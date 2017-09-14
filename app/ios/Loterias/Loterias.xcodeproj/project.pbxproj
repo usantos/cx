@@ -1,0 +1,973 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A606151D1F66B81E002191C3 /* Tour.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A606151B1F66B81E002191C3 /* Tour.storyboard */; };
+		A60615201F66BBBB002191C3 /* LOTourPageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A606151F1F66BBBB002191C3 /* LOTourPageController.swift */; };
+		A60615271F66FFEF002191C3 /* LOFinalizarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A60615261F66FFEF002191C3 /* LOFinalizarCell.swift */; };
+		A60615291F670001002191C3 /* LOOptionsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A60615281F670001002191C3 /* LOOptionsCell.swift */; };
+		A606152B1F670021002191C3 /* LOTermoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A606152A1F670021002191C3 /* LOTermoCell.swift */; };
+		A606152F1F670055002191C3 /* LOLocalizacaoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A606152E1F670055002191C3 /* LOLocalizacaoCell.swift */; };
+		A60615321F671E2C002191C3 /* LOMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A60615311F671E2C002191C3 /* LOMenuController.swift */; };
+		A60615341F671F79002191C3 /* LOLeftSideMenuControllerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A60615331F671F79002191C3 /* LOLeftSideMenuControllerController.swift */; };
+		A60615371F680E41002191C3 /* LOModalidesPageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A60615361F680E41002191C3 /* LOModalidesPageController.swift */; };
+		A60615391F680E6F002191C3 /* LOModalideController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A60615381F680E6F002191C3 /* LOModalideController.swift */; };
+		A606153B1F681BB2002191C3 /* LOModalidadeEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = A606153A1F681BB2002191C3 /* LOModalidadeEnum.swift */; };
+		A606153D1F686EED002191C3 /* LOTopDownSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = A606153C1F686EED002191C3 /* LOTopDownSegue.swift */; };
+		A606153F1F6870A3002191C3 /* LODownTopSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = A606153E1F6870A3002191C3 /* LODownTopSegue.swift */; };
+		A60615411F6871A3002191C3 /* LOTrevoMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A60615401F6871A3002191C3 /* LOTrevoMenuController.swift */; };
+		A60615441F697522002191C3 /* LOSimularApostasController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A60615431F697522002191C3 /* LOSimularApostasController.swift */; };
+		A60615461F69784C002191C3 /* LONumeroApostaCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A60615451F69784C002191C3 /* LONumeroApostaCell.swift */; };
+		A617DBAD1F58526800D257B7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A617DBAC1F58526800D257B7 /* AppDelegate.swift */; };
+		A617DBB51F58526800D257B7 /* Loterias.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A617DBB31F58526800D257B7 /* Loterias.xcdatamodeld */; };
+		A617DBC51F58526800D257B7 /* LoteriasTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A617DBC41F58526800D257B7 /* LoteriasTests.swift */; };
+		A617DBD01F58526800D257B7 /* LoteriasUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A617DBCF1F58526800D257B7 /* LoteriasUITests.swift */; };
+		A617DBE51F58570700D257B7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A617DBE41F58570700D257B7 /* Assets.xcassets */; };
+		A617DBEC1F58572500D257B7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A617DBE81F58572500D257B7 /* LaunchScreen.storyboard */; };
+		A617DBED1F58572500D257B7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A617DBEA1F58572500D257B7 /* Main.storyboard */; };
+		A617DBF01F58573700D257B7 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A617DBEE1F58573700D257B7 /* Login.storyboard */; };
+		A617DBF31F58762500D257B7 /* LOLoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A617DBF21F58762500D257B7 /* LOLoginController.swift */; };
+		A617DBF51F58A48800D257B7 /* LOExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A617DBF41F58A48800D257B7 /* LOExtensions.swift */; };
+		A617DBF71F58B60300D257B7 /* LOCadastroControllerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A617DBF61F58B60300D257B7 /* LOCadastroControllerController.swift */; };
+		A617DBFA1F5996C600D257B7 /* LOPopupSelecionarOpcoesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A617DBF91F5996C600D257B7 /* LOPopupSelecionarOpcoesController.swift */; };
+		A617DBFC1F59A99D00D257B7 /* LOPopupItensCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A617DBFB1F59A99D00D257B7 /* LOPopupItensCell.swift */; };
+		A617DC8E1F59B35700D257B7 /* FuturaStd-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = A617DC7A1F59B35700D257B7 /* FuturaStd-Bold.otf */; };
+		A617DC8F1F59B35700D257B7 /* FuturaStd-BoldOblique.otf in Resources */ = {isa = PBXBuildFile; fileRef = A617DC7B1F59B35700D257B7 /* FuturaStd-BoldOblique.otf */; };
+		A617DC901F59B35700D257B7 /* FuturaStd-Book.otf in Resources */ = {isa = PBXBuildFile; fileRef = A617DC7C1F59B35700D257B7 /* FuturaStd-Book.otf */; };
+		A617DC911F59B35700D257B7 /* FuturaStd-BookOblique.otf in Resources */ = {isa = PBXBuildFile; fileRef = A617DC7D1F59B35700D257B7 /* FuturaStd-BookOblique.otf */; };
+		A617DC921F59B35700D257B7 /* FuturaStd-Condensed.otf in Resources */ = {isa = PBXBuildFile; fileRef = A617DC7E1F59B35700D257B7 /* FuturaStd-Condensed.otf */; };
+		A617DC931F59B35700D257B7 /* FuturaStd-CondensedBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = A617DC7F1F59B35700D257B7 /* FuturaStd-CondensedBold.otf */; };
+		A617DC941F59B35700D257B7 /* FuturaStd-CondensedBoldObl.otf in Resources */ = {isa = PBXBuildFile; fileRef = A617DC801F59B35700D257B7 /* FuturaStd-CondensedBoldObl.otf */; };
+		A617DC951F59B35700D257B7 /* FuturaStd-CondensedExtraBd.otf in Resources */ = {isa = PBXBuildFile; fileRef = A617DC811F59B35700D257B7 /* FuturaStd-CondensedExtraBd.otf */; };
+		A617DC961F59B35700D257B7 /* FuturaStd-CondensedLight.otf in Resources */ = {isa = PBXBuildFile; fileRef = A617DC821F59B35700D257B7 /* FuturaStd-CondensedLight.otf */; };
+		A617DC971F59B35700D257B7 /* FuturaStd-CondensedLightObl.otf in Resources */ = {isa = PBXBuildFile; fileRef = A617DC831F59B35700D257B7 /* FuturaStd-CondensedLightObl.otf */; };
+		A617DC981F59B35700D257B7 /* FuturaStd-CondensedOblique.otf in Resources */ = {isa = PBXBuildFile; fileRef = A617DC841F59B35700D257B7 /* FuturaStd-CondensedOblique.otf */; };
+		A617DC991F59B35700D257B7 /* FuturaStd-CondExtraBoldObl.otf in Resources */ = {isa = PBXBuildFile; fileRef = A617DC851F59B35700D257B7 /* FuturaStd-CondExtraBoldObl.otf */; };
+		A617DC9A1F59B35700D257B7 /* FuturaStd-ExtraBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = A617DC861F59B35700D257B7 /* FuturaStd-ExtraBold.otf */; };
+		A617DC9B1F59B35700D257B7 /* FuturaStd-ExtraBoldOblique.otf in Resources */ = {isa = PBXBuildFile; fileRef = A617DC871F59B35700D257B7 /* FuturaStd-ExtraBoldOblique.otf */; };
+		A617DC9C1F59B35700D257B7 /* FuturaStd-Heavy.otf in Resources */ = {isa = PBXBuildFile; fileRef = A617DC881F59B35700D257B7 /* FuturaStd-Heavy.otf */; };
+		A617DC9D1F59B35700D257B7 /* FuturaStd-HeavyOblique.otf in Resources */ = {isa = PBXBuildFile; fileRef = A617DC891F59B35700D257B7 /* FuturaStd-HeavyOblique.otf */; };
+		A617DC9E1F59B35700D257B7 /* FuturaStd-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = A617DC8A1F59B35700D257B7 /* FuturaStd-Light.otf */; };
+		A617DC9F1F59B35700D257B7 /* FuturaStd-LightOblique.otf in Resources */ = {isa = PBXBuildFile; fileRef = A617DC8B1F59B35700D257B7 /* FuturaStd-LightOblique.otf */; };
+		A617DCA01F59B35700D257B7 /* FuturaStd-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = A617DC8C1F59B35700D257B7 /* FuturaStd-Medium.otf */; };
+		A617DCA11F59B35700D257B7 /* FuturaStd-MediumOblique.otf in Resources */ = {isa = PBXBuildFile; fileRef = A617DC8D1F59B35700D257B7 /* FuturaStd-MediumOblique.otf */; };
+		A617DCA41F59CA4A00D257B7 /* LOLoginBusinessService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A617DCA31F59CA4A00D257B7 /* LOLoginBusinessService.swift */; };
+		A617DCA61F59EF9200D257B7 /* LOCadastroPassoDoisController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A617DCA51F59EF9200D257B7 /* LOCadastroPassoDoisController.swift */; };
+		A69224A61F6AC08C00D319AC /* SimularApostaBaixo.xib in Resources */ = {isa = PBXBuildFile; fileRef = A69224A41F6AC08C00D319AC /* SimularApostaBaixo.xib */; };
+		A69224A81F6AC1C500D319AC /* SimularApostasCorpo.xib in Resources */ = {isa = PBXBuildFile; fileRef = A69224A71F6AC1C500D319AC /* SimularApostasCorpo.xib */; };
+		A69224AD1F6AC62F00D319AC /* LOSimularApostaBaixo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69224AC1F6AC62F00D319AC /* LOSimularApostaBaixo.swift */; };
+		EB859B319A3C90228FAA1C17 /* Pods_Loterias.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A20B6ADB9CB12B31C763A530 /* Pods_Loterias.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		A617DBC11F58526800D257B7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A617DBA11F58526800D257B7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A617DBA81F58526800D257B7;
+			remoteInfo = Loterias;
+		};
+		A617DBCC1F58526800D257B7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A617DBA11F58526800D257B7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A617DBA81F58526800D257B7;
+			remoteInfo = Loterias;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		6659A3785ADECB11CB237669 /* Pods-Loterias.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Loterias.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Loterias/Pods-Loterias.debug.xcconfig"; sourceTree = "<group>"; };
+		960D0A325E7278618E63BCF9 /* Pods-Loterias.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Loterias.release.xcconfig"; path = "Pods/Target Support Files/Pods-Loterias/Pods-Loterias.release.xcconfig"; sourceTree = "<group>"; };
+		A20B6ADB9CB12B31C763A530 /* Pods_Loterias.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Loterias.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A606151C1F66B81E002191C3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Userinterface/Base.lproj/Tour.storyboard; sourceTree = "<group>"; };
+		A606151F1F66BBBB002191C3 /* LOTourPageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LOTourPageController.swift; path = Controllers/Tour/LOTourPageController.swift; sourceTree = "<group>"; };
+		A60615261F66FFEF002191C3 /* LOFinalizarCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LOFinalizarCell.swift; path = Controllers/Login/Cadastro/LOFinalizarCell.swift; sourceTree = "<group>"; };
+		A60615281F670001002191C3 /* LOOptionsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LOOptionsCell.swift; path = Controllers/Login/Cadastro/LOOptionsCell.swift; sourceTree = "<group>"; };
+		A606152A1F670021002191C3 /* LOTermoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LOTermoCell.swift; path = Controllers/Login/Cadastro/LOTermoCell.swift; sourceTree = "<group>"; };
+		A606152E1F670055002191C3 /* LOLocalizacaoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LOLocalizacaoCell.swift; path = Controllers/Login/Cadastro/LOLocalizacaoCell.swift; sourceTree = "<group>"; };
+		A60615311F671E2C002191C3 /* LOMenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LOMenuController.swift; path = Controllers/LOMenuController.swift; sourceTree = "<group>"; };
+		A60615331F671F79002191C3 /* LOLeftSideMenuControllerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LOLeftSideMenuControllerController.swift; path = Controllers/Menu/LOLeftSideMenuControllerController.swift; sourceTree = "<group>"; };
+		A60615361F680E41002191C3 /* LOModalidesPageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LOModalidesPageController.swift; path = Controllers/Modalidades/LOModalidesPageController.swift; sourceTree = "<group>"; };
+		A60615381F680E6F002191C3 /* LOModalideController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LOModalideController.swift; path = Controllers/Modalidades/LOModalideController.swift; sourceTree = "<group>"; };
+		A606153A1F681BB2002191C3 /* LOModalidadeEnum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LOModalidadeEnum.swift; path = Controllers/Modalidades/LOModalidadeEnum.swift; sourceTree = "<group>"; };
+		A606153C1F686EED002191C3 /* LOTopDownSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LOTopDownSegue.swift; path = Controllers/Menu/LOTopDownSegue.swift; sourceTree = "<group>"; };
+		A606153E1F6870A3002191C3 /* LODownTopSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LODownTopSegue.swift; path = Controllers/Menu/LODownTopSegue.swift; sourceTree = "<group>"; };
+		A60615401F6871A3002191C3 /* LOTrevoMenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LOTrevoMenuController.swift; path = Controllers/Menu/LOTrevoMenuController.swift; sourceTree = "<group>"; };
+		A60615431F697522002191C3 /* LOSimularApostasController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LOSimularApostasController.swift; path = Controllers/Apostas/LOSimularApostasController.swift; sourceTree = "<group>"; };
+		A60615451F69784C002191C3 /* LONumeroApostaCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LONumeroApostaCell.swift; path = Controllers/Apostas/LONumeroApostaCell.swift; sourceTree = "<group>"; };
+		A617DBA91F58526800D257B7 /* Loterias.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Loterias.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A617DBAC1F58526800D257B7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		A617DBB41F58526800D257B7 /* Loterias.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Loterias.xcdatamodel; sourceTree = "<group>"; };
+		A617DBBB1F58526800D257B7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A617DBC01F58526800D257B7 /* LoteriasTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LoteriasTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A617DBC41F58526800D257B7 /* LoteriasTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoteriasTests.swift; sourceTree = "<group>"; };
+		A617DBC61F58526800D257B7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A617DBCB1F58526800D257B7 /* LoteriasUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LoteriasUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A617DBCF1F58526800D257B7 /* LoteriasUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoteriasUITests.swift; sourceTree = "<group>"; };
+		A617DBD11F58526800D257B7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A617DBE41F58570700D257B7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = Assets/Assets.xcassets; sourceTree = "<group>"; };
+		A617DBE91F58572500D257B7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Userinterface/Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		A617DBEB1F58572500D257B7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Userinterface/Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		A617DBEF1F58573700D257B7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Userinterface/Base.lproj/Login.storyboard; sourceTree = "<group>"; };
+		A617DBF21F58762500D257B7 /* LOLoginController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LOLoginController.swift; path = Controllers/Login/LOLoginController.swift; sourceTree = "<group>"; };
+		A617DBF41F58A48800D257B7 /* LOExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LOExtensions.swift; sourceTree = "<group>"; };
+		A617DBF61F58B60300D257B7 /* LOCadastroControllerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LOCadastroControllerController.swift; path = Controllers/Login/LOCadastroControllerController.swift; sourceTree = "<group>"; };
+		A617DBF91F5996C600D257B7 /* LOPopupSelecionarOpcoesController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LOPopupSelecionarOpcoesController.swift; path = Dependencies/LOPopupSelecionarOpcoesController.swift; sourceTree = "<group>"; };
+		A617DBFB1F59A99D00D257B7 /* LOPopupItensCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LOPopupItensCell.swift; path = Dependencies/LOPopupItensCell.swift; sourceTree = "<group>"; };
+		A617DC7A1F59B35700D257B7 /* FuturaStd-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "FuturaStd-Bold.otf"; path = "Assets/Fonts/FuturaStd-Bold.otf"; sourceTree = "<group>"; };
+		A617DC7B1F59B35700D257B7 /* FuturaStd-BoldOblique.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "FuturaStd-BoldOblique.otf"; path = "Assets/Fonts/FuturaStd-BoldOblique.otf"; sourceTree = "<group>"; };
+		A617DC7C1F59B35700D257B7 /* FuturaStd-Book.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "FuturaStd-Book.otf"; path = "Assets/Fonts/FuturaStd-Book.otf"; sourceTree = "<group>"; };
+		A617DC7D1F59B35700D257B7 /* FuturaStd-BookOblique.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "FuturaStd-BookOblique.otf"; path = "Assets/Fonts/FuturaStd-BookOblique.otf"; sourceTree = "<group>"; };
+		A617DC7E1F59B35700D257B7 /* FuturaStd-Condensed.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "FuturaStd-Condensed.otf"; path = "Assets/Fonts/FuturaStd-Condensed.otf"; sourceTree = "<group>"; };
+		A617DC7F1F59B35700D257B7 /* FuturaStd-CondensedBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "FuturaStd-CondensedBold.otf"; path = "Assets/Fonts/FuturaStd-CondensedBold.otf"; sourceTree = "<group>"; };
+		A617DC801F59B35700D257B7 /* FuturaStd-CondensedBoldObl.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "FuturaStd-CondensedBoldObl.otf"; path = "Assets/Fonts/FuturaStd-CondensedBoldObl.otf"; sourceTree = "<group>"; };
+		A617DC811F59B35700D257B7 /* FuturaStd-CondensedExtraBd.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "FuturaStd-CondensedExtraBd.otf"; path = "Assets/Fonts/FuturaStd-CondensedExtraBd.otf"; sourceTree = "<group>"; };
+		A617DC821F59B35700D257B7 /* FuturaStd-CondensedLight.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "FuturaStd-CondensedLight.otf"; path = "Assets/Fonts/FuturaStd-CondensedLight.otf"; sourceTree = "<group>"; };
+		A617DC831F59B35700D257B7 /* FuturaStd-CondensedLightObl.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "FuturaStd-CondensedLightObl.otf"; path = "Assets/Fonts/FuturaStd-CondensedLightObl.otf"; sourceTree = "<group>"; };
+		A617DC841F59B35700D257B7 /* FuturaStd-CondensedOblique.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "FuturaStd-CondensedOblique.otf"; path = "Assets/Fonts/FuturaStd-CondensedOblique.otf"; sourceTree = "<group>"; };
+		A617DC851F59B35700D257B7 /* FuturaStd-CondExtraBoldObl.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "FuturaStd-CondExtraBoldObl.otf"; path = "Assets/Fonts/FuturaStd-CondExtraBoldObl.otf"; sourceTree = "<group>"; };
+		A617DC861F59B35700D257B7 /* FuturaStd-ExtraBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "FuturaStd-ExtraBold.otf"; path = "Assets/Fonts/FuturaStd-ExtraBold.otf"; sourceTree = "<group>"; };
+		A617DC871F59B35700D257B7 /* FuturaStd-ExtraBoldOblique.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "FuturaStd-ExtraBoldOblique.otf"; path = "Assets/Fonts/FuturaStd-ExtraBoldOblique.otf"; sourceTree = "<group>"; };
+		A617DC881F59B35700D257B7 /* FuturaStd-Heavy.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "FuturaStd-Heavy.otf"; path = "Assets/Fonts/FuturaStd-Heavy.otf"; sourceTree = "<group>"; };
+		A617DC891F59B35700D257B7 /* FuturaStd-HeavyOblique.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "FuturaStd-HeavyOblique.otf"; path = "Assets/Fonts/FuturaStd-HeavyOblique.otf"; sourceTree = "<group>"; };
+		A617DC8A1F59B35700D257B7 /* FuturaStd-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "FuturaStd-Light.otf"; path = "Assets/Fonts/FuturaStd-Light.otf"; sourceTree = "<group>"; };
+		A617DC8B1F59B35700D257B7 /* FuturaStd-LightOblique.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "FuturaStd-LightOblique.otf"; path = "Assets/Fonts/FuturaStd-LightOblique.otf"; sourceTree = "<group>"; };
+		A617DC8C1F59B35700D257B7 /* FuturaStd-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "FuturaStd-Medium.otf"; path = "Assets/Fonts/FuturaStd-Medium.otf"; sourceTree = "<group>"; };
+		A617DC8D1F59B35700D257B7 /* FuturaStd-MediumOblique.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "FuturaStd-MediumOblique.otf"; path = "Assets/Fonts/FuturaStd-MediumOblique.otf"; sourceTree = "<group>"; };
+		A617DCA31F59CA4A00D257B7 /* LOLoginBusinessService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LOLoginBusinessService.swift; path = Business/LOLoginBusinessService.swift; sourceTree = "<group>"; };
+		A617DCA51F59EF9200D257B7 /* LOCadastroPassoDoisController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LOCadastroPassoDoisController.swift; path = Controllers/Login/LOCadastroPassoDoisController.swift; sourceTree = "<group>"; };
+		A69224A51F6AC08C00D319AC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Userinterface/Base.lproj/SimularApostaBaixo.xib; sourceTree = "<group>"; };
+		A69224A71F6AC1C500D319AC /* SimularApostasCorpo.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SimularApostasCorpo.xib; sourceTree = "<group>"; };
+		A69224AC1F6AC62F00D319AC /* LOSimularApostaBaixo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LOSimularApostaBaixo.swift; path = Userinterface/SimularApostaBaixo/LOSimularApostaBaixo.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A617DBA61F58526800D257B7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EB859B319A3C90228FAA1C17 /* Pods_Loterias.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A617DBBD1F58526800D257B7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A617DBC81F58526800D257B7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		18B400E3695E969BBC8D1560 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A20B6ADB9CB12B31C763A530 /* Pods_Loterias.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A606151E1F66BB9C002191C3 /* Tour */ = {
+			isa = PBXGroup;
+			children = (
+				A606151F1F66BBBB002191C3 /* LOTourPageController.swift */,
+			);
+			name = Tour;
+			sourceTree = "<group>";
+		};
+		A60615231F66FFA0002191C3 /* Cadastro */ = {
+			isa = PBXGroup;
+			children = (
+				A60615261F66FFEF002191C3 /* LOFinalizarCell.swift */,
+				A60615281F670001002191C3 /* LOOptionsCell.swift */,
+				A606152A1F670021002191C3 /* LOTermoCell.swift */,
+				A606152E1F670055002191C3 /* LOLocalizacaoCell.swift */,
+			);
+			name = Cadastro;
+			sourceTree = "<group>";
+		};
+		A60615301F671DE4002191C3 /* Menu */ = {
+			isa = PBXGroup;
+			children = (
+				A606153C1F686EED002191C3 /* LOTopDownSegue.swift */,
+				A606153E1F6870A3002191C3 /* LODownTopSegue.swift */,
+				A60615311F671E2C002191C3 /* LOMenuController.swift */,
+				A60615331F671F79002191C3 /* LOLeftSideMenuControllerController.swift */,
+				A60615401F6871A3002191C3 /* LOTrevoMenuController.swift */,
+			);
+			name = Menu;
+			sourceTree = "<group>";
+		};
+		A60615351F680DFE002191C3 /* Modalidades */ = {
+			isa = PBXGroup;
+			children = (
+				A60615361F680E41002191C3 /* LOModalidesPageController.swift */,
+				A60615381F680E6F002191C3 /* LOModalideController.swift */,
+				A606153A1F681BB2002191C3 /* LOModalidadeEnum.swift */,
+			);
+			name = Modalidades;
+			sourceTree = "<group>";
+		};
+		A60615421F6974B7002191C3 /* Apostas */ = {
+			isa = PBXGroup;
+			children = (
+				A60615431F697522002191C3 /* LOSimularApostasController.swift */,
+				A60615451F69784C002191C3 /* LONumeroApostaCell.swift */,
+			);
+			name = Apostas;
+			sourceTree = "<group>";
+		};
+		A617DBA01F58526800D257B7 = {
+			isa = PBXGroup;
+			children = (
+				A617DBAB1F58526800D257B7 /* Loterias */,
+				A617DBC31F58526800D257B7 /* LoteriasTests */,
+				A617DBCE1F58526800D257B7 /* LoteriasUITests */,
+				A617DBAA1F58526800D257B7 /* Products */,
+				EE9C27FCB5B3DA57824AA9E0 /* Pods */,
+				18B400E3695E969BBC8D1560 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		A617DBAA1F58526800D257B7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A617DBA91F58526800D257B7 /* Loterias.app */,
+				A617DBC01F58526800D257B7 /* LoteriasTests.xctest */,
+				A617DBCB1F58526800D257B7 /* LoteriasUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A617DBAB1F58526800D257B7 /* Loterias */ = {
+			isa = PBXGroup;
+			children = (
+				A617DCA21F59CA2B00D257B7 /* Business */,
+				A617DBF81F59968A00D257B7 /* Dependencies */,
+				A617DBE11F58564300D257B7 /* Assets */,
+				A617DBDF1F58554000D257B7 /* Userinterface */,
+				A617DBDE1F58553900D257B7 /* Controllers */,
+				A617DBDD1F58553300D257B7 /* Models */,
+				A617DBAC1F58526800D257B7 /* AppDelegate.swift */,
+				A617DBBB1F58526800D257B7 /* Info.plist */,
+				A617DBB31F58526800D257B7 /* Loterias.xcdatamodeld */,
+			);
+			path = Loterias;
+			sourceTree = "<group>";
+		};
+		A617DBC31F58526800D257B7 /* LoteriasTests */ = {
+			isa = PBXGroup;
+			children = (
+				A617DBC41F58526800D257B7 /* LoteriasTests.swift */,
+				A617DBC61F58526800D257B7 /* Info.plist */,
+			);
+			path = LoteriasTests;
+			sourceTree = "<group>";
+		};
+		A617DBCE1F58526800D257B7 /* LoteriasUITests */ = {
+			isa = PBXGroup;
+			children = (
+				A617DBCF1F58526800D257B7 /* LoteriasUITests.swift */,
+				A617DBD11F58526800D257B7 /* Info.plist */,
+			);
+			path = LoteriasUITests;
+			sourceTree = "<group>";
+		};
+		A617DBDD1F58553300D257B7 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		A617DBDE1F58553900D257B7 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				A60615421F6974B7002191C3 /* Apostas */,
+				A60615351F680DFE002191C3 /* Modalidades */,
+				A60615301F671DE4002191C3 /* Menu */,
+				A606151E1F66BB9C002191C3 /* Tour */,
+				A617DBF11F5875F600D257B7 /* Login */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		A617DBDF1F58554000D257B7 /* Userinterface */ = {
+			isa = PBXGroup;
+			children = (
+				A69224A91F6AC58F00D319AC /* SimularApostaBaixo */,
+				A617DBE81F58572500D257B7 /* LaunchScreen.storyboard */,
+				A617DBEA1F58572500D257B7 /* Main.storyboard */,
+				A617DBEE1F58573700D257B7 /* Login.storyboard */,
+				A606151B1F66B81E002191C3 /* Tour.storyboard */,
+				A69224A71F6AC1C500D319AC /* SimularApostasCorpo.xib */,
+			);
+			name = Userinterface;
+			sourceTree = "<group>";
+		};
+		A617DBE11F58564300D257B7 /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				A617DC791F59B30300D257B7 /* Fonts */,
+				A617DBE41F58570700D257B7 /* Assets.xcassets */,
+			);
+			name = Assets;
+			sourceTree = "<group>";
+		};
+		A617DBF11F5875F600D257B7 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				A60615231F66FFA0002191C3 /* Cadastro */,
+				A617DBF21F58762500D257B7 /* LOLoginController.swift */,
+				A617DBF61F58B60300D257B7 /* LOCadastroControllerController.swift */,
+				A617DCA51F59EF9200D257B7 /* LOCadastroPassoDoisController.swift */,
+			);
+			name = Login;
+			sourceTree = "<group>";
+		};
+		A617DBF81F59968A00D257B7 /* Dependencies */ = {
+			isa = PBXGroup;
+			children = (
+				A617DBF91F5996C600D257B7 /* LOPopupSelecionarOpcoesController.swift */,
+				A617DBFB1F59A99D00D257B7 /* LOPopupItensCell.swift */,
+				A617DBF41F58A48800D257B7 /* LOExtensions.swift */,
+			);
+			name = Dependencies;
+			sourceTree = "<group>";
+		};
+		A617DC791F59B30300D257B7 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				A617DC7A1F59B35700D257B7 /* FuturaStd-Bold.otf */,
+				A617DC7B1F59B35700D257B7 /* FuturaStd-BoldOblique.otf */,
+				A617DC7C1F59B35700D257B7 /* FuturaStd-Book.otf */,
+				A617DC7D1F59B35700D257B7 /* FuturaStd-BookOblique.otf */,
+				A617DC7E1F59B35700D257B7 /* FuturaStd-Condensed.otf */,
+				A617DC7F1F59B35700D257B7 /* FuturaStd-CondensedBold.otf */,
+				A617DC801F59B35700D257B7 /* FuturaStd-CondensedBoldObl.otf */,
+				A617DC811F59B35700D257B7 /* FuturaStd-CondensedExtraBd.otf */,
+				A617DC821F59B35700D257B7 /* FuturaStd-CondensedLight.otf */,
+				A617DC831F59B35700D257B7 /* FuturaStd-CondensedLightObl.otf */,
+				A617DC841F59B35700D257B7 /* FuturaStd-CondensedOblique.otf */,
+				A617DC851F59B35700D257B7 /* FuturaStd-CondExtraBoldObl.otf */,
+				A617DC861F59B35700D257B7 /* FuturaStd-ExtraBold.otf */,
+				A617DC871F59B35700D257B7 /* FuturaStd-ExtraBoldOblique.otf */,
+				A617DC881F59B35700D257B7 /* FuturaStd-Heavy.otf */,
+				A617DC891F59B35700D257B7 /* FuturaStd-HeavyOblique.otf */,
+				A617DC8A1F59B35700D257B7 /* FuturaStd-Light.otf */,
+				A617DC8B1F59B35700D257B7 /* FuturaStd-LightOblique.otf */,
+				A617DC8C1F59B35700D257B7 /* FuturaStd-Medium.otf */,
+				A617DC8D1F59B35700D257B7 /* FuturaStd-MediumOblique.otf */,
+			);
+			name = Fonts;
+			sourceTree = "<group>";
+		};
+		A617DCA21F59CA2B00D257B7 /* Business */ = {
+			isa = PBXGroup;
+			children = (
+				A617DCA31F59CA4A00D257B7 /* LOLoginBusinessService.swift */,
+			);
+			name = Business;
+			sourceTree = "<group>";
+		};
+		A69224A91F6AC58F00D319AC /* SimularApostaBaixo */ = {
+			isa = PBXGroup;
+			children = (
+				A69224A41F6AC08C00D319AC /* SimularApostaBaixo.xib */,
+				A69224AC1F6AC62F00D319AC /* LOSimularApostaBaixo.swift */,
+			);
+			name = SimularApostaBaixo;
+			sourceTree = "<group>";
+		};
+		EE9C27FCB5B3DA57824AA9E0 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				6659A3785ADECB11CB237669 /* Pods-Loterias.debug.xcconfig */,
+				960D0A325E7278618E63BCF9 /* Pods-Loterias.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A617DBA81F58526800D257B7 /* Loterias */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A617DBD41F58526800D257B7 /* Build configuration list for PBXNativeTarget "Loterias" */;
+			buildPhases = (
+				DB081791930921DA05FA1463 /* [CP] Check Pods Manifest.lock */,
+				A617DBA51F58526800D257B7 /* Sources */,
+				A617DBA61F58526800D257B7 /* Frameworks */,
+				A617DBA71F58526800D257B7 /* Resources */,
+				428BA409B16217837FBE7CC2 /* [CP] Embed Pods Frameworks */,
+				9BA4453865AF68A48ECB6D63 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Loterias;
+			productName = Loterias;
+			productReference = A617DBA91F58526800D257B7 /* Loterias.app */;
+			productType = "com.apple.product-type.application";
+		};
+		A617DBBF1F58526800D257B7 /* LoteriasTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A617DBD71F58526800D257B7 /* Build configuration list for PBXNativeTarget "LoteriasTests" */;
+			buildPhases = (
+				A617DBBC1F58526800D257B7 /* Sources */,
+				A617DBBD1F58526800D257B7 /* Frameworks */,
+				A617DBBE1F58526800D257B7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A617DBC21F58526800D257B7 /* PBXTargetDependency */,
+			);
+			name = LoteriasTests;
+			productName = LoteriasTests;
+			productReference = A617DBC01F58526800D257B7 /* LoteriasTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		A617DBCA1F58526800D257B7 /* LoteriasUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A617DBDA1F58526800D257B7 /* Build configuration list for PBXNativeTarget "LoteriasUITests" */;
+			buildPhases = (
+				A617DBC71F58526800D257B7 /* Sources */,
+				A617DBC81F58526800D257B7 /* Frameworks */,
+				A617DBC91F58526800D257B7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A617DBCD1F58526800D257B7 /* PBXTargetDependency */,
+			);
+			name = LoteriasUITests;
+			productName = LoteriasUITests;
+			productReference = A617DBCB1F58526800D257B7 /* LoteriasUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A617DBA11F58526800D257B7 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = LO;
+				LastSwiftUpdateCheck = 0830;
+				LastUpgradeCheck = 0830;
+				ORGANIZATIONNAME = Caixa;
+				TargetAttributes = {
+					A617DBA81F58526800D257B7 = {
+						CreatedOnToolsVersion = 8.3.3;
+						DevelopmentTeam = PRH6G37Z67;
+						ProvisioningStyle = Automatic;
+					};
+					A617DBBF1F58526800D257B7 = {
+						CreatedOnToolsVersion = 8.3.3;
+						ProvisioningStyle = Automatic;
+						TestTargetID = A617DBA81F58526800D257B7;
+					};
+					A617DBCA1F58526800D257B7 = {
+						CreatedOnToolsVersion = 8.3.3;
+						ProvisioningStyle = Automatic;
+						TestTargetID = A617DBA81F58526800D257B7;
+					};
+				};
+			};
+			buildConfigurationList = A617DBA41F58526800D257B7 /* Build configuration list for PBXProject "Loterias" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = A617DBA01F58526800D257B7;
+			productRefGroup = A617DBAA1F58526800D257B7 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A617DBA81F58526800D257B7 /* Loterias */,
+				A617DBBF1F58526800D257B7 /* LoteriasTests */,
+				A617DBCA1F58526800D257B7 /* LoteriasUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A617DBA71F58526800D257B7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A617DC951F59B35700D257B7 /* FuturaStd-CondensedExtraBd.otf in Resources */,
+				A617DC971F59B35700D257B7 /* FuturaStd-CondensedLightObl.otf in Resources */,
+				A617DCA01F59B35700D257B7 /* FuturaStd-Medium.otf in Resources */,
+				A617DC9C1F59B35700D257B7 /* FuturaStd-Heavy.otf in Resources */,
+				A617DC9E1F59B35700D257B7 /* FuturaStd-Light.otf in Resources */,
+				A606151D1F66B81E002191C3 /* Tour.storyboard in Resources */,
+				A617DC941F59B35700D257B7 /* FuturaStd-CondensedBoldObl.otf in Resources */,
+				A617DC921F59B35700D257B7 /* FuturaStd-Condensed.otf in Resources */,
+				A617DC961F59B35700D257B7 /* FuturaStd-CondensedLight.otf in Resources */,
+				A617DC9A1F59B35700D257B7 /* FuturaStd-ExtraBold.otf in Resources */,
+				A617DC981F59B35700D257B7 /* FuturaStd-CondensedOblique.otf in Resources */,
+				A617DC8E1F59B35700D257B7 /* FuturaStd-Bold.otf in Resources */,
+				A617DC9F1F59B35700D257B7 /* FuturaStd-LightOblique.otf in Resources */,
+				A617DC901F59B35700D257B7 /* FuturaStd-Book.otf in Resources */,
+				A617DC911F59B35700D257B7 /* FuturaStd-BookOblique.otf in Resources */,
+				A617DC991F59B35700D257B7 /* FuturaStd-CondExtraBoldObl.otf in Resources */,
+				A69224A81F6AC1C500D319AC /* SimularApostasCorpo.xib in Resources */,
+				A617DC9D1F59B35700D257B7 /* FuturaStd-HeavyOblique.otf in Resources */,
+				A617DC8F1F59B35700D257B7 /* FuturaStd-BoldOblique.otf in Resources */,
+				A617DCA11F59B35700D257B7 /* FuturaStd-MediumOblique.otf in Resources */,
+				A617DC9B1F59B35700D257B7 /* FuturaStd-ExtraBoldOblique.otf in Resources */,
+				A617DBF01F58573700D257B7 /* Login.storyboard in Resources */,
+				A617DBED1F58572500D257B7 /* Main.storyboard in Resources */,
+				A617DBE51F58570700D257B7 /* Assets.xcassets in Resources */,
+				A617DBEC1F58572500D257B7 /* LaunchScreen.storyboard in Resources */,
+				A617DC931F59B35700D257B7 /* FuturaStd-CondensedBold.otf in Resources */,
+				A69224A61F6AC08C00D319AC /* SimularApostaBaixo.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A617DBBE1F58526800D257B7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A617DBC91F58526800D257B7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		428BA409B16217837FBE7CC2 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Loterias/Pods-Loterias-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/AeroGearHttp/AeroGearHttp.framework",
+				"${BUILT_PRODUCTS_DIR}/AeroGearOAuth2/AeroGearOAuth2.framework",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/ObjectMapper/ObjectMapper.framework",
+				"${BUILT_PRODUCTS_DIR}/SideMenu/SideMenu.framework",
+				"${BUILT_PRODUCTS_DIR}/TextFieldEffects/TextFieldEffects.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AeroGearHttp.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AeroGearOAuth2.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManagerSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ObjectMapper.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SideMenu.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TextFieldEffects.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Loterias/Pods-Loterias-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9BA4453865AF68A48ECB6D63 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Loterias/Pods-Loterias-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DB081791930921DA05FA1463 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Loterias-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A617DBA51F58526800D257B7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A617DCA61F59EF9200D257B7 /* LOCadastroPassoDoisController.swift in Sources */,
+				A60615291F670001002191C3 /* LOOptionsCell.swift in Sources */,
+				A606153D1F686EED002191C3 /* LOTopDownSegue.swift in Sources */,
+				A617DCA41F59CA4A00D257B7 /* LOLoginBusinessService.swift in Sources */,
+				A60615461F69784C002191C3 /* LONumeroApostaCell.swift in Sources */,
+				A69224AD1F6AC62F00D319AC /* LOSimularApostaBaixo.swift in Sources */,
+				A617DBF71F58B60300D257B7 /* LOCadastroControllerController.swift in Sources */,
+				A617DBF51F58A48800D257B7 /* LOExtensions.swift in Sources */,
+				A617DBFC1F59A99D00D257B7 /* LOPopupItensCell.swift in Sources */,
+				A60615201F66BBBB002191C3 /* LOTourPageController.swift in Sources */,
+				A60615411F6871A3002191C3 /* LOTrevoMenuController.swift in Sources */,
+				A606152B1F670021002191C3 /* LOTermoCell.swift in Sources */,
+				A60615321F671E2C002191C3 /* LOMenuController.swift in Sources */,
+				A60615391F680E6F002191C3 /* LOModalideController.swift in Sources */,
+				A606153F1F6870A3002191C3 /* LODownTopSegue.swift in Sources */,
+				A617DBF31F58762500D257B7 /* LOLoginController.swift in Sources */,
+				A606152F1F670055002191C3 /* LOLocalizacaoCell.swift in Sources */,
+				A60615371F680E41002191C3 /* LOModalidesPageController.swift in Sources */,
+				A60615341F671F79002191C3 /* LOLeftSideMenuControllerController.swift in Sources */,
+				A617DBFA1F5996C600D257B7 /* LOPopupSelecionarOpcoesController.swift in Sources */,
+				A60615271F66FFEF002191C3 /* LOFinalizarCell.swift in Sources */,
+				A617DBB51F58526800D257B7 /* Loterias.xcdatamodeld in Sources */,
+				A60615441F697522002191C3 /* LOSimularApostasController.swift in Sources */,
+				A617DBAD1F58526800D257B7 /* AppDelegate.swift in Sources */,
+				A606153B1F681BB2002191C3 /* LOModalidadeEnum.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A617DBBC1F58526800D257B7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A617DBC51F58526800D257B7 /* LoteriasTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A617DBC71F58526800D257B7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A617DBD01F58526800D257B7 /* LoteriasUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A617DBC21F58526800D257B7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A617DBA81F58526800D257B7 /* Loterias */;
+			targetProxy = A617DBC11F58526800D257B7 /* PBXContainerItemProxy */;
+		};
+		A617DBCD1F58526800D257B7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A617DBA81F58526800D257B7 /* Loterias */;
+			targetProxy = A617DBCC1F58526800D257B7 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		A606151B1F66B81E002191C3 /* Tour.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A606151C1F66B81E002191C3 /* Base */,
+			);
+			name = Tour.storyboard;
+			sourceTree = "<group>";
+		};
+		A617DBE81F58572500D257B7 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A617DBE91F58572500D257B7 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		A617DBEA1F58572500D257B7 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A617DBEB1F58572500D257B7 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		A617DBEE1F58573700D257B7 /* Login.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A617DBEF1F58573700D257B7 /* Base */,
+			);
+			name = Login.storyboard;
+			sourceTree = "<group>";
+		};
+		A69224A41F6AC08C00D319AC /* SimularApostaBaixo.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A69224A51F6AC08C00D319AC /* Base */,
+			);
+			name = SimularApostaBaixo.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		A617DBD21F58526800D257B7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		A617DBD31F58526800D257B7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		A617DBD51F58526800D257B7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6659A3785ADECB11CB237669 /* Pods-Loterias.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = PRH6G37Z67;
+				INFOPLIST_FILE = Loterias/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = br.gov.caixa.caixaloterias;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		A617DBD61F58526800D257B7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 960D0A325E7278618E63BCF9 /* Pods-Loterias.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = PRH6G37Z67;
+				INFOPLIST_FILE = Loterias/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = br.gov.caixa.caixaloterias;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
+		A617DBD81F58526800D257B7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = LoteriasTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = br.gov.caixa.LoteriasTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Loterias.app/Loterias";
+			};
+			name = Debug;
+		};
+		A617DBD91F58526800D257B7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = LoteriasTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = br.gov.caixa.LoteriasTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Loterias.app/Loterias";
+			};
+			name = Release;
+		};
+		A617DBDB1F58526800D257B7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				INFOPLIST_FILE = LoteriasUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = br.gov.caixa.LoteriasUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_TARGET_NAME = Loterias;
+			};
+			name = Debug;
+		};
+		A617DBDC1F58526800D257B7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				INFOPLIST_FILE = LoteriasUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = br.gov.caixa.LoteriasUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_TARGET_NAME = Loterias;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A617DBA41F58526800D257B7 /* Build configuration list for PBXProject "Loterias" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A617DBD21F58526800D257B7 /* Debug */,
+				A617DBD31F58526800D257B7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A617DBD41F58526800D257B7 /* Build configuration list for PBXNativeTarget "Loterias" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A617DBD51F58526800D257B7 /* Debug */,
+				A617DBD61F58526800D257B7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A617DBD71F58526800D257B7 /* Build configuration list for PBXNativeTarget "LoteriasTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A617DBD81F58526800D257B7 /* Debug */,
+				A617DBD91F58526800D257B7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A617DBDA1F58526800D257B7 /* Build configuration list for PBXNativeTarget "LoteriasUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A617DBDB1F58526800D257B7 /* Debug */,
+				A617DBDC1F58526800D257B7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		A617DBB31F58526800D257B7 /* Loterias.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				A617DBB41F58526800D257B7 /* Loterias.xcdatamodel */,
+			);
+			currentVersion = A617DBB41F58526800D257B7 /* Loterias.xcdatamodel */;
+			path = Loterias.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = A617DBA11F58526800D257B7 /* Project object */;
+}
