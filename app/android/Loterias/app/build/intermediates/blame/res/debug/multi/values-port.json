@@ -1,6 +1,6 @@
 [
     {
-        "outputFile": "/Users/igorvilar/Documents/capgemini/Loterias/loterias/App/Android/Loterias/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-port/values-port.xml",
+        "outputFile": "C:\\Users\\brfernan\\Documents\\repositories\\simlo\\trunk\\app\\android\\Loterias\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-port\\values-port.xml",
         "map": [
             {
                 "to": {
@@ -11,7 +11,7 @@
                     "endOffset": 106
                 },
                 "from": {
-                    "file": "/Users/igorvilar/.android/build-cache/194fcee895c2072f69b9d78a3914a385b6aff91a/output/res/values-port/values-port.xml",
+                    "file": "C:\\Users\\brfernan\\.android\\build-cache\\d461813bfb306cc29e5cc968f5b8b181a34ea240\\output\\res\\values-port\\values-port.xml",
                     "position": {
                         "startLine": 2,
                         "startColumn": 4,

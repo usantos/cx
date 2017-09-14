@@ -8,67 +8,83 @@
     tools:context="caixa.gov.br.loterias.ui.HomeActivity"
     tools:showIn="@layout/app_bar_home">
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_width="368dp"
+        android:layout_height="439dp"
+        tools:layout_editor_absoluteY="8dp"
+        tools:layout_editor_absoluteX="8dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:background="@color/cinza2">
             <LinearLayout
                 android:id="@+id/RelativeLayoutTopResultados"
                 android:layout_width="match_parent"
                 android:layout_height="32dp"
                 android:layout_marginLeft="59dp"
                 android:layout_marginRight="59dp"
-                android:background="@color/verdesena"
+                android:background="@color/verdesenaescuro"
                 android:orientation="horizontal"
+                android:gravity="center"
                 >
                 <ImageView
-                    android:layout_width="12dp"
-                    android:layout_height="8dp"
-                    android:layout_marginLeft="17dp"
-                    android:layout_marginTop="0dp"
+                    android:layout_width="8dp"
+                    android:layout_height="12dp"
                     android:src="@drawable/seta_esquerda"
-                    android:layout_gravity="left"
                     />
+                <Button
+                    android:layout_marginLeft="61dp"
+                    android:layout_marginRight="61dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:textAllCaps="false"
+                    android:text="Resultados"
+                    android:background="@null"
+                    android:textColor="@color/branco"
+                    android:gravity="center"/>
                 <ImageView
                     android:src="@drawable/seta_direita"
-                    android:layout_width="12dp"
-                    android:layout_height="8dp"
-                    android:layout_marginRight="17dp"
-                    android:layout_marginTop="0dp"
-                    android:layout_gravity="right"/>
-                <Button
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="0dp"
-                android:layout_width="match_parent"
-                android:layout_height="32dp"
-                android:textAllCaps="false"
-                android:text="Resultados"
-                android:background="@null"
-                android:textColor="@color/branco"
-                android:gravity="center"/>
+                    android:layout_width="8dp"
+                    android:layout_height="12dp"/>
+
 
 
             </LinearLayout>
-            <ImageView
+            <LinearLayout
+                android:id="@+id/RelativeLayoutTopModalidades"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="71dp"
                 android:layout_marginLeft="42dp"
                 android:layout_marginRight="42dp"
-                android:background="@color/verdesena"
-                android:src="@drawable/cartao_american"
-                android:id="@+id/imageViewBannerTipoAposta"
-                />
+                android:background="@color/verdesenaclaro"
+                android:orientation="horizontal"
+                android:gravity="left">
+                <ImageView
+                    android:layout_width="85dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/verdesenamedio"
+                    android:src="@drawable/cartao_american"
+                    android:id="@+id/imageViewBannerTipoAposta"
+                    />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="mega-sena"
+                    android:textSize="21.7sp"
+                    android:textColor="@color/branco"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    />
+                </LinearLayout>
+
             <RelativeLayout
                 android:id="@+id/RelativeLayoutContentAposta"
                 android:layout_width="match_parent"
                 android:layout_height="356dp"
                 android:layout_marginLeft="42dp"
                 android:layout_marginRight="42dp"
-                android:background="@color/cinza2"
+                android:background="@color/branco"
                 >
                 <TextView
                     android:layout_width="match_parent"

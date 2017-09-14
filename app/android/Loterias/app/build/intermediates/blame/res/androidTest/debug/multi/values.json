@@ -1,6 +1,6 @@
 [
     {
-        "outputFile": "/Users/igorvilar/Documents/capgemini/Loterias/loterias/App/Android/Loterias/app/build/intermediates/incremental/mergeDebugAndroidTestResources/merged.dir/values/values.xml",
+        "outputFile": "C:\\Users\\brfernan\\Documents\\repositories\\simlo\\trunk\\app\\android\\Loterias\\app\\build\\intermediates\\incremental\\mergeDebugAndroidTestResources\\merged.dir\\values\\values.xml",
         "map": [
             {
                 "to": {
@@ -11,7 +11,7 @@
                     "endOffset": 96
                 },
                 "from": {
-                    "file": "/Users/igorvilar/.android/build-cache/58a16346d15d7cdedf876b8feca1071684808e0c/output/res/values/values.xml",
+                    "file": "C:\\Users\\brfernan\\.android\\build-cache\\ab1071c87e1e6bc4392ba22631310d80ad03b531\\output\\res\\values\\values.xml",
                     "position": {
                         "startLine": 4,
                         "startColumn": 4,

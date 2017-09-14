@@ -1,7 +1,7 @@
-#Wed Sep 13 18:44:59 BRT 2017
-base.0=/Users/igorvilar/Documents/capgemini/Loterias/loterias/App/Android/Loterias/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_59b5e82375c6944f6c2349d81d61bb799dd099f8
+#Thu Sep 14 17:32:42 BRT 2017
+base.0=C\:\\Users\\brfernan\\Documents\\repositories\\simlo\\trunk\\app\\android\\Loterias\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10000\\instant-run-bootstrap_7b973e2c13a88ec952cf1fbf7a063369b0e02539
 renamed.1=classes2.dex
 renamed.0=classes.dex
-file.1=/Users/igorvilar/Documents/capgemini/Loterias/loterias/App/Android/Loterias/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_42f39ab16fc968201a3227d5a47f9e53f202c833/classes.dex
-base.1=/Users/igorvilar/Documents/capgemini/Loterias/loterias/App/Android/Loterias/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_42f39ab16fc968201a3227d5a47f9e53f202c833
-file.0=/Users/igorvilar/Documents/capgemini/Loterias/loterias/App/Android/Loterias/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_59b5e82375c6944f6c2349d81d61bb799dd099f8/classes.dex
+file.1=C\:\\Users\\brfernan\\Documents\\repositories\\simlo\\trunk\\app\\android\\Loterias\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10000\\instant-run_c6047b30cea6986b70aab17409090073874f3022\\classes.dex
+base.1=C\:\\Users\\brfernan\\Documents\\repositories\\simlo\\trunk\\app\\android\\Loterias\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10000\\instant-run_c6047b30cea6986b70aab17409090073874f3022
+file.0=C\:\\Users\\brfernan\\Documents\\repositories\\simlo\\trunk\\app\\android\\Loterias\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10000\\instant-run-bootstrap_7b973e2c13a88ec952cf1fbf7a063369b0e02539\\classes.dex

@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ui.IntroducaoActivity"
+            android:name="caixa.gov.br.loterias.ui.IntroducaoActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
@@ -23,16 +23,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.LoginActivity_"
+            android:name="caixa.gov.br.loterias.ui.LoginActivity_"
             android:label="@string/title_activity_login"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ui.CadastrarActivity_" />
+        <activity android:name="caixa.gov.br.loterias.ui.CadastrarActivity_" />
 
         <service android:name="org.jboss.aerogear.android.authorization.oauth2.OAuth2AuthzService" />
 
-        <activity android:name=".ui.CadastrarPasso2Activity_" />
+        <activity android:name="caixa.gov.br.loterias.ui.CadastrarPasso2Activity_" />
         <activity
-            android:name=".ui.HomeActivity_"
+            android:name="caixa.gov.br.loterias.ui.HomeActivity_"
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>

@@ -1,10 +1,10 @@
 [
     {
-        "merged": "/Users/igorvilar/Documents/capgemini/Loterias/loterias/App/Android/Loterias/app/build/intermediates/res/merged/debug/anim-v21/design_bottom_sheet_slide_in.xml",
-        "source": "/Users/igorvilar/.android/build-cache/96d37a41a126a27cdd383c4ca8a122afc9d016a1/output/res/anim-v21/design_bottom_sheet_slide_in.xml"
+        "merged": "C:\\Users\\brfernan\\Documents\\repositories\\simlo\\trunk\\app\\android\\Loterias\\app\\build\\intermediates\\res\\merged\\debug\\anim-v21\\design_bottom_sheet_slide_out.xml",
+        "source": "C:\\Users\\brfernan\\.android\\build-cache\\f46fe58e4a9aec07e38cd5aab4df07ecd776e1de\\output\\res\\anim-v21\\design_bottom_sheet_slide_out.xml"
     },
     {
-        "merged": "/Users/igorvilar/Documents/capgemini/Loterias/loterias/App/Android/Loterias/app/build/intermediates/res/merged/debug/anim-v21/design_bottom_sheet_slide_out.xml",
-        "source": "/Users/igorvilar/.android/build-cache/96d37a41a126a27cdd383c4ca8a122afc9d016a1/output/res/anim-v21/design_bottom_sheet_slide_out.xml"
+        "merged": "C:\\Users\\brfernan\\Documents\\repositories\\simlo\\trunk\\app\\android\\Loterias\\app\\build\\intermediates\\res\\merged\\debug\\anim-v21\\design_bottom_sheet_slide_in.xml",
+        "source": "C:\\Users\\brfernan\\.android\\build-cache\\f46fe58e4a9aec07e38cd5aab4df07ecd776e1de\\output\\res\\anim-v21\\design_bottom_sheet_slide_in.xml"
     }
 ]

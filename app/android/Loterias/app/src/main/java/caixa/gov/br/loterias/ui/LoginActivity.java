@@ -32,24 +32,24 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void connectKeycloak() {
-        if (!KeycloakBO.isConnected()) {
-
-            KeycloakBO.connect(LoginActivity.this, new Callback() {
-                        @Override
-                        public void onSuccess(Object o) {
-                            loginSucess();
-                        }
-
-                        @Override
-                        public void onFailure(Exception e) {
-
-                        }
-                    }
-            );
-
-        } else {
+//        if (!KeycloakBO.isConnected()) {
+//
+//            KeycloakBO.connect(LoginActivity.this, new Callback() {
+//                        @Override
+//                        public void onSuccess(Object o) {
+//                            loginSucess();
+//                        }
+//
+//                        @Override
+//                        public void onFailure(Exception e) {
+//
+//                        }
+//                    }
+//            );
+//
+//        } else {
             loginSucess();
-        }
+//        }
     }
 
     private void loginSucess(){

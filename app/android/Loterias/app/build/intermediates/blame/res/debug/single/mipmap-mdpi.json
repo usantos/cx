@@ -1,10 +1,10 @@
 [
     {
-        "merged": "/Users/igorvilar/Documents/capgemini/Loterias/loterias/App/Android/Loterias/app/build/intermediates/res/merged/debug/mipmap-mdpi/ic_launcher_round.png",
-        "source": "/Users/igorvilar/Documents/capgemini/Loterias/loterias/App/Android/Loterias/app/src/main/res/mipmap-mdpi/ic_launcher_round.png"
+        "merged": "C:\\Users\\brfernan\\Documents\\repositories\\simlo\\trunk\\app\\android\\Loterias\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-mdpi\\ic_launcher_round.png",
+        "source": "C:\\Users\\brfernan\\Documents\\repositories\\simlo\\trunk\\app\\android\\Loterias\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher_round.png"
     },
     {
-        "merged": "/Users/igorvilar/Documents/capgemini/Loterias/loterias/App/Android/Loterias/app/build/intermediates/res/merged/debug/mipmap-mdpi/ic_launcher.png",
-        "source": "/Users/igorvilar/Documents/capgemini/Loterias/loterias/App/Android/Loterias/app/src/main/res/mipmap-mdpi/ic_launcher.png"
+        "merged": "C:\\Users\\brfernan\\Documents\\repositories\\simlo\\trunk\\app\\android\\Loterias\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-mdpi\\ic_launcher.png",
+        "source": "C:\\Users\\brfernan\\Documents\\repositories\\simlo\\trunk\\app\\android\\Loterias\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher.png"
     }
 ]

@@ -12,7 +12,9 @@
     <color name="cinzaescuro">#4e596b</color>
     <color name="verdeazul">#54bbab</color>
     <color name="amarelo">#feb21e</color>
-    <color name="verdesena">#508e5e</color>
+    <color name="verdesenaclaro">#60a96b</color>
+    <color name="verdesenamedio">#579166</color>
+    <color name="verdesenaescuro">#508e5e</color>
 
 
 </resources>

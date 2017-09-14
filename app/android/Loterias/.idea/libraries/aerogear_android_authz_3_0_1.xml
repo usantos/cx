@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="aerogear-android-authz-3.0.1">
     <CLASSES>
-      <root url="file://$USER_HOME$/.android/build-cache/852f091ccb19f3057be41a08ee496896c27c0f0e/output/res" />
-      <root url="jar://$USER_HOME$/.android/build-cache/852f091ccb19f3057be41a08ee496896c27c0f0e/output/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.android/build-cache/60f6f49ee30046ebbb6da1ba78d5b8bf44880aa5/output/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.android/build-cache/60f6f49ee30046ebbb6da1ba78d5b8bf44880aa5/output/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
