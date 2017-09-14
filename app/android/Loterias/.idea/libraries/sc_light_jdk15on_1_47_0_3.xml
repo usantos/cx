@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="sc-light-jdk15on-1.47.0.3">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.madgag/sc-light-jdk15on/1.47.0.3/ee5043d8e50e46b0daca4e798f52d7532c27b0c4/sc-light-jdk15on-1.47.0.3.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.madgag/sc-light-jdk15on/1.47.0.3/5945d1b2d9db14a7647788fac292d8b2606f40b1/sc-light-jdk15on-1.47.0.3-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

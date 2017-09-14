@@ -1,0 +1,7 @@
+#Wed Sep 13 18:44:59 BRT 2017
+base.0=/Users/igorvilar/Documents/capgemini/Loterias/loterias/App/Android/Loterias/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_59b5e82375c6944f6c2349d81d61bb799dd099f8
+renamed.1=classes2.dex
+renamed.0=classes.dex
+file.1=/Users/igorvilar/Documents/capgemini/Loterias/loterias/App/Android/Loterias/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_42f39ab16fc968201a3227d5a47f9e53f202c833/classes.dex
+base.1=/Users/igorvilar/Documents/capgemini/Loterias/loterias/App/Android/Loterias/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_42f39ab16fc968201a3227d5a47f9e53f202c833
+file.0=/Users/igorvilar/Documents/capgemini/Loterias/loterias/App/Android/Loterias/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_59b5e82375c6944f6c2349d81d61bb799dd099f8/classes.dex

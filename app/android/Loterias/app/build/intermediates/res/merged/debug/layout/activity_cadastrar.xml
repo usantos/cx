@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="caixa.gov.br.loterias.ui.CadastrarActivity"
+    android:background="@color/branco">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:windowSoftInputMode="adjustPan"
+        >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textViewTituloCadastrar"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:text="Cadastrar"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="16dp"
+                android:textColor="@color/cinza"/>
+
+
+            <ImageView
+                android:id="@+id/imageViewIcoPasso1"
+                android:layout_width="53dp"
+                android:layout_height="21dp"
+                app:srcCompat="@drawable/passo1"
+                android:layout_below="@id/textViewTituloCadastrar"
+                android:layout_marginTop="71dp"
+                android:layout_marginLeft="16dp"/>
+
+            <TextView
+                android:id="@+id/textViewTituloCadastrar2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/imageViewIcoPasso1"
+                android:layout_marginTop="20dp"
+                android:textSize="18sp"
+                android:text="Que bom ver você por aqui :)"
+                android:layout_marginLeft="16dp"
+                android:textColor="@color/verdeazul"/>
+
+            <TextView
+                android:id="@+id/textViewTituloCadastrar3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="O cadastro é bem rápido \n Para começar, informe os dados abaixo:"
+                android:layout_below="@id/textViewTituloCadastrar2"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="16dp"
+                android:textSize="14sp"
+                android:textColor="@color/cinza"
+                />
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/editTextCpf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textViewTituloCadastrar3"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="63dp">
+
+                <EditText
+                    android:id="@+id/editTextCpfContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="CPF"
+                    android:inputType="textNoSuggestions"
+                    android:ems="10"
+                    android:textSize="16sp"
+                    android:textColor="@color/cinza"
+                    />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/editTextNome"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="20dp"
+                android:layout_below="@id/editTextCpf">
+
+                <EditText
+                    android:id="@+id/editTextNomeContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    android:hint="Nome"
+                    android:textSize="16sp"
+                    android:textColor="@color/cinza"
+                    />
+            </android.support.design.widget.TextInputLayout>
+
+
+            <co.ceryle.segmentedbutton.SegmentedButtonGroup
+            android:id="@+id/segmentedButtonSexo"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_gravity="center_vertical"
+            android:layout_below="@id/editTextNome"
+            android:layout_marginTop="20dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+            android:elevation="2dp"
+            app:sbg_animateSelector="fastOutSlowIn"
+            app:sbg_animateSelectorDuration="1000"
+            app:sbg_backgroundColor="@color/cinzaclaro"
+            app:sbg_position="0"
+            app:sbg_ripple="true"
+            app:sbg_selectorColor="@color/verdeazul"
+                app:sb_textStyle="bold"
+
+                >
+
+            <co.ceryle.segmentedbutton.SegmentedButton
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_weight="1"
+                android:textSize="16sp"
+                app:sb_text="Masculino"
+                app:sb_textColor="@color/verdeazul"
+                app:sb_textColor_onSelection="@color/branco"
+                app:sb_textStyle="bold"
+                />
+
+            <co.ceryle.segmentedbutton.SegmentedButton
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_weight="1"
+                android:textSize="16sp"
+                app:sb_text="Feminino"
+                app:sb_textColor="@color/verdeazul"
+                app:sb_textColor_onSelection="@color/branco"
+                app:sb_textStyle="bold"
+                />
+
+        </co.ceryle.segmentedbutton.SegmentedButtonGroup>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/editTextCEP"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/segmentedButtonSexo"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp">
+
+                <EditText
+                    android:id="@+id/editTextCepContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    android:hint="CEP"
+                    android:textSize="16sp"
+                    android:textColor="@color/cinza"
+                    />
+            </android.support.design.widget.TextInputLayout>
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/editTextUF"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/editTextCEP"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp">
+
+                <EditText
+                    android:id="@+id/editTextUFContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    android:hint="UF"
+                    android:focusableInTouchMode="false"
+                    android:textSize="16sp"
+                    android:textColor="@color/cinza"
+                    />
+            </android.support.design.widget.TextInputLayout>
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/editTextMunicipio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/editTextUF"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                >
+
+                <EditText
+                    android:id="@+id/editTextMunicipioContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    android:hint="Município"
+                    android:focusableInTouchMode="false"
+                    android:textSize="16sp"
+                    android:textColor="@color/cinza"
+                    />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/editTextNascimento"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/editTextMunicipio"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp">
+
+                <EditText
+                    android:id="@+id/editTextNascimentoContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    android:hint="Nascimento"
+                    android:textSize="16sp"
+                    android:textColor="@color/cinza"
+                    />
+            </android.support.design.widget.TextInputLayout>
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/editTextEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/editTextNascimento"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp">
+
+                <EditText
+                    android:id="@+id/editTextEmailContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="textEmailAddress"
+                    android:hint="E-mail"
+                    android:textSize="16sp"
+                    android:textColor="@color/cinza"
+                    />
+            </android.support.design.widget.TextInputLayout>
+
+            <Button
+                android:id="@+id/buttonContinuarIntroducao"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Continuar"
+                android:layout_below="@id/editTextEmail"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:background="@color/amarelo"
+                android:textSize="16sp"
+                android:textColor="@color/branco"
+                android:layout_marginBottom="20dp"
+                />
+
+        </RelativeLayout>
+    </ScrollView>
+
+
+</android.support.constraint.ConstraintLayout>

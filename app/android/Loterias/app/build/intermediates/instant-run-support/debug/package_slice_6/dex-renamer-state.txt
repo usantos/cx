@@ -1,0 +1,4 @@
+#Fri Sep 08 14:35:49 BRT 2017
+base.0=/Users/igorvilar/Documents/capgemini/Loterias/loterias/App/Android/Loterias/app/build/intermediates/transforms/dex/debug/folders/1000/5/slice_6
+renamed.0=classes.dex
+file.0=/Users/igorvilar/Documents/capgemini/Loterias/loterias/App/Android/Loterias/app/build/intermediates/transforms/dex/debug/folders/1000/5/slice_6/classes.dex

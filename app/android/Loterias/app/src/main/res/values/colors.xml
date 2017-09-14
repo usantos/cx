@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#005ca9</color>
+
+    <color name="black_overlay">#66000000</color>
+    <color name="branco">#ffffff</color>
+    <color name="cinza">#48586c</color>
+    <color name="cinza2">#d4dfe2</color>
+    <color name="cinzaclaro">#eff5f6</color>
+    <color name="cinzaescuro">#4e596b</color>
+    <color name="verdeazul">#54bbab</color>
+    <color name="amarelo">#feb21e</color>
+    <color name="verdesena">#508e5e</color>
+
+
+</resources>

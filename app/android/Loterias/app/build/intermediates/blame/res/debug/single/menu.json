@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "/Users/igorvilar/Documents/capgemini/Loterias/loterias/App/Android/Loterias/app/build/intermediates/res/merged/debug/menu/home.xml",
+        "source": "/Users/igorvilar/Documents/capgemini/Loterias/loterias/App/Android/Loterias/app/src/main/res/menu/home.xml"
+    },
+    {
+        "merged": "/Users/igorvilar/Documents/capgemini/Loterias/loterias/App/Android/Loterias/app/build/intermediates/res/merged/debug/menu/activity_home_drawer.xml",
+        "source": "/Users/igorvilar/Documents/capgemini/Loterias/loterias/App/Android/Loterias/app/src/main/res/menu/activity_home_drawer.xml"
+    }
+]

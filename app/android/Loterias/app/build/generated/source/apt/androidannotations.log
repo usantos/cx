@@ -1,0 +1,6 @@
+14:31:12.504 [Daemon worker Thread 14] ERROR o.a.i.p.ModelValidator:77 - The AndroidManifest.xml file contains the original component, and not the AndroidAnnotations generated component. Please register LoginActivity_ instead of LoginActivity
+14:31:12.507 [Daemon worker Thread 14] WARN  o.a.i.p.ModelValidator:88 - Element caixa.gov.br.loterias.ui.LoginActivity invalidated by EActivityHandler
+18:32:11.239 [Daemon worker Thread 37] ERROR o.a.i.p.ModelValidator:77 - The AndroidManifest.xml file contains the original component, and not the AndroidAnnotations generated component. Please register CadastrarPasso2Activity_ instead of CadastrarPasso2Activity
+18:32:11.241 [Daemon worker Thread 37] WARN  o.a.i.p.ModelValidator:88 - Element caixa.gov.br.loterias.ui.CadastrarPasso2Activity invalidated by EActivityHandler
+18:33:20.597 [Daemon worker Thread 38] ERROR o.a.i.p.ModelValidator:77 - The AndroidManifest.xml file contains the original component, and not the AndroidAnnotations generated component. Please register CadastrarPasso2Activity_ instead of CadastrarPasso2Activity
+18:33:20.599 [Daemon worker Thread 38] WARN  o.a.i.p.ModelValidator:88 - Element caixa.gov.br.loterias.ui.CadastrarPasso2Activity invalidated by EActivityHandler

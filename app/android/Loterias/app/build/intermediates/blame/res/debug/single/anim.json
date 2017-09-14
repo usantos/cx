@@ -1,0 +1,58 @@
+[
+    {
+        "merged": "/Users/igorvilar/Documents/capgemini/Loterias/loterias/App/Android/Loterias/app/build/intermediates/res/merged/debug/anim/abc_slide_out_top.xml",
+        "source": "/Users/igorvilar/.android/build-cache/194fcee895c2072f69b9d78a3914a385b6aff91a/output/res/anim/abc_slide_out_top.xml"
+    },
+    {
+        "merged": "/Users/igorvilar/Documents/capgemini/Loterias/loterias/App/Android/Loterias/app/build/intermediates/res/merged/debug/anim/abc_shrink_fade_out_from_bottom.xml",
+        "source": "/Users/igorvilar/.android/build-cache/194fcee895c2072f69b9d78a3914a385b6aff91a/output/res/anim/abc_shrink_fade_out_from_bottom.xml"
+    },
+    {
+        "merged": "/Users/igorvilar/Documents/capgemini/Loterias/loterias/App/Android/Loterias/app/build/intermediates/res/merged/debug/anim/abc_fade_in.xml",
+        "source": "/Users/igorvilar/.android/build-cache/194fcee895c2072f69b9d78a3914a385b6aff91a/output/res/anim/abc_fade_in.xml"
+    },
+    {
+        "merged": "/Users/igorvilar/Documents/capgemini/Loterias/loterias/App/Android/Loterias/app/build/intermediates/res/merged/debug/anim/abc_popup_exit.xml",
+        "source": "/Users/igorvilar/.android/build-cache/194fcee895c2072f69b9d78a3914a385b6aff91a/output/res/anim/abc_popup_exit.xml"
+    },
+    {
+        "merged": "/Users/igorvilar/Documents/capgemini/Loterias/loterias/App/Android/Loterias/app/build/intermediates/res/merged/debug/anim/abc_slide_in_top.xml",
+        "source": "/Users/igorvilar/.android/build-cache/194fcee895c2072f69b9d78a3914a385b6aff91a/output/res/anim/abc_slide_in_top.xml"
+    },
+    {
+        "merged": "/Users/igorvilar/Documents/capgemini/Loterias/loterias/App/Android/Loterias/app/build/intermediates/res/merged/debug/anim/design_bottom_sheet_slide_in.xml",
+        "source": "/Users/igorvilar/.android/build-cache/96d37a41a126a27cdd383c4ca8a122afc9d016a1/output/res/anim/design_bottom_sheet_slide_in.xml"
+    },
+    {
+        "merged": "/Users/igorvilar/Documents/capgemini/Loterias/loterias/App/Android/Loterias/app/build/intermediates/res/merged/debug/anim/abc_fade_out.xml",
+        "source": "/Users/igorvilar/.android/build-cache/194fcee895c2072f69b9d78a3914a385b6aff91a/output/res/anim/abc_fade_out.xml"
+    },
+    {
+        "merged": "/Users/igorvilar/Documents/capgemini/Loterias/loterias/App/Android/Loterias/app/build/intermediates/res/merged/debug/anim/abc_grow_fade_in_from_bottom.xml",
+        "source": "/Users/igorvilar/.android/build-cache/194fcee895c2072f69b9d78a3914a385b6aff91a/output/res/anim/abc_grow_fade_in_from_bottom.xml"
+    },
+    {
+        "merged": "/Users/igorvilar/Documents/capgemini/Loterias/loterias/App/Android/Loterias/app/build/intermediates/res/merged/debug/anim/abc_slide_in_bottom.xml",
+        "source": "/Users/igorvilar/.android/build-cache/194fcee895c2072f69b9d78a3914a385b6aff91a/output/res/anim/abc_slide_in_bottom.xml"
+    },
+    {
+        "merged": "/Users/igorvilar/Documents/capgemini/Loterias/loterias/App/Android/Loterias/app/build/intermediates/res/merged/debug/anim/abc_popup_enter.xml",
+        "source": "/Users/igorvilar/.android/build-cache/194fcee895c2072f69b9d78a3914a385b6aff91a/output/res/anim/abc_popup_enter.xml"
+    },
+    {
+        "merged": "/Users/igorvilar/Documents/capgemini/Loterias/loterias/App/Android/Loterias/app/build/intermediates/res/merged/debug/anim/design_snackbar_in.xml",
+        "source": "/Users/igorvilar/.android/build-cache/96d37a41a126a27cdd383c4ca8a122afc9d016a1/output/res/anim/design_snackbar_in.xml"
+    },
+    {
+        "merged": "/Users/igorvilar/Documents/capgemini/Loterias/loterias/App/Android/Loterias/app/build/intermediates/res/merged/debug/anim/abc_slide_out_bottom.xml",
+        "source": "/Users/igorvilar/.android/build-cache/194fcee895c2072f69b9d78a3914a385b6aff91a/output/res/anim/abc_slide_out_bottom.xml"
+    },
+    {
+        "merged": "/Users/igorvilar/Documents/capgemini/Loterias/loterias/App/Android/Loterias/app/build/intermediates/res/merged/debug/anim/design_bottom_sheet_slide_out.xml",
+        "source": "/Users/igorvilar/.android/build-cache/96d37a41a126a27cdd383c4ca8a122afc9d016a1/output/res/anim/design_bottom_sheet_slide_out.xml"
+    },
+    {
+        "merged": "/Users/igorvilar/Documents/capgemini/Loterias/loterias/App/Android/Loterias/app/build/intermediates/res/merged/debug/anim/design_snackbar_out.xml",
+        "source": "/Users/igorvilar/.android/build-cache/96d37a41a126a27cdd383c4ca8a122afc9d016a1/output/res/anim/design_snackbar_out.xml"
+    }
+]

@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="caixa.gov.br.loterias.ui.CadastrarPasso2Activity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:windowSoftInputMode="adjustPan"
+        >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textViewTituloCadastrarPasso2"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:text="Cadastrar"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="16dp"
+                android:textColor="@color/cinza"/>
+
+
+            <ImageView
+                android:id="@+id/imageViewIcoPasso2"
+                android:layout_width="53dp"
+                android:layout_height="21dp"
+                app:srcCompat="@drawable/passo2"
+                android:layout_below="@id/textViewTituloCadastrarPasso2"
+                android:layout_marginTop="71dp"
+                android:layout_marginLeft="16dp"/>
+
+            <TextView
+                android:id="@+id/textViewTituloCadastrar2Passo2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/imageViewIcoPasso2"
+                android:layout_marginTop="20dp"
+                android:textSize="18sp"
+                android:text="Precisamos que você informe\numa lotérica de sua preferência."
+                android:layout_marginLeft="16dp"
+                android:textColor="@color/verdeazul"/>
+
+            <TextView
+                android:id="@+id/textViewTituloCadastrar3Passo2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Para isso, encontre a lotérica através\nde seu endereço, CEP ou código."
+                android:layout_below="@id/textViewTituloCadastrar2Passo2"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="16dp"
+                android:textSize="14sp"
+                android:textColor="@color/cinza"
+                />
+
+            <co.ceryle.segmentedbutton.SegmentedButtonGroup
+                android:id="@+id/segmentedButtonTipoBuscaLoterica"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_gravity="center_vertical"
+                android:layout_below="@id/textViewTituloCadastrar3Passo2"
+                android:layout_marginTop="20dp"
+                android:elevation="2dp"
+                app:sbg_animateSelector="fastOutSlowIn"
+                app:sbg_animateSelectorDuration="1000"
+                app:sbg_backgroundColor="@color/cinzaclaro"
+                app:sbg_position="0"
+                app:sbg_ripple="true"
+                app:sbg_selectorColor="@color/verdeazul"
+                app:sb_textStyle="bold"
+
+                >
+
+                <co.ceryle.segmentedbutton.SegmentedButton
+                    android:layout_width="0dp"
+                    android:layout_height="56dp"
+                    android:layout_weight="1"
+                    android:textSize="12sp"
+                    app:sb_text="Localização"
+                    app:sb_textColor="@color/verdeazul"
+                    app:sb_textColor_onSelection="@color/branco"
+                    app:sb_textStyle="bold"
+                    android:textAlignment="center"
+                    />
+
+                <co.ceryle.segmentedbutton.SegmentedButton
+                    android:layout_width="0dp"
+                    android:layout_height="56dp"
+                    android:layout_weight="1"
+                    android:textSize="12sp"
+                    app:sb_text="CEP"
+                    app:sb_textColor="@color/verdeazul"
+                    app:sb_textColor_onSelection="@color/branco"
+                    app:sb_textStyle="bold"
+                    android:textAlignment="center"
+                    />
+
+                <co.ceryle.segmentedbutton.SegmentedButton
+                    android:id="@+id/SegmentedButtonCodigoLoterica"
+                    android:layout_width="0dp"
+                    android:layout_height="56dp"
+                    android:layout_weight="1"
+                    android:textSize="12sp"
+                    app:sb_text="Código da lotérica"
+                    app:sb_textColor="@color/verdeazul"
+                    app:sb_textColor_onSelection="@color/branco"
+                    app:sb_textStyle="bold"
+                    android:textAlignment="center"
+                    />
+
+            </co.ceryle.segmentedbutton.SegmentedButtonGroup>
+
+
+
+            <LinearLayout
+
+                android:id="@+id/LinearLayoutLayoutHoriontalUfMunicipio"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_below="@id/segmentedButtonTipoBuscaLoterica"
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" >
+
+                >
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/editTextUFPasso2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    >
+
+                    <EditText
+                        android:id="@+id/editTextUFPasso2Content"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:inputType="textPersonName"
+                        android:hint="UF"
+                        android:textSize="16sp"
+                        android:textColor="@color/cinza"
+                        />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/editTextMunicipioPasso2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    >
+
+                    <EditText
+                        android:id="@+id/editTextMunicipioPasso2Content"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:inputType="textPersonName"
+                        android:hint="Cidade"
+                        android:textSize="16sp"
+                        android:textColor="@color/cinza"
+                        />
+                </android.support.design.widget.TextInputLayout>
+
+
+
+            </LinearLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/editTextBairroPasso2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/LinearLayoutLayoutHoriontalUfMunicipio"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="20dp">
+
+
+                <EditText
+                    android:id="@+id/editTextBairroPasso2Content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Bairro"
+                    android:inputType="textPersonName"
+                    android:textColor="@color/cinza"
+                    android:textSize="16sp" />
+            </android.support.design.widget.TextInputLayout>
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/ListViewLoterias"
+                android:layout_below="@id/editTextBairroPasso2"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="20dp"/>
+
+
+
+
+            <LinearLayout
+
+                android:id="@+id/LinearLayoutLayoutHoriontalDeclararAceite"
+                android:layout_marginTop="20dp"
+                android:layout_below="@id/ListViewLoterias"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="92dp"
+                android:background="@color/cinzaclaro">
+
+            </LinearLayout>
+
+            <LinearLayout
+
+                android:id="@+id/LinearLayoutLayoutHoriontalBotao"
+                android:layout_below="@id/LinearLayoutLayoutHoriontalDeclararAceite"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="92dp"
+                android:background="@color/cinzaclaro">
+
+                <Button
+                android:id="@+id/buttonFinalizarCadastro"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:text="Finalizar"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:background="@color/amarelo"
+                android:textSize="16sp"
+                android:textColor="@color/branco"
+                android:layout_marginBottom="20dp"
+                />
+            </LinearLayout>
+
+
+
+
+
+        </RelativeLayout>
+    </ScrollView>
+
+</android.support.constraint.ConstraintLayout>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="true"
+        jar="/Users/igorvilar/Documents/capgemini/Loterias/loterias/App/Android/Loterias/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.1"
+        sha1="3be78ebc2706b2e1fe2f12d5726887a92d6c183b">
+        <dex dex="/Users/igorvilar/Documents/capgemini/Loterias/loterias/App/Android/Loterias/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_59b5e82375c6944f6c2349d81d61bb799dd099f8/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/igorvilar/Documents/capgemini/Loterias/loterias/App/Android/Loterias/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.1"
+        sha1="4687f86693090f97b6d844e656175e4b794054b0">
+        <dex dex="/Users/igorvilar/Documents/capgemini/Loterias/loterias/App/Android/Loterias/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_42f39ab16fc968201a3227d5a47f9e53f202c833/classes.dex" />
+    </item>
+
+</items>

@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="aerogear-android-authz-3.0.1">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.android/build-cache/852f091ccb19f3057be41a08ee496896c27c0f0e/output/res" />
+      <root url="jar://$USER_HOME$/.android/build-cache/852f091ccb19f3057be41a08ee496896c27c0f0e/output/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jboss.aerogear/aerogear-android-authz/3.0.1/8423ba10acd183a13184bd33c0ce3b9bc66a76b5/aerogear-android-authz-3.0.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
