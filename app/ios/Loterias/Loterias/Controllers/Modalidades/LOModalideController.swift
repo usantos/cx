@@ -9,8 +9,8 @@
 import UIKit
 
 struct EstiloModalidade {
-    let hexCorAposte : UInt
-    let hexCorResultado : UInt
+    let corClara : UInt
+    let corEscura : UInt
     let imagemTopo : UIImage
     let imagemCalendario : UIImage
     let imagemRelogio : UIImage
@@ -66,39 +66,39 @@ class LOModalideController: UIViewController {
         if let tipoModalidade = self.tipoModalidade {
             switch tipoModalidade {
                 case .Duplasena:
-                    self.estiloModalidade = EstiloModalidade(hexCorAposte: 0x7d1a3f, hexCorResultado: 0x7d1a3f , imagemTopo: #imageLiteral(resourceName: "titulo-duplasena"), imagemCalendario: #imageLiteral(resourceName: "icon-data-duplasena"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-duplasena"))
+                    self.estiloModalidade = EstiloModalidade(corClara: 0xa92551, corEscura: 0x7d1a3f , imagemTopo: #imageLiteral(resourceName: "titulo-duplasena"), imagemCalendario: #imageLiteral(resourceName: "icon-data-duplasena"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-duplasena"))
                     break
                 case .Megasena:
-                    self.estiloModalidade = EstiloModalidade(hexCorAposte: 0x60a96b, hexCorResultado: 0x508e5e , imagemTopo: #imageLiteral(resourceName: "titulo_megasena"), imagemCalendario: #imageLiteral(resourceName: "icon-data-megasena"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-megasena"))
+                    self.estiloModalidade = EstiloModalidade(corClara: 0x00AB6B, corEscura: 0x009b66 , imagemTopo: #imageLiteral(resourceName: "titulo_megasena"), imagemCalendario: #imageLiteral(resourceName: "icon-data-megasena"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-megasena"))
                     break
                 case .Lotomania:
                     //
-                    self.estiloModalidade = EstiloModalidade(hexCorAposte: 0x7d1a3f, hexCorResultado: 0x7d1a3f , imagemTopo: #imageLiteral(resourceName: "titulo-duplasena"), imagemCalendario: #imageLiteral(resourceName: "icon-data-duplasena"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-duplasena"))
+                    self.estiloModalidade = EstiloModalidade(corClara: 0x7d1a3f, corEscura: 0x7d1a3f , imagemTopo: #imageLiteral(resourceName: "titulo-duplasena"), imagemCalendario: #imageLiteral(resourceName: "icon-data-duplasena"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-duplasena"))
 
                     break
                 case .Lotogol:
                     //
-                    self.estiloModalidade = EstiloModalidade(hexCorAposte: 0x7d1a3f, hexCorResultado: 0x7d1a3f , imagemTopo: #imageLiteral(resourceName: "titulo-duplasena"), imagemCalendario: #imageLiteral(resourceName: "icon-data-duplasena"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-duplasena"))
+                    self.estiloModalidade = EstiloModalidade(corClara: 0x7d1a3f, corEscura: 0x7d1a3f , imagemTopo: #imageLiteral(resourceName: "titulo-duplasena"), imagemCalendario: #imageLiteral(resourceName: "icon-data-duplasena"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-duplasena"))
 
                     break
                 case .Lotofacil:
-                    self.estiloModalidade = EstiloModalidade(hexCorAposte: 0xbd3e96, hexCorResultado: 0x9b2b7a , imagemTopo: #imageLiteral(resourceName: "titulo_lotofacil"), imagemCalendario: #imageLiteral(resourceName: "icon-data-lotofacil"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-lotofacil"))
+                    self.estiloModalidade = EstiloModalidade(corClara: 0xbf3c93, corEscura: 0x9b2b7a , imagemTopo: #imageLiteral(resourceName: "titulo_lotofacil"), imagemCalendario: #imageLiteral(resourceName: "icon-data-lotofacil"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-lotofacil"))
                     break
                 case .Loteca:
                     //
-                    self.estiloModalidade = EstiloModalidade(hexCorAposte: 0x7d1a3f, hexCorResultado: 0x7d1a3f , imagemTopo: #imageLiteral(resourceName: "titulo-duplasena"), imagemCalendario: #imageLiteral(resourceName: "icon-data-duplasena"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-duplasena"))
+                    self.estiloModalidade = EstiloModalidade(corClara: 0x7d1a3f, corEscura: 0x7d1a3f , imagemTopo: #imageLiteral(resourceName: "titulo-duplasena"), imagemCalendario: #imageLiteral(resourceName: "icon-data-duplasena"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-duplasena"))
 
                     break
                 case .Federal:
                     //
-                    self.estiloModalidade = EstiloModalidade(hexCorAposte: 0x7d1a3f, hexCorResultado: 0x7d1a3f , imagemTopo: #imageLiteral(resourceName: "titulo-duplasena"), imagemCalendario: #imageLiteral(resourceName: "icon-data-duplasena"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-duplasena"))
+                    self.estiloModalidade = EstiloModalidade(corClara: 0x7d1a3f, corEscura: 0x7d1a3f , imagemTopo: #imageLiteral(resourceName: "titulo-duplasena"), imagemCalendario: #imageLiteral(resourceName: "icon-data-duplasena"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-duplasena"))
                     break
                 case .Quina:
-                    self.estiloModalidade = EstiloModalidade(hexCorAposte: 0x642475, hexCorResultado: 0x642475 , imagemTopo: #imageLiteral(resourceName: "titulo_quina"), imagemCalendario: #imageLiteral(resourceName: "icon-data-quina"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-quina"))
+                    self.estiloModalidade = EstiloModalidade(corClara: 0x642573, corEscura: 0x642475 , imagemTopo: #imageLiteral(resourceName: "titulo_quina"), imagemCalendario: #imageLiteral(resourceName: "icon-data-quina"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-quina"))
                     break
                 case .Timemania:
                     //
-                    self.estiloModalidade = EstiloModalidade(hexCorAposte: 0x7d1a3f, hexCorResultado: 0x7d1a3f , imagemTopo: #imageLiteral(resourceName: "titulo-duplasena"), imagemCalendario: #imageLiteral(resourceName: "icon-data-duplasena"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-duplasena"))
+                    self.estiloModalidade = EstiloModalidade(corClara: 0x7d1a3f, corEscura: 0x7d1a3f , imagemTopo: #imageLiteral(resourceName: "titulo-duplasena"), imagemCalendario: #imageLiteral(resourceName: "icon-data-duplasena"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-duplasena"))
                     break
             }
         }
@@ -109,20 +109,19 @@ class LOModalideController: UIViewController {
     func aplicarEstilo () {
         self.iconeRelogio.image = self.estiloModalidade.imagemRelogio
         self.iconeCalendario.image = self.estiloModalidade.imagemCalendario
-        self.resultadoView.backgroundColor = self.UIColorFromHex(self.estiloModalidade.hexCorResultado, alpha: 1.0)
-        self.aposteView.backgroundColor = self.UIColorFromHex(self.estiloModalidade.hexCorAposte, alpha: 1.0)
+        self.resultadoView.backgroundColor = self.UIColorFromHex(self.estiloModalidade.corEscura, alpha: 1.0)
+        self.aposteView.backgroundColor = self.UIColorFromHex(self.estiloModalidade.corClara, alpha: 1.0)
         self.topoCorpo.image = self.estiloModalidade.imagemTopo
     }
     
 
-    /*
+    
     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        if segue.destination.isKind(of: LOSimularApostasController.self)  {
+            let destination = segue.destination as! LOSimularApostasController
+            destination.estiloModalidade = self.estiloModalidade
+        }
     }
-    */
-
 }

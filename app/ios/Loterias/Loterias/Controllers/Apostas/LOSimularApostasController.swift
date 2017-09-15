@@ -8,122 +8,75 @@
 
 import UIKit
 
-class LOSimularApostasController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-
-    @IBOutlet weak var simularApostaBaixo : LOSimularApostaBaixo!
+class LOSimularApostasController: UIViewController {
     
+    //Custom views
+    @IBOutlet var viewCustom : LOSimularApostaBaixo!
+    @IBOutlet var surpresinhaViewCustom : LOSimularSurpresinha!
     
-    
-    
+    //Elementos da barra superior
+    @IBOutlet weak var barraSuperior : UIView!
     @IBOutlet weak var selecionaNumeros: UIButton!
     @IBOutlet weak var surpresinha: UIButton!
-    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var escolheQntNumero : UIButton!
+    @IBOutlet weak var escolheQntConcursos : UIButton!
+
+    var delegateSurpresa: LOSurpresinhaDelegate?
+    var delegateSimularNumeros : LOSimularNumerosDelegate?
+    public var estiloModalidade : EstiloModalidade!
     
-    @IBOutlet weak var collectionView: UICollectionView! {
-        didSet {
-            self.collectionView.delegate = self
-            self.collectionView.dataSource = self
-        }
+    var apresentaNumeros : Bool = true
+
+    // ---------------
+
+    override func viewWillAppear(_ animated: Bool) {
+        delegateSurpresa = self.surpresinhaViewCustom
+        delegateSimularNumeros = self.viewCustom
+        
+        aplicaEstilos()
     }
-    
-    @IBOutlet weak var collectionViewSurpresinha : UICollectionView! {
-        didSet {
-            self.collectionViewSurpresinha.delegate = self
-            self.collectionViewSurpresinha.dataSource = self
-        }
-    }
-    @IBOutlet weak var imgPassoAPasso: UIImageView!
-    @IBOutlet weak var verticalLayoutConstraint : NSLayoutConstraint!
-    
-    @IBOutlet var viewSurpresinha : UIView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        //self.verticalLayoutConstraint.constant = self.collectionView.contentSize.height
-//        print(collectionViewSurpresinha.contentInset)
-//        //
-//        resizeCollectionViewSize()
-
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        delegateSurpresa?.willDisappearSurpresinha()
+        delegateSimularNumeros?.willDisappearSimularNumeros()
+        self.navigationController?.navigationBar.barTintColor = .white
+    }
+    
     @IBAction func apresentaNumeros(_ sender: Any) {
-        //self.viewSurpresinha.isHidden = true
         self.surpresinha.setImage(#imageLiteral(resourceName: "icon-surpresinha"), for: .normal)
         self.selecionaNumeros.setImage(#imageLiteral(resourceName: "icon-seleciona"), for: .normal)
-
+        self.viewCustom.isHidden = false
+        self.apresentaNumeros = true
     }
     
     @IBAction func apresentaSurpresinha(_ sender: Any) {
-        //self.viewSurpresinha.isHidden = false
         self.surpresinha.setImage(#imageLiteral(resourceName: "icon-surpresinha2"), for: .normal)
         self.selecionaNumeros.setImage(#imageLiteral(resourceName: "icon-seleciona2"), for: .normal)
+        self.viewCustom.isHidden = true
+        self.apresentaNumeros = false
     }
     
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 30
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        return collectionView.dequeueReusableCell(withReuseIdentifier: "numeroCell", for: indexPath)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let cel : LONumeroApostaCell = collectionView.dequeueReusableCell(withReuseIdentifier: "numeroCell", for: indexPath) as! LONumeroApostaCell
-    
-        cel.numero.backgroundColor = .black
-        cel.numero.textColor = .white
+    func aplicaEstilos () {
+        self.barraSuperior.backgroundColor = self.UIColorFromHex(self.estiloModalidade.corEscura, alpha: 1.0)
+        self.navigationController?.navigationBar.barTintColor = self.UIColorFromHex(self.estiloModalidade.corClara, alpha: 1.0)
+       
+        self.viewCustom.estiloModalidade = self.estiloModalidade
+        self.surpresinhaViewCustom.estiloModalidade = self.estiloModalidade
         
-        cel.layoutIfNeeded()
     }
     
-    func resizeCollectionViewSize() {
-        self.verticalLayoutConstraint.constant = self.collectionViewSurpresinha.collectionViewLayout.collectionViewContentSize.height
-        self.scrollView.contentSize.height = self.scrollView.contentSize.height + self.verticalLayoutConstraint.constant
-        
-        self.view.layoutIfNeeded()
+    @IBAction func apresentaPopup (_ sender: UIButton) {
+        self.performSegue(withIdentifier: "mandarParaPopup", sender: self)
     }
     
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-//        
-//        //Where elements_count is the count of all your items in that
-//        //Collection view...
-//        let cellCount = CGFloat(30)
-//        
-//        //If the cell count is zero, there is no point in calculating anything.
-//        if cellCount > 0 {
-//            let flowLayout = collectionViewLayout as! UICollectionViewFlowLayout
-//            let cellWidth = flowLayout.itemSize.width + flowLayout.minimumInteritemSpacing
-//            
-//            //20.00 was just extra spacing I wanted to add to my cell.
-//            let totalCellWidth = cellWidth*cellCount + 5 * (cellCount - 1)
-//            let contentWidth = collectionView.frame.size.width - collectionView.contentInset.left - collectionView.contentInset.right
-//            
-//            if (totalCellWidth < contentWidth) {
-//                //If the number of cells that exists take up less room than the
-//                //collection view width... then there is an actual point to centering them.
-//                
-//                //Calculate the right amount of padding to center the cells.
-//                let padding = (contentWidth - totalCellWidth) / 2.0
-//                return UIEdgeInsetsMake(0, padding, 0, padding)
-//            } else {
-//                //Pretty much if the number of cells that exist take up
-//                //more room than the actual collectionView width, there is no
-//                // point in trying to center them. So we leave the default behavior.
-//                return UIEdgeInsetsMake(0, 50, 0, 50)
-//            }
-//        }
-//        
-//        return UIEdgeInsets.zero
-//    }
 
     
     /*

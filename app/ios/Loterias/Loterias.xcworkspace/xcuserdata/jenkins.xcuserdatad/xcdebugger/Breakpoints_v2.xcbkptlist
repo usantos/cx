@@ -57,13 +57,13 @@
                   symbolName = "Loterias.LOLoginController.login2 () -&gt; ()"
                   moduleName = "Loterias"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/jenkins/Documents/Projetos%20iOS/Loterias/Loterias/Controllers/Login/LOLoginController.swift"
-                  timestampString = "527092858.623115"
+                  urlString = "file:///Users/jenkins/Documents/loterias-ios/simlo/trunk/app/ios/Loterias/Loterias/Controllers/Login/LOLoginController.swift"
+                  timestampString = "527202010.621951"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "147"
                   endingLineNumber = "147"
-                  offsetFromSymbolStart = "811">
+                  offsetFromSymbolStart = "632">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -72,15 +72,31 @@
                   symbolName = "Loterias.LOLoginController.(login2 () -&gt; ()).(closure #1)"
                   moduleName = "Loterias"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/jenkins/Documents/Projetos%20iOS/Loterias/Loterias/Controllers/Login/LOLoginController.swift"
-                  timestampString = "527092858.626133"
+                  urlString = "file:///Users/jenkins/Documents/loterias-ios/simlo/trunk/app/ios/Loterias/Loterias/Controllers/Login/LOLoginController.swift"
+                  timestampString = "527202010.623941"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "147"
                   endingLineNumber = "147"
-                  offsetFromSymbolStart = "16">
+                  offsetFromSymbolStart = "20">
                </Location>
             </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Loterias/Controllers/Apostas/LONumeroApostaCell.swift"
+            timestampString = "527113819.025172"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "34"
+            endingLineNumber = "34"
+            landmarkName = "loadViewFromNib()"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

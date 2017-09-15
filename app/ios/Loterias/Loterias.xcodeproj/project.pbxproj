@@ -58,9 +58,12 @@
 		A617DCA11F59B35700D257B7 /* FuturaStd-MediumOblique.otf in Resources */ = {isa = PBXBuildFile; fileRef = A617DC8D1F59B35700D257B7 /* FuturaStd-MediumOblique.otf */; };
 		A617DCA41F59CA4A00D257B7 /* LOLoginBusinessService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A617DCA31F59CA4A00D257B7 /* LOLoginBusinessService.swift */; };
 		A617DCA61F59EF9200D257B7 /* LOCadastroPassoDoisController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A617DCA51F59EF9200D257B7 /* LOCadastroPassoDoisController.swift */; };
-		A69224A61F6AC08C00D319AC /* SimularApostaBaixo.xib in Resources */ = {isa = PBXBuildFile; fileRef = A69224A41F6AC08C00D319AC /* SimularApostaBaixo.xib */; };
-		A69224A81F6AC1C500D319AC /* SimularApostasCorpo.xib in Resources */ = {isa = PBXBuildFile; fileRef = A69224A71F6AC1C500D319AC /* SimularApostasCorpo.xib */; };
-		A69224AD1F6AC62F00D319AC /* LOSimularApostaBaixo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69224AC1F6AC62F00D319AC /* LOSimularApostaBaixo.swift */; };
+		A632313D1F6BFE180004F327 /* LOSimularSurpresinha.xib in Resources */ = {isa = PBXBuildFile; fileRef = A632313B1F6BFE180004F327 /* LOSimularSurpresinha.xib */; };
+		A632313F1F6BFE3C0004F327 /* LOSimularSurpresinha.swift in Sources */ = {isa = PBXBuildFile; fileRef = A632313E1F6BFE3C0004F327 /* LOSimularSurpresinha.swift */; };
+		A63231411F6C68260004F327 /* LOButtonRightImg.swift in Sources */ = {isa = PBXBuildFile; fileRef = A63231401F6C68260004F327 /* LOButtonRightImg.swift */; };
+		A6895A521F6B16DE00420274 /* LONumeroApostaCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6895A511F6B16DE00420274 /* LONumeroApostaCell.xib */; };
+		A69224BB1F6AEBFF00D319AC /* LOSimularApostaBaixo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69224AC1F6AC62F00D319AC /* LOSimularApostaBaixo.swift */; };
+		A69225061F6AFCDE00D319AC /* LOSimularApostaNumeros.xib in Resources */ = {isa = PBXBuildFile; fileRef = A69225031F6AFC7A00D319AC /* LOSimularApostaNumeros.xib */; };
 		EB859B319A3C90228FAA1C17 /* Pods_Loterias.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A20B6ADB9CB12B31C763A530 /* Pods_Loterias.framework */; };
 /* End PBXBuildFile section */
 
@@ -142,9 +145,12 @@
 		A617DC8D1F59B35700D257B7 /* FuturaStd-MediumOblique.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "FuturaStd-MediumOblique.otf"; path = "Assets/Fonts/FuturaStd-MediumOblique.otf"; sourceTree = "<group>"; };
 		A617DCA31F59CA4A00D257B7 /* LOLoginBusinessService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LOLoginBusinessService.swift; path = Business/LOLoginBusinessService.swift; sourceTree = "<group>"; };
 		A617DCA51F59EF9200D257B7 /* LOCadastroPassoDoisController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LOCadastroPassoDoisController.swift; path = Controllers/Login/LOCadastroPassoDoisController.swift; sourceTree = "<group>"; };
-		A69224A51F6AC08C00D319AC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Userinterface/Base.lproj/SimularApostaBaixo.xib; sourceTree = "<group>"; };
-		A69224A71F6AC1C500D319AC /* SimularApostasCorpo.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SimularApostasCorpo.xib; sourceTree = "<group>"; };
+		A632313C1F6BFE180004F327 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Userinterface/Base.lproj/LOSimularSurpresinha.xib; sourceTree = "<group>"; };
+		A632313E1F6BFE3C0004F327 /* LOSimularSurpresinha.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LOSimularSurpresinha.swift; path = Userinterface/SimularApostaBaixo/LOSimularSurpresinha.swift; sourceTree = "<group>"; };
+		A63231401F6C68260004F327 /* LOButtonRightImg.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LOButtonRightImg.swift; path = Dependencies/LOButtonRightImg.swift; sourceTree = "<group>"; };
+		A6895A511F6B16DE00420274 /* LONumeroApostaCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LONumeroApostaCell.xib; sourceTree = "<group>"; };
 		A69224AC1F6AC62F00D319AC /* LOSimularApostaBaixo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LOSimularApostaBaixo.swift; path = Userinterface/SimularApostaBaixo/LOSimularApostaBaixo.swift; sourceTree = "<group>"; };
+		A69225041F6AFC7A00D319AC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Userinterface/Base.lproj/LOSimularApostaNumeros.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -226,7 +232,6 @@
 			isa = PBXGroup;
 			children = (
 				A60615431F697522002191C3 /* LOSimularApostasController.swift */,
-				A60615451F69784C002191C3 /* LONumeroApostaCell.swift */,
 			);
 			name = Apostas;
 			sourceTree = "<group>";
@@ -314,7 +319,6 @@
 				A617DBEA1F58572500D257B7 /* Main.storyboard */,
 				A617DBEE1F58573700D257B7 /* Login.storyboard */,
 				A606151B1F66B81E002191C3 /* Tour.storyboard */,
-				A69224A71F6AC1C500D319AC /* SimularApostasCorpo.xib */,
 			);
 			name = Userinterface;
 			sourceTree = "<group>";
@@ -345,6 +349,7 @@
 				A617DBF91F5996C600D257B7 /* LOPopupSelecionarOpcoesController.swift */,
 				A617DBFB1F59A99D00D257B7 /* LOPopupItensCell.swift */,
 				A617DBF41F58A48800D257B7 /* LOExtensions.swift */,
+				A63231401F6C68260004F327 /* LOButtonRightImg.swift */,
 			);
 			name = Dependencies;
 			sourceTree = "<group>";
@@ -387,8 +392,12 @@
 		A69224A91F6AC58F00D319AC /* SimularApostaBaixo */ = {
 			isa = PBXGroup;
 			children = (
-				A69224A41F6AC08C00D319AC /* SimularApostaBaixo.xib */,
+				A69225031F6AFC7A00D319AC /* LOSimularApostaNumeros.xib */,
 				A69224AC1F6AC62F00D319AC /* LOSimularApostaBaixo.swift */,
+				A6895A511F6B16DE00420274 /* LONumeroApostaCell.xib */,
+				A60615451F69784C002191C3 /* LONumeroApostaCell.swift */,
+				A632313B1F6BFE180004F327 /* LOSimularSurpresinha.xib */,
+				A632313E1F6BFE3C0004F327 /* LOSimularSurpresinha.swift */,
 			);
 			name = SimularApostaBaixo;
 			sourceTree = "<group>";
@@ -514,6 +523,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A69225061F6AFCDE00D319AC /* LOSimularApostaNumeros.xib in Resources */,
 				A617DC951F59B35700D257B7 /* FuturaStd-CondensedExtraBd.otf in Resources */,
 				A617DC971F59B35700D257B7 /* FuturaStd-CondensedLightObl.otf in Resources */,
 				A617DCA01F59B35700D257B7 /* FuturaStd-Medium.otf in Resources */,
@@ -522,6 +532,7 @@
 				A606151D1F66B81E002191C3 /* Tour.storyboard in Resources */,
 				A617DC941F59B35700D257B7 /* FuturaStd-CondensedBoldObl.otf in Resources */,
 				A617DC921F59B35700D257B7 /* FuturaStd-Condensed.otf in Resources */,
+				A632313D1F6BFE180004F327 /* LOSimularSurpresinha.xib in Resources */,
 				A617DC961F59B35700D257B7 /* FuturaStd-CondensedLight.otf in Resources */,
 				A617DC9A1F59B35700D257B7 /* FuturaStd-ExtraBold.otf in Resources */,
 				A617DC981F59B35700D257B7 /* FuturaStd-CondensedOblique.otf in Resources */,
@@ -530,17 +541,16 @@
 				A617DC901F59B35700D257B7 /* FuturaStd-Book.otf in Resources */,
 				A617DC911F59B35700D257B7 /* FuturaStd-BookOblique.otf in Resources */,
 				A617DC991F59B35700D257B7 /* FuturaStd-CondExtraBoldObl.otf in Resources */,
-				A69224A81F6AC1C500D319AC /* SimularApostasCorpo.xib in Resources */,
 				A617DC9D1F59B35700D257B7 /* FuturaStd-HeavyOblique.otf in Resources */,
 				A617DC8F1F59B35700D257B7 /* FuturaStd-BoldOblique.otf in Resources */,
 				A617DCA11F59B35700D257B7 /* FuturaStd-MediumOblique.otf in Resources */,
+				A6895A521F6B16DE00420274 /* LONumeroApostaCell.xib in Resources */,
 				A617DC9B1F59B35700D257B7 /* FuturaStd-ExtraBoldOblique.otf in Resources */,
 				A617DBF01F58573700D257B7 /* Login.storyboard in Resources */,
 				A617DBED1F58572500D257B7 /* Main.storyboard in Resources */,
 				A617DBE51F58570700D257B7 /* Assets.xcassets in Resources */,
 				A617DBEC1F58572500D257B7 /* LaunchScreen.storyboard in Resources */,
 				A617DC931F59B35700D257B7 /* FuturaStd-CondensedBold.otf in Resources */,
-				A69224A61F6AC08C00D319AC /* SimularApostaBaixo.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -634,9 +644,11 @@
 				A617DCA61F59EF9200D257B7 /* LOCadastroPassoDoisController.swift in Sources */,
 				A60615291F670001002191C3 /* LOOptionsCell.swift in Sources */,
 				A606153D1F686EED002191C3 /* LOTopDownSegue.swift in Sources */,
+				A632313F1F6BFE3C0004F327 /* LOSimularSurpresinha.swift in Sources */,
+				A63231411F6C68260004F327 /* LOButtonRightImg.swift in Sources */,
 				A617DCA41F59CA4A00D257B7 /* LOLoginBusinessService.swift in Sources */,
 				A60615461F69784C002191C3 /* LONumeroApostaCell.swift in Sources */,
-				A69224AD1F6AC62F00D319AC /* LOSimularApostaBaixo.swift in Sources */,
+				A69224BB1F6AEBFF00D319AC /* LOSimularApostaBaixo.swift in Sources */,
 				A617DBF71F58B60300D257B7 /* LOCadastroControllerController.swift in Sources */,
 				A617DBF51F58A48800D257B7 /* LOExtensions.swift in Sources */,
 				A617DBFC1F59A99D00D257B7 /* LOPopupItensCell.swift in Sources */,
@@ -723,13 +735,22 @@
 			name = Login.storyboard;
 			sourceTree = "<group>";
 		};
-		A69224A41F6AC08C00D319AC /* SimularApostaBaixo.xib */ = {
+		A632313B1F6BFE180004F327 /* LOSimularSurpresinha.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				A69224A51F6AC08C00D319AC /* Base */,
+				A632313C1F6BFE180004F327 /* Base */,
 			);
-			name = SimularApostaBaixo.xib;
+			name = LOSimularSurpresinha.xib;
 			sourceTree = "<group>";
+		};
+		A69225031F6AFC7A00D319AC /* LOSimularApostaNumeros.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A69225041F6AFC7A00D319AC /* Base */,
+			);
+			name = LOSimularApostaNumeros.xib;
+			path = Loterias;
+			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXVariantGroup section */
 

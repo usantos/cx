@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LONumeroApostaCell: UICollectionViewCell {
+class LONumeroApostaCell: UIView {
     
     @IBOutlet var numero : UILabel! {
         didSet {
@@ -16,5 +16,21 @@ class LONumeroApostaCell: UICollectionViewCell {
             numero.layer.borderColor = UIColor.black.cgColor
             numero.layer.cornerRadius = 22.5
         }
+    }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        
+        loadViewFromNib()
+    }
+    
+    func loadViewFromNib() {
+        let teste = Bundle.main.loadNibNamed("LONumeroApostaCell", owner: self, options: nil)?.first as! UICollectionViewCell
+        self.addSubview(teste)
     }
 }
