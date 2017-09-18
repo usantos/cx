@@ -44,8 +44,7 @@ class LOSimularSurpresinha: UIView, UICollectionViewDelegateFlowLayout, UICollec
         let teste = Bundle.main.loadNibNamed("LOSimularSurpresinha", owner: self, options: nil)?.first as! UIView
         self.addSubview(teste)
         
-        let nib = UINib(nibName: "LONumeroApostaCell", bundle: nil)
-        self.collectionViewNumerosMascarados.register(nib , forCellWithReuseIdentifier: "numeroCell")
+        self.collectionViewNumerosMascarados.register(UINib(nibName: "LONumeroApostaCell", bundle: nil) , forCellWithReuseIdentifier: "numeroCell")
         
         self.collectionViewNumerosMascarados.addObserver(self, forKeyPath: "contentSize" , options: NSKeyValueObservingOptions.old, context: nil)
     }
@@ -55,20 +54,67 @@ class LOSimularSurpresinha: UIView, UICollectionViewDelegateFlowLayout, UICollec
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 20
+        return 10
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
- 
-        return collectionView.dequeueReusableCell(withReuseIdentifier: "numeroCell", for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "numeroCell", for: indexPath) as! LONumeroApostaCell
+        cell.numero.textColor = self.UIColorFromHex(estiloModalidade.corEscura, alpha: 1.0)
+        
+        return cell
     }
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         resizeCollectionViewSize()
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let cell = collectionView.cellForItem(at: indexPath) as! LONumeroApostaCell
+        
+        if cell.isSelecionado {
+            cell.numero.layer.borderWidth = 1
+            cell.numero.layer.borderColor = UIColor.lightGray.cgColor
+            cell.numero.layer.backgroundColor = UIColor.white.cgColor
+            cell.numero.textColor = self.UIColorFromHex(estiloModalidade.corEscura, alpha: 1.0)
+            
+            cell.isSelecionado = false
+        } else {
+            cell.numero.layer.borderWidth = 1
+            cell.numero.layer.borderColor = self.UIColorFromHex(estiloModalidade.corEscura, alpha: 1.0).cgColor
+            cell.numero.layer.backgroundColor = self.UIColorFromHex(estiloModalidade.corEscura, alpha: 1.0).cgColor
+            cell.numero.textColor = .white
+            
+            cell.isSelecionado = true
+        }
+    }
 
     func resizeCollectionViewSize() {
         self.verticalLayoutConstraint.constant = self.collectionViewNumerosMascarados.collectionViewLayout.collectionViewContentSize.height
+        
+        //Calculando tamanho da collectionview caso venha com menos elementos do que a tela suporta.
+        //Fixando então a constant para apresentação otimizada.
+        
+        if DeviceType.IS_IPHONE_6P {
+            if self.verticalLayoutConstraint.constant < 439 {
+                self.verticalLayoutConstraint.constant = 439
+            } else {
+                self.verticalLayoutConstraint.constant = self.collectionViewNumerosMascarados.collectionViewLayout.collectionViewContentSize.height
+                
+                self.scrollView.contentSize.height = self.scrollView.contentSize.height + 114
+            }
+        } else if DeviceType.IS_IPHONE_6 {
+            if self.verticalLayoutConstraint.constant < 53 {
+                self.verticalLayoutConstraint.constant = 53
+            } else {
+                self.verticalLayoutConstraint.constant = self.collectionViewNumerosMascarados.collectionViewLayout.collectionViewContentSize.height
+                
+                self.scrollView.contentSize.height = self.scrollView.contentSize.height + 114
+            }
+        } else if DeviceType.IS_IPHONE_5 {
+            self.verticalLayoutConstraint.constant = self.collectionViewNumerosMascarados.collectionViewLayout.collectionViewContentSize.height
+            
+            self.scrollView.contentSize.height = self.scrollView.contentSize.height + 64
+        }
         
         self.layoutIfNeeded()
     }

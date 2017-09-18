@@ -148,7 +148,7 @@
                             </constraints>
                         </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Surpresinha" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9qi-FQ-fHV">
-                            <rect key="frame" x="124.5" y="27" width="126" height="20"/>
+                            <rect key="frame" x="125" y="27" width="126" height="20"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="20" id="smn-rc-iYs"/>
                             </constraints>
@@ -268,6 +268,6 @@ Surpresinhas quer apostar neste concurso.</string>
     </objects>
     <resources>
         <image name="icon-carrinho" width="37" height="40"/>
-        <image name="icon-paginacao1" width="183" height="13"/>
+        <image name="icon-paginacao1" width="183" height="12"/>
     </resources>
 </document>

@@ -11,7 +11,7 @@ import UIKit
 class LOSimularApostasController: UIViewController {
     
     //Custom views
-    @IBOutlet var viewCustom : LOSimularApostaBaixo!
+    @IBOutlet var viewCustom : LOSimularApostaNumeros!
     @IBOutlet var surpresinhaViewCustom : LOSimularSurpresinha!
     
     //Elementos da barra superior
@@ -20,6 +20,7 @@ class LOSimularApostasController: UIViewController {
     @IBOutlet weak var surpresinha: UIButton!
     @IBOutlet weak var escolheQntNumero : UIButton!
     @IBOutlet weak var escolheQntConcursos : UIButton!
+    @IBOutlet weak var meuNavigationItem : UINavigationItem!
 
     var delegateSurpresa: LOSurpresinhaDelegate?
     var delegateSimularNumeros : LOSimularNumerosDelegate?
@@ -48,6 +49,8 @@ class LOSimularApostasController: UIViewController {
         delegateSurpresa?.willDisappearSurpresinha()
         delegateSimularNumeros?.willDisappearSimularNumeros()
         self.navigationController?.navigationBar.barTintColor = .white
+        UINavigationBar.appearance().tintColor = .blue
+
     }
     
     @IBAction func apresentaNumeros(_ sender: Any) {
@@ -71,13 +74,12 @@ class LOSimularApostasController: UIViewController {
         self.viewCustom.estiloModalidade = self.estiloModalidade
         self.surpresinhaViewCustom.estiloModalidade = self.estiloModalidade
         
+        self.navigationController?.navigationBar.tintColor = .white
     }
     
     @IBAction func apresentaPopup (_ sender: UIButton) {
         self.performSegue(withIdentifier: "mandarParaPopup", sender: self)
     }
-    
-
     
     /*
     // MARK: - Navigation

@@ -357,6 +357,9 @@ Sábado. 18 de julho</string>
                             <constraint firstItem="aWe-TF-zB9" firstAttribute="leading" secondItem="LRR-pb-k6A" secondAttribute="trailing" constant="-2" id="wmE-dG-kck"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="Voa-Zs-jes">
+                        <barButtonItem key="backBarButtonItem" title=" " id="yrg-bK-eTQ"/>
+                    </navigationItem>
                     <connections>
                         <outlet property="aposteView" destination="aWe-TF-zB9" id="pop-mn-Afk"/>
                         <outlet property="badgeCarrinhoDeApostas" destination="2rK-O7-M12" id="w3e-R1-IGf"/>
@@ -437,16 +440,44 @@ Sábado. 18 de julho</string>
             </objects>
             <point key="canvasLocation" x="1180" y="-561.76911544227892"/>
         </scene>
+        <!--View Controller-->
+        <scene sceneID="Qcm-Qr-KVh">
+            <objects>
+                <viewController id="TsL-4K-R8p" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="rNG-mw-DpK"/>
+                        <viewControllerLayoutGuide type="bottom" id="8xn-aR-uhM"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="os4-fq-Zsm">
+                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="9jh-ew-3ns">
+                        <nil key="title"/>
+                        <view key="titleView" contentMode="scaleToFill" id="mQc-TB-50s" customClass="LOCustomNavbarSimular" customModule="Loterias" customModuleProvider="target">
+                            <rect key="frame" x="8" y="0.0" width="359" height="44"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <edgeInsets key="layoutMargins" top="0.0" left="8" bottom="0.0" right="0.0"/>
+                        </view>
+                    </navigationItem>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Qfr-0u-Mnn" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1322" y="-580"/>
+        </scene>
         <!--Simular Apostas Controller-->
         <scene sceneID="8y8-eG-CqN">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fKF-Oa-iPU" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="1Y2-7E-U4v" customClass="LOSimularApostasController" customModule="Loterias" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="F1j-IY-xps"/>
                         <viewControllerLayoutGuide type="bottom" id="KuU-Ir-0lz"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="fmC-wN-miN">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ugw-Ot-8mv">
@@ -467,13 +498,14 @@ Sábado. 18 de julho</string>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bPg-1z-d9s">
-                                        <rect key="frame" x="162" y="18" width="92" height="26"/>
+                                        <rect key="frame" x="165" y="18" width="92" height="26"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="92" id="Zvj-be-Tvm"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <inset key="imageEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                        <state key="normal" title="Button" image="icon-combo-white">
+                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                        <inset key="titleEdgeInsets" minX="-4" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                        <inset key="imageEdgeInsets" minX="20" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                        <state key="normal" title="60 números" image="icon-combo-white">
                                             <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
                                         <connections>
@@ -485,9 +517,10 @@ Sábado. 18 de julho</string>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="92" id="9tq-QO-onV"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <inset key="imageEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                        <state key="normal" title="Button" image="icon-combo-white">
+                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                        <inset key="titleEdgeInsets" minX="-4" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                        <inset key="imageEdgeInsets" minX="20" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                        <state key="normal" title="5 concursos" image="icon-combo-white">
                                             <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
                                         <connections>
@@ -509,16 +542,16 @@ Sábado. 18 de julho</string>
                                     <constraint firstAttribute="bottom" secondItem="V4g-A1-7os" secondAttribute="bottom" constant="10" id="Ubr-Lv-vOm"/>
                                     <constraint firstItem="VRX-Rk-kGs" firstAttribute="leading" secondItem="ugw-Ot-8mv" secondAttribute="leading" constant="16" id="VTI-ld-jbH"/>
                                     <constraint firstAttribute="height" constant="60" id="kRF-p6-iGb"/>
-                                    <constraint firstItem="bPg-1z-d9s" firstAttribute="leading" relation="lessThanOrEqual" secondItem="V4g-A1-7os" secondAttribute="trailing" constant="53" id="oWm-7l-m1N"/>
-                                    <constraint firstItem="1PP-TB-cLu" firstAttribute="leading" secondItem="bPg-1z-d9s" secondAttribute="trailing" constant="13" id="wob-88-uJE"/>
+                                    <constraint firstItem="bPg-1z-d9s" firstAttribute="leading" relation="lessThanOrEqual" secondItem="V4g-A1-7os" secondAttribute="trailing" constant="56" id="oWm-7l-m1N"/>
+                                    <constraint firstItem="1PP-TB-cLu" firstAttribute="leading" secondItem="bPg-1z-d9s" secondAttribute="trailing" constant="10" id="wob-88-uJE"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mQy-9n-mcF" customClass="LOSimularSurpresinha" customModule="Loterias" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="60" width="375" height="607"/>
+                                <rect key="frame" x="0.0" y="60" width="375" height="543"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Z6l-q9-QiG" customClass="LOSimularApostaBaixo" customModule="Loterias" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="60" width="375" height="607"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Z6l-q9-QiG" customClass="LOSimularApostaNumeros" customModule="Loterias" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="60" width="375" height="543"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                         </subviews>
@@ -537,24 +570,38 @@ Sábado. 18 de julho</string>
                             <constraint firstItem="KuU-Ir-0lz" firstAttribute="top" secondItem="Z6l-q9-QiG" secondAttribute="bottom" id="tMc-5i-rtg"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="dcL-0S-dTk">
+                        <nil key="title"/>
+                        <view key="titleView" contentMode="scaleToFill" id="3KJ-NT-hYD" customClass="LOCustomNavbarSimular" customModule="Loterias" customModuleProvider="target">
+                            <rect key="frame" x="8" y="0.0" width="359" height="44"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <edgeInsets key="layoutMargins" top="0.0" left="8" bottom="0.0" right="0.0"/>
+                        </view>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <connections>
                         <outlet property="barraSuperior" destination="ugw-Ot-8mv" id="38X-cd-fKK"/>
+                        <outlet property="escolheQntConcursos" destination="1PP-TB-cLu" id="8QF-0a-dlJ"/>
+                        <outlet property="escolheQntNumero" destination="bPg-1z-d9s" id="d8b-6p-m4K"/>
                         <outlet property="selecionaNumeros" destination="VRX-Rk-kGs" id="2R6-fi-nOf"/>
                         <outlet property="surpresinha" destination="V4g-A1-7os" id="jO6-Lc-vml"/>
                         <outlet property="surpresinhaViewCustom" destination="mQy-9n-mcF" id="nzt-BK-Dcx"/>
                         <outlet property="viewCustom" destination="Z6l-q9-QiG" id="l6A-wD-YFg"/>
                         <segue destination="45r-ui-MnB" kind="presentation" identifier="mandarParaPopup" modalPresentationStyle="overFullScreen" modalTransitionStyle="crossDissolve" id="w2h-nk-qhA"/>
+                        <segue destination="TsL-4K-R8p" kind="show" id="u1c-cJ-Dnc"/>
                     </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="fKF-Oa-iPU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-586" y="-580"/>
+            <point key="canvasLocation" x="-586.39999999999998" y="-580.65967016491754"/>
         </scene>
         <!--Modalides Page Controller-->
         <scene sceneID="JNP-RU-x3D">
             <objects>
                 <pageViewController autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="hlZ-hU-rtw" customClass="LOModalidesPageController" customModule="Loterias" customModuleProvider="target" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="wCV-rr-8wi"/>
+                    <navigationItem key="navigationItem" id="wCV-rr-8wi">
+                        <barButtonItem key="backBarButtonItem" title=" " id="Ep2-ZB-nqp"/>
+                    </navigationItem>
                     <connections>
                         <segue destination="aIl-o4-iqH" kind="presentation" identifier="apresentaMenu" id="40Q-Jr-g8k"/>
                         <segue destination="AIP-yH-a2u" kind="custom" identifier="apresentaTrevo" customClass="LOTopDownSegue" customModule="Loterias" customModuleProvider="target" id="eVu-J4-9EZ"/>

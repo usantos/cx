@@ -66,3 +66,21 @@ extension UIViewController {
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(image:imgRendering , style: UIBarButtonItemStyle.plain, target: nil, action: nil)
     }
 }
+
+extension CGFloat {
+    static func - (left: CGFloat, right: Double) -> CGFloat {
+        return left - CGFloat(right);
+    }
+    
+    static func - (left: CGFloat, right: Int) -> CGFloat {
+        return left - CGFloat(right);
+    }
+    
+    static func + (left: CGFloat, right: Double) -> CGFloat {
+        return left + CGFloat(right);
+    }
+    
+    static func + (left: CGFloat, right: Int) -> CGFloat {
+        return left + CGFloat(right);
+    }
+}
