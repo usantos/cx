@@ -26,6 +26,7 @@ struct DeviceType
 
 protocol LOSimularNumerosDelegate {
     func willDisappearSimularNumeros()
+    func willAppearSimularNumeros()
 }
 
 class LOSimularApostaNumeros: UIView, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, UICollectionViewDataSource, LOSimularNumerosDelegate {
@@ -35,6 +36,8 @@ class LOSimularApostaNumeros: UIView, UICollectionViewDelegateFlowLayout, UIColl
             self.viewAdicionarCarrinho.backgroundColor = self.UIColorFromHex(self.estiloModalidade.corClara, alpha: 1.0)
         }
     }
+    
+    var delegateSimular : LOSimularApostaDelegate!
     
     @IBOutlet private weak var collectionViewNumeros : UICollectionView! {
         didSet {
@@ -81,8 +84,6 @@ class LOSimularApostaNumeros: UIView, UICollectionViewDelegateFlowLayout, UIColl
         self.addSubview(teste)
                 
         self.collectionViewNumeros.register(UINib(nibName: "LONumeroApostaCell", bundle: nil) , forCellWithReuseIdentifier: "numeroCell")
-
-        self.collectionViewNumeros.addObserver(self, forKeyPath: "contentSize" , options: NSKeyValueObservingOptions.old, context: nil)
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -161,5 +162,13 @@ class LOSimularApostaNumeros: UIView, UICollectionViewDelegateFlowLayout, UIColl
     
     func willDisappearSimularNumeros() {
         self.collectionViewNumeros.removeObserver(self, forKeyPath: "contentSize")
+    }
+    
+    func willAppearSimularNumeros() {
+        self.collectionViewNumeros.addObserver(self, forKeyPath: "contentSize" , options: NSKeyValueObservingOptions.old, context: nil)
+    }
+    
+    @IBAction func adicionarApostaNoCarrinho() {
+        self.delegateSimular.adicionarNoCarrinho()
     }
 }

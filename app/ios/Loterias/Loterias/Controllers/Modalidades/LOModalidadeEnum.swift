@@ -8,14 +8,14 @@
 
 import UIKit
 
-public enum LOModalidadeEnum {
-    case Megasena
-    case Quina
-    case Duplasena
-    case Federal
-    case Loteca
-    case Lotofacil
-    case Lotogol
-    case Lotomania
-    case Timemania
+public enum LOModalidadeEnum: String {
+    case Megasena = "mega-sena"
+    case Quina = "quina"
+    case Duplasena = "dupla-sena"
+    case Federal = "federal"
+    case Loteca = "loteca"
+    case Lotofacil = "lotofácil"
+    case Lotogol = "lotogol"
+    case Lotomania = "lotomania"
+    case Timemania = "timemania"
 }

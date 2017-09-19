@@ -63,6 +63,7 @@
 		A63231421F6FF22E0004F327 /* LONumeroApostaCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6895A511F6B16DE00420274 /* LONumeroApostaCell.xib */; };
 		A63231451F7053130004F327 /* LOCustomNavbarSimular.xib in Resources */ = {isa = PBXBuildFile; fileRef = A63231431F7053130004F327 /* LOCustomNavbarSimular.xib */; };
 		A63231471F7053BF0004F327 /* LOCustomNavbarSimular.swift in Sources */ = {isa = PBXBuildFile; fileRef = A63231461F7053BF0004F327 /* LOCustomNavbarSimular.swift */; };
+		A63231491F715E750004F327 /* LOConfirmacaoApostaController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A63231481F715E750004F327 /* LOConfirmacaoApostaController.swift */; };
 		A69224BB1F6AEBFF00D319AC /* LOSimularApostaNumeros.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69224AC1F6AC62F00D319AC /* LOSimularApostaNumeros.swift */; };
 		A69225061F6AFCDE00D319AC /* LOSimularApostaNumeros.xib in Resources */ = {isa = PBXBuildFile; fileRef = A69225031F6AFC7A00D319AC /* LOSimularApostaNumeros.xib */; };
 		EB859B319A3C90228FAA1C17 /* Pods_Loterias.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A20B6ADB9CB12B31C763A530 /* Pods_Loterias.framework */; };
@@ -150,6 +151,7 @@
 		A632313E1F6BFE3C0004F327 /* LOSimularSurpresinha.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LOSimularSurpresinha.swift; path = Userinterface/SimularApostaBaixo/LOSimularSurpresinha.swift; sourceTree = "<group>"; };
 		A63231441F7053130004F327 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Userinterface/Base.lproj/LOCustomNavbarSimular.xib; sourceTree = "<group>"; };
 		A63231461F7053BF0004F327 /* LOCustomNavbarSimular.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LOCustomNavbarSimular.swift; path = Dependencies/LOCustomNavbarSimular.swift; sourceTree = "<group>"; };
+		A63231481F715E750004F327 /* LOConfirmacaoApostaController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LOConfirmacaoApostaController.swift; path = Controllers/Apostas/LOConfirmacaoApostaController.swift; sourceTree = "<group>"; };
 		A6895A511F6B16DE00420274 /* LONumeroApostaCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LONumeroApostaCell.xib; sourceTree = "<group>"; };
 		A69224AC1F6AC62F00D319AC /* LOSimularApostaNumeros.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LOSimularApostaNumeros.swift; path = Userinterface/SimularApostaBaixo/LOSimularApostaNumeros.swift; sourceTree = "<group>"; };
 		A69225041F6AFC7A00D319AC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Userinterface/Base.lproj/LOSimularApostaNumeros.xib; sourceTree = "<group>"; };
@@ -234,6 +236,7 @@
 			isa = PBXGroup;
 			children = (
 				A60615431F697522002191C3 /* LOSimularApostasController.swift */,
+				A63231481F715E750004F327 /* LOConfirmacaoApostaController.swift */,
 			);
 			name = Apostas;
 			sourceTree = "<group>";
@@ -648,6 +651,7 @@
 				A617DCA61F59EF9200D257B7 /* LOCadastroPassoDoisController.swift in Sources */,
 				A60615291F670001002191C3 /* LOOptionsCell.swift in Sources */,
 				A606153D1F686EED002191C3 /* LOTopDownSegue.swift in Sources */,
+				A63231491F715E750004F327 /* LOConfirmacaoApostaController.swift in Sources */,
 				A632313F1F6BFE3C0004F327 /* LOSimularSurpresinha.swift in Sources */,
 				A617DCA41F59CA4A00D257B7 /* LOLoginBusinessService.swift in Sources */,
 				A60615461F69784C002191C3 /* LONumeroApostaCell.swift in Sources */,

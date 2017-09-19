@@ -10,6 +10,10 @@ import UIKit
 
 class LOCustomNavbarSimular: UIView {
 
+    @IBOutlet weak var navTitle : UILabel!
+    @IBOutlet weak var concurso : UILabel!
+    @IBOutlet weak var sorteio : UILabel!
+
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }

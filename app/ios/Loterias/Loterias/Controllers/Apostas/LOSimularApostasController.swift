@@ -8,7 +8,11 @@
 
 import UIKit
 
-class LOSimularApostasController: UIViewController {
+protocol LOSimularApostaDelegate {
+    func adicionarNoCarrinho()
+}
+
+class LOSimularApostasController: UIViewController, LOSimularApostaDelegate {
     
     //Custom views
     @IBOutlet var viewCustom : LOSimularApostaNumeros!
@@ -20,7 +24,7 @@ class LOSimularApostasController: UIViewController {
     @IBOutlet weak var surpresinha: UIButton!
     @IBOutlet weak var escolheQntNumero : UIButton!
     @IBOutlet weak var escolheQntConcursos : UIButton!
-    @IBOutlet weak var meuNavigationItem : UINavigationItem!
+    @IBOutlet weak var meuNavigationItem : LOCustomNavbarSimular!
 
     var delegateSurpresa: LOSurpresinhaDelegate?
     var delegateSimularNumeros : LOSimularNumerosDelegate?
@@ -33,6 +37,11 @@ class LOSimularApostasController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         delegateSurpresa = self.surpresinhaViewCustom
         delegateSimularNumeros = self.viewCustom
+        
+        delegateSurpresa?.willAppearSurpresinha()
+        delegateSimularNumeros?.willAppearSimularNumeros()
+        
+        self.viewCustom.delegateSimular = self
         
         aplicaEstilos()
     }
@@ -48,6 +57,7 @@ class LOSimularApostasController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         delegateSurpresa?.willDisappearSurpresinha()
         delegateSimularNumeros?.willDisappearSimularNumeros()
+        
         self.navigationController?.navigationBar.barTintColor = .white
         UINavigationBar.appearance().tintColor = .blue
 
@@ -75,20 +85,26 @@ class LOSimularApostasController: UIViewController {
         self.surpresinhaViewCustom.estiloModalidade = self.estiloModalidade
         
         self.navigationController?.navigationBar.tintColor = .white
+        self.meuNavigationItem.navTitle.text = self.estiloModalidade.tipoModalidade.rawValue
     }
     
     @IBAction func apresentaPopup (_ sender: UIButton) {
         self.performSegue(withIdentifier: "mandarParaPopup", sender: self)
     }
     
-    /*
+    func adicionarNoCarrinho() {
+        self.performSegue(withIdentifier: "mandaParaAdicaoAposta", sender: self)
+    }
+    
     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        if segue.destination.isKind(of: LOConfirmacaoApostaController.self)  {
+            let destination = segue.destination as! LOConfirmacaoApostaController
+            destination.estiloModalidade = self.estiloModalidade
+        }
+
     }
-    */
+    
 
 }

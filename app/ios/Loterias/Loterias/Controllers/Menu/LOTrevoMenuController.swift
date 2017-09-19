@@ -11,9 +11,23 @@ import UIKit
 class LOTrevoMenuController: UIViewController {
 
     @IBOutlet weak var trevo: UIButton!
+    @IBOutlet weak var scrollView: UIScrollView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.navigationController?.isNavigationBarHidden = true
+        
+        self.scrollView.layoutIfNeeded()
+        self.scrollView.layer.masksToBounds = true
+        
+        
+        let gradient : CAGradientLayer = CAGradientLayer()
+        gradient.frame = self.scrollView.bounds
+        gradient.locations = [0.0, 1.0]
+        gradient.colors = [self.UIColorFromHex(0xffffff, alpha: 1.0).cgColor, self.UIColorFromHex(0xd4dfe2, alpha: 1.0).cgColor]
+        
+        self.scrollView.layer.insertSublayer(gradient, at: 0)
     }
 
     override func didReceiveMemoryWarning() {

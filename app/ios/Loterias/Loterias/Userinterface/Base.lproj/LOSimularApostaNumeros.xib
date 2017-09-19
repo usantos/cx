@@ -80,13 +80,14 @@
                                             <color key="textColor" red="0.22352941179999999" green="0.3921568627" blue="0.64313725489999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="V6q-sD-AHr">
-                                            <rect key="frame" x="20" y="6" width="34" height="40"/>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="V6q-sD-AHr">
+                                            <rect key="frame" x="1" y="6" width="71" height="76"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="34" id="glx-ot-7OC"/>
-                                                <constraint firstAttribute="height" constant="40" id="swx-Ge-gUB"/>
+                                                <constraint firstAttribute="width" constant="71" id="glx-ot-7OC"/>
+                                                <constraint firstAttribute="height" constant="76" id="swx-Ge-gUB"/>
                                             </constraints>
-                                            <state key="normal" backgroundImage="icon-carrinho"/>
+                                            <inset key="imageEdgeInsets" minX="2" minY="-28" maxX="0.0" maxY="0.0"/>
+                                            <state key="normal" image="icon-carrinho"/>
                                         </button>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bgn-ij-Ccg">
                                             <rect key="frame" x="6" y="23" width="26" height="26"/>
@@ -108,11 +109,11 @@
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <constraints>
                                         <constraint firstAttribute="bottom" secondItem="PvZ-IH-6PZ" secondAttribute="bottom" id="IEG-Ix-Pn6"/>
-                                        <constraint firstItem="V6q-sD-AHr" firstAttribute="leading" secondItem="hOT-SA-sIR" secondAttribute="leading" constant="20" id="Igg-pe-cEf"/>
+                                        <constraint firstItem="V6q-sD-AHr" firstAttribute="leading" secondItem="hOT-SA-sIR" secondAttribute="leading" constant="1" id="Igg-pe-cEf"/>
                                         <constraint firstItem="Bgn-ij-Ccg" firstAttribute="leading" secondItem="hOT-SA-sIR" secondAttribute="leading" constant="6" id="M3X-5L-45c"/>
                                         <constraint firstAttribute="height" constant="82" id="dVH-LS-9VT"/>
                                         <constraint firstItem="PvZ-IH-6PZ" firstAttribute="top" secondItem="Bgn-ij-Ccg" secondAttribute="bottom" constant="6" id="exb-AM-6mp"/>
-                                        <constraint firstItem="PvZ-IH-6PZ" firstAttribute="top" secondItem="V6q-sD-AHr" secondAttribute="bottom" constant="9" id="g48-im-sCo"/>
+                                        <constraint firstItem="PvZ-IH-6PZ" firstAttribute="top" secondItem="V6q-sD-AHr" secondAttribute="bottom" constant="-27" id="g48-im-sCo"/>
                                         <constraint firstItem="PvZ-IH-6PZ" firstAttribute="leading" secondItem="hOT-SA-sIR" secondAttribute="leading" constant="1" id="jbw-qG-gxC"/>
                                         <constraint firstAttribute="width" constant="73" id="lfb-qJ-OIx"/>
                                         <constraint firstItem="V6q-sD-AHr" firstAttribute="top" secondItem="hOT-SA-sIR" secondAttribute="top" constant="6" id="qFH-KB-CTK"/>
@@ -145,6 +146,9 @@
                                     <state key="normal" title="Button">
                                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </state>
+                                    <connections>
+                                        <action selector="adicionarApostaNoCarrinho" destination="-1" eventType="touchUpInside" id="LKM-Ld-fKy"/>
+                                    </connections>
                                 </button>
                             </subviews>
                             <color key="backgroundColor" red="0.30588235289999999" green="0.34901960780000002" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

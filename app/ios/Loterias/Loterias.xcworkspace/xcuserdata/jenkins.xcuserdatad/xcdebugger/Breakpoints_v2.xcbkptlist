@@ -58,12 +58,12 @@
                   moduleName = "Loterias"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/jenkins/Documents/loterias-ios/simlo/trunk/app/ios/Loterias/Loterias/Controllers/Login/LOLoginController.swift"
-                  timestampString = "527460313.910885"
+                  timestampString = "527544482.300289"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "147"
                   endingLineNumber = "147"
-                  offsetFromSymbolStart = "811">
+                  offsetFromSymbolStart = "632">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -73,12 +73,12 @@
                   moduleName = "Loterias"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/jenkins/Documents/loterias-ios/simlo/trunk/app/ios/Loterias/Loterias/Controllers/Login/LOLoginController.swift"
-                  timestampString = "527460313.912957"
+                  timestampString = "527544482.301601"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "147"
                   endingLineNumber = "147"
-                  offsetFromSymbolStart = "16">
+                  offsetFromSymbolStart = "20">
                </Location>
             </Locations>
          </BreakpointContent>

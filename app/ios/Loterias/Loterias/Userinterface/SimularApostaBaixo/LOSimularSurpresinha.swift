@@ -10,6 +10,7 @@ import UIKit
 
 protocol LOSurpresinhaDelegate {
     func willDisappearSurpresinha()
+    func willAppearSurpresinha()
 }
 
 class LOSimularSurpresinha: UIView, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, UICollectionViewDataSource, LOSurpresinhaDelegate {
@@ -45,8 +46,6 @@ class LOSimularSurpresinha: UIView, UICollectionViewDelegateFlowLayout, UICollec
         self.addSubview(teste)
         
         self.collectionViewNumerosMascarados.register(UINib(nibName: "LONumeroApostaCell", bundle: nil) , forCellWithReuseIdentifier: "numeroCell")
-        
-        self.collectionViewNumerosMascarados.addObserver(self, forKeyPath: "contentSize" , options: NSKeyValueObservingOptions.old, context: nil)
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -100,7 +99,7 @@ class LOSimularSurpresinha: UIView, UICollectionViewDelegateFlowLayout, UICollec
             } else {
                 self.verticalLayoutConstraint.constant = self.collectionViewNumerosMascarados.collectionViewLayout.collectionViewContentSize.height
                 
-                self.scrollView.contentSize.height = self.scrollView.contentSize.height + 114
+                self.scrollView.contentSize.height = self.scrollView.contentSize.height + 64
             }
         } else if DeviceType.IS_IPHONE_6 {
             if self.verticalLayoutConstraint.constant < 53 {
@@ -108,7 +107,7 @@ class LOSimularSurpresinha: UIView, UICollectionViewDelegateFlowLayout, UICollec
             } else {
                 self.verticalLayoutConstraint.constant = self.collectionViewNumerosMascarados.collectionViewLayout.collectionViewContentSize.height
                 
-                self.scrollView.contentSize.height = self.scrollView.contentSize.height + 114
+                self.scrollView.contentSize.height = self.scrollView.contentSize.height + 64
             }
         } else if DeviceType.IS_IPHONE_5 {
             self.verticalLayoutConstraint.constant = self.collectionViewNumerosMascarados.collectionViewLayout.collectionViewContentSize.height
@@ -121,6 +120,10 @@ class LOSimularSurpresinha: UIView, UICollectionViewDelegateFlowLayout, UICollec
     
     func willDisappearSurpresinha() {
         self.collectionViewNumerosMascarados.removeObserver(self, forKeyPath: "contentSize")
+    }
+    
+    func willAppearSurpresinha() {
+        self.collectionViewNumerosMascarados.addObserver(self, forKeyPath: "contentSize" , options: NSKeyValueObservingOptions.old, context: nil)
     }
 
 }
