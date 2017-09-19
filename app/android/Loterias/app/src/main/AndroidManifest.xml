@@ -35,6 +35,10 @@
             android:name="caixa.gov.br.loterias.ui.HomeActivity_"
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+
+        <activity
+            android:name="caixa.gov.br.loterias.ui.SimularApostaActivity_"
+            android:label="@string/title_activity_home"></activity>
     </application>
 
 </manifest>
