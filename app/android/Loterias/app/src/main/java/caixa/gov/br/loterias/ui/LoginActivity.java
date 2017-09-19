@@ -14,9 +14,10 @@ import org.jboss.aerogear.android.core.Callback;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.bo.KeycloakBO;
+import caixa.gov.br.loterias.utils.ColorEnum;
+import caixa.gov.br.loterias.utils.TipoApostaEnum;
 
 @EActivity(R.layout.activity_login)
-
 public class LoginActivity extends AppCompatActivity {
 
     @AfterViews
@@ -28,8 +29,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
-
-
 
     private void connectKeycloak() {
 //        if (!KeycloakBO.isConnected()) {
@@ -53,7 +52,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void loginSucess(){
-        startActivity(new Intent(this, CadastrarActivity_.class));
+        Intent activity = new Intent(this, SimularApostaActivity_.class);
+        activity.putExtra("tipoAposta", TipoApostaEnum.QUINA);
+        startActivity(activity);
         finish();
     }
 

@@ -54,27 +54,28 @@ public class SimularApostaActivity extends AppCompatActivity implements View.OnC
     @ViewById
     Button qtdNumerosButton;
 
-
-
     @ViewById
     Button qtdConcursosButton;
-
-    private String[] dezenas = {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20"
-            , "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43"
-            , "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59", "60", "61", "62", "63", "64", "65", "66"};
-    private ArrayList<String> dezenasSelecionadas = new ArrayList<>();
-
-    //mocks
-    int qtdNumerosMax;
-    int numeroConcursoAtual;
-    String dataSorteioAtual;
-
-    ColorEnum typeGameColorLight;
-    ColorEnum typeGameColorDark;
 
     // Fragments
     FragmentManager fm;
     CartelaFragment surpresinhaFragment;
+
+
+
+    //mocks
+    private String[] dezenas = {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20"
+            , "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43"
+            , "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59", "60", "61", "62", "63", "64", "65", "66"};
+    private ArrayList<String> dezenasSelecionadas = new ArrayList<>();
+    int qtdNumerosMax;
+    int qtdConcursoMax;
+    int numeroConcursoAtual;
+    String dataSorteioAtual;
+    ColorEnum typeGameColorLight;
+    ColorEnum typeGameColorDark;
+
+
 
     @AfterViews
     protected void init() {
@@ -90,8 +91,6 @@ public class SimularApostaActivity extends AppCompatActivity implements View.OnC
         surpresinhaFragment = new CartelaFragment();
 
         FragmentManager fm = getSupportFragmentManager();
-
-// Abre uma transação e adiciona
         FragmentTransaction ft = fm.beginTransaction();
         ft.add(R.id.fragmentSimularApostas, surpresinhaFragment);
         ft.commit();
@@ -114,9 +113,12 @@ public class SimularApostaActivity extends AppCompatActivity implements View.OnC
                 configuraTipoApostaTela("Duplasena", DUPLASENACLARO, DUPLASENAESCURO);
         }
 
+        // MOCK
         qtdNumerosMax = 4;
+        qtdConcursoMax = 1;
         numeroConcursoAtual = 1456;
         dataSorteioAtual = "16/06";
+
 
         // Passando um link
         Bundle bundle = new Bundle();
@@ -127,12 +129,16 @@ public class SimularApostaActivity extends AppCompatActivity implements View.OnC
         bundle.putSerializable("typeGameColorDark", typeGameColorDark);
         surpresinhaFragment.setArguments(bundle);
 
-        qtdNumerosButton.setText(format("%d números", qtdNumerosMax));
-
+        atualizaTextoBotoesQtdSelecionadas();
         simularTelaAposta.setBackgroundResource(R.drawable.icon_seleciona);
         surpresinhaTela.setBackgroundResource(R.drawable.icon_surpresinha);
 
         configuraBotoesListeners();
+    }
+
+    private void atualizaTextoBotoesQtdSelecionadas(){
+        qtdNumerosButton.setText(format("%d números", qtdNumerosMax));
+        qtdConcursosButton.setText(format("%d concurso", qtdConcursoMax));
     }
 
     private void configuraBotoesListeners(){
@@ -140,6 +146,9 @@ public class SimularApostaActivity extends AppCompatActivity implements View.OnC
         surpresinhaTela.setOnClickListener(this);
         qtdNumerosButton.setOnClickListener(this);
         qtdConcursosButton.setOnClickListener(this);
+
+        simularTelaAposta.setBackgroundResource(R.drawable.icon_seleciona);
+        surpresinhaTela.setBackgroundResource(R.drawable.icon_surpresinha);
     }
 
     // Pegar o handle dos botoes que mostrarao o seu respectivo fragment na activity
@@ -172,7 +181,7 @@ public class SimularApostaActivity extends AppCompatActivity implements View.OnC
             }
 
             case R.id.qtdNumerosButton: {
-                ViewUtils.alert(this, "TESTE NUMEROS");
+                qtdNumerosMax += 1;
 
                 break;
             }
@@ -228,8 +237,6 @@ public class SimularApostaActivity extends AppCompatActivity implements View.OnC
     public void onFragmentInteraction(Uri uri) {
 
     }
-
-
 
 
 }

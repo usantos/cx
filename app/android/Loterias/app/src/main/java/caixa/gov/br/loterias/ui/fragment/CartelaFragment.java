@@ -17,7 +17,10 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.ui.SimularApostaActivity;
+import caixa.gov.br.loterias.ui.SimularApostaActivity_;
 import caixa.gov.br.loterias.utils.ColorEnum;
+import caixa.gov.br.loterias.utils.ViewUtils;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -148,7 +151,7 @@ public class CartelaFragment extends Fragment{
                     dezenasSelecionadas.remove(dezenas[position]);
                 } else {
                     if (dezenasSelecionadas.size() == qtdNumerosMax) {
-//                        ViewUtils.alert(SimularApostaActivity.this, "Número de dezenas máximo selecionadas.");
+                        ViewUtils.alert(getActivity(), "Número de dezenas máximo selecionadas.");
 //                        ViewUtils.alert(SupresinhasFragment.this, "Número de dezenas máximo selecionadas.");
                     }else{
                         dezenasSelecionadas.add(dezenas[position]);
@@ -159,7 +162,6 @@ public class CartelaFragment extends Fragment{
             }
         });
     }
-
 
     // Adapter do gridview das dezenas
     private class SimularDezenasAdapter extends BaseAdapter {
