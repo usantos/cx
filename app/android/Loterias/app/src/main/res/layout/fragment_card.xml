@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
         <LinearLayout
-            android:id="@+id/RelativeLayoutTopResultados"
+            android:id="@+id/relativeLayoutTopResultados"
             android:layout_width="match_parent"
             android:layout_height="32dp"
             android:layout_marginLeft="59dp"
@@ -41,7 +41,7 @@
                 android:layout_height="12dp"/>
         </LinearLayout>
         <LinearLayout
-            android:id="@+id/RelativeLayoutTopModalidades"
+            android:id="@+id/relativeLayoutTopModalidades"
             android:layout_width="match_parent"
             android:layout_height="71dp"
             android:layout_marginLeft="42dp"
@@ -58,6 +58,7 @@
                 android:id="@+id/imageViewBannerTipoAposta"
                 />
             <TextView
+                android:id="@+id/textViewCardTitle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="mega-sena"
@@ -68,7 +69,7 @@
                 />
         </LinearLayout>
         <RelativeLayout
-            android:id="@+id/RelativeLayoutContentCard"
+            android:id="@+id/relativeLayoutContentCard"
             android:layout_width="match_parent"
             android:layout_height="356dp"
             android:layout_marginLeft="42dp"
@@ -87,22 +88,24 @@
                 />
 
             <TextView
+                android:id="@+id/textVieCardAcumulatedValue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="100dp"
                 android:textAlignment="center"
-                android:text="R$ 132.000.000,00"
+                android:text="R$ 0,00"
                 android:textSize="25sp"
                 android:textColor="@color/verdesenavalor"
                 android:textStyle="bold"
                 />
 
             <TextView
+                android:id="@+id/textVieCardEstimatedPrize"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="132dp"
                 android:textAlignment="center"
-                android:text="Prêmio estimado do concurso 1843"
+                android:text="Prêmio estimado do concurso 0"
                 android:textSize="14sp"
                 android:textColor="@color/cinzaescuro"
                 />
@@ -115,7 +118,6 @@
                 android:background="@color/cinza2"
                 />
             <LinearLayout
-                android:id="@+id/linearLayoutSorteio"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:layout_marginTop="232dp"
@@ -133,7 +135,6 @@
                     android:layout_gravity="center"
                     />
                 <RelativeLayout
-                    android:id="@+id/RelativeLayoutContentSorteio"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
                     android:layout_marginLeft="20dp"
@@ -147,6 +148,7 @@
                         android:textColor="@color/cinzaescuro"
                         />
                     <TextView
+                        android:id="@+id/textVieCardDrawDate"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:text="Sábado, 18 de julho"
@@ -158,7 +160,6 @@
                 </RelativeLayout>
             </LinearLayout>
             <LinearLayout
-                android:id="@+id/linearLayoutAposta"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:layout_marginTop="277dp"
@@ -176,7 +177,6 @@
                     android:layout_gravity="center"
                     />
                 <RelativeLayout
-                    android:id="@+id/RelativeLayoutContentAposta"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
                     android:layout_marginLeft="20dp"
@@ -189,9 +189,10 @@
                         android:textColor="@color/cinzaescuro"
                         />
                     <TextView
+                        android:id="@+id/textVieCardClosingOfBets"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:text="2 dias e 20 horas"
+                        android:text="0 dias e 0 horas"
                         android:textSize="13sp"
                         android:textColor="@color/cinzaescuro"
                         android:textStyle="bold"
