@@ -52,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void loginSucess(){
-        Intent activity = new Intent(this, SimularApostaActivity_.class);
+        Intent activity = new Intent(this, HomeActivity_.class);
         activity.putExtra("tipoAposta", TipoApostaEnum.QUINA);
         startActivity(activity);
         finish();

@@ -1,22 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background_gradient_color"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="caixa.gov.br.loterias.ui.HomeActivity"
-    tools:showIn="@layout/app_bar_home">
-    <ScrollView
-        android:layout_width="368dp"
-        android:layout_height="439dp"
-        tools:layout_editor_absoluteY="8dp"
-        tools:layout_editor_absoluteX="8dp"/>
+    tools:context="caixa.gov.br.loterias.ui.HomeActivity">
+    <RelativeLayout
+        android:layout_width="395dp"
+        android:layout_height="587dp"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="8dp">
 
-    <include
-        layout="@layout/fragment_card"
-        android:id="@+id/card"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"/>
+        <include
+            android:id="@+id/card"
+            layout="@layout/fragment_card"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
+        <Button
+            android:id="@+id/botaoAposte"
+            android:layout_width="184dp"
+            android:layout_height="84dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
+            android:background="@color/verdesenaclaro"
+            android:text="Aposte\npor R$3,50"
+            android:textAllCaps="false"
+            android:textColor="@color/branco"
+            android:textSize="16sp"
+            android:layout_marginBottom="35dp"/>
+
+        <TextView
+            android:id="@+id/valorMininoCompra"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
+            android:text="valor mínimo da compra: R$24,00"
+            android:textColor="@color/azulescuro"
+            android:textSize="10sp"
+            android:layout_marginBottom="20dp"/>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="70dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="12dp">
+
+            <Button
+                android:id="@+id/botaoApostas"
+                android:layout_width="34dp"
+                android:layout_height="40dp"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/icon_apostas" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:text="Apostas\nconfirmadas"
+                android:textAlignment="center"
+                android:textColor="@color/azulescuro"
+                android:textSize="12sp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="70dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="12dp"
+            android:layout_marginBottom="20dp">
+
+            <Button
+                android:id="@+id/botaoCarrinho"
+                android:layout_width="34dp"
+                android:layout_height="40dp"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/icon_carrinho" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:text="Carrinho\nde apostas"
+                android:textAlignment="center"
+                android:textColor="@color/azulescuro"
+                android:textSize="12sp" />
+        </RelativeLayout>
+    </RelativeLayout>
 </android.support.constraint.ConstraintLayout>
