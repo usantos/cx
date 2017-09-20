@@ -14,4 +14,11 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+
+    <string name="valorDessaAposta">Valor dessa aposta</string>
+    <string name="imagemCarrinho">Carrinho</string>
+    <string name="carrinhoDeApostas">Carrinho\nde apostas</string>
+
+    <string name="adicionarAoCarrinho">Adicionar \nao carrinho de apostas</string>
+    <string name="completarCartela">Completar com números aleatórios</string>
 </resources>

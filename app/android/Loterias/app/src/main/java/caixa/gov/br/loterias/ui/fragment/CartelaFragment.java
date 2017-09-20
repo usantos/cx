@@ -6,21 +6,25 @@ import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
-
+import caixa.gov.br.loterias.ui.Inteface.CartelaActivityInterface;
 import java.util.ArrayList;
 import caixa.gov.br.loterias.R;
-import caixa.gov.br.loterias.ui.SimularApostaActivity;
-import caixa.gov.br.loterias.ui.SimularApostaActivity_;
+import caixa.gov.br.loterias.ui.custom.ExpandableHeightGridView;
 import caixa.gov.br.loterias.utils.ColorEnum;
 import caixa.gov.br.loterias.utils.ViewUtils;
+
+import static java.lang.String.*;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,7 +34,7 @@ import caixa.gov.br.loterias.utils.ViewUtils;
  * Use the {@link CartelaFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CartelaFragment extends Fragment{
+public class CartelaFragment extends Fragment implements CartelaActivityInterface, OnClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -40,7 +44,7 @@ public class CartelaFragment extends Fragment{
     private String mParam1;
     private String mParam2;
 
-    private GridView listaDezenas;
+    private ExpandableHeightGridView listaDezenas;
 
     private String[] dezenas = {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20"
             , "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43"
@@ -50,10 +54,12 @@ public class CartelaFragment extends Fragment{
     ColorEnum typeGameColorLight;
     ColorEnum typeGameColorDark;
 
+    Button botaoFinalizar;
+
     SimularDezenasAdapter simularDezenasAdapter;
 
     //mocks
-    int qtdNumerosMax;
+    int qtdDezenasPossiveisSelecionado;
     int numeroConcursoAtual;
     String dataSorteioAtual;
 
@@ -86,16 +92,17 @@ public class CartelaFragment extends Fragment{
         super.onActivityCreated(savedInstanceState);
         Bundle bundle = getArguments();
         if (bundle != null) {
-            String link = bundle.getString("link");
-
             //mocks
-            qtdNumerosMax = bundle.getInt("qtdNumerosMax");
+            qtdDezenasPossiveisSelecionado = bundle.getInt("qtdDezenasPossiveisSelecionado");
             numeroConcursoAtual = bundle.getInt("numeroConcursoAtual");
             dataSorteioAtual = bundle.getString("dataSorteioAtual");
 
             typeGameColorLight = (ColorEnum) bundle.get("typeGameColorLight");
             typeGameColorDark = (ColorEnum) bundle.get("typeGameColorDark");
         }
+
+        View view = getView();
+        configuraBotoes(view);
     }
 
     @Override
@@ -130,18 +137,61 @@ public class CartelaFragment extends Fragment{
         mListener = null;
     }
 
+    // METODO DO PROTOCOLO ONCLICK
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case  R.id.botaoAdicionarCompletarCartela: {
+                if (dezenasSelecionadas.size() == qtdDezenasPossiveisSelecionado){
+                    ViewUtils.alert(getActivity(), "Botão adicionar ao carrinho de apostas pressionado");
+                }else{
+                    ViewUtils.alert(getActivity(), "Botão completar com números aleatórios pressionado");
+                }
+            }
+            break;
+
+            case R.id.botaoCarrinho:
+            case R.id.textInfoCarrinho:{
+                ViewUtils.alert(getActivity(), "Carrinho de apostas pressionado");
+            }
+            break;
+        }
+    }
+
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
 
-
     // METODOS DE CONFIGURACOES
+    private void configuraBotoes(View fragmentView){
+        botaoFinalizar = fragmentView.findViewById(R.id.botaoAdicionarCompletarCartela);
+        botaoFinalizar.setOnClickListener(this);
+        botaoFinalizar.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.cinzaescuro));
+        botaoFinalizar.setText(getString(R.string.completarCartela));
+        botaoFinalizar.setTextColor(Color.WHITE);
+
+        Button carrinhoImageView = fragmentView.findViewById(R.id.botaoCarrinho);
+        carrinhoImageView.setOnClickListener(this);
+
+        TextView textInfoCarrinho = fragmentView.findViewById(R.id.textInfoCarrinho);
+        textInfoCarrinho.setOnClickListener(this);
+    }
+
+    private void verificaQtdDezenasJaSelecionadas(){
+        if (dezenasSelecionadas.size() == qtdDezenasPossiveisSelecionado){
+            botaoFinalizar.setBackgroundColor(Color.parseColor(typeGameColorLight.toString()));
+            botaoFinalizar.setText(getString(R.string.adicionarAoCarrinho));
+        }else{
+            botaoFinalizar.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.cinzaescuro));
+            botaoFinalizar.setText(getString(R.string.completarCartela));
+        }
+    }
+
     private void configuraListaDezenas(View fragmentView){
-
-        listaDezenas = (GridView) fragmentView.findViewById(R.id.listaDezenas);
+        listaDezenas = fragmentView.findViewById(R.id.listaDezenas);
+        listaDezenas.setExpanded(true);
         simularDezenasAdapter = new SimularDezenasAdapter(getActivity());
-
         listaDezenas.setAdapter(simularDezenasAdapter);
 
         listaDezenas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -150,14 +200,14 @@ public class CartelaFragment extends Fragment{
                 if (dezenasSelecionadas.contains(dezenas[position])) {
                     dezenasSelecionadas.remove(dezenas[position]);
                 } else {
-                    if (dezenasSelecionadas.size() == qtdNumerosMax) {
+                    if (dezenasSelecionadas.size() == qtdDezenasPossiveisSelecionado) {
                         ViewUtils.alert(getActivity(), "Número de dezenas máximo selecionadas.");
-//                        ViewUtils.alert(SupresinhasFragment.this, "Número de dezenas máximo selecionadas.");
                     }else{
                         dezenasSelecionadas.add(dezenas[position]);
                     }
                 }
 
+                verificaQtdDezenasJaSelecionadas();
                 simularDezenasAdapter.notifyDataSetChanged();
             }
         });
@@ -166,11 +216,9 @@ public class CartelaFragment extends Fragment{
     // Adapter do gridview das dezenas
     private class SimularDezenasAdapter extends BaseAdapter {
         private Context context;
-        private final LayoutInflater mInflater;
 
         SimularDezenasAdapter(Context context){
             this.context = context;
-            mInflater = LayoutInflater.from(context);
         }
 
         @Override
@@ -205,7 +253,7 @@ public class CartelaFragment extends Fragment{
                 textView.setTextColor(Color.WHITE);
             }else{
                 shape.setColor(Color.WHITE);
-                textView.setTextColor(Color.parseColor(typeGameColorDark.toString()));
+                textView.setTextColor(Color.parseColor(typeGameColorLight.toString()));
             }
 
             shape.setCornerRadius(50);
@@ -216,6 +264,15 @@ public class CartelaFragment extends Fragment{
 
             return textView;
         }
+    }
 
+    // METODOS DA INTERFACE DA ACTIVITY
+    @Override
+    public void qtdDezenasPossiveisSelecionado(int qtdDezenas) {
+        qtdDezenasPossiveisSelecionado = qtdDezenas;
+        TextView text = (TextView) getView().findViewById(R.id.valorAposta);
+        text.setText(format("R$ %.2f", 4.5 * qtdDezenas));
+
+        verificaQtdDezenasJaSelecionadas();
     }
 }

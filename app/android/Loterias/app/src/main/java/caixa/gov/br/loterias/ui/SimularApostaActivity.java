@@ -1,9 +1,7 @@
 package caixa.gov.br.loterias.ui;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -11,33 +9,27 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
+import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.GridView;
-import android.widget.TextView;
-
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
-
-import java.util.ArrayList;
-
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.ui.Inteface.CartelaActivityInterface;
 import caixa.gov.br.loterias.ui.fragment.CartelaFragment;
+import caixa.gov.br.loterias.ui.fragment.CartelaFragment.OnFragmentInteractionListener;
 import caixa.gov.br.loterias.utils.ColorEnum;
 import caixa.gov.br.loterias.utils.TipoApostaEnum;
 import caixa.gov.br.loterias.utils.ViewUtils;
-
 import static caixa.gov.br.loterias.utils.ColorEnum.*;
 import static java.lang.String.*;
 
+
+
 @EActivity(R.layout.activity_simular_aposta)
-public class SimularApostaActivity extends AppCompatActivity implements View.OnClickListener, CartelaFragment.OnFragmentInteractionListener {
+public class SimularApostaActivity extends AppCompatActivity implements OnClickListener, OnFragmentInteractionListener{
 
     @ViewById
     DrawerLayout drawer_layout;
@@ -58,17 +50,13 @@ public class SimularApostaActivity extends AppCompatActivity implements View.OnC
     Button qtdConcursosButton;
 
     // Fragments
-    FragmentManager fm;
-    CartelaFragment surpresinhaFragment;
+    FragmentManager fragmentManager;
+    CartelaFragment cartelaFragment;
 
-
+    private CartelaActivityInterface cartelaActivityInterface ;
 
     //mocks
-    private String[] dezenas = {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20"
-            , "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43"
-            , "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59", "60", "61", "62", "63", "64", "65", "66"};
-    private ArrayList<String> dezenasSelecionadas = new ArrayList<>();
-    int qtdNumerosMax;
+    int qtdDezenasPossiveisSelecionado;
     int qtdConcursoMax;
     int numeroConcursoAtual;
     String dataSorteioAtual;
@@ -86,13 +74,14 @@ public class SimularApostaActivity extends AppCompatActivity implements View.OnC
     }
 
     private void configuraFragments(){
-        fm = getSupportFragmentManager();
+        fragmentManager = getSupportFragmentManager();
 
-        surpresinhaFragment = new CartelaFragment();
+        cartelaFragment = new CartelaFragment();
+        cartelaActivityInterface = cartelaFragment;
 
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        ft.add(R.id.fragmentSimularApostas, surpresinhaFragment);
+        ft.add(R.id.fragmentSimularApostas, cartelaFragment);
         ft.commit();
     }
 
@@ -114,7 +103,7 @@ public class SimularApostaActivity extends AppCompatActivity implements View.OnC
         }
 
         // MOCK
-        qtdNumerosMax = 4;
+        qtdDezenasPossiveisSelecionado = 4;
         qtdConcursoMax = 1;
         numeroConcursoAtual = 1456;
         dataSorteioAtual = "16/06";
@@ -122,12 +111,12 @@ public class SimularApostaActivity extends AppCompatActivity implements View.OnC
 
         // Passando um link
         Bundle bundle = new Bundle();
-        bundle.putInt("qtdNumerosMax", qtdNumerosMax);
+        bundle.putInt("qtdDezenasPossiveisSelecionado", qtdDezenasPossiveisSelecionado);
         bundle.putInt("numeroConcursoAtual", numeroConcursoAtual);
         bundle.putString("dataSorteioAtual", "16/06");
         bundle.putSerializable("typeGameColorLight", typeGameColorLight);
         bundle.putSerializable("typeGameColorDark", typeGameColorDark);
-        surpresinhaFragment.setArguments(bundle);
+        cartelaFragment.setArguments(bundle);
 
         atualizaTextoBotoesQtdSelecionadas();
         simularTelaAposta.setBackgroundResource(R.drawable.icon_seleciona);
@@ -137,7 +126,7 @@ public class SimularApostaActivity extends AppCompatActivity implements View.OnC
     }
 
     private void atualizaTextoBotoesQtdSelecionadas(){
-        qtdNumerosButton.setText(format("%d números", qtdNumerosMax));
+        qtdNumerosButton.setText(format("%d números", qtdDezenasPossiveisSelecionado));
         qtdConcursosButton.setText(format("%d concurso", qtdConcursoMax));
     }
 
@@ -155,25 +144,24 @@ public class SimularApostaActivity extends AppCompatActivity implements View.OnC
     public void onClick(View v) {
         switch (v.getId()) {
             case  R.id.simularTelaAposta: {
-                if(!(fm.findFragmentById(R.id.fragmentSimularApostas) instanceof CartelaFragment)){
-                    // Substitui um Fragment
-                    FragmentTransaction ft = fm.beginTransaction();
-                    ft.replace(R.id.fragmentSimularApostas, surpresinhaFragment);
-                    ft.commit();
+                if((fragmentManager.findFragmentById(R.id.fragmentSimularApostas) instanceof CartelaFragment)){
+                    fragmentManager.beginTransaction().show(fragmentManager.findFragmentById(R.id.fragmentSimularApostas)).commit();
+                } else {
+                    fragmentManager.beginTransaction().add(R.id.fragmentSimularApostas, cartelaFragment).commit();
+                }
+//                if(fragmentManager.findFragmentByTag("two") != null){
+//                    //if the other fragment is visible, hide it.
+//                    fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag("two")).commit();
+//                }
 
-                    simularTelaAposta.setBackgroundResource(R.drawable.icon_seleciona);
-                    surpresinhaTela.setBackgroundResource(R.drawable.icon_surpresinha);
-
+                simularTelaAposta.setBackgroundResource(R.drawable.icon_seleciona);
+                surpresinhaTela.setBackgroundResource(R.drawable.icon_surpresinha);
                 }
 
                 break;
-            }
 
             case R.id.surpresinhaTela: {
-                // Remove um Fragment
-                FragmentTransaction ft = fm.beginTransaction();
-                ft.remove(surpresinhaFragment);
-                ft.commit();
+                fragmentManager.beginTransaction().hide(fragmentManager.findFragmentById(R.id.fragmentSimularApostas)).commit();
 
                 simularTelaAposta.setBackgroundResource(R.drawable.icon_seleciona2);
                 surpresinhaTela.setBackgroundResource(R.drawable.icon_surpresinha2);
@@ -181,7 +169,9 @@ public class SimularApostaActivity extends AppCompatActivity implements View.OnC
             }
 
             case R.id.qtdNumerosButton: {
-                qtdNumerosMax += 1;
+                qtdDezenasPossiveisSelecionado += 1;
+                atualizaTextoBotoesQtdSelecionadas();
+                cartelaActivityInterface.qtdDezenasPossiveisSelecionado(qtdDezenasPossiveisSelecionado);
 
                 break;
             }
@@ -237,6 +227,5 @@ public class SimularApostaActivity extends AppCompatActivity implements View.OnC
     public void onFragmentInteraction(Uri uri) {
 
     }
-
 
 }

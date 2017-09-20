@@ -53,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void loginSucess(){
         Intent activity = new Intent(this, HomeActivity_.class);
-        activity.putExtra("tipoAposta", TipoApostaEnum.QUINA);
+        activity.putExtra("tipoAposta", TipoApostaEnum.MEGASENA);
         startActivity(activity);
         finish();
     }

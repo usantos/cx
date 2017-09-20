@@ -1,47 +1,147 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="caixa.gov.br.loterias.ui.fragment.CartelaFragment">
-
-
-    <android.support.constraint.ConstraintLayout
+    <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:fillViewport="false"
+        android:orientation="vertical">
 
-        <GridView
-            android:id="@+id/listaDezenas"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:columnWidth="40dp"
-            android:gravity="center"
-            android:horizontalSpacing="17dp"
-            android:numColumns="auto_fit"
-            android:stretchMode="columnWidth"
-            android:verticalSpacing="9dp"
-            app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-            app:layout_constraintHorizontal_bias="0.619"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fragmentSimularApostas"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.984" />
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:id="@+id/linearLayout"
-            android:layout_width="0dp"
-            android:layout_height="70dp"
-            android:background="@color/azulclaro"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"></LinearLayout>
-    </android.support.constraint.ConstraintLayout>
-</FrameLayout>
+            <Button
+                android:id="@+id/botaoAdicionarCompletarCartela"
+                android:layout_width="184dp"
+                android:layout_height="84dp"
+                android:layout_marginBottom="40dp"
+                android:paddingLeft="14dp"
+                android:paddingRight="14dp"
+                android:text="@string/adicionarAoCarrinho"
+                android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@+id/viewTabBar"
+                app:layout_constraintRight_toLeftOf="@+id/viewTabBar" />
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/viewTabBar"
+                android:layout_width="0dp"
+                android:layout_height="94dp"
+                android:background="@color/azulclaro"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent">
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_alignParentBottom="true"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="18dp"
+                    android:layout_marginLeft="10dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginBottom="13dp"
+                    app:layout_constraintRight_toLeftOf="@+id/imageViewPaginacao"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintVertical_bias="0.0">
+
+                    <TextView
+                        android:id="@+id/valorAposta"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="7dp"
+                        android:text="R$ 4,50"
+                        android:textAlignment="center"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/textInfoValorAposta"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:text="@string/valorDessaAposta"
+                        android:textAlignment="center"
+                        android:textColor="@color/azulTextoTabBar"
+                        android:textSize="12sp" />
+                </RelativeLayout>
+
+                <ImageView
+                    android:id="@+id/imageViewPaginacao"
+                    android:contentDescription="@string/imagemCarrinho"
+                    android:layout_width="184dp"
+                    android:layout_height="12dp"
+                    android:layout_marginBottom="13dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:srcCompat="@drawable/paginacao1" />
+
+                <RelativeLayout
+                    android:id="@+id/carrinhoApostas"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_alignParentBottom="true"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginBottom="13dp"
+                    android:layout_marginRight="10dp"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintLeft_toRightOf="@+id/imageViewPaginacao"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="10dp">
+
+                    <Button
+                        android:id="@+id/botaoCarrinho"
+                        android:layout_width="34dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/icon_carrinho"
+                        android:layout_centerHorizontal="true" />
+
+                    <TextView
+                        android:id="@+id/textInfoCarrinho"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:text="@string/carrinhoDeApostas"
+                        android:textAlignment="center"
+                        android:textColor="@color/azulTextoTabBar"
+                        android:textSize="12sp" />
+                </RelativeLayout>
+            </android.support.constraint.ConstraintLayout>
+
+            <caixa.gov.br.loterias.ui.custom.ExpandableHeightGridView
+                android:id="@+id/listaDezenas"
+                android:layout_width="0dp"
+                android:layout_height="200dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:columnWidth="40dp"
+                android:gravity="center"
+                android:horizontalSpacing="17dp"
+                android:numColumns="auto_fit"
+                android:stretchMode="columnWidth"
+                android:verticalSpacing="9dp"
+                app:layout_constraintBottom_toTopOf="@+id/botaoAdicionarCompletarCartela"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
+
+        </android.support.constraint.ConstraintLayout>
+    </ScrollView>
