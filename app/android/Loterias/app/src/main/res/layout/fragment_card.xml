@@ -52,7 +52,7 @@
             <ImageView
                 android:layout_width="85dp"
                 android:layout_height="match_parent"
-                android:background="@color/verdesenatrevo"
+                android:background="@drawable/background_trapeze"
                 android:src="@drawable/trevo"
                 android:scaleType="center"
                 android:id="@+id/imageViewBannerTipoAposta"

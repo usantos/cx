@@ -66,7 +66,13 @@
                     android:id="@+id/textViewHomeCountConfirmedBets"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0"/>
+                    android:layout_marginLeft="43dp"
+                    android:textColor="@color/branco"
+                    android:text="0"
+                    android:textSize="12sp"
+                    android:background="@drawable/rounded_textview"
+                    android:gravity="center"
+                    android:layout_marginTop="14dp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -87,12 +93,14 @@
 
                 <TextView
                     android:id="@+id/textViewHomeCountBetsCart"
-                    android:layout_width="26dp"
-                    android:layout_height="25dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:textColor="@color/branco"
                     android:text="0"
                     android:textSize="12sp"
-                    android:background="@color/azulescuro"
+                    android:background="@drawable/rounded_textview"
+                    android:gravity="center"
+                    android:layout_marginTop="14dp"
                     />
 
                 <Button

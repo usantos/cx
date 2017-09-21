@@ -13,9 +13,8 @@
     <color name="verdeazul">#54bbab</color>
     <color name="amarelo">#feb21e</color>
     <color name="verdesenaclaro">#60a96b</color>
-    <color name="verdesenamedio">#579166</color>
     <color name="verdesenaescuro">#508e5e</color>
     <color name="verdesenavalor">#00ab67</color>
-    <color name="verdesenatrevo">#579166</color>
+    <color name="verdesenatrevo">#579a66</color>
     <color name="azulescuro">#3964a4</color>
 </resources>
