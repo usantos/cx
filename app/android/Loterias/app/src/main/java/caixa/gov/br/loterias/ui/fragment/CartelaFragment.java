@@ -64,6 +64,7 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
     String dataSorteioAtual;
 
     private OnFragmentInteractionListener mListener;
+    private CartelaFragmentListener cartelaFragmentListener;
 
     public CartelaFragment() {
         // Required empty public constructor
@@ -110,7 +111,7 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_cartela,container,false);
         configuraListaDezenas(view);
-
+        verificaSeMostraBotaoLimparAposta(view);
         return view;
     }
 
@@ -123,6 +124,13 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+
+        try {
+            cartelaFragmentListener = (CartelaFragmentListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + " must implement CartelaFragmentListener");
+        }
+
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
@@ -178,6 +186,14 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
         textInfoCarrinho.setOnClickListener(this);
     }
 
+    private void verificaSeMostraBotaoLimparAposta(View fragmentView){
+        if (dezenasSelecionadas.isEmpty()){
+            fragmentView.findViewById(R.id.botaoLimparAposta).setVisibility(View.GONE);
+        }else{
+            fragmentView.findViewById(R.id.botaoLimparAposta).setVisibility(View.VISIBLE);
+        }
+    }
+
     private void verificaQtdDezenasJaSelecionadas(){
         if (dezenasSelecionadas.size() == qtdDezenasPossiveisSelecionado){
             botaoFinalizar.setBackgroundColor(Color.parseColor(typeGameColorLight.toString()));
@@ -201,12 +217,21 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
                     dezenasSelecionadas.remove(dezenas[position]);
                 } else {
                     if (dezenasSelecionadas.size() == qtdDezenasPossiveisSelecionado) {
-                        ViewUtils.alert(getActivity(), "Número de dezenas máximo selecionadas.");
+                        // VERIFICA SE TEM OPÇÃO DE SELECIONAR MAIS DEZENAS
+                        int qtdDezenasPossiveisSelecionadoAtual = qtdDezenasPossiveisSelecionado;
+                        qtdDezenasPossiveisSelecionado = cartelaFragmentListener.verificaNovoQtdDezenasMax(qtdDezenasPossiveisSelecionado);
+
+                        if (qtdDezenasPossiveisSelecionadoAtual < qtdDezenasPossiveisSelecionado) {
+                            dezenasSelecionadas.add(dezenas[position]);
+                        } else {
+                            ViewUtils.alert(getActivity(), "Número de dezenas máximo selecionadas.");
+                        }
                     }else{
                         dezenasSelecionadas.add(dezenas[position]);
                     }
                 }
 
+                verificaSeMostraBotaoLimparAposta(getView());
                 verificaQtdDezenasJaSelecionadas();
                 simularDezenasAdapter.notifyDataSetChanged();
             }
@@ -274,5 +299,11 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
         text.setText(format("R$ %.2f", 4.5 * qtdDezenas));
 
         verificaQtdDezenasJaSelecionadas();
+    }
+
+
+    // INTERFACE DO FRAGMENT PARA A ACTIVITY
+    public interface CartelaFragmentListener {
+        public int verificaNovoQtdDezenasMax(int qtdDezenasAtual);
     }
 }

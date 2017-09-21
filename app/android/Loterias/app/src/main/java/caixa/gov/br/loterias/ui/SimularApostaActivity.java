@@ -19,6 +19,7 @@ import org.androidannotations.annotations.ViewById;
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.ui.Inteface.CartelaActivityInterface;
 import caixa.gov.br.loterias.ui.fragment.CartelaFragment;
+import caixa.gov.br.loterias.ui.fragment.CartelaFragment.CartelaFragmentListener;
 import caixa.gov.br.loterias.ui.fragment.CartelaFragment.OnFragmentInteractionListener;
 import caixa.gov.br.loterias.utils.ColorEnum;
 import caixa.gov.br.loterias.utils.TipoApostaEnum;
@@ -29,7 +30,7 @@ import static java.lang.String.*;
 
 
 @EActivity(R.layout.activity_simular_aposta)
-public class SimularApostaActivity extends AppCompatActivity implements OnClickListener, OnFragmentInteractionListener{
+public class SimularApostaActivity extends AppCompatActivity implements OnClickListener, OnFragmentInteractionListener, CartelaFragmentListener{
 
     @ViewById
     DrawerLayout drawer_layout;
@@ -57,6 +58,8 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
 
     //mocks
     int qtdDezenasPossiveisSelecionado;
+    int qtdMinDezenasPossiveisSelecionado;
+    int qtdMaxDezenasPossiveisSelecionado;
     int qtdConcursoMax;
     int numeroConcursoAtual;
     String dataSorteioAtual;
@@ -104,6 +107,8 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
 
         // MOCK
         qtdDezenasPossiveisSelecionado = 4;
+        qtdMinDezenasPossiveisSelecionado = 4;
+        qtdMaxDezenasPossiveisSelecionado = 6;
         qtdConcursoMax = 1;
         numeroConcursoAtual = 1456;
         dataSorteioAtual = "16/06";
@@ -112,6 +117,8 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         // Passando um link
         Bundle bundle = new Bundle();
         bundle.putInt("qtdDezenasPossiveisSelecionado", qtdDezenasPossiveisSelecionado);
+        bundle.putInt("qtdMinDezenasPossiveisSelecionado", qtdMinDezenasPossiveisSelecionado);
+        bundle.putInt("qtdMaxDezenasPossiveisSelecionado", qtdMaxDezenasPossiveisSelecionado);
         bundle.putInt("numeroConcursoAtual", numeroConcursoAtual);
         bundle.putString("dataSorteioAtual", "16/06");
         bundle.putSerializable("typeGameColorLight", typeGameColorLight);
@@ -169,9 +176,11 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
             }
 
             case R.id.qtdNumerosButton: {
-                qtdDezenasPossiveisSelecionado += 1;
-                atualizaTextoBotoesQtdSelecionadas();
-                cartelaActivityInterface.qtdDezenasPossiveisSelecionado(qtdDezenasPossiveisSelecionado);
+                if (qtdDezenasPossiveisSelecionado < qtdMaxDezenasPossiveisSelecionado){
+                    qtdDezenasPossiveisSelecionado += 1;
+                    atualizaTextoBotoesQtdSelecionadas();
+                    cartelaActivityInterface.qtdDezenasPossiveisSelecionado(qtdDezenasPossiveisSelecionado);
+                }
 
                 break;
             }
@@ -228,4 +237,16 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
 
     }
 
+
+    // MÉTODOS DO FRAGMENT CARTELAFRAGMENTLISTENER
+    @Override
+    public int verificaNovoQtdDezenasMax(int qtdDezenasAtual) {
+        if (qtdDezenasAtual < qtdMaxDezenasPossiveisSelecionado){
+            qtdDezenasPossiveisSelecionado += 1;
+            atualizaTextoBotoesQtdSelecionadas();
+            cartelaActivityInterface.qtdDezenasPossiveisSelecionado(qtdDezenasPossiveisSelecionado);
+        }
+
+        return qtdDezenasPossiveisSelecionado;
+    }
 }

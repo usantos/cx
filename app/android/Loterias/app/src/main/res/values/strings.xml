@@ -20,5 +20,7 @@
     <string name="carrinhoDeApostas">Carrinho\nde apostas</string>
 
     <string name="adicionarAoCarrinho">Adicionar \nao carrinho de apostas</string>
+    <string name="limparAposta">Limpar aposta</string>
+
     <string name="completarCartela">Completar com números aleatórios</string>
 </resources>
