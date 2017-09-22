@@ -36,6 +36,7 @@ class LOModalideController: UIViewController {
     @IBOutlet var iconeRelogio : UIImageView!
     
     @IBOutlet var gradientView : UIView!
+    @IBOutlet weak var valorAcumulado: UILabel!
 
     public var tipoModalidade : LOModalidadeEnum?
     private var estiloModalidade : EstiloModalidade!
@@ -113,8 +114,22 @@ class LOModalideController: UIViewController {
         self.resultadoView.backgroundColor = self.UIColorFromHex(self.estiloModalidade.corEscura, alpha: 1.0)
         self.aposteView.backgroundColor = self.UIColorFromHex(self.estiloModalidade.corClara, alpha: 1.0)
         self.topoCorpo.image = self.estiloModalidade.imagemTopo
+        
+        popularCampos()
     }
     
+    func popularCampos () {
+        let attStringR$ = NSAttributedString.init(string: "R$", attributes: [NSFontAttributeName: UIFont.init(name: "FuturaStd-Medium", size: 12)!, NSForegroundColorAttributeName:self.UIColorFromHex(self.estiloModalidade.corClara, alpha: 1.0)])
+        
+        //Remover mock de valor
+        let attStringValor = NSAttributedString.init(string: "132.000.000,00", attributes: [NSFontAttributeName: UIFont.init(name: "FuturaStd-Bold", size: 20)!, NSForegroundColorAttributeName:self.UIColorFromHex(self.estiloModalidade.corClara, alpha: 1.0)])
+
+        let combination = NSMutableAttributedString()
+        combination.append(attStringR$)
+        combination.append(attStringValor)
+        
+        self.valorAcumulado.attributedText = combination
+    }
 
     
     // MARK: - Navigation

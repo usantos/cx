@@ -15,9 +15,13 @@ class LOConfirmacaoApostaController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.navigationBar.tintColor = .white
         self.navigationController?.navigationBar.barTintColor = self.UIColorFromHex(self.estiloModalidade.corClara, alpha: 1.0)
         self.view.backgroundColor = self.UIColorFromHex(self.estiloModalidade.corClara, alpha: 1.0)
+
     }
 
     override func didReceiveMemoryWarning() {

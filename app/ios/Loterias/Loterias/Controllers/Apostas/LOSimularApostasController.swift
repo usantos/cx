@@ -44,6 +44,8 @@ class LOSimularApostasController: UIViewController, LOSimularApostaDelegate {
         self.viewCustom.delegateSimular = self
         
         aplicaEstilos()
+        
+        LOCryptoService().crypfyURL()
     }
     
     override func viewDidLoad() {

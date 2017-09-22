@@ -16,8 +16,6 @@ class LOTrevoMenuController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationController?.isNavigationBarHidden = true
-        
         self.scrollView.layoutIfNeeded()
         self.scrollView.layer.masksToBounds = true
         
@@ -28,6 +26,10 @@ class LOTrevoMenuController: UIViewController {
         gradient.colors = [self.UIColorFromHex(0xffffff, alpha: 1.0).cgColor, self.UIColorFromHex(0xd4dfe2, alpha: 1.0).cgColor]
         
         self.scrollView.layer.insertSublayer(gradient, at: 0)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.navigationController?.isNavigationBarHidden = true
     }
 
     override func didReceiveMemoryWarning() {

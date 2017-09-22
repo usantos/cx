@@ -31,6 +31,10 @@ class LOSimularSurpresinha: UIView, UICollectionViewDelegateFlowLayout, UICollec
     @IBOutlet var scrollView : UIScrollView!
     @IBOutlet var verticalLayoutConstraint : NSLayoutConstraint!
     @IBOutlet weak var viewAdicionarCarrinho: UIView!
+    @IBOutlet weak var numerosSurpresinhas : UITextField!
+    @IBOutlet weak var subtrai : UIButton!
+    @IBOutlet weak var soma : UIButton!
+    var timer: Timer!
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -46,6 +50,12 @@ class LOSimularSurpresinha: UIView, UICollectionViewDelegateFlowLayout, UICollec
         self.addSubview(teste)
         
         self.collectionViewNumerosMascarados.register(UINib(nibName: "LONumeroApostaCell", bundle: nil) , forCellWithReuseIdentifier: "numeroCell")
+        
+        soma.addTarget(self, action: #selector(buttonDownSum), for: .touchDown)
+        soma.addTarget(self, action: #selector(buttonUpSum), for: [.touchUpInside, .touchUpOutside])
+        
+        subtrai.addTarget(self, action: #selector(buttonDownSub), for: .touchDown)
+        subtrai.addTarget(self, action: #selector(buttonUpSub), for: [.touchUpInside, .touchUpOutside])
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -124,6 +134,41 @@ class LOSimularSurpresinha: UIView, UICollectionViewDelegateFlowLayout, UICollec
     
     func willAppearSurpresinha() {
         self.collectionViewNumerosMascarados.addObserver(self, forKeyPath: "contentSize" , options: NSKeyValueObservingOptions.old, context: nil)
+    }
+    
+    // MARK: Soma / Subtrai Surpresinha
+    func somaUm () {
+        if numerosSurpresinhas.text == "" {
+            numerosSurpresinhas.text = "1"
+        } else {
+            numerosSurpresinhas.text = String(Int(numerosSurpresinhas.text!)! + 1)
+        }
+    }
+
+    func subtraiUm () {
+        if numerosSurpresinhas.text != "" {
+            if Int(numerosSurpresinhas.text!)! > 1 {
+                numerosSurpresinhas.text = String(Int(numerosSurpresinhas.text!)! - 1)
+            }
+        }
+    }
+    
+    func buttonDownSum() {
+        somaUm()
+        timer = Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(LOSimularSurpresinha.somaUm), userInfo: nil, repeats: true)
+    }
+    
+    func buttonUpSum() {
+        timer.invalidate()
+    }
+    
+    func buttonDownSub() {
+        subtraiUm()
+        timer = Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(LOSimularSurpresinha.subtraiUm), userInfo: nil, repeats: true)
+    }
+    
+    func buttonUpSub() {
+        timer.invalidate()
     }
 
 }

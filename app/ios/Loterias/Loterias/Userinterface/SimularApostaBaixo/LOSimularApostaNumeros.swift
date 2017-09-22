@@ -71,6 +71,8 @@ class LOSimularApostaNumeros: UIView, UICollectionViewDelegateFlowLayout, UIColl
     @IBOutlet private weak var verticalLayoutConstraint : NSLayoutConstraint!
     @IBOutlet private weak var viewAdicionarCarrinho: UIView!
     
+    var arraySelecionados = NSMutableArray()
+    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
@@ -97,7 +99,20 @@ class LOSimularApostaNumeros: UIView, UICollectionViewDelegateFlowLayout, UIColl
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "numeroCell", for: indexPath) as! LONumeroApostaCell
         cell.numero.textColor = self.UIColorFromHex(estiloModalidade.corEscura, alpha: 1.0)
-
+        cell.numero.text = String(format:"%d", indexPath.row + 1)
+        
+        if !cell.isSelecionado {
+            cell.numero.layer.borderWidth = 1
+            cell.numero.layer.borderColor = UIColor.lightGray.cgColor
+            cell.numero.layer.backgroundColor = UIColor.white.cgColor
+            cell.numero.textColor = self.UIColorFromHex(estiloModalidade.corEscura, alpha: 1.0)
+        } else {
+            cell.numero.layer.borderWidth = 1
+            cell.numero.layer.borderColor = self.UIColorFromHex(estiloModalidade.corEscura, alpha: 1.0).cgColor
+            cell.numero.layer.backgroundColor = self.UIColorFromHex(estiloModalidade.corEscura, alpha: 1.0).cgColor
+            cell.numero.textColor = .white
+        }
+        
         return cell
     }
     
@@ -115,6 +130,7 @@ class LOSimularApostaNumeros: UIView, UICollectionViewDelegateFlowLayout, UIColl
             cell.numero.textColor = self.UIColorFromHex(estiloModalidade.corEscura, alpha: 1.0)
             
             cell.isSelecionado = false
+            arraySelecionados.remove(cell)
         } else {
             cell.numero.layer.borderWidth = 1
             cell.numero.layer.borderColor = self.UIColorFromHex(estiloModalidade.corEscura, alpha: 1.0).cgColor
@@ -122,7 +138,29 @@ class LOSimularApostaNumeros: UIView, UICollectionViewDelegateFlowLayout, UIColl
             cell.numero.textColor = .white
             
             cell.isSelecionado = true
+            arraySelecionados.add(cell)
         }
+        
+        if arraySelecionados.count == 0 {
+            apresentaLimparApostas(hidden: true)
+        } else if arraySelecionados.count == 1 {
+            apresentaLimparApostas(hidden: false)
+        }
+    }
+    
+    func apresentaLimparApostas (hidden: Bool) {
+        UIView.transition(with: limpar, duration: 0.5, options: .transitionCrossDissolve, animations: { _ in
+            self.limpar.isHidden = hidden
+        }, completion: nil)
+    }
+    
+    @IBAction func limparAposta () {
+        for cell : LONumeroApostaCell in (arraySelecionados as? Array<LONumeroApostaCell>)! {
+            cell.isSelecionado = false
+            arraySelecionados.remove(cell)
+        }
+        apresentaLimparApostas(hidden: true)
+        collectionViewNumeros.reloadData()
     }
     
     func resizeCollectionViewSize() {

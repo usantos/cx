@@ -58,12 +58,12 @@
                   moduleName = "Loterias"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/jenkins/Documents/loterias-ios/simlo/trunk/app/ios/Loterias/Loterias/Controllers/Login/LOLoginController.swift"
-                  timestampString = "527544482.300289"
+                  timestampString = "527805693.337408"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "147"
                   endingLineNumber = "147"
-                  offsetFromSymbolStart = "632">
+                  offsetFromSymbolStart = "811">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -73,14 +73,46 @@
                   moduleName = "Loterias"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/jenkins/Documents/loterias-ios/simlo/trunk/app/ios/Loterias/Loterias/Controllers/Login/LOLoginController.swift"
-                  timestampString = "527544482.301601"
+                  timestampString = "527805693.33995"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "147"
                   endingLineNumber = "147"
-                  offsetFromSymbolStart = "20">
+                  offsetFromSymbolStart = "16">
                </Location>
             </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Loterias/Controllers/Apostas/Formas de pagamento/LOAdicionarCartaoController.swift"
+            timestampString = "527805569.872577"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "87"
+            endingLineNumber = "87"
+            landmarkName = "collectionView(_:didSelectItemAt:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Loterias/Controllers/Apostas/Formas de pagamento/LOAdicionarCartaoController.swift"
+            timestampString = "527805569.872577"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "89"
+            endingLineNumber = "89"
+            landmarkName = "collectionView(_:didSelectItemAt:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

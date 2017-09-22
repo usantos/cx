@@ -19,6 +19,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>CryptoSwift.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>IQKeyboardManagerSwift.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -47,17 +52,22 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>26D0C64D18F2A99B4094ED0442726C0C</key>
+		<key>35E4A3B86E0B2562C407437BCA35CFC9</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>3EF98EFAC96C9BFAA3334F972BF79E1B</key>
+		<key>49C85F31990A698B2D025DCBE546AA92</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>854FE6139B3CDFF671ECE18983FD883B</key>
+		<key>6BB1C1403B2419F911818DA8413FDA07</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>79D1142B65F4BC81906DEC8FF82E6B9A</key>
 		<dict>
 			<key>primary</key>
 			<true/>
