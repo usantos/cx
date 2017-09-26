@@ -13,6 +13,12 @@ class LOTrevoMenuController: UIViewController {
     @IBOutlet weak var trevo: UIButton!
     @IBOutlet weak var scrollView: UIScrollView!
     
+    @IBOutlet weak var resultadoAnterior : UIButton!
+    @IBOutlet weak var aposte : UIButton!
+    @IBOutlet weak var trevoBaixo : UIButton!
+    
+    var estiloModalidade : EstiloModalidade!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -26,6 +32,8 @@ class LOTrevoMenuController: UIViewController {
         gradient.colors = [self.UIColorFromHex(0xffffff, alpha: 1.0).cgColor, self.UIColorFromHex(0xd4dfe2, alpha: 1.0).cgColor]
         
         self.scrollView.layer.insertSublayer(gradient, at: 0)
+        
+        aplicaEstilos()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -43,6 +51,26 @@ class LOTrevoMenuController: UIViewController {
         transition.subtype = kCATransitionFromTop
         view.window!.layer.add(transition, forKey: kCATransition)
         self.dismiss(animated: true, completion: nil)
+    }
+    
+    func aplicaEstilos () {
+        resultadoAnterior.backgroundColor = self.UIColorFromHex(estiloModalidade.corEscura, alpha: 1.0)
+        aposte.backgroundColor = self.UIColorFromHex(estiloModalidade.corEscura, alpha: 1.0)
+        trevoBaixo.backgroundColor = self.UIColorFromHex(estiloModalidade.corClara, alpha: 1.0)
+        
+        let paragraph = NSMutableParagraphStyle()
+        paragraph.alignment = .center
+        let fixoAposte = NSAttributedString.init(string: "Aposte", attributes: [NSFontAttributeName: UIFont.init(name: "FuturaStd-Bold", size: 15)!, NSForegroundColorAttributeName:UIColor.white, NSParagraphStyleAttributeName: paragraph])
+        
+        //Remover mock de valor
+        let textoDinamico = NSAttributedString.init(string: String(format:"\npor R$%.2f", 3.5), attributes: [NSFontAttributeName: UIFont.init(name: "FuturaStd-Medium", size: 15)!, NSForegroundColorAttributeName:UIColor.white, NSParagraphStyleAttributeName: paragraph])
+        
+        let combination = NSMutableAttributedString()
+        combination.append(fixoAposte)
+        combination.append(textoDinamico)
+        
+        self.aposte.titleLabel?.numberOfLines = 0
+        self.aposte.setAttributedTitle(combination, for: .normal)
     }
     
 

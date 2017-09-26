@@ -107,6 +107,4 @@ class LOSimularApostasController: UIViewController, LOSimularApostaDelegate {
         }
 
     }
-    
-
 }

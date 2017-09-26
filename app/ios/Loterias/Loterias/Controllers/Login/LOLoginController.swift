@@ -135,7 +135,7 @@ class LOLoginController: UIViewController, UITextFieldDelegate, UINavigationCont
             host: keycloakHost,
             realm: "r_inter_auth_basic")
         // If you want to use embedded web view uncomment
-        keycloakConfig.isWebView = false
+        keycloakConfig.isWebView = true
         
         // Workaround issue on Keychain https://forums.developer.apple.com/message/23323
 //        let gdModule = KeycloakOAuth2Module(config: keycloakConfig, session: UntrustedMemoryOAuth2Session(accountId: "ACCOUNT_FOR_CLIENTID_\(keycloakConfig.clientId)"))

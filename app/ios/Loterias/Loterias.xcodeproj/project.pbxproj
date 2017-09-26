@@ -13,7 +13,6 @@
 		A60615291F670001002191C3 /* LOOptionsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A60615281F670001002191C3 /* LOOptionsCell.swift */; };
 		A606152B1F670021002191C3 /* LOTermoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A606152A1F670021002191C3 /* LOTermoCell.swift */; };
 		A606152F1F670055002191C3 /* LOLocalizacaoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A606152E1F670055002191C3 /* LOLocalizacaoCell.swift */; };
-		A60615321F671E2C002191C3 /* LOMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A60615311F671E2C002191C3 /* LOMenuController.swift */; };
 		A60615341F671F79002191C3 /* LOLeftSideMenuControllerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A60615331F671F79002191C3 /* LOLeftSideMenuControllerController.swift */; };
 		A60615371F680E41002191C3 /* LOModalidesPageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A60615361F680E41002191C3 /* LOModalidesPageController.swift */; };
 		A60615391F680E6F002191C3 /* LOModalideController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A60615381F680E6F002191C3 /* LOModalideController.swift */; };
@@ -77,6 +76,9 @@
 		A6AE530E1F758CA1001AB32C /* LOFormasDePagamentoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6AE530D1F758CA1001AB32C /* LOFormasDePagamentoController.swift */; };
 		A6AE53101F758CD4001AB32C /* LOAdicionarCartaoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6AE530F1F758CD4001AB32C /* LOAdicionarCartaoController.swift */; };
 		A6AE53121F759413001AB32C /* LOBandeiraCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6AE53111F759413001AB32C /* LOBandeiraCell.swift */; };
+		A6AE53161F79247A001AB32C /* LOMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6AE53151F79247A001AB32C /* LOMenuController.swift */; };
+		A6AE531A1F796F59001AB32C /* LOFimApostaController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6AE53191F796F59001AB32C /* LOFimApostaController.swift */; };
+		A6AE531C1F7A91C4001AB32C /* LOPaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6AE531B1F7A91C4001AB32C /* LOPaddingLabel.swift */; };
 		EB859B319A3C90228FAA1C17 /* Pods_Loterias.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A20B6ADB9CB12B31C763A530 /* Pods_Loterias.framework */; };
 /* End PBXBuildFile section */
 
@@ -107,7 +109,6 @@
 		A60615281F670001002191C3 /* LOOptionsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LOOptionsCell.swift; path = Controllers/Login/Cadastro/LOOptionsCell.swift; sourceTree = "<group>"; };
 		A606152A1F670021002191C3 /* LOTermoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LOTermoCell.swift; path = Controllers/Login/Cadastro/LOTermoCell.swift; sourceTree = "<group>"; };
 		A606152E1F670055002191C3 /* LOLocalizacaoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LOLocalizacaoCell.swift; path = Controllers/Login/Cadastro/LOLocalizacaoCell.swift; sourceTree = "<group>"; };
-		A60615311F671E2C002191C3 /* LOMenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LOMenuController.swift; path = Controllers/LOMenuController.swift; sourceTree = "<group>"; };
 		A60615331F671F79002191C3 /* LOLeftSideMenuControllerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LOLeftSideMenuControllerController.swift; path = Controllers/Menu/LOLeftSideMenuControllerController.swift; sourceTree = "<group>"; };
 		A60615361F680E41002191C3 /* LOModalidesPageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LOModalidesPageController.swift; path = Controllers/Modalidades/LOModalidesPageController.swift; sourceTree = "<group>"; };
 		A60615381F680E6F002191C3 /* LOModalideController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LOModalideController.swift; path = Controllers/Modalidades/LOModalideController.swift; sourceTree = "<group>"; };
@@ -177,6 +178,9 @@
 		A6AE530D1F758CA1001AB32C /* LOFormasDePagamentoController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LOFormasDePagamentoController.swift; path = "Controllers/Apostas/Formas de pagamento/LOFormasDePagamentoController.swift"; sourceTree = "<group>"; };
 		A6AE530F1F758CD4001AB32C /* LOAdicionarCartaoController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LOAdicionarCartaoController.swift; path = "Controllers/Apostas/Formas de pagamento/LOAdicionarCartaoController.swift"; sourceTree = "<group>"; };
 		A6AE53111F759413001AB32C /* LOBandeiraCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LOBandeiraCell.swift; path = "Controllers/Apostas/Formas de pagamento/LOBandeiraCell.swift"; sourceTree = "<group>"; };
+		A6AE53151F79247A001AB32C /* LOMenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LOMenuController.swift; path = Controllers/Menu/LOMenuController.swift; sourceTree = "<group>"; };
+		A6AE53191F796F59001AB32C /* LOFimApostaController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LOFimApostaController.swift; path = Controllers/Apostas/LOFimApostaController.swift; sourceTree = "<group>"; };
+		A6AE531B1F7A91C4001AB32C /* LOPaddingLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LOPaddingLabel.swift; path = Dependencies/LOPaddingLabel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -235,9 +239,9 @@
 		A60615301F671DE4002191C3 /* Menu */ = {
 			isa = PBXGroup;
 			children = (
+				A6AE53151F79247A001AB32C /* LOMenuController.swift */,
 				A606153C1F686EED002191C3 /* LOTopDownSegue.swift */,
 				A606153E1F6870A3002191C3 /* LODownTopSegue.swift */,
-				A60615311F671E2C002191C3 /* LOMenuController.swift */,
 				A60615331F671F79002191C3 /* LOLeftSideMenuControllerController.swift */,
 				A60615401F6871A3002191C3 /* LOTrevoMenuController.swift */,
 			);
@@ -261,6 +265,7 @@
 				A63231521F72F3480004F327 /* CarrinhoApostas */,
 				A60615431F697522002191C3 /* LOSimularApostasController.swift */,
 				A63231481F715E750004F327 /* LOConfirmacaoApostaController.swift */,
+				A6AE53191F796F59001AB32C /* LOFimApostaController.swift */,
 			);
 			name = Apostas;
 			sourceTree = "<group>";
@@ -380,6 +385,7 @@
 				A617DBF91F5996C600D257B7 /* LOPopupSelecionarOpcoesController.swift */,
 				A617DBFB1F59A99D00D257B7 /* LOPopupItensCell.swift */,
 				A617DBF41F58A48800D257B7 /* LOExtensions.swift */,
+				A6AE531B1F7A91C4001AB32C /* LOPaddingLabel.swift */,
 			);
 			name = Dependencies;
 			sourceTree = "<group>";
@@ -719,6 +725,7 @@
 				A6AE53101F758CD4001AB32C /* LOAdicionarCartaoController.swift in Sources */,
 				A63231541F72F3740004F327 /* LORodapeCell.swift in Sources */,
 				A69224BB1F6AEBFF00D319AC /* LOSimularApostaNumeros.swift in Sources */,
+				A6AE531A1F796F59001AB32C /* LOFimApostaController.swift in Sources */,
 				A63231471F7053BF0004F327 /* LOCustomNavbarSimular.swift in Sources */,
 				A6AE530B1F755F15001AB32C /* LOCabecalhoRepassesCell.swift in Sources */,
 				A617DBF71F58B60300D257B7 /* LOCadastroControllerController.swift in Sources */,
@@ -729,7 +736,6 @@
 				A632314B1F728ECC0004F327 /* LOCryptoService.swift in Sources */,
 				A6AE530E1F758CA1001AB32C /* LOFormasDePagamentoController.swift in Sources */,
 				A606152B1F670021002191C3 /* LOTermoCell.swift in Sources */,
-				A60615321F671E2C002191C3 /* LOMenuController.swift in Sources */,
 				A60615391F680E6F002191C3 /* LOModalideController.swift in Sources */,
 				A632315B1F7458A50004F327 /* LORepassesSociaisController.swift in Sources */,
 				A606153F1F6870A3002191C3 /* LODownTopSegue.swift in Sources */,
@@ -741,11 +747,13 @@
 				A617DBFA1F5996C600D257B7 /* LOPopupSelecionarOpcoesController.swift in Sources */,
 				A60615271F66FFEF002191C3 /* LOFinalizarCell.swift in Sources */,
 				A6AE53121F759413001AB32C /* LOBandeiraCell.swift in Sources */,
+				A6AE531C1F7A91C4001AB32C /* LOPaddingLabel.swift in Sources */,
 				A617DBB51F58526800D257B7 /* Loterias.xcdatamodeld in Sources */,
 				A60615441F697522002191C3 /* LOSimularApostasController.swift in Sources */,
 				A617DBAD1F58526800D257B7 /* AppDelegate.swift in Sources */,
 				A63231561F72F39B0004F327 /* LOCarrinhoApostasController.swift in Sources */,
 				A606153B1F681BB2002191C3 /* LOModalidadeEnum.swift in Sources */,
+				A6AE53161F79247A001AB32C /* LOMenuController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

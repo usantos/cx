@@ -28,6 +28,12 @@ class LOSimularSurpresinha: UIView, UICollectionViewDelegateFlowLayout, UICollec
         }
     }
     
+    @IBOutlet var adicionarAoCarrinho : UIButton! {
+        didSet {
+            adicionarAoCarrinho.titleLabel?.numberOfLines = 0
+        }
+    }
+    
     @IBOutlet var scrollView : UIScrollView!
     @IBOutlet var verticalLayoutConstraint : NSLayoutConstraint!
     @IBOutlet weak var viewAdicionarCarrinho: UIView!

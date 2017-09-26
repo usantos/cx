@@ -16,6 +16,8 @@ class LOModalidesPageController: UIPageViewController, UIPageViewControllerDeleg
                                     LOModalidadeEnum.Lotomania,LOModalidadeEnum.Quina,
                                     LOModalidadeEnum.Timemania]
     
+    var selectedController : LOModalideController?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -34,7 +36,9 @@ class LOModalidesPageController: UIPageViewController, UIPageViewControllerDeleg
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: imgRendering, style: .plain, target: self, action: #selector(apresentaMenu))
         
         let imgRendering2 = #imageLiteral(resourceName: "icon-trevo").withRenderingMode(UIImageRenderingMode.alwaysOriginal)
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: imgRendering2, style: .plain, target: self, action: #selector(apresentaTrevo))
+        let imgRendering3 = #imageLiteral(resourceName: "icon-menu-right-blue").withRenderingMode(UIImageRenderingMode.alwaysOriginal)
+        
+        self.navigationItem.rightBarButtonItems = [UIBarButtonItem(image: imgRendering3, style: .plain, target: self, action: #selector(apresentaMenu)) , UIBarButtonItem(image: imgRendering2, style: .plain, target: self, action: #selector(apresentaTrevo))]
     }
     
     func apresentaMenu () {
@@ -58,11 +62,11 @@ class LOModalidesPageController: UIPageViewController, UIPageViewControllerDeleg
     lazy var orderedViewControllers: [UIViewController] = {
         var array = Array<UIViewController>()
         
-        //Fixo pelo número de modalidades de apostas.
         for i in 0 ..< self.arrayModalidades.count {
             array.append(self.newController(viewController: "modalidadeScreen", indexArray:i))
         }
         
+        self.selectedController = array[0] as? LOModalideController
         return array
     }()
     
@@ -111,16 +115,18 @@ class LOModalidesPageController: UIPageViewController, UIPageViewControllerDeleg
         return orderedViewControllers[nextIndex]
     }
     
+    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool){
+        selectedController = pageViewController.viewControllers![0] as? LOModalideController
+    }
 
-
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        if segue.identifier == "apresentaTrevo" {
+            let controller = (segue.destination as! UINavigationController).topViewController as? LOTrevoMenuController
+            controller?.estiloModalidade = selectedController?.estiloModalidade
+        }
     }
-    */
-
 }

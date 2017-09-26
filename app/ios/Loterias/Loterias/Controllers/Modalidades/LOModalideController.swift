@@ -19,27 +19,35 @@ struct EstiloModalidade {
 
 class LOModalideController: UIViewController {
 
-    @IBOutlet var resultadoView : UIView!
+    @IBOutlet weak var resultadoView : UIView!
     
-    @IBOutlet var corpoView : UIView!
-    @IBOutlet var topoCorpo : UIImageView!
+    @IBOutlet weak var corpoView : UIView!
+    @IBOutlet weak var topoCorpo : UIImageView!
     
-    @IBOutlet var aposteView : UIView!
-    @IBOutlet var apostaLabel : UILabel!
+    @IBOutlet weak var aposteView : UIView!
+    @IBOutlet var aposteButon : UIButton! {
+        didSet {
+            aposteButon.titleLabel?.numberOfLines = 0
+        }
+    }
     
-    @IBOutlet var valorMinimoCompra : UILabel!
+    @IBOutlet weak var valorMinimoCompra : UILabel!
 
-    @IBOutlet var badgeMinhasCompras : UILabel!
-    @IBOutlet var badgeCarrinhoDeApostas : UILabel!
+    @IBOutlet weak var badgeMinhasCompras : UILabel!
+    @IBOutlet weak var badgeCarrinhoDeApostas : UILabel!
     
-    @IBOutlet var iconeCalendario : UIImageView!
-    @IBOutlet var iconeRelogio : UIImageView!
+    @IBOutlet weak var iconeCalendario : UIImageView!
+    @IBOutlet weak var iconeRelogio : UIImageView!
     
     @IBOutlet var gradientView : UIView!
-    @IBOutlet weak var valorAcumulado: UILabel!
-
+    @IBOutlet weak var valorAcumulado : UILabel!
+    @IBOutlet weak var premioEstimadoDoConcurso : UILabel!
+    @IBOutlet weak var diaSorteio : UILabel!
+    @IBOutlet weak var diaEncerramento : UILabel!
+    @IBOutlet weak var acumulouOuGanhadores : UILabel!
+    
     public var tipoModalidade : LOModalidadeEnum?
-    private var estiloModalidade : EstiloModalidade!
+    public var estiloModalidade : EstiloModalidade!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -119,18 +127,83 @@ class LOModalideController: UIViewController {
     }
     
     func popularCampos () {
-        let attStringR$ = NSAttributedString.init(string: "R$", attributes: [NSFontAttributeName: UIFont.init(name: "FuturaStd-Medium", size: 12)!, NSForegroundColorAttributeName:self.UIColorFromHex(self.estiloModalidade.corClara, alpha: 1.0)])
+        // Montagem do campo VALOR ACUMULADO
+        let fixoValor = NSAttributedString.init(string: "R$", attributes: [NSFontAttributeName: UIFont.init(name: "FuturaStd-Medium", size: 12)!, NSForegroundColorAttributeName:self.UIColorFromHex(self.estiloModalidade.corClara, alpha: 1.0)])
         
         //Remover mock de valor
-        let attStringValor = NSAttributedString.init(string: "132.000.000,00", attributes: [NSFontAttributeName: UIFont.init(name: "FuturaStd-Bold", size: 20)!, NSForegroundColorAttributeName:self.UIColorFromHex(self.estiloModalidade.corClara, alpha: 1.0)])
+        let dinamicoValor = NSAttributedString.init(string: "132.000.000,00", attributes: [NSFontAttributeName: UIFont.init(name: "FuturaStd-Bold", size: 20)!, NSForegroundColorAttributeName:self.UIColorFromHex(self.estiloModalidade.corClara, alpha: 1.0)])
 
-        let combination = NSMutableAttributedString()
-        combination.append(attStringR$)
-        combination.append(attStringValor)
+        var combination = NSMutableAttributedString()
+        combination.append(fixoValor)
+        combination.append(dinamicoValor)
         
         self.valorAcumulado.attributedText = combination
-    }
+        // ----------------------------------
+        
+        // Montagem do campo APOSTE
+        let paragraph = NSMutableParagraphStyle()
+        paragraph.alignment = .center
+        let fixoAposte = NSAttributedString.init(string: "Aposte", attributes: [NSFontAttributeName: UIFont.init(name: "FuturaStd-Bold", size: 15)!, NSForegroundColorAttributeName:UIColor.white, NSParagraphStyleAttributeName: paragraph])
+        
+        //Remover mock de valor
+        let textoDinamico = NSAttributedString.init(string: String(format:"\npor R$%.2f", 3.5), attributes: [NSFontAttributeName: UIFont.init(name: "FuturaStd-Medium", size: 15)!, NSForegroundColorAttributeName:UIColor.white, NSParagraphStyleAttributeName: paragraph])
+     
+        combination = NSMutableAttributedString()
+        combination.append(fixoAposte)
+        combination.append(textoDinamico)
+        
+        self.aposteButon.setAttributedTitle(combination, for: .normal)
+        // ----------------------------------
+        
+        //Montagem do campo PRÊMIO ESTIMADO
+        let fixoPremio = NSAttributedString.init(string: "Prêmio estimado do concurso ", attributes: [NSFontAttributeName: UIFont.init(name: "FuturaStd-Medium", size: 14)!, NSForegroundColorAttributeName:self.UIColorFromHex(0x4e596b, alpha: 1.0), NSParagraphStyleAttributeName: paragraph])
+        
+        //Remover mock de valor
+        let textoDinamicoPremio = NSAttributedString.init(string: "1843", attributes: [NSFontAttributeName: UIFont.init(name: "FuturaStd-Bold", size: 14)!, NSForegroundColorAttributeName:self.UIColorFromHex(0x4e596b, alpha: 1.0), NSParagraphStyleAttributeName: paragraph])
+        
+        combination = NSMutableAttributedString()
+        combination.append(fixoPremio)
+        combination.append(textoDinamicoPremio)
 
+        self.premioEstimadoDoConcurso.attributedText = combination
+        
+        //Montagem do campo DIA SORTEIO
+        let fixoSorteio = NSAttributedString.init(string: "Sorteio\n", attributes: [NSFontAttributeName: UIFont.init(name: "FuturaStd-Medium", size: 12)!, NSForegroundColorAttributeName:self.UIColorFromHex(0x4e596b, alpha: 1.0)])
+        
+        //Remover mock de valor
+        let textoDinamicoSorteio = NSAttributedString.init(string: "Sábado, 18 de julho", attributes: [NSFontAttributeName: UIFont.init(name: "FuturaStd-Bold", size: 12)!, NSForegroundColorAttributeName:self.UIColorFromHex(0x4e596b, alpha: 1.0)])
+        
+        combination = NSMutableAttributedString()
+        combination.append(fixoSorteio)
+        combination.append(textoDinamicoSorteio)
+        
+        self.diaSorteio.attributedText = combination
+        // ----------------------------------
+
+        //Montagem do campo FIM APOSTAS
+        let fixoFimApostas = NSAttributedString.init(string: "Apostas se encerram em\n", attributes: [NSFontAttributeName: UIFont.init(name: "FuturaStd-Medium", size: 12)!, NSForegroundColorAttributeName:self.UIColorFromHex(0x4e596b, alpha: 1.0)])
+        
+        //Remover mock de valor
+        let textoDinamicoFimApostas = NSAttributedString.init(string: "2 dias e 20 horas", attributes: [NSFontAttributeName: UIFont.init(name: "FuturaStd-Bold", size: 12)!, NSForegroundColorAttributeName:self.UIColorFromHex(0x4e596b, alpha: 1.0)])
+        
+        combination = NSMutableAttributedString()
+        combination.append(fixoFimApostas)
+        combination.append(textoDinamicoFimApostas)
+        
+        self.diaEncerramento.attributedText = combination
+        // ----------------------------------
+        
+        verificaSeGanhadoresOuAcumulado()
+    }
+    
+    func verificaSeGanhadoresOuAcumulado () {
+        //Remover mock quando tiver serviço
+        if false {
+            acumulouOuGanhadores.layer.borderWidth = 1
+            acumulouOuGanhadores.layer.borderColor = self.UIColorFromHex(0xd0e0e3, alpha: 1.0).cgColor
+            acumulouOuGanhadores.attributedText = NSAttributedString.init(string: String(format: "%d ganhadores", 3), attributes: [NSFontAttributeName: UIFont.init(name: "FuturaStd-Bold", size: 14)!, NSForegroundColorAttributeName:self.UIColorFromHex(0x4e596b, alpha: 1.0)])
+        }
+    }
     
     // MARK: - Navigation
 

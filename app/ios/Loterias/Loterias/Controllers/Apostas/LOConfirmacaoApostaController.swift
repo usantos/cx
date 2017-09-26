@@ -11,17 +11,30 @@ import UIKit
 class LOConfirmacaoApostaController: UIViewController {
 
     public var estiloModalidade : EstiloModalidade!
-
+    
+    @IBOutlet var viewAdicionarAoCarrinho : UIView!
+    @IBOutlet var limparAposta : UIButton! {
+        didSet {
+            limparAposta.layer.borderWidth = 1
+            limparAposta.layer.borderColor = UIColor.white.cgColor
+        }
+    }
+    @IBOutlet var botaoAdicionarAoCarrinho : UIButton! {
+        didSet {
+            botaoAdicionarAoCarrinho.titleLabel?.numberOfLines = 0
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        colocaEstiloNoBotaoAdicionarAoCarinho()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.navigationBar.tintColor = .white
         self.navigationController?.navigationBar.barTintColor = self.UIColorFromHex(self.estiloModalidade.corClara, alpha: 1.0)
         self.view.backgroundColor = self.UIColorFromHex(self.estiloModalidade.corClara, alpha: 1.0)
-
     }
 
     override func didReceiveMemoryWarning() {
@@ -29,6 +42,19 @@ class LOConfirmacaoApostaController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    func colocaEstiloNoBotaoAdicionarAoCarinho (){
+        
+        //remover mock
+        if 8 > 10 {
+            viewAdicionarAoCarrinho.backgroundColor = self.UIColorFromHex(0xeff5f6, alpha: 1.0)
+        } else  {
+            viewAdicionarAoCarrinho.backgroundColor = self.UIColorFromHex(0x48586c, alpha: 1.0)
+        }
+    }
+    
+    @IBAction func adicionarAoCarrinhoDeApostas(_ sender: Any) {
+        
+    }
 
     /*
     // MARK: - Navigation

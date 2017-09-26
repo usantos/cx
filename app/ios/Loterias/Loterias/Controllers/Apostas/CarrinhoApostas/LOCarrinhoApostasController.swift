@@ -12,20 +12,11 @@ class LOCarrinhoApostasController: UITableViewController, LOItemCellDelegate {
 
     var cellsArray : Array<UITableViewCell>?
     let gradient : CAGradientLayer = CAGradientLayer()
-    @IBOutlet var titleLabel : UILabel!
     @IBOutlet var titleViewCustom : UIView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         
-        
-        self.navigationItem.titleView = self.titleViewCustom
-        
-        populaArrayDeCelulas()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.estimatedRowHeight = 150
         
@@ -33,13 +24,22 @@ class LOCarrinhoApostasController: UITableViewController, LOItemCellDelegate {
         gradient.startPoint = CGPoint(x: 0.0, y: 0.5)
         gradient.endPoint = CGPoint(x: 1.0, y: 0.5)
         gradient.colors = [self.UIColorFromHex(0x7cbaaa, alpha: 1.0).cgColor, self.UIColorFromHex(0x345ca5, alpha: 1.0).cgColor]
-        
+        gradient.name = "gradientView"
         self.navigationController?.navigationBar.layer.insertSublayer(gradient, at: 0)
         self.navigationController?.navigationBar.layoutIfNeeded()
+        
+        self.navigationItem.titleView = self.titleViewCustom
+        populaArrayDeCelulas()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        self.gradient.removeFromSuperlayer()
+        if self.isMovingFromParentViewController {
+            self.gradient.removeFromSuperlayer()
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -66,7 +66,7 @@ class LOCarrinhoApostasController: UITableViewController, LOItemCellDelegate {
         
         cellsArray?.append(self.tableView.dequeueReusableCell(withIdentifier: "cabecalhoCell")!)
         
-        var cell = self.tableView.dequeueReusableCell(withIdentifier: "itemCell")! as! LOItemCell
+        let cell = self.tableView.dequeueReusableCell(withIdentifier: "itemCell")! as! LOItemCell
         cell.numeros.text = "AISUHASUHIUASHAHUISHIUAHSIUAHSIUHAIUSHAIUHSAHSIASHUAHSIUAHSIUAHSIUAHSAHIUSHIUAHSUIAHSIUh"
         cell.delegate = self
         
@@ -87,6 +87,17 @@ class LOCarrinhoApostasController: UITableViewController, LOItemCellDelegate {
     func swipeableTableViewCellDidTapRightButton(cell : LOItemCell) {
         
     }
+    
+    @IBAction func fazerNovaAposta () {
+        for vc in (self.navigationController?.viewControllers ?? []) {
+            if vc is LOSimularApostasController {
+                _ = self.navigationController?.popToViewController(vc, animated: true)
+                break
+            }
+        }
+    }
+
+    // MARK: - Navigation
 
     /*
     // Override to support conditional editing of the table view.

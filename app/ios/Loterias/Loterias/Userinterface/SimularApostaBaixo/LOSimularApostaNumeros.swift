@@ -59,8 +59,15 @@ class LOSimularApostaNumeros: UIView, UICollectionViewDelegateFlowLayout, UIColl
             salvarAposta.titleLabel?.numberOfLines = 0
             salvarAposta.titleLabel?.adjustsFontSizeToFitWidth = true
             if UIScreen.main.bounds.width == 320 {
-                salvarAposta.imageEdgeInsets = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 0)
+                salvarAposta.imageEdgeInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 0)
+                salvarAposta.titleEdgeInsets = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 0)
             }
+        }
+    }
+    
+    @IBOutlet private weak var adicionarAoCarinhoDeApostas : UIButton! {
+        didSet {
+            adicionarAoCarinhoDeApostas.titleLabel?.numberOfLines = 0
         }
     }
     
@@ -69,9 +76,11 @@ class LOSimularApostaNumeros: UIView, UICollectionViewDelegateFlowLayout, UIColl
     
     @IBOutlet private weak var scrollView : UIScrollView!
     @IBOutlet private weak var verticalLayoutConstraint : NSLayoutConstraint!
+    @IBOutlet private weak var heightViewNomeConstraint : NSLayoutConstraint!
     @IBOutlet private weak var viewAdicionarCarrinho: UIView!
     
     var arraySelecionados = NSMutableArray()
+    var flagApostaSalva : Bool = false
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -146,11 +155,38 @@ class LOSimularApostaNumeros: UIView, UICollectionViewDelegateFlowLayout, UIColl
         } else if arraySelecionados.count == 1 {
             apresentaLimparApostas(hidden: false)
         }
+        
+        if arraySelecionados.count == 5 {
+            apresentaSalvarAposta(hidden: false)
+        } else if arraySelecionados.count == 4 && !salvarAposta.isHidden {
+            apresentaSalvarAposta(hidden: true)
+        }
     }
     
     func apresentaLimparApostas (hidden: Bool) {
+        if hidden {
+            verticalLayoutConstraint.constant = verticalLayoutConstraint.constant - 50
+        } else {
+            verticalLayoutConstraint.constant = verticalLayoutConstraint.constant + 50
+        }
         UIView.transition(with: limpar, duration: 0.5, options: .transitionCrossDissolve, animations: { _ in
             self.limpar.isHidden = hidden
+        }, completion: nil)
+    }
+    
+    func apresentaSalvarAposta (hidden: Bool) {
+        if hidden {
+            verticalLayoutConstraint.constant = verticalLayoutConstraint.constant - 150
+        } else {
+            verticalLayoutConstraint.constant = verticalLayoutConstraint.constant + 150
+        }
+        
+        UIView.transition(with: salvarAposta, duration: 0.5, options: .transitionFlipFromBottom, animations: { _ in
+            self.salvarAposta.isHidden = hidden
+        }, completion: nil)
+        
+        UIView.transition(with: viewNomeAposta, duration: 0.5, options: .transitionFlipFromBottom, animations: { _ in
+            self.viewNomeAposta.isHidden = hidden
         }, completion: nil)
     }
     
@@ -160,6 +196,8 @@ class LOSimularApostaNumeros: UIView, UICollectionViewDelegateFlowLayout, UIColl
             arraySelecionados.remove(cell)
         }
         apresentaLimparApostas(hidden: true)
+        apresentaSalvarAposta(hidden: true)
+        
         collectionViewNumeros.reloadData()
     }
     
@@ -169,33 +207,97 @@ class LOSimularApostaNumeros: UIView, UICollectionViewDelegateFlowLayout, UIColl
         //Calculando tamanho da collectionview caso venha com menos elementos do que a tela suporta.
         //Fixando então a constant para apresentação otimizada.
         
+        //REFAZER SEPARANDO POR MÉTODOS QUANDO TIVER MAIS TEMPO
+        
         if DeviceType.IS_IPHONE_6P {
             if self.verticalLayoutConstraint.constant < 439 {
                 self.verticalLayoutConstraint.constant = 439
+                
+                if !salvarAposta.isHidden {
+                    if flagApostaSalva {
+                        self.verticalLayoutConstraint.constant = self.verticalLayoutConstraint.constant + 20
+                    } else {
+                        self.verticalLayoutConstraint.constant = self.verticalLayoutConstraint.constant + 120
+                    }
+                    
+                    self.scrollView.contentSize.height = self.scrollView.contentSize.height + 114
+                }
             } else {
-                self.verticalLayoutConstraint.constant = self.collectionViewNumeros.collectionViewLayout.collectionViewContentSize.height
+                if !salvarAposta.isHidden {
+                    if flagApostaSalva {
+                        self.verticalLayoutConstraint.constant = self.collectionViewNumeros.collectionViewLayout.collectionViewContentSize.height + 100
+                    } else {
+                        self.verticalLayoutConstraint.constant = self.collectionViewNumeros.collectionViewLayout.collectionViewContentSize.height + 180
+                    }
+                } else {
+                    if !limpar.isHidden {
+                        self.verticalLayoutConstraint.constant = self.collectionViewNumeros.collectionViewLayout.collectionViewContentSize.height + 50
+                    }
+                }
                 
                 self.scrollView.contentSize.height = self.scrollView.contentSize.height + 114
             }
         } else if DeviceType.IS_IPHONE_6 {
-            if self.verticalLayoutConstraint.constant < 370 {
-                self.verticalLayoutConstraint.constant = 370
+            if self.verticalLayoutConstraint.constant < 374 {
+                self.verticalLayoutConstraint.constant = 374
+                
+                if !salvarAposta.isHidden {
+                    if flagApostaSalva {
+                        self.verticalLayoutConstraint.constant = self.verticalLayoutConstraint.constant + 20
+                    } else {
+                        self.verticalLayoutConstraint.constant = self.verticalLayoutConstraint.constant + 120
+                    }
+                    
+                    self.scrollView.contentSize.height = self.scrollView.contentSize.height + 114
+                }
             } else {
-                self.verticalLayoutConstraint.constant = self.collectionViewNumeros.collectionViewLayout.collectionViewContentSize.height
+                if !salvarAposta.isHidden {
+                    if flagApostaSalva {
+                        self.verticalLayoutConstraint.constant = self.collectionViewNumeros.collectionViewLayout.collectionViewContentSize.height + 100
+                    } else {
+                        self.verticalLayoutConstraint.constant = self.collectionViewNumeros.collectionViewLayout.collectionViewContentSize.height + 180
+                    }
+                } else {
+                    if !limpar.isHidden {
+                        self.verticalLayoutConstraint.constant = self.collectionViewNumeros.collectionViewLayout.collectionViewContentSize.height + 50
+                    }
+                }
                 
                 self.scrollView.contentSize.height = self.scrollView.contentSize.height + 114
+
             }
         } else if DeviceType.IS_IPHONE_5 {
             if self.verticalLayoutConstraint.constant < 275 {
                 self.verticalLayoutConstraint.constant = 275
+                
+                if !salvarAposta.isHidden{
+                    if flagApostaSalva {
+                        self.verticalLayoutConstraint.constant = self.verticalLayoutConstraint.constant + 20
+                    } else {
+                        self.verticalLayoutConstraint.constant = self.verticalLayoutConstraint.constant + 120
+                    }
+                    
+                    self.scrollView.contentSize.height = self.scrollView.contentSize.height + 114
+                }
             } else{
-                self.verticalLayoutConstraint.constant = self.collectionViewNumeros.collectionViewLayout.collectionViewContentSize.height
+                if !salvarAposta.isHidden {
+                    if flagApostaSalva {
+                        self.verticalLayoutConstraint.constant = self.collectionViewNumeros.collectionViewLayout.collectionViewContentSize.height + 100
+                    } else {
+                        self.verticalLayoutConstraint.constant = self.collectionViewNumeros.collectionViewLayout.collectionViewContentSize.height + 180
+                    }
+                } else {
+                    if !limpar.isHidden {
+                        self.verticalLayoutConstraint.constant = self.collectionViewNumeros.collectionViewLayout.collectionViewContentSize.height + 50
+                    }
+                }
                 
                 self.scrollView.contentSize.height = self.scrollView.contentSize.height + 114
             }
         }
         
         self.layoutIfNeeded()
+        
     }
     
     func willDisappearSimularNumeros() {
@@ -208,5 +310,26 @@ class LOSimularApostaNumeros: UIView, UICollectionViewDelegateFlowLayout, UIColl
     
     @IBAction func adicionarApostaNoCarrinho() {
         self.delegateSimular.adicionarNoCarrinho()
+    }
+    
+    @IBAction func salvarApostaAction () {
+        if nomeAposta.text?.characters.count == 0 {
+            
+        } else {
+            salvarAposta.backgroundColor = self.UIColorFromHex(0x54bbab, alpha: 1.0)
+            salvarAposta.setImage(#imageLiteral(resourceName: "icon-favoritado"), for: .normal)
+            salvarAposta.setTitle("Aposta salva :)", for: .normal)
+            
+            //Chegando a imagem mais para esquerda.
+            salvarAposta.imageEdgeInsets = UIEdgeInsets(top: 0, left: -10, bottom: 0, right: 0)
+            
+            //Forçando chamada do método resizeCollectionViewSize() para diminuir a scroll.
+            verticalLayoutConstraint.constant = verticalLayoutConstraint.constant - 60
+            
+            //Sumindo com a view do nome da aposta.
+            heightViewNomeConstraint.constant = 0
+            viewNomeAposta.isHidden = true
+            flagApostaSalva = true
+        }
     }
 }

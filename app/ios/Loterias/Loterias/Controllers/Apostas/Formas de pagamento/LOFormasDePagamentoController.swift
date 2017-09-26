@@ -10,17 +10,15 @@ import UIKit
 
 class LOFormasDePagamentoController: UITableViewController {
     let gradient : CAGradientLayer = CAGradientLayer()
+    @IBOutlet var titleViewCustom : UIView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        gradient.frame = CGRect(x: 0, y: -20, width: self.view.frame.width, height: 64)
-        gradient.startPoint = CGPoint(x: 0.0, y: 0.5)
-        gradient.endPoint = CGPoint(x: 1.0, y: 0.5)
-        gradient.colors = [self.UIColorFromHex(0x7cbaaa, alpha: 1.0).cgColor, self.UIColorFromHex(0x345ca5, alpha: 1.0).cgColor]
-        
-        self.navigationController?.navigationBar.layer.insertSublayer(gradient, at: 0)
-        self.navigationController?.navigationBar.layoutIfNeeded()
+        self.navigationItem.titleView = titleViewCustom
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
     }
 
     override func didReceiveMemoryWarning() {
@@ -37,6 +35,10 @@ class LOFormasDePagamentoController: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         return 3
+    }
+    
+    @IBAction func finalizarAposta () {
+        self.performSegue(withIdentifier: "finalizarAposta", sender: self)
     }
 
     /*

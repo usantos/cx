@@ -27,19 +27,14 @@ class LOAdicionarCartaoController: UITableViewController, UICollectionViewDelega
     var salvarCartao: Bool = false
     
     @IBOutlet weak var totalCompra: UILabel!
+    @IBOutlet var titleViewCustom : UIView!
     
     let gradient : CAGradientLayer = CAGradientLayer()
     var arrayCells = Array<LOBandeiraCell>()
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        gradient.frame = CGRect(x: 0, y: -20, width: self.view.frame.width, height: 64)
-        gradient.startPoint = CGPoint(x: 0.0, y: 0.5)
-        gradient.endPoint = CGPoint(x: 1.0, y: 0.5)
-        gradient.colors = [self.UIColorFromHex(0x7cbaaa, alpha: 1.0).cgColor, self.UIColorFromHex(0x345ca5, alpha: 1.0).cgColor]
-        
-        self.navigationController?.navigationBar.layer.insertSublayer(gradient, at: 0)
-        self.navigationController?.navigationBar.layoutIfNeeded()
+        self.navigationItem.titleView = titleViewCustom
     }
     
     override func didReceiveMemoryWarning() {
@@ -47,7 +42,7 @@ class LOAdicionarCartaoController: UITableViewController, UICollectionViewDelega
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        self.gradient.removeFromSuperlayer()
+
     }
 
     // MARK: - Table view data source
@@ -150,16 +145,6 @@ class LOAdicionarCartaoController: UITableViewController, UICollectionViewDelega
     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
         // Return false if you do not want the item to be re-orderable.
         return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
     }
     */
 

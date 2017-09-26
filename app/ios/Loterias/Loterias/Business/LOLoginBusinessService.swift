@@ -12,7 +12,7 @@ import Alamofire
 class LOLoginBusinessService: NSObject {
     public func login (parameters: Parameters, completionHandler: @escaping(_ error: String) -> ()) {
         
-        var url = "https://logindes.caixa.gov.br/auth/realms/r_inter_auth_basic/protocol/openid-connect/"
+        let url = "https://logindes.caixa.gov.br/auth/realms/r_inter_auth_basic/protocol/openid-connect/"
         
         
         
