@@ -41,11 +41,11 @@ class LOModalidesPageController: UIPageViewController, UIPageViewControllerDeleg
         self.navigationItem.rightBarButtonItems = [UIBarButtonItem(image: imgRendering3, style: .plain, target: self, action: #selector(apresentaMenu)) , UIBarButtonItem(image: imgRendering2, style: .plain, target: self, action: #selector(apresentaTrevo))]
     }
     
-    func apresentaMenu () {
+    @objc func apresentaMenu () {
         self.performSegue(withIdentifier: "apresentaMenu", sender: self)
     }
     
-    func apresentaTrevo () {
+    @objc func apresentaTrevo () {
         self.performSegue(withIdentifier: "apresentaTrevo", sender: self)
     }
     

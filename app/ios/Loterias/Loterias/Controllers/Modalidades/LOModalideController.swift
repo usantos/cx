@@ -128,10 +128,10 @@ class LOModalideController: UIViewController {
     
     func popularCampos () {
         // Montagem do campo VALOR ACUMULADO
-        let fixoValor = NSAttributedString.init(string: "R$", attributes: [NSFontAttributeName: UIFont.init(name: "FuturaStd-Medium", size: 12)!, NSForegroundColorAttributeName:self.UIColorFromHex(self.estiloModalidade.corClara, alpha: 1.0)])
+        let fixoValor = NSAttributedString.init(string: "R$", attributes: [NSAttributedStringKey.font: UIFont.init(name: "FuturaStd-Medium", size: 12)!, NSAttributedStringKey.foregroundColor:self.UIColorFromHex(self.estiloModalidade.corClara, alpha: 1.0)])
         
         //Remover mock de valor
-        let dinamicoValor = NSAttributedString.init(string: "132.000.000,00", attributes: [NSFontAttributeName: UIFont.init(name: "FuturaStd-Bold", size: 20)!, NSForegroundColorAttributeName:self.UIColorFromHex(self.estiloModalidade.corClara, alpha: 1.0)])
+        let dinamicoValor = NSAttributedString.init(string: "132.000.000,00", attributes: [NSAttributedStringKey.font: UIFont.init(name: "FuturaStd-Bold", size: 20)!, NSAttributedStringKey.foregroundColor:self.UIColorFromHex(self.estiloModalidade.corClara, alpha: 1.0)])
 
         var combination = NSMutableAttributedString()
         combination.append(fixoValor)
@@ -143,10 +143,10 @@ class LOModalideController: UIViewController {
         // Montagem do campo APOSTE
         let paragraph = NSMutableParagraphStyle()
         paragraph.alignment = .center
-        let fixoAposte = NSAttributedString.init(string: "Aposte", attributes: [NSFontAttributeName: UIFont.init(name: "FuturaStd-Bold", size: 15)!, NSForegroundColorAttributeName:UIColor.white, NSParagraphStyleAttributeName: paragraph])
+        let fixoAposte = NSAttributedString.init(string: "Aposte", attributes: [NSAttributedStringKey.font: UIFont.init(name: "FuturaStd-Bold", size: 15)!, NSAttributedStringKey.foregroundColor:UIColor.white, NSAttributedStringKey.paragraphStyle: paragraph])
         
         //Remover mock de valor
-        let textoDinamico = NSAttributedString.init(string: String(format:"\npor R$%.2f", 3.5), attributes: [NSFontAttributeName: UIFont.init(name: "FuturaStd-Medium", size: 15)!, NSForegroundColorAttributeName:UIColor.white, NSParagraphStyleAttributeName: paragraph])
+        let textoDinamico = NSAttributedString.init(string: String(format:"\npor R$%.2f", 3.5), attributes: [NSAttributedStringKey.font: UIFont.init(name: "FuturaStd-Medium", size: 15)!, NSAttributedStringKey.foregroundColor:UIColor.white, NSAttributedStringKey.paragraphStyle: paragraph])
      
         combination = NSMutableAttributedString()
         combination.append(fixoAposte)
@@ -156,10 +156,10 @@ class LOModalideController: UIViewController {
         // ----------------------------------
         
         //Montagem do campo PRÊMIO ESTIMADO
-        let fixoPremio = NSAttributedString.init(string: "Prêmio estimado do concurso ", attributes: [NSFontAttributeName: UIFont.init(name: "FuturaStd-Medium", size: 14)!, NSForegroundColorAttributeName:self.UIColorFromHex(0x4e596b, alpha: 1.0), NSParagraphStyleAttributeName: paragraph])
+        let fixoPremio = NSAttributedString.init(string: "Prêmio estimado do concurso ", attributes: [NSAttributedStringKey.font: UIFont.init(name: "FuturaStd-Medium", size: 14)!, NSAttributedStringKey.foregroundColor:self.UIColorFromHex(0x4e596b, alpha: 1.0), NSAttributedStringKey.paragraphStyle: paragraph])
         
         //Remover mock de valor
-        let textoDinamicoPremio = NSAttributedString.init(string: "1843", attributes: [NSFontAttributeName: UIFont.init(name: "FuturaStd-Bold", size: 14)!, NSForegroundColorAttributeName:self.UIColorFromHex(0x4e596b, alpha: 1.0), NSParagraphStyleAttributeName: paragraph])
+        let textoDinamicoPremio = NSAttributedString.init(string: "1843", attributes: [NSAttributedStringKey.font: UIFont.init(name: "FuturaStd-Bold", size: 14)!, NSAttributedStringKey.foregroundColor:self.UIColorFromHex(0x4e596b, alpha: 1.0), NSAttributedStringKey.paragraphStyle: paragraph])
         
         combination = NSMutableAttributedString()
         combination.append(fixoPremio)
@@ -168,10 +168,10 @@ class LOModalideController: UIViewController {
         self.premioEstimadoDoConcurso.attributedText = combination
         
         //Montagem do campo DIA SORTEIO
-        let fixoSorteio = NSAttributedString.init(string: "Sorteio\n", attributes: [NSFontAttributeName: UIFont.init(name: "FuturaStd-Medium", size: 12)!, NSForegroundColorAttributeName:self.UIColorFromHex(0x4e596b, alpha: 1.0)])
+        let fixoSorteio = NSAttributedString.init(string: "Sorteio\n", attributes: [NSAttributedStringKey.font: UIFont.init(name: "FuturaStd-Medium", size: 12)!, NSAttributedStringKey.foregroundColor:self.UIColorFromHex(0x4e596b, alpha: 1.0)])
         
         //Remover mock de valor
-        let textoDinamicoSorteio = NSAttributedString.init(string: "Sábado, 18 de julho", attributes: [NSFontAttributeName: UIFont.init(name: "FuturaStd-Bold", size: 12)!, NSForegroundColorAttributeName:self.UIColorFromHex(0x4e596b, alpha: 1.0)])
+        let textoDinamicoSorteio = NSAttributedString.init(string: "Sábado, 18 de julho", attributes: [NSAttributedStringKey.font: UIFont.init(name: "FuturaStd-Bold", size: 12)!, NSAttributedStringKey.foregroundColor:self.UIColorFromHex(0x4e596b, alpha: 1.0)])
         
         combination = NSMutableAttributedString()
         combination.append(fixoSorteio)
@@ -181,10 +181,10 @@ class LOModalideController: UIViewController {
         // ----------------------------------
 
         //Montagem do campo FIM APOSTAS
-        let fixoFimApostas = NSAttributedString.init(string: "Apostas se encerram em\n", attributes: [NSFontAttributeName: UIFont.init(name: "FuturaStd-Medium", size: 12)!, NSForegroundColorAttributeName:self.UIColorFromHex(0x4e596b, alpha: 1.0)])
+        let fixoFimApostas = NSAttributedString.init(string: "Apostas se encerram em\n", attributes: [NSAttributedStringKey.font: UIFont.init(name: "FuturaStd-Medium", size: 12)!, NSAttributedStringKey.foregroundColor:self.UIColorFromHex(0x4e596b, alpha: 1.0)])
         
         //Remover mock de valor
-        let textoDinamicoFimApostas = NSAttributedString.init(string: "2 dias e 20 horas", attributes: [NSFontAttributeName: UIFont.init(name: "FuturaStd-Bold", size: 12)!, NSForegroundColorAttributeName:self.UIColorFromHex(0x4e596b, alpha: 1.0)])
+        let textoDinamicoFimApostas = NSAttributedString.init(string: "2 dias e 20 horas", attributes: [NSAttributedStringKey.font: UIFont.init(name: "FuturaStd-Bold", size: 12)!, NSAttributedStringKey.foregroundColor:self.UIColorFromHex(0x4e596b, alpha: 1.0)])
         
         combination = NSMutableAttributedString()
         combination.append(fixoFimApostas)
@@ -201,7 +201,7 @@ class LOModalideController: UIViewController {
         if false {
             acumulouOuGanhadores.layer.borderWidth = 1
             acumulouOuGanhadores.layer.borderColor = self.UIColorFromHex(0xd0e0e3, alpha: 1.0).cgColor
-            acumulouOuGanhadores.attributedText = NSAttributedString.init(string: String(format: "%d ganhadores", 3), attributes: [NSFontAttributeName: UIFont.init(name: "FuturaStd-Bold", size: 14)!, NSForegroundColorAttributeName:self.UIColorFromHex(0x4e596b, alpha: 1.0)])
+            acumulouOuGanhadores.attributedText = NSAttributedString.init(string: String(format: "%d ganhadores", 3), attributes: [NSAttributedStringKey.font: UIFont.init(name: "FuturaStd-Bold", size: 14)!, NSAttributedStringKey.foregroundColor:self.UIColorFromHex(0x4e596b, alpha: 1.0)])
         }
     }
     

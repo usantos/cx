@@ -26,7 +26,7 @@ class LOTermoCell: UITableViewCell {
             guard let text = self.termosDeUso.titleLabel?.text else { return }
             let textRange = NSMakeRange(0, text.characters.count)
             let attributedText = NSMutableAttributedString(string: text)
-            attributedText.addAttribute(NSUnderlineStyleAttributeName , value: NSUnderlineStyle.styleSingle.rawValue, range: textRange)
+            attributedText.addAttribute(NSAttributedStringKey.underlineStyle , value: NSUnderlineStyle.styleSingle.rawValue, range: textRange)
             
             self.termosDeUso.setAttributedTitle(attributedText, for: .normal)
         }
@@ -37,7 +37,7 @@ class LOTermoCell: UITableViewCell {
             guard let text = self.politicasDePrivacidade.titleLabel?.text else { return }
             let textRange = NSMakeRange(0, text.characters.count)
             let attributedText = NSMutableAttributedString(string: text)
-            attributedText.addAttribute(NSUnderlineStyleAttributeName , value: NSUnderlineStyle.styleSingle.rawValue, range: textRange)
+            attributedText.addAttribute(NSAttributedStringKey.underlineStyle , value: NSUnderlineStyle.styleSingle.rawValue, range: textRange)
             
             self.politicasDePrivacidade.setAttributedTitle(attributedText, for: .normal)
         }

@@ -55,6 +55,6 @@ class LOCabecalhoRepassesCell: UITableViewCell, UIPickerViewDelegate, UIPickerVi
     
     func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
         let str = numbers[row]
-        return NSAttributedString(string: str, attributes: [NSForegroundColorAttributeName:UIColor.white])
+        return NSAttributedString(string: str, attributes: [NSAttributedStringKey.foregroundColor:UIColor.white])
     }
 }

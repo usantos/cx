@@ -17,8 +17,8 @@ class LOFimApostaController: UIViewController {
         gradient.frame = self.view.bounds
         gradient.startPoint = CGPoint(x: 0.0, y: 0.5)
         gradient.endPoint = CGPoint(x: 1.0, y: 0.5)
-        gradient.colors = [self.UIColorFromHex(0x7cbaaa, alpha: 1.0).cgColor, self.UIColorFromHex(0x345ca5, alpha: 1.0).cgColor]
-        
+        gradient.colors = [self.UIColorFromHex(0x54bbab, alpha: 1.0).cgColor, self.UIColorFromHex(0x005ca9, alpha: 1.0).cgColor]
+
         self.view.layer.insertSublayer(gradient, at: 0)
         // Do any additional setup after loading the view.
     }
@@ -29,6 +29,9 @@ class LOFimApostaController: UIViewController {
     }
     
     @IBAction func voltarParaInicio() {
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        self.navigationController?.navigationBar.barTintColor = .white
         self.navigationController?.popToRootViewController(animated: true)
     }
 

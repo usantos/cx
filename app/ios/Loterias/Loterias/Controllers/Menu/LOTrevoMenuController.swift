@@ -60,10 +60,10 @@ class LOTrevoMenuController: UIViewController {
         
         let paragraph = NSMutableParagraphStyle()
         paragraph.alignment = .center
-        let fixoAposte = NSAttributedString.init(string: "Aposte", attributes: [NSFontAttributeName: UIFont.init(name: "FuturaStd-Bold", size: 15)!, NSForegroundColorAttributeName:UIColor.white, NSParagraphStyleAttributeName: paragraph])
+        let fixoAposte = NSAttributedString.init(string: "Aposte", attributes: [NSAttributedStringKey.font: UIFont.init(name: "FuturaStd-Bold", size: 15)!, NSAttributedStringKey.foregroundColor:UIColor.white, NSAttributedStringKey.paragraphStyle: paragraph])
         
         //Remover mock de valor
-        let textoDinamico = NSAttributedString.init(string: String(format:"\npor R$%.2f", 3.5), attributes: [NSFontAttributeName: UIFont.init(name: "FuturaStd-Medium", size: 15)!, NSForegroundColorAttributeName:UIColor.white, NSParagraphStyleAttributeName: paragraph])
+        let textoDinamico = NSAttributedString.init(string: String(format:"\npor R$%.2f", 3.5), attributes: [NSAttributedStringKey.font: UIFont.init(name: "FuturaStd-Medium", size: 15)!, NSAttributedStringKey.foregroundColor:UIColor.white, NSAttributedStringKey.paragraphStyle: paragraph])
         
         let combination = NSMutableAttributedString()
         combination.append(fixoAposte)

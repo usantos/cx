@@ -52,8 +52,8 @@ class LOSimularSurpresinha: UIView, UICollectionViewDelegateFlowLayout, UICollec
     }
     
     override func awakeFromNib() {
-        let teste = Bundle.main.loadNibNamed("LOSimularSurpresinha", owner: self, options: nil)?.first as! UIView
-        self.addSubview(teste)
+        let surpesinha = Bundle.main.loadNibNamed("LOSimularSurpresinha", owner: self, options: nil)?.first as! UIView
+        self.addSubview(surpesinha)
         
         self.collectionViewNumerosMascarados.register(UINib(nibName: "LONumeroApostaCell", bundle: nil) , forCellWithReuseIdentifier: "numeroCell")
         
@@ -62,6 +62,7 @@ class LOSimularSurpresinha: UIView, UICollectionViewDelegateFlowLayout, UICollec
         
         subtrai.addTarget(self, action: #selector(buttonDownSub), for: .touchDown)
         subtrai.addTarget(self, action: #selector(buttonUpSub), for: [.touchUpInside, .touchUpOutside])
+        
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -130,7 +131,8 @@ class LOSimularSurpresinha: UIView, UICollectionViewDelegateFlowLayout, UICollec
             
             self.scrollView.contentSize.height = self.scrollView.contentSize.height + 64
         }
-        
+        self.scrollView.contentSize.width = UIScreen.main.bounds.width
+
         self.layoutIfNeeded()
     }
     
@@ -143,7 +145,7 @@ class LOSimularSurpresinha: UIView, UICollectionViewDelegateFlowLayout, UICollec
     }
     
     // MARK: Soma / Subtrai Surpresinha
-    func somaUm () {
+    @objc func somaUm () {
         if numerosSurpresinhas.text == "" {
             numerosSurpresinhas.text = "1"
         } else {
@@ -151,7 +153,7 @@ class LOSimularSurpresinha: UIView, UICollectionViewDelegateFlowLayout, UICollec
         }
     }
 
-    func subtraiUm () {
+    @objc func subtraiUm () {
         if numerosSurpresinhas.text != "" {
             if Int(numerosSurpresinhas.text!)! > 1 {
                 numerosSurpresinhas.text = String(Int(numerosSurpresinhas.text!)! - 1)
@@ -159,21 +161,21 @@ class LOSimularSurpresinha: UIView, UICollectionViewDelegateFlowLayout, UICollec
         }
     }
     
-    func buttonDownSum() {
+    @objc func buttonDownSum() {
         somaUm()
         timer = Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(LOSimularSurpresinha.somaUm), userInfo: nil, repeats: true)
     }
     
-    func buttonUpSum() {
+    @objc func buttonUpSum() {
         timer.invalidate()
     }
     
-    func buttonDownSub() {
+    @objc func buttonDownSub() {
         subtraiUm()
         timer = Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(LOSimularSurpresinha.subtraiUm), userInfo: nil, repeats: true)
     }
     
-    func buttonUpSub() {
+    @objc func buttonUpSub() {
         timer.invalidate()
     }
 

@@ -29,7 +29,7 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>ObjectMapper.xcscheme</key>
+		<key>InputMask.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -51,52 +51,6 @@
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
-	<dict>
-		<key>35E4A3B86E0B2562C407437BCA35CFC9</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>49C85F31990A698B2D025DCBE546AA92</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>6BB1C1403B2419F911818DA8413FDA07</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>79D1142B65F4BC81906DEC8FF82E6B9A</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>88E9EC28B8B46C3631E6B242B50F4442</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>8AAF1DD1DE413A1969136F1BFB030B08</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>BF0D185498A8BDC067A39693FB4BD1B9</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>C235F77E101E742652CCF98FFDFA5182</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>CD6C9FB6B052E1CF663F8A56041EA163</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-	</dict>
+	<dict/>
 </dict>
 </plist>

@@ -29,6 +29,43 @@ extension NSObject {
             alpha: CGFloat(alpha)
         )
     }
+    
+    func getBaseUrl() -> String? {
+        if let path = Bundle.main.path(forResource: "server-config", ofType: "plist") {
+            let dictRoot = NSDictionary(contentsOfFile: path)
+            if let dict = dictRoot {
+                return (dict["protocol"] as! String) + "://" + (dict["baseUrl"] as! String)
+            }
+        }
+        return nil
+    }
+    
+    func treatStatusCode (statusCode : Int) -> (status: Bool, message: String?) {
+        switch statusCode {
+        case 200:
+            return (true, "")
+        case 408:
+            return (false, "Esgotou o tempo da requisição, tente novamente.")
+        case 500:
+            return (false, "Problemas no servidor, entre em contato com a equipe de Tecnologia")
+        case 503:
+            return (false, "Servidor indisponível, tente novamente mais tarde.")
+        default:
+            return (false, "")
+        }
+    }
+    
+    func image(fromLayer layer: CALayer) -> UIImage {
+        UIGraphicsBeginImageContext(layer.frame.size)
+        
+        layer.render(in: UIGraphicsGetCurrentContext()!)
+        
+        let outputImage = UIGraphicsGetImageFromCurrentImageContext()
+        
+        UIGraphicsEndImageContext()
+        
+        return outputImage!
+    }
 }
 
 extension UIViewController {
@@ -64,6 +101,52 @@ extension UIViewController {
     public func addLeftIconOnNavigation (image: UIImage) {
         let imgRendering = image.withRenderingMode(UIImageRenderingMode.alwaysOriginal)
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(image:imgRendering , style: UIBarButtonItemStyle.plain, target: nil, action: nil)
+    }
+    
+    func alert(title: String, message: String, completionHandler: @escaping () -> ()) {
+        let attributedMessage = NSAttributedString(string: String("\n".appending(message)), attributes: [
+            NSAttributedStringKey.font : UIFont(name: "System-Regular", size: 18.0)!
+        ])
+        
+        let attributedTitle = NSAttributedString(string: title, attributes: [
+            NSAttributedStringKey.font : UIFont(name: "System-Regular", size: 18.0)!
+        ])
+        
+        let alert = UIAlertController(title: "", message: "",  preferredStyle: .alert)
+        alert.setValue(attributedMessage, forKey: "attributedMessage")
+        alert.setValue(attributedTitle, forKey: "attributedTitle")
+        
+        let okAction = UIAlertAction(title: "Ok", style: .default) { (alertAction) in
+            completionHandler()
+        }
+        
+        alert.addAction(okAction)
+        
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    func alertConfirm (title: String, message: String , titleCancelAction: String , titleOkAction: String , completionHandler: @escaping () -> Void) {
+        
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        let DestructiveAction = UIAlertAction(title: titleCancelAction, style: UIAlertActionStyle.destructive) { (result : UIAlertAction) -> Void in
+        }
+        
+        let okAction = UIAlertAction(title: titleOkAction, style: UIAlertActionStyle.default) { (result : UIAlertAction) -> Void in
+            completionHandler()
+        }
+        alertController.addAction(DestructiveAction)
+        alertController.addAction(okAction)
+        
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
+    func alertSimple (title: String, message: String) {
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        let okAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default)
+        
+        alertController.addAction(okAction)
+        
+        self.present(alertController, animated: true, completion: nil)
     }
 }
 
@@ -104,3 +187,5 @@ extension UIApplication {
         return value(forKey: "statusBar") as? UIView
     }
 }
+
+

@@ -8,11 +8,11 @@ target 'Loterias' do
   # Pods for Loterias
 	
   pod 'Alamofire'
-  pod 'ObjectMapper'
   pod 'IQKeyboardManagerSwift'
   pod 'TextFieldEffects', '~>1.3.3'
   pod 'AeroGearOAuth2', '~>1.0.1'
-  pod 'SideMenu'
   pod 'CryptoSwift'
+  pod 'SideMenu'
+  pod 'InputMask'
   
 end

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>protocol</key>
+	<string>http</string>
+	<key>baseUrl</key>
+	<string>10.130.9.22:81/silce-servico-rest/rest/v1/</string>
+	<key>baseUrl-caixa</key>
+	<string>simlo.des.caixa/silce-servico-rest/rest/v1/</string>
+	<key>port</key>
+	<string>443</string>
+	<key>application version</key>
+	<string>1.0</string>
+	<key>environment</key>
+	<string>ios</string>
+</dict>
+</plist>

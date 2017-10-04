@@ -8,14 +8,22 @@
 
 import UIKit
 import TextFieldEffects
+import InputMask
 
-class LOCadastroControllerController: UITableViewController, UITextFieldDelegate {
+class LOCadastroControllerController: UITableViewController, UITextFieldDelegate, MaskedTextFieldDelegateListener {
+    
+    var maskedDelegateCpf: MaskedTextFieldDelegate!
+    var maskedDelegateDtNascimento: MaskedTextFieldDelegate!
 
     @IBOutlet weak var btnMasculino : UIButton!
     @IBOutlet weak var btnFeminino : UIButton!
     var isMasculino = true
     
-    @IBOutlet weak var cpf: HoshiTextField!
+    @IBOutlet weak var cpf: HoshiTextField! {
+        didSet {
+            cpf.delegate = self
+        }
+    }
     @IBOutlet weak var nome: HoshiTextField!
     @IBOutlet weak var nomeDaMae: HoshiTextField!
     @IBOutlet weak var cep: HoshiTextField!
@@ -38,6 +46,19 @@ class LOCadastroControllerController: UITableViewController, UITextFieldDelegate
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.navigationController?.navigationBar.barTintColor = UIColor(red: 0.0/255.0, green: 118.0/255.0, blue: 183.0/255.0, alpha: 1.0)
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        
+        maskedDelegateCpf = MaskedTextFieldDelegate(format: "[000].[000].[000]-[00]")
+        maskedDelegateCpf.listener = self
+        
+        maskedDelegateDtNascimento = MaskedTextFieldDelegate(format: "[00]/[00]/[0000]")
+        maskedDelegateDtNascimento.listener = self
+        
+        cpf.delegate = maskedDelegateCpf
+        dataNascimento.delegate = maskedDelegateDtNascimento
         
         self.addRightIconOnNavigation(image: #imageLiteral(resourceName: "icon-loteria"))
     }
@@ -95,6 +116,10 @@ class LOCadastroControllerController: UITableViewController, UITextFieldDelegate
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 12
+    }
+    
+    @IBAction func dismiss () {
+        self.dismiss(animated: true, completion: nil)
     }
 
     /*

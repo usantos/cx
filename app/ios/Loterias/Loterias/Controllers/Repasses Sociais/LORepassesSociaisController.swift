@@ -12,36 +12,29 @@ class LORepassesSociaisController: UITableViewController {
     let gradient : CAGradientLayer = CAGradientLayer()
     @IBOutlet var titleCustomView : UIView!
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.estimatedRowHeight = 150
         
-        self.navigationItem.titleView = titleCustomView
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        UIGraphicsBeginImageContext((UIApplication.shared.statusBarView?.frame.size)!);
-        UIImage(named: "020")?.draw(in: (UIApplication.shared.statusBarView?.bounds)!)
-        let image = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        UIApplication.shared.statusBarView?.backgroundColor = UIColor(patternImage: image!)
-        
-        UIGraphicsBeginImageContext(CGSize(width: 375, height: 64));
-        UIImage(named: "020")?.draw(in: CGRect(x: 0, y: 4, width: 375, height: 64))
-        let image2 = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        UINavigationBar.appearance().setBackgroundImage(image2, for: .default)
+        gradient.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 64)
+        gradient.startPoint = CGPoint(x: 0.0, y: 0.5)
+        gradient.endPoint = CGPoint(x: 1.0, y: 0.5)
+        gradient.colors = [self.UIColorFromHex(0x54bbab, alpha: 1.0).cgColor, self.UIColorFromHex(0x005ca9, alpha: 1.0).cgColor]
+        gradient.name = "gradientView"
         
         self.navigationController?.navigationBar.tintColor = .white
         self.navigationController?.isNavigationBarHidden = false
+        
+        self.navigationItem.titleView = self.titleCustomView
+        
+        self.navigationController?.navigationBar.setBackgroundImage(self.image(fromLayer: gradient), for: .default)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        UIApplication.shared.statusBarView?.backgroundColor = .clear
-        UINavigationBar.appearance().shadowImage = UIImage()
-        UINavigationBar.appearance().setBackgroundImage(UIImage(), for: .default)
+        if self.isMovingFromParentViewController {
+            self.navigationController?.navigationBar.shadowImage = UIImage()
+            self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        }
     }
 
     override func didReceiveMemoryWarning() {

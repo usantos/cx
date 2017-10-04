@@ -20,25 +20,26 @@ class LOCarrinhoApostasController: UITableViewController, LOItemCellDelegate {
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.estimatedRowHeight = 150
         
-        gradient.frame = CGRect(x: 0, y: -20, width: self.view.frame.width, height: 64)
+        gradient.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 64)
         gradient.startPoint = CGPoint(x: 0.0, y: 0.5)
         gradient.endPoint = CGPoint(x: 1.0, y: 0.5)
-        gradient.colors = [self.UIColorFromHex(0x7cbaaa, alpha: 1.0).cgColor, self.UIColorFromHex(0x345ca5, alpha: 1.0).cgColor]
+        gradient.colors = [self.UIColorFromHex(0x54bbab, alpha: 1.0).cgColor, self.UIColorFromHex(0x005ca9, alpha: 1.0).cgColor]
         gradient.name = "gradientView"
-        self.navigationController?.navigationBar.layer.insertSublayer(gradient, at: 0)
-        self.navigationController?.navigationBar.layoutIfNeeded()
+
+        self.navigationController?.navigationBar.tintColor = .white
+        self.navigationController?.isNavigationBarHidden = false
         
         self.navigationItem.titleView = self.titleViewCustom
-        populaArrayDeCelulas()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
         
+        self.navigationController?.navigationBar.setBackgroundImage(self.image(fromLayer: gradient), for: .default)
+        
+        populaArrayDeCelulas()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         if self.isMovingFromParentViewController {
-            self.gradient.removeFromSuperlayer()
+            self.navigationController?.navigationBar.shadowImage = UIImage()
+            self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         }
     }
 
@@ -91,6 +92,8 @@ class LOCarrinhoApostasController: UITableViewController, LOItemCellDelegate {
     @IBAction func fazerNovaAposta () {
         for vc in (self.navigationController?.viewControllers ?? []) {
             if vc is LOSimularApostasController {
+                self.navigationController?.navigationBar.shadowImage = UIImage()
+                self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
                 _ = self.navigationController?.popToViewController(vc, animated: true)
                 break
             }

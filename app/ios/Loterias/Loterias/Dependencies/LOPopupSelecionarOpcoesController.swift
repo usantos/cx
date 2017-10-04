@@ -26,7 +26,7 @@ class LOPopupSelecionarOpcoesController: UIViewController, UITableViewDelegate, 
             gradient.frame = self.gradientView.bounds
             gradient.startPoint = CGPoint(x: 0.0, y: 0.5)
             gradient.endPoint = CGPoint(x: 1.0, y: 0.5)
-            gradient.colors = [self.UIColorFromHex(0x7cbaaa, alpha: 1.0).cgColor, self.UIColorFromHex(0x345ca5, alpha: 1.0).cgColor]
+            gradient.colors = [self.UIColorFromHex(0x54bbab, alpha: 1.0).cgColor, self.UIColorFromHex(0x005ca9, alpha: 1.0).cgColor]
 
             self.gradientView.layer.addSublayer(gradient)
         }

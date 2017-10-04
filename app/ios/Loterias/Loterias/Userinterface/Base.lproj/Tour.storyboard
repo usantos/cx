@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="chI-m0-hkL">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="chI-m0-hkL">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
+        <array key="FuturaStd-Bold.otf">
+            <string>FuturaStd-Bold</string>
+        </array>
         <array key="FuturaStd-Medium.otf">
             <string>FuturaStd-Medium</string>
         </array>
@@ -19,7 +24,7 @@
                 <viewControllerPlaceholder storyboardName="Login" id="Yuw-N5-ufc" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sQE-vd-Kpy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1028" y="-218"/>
+            <point key="canvasLocation" x="1721" y="484"/>
         </scene>
         <!--Tour Page Controller-->
         <scene sceneID="TvK-lc-H7F">
@@ -75,7 +80,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hfc-tr-4U7">
-                                <rect key="frame" x="32" y="380" width="311" height="30"/>
+                                <rect key="frame" x="32" y="380" width="311" height="35"/>
                                 <string key="text">Suas apostas ainda mais fáceis
 e muito mais rápidas.</string>
                                 <fontDescription key="fontDescription" name="FuturaStd-Medium" family="Futura Std" pointSize="15"/>
@@ -112,10 +117,10 @@ e muito mais rápidas.</string>
             </objects>
             <point key="canvasLocation" x="414" y="-927"/>
         </scene>
-        <!--View Controller-->
+        <!--First Tour Controller-->
         <scene sceneID="Gzu-ht-cpX">
             <objects>
-                <viewController storyboardIdentifier="screen1" id="kuZ-v6-kjc" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="screen1" id="kuZ-v6-kjc" customClass="LOFirstTourController" customModule="Loterias" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="EUp-YB-U1d"/>
                         <viewControllerLayoutGuide type="bottom" id="oci-ws-hDF"/>
@@ -127,14 +132,13 @@ e muito mais rápidas.</string>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_bg_splash" translatesAutoresizingMaskIntoConstraints="NO" id="DOo-C5-0u4">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XW7-4H-upb">
-                                <rect key="frame" x="234" y="591" width="125" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XW7-4H-upb">
+                                <rect key="frame" x="241" y="591" width="118" height="30"/>
                                 <state key="normal" title="Pular introdrução">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="Yuw-N5-ufc" kind="presentation" id="fd6-VB-tPx"/>
+                                    <action selector="jumpToLogin" destination="kuZ-v6-kjc" eventType="touchUpInside" id="PQC-xg-fmE"/>
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_logo" translatesAutoresizingMaskIntoConstraints="NO" id="K25-yP-7fG">
@@ -174,7 +178,7 @@ e muito mais rápidas.</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s6j-a8-O6u">
-                                <rect key="frame" x="32" y="380" width="311" height="30"/>
+                                <rect key="frame" x="32" y="380" width="311" height="35"/>
                                 <string key="text">Todas as apostas na palma da sua mão,
 o dia inteiro, todos os dias. :)</string>
                                 <fontDescription key="fontDescription" name="FuturaStd-Medium" family="Futura Std" pointSize="15"/>
@@ -192,6 +196,7 @@ o dia inteiro, todos os dias. :)</string>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="s6j-a8-O6u" secondAttribute="trailing" constant="32" id="43k-dk-oXs"/>
+                            <constraint firstItem="oci-ws-hDF" firstAttribute="top" secondItem="XW7-4H-upb" secondAttribute="bottom" constant="46" id="5zc-BO-MSD"/>
                             <constraint firstItem="xxS-tQ-SkV" firstAttribute="top" secondItem="K25-yP-7fG" secondAttribute="bottom" constant="86" id="6Sb-hf-zHy"/>
                             <constraint firstItem="K25-yP-7fG" firstAttribute="top" secondItem="EUp-YB-U1d" secondAttribute="bottom" constant="25" id="9PV-Ge-qZY"/>
                             <constraint firstItem="oci-ws-hDF" firstAttribute="top" secondItem="DOo-C5-0u4" secondAttribute="bottom" id="9Qv-4S-geX"/>
@@ -200,7 +205,9 @@ o dia inteiro, todos os dias. :)</string>
                             <constraint firstItem="q9Q-cH-Bo1" firstAttribute="top" secondItem="xxS-tQ-SkV" secondAttribute="bottom" constant="25" id="O3I-hE-AAJ"/>
                             <constraint firstItem="q9Q-cH-Bo1" firstAttribute="centerX" secondItem="azo-Bv-28T" secondAttribute="centerX" id="Pbt-NN-V7d"/>
                             <constraint firstItem="DOo-C5-0u4" firstAttribute="top" secondItem="azo-Bv-28T" secondAttribute="top" id="aTi-2W-Df3"/>
+                            <constraint firstAttribute="trailing" secondItem="XW7-4H-upb" secondAttribute="trailing" constant="16" id="bFh-6o-W8e"/>
                             <constraint firstItem="K25-yP-7fG" firstAttribute="centerX" secondItem="azo-Bv-28T" secondAttribute="centerX" id="cFl-IJ-bRD"/>
+                            <constraint firstItem="XW7-4H-upb" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="azo-Bv-28T" secondAttribute="leading" constant="20" symbolic="YES" id="cka-q4-JKI"/>
                             <constraint firstItem="s6j-a8-O6u" firstAttribute="top" secondItem="q9Q-cH-Bo1" secondAttribute="bottom" constant="26" id="dE0-DN-lOx"/>
                             <constraint firstItem="xxS-tQ-SkV" firstAttribute="centerX" secondItem="azo-Bv-28T" secondAttribute="centerX" id="pmz-bB-VND"/>
                             <constraint firstItem="DOo-C5-0u4" firstAttribute="leading" secondItem="azo-Bv-28T" secondAttribute="leading" id="wMY-0U-1hZ"/>
@@ -263,23 +270,13 @@ o dia inteiro, todos os dias. :)</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y4y-xO-zBd">
-                                <rect key="frame" x="32" y="380" width="311" height="30"/>
+                                <rect key="frame" x="32" y="380" width="311" height="35"/>
                                 <string key="text">Acompanhe e gerencie
 todas as suas apostas.</string>
                                 <fontDescription key="fontDescription" name="FuturaStd-Medium" family="Futura Std" pointSize="15"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7cc-8p-2Va">
-                                <rect key="frame" x="234" y="599" width="125" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Continuar">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <segue destination="Yuw-N5-ufc" kind="presentation" id="OEk-zb-gcO"/>
-                                </connections>
-                            </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-tour-mid3" translatesAutoresizingMaskIntoConstraints="NO" id="WEs-B5-POv">
                                 <rect key="frame" x="117" y="226" width="142" height="82"/>
                                 <constraints>
@@ -310,6 +307,121 @@ todas as suas apostas.</string>
             </objects>
             <point key="canvasLocation" x="414" y="509"/>
         </scene>
+        <!--Controller-->
+        <scene sceneID="iKr-MR-MxQ">
+            <objects>
+                <viewController storyboardIdentifier="screen4" id="fBw-JG-xBZ" customClass="LOSSOController" customModule="Loterias" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Rf5-aH-G7r"/>
+                        <viewControllerLayoutGuide type="bottom" id="3W0-m5-I4R"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Y03-C6-O5H">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sAu-pQ-rFY">
+                                <rect key="frame" x="30" y="331.5" width="315" height="56"/>
+                                <color key="backgroundColor" red="1" green="0.56862745100000001" blue="0.12941176469999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="56" id="A3A-zY-6bT"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="FuturaStd-Bold" family="Futura Std" pointSize="17"/>
+                                <state key="normal" title="Faça login/Cadastre-se">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <segue destination="Yuw-N5-ufc" kind="presentation" id="g5o-wZ-qH2"/>
+                                </connections>
+                            </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_logo" translatesAutoresizingMaskIntoConstraints="NO" id="PKJ-Gm-Zxj">
+                                <rect key="frame" x="140" y="45" width="95" height="95"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="95" id="0rH-Qa-PkV"/>
+                                    <constraint firstAttribute="height" constant="95" id="bxL-Uz-n8t"/>
+                                </constraints>
+                            </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Pld-cE-AnG">
+                                <rect key="frame" x="116" y="292" width="142" height="1"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="Ajs-Of-pnZ"/>
+                                    <constraint firstAttribute="width" constant="142" id="s4y-j8-zkx"/>
+                                </constraints>
+                            </view>
+                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oh3-MX-Ttg">
+                                <rect key="frame" x="30" y="190" width="315" height="56"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="56" id="JmI-0Z-aVA"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="FuturaStd-Bold" family="Futura Std" pointSize="17"/>
+                                <state key="normal" title="Aposte agora">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <segue destination="F0f-ZQ-hWU" kind="presentation" id="zCh-ox-JRT"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Você utilizará o sistema único de login da Caixa." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ak2-k7-xJq">
+                                <rect key="frame" x="80" y="421" width="216" height="52"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="216" id="6wF-ea-vwt"/>
+                                    <constraint firstAttribute="height" constant="52" id="dcC-Bs-tcc"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="FuturaStd-Medium" family="Futura Std" pointSize="17"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0ab-c1-5ha">
+                                <rect key="frame" x="175" y="278" width="23.5" height="23"/>
+                                <color key="backgroundColor" red="0.0" green="0.36078431370000003" blue="0.66274509800000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <attributedString key="attributedText">
+                                    <fragment content="ou">
+                                        <attributes>
+                                            <color key="NSColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <font key="NSFont" size="17" name="Futura-Bold"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="0.0" green="0.36078431372549019" blue="0.66274509803921566" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="oh3-MX-Ttg" firstAttribute="top" secondItem="PKJ-Gm-Zxj" secondAttribute="bottom" constant="50" id="3sq-5w-ACt"/>
+                            <constraint firstItem="sAu-pQ-rFY" firstAttribute="leading" secondItem="Y03-C6-O5H" secondAttribute="leadingMargin" constant="14" id="5bv-qW-EeP"/>
+                            <constraint firstItem="ak2-k7-xJq" firstAttribute="top" secondItem="sAu-pQ-rFY" secondAttribute="bottom" constant="33.5" id="9Iz-9v-tDh"/>
+                            <constraint firstItem="0ab-c1-5ha" firstAttribute="centerX" secondItem="Y03-C6-O5H" secondAttribute="centerX" id="Dhy-ci-AZm"/>
+                            <constraint firstItem="sAu-pQ-rFY" firstAttribute="top" secondItem="0ab-c1-5ha" secondAttribute="bottom" constant="30.5" id="ENj-Ca-Iyk"/>
+                            <constraint firstItem="ak2-k7-xJq" firstAttribute="centerX" secondItem="Y03-C6-O5H" secondAttribute="centerX" id="Ehc-x7-fsW"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="oh3-MX-Ttg" secondAttribute="trailing" constant="14" id="Fb8-G7-Pyh"/>
+                            <constraint firstItem="oh3-MX-Ttg" firstAttribute="leading" secondItem="Y03-C6-O5H" secondAttribute="leadingMargin" constant="14" id="MR6-bG-q7Q"/>
+                            <constraint firstItem="PKJ-Gm-Zxj" firstAttribute="top" secondItem="Rf5-aH-G7r" secondAttribute="bottom" constant="25" id="SFZ-Rb-J89"/>
+                            <constraint firstItem="ak2-k7-xJq" firstAttribute="centerX" secondItem="Y03-C6-O5H" secondAttribute="centerX" id="Vzy-w0-2gD"/>
+                            <constraint firstItem="Pld-cE-AnG" firstAttribute="centerX" secondItem="Y03-C6-O5H" secondAttribute="centerX" id="coB-tK-oB4"/>
+                            <constraint firstItem="sAu-pQ-rFY" firstAttribute="top" secondItem="Pld-cE-AnG" secondAttribute="bottom" constant="38.5" id="k0c-bc-a0n"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="sAu-pQ-rFY" secondAttribute="trailing" constant="14" id="kax-Tq-9WH"/>
+                            <constraint firstItem="PKJ-Gm-Zxj" firstAttribute="centerX" secondItem="Y03-C6-O5H" secondAttribute="centerX" id="rqw-47-oYY"/>
+                            <constraint firstItem="0ab-c1-5ha" firstAttribute="top" secondItem="oh3-MX-Ttg" secondAttribute="bottom" constant="32" id="u0l-pa-Wgz"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="27S-43-gYI"/>
+                    <connections>
+                        <outlet property="aposteAgora" destination="oh3-MX-Ttg" id="nVB-Rk-GbU"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hUa-R8-ier" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1205.5999999999999" y="508.69565217391306"/>
+        </scene>
+        <!--Main-->
+        <scene sceneID="cSo-qe-3Jj">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Main" id="F0f-ZQ-hWU" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6Ki-Ub-wRP" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1720" y="528"/>
+        </scene>
     </scenes>
     <resources>
         <image name="ic_bg_splash" width="360" height="640"/>
@@ -318,7 +430,4 @@ todas as suas apostas.</string>
         <image name="icon-tour-mid2" width="213" height="122"/>
         <image name="icon-tour-mid3" width="213" height="123"/>
     </resources>
-    <inferredMetricsTieBreakers>
-        <segue reference="OEk-zb-gcO"/>
-    </inferredMetricsTieBreakers>
 </document>

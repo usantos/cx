@@ -8,8 +8,11 @@
 
 import UIKit
 import TextFieldEffects
+import InputMask
 
-class LOAdicionarCartaoController: UITableViewController, UICollectionViewDelegate, UICollectionViewDataSource {
+class LOAdicionarCartaoController: UITableViewController, UICollectionViewDelegate, UICollectionViewDataSource, MaskedTextFieldDelegateListener {
+    
+    var maskedDelegate: MaskedTextFieldDelegate!
     
     @IBOutlet weak var textoExplicativoCabecalho: UILabel!
     @IBOutlet weak var collectionBandeiras : UICollectionView! {
@@ -18,7 +21,11 @@ class LOAdicionarCartaoController: UITableViewController, UICollectionViewDelega
             collectionBandeiras.dataSource = self
         }
     }
-    @IBOutlet weak var numeroCartao: HoshiTextField!
+    @IBOutlet weak var numeroCartao: HoshiTextField! {
+        didSet {
+            numeroCartao.delegate = self
+        }
+    }
     @IBOutlet weak var nomeCartao: HoshiTextField!
     @IBOutlet weak var cvv: HoshiTextField!
     @IBOutlet weak var mesValidade: HoshiTextField!
@@ -33,6 +40,11 @@ class LOAdicionarCartaoController: UITableViewController, UICollectionViewDelega
     var arrayCells = Array<LOBandeiraCell>()
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        maskedDelegate = MaskedTextFieldDelegate(format: "[0000] [0000] [0000] [0000]")
+        maskedDelegate.listener = self
+        
+        numeroCartao.delegate = maskedDelegate
         
         self.navigationItem.titleView = titleViewCustom
     }

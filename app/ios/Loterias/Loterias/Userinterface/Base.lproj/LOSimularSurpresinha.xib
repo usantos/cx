@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
+        <array key="Arial.ttf">
+            <string>ArialMT</string>
+        </array>
         <array key="FuturaStd-Bold.otf">
             <string>FuturaStd-Bold</string>
         </array>
@@ -172,7 +176,7 @@ ao carrinho de apostas</string>
                             </constraints>
                         </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Surpresinha" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9qi-FQ-fHV">
-                            <rect key="frame" x="125" y="27" width="126" height="20"/>
+                            <rect key="frame" x="134" y="27" width="107.5" height="20"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="20" id="smn-rc-iYs"/>
                             </constraints>
@@ -284,6 +288,7 @@ Surpresinhas quer apostar neste concurso.</string>
                 <constraint firstItem="FWd-ES-RtJ" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="HQl-0G-2GN"/>
                 <constraint firstAttribute="bottom" secondItem="FWd-ES-RtJ" secondAttribute="bottom" id="R9f-wj-AAx"/>
                 <constraint firstAttribute="trailing" secondItem="FWd-ES-RtJ" secondAttribute="trailing" id="gsh-NG-6iK"/>
+                <constraint firstItem="FWd-ES-RtJ" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" id="vZi-v1-FcL"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="32.5" y="33"/>

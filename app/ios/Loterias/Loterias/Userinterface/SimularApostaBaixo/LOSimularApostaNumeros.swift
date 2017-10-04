@@ -156,10 +156,19 @@ class LOSimularApostaNumeros: UIView, UICollectionViewDelegateFlowLayout, UIColl
             apresentaLimparApostas(hidden: false)
         }
         
+        //Setar no lugar do 5 o número que o usuário escolher na popup.
+        //No 4 o número - 1
         if arraySelecionados.count == 5 {
             apresentaSalvarAposta(hidden: false)
         } else if arraySelecionados.count == 4 && !salvarAposta.isHidden {
             apresentaSalvarAposta(hidden: true)
+        }
+        
+        //Igual ao numero + 1
+        if flagApostaSalva == true && arraySelecionados.count == 6{
+            retornaSalvarApostaParaStatusInicial()
+    
+            apresentaSalvarAposta(hidden: false)
         }
     }
     
@@ -169,7 +178,7 @@ class LOSimularApostaNumeros: UIView, UICollectionViewDelegateFlowLayout, UIColl
         } else {
             verticalLayoutConstraint.constant = verticalLayoutConstraint.constant + 50
         }
-        UIView.transition(with: limpar, duration: 0.5, options: .transitionCrossDissolve, animations: { _ in
+        UIView.transition(with: limpar, duration: 0.5, options: .transitionCrossDissolve, animations: {
             self.limpar.isHidden = hidden
         }, completion: nil)
     }
@@ -181,11 +190,11 @@ class LOSimularApostaNumeros: UIView, UICollectionViewDelegateFlowLayout, UIColl
             verticalLayoutConstraint.constant = verticalLayoutConstraint.constant + 150
         }
         
-        UIView.transition(with: salvarAposta, duration: 0.5, options: .transitionFlipFromBottom, animations: { _ in
+        UIView.transition(with: salvarAposta, duration: 0.5, options: .transitionFlipFromBottom, animations: {
             self.salvarAposta.isHidden = hidden
         }, completion: nil)
         
-        UIView.transition(with: viewNomeAposta, duration: 0.5, options: .transitionFlipFromBottom, animations: { _ in
+        UIView.transition(with: viewNomeAposta, duration: 0.5, options: .transitionFlipFromBottom, animations: {
             self.viewNomeAposta.isHidden = hidden
         }, completion: nil)
     }
@@ -197,8 +206,30 @@ class LOSimularApostaNumeros: UIView, UICollectionViewDelegateFlowLayout, UIColl
         }
         apresentaLimparApostas(hidden: true)
         apresentaSalvarAposta(hidden: true)
+        retornaSalvarApostaParaStatusInicial()
         
         collectionViewNumeros.reloadData()
+    }
+    
+    func retornaSalvarApostaParaStatusInicial () {
+        salvarAposta.backgroundColor = self.UIColorFromHex(0x4E596B, alpha: 1.0)
+        salvarAposta.setImage(#imageLiteral(resourceName: "icon-favoritar"), for: .normal)
+        salvarAposta.setTitle("Salve esta aposta :)", for: .normal)
+        nomeAposta.text = ""
+        //Chegando a imagem mais para esquerda.
+        if UIScreen.main.bounds.width == 320 {
+            salvarAposta.imageEdgeInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 0)
+            salvarAposta.titleEdgeInsets = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 0)
+        }
+
+        //Forçando chamada do método resizeCollectionViewSize() para diminuir a scroll.
+        verticalLayoutConstraint.constant = verticalLayoutConstraint.constant - 60
+        
+        //Sumindo com a view do nome da aposta.
+        heightViewNomeConstraint.constant = 84
+        viewNomeAposta.isHidden = true
+        salvarAposta.isHidden = true
+        flagApostaSalva = false
     }
     
     func resizeCollectionViewSize() {
@@ -297,7 +328,6 @@ class LOSimularApostaNumeros: UIView, UICollectionViewDelegateFlowLayout, UIColl
         }
         
         self.layoutIfNeeded()
-        
     }
     
     func willDisappearSimularNumeros() {

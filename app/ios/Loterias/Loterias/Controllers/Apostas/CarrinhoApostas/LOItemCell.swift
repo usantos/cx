@@ -143,13 +143,13 @@ class LOItemCell: UITableViewCell {
         }
     }
     
-    func didTap(sender : UITapGestureRecognizer) {
+    @objc func didTap(sender : UITapGestureRecognizer) {
         UIView.animate(withDuration: self.animationDuration, delay: self.animationDelay, usingSpringWithDamping: self.animationSpingDamping, initialSpringVelocity: self.animationInitialVelocity, options: self.animationOptions, animations: { () -> Void in
             self.contentView.frame.origin.x = 0
         }, completion: nil)
     }
     
-    func didPan(sender: UIPanGestureRecognizer) {
+    @objc func didPan(sender: UIPanGestureRecognizer) {
         switch sender.state {
         case .began:
             self.delegate?.swipeableTableViewCellDidRecognizeSwipe(cell: self)
@@ -225,7 +225,7 @@ class LOItemCell: UITableViewCell {
         }
     }
     
-    func didTapButton(sender:UIButton!) {
+    @objc func didTapButton(sender:UIButton!) {
         if let d = delegate {
             if let l = self.leftButton {
                 if sender == l {
