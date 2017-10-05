@@ -24,6 +24,8 @@ class LOCadastroPassoDoisController: UITableViewController, LOCadastroPassoDoisD
         self.tableView.estimatedRowHeight = 140
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.tableFooterView = UITableViewHeaderFooterView()
+        
+        self.addRightIconOnNavigation(image: #imageLiteral(resourceName: "icon-loteria"))
     }
 
     override func didReceiveMemoryWarning() {
@@ -112,6 +114,7 @@ class LOCadastroPassoDoisController: UITableViewController, LOCadastroPassoDoisD
             break
         }
     }
+
     /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {

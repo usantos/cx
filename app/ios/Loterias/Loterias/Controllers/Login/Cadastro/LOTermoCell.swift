@@ -10,6 +10,8 @@ import UIKit
 
 class LOTermoCell: UITableViewCell {
 
+    var selecionado : Bool = false
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -19,6 +21,16 @@ class LOTermoCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
+    }
+    
+    @IBAction func trocaCheckSalvarCartao (sender: UIButton) {
+        if !selecionado {
+            sender.setImage(#imageLiteral(resourceName: "icon-check"), for: .normal)
+            selecionado = true
+        } else {
+            sender.setImage(#imageLiteral(resourceName: "icon-uncheck"), for: .normal)
+            selecionado = false
+        }
     }
     
     @IBOutlet var termosDeUso : UIButton! {

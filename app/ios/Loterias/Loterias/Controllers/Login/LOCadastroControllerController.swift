@@ -50,6 +50,7 @@ class LOCadastroControllerController: UITableViewController, UITextFieldDelegate
         self.navigationController?.navigationBar.barTintColor = UIColor(red: 0.0/255.0, green: 118.0/255.0, blue: 183.0/255.0, alpha: 1.0)
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.tintColor = .white
         
         maskedDelegateCpf = MaskedTextFieldDelegate(format: "[000].[000].[000]-[00]")
         maskedDelegateCpf.listener = self

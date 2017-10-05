@@ -55,6 +55,14 @@ class LORepassesSociaisController: UITableViewController {
         let cell : UITableViewCell?
         if indexPath.row == 0 {
             cell = tableView.dequeueReusableCell(withIdentifier: "cabecalhoCell", for: indexPath)
+            
+            gradient.frame = CGRect(x: 0, y: 0, width: (cell?.contentView.frame.width)!, height: (cell?.contentView.frame.height)!)
+            gradient.startPoint = CGPoint(x: 0.0, y: 0.5)
+            gradient.endPoint = CGPoint(x: 1.0, y: 0.5)
+            gradient.colors = [self.UIColorFromHex(0x54bbab, alpha: 1.0).cgColor, self.UIColorFromHex(0x005ca9, alpha: 1.0).cgColor]
+            gradient.name = "gradientView"
+            
+            cell?.contentView.layer.insertSublayer(gradient, at: 0)
         } else {
             cell = tableView.dequeueReusableCell(withIdentifier: "rodapeCell", for: indexPath)
 

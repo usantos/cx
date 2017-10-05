@@ -234,7 +234,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cadastrar" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="26K-A5-di0">
-                                                    <rect key="frame" x="16" y="16" width="75" height="21"/>
+                                                    <rect key="frame" x="16" y="16" width="88" height="21"/>
                                                     <fontDescription key="fontDescription" name="FuturaStd-Bold" family="Futura Std" pointSize="17"/>
                                                     <color key="textColor" red="0.28235294117647058" green="0.34509803921568627" blue="0.42352941176470588" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -876,6 +876,9 @@ Para começar, informe os dados abaixo:</string>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="VKM-9z-Qg0">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <textAttributes key="largeTitleTextAttributes">
+                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        </textAttributes>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
@@ -886,7 +889,7 @@ Para começar, informe os dados abaixo:</string>
             </objects>
             <point key="canvasLocation" x="1628" y="-384"/>
         </scene>
-        <!--Cadastro Passo Dois Controller-->
+        <!--Loterias Caixa-->
         <scene sceneID="35D-Fh-9de">
             <objects>
                 <tableViewController id="VGk-if-dRR" customClass="LOCadastroPassoDoisController" customModule="Loterias" customModuleProvider="target" sceneMemberID="viewController">
@@ -903,7 +906,7 @@ Para começar, informe os dados abaixo:</string>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cadastrar" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YzK-YV-18S">
-                                            <rect key="frame" x="16" y="16" width="75" height="21"/>
+                                            <rect key="frame" x="16" y="16" width="88" height="21"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="21" id="XDr-yf-ioj"/>
                                             </constraints>
@@ -945,7 +948,7 @@ de seu endereço, CEP ou código.</string>
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VnU-rV-YRg">
-                                            <rect key="frame" x="16" y="49" width="215.5" height="40"/>
+                                            <rect key="frame" x="16" y="49" width="205" height="40"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="40" id="GKS-jl-KEN"/>
                                             </constraints>
@@ -1261,6 +1264,9 @@ uma lotérica de sua preferência.</string>
                                                 <constraint firstAttribute="width" constant="44" id="CF3-vU-kKi"/>
                                             </constraints>
                                             <state key="normal" image="icon-uncheck"/>
+                                            <connections>
+                                                <action selector="trocaCheckSalvarCartaoWithSender:" destination="gPT-l9-dQU" eventType="touchUpInside" id="Qdy-cp-zSb"/>
+                                            </connections>
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jyp-HL-dlb">
                                             <rect key="frame" x="43" y="59" width="96" height="21"/>
@@ -1362,6 +1368,49 @@ uma lotérica de sua preferência.</string>
                                 <color key="backgroundColor" red="0.93725490196078431" green="0.96078431372549022" blue="0.96470588235294119" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <inset key="separatorInset" minX="1000" minY="0.0" maxX="0.0" maxY="0.0"/>
                             </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="lotericaCell" rowHeight="60" id="yUR-0H-PUQ">
+                                <rect key="frame" x="0.0" y="729" width="375" height="60"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="yUR-0H-PUQ" id="cxL-SA-cbt">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="59.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0uk-Vi-zDo">
+                                            <rect key="frame" x="51" y="11" width="316" height="20.5"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tag-nd-OXn">
+                                            <rect key="frame" x="51" y="32.5" width="316" height="20.5"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" red="0.3294117647" green="0.73333333329999995" blue="0.6705882353" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RH1-10-j3E">
+                                            <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="44" id="9XJ-tm-V51"/>
+                                                <constraint firstAttribute="width" constant="44" id="Q8A-68-agv"/>
+                                            </constraints>
+                                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="12"/>
+                                            <state key="normal" image="icon-radio-uncheck"/>
+                                        </button>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="bottom" secondItem="RH1-10-j3E" secondAttribute="bottom" constant="15.5" id="HMI-Oz-b6h"/>
+                                        <constraint firstItem="0uk-Vi-zDo" firstAttribute="leading" secondItem="RH1-10-j3E" secondAttribute="trailing" constant="7" id="L9W-Cu-NjS"/>
+                                        <constraint firstItem="tag-nd-OXn" firstAttribute="top" secondItem="0uk-Vi-zDo" secondAttribute="bottom" constant="1" id="MQj-8T-XaM"/>
+                                        <constraint firstItem="RH1-10-j3E" firstAttribute="leading" secondItem="cxL-SA-cbt" secondAttribute="leading" id="PM6-w5-QEv"/>
+                                        <constraint firstAttribute="bottom" secondItem="tag-nd-OXn" secondAttribute="bottom" constant="6.5" id="Pgj-Jt-rbL"/>
+                                        <constraint firstItem="tag-nd-OXn" firstAttribute="leading" secondItem="RH1-10-j3E" secondAttribute="trailing" constant="7" id="iC8-1d-nT3"/>
+                                        <constraint firstAttribute="trailing" secondItem="tag-nd-OXn" secondAttribute="trailing" constant="8" id="kZD-0o-SqI"/>
+                                        <constraint firstAttribute="trailing" secondItem="0uk-Vi-zDo" secondAttribute="trailing" constant="8" id="nXT-sZ-ia6"/>
+                                        <constraint firstItem="0uk-Vi-zDo" firstAttribute="top" secondItem="cxL-SA-cbt" secondAttribute="top" constant="11" id="vxp-Z4-JO1"/>
+                                        <constraint firstItem="tag-nd-OXn" firstAttribute="top" secondItem="0uk-Vi-zDo" secondAttribute="bottom" constant="1" id="yJY-wb-NQt"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                            </tableViewCell>
                         </prototypes>
                         <sections/>
                         <connections>
@@ -1369,6 +1418,9 @@ uma lotérica de sua preferência.</string>
                             <outlet property="delegate" destination="VGk-if-dRR" id="yuz-Td-N16"/>
                         </connections>
                     </tableView>
+                    <navigationItem key="navigationItem" title="Loterias Caixa" id="PGE-9Y-duf">
+                        <barButtonItem key="backBarButtonItem" title=" " id="Kau-Kz-qpJ"/>
+                    </navigationItem>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="375" height="890"/>
                 </tableViewController>
@@ -1483,6 +1535,7 @@ realizará suas apostas.
         <image name="icon-fim-cadastro" width="60" height="54"/>
         <image name="icon-passo1" width="52" height="20"/>
         <image name="icon-passo2" width="52" height="20"/>
+        <image name="icon-radio-uncheck" width="20" height="20"/>
         <image name="icon-uncheck" width="20" height="20"/>
     </resources>
 </document>
