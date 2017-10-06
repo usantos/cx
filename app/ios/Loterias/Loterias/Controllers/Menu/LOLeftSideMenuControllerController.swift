@@ -9,8 +9,6 @@
 import UIKit
 
 class LOLeftSideMenuControllerController: UITableViewController {
-
-    @IBOutlet var footerView : UIView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,6 +19,8 @@ class LOLeftSideMenuControllerController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
         self.navigationController?.isNavigationBarHidden = true
+        
+        self.tableView.tableFooterView = UITableViewHeaderFooterView()
     }
 
     override func didReceiveMemoryWarning() {
@@ -29,25 +29,15 @@ class LOLeftSideMenuControllerController: UITableViewController {
     }
 
     // MARK: - Table view data source
-
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 1
-    }
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 8
-    }
-    
-    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        return self.footerView
-    }
     
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 44
     }
-
+    
+    @IBAction func logout () {
+        self.performSegue(withIdentifier: "logout", sender: self)
+    }
+    
     /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)

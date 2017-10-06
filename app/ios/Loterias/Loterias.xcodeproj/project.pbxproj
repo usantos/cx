@@ -71,6 +71,7 @@
 		A63231561F72F39B0004F327 /* LOCarrinhoApostasController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A63231551F72F39B0004F327 /* LOCarrinhoApostasController.swift */; };
 		A63231581F72F3BA0004F327 /* LOItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A63231571F72F3BA0004F327 /* LOItemCell.swift */; };
 		A632315B1F7458A50004F327 /* LORepassesSociaisController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A632315A1F7458A40004F327 /* LORepassesSociaisController.swift */; };
+		A65247711F87A9BD00E12A8D /* LOLotericaCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A65247701F87A9BD00E12A8D /* LOLotericaCell.swift */; };
 		A6710E171F826D5300854BD4 /* LOSSOController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6710E161F826D5300854BD4 /* LOSSOController.swift */; };
 		A69224BB1F6AEBFF00D319AC /* LOSimularApostaNumeros.swift in Sources */ = {isa = PBXBuildFile; fileRef = A69224AC1F6AC62F00D319AC /* LOSimularApostaNumeros.swift */; };
 		A69225061F6AFCDE00D319AC /* LOSimularApostaNumeros.xib in Resources */ = {isa = PBXBuildFile; fileRef = A69225031F6AFC7A00D319AC /* LOSimularApostaNumeros.xib */; };
@@ -181,6 +182,7 @@
 		A63231551F72F39B0004F327 /* LOCarrinhoApostasController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LOCarrinhoApostasController.swift; path = Controllers/Apostas/CarrinhoApostas/LOCarrinhoApostasController.swift; sourceTree = "<group>"; };
 		A63231571F72F3BA0004F327 /* LOItemCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LOItemCell.swift; path = Controllers/Apostas/CarrinhoApostas/LOItemCell.swift; sourceTree = "<group>"; };
 		A632315A1F7458A40004F327 /* LORepassesSociaisController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LORepassesSociaisController.swift; path = "Controllers/Repasses Sociais/LORepassesSociaisController.swift"; sourceTree = "<group>"; };
+		A65247701F87A9BD00E12A8D /* LOLotericaCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LOLotericaCell.swift; path = Controllers/Login/Cadastro/LOLotericaCell.swift; sourceTree = "<group>"; };
 		A6710E161F826D5300854BD4 /* LOSSOController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LOSSOController.swift; path = Controllers/Login/LOSSOController.swift; sourceTree = "<group>"; };
 		A6895A511F6B16DE00420274 /* LONumeroApostaCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LONumeroApostaCell.xib; sourceTree = "<group>"; };
 		A69224AC1F6AC62F00D319AC /* LOSimularApostaNumeros.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LOSimularApostaNumeros.swift; path = Userinterface/SimularApostaBaixo/LOSimularApostaNumeros.swift; sourceTree = "<group>"; };
@@ -251,6 +253,7 @@
 				A60615281F670001002191C3 /* LOOptionsCell.swift */,
 				A606152A1F670021002191C3 /* LOTermoCell.swift */,
 				A606152E1F670055002191C3 /* LOLocalizacaoCell.swift */,
+				A65247701F87A9BD00E12A8D /* LOLotericaCell.swift */,
 			);
 			name = Cadastro;
 			sourceTree = "<group>";
@@ -778,6 +781,7 @@
 				A617DBF31F58762500D257B7 /* LOLoginController.swift in Sources */,
 				A63231581F72F3BA0004F327 /* LOItemCell.swift in Sources */,
 				A606152F1F670055002191C3 /* LOLocalizacaoCell.swift in Sources */,
+				A65247711F87A9BD00E12A8D /* LOLotericaCell.swift in Sources */,
 				A60615371F680E41002191C3 /* LOModalidesPageController.swift in Sources */,
 				A6EC217E1F8285F100BD6825 /* LOAjudaController.swift in Sources */,
 				A60615341F671F79002191C3 /* LOLeftSideMenuControllerController.swift in Sources */,

@@ -21,6 +21,7 @@ extension UITextField {
 }
 
 extension NSObject {
+    
     func UIColorFromHex(_ hex: UInt, alpha: Float) -> UIColor {
         return UIColor(
             red: CGFloat((hex & 0xFF0000) >> 16) / 255.0,
@@ -73,7 +74,7 @@ extension UIViewController {
         
         let overlayView = UIView()
         let activityIndicator = UIActivityIndicatorView()
-
+        
         overlayView.frame = UIScreen.main.bounds
         overlayView.center = CGPoint(x: UIScreen.main.bounds.width / 2.0, y: UIScreen.main.bounds.height / 2.0)
         overlayView.backgroundColor = UIColor.white

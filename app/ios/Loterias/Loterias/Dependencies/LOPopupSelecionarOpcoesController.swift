@@ -8,8 +8,19 @@
 
 import UIKit
 
-class LOPopupSelecionarOpcoesController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+public protocol LOPopupDelegate: class {
+    func didSelect(string : String, sender: UITextField)
+}
 
+class LOPopupSelecionarOpcoesController : UIViewController, UITableViewDelegate, UITableViewDataSource {
+
+    var arrayDados : Array<String>!
+    var tituloPopup : String!
+    var senderText: UITextField!
+    
+    var delegate : LOPopupDelegate!
+    var selectedOption : String!
+    
     @IBOutlet weak var tituloDados: UILabel!
     @IBOutlet weak var tableView: UITableView! {
         didSet {
@@ -33,7 +44,12 @@ class LOPopupSelecionarOpcoesController: UIViewController, UITableViewDelegate, 
     }
     
     @IBAction func confirmarSelecao(_ sender: UIButton) {
-        
+        if selectedOption != nil {
+            self.delegate.didSelect(string: selectedOption, sender: senderText)
+            self.dismiss(animated: true, completion: nil)
+        } else {
+            self.alertSimple(title: "Atenção", message: "Selecione uma opção ou clique em cancelar para sair.")
+        }
     }
         
     @IBAction func cancelarSelecao(_ sender: UIButton) {
@@ -41,7 +57,9 @@ class LOPopupSelecionarOpcoesController: UIViewController, UITableViewDelegate, 
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         self.view.backgroundColor = UIColor(red: 78.0/255.0, green: 89.0/255.0, blue: 107.0/255.0, alpha: 0.9)
+        self.tituloDados.text = tituloPopup
     }
 
     override func didReceiveMemoryWarning() {
@@ -53,15 +71,19 @@ class LOPopupSelecionarOpcoesController: UIViewController, UITableViewDelegate, 
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 4
+        return arrayDados.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell : LOPopupItensCell = tableView.dequeueReusableCell(withIdentifier: "celulaPadrao") as! LOPopupItensCell
         
-        cell.titulo.text = "Teste"
+        cell.titulo.text = arrayDados[indexPath.row]
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        selectedOption = arrayDados[indexPath.row]
     }
 
     /*

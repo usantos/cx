@@ -234,7 +234,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cadastrar" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="26K-A5-di0">
-                                                    <rect key="frame" x="16" y="16" width="88" height="21"/>
+                                                    <rect key="frame" x="16" y="16" width="75" height="21"/>
                                                     <fontDescription key="fontDescription" name="FuturaStd-Bold" family="Futura Std" pointSize="17"/>
                                                     <color key="textColor" red="0.28235294117647058" green="0.34509803921568627" blue="0.42352941176470588" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -729,12 +729,12 @@ Para começar, informe os dados abaixo:</string>
         <!--Popup Selecionar Opcoes Controller-->
         <scene sceneID="clp-Yv-Jzr">
             <objects>
-                <viewController id="GHv-pe-6bR" customClass="LOPopupSelecionarOpcoesController" customModule="Loterias" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LOPopupSelecionarOpcoesController" id="GHv-pe-6bR" customClass="LOPopupSelecionarOpcoesController" customModule="Loterias" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="SAv-gn-XHS"/>
                         <viewControllerLayoutGuide type="bottom" id="PUL-Fd-l5N"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="Y38-fb-Jum">
+                    <view key="view" clipsSubviews="YES" contentMode="scaleToFill" id="Y38-fb-Jum">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -906,7 +906,7 @@ Para começar, informe os dados abaixo:</string>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cadastrar" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YzK-YV-18S">
-                                            <rect key="frame" x="16" y="16" width="88" height="21"/>
+                                            <rect key="frame" x="16" y="16" width="75" height="21"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="21" id="XDr-yf-ioj"/>
                                             </constraints>
@@ -948,7 +948,7 @@ de seu endereço, CEP ou código.</string>
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VnU-rV-YRg">
-                                            <rect key="frame" x="16" y="49" width="205" height="40"/>
+                                            <rect key="frame" x="16" y="49" width="215.5" height="40"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="40" id="GKS-jl-KEN"/>
                                             </constraints>
@@ -1368,7 +1368,7 @@ uma lotérica de sua preferência.</string>
                                 <color key="backgroundColor" red="0.93725490196078431" green="0.96078431372549022" blue="0.96470588235294119" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <inset key="separatorInset" minX="1000" minY="0.0" maxX="0.0" maxY="0.0"/>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="lotericaCell" rowHeight="60" id="yUR-0H-PUQ">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="lotericaCell" rowHeight="60" id="yUR-0H-PUQ" customClass="LOLotericaCell" customModule="Loterias" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="729" width="375" height="60"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="yUR-0H-PUQ" id="cxL-SA-cbt">
@@ -1395,6 +1395,9 @@ uma lotérica de sua preferência.</string>
                                             </constraints>
                                             <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="12"/>
                                             <state key="normal" image="icon-radio-uncheck"/>
+                                            <connections>
+                                                <action selector="trocaRadioButtonWithSender:" destination="yUR-0H-PUQ" eventType="touchUpInside" id="jBO-NI-bYa"/>
+                                            </connections>
                                         </button>
                                     </subviews>
                                     <constraints>
@@ -1410,6 +1413,10 @@ uma lotérica de sua preferência.</string>
                                         <constraint firstItem="tag-nd-OXn" firstAttribute="top" secondItem="0uk-Vi-zDo" secondAttribute="bottom" constant="1" id="yJY-wb-NQt"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="codigoLoterica" destination="tag-nd-OXn" id="v54-pe-nQp"/>
+                                    <outlet property="nomeLoterica" destination="0uk-Vi-zDo" id="sA9-s5-ILA"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <sections/>

@@ -93,8 +93,13 @@ class LOCadastroPassoDoisController: UITableViewController, LOCadastroPassoDoisD
         
         self.arrayDeCelulas.append(opcoesCell)
         arrayDeCelulas.removeSubrange(3..<arrayDeCelulas.count)
-
+        
         self.arrayDeCelulas.append(tableView.dequeueReusableCell(withIdentifier: "cepCell")!)
+        
+        self.arrayDeCelulas.append(tableView.dequeueReusableCell(withIdentifier: "lotericaCell")!)
+        self.arrayDeCelulas.append(tableView.dequeueReusableCell(withIdentifier: "lotericaCell")!)
+        self.arrayDeCelulas.append(tableView.dequeueReusableCell(withIdentifier: "lotericaCell")!)
+
         self.arrayDeCelulas.append(tableView.dequeueReusableCell(withIdentifier: "termoCell")!)
         self.arrayDeCelulas.append(tableView.dequeueReusableCell(withIdentifier: "finalizarCell")!)
 

@@ -10,7 +10,7 @@ import UIKit
 import TextFieldEffects
 import InputMask
 
-class LOCadastroControllerController: UITableViewController, UITextFieldDelegate, MaskedTextFieldDelegateListener {
+class LOCadastroControllerController: UITableViewController, UITextFieldDelegate, MaskedTextFieldDelegateListener, LOPopupDelegate {
     
     var maskedDelegateCpf: MaskedTextFieldDelegate!
     var maskedDelegateDtNascimento: MaskedTextFieldDelegate!
@@ -76,10 +76,45 @@ class LOCadastroControllerController: UITableViewController, UITextFieldDelegate
         switch textField {
             
         case self.uf:
-            self.performSegue(withIdentifier: "mandarParaPopup", sender: self)
+            let loadingView = self.addLoadingView(alpha: 0.8)
+            LORegisterBusinessService().getUfs(parameters: [:], completionHandler: { (error, listaCidades) in
+                loadingView.removeFromSuperview()
+                if error != nil {
+                    
+                } else {
+                    let storyboard = UIStoryboard(name: "Login", bundle: nil)
+                    let controller = storyboard.instantiateViewController(withIdentifier: "LOPopupSelecionarOpcoesController") as? LOPopupSelecionarOpcoesController
+                    var arrayUfs = Array<String>()
+                    for objCidade in (listaCidades?.payload)! {
+                        arrayUfs.append(objCidade.sigla!)
+                    }
+                    controller?.arrayDados = arrayUfs
+                    controller?.tituloPopup = "UF"
+                    controller?.modalPresentationStyle = .overFullScreen
+                    controller?.delegate = self
+                    controller?.senderText = textField
+                    
+                    self.present(controller!, animated: true, completion: nil)
+                }
+            })
             return false
         case self.municipio:
-            self.performSegue(withIdentifier: "mandarParaPopup", sender: self)
+            let storyboard = UIStoryboard(name: "Login", bundle: nil)
+            let controller = storyboard.instantiateViewController(withIdentifier: "LOPopupSelecionarOpcoesController") as? LOPopupSelecionarOpcoesController
+            var arrayUfs = Array<String>()
+            
+            //RETIRAR MOCK
+            arrayUfs.append("Brasilia")
+            arrayUfs.append("Taguatinga")
+            arrayUfs.append("Asa norte")
+            
+            controller?.arrayDados = arrayUfs
+            controller?.tituloPopup = "Município"
+            controller?.modalPresentationStyle = .overFullScreen
+            controller?.delegate = self
+            controller?.senderText = textField
+            
+            self.present(controller!, animated: true, completion: nil)
             return false
         default:
             break
@@ -121,6 +156,10 @@ class LOCadastroControllerController: UITableViewController, UITextFieldDelegate
     
     @IBAction func dismiss () {
         self.dismiss(animated: true, completion: nil)
+    }
+    
+    func didSelect(string: String, sender: UITextField) {
+        sender.text = string
     }
 
     /*
