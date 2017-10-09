@@ -21,6 +21,7 @@ import caixa.gov.br.loterias.ui.Inteface.CartelaActivityInterface;
 import caixa.gov.br.loterias.ui.fragment.CartelaFragment;
 import caixa.gov.br.loterias.ui.fragment.CartelaFragment.CartelaFragmentListener;
 import caixa.gov.br.loterias.ui.fragment.CartelaFragment.OnFragmentInteractionListener;
+import caixa.gov.br.loterias.ui.fragment.SurpresinhaFragment;
 import caixa.gov.br.loterias.utils.ColorEnum;
 import caixa.gov.br.loterias.utils.TipoApostaEnum;
 import caixa.gov.br.loterias.utils.ViewUtils;
@@ -53,6 +54,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
     // Fragments
     FragmentManager fragmentManager;
     CartelaFragment cartelaFragment;
+    SurpresinhaFragment surpresinhaFragment;
 
     private CartelaActivityInterface cartelaActivityInterface ;
 
@@ -80,6 +82,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         fragmentManager = getSupportFragmentManager();
 
         cartelaFragment = new CartelaFragment();
+        surpresinhaFragment = new SurpresinhaFragment();
         cartelaActivityInterface = cartelaFragment;
 
         FragmentManager fm = getSupportFragmentManager();
@@ -124,6 +127,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         bundle.putSerializable("typeGameColorLight", typeGameColorLight);
         bundle.putSerializable("typeGameColorDark", typeGameColorDark);
         cartelaFragment.setArguments(bundle);
+        surpresinhaFragment.setArguments(bundle);
 
         atualizaTextoBotoesQtdSelecionadas();
         simularTelaAposta.setBackgroundResource(R.drawable.icon_seleciona);
@@ -154,7 +158,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
                 if((fragmentManager.findFragmentById(R.id.fragmentSimularApostas) instanceof CartelaFragment)){
                     fragmentManager.beginTransaction().show(fragmentManager.findFragmentById(R.id.fragmentSimularApostas)).commit();
                 } else {
-                    fragmentManager.beginTransaction().add(R.id.fragmentSimularApostas, cartelaFragment).commit();
+                    fragmentManager.beginTransaction().replace(R.id.fragmentSimularApostas, cartelaFragment).commit();
                 }
 //                if(fragmentManager.findFragmentByTag("two") != null){
 //                    //if the other fragment is visible, hide it.
@@ -168,7 +172,11 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
                 break;
 
             case R.id.surpresinhaTela: {
-                fragmentManager.beginTransaction().hide(fragmentManager.findFragmentById(R.id.fragmentSimularApostas)).commit();
+                if((fragmentManager.findFragmentById(R.id.fragmentSimularApostas) instanceof SurpresinhaFragment)){
+                    fragmentManager.beginTransaction().show(fragmentManager.findFragmentById(R.id.fragmentSimularApostas)).commit();
+                } else {
+                    fragmentManager.beginTransaction().replace(R.id.fragmentSimularApostas, surpresinhaFragment).commit();
+                }
 
                 simularTelaAposta.setBackgroundResource(R.drawable.icon_seleciona2);
                 surpresinhaTela.setBackgroundResource(R.drawable.icon_surpresinha2);
@@ -236,6 +244,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
     public void onFragmentInteraction(Uri uri) {
 
     }
+
 
 
     // MÉTODOS DO FRAGMENT CARTELAFRAGMENTLISTENER

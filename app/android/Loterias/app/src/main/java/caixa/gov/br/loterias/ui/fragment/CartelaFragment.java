@@ -55,6 +55,7 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
     ColorEnum typeGameColorDark;
 
     Button botaoFinalizar;
+    Button botaoLimparAposta;
 
     SimularDezenasAdapter simularDezenasAdapter;
 
@@ -143,6 +144,7 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        cartelaFragmentListener = null;
     }
 
     // METODO DO PROTOCOLO ONCLICK
@@ -155,6 +157,14 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
                 }else{
                     ViewUtils.alert(getActivity(), "Botão completar com números aleatórios pressionado");
                 }
+            }
+            break;
+
+            case R.id.botaoLimparAposta:{
+                dezenasSelecionadas.clear();
+                verificaSeMostraBotaoLimparAposta(getView());
+                verificaQtdDezenasJaSelecionadas();
+                simularDezenasAdapter.notifyDataSetChanged();
             }
             break;
 
@@ -184,6 +194,9 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
 
         TextView textInfoCarrinho = fragmentView.findViewById(R.id.textInfoCarrinho);
         textInfoCarrinho.setOnClickListener(this);
+
+        botaoLimparAposta = fragmentView.findViewById(R.id.botaoLimparAposta);
+        botaoLimparAposta.setOnClickListener(this);
     }
 
     private void verificaSeMostraBotaoLimparAposta(View fragmentView){
@@ -207,7 +220,7 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
     private void configuraListaDezenas(View fragmentView){
         listaDezenas = fragmentView.findViewById(R.id.listaDezenas);
         listaDezenas.setExpanded(true);
-        simularDezenasAdapter = new SimularDezenasAdapter(getActivity());
+        simularDezenasAdapter = new SimularDezenasAdapter(getActivity(), dezenas);
         listaDezenas.setAdapter(simularDezenasAdapter);
 
         listaDezenas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -239,21 +252,23 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
     }
 
     // Adapter do gridview das dezenas
-    private class SimularDezenasAdapter extends BaseAdapter {
+    public class SimularDezenasAdapter extends BaseAdapter {
         private Context context;
+        private String[] rows;
 
-        SimularDezenasAdapter(Context context){
+        SimularDezenasAdapter(Context context, String[] activitData){
             this.context = context;
+            rows = activitData;
         }
 
         @Override
         public int getCount() {
-            return dezenas.length;
+            return rows.length;
         }
 
         @Override
         public Object getItem(int i) {
-            return dezenas[i];
+            return rows[i];
         }
 
         @Override
@@ -273,7 +288,7 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
                 textView = (TextView) view;
             }
 
-            if (dezenasSelecionadas.contains(dezenas[i])){
+            if (dezenasSelecionadas.contains(rows[i])){
                 shape.setColor(Color.parseColor(typeGameColorLight.toString()));
                 textView.setTextColor(Color.WHITE);
             }else{

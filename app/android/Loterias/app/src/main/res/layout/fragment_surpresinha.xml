@@ -1,0 +1,242 @@
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="false"
+    android:orientation="vertical">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/surpresinhaInfo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="75dp"
+            android:layout_marginRight="75dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/surpresinhaInfo"
+            android:textAlignment="center"
+            android:textColor="@color/cinza"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/surpresinhaTitulo"
+            android:layout_marginStart="75dp"
+            android:layout_marginEnd="75dp" />
+
+        <TextView
+            android:id="@+id/surpresinhaTitulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="125dp"
+            android:layout_marginRight="125dp"
+            android:layout_marginTop="41dp"
+            android:text="@string/surpresinhaTitulo"
+            android:textAlignment="center"
+            android:textColor="@color/verdeagua"
+            android:textSize="18sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="125dp"
+            android:layout_marginEnd="125dp" />
+
+        <caixa.gov.br.loterias.ui.custom.ExpandableHeightGridView
+            android:id="@+id/listaDezenasSurpresinha"
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            android:layout_marginEnd="17dp"
+            android:layout_marginLeft="17dp"
+            android:layout_marginRight="17dp"
+            android:layout_marginStart="17dp"
+            android:layout_marginTop="19dp"
+            android:columnWidth="40dp"
+            android:gravity="center_horizontal"
+            android:horizontalSpacing="17dp"
+            android:numColumns="auto_fit"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="9dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/surpresinhaInfo" />
+
+        <TextView
+            android:id="@+id/surpresinhaQtdInfo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="45dp"
+            android:layout_marginRight="45dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/surpresinhaQtdInfo"
+            android:textAlignment="center"
+            android:textColor="@color/cinza"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/listaDezenasSurpresinha"
+            app:layout_constraintHorizontal_bias="0.0"
+            android:layout_marginStart="45dp"
+            android:layout_marginEnd="45dp" />
+
+        <TextView
+            android:id="@+id/qtdSurpresinhasSelecionadas"
+            android:layout_width="88dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:text="1"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/surpresinhaQtdInfo" />
+
+        <Button
+            android:id="@+id/btnMenosSurpresinha"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginEnd="0dp"
+            android:background="@color/verdesenaclaro"
+            android:text="-"
+            android:textColor="@color/branco"
+            android:textSize="24sp"
+            app:layout_constraintRight_toLeftOf="@+id/qtdSurpresinhasSelecionadas"
+            android:layout_marginTop="20dp"
+            app:layout_constraintTop_toBottomOf="@+id/surpresinhaQtdInfo" />
+
+        <Button
+            android:id="@+id/btnMaisSurpresinha"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginLeft="0dp"
+            android:background="@color/verdesenaclaro"
+            android:text="+"
+            android:textColor="@color/branco"
+            android:textSize="24sp"
+            app:layout_constraintLeft_toRightOf="@+id/qtdSurpresinhasSelecionadas"
+            android:layout_marginTop="20dp"
+            app:layout_constraintTop_toBottomOf="@+id/surpresinhaQtdInfo" />
+
+        <Button
+            android:id="@+id/btnAdicionarSurpresinhaAoCarrinho"
+            android:layout_width="184dp"
+            android:layout_height="84dp"
+            android:layout_marginBottom="51dp"
+            android:paddingLeft="14dp"
+            android:paddingRight="14dp"
+            android:text="@string/adicionarAoCarrinho"
+            android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/viewTabBar"
+            app:layout_constraintRight_toLeftOf="@+id/viewTabBar"
+            app:layout_constraintHorizontal_bias="0.499"
+            android:layout_marginTop="40dp"
+            app:layout_constraintTop_toBottomOf="@+id/qtdSurpresinhasSelecionadas" />
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/viewTabBar"
+            android:layout_width="0dp"
+            android:layout_height="94dp"
+            android:layout_marginBottom="0dp"
+            android:background="@color/azulclaro"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/btnAdicionarSurpresinhaAoCarrinho"
+            android:layout_marginTop="42dp">
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="13dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="18dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/imageViewPaginacao"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0">
+
+                <TextView
+                    android:id="@+id/valorAposta"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="7dp"
+                    android:text="R$ 4,50"
+                    android:textAlignment="center"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textInfoValorAposta"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/valorDessaAposta"
+                    android:textAlignment="center"
+                    android:textColor="@color/azulescuro"
+                    android:textSize="12sp" />
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/imageViewPaginacao"
+                android:layout_width="184dp"
+                android:layout_height="12dp"
+                android:layout_marginBottom="20dp"
+                android:contentDescription="@string/imagemCarrinho"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:srcCompat="@drawable/paginacao1" />
+
+            <RelativeLayout
+                android:id="@+id/carrinhoApostas"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="13dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@+id/imageViewPaginacao"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <Button
+                    android:id="@+id/botaoCarrinho"
+                    android:layout_width="34dp"
+                    android:layout_height="40dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/icon_carrinho" />
+
+                <TextView
+                    android:id="@+id/textInfoCarrinho"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/carrinhoDeApostas"
+                    android:textAlignment="center"
+                    android:textColor="@color/azulescuro"
+                    android:textSize="12sp" />
+            </RelativeLayout>
+        </android.support.constraint.ConstraintLayout>
+    </android.support.constraint.ConstraintLayout>
+</ScrollView>
