@@ -27,4 +27,8 @@
     <string name="surpresinhaTitulo">Surpresinha</string>
     <string name="surpresinhaInfo">Na Surpresinha os números ficam mascarados com a interrogação até a efetivação da compra.</string>
     <string name="surpresinhaQtdInfo">Você ainda pode escolher quantas Surpresinhas quer apostar neste concurso.</string>
+
+    <string name="titulo_dialog">Titulo da dialog</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="ok">OK</string>
 </resources>

@@ -17,24 +17,23 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.ui.Inteface.CartelaActivityInterface;
 import caixa.gov.br.loterias.ui.custom.ExpandableHeightGridView;
 import caixa.gov.br.loterias.utils.ColorEnum;
 
-public class SurpresinhaFragment extends Fragment implements OnClickListener {
-    // TODO: Rename parameter arguments, choose names that match
+import static java.lang.String.format;
+
+public class SurpresinhaFragment extends Fragment implements CartelaActivityInterface, OnClickListener {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
     private ExpandableHeightGridView listaDezenas;
-    private ArrayList<String> dezenasSelecionadas = new ArrayList<>();
 
     ColorEnum typeGameColorLight;
     ColorEnum typeGameColorDark;
@@ -52,6 +51,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
     int numeroConcursoAtual;
     String dataSorteioAtual;
     int qtdSurpresinhas = 1;
+    Boolean receberDados = false;
 
     public SurpresinhaFragment() {
         // Required empty public constructor
@@ -61,20 +61,20 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        Bundle bundle = getArguments();
-        if (bundle != null) {
+        configuraBotoes(getView());
+        configuraListaDezenas(getView());
+    }
+
+    public void surpresinhaFragmentBuilder(Bundle dataBundle){
+        if (dataBundle != null) {
             //mocks
-            qtdDezenasPossiveisSelecionado = bundle.getInt("qtdDezenasPossiveisSelecionado");
-            numeroConcursoAtual = bundle.getInt("numeroConcursoAtual");
-            dataSorteioAtual = bundle.getString("dataSorteioAtual");
+            qtdDezenasPossiveisSelecionado = dataBundle.getInt("qtdDezenasPossiveisSelecionado");
+            numeroConcursoAtual = dataBundle.getInt("numeroConcursoAtual");
+            dataSorteioAtual = dataBundle.getString("dataSorteioAtual");
 
-            typeGameColorLight = (ColorEnum) bundle.get("typeGameColorLight");
-            typeGameColorDark = (ColorEnum) bundle.get("typeGameColorDark");
+            typeGameColorLight = (ColorEnum) dataBundle.get("typeGameColorLight");
+            typeGameColorDark = (ColorEnum) dataBundle.get("typeGameColorDark");
         }
-
-        View view = getView();
-        configuraBotoes(view);
-        configuraListaDezenas(view);
     }
 
     @Override
@@ -89,12 +89,18 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_surpresinha, container, false);
+//        View view = inflater.inflate(R.layout.fragment_surpresinha, container, false);
 //        configuraListaDezenas(view);
 //        verificaSeMostraBotaoLimparAposta(view);
-        return view;
+        return inflater.inflate(R.layout.fragment_surpresinha, container, false);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        atualizaDezenaAdapter();
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -108,6 +114,14 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
     }
 
     // METODOS DE CONFIGURACOES
+    private void atualizaDezenaAdapter(){
+        simularDezenasAdapter.rows = montaListaDezenasSurpresinha();
+        simularDezenasAdapter.notifyDataSetChanged();
+
+        TextView text = (TextView) getView().findViewById(R.id.valorAposta);
+        text.setText(format("R$ %.2f", 4.5 * qtdDezenasPossiveisSelecionado));
+    }
+
     private void configuraBotoes(View fragmentView){
         botaoMenosSurpresinha = fragmentView.findViewById(R.id.btnMenosSurpresinha);
         botaoMenosSurpresinha.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.cinzaescuro));
@@ -134,8 +148,8 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         listaDezenas.setAdapter(simularDezenasAdapter);
     }
 
-    private ArrayList montaListaDezenasSurpresinha(){
-        ArrayList arrayDezenas = new ArrayList();
+    private ArrayList<String> montaListaDezenasSurpresinha(){
+        ArrayList<String> arrayDezenas = new ArrayList<>();
         for (int i = 0; i < qtdDezenasPossiveisSelecionado; i++) {
             arrayDezenas.add("XX");
         }
@@ -172,11 +186,11 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
     // Adapter do gridview das dezenas
     private class SurpresinhaGridViewAdapter extends BaseAdapter {
         private Context context;
-        private ArrayList rows;
+        private ArrayList<String> rows;
 
-        SurpresinhaGridViewAdapter(Context context, ArrayList activitData){
+        SurpresinhaGridViewAdapter(Context context, ArrayList<String> activitData){
             this.context = context;
-            rows = activitData;
+            this.rows = activitData;
         }
 
         @Override
@@ -212,10 +226,20 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
             shape.setCornerRadius(50);
             shape.setStroke(1, Color.GRAY);
             textView.setBackground(shape);
-            textView.setText(rows.get(i).toString());
+            textView.setText(rows.get(i));
             textView.setGravity(Gravity.CENTER);
 
             return textView;
+        }
+    }
+
+    // METODOS DA INTERFACE DA ACTIVITY
+    @Override
+    public void qtdDezenasPossiveisSelecionado(int qtdDezenas) {
+        qtdDezenasPossiveisSelecionado = qtdDezenas;
+
+        if (getView() != null){
+            atualizaDezenaAdapter();
         }
     }
 

@@ -92,19 +92,19 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            //mocks
-            qtdDezenasPossiveisSelecionado = bundle.getInt("qtdDezenasPossiveisSelecionado");
-            numeroConcursoAtual = bundle.getInt("numeroConcursoAtual");
-            dataSorteioAtual = bundle.getString("dataSorteioAtual");
 
-            typeGameColorLight = (ColorEnum) bundle.get("typeGameColorLight");
-            typeGameColorDark = (ColorEnum) bundle.get("typeGameColorDark");
+        configuraBotoes(getView());
+    }
+
+    public void cartelaFragmentBuilder(Bundle dataBundle){
+        if (dataBundle != null){
+            qtdDezenasPossiveisSelecionado = dataBundle.getInt("qtdDezenasPossiveisSelecionado");
+            numeroConcursoAtual = dataBundle.getInt("numeroConcursoAtual");
+            dataSorteioAtual = dataBundle.getString("dataSorteioAtual");
+
+            typeGameColorLight = (ColorEnum) dataBundle.get("typeGameColorLight");
+            typeGameColorDark = (ColorEnum) dataBundle.get("typeGameColorDark");
         }
-
-        View view = getView();
-        configuraBotoes(view);
     }
 
     @Override
@@ -120,6 +120,13 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        atualizaDezenaAdapter();
     }
 
     @Override
@@ -154,7 +161,7 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
             case  R.id.botaoAdicionarCompletarCartela: {
                 if (dezenasSelecionadas.size() == qtdDezenasPossiveisSelecionado){
                     ViewUtils.alert(getActivity(), "Botão adicionar ao carrinho de apostas pressionado");
-                }else{
+                } else{
                     ViewUtils.alert(getActivity(), "Botão completar com números aleatórios pressionado");
                 }
             }
@@ -182,6 +189,13 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
     }
 
     // METODOS DE CONFIGURACOES
+    private void atualizaDezenaAdapter(){
+        TextView text = (TextView) getView().findViewById(R.id.valorAposta);
+        text.setText(format("R$ %.2f", 4.5 * qtdDezenasPossiveisSelecionado));
+
+        verificaQtdDezenasJaSelecionadas();
+    }
+
     private void configuraBotoes(View fragmentView){
         botaoFinalizar = fragmentView.findViewById(R.id.botaoAdicionarCompletarCartela);
         botaoFinalizar.setOnClickListener(this);
@@ -211,7 +225,12 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
         if (dezenasSelecionadas.size() == qtdDezenasPossiveisSelecionado){
             botaoFinalizar.setBackgroundColor(Color.parseColor(typeGameColorLight.toString()));
             botaoFinalizar.setText(getString(R.string.adicionarAoCarrinho));
-        }else{
+        }else if (dezenasSelecionadas.size() > qtdDezenasPossiveisSelecionado) {
+            dezenasSelecionadas.clear();
+            simularDezenasAdapter.notifyDataSetChanged();
+            botaoFinalizar.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.cinzaescuro));
+            botaoFinalizar.setText(getString(R.string.completarCartela));
+        } else{
             botaoFinalizar.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.cinzaescuro));
             botaoFinalizar.setText(getString(R.string.completarCartela));
         }
@@ -258,7 +277,7 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
 
         SimularDezenasAdapter(Context context, String[] activitData){
             this.context = context;
-            rows = activitData;
+            this.rows = activitData;
         }
 
         @Override
@@ -310,12 +329,11 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
     @Override
     public void qtdDezenasPossiveisSelecionado(int qtdDezenas) {
         qtdDezenasPossiveisSelecionado = qtdDezenas;
-        TextView text = (TextView) getView().findViewById(R.id.valorAposta);
-        text.setText(format("R$ %.2f", 4.5 * qtdDezenas));
 
-        verificaQtdDezenasJaSelecionadas();
+        if (getView() != null){
+            atualizaDezenaAdapter();
+        }
     }
-
 
     // INTERFACE DO FRAGMENT PARA A ACTIVITY
     public interface CartelaFragmentListener {
