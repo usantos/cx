@@ -11,7 +11,12 @@ import UIKit
 class LOBandeiraCell: UICollectionViewCell {
 
     @IBOutlet var bandeiraImg : UIImageView!
-    var isSelecionado : Bool = false
+    
+    override var isSelected: Bool {
+        didSet{
+            setSelected(isSelected: isSelected)
+        }
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -27,7 +32,7 @@ class LOBandeiraCell: UICollectionViewCell {
     }
     
     override func prepareForReuse() {
-        setSelected(isSelected: false)
+        self.layer.borderColor = UIColor.white.cgColor
     }
 
 }

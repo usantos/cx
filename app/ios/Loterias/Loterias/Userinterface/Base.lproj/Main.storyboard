@@ -31,7 +31,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="aIl-o4-iqH" customClass="LOMenuController" customModule="Loterias" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="9of-9y-tbg">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="48"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -913,7 +913,7 @@ em apenas um clique.</string>
             <objects>
                 <tableViewController id="EUF-Jb-ViU" customClass="LORepassesSociaisController" customModule="Loterias" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="298" sectionHeaderHeight="28" sectionFooterHeight="28" id="1PZ-gF-VZC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="599"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -1204,7 +1204,7 @@ Cg
                         <nil key="title"/>
                         <barButtonItem key="backBarButtonItem" title=" " id="5CD-Jz-NqI"/>
                         <view key="titleView" contentMode="scaleToFill" id="jwO-Cr-RIM">
-                            <rect key="frame" x="42.5" y="0.0" width="290" height="44"/>
+                            <rect key="frame" x="42.5" y="2" width="290" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FrE-ua-Yxq">
@@ -1253,7 +1253,7 @@ Cg
                 <viewControllerPlaceholder storyboardName="FinalizarApostas" id="LS5-N4-IHm" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UEL-ap-1sF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1105" y="-134"/>
+            <point key="canvasLocation" x="-1242" y="-294"/>
         </scene>
         <!--Simular Apostas Controller-->
         <scene sceneID="8y8-eG-CqN">
@@ -1264,7 +1264,7 @@ Cg
                         <viewControllerLayoutGuide type="bottom" id="KuU-Ir-0lz"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="fmC-wN-miN">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="599"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ugw-Ot-8mv">
@@ -1361,7 +1361,7 @@ Cg
                         <nil key="title"/>
                         <barButtonItem key="backBarButtonItem" title=" " id="MB0-4U-iql"/>
                         <view key="titleView" contentMode="scaleToFill" id="3KJ-NT-hYD" customClass="LOCustomNavbarSimular" customModule="Loterias" customModuleProvider="target">
-                            <rect key="frame" x="8" y="0.0" width="359" height="44"/>
+                            <rect key="frame" x="8" y="2" width="359" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <edgeInsets key="layoutMargins" top="0.0" left="8" bottom="0.0" right="0.0"/>
@@ -1699,7 +1699,7 @@ Cg
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="qLw-wp-C7G">
-                                <rect key="frame" x="0.0" y="65" width="375" height="56"/>
+                                <rect key="frame" x="0.0" y="69" width="375" height="56"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pVf-9p-LQk">
                                         <rect key="frame" x="0.0" y="0.0" width="124.5" height="56"/>
@@ -1729,7 +1729,7 @@ Cg
                                 </subviews>
                             </stackView>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="justified" translatesAutoresizingMaskIntoConstraints="NO" id="jzw-hN-pz0">
-                                <rect key="frame" x="8" y="129" width="359" height="530"/>
+                                <rect key="frame" x="8" y="133" width="359" height="526"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <string key="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget.
 
@@ -1766,6 +1766,7 @@ Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin soda
                         <outlet property="duvidas" destination="gEZ-ML-4ou" id="KjB-iE-zgG"/>
                         <outlet property="politicaPrivacidade" destination="YCG-bs-5Yb" id="n2C-eT-L1W"/>
                         <outlet property="termosDeUso" destination="pVf-9p-LQk" id="hi1-cI-lJR"/>
+                        <outlet property="textView" destination="jzw-hN-pz0" id="2ed-8z-fw3"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cmv-sV-V1G" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1778,7 +1779,7 @@ Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin soda
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="YGs-xC-wiA" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="5eW-xH-JeE">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="48"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -1938,7 +1939,7 @@ Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin soda
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="uZg-2R-Ulg" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="J7x-sb-aid">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="48"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>

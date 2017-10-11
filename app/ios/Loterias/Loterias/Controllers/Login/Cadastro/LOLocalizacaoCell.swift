@@ -45,7 +45,7 @@ class LOLocalizacaoCell: UITableViewCell, UITextFieldDelegate, LOPopupDelegate {
                     let storyboard = UIStoryboard(name: "Login", bundle: nil)
                     let controller = storyboard.instantiateViewController(withIdentifier: "LOPopupSelecionarOpcoesController") as? LOPopupSelecionarOpcoesController
                     var arrayUfs = Array<String>()
-                    for objCidade in (listaCidades?.payload)! {
+                    for objCidade in listaCidades! {
                         arrayUfs.append(objCidade.sigla!)
                     }
                     controller?.arrayDados = arrayUfs

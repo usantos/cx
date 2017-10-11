@@ -10,11 +10,7 @@ import UIKit
 
 class LOModalidesPageController: UIPageViewController, UIPageViewControllerDelegate, UIPageViewControllerDataSource {
     
-    private var arrayModalidades = [LOModalidadeEnum.Megasena, LOModalidadeEnum.Duplasena,
-                                    LOModalidadeEnum.Federal, LOModalidadeEnum.Loteca,
-                                    LOModalidadeEnum.Lotofacil, LOModalidadeEnum.Lotogol,
-                                    LOModalidadeEnum.Lotomania,LOModalidadeEnum.Quina,
-                                    LOModalidadeEnum.Timemania]
+    private var arrayModalidades = [LOModalidadeEnum]()
     
     var selectedController : LOModalideController?
     
@@ -24,14 +20,6 @@ class LOModalidesPageController: UIPageViewController, UIPageViewControllerDeleg
         self.dataSource = self
         self.delegate = self
         
-        if let firstViewController = orderedViewControllers.first {
-            setViewControllers([firstViewController],
-                               direction: .forward,
-                               animated: true,
-                               completion: nil)
-        }
-        
-        
         let imgRendering = #imageLiteral(resourceName: "icon-menu").withRenderingMode(UIImageRenderingMode.alwaysOriginal)
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: imgRendering, style: .plain, target: self, action: #selector(apresentaMenu))
         
@@ -39,6 +27,23 @@ class LOModalidesPageController: UIPageViewController, UIPageViewControllerDeleg
         let imgRendering3 = #imageLiteral(resourceName: "icon-menu-right-blue").withRenderingMode(UIImageRenderingMode.alwaysOriginal)
         
         self.navigationItem.rightBarButtonItems = [UIBarButtonItem(image: imgRendering3, style: .plain, target: self, action: #selector(apresentaMenu)) , UIBarButtonItem(image: imgRendering2, style: .plain, target: self, action: #selector(apresentaTrevo))]
+        
+        self.chamaWebservice()
+    }
+    
+    func chamaWebservice () {
+        LOModalidadesBusinessService().getModalidades(parameters: [:]) { (error, modalidades) in
+            for modalidade : LOModalidade in modalidades! {
+                self.arrayModalidades.append(LOModalidadeEnum(rawValue: modalidade.descricao)!)
+            }
+            
+            if let firstViewController = self.orderedViewControllers.first {
+                self.setViewControllers([firstViewController],
+                                   direction: .forward,
+                                   animated: true,
+                                   completion: nil)
+            }
+        }
     }
     
     @objc func apresentaMenu () {

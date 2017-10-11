@@ -89,7 +89,8 @@ extension UIViewController {
         
         activityIndicator.startAnimating()
         
-        self.view.window?.addSubview(overlayView)
+        let window  = UIApplication.shared.keyWindow!
+        window.addSubview(overlayView)
         
         return overlayView
     }

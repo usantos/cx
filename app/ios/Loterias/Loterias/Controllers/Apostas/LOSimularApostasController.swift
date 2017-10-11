@@ -45,9 +45,9 @@ class LOSimularApostasController: UIViewController, LOSimularApostaDelegate {
         
         aplicaEstilos()
         
-        LOCryptoService().crypfyURL()
+        //LOCryptoService().crypfyURL()
         
-        LOCryptoTest().crypfyURL()
+        LOCryptoTest().cripfyFinal()
         
         LORegisterBusinessService().getUfs(parameters: [:]) { (error, listaCidade) in
             

@@ -330,7 +330,7 @@ todas as suas apostas.</string>
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
-                                    <segue destination="Yuw-N5-ufc" kind="presentation" id="g5o-wZ-qH2"/>
+                                    <segue destination="Yuw-N5-ufc" kind="presentation" identifier="sendToLogin" id="pBw-Cl-en4"/>
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_logo" translatesAutoresizingMaskIntoConstraints="NO" id="PKJ-Gm-Zxj">

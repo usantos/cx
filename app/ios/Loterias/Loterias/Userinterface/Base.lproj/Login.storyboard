@@ -213,12 +213,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rht-Dh-eyY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1628" y="478"/>
+            <point key="canvasLocation" x="1628" y="974"/>
         </scene>
         <!--Loterias Caixa-->
         <scene sceneID="TWa-dm-tAk">
             <objects>
-                <tableViewController id="sGk-Xb-boT" customClass="LOCadastroControllerController" customModule="Loterias" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="registerController" id="sGk-Xb-boT" customClass="LOCadastroController" customModule="Loterias" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" rowHeight="54" sectionHeaderHeight="28" sectionFooterHeight="28" id="35Y-MC-8ZQ">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="890"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -702,8 +702,8 @@ Para começar, informe os dados abaixo:</string>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="375" height="890"/>
                     <connections>
-                        <outlet property="btnFeminino" destination="5Bi-vx-Hfs" id="8v6-X4-PLi"/>
-                        <outlet property="btnMasculino" destination="ERG-rW-ydB" id="qvE-2f-SVS"/>
+                        <outlet property="btnFeminino" destination="5Bi-vx-Hfs" id="9MC-1e-sBi"/>
+                        <outlet property="btnMasculino" destination="ERG-rW-ydB" id="As7-NH-dqd"/>
                         <outlet property="cep" destination="rGu-Zs-lX6" id="496-T5-shG"/>
                         <outlet property="cpf" destination="RdN-Zl-fg7" id="VkG-x3-9xX"/>
                         <outlet property="dataNascimento" destination="lYu-b2-MRP" id="ftJ-s0-fcC"/>
@@ -724,7 +724,7 @@ Para começar, informe os dados abaixo:</string>
                     </items>
                 </navigationBar>
             </objects>
-            <point key="canvasLocation" x="2421.5999999999999" y="-384.10794602698655"/>
+            <point key="canvasLocation" x="1628" y="80"/>
         </scene>
         <!--Popup Selecionar Opcoes Controller-->
         <scene sceneID="clp-Yv-Jzr">
@@ -868,10 +868,10 @@ Para começar, informe os dados abaixo:</string>
             </objects>
             <point key="canvasLocation" x="2421.5999999999999" y="478.11094452773619"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Initial Nav Login Controller-->
         <scene sceneID="FGE-SA-QCG">
             <objects>
-                <navigationController storyboardIdentifier="initialLogin" automaticallyAdjustsScrollViewInsets="NO" id="Z0u-YT-xVs" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="initialLogin" automaticallyAdjustsScrollViewInsets="NO" id="Z0u-YT-xVs" customClass="LOInitialNavLoginController" customModule="Loterias" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="VKM-9z-Qg0">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
@@ -882,12 +882,13 @@ Para começar, informe os dados abaixo:</string>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="sGk-Xb-boT" kind="relationship" relationship="rootViewController" id="gNK-2M-cOO"/>
+                        <segue destination="sGk-Xb-boT" kind="show" identifier="sendToRegister" id="HGb-do-YmM"/>
+                        <segue destination="CrJ-wz-bKn" kind="show" identifier="sendToLogin" id="Uc9-nk-CJM"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dPw-z5-fwu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1628" y="-384"/>
+            <point key="canvasLocation" x="838" y="-385"/>
         </scene>
         <!--Loterias Caixa-->
         <scene sceneID="35D-Fh-9de">
@@ -1336,7 +1337,7 @@ uma lotérica de sua preferência.</string>
                                     <outlet property="termosDeUso" destination="jyp-HL-dlb" id="RQC-am-LcD"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="finalizarCell" rowHeight="85" id="FFx-41-QAI">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="finalizarCell" rowHeight="85" id="FFx-41-QAI" customClass="LOFinalizarCell" customModule="Loterias" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="644" width="375" height="85"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="FFx-41-QAI" id="P8F-2B-aKM">
@@ -1354,7 +1355,7 @@ uma lotérica de sua preferência.</string>
                                                 <color key="titleColor" red="0.93725490199999995" green="0.96078431369999995" blue="0.96470588239999999" alpha="1" colorSpace="calibratedRGB"/>
                                             </state>
                                             <connections>
-                                                <segue destination="PIb-fj-Zp4" kind="show" id="7Dk-a2-rSW"/>
+                                                <action selector="finalizarCadastro" destination="FFx-41-QAI" eventType="touchUpInside" id="nr8-1l-ObS"/>
                                             </connections>
                                         </button>
                                     </subviews>
@@ -1430,10 +1431,13 @@ uma lotérica de sua preferência.</string>
                     </navigationItem>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="375" height="890"/>
+                    <connections>
+                        <segue destination="PIb-fj-Zp4" kind="show" identifier="finalizarCadastro" id="C1F-ey-zd1"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oKZ-Os-l38" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3205.5999999999999" y="-385.0074962518741"/>
+            <point key="canvasLocation" x="2422" y="-386"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="KLE-mn-LXg">
@@ -1448,7 +1452,7 @@ uma lotérica de sua preferência.</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e7N-KA-uLO">
-                                <rect key="frame" x="68" y="246" width="240" height="44.5"/>
+                                <rect key="frame" x="68" y="202" width="240" height="44.5"/>
                                 <attributedString key="attributedText">
                                     <fragment content="Seu cadastro">
                                         <attributes>
@@ -1477,7 +1481,7 @@ com sucesso.</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pzM-ac-1d8">
-                                <rect key="frame" x="15" y="316" width="345" height="81.5"/>
+                                <rect key="frame" x="15" y="272" width="345" height="81.5"/>
                                 <string key="text">Aguarde apenas um instante enquanto
 te redirecionamos para a área onde você
 realizará suas apostas.
@@ -1487,14 +1491,14 @@ realizará suas apostas.
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-fim-cadastro" translatesAutoresizingMaskIntoConstraints="NO" id="QIp-EA-h1X">
-                                <rect key="frame" x="157" y="140" width="61" height="55"/>
+                                <rect key="frame" x="157" y="96" width="61" height="55"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="61" id="bDm-Jh-Dar"/>
                                     <constraint firstAttribute="height" constant="55" id="nRW-6k-SSG"/>
                                 </constraints>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PET-zm-adb">
-                                <rect key="frame" x="107" y="220" width="160" height="1"/>
+                                <rect key="frame" x="107" y="176" width="160" height="1"/>
                                 <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="AvE-Ky-hMu"/>
@@ -1527,7 +1531,7 @@ realizará suas apostas.
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RmO-wZ-Qvj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3973.5999999999999" y="-383.65817091454278"/>
+            <point key="canvasLocation" x="3242" y="-385"/>
         </scene>
         <!--Main-->
         <scene sceneID="QCO-Mf-yQY">
@@ -1535,14 +1539,126 @@ realizará suas apostas.
                 <viewControllerPlaceholder storyboardName="Main" id="isI-8l-tLc" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1T6-W5-7lf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4609" y="-385"/>
+            <point key="canvasLocation" x="3773" y="-448"/>
+        </scene>
+        <!--Controller-->
+        <scene sceneID="Imd-pD-lZA">
+            <objects>
+                <viewController storyboardIdentifier="screen4" id="CrJ-wz-bKn" customClass="LOSSOController" customModule="Loterias" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="bdY-6n-o0C"/>
+                        <viewControllerLayoutGuide type="bottom" id="l7w-8H-g6o"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="ng6-Oh-v7M">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5sT-ez-igl">
+                                <rect key="frame" x="30" y="331.5" width="315" height="56"/>
+                                <color key="backgroundColor" red="1" green="0.56862745100000001" blue="0.12941176469999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="56" id="c5i-dy-cIf"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="FuturaStd-Bold" family="Futura Std" pointSize="17"/>
+                                <state key="normal" title="Faça login/Cadastre-se">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <segue destination="sGk-Xb-boT" kind="show" id="fjC-kI-MqF"/>
+                                </connections>
+                            </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_logo" translatesAutoresizingMaskIntoConstraints="NO" id="19g-5b-gDo">
+                                <rect key="frame" x="140" y="45" width="95" height="95"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="95" id="W8W-bI-pIe"/>
+                                    <constraint firstAttribute="width" constant="95" id="bbq-En-s9G"/>
+                                </constraints>
+                            </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bJG-YA-Cfp">
+                                <rect key="frame" x="116" y="292" width="142" height="1"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="9cp-uA-zT8"/>
+                                    <constraint firstAttribute="width" constant="142" id="Dx0-s1-OYi"/>
+                                </constraints>
+                            </view>
+                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7It-OQ-kjG">
+                                <rect key="frame" x="30" y="190" width="315" height="56"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="56" id="gC2-6I-Uo4"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="FuturaStd-Bold" family="Futura Std" pointSize="17"/>
+                                <state key="normal" title="Aposte agora">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <segue destination="isI-8l-tLc" kind="presentation" id="Xjc-gF-Tfg"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Você utilizará o sistema único de login da Caixa." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Di-hR-1bN">
+                                <rect key="frame" x="80" y="421" width="216" height="52"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="216" id="uUd-ti-iOz"/>
+                                    <constraint firstAttribute="height" constant="52" id="zGM-nD-WOl"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="FuturaStd-Medium" family="Futura Std" pointSize="17"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2T7-uH-pu0">
+                                <rect key="frame" x="175" y="278" width="23.5" height="23"/>
+                                <color key="backgroundColor" red="0.0" green="0.36078431370000003" blue="0.66274509800000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <attributedString key="attributedText">
+                                    <fragment content="ou">
+                                        <attributes>
+                                            <color key="NSColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <font key="NSFont" size="17" name="Futura-Bold"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="0.0" green="0.36078431370000003" blue="0.66274509800000003" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="5Di-hR-1bN" firstAttribute="centerX" secondItem="ng6-Oh-v7M" secondAttribute="centerX" id="224-qt-QHU"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="7It-OQ-kjG" secondAttribute="trailing" constant="14" id="Gbc-ER-vOe"/>
+                            <constraint firstItem="7It-OQ-kjG" firstAttribute="leading" secondItem="ng6-Oh-v7M" secondAttribute="leadingMargin" constant="14" id="KY9-74-yr5"/>
+                            <constraint firstItem="7It-OQ-kjG" firstAttribute="top" secondItem="19g-5b-gDo" secondAttribute="bottom" constant="50" id="KjZ-zF-mKK"/>
+                            <constraint firstItem="bJG-YA-Cfp" firstAttribute="centerX" secondItem="ng6-Oh-v7M" secondAttribute="centerX" id="OxI-GB-8Qy"/>
+                            <constraint firstItem="5sT-ez-igl" firstAttribute="leading" secondItem="ng6-Oh-v7M" secondAttribute="leadingMargin" constant="14" id="XLy-T3-cac"/>
+                            <constraint firstItem="2T7-uH-pu0" firstAttribute="top" secondItem="7It-OQ-kjG" secondAttribute="bottom" constant="32" id="YnF-Jy-2mX"/>
+                            <constraint firstItem="5sT-ez-igl" firstAttribute="top" secondItem="bJG-YA-Cfp" secondAttribute="bottom" constant="38.5" id="Zip-OP-N7I"/>
+                            <constraint firstItem="19g-5b-gDo" firstAttribute="top" secondItem="bdY-6n-o0C" secondAttribute="bottom" constant="25" id="cL5-3q-iUp"/>
+                            <constraint firstItem="5Di-hR-1bN" firstAttribute="top" secondItem="5sT-ez-igl" secondAttribute="bottom" constant="33.5" id="cRK-wx-Mgy"/>
+                            <constraint firstItem="2T7-uH-pu0" firstAttribute="centerX" secondItem="ng6-Oh-v7M" secondAttribute="centerX" id="jll-Rr-Uqf"/>
+                            <constraint firstItem="19g-5b-gDo" firstAttribute="centerX" secondItem="ng6-Oh-v7M" secondAttribute="centerX" id="lYj-AG-Bqd"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="5sT-ez-igl" secondAttribute="trailing" constant="14" id="q57-pZ-8RH"/>
+                            <constraint firstItem="5sT-ez-igl" firstAttribute="top" secondItem="2T7-uH-pu0" secondAttribute="bottom" constant="30.5" id="wtp-O7-Cpo"/>
+                            <constraint firstItem="5Di-hR-1bN" firstAttribute="centerX" secondItem="ng6-Oh-v7M" secondAttribute="centerX" id="xGT-NQ-buU"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="kRD-pz-sMY"/>
+                    <connections>
+                        <outlet property="aposteAgora" destination="7It-OQ-kjG" id="Qws-fS-zBt"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ra0-5d-wmo" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1628" y="-767"/>
         </scene>
     </scenes>
     <resources>
+        <image name="ic_logo" width="126" height="128"/>
         <image name="icon-fim-cadastro" width="60" height="54"/>
         <image name="icon-passo1" width="52" height="20"/>
         <image name="icon-passo2" width="52" height="20"/>
         <image name="icon-radio-uncheck" width="20" height="20"/>
         <image name="icon-uncheck" width="20" height="20"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="Xjc-gF-Tfg"/>
+        <segue reference="HGb-do-YmM"/>
+    </inferredMetricsTieBreakers>
 </document>

@@ -77,9 +77,7 @@ class LOAdicionarCartaoController: UITableViewController, UICollectionViewDelega
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "bandeiraCell", for: indexPath) as! LOBandeiraCell
-        
-        //cell.setSelected(isSelected: cell.isSelecionado)
-        
+            
         if !arrayCells.contains(cell) {
             arrayCells.append(cell)
         }
@@ -90,18 +88,12 @@ class LOAdicionarCartaoController: UITableViewController, UICollectionViewDelega
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath) as? LOBandeiraCell
         
-        if (cell?.isSelecionado)! {
-            cell?.isSelecionado = false
-        } else {
-            cell?.isSelecionado = true
-        }
-        
-        cell?.setSelected(isSelected: (cell?.isSelecionado)!)
+        cell?.setSelected(isSelected: (cell?.isSelected)!)
         
         for cellLocal in arrayCells {
             if cell != cellLocal {
                 cellLocal.setSelected(isSelected: false)
-                cellLocal.isSelecionado = false
+                cellLocal.isSelected = false
             }
         }
     }

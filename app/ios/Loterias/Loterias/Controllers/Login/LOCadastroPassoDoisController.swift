@@ -10,6 +10,7 @@ import UIKit
 
 protocol LOCadastroPassoDoisDelegate: class {
     func trocaTipoDaBusca(opcao : LOOpcoesDeBuscaEnum)
+    func finalizarCadastro()
 }
 
 class LOCadastroPassoDoisController: UITableViewController, LOCadastroPassoDoisDelegate {
@@ -62,7 +63,10 @@ class LOCadastroPassoDoisController: UITableViewController, LOCadastroPassoDoisD
         self.arrayDeCelulas.append(tableView.dequeueReusableCell(withIdentifier: "locCell")!)
         self.arrayDeCelulas.append(tableView.dequeueReusableCell(withIdentifier: "bairroCell")!)
         self.arrayDeCelulas.append(tableView.dequeueReusableCell(withIdentifier: "termoCell")!)
-        self.arrayDeCelulas.append(tableView.dequeueReusableCell(withIdentifier: "finalizarCell")!)
+        
+        let finalizarCell : LOFinalizarCell = tableView.dequeueReusableCell(withIdentifier: "finalizarCell")! as! LOFinalizarCell
+        finalizarCell.delegate = self
+        self.arrayDeCelulas.append(finalizarCell)
         
         self.tableView.reloadData()
     }
@@ -79,8 +83,11 @@ class LOCadastroPassoDoisController: UITableViewController, LOCadastroPassoDoisD
 
         self.arrayDeCelulas.append(tableView.dequeueReusableCell(withIdentifier: "codigoCell")!)
         self.arrayDeCelulas.append(tableView.dequeueReusableCell(withIdentifier: "termoCell")!)
-        self.arrayDeCelulas.append(tableView.dequeueReusableCell(withIdentifier: "finalizarCell")!)
         
+        let finalizarCell : LOFinalizarCell = tableView.dequeueReusableCell(withIdentifier: "finalizarCell")! as! LOFinalizarCell
+        finalizarCell.delegate = self
+        self.arrayDeCelulas.append(finalizarCell)
+
         self.tableView.reloadData()
     }
     
@@ -101,8 +108,11 @@ class LOCadastroPassoDoisController: UITableViewController, LOCadastroPassoDoisD
         self.arrayDeCelulas.append(tableView.dequeueReusableCell(withIdentifier: "lotericaCell")!)
 
         self.arrayDeCelulas.append(tableView.dequeueReusableCell(withIdentifier: "termoCell")!)
-        self.arrayDeCelulas.append(tableView.dequeueReusableCell(withIdentifier: "finalizarCell")!)
-
+        
+        let finalizarCell : LOFinalizarCell = tableView.dequeueReusableCell(withIdentifier: "finalizarCell")! as! LOFinalizarCell
+        finalizarCell.delegate = self
+        self.arrayDeCelulas.append(finalizarCell)
+        
         self.tableView.reloadData()
     }
 
@@ -119,7 +129,29 @@ class LOCadastroPassoDoisController: UITableViewController, LOCadastroPassoDoisD
             break
         }
     }
-
+    
+    func finalizarCadastro() {
+        if termoSelecionado() {
+            LOTermoBusinessService().registraAceiteTermo(parameters: [:], completionHandler: { (sucesso) in
+                if sucesso! {
+                    self.performSegue(withIdentifier: "finalizarCadastro", sender: self)
+                } else {
+                    
+                }
+            })
+        } else {
+            self.alertSimple(title: "Atenção", message: "Para continuar é necessário o aceite do termo.")
+        }
+    }
+    
+    func termoSelecionado() -> Bool {
+        for cell in arrayDeCelulas {
+            if cell.reuseIdentifier == "termoCell" {
+                return ((cell as? LOTermoCell)?.selecionado)!
+            }
+        }
+        return false
+    }
     /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {

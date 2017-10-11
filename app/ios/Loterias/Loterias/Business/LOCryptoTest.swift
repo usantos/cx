@@ -13,89 +13,91 @@ import Alamofire
 class LOCryptoTest: NSObject {
     let salt: Array<UInt8> = Array("nacllcan".utf8)
     let password: Array<UInt8> = Array("s33krit".utf8)
-    
     let iv: Array<UInt8> = AES.randomIV(AES.blockSize)
-    
-    func crypfyBody () {
+
+    func cripfyFinal () {
         do {
+            print("Salt: ", salt)
+            print("Iv: ", iv)
+            
             let key = try PKCS5.PBKDF2(password: password, salt: salt, iterations: 1, variant: .sha256).calculate()
+            let key3 = try PKCS5.PBKDF2(password: password, salt: salt).calculate()
+            let key2 = try PKCS5.PBKDF1(password: password, salt: salt, variant: PKCS5.PBKDF1.Variant.sha1, iterations: 1, keyLength: 16)
+            print("Key: ", key)
+            print("Key: ", key2)
+            print("Key3: ",key3)
+
             //let aes = try AES(key: key, iv: iv) // aes128
             
-            var encryptor = try AES(key: key, iv: iv).makeEncryptor()
+            let queryParam = "quantidadeTotalNumeros==6&&numerosMarcados==15,18,19,48,52,58&&menorPrognostico==1&&maiorPrognostico==60&&"
             
-            var ciphertext = Array<UInt8>()
-            //ciphertext += try encryptor.update(withBytes: Array("AES-CBC".utf8))
-            ciphertext += try encryptor.update(withBytes: Array("{\"idUF\" : 17}".utf8))
-            
-            ciphertext += try encryptor.finish()
-            
-            let cipherFinal = ciphertext.toHexString() + "!#!#!" + key.toHexString() + "!#!#!" + iv.toHexString()
-            
-            print(cipherFinal.toBase64())
-        } catch {
-            print(error)
-        }
-    }
-    
-    func crypfyURL () {
-        do {
-            let urlTest = URL(string: "http://10.130.9.22:81/silce-servico-rest/rest/v1/" + "ufs".toBase64())
-            let urlTestMun = URL(string: "http://10.130.9.22:81/silce-servico-rest/rest/v1/" + "municipios".toBase64())
-            
-            let key = try PKCS5.PBKDF2(password: password, salt: salt, iterations: 1, variant: .sha256).calculate()
-            
-            let aes = try AES(key: key, iv: iv) // aes128
-            
-            var teste = Array<String.UTF8View>()
-            teste.append("AES-CBC".utf8)
-            teste.append("".utf8)
-            
-            var ciphertext = try aes.encrypt(Array("AES-CBC".utf8))
-            
-            //let encrypted = try Blowfish(key: key.toHexString(), iv: iv.toHexString(), blockMode: .CBC, padding: .pkcs5).encrypt(Array("idUF==23".utf8))
-            
-            //print(ciphertext.toHexString())
-            
-            
-            //let cipherFinal = encrypted.description + "!#!#!" + key.toHexString() + "!#!#!" + iv.toHexString()
-            
-            //print(cipherFinal)
-            //print(cipherFinal.toBase64())
-            //getUfs(urlTest: urlTest!)
-            //crypfyBody()
-            cripfyUrlWithQueryParam()
-        } catch {
-            print(error)
-        }
-    }
-    
-    func cripfyUrlWithQueryParam () {
-        var urlTestMun : URL?
-        do {
-            let key = try PKCS5.PBKDF2(password: password, salt: salt, iterations: 1, variant: .sha256).calculate()
-            
-            //let aes = try AES(key: key, iv: iv) // aes128
-            
-            let queryParam = "idUF==17"
-            
-            var encryptor = try AES(key: key, iv: iv, blockMode: .CBC, padding: .pkcs5).makeEncryptor()
-            
+            var encryptor = try AES(key: key, iv: iv , blockMode: .CBC, padding: .pkcs5).makeEncryptor()
+            print("Encryptor: ",encryptor)
             var ciphertext = Array<UInt8>()
             
             ciphertext += try encryptor.update(withBytes: Array(queryParam.utf8))
             
             ciphertext += try encryptor.finish()
+            print("Cipher: ",ciphertext)
             
-            let cipherFinal = ciphertext.toHexString() + "!#!#!" + key.toHexString() + "!#!#!" + iv.toHexString()
+            let cipherFinal = ciphertext.toBase64()! + "!#!#!" + key.toBase64()! + "!#!#!" + iv.toBase64()!
+            //
+            let urlBs64 = "https://simlo.des.caixa/silce-servico-rest/rest/v1/" + "apostas/completar-jogo".toBase64() + "?q=" + cipherFinal
+            print(urlBs64)
+            //urlTestMun = URL(string: urlBs64 )
+    
+        } catch {
             
-            let urlBs64 = "https://simlo.des.caixa/silce-servico-rest/rest/v1/" + "municipios".toBase64() + "?q=" + cipherFinal
+        }
+
+    }
+    
+    func cripfyUrlWithQueryParam () {
+        var urlTestMun : URL?
+        do {
+            //print("Salt: ", salt)
+            //print("Iv: ", iv)
             
-            urlTestMun = URL(string: urlBs64 )
+            let data = ("YbEzQCORJsub6TqXt4n9Dg==").data(using: String.Encoding.utf8)
+            let base64 = data!.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
+            var arrayTest = [UInt8]()
+            
+            for c in base64.characters {
+                print(c)
+                arrayTest.append(Array(String(c).utf8)[0])
+            }
+            
+            let arraySalt: [UInt8] = Array("YbEzQCORJsub6TqXt4n9Dg==".utf8)
+            let arrayIv: [UInt8] = Array("8hQLtNV44Y1bIeONmlr+Dg==".utf8)
+            print("Salt: ", arraySalt)
+            print("Iv: ", arrayIv)
+            //let key = try PKCS5.PBKDF2(password: password, salt: arraySalt, iterations: 1, variant: .sha256).calculate()
+            
+            //print("Key: ", key.description)
+            
+            //let aes = try AES(key: key, iv: iv) // aes128
+            
+            let queryParam = "idUF==17"
+            
+            var encryptor = try AES(key: Array("QEm06ZAThg1E314zziahsg==".utf8), iv: arrayIv , blockMode: .CBC, padding: .pkcs5).makeEncryptor()
+            print("Encryptor: ",encryptor)
+            var ciphertext = Array<UInt8>()
+            
+            ciphertext += try encryptor.update(withBytes: Array(queryParam.utf8))
+            
+            ciphertext += try encryptor.finish()
+            print("Cipher: ",ciphertext)
+//            let cipherFinal = ciphertext.toHexString() + "!#!#!" + key.toHexString() + "!#!#!" + iv.toHexString()
+//
+//            let urlBs64 = "https://simlo.des.caixa/silce-servico-rest/rest/v1/" + "municipios".toBase64() + "?q=" + cipherFinal
+            
+            //urlTestMun = URL(string: urlBs64 )
         } catch {
             
         }
         getUfs(urlTest: URL(string: "https://simlo.des.caixa/")!)
     }
+    
     
     private static var Manager: Alamofire.SessionManager = {
         
@@ -145,19 +147,15 @@ class LOCryptoTest: NSObject {
             return (disposition, credential)
         }
         
-        let params : Parameters = [
-            "q" : "2e79d641fb72dd9ce0b662ac216db182!#!#!d5f7c7bbf92c172783f4c1ed45809ca115cbd593b3e28c0c2bc5192895372ff2!#!#!7c0a0d9b24a0efdb1a2cc433aece60ae"
-        ]
-        
         //Web service Request
         let header: HTTPHeaders = ["Accept": "application/json"]
-        LOCryptoTest.Manager.request(URL(string:"https://simlo.des.caixa/silce-servico-rest/rest/v1/bXVuaWNpcGlvcw==")!, method: .get, parameters: params, encoding: URLEncoding(destination: .queryString) ,headers :header).responseString { response in
+        LOCryptoTest.Manager.request(urlTest, method: .get, parameters: [:], encoding: URLEncoding(destination: .queryString) ,headers :header).responseString { response in
             debugPrint(response)
-            var listaCidades : LOWrapperCidade?
+            //var listaCidades : LOWrapperCidade?
             
             if let json = response.result.value {
                 do {
-                    listaCidades = try JSONDecoder().decode(LOWrapperCidade.self, from: json.data(using: .utf8)!)
+                    //listaCidades = try JSONDecoder().decode(LOWrapperCidade.self, from: json.data(using: .utf8)!)
                 } catch {
                     print(error.localizedDescription)
                 }

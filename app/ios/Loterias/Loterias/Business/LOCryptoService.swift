@@ -148,11 +148,11 @@ class LOCryptoService: NSObject {
         let header: HTTPHeaders = ["Accept": "application/json"]
         Alamofire.request(urlTest, method: .get ,headers :header).responseString { response in
             debugPrint(response)
-            var listaCidades : LOWrapperCidade?
+            var listaCidades : [LOUnidadeFederativa]?
             
             if let json = response.result.value {
                 do {                    
-                    listaCidades = try JSONDecoder().decode(LOWrapperCidade.self, from: json.data(using: .utf8)!)
+                    //listaCidades = try JSONDecoder().decode(LOCidade.self, from: json.data(using: .utf8)!)
                 } catch {
                     print(error.localizedDescription)
                 }

@@ -21,6 +21,9 @@ class LOAjudaController: UIViewController {
             politicaPrivacidade.titleLabel?.numberOfLines = 0
         }
     }
+    
+    @IBOutlet weak var textView : UITextView!
+    
     @IBOutlet weak var duvidas: UIButton!
     
     override func viewDidLoad() {
@@ -36,10 +39,20 @@ class LOAjudaController: UIViewController {
         self.navigationController?.isNavigationBarHidden = false
                 
         self.navigationController?.navigationBar.setBackgroundImage(self.image(fromLayer: gradient), for: .default)
+        
+        chamaWebService()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+    }
+    
+    func chamaWebService () {
+        let loadingView = self.addLoadingView(alpha: 1.0)
+        LOTermoBusinessService().getTermo(parameters: [:]) { (error, textoTermo) in
+            loadingView.removeFromSuperview()
+            self.textView.text = textoTermo
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
