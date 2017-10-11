@@ -31,4 +31,7 @@
     <string name="titulo_dialog">Titulo da dialog</string>
     <string name="cancelar">Cancelar</string>
     <string name="ok">OK</string>
+
+    <string name="tituloSalvarAposta">Salve esta aposta :)</string>
+    <string name="textoDeNome">Dê um nome</string>
 </resources>

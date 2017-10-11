@@ -1,6 +1,7 @@
     <ScrollView
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fillViewport="false"
@@ -9,6 +10,95 @@
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:id="@+id/salvarApostaLayout"
+                android:layout_width="184dp"
+                android:layout_height="140dp"
+                android:clickable="true"
+                android:background="@color/cinza"
+                app:layout_constraintBottom_toTopOf="@+id/botaoLimparAposta"
+                app:layout_constraintLeft_toRightOf="@+id/viewTabBar"
+                app:layout_constraintRight_toLeftOf="@+id/viewTabBar"
+                android:layout_marginBottom="10dp">
+
+                <RelativeLayout
+                    android:layout_width="152dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/textoDeNomeInfo"
+                    android:layout_alignLeft="@+id/textoDeNomeInfo"
+                    android:layout_alignStart="@+id/textoDeNomeInfo"
+                    android:layout_marginTop="10dp">
+
+                    <ImageButton
+                        android:id="@+id/btnSalvarAposta"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:background="@drawable/seta_verde"
+
+                        android:layout_centerInParent="true"
+                        android:layout_toRightOf="@+id/editNomeAposta"
+                        android:layout_toEndOf="@+id/editNomeAposta"
+                        android:layout_marginLeft="7dp"
+                        android:layout_marginStart="7dp"/>
+
+                    <EditText
+                        android:id="@+id/editNomeAposta"
+                        android:layout_width="125dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="0dp"
+                        android:inputType="textNoSuggestions"
+                        android:backgroundTint="@color/branco"
+                        android:text=""
+                        android:textColor="@color/branco"
+                        android:textSize="16sp"
+                        android:paddingTop="0dp"
+                        android:paddingBottom="7dp"
+                        android:paddingLeft="0dp"
+                        android:textCursorDrawable="@null" />
+                </RelativeLayout>
+
+
+
+                <TextView
+                    android:id="@+id/textoDeNomeInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/textoDeNome"
+                    android:textColor="@color/verdeazul"
+                    android:layout_below="@+id/textoSalveEstaAposta"
+                    android:textSize="12sp"
+                    android:layout_alignLeft="@+id/iconStarSalvar"
+                    android:layout_alignStart="@+id/iconStarSalvar"
+                    android:layout_marginTop="29dp" />
+
+                <TextView
+                    android:id="@+id/textoSalveEstaAposta"
+                    android:layout_width="match_parent"
+                    android:layout_height="21dp"
+                    android:layout_alignBottom="@+id/iconStarSalvar"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_toEndOf="@+id/iconStarSalvar"
+                    android:layout_toRightOf="@+id/iconStarSalvar"
+                    android:padding="0dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/tituloSalvarAposta"
+                    android:textColor="@color/branco"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:id="@+id/iconStarSalvar"
+                    android:layout_width="21dp"
+                    android:layout_height="21dp"
+                    app:srcCompat="@drawable/icon_favoritar"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="20dp" />
+            </RelativeLayout>
 
             <Button
                 android:id="@+id/botaoLimparAposta"
@@ -123,6 +213,18 @@
                         android:layout_centerHorizontal="true" />
 
                     <TextView
+                        android:id="@+id/textViewCarrinhoCartelaCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/branco"
+                        android:text="0"
+                        android:textSize="12sp"
+                        android:background="@drawable/rounded_textview"
+                        android:gravity="center"
+                        android:layout_marginTop="14dp"
+                        android:layout_marginLeft="5dp"/>
+
+                    <TextView
                         android:id="@+id/textInfoCarrinho"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -139,24 +241,21 @@
                 android:id="@+id/listaDezenas"
                 android:layout_width="0dp"
                 android:layout_height="200dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="12dp"
                 android:layout_marginEnd="17dp"
                 android:layout_marginLeft="17dp"
                 android:layout_marginRight="17dp"
                 android:layout_marginStart="17dp"
-                android:layout_marginTop="8dp"
                 android:columnWidth="40dp"
                 android:gravity="center"
                 android:horizontalSpacing="17dp"
                 android:numColumns="auto_fit"
                 android:stretchMode="columnWidth"
                 android:verticalSpacing="9dp"
-                app:layout_constraintBottom_toTopOf="@+id/botaoLimparAposta"
-                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintBottom_toTopOf="@+id/salvarApostaLayout"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintRight_toRightOf="parent" />
 
         </android.support.constraint.ConstraintLayout>
     </ScrollView>

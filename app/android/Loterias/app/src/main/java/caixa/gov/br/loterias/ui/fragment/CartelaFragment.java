@@ -3,7 +3,6 @@ package caixa.gov.br.loterias.ui.fragment;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -16,6 +15,8 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import caixa.gov.br.loterias.ui.Inteface.CartelaActivityInterface;
 import java.util.ArrayList;
@@ -26,23 +27,7 @@ import caixa.gov.br.loterias.utils.ViewUtils;
 
 import static java.lang.String.*;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link CartelaFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link CartelaFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class CartelaFragment extends Fragment implements CartelaActivityInterface, OnClickListener {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     private ExpandableHeightGridView listaDezenas;
 
@@ -62,31 +47,19 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
     //mocks
     int qtdDezenasPossiveisSelecionado;
     int numeroConcursoAtual;
+    int qtdCartelasCarrinho = 0;
     String dataSorteioAtual;
 
-    private OnFragmentInteractionListener mListener;
     private CartelaFragmentListener cartelaFragmentListener;
 
     public CartelaFragment() {
         // Required empty public constructor
     }
 
-    public static CartelaFragment newInstance(String param1, String param2) {
-        CartelaFragment fragment = new CartelaFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
     }
 
     @Override
@@ -113,13 +86,9 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
         View view = inflater.inflate(R.layout.fragment_cartela,container,false);
         configuraListaDezenas(view);
         verificaSeMostraBotaoLimparAposta(view);
-        return view;
-    }
+        verificaSeMostraSalvarApostaView(view);
 
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+        return view;
     }
 
     @Override
@@ -138,19 +107,12 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString() + " must implement CartelaFragmentListener");
         }
-
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+
         cartelaFragmentListener = null;
     }
 
@@ -160,7 +122,11 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
         switch (view.getId()) {
             case  R.id.botaoAdicionarCompletarCartela: {
                 if (dezenasSelecionadas.size() == qtdDezenasPossiveisSelecionado){
-                    ViewUtils.alert(getActivity(), "Botão adicionar ao carrinho de apostas pressionado");
+                    TextView count = getView().findViewById(R.id.textViewCarrinhoCartelaCount);
+
+                    qtdCartelasCarrinho++;
+
+                    count.setText(String.format("%d", qtdCartelasCarrinho));
                 } else{
                     ViewUtils.alert(getActivity(), "Botão completar com números aleatórios pressionado");
                 }
@@ -180,17 +146,47 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
                 ViewUtils.alert(getActivity(), "Carrinho de apostas pressionado");
             }
             break;
-        }
-    }
 
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+            case R.id.salvarApostaLayout:{
+                RelativeLayout salvarApostaLayout = (RelativeLayout) view.findViewById(R.id.salvarApostaLayout);
+
+                ViewGroup.LayoutParams relativelayoutParams = salvarApostaLayout.getLayoutParams();
+
+                final float scale = getContext().getResources().getDisplayMetrics().density;
+                relativelayoutParams.height = (int) (140 * scale + 0.5f);
+
+                salvarApostaLayout.setLayoutParams(relativelayoutParams);
+                salvarApostaLayout.setOnClickListener(null);
+
+                salvarApostaLayout.findViewById(R.id.btnSalvarAposta).setOnClickListener(this);
+            }
+            break;
+
+            case R.id.btnSalvarAposta:{
+                RelativeLayout salvarApostaLayout = (RelativeLayout) getView().findViewById(R.id.salvarApostaLayout);
+
+                salvarApostaLayout.setBackgroundResource(R.color.verdeazul);
+                ViewGroup.LayoutParams relativelayoutParams = salvarApostaLayout.getLayoutParams();
+
+                final float scale = getContext().getResources().getDisplayMetrics().density;
+                relativelayoutParams.height = (int) (64 * scale + 0.5f);
+
+                salvarApostaLayout.setLayoutParams(relativelayoutParams);
+
+                TextView tituloSalvarAposta = getView().findViewById(R.id.textoSalveEstaAposta);
+                tituloSalvarAposta.setText("Aposta salva :)");
+                tituloSalvarAposta.setGravity(Gravity.CENTER);
+
+                ImageView starSalvarApostaImageView = getView().findViewById(R.id.iconStarSalvar);
+                starSalvarApostaImageView.setBackgroundResource(R.drawable.icon_favoritado);
+            }
+
+        }
     }
 
     // METODOS DE CONFIGURACOES
     private void atualizaDezenaAdapter(){
-        TextView text = (TextView) getView().findViewById(R.id.valorAposta);
+        TextView text = getView().findViewById(R.id.valorAposta);
         text.setText(format("R$ %.2f", 4.5 * qtdDezenasPossiveisSelecionado));
 
         verificaQtdDezenasJaSelecionadas();
@@ -221,6 +217,19 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
         }
     }
 
+    private void verificaSeMostraSalvarApostaView(View fragmentView){
+        if (dezenasSelecionadas.size() == qtdDezenasPossiveisSelecionado){
+            RelativeLayout salvarApostaLayout = fragmentView.findViewById(R.id.salvarApostaLayout);
+
+            salvarApostaLayout.setVisibility(View.VISIBLE);
+            final float scale = getContext().getResources().getDisplayMetrics().density;
+            salvarApostaLayout.getLayoutParams().height = (int) (64 * scale + 0.5f);
+            salvarApostaLayout.setOnClickListener(this);
+        }else{
+            fragmentView.findViewById(R.id.salvarApostaLayout).setVisibility(View.GONE);
+        }
+    }
+
     private void verificaQtdDezenasJaSelecionadas(){
         if (dezenasSelecionadas.size() == qtdDezenasPossiveisSelecionado){
             botaoFinalizar.setBackgroundColor(Color.parseColor(typeGameColorLight.toString()));
@@ -230,6 +239,9 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
             simularDezenasAdapter.notifyDataSetChanged();
             botaoFinalizar.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.cinzaescuro));
             botaoFinalizar.setText(getString(R.string.completarCartela));
+
+            getView().findViewById(R.id.salvarApostaLayout).setVisibility(View.GONE);
+            getView().findViewById(R.id.botaoLimparAposta).setVisibility(View.GONE);
         } else{
             botaoFinalizar.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.cinzaescuro));
             botaoFinalizar.setText(getString(R.string.completarCartela));
@@ -263,6 +275,7 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
                     }
                 }
 
+                verificaSeMostraSalvarApostaView(getView());
                 verificaSeMostraBotaoLimparAposta(getView());
                 verificaQtdDezenasJaSelecionadas();
                 simularDezenasAdapter.notifyDataSetChanged();
@@ -271,7 +284,7 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
     }
 
     // Adapter do gridview das dezenas
-    public class SimularDezenasAdapter extends BaseAdapter {
+    private class SimularDezenasAdapter extends BaseAdapter {
         private Context context;
         private String[] rows;
 
@@ -337,6 +350,6 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
 
     // INTERFACE DO FRAGMENT PARA A ACTIVITY
     public interface CartelaFragmentListener {
-        public int verificaNovoQtdDezenasMax(int qtdDezenasAtual);
+        int verificaNovoQtdDezenasMax(int qtdDezenasAtual);
     }
 }

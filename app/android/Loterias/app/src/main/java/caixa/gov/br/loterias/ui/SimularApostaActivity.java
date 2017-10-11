@@ -2,7 +2,6 @@ package caixa.gov.br.loterias.ui;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.FragmentManager;
@@ -14,32 +13,27 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
-
 import java.util.ArrayList;
-
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.ui.Inteface.CartelaActivityInterface;
+import caixa.gov.br.loterias.ui.adapter.DialogListViewAdapter;
 import caixa.gov.br.loterias.ui.fragment.CartelaFragment;
 import caixa.gov.br.loterias.ui.fragment.CartelaFragment.CartelaFragmentListener;
-import caixa.gov.br.loterias.ui.fragment.CartelaFragment.OnFragmentInteractionListener;
 import caixa.gov.br.loterias.ui.fragment.SurpresinhaFragment;
 import caixa.gov.br.loterias.utils.ColorEnum;
 import caixa.gov.br.loterias.utils.TipoApostaEnum;
 import caixa.gov.br.loterias.utils.TipoDialog;
-import caixa.gov.br.loterias.utils.ViewUtils;
-
 import static caixa.gov.br.loterias.utils.ColorEnum.*;
 import static java.lang.String.*;
 
 @EActivity(R.layout.activity_simular_aposta)
-public class SimularApostaActivity extends AppCompatActivity implements OnClickListener, OnFragmentInteractionListener, CartelaFragmentListener{
+public class SimularApostaActivity extends AppCompatActivity implements OnClickListener, CartelaFragmentListener{
 
     @ViewById
     DrawerLayout drawer_layout;
@@ -234,7 +228,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
     }
 
     private ArrayList<String> montaListDialog(TipoDialog tipoDialog, String valores[]){
-        ArrayList<String> valoresTextoDialog = new ArrayList<String>();
+        ArrayList<String> valoresTextoDialog = new ArrayList<>();
 
         for (String valor: valores) {
             if (tipoDialog == TipoDialog.NUM_CARTELA){
@@ -268,18 +262,22 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         dialogView.findViewById(R.id.btnCancelarDialog).setOnClickListener(this);
         dialogView.findViewById(R.id.btnOkDialog).setOnClickListener(this);
 
-        final TextView dialogTitulo = (TextView) dialogView.findViewById(R.id.dialog_titulo);
+        final TextView dialogTitulo = dialogView.findViewById(R.id.dialog_titulo);
         dialogTitulo.setText(titulo);
 
-        final ListView numerosListView = (ListView) dialogView.findViewById(R.id.listViewOpcoes);
+        final DialogListViewAdapter qtdNumerosAdapter = new DialogListViewAdapter(this, valores);
+
+        final ListView numerosListView = dialogView.findViewById(R.id.listViewOpcoes);
         numerosListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                qtdNumerosAdapter.setSelectedIndex(position);
                 callback.executeCallback(position);
             }
         });
 
-        ArrayAdapter<String> qtdNumerosAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, valores);
+
+//        ArrayAdapter<String> qtdNumerosAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, valores);
         numerosListView.setAdapter(qtdNumerosAdapter);
 
         mBuilder.setView(dialogView);
@@ -308,15 +306,20 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
 
-        menu.findItem(R.id.concursoAtual).setTitle("Concurso\n" + numeroConcursoAtual);
-        menu.findItem(R.id.sorteioAtual).setTitle("Sorteio\n" + dataSorteioAtual);
+        configuraMenuItem(R.id.concursoAtual, "Concurso\n" + numeroConcursoAtual);
+        configuraMenuItem(R.id.sorteioAtual, "Sorteio\n" + dataSorteioAtual);
 
         return true;
     }
 
-    @Override
-    public void onFragmentInteraction(Uri uri) {
+    private void configuraMenuItem(int id, String texto){
+        View menuItem = findViewById(id);
 
+        if (menuItem != null && menuItem instanceof TextView) {
+            ((TextView) menuItem).setText(texto);
+            ((TextView) menuItem).setTextSize(12);
+            menuItem.setPadding(5, 5, 5, 5);
+        }
     }
 
     // MÉTODOS DO FRAGMENT CARTELAFRAGMENTLISTENER
@@ -335,5 +338,5 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
 
 
 interface CallbackDialog{
-    public void executeCallback(int position);
+    void executeCallback(int position);
 }
