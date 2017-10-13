@@ -22,17 +22,6 @@ class LOTrevoMenuController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.scrollView.layoutIfNeeded()
-        self.scrollView.layer.masksToBounds = true
-        
-        
-        let gradient : CAGradientLayer = CAGradientLayer()
-        gradient.frame = self.scrollView.bounds
-        gradient.locations = [0.0, 1.0]
-        gradient.colors = [self.UIColorFromHex(0xffffff, alpha: 1.0).cgColor, self.UIColorFromHex(0xd4dfe2, alpha: 1.0).cgColor]
-        
-        self.scrollView.layer.insertSublayer(gradient, at: 0)
-        
         aplicaEstilos()
     }
     
@@ -54,23 +43,35 @@ class LOTrevoMenuController: UIViewController {
     }
     
     func aplicaEstilos () {
-        resultadoAnterior.backgroundColor = self.UIColorFromHex(estiloModalidade.corEscura, alpha: 1.0)
-        aposte.backgroundColor = self.UIColorFromHex(estiloModalidade.corEscura, alpha: 1.0)
-        trevoBaixo.backgroundColor = self.UIColorFromHex(estiloModalidade.corClara, alpha: 1.0)
-        
-        let paragraph = NSMutableParagraphStyle()
-        paragraph.alignment = .center
-        let fixoAposte = NSAttributedString.init(string: "Aposte", attributes: [NSAttributedStringKey.font: UIFont.init(name: "FuturaStd-Bold", size: 15)!, NSAttributedStringKey.foregroundColor:UIColor.white, NSAttributedStringKey.paragraphStyle: paragraph])
-        
-        //Remover mock de valor
-        let textoDinamico = NSAttributedString.init(string: String(format:"\npor R$%.2f", 3.5), attributes: [NSAttributedStringKey.font: UIFont.init(name: "FuturaStd-Medium", size: 15)!, NSAttributedStringKey.foregroundColor:UIColor.white, NSAttributedStringKey.paragraphStyle: paragraph])
-        
-        let combination = NSMutableAttributedString()
-        combination.append(fixoAposte)
-        combination.append(textoDinamico)
-        
-        self.aposte.titleLabel?.numberOfLines = 0
-        self.aposte.setAttributedTitle(combination, for: .normal)
+        DispatchQueue.main.async {
+            self.scrollView.layoutIfNeeded()
+            self.scrollView.layer.masksToBounds = true
+            
+            let gradient : CAGradientLayer = CAGradientLayer()
+            gradient.frame = self.scrollView.bounds
+            gradient.locations = [0.0, 1.0]
+            gradient.colors = [self.UIColorFromHex(0xffffff, alpha: 1.0).cgColor, self.UIColorFromHex(0xd4dfe2, alpha: 1.0).cgColor]
+            
+            self.scrollView.layer.insertSublayer(gradient, at: 0)
+            
+            self.resultadoAnterior.backgroundColor = self.UIColorFromHex(self.estiloModalidade.corEscura, alpha: 1.0)
+            self.aposte.backgroundColor = self.UIColorFromHex(self.estiloModalidade.corEscura, alpha: 1.0)
+            self.trevoBaixo.backgroundColor = self.UIColorFromHex(self.estiloModalidade.corClara, alpha: 1.0)
+            
+            let paragraph = NSMutableParagraphStyle()
+            paragraph.alignment = .center
+            let fixoAposte = NSAttributedString.init(string: "Aposte", attributes: [NSAttributedStringKey.font: UIFont.init(name: "FuturaStd-Bold", size: 15)!, NSAttributedStringKey.foregroundColor:UIColor.white, NSAttributedStringKey.paragraphStyle: paragraph])
+            
+            //Remover mock de valor
+            let textoDinamico = NSAttributedString.init(string: String(format:"\npor R$%.2f", 3.5), attributes: [NSAttributedStringKey.font: UIFont.init(name: "FuturaStd-Medium", size: 15)!, NSAttributedStringKey.foregroundColor:UIColor.white, NSAttributedStringKey.paragraphStyle: paragraph])
+            
+            let combination = NSMutableAttributedString()
+            combination.append(fixoAposte)
+            combination.append(textoDinamico)
+            
+            self.aposte.titleLabel?.numberOfLines = 0
+            self.aposte.setAttributedTitle(combination, for: .normal)
+        }
     }
     
 

@@ -52,17 +52,17 @@ class LOModalideController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.gradientView.layoutIfNeeded()
-        self.gradientView.layer.masksToBounds = true
-        
-        print(self.gradientView)
-        
-        let gradient : CAGradientLayer = CAGradientLayer()
-        gradient.frame = self.gradientView.bounds
-        gradient.locations = [0.0, 1.0]
-        gradient.colors = [self.UIColorFromHex(0xffffff, alpha: 1.0).cgColor, self.UIColorFromHex(0xd4dfe2, alpha: 1.0).cgColor]
-        
-        self.gradientView.layer.addSublayer(gradient)
+        DispatchQueue.main.async {
+            self.gradientView.layoutIfNeeded()
+            self.gradientView.layer.masksToBounds = true
+            
+            let gradient : CAGradientLayer = CAGradientLayer()
+            gradient.frame = self.gradientView.bounds
+            gradient.locations = [0.0, 1.0]
+            gradient.colors = [self.UIColorFromHex(0xffffff, alpha: 1.0).cgColor, self.UIColorFromHex(0xd4dfe2, alpha: 1.0).cgColor]
+            
+            self.gradientView.layer.addSublayer(gradient)
+        }
         
         montarTelaBaseadoNoTipoDeModalidade()
     }
@@ -76,7 +76,7 @@ class LOModalideController: UIViewController {
         if let tipoModalidade = self.tipoModalidade {
             switch tipoModalidade {
                 case .Duplasena:
-                    self.estiloModalidade = EstiloModalidade(corClara: 0xa92551, corEscura: 0x7d1a3f , imagemTopo: #imageLiteral(resourceName: "titulo-duplasena"), imagemCalendario: #imageLiteral(resourceName: "icon-data-duplasena"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-duplasena"), tipoModalidade: self.tipoModalidade!)
+                    self.estiloModalidade = EstiloModalidade(corClara: 0xa62a52, corEscura: 0x7d1a3f , imagemTopo: #imageLiteral(resourceName: "titulo-duplasena"), imagemCalendario: #imageLiteral(resourceName: "icon-data-duplasena"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-duplasena"), tipoModalidade: self.tipoModalidade!)
                     break
                 case .Megasena:
                     self.estiloModalidade = EstiloModalidade(corClara: 0x00AB6B, corEscura: 0x009b66 , imagemTopo: #imageLiteral(resourceName: "titulo_megasena"), imagemCalendario: #imageLiteral(resourceName: "icon-data-megasena"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-megasena"), tipoModalidade: self.tipoModalidade!)
@@ -117,11 +117,13 @@ class LOModalideController: UIViewController {
     }
     
     func aplicarEstilo () {
-        self.iconeRelogio.image = self.estiloModalidade.imagemRelogio
-        self.iconeCalendario.image = self.estiloModalidade.imagemCalendario
-        self.resultadoView.backgroundColor = self.UIColorFromHex(self.estiloModalidade.corEscura, alpha: 1.0)
-        self.aposteView.backgroundColor = self.UIColorFromHex(self.estiloModalidade.corClara, alpha: 1.0)
-        self.topoCorpo.image = self.estiloModalidade.imagemTopo
+        DispatchQueue.main.async {
+            self.iconeRelogio.image = self.estiloModalidade.imagemRelogio
+            self.iconeCalendario.image = self.estiloModalidade.imagemCalendario
+            self.resultadoView.backgroundColor = self.UIColorFromHex(self.estiloModalidade.corEscura, alpha: 1.0)
+            self.aposteView.backgroundColor = self.UIColorFromHex(self.estiloModalidade.corClara, alpha: 1.0)
+            self.topoCorpo.image = self.estiloModalidade.imagemTopo
+        }
         
         popularCampos()
     }

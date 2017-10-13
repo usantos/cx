@@ -15,6 +15,7 @@ protocol LOSurpresinhaDelegate {
 
 class LOSimularSurpresinha: UIView, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, UICollectionViewDataSource, LOSurpresinhaDelegate {
 
+    var delegateSimular : LOSimularApostaDelegate!
     public var estiloModalidade : EstiloModalidade!{
         didSet {
             self.viewAdicionarCarrinho.backgroundColor = self.UIColorFromHex(self.estiloModalidade.corClara, alpha: 1.0)
@@ -111,8 +112,8 @@ class LOSimularSurpresinha: UIView, UICollectionViewDelegateFlowLayout, UICollec
         //Fixando então a constant para apresentação otimizada.
         
         if DeviceType.IS_IPHONE_6P {
-            if self.verticalLayoutConstraint.constant < 439 {
-                self.verticalLayoutConstraint.constant = 439
+            if self.verticalLayoutConstraint.constant < 124 {
+                self.verticalLayoutConstraint.constant = 124
             } else {
                 self.verticalLayoutConstraint.constant = self.collectionViewNumerosMascarados.collectionViewLayout.collectionViewContentSize.height
                 
@@ -178,5 +179,12 @@ class LOSimularSurpresinha: UIView, UICollectionViewDelegateFlowLayout, UICollec
     @objc func buttonUpSub() {
         timer.invalidate()
     }
-
+    
+    @IBAction func adicionarApostaNoCarrinho() {
+        self.delegateSimular.adicionarNoCarrinho()
+    }
+    
+    @IBAction func enviarParaCarrinhoDeApostas () {
+        self.delegateSimular.enviarParaTelaCarrinho()
+    }
 }

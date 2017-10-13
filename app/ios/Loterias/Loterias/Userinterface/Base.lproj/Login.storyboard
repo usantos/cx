@@ -168,10 +168,14 @@
                         <color key="backgroundColor" red="0.0" green="0.36862745098039218" blue="0.6705882352941176" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="uCZ-0T-Kns" firstAttribute="top" secondItem="MOe-Ld-ZCn" secondAttribute="bottom" constant="24" id="1qg-VQ-lOI"/>
+                            <constraint firstItem="1Ft-kb-IYN" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="z6C-UY-ldH" secondAttribute="leading" constant="20" symbolic="YES" id="2qu-8y-D5z"/>
                             <constraint firstItem="PMC-Yr-9Kt" firstAttribute="top" secondItem="4aZ-CN-KaN" secondAttribute="bottom" constant="50" id="52N-9W-C9U"/>
+                            <constraint firstItem="oPW-Tr-gTT" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="z6C-UY-ldH" secondAttribute="leading" constant="20" symbolic="YES" id="6ox-WY-Vxc"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="O4m-D5-jcK" secondAttribute="trailing" constant="20" symbolic="YES" id="7GR-w9-prD"/>
                             <constraint firstItem="PMC-Yr-9Kt" firstAttribute="leading" secondItem="z6C-UY-ldH" secondAttribute="leading" constant="16" id="FOo-SS-Gep"/>
                             <constraint firstAttribute="trailing" secondItem="4aZ-CN-KaN" secondAttribute="trailing" id="HHv-zB-YTt"/>
                             <constraint firstItem="oPW-Tr-gTT" firstAttribute="top" secondItem="PMC-Yr-9Kt" secondAttribute="bottom" constant="5" id="Ixs-4G-vQa"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="uCZ-0T-Kns" secondAttribute="trailing" constant="20" symbolic="YES" id="JOL-1U-CDc"/>
                             <constraint firstItem="4aZ-CN-KaN" firstAttribute="leading" secondItem="z6C-UY-ldH" secondAttribute="leading" id="Jlw-DK-Txt"/>
                             <constraint firstItem="4aZ-CN-KaN" firstAttribute="top" relation="greaterThanOrEqual" secondItem="LQd-Bh-0Wo" secondAttribute="bottom" constant="10" id="K7s-hG-VGt"/>
                             <constraint firstItem="1Ft-kb-IYN" firstAttribute="top" secondItem="lIY-PN-0sJ" secondAttribute="bottom" constant="8" id="Lac-VD-R8e"/>
@@ -213,7 +217,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rht-Dh-eyY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1628" y="974"/>
+            <point key="canvasLocation" x="838" y="381"/>
         </scene>
         <!--Loterias Caixa-->
         <scene sceneID="TWa-dm-tAk">
@@ -234,7 +238,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cadastrar" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="26K-A5-di0">
-                                                    <rect key="frame" x="16" y="16" width="75" height="21"/>
+                                                    <rect key="frame" x="16" y="16" width="88" height="21"/>
                                                     <fontDescription key="fontDescription" name="FuturaStd-Bold" family="Futura Std" pointSize="17"/>
                                                     <color key="textColor" red="0.28235294117647058" green="0.34509803921568627" blue="0.42352941176470588" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -244,6 +248,7 @@
                                                 <constraint firstItem="26K-A5-di0" firstAttribute="leading" secondItem="NTH-6Z-ThH" secondAttribute="leading" constant="16" id="7r4-Ve-1xp"/>
                                                 <constraint firstAttribute="bottom" secondItem="26K-A5-di0" secondAttribute="bottom" constant="16.5" id="Qu6-3g-b0r"/>
                                                 <constraint firstItem="26K-A5-di0" firstAttribute="top" secondItem="NTH-6Z-ThH" secondAttribute="top" constant="16" id="VY0-I6-coe"/>
+                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="26K-A5-di0" secondAttribute="trailing" constant="20" symbolic="YES" id="ax0-zv-ptI"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -712,7 +717,6 @@ Para começar, informe os dados abaixo:</string>
                         <outlet property="nome" destination="g5Y-A0-Pwm" id="jw9-r8-gjJ"/>
                         <outlet property="nomeDaMae" destination="MiH-GW-gTg" id="Ge5-zZ-Be6"/>
                         <outlet property="uf" destination="9BG-1j-ErK" id="BWg-Kk-vKl"/>
-                        <segue destination="GHv-pe-6bR" kind="presentation" identifier="mandarParaPopup" modalPresentationStyle="overFullScreen" modalTransitionStyle="crossDissolve" id="vhv-ph-sdc"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yEV-aF-0Xc" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -783,7 +787,7 @@ Para começar, informe os dados abaixo:</string>
                                         <rect key="frame" x="162" y="411" width="134" height="56"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="56" id="JBK-bc-3VA"/>
-                                            <constraint firstAttribute="width" constant="134" id="xbk-7Q-nVA"/>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="134" id="QRv-yS-ExA"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="FuturaStd-Bold" family="Futura Std" pointSize="17"/>
                                         <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="14" maxY="0.0"/>
@@ -794,7 +798,7 @@ Para começar, informe os dados abaixo:</string>
                                             <action selector="confirmarSelecao:" destination="GHv-pe-6bR" eventType="touchUpInside" id="52r-FH-KGv"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ur1-ut-C1a">
+                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ur1-ut-C1a">
                                         <rect key="frame" x="0.0" y="411" width="162" height="56"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="56" id="Bur-zh-ax2"/>
@@ -866,7 +870,7 @@ Para começar, informe os dados abaixo:</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vF7-4B-XXf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2421.5999999999999" y="478.11094452773619"/>
+            <point key="canvasLocation" x="2422" y="406"/>
         </scene>
         <!--Initial Nav Login Controller-->
         <scene sceneID="FGE-SA-QCG">
@@ -907,16 +911,14 @@ Para começar, informe os dados abaixo:</string>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cadastrar" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YzK-YV-18S">
-                                            <rect key="frame" x="16" y="16" width="75" height="21"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="21" id="XDr-yf-ioj"/>
-                                            </constraints>
+                                            <rect key="frame" x="16" y="16" width="88" height="21"/>
                                             <fontDescription key="fontDescription" name="FuturaStd-Bold" family="Futura Std" pointSize="17"/>
                                             <color key="textColor" red="0.28235294119999998" green="0.34509803919999998" blue="0.42352941179999998" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="YzK-YV-18S" secondAttribute="trailing" constant="20" symbolic="YES" id="4KB-NC-HGN"/>
                                         <constraint firstItem="YzK-YV-18S" firstAttribute="top" secondItem="aTl-CZ-eQs" secondAttribute="top" constant="16" id="WiO-7a-7ha"/>
                                         <constraint firstItem="YzK-YV-18S" firstAttribute="leading" secondItem="aTl-CZ-eQs" secondAttribute="leading" constant="16" id="jwO-M3-bQi"/>
                                         <constraint firstAttribute="bottom" secondItem="YzK-YV-18S" secondAttribute="bottom" constant="16.5" id="zVf-CE-So1"/>
@@ -949,10 +951,7 @@ de seu endereço, CEP ou código.</string>
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VnU-rV-YRg">
-                                            <rect key="frame" x="16" y="49" width="215.5" height="40"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="40" id="GKS-jl-KEN"/>
-                                            </constraints>
+                                            <rect key="frame" x="16" y="49" width="205" height="40"/>
                                             <string key="text">Precisamos que você informe
 uma lotérica de sua preferência.</string>
                                             <fontDescription key="fontDescription" name="FuturaStd-Medium" family="Futura Std" pointSize="15"/>
@@ -965,7 +964,9 @@ uma lotérica de sua preferência.</string>
                                         <constraint firstItem="93E-jr-qrZ" firstAttribute="top" secondItem="VnU-rV-YRg" secondAttribute="bottom" constant="8" id="DpX-cL-0Ba"/>
                                         <constraint firstItem="VnU-rV-YRg" firstAttribute="top" secondItem="b2z-rT-1g3" secondAttribute="bottom" constant="12" id="HHp-mU-sRl"/>
                                         <constraint firstItem="b2z-rT-1g3" firstAttribute="leading" secondItem="PKL-t4-hKF" secondAttribute="leadingMargin" constant="8" id="ODK-yB-chW"/>
+                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="93E-jr-qrZ" secondAttribute="trailing" constant="20" symbolic="YES" id="QYH-kS-Lio"/>
                                         <constraint firstAttribute="bottom" secondItem="93E-jr-qrZ" secondAttribute="bottom" constant="13.5" id="WuB-0t-wOu"/>
+                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="VnU-rV-YRg" secondAttribute="trailing" constant="20" symbolic="YES" id="Zkv-oy-Deg"/>
                                         <constraint firstItem="93E-jr-qrZ" firstAttribute="leading" secondItem="PKL-t4-hKF" secondAttribute="leading" constant="16" id="ms6-wf-sZP"/>
                                         <constraint firstItem="b2z-rT-1g3" firstAttribute="top" secondItem="PKL-t4-hKF" secondAttribute="topMargin" constant="9" id="pY8-ce-M5k"/>
                                     </constraints>
@@ -986,7 +987,7 @@ uma lotérica de sua preferência.</string>
                                                     <rect key="frame" x="0.0" y="0.0" width="124.5" height="56.5"/>
                                                     <color key="backgroundColor" red="0.20784313730000001" green="0.6588235294" blue="0.59607843140000005" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="56.5" id="HsG-aY-4SZ"/>
+                                                        <constraint firstAttribute="height" constant="56.5" id="cRe-7B-ZP8"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" name="FuturaStd-Bold" family="Futura Std" pointSize="17"/>
                                                     <state key="normal" title="Localização">
@@ -1023,16 +1024,11 @@ uma lotérica de sua preferência.</string>
                                                 <constraint firstItem="R4I-Lr-ljo" firstAttribute="leading" secondItem="ygl-pJ-bQa" secondAttribute="trailing" id="1nQ-16-yGT"/>
                                                 <constraint firstItem="UJm-Nc-EDl" firstAttribute="leading" secondItem="R4I-Lr-ljo" secondAttribute="trailing" id="6e3-DE-9jr"/>
                                                 <constraint firstItem="R4I-Lr-ljo" firstAttribute="top" secondItem="Ve0-fz-Jxo" secondAttribute="top" id="8vI-2Y-xFV"/>
-                                                <constraint firstAttribute="height" constant="56.5" id="9Ni-hk-pxD"/>
                                                 <constraint firstAttribute="bottom" secondItem="UJm-Nc-EDl" secondAttribute="bottom" id="EHG-aS-6d3"/>
                                                 <constraint firstItem="ygl-pJ-bQa" firstAttribute="leading" secondItem="Ve0-fz-Jxo" secondAttribute="leading" id="Mhd-UU-g5o"/>
-                                                <constraint firstItem="UJm-Nc-EDl" firstAttribute="height" secondItem="R4I-Lr-ljo" secondAttribute="height" id="NTc-jv-FJ3"/>
                                                 <constraint firstAttribute="trailing" secondItem="UJm-Nc-EDl" secondAttribute="trailing" id="ad5-i9-PDU"/>
-                                                <constraint firstItem="R4I-Lr-ljo" firstAttribute="height" secondItem="ygl-pJ-bQa" secondAttribute="height" id="bLQ-bB-Am7"/>
-                                                <constraint firstAttribute="bottom" secondItem="ygl-pJ-bQa" secondAttribute="bottom" id="gyM-ET-GJE"/>
                                                 <constraint firstItem="UJm-Nc-EDl" firstAttribute="top" secondItem="Ve0-fz-Jxo" secondAttribute="top" id="k4k-OT-3by"/>
                                                 <constraint firstAttribute="bottom" secondItem="R4I-Lr-ljo" secondAttribute="bottom" id="kLe-zF-nj8"/>
-                                                <constraint firstItem="ygl-pJ-bQa" firstAttribute="top" secondItem="Ve0-fz-Jxo" secondAttribute="top" id="p2g-iI-WhE"/>
                                             </constraints>
                                         </stackView>
                                     </subviews>
@@ -1040,7 +1036,7 @@ uma lotérica de sua preferência.</string>
                                         <constraint firstAttribute="trailing" secondItem="Ve0-fz-Jxo" secondAttribute="trailing" id="50N-6X-P64"/>
                                         <constraint firstItem="Ve0-fz-Jxo" firstAttribute="leading" secondItem="Ycn-0l-Xfq" secondAttribute="leading" constant="1" id="K3P-ZT-qw1"/>
                                         <constraint firstAttribute="bottom" secondItem="Ve0-fz-Jxo" secondAttribute="bottom" constant="15" id="PDh-Sj-gmd"/>
-                                        <constraint firstItem="Ve0-fz-Jxo" firstAttribute="top" secondItem="Ycn-0l-Xfq" secondAttribute="top" constant="15" id="qhc-UA-tWU"/>
+                                        <constraint firstItem="Ve0-fz-Jxo" firstAttribute="top" secondItem="Ycn-0l-Xfq" secondAttribute="top" constant="15" id="yXO-nI-g9N"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <inset key="separatorInset" minX="1000" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -1057,10 +1053,10 @@ uma lotérica de sua preferência.</string>
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="55.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="UF" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="lpP-nC-SNV" customClass="HoshiTextField" customModule="TextFieldEffects">
+                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="UF" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="lpP-nC-SNV" customClass="HoshiTextField" customModule="TextFieldEffects">
                                             <rect key="frame" x="16" y="6" width="150" height="45"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="45" id="fXK-Nu-7q1"/>
+                                                <constraint firstAttribute="height" constant="45" id="KBN-nn-VqU"/>
                                             </constraints>
                                             <color key="textColor" red="0.28235294119999998" green="0.34509803919999998" blue="0.42352941179999998" alpha="1" colorSpace="calibratedRGB"/>
                                             <fontDescription key="fontDescription" name="ArialMT" family="Arial" pointSize="17"/>
@@ -1074,14 +1070,17 @@ uma lotérica de sua preferência.</string>
                                                 </userDefinedRuntimeAttribute>
                                                 <userDefinedRuntimeAttribute type="color" keyPath="borderActiveColor">
                                                     <color key="value" red="0.81568627449999997" green="0.87843137250000003" blue="0.89019607840000003" alpha="1" colorSpace="calibratedRGB"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="placeholderFontScale">
+                                                    <real key="value" value="0.90000000000000002"/>
                                                 </userDefinedRuntimeAttribute>
                                             </userDefinedRuntimeAttributes>
                                         </textField>
                                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Cidade" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="IH2-RL-6od" customClass="HoshiTextField" customModule="TextFieldEffects">
                                             <rect key="frame" x="174" y="6" width="185" height="45"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="45" id="3EQ-Ib-4yQ"/>
-                                                <constraint firstAttribute="width" constant="185" id="4KS-il-zl8"/>
+                                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="185" id="4KS-il-zl8"/>
+                                                <constraint firstAttribute="height" constant="45" id="Czb-Be-kps"/>
                                             </constraints>
                                             <color key="textColor" red="0.28235294119999998" green="0.34509803919999998" blue="0.42352941179999998" alpha="1" colorSpace="calibratedRGB"/>
                                             <fontDescription key="fontDescription" name="ArialMT" family="Arial" pointSize="17"/>
@@ -1095,6 +1094,9 @@ uma lotérica de sua preferência.</string>
                                                 </userDefinedRuntimeAttribute>
                                                 <userDefinedRuntimeAttribute type="color" keyPath="borderActiveColor">
                                                     <color key="value" red="0.81568627449999997" green="0.87843137250000003" blue="0.89019607840000003" alpha="1" colorSpace="calibratedRGB"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="placeholderFontScale">
+                                                    <real key="value" value="0.90000000000000002"/>
                                                 </userDefinedRuntimeAttribute>
                                             </userDefinedRuntimeAttributes>
                                         </textField>
@@ -1106,7 +1108,6 @@ uma lotérica de sua preferência.</string>
                                         <constraint firstAttribute="bottom" secondItem="lpP-nC-SNV" secondAttribute="bottom" constant="4.5" id="OmY-Jt-bt4"/>
                                         <constraint firstItem="IH2-RL-6od" firstAttribute="top" secondItem="Fhm-ly-dlz" secondAttribute="top" constant="6" id="mAb-5G-tbp"/>
                                         <constraint firstAttribute="trailing" secondItem="IH2-RL-6od" secondAttribute="trailing" constant="16" id="mxe-Ss-HDv"/>
-                                        <constraint firstItem="lpP-nC-SNV" firstAttribute="top" secondItem="Fhm-ly-dlz" secondAttribute="top" constant="6" id="stx-pG-hEd"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <inset key="separatorInset" minX="1000" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -1125,7 +1126,7 @@ uma lotérica de sua preferência.</string>
                                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Bairro" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="aDM-7P-Ntk" customClass="HoshiTextField" customModule="TextFieldEffects">
                                             <rect key="frame" x="16" y="6" width="344" height="44.5"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="44.5" id="c0y-jq-HC3"/>
+                                                <constraint firstAttribute="height" constant="44.5" id="SyS-Cg-Vy4"/>
                                             </constraints>
                                             <color key="textColor" red="0.28235294119999998" green="0.34509803919999998" blue="0.42352941179999998" alpha="1" colorSpace="calibratedRGB"/>
                                             <fontDescription key="fontDescription" name="ArialMT" family="Arial" pointSize="17"/>
@@ -1139,6 +1140,9 @@ uma lotérica de sua preferência.</string>
                                                 </userDefinedRuntimeAttribute>
                                                 <userDefinedRuntimeAttribute type="color" keyPath="borderActiveColor">
                                                     <color key="value" red="0.81568627449999997" green="0.87843137250000003" blue="0.89019607840000003" alpha="1" colorSpace="calibratedRGB"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="placeholderFontScale">
+                                                    <real key="value" value="0.90000000000000002"/>
                                                 </userDefinedRuntimeAttribute>
                                             </userDefinedRuntimeAttributes>
                                         </textField>
@@ -1162,7 +1166,7 @@ uma lotérica de sua preferência.</string>
                                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="CEP" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Ifd-fC-pGN" customClass="HoshiTextField" customModule="TextFieldEffects">
                                             <rect key="frame" x="16" y="6" width="344" height="44.5"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="44.5" id="6Vs-Tz-onx"/>
+                                                <constraint firstAttribute="height" constant="44.5" id="rz5-f5-ZWP"/>
                                             </constraints>
                                             <color key="textColor" red="0.28235294119999998" green="0.34509803919999998" blue="0.42352941179999998" alpha="1" colorSpace="calibratedRGB"/>
                                             <fontDescription key="fontDescription" name="ArialMT" family="Arial" pointSize="17"/>
@@ -1176,6 +1180,9 @@ uma lotérica de sua preferência.</string>
                                                 </userDefinedRuntimeAttribute>
                                                 <userDefinedRuntimeAttribute type="color" keyPath="borderActiveColor">
                                                     <color key="value" red="0.81568627449999997" green="0.87843137250000003" blue="0.89019607840000003" alpha="1" colorSpace="calibratedRGB"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="placeholderFontScale">
+                                                    <real key="value" value="0.90000000000000002"/>
                                                 </userDefinedRuntimeAttribute>
                                             </userDefinedRuntimeAttributes>
                                         </textField>
@@ -1189,7 +1196,7 @@ uma lotérica de sua preferência.</string>
                                 </tableViewCellContentView>
                                 <inset key="separatorInset" minX="1000" minY="0.0" maxX="0.0" maxY="0.0"/>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="codigoCell" rowHeight="56" id="JtG-ZV-1W0">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="codigoCell" rowHeight="56" id="JtG-ZV-1W0" customClass="LOCodigoLotericaCell" customModule="Loterias" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="487" width="375" height="56"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="JtG-ZV-1W0" id="al8-Sc-D9T">
@@ -1199,7 +1206,7 @@ uma lotérica de sua preferência.</string>
                                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Código lotérica" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="url-My-m3Z" customClass="HoshiTextField" customModule="TextFieldEffects">
                                             <rect key="frame" x="16" y="6" width="344" height="44.5"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="44.5" id="ESf-Pn-GCT"/>
+                                                <constraint firstAttribute="height" constant="44.5" id="RgX-bt-Hz5"/>
                                             </constraints>
                                             <color key="textColor" red="0.28235294119999998" green="0.34509803919999998" blue="0.42352941179999998" alpha="1" colorSpace="calibratedRGB"/>
                                             <fontDescription key="fontDescription" name="ArialMT" family="Arial" pointSize="17"/>
@@ -1214,6 +1221,9 @@ uma lotérica de sua preferência.</string>
                                                 <userDefinedRuntimeAttribute type="color" keyPath="borderActiveColor">
                                                     <color key="value" red="0.81568627449999997" green="0.87843137250000003" blue="0.89019607840000003" alpha="1" colorSpace="calibratedRGB"/>
                                                 </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="placeholderFontScale">
+                                                    <real key="value" value="0.90000000000000002"/>
+                                                </userDefinedRuntimeAttribute>
                                             </userDefinedRuntimeAttributes>
                                         </textField>
                                     </subviews>
@@ -1225,6 +1235,9 @@ uma lotérica de sua preferência.</string>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <inset key="separatorInset" minX="1000" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <connections>
+                                    <outlet property="codigoText" destination="url-My-m3Z" id="AMf-Pn-ThX"/>
+                                </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="termoCell" rowHeight="101" id="gPT-l9-dQU" customClass="LOTermoCell" customModule="Loterias" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="543" width="375" height="101"/>
@@ -1271,9 +1284,6 @@ uma lotérica de sua preferência.</string>
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jyp-HL-dlb">
                                             <rect key="frame" x="43" y="59" width="96" height="21"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="21" id="sFI-W4-B7q"/>
-                                            </constraints>
                                             <color key="tintColor" red="0.28235294117647058" green="0.34509803921568627" blue="0.42352941176470588" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <state key="normal">
                                                 <attributedString key="attributedTitle">
@@ -1286,20 +1296,13 @@ uma lotérica de sua preferência.</string>
                                             </state>
                                         </button>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="e" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="42A-SH-CzI">
-                                            <rect key="frame" x="140" y="59" width="16" height="21"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="16" id="D7J-J3-N6C"/>
-                                                <constraint firstAttribute="height" constant="21" id="Ha5-Nk-57f"/>
-                                            </constraints>
+                                            <rect key="frame" x="140" y="59" width="8.5" height="21"/>
                                             <fontDescription key="fontDescription" name="ArialMT" family="Arial" pointSize="15"/>
                                             <color key="textColor" red="0.28235294119999998" green="0.34509803919999998" blue="0.42352941179999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="odA-pu-Icj">
-                                            <rect key="frame" x="157" y="59" width="154" height="21"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="21" id="9yw-yd-Kv8"/>
-                                            </constraints>
+                                            <rect key="frame" x="149.5" y="59" width="154" height="21"/>
                                             <color key="tintColor" red="0.28235294119999998" green="0.34509803919999998" blue="0.42352941179999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <state key="normal">
                                                 <attributedString key="attributedTitle">
@@ -1316,15 +1319,18 @@ uma lotérica de sua preferência.</string>
                                     </subviews>
                                     <constraints>
                                         <constraint firstAttribute="bottom" secondItem="jyp-HL-dlb" secondAttribute="bottom" constant="20.5" id="28M-md-6PW"/>
+                                        <constraint firstItem="jyp-HL-dlb" firstAttribute="top" secondItem="77Z-cP-oyL" secondAttribute="bottom" constant="2" id="2fh-Ju-7Rc"/>
                                         <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="odA-pu-Icj" secondAttribute="trailing" constant="20" id="2q4-zz-qOl"/>
                                         <constraint firstAttribute="bottom" secondItem="42A-SH-CzI" secondAttribute="bottom" constant="20.5" id="43w-Ej-aP2"/>
                                         <constraint firstItem="77Z-cP-oyL" firstAttribute="leading" secondItem="twP-bM-lSn" secondAttribute="trailing" constant="-2" id="ASN-Bz-XAa"/>
+                                        <constraint firstItem="odA-pu-Icj" firstAttribute="top" secondItem="77Z-cP-oyL" secondAttribute="bottom" constant="2" id="F8V-Je-4ok"/>
                                         <constraint firstItem="42A-SH-CzI" firstAttribute="leading" secondItem="jyp-HL-dlb" secondAttribute="trailing" constant="1" id="FNz-qQ-iu0"/>
                                         <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="77Z-cP-oyL" secondAttribute="trailing" constant="20" id="Gmm-Br-yCd"/>
                                         <constraint firstItem="jyp-HL-dlb" firstAttribute="leading" secondItem="twP-bM-lSn" secondAttribute="trailing" constant="-2" id="ME7-BO-ZBT"/>
                                         <constraint firstAttribute="bottom" secondItem="odA-pu-Icj" secondAttribute="bottom" constant="20.5" id="VQa-CS-y67"/>
                                         <constraint firstItem="odA-pu-Icj" firstAttribute="leading" secondItem="42A-SH-CzI" secondAttribute="trailing" constant="1" id="XE4-rS-RP7"/>
                                         <constraint firstItem="77Z-cP-oyL" firstAttribute="top" secondItem="7XA-35-KKb" secondAttribute="top" constant="37" id="e2c-Jy-4wu"/>
+                                        <constraint firstItem="42A-SH-CzI" firstAttribute="top" secondItem="77Z-cP-oyL" secondAttribute="bottom" constant="2" id="faR-MB-tnH"/>
                                         <constraint firstItem="twP-bM-lSn" firstAttribute="top" secondItem="7XA-35-KKb" secondAttribute="top" constant="22" id="h30-UD-ED5"/>
                                         <constraint firstItem="twP-bM-lSn" firstAttribute="leading" secondItem="7XA-35-KKb" secondAttribute="leading" constant="1" id="j6v-l5-wWY"/>
                                         <constraint firstAttribute="bottom" secondItem="twP-bM-lSn" secondAttribute="bottom" constant="34.5" id="x5e-bt-OI4"/>
@@ -1437,7 +1443,7 @@ uma lotérica de sua preferência.</string>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oKZ-Os-l38" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2422" y="-386"/>
+            <point key="canvasLocation" x="2421.5999999999999" y="-386.8065967016492"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="KLE-mn-LXg">

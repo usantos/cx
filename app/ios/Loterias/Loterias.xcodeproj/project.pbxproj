@@ -88,6 +88,7 @@
 		A6AE53161F79247A001AB32C /* LOMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6AE53151F79247A001AB32C /* LOMenuController.swift */; };
 		A6AE531A1F796F59001AB32C /* LOFimApostaController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6AE53191F796F59001AB32C /* LOFimApostaController.swift */; };
 		A6AE531C1F7A91C4001AB32C /* LOPaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6AE531B1F7A91C4001AB32C /* LOPaddingLabel.swift */; };
+		A6B34C3E1F911FEF00AB2B51 /* LOCodigoLotericaCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B34C3D1F911FEF00AB2B51 /* LOCodigoLotericaCell.swift */; };
 		A6BA013F1F8BB6670032ECDC /* LOInitialNavLoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BA013E1F8BB6670032ECDC /* LOInitialNavLoginController.swift */; };
 		A6BC9DB31F8D448F00778335 /* LOModalidadesBusinessService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BC9DB21F8D448F00778335 /* LOModalidadesBusinessService.swift */; };
 		A6E5DD961F83C1C9002342D6 /* server-config.plist in Resources */ = {isa = PBXBuildFile; fileRef = A6EC217F1F82D22F00BD6825 /* server-config.plist */; };
@@ -207,6 +208,7 @@
 		A6AE53151F79247A001AB32C /* LOMenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LOMenuController.swift; path = Controllers/Menu/LOMenuController.swift; sourceTree = "<group>"; };
 		A6AE53191F796F59001AB32C /* LOFimApostaController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LOFimApostaController.swift; path = Controllers/Apostas/LOFimApostaController.swift; sourceTree = "<group>"; };
 		A6AE531B1F7A91C4001AB32C /* LOPaddingLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LOPaddingLabel.swift; path = Dependencies/LOPaddingLabel.swift; sourceTree = "<group>"; };
+		A6B34C3D1F911FEF00AB2B51 /* LOCodigoLotericaCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LOCodigoLotericaCell.swift; path = Controllers/Login/Cadastro/LOCodigoLotericaCell.swift; sourceTree = "<group>"; };
 		A6BA013E1F8BB6670032ECDC /* LOInitialNavLoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LOInitialNavLoginController.swift; path = Controllers/Login/LOInitialNavLoginController.swift; sourceTree = "<group>"; };
 		A6BC9DB21F8D448F00778335 /* LOModalidadesBusinessService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LOModalidadesBusinessService.swift; path = Business/LOModalidadesBusinessService.swift; sourceTree = "<group>"; };
 		A6EC21771F82731C00BD6825 /* LOFirstTourController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LOFirstTourController.swift; path = Controllers/Tour/LOFirstTourController.swift; sourceTree = "<group>"; };
@@ -268,6 +270,7 @@
 				A606152A1F670021002191C3 /* LOTermoCell.swift */,
 				A606152E1F670055002191C3 /* LOLocalizacaoCell.swift */,
 				A65247701F87A9BD00E12A8D /* LOLotericaCell.swift */,
+				A6B34C3D1F911FEF00AB2B51 /* LOCodigoLotericaCell.swift */,
 			);
 			name = Cadastro;
 			sourceTree = "<group>";
@@ -804,6 +807,7 @@
 				A617DCA61F59EF9200D257B7 /* LOCadastroPassoDoisController.swift in Sources */,
 				A6AE53071F755A57001AB32C /* LORodapeRepassesCell.swift in Sources */,
 				A6997A9E1F8E5A6900DEE729 /* LOTermoBusinessService.swift in Sources */,
+				A6B34C3E1F911FEF00AB2B51 /* LOCodigoLotericaCell.swift in Sources */,
 				A60615291F670001002191C3 /* LOOptionsCell.swift in Sources */,
 				A606153D1F686EED002191C3 /* LOTopDownSegue.swift in Sources */,
 				A63231491F715E750004F327 /* LOConfirmacaoApostaController.swift in Sources */,

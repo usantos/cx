@@ -9,25 +9,28 @@
 import UIKit
 
 class LORepassesSociaisController: UITableViewController {
-    let gradient : CAGradientLayer = CAGradientLayer()
+    let gradientNav : CAGradientLayer = CAGradientLayer()
+    let gradientCell : CAGradientLayer = CAGradientLayer()
+
     @IBOutlet var titleCustomView : UIView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.estimatedRowHeight = 150
+        self.tableView.tableFooterView = UITableViewHeaderFooterView()
         
-        gradient.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 64)
-        gradient.startPoint = CGPoint(x: 0.0, y: 0.5)
-        gradient.endPoint = CGPoint(x: 1.0, y: 0.5)
-        gradient.colors = [self.UIColorFromHex(0x54bbab, alpha: 1.0).cgColor, self.UIColorFromHex(0x005ca9, alpha: 1.0).cgColor]
-        gradient.name = "gradientView"
+        self.gradientNav.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 64)
+        self.gradientNav.startPoint = CGPoint(x: 0.0, y: 0.5)
+        self.gradientNav.endPoint = CGPoint(x: 1.0, y: 0.5)
+        self.gradientNav.colors = [self.UIColorFromHex(0x54bbab, alpha: 1.0).cgColor, self.UIColorFromHex(0x005ca9, alpha: 1.0).cgColor]
+        self.gradientNav.name = "gradientView"
         
         self.navigationController?.navigationBar.tintColor = .white
         self.navigationController?.isNavigationBarHidden = false
         
         self.navigationItem.titleView = self.titleCustomView
         
-        self.navigationController?.navigationBar.setBackgroundImage(self.image(fromLayer: gradient), for: .default)
+        self.navigationController?.navigationBar.setBackgroundImage(self.image(fromLayer: self.gradientNav), for: .default)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -55,17 +58,19 @@ class LORepassesSociaisController: UITableViewController {
         let cell : UITableViewCell?
         if indexPath.row == 0 {
             cell = tableView.dequeueReusableCell(withIdentifier: "cabecalhoCell", for: indexPath)
+            cell?.contentView.layoutIfNeeded()
             
-            gradient.frame = CGRect(x: 0, y: 0, width: (cell?.contentView.frame.width)!, height: (cell?.contentView.frame.height)!)
-            gradient.startPoint = CGPoint(x: 0.0, y: 0.5)
-            gradient.endPoint = CGPoint(x: 1.0, y: 0.5)
-            gradient.colors = [self.UIColorFromHex(0x54bbab, alpha: 1.0).cgColor, self.UIColorFromHex(0x005ca9, alpha: 1.0).cgColor]
-            gradient.name = "gradientView"
-            
-            cell?.contentView.layer.insertSublayer(gradient, at: 0)
+            DispatchQueue.main.async {
+                self.gradientCell.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: (cell?.contentView.frame.height)!)
+                self.gradientCell.startPoint = CGPoint(x: 0.0, y: 0.5)
+                self.gradientCell.endPoint = CGPoint(x: 1.0, y: 0.5)
+                self.gradientCell.colors = [self.UIColorFromHex(0x54bbab, alpha: 1.0).cgColor, self.UIColorFromHex(0x005ca9, alpha: 1.0).cgColor]
+                self.gradientCell.name = "gradientView"
+                
+                cell?.contentView.layer.insertSublayer(self.gradientCell, at: 0)
+            }
         } else {
             cell = tableView.dequeueReusableCell(withIdentifier: "rodapeCell", for: indexPath)
-
         }
 
         return cell!

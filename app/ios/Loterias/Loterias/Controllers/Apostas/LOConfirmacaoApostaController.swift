@@ -13,10 +13,10 @@ class LOConfirmacaoApostaController: UIViewController {
     public var estiloModalidade : EstiloModalidade!
     
     @IBOutlet var viewAdicionarAoCarrinho : UIView!
-    @IBOutlet var limparAposta : UIButton! {
+    @IBOutlet var fazerNovaAposta : UIButton! {
         didSet {
-            limparAposta.layer.borderWidth = 1
-            limparAposta.layer.borderColor = UIColor.white.cgColor
+            fazerNovaAposta.layer.borderWidth = 1
+            fazerNovaAposta.layer.borderColor = UIColor.white.cgColor
         }
     }
     @IBOutlet var botaoAdicionarAoCarrinho : UIButton! {
@@ -45,15 +45,19 @@ class LOConfirmacaoApostaController: UIViewController {
     func colocaEstiloNoBotaoAdicionarAoCarinho (){
         
         //remover mock
-        if 8 > 10 {
-            viewAdicionarAoCarrinho.backgroundColor = self.UIColorFromHex(0xeff5f6, alpha: 1.0)
-        } else  {
+        if 12 > 10 {
             viewAdicionarAoCarrinho.backgroundColor = self.UIColorFromHex(0x48586c, alpha: 1.0)
+        } else  {
+            viewAdicionarAoCarrinho.backgroundColor = self.UIColorFromHex(0xeff5f6, alpha: 1.0)
         }
     }
     
     @IBAction func adicionarAoCarrinhoDeApostas(_ sender: Any) {
         
+    }
+    
+    @IBAction func dismiss () {
+        self.navigationController?.popViewController(animated: true)
     }
 
     /*

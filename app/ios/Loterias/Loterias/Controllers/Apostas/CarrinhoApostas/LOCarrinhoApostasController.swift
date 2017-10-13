@@ -20,20 +20,22 @@ class LOCarrinhoApostasController: UITableViewController, LOItemCellDelegate {
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.estimatedRowHeight = 150
         
-        gradient.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 64)
-        gradient.startPoint = CGPoint(x: 0.0, y: 0.5)
-        gradient.endPoint = CGPoint(x: 1.0, y: 0.5)
-        gradient.colors = [self.UIColorFromHex(0x54bbab, alpha: 1.0).cgColor, self.UIColorFromHex(0x005ca9, alpha: 1.0).cgColor]
-        gradient.name = "gradientView"
+        populaArrayDeCelulas()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.navigationItem.titleView = self.titleViewCustom
+        
+        self.gradient.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 64)
+        self.gradient.startPoint = CGPoint(x: 0.0, y: 0.5)
+        self.gradient.endPoint = CGPoint(x: 1.0, y: 0.5)
+        self.gradient.colors = [self.UIColorFromHex(0x54bbab, alpha: 1.0).cgColor, self.UIColorFromHex(0x005ca9, alpha: 1.0).cgColor]
+        self.gradient.name = "gradientView"
 
         self.navigationController?.navigationBar.tintColor = .white
         self.navigationController?.isNavigationBarHidden = false
-        
-        self.navigationItem.titleView = self.titleViewCustom
-        
-        self.navigationController?.navigationBar.setBackgroundImage(self.image(fromLayer: gradient), for: .default)
-        
-        populaArrayDeCelulas()
+
+        self.navigationController?.navigationBar.setBackgroundImage(self.image(fromLayer: self.gradient), for: .default)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -99,6 +101,8 @@ class LOCarrinhoApostasController: UITableViewController, LOItemCellDelegate {
             }
         }
     }
+    
+    @IBAction func voltaParaCarrinhoDeApostas(segue:UIStoryboardSegue) { }
 
     // MARK: - Navigation
 

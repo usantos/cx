@@ -14,7 +14,7 @@ public protocol LOPopupDelegate: class {
 
 class LOPopupSelecionarOpcoesController : UIViewController, UITableViewDelegate, UITableViewDataSource {
 
-    var arrayDados : Array<String>!
+    var arrayDados = Array<String>()
     var tituloPopup : String!
     var senderText: UITextField!
     

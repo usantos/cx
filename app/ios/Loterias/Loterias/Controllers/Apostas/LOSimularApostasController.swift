@@ -10,6 +10,7 @@ import UIKit
 
 protocol LOSimularApostaDelegate {
     func adicionarNoCarrinho()
+    func enviarParaTelaCarrinho()
 }
 
 class LOSimularApostasController: UIViewController, LOSimularApostaDelegate {
@@ -42,16 +43,12 @@ class LOSimularApostasController: UIViewController, LOSimularApostaDelegate {
         delegateSimularNumeros?.willAppearSimularNumeros()
         
         self.viewCustom.delegateSimular = self
-        
+        self.surpresinhaViewCustom.delegateSimular = self
         aplicaEstilos()
         
         //LOCryptoService().crypfyURL()
         
-        LOCryptoTest().cripfyFinal()
-        
-        LORegisterBusinessService().getUfs(parameters: [:]) { (error, listaCidade) in
-            
-        }
+        //LOCryptoTest().cripfyFinal()
     }
     
     override func viewDidLoad() {
@@ -102,6 +99,10 @@ class LOSimularApostasController: UIViewController, LOSimularApostaDelegate {
     
     func adicionarNoCarrinho() {
         self.performSegue(withIdentifier: "mandaParaAdicaoAposta", sender: self)
+    }
+    
+    func enviarParaTelaCarrinho () {
+        self.performSegue(withIdentifier: "mandaParaCarrinhoDeApostas", sender: self)
     }
     
     // MARK: - Navigation

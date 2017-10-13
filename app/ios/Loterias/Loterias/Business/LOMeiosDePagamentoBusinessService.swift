@@ -9,7 +9,7 @@
 import UIKit
 import Alamofire
 
-class LOMeiosDePagamentoBusinessService: NSObject {
+class LOMeiosDePagamentoBusinessService : NSObject {
     
     public func getMeiosDePagamento (parameters: Parameters, completionHandler: @escaping(_ error: String?, _ listaMeioPagamento : [LOMeioDePagamento]?) -> ()) {
         let urlTest = URL(string: getBaseUrl()! + "meios-pagamento".toBase64())

@@ -342,6 +342,10 @@ class LOSimularApostaNumeros: UIView, UICollectionViewDelegateFlowLayout, UIColl
         self.delegateSimular.adicionarNoCarrinho()
     }
     
+    @IBAction func enviarParaCarrinhoDeApostas () {
+        self.delegateSimular.enviarParaTelaCarrinho()
+    }
+    
     @IBAction func salvarApostaAction () {
         if nomeAposta.text?.characters.count == 0 {
             

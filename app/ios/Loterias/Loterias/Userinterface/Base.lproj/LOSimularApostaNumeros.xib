@@ -203,14 +203,24 @@
                                                 </userDefinedRuntimeAttribute>
                                             </userDefinedRuntimeAttributes>
                                         </label>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cnX-mM-qE0">
+                                            <rect key="frame" x="0.0" y="0.0" width="73" height="82"/>
+                                            <connections>
+                                                <action selector="enviarParaCarrinhoDeApostas" destination="-1" eventType="touchUpInside" id="48k-RJ-dfH"/>
+                                            </connections>
+                                        </button>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <constraints>
                                         <constraint firstItem="dO2-Bh-iUN" firstAttribute="leading" secondItem="YXL-Eh-uIB" secondAttribute="leading" constant="1" id="21C-Cr-YVz"/>
+                                        <constraint firstItem="cnX-mM-qE0" firstAttribute="leading" secondItem="YXL-Eh-uIB" secondAttribute="leading" id="2Qp-MB-m4g"/>
+                                        <constraint firstAttribute="trailing" secondItem="cnX-mM-qE0" secondAttribute="trailing" id="4Wu-vQ-v19"/>
+                                        <constraint firstItem="cnX-mM-qE0" firstAttribute="top" secondItem="YXL-Eh-uIB" secondAttribute="top" id="50k-CP-BsY"/>
                                         <constraint firstItem="Auh-V9-qCN" firstAttribute="top" secondItem="YXL-Eh-uIB" secondAttribute="top" constant="23" id="Aqu-fX-Wwc"/>
                                         <constraint firstItem="Auh-V9-qCN" firstAttribute="leading" secondItem="YXL-Eh-uIB" secondAttribute="leading" constant="1" id="DdX-ek-VC6"/>
                                         <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Auh-V9-qCN" secondAttribute="trailing" constant="20" symbolic="YES" id="LpN-Ob-tCR"/>
                                         <constraint firstItem="dO2-Bh-iUN" firstAttribute="top" secondItem="kkJ-Nx-slX" secondAttribute="bottom" constant="9" id="OgE-Us-tnX"/>
+                                        <constraint firstAttribute="bottom" secondItem="cnX-mM-qE0" secondAttribute="bottom" id="Vl0-nC-IOA"/>
                                         <constraint firstItem="dO2-Bh-iUN" firstAttribute="top" secondItem="Auh-V9-qCN" secondAttribute="bottom" constant="6" id="Wjb-bt-2gh"/>
                                         <constraint firstItem="kkJ-Nx-slX" firstAttribute="top" secondItem="YXL-Eh-uIB" secondAttribute="top" constant="6" id="iEw-wz-fqo"/>
                                         <constraint firstAttribute="height" constant="82" id="lhR-Ly-CfX"/>

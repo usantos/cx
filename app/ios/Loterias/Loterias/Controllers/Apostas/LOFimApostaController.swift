@@ -34,7 +34,11 @@ class LOFimApostaController: UIViewController {
         self.navigationController?.navigationBar.barTintColor = .white
         self.navigationController?.popToRootViewController(animated: true)
     }
-
+    
+    @IBAction func voltarParaMeuCarrinho () {
+        performSegue(withIdentifier: "voltaParaCarrinhoDeApostas", sender: self)
+    }
+    
     /*
     // MARK: - Navigation
 

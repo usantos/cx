@@ -31,7 +31,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="aIl-o4-iqH" customClass="LOMenuController" customModule="Loterias" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="9of-9y-tbg">
-                        <rect key="frame" x="0.0" y="20" width="375" height="48"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -44,7 +44,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iKc-4t-EOx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1180" y="121.88905547226388"/>
+            <point key="canvasLocation" x="1180" y="177"/>
         </scene>
         <!--Modalide Controller-->
         <scene sceneID="5tx-s4-9xX">
@@ -143,6 +143,12 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="H4H-ab-JKR">
+                                        <rect key="frame" x="0.0" y="0.0" width="79" height="82"/>
+                                        <connections>
+                                            <segue destination="fd7-rd-EeR" kind="show" id="3vK-ST-8P5"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -150,13 +156,17 @@
                                     <constraint firstItem="XC6-eM-IlD" firstAttribute="top" secondItem="9W5-3S-kRj" secondAttribute="top" id="FZn-9s-mhX"/>
                                     <constraint firstItem="lK1-Fe-cgV" firstAttribute="top" secondItem="2rK-O7-M12" secondAttribute="bottom" constant="7" id="Hw6-fD-CzC"/>
                                     <constraint firstItem="lK1-Fe-cgV" firstAttribute="leading" secondItem="9W5-3S-kRj" secondAttribute="leading" constant="7" id="JKR-LL-gZb"/>
+                                    <constraint firstItem="H4H-ab-JKR" firstAttribute="leading" secondItem="9W5-3S-kRj" secondAttribute="leading" id="L12-pJ-MH8"/>
                                     <constraint firstItem="XC6-eM-IlD" firstAttribute="leading" secondItem="9W5-3S-kRj" secondAttribute="leading" constant="26" id="MFD-On-C6x"/>
+                                    <constraint firstAttribute="trailing" secondItem="H4H-ab-JKR" secondAttribute="trailing" id="Mhj-Dy-JCW"/>
                                     <constraint firstItem="lK1-Fe-cgV" firstAttribute="top" secondItem="XC6-eM-IlD" secondAttribute="bottom" constant="10" id="NFB-LA-J3z"/>
                                     <constraint firstAttribute="trailing" secondItem="lK1-Fe-cgV" secondAttribute="trailing" constant="1" id="ZmO-GO-czr"/>
                                     <constraint firstItem="2rK-O7-M12" firstAttribute="leading" secondItem="9W5-3S-kRj" secondAttribute="leading" constant="7" id="ap8-8t-E0d"/>
                                     <constraint firstItem="2rK-O7-M12" firstAttribute="top" secondItem="9W5-3S-kRj" secondAttribute="top" constant="17" id="ehV-Kl-7mY"/>
+                                    <constraint firstAttribute="bottom" secondItem="H4H-ab-JKR" secondAttribute="bottom" id="gla-Ld-asU"/>
                                     <constraint firstAttribute="bottom" secondItem="lK1-Fe-cgV" secondAttribute="bottom" id="le7-Vf-FTC"/>
                                     <constraint firstAttribute="height" constant="82" id="tJu-xt-60V"/>
+                                    <constraint firstItem="H4H-ab-JKR" firstAttribute="top" secondItem="9W5-3S-kRj" secondAttribute="top" id="x8N-s0-9O9"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kRg-Mo-HJj">
@@ -550,17 +560,27 @@ Sábado. 18 de julho</string>
                                                             </userDefinedRuntimeAttribute>
                                                         </userDefinedRuntimeAttributes>
                                                     </label>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yrt-Hf-g90">
+                                                        <rect key="frame" x="0.0" y="0.0" width="79" height="82"/>
+                                                        <connections>
+                                                            <segue destination="fd7-rd-EeR" kind="show" id="ezK-Ql-baW"/>
+                                                        </connections>
+                                                    </button>
                                                 </subviews>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <constraints>
                                                     <constraint firstItem="ht8-Og-Jot" firstAttribute="leading" secondItem="bza-EN-Bxg" secondAttribute="leading" constant="4" id="8t0-H2-sPh"/>
                                                     <constraint firstAttribute="height" constant="82" id="Fvw-h2-6Ky"/>
+                                                    <constraint firstAttribute="trailing" secondItem="yrt-Hf-g90" secondAttribute="trailing" id="IQN-Ef-EHD"/>
                                                     <constraint firstAttribute="trailing" secondItem="ht8-Og-Jot" secondAttribute="trailing" constant="4" id="M14-E9-uf4"/>
                                                     <constraint firstItem="H09-jZ-iCt" firstAttribute="top" secondItem="bza-EN-Bxg" secondAttribute="top" id="QaG-wB-QBC"/>
                                                     <constraint firstItem="ht8-Og-Jot" firstAttribute="top" secondItem="H09-jZ-iCt" secondAttribute="bottom" constant="10" id="R2w-ut-pjx"/>
                                                     <constraint firstAttribute="bottom" secondItem="ht8-Og-Jot" secondAttribute="bottom" id="VAR-cT-RJ1"/>
                                                     <constraint firstItem="OIU-Ve-dPU" firstAttribute="leading" secondItem="bza-EN-Bxg" secondAttribute="leading" constant="7" id="cZa-VT-DYb"/>
+                                                    <constraint firstItem="yrt-Hf-g90" firstAttribute="top" secondItem="bza-EN-Bxg" secondAttribute="top" id="ck7-Y3-9D9"/>
+                                                    <constraint firstItem="yrt-Hf-g90" firstAttribute="leading" secondItem="bza-EN-Bxg" secondAttribute="leading" id="dwp-Un-Agx"/>
                                                     <constraint firstAttribute="width" constant="79" id="efM-fN-l4d"/>
+                                                    <constraint firstAttribute="bottom" secondItem="yrt-Hf-g90" secondAttribute="bottom" id="fqz-g8-8HE"/>
                                                     <constraint firstItem="OIU-Ve-dPU" firstAttribute="top" secondItem="bza-EN-Bxg" secondAttribute="top" constant="17" id="jrx-ez-1rG"/>
                                                     <constraint firstItem="ht8-Og-Jot" firstAttribute="top" secondItem="OIU-Ve-dPU" secondAttribute="bottom" constant="7" id="kjd-yi-SvK"/>
                                                     <constraint firstItem="H09-jZ-iCt" firstAttribute="leading" secondItem="bza-EN-Bxg" secondAttribute="leading" constant="22" id="nRx-rv-pSd"/>
@@ -688,7 +708,7 @@ Sábado. 18 de julho</string>
                                                 <state key="normal" image="icon-favoritas"/>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Favoritas" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6UE-mA-D9v">
-                                                <rect key="frame" x="224.5" y="6" width="57.5" height="21"/>
+                                                <rect key="frame" x="214.5" y="6" width="67.5" height="21"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="21" id="v7z-PC-ewG"/>
                                                 </constraints>
@@ -810,7 +830,7 @@ Confira aqui os seus resultados.</string>
                                                 <state key="normal" image="icon-rapidao"/>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rapidão" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xp3-k2-7k2">
-                                                <rect key="frame" x="229.5" y="6" width="52.5" height="21"/>
+                                                <rect key="frame" x="220.5" y="6" width="61.5" height="21"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="21" id="Zqy-Xk-u9v"/>
                                                 </constraints>
@@ -906,14 +926,14 @@ em apenas um clique.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="j9A-W4-8by" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2118" y="-575"/>
+            <point key="canvasLocation" x="2117.5999999999999" y="-575.26236881559225"/>
         </scene>
         <!--Repasses Sociais Controller-->
         <scene sceneID="sMu-oa-MIa">
             <objects>
                 <tableViewController id="EUF-Jb-ViU" customClass="LORepassesSociaisController" customModule="Loterias" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="298" sectionHeaderHeight="28" sectionFooterHeight="28" id="1PZ-gF-VZC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="599"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -925,13 +945,13 @@ em apenas um clique.</string>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="OTK-St-KlD">
-                                            <rect key="frame" x="0.0" y="152" width="375" height="117"/>
+                                            <rect key="frame" x="0.0" y="149" width="375" height="120"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qzD-Lb-gtW">
-                                                    <rect key="frame" x="0.0" y="0.0" width="187.5" height="117"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="187.5" height="120"/>
                                                     <subviews>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="repasse-quadro1" translatesAutoresizingMaskIntoConstraints="NO" id="rmy-fC-Rp8">
-                                                            <rect key="frame" x="0.0" y="0.0" width="188" height="117"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="188" height="120"/>
                                                         </imageView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="MsC-8G-krP">
                                                             <rect key="frame" x="30" y="13" width="129" height="91"/>
@@ -990,10 +1010,10 @@ loterias federais</string>
                                                     </constraints>
                                                 </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cKr-hm-EdK">
-                                                    <rect key="frame" x="187.5" y="0.0" width="187.5" height="117"/>
+                                                    <rect key="frame" x="187.5" y="0.0" width="187.5" height="120"/>
                                                     <subviews>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="repasse-quadro2" translatesAutoresizingMaskIntoConstraints="NO" id="siT-QQ-kHc">
-                                                            <rect key="frame" x="0.0" y="0.0" width="187" height="117"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="187" height="120"/>
                                                         </imageView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="L5g-hQ-d2Q">
                                                             <rect key="frame" x="24.5" y="16" width="137" height="86"/>
@@ -1051,18 +1071,17 @@ Cg
                                             <constraints>
                                                 <constraint firstAttribute="trailing" secondItem="cKr-hm-EdK" secondAttribute="trailing" id="7eU-Y2-04u"/>
                                                 <constraint firstItem="cKr-hm-EdK" firstAttribute="leading" secondItem="qzD-Lb-gtW" secondAttribute="trailing" id="GDK-Wq-0WY"/>
-                                                <constraint firstAttribute="height" constant="117" id="M6Z-9m-wmT"/>
                                                 <constraint firstItem="qzD-Lb-gtW" firstAttribute="leading" secondItem="OTK-St-KlD" secondAttribute="leading" id="uXq-pI-CdU"/>
                                             </constraints>
                                         </stackView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Em 2017, as Loterias já destinaram" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LRS-Xp-Krg">
-                                            <rect key="frame" x="56.5" y="10" width="262.5" height="20.5"/>
+                                            <rect key="frame" x="56.5" y="10" width="262.5" height="17.5"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="para melhorar o pais." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M3O-RZ-aAj">
-                                            <rect key="frame" x="107.5" y="112" width="161" height="19"/>
+                                            <rect key="frame" x="107" y="109" width="161" height="19"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="19" id="kVs-o8-JuF"/>
                                             </constraints>
@@ -1071,7 +1090,7 @@ Cg
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UyZ-7I-3Mc">
-                                            <rect key="frame" x="14" y="36" width="347" height="70"/>
+                                            <rect key="frame" x="14" y="33" width="347" height="70"/>
                                             <subviews>
                                                 <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pXe-0G-cGv">
                                                     <rect key="frame" x="89" y="0.0" width="231" height="70"/>
@@ -1135,7 +1154,6 @@ Cg
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="* o valor inclui a parcela correspondente ao imposto de renda sobre os prêmios" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="stb-WE-3uo">
                                                     <rect key="frame" x="43" y="59.5" width="290" height="33.5"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="33.5" id="Pai-U0-VSG"/>
                                                         <constraint firstAttribute="width" constant="290" id="gUy-LL-Qdj"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -1154,7 +1172,7 @@ Cg
                                             <rect key="frame" x="92" y="25" width="191" height="84"/>
                                             <color key="backgroundColor" red="0.30588235289999999" green="0.34901960780000002" blue="0.41960784309999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="84" id="gno-13-m47"/>
+                                                <constraint firstAttribute="height" constant="84" id="TC4-tK-Ht0"/>
                                                 <constraint firstAttribute="width" constant="191" id="uQO-s6-loO"/>
                                             </constraints>
                                             <state key="normal">
@@ -1181,10 +1199,10 @@ Cg
                                     </subviews>
                                     <constraints>
                                         <constraint firstAttribute="bottom" secondItem="zhN-T4-81B" secondAttribute="bottom" constant="0.5" id="9cf-D0-YIW"/>
+                                        <constraint firstItem="stb-WE-3uo" firstAttribute="top" secondItem="hbl-Lx-XnW" secondAttribute="bottom" constant="14.5" id="AGV-sC-mi4"/>
                                         <constraint firstItem="zhN-T4-81B" firstAttribute="leading" secondItem="5gh-rC-Hor" secondAttribute="leading" id="Ax3-j2-0go"/>
                                         <constraint firstItem="hbl-Lx-XnW" firstAttribute="centerX" secondItem="5gh-rC-Hor" secondAttribute="centerX" id="XPb-ew-e4z"/>
                                         <constraint firstItem="hbl-Lx-XnW" firstAttribute="top" secondItem="5gh-rC-Hor" secondAttribute="topMargin" constant="17" id="Yn3-2T-Jlv"/>
-                                        <constraint firstAttribute="bottom" secondItem="hbl-Lx-XnW" secondAttribute="bottom" constant="55.5" id="bqS-x1-YvJ"/>
                                         <constraint firstAttribute="trailing" secondItem="zhN-T4-81B" secondAttribute="trailing" id="g53-pN-cww"/>
                                     </constraints>
                                 </tableViewCellContentView>
@@ -1204,11 +1222,11 @@ Cg
                         <nil key="title"/>
                         <barButtonItem key="backBarButtonItem" title=" " id="5CD-Jz-NqI"/>
                         <view key="titleView" contentMode="scaleToFill" id="jwO-Cr-RIM">
-                            <rect key="frame" x="42.5" y="2" width="290" height="44"/>
+                            <rect key="frame" x="46.5" y="0.0" width="282" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FrE-ua-Yxq">
-                                    <rect key="frame" x="23" y="12" width="135" height="21"/>
+                                    <rect key="frame" x="19" y="12" width="135" height="21"/>
                                     <attributedString key="attributedText">
                                         <fragment content="Repasses ">
                                             <attributes>
@@ -1253,7 +1271,15 @@ Cg
                 <viewControllerPlaceholder storyboardName="FinalizarApostas" id="LS5-N4-IHm" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UEL-ap-1sF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1242" y="-294"/>
+            <point key="canvasLocation" x="-1242" y="-377"/>
+        </scene>
+        <!--LOCarrinhoApostas-->
+        <scene sceneID="Cvf-ob-cvc">
+            <objects>
+                <viewControllerPlaceholder storyboardName="FinalizarApostas" referencedIdentifier="LOCarrinhoApostas" id="fd7-rd-EeR" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="kMo-Qk-FEU" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-145" y="-203"/>
         </scene>
         <!--Simular Apostas Controller-->
         <scene sceneID="8y8-eG-CqN">
@@ -1264,7 +1290,7 @@ Cg
                         <viewControllerLayoutGuide type="bottom" id="KuU-Ir-0lz"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="fmC-wN-miN">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="599"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ugw-Ot-8mv">
@@ -1285,9 +1311,9 @@ Cg
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bPg-1z-d9s">
-                                        <rect key="frame" x="165" y="18" width="92" height="26"/>
+                                        <rect key="frame" x="165" y="10" width="92" height="42"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="92" id="Zvj-be-Tvm"/>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="92" id="Zvj-be-Tvm"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                         <inset key="titleEdgeInsets" minX="-4" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -1300,9 +1326,9 @@ Cg
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1PP-TB-cLu">
-                                        <rect key="frame" x="267" y="18" width="92" height="26"/>
+                                        <rect key="frame" x="267" y="10" width="92" height="42"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="92" id="9tq-QO-onV"/>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="92" id="9tq-QO-onV"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                         <inset key="titleEdgeInsets" minX="-4" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -1317,15 +1343,15 @@ Cg
                                 </subviews>
                                 <color key="backgroundColor" red="0.0" green="0.6705882353" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstItem="1PP-TB-cLu" firstAttribute="top" secondItem="ugw-Ot-8mv" secondAttribute="top" constant="18" id="08W-91-vyR"/>
+                                    <constraint firstItem="1PP-TB-cLu" firstAttribute="top" secondItem="ugw-Ot-8mv" secondAttribute="top" constant="10" id="08W-91-vyR"/>
                                     <constraint firstItem="VRX-Rk-kGs" firstAttribute="top" secondItem="ugw-Ot-8mv" secondAttribute="top" constant="10" id="5Qz-8L-E5p"/>
                                     <constraint firstAttribute="trailing" secondItem="1PP-TB-cLu" secondAttribute="trailing" constant="16" id="93z-hM-vDp"/>
                                     <constraint firstAttribute="bottom" secondItem="VRX-Rk-kGs" secondAttribute="bottom" constant="10" id="DLj-hZ-cFO"/>
                                     <constraint firstItem="V4g-A1-7os" firstAttribute="top" secondItem="ugw-Ot-8mv" secondAttribute="top" constant="10" id="DZq-Pn-OPN"/>
-                                    <constraint firstItem="bPg-1z-d9s" firstAttribute="top" secondItem="ugw-Ot-8mv" secondAttribute="top" constant="18" id="Dqt-9R-sNx"/>
+                                    <constraint firstItem="bPg-1z-d9s" firstAttribute="top" secondItem="ugw-Ot-8mv" secondAttribute="top" constant="10" id="Dqt-9R-sNx"/>
                                     <constraint firstItem="V4g-A1-7os" firstAttribute="leading" secondItem="VRX-Rk-kGs" secondAttribute="trailing" constant="13" id="Ll3-26-T8r"/>
-                                    <constraint firstAttribute="bottom" secondItem="bPg-1z-d9s" secondAttribute="bottom" constant="16" id="T93-NS-ark"/>
-                                    <constraint firstAttribute="bottom" secondItem="1PP-TB-cLu" secondAttribute="bottom" constant="16" id="TWa-O3-nqZ"/>
+                                    <constraint firstAttribute="bottom" secondItem="bPg-1z-d9s" secondAttribute="bottom" constant="8" id="T93-NS-ark"/>
+                                    <constraint firstAttribute="bottom" secondItem="1PP-TB-cLu" secondAttribute="bottom" constant="8" id="TWa-O3-nqZ"/>
                                     <constraint firstAttribute="bottom" secondItem="V4g-A1-7os" secondAttribute="bottom" constant="10" id="Ubr-Lv-vOm"/>
                                     <constraint firstItem="VRX-Rk-kGs" firstAttribute="leading" secondItem="ugw-Ot-8mv" secondAttribute="leading" constant="16" id="VTI-ld-jbH"/>
                                     <constraint firstAttribute="height" constant="60" id="kRF-p6-iGb"/>
@@ -1361,7 +1387,7 @@ Cg
                         <nil key="title"/>
                         <barButtonItem key="backBarButtonItem" title=" " id="MB0-4U-iql"/>
                         <view key="titleView" contentMode="scaleToFill" id="3KJ-NT-hYD" customClass="LOCustomNavbarSimular" customModule="Loterias" customModuleProvider="target">
-                            <rect key="frame" x="8" y="2" width="359" height="44"/>
+                            <rect key="frame" x="35.5" y="0.0" width="304" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <edgeInsets key="layoutMargins" top="0.0" left="8" bottom="0.0" right="0.0"/>
@@ -1379,6 +1405,7 @@ Cg
                         <outlet property="viewCustom" destination="Z6l-q9-QiG" id="l6A-wD-YFg"/>
                         <segue destination="45r-ui-MnB" kind="presentation" identifier="mandarParaPopup" modalPresentationStyle="overFullScreen" modalTransitionStyle="crossDissolve" id="w2h-nk-qhA"/>
                         <segue destination="LS5-N4-IHm" kind="show" identifier="mandaParaAdicaoAposta" id="bgu-4U-mlh"/>
+                        <segue destination="fd7-rd-EeR" kind="show" identifier="mandaParaCarrinhoDeApostas" id="4YF-Os-epM"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fKF-Oa-iPU" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1399,7 +1426,7 @@ Cg
                 </pageViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zBL-Nk-tep" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="294" y="122"/>
+            <point key="canvasLocation" x="294" y="177"/>
         </scene>
         <!--Left Side Menu Controller Controller-->
         <scene sceneID="iM5-Ia-j0O">
@@ -1676,7 +1703,7 @@ Cg
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CXw-8S-1aD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2117.5999999999999" y="121.88905547226388"/>
+            <point key="canvasLocation" x="2118" y="167"/>
         </scene>
         <!--Login-->
         <scene sceneID="Zof-IH-trC">
@@ -1684,7 +1711,7 @@ Cg
                 <viewControllerPlaceholder storyboardName="Login" id="ohN-qY-9yK" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="72r-gX-0gu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2118" y="533"/>
+            <point key="canvasLocation" x="2118" y="572"/>
         </scene>
         <!--Loterias Caixa-->
         <scene sceneID="HCh-fo-OhU">
@@ -1699,7 +1726,7 @@ Cg
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="qLw-wp-C7G">
-                                <rect key="frame" x="0.0" y="69" width="375" height="56"/>
+                                <rect key="frame" x="0.0" y="65" width="375" height="56"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pVf-9p-LQk">
                                         <rect key="frame" x="0.0" y="0.0" width="124.5" height="56"/>
@@ -1729,7 +1756,7 @@ Cg
                                 </subviews>
                             </stackView>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="justified" translatesAutoresizingMaskIntoConstraints="NO" id="jzw-hN-pz0">
-                                <rect key="frame" x="8" y="133" width="359" height="526"/>
+                                <rect key="frame" x="8" y="129" width="359" height="530"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <string key="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget.
 
@@ -1771,7 +1798,7 @@ Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin soda
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cmv-sV-V1G" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2940" y="129.98500749625188"/>
+            <point key="canvasLocation" x="2948" y="177"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Vv1-Cy-9fh">
@@ -1779,7 +1806,7 @@ Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin soda
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="YGs-xC-wiA" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="5eW-xH-JeE">
-                        <rect key="frame" x="0.0" y="20" width="375" height="48"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -1789,7 +1816,7 @@ Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin soda
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FV9-Vw-jUb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-586.39999999999998" y="121.88905547226388"/>
+            <point key="canvasLocation" x="-586" y="167"/>
         </scene>
         <!--Popup Selecionar Opcoes Controller-->
         <scene sceneID="kP9-ph-T2X">
@@ -1939,7 +1966,7 @@ Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin soda
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="uZg-2R-Ulg" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="J7x-sb-aid">
-                        <rect key="frame" x="0.0" y="20" width="375" height="48"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -1988,6 +2015,7 @@ Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin soda
         <image name="trevo" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="dB0-4W-BEE"/>
+        <segue reference="4YF-Os-epM"/>
+        <segue reference="kyq-1s-9L4"/>
     </inferredMetricsTieBreakers>
 </document>
