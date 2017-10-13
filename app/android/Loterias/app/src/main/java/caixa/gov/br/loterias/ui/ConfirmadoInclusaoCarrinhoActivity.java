@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.TextView;
 
 import caixa.gov.br.loterias.R;
@@ -26,7 +27,7 @@ import static caixa.gov.br.loterias.utils.ColorEnum.MEGASENAESCURO;
 import static caixa.gov.br.loterias.utils.ColorEnum.QUINACLARO;
 import static caixa.gov.br.loterias.utils.ColorEnum.QUINAESCURO;
 
-public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity {
+public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implements OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,25 +59,26 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity {
 
         switch (tipoJogo){
             case MEGASENA:
-                configuraNavigation("Mega Sena", MEGASENACLARO, MEGASENAESCURO);
+                configuraLayoutTela("Mega Sena", MEGASENACLARO, MEGASENAESCURO);
                 break;
             case QUINA:
-                configuraNavigation("Quina", QUINACLARO, QUINAESCURO);
+                configuraLayoutTela("Quina", QUINACLARO, QUINAESCURO);
                 break;
             case LOTOFACIL:
-                configuraNavigation("Lotofácil", LOTOFACILCLARO, LOTOFACILESCURO);
+                configuraLayoutTela("Lotofácil", LOTOFACILCLARO, LOTOFACILESCURO);
                 break;
             case DUPLASENA:
-                configuraNavigation("Duplasena", DUPLASENACLARO, DUPLASENAESCURO);
+                configuraLayoutTela("Duplasena", DUPLASENACLARO, DUPLASENAESCURO);
         }
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
-
-
+        findViewById(R.id.botaoNovaAposta).setOnClickListener(this);
     }
 
-    private void configuraNavigation(String titleActivity, ColorEnum lightColor, ColorEnum darkColor){
+    private void configuraLayoutTela(String titleActivity, ColorEnum lightColor, ColorEnum darkColor){
         setTitle(titleActivity);
 
         getWindow().setStatusBarColor(Color.parseColor(darkColor.toString()));
@@ -108,6 +110,17 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity {
         if (menuItem != null && menuItem instanceof TextView) {
             ((TextView) menuItem).setTextSize(12);
             menuItem.setPadding(5, 5, 5, 5);
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.botaoNovaAposta:{
+                finish();
+            }
+
+            break;
         }
     }
 }

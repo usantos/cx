@@ -249,7 +249,11 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         setTitle(titleActivity);
         getWindow().setStatusBarColor(Color.parseColor(darkColor.toString()));
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor(lightColor.toString())));
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
 
         toolBarSimularAposta.setBackgroundColor(Color.parseColor(darkColor.toString()));
 
