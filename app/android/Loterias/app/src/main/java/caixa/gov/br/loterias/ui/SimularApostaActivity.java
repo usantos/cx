@@ -1,5 +1,6 @@
 package caixa.gov.br.loterias.ui;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -72,6 +73,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
     ColorEnum typeGameColorDark;
     String qtdNumerosList[] = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
     String qtdConcursosList[] = {"1", "2", "3", "4", "5"};
+    TipoApostaEnum tipoJogo;
 
     int alertDialogPosicaoSelecionada;
     TipoDialog tipoDialogMostrando;
@@ -99,7 +101,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
     }
 
     private void configuraActivity() {
-        TipoApostaEnum tipoJogo = (TipoApostaEnum) getIntent().getSerializableExtra("tipoAposta");
+        tipoJogo = (TipoApostaEnum) getIntent().getSerializableExtra("tipoAposta");
 
         switch (tipoJogo){
             case MEGASENA:
@@ -333,6 +335,13 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         }
 
         return qtdDezenasPossiveisSelecionado;
+    }
+
+    @Override
+    public void adicionarApostaCarrinho(){
+        Intent activity = new Intent(this, ConfirmadoInclusaoCarrinhoActivity.class);
+        activity.putExtra("tipoAposta", tipoJogo);
+        startActivity(activity);
     }
 }
 

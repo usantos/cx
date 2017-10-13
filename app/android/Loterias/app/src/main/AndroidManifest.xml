@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="caixa.gov.br.loterias.ui.IntroducaoActivity"
+            android:name=".ui.IntroducaoActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
@@ -23,32 +23,35 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="caixa.gov.br.loterias.ui.LoginActivity_"
+            android:name=".ui.LoginActivity_"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"
             android:label="@string/title_activity_login"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name="caixa.gov.br.loterias.ui.CadastrarActivity_" />
+        <activity android:name=".ui.CadastrarActivity_" />
 
         <service android:name="org.jboss.aerogear.android.authorization.oauth2.OAuth2AuthzService" />
 
         <activity
-            android:name="caixa.gov.br.loterias.ui.CadastrarPasso2Activity_"
+            android:name=".ui.CadastrarPasso2Activity_"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
-
+            android:screenOrientation="portrait" />
         <activity
-            android:name="caixa.gov.br.loterias.ui.HomeActivity_"
+            android:name=".ui.HomeActivity_"
             android:configChanges="orientation"
+            android:label="@string/title_activity_home"
             android:screenOrientation="portrait"
-            android:label="@string/title_activity_home"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="caixa.gov.br.loterias.ui.SimularApostaActivity_"
-            android:label="@string/title_activity_home"
+            android:name=".ui.SimularApostaActivity_"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"></activity>
+            android:label="@string/title_activity_home"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.ConfirmadoInclusaoCarrinhoActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+
     </application>
 
 </manifest>

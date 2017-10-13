@@ -127,6 +127,8 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
                     qtdCartelasCarrinho++;
 
                     count.setText(String.format("%d", qtdCartelasCarrinho));
+
+                    cartelaFragmentListener.adicionarApostaCarrinho();
                 } else{
                     ViewUtils.alert(getActivity(), "Botão completar com números aleatórios pressionado");
                 }
@@ -351,5 +353,6 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
     // INTERFACE DO FRAGMENT PARA A ACTIVITY
     public interface CartelaFragmentListener {
         int verificaNovoQtdDezenasMax(int qtdDezenasAtual);
+        void adicionarApostaCarrinho();
     }
 }

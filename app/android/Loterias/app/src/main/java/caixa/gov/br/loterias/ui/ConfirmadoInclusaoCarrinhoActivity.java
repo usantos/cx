@@ -1,0 +1,113 @@
+package caixa.gov.br.loterias.ui;
+
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.RectShape;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.View;
+import android.widget.TextView;
+
+import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.utils.ColorEnum;
+import caixa.gov.br.loterias.utils.TipoApostaEnum;
+import caixa.gov.br.loterias.utils.ViewUtils;
+
+import static caixa.gov.br.loterias.utils.ColorEnum.DUPLASENACLARO;
+import static caixa.gov.br.loterias.utils.ColorEnum.DUPLASENAESCURO;
+import static caixa.gov.br.loterias.utils.ColorEnum.LOTOFACILCLARO;
+import static caixa.gov.br.loterias.utils.ColorEnum.LOTOFACILESCURO;
+import static caixa.gov.br.loterias.utils.ColorEnum.MEGASENACLARO;
+import static caixa.gov.br.loterias.utils.ColorEnum.MEGASENAESCURO;
+import static caixa.gov.br.loterias.utils.ColorEnum.QUINACLARO;
+import static caixa.gov.br.loterias.utils.ColorEnum.QUINAESCURO;
+
+public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_confirmado_inclusao_carrinho);
+
+        invalidateOptionsMenu();
+        configuraActivityIncluidoApostaCarrinho();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.itens_simular_actionbar, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onSupportNavigateUp(){
+        finish();
+
+        return true;
+    }
+
+    private void configuraActivityIncluidoApostaCarrinho(){
+        TipoApostaEnum tipoJogo = (TipoApostaEnum) getIntent().getSerializableExtra("tipoAposta");
+
+        switch (tipoJogo){
+            case MEGASENA:
+                configuraNavigation("Mega Sena", MEGASENACLARO, MEGASENAESCURO);
+                break;
+            case QUINA:
+                configuraNavigation("Quina", QUINACLARO, QUINAESCURO);
+                break;
+            case LOTOFACIL:
+                configuraNavigation("Lotofácil", LOTOFACILCLARO, LOTOFACILESCURO);
+                break;
+            case DUPLASENA:
+                configuraNavigation("Duplasena", DUPLASENACLARO, DUPLASENAESCURO);
+        }
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
+
+    }
+
+    private void configuraNavigation(String titleActivity, ColorEnum lightColor, ColorEnum darkColor){
+        setTitle(titleActivity);
+
+        getWindow().setStatusBarColor(Color.parseColor(darkColor.toString()));
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor(lightColor.toString())));
+        getWindow().getDecorView().setBackground(new ColorDrawable(Color.parseColor(lightColor.toString())));
+
+        GradientDrawable gd = new GradientDrawable();
+        gd.setColor(Color.parseColor(lightColor.toString()));
+        gd.setCornerRadius(5);
+        gd.setStroke(2, Color.WHITE);
+
+        findViewById(R.id.botaoNovaAposta).setBackground(gd);
+    }
+
+    // Mudando o texto dos MenuItem de acordo com os dados
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+
+        configuraMenuItem(R.id.concursoAtual);
+        configuraMenuItem(R.id.sorteioAtual);
+
+        return true;
+    }
+
+    private void configuraMenuItem(int id){
+        View menuItem = findViewById(id);
+
+        if (menuItem != null && menuItem instanceof TextView) {
+            ((TextView) menuItem).setTextSize(12);
+            menuItem.setPadding(5, 5, 5, 5);
+        }
+    }
+}
