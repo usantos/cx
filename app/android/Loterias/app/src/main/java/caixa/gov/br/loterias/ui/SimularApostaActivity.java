@@ -27,6 +27,7 @@ import caixa.gov.br.loterias.ui.adapter.DialogListViewAdapter;
 import caixa.gov.br.loterias.ui.fragment.CartelaFragment;
 import caixa.gov.br.loterias.ui.fragment.CartelaFragment.CartelaFragmentListener;
 import caixa.gov.br.loterias.ui.fragment.SurpresinhaFragment;
+import caixa.gov.br.loterias.ui.fragment.SurpresinhaFragment.SurpresinhaFragmentListener;
 import caixa.gov.br.loterias.utils.ColorEnum;
 import caixa.gov.br.loterias.utils.TipoApostaEnum;
 import caixa.gov.br.loterias.utils.TipoDialog;
@@ -34,7 +35,7 @@ import static caixa.gov.br.loterias.utils.ColorEnum.*;
 import static java.lang.String.*;
 
 @EActivity(R.layout.activity_simular_aposta)
-public class SimularApostaActivity extends AppCompatActivity implements OnClickListener, CartelaFragmentListener{
+public class SimularApostaActivity extends AppCompatActivity implements OnClickListener, CartelaFragmentListener, SurpresinhaFragmentListener{
 
     @ViewById
     DrawerLayout drawer_layout;
@@ -323,7 +324,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
 
         if (menuItem != null && menuItem instanceof TextView) {
             ((TextView) menuItem).setText(texto);
-            ((TextView) menuItem).setTextSize(12);
+            ((TextView) menuItem).setTextSize(10);
             menuItem.setPadding(5, 5, 5, 5);
         }
     }

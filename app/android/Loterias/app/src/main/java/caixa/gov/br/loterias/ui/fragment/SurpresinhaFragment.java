@@ -26,14 +26,6 @@ import caixa.gov.br.loterias.utils.ColorEnum;
 import static java.lang.String.format;
 
 public class SurpresinhaFragment extends Fragment implements CartelaActivityInterface, OnClickListener {
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    private String mParam1;
-    private String mParam2;
-
-    private ExpandableHeightGridView listaDezenas;
 
     ColorEnum typeGameColorLight;
     ColorEnum typeGameColorDark;
@@ -46,12 +38,13 @@ public class SurpresinhaFragment extends Fragment implements CartelaActivityInte
 
     TextView qtdSurpresinhasTextView;
 
+    private SurpresinhaFragmentListener surpresinhaFragmentListener;
+
     //mocks
     int qtdDezenasPossiveisSelecionado;
     int numeroConcursoAtual;
     String dataSorteioAtual;
     int qtdSurpresinhas = 1;
-    Boolean receberDados = false;
 
     public SurpresinhaFragment() {
         // Required empty public constructor
@@ -80,10 +73,7 @@ public class SurpresinhaFragment extends Fragment implements CartelaActivityInte
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
     }
 
     @Override
@@ -106,11 +96,19 @@ public class SurpresinhaFragment extends Fragment implements CartelaActivityInte
     public void onAttach(Context context) {
         super.onAttach(context);
 
+        try {
+            surpresinhaFragmentListener = (SurpresinhaFragmentListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + " must implement SurpresinhaFragmentListener");
+        }
+
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
+
+        surpresinhaFragmentListener = null;
     }
 
     // METODOS DE CONFIGURACOES
@@ -118,7 +116,7 @@ public class SurpresinhaFragment extends Fragment implements CartelaActivityInte
         simularDezenasAdapter.rows = montaListaDezenasSurpresinha();
         simularDezenasAdapter.notifyDataSetChanged();
 
-        TextView text = (TextView) getView().findViewById(R.id.valorAposta);
+        TextView text = getView().findViewById(R.id.valorAposta);
         text.setText(format("R$ %.2f", 4.5 * qtdDezenasPossiveisSelecionado));
     }
 
@@ -138,10 +136,13 @@ public class SurpresinhaFragment extends Fragment implements CartelaActivityInte
         botaoAdicionarSurpresinhaAoCarrinho = fragmentView.findViewById(R.id.btnAdicionarSurpresinhaAoCarrinho);
         botaoAdicionarSurpresinhaAoCarrinho.setBackgroundColor(Color.parseColor(typeGameColorLight.toString()));
         botaoAdicionarSurpresinhaAoCarrinho.setTextColor(Color.WHITE);
+        botaoAdicionarSurpresinhaAoCarrinho.setOnClickListener(this);
+
     }
 
     private void configuraListaDezenas(View fragmentView){
-        listaDezenas = fragmentView.findViewById(R.id.listaDezenasSurpresinha);
+        ExpandableHeightGridView listaDezenas = fragmentView.findViewById(R.id.listaDezenasSurpresinha);
+
         listaDezenas.setExpanded(true);
 
         simularDezenasAdapter = new SurpresinhaGridViewAdapter(getActivity(), montaListaDezenasSurpresinha());
@@ -167,7 +168,6 @@ public class SurpresinhaFragment extends Fragment implements CartelaActivityInte
                         botaoMenosSurpresinha.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.cinzaescuro));
                     }
                 }
-
             }
             break;
 
@@ -176,6 +176,11 @@ public class SurpresinhaFragment extends Fragment implements CartelaActivityInte
                     botaoMenosSurpresinha.setBackgroundColor(Color.parseColor(typeGameColorLight.toString()));
                 }
                 qtdSurpresinhas++;
+            }
+            break;
+
+            case R.id.btnAdicionarSurpresinhaAoCarrinho:{
+                surpresinhaFragmentListener.adicionarApostaCarrinho();
             }
             break;
         }
@@ -241,6 +246,11 @@ public class SurpresinhaFragment extends Fragment implements CartelaActivityInte
         if (getView() != null){
             atualizaDezenaAdapter();
         }
+    }
+
+    // INTERFACE DO FRAGMENT PARA A ACTIVITY
+    public interface SurpresinhaFragmentListener {
+        void adicionarApostaCarrinho();
     }
 
 }
