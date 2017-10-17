@@ -29,6 +29,13 @@ class LOTourPageController: UIPageViewController, UIPageViewControllerDelegate, 
                                animated: true,
                                completion: nil)
         }
+        
+        let img = UIImageView(frame: self.view.frame)
+        img.contentMode = .scaleAspectFit
+        img.image = #imageLiteral(resourceName: "ic_bg_splash")
+        
+        self.view.insertSubview(img, at: 0)
+        img.sendSubview(toBack: self.view)
     }
 
     override func didReceiveMemoryWarning() {

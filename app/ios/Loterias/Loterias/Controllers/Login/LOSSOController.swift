@@ -61,13 +61,22 @@ class LOSSOController: UIViewController {
             
         }
     }
+    
+    @IBAction func aposteAgoraAction () {
+        //MOCK REMOVER COMENTÁRIOS
+//        if isInternetAvailable() {
+            self.performSegue(withIdentifier: "aposteAgora", sender: self)
+//        } else {
+//            self.alertSimple(title: "Atenção", message: "Sem conexão com a internet.")
+//        }
+    }
 
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "sendToLogin" {
-            var destination = segue.destination as! LOInitialNavLoginController
+            let destination = segue.destination as! LOInitialNavLoginController
             destination.isFirstTime = true
         }
     }

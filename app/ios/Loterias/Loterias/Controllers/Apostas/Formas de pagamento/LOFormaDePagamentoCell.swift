@@ -17,7 +17,7 @@ class LOFormaDePagamentoCell: UITableViewCell {
     var isSelecionado : Bool = false
     
     var delegate : LOFormasDePagamentoDelegate?
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
     }

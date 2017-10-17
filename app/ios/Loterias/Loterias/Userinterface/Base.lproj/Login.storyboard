@@ -22,6 +22,9 @@
         <array key="FuturaStd-Medium.otf">
             <string>FuturaStd-Medium</string>
         </array>
+        <array key="HelveticaNeue.ttc">
+            <string>HelveticaNeue-Bold</string>
+        </array>
     </customFonts>
     <scenes>
         <!--Loterias Caixa-->
@@ -697,7 +700,8 @@ Para começar, informe os dados abaixo:</string>
                     </tableView>
                     <navigationItem key="navigationItem" title="Loterias Caixa" id="7cD-Q4-5dR">
                         <barButtonItem key="backBarButtonItem" title=" " id="6v4-Br-aLf"/>
-                        <barButtonItem key="leftBarButtonItem" systemItem="stop" id="r2y-1Y-fdx">
+                        <barButtonItem key="leftBarButtonItem" image="icons8-Back Filled-100" id="r2y-1Y-fdx">
+                            <inset key="imageInsets" minX="-8" minY="0.0" maxX="0.0" maxY="0.0"/>
                             <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="dismiss" destination="sGk-Xb-boT" id="YQR-A4-dJj"/>
@@ -1012,7 +1016,7 @@ uma lotérica de sua preferência.</string>
                                                     <rect key="frame" x="249.5" y="0.0" width="124.5" height="56.5"/>
                                                     <color key="backgroundColor" red="0.93725490199999995" green="0.96078431369999995" blue="0.96470588239999999" alpha="1" colorSpace="calibratedRGB"/>
                                                     <fontDescription key="fontDescription" name="FuturaStd-Bold" family="Futura Std" pointSize="17"/>
-                                                    <state key="normal" title="Código da Lotérica">
+                                                    <state key="normal" title="Código da lotérica">
                                                         <color key="titleColor" red="0.20784313730000001" green="0.6588235294" blue="0.59607843140000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </state>
                                                     <connections>
@@ -1116,7 +1120,7 @@ uma lotérica de sua preferência.</string>
                                     <outlet property="uf" destination="lpP-nC-SNV" id="CZj-Ug-PTq"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="bairroCell" rowHeight="56" id="Et5-fn-cGR">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="bairroCell" rowHeight="56" id="Et5-fn-cGR" customClass="LOBairroCell" customModule="Loterias" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="375" width="375" height="56"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Et5-fn-cGR" id="Mcv-Qs-Dr3">
@@ -1155,8 +1159,11 @@ uma lotérica de sua preferência.</string>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <inset key="separatorInset" minX="1000" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <connections>
+                                    <outlet property="bairro" destination="aDM-7P-Ntk" id="bCh-qG-hJu"/>
+                                </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="cepCell" rowHeight="56" id="JZt-71-gl1">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="cepCell" rowHeight="56" id="JZt-71-gl1" customClass="LOCepCell" customModule="Loterias" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="431" width="375" height="56"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="JZt-71-gl1" id="5Wc-dN-GQb">
@@ -1170,7 +1177,7 @@ uma lotérica de sua preferência.</string>
                                             </constraints>
                                             <color key="textColor" red="0.28235294119999998" green="0.34509803919999998" blue="0.42352941179999998" alpha="1" colorSpace="calibratedRGB"/>
                                             <fontDescription key="fontDescription" name="ArialMT" family="Arial" pointSize="17"/>
-                                            <textInputTraits key="textInputTraits"/>
+                                            <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                             <userDefinedRuntimeAttributes>
                                                 <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
                                                     <color key="value" red="0.0" green="0.36078431370000003" blue="0.66274509800000003" alpha="1" colorSpace="calibratedRGB"/>
@@ -1195,6 +1202,9 @@ uma lotérica de sua preferência.</string>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <inset key="separatorInset" minX="1000" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <connections>
+                                    <outlet property="cep" destination="Ifd-fC-pGN" id="f25-Ot-aVu"/>
+                                </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="codigoCell" rowHeight="56" id="JtG-ZV-1W0" customClass="LOCodigoLotericaCell" customModule="Loterias" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="487" width="375" height="56"/>
@@ -1283,54 +1293,29 @@ uma lotérica de sua preferência.</string>
                                             </connections>
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jyp-HL-dlb">
-                                            <rect key="frame" x="43" y="59" width="96" height="21"/>
+                                            <rect key="frame" x="43" y="59" width="100" height="21"/>
                                             <color key="tintColor" red="0.28235294117647058" green="0.34509803921568627" blue="0.42352941176470588" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <state key="normal">
                                                 <attributedString key="attributedTitle">
-                                                    <fragment content="termos de uso">
+                                                    <fragment content="termos de uso.">
                                                         <attributes>
                                                             <font key="NSFont" size="15" name="ArialMT"/>
                                                         </attributes>
                                                     </fragment>
                                                 </attributedString>
                                             </state>
-                                        </button>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="e" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="42A-SH-CzI">
-                                            <rect key="frame" x="140" y="59" width="8.5" height="21"/>
-                                            <fontDescription key="fontDescription" name="ArialMT" family="Arial" pointSize="15"/>
-                                            <color key="textColor" red="0.28235294119999998" green="0.34509803919999998" blue="0.42352941179999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="odA-pu-Icj">
-                                            <rect key="frame" x="149.5" y="59" width="154" height="21"/>
-                                            <color key="tintColor" red="0.28235294119999998" green="0.34509803919999998" blue="0.42352941179999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <state key="normal">
-                                                <attributedString key="attributedTitle">
-                                                    <fragment content="política de privacidade.">
-                                                        <attributes>
-                                                            <color key="NSColor" red="0.28235294117647058" green="0.34509803921568627" blue="0.42352941176470588" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                            <font key="NSFont" size="15" name="ArialMT"/>
-                                                            <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
-                                                        </attributes>
-                                                    </fragment>
-                                                </attributedString>
-                                            </state>
+                                            <connections>
+                                                <segue destination="rEn-gb-vZ2" kind="show" id="fxd-9K-wP5"/>
+                                            </connections>
                                         </button>
                                     </subviews>
                                     <constraints>
                                         <constraint firstAttribute="bottom" secondItem="jyp-HL-dlb" secondAttribute="bottom" constant="20.5" id="28M-md-6PW"/>
                                         <constraint firstItem="jyp-HL-dlb" firstAttribute="top" secondItem="77Z-cP-oyL" secondAttribute="bottom" constant="2" id="2fh-Ju-7Rc"/>
-                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="odA-pu-Icj" secondAttribute="trailing" constant="20" id="2q4-zz-qOl"/>
-                                        <constraint firstAttribute="bottom" secondItem="42A-SH-CzI" secondAttribute="bottom" constant="20.5" id="43w-Ej-aP2"/>
                                         <constraint firstItem="77Z-cP-oyL" firstAttribute="leading" secondItem="twP-bM-lSn" secondAttribute="trailing" constant="-2" id="ASN-Bz-XAa"/>
-                                        <constraint firstItem="odA-pu-Icj" firstAttribute="top" secondItem="77Z-cP-oyL" secondAttribute="bottom" constant="2" id="F8V-Je-4ok"/>
-                                        <constraint firstItem="42A-SH-CzI" firstAttribute="leading" secondItem="jyp-HL-dlb" secondAttribute="trailing" constant="1" id="FNz-qQ-iu0"/>
                                         <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="77Z-cP-oyL" secondAttribute="trailing" constant="20" id="Gmm-Br-yCd"/>
                                         <constraint firstItem="jyp-HL-dlb" firstAttribute="leading" secondItem="twP-bM-lSn" secondAttribute="trailing" constant="-2" id="ME7-BO-ZBT"/>
-                                        <constraint firstAttribute="bottom" secondItem="odA-pu-Icj" secondAttribute="bottom" constant="20.5" id="VQa-CS-y67"/>
-                                        <constraint firstItem="odA-pu-Icj" firstAttribute="leading" secondItem="42A-SH-CzI" secondAttribute="trailing" constant="1" id="XE4-rS-RP7"/>
                                         <constraint firstItem="77Z-cP-oyL" firstAttribute="top" secondItem="7XA-35-KKb" secondAttribute="top" constant="37" id="e2c-Jy-4wu"/>
-                                        <constraint firstItem="42A-SH-CzI" firstAttribute="top" secondItem="77Z-cP-oyL" secondAttribute="bottom" constant="2" id="faR-MB-tnH"/>
                                         <constraint firstItem="twP-bM-lSn" firstAttribute="top" secondItem="7XA-35-KKb" secondAttribute="top" constant="22" id="h30-UD-ED5"/>
                                         <constraint firstItem="twP-bM-lSn" firstAttribute="leading" secondItem="7XA-35-KKb" secondAttribute="leading" constant="1" id="j6v-l5-wWY"/>
                                         <constraint firstAttribute="bottom" secondItem="twP-bM-lSn" secondAttribute="bottom" constant="34.5" id="x5e-bt-OI4"/>
@@ -1339,7 +1324,6 @@ uma lotérica de sua preferência.</string>
                                 <color key="backgroundColor" red="0.93725490196078431" green="0.96078431372549022" blue="0.96470588235294119" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <inset key="separatorInset" minX="1000" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <connections>
-                                    <outlet property="politicasDePrivacidade" destination="odA-pu-Icj" id="Tdm-dE-GkH"/>
                                     <outlet property="termosDeUso" destination="jyp-HL-dlb" id="RQC-am-LcD"/>
                                 </connections>
                             </tableViewCell>
@@ -1375,7 +1359,7 @@ uma lotérica de sua preferência.</string>
                                 <color key="backgroundColor" red="0.93725490196078431" green="0.96078431372549022" blue="0.96470588235294119" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <inset key="separatorInset" minX="1000" minY="0.0" maxX="0.0" maxY="0.0"/>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="lotericaCell" rowHeight="60" id="yUR-0H-PUQ" customClass="LOLotericaCell" customModule="Loterias" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="lotericaCell" rowHeight="60" id="yUR-0H-PUQ" customClass="LOLotericaCell" customModule="Loterias" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="729" width="375" height="60"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="yUR-0H-PUQ" id="cxL-SA-cbt">
@@ -1445,10 +1429,10 @@ uma lotérica de sua preferência.</string>
             </objects>
             <point key="canvasLocation" x="2421.5999999999999" y="-386.8065967016492"/>
         </scene>
-        <!--View Controller-->
+        <!--Fim Registro Controller-->
         <scene sceneID="KLE-mn-LXg">
             <objects>
-                <viewController id="PIb-fj-Zp4" sceneMemberID="viewController">
+                <viewController id="PIb-fj-Zp4" customClass="LOFimRegistroController" customModule="Loterias" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="hkl-m7-zes"/>
                         <viewControllerLayoutGuide type="bottom" id="UXo-2i-IBv"/>
@@ -1458,28 +1442,14 @@ uma lotérica de sua preferência.</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e7N-KA-uLO">
-                                <rect key="frame" x="68" y="202" width="240" height="44.5"/>
+                                <rect key="frame" x="68" y="234" width="240" height="49.5"/>
                                 <attributedString key="attributedText">
-                                    <fragment content="Seu cadastro">
-                                        <attributes>
-                                            <color key="NSColor" red="0.3294117647" green="0.73333333329999995" blue="0.6705882353" alpha="1" colorSpace="calibratedRGB"/>
-                                            <font key="NSFont" size="17" name="Futura-Bold"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
-                                        </attributes>
-                                    </fragment>
-                                    <fragment content=" ">
-                                        <attributes>
-                                            <color key="NSColor" red="0.3294117647" green="0.73333333329999995" blue="0.6705882353" alpha="1" colorSpace="calibratedRGB"/>
-                                            <font key="NSFont" metaFont="system" size="17"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
-                                        </attributes>
-                                    </fragment>
                                     <fragment>
-                                        <string key="content">foi realizado
-com sucesso.</string>
+                                        <string key="content">Seu cadastro foi realizado
+com sucesso!</string>
                                         <attributes>
                                             <color key="NSColor" red="0.3294117647" green="0.73333333329999995" blue="0.6705882353" alpha="1" colorSpace="calibratedRGB"/>
-                                            <font key="NSFont" size="17" name="Futura-Medium"/>
+                                            <font key="NSFont" size="19" name="Futura-Medium"/>
                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                         </attributes>
                                     </fragment>
@@ -1487,11 +1457,9 @@ com sucesso.</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pzM-ac-1d8">
-                                <rect key="frame" x="15" y="272" width="345" height="81.5"/>
+                                <rect key="frame" x="15" y="309" width="345" height="41"/>
                                 <string key="text">Aguarde apenas um instante enquanto
-te redirecionamos para a área onde você
-realizará suas apostas.
-:)</string>
+te redirecionamos para as suas apostas :)</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.28235294119999998" green="0.34509803919999998" blue="0.42352941179999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -1511,15 +1479,23 @@ realizará suas apostas.
                                     <constraint firstAttribute="width" constant="160" id="Ehp-VE-Dk2"/>
                                 </constraints>
                             </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Excelente!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pC4-p5-f0c">
+                                <rect key="frame" x="128" y="193" width="119.5" height="29"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="24"/>
+                                <color key="textColor" red="0.1647058824" green="0.73725490199999999" blue="0.67450980390000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="PET-zm-adb" firstAttribute="centerX" secondItem="lH0-fi-6Sz" secondAttribute="centerX" id="0Sj-pM-deV"/>
-                            <constraint firstItem="e7N-KA-uLO" firstAttribute="top" secondItem="PET-zm-adb" secondAttribute="bottom" constant="25" id="2hQ-Xs-k95"/>
                             <constraint firstItem="e7N-KA-uLO" firstAttribute="centerX" secondItem="lH0-fi-6Sz" secondAttribute="centerX" id="4kI-3t-Rgk"/>
                             <constraint firstAttribute="trailing" relation="lessThanOrEqual" secondItem="e7N-KA-uLO" secondAttribute="trailing" constant="67" id="90n-jb-byv"/>
                             <constraint firstItem="e7N-KA-uLO" firstAttribute="leading" relation="lessThanOrEqual" secondItem="lH0-fi-6Sz" secondAttribute="leading" constant="68" id="AFJ-Rs-GT4"/>
+                            <constraint firstItem="e7N-KA-uLO" firstAttribute="top" secondItem="pC4-p5-f0c" secondAttribute="bottom" constant="12" id="CU2-0X-hjR"/>
                             <constraint firstItem="QIp-EA-h1X" firstAttribute="centerX" secondItem="lH0-fi-6Sz" secondAttribute="centerX" id="Rwk-EW-2xJ"/>
+                            <constraint firstItem="pC4-p5-f0c" firstAttribute="top" secondItem="PET-zm-adb" secondAttribute="bottom" constant="16" id="YMs-vX-02I"/>
+                            <constraint firstItem="pC4-p5-f0c" firstAttribute="centerX" secondItem="lH0-fi-6Sz" secondAttribute="centerX" id="awR-2f-oeL"/>
                             <constraint firstItem="PET-zm-adb" firstAttribute="top" secondItem="QIp-EA-h1X" secondAttribute="bottom" constant="25" id="cju-d3-RmF"/>
                             <constraint firstItem="pzM-ac-1d8" firstAttribute="top" secondItem="e7N-KA-uLO" secondAttribute="bottom" constant="25.5" id="d9T-Gn-Cbi"/>
                             <constraint firstItem="QIp-EA-h1X" firstAttribute="top" secondItem="hkl-m7-zes" secondAttribute="bottom" constant="76" id="eWQ-Kk-jWQ"/>
@@ -1528,7 +1504,7 @@ realizará suas apostas.
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Ob9-lN-vRq">
-                        <barButtonItem key="rightBarButtonItem" title="Item" id="IZY-da-nC9">
+                        <barButtonItem key="rightBarButtonItem" title="Avançar" id="IZY-da-nC9">
                             <connections>
                                 <segue destination="isI-8l-tLc" kind="presentation" id="NcE-IK-7cj"/>
                             </connections>
@@ -1537,7 +1513,7 @@ realizará suas apostas.
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RmO-wZ-Qvj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3242" y="-385"/>
+            <point key="canvasLocation" x="3240.8000000000002" y="-385.45727136431788"/>
         </scene>
         <!--Main-->
         <scene sceneID="QCO-Mf-yQY">
@@ -1598,10 +1574,10 @@ realizará suas apostas.
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
-                                    <segue destination="isI-8l-tLc" kind="presentation" id="Xjc-gF-Tfg"/>
+                                    <action selector="aposteAgoraAction" destination="CrJ-wz-bKn" eventType="touchUpInside" id="WeC-Gz-MCD"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Você utilizará o sistema único de login da Caixa." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Di-hR-1bN">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Você utilizará o sistema único de cadastro da Caixa." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Di-hR-1bN">
                                 <rect key="frame" x="80" y="421" width="216" height="52"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="216" id="uUd-ti-iOz"/>
@@ -1648,11 +1624,99 @@ realizará suas apostas.
                     <navigationItem key="navigationItem" id="kRD-pz-sMY"/>
                     <connections>
                         <outlet property="aposteAgora" destination="7It-OQ-kjG" id="Qws-fS-zBt"/>
+                        <segue destination="isI-8l-tLc" kind="presentation" identifier="aposteAgora" id="uIY-3q-XK1"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ra0-5d-wmo" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1628" y="-767"/>
+        </scene>
+        <!--Loterias Caixa-->
+        <scene sceneID="1uH-b8-5ah">
+            <objects>
+                <viewController id="rEn-gb-vZ2" customClass="LOAjudaController" customModule="Loterias" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="DIy-Qb-ogu"/>
+                        <viewControllerLayoutGuide type="bottom" id="Y9I-I8-SM1"/>
+                    </layoutGuides>
+                    <view key="view" clipsSubviews="YES" contentMode="scaleToFill" id="yNJ-qs-tzA">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="pyw-MN-pCH">
+                                <rect key="frame" x="0.0" y="21" width="375" height="56"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UHx-J2-VKK">
+                                        <rect key="frame" x="0.0" y="0.0" width="124.5" height="56"/>
+                                        <color key="backgroundColor" red="0.3294117647" green="0.73333333329999995" blue="0.6705882353" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="56" id="Jf9-Lq-jsZ"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="FuturaStd-Bold" family="Futura Std" pointSize="15"/>
+                                        <state key="normal" title="Termos de uso">
+                                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        </state>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lrm-aM-bSd">
+                                        <rect key="frame" x="125.5" y="0.0" width="124" height="56"/>
+                                        <fontDescription key="fontDescription" name="FuturaStd-Bold" family="Futura Std" pointSize="15"/>
+                                        <state key="normal" title="Política de privacidade">
+                                            <color key="titleColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </state>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dTe-xS-YSk">
+                                        <rect key="frame" x="250.5" y="0.0" width="124.5" height="56"/>
+                                        <fontDescription key="fontDescription" name="FuturaStd-Bold" family="Futura Std" pointSize="15"/>
+                                        <state key="normal" title="Dúvidas">
+                                            <color key="titleColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </state>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="justified" translatesAutoresizingMaskIntoConstraints="NO" id="xNY-0g-pAU">
+                                <rect key="frame" x="8" y="85" width="359" height="574"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <string key="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+
+Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet.
+
+Proin gravida dolor sit amet lacus accumsan et viverra justo commodo.
+
+Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet.
+
+Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget.</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="xNY-0g-pAU" firstAttribute="leading" secondItem="yNJ-qs-tzA" secondAttribute="leading" constant="8" id="5Dm-33-wyW"/>
+                            <constraint firstAttribute="trailing" secondItem="pyw-MN-pCH" secondAttribute="trailing" id="Jzq-ch-f2Y"/>
+                            <constraint firstItem="xNY-0g-pAU" firstAttribute="top" secondItem="pyw-MN-pCH" secondAttribute="bottom" constant="8" id="QBR-eI-JkO"/>
+                            <constraint firstItem="pyw-MN-pCH" firstAttribute="leading" secondItem="yNJ-qs-tzA" secondAttribute="leading" id="Z49-2H-n7N"/>
+                            <constraint firstItem="Y9I-I8-SM1" firstAttribute="top" secondItem="xNY-0g-pAU" secondAttribute="bottom" constant="8" id="cHk-Vn-28D"/>
+                            <constraint firstAttribute="trailing" secondItem="xNY-0g-pAU" secondAttribute="trailing" constant="8" id="gMU-U3-aRf"/>
+                            <constraint firstItem="pyw-MN-pCH" firstAttribute="top" secondItem="DIy-Qb-ogu" secondAttribute="bottom" constant="1" id="kPv-eR-tie"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Loterias Caixa" id="Exf-xK-mtJ"/>
+                    <connections>
+                        <outlet property="duvidas" destination="dTe-xS-YSk" id="u2y-9l-Iev"/>
+                        <outlet property="politicaPrivacidade" destination="Lrm-aM-bSd" id="P9l-XG-PQb"/>
+                        <outlet property="termosDeUso" destination="UHx-J2-VKK" id="Utn-LA-XqO"/>
+                        <outlet property="textView" destination="xNY-0g-pAU" id="MI7-KW-nCV"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lSy-pM-l5F" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3241" y="405"/>
         </scene>
     </scenes>
     <resources>
@@ -1662,9 +1726,10 @@ realizará suas apostas.
         <image name="icon-passo2" width="52" height="20"/>
         <image name="icon-radio-uncheck" width="20" height="20"/>
         <image name="icon-uncheck" width="20" height="20"/>
+        <image name="icons8-Back Filled-100" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Xjc-gF-Tfg"/>
-        <segue reference="HGb-do-YmM"/>
+        <segue reference="NcE-IK-7cj"/>
+        <segue reference="fjC-kI-MqF"/>
     </inferredMetricsTieBreakers>
 </document>

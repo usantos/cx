@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SystemConfiguration
 
 extension UITextField {
     
@@ -41,16 +42,38 @@ extension NSObject {
         return nil
     }
     
+    func isInternetAvailable() -> Bool {
+        var zeroAddress = sockaddr_in()
+        zeroAddress.sin_len = UInt8(MemoryLayout.size(ofValue: zeroAddress))
+        zeroAddress.sin_family = sa_family_t(AF_INET)
+        
+        let defaultRouteReachability = withUnsafePointer(to: &zeroAddress) {
+            $0.withMemoryRebound(to: sockaddr.self, capacity: 1) {zeroSockAddress in
+                SCNetworkReachabilityCreateWithAddress(nil, zeroSockAddress)
+            }
+        }
+        
+        var flags = SCNetworkReachabilityFlags()
+        if !SCNetworkReachabilityGetFlags(defaultRouteReachability!, &flags) {
+            return false
+        }
+        let isReachable = flags.contains(.reachable)
+        let needsConnection = flags.contains(.connectionRequired)
+        return (isReachable && !needsConnection)
+    }
+    
     func treatStatusCode (statusCode : Int) -> (status: Bool, message: String?) {
         switch statusCode {
         case 200:
             return (true, "")
         case 408:
-            return (false, "Esgotou o tempo da requisição, tente novamente.")
+            return (false, "Tempo de resposta esgotou. Tente novamente mais tarde.")
         case 500:
-            return (false, "Problemas no servidor, entre em contato com a equipe de Tecnologia")
+            return (false, "Não foi possível concluir esta operação. Por favor, tente novamente.")
         case 503:
-            return (false, "Servidor indisponível, tente novamente mais tarde.")
+            return (false, "Não foi possível concluir esta operação. Por favor, tente novamente.")
+        case 1009:
+            return (false, "Sem conexão com a internet.")
         default:
             return (false, "")
         }

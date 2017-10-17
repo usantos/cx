@@ -131,17 +131,22 @@ class LOCadastroPassoDoisController: UITableViewController, LOCadastroPassoDoisD
     }
     
     func finalizarCadastro() {
-        if termoSelecionado() {
-            LOTermoBusinessService().registraAceiteTermo(parameters: [:], completionHandler: { (sucesso) in
-                if sucesso! {
-                    self.performSegue(withIdentifier: "finalizarCadastro", sender: self)
-                } else {
-                    
-                }
-            })
-        } else {
-            self.alertSimple(title: "Atenção", message: "Para continuar é necessário o aceite do termo.")
-        }
+        let defaults = UserDefaults.standard
+        defaults.set(true, forKey: "isFirstAccess")
+
+        self.performSegue(withIdentifier: "finalizarCadastro", sender: self)
+
+//        if termoSelecionado() {
+//            LOTermoBusinessService().registraAceiteTermo(parameters: [:], completionHandler: { (sucesso) in
+//                if sucesso! {
+//                    self.performSegue(withIdentifier: "finalizarCadastro", sender: self)
+//                } else {
+//                    
+//                }
+//            })
+//        } else {
+//            self.alertSimple(title: "Atenção", message: "Para continuar é necessário o aceite do termo.")
+//        }
     }
     
     func termoSelecionado() -> Bool {

@@ -2,17 +2,16 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "ic_bg_splash.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "ic_bg_splash@2x.png",
+      "filename" : "splashscreen-triangulo-1.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "ic_bg_splash@3x.png",
+      "filename" : "splashscreen-triangulo.png",
       "scale" : "3x"
     }
   ],

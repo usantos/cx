@@ -25,6 +25,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UINavigationBar.appearance().shadowImage = UIImage()
         UINavigationBar.appearance().setBackgroundImage(UIImage(), for: .default)
         
+        let defaults = UserDefaults.standard
+
+        if defaults.bool(forKey: "isFirstAccess") {
+            self.window?.rootViewController = UIStoryboard(name: "Login", bundle: nil).instantiateViewController(withIdentifier: "initialLogin")
+        } else {
+            self.window?.rootViewController = UIStoryboard(name: "Tour", bundle: nil).instantiateViewController(withIdentifier: "initialTour")
+        }
+        
         return true
     }
 

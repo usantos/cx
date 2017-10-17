@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AnimatedCollectionViewLayout
 
 struct EstiloModalidade {
     let corClara : UInt
@@ -17,12 +18,30 @@ struct EstiloModalidade {
     let tipoModalidade: LOModalidadeEnum
 }
 
-class LOModalideController: UIViewController {
+class LOModalideController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    private var arrayModalidades = [LOModalidadeEnum]()
 
-    @IBOutlet weak var resultadoView : UIView!
-    
-    @IBOutlet weak var corpoView : UIView!
-    @IBOutlet weak var topoCorpo : UIImageView!
+    @IBOutlet weak var collectionView : UICollectionView! {
+        didSet {
+            collectionView.delegate = self
+            collectionView.dataSource = self
+            
+            let layout = AnimatedCollectionViewLayout()
+            
+            if DeviceType.IS_IPHONE_6 {
+                layout.animator = LinearCardAttributesAnimator(minAlpha: 0.8, itemSpacing: 0.35, scaleRate: 0.75)
+            } else if DeviceType.IS_IPHONE_6P {
+                layout.animator = LinearCardAttributesAnimator(minAlpha: 0.8, itemSpacing: 0.35, scaleRate: 0.75)
+            } else {
+                layout.animator = LinearCardAttributesAnimator(minAlpha: 0.8, itemSpacing: 0.4, scaleRate: 0.7)
+            }
+            layout.scrollDirection = .horizontal
+
+            collectionView.collectionViewLayout = layout
+            collectionView.showsHorizontalScrollIndicator = false
+        }
+    }
+    //NEW
     
     @IBOutlet weak var aposteView : UIView!
     @IBOutlet var aposteButon : UIButton! {
@@ -32,25 +51,18 @@ class LOModalideController: UIViewController {
     }
     
     @IBOutlet weak var valorMinimoCompra : UILabel!
-
     @IBOutlet weak var badgeMinhasCompras : UILabel!
     @IBOutlet weak var badgeCarrinhoDeApostas : UILabel!
-    
-    @IBOutlet weak var iconeCalendario : UIImageView!
-    @IBOutlet weak var iconeRelogio : UIImageView!
-    
     @IBOutlet var gradientView : UIView!
-    @IBOutlet weak var valorAcumulado : UILabel!
-    @IBOutlet weak var premioEstimadoDoConcurso : UILabel!
-    @IBOutlet weak var diaSorteio : UILabel!
-    @IBOutlet weak var diaEncerramento : UILabel!
-    @IBOutlet weak var acumulouOuGanhadores : UILabel!
-    
-    public var tipoModalidade : LOModalidadeEnum?
     public var estiloModalidade : EstiloModalidade!
-    
+    public var tipoModalidade : LOModalidadeEnum?
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        estiloNavigationController()
+        
+        collectionView?.isPagingEnabled = true
         
         DispatchQueue.main.async {
             self.gradientView.layoutIfNeeded()
@@ -64,147 +76,74 @@ class LOModalideController: UIViewController {
             self.gradientView.layer.addSublayer(gradient)
         }
         
-        montarTelaBaseadoNoTipoDeModalidade()
+        chamaWebservice()
+        //montarTelaBaseadoNoTipoDeModalidade()
+    }
+    
+    func chamaWebservice () {
+        LOModalidadesBusinessService().getModalidades(parameters: [:]) { (error, modalidades) in
+            if error != nil {
+                //self.alertSimple(title: "Atenção", message: error!)
+                
+                self.arrayModalidades = [LOModalidadeEnum.Megasena, LOModalidadeEnum.Duplasena, LOModalidadeEnum.Lotofacil, LOModalidadeEnum.Quina]
+                self.collectionView.reloadData()
+            } else {
+                for modalidade : LOModalidade in modalidades! {
+                    self.arrayModalidades.append(LOModalidadeEnum(rawValue: modalidade.descricao)!)
+                }
+                self.collectionView.reloadData()
+            }
+        }
+    }
+    
+    func selecionaEstiloModalidade () -> EstiloModalidade {
+        if let tipoModalidade = self.tipoModalidade {
+            switch tipoModalidade {
+            case .Duplasena:
+                return EstiloModalidade(corClara: 0xa62a52, corEscura: 0x7d1a3f , imagemTopo: #imageLiteral(resourceName: "titulo-duplasena"), imagemCalendario: #imageLiteral(resourceName: "icon-data-duplasena"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-duplasena"), tipoModalidade: self.tipoModalidade!)
+            case .Megasena:
+                return EstiloModalidade(corClara: 0x00AB6B, corEscura: 0x009b66 , imagemTopo: #imageLiteral(resourceName: "titulo_megasena"), imagemCalendario: #imageLiteral(resourceName: "icon-data-megasena"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-megasena"), tipoModalidade: self.tipoModalidade!)
+            case .Lotomania:
+                //
+                return EstiloModalidade(corClara: 0x7d1a3f, corEscura: 0x7d1a3f , imagemTopo: #imageLiteral(resourceName: "titulo-duplasena"), imagemCalendario: #imageLiteral(resourceName: "icon-data-duplasena"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-duplasena"), tipoModalidade: self.tipoModalidade!)
+                
+            case .Lotogol:
+                //
+                return EstiloModalidade(corClara: 0x7d1a3f, corEscura: 0x7d1a3f , imagemTopo: #imageLiteral(resourceName: "titulo-duplasena"), imagemCalendario: #imageLiteral(resourceName: "icon-data-duplasena"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-duplasena"), tipoModalidade: self.tipoModalidade!)
+            case .Lotofacil:
+                return EstiloModalidade(corClara: 0xbf3c93, corEscura: 0x9b2b7a , imagemTopo: #imageLiteral(resourceName: "titulo_lotofacil"), imagemCalendario: #imageLiteral(resourceName: "icon-data-lotofacil"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-lotofacil"), tipoModalidade: self.tipoModalidade!)
+            case .Loteca:
+                //
+                return EstiloModalidade(corClara: 0x7d1a3f, corEscura: 0x7d1a3f , imagemTopo: #imageLiteral(resourceName: "titulo-duplasena"), imagemCalendario: #imageLiteral(resourceName: "icon-data-duplasena"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-duplasena"), tipoModalidade: self.tipoModalidade!)
+            case .Federal:
+                //
+                return EstiloModalidade(corClara: 0x7d1a3f, corEscura: 0x7d1a3f , imagemTopo: #imageLiteral(resourceName: "titulo-duplasena"), imagemCalendario: #imageLiteral(resourceName: "icon-data-duplasena"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-duplasena"), tipoModalidade: self.tipoModalidade!)
+            case .Quina:
+                return EstiloModalidade(corClara: 0x642573, corEscura: 0x642475 , imagemTopo: #imageLiteral(resourceName: "titulo_quina"), imagemCalendario: #imageLiteral(resourceName: "icon-data-quina"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-quina"), tipoModalidade: self.tipoModalidade!)
+            case .Timemania:
+                //
+                return EstiloModalidade(corClara: 0x7d1a3f, corEscura: 0x7d1a3f , imagemTopo: #imageLiteral(resourceName: "titulo-duplasena"), imagemCalendario: #imageLiteral(resourceName: "icon-data-duplasena"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-duplasena"), tipoModalidade: self.tipoModalidade!)
+            }
+        }
+        return EstiloModalidade(corClara: 0x7d1a3f, corEscura: 0x7d1a3f , imagemTopo: #imageLiteral(resourceName: "titulo-duplasena"), imagemCalendario: #imageLiteral(resourceName: "icon-data-duplasena"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-duplasena"), tipoModalidade: self.tipoModalidade!)
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
     
-    func montarTelaBaseadoNoTipoDeModalidade () {
+    func estiloNavigationController () {
+        let imgRendering = #imageLiteral(resourceName: "icon-menu").withRenderingMode(UIImageRenderingMode.alwaysOriginal)
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: imgRendering, style: .plain, target: self, action: #selector(apresentaMenu))
         
-        if let tipoModalidade = self.tipoModalidade {
-            switch tipoModalidade {
-                case .Duplasena:
-                    self.estiloModalidade = EstiloModalidade(corClara: 0xa62a52, corEscura: 0x7d1a3f , imagemTopo: #imageLiteral(resourceName: "titulo-duplasena"), imagemCalendario: #imageLiteral(resourceName: "icon-data-duplasena"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-duplasena"), tipoModalidade: self.tipoModalidade!)
-                    break
-                case .Megasena:
-                    self.estiloModalidade = EstiloModalidade(corClara: 0x00AB6B, corEscura: 0x009b66 , imagemTopo: #imageLiteral(resourceName: "titulo_megasena"), imagemCalendario: #imageLiteral(resourceName: "icon-data-megasena"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-megasena"), tipoModalidade: self.tipoModalidade!)
-                    break
-                case .Lotomania:
-                    //
-                    self.estiloModalidade = EstiloModalidade(corClara: 0x7d1a3f, corEscura: 0x7d1a3f , imagemTopo: #imageLiteral(resourceName: "titulo-duplasena"), imagemCalendario: #imageLiteral(resourceName: "icon-data-duplasena"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-duplasena"), tipoModalidade: self.tipoModalidade!)
-
-                    break
-                case .Lotogol:
-                    //
-                    self.estiloModalidade = EstiloModalidade(corClara: 0x7d1a3f, corEscura: 0x7d1a3f , imagemTopo: #imageLiteral(resourceName: "titulo-duplasena"), imagemCalendario: #imageLiteral(resourceName: "icon-data-duplasena"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-duplasena"), tipoModalidade: self.tipoModalidade!)
-
-                    break
-                case .Lotofacil:
-                    self.estiloModalidade = EstiloModalidade(corClara: 0xbf3c93, corEscura: 0x9b2b7a , imagemTopo: #imageLiteral(resourceName: "titulo_lotofacil"), imagemCalendario: #imageLiteral(resourceName: "icon-data-lotofacil"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-lotofacil"), tipoModalidade: self.tipoModalidade!)
-                    break
-                case .Loteca:
-                    //
-                    self.estiloModalidade = EstiloModalidade(corClara: 0x7d1a3f, corEscura: 0x7d1a3f , imagemTopo: #imageLiteral(resourceName: "titulo-duplasena"), imagemCalendario: #imageLiteral(resourceName: "icon-data-duplasena"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-duplasena"), tipoModalidade: self.tipoModalidade!)
-
-                    break
-                case .Federal:
-                    //
-                    self.estiloModalidade = EstiloModalidade(corClara: 0x7d1a3f, corEscura: 0x7d1a3f , imagemTopo: #imageLiteral(resourceName: "titulo-duplasena"), imagemCalendario: #imageLiteral(resourceName: "icon-data-duplasena"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-duplasena"), tipoModalidade: self.tipoModalidade!)
-                    break
-                case .Quina:
-                    self.estiloModalidade = EstiloModalidade(corClara: 0x642573, corEscura: 0x642475 , imagemTopo: #imageLiteral(resourceName: "titulo_quina"), imagemCalendario: #imageLiteral(resourceName: "icon-data-quina"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-quina"), tipoModalidade: self.tipoModalidade!)
-                    break
-                case .Timemania:
-                    //
-                    self.estiloModalidade = EstiloModalidade(corClara: 0x7d1a3f, corEscura: 0x7d1a3f , imagemTopo: #imageLiteral(resourceName: "titulo-duplasena"), imagemCalendario: #imageLiteral(resourceName: "icon-data-duplasena"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-duplasena"), tipoModalidade: self.tipoModalidade!)
-                    break
-            }
-        }
+        let imgRendering2 = #imageLiteral(resourceName: "icon-trevo").withRenderingMode(UIImageRenderingMode.alwaysOriginal)
+        let imgRendering3 = #imageLiteral(resourceName: "icon-menu-right-blue").withRenderingMode(UIImageRenderingMode.alwaysOriginal)
         
-        aplicarEstilo()
-    }
-    
-    func aplicarEstilo () {
-        DispatchQueue.main.async {
-            self.iconeRelogio.image = self.estiloModalidade.imagemRelogio
-            self.iconeCalendario.image = self.estiloModalidade.imagemCalendario
-            self.resultadoView.backgroundColor = self.UIColorFromHex(self.estiloModalidade.corEscura, alpha: 1.0)
-            self.aposteView.backgroundColor = self.UIColorFromHex(self.estiloModalidade.corClara, alpha: 1.0)
-            self.topoCorpo.image = self.estiloModalidade.imagemTopo
-        }
+        self.navigationItem.rightBarButtonItems = [UIBarButtonItem(image: imgRendering3, style: .plain, target: self, action: #selector(apresentaMenu)) , UIBarButtonItem(image: imgRendering2, style: .plain, target: self, action: #selector(apresentaTrevo))]
         
-        popularCampos()
-    }
-    
-    func popularCampos () {
-        // Montagem do campo VALOR ACUMULADO
-        let fixoValor = NSAttributedString.init(string: "R$", attributes: [NSAttributedStringKey.font: UIFont.init(name: "FuturaStd-Medium", size: 12)!, NSAttributedStringKey.foregroundColor:self.UIColorFromHex(self.estiloModalidade.corClara, alpha: 1.0)])
-        
-        //Remover mock de valor
-        let dinamicoValor = NSAttributedString.init(string: "132.000.000,00", attributes: [NSAttributedStringKey.font: UIFont.init(name: "FuturaStd-Bold", size: 20)!, NSAttributedStringKey.foregroundColor:self.UIColorFromHex(self.estiloModalidade.corClara, alpha: 1.0)])
-
-        var combination = NSMutableAttributedString()
-        combination.append(fixoValor)
-        combination.append(dinamicoValor)
-        
-        self.valorAcumulado.attributedText = combination
-        // ----------------------------------
-        
-        // Montagem do campo APOSTE
-        let paragraph = NSMutableParagraphStyle()
-        paragraph.alignment = .center
-        let fixoAposte = NSAttributedString.init(string: "Aposte", attributes: [NSAttributedStringKey.font: UIFont.init(name: "FuturaStd-Bold", size: 15)!, NSAttributedStringKey.foregroundColor:UIColor.white, NSAttributedStringKey.paragraphStyle: paragraph])
-        
-        //Remover mock de valor
-        let textoDinamico = NSAttributedString.init(string: String(format:"\npor R$%.2f", 3.5), attributes: [NSAttributedStringKey.font: UIFont.init(name: "FuturaStd-Medium", size: 15)!, NSAttributedStringKey.foregroundColor:UIColor.white, NSAttributedStringKey.paragraphStyle: paragraph])
-     
-        combination = NSMutableAttributedString()
-        combination.append(fixoAposte)
-        combination.append(textoDinamico)
-        
-        self.aposteButon.setAttributedTitle(combination, for: .normal)
-        // ----------------------------------
-        
-        //Montagem do campo PRÊMIO ESTIMADO
-        let fixoPremio = NSAttributedString.init(string: "Prêmio estimado do concurso ", attributes: [NSAttributedStringKey.font: UIFont.init(name: "FuturaStd-Medium", size: 14)!, NSAttributedStringKey.foregroundColor:self.UIColorFromHex(0x4e596b, alpha: 1.0), NSAttributedStringKey.paragraphStyle: paragraph])
-        
-        //Remover mock de valor
-        let textoDinamicoPremio = NSAttributedString.init(string: "1843", attributes: [NSAttributedStringKey.font: UIFont.init(name: "FuturaStd-Bold", size: 14)!, NSAttributedStringKey.foregroundColor:self.UIColorFromHex(0x4e596b, alpha: 1.0), NSAttributedStringKey.paragraphStyle: paragraph])
-        
-        combination = NSMutableAttributedString()
-        combination.append(fixoPremio)
-        combination.append(textoDinamicoPremio)
-
-        self.premioEstimadoDoConcurso.attributedText = combination
-        
-        //Montagem do campo DIA SORTEIO
-        let fixoSorteio = NSAttributedString.init(string: "Sorteio\n", attributes: [NSAttributedStringKey.font: UIFont.init(name: "FuturaStd-Medium", size: 12)!, NSAttributedStringKey.foregroundColor:self.UIColorFromHex(0x4e596b, alpha: 1.0)])
-        
-        //Remover mock de valor
-        let textoDinamicoSorteio = NSAttributedString.init(string: "Sábado, 18 de julho", attributes: [NSAttributedStringKey.font: UIFont.init(name: "FuturaStd-Bold", size: 12)!, NSAttributedStringKey.foregroundColor:self.UIColorFromHex(0x4e596b, alpha: 1.0)])
-        
-        combination = NSMutableAttributedString()
-        combination.append(fixoSorteio)
-        combination.append(textoDinamicoSorteio)
-        
-        self.diaSorteio.attributedText = combination
-        // ----------------------------------
-
-        //Montagem do campo FIM APOSTAS
-        let fixoFimApostas = NSAttributedString.init(string: "Apostas se encerram em\n", attributes: [NSAttributedStringKey.font: UIFont.init(name: "FuturaStd-Medium", size: 12)!, NSAttributedStringKey.foregroundColor:self.UIColorFromHex(0x4e596b, alpha: 1.0)])
-        
-        //Remover mock de valor
-        let textoDinamicoFimApostas = NSAttributedString.init(string: "2 dias e 20 horas", attributes: [NSAttributedStringKey.font: UIFont.init(name: "FuturaStd-Bold", size: 12)!, NSAttributedStringKey.foregroundColor:self.UIColorFromHex(0x4e596b, alpha: 1.0)])
-        
-        combination = NSMutableAttributedString()
-        combination.append(fixoFimApostas)
-        combination.append(textoDinamicoFimApostas)
-        
-        self.diaEncerramento.attributedText = combination
-        // ----------------------------------
-        
-        verificaSeGanhadoresOuAcumulado()
-    }
-    
-    func verificaSeGanhadoresOuAcumulado () {
-        //Remover mock quando tiver serviço
-        if false {
-            acumulouOuGanhadores.layer.borderWidth = 1
-            acumulouOuGanhadores.layer.borderColor = self.UIColorFromHex(0xd0e0e3, alpha: 1.0).cgColor
-            acumulouOuGanhadores.attributedText = NSAttributedString.init(string: String(format: "%d ganhadores", 3), attributes: [NSAttributedStringKey.font: UIFont.init(name: "FuturaStd-Bold", size: 14)!, NSAttributedStringKey.foregroundColor:self.UIColorFromHex(0x4e596b, alpha: 1.0)])
-        }
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.view.backgroundColor = UIColor.clear
     }
     
     // MARK: - Navigation
@@ -214,5 +153,97 @@ class LOModalideController: UIViewController {
             let destination = segue.destination as! LOSimularApostasController
             destination.estiloModalidade = self.estiloModalidade
         }
+    }
+    
+    func estiloAposteBotao () {
+        // Montagem do campo APOSTE
+        var combination = NSMutableAttributedString()
+
+        let paragraph = NSMutableParagraphStyle()
+        paragraph.alignment = .center
+        let fixoAposte = NSAttributedString.init(string: "Aposte", attributes: [NSAttributedStringKey.font: UIFont.init(name: "FuturaStd-Bold", size: 15)!, NSAttributedStringKey.foregroundColor:UIColor.white, NSAttributedStringKey.paragraphStyle: paragraph])
+        
+        //Remover mock de valor
+        let textoDinamico = NSAttributedString.init(string: String(format:"\npor R$%.2f", 3.5), attributes: [NSAttributedStringKey.font: UIFont.init(name: "FuturaStd-Medium", size: 15)!, NSAttributedStringKey.foregroundColor:UIColor.white, NSAttributedStringKey.paragraphStyle: paragraph])
+        
+        combination = NSMutableAttributedString()
+        combination.append(fixoAposte)
+        combination.append(textoDinamico)
+        
+        self.aposteButon.setAttributedTitle(combination, for: .normal)
+        UIView.animate(withDuration: 0.3, animations: { () -> Void in
+            self.aposteView.backgroundColor = self.UIColorFromHex(self.estiloModalidade.corClara, alpha: 1.0)
+        })
+    }
+    
+    //NEW
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return self.arrayModalidades.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellTeste", for: indexPath) as? LOModalidadeCell
+        self.tipoModalidade = self.arrayModalidades[indexPath.row]
+        cell?.estiloModalidade = selecionaEstiloModalidade()
+        cell?.aplicarEstilo()
+        return cell!
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: view.bounds.width, height: view.bounds.height + 80)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return .zero
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 0
+    }
+
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        let x = collectionView.contentOffset.x
+        let w = collectionView.bounds.size.width
+        let currentPage = Int(ceil(x/w))
+        print("Current Page: \(currentPage)")
+        
+        if currentPage < self.arrayModalidades.count {
+            self.tipoModalidade = self.arrayModalidades[currentPage]
+            self.estiloModalidade = selecionaEstiloModalidade()
+            estiloAposteBotao()
+        }
+    }
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        let x = collectionView.contentOffset.x
+        let w = collectionView.bounds.size.width
+        let currentPage = Int(ceil(x/w))
+        
+        UIView.animate(withDuration: 0.5, animations: { () -> Void in
+            self.tipoModalidade = self.arrayModalidades[currentPage + 1]
+            self.estiloModalidade = self.selecionaEstiloModalidade()
+            
+            self.aposteView.backgroundColor = self.UIColorFromHex(self.estiloModalidade.corClara, alpha: 1.0)
+        })
+    }
+    
+    @objc func apresentaMenu () {
+        self.performSegue(withIdentifier: "apresentaMenu", sender: self)
+    }
+    
+    @objc func apresentaTrevo () {
+        self.performSegue(withIdentifier: "apresentaTrevo", sender: self)
+    }
+    
+    @objc func apresentaAjuda () {
+        self.performSegue(withIdentifier: "apresentaAjuda", sender: self)
     }
 }

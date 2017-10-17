@@ -14,5 +14,6 @@ target 'Loterias' do
   pod 'CryptoSwift'
   pod 'SideMenu'
   pod 'InputMask'
-  
+  pod 'AnimatedCollectionViewLayout'
+
 end

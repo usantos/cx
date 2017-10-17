@@ -96,6 +96,10 @@
 		A6EC217C1F8280C100BD6825 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A6EC217A1F8280C100BD6825 /* Login.storyboard */; };
 		A6EC217E1F8285F100BD6825 /* LOAjudaController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6EC217D1F8285F100BD6825 /* LOAjudaController.swift */; };
 		A6EC21811F82D53500BD6825 /* LORegisterBusinessService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6EC21801F82D53500BD6825 /* LORegisterBusinessService.swift */; };
+		A6F2E9021F9509480049EEF9 /* LOBairroCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F2E9011F9509480049EEF9 /* LOBairroCell.swift */; };
+		A6F2E9041F950A160049EEF9 /* LOCepCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F2E9031F950A160049EEF9 /* LOCepCell.swift */; };
+		A6F2E9061F9514E10049EEF9 /* LOFimRegistroController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F2E9051F9514E10049EEF9 /* LOFimRegistroController.swift */; };
+		A6F2E94C1F969AEC0049EEF9 /* LOModalidadeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F2E94B1F969AEB0049EEF9 /* LOModalidadeCell.swift */; };
 		A6F8D7F41F83D78A005529F1 /* LOFormaDePagamentoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F8D7F31F83D78A005529F1 /* LOFormaDePagamentoCell.swift */; };
 		EB859B319A3C90228FAA1C17 /* Pods_Loterias.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A20B6ADB9CB12B31C763A530 /* Pods_Loterias.framework */; };
 /* End PBXBuildFile section */
@@ -216,6 +220,10 @@
 		A6EC217D1F8285F100BD6825 /* LOAjudaController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LOAjudaController.swift; path = Controllers/Menu/LOAjudaController.swift; sourceTree = "<group>"; };
 		A6EC217F1F82D22F00BD6825 /* server-config.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "server-config.plist"; sourceTree = "<group>"; };
 		A6EC21801F82D53500BD6825 /* LORegisterBusinessService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LORegisterBusinessService.swift; path = Business/LORegisterBusinessService.swift; sourceTree = "<group>"; };
+		A6F2E9011F9509480049EEF9 /* LOBairroCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LOBairroCell.swift; path = Controllers/Login/Cadastro/LOBairroCell.swift; sourceTree = "<group>"; };
+		A6F2E9031F950A160049EEF9 /* LOCepCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LOCepCell.swift; path = Controllers/Login/Cadastro/LOCepCell.swift; sourceTree = "<group>"; };
+		A6F2E9051F9514E10049EEF9 /* LOFimRegistroController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LOFimRegistroController.swift; path = Controllers/Login/LOFimRegistroController.swift; sourceTree = "<group>"; };
+		A6F2E94B1F969AEB0049EEF9 /* LOModalidadeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LOModalidadeCell.swift; path = Controllers/Modalidades/LOModalidadeCell.swift; sourceTree = "<group>"; };
 		A6F8D7F31F83D78A005529F1 /* LOFormaDePagamentoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LOFormaDePagamentoCell.swift; path = "Controllers/Apostas/Formas de pagamento/LOFormaDePagamentoCell.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -271,6 +279,8 @@
 				A606152E1F670055002191C3 /* LOLocalizacaoCell.swift */,
 				A65247701F87A9BD00E12A8D /* LOLotericaCell.swift */,
 				A6B34C3D1F911FEF00AB2B51 /* LOCodigoLotericaCell.swift */,
+				A6F2E9011F9509480049EEF9 /* LOBairroCell.swift */,
+				A6F2E9031F950A160049EEF9 /* LOCepCell.swift */,
 			);
 			name = Cadastro;
 			sourceTree = "<group>";
@@ -295,6 +305,7 @@
 				A60615361F680E41002191C3 /* LOModalidesPageController.swift */,
 				A60615381F680E6F002191C3 /* LOModalideController.swift */,
 				A606153A1F681BB2002191C3 /* LOModalidadeEnum.swift */,
+				A6F2E94B1F969AEB0049EEF9 /* LOModalidadeCell.swift */,
 			);
 			name = Modalidades;
 			sourceTree = "<group>";
@@ -422,6 +433,7 @@
 				A617DCA51F59EF9200D257B7 /* LOCadastroPassoDoisController.swift */,
 				A6BA013E1F8BB6670032ECDC /* LOInitialNavLoginController.swift */,
 				A6710E161F826D5300854BD4 /* LOSSOController.swift */,
+				A6F2E9051F9514E10049EEF9 /* LOFimRegistroController.swift */,
 			);
 			name = Login;
 			sourceTree = "<group>";
@@ -742,6 +754,7 @@
 				"${BUILT_PRODUCTS_DIR}/AeroGearHttp/AeroGearHttp.framework",
 				"${BUILT_PRODUCTS_DIR}/AeroGearOAuth2/AeroGearOAuth2.framework",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/AnimatedCollectionViewLayout/AnimatedCollectionViewLayout.framework",
 				"${BUILT_PRODUCTS_DIR}/CryptoSwift/CryptoSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/InputMask/InputMask.framework",
@@ -753,6 +766,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AeroGearHttp.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AeroGearOAuth2.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AnimatedCollectionViewLayout.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CryptoSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManagerSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/InputMask.framework",
@@ -837,6 +851,7 @@
 				A6AE530E1F758CA1001AB32C /* LOFormasDePagamentoController.swift in Sources */,
 				A606152B1F670021002191C3 /* LOTermoCell.swift in Sources */,
 				A60615391F680E6F002191C3 /* LOModalideController.swift in Sources */,
+				A6F2E94C1F969AEC0049EEF9 /* LOModalidadeCell.swift in Sources */,
 				A632315B1F7458A50004F327 /* LORepassesSociaisController.swift in Sources */,
 				A606153F1F6870A3002191C3 /* LODownTopSegue.swift in Sources */,
 				A617DBF31F58762500D257B7 /* LOLoginController.swift in Sources */,
@@ -845,6 +860,7 @@
 				A6BC9DB31F8D448F00778335 /* LOModalidadesBusinessService.swift in Sources */,
 				A606152F1F670055002191C3 /* LOLocalizacaoCell.swift in Sources */,
 				A691CD861F8EBBB100D73CAF /* LOMeiosDePagamentoBusinessService.swift in Sources */,
+				A6F2E9041F950A160049EEF9 /* LOCepCell.swift in Sources */,
 				A65247711F87A9BD00E12A8D /* LOLotericaCell.swift in Sources */,
 				A60615371F680E41002191C3 /* LOModalidesPageController.swift in Sources */,
 				A6EC217E1F8285F100BD6825 /* LOAjudaController.swift in Sources */,
@@ -857,10 +873,12 @@
 				A6AE531C1F7A91C4001AB32C /* LOPaddingLabel.swift in Sources */,
 				A617DBB51F58526800D257B7 /* Loterias.xcdatamodeld in Sources */,
 				A60615441F697522002191C3 /* LOSimularApostasController.swift in Sources */,
+				A6F2E9061F9514E10049EEF9 /* LOFimRegistroController.swift in Sources */,
 				A617DBAD1F58526800D257B7 /* AppDelegate.swift in Sources */,
 				A63231561F72F39B0004F327 /* LOCarrinhoApostasController.swift in Sources */,
 				A606153B1F681BB2002191C3 /* LOModalidadeEnum.swift in Sources */,
 				A6AE53161F79247A001AB32C /* LOMenuController.swift in Sources */,
+				A6F2E9021F9509480049EEF9 /* LOBairroCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

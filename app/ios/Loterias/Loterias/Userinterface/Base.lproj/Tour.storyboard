@@ -29,7 +29,7 @@
         <!--Tour Page Controller-->
         <scene sceneID="TvK-lc-H7F">
             <objects>
-                <pageViewController autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="chI-m0-hkL" customClass="LOTourPageController" customModule="Loterias" customModuleProvider="target" sceneMemberID="viewController"/>
+                <pageViewController storyboardIdentifier="initialTour" autoresizesArchivedViewToFullSize="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="chI-m0-hkL" customClass="LOTourPageController" customModule="Loterias" customModuleProvider="target" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ESZ-t5-ZZv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-567" y="-217"/>
@@ -46,9 +46,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_bg_splash" translatesAutoresizingMaskIntoConstraints="NO" id="gcP-Ec-kbN">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                            </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_logo" translatesAutoresizingMaskIntoConstraints="NO" id="uAK-My-YVS">
                                 <rect key="frame" x="140" y="45" width="95" height="95"/>
                                 <constraints>
@@ -95,16 +92,12 @@ e muito mais rápidas.</string>
                                 </constraints>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="QTC-kW-KdA" firstAttribute="top" secondItem="uAK-My-YVS" secondAttribute="bottom" constant="86" id="2XK-Hj-roC"/>
                             <constraint firstItem="QTC-kW-KdA" firstAttribute="centerX" secondItem="hcv-EZ-UsW" secondAttribute="centerX" id="30U-ac-swG"/>
                             <constraint firstItem="cxN-32-V7O" firstAttribute="centerX" secondItem="hcv-EZ-UsW" secondAttribute="centerX" id="Cwm-BM-R4x"/>
-                            <constraint firstAttribute="trailing" secondItem="gcP-Ec-kbN" secondAttribute="trailing" id="J13-wA-nOm"/>
-                            <constraint firstItem="EB0-0R-hDX" firstAttribute="top" secondItem="gcP-Ec-kbN" secondAttribute="bottom" id="J4Y-ef-94w"/>
-                            <constraint firstItem="gcP-Ec-kbN" firstAttribute="top" secondItem="hcv-EZ-UsW" secondAttribute="top" id="JYw-Do-fEh"/>
                             <constraint firstItem="uAK-My-YVS" firstAttribute="centerX" secondItem="hcv-EZ-UsW" secondAttribute="centerX" id="R2j-8A-IWt"/>
-                            <constraint firstItem="gcP-Ec-kbN" firstAttribute="leading" secondItem="hcv-EZ-UsW" secondAttribute="leading" id="e44-pY-9gq"/>
                             <constraint firstItem="Hfc-tr-4U7" firstAttribute="top" secondItem="cxN-32-V7O" secondAttribute="bottom" constant="26" id="eZV-xs-Fs8"/>
                             <constraint firstItem="uAK-My-YVS" firstAttribute="top" secondItem="32p-eO-4bL" secondAttribute="bottom" constant="25" id="sTk-rb-YpR"/>
                             <constraint firstItem="cxN-32-V7O" firstAttribute="top" secondItem="QTC-kW-KdA" secondAttribute="bottom" constant="25" id="sYZ-zU-Ht4"/>
@@ -128,12 +121,9 @@ e muito mais rápidas.</string>
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_bg_splash" translatesAutoresizingMaskIntoConstraints="NO" id="DOo-C5-0u4">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                            </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XW7-4H-upb">
-                                <rect key="frame" x="241" y="591" width="118" height="30"/>
-                                <state key="normal" title="Pular introdrução">
+                                <rect key="frame" x="246" y="591" width="113" height="30"/>
+                                <state key="normal" title="Pular introdução">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -148,7 +138,7 @@ e muito mais rápidas.</string>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q9Q-cH-Bo1">
-                                <rect key="frame" x="95" y="333" width="186" height="21"/>
+                                <rect key="frame" x="92.5" y="333" width="191" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="3DS-Wi-5BC"/>
                                 </constraints>
@@ -166,7 +156,7 @@ e muito mais rápidas.</string>
                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
                                         </attributes>
                                     </fragment>
-                                    <fragment content="experência">
+                                    <fragment content="experiência">
                                         <attributes>
                                             <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                             <font key="NSFont" size="17" name="Futura-Bold"/>
@@ -192,23 +182,19 @@ o dia inteiro, todos os dias. :)</string>
                                 </constraints>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="oci-ws-hDF" firstAttribute="top" secondItem="XW7-4H-upb" secondAttribute="bottom" constant="46" id="5zc-BO-MSD"/>
                             <constraint firstItem="xxS-tQ-SkV" firstAttribute="top" secondItem="K25-yP-7fG" secondAttribute="bottom" constant="86" id="6Sb-hf-zHy"/>
                             <constraint firstItem="K25-yP-7fG" firstAttribute="top" secondItem="EUp-YB-U1d" secondAttribute="bottom" constant="25" id="9PV-Ge-qZY"/>
-                            <constraint firstItem="oci-ws-hDF" firstAttribute="top" secondItem="DOo-C5-0u4" secondAttribute="bottom" id="9Qv-4S-geX"/>
-                            <constraint firstAttribute="trailing" secondItem="DOo-C5-0u4" secondAttribute="trailing" id="Edz-YG-9Xs"/>
                             <constraint firstItem="q9Q-cH-Bo1" firstAttribute="top" secondItem="xxS-tQ-SkV" secondAttribute="bottom" constant="25" id="O3I-hE-AAJ"/>
                             <constraint firstItem="q9Q-cH-Bo1" firstAttribute="centerX" secondItem="azo-Bv-28T" secondAttribute="centerX" id="Pbt-NN-V7d"/>
-                            <constraint firstItem="DOo-C5-0u4" firstAttribute="top" secondItem="azo-Bv-28T" secondAttribute="top" id="aTi-2W-Df3"/>
                             <constraint firstAttribute="trailing" secondItem="XW7-4H-upb" secondAttribute="trailing" constant="16" id="bFh-6o-W8e"/>
                             <constraint firstItem="K25-yP-7fG" firstAttribute="centerX" secondItem="azo-Bv-28T" secondAttribute="centerX" id="cFl-IJ-bRD"/>
                             <constraint firstItem="XW7-4H-upb" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="azo-Bv-28T" secondAttribute="leading" constant="20" symbolic="YES" id="cka-q4-JKI"/>
                             <constraint firstItem="s6j-a8-O6u" firstAttribute="top" secondItem="q9Q-cH-Bo1" secondAttribute="bottom" constant="26" id="dE0-DN-lOx"/>
                             <constraint firstItem="s6j-a8-O6u" firstAttribute="centerX" secondItem="azo-Bv-28T" secondAttribute="centerX" id="gY9-Rk-Ij2"/>
                             <constraint firstItem="xxS-tQ-SkV" firstAttribute="centerX" secondItem="azo-Bv-28T" secondAttribute="centerX" id="pmz-bB-VND"/>
-                            <constraint firstItem="DOo-C5-0u4" firstAttribute="leading" secondItem="azo-Bv-28T" secondAttribute="leading" id="wMY-0U-1hZ"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -228,9 +214,6 @@ o dia inteiro, todos os dias. :)</string>
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_bg_splash" translatesAutoresizingMaskIntoConstraints="NO" id="4qL-sj-Xbm">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                            </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_logo" translatesAutoresizingMaskIntoConstraints="NO" id="NbV-Wa-Nrd">
                                 <rect key="frame" x="140" y="45" width="95" height="95"/>
                                 <constraints>
@@ -268,7 +251,7 @@ o dia inteiro, todos os dias. :)</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y4y-xO-zBd">
-                                <rect key="frame" x="110.5" y="380" width="155" height="35"/>
+                                <rect key="frame" x="111" y="380" width="155" height="35"/>
                                 <string key="text">Acompanhe e gerencie
 todas as suas apostas.</string>
                                 <fontDescription key="fontDescription" name="FuturaStd-Medium" family="Futura Std" pointSize="15"/>
@@ -283,7 +266,7 @@ todas as suas apostas.</string>
                                 </constraints>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="KxF-m0-8zn" firstAttribute="centerX" secondItem="1l2-4e-wDZ" secondAttribute="centerX" id="1gk-Ud-ssv"/>
                             <constraint firstItem="NbV-Wa-Nrd" firstAttribute="top" secondItem="Bcn-q7-nWi" secondAttribute="bottom" constant="25" id="DtI-fW-x2g"/>
@@ -292,11 +275,7 @@ todas as suas apostas.</string>
                             <constraint firstItem="y4y-xO-zBd" firstAttribute="centerX" secondItem="1l2-4e-wDZ" secondAttribute="centerX" id="Nfr-m8-74a"/>
                             <constraint firstItem="KxF-m0-8zn" firstAttribute="top" secondItem="WEs-B5-POv" secondAttribute="bottom" constant="25" id="UZi-Ow-N1P"/>
                             <constraint firstItem="y4y-xO-zBd" firstAttribute="top" secondItem="KxF-m0-8zn" secondAttribute="bottom" constant="26" id="WyS-hE-jUO"/>
-                            <constraint firstAttribute="trailing" secondItem="4qL-sj-Xbm" secondAttribute="trailing" id="aRg-Mo-RJo"/>
-                            <constraint firstItem="4qL-sj-Xbm" firstAttribute="leading" secondItem="1l2-4e-wDZ" secondAttribute="leading" id="fhp-me-W95"/>
                             <constraint firstItem="WEs-B5-POv" firstAttribute="top" secondItem="NbV-Wa-Nrd" secondAttribute="bottom" constant="86" id="tsj-29-Arl"/>
-                            <constraint firstItem="amc-zV-5i6" firstAttribute="top" secondItem="4qL-sj-Xbm" secondAttribute="bottom" id="vIU-Ks-Sqp"/>
-                            <constraint firstItem="4qL-sj-Xbm" firstAttribute="top" secondItem="1l2-4e-wDZ" secondAttribute="top" id="zSY-v3-QI1"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -355,10 +334,10 @@ todas as suas apostas.</string>
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
-                                    <segue destination="F0f-ZQ-hWU" kind="presentation" id="zCh-ox-JRT"/>
+                                    <action selector="aposteAgoraAction" destination="fBw-JG-xBZ" eventType="touchUpInside" id="qzv-TU-Ph8"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Você utilizará o sistema único de login da Caixa." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ak2-k7-xJq">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Você utilizará o sistema único de cadastro da Caixa." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ak2-k7-xJq">
                                 <rect key="frame" x="80" y="421" width="216" height="52"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="216" id="6wF-ea-vwt"/>
@@ -382,6 +361,13 @@ todas as suas apostas.</string>
                                 </attributedString>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="triangulo" translatesAutoresizingMaskIntoConstraints="NO" id="ZVi-NS-hTM">
+                                <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="jAX-n9-CsS"/>
+                                    <constraint firstAttribute="width" constant="30" id="vUj-Qz-ZA0"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.36078431372549019" blue="0.66274509803921566" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -396,8 +382,10 @@ todas as suas apostas.</string>
                             <constraint firstItem="PKJ-Gm-Zxj" firstAttribute="top" secondItem="Rf5-aH-G7r" secondAttribute="bottom" constant="25" id="SFZ-Rb-J89"/>
                             <constraint firstItem="ak2-k7-xJq" firstAttribute="centerX" secondItem="Y03-C6-O5H" secondAttribute="centerX" id="Vzy-w0-2gD"/>
                             <constraint firstItem="Pld-cE-AnG" firstAttribute="centerX" secondItem="Y03-C6-O5H" secondAttribute="centerX" id="coB-tK-oB4"/>
+                            <constraint firstItem="ZVi-NS-hTM" firstAttribute="leading" secondItem="Y03-C6-O5H" secondAttribute="leading" id="ihQ-hC-FCB"/>
                             <constraint firstItem="sAu-pQ-rFY" firstAttribute="top" secondItem="Pld-cE-AnG" secondAttribute="bottom" constant="38.5" id="k0c-bc-a0n"/>
                             <constraint firstAttribute="trailingMargin" secondItem="sAu-pQ-rFY" secondAttribute="trailing" constant="14" id="kax-Tq-9WH"/>
+                            <constraint firstItem="ZVi-NS-hTM" firstAttribute="top" secondItem="Y03-C6-O5H" secondAttribute="top" id="n3e-Bg-pAI"/>
                             <constraint firstItem="PKJ-Gm-Zxj" firstAttribute="centerX" secondItem="Y03-C6-O5H" secondAttribute="centerX" id="rqw-47-oYY"/>
                             <constraint firstItem="0ab-c1-5ha" firstAttribute="top" secondItem="oh3-MX-Ttg" secondAttribute="bottom" constant="32" id="u0l-pa-Wgz"/>
                         </constraints>
@@ -405,6 +393,7 @@ todas as suas apostas.</string>
                     <navigationItem key="navigationItem" id="27S-43-gYI"/>
                     <connections>
                         <outlet property="aposteAgora" destination="oh3-MX-Ttg" id="nVB-Rk-GbU"/>
+                        <segue destination="F0f-ZQ-hWU" kind="presentation" identifier="aposteAgora" id="yLw-5d-2bX"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hUa-R8-ier" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -421,10 +410,10 @@ todas as suas apostas.</string>
         </scene>
     </scenes>
     <resources>
-        <image name="ic_bg_splash" width="360" height="640"/>
         <image name="ic_logo" width="126" height="128"/>
         <image name="icon-tour-mid1" width="213" height="123"/>
         <image name="icon-tour-mid2" width="213" height="122"/>
         <image name="icon-tour-mid3" width="213" height="123"/>
+        <image name="triangulo" width="80" height="80"/>
     </resources>
 </document>

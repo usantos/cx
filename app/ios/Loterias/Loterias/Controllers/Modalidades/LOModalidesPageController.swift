@@ -28,22 +28,11 @@ class LOModalidesPageController: UIPageViewController, UIPageViewControllerDeleg
         
         self.navigationItem.rightBarButtonItems = [UIBarButtonItem(image: imgRendering3, style: .plain, target: self, action: #selector(apresentaMenu)) , UIBarButtonItem(image: imgRendering2, style: .plain, target: self, action: #selector(apresentaTrevo))]
         
-        self.chamaWebservice()
-    }
-    
-    func chamaWebservice () {
-        LOModalidadesBusinessService().getModalidades(parameters: [:]) { (error, modalidades) in
-            for modalidade : LOModalidade in modalidades! {
-                self.arrayModalidades.append(LOModalidadeEnum(rawValue: modalidade.descricao)!)
-            }
-            
-            if let firstViewController = self.orderedViewControllers.first {
-                self.setViewControllers([firstViewController],
-                                   direction: .forward,
-                                   animated: true,
-                                   completion: nil)
-            }
-        }
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.view.backgroundColor = UIColor.clear
+        
+        //self.chamaWebservice()
     }
     
     @objc func apresentaMenu () {
@@ -54,9 +43,14 @@ class LOModalidesPageController: UIPageViewController, UIPageViewControllerDeleg
         self.performSegue(withIdentifier: "apresentaTrevo", sender: self)
     }
     
+    @objc func apresentaAjuda () {
+        self.performSegue(withIdentifier: "apresentaAjuda", sender: self)
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
+    
     func newController(viewController: String, indexArray: Int) -> UIViewController {
         let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: viewController) as! LOModalideController
         viewController.tipoModalidade = arrayModalidades[indexArray]

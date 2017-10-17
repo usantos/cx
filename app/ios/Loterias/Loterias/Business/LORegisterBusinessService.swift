@@ -17,8 +17,9 @@ class LORegisterBusinessService: NSObject {
         let header: HTTPHeaders = ["Accept": "application/json"]
         Alamofire.request(urlTest!, method: .get ,headers :header).responseString { response in
             debugPrint(response)
-            
-            let treat = self.treatStatusCode(statusCode: (response.response?.statusCode)!)
+            let statusCode = response.response != nil ? response.response?.statusCode : 1009
+
+            let treat = self.treatStatusCode(statusCode: statusCode!)
             if treat.status {
                 if let json = response.result.value {
                     do {

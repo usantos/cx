@@ -40,7 +40,7 @@ class LOLocalizacaoCell: UITableViewCell, UITextFieldDelegate, LOPopupDelegate {
             LORegisterBusinessService().getUfs(parameters: [:], completionHandler: { (error, listaCidades) in
                 loadingView?.removeFromSuperview()
                 if error != nil {
-                    
+                    self.viewController()?.alertSimple(title: "Atenção", message: error!)
                 } else {
                     let storyboard = UIStoryboard(name: "Login", bundle: nil)
                     let controller = storyboard.instantiateViewController(withIdentifier: "LOPopupSelecionarOpcoesController") as? LOPopupSelecionarOpcoesController

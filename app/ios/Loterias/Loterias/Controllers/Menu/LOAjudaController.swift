@@ -53,14 +53,11 @@ class LOAjudaController: UIViewController {
         let loadingView = self.addLoadingView(alpha: 1.0)
         LOTermoBusinessService().getTermo(parameters: [:]) { (error, textoTermo) in
             loadingView.removeFromSuperview()
-            self.textView.text = textoTermo
-        }
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        if self.isMovingFromParentViewController {
-            self.navigationController?.navigationBar.shadowImage = UIImage()
-            self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+            if error != nil {
+                self.alertSimple(title: "Atenção", message: error!)
+            } else {
+                self.textView.text = textoTermo
+            }
         }
     }
 

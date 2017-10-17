@@ -13,6 +13,7 @@ import InputMask
 class LOCadastroController: UITableViewController, UITextFieldDelegate, MaskedTextFieldDelegateListener, LOPopupDelegate {
     
     var maskedDelegateCpf: MaskedTextFieldDelegate!
+    var maskedDelegateCep: MaskedTextFieldDelegate!
     var maskedDelegateDtNascimento: MaskedTextFieldDelegate!
 
     @IBOutlet weak var btnMasculino : UIButton!
@@ -24,9 +25,23 @@ class LOCadastroController: UITableViewController, UITextFieldDelegate, MaskedTe
             cpf.delegate = self
         }
     }
-    @IBOutlet weak var nome: HoshiTextField!
-    @IBOutlet weak var nomeDaMae: HoshiTextField!
-    @IBOutlet weak var cep: HoshiTextField!
+    @IBOutlet weak var nome: HoshiTextField! {
+        didSet {
+            nome.delegate = self
+        }
+    }
+    
+    @IBOutlet weak var nomeDaMae: HoshiTextField! {
+        didSet {
+            nomeDaMae.delegate = self
+        }
+    }
+    
+    @IBOutlet weak var cep: HoshiTextField! {
+        didSet {
+            cep.delegate = self
+        }
+    }
     
     @IBOutlet weak var uf: HoshiTextField! {
         didSet {
@@ -41,27 +56,60 @@ class LOCadastroController: UITableViewController, UITextFieldDelegate, MaskedTe
         }
     }
     
-    @IBOutlet weak var dataNascimento: HoshiTextField!
-    @IBOutlet weak var email: HoshiTextField!
+    @IBOutlet weak var dataNascimento: HoshiTextField! {
+        didSet {
+            dataNascimento.delegate = self
+        }
+    }
     
+    @IBOutlet weak var email: HoshiTextField! {
+        didSet {
+            email.delegate = self
+        }
+    }
+    let gradient : CAGradientLayer = CAGradientLayer()
+    var arrayTextFields : Array<HoshiTextField>!
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationController?.navigationBar.barTintColor = UIColor(red: 0.0/255.0, green: 118.0/255.0, blue: 183.0/255.0, alpha: 1.0)
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
-        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.gradient.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 64)
+        self.gradient.startPoint = CGPoint(x: 0.0, y: 0.5)
+        self.gradient.endPoint = CGPoint(x: 1.0, y: 0.5)
+        self.gradient.colors = [self.UIColorFromHex(0x54bbab, alpha: 1.0).cgColor, self.UIColorFromHex(0x005ca9, alpha: 1.0).cgColor]
+        self.gradient.name = "gradientView"
+        
         self.navigationController?.navigationBar.tintColor = .white
+        self.navigationController?.isNavigationBarHidden = false
+        
+        self.navigationController?.navigationBar.setBackgroundImage(self.image(fromLayer: self.gradient), for: .default)
         
         maskedDelegateCpf = MaskedTextFieldDelegate(format: "[000].[000].[000]-[00]")
         maskedDelegateCpf.listener = self
         
+        maskedDelegateCep = MaskedTextFieldDelegate(format: "[00000]-[000]")
+        maskedDelegateCep.listener = self
+        
         maskedDelegateDtNascimento = MaskedTextFieldDelegate(format: "[00]/[00]/[0000]")
         maskedDelegateDtNascimento.listener = self
         
+        cep.delegate = maskedDelegateCep
         cpf.delegate = maskedDelegateCpf
         dataNascimento.delegate = maskedDelegateDtNascimento
         
         self.addRightIconOnNavigation(image: #imageLiteral(resourceName: "icon-loteria"))
+        
+        self.arrayTextFields = [cpf, nome, nomeDaMae, cep, dataNascimento, email]
+        
+        self.navigationController?.navigationBar.backIndicatorImage = #imageLiteral(resourceName: "icons8-Back Filled-100")
+        self.navigationController?.navigationBar.backIndicatorTransitionMaskImage = #imageLiteral(resourceName: "icons8-Back Filled-100")
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        if self.isMovingFromParentViewController {
+            self.navigationController?.navigationBar.shadowImage = UIImage()
+            self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -72,6 +120,19 @@ class LOCadastroController: UITableViewController, UITextFieldDelegate, MaskedTe
         
     }
     
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        validaCamposDeTexto(textField)
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if textField == nomeDaMae || textField == email {
+            guard let text = textField.text else { return true }
+            let newLength = text.characters.count + string.characters.count - range.length
+            return newLength <= 80
+        }
+        return true
+    }
+    
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         switch textField {
             
@@ -80,7 +141,7 @@ class LOCadastroController: UITableViewController, UITextFieldDelegate, MaskedTe
             LORegisterBusinessService().getUfs(parameters: [:], completionHandler: { (error, listaCidades) in
                 loadingView.removeFromSuperview()
                 if error != nil {
-                    
+                    self.alertSimple(title: "Atenção", message: error!)
                 } else {
                     let storyboard = UIStoryboard(name: "Login", bundle: nil)
                     let controller = storyboard.instantiateViewController(withIdentifier: "LOPopupSelecionarOpcoesController") as? LOPopupSelecionarOpcoesController
@@ -121,6 +182,19 @@ class LOCadastroController: UITableViewController, UITextFieldDelegate, MaskedTe
         }
         return true
     }
+    
+    func validaCamposDeTexto(_ textField: UITextField) -> Bool {
+        for textfieldLocal in self.arrayTextFields {
+            if (textfieldLocal.text?.characters.count)! == 0 {
+                textfieldLocal.rightView = nil
+                return false
+            } else {
+                textfieldLocal.addRightImg(image: #imageLiteral(resourceName: "icon-input-ok"), rect: CGRect(x: 0, y: 0, width: 12, height: 10))
+            }
+        }
+        
+        return true
+    }
 
     @IBAction func ativaMasculino () {
         self.btnMasculino.backgroundColor = UIColor(red: 53.0/255.0, green: 168.0/255.0, blue: 152.0/255.0, alpha: 1.0)
@@ -155,7 +229,7 @@ class LOCadastroController: UITableViewController, UITextFieldDelegate, MaskedTe
     }
     
     @IBAction func dismiss () {
-        self.dismiss(animated: true, completion: nil)
+        self.navigationController?.popViewController(animated: true)
     }
     
     func didSelect(string: String, sender: UITextField) {
