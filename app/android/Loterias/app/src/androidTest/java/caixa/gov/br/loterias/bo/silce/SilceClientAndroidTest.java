@@ -12,13 +12,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
 import caixa.gov.br.loterias.bo.silce.data.CompletaJogoRsp;
+import caixa.gov.br.loterias.bo.silce.dto.UsuarioLogadoResponse;
 import caixa.gov.br.loterias.bo.silce.internals.SilceConnection;
-import caixa.gov.br.loterias.bo.silce.internals.SilceRequestQueue;
+import caixa.gov.br.loterias.bo.silce.internals.SilceSingleton;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.*;
@@ -64,18 +64,14 @@ public class SilceClientAndroidTest {
     public static final String SILCE_BASE_URL = "http://10.130.9.22:81/silce-servico-rest/rest/v1/";
     Context context;
     SilceClient silceClient;
-    Listener listener;
-    ErrorListener errorListener;
     Semaphore pendingRequests;
 
     @Before
     public void setup() {
         this.context = InstrumentationRegistry.getTargetContext();
-        SilceRequestQueue queue = new SilceRequestQueue(context);
+        SilceSingleton queue = new SilceSingleton(context);
         SilceConnection conn = SilceConnection.create(queue.getRequestQueue(), SILCE_BASE_URL);
         this.silceClient = SilceClient.create(conn);
-        listener = new Listener();
-        errorListener = new ErrorListener();
     }
 
     @Test
@@ -87,12 +83,36 @@ public class SilceClientAndroidTest {
     @Test
     public void completaJogo() throws Exception {
         boolean ok = true;
+        Listener<CompletaJogoRsp> listener = new Listener();
+        ErrorListener errorListener = new ErrorListener();
         pendingRequests = new Semaphore(1, true);
 
         pendingRequests.acquire();
 
         silceClient.completaJogo(6, Arrays.asList(15, 18, 19, 48, 52, 58), 1, 60,
                 listener, errorListener);
+        pendingRequests.tryAcquire(60, TimeUnit.SECONDS);
+
+        Log.d(TAG, "response = " + listener.getResponse());
+        Log.d(TAG, "error = " + errorListener.getError());
+
+        assertThat(listener.getResponse(), is(notNullValue()));
+        assertThat(errorListener.getError(), is(nullValue()));
+    }
+
+    @Test
+    public void autentica() throws Exception {
+        // for now, only tests the cryptography
+        boolean ok = true;
+        Listener<UsuarioLogadoResponse> listener = new Listener<>();
+        ErrorListener errorListener = new ErrorListener();
+        pendingRequests = new Semaphore(1, true);
+
+        pendingRequests.acquire();
+        silceClient.autenticar("rinaldo90@gmail.com", "Vaibombar1",
+                listener, errorListener);
+        //silceClient.autenticar("email@gmail.com", "a",
+        //                listener, errorListener);
         pendingRequests.tryAcquire(60, TimeUnit.SECONDS);
 
         Log.d(TAG, "response = " + listener.getResponse());

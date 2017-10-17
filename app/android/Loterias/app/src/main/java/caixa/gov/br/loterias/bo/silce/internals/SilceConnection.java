@@ -3,6 +3,8 @@ package caixa.gov.br.loterias.bo.silce.internals;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.google.gson.Gson;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -10,6 +12,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import static com.android.volley.Request.Method.GET;
+import static com.android.volley.Request.Method.POST;
 
 public class SilceConnection {
     public static final Bin KEY = Bin.fromBase64("QEm06ZAThg1E314zziahsg");
@@ -34,53 +37,23 @@ public class SilceConnection {
                                     Response.Listener<T> listener,
                                     Response.ErrorListener errorListener) {
         String url = fillUrlWithQueryParams(path, queryParams);
-        GsonRequest<T> req = new GsonRequest<>(GET, url, responseDataClass,
+        GsonRequest<String, T> req = new GsonRequest<>(GET, url, responseDataClass,
                 new LinkedHashMap<String, String>(), listener, errorListener);
         requestQueue.add(req);
         requestQueue.start();
     }
-/*
-    public <R, T> void post(String path, Map<String, String> queryParams,
-                        R requestBody,
-                        Class<T> responseDataClass,
-                        Response.Listener<T> listener,
-                        Response.ErrorListener errorListener) {
-        JSONObject postBody = new JSONObject();
-        JsonObjectRequest req = new JsonObjectRequest(POST, fillUrl(path), postBody,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
 
-                    }
-                });
-        GsonRequest<T> req = new GsonRequest<>(GET, url, responseDataClass,
+    public <REQ, RSP> void post(String path, Map<String, String> queryParams,
+                                REQ body, Class<RSP> responseDataClass,
+                                Response.Listener<RSP> listener,
+                                Response.ErrorListener errorListener) {
+        String url = fillUrlWithQueryParams(path, queryParams);
+        GsonRequest<String, RSP> req = new GsonRequest<>(POST, url,
+                prepareBody(body), responseDataClass,
                 new LinkedHashMap<String, String>(), listener, errorListener);
         requestQueue.add(req);
+        requestQueue.start();
     }
-    */
-/*
-    <T> Response.Listener<T> volleyJsonListener(
-            final SilceClient.Listener<T> listener,
-            final Class<T> responseKlazz) {
-        return new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-
-            }
-        });
-
-    }
-
-    Response.ErrorListener volleyErrorListener(final SilceClient.ErrorListener errorListener,
-                                               final Class klass) {
-        return new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                errorListener.onErrorResponse(error);
-            }
-        };
-    }
-*/
 
     public RequestQueue getRequestQueue() {
         return requestQueue;
@@ -96,6 +69,18 @@ public class SilceConnection {
 
     private String fillUrlWithQueryParams(String path, Map<String, String> queryParams) {
         return fillUrl(path) + fillParamStr(queryParams);
+    }
+
+    private <T> String prepareBody(T body) {
+        try {
+            Bin encryptedBody = silceCrypto.encryptBody((new Gson()).toJson(body));
+            String bodyStr = encryptedBody.toIso8859_1()
+                    + "!#!#!" + KEY.toIso8859_1()
+                    + "!#!#!" +  IV.toIso8859_1();
+            return Bin.fromIso8859_1(bodyStr).toBase64();
+        } catch (Exception e) {
+            throw new RuntimeException("Exceção ao preparar o body da requisição ao SILCE", e);
+        }
     }
 
     private String fillParamStr(Map<String, String> queryParams) {

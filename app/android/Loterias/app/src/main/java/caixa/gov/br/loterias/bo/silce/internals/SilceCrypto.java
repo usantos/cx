@@ -1,5 +1,7 @@
 package caixa.gov.br.loterias.bo.silce.internals;
 
+import com.google.gson.Gson;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -12,9 +14,9 @@ public class SilceCrypto {
         crypto = new Crypto(keyBase64, ivBase64);
     }
 
-    public String encryptBody(String jsonString) {
+    public Bin encryptBody(String jsonString) {
         try {
-            return crypto.encrypt(Bin.fromUtf8(jsonString)).toBase64();
+            return crypto.encrypt(Bin.fromUtf8(jsonString));
         } catch (Exception e) {
             throw new RuntimeException("Falha ao tentar criptografar o corpo", e);
         }

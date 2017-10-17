@@ -12,9 +12,9 @@ import com.google.gson.JsonSyntaxException;
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
-public class GsonRequest<RSP> extends JsonRequest<RSP> {
+public class GsonRequest<REQ, RSP> extends JsonRequest<RSP> {
     private final Gson gson = new Gson();
-    private final Class<RSP> clazz;
+    private final Class<RSP> responseKlazz;
     private final Map<String, String> headers;
     private final Response.Listener<RSP> listener;
 
@@ -22,15 +22,31 @@ public class GsonRequest<RSP> extends JsonRequest<RSP> {
      * Make a GET request and return a parsed object from JSON.
      *
      * @param url URL of the request to make
-     * @param clazz Relevant class object, for Gson's reflection
+     * @param responseKlazz Relevant class object, for Gson's reflection
      * @param headers Map of request headers
      */
-    public GsonRequest(int method, String url, Class<RSP> clazz, Map<String, String> headers,
+    public GsonRequest(int method, String url, Class<RSP> responseKlazz, Map<String, String> headers,
                        Response.Listener<RSP> listener, Response.ErrorListener errorListener) {
-        super(method, url, null, listener, errorListener);
-        this.clazz = clazz;
+        this(method, url, null, responseKlazz, headers, listener, errorListener);
+    }
+
+    public GsonRequest(int method, String url, REQ requestBody, Class<RSP> responseKlazz,
+                       Map<String, String> headers, Response.Listener<RSP> listener,
+                       Response.ErrorListener errorListener) {
+        super(method, url, bodyToJson(requestBody), listener, errorListener);
+        this.responseKlazz = responseKlazz;
         this.headers = headers;
         this.listener = listener;
+    }
+
+    private static <T> String bodyToJson(T requestBody) {
+        if (requestBody == null) {
+            return null;
+        } else if (String.class.isAssignableFrom(requestBody.getClass())) {
+            return (String) requestBody;
+        }
+
+        return (new Gson()).toJson(requestBody);
     }
 
     @Override
@@ -50,7 +66,7 @@ public class GsonRequest<RSP> extends JsonRequest<RSP> {
                     response.data,
                     HttpHeaderParser.parseCharset(response.headers));
             return Response.success(
-                    gson.fromJson(json, clazz),
+                    gson.fromJson(json, responseKlazz),
                     HttpHeaderParser.parseCacheHeaders(response));
         } catch (UnsupportedEncodingException e) {
             return Response.error(new ParseError(e));

@@ -8,10 +8,14 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import caixa.gov.br.loterias.bo.silce.data.CompletaJogoRsp;
+import caixa.gov.br.loterias.bo.silce.data.LoginReq;
+import caixa.gov.br.loterias.bo.silce.dto.AutenticacaoDTO;
+import caixa.gov.br.loterias.bo.silce.dto.UsuarioLogadoResponse;
 import caixa.gov.br.loterias.bo.silce.internals.SilceConnection;
 
 public class SilceClient {
     private static final String COMPLETA_JOGO_PATH = "/apostas/completar-jogo";
+    private static final String LOGIN_PATH = "/usuarios/autenticar";
 
     public interface Listener<T> {
         /** Called when a response is received. */
@@ -35,6 +39,23 @@ public class SilceClient {
         this.conn = conn;
     }
 
+    public void autenticar(final String email, final String senha,
+                           final Listener<UsuarioLogadoResponse> listener,
+                           final ErrorListener errorListener) {
+        AutenticacaoDTO autenticacaoDTO = new AutenticacaoDTO();
+        autenticacaoDTO.setEmail(email);
+        autenticacaoDTO.setSenha(senha);
+        /*
+        LoginReq req = new LoginReq();
+        req.setEmail(email);
+        req.setSenha(senha);
+        */
+        conn.post(LOGIN_PATH, new LinkedHashMap<String, String>(),
+                autenticacaoDTO, UsuarioLogadoResponse.class,
+                volleyListener(listener, UsuarioLogadoResponse.class),
+                volleyErrorListener(errorListener));
+    }
+
     public void completaJogo(final int quantidadeTotalNumeros,
                              final List<Integer> numerosMarcados,
                              final int menorPrognostico,
@@ -49,7 +70,7 @@ public class SilceClient {
 
         conn.get(COMPLETA_JOGO_PATH, queryParams, CompletaJogoRsp.class,
                 volleyListener(listener, CompletaJogoRsp.class),
-                volleyErrorListener(errorListener, CompletaJogoRsp.class));
+                volleyErrorListener(errorListener));
     }
 
     <T> Response.Listener<T> volleyListener(final Listener<T> listener, final Class<T> klass) {
@@ -65,8 +86,7 @@ public class SilceClient {
         return conn;
     }
 
-    Response.ErrorListener volleyErrorListener(final ErrorListener errorListener,
-                                                      final Class klass) {
+    Response.ErrorListener volleyErrorListener(final ErrorListener errorListener) {
         return new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
