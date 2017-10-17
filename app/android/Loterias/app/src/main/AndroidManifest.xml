@@ -51,10 +51,14 @@
             android:name=".ui.ConfirmadoInclusaoCarrinhoActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
-
-        <activity android:name=".ui.CarrinhoActivity"
+        <activity
+            android:name=".ui.CarrinhoActivity"
             android:configChanges="orientation"
             android:label="@string/title_activity_carrinho"
+            android:screenOrientation="portrait" />
+        <activity android:name=".ui.FormaPagamentoActivity"
+            android:configChanges="orientation"
+            android:label="@string/title_activity_forma_pagamento"
             android:screenOrientation="portrait" />
     </application>
 

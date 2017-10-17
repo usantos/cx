@@ -1,5 +1,6 @@
 package caixa.gov.br.loterias.ui;
 
+import android.content.Intent;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,29 +24,7 @@ public class CarrinhoActivity extends AppCompatActivity {
 
         configuraActivityCarrinho();
         configuraRecyclerViewCarrinhoAposta();
-
-        findViewById(R.id.botaoFazerNovaAposta).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setResult(2);
-
-                finish();
-            }
-        });
-
-        findViewById(R.id.imagemLixeiraCarrinho).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                limpaCarrinho();
-            }
-        });
-
-        findViewById(R.id.textoLimparCarrinho).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                limpaCarrinho();
-            }
-        });
+        configuraListeners();
     }
 
     @Override
@@ -78,6 +57,40 @@ public class CarrinhoActivity extends AppCompatActivity {
         }
 
         getSupportActionBar().setBackgroundDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.navigation_gradient, null));
+    }
+
+    private void configuraListeners(){
+        findViewById(R.id.botaoFazerNovaAposta).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setResult(2);
+
+                finish();
+            }
+        });
+
+        findViewById(R.id.imagemLixeiraCarrinho).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                limpaCarrinho();
+            }
+        });
+
+        findViewById(R.id.textoLimparCarrinho).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                limpaCarrinho();
+            }
+        });
+
+        findViewById(R.id.botaoAvancarPagamento).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent activity = new Intent(CarrinhoActivity.this, FormaPagamentoActivity.class);
+
+                startActivity(activity);
+            }
+        });
     }
 
     private void configuraRecyclerViewCarrinhoAposta(){
