@@ -1,4 +1,4 @@
-<ScrollView
+<ScrollView xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -6,7 +6,7 @@
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:minHeight="@dimen/activity_vertical_margin">
 
         <TextView
@@ -45,31 +45,17 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/apostasListaRecycleView"
+        <RelativeLayout
+            android:id="@+id/relativeLayout"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginLeft="0dp"
-            android:layout_marginRight="0dp"
-            android:layout_marginTop="8dp"
+            android:layout_height="56dp"
+            android:layout_marginBottom="20dp"
+            android:background="@color/colorAccent"
             app:layout_constraintBottom_toTopOf="@+id/botaoFazerNovaAposta"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/infoValorMinimo">
-        </android.support.v7.widget.RecyclerView>
-
-        <!--<ListView-->
-        <!--android:id="@+id/apostasListView"-->
-        <!--android:layout_width="0dp"-->
-        <!--android:layout_height="0dp"-->
-        <!--android:layout_marginTop="10dp"-->
-        <!--app:layout_constraintHorizontal_bias="0.0"-->
-        <!--app:layout_constraintLeft_toLeftOf="parent"-->
-        <!--app:layout_constraintRight_toRightOf="parent"-->
-        <!--app:layout_constraintTop_toBottomOf="@+id/infoValorMinimo"-->
-        <!--android:layout_marginBottom="8dp"-->
-        <!--app:layout_constraintBottom_toTopOf="@+id/botaoFazerNovaAposta" />-->
+            app:layout_constraintTop_toBottomOf="@+id/apostasListaRecycleView"
+            android:layout_marginTop="10dp"></RelativeLayout>
 
         <Button
             android:id="@+id/botaoFazerNovaAposta"
@@ -137,6 +123,16 @@
                 app:srcCompat="@drawable/paginacao1" />
 
         </android.support.constraint.ConstraintLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/apostasListaRecycleView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/infoValorMinimo"></android.support.v7.widget.RecyclerView>
     </android.support.constraint.ConstraintLayout>
 
 </ScrollView>
