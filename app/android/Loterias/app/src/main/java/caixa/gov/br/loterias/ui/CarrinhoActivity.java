@@ -5,20 +5,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
-import android.view.View.MeasureSpec;
-import android.view.ViewGroup;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-
 import java.util.ArrayList;
 import java.util.Collections;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.ui.adapter.CarrinhoApostasListViewAdapter;
+import caixa.gov.br.loterias.utils.ViewUtils;
 
 public class CarrinhoActivity extends AppCompatActivity {
 
@@ -28,24 +22,30 @@ public class CarrinhoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_carrinho);
 
         configuraActivityCarrinho();
+        configuraRecyclerViewCarrinhoAposta();
 
-        String[] values = new String[] { "01", "02", "02", "02", "02", "02", "02", "02", "02", "10" };
+        findViewById(R.id.botaoFazerNovaAposta).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setResult(2);
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.apostasListaRecycleView);
-        RecyclerView.LayoutManager layout = new LinearLayoutManager(this,
-                LinearLayoutManager.VERTICAL, false);
+                finish();
+            }
+        });
 
-        recyclerView.setAdapter(new CarrinhoApostasListViewAdapter(montaCarrinhoApostaValores(values), this));
-        recyclerView.setLayoutManager(layout);
-        recyclerView.setNestedScrollingEnabled(false);
-    }
+        findViewById(R.id.imagemLixeiraCarrinho).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                limpaCarrinho();
+            }
+        });
 
-    private ArrayList<String> montaCarrinhoApostaValores(String valores[]){
-        ArrayList<String> valoresTextoDialog = new ArrayList<>();
-
-        Collections.addAll(valoresTextoDialog, valores);
-
-        return valoresTextoDialog;
+        findViewById(R.id.textoLimparCarrinho).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                limpaCarrinho();
+            }
+        });
     }
 
     @Override
@@ -77,16 +77,31 @@ public class CarrinhoActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-//        getWindow().setStatusBarColor(getResources().get);
         getSupportActionBar().setBackgroundDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.navigation_gradient, null));
-//        getWindow().getDecorView().setBackground(new ColorDrawable(Color.parseColor(lightColor.toString())));
+    }
 
-//        GradientDrawable gd = new GradientDrawable();
-//        gd.setColor(Color.parseColor(lightColor.toString()));
-//        gd.setCornerRadius(5);
-//        gd.setStroke(2, Color.WHITE);
-//
-//        findViewById(R.id.botaoNovaAposta).setBackground(gd);
+    private void configuraRecyclerViewCarrinhoAposta(){
+        String[] values = new String[] { "01", "02", "02", "02", "02", "02", "02", "02", "02", "10" };
+
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.apostasListaRecycleView);
+        RecyclerView.LayoutManager layout = new LinearLayoutManager(this,
+                LinearLayoutManager.VERTICAL, false);
+
+        recyclerView.setAdapter(new CarrinhoApostasListViewAdapter(montaCarrinhoApostaValores(values), this));
+        recyclerView.setLayoutManager(layout);
+        recyclerView.setNestedScrollingEnabled(false);
+    }
+
+    private ArrayList<String> montaCarrinhoApostaValores(String valores[]){
+        ArrayList<String> valoresTextoDialog = new ArrayList<>();
+
+        Collections.addAll(valoresTextoDialog, valores);
+
+        return valoresTextoDialog;
+    }
+
+    private void limpaCarrinho(){
+        ViewUtils.alert(this, "LIMPAR CARRINHO");
     }
 
 }

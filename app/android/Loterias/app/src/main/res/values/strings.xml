@@ -22,6 +22,7 @@
 
     <string name="adicionarAoCarrinho">Adicionar \nao carrinho de apostas</string>
     <string name="limparAposta">Limpar aposta</string>
+    <string name="limparCarrinho">Limpar carrinho</string>
 
     <string name="completarCartela">Completar com números aleatórios</string>
 
@@ -40,4 +41,9 @@
     <string name="infoValorMinimoCarrinho">Lembre-se: o valor mínimo do total de compras nesse aplicativo é R$24,00</string>
     <string name="tituloApostaFeita">Essa aposta foi para o seu carrinho.</string>
     <string name="novaAposta">Fazer nova aposta</string>
+    <string name="confirmarApostas">Confirme suas apostas e pressione AVANÇAR para continuar.</string>
+    <string name="avancarFormaPagamento">Avançar para a forma de pagamento</string>
+    <string name="fazerNovaAposta">Fazer nova aposta</string>
+
+    <string name="total">Total</string>
 </resources>

@@ -121,8 +121,18 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
             case R.id.botaoVerCarrinhoAposta:{
                 Intent activity = new Intent(this, CarrinhoActivity.class);
 
-                startActivity(activity);
+                startActivityForResult(activity, 0);
+//                startActivity(activity);
             }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == 2){
+            finish();
         }
     }
 }
