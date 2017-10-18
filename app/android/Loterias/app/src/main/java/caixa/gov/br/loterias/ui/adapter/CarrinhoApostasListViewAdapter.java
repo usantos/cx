@@ -6,7 +6,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
 import java.util.ArrayList;
 import caixa.gov.br.loterias.R;
@@ -38,7 +37,7 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
 
     @Override
     public CarrinhoApostasListViewAdapter.ApostaHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.apostas_list_view_row, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.row_apostas_list_view, parent, false);
 
         ApostaHolder holder = new ApostaHolder(view);
 
