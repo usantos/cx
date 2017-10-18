@@ -14,7 +14,6 @@
 		A606152B1F670021002191C3 /* LOTermoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A606152A1F670021002191C3 /* LOTermoCell.swift */; };
 		A606152F1F670055002191C3 /* LOLocalizacaoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A606152E1F670055002191C3 /* LOLocalizacaoCell.swift */; };
 		A60615341F671F79002191C3 /* LOLeftSideMenuControllerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A60615331F671F79002191C3 /* LOLeftSideMenuControllerController.swift */; };
-		A60615371F680E41002191C3 /* LOModalidesPageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A60615361F680E41002191C3 /* LOModalidesPageController.swift */; };
 		A60615391F680E6F002191C3 /* LOModalideController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A60615381F680E6F002191C3 /* LOModalideController.swift */; };
 		A606153B1F681BB2002191C3 /* LOModalidadeEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = A606153A1F681BB2002191C3 /* LOModalidadeEnum.swift */; };
 		A606153D1F686EED002191C3 /* LOTopDownSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = A606153C1F686EED002191C3 /* LOTopDownSegue.swift */; };
@@ -132,7 +131,6 @@
 		A606152A1F670021002191C3 /* LOTermoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LOTermoCell.swift; path = Controllers/Login/Cadastro/LOTermoCell.swift; sourceTree = "<group>"; };
 		A606152E1F670055002191C3 /* LOLocalizacaoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LOLocalizacaoCell.swift; path = Controllers/Login/Cadastro/LOLocalizacaoCell.swift; sourceTree = "<group>"; };
 		A60615331F671F79002191C3 /* LOLeftSideMenuControllerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LOLeftSideMenuControllerController.swift; path = Controllers/Menu/LOLeftSideMenuControllerController.swift; sourceTree = "<group>"; };
-		A60615361F680E41002191C3 /* LOModalidesPageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LOModalidesPageController.swift; path = Controllers/Modalidades/LOModalidesPageController.swift; sourceTree = "<group>"; };
 		A60615381F680E6F002191C3 /* LOModalideController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LOModalideController.swift; path = Controllers/Modalidades/LOModalideController.swift; sourceTree = "<group>"; };
 		A606153A1F681BB2002191C3 /* LOModalidadeEnum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LOModalidadeEnum.swift; path = Controllers/Modalidades/LOModalidadeEnum.swift; sourceTree = "<group>"; };
 		A606153C1F686EED002191C3 /* LOTopDownSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LOTopDownSegue.swift; path = Controllers/Menu/LOTopDownSegue.swift; sourceTree = "<group>"; };
@@ -302,7 +300,6 @@
 		A60615351F680DFE002191C3 /* Modalidades */ = {
 			isa = PBXGroup;
 			children = (
-				A60615361F680E41002191C3 /* LOModalidesPageController.swift */,
 				A60615381F680E6F002191C3 /* LOModalideController.swift */,
 				A606153A1F681BB2002191C3 /* LOModalidadeEnum.swift */,
 				A6F2E94B1F969AEB0049EEF9 /* LOModalidadeCell.swift */,
@@ -862,7 +859,6 @@
 				A691CD861F8EBBB100D73CAF /* LOMeiosDePagamentoBusinessService.swift in Sources */,
 				A6F2E9041F950A160049EEF9 /* LOCepCell.swift in Sources */,
 				A65247711F87A9BD00E12A8D /* LOLotericaCell.swift in Sources */,
-				A60615371F680E41002191C3 /* LOModalidesPageController.swift in Sources */,
 				A6EC217E1F8285F100BD6825 /* LOAjudaController.swift in Sources */,
 				A60615341F671F79002191C3 /* LOLeftSideMenuControllerController.swift in Sources */,
 				A617DBFA1F5996C600D257B7 /* LOPopupSelecionarOpcoesController.swift in Sources */,

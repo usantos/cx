@@ -49,6 +49,13 @@ class LOAjudaController: UIViewController {
         super.didReceiveMemoryWarning()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        if self.isMovingFromParentViewController {
+            self.navigationController?.navigationBar.shadowImage = UIImage()
+            self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        }
+    }
+    
     func chamaWebService () {
         let loadingView = self.addLoadingView(alpha: 1.0)
         LOTermoBusinessService().getTermo(parameters: [:]) { (error, textoTermo) in

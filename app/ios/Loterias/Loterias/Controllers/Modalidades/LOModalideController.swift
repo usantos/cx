@@ -20,7 +20,16 @@ struct EstiloModalidade {
 
 class LOModalideController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     private var arrayModalidades = [LOModalidadeEnum]()
-
+    var currentPage : Int = 0
+    public var estiloModalidade : EstiloModalidade!
+    public var tipoModalidade : LOModalidadeEnum?
+    @IBOutlet weak var valorMinimoCompra : UILabel!
+    @IBOutlet weak var badgeMinhasCompras : UILabel!
+    @IBOutlet weak var badgeCarrinhoDeApostas : UILabel!
+    @IBOutlet weak var aposteView : UIView!
+    @IBOutlet var gradientView : UIView!
+    @IBOutlet weak var blankViewBottom : UIView!
+    
     @IBOutlet weak var collectionView : UICollectionView! {
         didSet {
             collectionView.delegate = self
@@ -41,27 +50,34 @@ class LOModalideController: UIViewController, UICollectionViewDelegate, UICollec
             collectionView.showsHorizontalScrollIndicator = false
         }
     }
-    //NEW
     
-    @IBOutlet weak var aposteView : UIView!
+    //Trevo
+    struct ConfigAntigaTrevo {
+        var yCollection: CGFloat!
+        var alphaBlankView: CGFloat!
+        var aposteColor: UIColor!
+        var aposteTituloColor : UIColor!
+    }
+    
+    public var trevoBarButton : UIBarButtonItem!
+    var trevoAberto = false
+    var configAntigaTrevo : ConfigAntigaTrevo!
+    
+    @IBOutlet weak var rapidaoView : UIView!
+    @IBOutlet weak var lerBilhetesView : UIView!
+    @IBOutlet weak var favoritosView : UIView!
+    @IBOutlet weak var repassesSociaisView : UIView!
+
     @IBOutlet var aposteButon : UIButton! {
         didSet {
             aposteButon.titleLabel?.numberOfLines = 0
         }
     }
-    
-    @IBOutlet weak var valorMinimoCompra : UILabel!
-    @IBOutlet weak var badgeMinhasCompras : UILabel!
-    @IBOutlet weak var badgeCarrinhoDeApostas : UILabel!
-    @IBOutlet var gradientView : UIView!
-    public var estiloModalidade : EstiloModalidade!
-    public var tipoModalidade : LOModalidadeEnum?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         estiloNavigationController()
-        
         collectionView?.isPagingEnabled = true
         
         DispatchQueue.main.async {
@@ -77,7 +93,6 @@ class LOModalideController: UIViewController, UICollectionViewDelegate, UICollec
         }
         
         chamaWebservice()
-        //montarTelaBaseadoNoTipoDeModalidade()
     }
     
     func chamaWebservice () {
@@ -97,49 +112,63 @@ class LOModalideController: UIViewController, UICollectionViewDelegate, UICollec
     }
     
     func selecionaEstiloModalidade () -> EstiloModalidade {
+        var estiloModalidade : EstiloModalidade!
+        
         if let tipoModalidade = self.tipoModalidade {
             switch tipoModalidade {
             case .Duplasena:
-                return EstiloModalidade(corClara: 0xa62a52, corEscura: 0x7d1a3f , imagemTopo: #imageLiteral(resourceName: "titulo-duplasena"), imagemCalendario: #imageLiteral(resourceName: "icon-data-duplasena"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-duplasena"), tipoModalidade: self.tipoModalidade!)
+                estiloModalidade = EstiloModalidade(corClara: 0xa62a52, corEscura: 0x7d1a3f , imagemTopo: #imageLiteral(resourceName: "titulo-duplasena"), imagemCalendario: #imageLiteral(resourceName: "icon-data-duplasena"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-duplasena"), tipoModalidade: self.tipoModalidade!)
+                break
             case .Megasena:
-                return EstiloModalidade(corClara: 0x00AB6B, corEscura: 0x009b66 , imagemTopo: #imageLiteral(resourceName: "titulo_megasena"), imagemCalendario: #imageLiteral(resourceName: "icon-data-megasena"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-megasena"), tipoModalidade: self.tipoModalidade!)
+                estiloModalidade = EstiloModalidade(corClara: 0x00AB6B, corEscura: 0x009b66 , imagemTopo: #imageLiteral(resourceName: "titulo_megasena"), imagemCalendario: #imageLiteral(resourceName: "icon-data-megasena"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-megasena"), tipoModalidade: self.tipoModalidade!)
+                break
             case .Lotomania:
                 //
-                return EstiloModalidade(corClara: 0x7d1a3f, corEscura: 0x7d1a3f , imagemTopo: #imageLiteral(resourceName: "titulo-duplasena"), imagemCalendario: #imageLiteral(resourceName: "icon-data-duplasena"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-duplasena"), tipoModalidade: self.tipoModalidade!)
-                
+                estiloModalidade = EstiloModalidade(corClara: 0x7d1a3f, corEscura: 0x7d1a3f , imagemTopo: #imageLiteral(resourceName: "titulo-duplasena"), imagemCalendario: #imageLiteral(resourceName: "icon-data-duplasena"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-duplasena"), tipoModalidade: self.tipoModalidade!)
+                break
             case .Lotogol:
                 //
-                return EstiloModalidade(corClara: 0x7d1a3f, corEscura: 0x7d1a3f , imagemTopo: #imageLiteral(resourceName: "titulo-duplasena"), imagemCalendario: #imageLiteral(resourceName: "icon-data-duplasena"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-duplasena"), tipoModalidade: self.tipoModalidade!)
+                estiloModalidade = EstiloModalidade(corClara: 0x7d1a3f, corEscura: 0x7d1a3f , imagemTopo: #imageLiteral(resourceName: "titulo-duplasena"), imagemCalendario: #imageLiteral(resourceName: "icon-data-duplasena"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-duplasena"), tipoModalidade: self.tipoModalidade!)
+                break
             case .Lotofacil:
-                return EstiloModalidade(corClara: 0xbf3c93, corEscura: 0x9b2b7a , imagemTopo: #imageLiteral(resourceName: "titulo_lotofacil"), imagemCalendario: #imageLiteral(resourceName: "icon-data-lotofacil"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-lotofacil"), tipoModalidade: self.tipoModalidade!)
+                estiloModalidade = EstiloModalidade(corClara: 0xbf3c93, corEscura: 0x9b2b7a , imagemTopo: #imageLiteral(resourceName: "titulo_lotofacil"), imagemCalendario: #imageLiteral(resourceName: "icon-data-lotofacil"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-lotofacil"), tipoModalidade: self.tipoModalidade!)
+                break
             case .Loteca:
                 //
-                return EstiloModalidade(corClara: 0x7d1a3f, corEscura: 0x7d1a3f , imagemTopo: #imageLiteral(resourceName: "titulo-duplasena"), imagemCalendario: #imageLiteral(resourceName: "icon-data-duplasena"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-duplasena"), tipoModalidade: self.tipoModalidade!)
+                estiloModalidade = EstiloModalidade(corClara: 0x7d1a3f, corEscura: 0x7d1a3f , imagemTopo: #imageLiteral(resourceName: "titulo-duplasena"), imagemCalendario: #imageLiteral(resourceName: "icon-data-duplasena"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-duplasena"), tipoModalidade: self.tipoModalidade!)
+                break
             case .Federal:
                 //
-                return EstiloModalidade(corClara: 0x7d1a3f, corEscura: 0x7d1a3f , imagemTopo: #imageLiteral(resourceName: "titulo-duplasena"), imagemCalendario: #imageLiteral(resourceName: "icon-data-duplasena"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-duplasena"), tipoModalidade: self.tipoModalidade!)
+                estiloModalidade = EstiloModalidade(corClara: 0x7d1a3f, corEscura: 0x7d1a3f , imagemTopo: #imageLiteral(resourceName: "titulo-duplasena"), imagemCalendario: #imageLiteral(resourceName: "icon-data-duplasena"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-duplasena"), tipoModalidade: self.tipoModalidade!)
+                break
             case .Quina:
-                return EstiloModalidade(corClara: 0x642573, corEscura: 0x642475 , imagemTopo: #imageLiteral(resourceName: "titulo_quina"), imagemCalendario: #imageLiteral(resourceName: "icon-data-quina"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-quina"), tipoModalidade: self.tipoModalidade!)
+                estiloModalidade = EstiloModalidade(corClara: 0x642573, corEscura: 0x642475 , imagemTopo: #imageLiteral(resourceName: "titulo_quina"), imagemCalendario: #imageLiteral(resourceName: "icon-data-quina"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-quina"), tipoModalidade: self.tipoModalidade!)
+                break
             case .Timemania:
                 //
-                return EstiloModalidade(corClara: 0x7d1a3f, corEscura: 0x7d1a3f , imagemTopo: #imageLiteral(resourceName: "titulo-duplasena"), imagemCalendario: #imageLiteral(resourceName: "icon-data-duplasena"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-duplasena"), tipoModalidade: self.tipoModalidade!)
+                estiloModalidade = EstiloModalidade(corClara: 0x7d1a3f, corEscura: 0x7d1a3f , imagemTopo: #imageLiteral(resourceName: "titulo-duplasena"), imagemCalendario: #imageLiteral(resourceName: "icon-data-duplasena"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-duplasena"), tipoModalidade: self.tipoModalidade!)
+                break
             }
         }
-        return EstiloModalidade(corClara: 0x7d1a3f, corEscura: 0x7d1a3f , imagemTopo: #imageLiteral(resourceName: "titulo-duplasena"), imagemCalendario: #imageLiteral(resourceName: "icon-data-duplasena"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-duplasena"), tipoModalidade: self.tipoModalidade!)
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
+        self.estiloModalidade = estiloModalidade
+        estiloAposteBotao()
+        return estiloModalidade
     }
     
     func estiloNavigationController () {
         let imgRendering = #imageLiteral(resourceName: "icon-menu").withRenderingMode(UIImageRenderingMode.alwaysOriginal)
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: imgRendering, style: .plain, target: self, action: #selector(apresentaMenu))
         
-        let imgRendering2 = #imageLiteral(resourceName: "icon-trevo").withRenderingMode(UIImageRenderingMode.alwaysOriginal)
         let imgRendering3 = #imageLiteral(resourceName: "icon-menu-right-blue").withRenderingMode(UIImageRenderingMode.alwaysOriginal)
         
-        self.navigationItem.rightBarButtonItems = [UIBarButtonItem(image: imgRendering3, style: .plain, target: self, action: #selector(apresentaMenu)) , UIBarButtonItem(image: imgRendering2, style: .plain, target: self, action: #selector(apresentaTrevo))]
+        let button =  UIButton(type: .custom)
+        button.setImage(#imageLiteral(resourceName: "icon-trevo"), for: .normal)
+        button.addTarget(self, action: #selector(LOModalideController.apresentaTrevo), for: .touchUpInside)
+        button.frame = CGRect(x: 0, y: 0, width: 44, height: 44)
+        
+        trevoBarButton = UIBarButtonItem(customView: button)
+        
+        self.navigationItem.rightBarButtonItems = [UIBarButtonItem(image: imgRendering3, style: .plain, target: self, action: #selector(apresentaAjuda)) , trevoBarButton]
         
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
@@ -149,7 +178,7 @@ class LOModalideController: UIViewController, UICollectionViewDelegate, UICollec
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.destination.isKind(of: LOSimularApostasController.self)  {
+        if segue.destination.isKind(of: LOSimularApostasController.self)  {            
             let destination = segue.destination as! LOSimularApostasController
             destination.estiloModalidade = self.estiloModalidade
         }
@@ -173,10 +202,10 @@ class LOModalideController: UIViewController, UICollectionViewDelegate, UICollec
         self.aposteButon.setAttributedTitle(combination, for: .normal)
         UIView.animate(withDuration: 0.3, animations: { () -> Void in
             self.aposteView.backgroundColor = self.UIColorFromHex(self.estiloModalidade.corClara, alpha: 1.0)
+            self.aposteView.alpha = 1.0
         })
     }
     
-    //NEW
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
@@ -212,12 +241,13 @@ class LOModalideController: UIViewController, UICollectionViewDelegate, UICollec
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         let x = collectionView.contentOffset.x
         let w = collectionView.bounds.size.width
-        let currentPage = Int(ceil(x/w))
+        currentPage = Int(ceil(x/w))
         print("Current Page: \(currentPage)")
         
         if currentPage < self.arrayModalidades.count {
             self.tipoModalidade = self.arrayModalidades[currentPage]
             self.estiloModalidade = selecionaEstiloModalidade()
+            
             estiloAposteBotao()
         }
     }
@@ -227,12 +257,11 @@ class LOModalideController: UIViewController, UICollectionViewDelegate, UICollec
         let w = collectionView.bounds.size.width
         let currentPage = Int(ceil(x/w))
         
-        UIView.animate(withDuration: 0.5, animations: { () -> Void in
-            self.tipoModalidade = self.arrayModalidades[currentPage + 1]
-            self.estiloModalidade = self.selecionaEstiloModalidade()
-            
-            self.aposteView.backgroundColor = self.UIColorFromHex(self.estiloModalidade.corClara, alpha: 1.0)
-        })
+        if currentPage < self.arrayModalidades.count {
+            UIView.animate(withDuration: 0.3, animations: {
+                self.aposteView.alpha = 0.7
+            })
+        }
     }
     
     @objc func apresentaMenu () {
@@ -240,7 +269,83 @@ class LOModalideController: UIViewController, UICollectionViewDelegate, UICollec
     }
     
     @objc func apresentaTrevo () {
-        self.performSegue(withIdentifier: "apresentaTrevo", sender: self)
+        self.trevoBarButton.isEnabled = false
+
+        if !trevoAberto {
+            configAntigaTrevo = ConfigAntigaTrevo(yCollection: self.collectionView.frame.origin.y, alphaBlankView: self.blankViewBottom.alpha, aposteColor: self.aposteView.backgroundColor, aposteTituloColor: self.aposteButon.titleLabel?.textColor)
+            self.collectionView.isScrollEnabled = false
+            trevoAberto = true
+            
+            UIView.animate(withDuration: 0.5, animations: {
+                self.collectionView.frame.origin.y = self.view.frame.size.height - 204
+                self.blankViewBottom.alpha = 0.8
+                self.aposteView.backgroundColor = .white
+                self.aposteButon.titleLabel?.textColor = UIColor.lightGray
+
+                self.trevoBarButton.customView?.transform = CGAffineTransform(rotationAngle: CGFloat.pi)
+                
+                self.view.layoutIfNeeded()
+            }, completion: { (success) in
+                if success {
+                    self.adicionaOpcoesTrevo()
+                }
+            })
+        
+        } else {
+            self.collectionView.isScrollEnabled = true
+            trevoAberto = false
+            self.removeOpcoesTrevo()
+        }
+    }
+    
+    func adicionaOpcoesTrevo () {
+        UIView.transition(with: self.rapidaoView, duration: 0.2, options: .transitionCrossDissolve, animations: {
+            self.rapidaoView.isHidden = false
+        }) { _ in
+            UIView.transition(with: self.lerBilhetesView, duration: 0.2, options: .transitionCrossDissolve, animations: {
+                self.lerBilhetesView.isHidden = false
+            }) { _ in
+                UIView.transition(with: self.favoritosView, duration: 0.2, options: .transitionCrossDissolve, animations: {
+                    self.favoritosView.isHidden = false
+                }) { _ in
+                    UIView.transition(with: self.repassesSociaisView, duration: 0.2, options: .transitionCrossDissolve, animations: {
+                        self.repassesSociaisView.isHidden = false
+                    }) { _ in
+                        self.trevoBarButton.isEnabled = true
+                    }
+                }
+            }
+        }
+    }
+    
+    func removeOpcoesTrevo () {
+        UIView.transition(with: self.repassesSociaisView, duration: 0.2, options: .transitionCrossDissolve, animations: {
+            self.repassesSociaisView.isHidden = true
+        }) { _ in
+            UIView.transition(with: self.favoritosView, duration: 0.2, options: .transitionCrossDissolve, animations: {
+                self.favoritosView.isHidden = true
+            }) { _ in
+                UIView.transition(with: self.lerBilhetesView, duration: 0.2, options: .transitionCrossDissolve, animations: {
+                    self.lerBilhetesView.isHidden = true
+                }) { _ in
+                    UIView.transition(with: self.rapidaoView, duration: 0.2, options: .transitionCrossDissolve, animations: {
+                        self.rapidaoView.isHidden = true
+                    }) { _ in
+                        UIView.animate(withDuration: 0.5, animations: {
+                            self.collectionView.frame.origin.y = self.configAntigaTrevo.yCollection
+                            self.blankViewBottom.alpha = self.configAntigaTrevo.alphaBlankView
+                            self.aposteView.backgroundColor = self.configAntigaTrevo.aposteColor
+                            self.aposteButon.titleLabel?.textColor = self.configAntigaTrevo.aposteTituloColor
+                            self.trevoBarButton.customView?.transform = CGAffineTransform(rotationAngle: -(.pi * 2))
+                            
+                            self.view.layoutIfNeeded()
+                        }, completion: { (_) in
+                            self.trevoBarButton.isEnabled = true
+                        })
+                    }
+                }
+            }
+        }
     }
     
     @objc func apresentaAjuda () {
