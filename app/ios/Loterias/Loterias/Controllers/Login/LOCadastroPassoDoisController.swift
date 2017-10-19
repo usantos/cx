@@ -16,7 +16,8 @@ protocol LOCadastroPassoDoisDelegate: class {
 class LOCadastroPassoDoisController: UITableViewController, LOCadastroPassoDoisDelegate {
     
     var arrayDeCelulas = Array<UITableViewCell>()
-    
+    let gradient : CAGradientLayer = CAGradientLayer()
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -27,6 +28,19 @@ class LOCadastroPassoDoisController: UITableViewController, LOCadastroPassoDoisD
         self.tableView.tableFooterView = UITableViewHeaderFooterView()
         
         self.addRightIconOnNavigation(image: #imageLiteral(resourceName: "icon-loteria"))
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.gradient.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 64)
+        self.gradient.startPoint = CGPoint(x: 0.0, y: 0.5)
+        self.gradient.endPoint = CGPoint(x: 1.0, y: 0.5)
+        self.gradient.colors = [self.UIColorFromHex(0x54bbab, alpha: 1.0).cgColor, self.UIColorFromHex(0x005ca9, alpha: 1.0).cgColor]
+        self.gradient.name = "gradientView"
+        
+        self.navigationController?.navigationBar.tintColor = .white
+        self.navigationController?.isNavigationBarHidden = false
+        
+        self.navigationController?.navigationBar.setBackgroundImage(self.image(fromLayer: self.gradient), for: .default)
     }
 
     override func didReceiveMemoryWarning() {

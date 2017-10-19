@@ -241,7 +241,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cadastrar" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="26K-A5-di0">
-                                                    <rect key="frame" x="16" y="16" width="88" height="21"/>
+                                                    <rect key="frame" x="16" y="16" width="75" height="21"/>
                                                     <fontDescription key="fontDescription" name="FuturaStd-Bold" family="Futura Std" pointSize="17"/>
                                                     <color key="textColor" red="0.28235294117647058" green="0.34509803921568627" blue="0.42352941176470588" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -915,7 +915,7 @@ Para começar, informe os dados abaixo:</string>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cadastrar" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YzK-YV-18S">
-                                            <rect key="frame" x="16" y="16" width="88" height="21"/>
+                                            <rect key="frame" x="16" y="16" width="75" height="21"/>
                                             <fontDescription key="fontDescription" name="FuturaStd-Bold" family="Futura Std" pointSize="17"/>
                                             <color key="textColor" red="0.28235294119999998" green="0.34509803919999998" blue="0.42352941179999998" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
@@ -955,7 +955,7 @@ de seu endereço, CEP ou código.</string>
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VnU-rV-YRg">
-                                            <rect key="frame" x="16" y="49" width="205" height="40"/>
+                                            <rect key="frame" x="16" y="49" width="215.5" height="40"/>
                                             <string key="text">Precisamos que você informe
 uma lotérica de sua preferência.</string>
                                             <fontDescription key="fontDescription" name="FuturaStd-Medium" family="Futura Std" pointSize="15"/>
@@ -1506,7 +1506,7 @@ te redirecionamos para as suas apostas :)</string>
                     <navigationItem key="navigationItem" id="Ob9-lN-vRq">
                         <barButtonItem key="rightBarButtonItem" title="Avançar" id="IZY-da-nC9">
                             <connections>
-                                <segue destination="isI-8l-tLc" kind="presentation" id="NcE-IK-7cj"/>
+                                <segue destination="isI-8l-tLc" kind="show" id="NcE-IK-7cj"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -1624,7 +1624,7 @@ te redirecionamos para as suas apostas :)</string>
                     <navigationItem key="navigationItem" id="kRD-pz-sMY"/>
                     <connections>
                         <outlet property="aposteAgora" destination="7It-OQ-kjG" id="Qws-fS-zBt"/>
-                        <segue destination="isI-8l-tLc" kind="presentation" identifier="aposteAgora" id="uIY-3q-XK1"/>
+                        <segue destination="isI-8l-tLc" kind="show" identifier="aposteAgora" id="uIY-3q-XK1"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ra0-5d-wmo" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1729,7 +1729,7 @@ Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin soda
         <image name="icons8-Back Filled-100" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="NcE-IK-7cj"/>
+        <segue reference="uIY-3q-XK1"/>
         <segue reference="fjC-kI-MqF"/>
     </inferredMetricsTieBreakers>
 </document>

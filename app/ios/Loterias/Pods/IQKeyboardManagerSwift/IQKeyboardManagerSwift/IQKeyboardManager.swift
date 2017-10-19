@@ -669,7 +669,17 @@ open class IQKeyboardManager: NSObject, UIGestureRecognizerDelegate {
      */
     open var shouldFixInteractivePopGestureRecognizer = true
     
-    
+#if swift(>=3.2)
+    ///------------------------------------
+    /// MARK: Safe Area
+    ///------------------------------------
+
+    /**
+     If YES, then library will try to adjust viewController.additionalSafeAreaInsets to automatically handle layout guide. Default is NO.
+     */
+    open var canAdjustAdditionalSafeAreaInsets = false
+#endif
+
     ///------------------------------------
     /// MARK: Class Level disabling methods
     ///------------------------------------
@@ -761,8 +771,10 @@ open class IQKeyboardManager: NSObject, UIGestureRecognizerDelegate {
     /** To save rootViewController */
     fileprivate weak var    _rootViewController: UIViewController?
     
+#if swift(>=3.2)
     /** To save additionalSafeAreaInsets of rootViewController to tweak iOS11 Safe Area */
     fileprivate var         _initialAdditionalSafeAreaInsets = UIEdgeInsets.zero
+#endif
 
     /** To save topBottomLayoutConstraint original constant */
     fileprivate var         _layoutGuideConstraintInitialConstant: CGFloat  = 0
@@ -912,35 +924,44 @@ open class IQKeyboardManager: NSObject, UIGestureRecognizerDelegate {
             
             var safeAreaNewInset = UIEdgeInsets.zero;
             
-            if #available(iOS 11, *) {
-                
-                if let textFieldView = _textFieldView {
-                    safeAreaNewInset = _initialAdditionalSafeAreaInsets;
-                    let viewMovement : CGFloat = _topViewBeginRect.maxY - newFrame.maxY;
+#if swift(>=3.2)
+            if canAdjustAdditionalSafeAreaInsets {
+        
+                if #available(iOS 11, *) {
                     
-                    //Maintain keyboardDistanceFromTextField
-                    var specialKeyboardDistanceFromTextField = textFieldView.keyboardDistanceFromTextField
-                    
-                    if textFieldView.isSearchBarTextField() {
+                    if let textFieldView = _textFieldView {
+                        safeAreaNewInset = _initialAdditionalSafeAreaInsets;
+                        let viewMovement : CGFloat = _topViewBeginRect.maxY - newFrame.maxY;
                         
-                        if  let searchBar = textFieldView.superviewOfClassType(UISearchBar.self) {
-                            specialKeyboardDistanceFromTextField = searchBar.keyboardDistanceFromTextField
+                        //Maintain keyboardDistanceFromTextField
+                        var specialKeyboardDistanceFromTextField = textFieldView.keyboardDistanceFromTextField
+                        
+                        if textFieldView.isSearchBarTextField() {
+                            
+                            if  let searchBar = textFieldView.superviewOfClassType(UISearchBar.self) {
+                                specialKeyboardDistanceFromTextField = searchBar.keyboardDistanceFromTextField
+                            }
                         }
+                        
+                        let newKeyboardDistanceFromTextField = (specialKeyboardDistanceFromTextField == kIQUseDefaultKeyboardDistance) ? keyboardDistanceFromTextField : specialKeyboardDistanceFromTextField
+                        
+                        let textFieldDistance = textFieldView.frame.size.height + newKeyboardDistanceFromTextField;
+                        safeAreaNewInset.bottom += min(viewMovement, textFieldDistance);
                     }
-                    
-                    let newKeyboardDistanceFromTextField = (specialKeyboardDistanceFromTextField == kIQUseDefaultKeyboardDistance) ? keyboardDistanceFromTextField : specialKeyboardDistanceFromTextField
-                    
-                    let textFieldDistance = textFieldView.frame.size.height + newKeyboardDistanceFromTextField;
-                    safeAreaNewInset.bottom += min(viewMovement, textFieldDistance);
                 }
             }
+#endif
 
             //Used UIViewAnimationOptionBeginFromCurrentState to minimize strange animations.
             UIView.animate(withDuration: _animationDuration, delay: 0, options: UIViewAnimationOptions.beginFromCurrentState.union(_animationCurve), animations: { () -> Void in
                 
-                if #available(iOS 11, *) {
-                    unwrappedController.additionalSafeAreaInsets = safeAreaNewInset;
+#if swift(>=3.2)
+                if self.canAdjustAdditionalSafeAreaInsets {
+                    if #available(iOS 11, *) {
+                        unwrappedController.additionalSafeAreaInsets = safeAreaNewInset;
+                    }
                 }
+#endif
 
                 //  Setting it's new frame
                 unwrappedController.view.frame = newFrame
@@ -1480,19 +1501,21 @@ open class IQKeyboardManager: NSObject, UIGestureRecognizerDelegate {
             if let unwrappedRootController = _rootViewController {
                 _topViewBeginRect = unwrappedRootController.view.frame
                 
+#if swift(>=3.2)
                 if #available(iOS 11, *) {
                     _initialAdditionalSafeAreaInsets = unwrappedRootController.additionalSafeAreaInsets;
                 }
-
-                if shouldFixInteractivePopGestureRecognizer == true &&
+#endif
+                if _topViewBeginRect.origin.y != 0 &&
+                    shouldFixInteractivePopGestureRecognizer == true &&
                     unwrappedRootController is UINavigationController &&
                     unwrappedRootController.modalPresentationStyle != UIModalPresentationStyle.formSheet &&
                     unwrappedRootController.modalPresentationStyle != UIModalPresentationStyle.pageSheet {
 
                     if let window = keyWindow() {
-                        _topViewBeginRect.origin = CGPoint(x: 0,y: window.frame.size.height-unwrappedRootController.view.frame.size.height)
+                        _topViewBeginRect.origin.y = window.frame.size.height-unwrappedRootController.view.frame.size.height
                     } else {
-                        _topViewBeginRect.origin = CGPoint.zero
+                        _topViewBeginRect.origin.y = 0
                     }
                 }
 
@@ -1649,9 +1672,11 @@ open class IQKeyboardManager: NSObject, UIGestureRecognizerDelegate {
                         //  Setting it's new frame
                         rootViewController.view.frame = self._topViewBeginRect
                         
+#if swift(>=3.2)
                         if #available(iOS 11, *) {
                             rootViewController.additionalSafeAreaInsets = self._initialAdditionalSafeAreaInsets;
                         }
+#endif
 
                         self._privateMovedDistance = 0
                         
@@ -1700,9 +1725,11 @@ open class IQKeyboardManager: NSObject, UIGestureRecognizerDelegate {
         
         _topViewBeginRect = CGRect.zero
         
+#if swift(>=3.2)
         if #available(iOS 11, *) {
             _initialAdditionalSafeAreaInsets = .zero;
         }
+#endif
         
         _kbSize = CGSize.zero
 
@@ -1787,18 +1814,21 @@ open class IQKeyboardManager: NSObject, UIGestureRecognizerDelegate {
                     
                     _topViewBeginRect = rootViewController.view.frame
                     
+#if swift(>=3.2)
                     if #available(iOS 11, *) {
                         _initialAdditionalSafeAreaInsets = rootViewController.additionalSafeAreaInsets;
                     }
+#endif
 
-                    if shouldFixInteractivePopGestureRecognizer == true &&
+                    if _topViewBeginRect.origin.y != 0 &&
+                        shouldFixInteractivePopGestureRecognizer == true &&
                         rootViewController is UINavigationController &&
                         rootViewController.modalPresentationStyle != UIModalPresentationStyle.formSheet &&
                         rootViewController.modalPresentationStyle != UIModalPresentationStyle.pageSheet {
                         if let window = keyWindow() {
-                            _topViewBeginRect.origin = CGPoint(x: 0,y: window.frame.size.height-rootViewController.view.frame.size.height)
+                            _topViewBeginRect.origin.y = window.frame.size.height-rootViewController.view.frame.size.height
                         } else {
-                            _topViewBeginRect.origin = CGPoint.zero
+                            _topViewBeginRect.origin.y = 0
                         }
                     }
                     
@@ -1891,11 +1921,13 @@ open class IQKeyboardManager: NSObject, UIGestureRecognizerDelegate {
         }
         
         if let rootViewController = _rootViewController {
+#if swift(>=3.2)
             if #available(iOS 11, *) {
                 if UIEdgeInsetsEqualToEdgeInsets(_initialAdditionalSafeAreaInsets, rootViewController.additionalSafeAreaInsets) {
                     rootViewController.additionalSafeAreaInsets = _initialAdditionalSafeAreaInsets;
                 }
             }
+#endif
         }
 
         let elapsedTime = CACurrentMediaTime() - startTime
@@ -1926,19 +1958,22 @@ open class IQKeyboardManager: NSObject, UIGestureRecognizerDelegate {
             if let unwrappedRootController = _rootViewController {
                 _topViewBeginRect = unwrappedRootController.view.frame
                 
+#if swift(>=3.2)
                 if #available(iOS 11, *) {
                     _initialAdditionalSafeAreaInsets = unwrappedRootController.additionalSafeAreaInsets;
                 }
+#endif
                 
-                if shouldFixInteractivePopGestureRecognizer == true &&
+                if _topViewBeginRect.origin.y != 0 &&
+                    shouldFixInteractivePopGestureRecognizer == true &&
                     unwrappedRootController is UINavigationController &&
                     unwrappedRootController.modalPresentationStyle != UIModalPresentationStyle.formSheet &&
                     unwrappedRootController.modalPresentationStyle != UIModalPresentationStyle.pageSheet {
                     
                     if let window = keyWindow() {
-                        _topViewBeginRect.origin = CGPoint(x: 0,y: window.frame.size.height-unwrappedRootController.view.frame.size.height)
+                        _topViewBeginRect.origin.y = window.frame.size.height-unwrappedRootController.view.frame.size.height
                     } else {
-                        _topViewBeginRect.origin = CGPoint.zero
+                        _topViewBeginRect.origin.y = 0
                     }
                 }
                 

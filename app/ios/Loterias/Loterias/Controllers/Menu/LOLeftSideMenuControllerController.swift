@@ -35,7 +35,10 @@ class LOLeftSideMenuControllerController: UITableViewController {
     }
     
     @IBAction func logout () {
-        self.performSegue(withIdentifier: "logout", sender: self)
+        self.view.window?.rootViewController?.dismiss(animated: false, completion: nil  )
+        
+        self.view.window?.rootViewController = UIStoryboard(name: "Login", bundle: nil).instantiateViewController(withIdentifier: "initialLogin")
+        self.view.window?.makeKeyAndVisible()
     }
     
     /*

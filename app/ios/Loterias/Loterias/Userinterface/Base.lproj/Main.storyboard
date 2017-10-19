@@ -44,7 +44,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iKc-4t-EOx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1180" y="306"/>
+            <point key="canvasLocation" x="1274" y="283"/>
         </scene>
         <!--Modalide Controller-->
         <scene sceneID="5tx-s4-9xX">
@@ -62,7 +62,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </view>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Bic-CB-K5X">
-                                <rect key="frame" x="0.0" y="94" width="375" height="459"/>
+                                <rect key="frame" x="0.0" y="74" width="375" height="487"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="i5s-I4-wts">
                                     <size key="itemSize" width="302" height="579"/>
@@ -79,7 +79,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Huk-du-VuC">
-                                                    <rect key="frame" x="31" y="12" width="240" height="54"/>
+                                                    <rect key="frame" x="31" y="15" width="240" height="54"/>
                                                     <subviews>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0ja-zd-FXB">
                                                             <rect key="frame" x="0.0" y="0.0" width="45" height="54"/>
@@ -125,7 +125,7 @@
                                                     </constraints>
                                                 </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SLp-hX-STw">
-                                                    <rect key="frame" x="6" y="60" width="291" height="440"/>
+                                                    <rect key="frame" x="6" y="63" width="291" height="437"/>
                                                     <subviews>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="titulo_megasena" translatesAutoresizingMaskIntoConstraints="NO" id="cia-Ol-DOU">
                                                             <rect key="frame" x="0.0" y="0.0" width="291" height="80"/>
@@ -152,7 +152,7 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mgy-wZ-8Ou">
-                                                            <rect key="frame" x="53" y="261" width="134.5" height="41"/>
+                                                            <rect key="frame" x="53" y="258" width="134.5" height="41"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="41" id="iq1-Zm-Li3"/>
                                                             </constraints>
@@ -163,28 +163,28 @@ Sábado. 18 de julho</string>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZzW-aD-ExE">
-                                                            <rect key="frame" x="27" y="247" width="236" height="1"/>
+                                                            <rect key="frame" x="27" y="244" width="236" height="1"/>
                                                             <color key="backgroundColor" red="0.81568627449999997" green="0.87843137250000003" blue="0.89019607840000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="1" id="O8X-LF-vjw"/>
                                                             </constraints>
                                                         </view>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-data-megasena" translatesAutoresizingMaskIntoConstraints="NO" id="O97-H0-qpU">
-                                                            <rect key="frame" x="21" y="272" width="20" height="20"/>
+                                                            <rect key="frame" x="21" y="269" width="20" height="20"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="20" id="H5U-Xz-YV0"/>
                                                                 <constraint firstAttribute="height" constant="20" id="ODi-6B-q1o"/>
                                                             </constraints>
                                                         </imageView>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-horario-megasena" translatesAutoresizingMaskIntoConstraints="NO" id="aUs-0t-h60">
-                                                            <rect key="frame" x="21" y="321" width="20" height="20"/>
+                                                            <rect key="frame" x="21" y="318" width="20" height="20"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="20" id="QTJ-KH-zbE"/>
                                                                 <constraint firstAttribute="width" constant="20" id="cy7-6N-zvb"/>
                                                             </constraints>
                                                         </imageView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UiM-Pw-SOm">
-                                                            <rect key="frame" x="53" y="313" width="175" height="37"/>
+                                                            <rect key="frame" x="53" y="310" width="175" height="37"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="37" id="WU8-1t-FeM"/>
                                                             </constraints>
@@ -256,7 +256,7 @@ Sábado. 18 de julho</string>
                                             <constraint firstAttribute="trailing" secondItem="SLp-hX-STw" secondAttribute="trailing" constant="5.5" id="07G-5V-lJd"/>
                                             <constraint firstAttribute="trailing" secondItem="Huk-du-VuC" secondAttribute="trailing" constant="31" id="Jxf-vp-fsg"/>
                                             <constraint firstItem="Huk-du-VuC" firstAttribute="leading" secondItem="F5S-zi-34x" secondAttribute="leading" constant="31" id="bIK-Gm-ep2"/>
-                                            <constraint firstItem="Huk-du-VuC" firstAttribute="top" secondItem="F5S-zi-34x" secondAttribute="top" constant="12" id="cCv-JH-1X8"/>
+                                            <constraint firstItem="Huk-du-VuC" firstAttribute="top" secondItem="F5S-zi-34x" secondAttribute="top" constant="15" id="cCv-JH-1X8"/>
                                             <constraint firstItem="SLp-hX-STw" firstAttribute="leading" secondItem="F5S-zi-34x" secondAttribute="leading" constant="5.5" id="nwZ-9M-sGj"/>
                                             <constraint firstAttribute="bottom" secondItem="SLp-hX-STw" secondAttribute="bottom" id="tpE-pe-Dvv"/>
                                             <constraint firstItem="cia-Ol-DOU" firstAttribute="top" secondItem="Huk-du-VuC" secondAttribute="bottom" constant="-6" id="y6L-Hg-8lK"/>
@@ -428,7 +428,7 @@ Sábado. 18 de julho</string>
                                 </constraints>
                             </view>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cvb-i1-F59">
-                                <rect key="frame" x="18" y="109" width="318" height="69"/>
+                                <rect key="frame" x="18" y="89" width="318" height="69"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X0w-HW-vN4">
                                         <rect key="frame" x="276" y="0.0" width="40" height="40"/>
@@ -478,7 +478,7 @@ em apenas um clique.</string>
                                 </constraints>
                             </view>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zo6-FE-xZI">
-                                <rect key="frame" x="18" y="183" width="318" height="69"/>
+                                <rect key="frame" x="18" y="163" width="318" height="69"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="G4L-H0-3XB">
                                         <rect key="frame" x="278" y="0.0" width="40" height="40"/>
@@ -550,7 +550,7 @@ Confira aqui os seus resultados.</string>
                                 </constraints>
                             </view>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DBf-w2-d6u">
-                                <rect key="frame" x="18" y="257" width="318" height="69"/>
+                                <rect key="frame" x="18" y="237" width="318" height="69"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6FK-Ge-xTa">
                                         <rect key="frame" x="277" y="0.0" width="40" height="40"/>
@@ -600,7 +600,7 @@ em apenas um clique. :)</string>
                                 </constraints>
                             </view>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cRs-tO-zOV">
-                                <rect key="frame" x="18" y="331" width="315" height="69"/>
+                                <rect key="frame" x="18" y="311" width="315" height="69"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KvX-ua-2ee">
                                         <rect key="frame" x="275" y="0.0" width="40" height="40"/>
@@ -701,7 +701,7 @@ em apenas um clique. :)</string>
                             <constraint firstItem="aWe-TF-zB9" firstAttribute="leading" secondItem="LRR-pb-k6A" secondAttribute="trailing" constant="-2" id="wmE-dG-kck"/>
                             <constraint firstItem="DBf-w2-d6u" firstAttribute="leading" secondItem="MYQ-jh-9Yt" secondAttribute="leading" constant="18" id="xJN-F1-NJA"/>
                             <constraint firstItem="Bic-CB-K5X" firstAttribute="leading" secondItem="MYQ-jh-9Yt" secondAttribute="leading" id="yvv-07-rog"/>
-                            <constraint firstItem="LRR-pb-k6A" firstAttribute="top" secondItem="Bic-CB-K5X" secondAttribute="bottom" constant="23" id="ztL-Bu-qY8"/>
+                            <constraint firstItem="LRR-pb-k6A" firstAttribute="top" secondItem="Bic-CB-K5X" secondAttribute="bottom" constant="15" id="ztL-Bu-qY8"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Voa-Zs-jes">
@@ -726,7 +726,7 @@ em apenas um clique. :)</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="s4R-sm-z5c" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="294" y="-583"/>
+            <point key="canvasLocation" x="294" y="-492"/>
         </scene>
         <!--Repasses Sociais Controller-->
         <scene sceneID="sMu-oa-MIa">
@@ -1063,7 +1063,7 @@ Cg
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iXg-zX-dR7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2118" y="-583"/>
+            <point key="canvasLocation" x="2895" y="-493"/>
         </scene>
         <!--FinalizarApostas-->
         <scene sceneID="0o3-xl-5YU">
@@ -1071,7 +1071,7 @@ Cg
                 <viewControllerPlaceholder storyboardName="FinalizarApostas" id="LS5-N4-IHm" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UEL-ap-1sF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1242" y="-377"/>
+            <point key="canvasLocation" x="-1284" y="-4"/>
         </scene>
         <!--LOCarrinhoApostas-->
         <scene sceneID="Cvf-ob-cvc">
@@ -1079,7 +1079,7 @@ Cg
                 <viewControllerPlaceholder storyboardName="FinalizarApostas" referencedIdentifier="LOCarrinhoApostas" id="fd7-rd-EeR" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kMo-Qk-FEU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="255" y="-85"/>
+            <point key="canvasLocation" x="264" y="166"/>
         </scene>
         <!--Simular Apostas Controller-->
         <scene sceneID="8y8-eG-CqN">
@@ -1210,12 +1210,12 @@ Cg
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fKF-Oa-iPU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-586.39999999999998" y="-580.65967016491754"/>
+            <point key="canvasLocation" x="-588" y="-493"/>
         </scene>
         <!--Left Side Menu Controller Controller-->
         <scene sceneID="iM5-Ia-j0O">
             <objects>
-                <tableViewController id="WHg-A9-JeD" customClass="LOLeftSideMenuControllerController" customModule="Loterias" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="leftMenu" useStoryboardIdentifierAsRestorationIdentifier="YES" id="WHg-A9-JeD" customClass="LOLeftSideMenuControllerController" customModule="Loterias" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="EVc-7n-bNb">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1481,21 +1481,10 @@ Cg
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="0TW-hZ-jp7"/>
-                    <connections>
-                        <segue destination="ohN-qY-9yK" kind="presentation" identifier="logout" id="6cx-Gz-e17"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CXw-8S-1aD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2118" y="167"/>
-        </scene>
-        <!--Login-->
-        <scene sceneID="Zof-IH-trC">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Login" id="ohN-qY-9yK" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="72r-gX-0gu" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2580" y="626"/>
+            <point key="canvasLocation" x="2118" y="283"/>
         </scene>
         <!--Loterias Caixa-->
         <scene sceneID="HCh-fo-OhU">
@@ -1587,7 +1576,8 @@ Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin soda
         <!--Navigation Controller-->
         <scene sceneID="Vv1-Cy-9fh">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="YGs-xC-wiA" sceneMemberID="viewController">
+                <placeholder placeholderIdentifier="IBFirstResponder" id="FV9-Vw-jUb" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <navigationController storyboardIdentifier="LOModalidadeNavigationController" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="YGs-xC-wiA" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="5eW-xH-JeE">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
@@ -1598,9 +1588,8 @@ Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin soda
                         <segue destination="yT4-bc-eqY" kind="relationship" relationship="rootViewController" id="jJK-7g-wOj"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="FV9-Vw-jUb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-586" y="167"/>
+            <point key="canvasLocation" x="-587" y="326"/>
         </scene>
         <!--Popup Selecionar Opcoes Controller-->
         <scene sceneID="kP9-ph-T2X">
@@ -1770,8 +1759,8 @@ Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin soda
         <image name="titulo_megasena" width="277" height="71"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="uCk-Jt-8il"/>
-        <segue reference="3vK-ST-8P5"/>
-        <segue reference="vUY-hu-Zjb"/>
+        <segue reference="iB0-VQ-H6X"/>
+        <segue reference="4YF-Os-epM"/>
+        <segue reference="dB0-4W-BEE"/>
     </inferredMetricsTieBreakers>
 </document>

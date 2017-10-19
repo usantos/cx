@@ -8,6 +8,7 @@
 
 import UIKit
 import AnimatedCollectionViewLayout
+import SideMenu
 
 struct EstiloModalidade {
     let corClara : UInt
@@ -18,7 +19,7 @@ struct EstiloModalidade {
     let tipoModalidade: LOModalidadeEnum
 }
 
-class LOModalideController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+class LOModalideController: UIViewController, UISideMenuNavigationControllerDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     private var arrayModalidades = [LOModalidadeEnum]()
     var currentPage : Int = 0
     public var estiloModalidade : EstiloModalidade!
@@ -29,7 +30,8 @@ class LOModalideController: UIViewController, UICollectionViewDelegate, UICollec
     @IBOutlet weak var aposteView : UIView!
     @IBOutlet var gradientView : UIView!
     @IBOutlet weak var blankViewBottom : UIView!
-    
+    var blackView : UIView!
+
     @IBOutlet weak var collectionView : UICollectionView! {
         didSet {
             collectionView.delegate = self
@@ -40,7 +42,7 @@ class LOModalideController: UIViewController, UICollectionViewDelegate, UICollec
             if DeviceType.IS_IPHONE_6 {
                 layout.animator = LinearCardAttributesAnimator(minAlpha: 0.8, itemSpacing: 0.35, scaleRate: 0.75)
             } else if DeviceType.IS_IPHONE_6P {
-                layout.animator = LinearCardAttributesAnimator(minAlpha: 0.8, itemSpacing: 0.35, scaleRate: 0.75)
+                layout.animator = LinearCardAttributesAnimator(minAlpha: 0.8, itemSpacing: 0.32, scaleRate: 0.78)
             } else {
                 layout.animator = LinearCardAttributesAnimator(minAlpha: 0.8, itemSpacing: 0.4, scaleRate: 0.7)
             }
@@ -351,4 +353,23 @@ class LOModalideController: UIViewController, UICollectionViewDelegate, UICollec
     @objc func apresentaAjuda () {
         self.performSegue(withIdentifier: "apresentaAjuda", sender: self)
     }
+    
+    func sideMenuWillAppear(menu: UISideMenuNavigationController, animated: Bool) {
+        blackView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height + 64))
+        blackView.backgroundColor = self.UIColorFromHex(0x4e596b, alpha: 0.9)
+        self.navigationController?.navigationBar.addSubview(blackView)
+    }
+    
+    func sideMenuDidAppear(menu: UISideMenuNavigationController, animated: Bool) {
+        print("SideMenu Appeared! (animated: \(animated))")
+    }
+    
+    func sideMenuWillDisappear(menu: UISideMenuNavigationController, animated: Bool) {
+        blackView.removeFromSuperview()
+    }
+    
+    func sideMenuDidDisappear(menu: UISideMenuNavigationController, animated: Bool) {
+        print("SideMenu Disappeared! (animated: \(animated))")
+    }
 }
+

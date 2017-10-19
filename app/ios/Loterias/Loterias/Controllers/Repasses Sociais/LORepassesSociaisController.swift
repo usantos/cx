@@ -18,25 +18,28 @@ class LORepassesSociaisController: UITableViewController {
         super.viewDidLoad()
         self.tableView.estimatedRowHeight = 150
         self.tableView.tableFooterView = UITableViewHeaderFooterView()
-        
-        self.gradientNav.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 64)
-        self.gradientNav.startPoint = CGPoint(x: 0.0, y: 0.5)
-        self.gradientNav.endPoint = CGPoint(x: 1.0, y: 0.5)
-        self.gradientNav.colors = [self.UIColorFromHex(0x54bbab, alpha: 1.0).cgColor, self.UIColorFromHex(0x005ca9, alpha: 1.0).cgColor]
-        self.gradientNav.name = "gradientView"
-        
-        self.navigationController?.navigationBar.tintColor = .white
-        self.navigationController?.isNavigationBarHidden = false
-        
-        self.navigationItem.titleView = self.titleCustomView
-        
-        self.navigationController?.navigationBar.setBackgroundImage(self.image(fromLayer: self.gradientNav), for: .default)
+        DispatchQueue.main.async {
+            self.gradientNav.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 64)
+            self.gradientNav.startPoint = CGPoint(x: 0.0, y: 0.5)
+            self.gradientNav.endPoint = CGPoint(x: 1.0, y: 0.5)
+            self.gradientNav.colors = [self.UIColorFromHex(0x54bbab, alpha: 1.0).cgColor, self.UIColorFromHex(0x005ca9, alpha: 1.0).cgColor]
+            self.gradientNav.name = "gradientView"
+            
+            self.navigationController?.navigationBar.tintColor = .white
+            self.navigationController?.isNavigationBarHidden = false
+            
+            self.navigationItem.titleView = self.titleCustomView
+            
+            self.navigationController?.navigationBar.setBackgroundImage(self.image(fromLayer: self.gradientNav), for: .default)
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        if self.isMovingFromParentViewController {
-            self.navigationController?.navigationBar.shadowImage = UIImage()
-            self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        DispatchQueue.main.async {
+            if self.isMovingFromParentViewController {
+                self.navigationController?.navigationBar.shadowImage = UIImage()
+                self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+            }
         }
     }
 
