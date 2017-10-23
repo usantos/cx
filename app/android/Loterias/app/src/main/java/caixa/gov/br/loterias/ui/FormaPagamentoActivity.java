@@ -3,9 +3,15 @@ package caixa.gov.br.loterias.ui;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.ui.adapter.FormaPagamentoRecyclerViewAdapter;
 
 public class FormaPagamentoActivity extends AppCompatActivity {
 
@@ -15,6 +21,7 @@ public class FormaPagamentoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_forma_pagamento);
 
         configuraActivityCarrinho();
+        configuraRecyclerViewCarrinhoAposta();
     }
 
     @Override
@@ -47,5 +54,25 @@ public class FormaPagamentoActivity extends AppCompatActivity {
         }
 
         getSupportActionBar().setBackgroundDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.navigation_gradient, null));
+    }
+
+    private void configuraRecyclerViewCarrinhoAposta(){
+        String[] values = new String[] { "01", "02", "02", "02", "02"};
+
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.formasPagamentoRecyclerView);
+        RecyclerView.LayoutManager layout = new LinearLayoutManager(this,
+                LinearLayoutManager.VERTICAL, false);
+
+        recyclerView.setAdapter(new FormaPagamentoRecyclerViewAdapter(montaCarrinhoApostaValores(values), this));
+        recyclerView.setLayoutManager(layout);
+        recyclerView.setNestedScrollingEnabled(false);
+    }
+
+    private ArrayList<String> montaCarrinhoApostaValores(String valores[]){
+        ArrayList<String> valoresTextoDialog = new ArrayList<>();
+
+        Collections.addAll(valoresTextoDialog, valores);
+
+        return valoresTextoDialog;
     }
 }
