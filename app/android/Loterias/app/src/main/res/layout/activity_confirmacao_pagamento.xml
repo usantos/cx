@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="caixa.gov.br.loterias.ui.ConfirmacaoPagamentoActivity"
+    android:background="@drawable/navigation_gradient">
+
+
+    <caixa.gov.br.loterias.ui.custom.StatusBarView
+        android:layout_width="344dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/navigation_gradient"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="8dp" />
+
+    <TextView
+        android:id="@+id/textInfoApostas"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="57dp"
+        android:layout_marginStart="57dp"
+        android:layout_marginRight="41dp"
+        android:layout_marginEnd="41dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/confirmacaoPagamentoInfoApostas"
+        android:textAlignment="center"
+        android:textColor="@color/branco"
+        app:layout_constraintLeft_toLeftOf="@+id/imageViewSetaParaApostas"
+        app:layout_constraintRight_toRightOf="@+id/imageViewSetaParaApostas"
+        app:layout_constraintTop_toTopOf="@+id/imageViewSetaParaApostas"
+        app:layout_constraintHorizontal_bias="0.0" />
+
+    <ImageView
+        android:id="@+id/imageViewSetaParaApostas"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="106dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="55dp"
+        android:layout_marginRight="55dp"
+        android:layout_marginTop="13dp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textTitulo"
+        app:srcCompat="@drawable/seta_apontando_apostas" />
+
+    <TextView
+        android:id="@+id/textTitulo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="115dp"
+        android:layout_marginRight="115dp"
+        android:layout_marginTop="100dp"
+        android:text="@string/confirmacaopagamentoParabens"
+        android:textAlignment="center"
+        android:textColor="@color/branco"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/viewTabBar"
+        android:layout_width="0dp"
+        android:layout_height="94dp"
+        android:background="@color/azulclaro"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+        <RelativeLayout
+            android:id="@+id/carrinhoApostas"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_alignParentBottom="true"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="13dp"
+            android:layout_marginRight="10dp"
+            app:layout_constraintRight_toLeftOf="@+id/imageViewPaginacao"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="10dp">
+
+            <TextView
+                android:id="@+id/textViewCarrinhoCartelaCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/botaoCarrinho"
+                android:layout_alignEnd="@+id/textInfoCarrinho"
+                android:layout_alignRight="@+id/textInfoCarrinho"
+                android:background="@drawable/rounded_textview"
+                android:gravity="center"
+                android:text="0"
+                android:textColor="@color/branco"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/botaoCarrinho"
+                android:layout_width="34dp"
+                android:layout_height="40dp"
+                android:background="@drawable/icon_apostas"
+                android:layout_centerHorizontal="true" />
+
+            <TextView
+                android:id="@+id/textInfoCarrinho"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:text="@string/minhasApostas"
+                android:textAlignment="center"
+                android:textColor="@color/azulescuro"
+                android:textSize="12sp" />
+
+
+        </RelativeLayout>
+
+
+        <ImageView
+            android:id="@+id/imageViewPaginacao"
+            android:layout_width="184dp"
+            android:layout_height="12dp"
+            android:layout_marginBottom="20dp"
+            android:contentDescription="@string/imagemCarrinho"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:srcCompat="@drawable/paginacao3" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <Button
+        android:id="@+id/botaoVoltarInicio"
+        android:layout_width="184dp"
+        android:layout_height="84dp"
+        android:layout_marginBottom="51dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:background="@color/verdeazul"
+        android:paddingLeft="14dp"
+        android:paddingRight="14dp"
+        android:text="@string/confirmacaoPagamentoBotaoVoltarInicio"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
+        android:textColor="@color/branco"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/viewTabBar"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

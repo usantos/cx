@@ -11,6 +11,7 @@
     <string name="title_activity_home">HomeActivity</string>
     <string name="title_activity_carrinho">Carrinho de apostas</string>
     <string name="title_activity_forma_pagamento">Forma de pagamento</string>
+    <string name="title_activity_confirmacao_pagamento">Confirmação</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -52,4 +53,11 @@
     <string name="apostarAutorizarCobranca">Apostar e autorizar cobrança</string>
 
     <string name="total">Total</string>
+
+    <string name="confirmacaoPagamentoInfoApostas">Você pode visualizá-las na área Apostas realizadas do aplicativo</string>
+    <string name="confirmacaopagamentoParabens">Parabéns!\nSuas apostas foram efetivadas.</string>
+    <string name="minhasApostas">Minhas apostas</string>
+    <string name="confirmacaoPagamentoBotaoVoltarInicio">Voltar ao início</string>
+
+
 </resources>

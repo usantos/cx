@@ -1,17 +1,20 @@
 package caixa.gov.br.loterias.ui;
 
+import android.content.Intent;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
+import android.view.View;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.ui.adapter.FormaPagamentoRecyclerViewAdapter;
+import caixa.gov.br.loterias.utils.TipoApostaEnum;
 
 public class FormaPagamentoActivity extends AppCompatActivity {
 
@@ -22,6 +25,7 @@ public class FormaPagamentoActivity extends AppCompatActivity {
 
         configuraActivityCarrinho();
         configuraRecyclerViewCarrinhoAposta();
+        configuraClickBotoes();
     }
 
     @Override
@@ -40,7 +44,6 @@ public class FormaPagamentoActivity extends AppCompatActivity {
         return true;
     }
 
-    // Mudando o texto dos MenuItem de acordo com os dados
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
@@ -54,6 +57,16 @@ public class FormaPagamentoActivity extends AppCompatActivity {
         }
 
         getSupportActionBar().setBackgroundDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.navigation_gradient, null));
+    }
+
+    private void configuraClickBotoes(){
+        findViewById(R.id.botaoAvancarPagamento).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent activity = new Intent(FormaPagamentoActivity.this, ConfirmacaoPagamentoActivity.class);
+                startActivity(activity);
+            }
+        });
     }
 
     private void configuraRecyclerViewCarrinhoAposta(){
