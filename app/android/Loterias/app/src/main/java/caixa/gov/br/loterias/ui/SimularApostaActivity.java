@@ -22,6 +22,7 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 import java.util.ArrayList;
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.ui.Inteface.CallbackDialog;
 import caixa.gov.br.loterias.ui.Inteface.CartelaActivityInterface;
 import caixa.gov.br.loterias.ui.adapter.DialogListViewAdapter;
 import caixa.gov.br.loterias.ui.fragment.CartelaFragment;
@@ -348,9 +349,4 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         activity.putExtra("tipoAposta", tipoJogo);
         startActivity(activity);
     }
-}
-
-
-interface CallbackDialog{
-    void executeCallback(int position);
 }

@@ -1,6 +1,8 @@
 package caixa.gov.br.loterias.ui;
 
 import android.content.Intent;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,13 +10,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Button;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.ui.adapter.FormaPagamentoRecyclerViewAdapter;
-import caixa.gov.br.loterias.utils.TipoApostaEnum;
 
 public class FormaPagamentoActivity extends AppCompatActivity {
 
@@ -24,8 +26,8 @@ public class FormaPagamentoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_forma_pagamento);
 
         configuraActivityCarrinho();
-        configuraRecyclerViewCarrinhoAposta();
         configuraClickBotoes();
+        configuraRecyclerViewCarrinhoAposta();
     }
 
     @Override
@@ -64,6 +66,15 @@ public class FormaPagamentoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent activity = new Intent(FormaPagamentoActivity.this, ConfirmacaoPagamentoActivity.class);
+                startActivity(activity);
+            }
+        });
+
+        final Button buttonAdicionarFormaPagamento = ((Button) findViewById(R.id.botaoAdicionarFormaPagamento));
+        buttonAdicionarFormaPagamento.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent activity = new Intent(FormaPagamentoActivity.this, NovaFormaPagamentoActivity.class);
                 startActivity(activity);
             }
         });

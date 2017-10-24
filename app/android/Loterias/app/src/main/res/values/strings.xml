@@ -59,5 +59,8 @@
     <string name="minhasApostas">Minhas apostas</string>
     <string name="confirmacaoPagamentoBotaoVoltarInicio">Voltar ao início</string>
 
+    <string name="novaFormaPagamentoTitulo">Cadastrar cartão</string>
+    <string name="novaFormaPagamentoNenhumCartaoCadastrado">Notamos que você ainda não possui nenhum cartão de crédito cadastrado. Para contnuar, informe:</string>
+
 
 </resources>

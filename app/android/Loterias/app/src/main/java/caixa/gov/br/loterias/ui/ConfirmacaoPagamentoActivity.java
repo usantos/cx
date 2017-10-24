@@ -28,7 +28,6 @@ public class ConfirmacaoPagamentoActivity extends AppCompatActivity {
 
         configuraActivityCarrinho();
         configuraBotoes();
-
     }
 
     @Override

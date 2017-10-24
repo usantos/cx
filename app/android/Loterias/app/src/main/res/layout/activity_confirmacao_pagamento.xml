@@ -7,14 +7,6 @@
     tools:context="caixa.gov.br.loterias.ui.ConfirmacaoPagamentoActivity"
     android:background="@drawable/navigation_gradient">
 
-
-    <caixa.gov.br.loterias.ui.custom.StatusBarView
-        android:layout_width="344dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/navigation_gradient"
-        tools:layout_editor_absoluteY="0dp"
-        tools:layout_editor_absoluteX="8dp" />
-
     <TextView
         android:id="@+id/textInfoApostas"
         android:layout_width="0dp"
