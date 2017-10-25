@@ -21,7 +21,10 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 import java.util.ArrayList;
+import java.util.List;
+
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.bo.silce.SilceClient;
 import caixa.gov.br.loterias.ui.Inteface.CallbackDialog;
 import caixa.gov.br.loterias.ui.Inteface.CartelaActivityInterface;
 import caixa.gov.br.loterias.ui.adapter.DialogListViewAdapter;
@@ -86,6 +89,10 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
 
         configuraFragments();
         configuraActivity();
+
+
+
+
     }
 
     private void configuraFragments(){

@@ -18,9 +18,22 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.android.volley.VolleyError;
+
+import caixa.gov.br.loterias.bo.ApostaBO;
+import caixa.gov.br.loterias.bo.silce.SilceClient;
+import caixa.gov.br.loterias.bo.silce.data.CompletaJogoRsp;
+import caixa.gov.br.loterias.bo.silce.internals.SilceConnection;
+import caixa.gov.br.loterias.bo.silce.internals.SilceSingleton;
 import caixa.gov.br.loterias.ui.Inteface.CartelaActivityInterface;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.ui.SimularApostaActivity;
 import caixa.gov.br.loterias.ui.custom.ExpandableHeightGridView;
 import caixa.gov.br.loterias.utils.ColorEnum;
 import caixa.gov.br.loterias.utils.ViewUtils;
@@ -130,7 +143,22 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
 
                     cartelaFragmentListener.adicionarApostaCarrinho();
                 } else{
-                    ViewUtils.alert(getActivity(), "Botão completar com números aleatórios pressionado");
+
+
+                    ApostaBO apostaBO = new ApostaBO(getActivity());
+
+                    apostaBO.completaJogo(6, Arrays.asList(15), 1, 60, new SilceClient.Listener<CompletaJogoRsp>() {
+                        @Override
+                        public void onResponse(CompletaJogoRsp response) {
+                            ViewUtils.alert(getActivity(), response.toString());
+                        }
+                    }, new SilceClient.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            ViewUtils.alert(getActivity(), "TESTE");
+                        }
+                    });
+
                 }
             }
             break;
