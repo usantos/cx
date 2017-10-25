@@ -2,7 +2,6 @@ package caixa.gov.br.loterias.ui.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.support.annotation.ColorRes;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,7 +57,7 @@ public class FormaPagamentoRecyclerViewAdapter  extends RecyclerView.Adapter<For
 
     @Override
     public FormaPagamentoRecyclerViewAdapter.ApostaHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.row_forma_pagamento_recycler_view, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.row_forma_pagamento, parent, false);
 
         return new FormaPagamentoRecyclerViewAdapter.ApostaHolder(view);
     }

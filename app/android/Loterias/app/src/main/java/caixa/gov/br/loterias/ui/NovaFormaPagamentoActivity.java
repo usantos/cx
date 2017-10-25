@@ -1,5 +1,6 @@
 package caixa.gov.br.loterias.ui;
 
+import android.content.Intent;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.Menu;
+import android.view.View;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 
@@ -33,21 +35,16 @@ public class NovaFormaPagamentoActivity extends AppCompatActivity {
         String[] values = new String[] { "01", "02", "02", "02", "02"};
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.novaFormaPagamentoRecyclerView);
-//        RecyclerView.LayoutManager layout = new LinearLayoutManager(this,
-//                LinearLayoutManager.VERTICAL, false);
-
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
 
-//        RecyclerView myList = (RecyclerView) findViewById(R.id.formasPagamentoRecyclerView);
+
         recyclerView.setLayoutManager(layoutManager);
 
         recyclerView.setAdapter(new FormaPagamentoRecyclerViewAdapter(montaCarrinhoApostaValores(values), this));
-//        recyclerView.setLayoutManager(layout);
-//        recyclerView.setNestedScrollingEnabled(false);
-
 
         configuraActivityCarrinho();
+        configuraBotoesListener();
     }
 
     @Override
@@ -87,6 +84,16 @@ public class NovaFormaPagamentoActivity extends AppCompatActivity {
         Collections.addAll(valoresTextoDialog, valores);
 
         return valoresTextoDialog;
+    }
+
+    private void configuraBotoesListener(){
+        findViewById(R.id.botaoAvancarPagamento).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent activity = new Intent(NovaFormaPagamentoActivity.this, ConfirmacaoPagamentoActivity.class);
+                startActivity(activity);
+            }
+        });
     }
 
 }
