@@ -1,65 +1,251 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="caixa.gov.br.loterias.ui.NovaFormaPagamentoActivity">
+    android:layout_height="wrap_content"
+    android:fillViewport="false"
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textoInfoSelecioneFormaPagamento"
-        android:layout_width="0dp"
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="19dp"
-        android:text="@string/novaFormaPagamentoNenhumCartaoCadastrado"
-        android:textColor="@color/cinza"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textoFormaPagamentoTitulo"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp" />
+        tools:context="caixa.gov.br.loterias.ui.NovaFormaPagamentoActivity">
 
-    <TextView
-        android:id="@+id/textoFormaPagamentoTitulo"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="40dp"
-        android:text="@string/novaFormaPagamentoTitulo"
-        android:textColor="@color/colorAccent"
-        android:textStyle="bold"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp" />
+        <TextView
+            android:id="@+id/textoInfoSelecioneFormaPagamento"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="19dp"
+            android:text="@string/novaFormaPagamentoNenhumCartaoCadastrado"
+            android:textColor="@color/cinza"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textoFormaPagamentoTitulo"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp" />
 
-        <LinearLayout
-            android:orientation="horizontal"
+        <TextView
+            android:id="@+id/textoFormaPagamentoTitulo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="40dp"
+            android:text="@string/novaFormaPagamentoTitulo"
+            android:textColor="@color/colorAccent"
+            android:textStyle="bold"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp" />
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/novaFormaPagamentoRecyclerView"
             android:layout_width="0dp"
             android:layout_height="56dp"
             android:background="@color/cinzaclaro"
-            android:layout_marginTop="40dp"
-            app:layout_constraintTop_toBottomOf="@+id/textoInfoSelecioneFormaPagamento"
-            android:layout_marginLeft="0dp"
-            android:layout_marginRight="0dp"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent">
+            android:layout_marginTop="40dp"
+            app:layout_constraintTop_toBottomOf="@+id/textoInfoSelecioneFormaPagamento" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/novaFormaPagamentoRecyclerView"
+        <RelativeLayout
+            android:id="@+id/containerNumeroCartao"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="15dp"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/novaFormaPagamentoRecyclerView"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp">
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/editTextNumeroCartao"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textoInfoSelecioneFormaPagamento" />
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_toLeftOf="@+id/imageNumeroCartaoCorrect"
+                android:layout_toStartOf="@+id/imageNumeroCartaoCorrect">
 
-        </LinearLayout>
+                <EditText
+                    android:id="@+id/editTextNumeroCartaoContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Numero cartão"
+                    android:inputType="number"
+                    android:textColor="@color/cinza"
+                    android:textSize="16sp" />
+            </android.support.design.widget.TextInputLayout>
 
-</android.support.constraint.ConstraintLayout>
+            <ImageView
+                android:id="@+id/imageNumeroCartaoCorrect"
+                android:layout_width="12dp"
+                android:layout_height="10dp"
+
+                android:background="@drawable/icon_input_ok"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/containerNomeClienteCartao"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="15dp"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/containerNumeroCartao"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp">
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/editTextNomeClienteCartao"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_toLeftOf="@+id/imageNomeClienteCartaoCorrect"
+                android:layout_toStartOf="@+id/imageNomeClienteCartaoCorrect">
+
+                <EditText
+                    android:id="@+id/editTextNomeClienteCartaoContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Nome igual ao do cartão"
+                    android:inputType="textPersonName"
+                    android:textColor="@color/cinza"
+                    android:textSize="16sp" />
+            </android.support.design.widget.TextInputLayout>
+
+            <ImageView
+                android:id="@+id/imageNomeClienteCartaoCorrect"
+                android:layout_width="12dp"
+                android:layout_height="10dp"
+                android:background="@drawable/icon_input_ok"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/containerCodigoSeguranca"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="15dp"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/containerNomeClienteCartao"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp">
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/editTextCodigoSeguranca"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_toLeftOf="@+id/imageCodigoSegurancaCorrect"
+                android:layout_toStartOf="@+id/imageCodigoSegurancaCorrect">
+
+                <EditText
+                    android:id="@+id/editTextCodigoSegurancaContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:hint="Código de segurança"
+
+                    android:inputType="number"
+                    android:textColor="@color/cinza"
+                    android:textSize="16sp" />
+            </android.support.design.widget.TextInputLayout>
+
+            <ImageView
+                android:id="@+id/imageCodigoSegurancaCorrect"
+                android:layout_width="12dp"
+                android:layout_height="10dp"
+                android:background="@drawable/icon_input_ok"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:layout_toLeftOf="@+id/imageViewCVV"
+                android:layout_toStartOf="@+id/imageViewCVV" />
+
+            <ImageView
+                android:id="@+id/imageViewCVV"
+                android:layout_width="37dp"
+                android:layout_height="26dp"
+                app:srcCompat="@drawable/cartao_cvc"
+                android:layout_centerInParent="true"
+
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/containerValidadeCartao"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="15dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/containerCodigoSeguranca">
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/editTextNome1ClienteCartao"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_toLeftOf="@+id/imageNomeClie2nteCartaoCorrect"
+                android:layout_toStartOf="@+id/imageNomeClie2nteCartaoCorrect">
+
+                <EditText
+                    android:id="@+id/editTextNom1eClienteCartaoContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Nome igual ao do cartão"
+                    android:inputType="textPersonName"
+                    android:textColor="@color/cinza"
+                    android:textSize="16sp" />
+            </android.support.design.widget.TextInputLayout>
+
+            <ImageView
+                android:id="@+id/imageNomeClie2nteCartaoCorrect"
+                android:layout_width="12dp"
+                android:layout_height="10dp"
+                android:background="@drawable/icon_input_ok"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+        </RelativeLayout>
+
+
+
+
+
+
+    </android.support.constraint.ConstraintLayout>
+</ScrollView>

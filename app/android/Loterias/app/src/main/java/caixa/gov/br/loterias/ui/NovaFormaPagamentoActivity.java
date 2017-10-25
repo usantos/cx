@@ -1,10 +1,12 @@
 package caixa.gov.br.loterias.ui;
 
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
+import android.view.Menu;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 
@@ -43,6 +45,40 @@ public class NovaFormaPagamentoActivity extends AppCompatActivity {
         recyclerView.setAdapter(new FormaPagamentoRecyclerViewAdapter(montaCarrinhoApostaValores(values), this));
 //        recyclerView.setLayoutManager(layout);
 //        recyclerView.setNestedScrollingEnabled(false);
+
+
+        configuraActivityCarrinho();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp(){
+        finish();
+
+        return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.home, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+
+        return true;
+    }
+
+    private void configuraActivityCarrinho(){
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
+        getSupportActionBar().setBackgroundDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.navigation_gradient, null));
     }
 
     private ArrayList<String> montaCarrinhoApostaValores(String valores[]){

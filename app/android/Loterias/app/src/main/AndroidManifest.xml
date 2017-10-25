@@ -68,7 +68,7 @@
             android:screenOrientation="portrait" />
         <activity android:name=".ui.NovaFormaPagamentoActivity"
             android:configChanges="orientation"
-            android:label="@string/title_activity_confirmacao_pagamento"
+            android:label="@string/title_activity_forma_pagamento"
             android:screenOrientation="portrait" />
     </application>
 
