@@ -18,22 +18,14 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.android.volley.VolleyError;
-
 import caixa.gov.br.loterias.bo.ApostaBO;
 import caixa.gov.br.loterias.bo.silce.SilceClient;
 import caixa.gov.br.loterias.bo.silce.data.CompletaJogoRsp;
-import caixa.gov.br.loterias.bo.silce.internals.SilceConnection;
-import caixa.gov.br.loterias.bo.silce.internals.SilceSingleton;
 import caixa.gov.br.loterias.ui.Inteface.CartelaActivityInterface;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
-
 import caixa.gov.br.loterias.R;
-import caixa.gov.br.loterias.ui.SimularApostaActivity;
 import caixa.gov.br.loterias.ui.custom.ExpandableHeightGridView;
 import caixa.gov.br.loterias.utils.ColorEnum;
 import caixa.gov.br.loterias.utils.ViewUtils;
@@ -46,8 +38,9 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
 
     private String[] dezenas = {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20"
             , "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43"
-            , "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59", "60", "61", "62", "63", "64", "65", "66"};
-    private ArrayList<String> dezenasSelecionadas = new ArrayList<>();
+            , "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59", "60"};
+
+    private ArrayList<Integer> dezenasSelecionadas = new ArrayList<>();
 
     ColorEnum typeGameColorLight;
     ColorEnum typeGameColorDark;
@@ -143,22 +136,7 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
 
                     cartelaFragmentListener.adicionarApostaCarrinho();
                 } else{
-
-
-                    ApostaBO apostaBO = new ApostaBO(getActivity());
-
-                    apostaBO.completaJogo(6, Arrays.asList(15), 1, 60, new SilceClient.Listener<CompletaJogoRsp>() {
-                        @Override
-                        public void onResponse(CompletaJogoRsp response) {
-                            ViewUtils.alert(getActivity(), response.toString());
-                        }
-                    }, new SilceClient.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            ViewUtils.alert(getActivity(), "TESTE");
-                        }
-                    });
-
+                    preencheNumerosAleatorios();
                 }
             }
             break;
@@ -178,7 +156,7 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
             break;
 
             case R.id.salvarApostaLayout:{
-                RelativeLayout salvarApostaLayout = (RelativeLayout) view.findViewById(R.id.salvarApostaLayout);
+                RelativeLayout salvarApostaLayout = view.findViewById(R.id.salvarApostaLayout);
 
                 ViewGroup.LayoutParams relativelayoutParams = salvarApostaLayout.getLayoutParams();
 
@@ -193,7 +171,7 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
             break;
 
             case R.id.btnSalvarAposta:{
-                RelativeLayout salvarApostaLayout = (RelativeLayout) getView().findViewById(R.id.salvarApostaLayout);
+                RelativeLayout salvarApostaLayout = getView().findViewById(R.id.salvarApostaLayout);
 
                 salvarApostaLayout.setBackgroundResource(R.color.verdeazul);
                 ViewGroup.LayoutParams relativelayoutParams = salvarApostaLayout.getLayoutParams();
@@ -214,7 +192,26 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
         }
     }
 
-    // METODOS DE CONFIGURACOES
+    private void preencheNumerosAleatorios(){
+        ApostaBO apostaBO = new ApostaBO(getActivity());
+
+        apostaBO.completaJogo(qtdDezenasPossiveisSelecionado, dezenasSelecionadas, 1, 60, new SilceClient.Listener<CompletaJogoRsp>() {
+            @Override
+            public void onResponse(CompletaJogoRsp response) {
+                dezenasSelecionadas.clear();
+                dezenasSelecionadas.addAll(response.getPayload());
+                simularDezenasAdapter.notifyDataSetChanged();
+                verificaQtdDezenasJaSelecionadas();
+            }
+        }, new SilceClient.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                ViewUtils.alert(getActivity(), "ERRO");
+            }
+        });
+    }
+
     private void atualizaDezenaAdapter(){
         TextView text = getView().findViewById(R.id.valorAposta);
         text.setText(format("R$ %.2f", 4.5 * qtdDezenasPossiveisSelecionado));
@@ -287,8 +284,10 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
         listaDezenas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                if (dezenasSelecionadas.contains(dezenas[position])) {
-                    dezenasSelecionadas.remove(dezenas[position]);
+                Integer valorSelecionado = Integer.valueOf(dezenas[position]);
+
+                if (dezenasSelecionadas.contains(valorSelecionado)) {
+                    dezenasSelecionadas.remove(valorSelecionado);
                 } else {
                     if (dezenasSelecionadas.size() == qtdDezenasPossiveisSelecionado) {
                         // VERIFICA SE TEM OPÇÃO DE SELECIONAR MAIS DEZENAS
@@ -296,12 +295,12 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
                         qtdDezenasPossiveisSelecionado = cartelaFragmentListener.verificaNovoQtdDezenasMax(qtdDezenasPossiveisSelecionado);
 
                         if (qtdDezenasPossiveisSelecionadoAtual < qtdDezenasPossiveisSelecionado) {
-                            dezenasSelecionadas.add(dezenas[position]);
+                            dezenasSelecionadas.add(valorSelecionado);
                         } else {
                             ViewUtils.alert(getActivity(), "Número de dezenas máximo selecionadas.");
                         }
                     }else{
-                        dezenasSelecionadas.add(dezenas[position]);
+                        dezenasSelecionadas.add(valorSelecionado);
                     }
                 }
 
@@ -350,7 +349,7 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
                 textView = (TextView) view;
             }
 
-            if (dezenasSelecionadas.contains(rows[i])){
+            if (dezenasSelecionadas.contains(Integer.valueOf(rows[i]))){
                 shape.setColor(Color.parseColor(typeGameColorLight.toString()));
                 textView.setTextColor(Color.WHITE);
             }else{

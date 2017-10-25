@@ -90,9 +90,6 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         configuraFragments();
         configuraActivity();
 
-
-
-
     }
 
     private void configuraFragments(){
