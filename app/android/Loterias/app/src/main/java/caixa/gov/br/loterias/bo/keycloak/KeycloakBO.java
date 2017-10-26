@@ -1,4 +1,4 @@
-package caixa.gov.br.loterias.bo;
+package caixa.gov.br.loterias.bo.keycloak;
 
 
 /**
@@ -6,6 +6,7 @@ package caixa.gov.br.loterias.bo;
  */
 
 import android.app.Activity;
+import android.util.Log;
 
 import org.jboss.aerogear.android.authorization.AuthorizationManager;
 import org.jboss.aerogear.android.authorization.AuthzModule;
@@ -15,8 +16,10 @@ import org.jboss.aerogear.android.core.Callback;
 import java.net.URL;
 
     public class KeycloakBO {
+        private static final String TAG = KeycloakBO.class.getName();
 
-        private static final String SERVER_URL = "https://logindes.caixa.gov.br";
+        //  private static final String SERVER_URL = "https://logindes.caixa.gov.br";
+        private static final String SERVER_URL = "http://10.130.9.22:81";
         private static final String AUTH_URL = SERVER_URL +"/auth";
         private static final String AUTH_ENDPOINT = "/realms/r_inter_auth_basic/protocol/openid-connect/auth";
         private static final String ACCESS_TOKEN_ENDPOINT = "/realms/r_inter_auth_basic/protocol/openid-connect/token";
@@ -46,19 +49,42 @@ import java.net.URL;
             }
         }
 
+        public static OAuth2AuthorizationConfiguration oauth2Configuration() {
+            try {
+                return AuthorizationManager.config(MODULE_NAME, OAuth2AuthorizationConfiguration.class)
+                        .setBaseURL(new URL(AUTH_URL))
+                        .setAuthzEndpoint(AUTH_ENDPOINT)
+                        .setAccessTokenEndpoint(ACCESS_TOKEN_ENDPOINT)
+                        .setRefreshEndpoint(REFRESH_TOKEN_ENDPOINT)
+                        .setAccountId(AUTHZ_ACCOOUNT_ID)
+                        .setClientId(AUTH_CLIENT_ID)
+                        .setClientSecret(CLIENT_SECRET)
+                        .setRedirectURL(AUTH_REDIRECT_URL);
+            } catch (Exception e) {
+                throw new RuntimeException("Não foi possível inicializar os serviços de " +
+                        "autenticação OAUTH2 por um erro de configuração", e);
+            }
+        }
+
         public static void connect(final Activity activity, final Callback callback) {
             try {
                 final AuthzModule authzModule = AuthorizationManager.getModule(MODULE_NAME);
+
+                Log.i(TAG, "authzModule = " + authzModule.getClass().getName());
 
                 authzModule.requestAccess(activity, new Callback<String>() {
                     @SuppressWarnings("unchecked")
                     @Override
                     public void onSuccess(String s) {
+                        Log.i(TAG, "KeycloakBO.connect.onSuccess: " + s);
+
                         callback.onSuccess(s);
                     }
 
                     @Override
                     public void onFailure(Exception e) {
+                        Log.i(TAG, "KeycloakBO.connect.onFailure: " + e);
+
                         if (!e.getMessage().matches(OAuthWebViewDialog.OAuthReceiver.DISMISS_ERROR)) {
                             authzModule.deleteAccount();
                         }

@@ -1,4 +1,4 @@
-package caixa.gov.br.loterias.bo.silce;
+ package caixa.gov.br.loterias.bo.silce;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -15,16 +15,23 @@ import java.util.Arrays;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
+import caixa.gov.br.loterias.bo.ApostaBO;
 import caixa.gov.br.loterias.bo.silce.data.CompletaJogoRsp;
 import caixa.gov.br.loterias.bo.silce.dto.UsuarioLogadoResponse;
 import caixa.gov.br.loterias.bo.silce.internals.SilceConnection;
 import caixa.gov.br.loterias.bo.silce.internals.SilceSingleton;
 
+import static junit.framework.Assert.assertTrue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.Matchers.isOneOf;
 
 @RunWith(AndroidJUnit4.class)
 public class SilceClientAndroidTest {
+    private static final String SILCE_USERNAME = "vinicius.ferraz@gmail.com";
+    private static final String SILCE_PASSWORD = "Vaibombar1";
+    //public static final String SILCE_BASE_URL = "https://simlo.des.caixa/silce-servico-rest/rest/v1/";
+    public static final String SILCE_BASE_URL = "http://10.130.9.22:81/silce-servico-rest/rest/v1/";
     private static final String TAG = SilceClientAndroidTest.class.getName();
     private class Listener<T> implements SilceClient.Listener<T> {
         T response = null;
@@ -60,11 +67,10 @@ public class SilceClientAndroidTest {
         }
     };
 
-    //public static final String SILCE_BASE_URL = "https://simlo.des.caixa/silce-servico-rest/rest/v1/";
-    public static final String SILCE_BASE_URL = "http://10.130.9.22:81/silce-servico-rest/rest/v1/";
     Context context;
     SilceClient silceClient;
     Semaphore pendingRequests;
+    ApostaBO apostaBO;
 
     @Before
     public void setup() {
@@ -72,6 +78,7 @@ public class SilceClientAndroidTest {
         SilceSingleton queue = new SilceSingleton(context);
         SilceConnection conn = SilceConnection.create(queue.getRequestQueue(), SILCE_BASE_URL);
         this.silceClient = SilceClient.create(conn);
+        this.apostaBO = new ApostaBO(this.context);
     }
 
     @Test
@@ -89,7 +96,7 @@ public class SilceClientAndroidTest {
 
         pendingRequests.acquire();
 
-        silceClient.completaJogo(6, Arrays.asList(15, 18, 19, 48, 52, 58), 1, 60,
+        apostaBO.completaJogo(6, Arrays.asList(15, 18, 19, 48, 52, 58), 1, 60,
                 listener, errorListener);
         pendingRequests.tryAcquire(60, TimeUnit.SECONDS);
 
@@ -98,6 +105,27 @@ public class SilceClientAndroidTest {
 
         assertThat(listener.getResponse(), is(notNullValue()));
         assertThat(errorListener.getError(), is(nullValue()));
+    }
+
+    @Test()
+    public void autenticaCrypto() throws Exception {
+        // for now, only tests the cryptography
+        boolean ok = true;
+        Listener<UsuarioLogadoResponse> listener = new Listener<>();
+        ErrorListener errorListener = new ErrorListener();
+        pendingRequests = new Semaphore(1, true);
+
+        pendingRequests.acquire();
+        silceClient.autenticar(SILCE_USERNAME, SILCE_PASSWORD,
+                listener, errorListener);
+        pendingRequests.tryAcquire(60, TimeUnit.SECONDS);
+
+        Log.d(TAG, "response = " + listener.getResponse());
+        Log.d(TAG, "error = " + errorListener.getError());
+
+        assertTrue((listener.getResponse() != null)
+            || (errorListener.getError() != null
+                && errorListener.getError().networkResponse.statusCode == 401));
     }
 
     @Test
@@ -109,7 +137,7 @@ public class SilceClientAndroidTest {
         pendingRequests = new Semaphore(1, true);
 
         pendingRequests.acquire();
-        silceClient.autenticar("rinaldo90@gmail.com", "Vaibombar1",
+        silceClient.autenticar(SILCE_USERNAME, SILCE_PASSWORD,
                 listener, errorListener);
         //silceClient.autenticar("email@gmail.com", "a",
         //                listener, errorListener);
