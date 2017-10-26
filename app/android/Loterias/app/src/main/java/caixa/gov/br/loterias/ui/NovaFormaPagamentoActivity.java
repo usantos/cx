@@ -15,7 +15,7 @@ import java.util.Collections;
 import java.util.List;
 
 import caixa.gov.br.loterias.R;
-import caixa.gov.br.loterias.ui.adapter.FormaPagamentoRecyclerViewAdapter;
+import caixa.gov.br.loterias.ui.adapter.NovaFormaPagamentoBandeiraAdapter;
 
 public class NovaFormaPagamentoActivity extends AppCompatActivity {
 
@@ -30,7 +30,7 @@ public class NovaFormaPagamentoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_nova_forma_pagamento);
 
 
-        String[] values = new String[] { "01", "02", "02", "02", "02"};
+        String[] values = new String[] { "01", "02", "02", "02", "02", "02", "02", "02", "02"};
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.novaFormaPagamentoRecyclerView);
         LinearLayoutManager layoutManager
@@ -39,7 +39,7 @@ public class NovaFormaPagamentoActivity extends AppCompatActivity {
 
         recyclerView.setLayoutManager(layoutManager);
 
-        recyclerView.setAdapter(new FormaPagamentoRecyclerViewAdapter(montaCarrinhoApostaValores(values), this));
+        recyclerView.setAdapter(new NovaFormaPagamentoBandeiraAdapter(montaCarrinhoApostaValores(values), this));
 
         configuraActivityCarrinho();
         configuraBotoesListener();

@@ -24,7 +24,6 @@ import caixa.gov.br.loterias.bo.silce.SilceClient;
 import caixa.gov.br.loterias.bo.silce.data.CompletaJogoRsp;
 import caixa.gov.br.loterias.ui.Inteface.CartelaActivityInterface;
 import java.util.ArrayList;
-import java.util.Arrays;
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.ui.custom.ExpandableHeightGridView;
 import caixa.gov.br.loterias.utils.ColorEnum;
@@ -151,7 +150,7 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
 
             case R.id.botaoCarrinho:
             case R.id.textInfoCarrinho:{
-                ViewUtils.alert(getActivity(), "Carrinho de apostas pressionado");
+                cartelaFragmentListener.abreCarrinhoApostas();
             }
             break;
 
@@ -381,5 +380,6 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
     public interface CartelaFragmentListener {
         int verificaNovoQtdDezenasMax(int qtdDezenasAtual);
         void adicionarApostaCarrinho();
+        void abreCarrinhoApostas();
     }
 }

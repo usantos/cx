@@ -353,4 +353,13 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         activity.putExtra("tipoAposta", tipoJogo);
         startActivity(activity);
     }
+
+    @Override
+    public void abreCarrinhoApostas() {
+        Intent activity = new Intent(this, CarrinhoActivity.class);
+
+        startActivity(activity);
+    }
+
+
 }
