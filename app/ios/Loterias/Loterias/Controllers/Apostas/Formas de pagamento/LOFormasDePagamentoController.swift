@@ -12,13 +12,17 @@ protocol LOFormasDePagamentoDelegate {
     func excluirFormaDePagamento(_ sender : UITableViewCell)
 }
 
-class LOFormasDePagamentoController: UITableViewController, LOFormasDePagamentoDelegate {
+class LOFormasDePagamentoController: UIViewController, LOFormasDePagamentoDelegate, UITableViewDataSource, UITableViewDelegate {
     
     let gradient : CAGradientLayer = CAGradientLayer()
     @IBOutlet var titleViewCustom : UIView!
     var arrayCells = Array<UITableViewCell>()
     var listaFormaPagamento = Array<Int>()
     var arrayFormaPagamentoCells = Array<LOFormaDePagamentoCell>()
+    
+    @IBOutlet var navBarCustom : UIView!
+    @IBOutlet var tableView : UITableView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -35,7 +39,24 @@ class LOFormasDePagamentoController: UITableViewController, LOFormasDePagamentoD
     }
     
     override func viewWillAppear(_ animated: Bool) {
-
+        self.navigationItem.titleView = self.titleViewCustom
+        
+        self.navigationController?.isNavigationBarHidden = true
+        
+        self.gradient.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 64)
+        self.gradient.startPoint = CGPoint(x: 0.0, y: 0.5)
+        self.gradient.endPoint = CGPoint(x: 1.0, y: 0.5)
+        self.gradient.colors = [self.UIColorFromHex(0x54bbab, alpha: 1.0).cgColor, self.UIColorFromHex(0x005ca9, alpha: 1.0).cgColor]
+        
+        self.navBarCustom.layer.insertSublayer(self.gradient, at: 0)
+    }
+    
+    @IBAction func backButtonAction () {
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        self.navigationController?.isNavigationBarHidden = false
     }
 
     override func didReceiveMemoryWarning() {
@@ -44,11 +65,11 @@ class LOFormasDePagamentoController: UITableViewController, LOFormasDePagamentoD
 
     // MARK: - Table view data source
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return arrayCells.count
     }
     
@@ -75,7 +96,7 @@ class LOFormasDePagamentoController: UITableViewController, LOFormasDePagamentoD
         arrayCells.append(rodapeCell!)
     }
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if !(tableView.cellForRow(at: indexPath) == self.arrayCells.first || tableView.cellForRow(at: indexPath) == self.arrayCells.last) {
             let cell = tableView.cellForRow(at: indexPath) as? LOFormaDePagamentoCell
             
@@ -96,7 +117,7 @@ class LOFormasDePagamentoController: UITableViewController, LOFormasDePagamentoD
         }
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         return arrayCells[indexPath.row]
     }
     
@@ -112,14 +133,14 @@ class LOFormasDePagamentoController: UITableViewController, LOFormasDePagamentoD
         }
     }
     
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         if tableView.cellForRow(at: indexPath) == self.arrayCells.first || tableView.cellForRow(at: indexPath) == self.arrayCells.last {
             return false
         }
         return true
     }
     
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             arrayCells.remove(at: indexPath.row)
             arrayFormaPagamentoCells.remove(at: indexPath.row - 1)

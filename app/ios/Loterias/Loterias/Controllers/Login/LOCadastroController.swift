@@ -101,8 +101,8 @@ class LOCadastroController: UITableViewController, UITextFieldDelegate, MaskedTe
         
         self.arrayTextFields = [cpf, nome, nomeDaMae, cep, dataNascimento, email]
         
-        self.navigationController?.navigationBar.backIndicatorImage = #imageLiteral(resourceName: "icons8-Back Filled-100")
-        self.navigationController?.navigationBar.backIndicatorTransitionMaskImage = #imageLiteral(resourceName: "icons8-Back Filled-100")
+        self.navigationController?.navigationBar.backIndicatorImage = #imageLiteral(resourceName: "ic-back-button")
+        self.navigationController?.navigationBar.backIndicatorTransitionMaskImage = #imageLiteral(resourceName: "ic-back-button")
     }
     
     override func viewWillDisappear(_ animated: Bool) {

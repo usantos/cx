@@ -11,7 +11,7 @@ import Alamofire
 
 class LOTermoBusinessService: NSObject {
     public func getTermo (parameters: Parameters, completionHandler: @escaping(_ error: String?, _ termo : String?) -> ()) {
-        let urlTest = URL(string: getBaseUrl()! + "termos-de-uso/termo-vigente".toBase64())
+        let urlTest = URL(string: getBaseUrl()! + "termos-de-uso/termo-vigente".toBase64()!)
         
         let header: HTTPHeaders = ["Accept": "application/json"]
         Alamofire.request(urlTest!, method: .get , encoding: JSONEncoding.prettyPrinted ,headers :header).responseJSON { response in
@@ -30,7 +30,7 @@ class LOTermoBusinessService: NSObject {
     
     
     public func registraAceiteTermo (parameters: Parameters, completionHandler: @escaping(_ error: Bool?) -> ()) {
-        let urlTest = URL(string: getBaseUrl()! + "/termos-de-uso/aceitar-termo-vigente".toBase64())
+        let urlTest = URL(string: getBaseUrl()! + "/termos-de-uso/aceitar-termo-vigente".toBase64()!)
         
         let header: HTTPHeaders = ["Accept": "application/json"]
         Alamofire.request(urlTest!, method: .post , encoding: JSONEncoding.prettyPrinted ,headers :header).responseJSON { response in

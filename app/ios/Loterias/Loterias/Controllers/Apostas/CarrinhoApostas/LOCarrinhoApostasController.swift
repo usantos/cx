@@ -8,11 +8,13 @@
 
 import UIKit
 
-class LOCarrinhoApostasController: UITableViewController, LOItemCellDelegate {
+class LOCarrinhoApostasController: UIViewController, LOItemCellDelegate, UITableViewDelegate, UITableViewDataSource {
 
     var cellsArray : Array<UITableViewCell>?
     let gradient : CAGradientLayer = CAGradientLayer()
     @IBOutlet var titleViewCustom : UIView!
+    @IBOutlet var navBarCustom : UIView!
+    @IBOutlet var tableView : UITableView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,23 +28,18 @@ class LOCarrinhoApostasController: UITableViewController, LOItemCellDelegate {
     override func viewWillAppear(_ animated: Bool) {
         self.navigationItem.titleView = self.titleViewCustom
         
+        self.navigationController?.isNavigationBarHidden = true
+        
         self.gradient.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 64)
         self.gradient.startPoint = CGPoint(x: 0.0, y: 0.5)
         self.gradient.endPoint = CGPoint(x: 1.0, y: 0.5)
         self.gradient.colors = [self.UIColorFromHex(0x54bbab, alpha: 1.0).cgColor, self.UIColorFromHex(0x005ca9, alpha: 1.0).cgColor]
-        self.gradient.name = "gradientView"
-
-        self.navigationController?.navigationBar.tintColor = .white
-        self.navigationController?.isNavigationBarHidden = false
-
-        self.navigationController?.navigationBar.setBackgroundImage(self.image(fromLayer: self.gradient), for: .default)
+        
+        self.navBarCustom.layer.insertSublayer(self.gradient, at: 0)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        if self.isMovingFromParentViewController {
-            self.navigationController?.navigationBar.shadowImage = UIImage()
-            self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        }
+        self.navigationController?.isNavigationBarHidden = false
     }
 
     override func didReceiveMemoryWarning() {
@@ -51,16 +48,19 @@ class LOCarrinhoApostasController: UITableViewController, LOItemCellDelegate {
 
     // MARK: - Table view data source
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return cellsArray != nil ? (cellsArray?.count)! : 0
     }
 
+    @IBAction func backButtonAction () {
+        self.navigationController?.popViewController(animated: true)
+    }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         return cellsArray![indexPath.row]
     }
     
@@ -70,7 +70,7 @@ class LOCarrinhoApostasController: UITableViewController, LOItemCellDelegate {
         cellsArray?.append(self.tableView.dequeueReusableCell(withIdentifier: "cabecalhoCell")!)
         
         let cell = self.tableView.dequeueReusableCell(withIdentifier: "itemCell")! as! LOItemCell
-        cell.numeros.text = "AISUHASUHIUASHAHUISHIUAHSIUAHSIUHAIUSHAIUHSAHSIASHUAHSIUAHSIUAHSIUAHSAHIUSHIUAHSUIAHSIUh"
+        cell.numeros.text = "1 2 3 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24"
         cell.delegate = self
         
         cellsArray?.append(cell)

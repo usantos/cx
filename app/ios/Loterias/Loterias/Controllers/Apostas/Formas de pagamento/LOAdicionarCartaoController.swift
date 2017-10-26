@@ -38,15 +38,32 @@ class LOAdicionarCartaoController: UITableViewController, UICollectionViewDelega
     
     let gradient : CAGradientLayer = CAGradientLayer()
     var arrayCells = Array<LOBandeiraCell>()
+    var arrayTableCell = Array<UITableViewCell>()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.tableView.rowHeight = UITableViewAutomaticDimension
+        self.tableView.estimatedRowHeight = 150
         
         maskedDelegate = MaskedTextFieldDelegate(format: "[0000] [0000] [0000] [0000]")
         maskedDelegate.listener = self
         
         numeroCartao.delegate = maskedDelegate
+    
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.navigationItem.titleView = self.titleViewCustom
         
-        self.navigationItem.titleView = titleViewCustom
+        self.gradient.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 64)
+        self.gradient.startPoint = CGPoint(x: 0.0, y: 0.5)
+        self.gradient.endPoint = CGPoint(x: 1.0, y: 0.5)
+        self.gradient.colors = [self.UIColorFromHex(0x54bbab, alpha: 1.0).cgColor, self.UIColorFromHex(0x005ca9, alpha: 1.0).cgColor]
+        
+        self.navigationController?.navigationBar.tintColor = .white
+        
+        self.navigationController?.navigationBar.setBackgroundImage(self.image(fromLayer: self.gradient), for: .default)
     }
     
     override func didReceiveMemoryWarning() {
@@ -54,9 +71,9 @@ class LOAdicionarCartaoController: UITableViewController, UICollectionViewDelega
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
     }
-
+    
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {

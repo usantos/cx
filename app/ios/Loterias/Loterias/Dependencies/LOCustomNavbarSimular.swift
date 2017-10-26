@@ -13,6 +13,7 @@ class LOCustomNavbarSimular: UIView {
     @IBOutlet weak var navTitle : UILabel!
     @IBOutlet weak var concurso : UILabel!
     @IBOutlet weak var sorteio : UILabel!
+    @IBOutlet var botaoDireita : UIButton!
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)

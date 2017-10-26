@@ -70,6 +70,11 @@ class LOSSOController: UIViewController {
 //            self.alertSimple(title: "Atenção", message: "Sem conexão com a internet.")
 //        }
     }
+    
+    @IBAction func fazerLogin() {
+        login2()
+        //self.performSegue(withIdentifier: "mandaParaLogin", sender: self)
+    }
 
     // MARK: - Navigation
 

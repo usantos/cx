@@ -95,6 +95,8 @@ class LOSimularApostaNumeros: UIView, UICollectionViewDelegateFlowLayout, UIColl
         self.addSubview(teste)
                 
         self.collectionViewNumeros.register(UINib(nibName: "LONumeroApostaCell", bundle: nil) , forCellWithReuseIdentifier: "numeroCell")
+        
+        aplicarEstiloBotaoCentral()
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -102,6 +104,7 @@ class LOSimularApostaNumeros: UIView, UICollectionViewDelegateFlowLayout, UIColl
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        //MOCK VALOR
         return 20
     }
     
@@ -140,6 +143,7 @@ class LOSimularApostaNumeros: UIView, UICollectionViewDelegateFlowLayout, UIColl
             
             cell.isSelecionado = false
             arraySelecionados.remove(cell)
+            sortedNumbers = sortedNumbers.filter { $0 != (Int(cell.numero.text!)!)}
         } else {
             cell.numero.layer.borderWidth = 1
             cell.numero.layer.borderColor = self.UIColorFromHex(estiloModalidade.corEscura, alpha: 1.0).cgColor
@@ -148,6 +152,7 @@ class LOSimularApostaNumeros: UIView, UICollectionViewDelegateFlowLayout, UIColl
             
             cell.isSelecionado = true
             arraySelecionados.add(cell)
+            sortedNumbers.append(Int(cell.numero.text!)!)
         }
         
         if arraySelecionados.count == 0 {
@@ -158,18 +163,61 @@ class LOSimularApostaNumeros: UIView, UICollectionViewDelegateFlowLayout, UIColl
         
         //Setar no lugar do 5 o número que o usuário escolher na popup.
         //No 4 o número - 1
+        //MOCK VALOR
         if arraySelecionados.count == 5 {
+            aplicarEstiloBotaoCentral()
+            
             apresentaSalvarAposta(hidden: false)
         } else if arraySelecionados.count == 4 && !salvarAposta.isHidden {
+            aplicarEstiloBotaoCentral()
+            
             apresentaSalvarAposta(hidden: true)
         }
         
         //Igual ao numero + 1
+        //MOCK VALOR
         if flagApostaSalva == true && arraySelecionados.count == 6{
             retornaSalvarApostaParaStatusInicial()
     
             apresentaSalvarAposta(hidden: false)
         }
+    }
+    
+    func aplicarEstiloBotaoCentral () {
+        var combination = NSMutableAttributedString()
+        
+        //MOCK VALOR
+        if arraySelecionados.count >= 5 {
+            let paragraph = NSMutableParagraphStyle()
+            paragraph.alignment = .center
+            let fixoAposte = NSAttributedString.init(string: "Adicionar\n", attributes: [NSAttributedStringKey.font: UIFont.init(name: "FuturaStd-Bold", size: 15)!, NSAttributedStringKey.foregroundColor:UIColor.white, NSAttributedStringKey.paragraphStyle: paragraph])
+            
+            //Remover mock de valor
+            let textoDinamico = NSAttributedString.init(string: "ao carrinho de apostas", attributes: [NSAttributedStringKey.font: UIFont.init(name: "FuturaStd-Medium", size: 15)!, NSAttributedStringKey.foregroundColor:UIColor.white, NSAttributedStringKey.paragraphStyle: paragraph])
+            
+            combination = NSMutableAttributedString()
+            combination.append(fixoAposte)
+            combination.append(textoDinamico)
+            
+            adicionarAoCarinhoDeApostas.removeTarget(self, action: #selector(completarComNumerosAleatorios), for: .touchUpInside)
+            adicionarAoCarinhoDeApostas.addTarget(self, action: #selector(adicionarApostaNoCarrinho), for: .touchUpInside)
+        } else {
+            let paragraph = NSMutableParagraphStyle()
+            paragraph.alignment = .center
+            let fixoAposte = NSAttributedString.init(string: "Completar\n", attributes: [NSAttributedStringKey.font: UIFont.init(name: "FuturaStd-Bold", size: 15)!, NSAttributedStringKey.foregroundColor:UIColor.white, NSAttributedStringKey.paragraphStyle: paragraph])
+            
+            //Remover mock de valor
+            let textoDinamico = NSAttributedString.init(string: "com números aleatórios", attributes: [NSAttributedStringKey.font: UIFont.init(name: "FuturaStd-Medium", size: 15)!, NSAttributedStringKey.foregroundColor:UIColor.white, NSAttributedStringKey.paragraphStyle: paragraph])
+            
+            combination = NSMutableAttributedString()
+            combination.append(fixoAposte)
+            combination.append(textoDinamico)
+            
+            adicionarAoCarinhoDeApostas.removeTarget(self, action: #selector(adicionarApostaNoCarrinho), for: .touchUpInside)
+            adicionarAoCarinhoDeApostas.addTarget(self, action: #selector(completarComNumerosAleatorios), for: .touchUpInside)
+        }
+        
+        adicionarAoCarinhoDeApostas.setAttributedTitle(combination, for: .normal)
     }
     
     func apresentaLimparApostas (hidden: Bool) {
@@ -207,7 +255,9 @@ class LOSimularApostaNumeros: UIView, UICollectionViewDelegateFlowLayout, UIColl
         apresentaLimparApostas(hidden: true)
         apresentaSalvarAposta(hidden: true)
         retornaSalvarApostaParaStatusInicial()
-        
+        aplicarEstiloBotaoCentral()
+        //MOCK VALOR
+        sortedNumbers = [Int]()
         collectionViewNumeros.reloadData()
     }
     
@@ -338,8 +388,62 @@ class LOSimularApostaNumeros: UIView, UICollectionViewDelegateFlowLayout, UIColl
         self.collectionViewNumeros.addObserver(self, forKeyPath: "contentSize" , options: NSKeyValueObservingOptions.old, context: nil)
     }
     
-    @IBAction func adicionarApostaNoCarrinho() {
+    @objc func adicionarApostaNoCarrinho() {
         self.delegateSimular.adicionarNoCarrinho()
+    }
+    
+    @objc func completarComNumerosAleatorios() {
+        //MOCK VALOR
+        for _ in 0..<5 - self.arraySelecionados.count {
+            //MOCK VALOR
+            randomInt(min: 0, max: 19)
+        }
+        
+        for number in sortedNumbers {
+            let cell = self.collectionViewNumeros.cellForItem(at: IndexPath(item: number, section: 0)) as? LONumeroApostaCell
+            cell?.isSelecionado = true
+            self.arraySelecionados.add(cell!)
+        }
+        
+        
+        apresentaSalvarAposta(hidden: false)
+        apresentaLimparApostas(hidden: false)
+        aplicarEstiloBotaoCentral()
+        
+        self.collectionViewNumeros.reloadData()
+    }
+    
+    //MOCK VALOR
+    var sortedNumbers = [Int]()
+    
+//    func randomSequenceGenerator() -> Int {
+//        let randomIndex = Int(arc4random()) % self.numbers!.count
+//        return self.numbers![randomIndex]
+//    }
+//
+//    func montaArrayParaRandomizar(completionHandler: @escaping() -> ()) {
+//        if arraySelecionados.count > 0 {
+//            if numbers?.count == 0 {
+//                numbers = Array(0 ... 19)
+//            }
+//
+//            for cell : LONumeroApostaCell in (arraySelecionados as? [LONumeroApostaCell])! {
+//                numbers = numbers?.filter { $0 != (Int(cell.numero.text!)! + 1)}
+//            }
+//            completionHandler()
+//        } else {
+//            numbers = Array(0 ... 19)
+//            completionHandler()
+//        }
+//    }
+    
+    func randomInt(min: Int, max:Int) -> Int {
+        var randomNumber : Int!
+        repeat {
+            randomNumber = min + Int(arc4random_uniform(UInt32(max - min + 1)))
+        } while (sortedNumbers.contains(randomNumber))
+        sortedNumbers.append(randomNumber)
+        return randomNumber
     }
     
     @IBAction func enviarParaCarrinhoDeApostas () {

@@ -12,7 +12,7 @@ import Alamofire
 class LORegisterBusinessService: NSObject {
     
     public func getUfs (parameters: Parameters, completionHandler: @escaping(_ error: String?, _ listaCidade : [LOUnidadeFederativa]?) -> ()) {
-        let urlTest = URL(string: getBaseUrl()! + "ufs".toBase64())
+        let urlTest = URL(string: getBaseUrl()! + "ufs".toBase64()!)
         
         let header: HTTPHeaders = ["Accept": "application/json"]
         Alamofire.request(urlTest!, method: .get ,headers :header).responseString { response in

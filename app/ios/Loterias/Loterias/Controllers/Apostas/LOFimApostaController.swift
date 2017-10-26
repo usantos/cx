@@ -22,6 +22,19 @@ class LOFimApostaController: UIViewController {
         self.view.layer.insertSublayer(gradient, at: 0)
         // Do any additional setup after loading the view.
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        let gradient : CAGradientLayer = CAGradientLayer()
+
+        gradient.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 64)
+        gradient.startPoint = CGPoint(x: 0.0, y: 0.5)
+        gradient.endPoint = CGPoint(x: 1.0, y: 0.5)
+        gradient.colors = [self.UIColorFromHex(0x54bbab, alpha: 1.0).cgColor, self.UIColorFromHex(0x005ca9, alpha: 1.0).cgColor]
+        
+        self.navigationController?.navigationBar.tintColor = .white
+        
+        self.navigationController?.navigationBar.setBackgroundImage(self.image(fromLayer: gradient), for: .default)
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

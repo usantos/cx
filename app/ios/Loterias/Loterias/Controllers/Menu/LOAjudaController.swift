@@ -13,7 +13,8 @@ class LOAjudaController: UIViewController {
 
     @IBOutlet weak var termosDeUso: UIButton! {
         didSet {
-            politicaPrivacidade.titleLabel?.numberOfLines = 0
+            termosDeUso.titleLabel?.numberOfLines = 0
+            termosDeUso.titleLabel?.textAlignment = .center
         }
     }
     @IBOutlet weak var politicaPrivacidade: UIButton! {
@@ -29,18 +30,13 @@ class LOAjudaController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        DispatchQueue.main.async {
-            self.gradient.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 64)
-            self.gradient.startPoint = CGPoint(x: 0.0, y: 0.5)
-            self.gradient.endPoint = CGPoint(x: 1.0, y: 0.5)
-            self.gradient.colors = [self.UIColorFromHex(0x54bbab, alpha: 1.0).cgColor, self.UIColorFromHex(0x005ca9, alpha: 1.0).cgColor]
-            self.gradient.name = "gradientView"
-            
-            self.navigationController?.navigationBar.tintColor = .white
-            self.navigationController?.isNavigationBarHidden = false
-            
-            self.navigationController?.navigationBar.setBackgroundImage(self.image(fromLayer: self.gradient), for: .default)
-        }
+        self.navigationController?.isNavigationBarHidden = true
+        
+        self.gradient.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 64)
+        self.gradient.startPoint = CGPoint(x: 0.0, y: 0.5)
+        self.gradient.endPoint = CGPoint(x: 1.0, y: 0.5)
+        self.gradient.colors = [self.UIColorFromHex(0x54bbab, alpha: 1.0).cgColor, self.UIColorFromHex(0x005ca9, alpha: 1.0).cgColor]
+        self.view.layer.insertSublayer(self.gradient, at: 0)            
         
         chamaWebService()
     }
@@ -49,11 +45,12 @@ class LOAjudaController: UIViewController {
         super.didReceiveMemoryWarning()
     }
     
+    @IBAction func backButtonAction () {
+        self.navigationController?.popViewController(animated: true)
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
-        if self.isMovingFromParentViewController {
-            self.navigationController?.navigationBar.shadowImage = UIImage()
-            self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        }
+        self.navigationController?.isNavigationBarHidden = false
     }
     
     func chamaWebService () {

@@ -12,7 +12,7 @@ import Alamofire
 class LOMeiosDePagamentoBusinessService : NSObject {
     
     public func getMeiosDePagamento (parameters: Parameters, completionHandler: @escaping(_ error: String?, _ listaMeioPagamento : [LOMeioDePagamento]?) -> ()) {
-        let urlTest = URL(string: getBaseUrl()! + "meios-pagamento".toBase64())
+        let urlTest = URL(string: getBaseUrl()! + "meios-pagamento".toBase64()!)
         
         let header: HTTPHeaders = ["Accept": "application/json"]
         Alamofire.request(urlTest!, method: .get , encoding: JSONEncoding.prettyPrinted ,headers :header).responseJSON { response in

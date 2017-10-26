@@ -41,6 +41,18 @@ class LOLeftSideMenuControllerController: UITableViewController {
         self.view.window?.makeKeyAndVisible()
     }
     
+    func dismissMenu () {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        //Opção de apostar
+        if indexPath.row == 2 {
+            dismissMenu()
+        }
+    }
+    
     /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)

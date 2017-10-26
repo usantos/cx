@@ -18,29 +18,31 @@ class LORepassesSociaisController: UITableViewController {
         super.viewDidLoad()
         self.tableView.estimatedRowHeight = 150
         self.tableView.tableFooterView = UITableViewHeaderFooterView()
-        DispatchQueue.main.async {
-            self.gradientNav.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 64)
-            self.gradientNav.startPoint = CGPoint(x: 0.0, y: 0.5)
-            self.gradientNav.endPoint = CGPoint(x: 1.0, y: 0.5)
-            self.gradientNav.colors = [self.UIColorFromHex(0x54bbab, alpha: 1.0).cgColor, self.UIColorFromHex(0x005ca9, alpha: 1.0).cgColor]
-            self.gradientNav.name = "gradientView"
-            
-            self.navigationController?.navigationBar.tintColor = .white
-            self.navigationController?.isNavigationBarHidden = false
-            
-            self.navigationItem.titleView = self.titleCustomView
-            
-            self.navigationController?.navigationBar.setBackgroundImage(self.image(fromLayer: self.gradientNav), for: .default)
-        }
+        
+        self.navigationController?.isNavigationBarHidden = true
+        addStatusBarBackgroundView()
+    }
+    
+    func addStatusBarBackgroundView() {
+        self.gradientNav.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 20)
+        self.gradientNav.startPoint = CGPoint(x: 0.0, y: 0.5)
+        self.gradientNav.endPoint = CGPoint(x: 1.0, y: 0.5)
+        self.gradientNav.colors = [self.UIColorFromHex(0x54bbab, alpha: 1.0).cgColor, self.UIColorFromHex(0x005ca9, alpha: 1.0).cgColor]
+
+        let rect = CGRect(origin: CGPoint(x: 0, y: -20), size:CGSize(width: self.view.frame.width, height:20))
+        let view : UIView = UIView.init(frame: rect)
+        view.backgroundColor = .clear
+        view.layer.addSublayer(gradientNav)
+
+        self.view?.addSubview(view)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        DispatchQueue.main.async {
-            if self.isMovingFromParentViewController {
-                self.navigationController?.navigationBar.shadowImage = UIImage()
-                self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-            }
-        }
+        self.navigationController?.isNavigationBarHidden = false
+    }
+    
+    @IBAction func backButtonAction () {
+        self.navigationController?.popViewController(animated: true)
     }
 
     override func didReceiveMemoryWarning() {

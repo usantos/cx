@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<string>Foundation</string>
+	<string>CoreData</string>
+	<string>AeroGearOAuth2</string>
+	<string>SideMenu</string>
+	<string>CoreGraphics</string>
+	<string>Dispatch</string>
+	<string>CryptoSwift</string>
+	<string>QuartzCore</string>
+	<string>Alamofire</string>
+	<string>Security</string>
+	<string>Loterias</string>
+	<string>TextFieldEffects</string>
+	<string>CoreServices</string>
+	<string>Darwin</string>
+	<string>UIKit</string>
+	<string>AnimatedCollectionViewLayout</string>
+	<string>XCTest</string>
+	<string>SystemConfiguration</string>
+	<string>Glibc</string>
+	<string>IQKeyboardManagerSwift</string>
+	<string>MobileCoreServices</string>
+	<string>InputMask</string>
+	<string>AeroGearHttp</string>
+</array>
+</plist>

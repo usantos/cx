@@ -98,19 +98,21 @@ class LOModalideController: UIViewController, UISideMenuNavigationControllerDele
     }
     
     func chamaWebservice () {
-        LOModalidadesBusinessService().getModalidades(parameters: [:]) { (error, modalidades) in
-            if error != nil {
-                //self.alertSimple(title: "Atenção", message: error!)
-                
+//        let loadingView = self.addLoadingView(alpha: 1.0)
+//        LOModalidadesBusinessService().getModalidades(parameters: [:]) { (error, modalidades) in
+//            loadingView.removeFromSuperview()
+//            if error != nil {
+//                self.alertSimple(title: "Atenção", message: error!)
+        
                 self.arrayModalidades = [LOModalidadeEnum.Megasena, LOModalidadeEnum.Duplasena, LOModalidadeEnum.Lotofacil, LOModalidadeEnum.Quina]
                 self.collectionView.reloadData()
-            } else {
-                for modalidade : LOModalidade in modalidades! {
-                    self.arrayModalidades.append(LOModalidadeEnum(rawValue: modalidade.descricao)!)
-                }
-                self.collectionView.reloadData()
-            }
-        }
+//            } else {
+//                for modalidade : LOModalidade in modalidades! {
+//                    self.arrayModalidades.append(LOModalidadeEnum(rawValue: modalidade.descricao)!)
+//                }
+//                self.collectionView.reloadData()
+//            }
+//        }
     }
     
     func selecionaEstiloModalidade () -> EstiloModalidade {
@@ -125,35 +127,29 @@ class LOModalideController: UIViewController, UISideMenuNavigationControllerDele
                 estiloModalidade = EstiloModalidade(corClara: 0x00AB6B, corEscura: 0x009b66 , imagemTopo: #imageLiteral(resourceName: "titulo_megasena"), imagemCalendario: #imageLiteral(resourceName: "icon-data-megasena"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-megasena"), tipoModalidade: self.tipoModalidade!)
                 break
             case .Lotomania:
-                //
-                estiloModalidade = EstiloModalidade(corClara: 0x7d1a3f, corEscura: 0x7d1a3f , imagemTopo: #imageLiteral(resourceName: "titulo-duplasena"), imagemCalendario: #imageLiteral(resourceName: "icon-data-duplasena"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-duplasena"), tipoModalidade: self.tipoModalidade!)
+                estiloModalidade = EstiloModalidade(corClara: 0xff9a2f, corEscura: 0xdd8628 , imagemTopo: #imageLiteral(resourceName: "titulo_lotomania"), imagemCalendario: #imageLiteral(resourceName: "icon-data-lotomania"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-lotomania"), tipoModalidade: self.tipoModalidade!)
                 break
             case .Lotogol:
-                //
-                estiloModalidade = EstiloModalidade(corClara: 0x7d1a3f, corEscura: 0x7d1a3f , imagemTopo: #imageLiteral(resourceName: "titulo-duplasena"), imagemCalendario: #imageLiteral(resourceName: "icon-data-duplasena"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-duplasena"), tipoModalidade: self.tipoModalidade!)
+                estiloModalidade = EstiloModalidade(corClara: 0x00b7e3, corEscura: 0x009fc5 , imagemTopo: #imageLiteral(resourceName: "titulo_lotogol"), imagemCalendario: #imageLiteral(resourceName: "icon-data-lotogol"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-lotogol"), tipoModalidade: self.tipoModalidade!)
                 break
             case .Lotofacil:
                 estiloModalidade = EstiloModalidade(corClara: 0xbf3c93, corEscura: 0x9b2b7a , imagemTopo: #imageLiteral(resourceName: "titulo_lotofacil"), imagemCalendario: #imageLiteral(resourceName: "icon-data-lotofacil"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-lotofacil"), tipoModalidade: self.tipoModalidade!)
                 break
             case .Loteca:
-                //
-                estiloModalidade = EstiloModalidade(corClara: 0x7d1a3f, corEscura: 0x7d1a3f , imagemTopo: #imageLiteral(resourceName: "titulo-duplasena"), imagemCalendario: #imageLiteral(resourceName: "icon-data-duplasena"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-duplasena"), tipoModalidade: self.tipoModalidade!)
+                estiloModalidade = EstiloModalidade(corClara: 0xf30025, corEscura: 0xd30220 , imagemTopo: #imageLiteral(resourceName: "titulo_loteca"), imagemCalendario: #imageLiteral(resourceName: "icon-data-loteca"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-loteca"), tipoModalidade: self.tipoModalidade!)
                 break
             case .Federal:
-                //
-                estiloModalidade = EstiloModalidade(corClara: 0x7d1a3f, corEscura: 0x7d1a3f , imagemTopo: #imageLiteral(resourceName: "titulo-duplasena"), imagemCalendario: #imageLiteral(resourceName: "icon-data-duplasena"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-duplasena"), tipoModalidade: self.tipoModalidade!)
+                estiloModalidade = EstiloModalidade(corClara: 0x005fa1, corEscura: 0x00528c , imagemTopo: #imageLiteral(resourceName: "titulo_federal"), imagemCalendario: #imageLiteral(resourceName: "icon-data-federal"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-federal"), tipoModalidade: self.tipoModalidade!)
                 break
             case .Quina:
                 estiloModalidade = EstiloModalidade(corClara: 0x642573, corEscura: 0x642475 , imagemTopo: #imageLiteral(resourceName: "titulo_quina"), imagemCalendario: #imageLiteral(resourceName: "icon-data-quina"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-quina"), tipoModalidade: self.tipoModalidade!)
                 break
             case .Timemania:
-                //
-                estiloModalidade = EstiloModalidade(corClara: 0x7d1a3f, corEscura: 0x7d1a3f , imagemTopo: #imageLiteral(resourceName: "titulo-duplasena"), imagemCalendario: #imageLiteral(resourceName: "icon-data-duplasena"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-duplasena"), tipoModalidade: self.tipoModalidade!)
+                estiloModalidade = EstiloModalidade(corClara: 0xa8cd4a, corEscura: 0x92b240 , imagemTopo: #imageLiteral(resourceName: "titulo_timemania"), imagemCalendario: #imageLiteral(resourceName: "icon-data-timemania"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-timemania"), tipoModalidade: self.tipoModalidade!)
                 break
             }
         }
         self.estiloModalidade = estiloModalidade
-        estiloAposteBotao()
         return estiloModalidade
     }
     
@@ -221,6 +217,11 @@ class LOModalideController: UIViewController, UISideMenuNavigationControllerDele
         self.tipoModalidade = self.arrayModalidades[indexPath.row]
         cell?.estiloModalidade = selecionaEstiloModalidade()
         cell?.aplicarEstilo()
+        
+        if indexPath.row == 0 {
+            estiloAposteBotao()
+        }
+        
         return cell!
     }
     
@@ -352,6 +353,12 @@ class LOModalideController: UIViewController, UISideMenuNavigationControllerDele
     
     @objc func apresentaAjuda () {
         self.performSegue(withIdentifier: "apresentaAjuda", sender: self)
+    }
+    
+    @IBAction func mandarParaApostas () {
+        self.tipoModalidade = self.arrayModalidades[currentPage]
+        self.estiloModalidade = selecionaEstiloModalidade()
+        self.performSegue(withIdentifier: "mandaParaApostas", sender: self)
     }
     
     func sideMenuWillAppear(menu: UISideMenuNavigationController, animated: Bool) {

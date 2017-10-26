@@ -194,16 +194,29 @@ extension CGFloat {
 }
 
 extension String {
-    func fromBase64() -> String? {
-        guard let data = Data(base64Encoded: self) else {
-            return nil
+    
+    
+    func toBase64() -> String? {
+        if let data = self.data(using: .utf8) {
+            return data.base64EncodedString()
         }
-        
-        return String(data: data, encoding: .utf8)
+        return nil
     }
     
-    func toBase64() -> String {
-        return Data(self.utf8).base64EncodedString()
+    //: ### Base64 decoding a string
+    func fromBase64() -> String? {
+        if let data = Data(base64Encoded: self, options: .ignoreUnknownCharacters) {
+            return String(data: data, encoding: .utf8)
+        }
+        return nil
+    }
+    
+    func base64URLEncodedString() -> String {
+        // use URL safe encoding and remove padding
+        return self
+            //.replacingOccurrences(of: "/", with: "_")
+            .replacingOccurrences(of: "+", with: "/")
+            //.replacingOccurrences(of: "=", with: "")
     }
 }
 
