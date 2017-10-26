@@ -17,6 +17,7 @@ import java.util.Collections;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.ui.adapter.FormaPagamentoRecyclerViewAdapter;
+import caixa.gov.br.loterias.utils.ViewUtils;
 
 public class FormaPagamentoActivity extends AppCompatActivity {
 
@@ -62,6 +63,9 @@ public class FormaPagamentoActivity extends AppCompatActivity {
     }
 
     private void configuraClickBotoes(){
+        ((Button) findViewById(R.id.botaoAvancarPagamento)).setText(ViewUtils.configuraButtonText(this, getString(R.string.apostarAutorizarCobranca), 7));
+        ((Button) findViewById(R.id.botaoAdicionarFormaPagamento)).setText(ViewUtils.configuraButtonText(this, getString(R.string.adicionarFormaPagamento), 9));
+
         findViewById(R.id.botaoAvancarPagamento).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -22,11 +22,11 @@
     <string name="imagemCarrinho">Carrinho</string>
     <string name="carrinhoDeApostas">Carrinho\nde apostas</string>
 
-    <string name="adicionarAoCarrinho">Adicionar \nao carrinho de apostas</string>
+    <string name="adicionarAoCarrinho">Adicionar\nao carrinho de apostas</string>
     <string name="limparAposta">Limpar aposta</string>
     <string name="limparCarrinho">Limpar carrinho</string>
 
-    <string name="completarCartela">Completar com números aleatórios</string>
+    <string name="completarCartela">Completar\ncom números aleatórios</string>
 
     <string name="surpresinhaTitulo">Surpresinha</string>
     <string name="surpresinhaInfo">Na Surpresinha os números ficam mascarados com a interrogação até a efetivação da compra.</string>
@@ -39,25 +39,25 @@
     <string name="tituloSalvarAposta">Salve esta aposta :)</string>
     <string name="textoDeNome">Dê um nome</string>
 
-    <string name="verCarrinho">Ver carrinho de apostas</string>
+    <string name="verCarrinho">Ver carrinho\nde apostas</string>
     <string name="infoValorMinimoCarrinho">Lembre-se: o valor mínimo do total de compras nesse aplicativo é R$24,00</string>
     <string name="tituloApostaFeita">Essa aposta foi para o seu carrinho.</string>
     <string name="novaAposta">Fazer nova aposta</string>
     <string name="confirmarApostas">Confirme suas apostas e pressione AVANÇAR para continuar.</string>
-    <string name="avancarFormaPagamento">Avançar para a forma de pagamento</string>
+    <string name="avancarFormaPagamento">Avançar\npara a forma de pagamento</string>
     <string name="fazerNovaAposta">Fazer nova aposta</string>
 
-    <string name="adicionarFormaPagamento">Adicionar forma de pagamento</string>
+    <string name="adicionarFormaPagamento">Adicionar\nforma de pagamento</string>
     <string name="tituloFormaPagamento">Agora é pra valer!</string>
     <string name="infoFormaPagamento">Selecione sua forma de pagamento para prosseguir</string>
-    <string name="apostarAutorizarCobranca">Apostar e autorizar cobrança</string>
+    <string name="apostarAutorizarCobranca">Apostar\ne autorizar cobrança</string>
 
     <string name="total">Total</string>
 
     <string name="confirmacaoPagamentoInfoApostas">Você pode visualizá-las na área Apostas realizadas do aplicativo</string>
     <string name="confirmacaopagamentoParabens">Parabéns!\nSuas apostas foram efetivadas.</string>
     <string name="minhasApostas">Minhas apostas</string>
-    <string name="confirmacaoPagamentoBotaoVoltarInicio">Voltar ao início</string>
+    <string name="confirmacaoPagamentoBotaoVoltarInicio">Voltar\nao início</string>
 
     <string name="novaFormaPagamentoTitulo">Cadastrar cartão</string>
     <string name="novaFormaPagamentoNenhumCartaoCadastrado">Notamos que você ainda não possui nenhum cartão de crédito cadastrado. Para contnuar, informe:</string>

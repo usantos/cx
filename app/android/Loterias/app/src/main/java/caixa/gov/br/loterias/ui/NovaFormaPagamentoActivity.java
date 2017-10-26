@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Button;
 import android.widget.GridView;
 
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import java.util.List;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.ui.adapter.NovaFormaPagamentoBandeiraAdapter;
+import caixa.gov.br.loterias.utils.ViewUtils;
 
 public class NovaFormaPagamentoActivity extends AppCompatActivity {
 
@@ -23,12 +25,10 @@ public class NovaFormaPagamentoActivity extends AppCompatActivity {
     List<String> list;
     int size;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nova_forma_pagamento);
-
 
         String[] values = new String[] { "01", "02", "02", "02", "02", "02", "02", "02", "02"};
 
@@ -85,6 +85,8 @@ public class NovaFormaPagamentoActivity extends AppCompatActivity {
     }
 
     private void configuraBotoesListener(){
+        ((Button) findViewById(R.id.botaoAvancarPagamento)).setText(ViewUtils.configuraButtonText(this, getString(R.string.apostarAutorizarCobranca), 7));
+
         findViewById(R.id.botaoAvancarPagamento).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

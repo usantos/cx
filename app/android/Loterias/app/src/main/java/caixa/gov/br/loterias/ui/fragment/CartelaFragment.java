@@ -221,9 +221,9 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
     private void configuraBotoes(View fragmentView){
         botaoFinalizar = fragmentView.findViewById(R.id.botaoAdicionarCompletarCartela);
         botaoFinalizar.setOnClickListener(this);
-        botaoFinalizar.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.cinzaescuro));
-        botaoFinalizar.setText(getString(R.string.completarCartela));
-        botaoFinalizar.setTextColor(Color.WHITE);
+        botaoFinalizar.setBackgroundColor(ContextCompat.getColor(fragmentView.getContext(), R.color.cinzaescuro));
+        botaoFinalizar.setText(ViewUtils.configuraButtonText(fragmentView.getContext(), getString(R.string.completarCartela), 9));
+
 
         Button carrinhoImageView = fragmentView.findViewById(R.id.botaoCarrinho);
         carrinhoImageView.setOnClickListener(this);
@@ -233,6 +233,8 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
 
         botaoLimparAposta = fragmentView.findViewById(R.id.botaoLimparAposta);
         botaoLimparAposta.setOnClickListener(this);
+
+
     }
 
     private void verificaSeMostraBotaoLimparAposta(View fragmentView){
@@ -259,18 +261,18 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
     private void verificaQtdDezenasJaSelecionadas(){
         if (dezenasSelecionadas.size() == qtdDezenasPossiveisSelecionado){
             botaoFinalizar.setBackgroundColor(Color.parseColor(typeGameColorLight.toString()));
-            botaoFinalizar.setText(getString(R.string.adicionarAoCarrinho));
+            botaoFinalizar.setText(ViewUtils.configuraButtonText(getActivity(), getString(R.string.adicionarAoCarrinho), 9));
         }else if (dezenasSelecionadas.size() > qtdDezenasPossiveisSelecionado) {
             dezenasSelecionadas.clear();
             simularDezenasAdapter.notifyDataSetChanged();
             botaoFinalizar.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.cinzaescuro));
-            botaoFinalizar.setText(getString(R.string.completarCartela));
+            botaoFinalizar.setText(ViewUtils.configuraButtonText(getActivity(), getString(R.string.completarCartela), 9));
 
             getView().findViewById(R.id.salvarApostaLayout).setVisibility(View.GONE);
             getView().findViewById(R.id.botaoLimparAposta).setVisibility(View.GONE);
         } else{
             botaoFinalizar.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.cinzaescuro));
-            botaoFinalizar.setText(getString(R.string.completarCartela));
+            botaoFinalizar.setText(ViewUtils.configuraButtonText(getActivity(), getString(R.string.completarCartela), 9));
         }
     }
 

@@ -35,6 +35,8 @@ import caixa.gov.br.loterias.ui.fragment.SurpresinhaFragment.SurpresinhaFragment
 import caixa.gov.br.loterias.utils.ColorEnum;
 import caixa.gov.br.loterias.utils.TipoApostaEnum;
 import caixa.gov.br.loterias.utils.TipoDialog;
+import caixa.gov.br.loterias.utils.ViewUtils;
+
 import static caixa.gov.br.loterias.utils.ColorEnum.*;
 import static java.lang.String.*;
 

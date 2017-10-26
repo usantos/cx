@@ -14,8 +14,12 @@ import android.net.Uri;
 import android.os.Build;
 import android.support.v7.app.AlertDialog;
 import android.text.Html;
+import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.style.AbsoluteSizeSpan;
+import android.text.style.StyleSpan;
 import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
 import android.view.Display;
 import android.view.View;
@@ -63,6 +67,23 @@ public class ViewUtils {
         }
 
         return fontFuturaBold;
+    }
+
+    private static int convertSpToPixels(float sp, Context context) {
+        int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp, context.getResources().getDisplayMetrics());
+
+        return px;
+    }
+
+    public static SpannableString configuraButtonText(Context context, String texto, int posicaoTrocaStyle){
+        SpannableString spannableString=  new SpannableString(texto);
+        spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0, posicaoTrocaStyle, 0);
+        spannableString.setSpan(new AbsoluteSizeSpan(convertSpToPixels(17.7f, context)), 0, posicaoTrocaStyle, 0);
+
+        spannableString.setSpan(new StyleSpan(Typeface.NORMAL), posicaoTrocaStyle+1, spannableString.length(), 0);
+        spannableString.setSpan(new AbsoluteSizeSpan(convertSpToPixels(14.2f, context)), posicaoTrocaStyle+1, spannableString.length(), 0);
+
+        return spannableString;
     }
 
     public static void abrirUrl(Context context, String url) {

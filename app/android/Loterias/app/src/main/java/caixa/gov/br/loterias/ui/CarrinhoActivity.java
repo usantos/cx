@@ -8,6 +8,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Button;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -60,6 +62,9 @@ public class CarrinhoActivity extends AppCompatActivity {
     }
 
     private void configuraListeners(){
+        ((Button) findViewById(R.id.botaoAvancarPagamento)).setText(ViewUtils.configuraButtonText(this, getString(R.string.avancarFormaPagamento), 7));
+
+
         findViewById(R.id.botaoFazerNovaAposta).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

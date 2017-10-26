@@ -120,10 +120,12 @@
                 android:layout_width="184dp"
                 android:layout_height="84dp"
                 android:layout_marginBottom="51dp"
+                android:background="@color/cinzaescuro"
                 android:paddingLeft="14dp"
                 android:paddingRight="14dp"
                 android:text="@string/adicionarAoCarrinho"
                 android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
+                android:textColor="@color/branco"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toRightOf="@+id/viewTabBar"
                 app:layout_constraintRight_toLeftOf="@+id/viewTabBar" />

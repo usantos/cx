@@ -9,10 +9,13 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.TextView;
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.utils.ColorEnum;
 import caixa.gov.br.loterias.utils.TipoApostaEnum;
+import caixa.gov.br.loterias.utils.ViewUtils;
+
 import static caixa.gov.br.loterias.utils.ColorEnum.DUPLASENACLARO;
 import static caixa.gov.br.loterias.utils.ColorEnum.DUPLASENAESCURO;
 import static caixa.gov.br.loterias.utils.ColorEnum.LOTOFACILCLARO;
@@ -87,6 +90,10 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
         gd.setStroke(2, Color.WHITE);
 
         findViewById(R.id.botaoNovaAposta).setBackground(gd);
+
+        ((Button) findViewById(R.id.botaoVerCarrinhoAposta)).setText(ViewUtils.configuraButtonText(this, getString(R.string.verCarrinho), 12));
+        ((Button) findViewById(R.id.botaoAdicionarCompletarCartela)).setText(ViewUtils.configuraButtonText(this, getString(R.string.adicionarAoCarrinho), 9));
+
     }
 
     // Mudando o texto dos MenuItem de acordo com os dados

@@ -18,6 +18,7 @@ import android.widget.Button;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.utils.TipoApostaEnum;
+import caixa.gov.br.loterias.utils.ViewUtils;
 
 public class ConfirmacaoPagamentoActivity extends AppCompatActivity {
 
@@ -62,6 +63,8 @@ public class ConfirmacaoPagamentoActivity extends AppCompatActivity {
     }
 
     private void configuraBotoes(){
+        ((Button) findViewById(R.id.botaoVoltarInicio)).setText(ViewUtils.configuraButtonText(this, getString(R.string.confirmacaoPagamentoBotaoVoltarInicio), 6));
+
         findViewById(R.id.botaoVoltarInicio).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

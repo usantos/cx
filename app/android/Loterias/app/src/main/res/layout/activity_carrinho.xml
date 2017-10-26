@@ -104,10 +104,10 @@
                 android:id="@+id/imagemLixeiraCarrinho"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
+                android:layout_centerVertical="true"
                 android:layout_marginLeft="14dp"
                 android:layout_marginStart="14dp"
-                android:layout_centerVertical="true"
-                app:srcCompat="@drawable/icon_input_ok" />
+                app:srcCompat="@drawable/icon_excluir" />
         </RelativeLayout>
 
         <Button
@@ -141,14 +141,11 @@
             android:layout_marginRight="8dp"
             android:layout_marginStart="8dp"
             android:background="@color/verdeazul"
-            android:paddingLeft="14dp"
-            android:paddingRight="14dp"
             android:text="@string/avancarFormaPagamento"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
             android:textColor="@color/branco"
             android:textSize="17sp"
-            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/viewTabBar"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent" />

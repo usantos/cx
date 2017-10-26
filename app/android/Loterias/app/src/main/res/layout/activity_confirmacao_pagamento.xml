@@ -149,7 +149,6 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
         android:textColor="@color/branco"
         android:textSize="17sp"
-        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/viewTabBar"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
