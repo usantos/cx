@@ -22,6 +22,7 @@ import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.ui.Inteface.CartelaActivityInterface;
 import caixa.gov.br.loterias.ui.custom.ExpandableHeightGridView;
 import caixa.gov.br.loterias.utils.ColorEnum;
+import caixa.gov.br.loterias.utils.ViewUtils;
 
 import static java.lang.String.format;
 
@@ -137,7 +138,13 @@ public class SurpresinhaFragment extends Fragment implements CartelaActivityInte
         botaoAdicionarSurpresinhaAoCarrinho.setBackgroundColor(Color.parseColor(typeGameColorLight.toString()));
         botaoAdicionarSurpresinhaAoCarrinho.setTextColor(Color.WHITE);
         botaoAdicionarSurpresinhaAoCarrinho.setOnClickListener(this);
+        botaoAdicionarSurpresinhaAoCarrinho.setText(ViewUtils.configuraButtonText(getActivity(), getString(R.string.adicionarAoCarrinho), 9));
 
+        Button carrinhoImageView = fragmentView.findViewById(R.id.botaoCarrinho);
+        carrinhoImageView.setOnClickListener(this);
+
+        TextView textInfoCarrinho = fragmentView.findViewById(R.id.textInfoCarrinho);
+        textInfoCarrinho.setOnClickListener(this);
     }
 
     private void configuraListaDezenas(View fragmentView){
@@ -183,6 +190,11 @@ public class SurpresinhaFragment extends Fragment implements CartelaActivityInte
                 surpresinhaFragmentListener.adicionarApostaCarrinho();
             }
             break;
+
+            case R.id.botaoCarrinho:
+            case R.id.textInfoCarrinho:{
+                surpresinhaFragmentListener.abreCarrinhoApostas();
+            }
         }
 
         qtdSurpresinhasTextView.setText(String.format("%d", qtdSurpresinhas));
@@ -251,6 +263,7 @@ public class SurpresinhaFragment extends Fragment implements CartelaActivityInte
     // INTERFACE DO FRAGMENT PARA A ACTIVITY
     public interface SurpresinhaFragmentListener {
         void adicionarApostaCarrinho();
+        void abreCarrinhoApostas();
     }
 
 }
