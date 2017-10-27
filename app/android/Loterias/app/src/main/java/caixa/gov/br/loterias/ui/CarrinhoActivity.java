@@ -21,6 +21,8 @@ public class CarrinhoActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ViewUtils.configuraStatusBarGradientLayout(this, getWindow());
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_carrinho);
 

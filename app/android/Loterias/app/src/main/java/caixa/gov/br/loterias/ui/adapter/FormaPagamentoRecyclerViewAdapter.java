@@ -42,16 +42,25 @@ public class FormaPagamentoRecyclerViewAdapter  extends RecyclerView.Adapter<For
             buttonRemoverCartao = view.findViewById(R.id.buttonRemoverFormaPagamento);
 
             itemView.setOnClickListener(this);
+            buttonRemoverCartao.setOnClickListener(this);
         }
 
         @Override
-        public void onClick(View v) {
-            if (getAdapterPosition() == RecyclerView.NO_POSITION) return;
+        public void onClick(View view) {
+            switch (view.getId()){
+                case R.id.buttonRemoverFormaPagamento:{
+                    valoresList.remove(getAdapterPosition());
+                    notifyDataSetChanged();
+                }
+                break;
+                default:{
+                    if (getAdapterPosition() == RecyclerView.NO_POSITION) return;
 
-            notifyItemChanged(selected_position);
-            selected_position = getAdapterPosition();
-            notifyItemChanged(selected_position);
-
+                    notifyItemChanged(selected_position);
+                    selected_position = getAdapterPosition();
+                    notifyItemChanged(selected_position);
+                }
+            }
         }
     }
 

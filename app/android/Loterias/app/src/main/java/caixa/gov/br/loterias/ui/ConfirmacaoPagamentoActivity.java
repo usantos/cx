@@ -1,11 +1,18 @@
 package caixa.gov.br.loterias.ui;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.support.v4.content.res.ResourcesCompat;
+import android.support.v4.graphics.ColorUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 
 import caixa.gov.br.loterias.R;
@@ -15,11 +22,14 @@ public class ConfirmacaoPagamentoActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ViewUtils.configuraStatusBarGradientLayout(this, getWindow());
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirmacao_pagamento);
 
         configuraActivityCarrinho();
         configuraBotoes();
+
     }
 
     @Override

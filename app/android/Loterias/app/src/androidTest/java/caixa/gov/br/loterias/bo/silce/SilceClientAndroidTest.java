@@ -89,6 +89,7 @@ public class SilceClientAndroidTest {
 
     @Test
     public void completaJogo() throws Exception {
+        ApostaBO apostaBO = new ApostaBO(InstrumentationRegistry.getTargetContext());
         boolean ok = true;
         Listener<CompletaJogoRsp> listener = new Listener();
         ErrorListener errorListener = new ErrorListener();
