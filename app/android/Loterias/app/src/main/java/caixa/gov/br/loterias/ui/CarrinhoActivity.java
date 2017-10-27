@@ -29,6 +29,8 @@ public class CarrinhoActivity extends AppCompatActivity {
         configuraActivityCarrinho();
         configuraRecyclerViewCarrinhoAposta();
         configuraListeners();
+
+        ViewUtils.organizaTabLayout(this, R.id.carrinhoMainLayout, R.id.apostasListaRecycleView, R.id.carrinhoScrollView);
     }
 
     @Override
@@ -101,7 +103,7 @@ public class CarrinhoActivity extends AppCompatActivity {
     }
 
     private void configuraRecyclerViewCarrinhoAposta(){
-        String[] values = new String[] { "01", "02", "02", "02", "02", "02", "02", "02", "02", "10" };
+        String[] values = new String[] { "01", "02"};
 
         RecyclerView recyclerView = findViewById(R.id.apostasListaRecycleView);
         RecyclerView.LayoutManager layout = new LinearLayoutManager(this,

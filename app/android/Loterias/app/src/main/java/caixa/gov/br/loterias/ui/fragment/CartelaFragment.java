@@ -71,6 +71,9 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
         super.onActivityCreated(savedInstanceState);
 
         configuraBotoes(getView());
+
+        ViewUtils.organizaTabLayout(getActivity(), R.id.cartelaFragmentMainLayout, R.id.listaDezenas, R.id.cartelaFragmentScrollView);
+
     }
 
     public void cartelaFragmentBuilder(Bundle dataBundle){
@@ -91,6 +94,8 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
         configuraListaDezenas(view);
         verificaSeMostraBotaoLimparAposta(view);
         verificaSeMostraSalvarApostaView(view);
+
+
 
         return view;
     }

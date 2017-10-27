@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Rect;
@@ -14,8 +15,11 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
+import android.support.constraint.ConstraintLayout;
+import android.support.constraint.ConstraintSet;
 import android.support.v4.graphics.ColorUtils;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -38,11 +42,13 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.lang.reflect.InvocationTargetException;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Calendar;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.ui.FormaPagamentoActivity;
 
 /**
  * Created by lsimas on 05/04/2017.
@@ -418,6 +424,88 @@ public class ViewUtils {
 
             tv.setTypeface( typeface );
         }
+    }
+
+
+    // Metodos relacionados a caso o conteudo da tela seja inferior o ao height do dispositivo, mantenha a tab no bottom da tela
+
+    public static void organizaTabLayout(final Activity activity, int idMainLayout, final int idViewToExpand, final int idScrollView){
+        final ConstraintLayout constraintLayout = activity.findViewById(idMainLayout);
+        ViewTreeObserver viewTreeObserver = constraintLayout.getViewTreeObserver();
+
+        if (viewTreeObserver.isAlive()) {
+            viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    constraintLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+
+                    DisplayMetrics displayMetrics = new DisplayMetrics();
+                    activity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+                    int heightWindow = displayMetrics.heightPixels;
+
+                    if(constraintLayout.getMeasuredHeight()> 0){
+                        Resources resources = activity.getResources();
+                        int resourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android");
+                        int heightNavigationBar =  resources.getDimensionPixelSize(resourceId);
+
+                        int heightLayout = constraintLayout.getMeasuredHeight();
+                        int heightElementToExpand = activity.findViewById(idViewToExpand).getMeasuredHeight();
+                        float heightStatusBar = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 25, resources.getDisplayMetrics());
+
+                        if (!((ScrollView) activity.findViewById(idScrollView)).canScrollVertically(1)){
+                            ConstraintSet set = new ConstraintSet();
+
+                            set.clone(constraintLayout);
+                            set.constrainHeight(idViewToExpand, (heightElementToExpand + heightWindow-(int)heightStatusBar-heightLayout-heightNavigationBar-14));
+                            set.applyTo(constraintLayout);
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+
+    public static Point getNavigationBarSize(Context context) {
+        Point appUsableSize = getAppUsableScreenSize(context);
+        Point realScreenSize = getRealScreenSize(context);
+
+        // navigation bar on the right
+        if (appUsableSize.x < realScreenSize.x) {
+            return new Point(realScreenSize.x - appUsableSize.x, appUsableSize.y);
+        }
+
+        // navigation bar at the bottom
+        if (appUsableSize.y < realScreenSize.y) {
+            return new Point(appUsableSize.x, realScreenSize.y - appUsableSize.y);
+        }
+
+        // navigation bar is not present
+        return new Point();
+    }
+    public static Point getAppUsableScreenSize(Context context) {
+        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        Display display = windowManager.getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        return size;
+    }
+
+    public static Point getRealScreenSize(Context context) {
+        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        Display display = windowManager.getDefaultDisplay();
+        Point size = new Point();
+
+        if (Build.VERSION.SDK_INT >= 17) {
+            display.getRealSize(size);
+        } else if (Build.VERSION.SDK_INT >= 14) {
+            try {
+                size.x = (Integer) Display.class.getMethod("getRawWidth").invoke(display);
+                size.y = (Integer) Display.class.getMethod("getRawHeight").invoke(display);
+            } catch (IllegalAccessException e) {} catch (InvocationTargetException e) {} catch (NoSuchMethodException e) {}
+        }
+
+        return size;
     }
 
 }

@@ -1,23 +1,37 @@
 package caixa.gov.br.loterias.ui;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Point;
+import android.os.Build;
+import android.support.constraint.ConstraintLayout;
+import android.support.constraint.ConstraintSet;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
+import android.util.TypedValue;
+import android.view.Display;
 import android.view.Menu;
 import android.view.View;
+import android.view.ViewTreeObserver;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ScrollView;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.ui.Inteface.FormaDePagamentoListener;
 import caixa.gov.br.loterias.ui.adapter.FormaPagamentoRecyclerViewAdapter;
 import caixa.gov.br.loterias.utils.ViewUtils;
 
-public class FormaPagamentoActivity extends AppCompatActivity {
+public class FormaPagamentoActivity extends AppCompatActivity implements FormaDePagamentoListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +43,8 @@ public class FormaPagamentoActivity extends AppCompatActivity {
         configuraActivityCarrinho();
         configuraClickBotoes();
         configuraRecyclerViewCarrinhoAposta();
+
+        ViewUtils.organizaTabLayout(this, R.id.formaPagamentoMainLayout, R.id.formasPagamentoRecyclerView, R.id.formaPagamentoScrollView);
     }
 
     @Override
@@ -85,13 +101,16 @@ public class FormaPagamentoActivity extends AppCompatActivity {
     }
 
     private void configuraRecyclerViewCarrinhoAposta(){
-        String[] values = new String[] { "01", "02", "02", "02", "02"};
+        String[] values = new String[] {"01", "02", "03", "04"};
 
         RecyclerView recyclerView = findViewById(R.id.formasPagamentoRecyclerView);
         RecyclerView.LayoutManager layout = new LinearLayoutManager(this,
                 LinearLayoutManager.VERTICAL, false);
 
-        recyclerView.setAdapter(new FormaPagamentoRecyclerViewAdapter(montaCarrinhoApostaValores(values), this));
+        FormaPagamentoRecyclerViewAdapter formaPagamentoRecyclerViewAdapter = new FormaPagamentoRecyclerViewAdapter(montaCarrinhoApostaValores(values), this);
+        formaPagamentoRecyclerViewAdapter.formaDePagamentoListener = this;
+
+        recyclerView.setAdapter(formaPagamentoRecyclerViewAdapter);
         recyclerView.setLayoutManager(layout);
         recyclerView.setNestedScrollingEnabled(false);
     }
@@ -102,5 +121,10 @@ public class FormaPagamentoActivity extends AppCompatActivity {
         Collections.addAll(valoresTextoDialog, valores);
 
         return valoresTextoDialog;
+    }
+
+    @Override
+    public void itemRemoved() {
+        ViewUtils.organizaTabLayout(this, R.id.formaPagamentoMainLayout, R.id.formasPagamentoRecyclerView, R.id.formaPagamentoScrollView);
     }
 }

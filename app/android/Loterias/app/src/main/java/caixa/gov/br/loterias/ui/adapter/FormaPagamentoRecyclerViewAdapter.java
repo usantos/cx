@@ -13,10 +13,15 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.ui.Inteface.FormaDePagamentoListener;
+import caixa.gov.br.loterias.utils.ViewUtils;
+
 
 public class FormaPagamentoRecyclerViewAdapter  extends RecyclerView.Adapter<FormaPagamentoRecyclerViewAdapter.ApostaHolder> {
     private int selected_position = -1;
 
+
+    public FormaDePagamentoListener formaDePagamentoListener;
     private Context context;
     private ArrayList<String> valoresList;
 
@@ -51,6 +56,7 @@ public class FormaPagamentoRecyclerViewAdapter  extends RecyclerView.Adapter<For
                 case R.id.buttonRemoverFormaPagamento:{
                     valoresList.remove(getAdapterPosition());
                     notifyDataSetChanged();
+                    formaDePagamentoListener.itemRemoved();
                 }
                 break;
                 default:{
