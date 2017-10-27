@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -78,7 +79,7 @@ public class SurpresinhaFragment extends Fragment implements CartelaActivityInte
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 //        View view = inflater.inflate(R.layout.fragment_surpresinha, container, false);
 //        configuraListaDezenas(view);
@@ -102,7 +103,6 @@ public class SurpresinhaFragment extends Fragment implements CartelaActivityInte
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString() + " must implement SurpresinhaFragmentListener");
         }
-
     }
 
     @Override

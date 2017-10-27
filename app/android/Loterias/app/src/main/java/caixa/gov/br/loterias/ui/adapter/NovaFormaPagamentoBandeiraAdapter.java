@@ -2,19 +2,12 @@ package caixa.gov.br.loterias.ui.adapter;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.RectShape;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -22,7 +15,7 @@ import caixa.gov.br.loterias.R;
 
 public class NovaFormaPagamentoBandeiraAdapter extends RecyclerView.Adapter<NovaFormaPagamentoBandeiraAdapter.ApostaHolder> {
 
-    int selected_position = -1;
+    private int selected_position = -1;
 
     private Context context;
     private ArrayList<String> valoresList;
@@ -36,7 +29,7 @@ public class NovaFormaPagamentoBandeiraAdapter extends RecyclerView.Adapter<Nova
 
         final ImageView bandeiraImageView;
 
-        public ApostaHolder(View view){
+        ApostaHolder(View view){
             super(view);
 
             bandeiraImageView = itemView.findViewById(R.id.imageViewbandeiraCartao);

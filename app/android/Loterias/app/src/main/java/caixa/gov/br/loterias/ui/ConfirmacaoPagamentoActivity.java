@@ -1,23 +1,14 @@
 package caixa.gov.br.loterias.ui;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.Typeface;
-import android.os.Build;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Spannable;
-import android.text.SpannableStringBuilder;
-import android.text.style.StyleSpan;
 import android.view.Menu;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 
 import caixa.gov.br.loterias.R;
-import caixa.gov.br.loterias.utils.TipoApostaEnum;
 import caixa.gov.br.loterias.utils.ViewUtils;
 
 public class ConfirmacaoPagamentoActivity extends AppCompatActivity {

@@ -9,21 +9,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
-import android.widget.GridView;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.ui.adapter.NovaFormaPagamentoBandeiraAdapter;
 import caixa.gov.br.loterias.utils.ViewUtils;
 
 public class NovaFormaPagamentoActivity extends AppCompatActivity {
-
-    private GridView horizontalGridView;
-    List<String> list;
-    int size;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +26,7 @@ public class NovaFormaPagamentoActivity extends AppCompatActivity {
 
         String[] values = new String[] { "01", "02", "02", "02", "02", "02", "02", "02", "02"};
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.novaFormaPagamentoRecyclerView);
+        RecyclerView recyclerView = findViewById(R.id.novaFormaPagamentoRecyclerView);
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
 

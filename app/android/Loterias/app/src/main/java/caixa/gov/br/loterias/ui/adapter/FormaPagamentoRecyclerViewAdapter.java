@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import caixa.gov.br.loterias.R;
 
 public class FormaPagamentoRecyclerViewAdapter  extends RecyclerView.Adapter<FormaPagamentoRecyclerViewAdapter.ApostaHolder> {
-    int selected_position = -1;
+    private int selected_position = -1;
 
     private Context context;
     private ArrayList<String> valoresList;
@@ -32,7 +32,7 @@ public class FormaPagamentoRecyclerViewAdapter  extends RecyclerView.Adapter<For
         final TextView numeroCartao;
         final Button buttonRemoverCartao;
 
-        public ApostaHolder(View view){
+        ApostaHolder(View view){
             super(view);
 
             imageViewBandeiraCartao = view.findViewById(R.id.imageViewCartao);

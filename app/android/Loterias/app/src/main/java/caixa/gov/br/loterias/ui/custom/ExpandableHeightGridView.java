@@ -6,12 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
 
-import static android.view.View.MEASURED_SIZE_MASK;
-
-/**
- * Created by lcardoso on 20/09/2017.
- */
-
 public class ExpandableHeightGridView extends GridView {
 
     boolean expanded = false;

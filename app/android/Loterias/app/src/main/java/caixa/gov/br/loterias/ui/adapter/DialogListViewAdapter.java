@@ -11,12 +11,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import caixa.gov.br.loterias.R;
-
-/**
- * Created by lcardoso on 11/10/2017.
- */
-
 public class DialogListViewAdapter extends BaseAdapter {
     private Context context;
     private ArrayList<String> valoresList;

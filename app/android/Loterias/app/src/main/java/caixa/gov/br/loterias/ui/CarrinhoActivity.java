@@ -101,7 +101,7 @@ public class CarrinhoActivity extends AppCompatActivity {
     private void configuraRecyclerViewCarrinhoAposta(){
         String[] values = new String[] { "01", "02", "02", "02", "02", "02", "02", "02", "02", "10" };
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.apostasListaRecycleView);
+        RecyclerView recyclerView = findViewById(R.id.apostasListaRecycleView);
         RecyclerView.LayoutManager layout = new LinearLayoutManager(this,
                 LinearLayoutManager.VERTICAL, false);
 

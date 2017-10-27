@@ -3,6 +3,7 @@ package caixa.gov.br.loterias.ui;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.FragmentManager;
@@ -21,10 +22,8 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 import java.util.ArrayList;
-import java.util.List;
 
 import caixa.gov.br.loterias.R;
-import caixa.gov.br.loterias.bo.silce.SilceClient;
 import caixa.gov.br.loterias.ui.Inteface.CallbackDialog;
 import caixa.gov.br.loterias.ui.Inteface.CartelaActivityInterface;
 import caixa.gov.br.loterias.ui.adapter.DialogListViewAdapter;
@@ -35,7 +34,6 @@ import caixa.gov.br.loterias.ui.fragment.SurpresinhaFragment.SurpresinhaFragment
 import caixa.gov.br.loterias.utils.ColorEnum;
 import caixa.gov.br.loterias.utils.TipoApostaEnum;
 import caixa.gov.br.loterias.utils.TipoDialog;
-import caixa.gov.br.loterias.utils.ViewUtils;
 
 import static caixa.gov.br.loterias.utils.ColorEnum.*;
 import static java.lang.String.*;
@@ -255,7 +253,9 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
 
     private void configuraTipoApostaTela(String titleActivity, ColorEnum lightColor, ColorEnum darkColor){
         setTitle(titleActivity);
-        getWindow().setStatusBarColor(Color.parseColor(darkColor.toString()));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(Color.parseColor(darkColor.toString()));
+        }
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor(lightColor.toString())));
 
         if (getSupportActionBar() != null){

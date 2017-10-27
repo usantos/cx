@@ -21,12 +21,12 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
     }
 
 
-    public static class ApostaHolder extends RecyclerView.ViewHolder{
+    static class ApostaHolder extends RecyclerView.ViewHolder{
         final TextView textViewTipoAposta;
         final TextView numerosAposta;
         final TextView valorAposta;
 
-        public ApostaHolder(View view){
+        ApostaHolder(View view){
             super(view);
 
             textViewTipoAposta = view.findViewById(R.id.tipoAposta);
@@ -39,9 +39,7 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
     public CarrinhoApostasListViewAdapter.ApostaHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.row_apostas_list_view, parent, false);
 
-        ApostaHolder holder = new ApostaHolder(view);
-
-        return holder;
+        return  new ApostaHolder(view);
     }
 
     @Override

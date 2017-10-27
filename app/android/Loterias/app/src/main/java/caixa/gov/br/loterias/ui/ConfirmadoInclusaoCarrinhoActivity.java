@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -80,7 +81,9 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
     private void configuraLayoutTela(String titleActivity, ColorEnum lightColor, ColorEnum darkColor){
         setTitle(titleActivity);
 
-        getWindow().setStatusBarColor(Color.parseColor(darkColor.toString()));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(Color.parseColor(darkColor.toString()));
+        }
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor(lightColor.toString())));
         getWindow().getDecorView().setBackground(new ColorDrawable(Color.parseColor(lightColor.toString())));
 

@@ -1,8 +1,6 @@
 package caixa.gov.br.loterias.ui;
 
 import android.content.Intent;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -74,7 +72,7 @@ public class FormaPagamentoActivity extends AppCompatActivity {
             }
         });
 
-        final Button buttonAdicionarFormaPagamento = ((Button) findViewById(R.id.botaoAdicionarFormaPagamento));
+        final Button buttonAdicionarFormaPagamento = (findViewById(R.id.botaoAdicionarFormaPagamento));
         buttonAdicionarFormaPagamento.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -87,7 +85,7 @@ public class FormaPagamentoActivity extends AppCompatActivity {
     private void configuraRecyclerViewCarrinhoAposta(){
         String[] values = new String[] { "01", "02", "02", "02", "02"};
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.formasPagamentoRecyclerView);
+        RecyclerView recyclerView = findViewById(R.id.formasPagamentoRecyclerView);
         RecyclerView.LayoutManager layout = new LinearLayoutManager(this,
                 LinearLayoutManager.VERTICAL, false);
 

@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.ui.LoginActivity;
 import caixa.gov.br.loterias.ui.LoginActivity_;
 import caixa.gov.br.loterias.utils.ViewUtils;
 
