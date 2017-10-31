@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ui.IntroducaoActivity"
+            android:name=".view.IntroducaoActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
@@ -23,50 +23,50 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.LoginActivity_"
+            android:name=".view.LoginActivity_"
             android:configChanges="orientation"
             android:label="@string/title_activity_login"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ui.CadastrarActivity_" />
+        <activity android:name=".view.CadastrarActivity_" />
 
         <service android:name="org.jboss.aerogear.android.authorization.oauth2.OAuth2AuthzService" />
 
         <activity
-            android:name=".ui.CadastrarPasso2Activity_"
+            android:name=".view.CadastrarPasso2Activity_"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.HomeActivity_"
+            android:name=".view.HomeActivity"
             android:configChanges="orientation"
             android:label="@string/title_activity_home"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.SimularApostaActivity_"
+            android:name=".view.SimularApostaActivity_"
             android:configChanges="orientation"
             android:label="@string/title_activity_home"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.ConfirmadoInclusaoCarrinhoActivity"
+            android:name=".view.ConfirmadoInclusaoCarrinhoActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.CarrinhoActivity"
+            android:name=".view.CarrinhoActivity"
             android:configChanges="orientation"
             android:label="@string/title_activity_carrinho"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.FormaPagamentoActivity"
+            android:name=".view.FormaPagamentoActivity"
             android:configChanges="orientation"
             android:label="@string/title_activity_forma_pagamento"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.ConfirmacaoPagamentoActivity"
+            android:name=".view.ConfirmacaoPagamentoActivity"
             android:configChanges="orientation"
             android:label="@string/title_activity_confirmacao_pagamento"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.NovaFormaPagamentoActivity"
+        <activity android:name=".view.NovaFormaPagamentoActivity"
             android:configChanges="orientation"
             android:label="@string/title_activity_forma_pagamento"
             android:screenOrientation="portrait" />

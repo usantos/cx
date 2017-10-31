@@ -99,9 +99,9 @@ public class RapidaoDTO {
     }
 
     /**
-     * Modalidades a compor as apostas do rapidão
+     * TipoModalidade a compor as apostas do rapidão
      **/
-    @ApiModelProperty(value = "Modalidades a compor as apostas do rapidão")
+    @ApiModelProperty(value = "TipoModalidade a compor as apostas do rapidão")
     public List<ModalidadeDTO> getModalidades() {
         return modalidades;
     }

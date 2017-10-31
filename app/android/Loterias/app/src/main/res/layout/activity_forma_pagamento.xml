@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:background="@color/branco"
         android:minHeight="@dimen/activity_vertical_margin"
-        tools:context="caixa.gov.br.loterias.ui.FormaPagamentoActivity"
+        tools:context="caixa.gov.br.loterias.view.FormaPagamentoActivity"
         android:focusableInTouchMode="true">
 
         <TextView

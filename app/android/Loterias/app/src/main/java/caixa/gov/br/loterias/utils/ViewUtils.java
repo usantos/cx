@@ -48,7 +48,7 @@ import java.text.DecimalFormatSymbols;
 import java.util.Calendar;
 
 import caixa.gov.br.loterias.R;
-import caixa.gov.br.loterias.ui.FormaPagamentoActivity;
+import caixa.gov.br.loterias.view.FormaPagamentoActivity;
 
 /**
  * Created by lsimas on 05/04/2017.

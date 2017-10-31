@@ -6,7 +6,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="caixa.gov.br.loterias.ui.HomeActivity"
+    tools:context="caixa.gov.br.loterias.view.HomeActivity_"
     android:background="@drawable/background_gradient_color">
 
     <ScrollView
@@ -20,11 +20,13 @@
             android:layout_width="match_parent"
             android:layout_height="552dp"
             >
-            <include
-                android:id="@+id/fragmentCard"
-                layout="@layout/fragment_card"
+
+            <com.yarolegovich.discretescrollview.DiscreteScrollView
+                android:id="@+id/home_carousel"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                app:dsv_orientation="horizontal"
+                />
 
             <Button
                 android:id="@+id/buttonHomeBet"

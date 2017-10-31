@@ -45,7 +45,7 @@
             android:layout_marginStart="125dp"
             android:layout_marginEnd="125dp" />
 
-        <caixa.gov.br.loterias.ui.custom.ExpandableHeightGridView
+        <caixa.gov.br.loterias.view.custom.ExpandableHeightGridView
             android:id="@+id/listaDezenasSurpresinha"
             android:layout_width="0dp"
             android:layout_height="200dp"

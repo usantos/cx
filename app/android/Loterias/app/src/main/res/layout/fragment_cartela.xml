@@ -239,7 +239,7 @@
                 </RelativeLayout>
             </android.support.constraint.ConstraintLayout>
 
-            <caixa.gov.br.loterias.ui.custom.ExpandableHeightGridView
+            <caixa.gov.br.loterias.view.custom.ExpandableHeightGridView
                 android:id="@+id/listaDezenas"
                 android:layout_width="0dp"
                 android:layout_height="200dp"

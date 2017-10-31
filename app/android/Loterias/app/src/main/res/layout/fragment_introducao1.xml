@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="caixa.gov.br.loterias.ui.fragment.Introducao1Fragment"
+    tools:context="caixa.gov.br.loterias.view.fragment.Introducao1Fragment"
     android:background="@drawable/fundo_splash">
 
     <!-- TODO: Update blank fragment layout -->

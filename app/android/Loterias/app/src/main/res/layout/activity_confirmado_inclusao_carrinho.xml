@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="caixa.gov.br.loterias.ui.ConfirmadoInclusaoCarrinhoActivity">
+    tools:context="caixa.gov.br.loterias.view.ConfirmadoInclusaoCarrinhoActivity">
 
 
     <Button
@@ -60,7 +60,7 @@
         android:layout_width="174dp"
         android:layout_height="56dp"
         android:layout_marginBottom="10dp"
-        android:background="@color/verdesenavalor"
+        android:background="@color/megasenaclaro"
         android:paddingLeft="14dp"
         android:paddingRight="14dp"
         android:text="@string/novaAposta"
