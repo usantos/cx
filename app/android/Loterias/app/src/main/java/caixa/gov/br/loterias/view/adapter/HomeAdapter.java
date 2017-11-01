@@ -1,5 +1,6 @@
 package caixa.gov.br.loterias.view.adapter;
 
+import android.content.ClipData;
 import android.content.Context;
 import android.graphics.Color;
 import android.media.Image;
@@ -34,10 +35,12 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     private List<Modalidade> data;
     private EstiloModalidade estilo;
     private Context context;
+    private static Button aposta;
 
-    public HomeAdapter(List<Modalidade> data, Context context) {
+    public HomeAdapter(Context context, List<Modalidade> data, View aposta) {
         this.data = data;
         this.context = context;
+        this.aposta = (Button) aposta;
     }
 
 //    @Override
@@ -53,11 +56,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View v = inflater.inflate(R.layout.card_modalidade, parent, false);
-//        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(
-//                ViewGroup.LayoutParams.MATCH_PARENT,
-//                itemHeight
-//        );
-//        v.setLayoutParams(params);
+
         return new ViewHolder(v);
     }
 
@@ -67,8 +66,10 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
         holder.game.setText(data.get(position).getNome());
         holder.resultados.setBackgroundColor(ContextCompat.getColor(context, estilo.getCorEscura()));
-//        holder.aposta.setText("Aposte\npor R$" + data.get(position).getValor());
-//        holder.aposta.setBackgroundColor(ContextCompat.getColor(context, estilo.getCorEscura()));
+        holder.trevo.setBackground(ContextCompat.getDrawable(context, estilo.getTrevoBackground()));
+        holder.titulo.setBackgroundColor(ContextCompat.getColor(context, estilo.getCorClara()));
+        holder.valor.setTextColor(ContextCompat.getColor(context, estilo.getCorClara()));
+        aposta.setText("Aposte\npor R$" + data.get(position).getValor());
         Glide.with(holder.itemView.getContext())
                 .load(estilo.getImagemCalendario())
                 .into(holder.calendario);
@@ -85,23 +86,25 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private View titulo;
         private TextView game;
-        private Button aposta;
         private ImageView relogio;
         private ImageView calendario;
         private LinearLayout resultados;
+        private TextView valor;
+        private ImageView trevo;
 
         public ViewHolder (View itemView) {
             super(itemView);
             game = (TextView) itemView.findViewById(R.id.textViewCardTitle);
             resultados = (LinearLayout) itemView.findViewById(R.id.relativeLayoutTopResultados);
-            aposta = (Button) itemView.findViewById(R.id.buttonHomeBet);
+            trevo = (ImageView) itemView.findViewById(R.id.trevobackground);
             calendario = (ImageView)  itemView.findViewById(R.id.imageCalendar);
             relogio = (ImageView)  itemView.findViewById(R.id.imageWatch);
             titulo = itemView.findViewById(R.id.relativeLayoutTopModalidades);
+            valor = itemView.findViewById(R.id.textVieCardAcumulatedValue);
         }
 
         public void setOverlayColor(@ColorInt int color) {
-//            aposta.setBackgroundColor(color);
+            aposta.setBackgroundColor(color);
         }
     }
 }

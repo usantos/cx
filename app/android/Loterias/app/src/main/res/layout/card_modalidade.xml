@@ -47,16 +47,16 @@
             android:id="@+id/relativeLayoutTopModalidades"
             android:layout_width="match_parent"
             android:layout_height="71dp"
-            android:background="@color/verdesenaclaro"
+            android:background="@color/megasenaclaro"
             android:orientation="horizontal"
             android:gravity="left">
             <ImageView
                 android:layout_width="85dp"
                 android:layout_height="match_parent"
-                android:background="@drawable/background_trapeze"
+                android:background="@drawable/background_trapeze_megasena"
                 android:src="@drawable/trevo"
                 android:scaleType="center"
-                android:id="@+id/imageViewBannerTipoAposta"
+                android:id="@+id/trevobackground"
                 />
             <TextView
                 android:id="@+id/textViewCardTitle"

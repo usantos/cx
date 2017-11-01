@@ -41,7 +41,7 @@ public class HomeActivity extends AppCompatActivity implements
         ModalidadesMock modalidade = ModalidadesMock.get();
         List<Modalidade> data = modalidade.getData();
         DiscreteScrollView itemCarousel = (DiscreteScrollView) findViewById(R.id.home_carousel);
-        itemCarousel.setAdapter(new HomeAdapter(data, this));
+        itemCarousel.setAdapter(new HomeAdapter(this, data, findViewById(R.id.buttonHomeBet)));
         itemCarousel.addScrollListener(this);
         itemCarousel.addOnItemChangedListener(this);
         itemCarousel.scrollToPosition(0);

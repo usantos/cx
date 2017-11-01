@@ -21,6 +21,7 @@ public class EstiloModalidade {
     private final int corEscura;
     private final int imagemCalendario;
     private final int imagemRelogio;
+    private final int trevoBackground;
 
     public EstiloModalidade(TipoModalidadeEnum tipoModalidade) {
         this.tipoModalidade = tipoModalidade;
@@ -32,6 +33,7 @@ public class EstiloModalidade {
                 this.corEscura = R.color.quinaescuro;
                 imagemCalendario = R.drawable.icon_data_quina;
                 imagemRelogio = R.drawable.icon_horario_quina;
+                trevoBackground = R.drawable.background_trapeze_quina;
                 break;
             case LOTECA:
                 this.corClara = R.color.lotecaclaro;
@@ -39,6 +41,7 @@ public class EstiloModalidade {
                 this.corEscura = R.color.lotecaescuro;
                 imagemCalendario = R.drawable.icon_data_loteca;
                 imagemRelogio = R.drawable.icon_horario_loteca;
+                trevoBackground = R.drawable.background_trapeze_loteca;
                 break;
             case FEDERAL:
                 this.corClara = R.color.federalclaro;
@@ -46,6 +49,7 @@ public class EstiloModalidade {
                 this.corEscura = R.color.federalescuro;
                 imagemCalendario = R.drawable.icon_data_federal;
                 imagemRelogio = R.drawable.icon_horario_federal;
+                trevoBackground= R.drawable.background_trapeze_federal;
                 break;
             case LOTOGOL:
                 this.corClara = R.color.lotogolclaro;
@@ -53,6 +57,7 @@ public class EstiloModalidade {
                 this.corEscura = R.color.lotogolescuro;
                 imagemCalendario = R.drawable.icon_data_lotogol;
                 imagemRelogio = R.drawable.icon_horario_lotogol;
+                trevoBackground = R.drawable.background_trapeze_lotogol;
                 break;
             case MEGASENA:
                 this.corClara = R.color.megasenaclaro;
@@ -60,6 +65,7 @@ public class EstiloModalidade {
                 this.corEscura = R.color.megasenaescuro;
                 imagemCalendario = R.drawable.icon_data_megasena;
                 imagemRelogio = R.drawable.icon_horario_megasena;
+                trevoBackground = R.drawable.background_trapeze_megasena;
                 break;
             case DUPLASENA:
                 this.corClara = R.color.duplasenaclaro;
@@ -67,6 +73,7 @@ public class EstiloModalidade {
                 this.corEscura = R.color.duplasenaescuro;
                 imagemCalendario = R.drawable.icon_data_duplasena;
                 imagemRelogio = R.drawable.icon_horario_duplasena;
+                trevoBackground = R.drawable.background_trapeze_duplasena;
                 break;
             case LOTOFACIL:
                 this.corClara = R.color.lotofacilclaro;
@@ -74,6 +81,7 @@ public class EstiloModalidade {
                 this.corEscura = R.color.lotofacilescuro;
                 imagemCalendario = R.drawable.icon_data_lotofacil;
                 imagemRelogio = R.drawable.icon_horario_lotofacil;
+                trevoBackground = R.drawable.background_trapeze_lotofacil;
                 break;
             case LOTOMANIA:
                 this.corClara = R.color.lotomaniaclaro;
@@ -81,6 +89,7 @@ public class EstiloModalidade {
                 this.corEscura = R.color.lotomaniaescuro;
                 imagemCalendario = R.drawable.icon_data_lotomania;
                 imagemRelogio = R.drawable.icon_horario_lotomania;
+                trevoBackground = R.drawable.background_trapeze_lotomania;
                 break;
             case TIMEMANIA:
                 this.corClara = R.color.timemaniaclaro;
@@ -88,6 +97,7 @@ public class EstiloModalidade {
                 this.corEscura = R.color.timemaniaescuro;
                 imagemCalendario = R.drawable.icon_data_timemania;
                 imagemRelogio = R.drawable.icon_horario_timemania;
+                trevoBackground = R.drawable.background_trapeze_timemania;
                 break;
             default:
                 this.corClara = R.color.megasenaclaro;
@@ -95,6 +105,7 @@ public class EstiloModalidade {
                 this.corEscura = R.color.megasenaescuro;
                 imagemCalendario = R.drawable.icon_data_megasena;
                 imagemRelogio = R.drawable.icon_horario_megasena;
+                trevoBackground = R.drawable.background_trapeze_megasena;
                 break;
         }
     }
@@ -122,4 +133,6 @@ public class EstiloModalidade {
     public int getImagemRelogio() {
         return imagemRelogio;
     }
+
+    public int getTrevoBackground() { return trevoBackground; }
 }
