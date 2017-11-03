@@ -13,6 +13,7 @@ class LORepassesSociaisController: UITableViewController {
     let gradientCell : CAGradientLayer = CAGradientLayer()
 
     @IBOutlet var titleCustomView : UIView!
+    var repassometroObj : LORepassometro?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,6 +22,20 @@ class LORepassesSociaisController: UITableViewController {
         
         self.navigationController?.isNavigationBarHidden = true
         addStatusBarBackgroundView()
+        
+        chamaWebservice()
+    }
+    
+    func chamaWebservice () {
+        let loadingView = addLoadingView(alpha: 0.8)
+        LORepassometroBusinessService().getRepasses(parameters: [:]) { (errorMsg, repassometroObj) in
+            loadingView.removeFromSuperview()
+            if errorMsg != nil {
+                self.alertSimple(title: "Ops!", message: errorMsg!)
+            } else {
+                self.repassometroObj = repassometroObj
+            }
+        }
     }
     
     func addStatusBarBackgroundView() {
@@ -62,23 +77,27 @@ class LORepassesSociaisController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell : UITableViewCell?
         if indexPath.row == 0 {
-            cell = tableView.dequeueReusableCell(withIdentifier: "cabecalhoCell", for: indexPath)
-            cell?.contentView.layoutIfNeeded()
+            var cellCabecalho = tableView.dequeueReusableCell(withIdentifier: "cabecalhoCell", for: indexPath) as? LOCabecalhoRepassesCell
+            cellCabecalho?.contentView.layoutIfNeeded()
+            cellCabecalho?.repassometroObj = self.repassometroObj
             
             DispatchQueue.main.async {
-                self.gradientCell.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: (cell?.contentView.frame.height)!)
+                self.gradientCell.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: (cellCabecalho?.contentView.frame.height)!)
                 self.gradientCell.startPoint = CGPoint(x: 0.0, y: 0.5)
                 self.gradientCell.endPoint = CGPoint(x: 1.0, y: 0.5)
                 self.gradientCell.colors = [self.UIColorFromHex(0x54bbab, alpha: 1.0).cgColor, self.UIColorFromHex(0x005ca9, alpha: 1.0).cgColor]
                 self.gradientCell.name = "gradientView"
                 
-                cell?.contentView.layer.insertSublayer(self.gradientCell, at: 0)
+                cellCabecalho?.contentView.layer.insertSublayer(self.gradientCell, at: 0)
             }
+            
+            return cellCabecalho!
+
         } else {
             cell = tableView.dequeueReusableCell(withIdentifier: "rodapeCell", for: indexPath)
+            
+            return cell!
         }
-
-        return cell!
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

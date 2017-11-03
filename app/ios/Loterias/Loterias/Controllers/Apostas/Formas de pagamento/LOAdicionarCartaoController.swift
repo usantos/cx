@@ -10,7 +10,7 @@ import UIKit
 import TextFieldEffects
 import InputMask
 
-class LOAdicionarCartaoController: UITableViewController, UICollectionViewDelegate, UICollectionViewDataSource, MaskedTextFieldDelegateListener {
+class LOAdicionarCartaoController: UITableViewController, UICollectionViewDelegate, UICollectionViewDataSource, MaskedTextFieldDelegateListener, UITextFieldDelegate {
     
     var maskedDelegate: MaskedTextFieldDelegate!
     
@@ -21,17 +21,23 @@ class LOAdicionarCartaoController: UITableViewController, UICollectionViewDelega
             collectionBandeiras.dataSource = self
         }
     }
-    @IBOutlet weak var numeroCartao: HoshiTextField! {
-        didSet {
-            numeroCartao.delegate = self
-        }
-    }
+    @IBOutlet weak var numeroCartao: HoshiTextField!
     @IBOutlet weak var nomeCartao: HoshiTextField!
     @IBOutlet weak var cvv: HoshiTextField!
-    @IBOutlet weak var mesValidade: HoshiTextField!
-    @IBOutlet weak var anoValidade: HoshiTextField!
+    @IBOutlet weak var mesValidade: HoshiTextField! {
+        didSet {
+            self.mesValidade.addRightImg(image: #imageLiteral(resourceName: "icon-combo"), rect: CGRect(x: 0, y: 0, width: 12, height: 8))
+        }
+    }
+    @IBOutlet weak var anoValidade: HoshiTextField! {
+        didSet {
+            self.anoValidade
+                .addRightImg(image: #imageLiteral(resourceName: "icon-combo"), rect: CGRect(x: 0, y: 0, width: 12, height: 8))
+        }
+    }
     
     var salvarCartao: Bool = false
+    var arrayTextfields = Array<UITextField>()
     
     @IBOutlet weak var totalCompra: UILabel!
     @IBOutlet var titleViewCustom : UIView!
@@ -43,6 +49,8 @@ class LOAdicionarCartaoController: UITableViewController, UICollectionViewDelega
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.arrayTextfields = [numeroCartao, nomeCartao, cvv]
+        
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.estimatedRowHeight = 150
         
@@ -50,7 +58,6 @@ class LOAdicionarCartaoController: UITableViewController, UICollectionViewDelega
         maskedDelegate.listener = self
         
         numeroCartao.delegate = maskedDelegate
-    
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -123,6 +130,23 @@ class LOAdicionarCartaoController: UITableViewController, UICollectionViewDelega
             sender.setImage(#imageLiteral(resourceName: "icon-uncheck"), for: .normal)
             salvarCartao = false
         }
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        validaCamposDeTexto(textField)
+    }
+    
+    func validaCamposDeTexto(_ textField: UITextField) -> Bool {
+        for textfieldLocal in self.arrayTextfields {
+            if (textfieldLocal.text?.characters.count)! == 0 {
+                textfieldLocal.rightView = nil
+                return false
+            } else {
+                textfieldLocal.addRightImg(image: #imageLiteral(resourceName: "icon-input-ok"), rect: CGRect(x: 0, y: 0, width: 12, height: 10))
+            }
+        }
+        
+        return true
     }
     /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

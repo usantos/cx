@@ -133,6 +133,8 @@ class LOCadastroController: UITableViewController, UITextFieldDelegate, MaskedTe
         return true
     }
     
+    var listaUfs : [LOUnidadeFederativa]?
+    
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         switch textField {
             
@@ -149,6 +151,9 @@ class LOCadastroController: UITableViewController, UITextFieldDelegate, MaskedTe
                     for objCidade in listaCidades! {
                         arrayUfs.append(objCidade.sigla!)
                     }
+                    
+                    self.listaUfs = listaCidades!
+                    
                     controller?.arrayDados = arrayUfs
                     controller?.tituloPopup = "UF"
                     controller?.modalPresentationStyle = .overFullScreen
@@ -160,22 +165,37 @@ class LOCadastroController: UITableViewController, UITextFieldDelegate, MaskedTe
             })
             return false
         case self.municipio:
-            let storyboard = UIStoryboard(name: "Login", bundle: nil)
-            let controller = storyboard.instantiateViewController(withIdentifier: "LOPopupSelecionarOpcoesController") as? LOPopupSelecionarOpcoesController
-            var arrayUfs = Array<String>()
             
-            //RETIRAR MOCK
-            arrayUfs.append("Brasilia")
-            arrayUfs.append("Taguatinga")
-            arrayUfs.append("Asa norte")
+            if uf.text != "" {
+                let ufSelecionada = listaUfs?.filter { $0.sigla == self.uf.text }
+                let loadingView = self.addLoadingView(alpha: 0.8)
+
+                LORegisterBusinessService().getMunicipios(idUf: ufSelecionada![0].id!, completionHandler: { (error, listaMunicipios) in
+                    loadingView.removeFromSuperview()
+                    if error != nil {
+                        self.alertSimple(title: "Atenção", message: error!)
+                    } else {
+                        let storyboard = UIStoryboard(name: "Login", bundle: nil)
+                        let controller = storyboard.instantiateViewController(withIdentifier: "LOPopupSelecionarOpcoesController") as? LOPopupSelecionarOpcoesController
+                        var arrayMunicipios = Array<String>()
+                        
+                        for municipio in listaMunicipios! {
+                            arrayMunicipios.append(municipio.nome)
+                        }
+                        
+                        controller?.arrayDados = arrayMunicipios
+                        controller?.tituloPopup = "Município"
+                        controller?.modalPresentationStyle = .overFullScreen
+                        controller?.delegate = self
+                        controller?.senderText = textField
+                        
+                        self.present(controller!, animated: true, completion: nil)
+                    }
+                })
+            } else {
+                self.alertSimple(title: "Ops!", message: "Selecione primeiro a UF, assim nossa precisão de municípios será incrível.")
+            }
             
-            controller?.arrayDados = arrayUfs
-            controller?.tituloPopup = "Município"
-            controller?.modalPresentationStyle = .overFullScreen
-            controller?.delegate = self
-            controller?.senderText = textField
-            
-            self.present(controller!, animated: true, completion: nil)
             return false
         default:
             break
@@ -235,51 +255,6 @@ class LOCadastroController: UITableViewController, UITextFieldDelegate, MaskedTe
     func didSelect(string: String, sender: UITextField) {
         sender.text = string
     }
-
-    /*
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
-        return cell
-    }
-    */
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
 
     /*
     // MARK: - Navigation

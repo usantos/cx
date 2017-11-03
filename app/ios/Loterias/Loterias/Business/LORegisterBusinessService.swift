@@ -36,10 +36,16 @@ class LORegisterBusinessService: NSObject {
         }
     }
     
-    public func getMunicipios (url: URL , parameters: Parameters, completionHandler: @escaping(_ error: String?, _ listaCidade : [LOMunicipio]?) -> ()) {
+    public func getMunicipios (idUf: Int, completionHandler: @escaping(_ error: String?, _ listaMunicipio : [LOMunicipio]?) -> ()) {
+        
+        var qparams : [String:String] = Dictionary()
+        qparams["idUf"] = String(idUf)
+        
+        let paramsUInt8 = makeQueryParamsEncrypt(params: qparams)
+        let url = LOCrypto().cripfyBody(endpoint: "municipios", params: paramsUInt8)
         
         let header: HTTPHeaders = ["Accept": "application/json"]
-        Alamofire.request(url, method: .get ,headers :header).responseString { response in
+        Alamofire.request(url!, method: .get ,headers :header).responseString { response in
             debugPrint(response)
             
             let treat = self.treatStatusCode(statusCode: (response.response?.statusCode)!)

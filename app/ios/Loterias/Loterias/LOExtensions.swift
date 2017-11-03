@@ -22,6 +22,88 @@ extension UITextField {
 }
 
 extension NSObject {
+    public func addLoadingView (alpha : CGFloat) -> UIView {
+        
+        let overlayView = UIView()
+        let activityIndicator = UIActivityIndicatorView()
+        
+        overlayView.frame = UIScreen.main.bounds
+        overlayView.center = CGPoint(x: UIScreen.main.bounds.width / 2.0, y: UIScreen.main.bounds.height / 2.0)
+        overlayView.backgroundColor = UIColor.white
+        overlayView.alpha = alpha
+        overlayView.clipsToBounds = true
+        
+        activityIndicator.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
+        activityIndicator.activityIndicatorViewStyle = .gray
+        activityIndicator.center = CGPoint(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / 2)
+        
+        overlayView.addSubview(activityIndicator)
+        
+        activityIndicator.startAnimating()
+        
+        let window  = UIApplication.shared.keyWindow!
+        window.addSubview(overlayView)
+        
+        return overlayView
+    }
+    
+    func alert(title: String, message: String, completionHandler: @escaping () -> ()) {
+        let attributedMessage = NSAttributedString(string: String("\n".appending(message)), attributes: [
+            NSAttributedStringKey.font : UIFont(name: "System-Regular", size: 18.0)!
+            ])
+        
+        let attributedTitle = NSAttributedString(string: title, attributes: [
+            NSAttributedStringKey.font : UIFont(name: "System-Regular", size: 18.0)!
+            ])
+        
+        let alert = UIAlertController(title: "", message: "",  preferredStyle: .alert)
+        alert.setValue(attributedMessage, forKey: "attributedMessage")
+        alert.setValue(attributedTitle, forKey: "attributedTitle")
+        
+        let okAction = UIAlertAction(title: "Ok", style: .default) { (alertAction) in
+            completionHandler()
+        }
+        
+        alert.addAction(okAction)
+        let window  = UIApplication.shared.keyWindow!
+
+        window.rootViewController?.present(alert, animated: true, completion: nil)
+    }
+    
+    func alertConfirm (title: String, message: String , titleCancelAction: String , titleOkAction: String , completionHandler: @escaping () -> Void) {
+        
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        let DestructiveAction = UIAlertAction(title: titleCancelAction, style: UIAlertActionStyle.destructive) { (result : UIAlertAction) -> Void in
+        }
+        
+        let okAction = UIAlertAction(title: titleOkAction, style: UIAlertActionStyle.default) { (result : UIAlertAction) -> Void in
+            completionHandler()
+        }
+        alertController.addAction(DestructiveAction)
+        alertController.addAction(okAction)
+        let window  = UIApplication.shared.keyWindow!
+
+        window.rootViewController?.present(alertController, animated: true, completion: nil)
+    }
+    
+    func alertSimple (title: String, message: String) {
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        let okAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default)
+        
+        alertController.addAction(okAction)
+        let window  = UIApplication.shared.keyWindow!
+
+        window.rootViewController?.present(alertController, animated: true, completion: nil)
+    }
+    
+    func makeQueryParamsEncrypt(params: [String:String]) -> [UInt8] {
+        var qparam = ""
+        for (key, value) in params{
+            qparam += key + "==" + value + "&&"
+        }
+        
+        return Array(qparam.utf8)
+    }
     
     func UIColorFromHex(_ hex: UInt, alpha: Float) -> UIColor {
         return UIColor(
@@ -93,30 +175,6 @@ extension NSObject {
 }
 
 extension UIViewController {
-    public func addLoadingView (alpha : CGFloat) -> UIView {
-        
-        let overlayView = UIView()
-        let activityIndicator = UIActivityIndicatorView()
-        
-        overlayView.frame = UIScreen.main.bounds
-        overlayView.center = CGPoint(x: UIScreen.main.bounds.width / 2.0, y: UIScreen.main.bounds.height / 2.0)
-        overlayView.backgroundColor = UIColor.white
-        overlayView.alpha = alpha
-        overlayView.clipsToBounds = true
-        
-        activityIndicator.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
-        activityIndicator.activityIndicatorViewStyle = .gray
-        activityIndicator.center = CGPoint(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / 2)
-        
-        overlayView.addSubview(activityIndicator)
-        
-        activityIndicator.startAnimating()
-        
-        let window  = UIApplication.shared.keyWindow!
-        window.addSubview(overlayView)
-        
-        return overlayView
-    }
     
     public func addRightIconOnNavigation (image: UIImage) {
         let imgRendering = image.withRenderingMode(UIImageRenderingMode.alwaysOriginal)
@@ -127,51 +185,60 @@ extension UIViewController {
         let imgRendering = image.withRenderingMode(UIImageRenderingMode.alwaysOriginal)
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(image:imgRendering , style: UIBarButtonItemStyle.plain, target: nil, action: nil)
     }
-    
-    func alert(title: String, message: String, completionHandler: @escaping () -> ()) {
-        let attributedMessage = NSAttributedString(string: String("\n".appending(message)), attributes: [
-            NSAttributedStringKey.font : UIFont(name: "System-Regular", size: 18.0)!
-        ])
-        
-        let attributedTitle = NSAttributedString(string: title, attributes: [
-            NSAttributedStringKey.font : UIFont(name: "System-Regular", size: 18.0)!
-        ])
-        
-        let alert = UIAlertController(title: "", message: "",  preferredStyle: .alert)
-        alert.setValue(attributedMessage, forKey: "attributedMessage")
-        alert.setValue(attributedTitle, forKey: "attributedTitle")
-        
-        let okAction = UIAlertAction(title: "Ok", style: .default) { (alertAction) in
-            completionHandler()
-        }
-        
-        alert.addAction(okAction)
-        
-        self.present(alert, animated: true, completion: nil)
+}
+
+extension Array {
+    func toIsoLatin1Data () -> String? {
+        return String(bytes: self as! [UInt8], encoding: .isoLatin1)
+    }
+}
+
+extension String {
+    public var bytes: Array<UInt8> {
+        return data(using: String.Encoding.utf8, allowLossyConversion: true)?.bytes ?? Array(utf8)
     }
     
-    func alertConfirm (title: String, message: String , titleCancelAction: String , titleOkAction: String , completionHandler: @escaping () -> Void) {
-        
-        let alertController = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
-        let DestructiveAction = UIAlertAction(title: titleCancelAction, style: UIAlertActionStyle.destructive) { (result : UIAlertAction) -> Void in
+    func toIsoLatin1 () -> String? {
+        if let data = self.data(using: .isoLatin1),
+            let convertedString = String(data: data, encoding: .isoLatin1) {
+            
+            return convertedString
         }
-        
-        let okAction = UIAlertAction(title: titleOkAction, style: UIAlertActionStyle.default) { (result : UIAlertAction) -> Void in
-            completionHandler()
-        }
-        alertController.addAction(DestructiveAction)
-        alertController.addAction(okAction)
-        
-        self.present(alertController, animated: true, completion: nil)
+        return nil
     }
     
-    func alertSimple (title: String, message: String) {
-        let alertController = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
-        let okAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default)
-        
-        alertController.addAction(okAction)
-        
-        self.present(alertController, animated: true, completion: nil)
+    func toBase64() -> String? {
+        if let data = self.data(using: .isoLatin1) {
+            return data.base64EncodedString()
+        }
+        return nil
+    }
+    
+    //: ### Base64 decoding a string
+    func fromBase64() -> String? {
+        if let data = Data(base64Encoded: self, options: .ignoreUnknownCharacters) {
+            return String(data: data, encoding: .isoLatin1 )
+        }
+        return nil
+    }
+    
+    func base64URLEncodedString() -> String {
+        // use URL safe encoding and remove padding
+        return self
+            //.replacingOccurrences(of: "/", with: "_")
+            .replacingOccurrences(of: "+", with: "/")
+        //.replacingOccurrences(of: "=", with: "")
+    }
+    
+    func paddingBase64 () -> String {
+        let remainder = self.count % 4
+        if remainder > 0 {
+            return self.padding(toLength: self.count + 4 - remainder,
+                              withPad: "=",
+                              startingAt: 0)
+        } else {
+            return self
+        }
     }
 }
 
@@ -190,33 +257,6 @@ extension CGFloat {
     
     static func + (left: CGFloat, right: Int) -> CGFloat {
         return left + CGFloat(right);
-    }
-}
-
-extension String {
-    
-    
-    func toBase64() -> String? {
-        if let data = self.data(using: .utf8) {
-            return data.base64EncodedString()
-        }
-        return nil
-    }
-    
-    //: ### Base64 decoding a string
-    func fromBase64() -> String? {
-        if let data = Data(base64Encoded: self, options: .ignoreUnknownCharacters) {
-            return String(data: data, encoding: .utf8)
-        }
-        return nil
-    }
-    
-    func base64URLEncodedString() -> String {
-        // use URL safe encoding and remove padding
-        return self
-            //.replacingOccurrences(of: "/", with: "_")
-            .replacingOccurrences(of: "+", with: "/")
-            //.replacingOccurrences(of: "=", with: "")
     }
 }
 

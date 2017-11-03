@@ -40,11 +40,11 @@ class LOModalideController: UIViewController, UISideMenuNavigationControllerDele
             let layout = AnimatedCollectionViewLayout()
             
             if DeviceType.IS_IPHONE_6 {
-                layout.animator = LinearCardAttributesAnimator(minAlpha: 0.8, itemSpacing: 0.35, scaleRate: 0.75)
+                layout.animator = LinearCardAttributesAnimator(minAlpha: 0.8, itemSpacing: 0.33, scaleRate: 0.77)
             } else if DeviceType.IS_IPHONE_6P {
                 layout.animator = LinearCardAttributesAnimator(minAlpha: 0.8, itemSpacing: 0.32, scaleRate: 0.78)
             } else {
-                layout.animator = LinearCardAttributesAnimator(minAlpha: 0.8, itemSpacing: 0.4, scaleRate: 0.7)
+                layout.animator = LinearCardAttributesAnimator(minAlpha: 0.8, itemSpacing: 0.35, scaleRate: 0.75)
             }
             layout.scrollDirection = .horizontal
 
@@ -98,14 +98,26 @@ class LOModalideController: UIViewController, UISideMenuNavigationControllerDele
     }
     
     func chamaWebservice () {
-//        let loadingView = self.addLoadingView(alpha: 1.0)
+        let loadingView = self.addLoadingView(alpha: 1.0)
+        
+        LOParametrosSimulacaoBusinessService().getParametrosSimulacao(parameters: [:]) { (erro, retorno) in
+            loadingView.removeFromSuperview()
+            if erro != nil {
+                self.alertSimple(title: "Atenção", message: erro!)
+
+                self.arrayModalidades = [LOModalidadeEnum.Megasena, LOModalidadeEnum.Duplasena, LOModalidadeEnum.Lotofacil, LOModalidadeEnum.Quina]
+                self.collectionView.reloadData()
+            } else {
+            
+            }
+        }
 //        LOModalidadesBusinessService().getModalidades(parameters: [:]) { (error, modalidades) in
 //            loadingView.removeFromSuperview()
 //            if error != nil {
 //                self.alertSimple(title: "Atenção", message: error!)
-        
-                self.arrayModalidades = [LOModalidadeEnum.Megasena, LOModalidadeEnum.Duplasena, LOModalidadeEnum.Lotofacil, LOModalidadeEnum.Quina]
-                self.collectionView.reloadData()
+//
+//                self.arrayModalidades = [LOModalidadeEnum.Megasena, LOModalidadeEnum.Duplasena, LOModalidadeEnum.Lotofacil, LOModalidadeEnum.Quina]
+//                self.collectionView.reloadData()
 //            } else {
 //                for modalidade : LOModalidade in modalidades! {
 //                    self.arrayModalidades.append(LOModalidadeEnum(rawValue: modalidade.descricao)!)
@@ -142,12 +154,14 @@ class LOModalideController: UIViewController, UISideMenuNavigationControllerDele
                 estiloModalidade = EstiloModalidade(corClara: 0x005fa1, corEscura: 0x00528c , imagemTopo: #imageLiteral(resourceName: "titulo_federal"), imagemCalendario: #imageLiteral(resourceName: "icon-data-federal"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-federal"), tipoModalidade: self.tipoModalidade!)
                 break
             case .Quina:
-                estiloModalidade = EstiloModalidade(corClara: 0x642573, corEscura: 0x642475 , imagemTopo: #imageLiteral(resourceName: "titulo_quina"), imagemCalendario: #imageLiteral(resourceName: "icon-data-quina"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-quina"), tipoModalidade: self.tipoModalidade!)
+                estiloModalidade = EstiloModalidade(corClara: 0x803594, corEscura: 0x642573 , imagemTopo: #imageLiteral(resourceName: "titulo_quina"), imagemCalendario: #imageLiteral(resourceName: "icon-data-quina"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-quina"), tipoModalidade: self.tipoModalidade!)
                 break
             case .Timemania:
                 estiloModalidade = EstiloModalidade(corClara: 0xa8cd4a, corEscura: 0x92b240 , imagemTopo: #imageLiteral(resourceName: "titulo_timemania"), imagemCalendario: #imageLiteral(resourceName: "icon-data-timemania"), imagemRelogio: #imageLiteral(resourceName: "icon-horario-timemania"), tipoModalidade: self.tipoModalidade!)
                 break
             }
+            
+        
         }
         self.estiloModalidade = estiloModalidade
         return estiloModalidade
@@ -250,8 +264,9 @@ class LOModalideController: UIViewController, UISideMenuNavigationControllerDele
         if currentPage < self.arrayModalidades.count {
             self.tipoModalidade = self.arrayModalidades[currentPage]
             self.estiloModalidade = selecionaEstiloModalidade()
-            
-            estiloAposteBotao()
+            UIView.animate(withDuration: 0.3, animations: {
+                self.estiloAposteBotao()
+            })
         }
     }
     
@@ -262,7 +277,7 @@ class LOModalideController: UIViewController, UISideMenuNavigationControllerDele
         
         if currentPage < self.arrayModalidades.count {
             UIView.animate(withDuration: 0.3, animations: {
-                self.aposteView.alpha = 0.7
+                //self.aposteView.alpha = 0.7
             })
         }
     }

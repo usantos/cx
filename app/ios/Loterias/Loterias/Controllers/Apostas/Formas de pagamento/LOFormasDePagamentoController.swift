@@ -85,7 +85,7 @@ class LOFormasDePagamentoController: UIViewController, LOFormasDePagamentoDelega
             let itemCell = tableView.dequeueReusableCell(withIdentifier: "itemCell") as? LOFormaDePagamentoCell
             itemCell?.bandeiraCartao.image = #imageLiteral(resourceName: "mastercard")
             itemCell?.tituloCartao.text = "Mastercard"
-            itemCell?.numero.text = "4444.4444.4444.4444"
+            itemCell?.numero.text = aplicaMascaraNumeroCartao(numero: "4444444444441234")
             itemCell?.delegate = self
             
             arrayCells.append(itemCell!)
@@ -119,6 +119,16 @@ class LOFormasDePagamentoController: UIViewController, LOFormasDePagamentoDelega
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         return arrayCells[indexPath.row]
+    }
+    
+    func aplicaMascaraNumeroCartao (numero: String) -> String {
+        var numeroComMask = "**** **** **** "
+        
+        let indexEndOfText = numero.index(numero.startIndex, offsetBy: 12)
+        let substring = numero[indexEndOfText...]
+        numeroComMask.append(substring.description)
+        
+        return numeroComMask
     }
     
     func excluirFormaDePagamento(_ sender: UITableViewCell) {

@@ -72,8 +72,8 @@ class LOSSOController: UIViewController {
     }
     
     @IBAction func fazerLogin() {
-        login2()
-        //self.performSegue(withIdentifier: "mandaParaLogin", sender: self)
+        //login2()
+        self.performSegue(withIdentifier: "mandaParaLogin", sender: self)
     }
 
     // MARK: - Navigation

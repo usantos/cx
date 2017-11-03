@@ -11,8 +11,9 @@ import UIKit
 class LOModalidadeCell: UICollectionViewCell {
     @IBOutlet weak var resultadoView : UIView!
     
-    @IBOutlet weak var corpoView : UIView!
-    @IBOutlet weak var topoCorpo : UIImageView!
+    @IBOutlet weak var topoView : UIView!
+    @IBOutlet weak var trevoTopoView : UIView!
+    @IBOutlet weak var topoTitulo : UILabel!
     
     @IBOutlet weak var iconeCalendario : UIImageView!
     @IBOutlet weak var iconeRelogio : UIImageView!
@@ -22,7 +23,7 @@ class LOModalidadeCell: UICollectionViewCell {
     @IBOutlet weak var diaSorteio : UILabel!
     @IBOutlet weak var diaEncerramento : UILabel!
     @IBOutlet weak var acumulouOuGanhadores : UILabel!
-    
+    var shape : CAShapeLayer?
     public var estiloModalidade : EstiloModalidade!
     
     override func awakeFromNib() {
@@ -34,10 +35,29 @@ class LOModalidadeCell: UICollectionViewCell {
             self.iconeRelogio.image = self.estiloModalidade.imagemRelogio
             self.iconeCalendario.image = self.estiloModalidade.imagemCalendario
             self.resultadoView.backgroundColor = self.UIColorFromHex(self.estiloModalidade.corEscura, alpha: 1.0)
-            self.topoCorpo.image = self.estiloModalidade.imagemTopo
+            
+                self.shape = CAShapeLayer()
+                self.trevoTopoView.layer.insertSublayer(self.shape!, at: 0)
+                self.topoView.backgroundColor = self.UIColorFromHex(self.estiloModalidade.corClara, alpha: 1.0)
+                self.topoTitulo.text = self.estiloModalidade.tipoModalidade.rawValue.lowercased()
+                
+                self.shape!.opacity = 1.0
+                self.shape!.fillColor = self.UIColorFromHex(self.estiloModalidade.corEscura, alpha: 1.0).cgColor
+                
+                let path = UIBezierPath()
+                path.move(to: CGPoint(x: 0, y: 0))
+                path.addLine(to: CGPoint(x: self.trevoTopoView.frame.width, y: 0))
+                path.addLine(to: CGPoint(x: self.trevoTopoView.frame.width - 30, y: self.trevoTopoView.frame.height))
+                path.addLine(to: CGPoint(x: 0, y: self.trevoTopoView.frame.height))
+                path.close()
+                self.shape!.path = path.cgPath
         }
         
         popularCampos()
+    }
+    
+    override func prepareForReuse() {
+        self.shape?.removeFromSuperlayer()
     }
     
     func popularCampos () {

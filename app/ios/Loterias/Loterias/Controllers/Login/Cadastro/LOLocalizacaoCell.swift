@@ -33,6 +33,8 @@ class LOLocalizacaoCell: UITableViewCell, UITextFieldDelegate, LOPopupDelegate {
         super.setSelected(selected, animated: animated)
     }
     
+    var listaUfs : [LOUnidadeFederativa]?
+
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         if textField == uf {
             
@@ -48,6 +50,9 @@ class LOLocalizacaoCell: UITableViewCell, UITextFieldDelegate, LOPopupDelegate {
                     for objCidade in listaCidades! {
                         arrayUfs.append(objCidade.sigla!)
                     }
+                    
+                    self.listaUfs = listaCidades!
+                    
                     controller?.arrayDados = arrayUfs
                     controller?.tituloPopup = "UF"
                     controller?.modalPresentationStyle = .overFullScreen
@@ -59,23 +64,35 @@ class LOLocalizacaoCell: UITableViewCell, UITextFieldDelegate, LOPopupDelegate {
             })
             return false
         } else if textField == cidade {
-            let storyboard = UIStoryboard(name: "Login", bundle: nil)
-            let controller = storyboard.instantiateViewController(withIdentifier: "LOPopupSelecionarOpcoesController") as? LOPopupSelecionarOpcoesController
-            var arrayUfs = Array<String>()
-        
-            //RETIRAR MOCK
-            arrayUfs.append("Brasilia")
-            arrayUfs.append("Taguatinga")
-            arrayUfs.append("Asa norte")
-
-            controller?.arrayDados = arrayUfs
-            controller?.tituloPopup = "Cidade"
-            controller?.modalPresentationStyle = .overFullScreen
-            controller?.delegate = self
-            controller?.senderText = textField
-            
-            self.viewController()?.present(controller!, animated: true, completion: nil)
-
+            if uf.text != "" {
+                let ufSelecionada = listaUfs?.filter { $0.sigla == self.uf.text }
+                let loadingView = self.addLoadingView(alpha: 0.8)
+                
+                LORegisterBusinessService().getMunicipios(idUf: ufSelecionada![0].id!, completionHandler: { (error, listaMunicipios) in
+                    loadingView.removeFromSuperview()
+                    if error != nil {
+                        self.alertSimple(title: "Atenção", message: error!)
+                    } else {
+                        let storyboard = UIStoryboard(name: "Login", bundle: nil)
+                        let controller = storyboard.instantiateViewController(withIdentifier: "LOPopupSelecionarOpcoesController") as? LOPopupSelecionarOpcoesController
+                        var arrayMunicipios = Array<String>()
+                        
+                        for municipio in listaMunicipios! {
+                            arrayMunicipios.append(municipio.nome)
+                        }
+                        
+                        controller?.arrayDados = arrayMunicipios
+                        controller?.tituloPopup = "Município"
+                        controller?.modalPresentationStyle = .overFullScreen
+                        controller?.delegate = self
+                        controller?.senderText = textField
+                        
+                        self.viewController()?.present(controller!, animated: true, completion: nil)
+                    }
+                })
+            } else {
+                self.alertSimple(title: "Ops!", message: "Selecione primeiro a UF, assim nossa precisão de municípios será incrível.")
+            }
             return false
         }
         return true

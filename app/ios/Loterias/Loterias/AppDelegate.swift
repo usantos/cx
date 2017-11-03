@@ -17,8 +17,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
-        LOCrypto().iniciaCrypto()
-        
+//        LOUserBusinessService().alterarSenha(senhaAtual: "123456", novaSenha: "123456") { (teste, teste2) in
+//
+//        }
+        LOUserBusinessService().autenticar(email: "rinaldo90@gmail.com", senha: "Vaibombar1") { (teste, teste2) in
+            
+        }
         IQKeyboardManager.sharedManager().enable = true
                 
         UINavigationBar.appearance().tintColor = .blue

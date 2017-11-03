@@ -13,6 +13,7 @@ class LOCabecalhoRepassesCell: UITableViewCell, UIPickerViewDelegate, UIPickerVi
     @IBOutlet var pickerView : UIPickerView!
     
     var numbers = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+    var repassometroObj : LORepassometro?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -23,6 +24,10 @@ class LOCabecalhoRepassesCell: UITableViewCell, UIPickerViewDelegate, UIPickerVi
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
+    }
+    
+    func configuraPickerview () {
+        
     }
 
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {

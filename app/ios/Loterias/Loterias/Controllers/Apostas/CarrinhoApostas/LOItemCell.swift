@@ -19,6 +19,8 @@ class LOItemCell: UITableViewCell {
     @IBOutlet var modalidade : UILabel!
     @IBOutlet var numeros : UILabel!
     @IBOutlet var valor : UILabel!
+    
+    var delegateCarrinho : LOCarrinhoApostaDelegate?
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -91,6 +93,10 @@ class LOItemCell: UITableViewCell {
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         commonInit()
+    }
+    
+    @IBAction func excluirFormaPagamento () {
+        self.delegateCarrinho?.excluirFormaDePagamento(self)
     }
     
     private func commonInit() {

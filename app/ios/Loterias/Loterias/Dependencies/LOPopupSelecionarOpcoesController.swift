@@ -31,8 +31,9 @@ class LOPopupSelecionarOpcoesController : UIViewController, UITableViewDelegate,
     @IBOutlet weak var gradientView : UIView! {
         didSet {
             self.gradientView.layoutIfNeeded()
+            self.gradientView.autoresizesSubviews = true
             self.gradientView.layer.masksToBounds = true
-
+            
             let gradient : CAGradientLayer = CAGradientLayer()
             gradient.frame = self.gradientView.bounds
             gradient.startPoint = CGPoint(x: 0.0, y: 0.5)

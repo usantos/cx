@@ -2,7 +2,7 @@
 //  LOBin.swift
 //  Loterias
 //
-//  Created by Jenkins on 26/10/17.
+//  Created by Jenkins on 27/10/17.
 //  Copyright © 2017 Caixa. All rights reserved.
 //
 

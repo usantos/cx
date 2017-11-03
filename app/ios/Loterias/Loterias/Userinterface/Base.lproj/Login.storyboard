@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Z0u-YT-xVs">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13528" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Z0u-YT-xVs">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13526"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -882,7 +882,7 @@ Para começar, informe os dados abaixo:</string>
                 <navigationController storyboardIdentifier="initialLogin" automaticallyAdjustsScrollViewInsets="NO" id="Z0u-YT-xVs" customClass="LOInitialNavLoginController" customModule="Loterias" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="VKM-9z-Qg0">
-                        <rect key="frame" x="0.0" y="20" width="375" height="48"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <textAttributes key="largeTitleTextAttributes">
                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -949,13 +949,13 @@ de seu endereço, CEP ou código.</string>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-passo2" translatesAutoresizingMaskIntoConstraints="NO" id="b2z-rT-1g3">
-                                            <rect key="frame" x="16" y="17" width="52" height="20"/>
+                                            <rect key="frame" x="24" y="20" width="52" height="20"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="20" id="oQg-uT-DJ2"/>
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VnU-rV-YRg">
-                                            <rect key="frame" x="16" y="49" width="215.5" height="40"/>
+                                            <rect key="frame" x="16" y="52" width="215.5" height="37"/>
                                             <string key="text">Precisamos que você informe
 uma lotérica de sua preferência.</string>
                                             <fontDescription key="fontDescription" name="FuturaStd-Medium" family="Futura Std" pointSize="15"/>
@@ -1305,7 +1305,7 @@ uma lotérica de sua preferência.</string>
                                                 </attributedString>
                                             </state>
                                             <connections>
-                                                <segue destination="rEn-gb-vZ2" kind="show" id="fxd-9K-wP5"/>
+                                                <segue destination="KeK-el-u4V" kind="show" id="s7g-zG-VDZ"/>
                                             </connections>
                                         </button>
                                     </subviews>
@@ -1632,92 +1632,13 @@ te redirecionamos para as suas apostas :)</string>
             </objects>
             <point key="canvasLocation" x="1628" y="-767"/>
         </scene>
-        <!--Loterias Caixa-->
-        <scene sceneID="1uH-b8-5ah">
+        <!--LOAjudaController-->
+        <scene sceneID="nnG-vC-a3v">
             <objects>
-                <viewController id="rEn-gb-vZ2" customClass="LOAjudaController" customModule="Loterias" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="DIy-Qb-ogu"/>
-                        <viewControllerLayoutGuide type="bottom" id="Y9I-I8-SM1"/>
-                    </layoutGuides>
-                    <view key="view" clipsSubviews="YES" contentMode="scaleToFill" id="yNJ-qs-tzA">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="pyw-MN-pCH">
-                                <rect key="frame" x="0.0" y="21" width="375" height="56"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UHx-J2-VKK">
-                                        <rect key="frame" x="0.0" y="0.0" width="124.5" height="56"/>
-                                        <color key="backgroundColor" red="0.3294117647" green="0.73333333329999995" blue="0.6705882353" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="56" id="Jf9-Lq-jsZ"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" name="FuturaStd-Bold" family="Futura Std" pointSize="15"/>
-                                        <state key="normal" title="Termos de uso">
-                                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                        </state>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lrm-aM-bSd">
-                                        <rect key="frame" x="125.5" y="0.0" width="124" height="56"/>
-                                        <fontDescription key="fontDescription" name="FuturaStd-Bold" family="Futura Std" pointSize="15"/>
-                                        <state key="normal" title="Política de privacidade">
-                                            <color key="titleColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        </state>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dTe-xS-YSk">
-                                        <rect key="frame" x="250.5" y="0.0" width="124.5" height="56"/>
-                                        <fontDescription key="fontDescription" name="FuturaStd-Bold" family="Futura Std" pointSize="15"/>
-                                        <state key="normal" title="Dúvidas">
-                                            <color key="titleColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        </state>
-                                    </button>
-                                </subviews>
-                            </stackView>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="justified" translatesAutoresizingMaskIntoConstraints="NO" id="xNY-0g-pAU">
-                                <rect key="frame" x="8" y="85" width="359" height="574"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <string key="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget.
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-
-Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet.
-
-Proin gravida dolor sit amet lacus accumsan et viverra justo commodo.
-
-Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget.
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget.
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet.
-
-Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget.</string>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            </textView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="xNY-0g-pAU" firstAttribute="leading" secondItem="yNJ-qs-tzA" secondAttribute="leading" constant="8" id="5Dm-33-wyW"/>
-                            <constraint firstAttribute="trailing" secondItem="pyw-MN-pCH" secondAttribute="trailing" id="Jzq-ch-f2Y"/>
-                            <constraint firstItem="xNY-0g-pAU" firstAttribute="top" secondItem="pyw-MN-pCH" secondAttribute="bottom" constant="8" id="QBR-eI-JkO"/>
-                            <constraint firstItem="pyw-MN-pCH" firstAttribute="leading" secondItem="yNJ-qs-tzA" secondAttribute="leading" id="Z49-2H-n7N"/>
-                            <constraint firstItem="Y9I-I8-SM1" firstAttribute="top" secondItem="xNY-0g-pAU" secondAttribute="bottom" constant="8" id="cHk-Vn-28D"/>
-                            <constraint firstAttribute="trailing" secondItem="xNY-0g-pAU" secondAttribute="trailing" constant="8" id="gMU-U3-aRf"/>
-                            <constraint firstItem="pyw-MN-pCH" firstAttribute="top" secondItem="DIy-Qb-ogu" secondAttribute="bottom" constant="1" id="kPv-eR-tie"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" title="Loterias Caixa" id="Exf-xK-mtJ"/>
-                    <connections>
-                        <outlet property="duvidas" destination="dTe-xS-YSk" id="u2y-9l-Iev"/>
-                        <outlet property="politicaPrivacidade" destination="Lrm-aM-bSd" id="P9l-XG-PQb"/>
-                        <outlet property="termosDeUso" destination="UHx-J2-VKK" id="Utn-LA-XqO"/>
-                        <outlet property="textView" destination="xNY-0g-pAU" id="MI7-KW-nCV"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="lSy-pM-l5F" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <viewControllerPlaceholder storyboardName="Main" referencedIdentifier="LOAjudaController" id="KeK-el-u4V" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Sv8-pb-FrE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3241" y="405"/>
+            <point key="canvasLocation" x="3056" y="1"/>
         </scene>
     </scenes>
     <resources>

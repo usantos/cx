@@ -145,9 +145,6 @@ class LOCadastroPassoDoisController: UITableViewController, LOCadastroPassoDoisD
     }
     
     func finalizarCadastro() {
-        let defaults = UserDefaults.standard
-        defaults.set(true, forKey: "isFirstAccess")
-
         self.performSegue(withIdentifier: "finalizarCadastro", sender: self)
 
 //        if termoSelecionado() {
@@ -155,7 +152,7 @@ class LOCadastroPassoDoisController: UITableViewController, LOCadastroPassoDoisD
 //                if sucesso! {
 //                    self.performSegue(withIdentifier: "finalizarCadastro", sender: self)
 //                } else {
-//                    
+//                    self.alertSimple(title: "Ops!", message: "")
 //                }
 //            })
 //        } else {

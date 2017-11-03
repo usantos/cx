@@ -2,108 +2,192 @@
 //  LOCrypto.swift
 //  Loterias
 //
-//  Created by Jenkins on 26/10/17.
+//  Created by Jenkins on 27/10/17.
 //  Copyright © 2017 Caixa. All rights reserved.
 //
 
 import UIKit
+import CryptoSwift
+import Security
+import Alamofire
 
 class LOCrypto: NSObject {
-    public var TEXT = LOBin().fromUtf8(data: "quantidadeTotalNumeros==6&&numerosMarcados==15,18,19,48,52,58&&menorPrognostico==1&&maiorPrognostico==60&&")
-    public var ENCRYPTED = "5sqb7m8tljzD73R/uBrZga5ctylBea53WbH0s1wqvEfWrViv5VeWYDkJmaXT6luwK8xaMMO+hUWq6MlrFLEaN+GRJOtPSaW6YlApmEDhnkSTaUw+9tSy4Tm9FkvPVOsapG5+irt9RXyHhkWMaCW6jw=="
-    public var KEY = "QEm06ZAThg1E314zziahsg"
-    public var IV = ("8hQLtNV44Y1bIeONmlr+Dg==").fromBase64()
     
-    enum AESError: Error {
-        case KeyError((String, Int))
-        case IVError((String, Int))
-        case CryptorError((String, Int))
+    func cripfyBody (endpoint: String, params: [UInt8]) -> URL?{
+        let key = try! Base64.decode("QEm06ZAThg1E314zziahsg")
+        let iv = try! Base64.decode("8hQLtNV44Y1bIeONmlr+Dg==")
+        
+        do {
+            let encrypted = try AES(key: key, blockMode: .CBC(iv: iv), padding: .pkcs5).encrypt(params)
+            let cipherFinal = encrypted.toIsoLatin1Data()! + "!#!#!" + key.toIsoLatin1Data()! + "!#!#!" + iv.toIsoLatin1Data()!
+
+            let str = CFURLCreateStringByAddingPercentEscapes(
+                nil,
+                cipherFinal as CFString,
+                nil,
+                "!*'();:@&=+$,/?%#[]" as CFString,
+                CFStringBuiltInEncodings.UTF8.rawValue
+            )
+
+            return URL(string: getBaseUrl()! + endpoint.toBase64()! + "/?q=" + (str! as String))!
+        } catch {
+            debugPrint(error)
+        }
+        return nil
+    }
+}
+
+struct InvalidBase64: Error {}
+
+struct Base64 {
+    static func decode(_ string: String) throws -> [UInt8] {
+        return try decode([UInt8](string.utf8))
     }
     
-    // The iv is prefixed to the encrypted data
-    func aesCBCEncrypt(data:Data, keyData:Data) throws -> Data {
-        let keyLength = keyData.count
-        let validKeyLengths = [kCCKeySizeAES128, kCCKeySizeAES192, kCCKeySizeAES256]
-        if (validKeyLengths.contains(keyLength) == false) {
-            throw AESError.KeyError(("Invalid key length", keyLength))
+    /// Decodes a Base64 encoded String into Data
+    ///
+    /// - throws: If the string isn't base64 encoded
+    static func decode(_ string: [UInt8]) throws -> [UInt8] {
+        let lookupTable: [UInt8] = [
+            64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
+            64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
+            64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 62, 64, 62, 64, 63,
+            52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 64, 64, 64, 64, 64, 64,
+            64, 00, 01, 02, 03, 04, 05, 06, 07, 08, 09, 10, 11, 12, 13, 14,
+            15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 64, 64, 64, 64, 63,
+            64, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40,
+            41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 64, 64, 64, 64, 64,
+            64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
+            64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
+            64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
+            64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
+            64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
+            64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
+            64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
+            64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
+            64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64
+        ]
+        
+        let remainder = string.count % 4
+        let length = (string.count - remainder) / 4
+        
+        var decoded = [UInt8]()
+        decoded.reserveCapacity(length)
+        
+        var index = 0
+        var i0: UInt8 = 0
+        var i1: UInt8 = 0
+        var i2: UInt8 = 0
+        var i3: UInt8 = 0
+        
+        while index &+ 4 < string.count {
+            i0 = lookupTable[numericCast(string[index])]
+            i1 = lookupTable[numericCast(string[index &+ 1])]
+            i2 = lookupTable[numericCast(string[index &+ 2])]
+            i3 = lookupTable[numericCast(string[index &+ 3])]
+            
+            if i0 > 63 || i1 > 63 || i2 > 63 || i3 > 63 {
+                throw InvalidBase64()
+            }
+            
+            decoded.append(i0 << 2 | i1 >> 4)
+            decoded.append(i1 << 4 | i2 >> 2)
+            decoded.append(i2 << 6 | i3)
+            index += 4
         }
         
-        let ivSize = kCCBlockSizeAES128;
-        let cryptLength = size_t(ivSize + data.count + kCCBlockSizeAES128)
-        var cryptData = Data(count:cryptLength)
-        
-        let status = cryptData.withUnsafeMutableBytes {ivBytes in
-            SecRandomCopyBytes(kSecRandomDefault, kCCBlockSizeAES128, ivBytes)
-        }
-        if (status != 0) {
-            throw AESError.IVError(("IV generation failed", Int(status)))
-        }
-        
-        var numBytesEncrypted :size_t = 0
-        let options   = CCOptions(kCCOptionPKCS7Padding)
-        
-        let cryptStatus = cryptData.withUnsafeMutableBytes {cryptBytes in
-            data.withUnsafeBytes {dataBytes in
-                keyData.withUnsafeBytes {keyBytes in
-                    CCCrypt(CCOperation(kCCEncrypt),
-                            CCAlgorithm(kCCAlgorithmAES),
-                            options,
-                            keyBytes, keyLength,
-                            cryptBytes,
-                            dataBytes, data.count,
-                            cryptBytes+kCCBlockSizeAES128, cryptLength,
-                            &numBytesEncrypted)
+        if string.count &- index > 1 {
+            i0 = lookupTable[numericCast(string[index])]
+            i1 = lookupTable[numericCast(string[index &+ 1])]
+            
+            if i1 > 63 {
+                guard string[index] == 61 else {
+                    throw InvalidBase64()
+                }
+                
+                return decoded
+            }
+            
+            if i2 > 63 {
+                guard string[index &+ 2] == 61 else {
+                    throw InvalidBase64()
+                }
+                
+                return decoded
+            }
+            
+            decoded.append(i0 << 2 | i1 >> 4)
+            
+            if string.count &- index > 2 {
+                i2 = lookupTable[numericCast(string[index &+ 2])]
+                
+                if i2 > 63 {
+                    guard string[index &+ 2] == 61 else {
+                        throw InvalidBase64()
+                    }
+                    
+                    return decoded
+                }
+                
+                decoded.append(i1 << 4 | i2 >> 2)
+                
+                if string.count &- index > 3 {
+                    i3 = lookupTable[numericCast(string[index &+ 3])]
+                    
+                    if i3 > 63 {
+                        guard string[index &+ 3] == 61 else {
+                            throw InvalidBase64()
+                        }
+                        
+                        return decoded
+                    }
+                    
+                    decoded.append(i2 << 6 | i3)
                 }
             }
         }
         
-        if UInt32(cryptStatus) == UInt32(kCCSuccess) {
-            cryptData.count = numBytesEncrypted + ivSize
-        }
-        else {
-            throw AESError.CryptorError(("Encryption failed", Int(cryptStatus)))
-        }
-        
-        return cryptData;
+        return decoded
     }
     
-    // The iv is prefixed to the encrypted data
-    func aesCBCDecrypt(data:Data, keyData:Data) throws -> Data? {
-        let keyLength = keyData.count
-        let validKeyLengths = [kCCKeySizeAES128, kCCKeySizeAES192, kCCKeySizeAES256]
-        if (validKeyLengths.contains(keyLength) == false) {
-            throw AESError.KeyError(("Invalid key length", keyLength))
+    static func encode(_ data: [UInt8]) -> String {
+        let base64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
+        var encoded: String = ""
+        
+        func appendCharacterFromBase(_ character: Int) {
+            encoded.append(base64[base64.index(base64.startIndex, offsetBy: character)])
         }
         
-        let ivSize = kCCBlockSizeAES128;
-        let clearLength = size_t(data.count - ivSize)
-        var clearData = Data(count:clearLength)
+        func byte(_ index: Int) -> Int {
+            return Int(data[index])
+        }
         
-        var numBytesDecrypted :size_t = 0
-        let options   = CCOptions(kCCOptionPKCS7Padding)
+        let decodedBytes = data.map { Int($0) }
         
-        let cryptStatus = clearData.withUnsafeMutableBytes {cryptBytes in
-            data.withUnsafeBytes {dataBytes in
-                keyData.withUnsafeBytes {keyBytes in
-                    CCCrypt(CCOperation(kCCDecrypt),
-                            CCAlgorithm(kCCAlgorithmAES128),
-                            options,
-                            keyBytes, keyLength,
-                            dataBytes,
-                            dataBytes+kCCBlockSizeAES128, clearLength,
-                            cryptBytes, clearLength,
-                            &numBytesDecrypted)
-                }
+        var i = 0
+        
+        while i < decodedBytes.count - 2 {
+            appendCharacterFromBase((byte(i) >> 2) & 0x3F)
+            appendCharacterFromBase(((byte(i) & 0x3) << 4) | ((byte(i + 1) & 0xF0) >> 4))
+            appendCharacterFromBase(((byte(i + 1) & 0xF) << 2) | ((byte(i + 2) & 0xC0) >> 6))
+            appendCharacterFromBase(byte(i + 2) & 0x3F)
+            i += 3
+        }
+        
+        if i < decodedBytes.count {
+            appendCharacterFromBase((byte(i) >> 2) & 0x3F)
+            
+            if i == decodedBytes.count - 1 {
+                appendCharacterFromBase(((byte(i) & 0x3) << 4))
+                encoded.append("=")
+            } else {
+                appendCharacterFromBase(((byte(i) & 0x3) << 4) | ((byte(i + 1) & 0xF0) >> 4))
+                appendCharacterFromBase(((byte(i + 1) & 0xF) << 2))
             }
+            
+            encoded.append("=")
         }
         
-        if UInt32(cryptStatus) == UInt32(kCCSuccess) {
-            clearData.count = numBytesDecrypted
-        }
-        else {
-            throw AESError.CryptorError(("Decryption failed", Int(cryptStatus)))
-        }
-        
-        return clearData;
+        return encoded
     }
 }

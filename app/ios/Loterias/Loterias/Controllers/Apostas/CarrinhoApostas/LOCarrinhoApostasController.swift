@@ -8,7 +8,11 @@
 
 import UIKit
 
-class LOCarrinhoApostasController: UIViewController, LOItemCellDelegate, UITableViewDelegate, UITableViewDataSource {
+protocol LOCarrinhoApostaDelegate {
+    func excluirFormaDePagamento(_ sender : UITableViewCell)
+}
+
+class LOCarrinhoApostasController: UIViewController, LOCarrinhoApostaDelegate, LOItemCellDelegate, UITableViewDelegate, UITableViewDataSource {
 
     var cellsArray : Array<UITableViewCell>?
     let gradient : CAGradientLayer = CAGradientLayer()
@@ -21,6 +25,9 @@ class LOCarrinhoApostasController: UIViewController, LOItemCellDelegate, UITable
         
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.estimatedRowHeight = 150
+        
+        
+        
         
         populaArrayDeCelulas()
     }
@@ -72,6 +79,7 @@ class LOCarrinhoApostasController: UIViewController, LOItemCellDelegate, UITable
         let cell = self.tableView.dequeueReusableCell(withIdentifier: "itemCell")! as! LOItemCell
         cell.numeros.text = "1 2 3 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24"
         cell.delegate = self
+        cell.delegateCarrinho = self
         
         cellsArray?.append(cell)
         cellsArray?.append(self.tableView.dequeueReusableCell(withIdentifier: "itemCell")!)
@@ -92,13 +100,19 @@ class LOCarrinhoApostasController: UIViewController, LOItemCellDelegate, UITable
     }
     
     @IBAction func fazerNovaAposta () {
-        for vc in (self.navigationController?.viewControllers ?? []) {
-            if vc is LOSimularApostasController {
-                self.navigationController?.navigationBar.shadowImage = UIImage()
-                self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-                _ = self.navigationController?.popToViewController(vc, animated: true)
-                break
-            }
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        _ = self.navigationController?.popToRootViewController(animated: true)
+    }
+    
+    func excluirFormaDePagamento(_ sender: UITableViewCell) {
+        self.alertConfirm(title: "Atenção", message: "Deseja realmente excluir essa forma de pagamento?", titleCancelAction: "Não!", titleOkAction: "Sim") {
+            
+            let indexPath = self.tableView.indexPath(for: sender)!
+            
+            self.cellsArray?.remove(at: indexPath.row)
+            
+            self.tableView.deleteRows(at: [indexPath], with: .automatic)
         }
     }
     

@@ -10,7 +10,7 @@ import UIKit
 import Alamofire
 
 class LOTermoBusinessService: NSObject {
-    public func getTermo (parameters: Parameters, completionHandler: @escaping(_ error: String?, _ termo : String?) -> ()) {
+    public func getTermo (parameters: Parameters, completionHandler: @escaping(_ error: String?, _ termo : String?) -> ()) {        
         let urlTest = URL(string: getBaseUrl()! + "termos-de-uso/termo-vigente".toBase64()!)
         
         let header: HTTPHeaders = ["Accept": "application/json"]

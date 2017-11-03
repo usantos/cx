@@ -30,8 +30,6 @@ class LOAjudaController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationController?.isNavigationBarHidden = true
-        
         self.gradient.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 64)
         self.gradient.startPoint = CGPoint(x: 0.0, y: 0.5)
         self.gradient.endPoint = CGPoint(x: 1.0, y: 0.5)
@@ -47,6 +45,10 @@ class LOAjudaController: UIViewController {
     
     @IBAction func backButtonAction () {
         self.navigationController?.popViewController(animated: true)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.navigationController?.isNavigationBarHidden = true
     }
     
     override func viewWillDisappear(_ animated: Bool) {

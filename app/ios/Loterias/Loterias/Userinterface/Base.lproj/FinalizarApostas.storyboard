@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="hC2-F3-uBp">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13528" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="hC2-F3-uBp">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13526"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -119,7 +119,7 @@
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="cabecalhoCell" rowHeight="141" id="a2O-sZ-fFf">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="cabecalhoCell" rowHeight="141" id="a2O-sZ-fFf" customClass="LOCabecalhoCarrinhoCell" customModule="Loterias" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="375" height="141"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="a2O-sZ-fFf" id="IRu-5h-997">
@@ -154,6 +154,9 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                        <connections>
+                                            <outlet property="textoDinamicoTopo" destination="3DN-pg-cfz" id="0ka-uU-og4"/>
+                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="itemCell" rowHeight="55" id="OA2-OS-PEV" customClass="LOItemCell" customModule="Loterias" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="169" width="375" height="55"/>
@@ -196,6 +199,9 @@
                                                     <state key="normal" title="X">
                                                         <color key="titleColor" red="0.32941176470588235" green="0.73333333333333328" blue="0.6705882352941176" alpha="1" colorSpace="calibratedRGB"/>
                                                     </state>
+                                                    <connections>
+                                                        <action selector="excluirFormaPagamento" destination="OA2-OS-PEV" eventType="touchUpInside" id="G8K-NQ-eP7"/>
+                                                    </connections>
                                                 </button>
                                             </subviews>
                                             <constraints>
@@ -252,6 +258,9 @@
                                                     <state key="normal" title="Fazer nova aposta">
                                                         <color key="titleColor" red="0.29411764709999999" green="0.74117647060000003" blue="0.67450980390000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </state>
+                                                    <connections>
+                                                        <action selector="fazerNovaAposta" destination="tXW-5N-Ax1" eventType="touchUpInside" id="XHS-yq-lYb"/>
+                                                    </connections>
                                                 </button>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ONJ-DQ-tcn">
                                                     <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
@@ -784,7 +793,7 @@ o seu carrinho.</string>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z7k-Dn-cAu">
                                                             <rect key="frame" x="0.0" y="0.0" width="42" height="20.5"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                            <nil key="textColor"/>
+                                                            <color key="textColor" red="0.0" green="0.29803921568627451" blue="0.5490196078431373" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ds1-RT-aqh">
@@ -927,6 +936,9 @@ e autorizar cobrança</string>
                                                             </fragment>
                                                         </attributedString>
                                                     </state>
+                                                    <connections>
+                                                        <action selector="finalizarAposta" destination="9uP-YV-7bc" eventType="touchUpInside" id="efQ-MH-B3s"/>
+                                                    </connections>
                                                 </button>
                                             </subviews>
                                             <constraints>
@@ -998,16 +1010,19 @@ e autorizar cobrança</string>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cadastrar cartão" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VRp-Ze-WYe">
-                                                    <rect key="frame" x="21" y="31" width="332" height="42"/>
+                                                    <rect key="frame" x="21" y="31" width="332" height="39"/>
                                                     <fontDescription key="fontDescription" name="FuturaStd-Bold" family="Futura Std" pointSize="15"/>
                                                     <color key="textColor" red="0.0" green="0.36862745099999999" blue="0.65098039220000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="goI-Wr-zH6">
-                                                    <rect key="frame" x="21" y="86" width="332" height="64"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="goI-Wr-zH6">
+                                                    <rect key="frame" x="29" y="83" width="316" height="64"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="64" id="86L-XZ-jPQ"/>
                                                     </constraints>
+                                                    <string key="text">Notamos que você ainda não possui
+nenhum cartão de crédito cadastrado.
+Para continuar, informe:</string>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.28235294119999998" green="0.34509803919999998" blue="0.42352941179999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -1109,6 +1124,9 @@ e autorizar cobrança</string>
                                                             <real key="value" value="0.90000000000000002"/>
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
+                                                    <connections>
+                                                        <outlet property="delegate" destination="nTm-gw-pKd" id="Pek-5L-oXS"/>
+                                                    </connections>
                                                 </textField>
                                             </subviews>
                                             <constraints>
@@ -1146,6 +1164,9 @@ e autorizar cobrança</string>
                                                             <real key="value" value="0.90000000000000002"/>
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
+                                                    <connections>
+                                                        <outlet property="delegate" destination="nTm-gw-pKd" id="jQO-1q-w5B"/>
+                                                    </connections>
                                                 </textField>
                                             </subviews>
                                             <constraints>
@@ -1183,6 +1204,9 @@ e autorizar cobrança</string>
                                                             <real key="value" value="0.90000000000000002"/>
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
+                                                    <connections>
+                                                        <outlet property="delegate" destination="nTm-gw-pKd" id="hhN-QT-mHz"/>
+                                                    </connections>
                                                 </textField>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-cartao-cvc" translatesAutoresizingMaskIntoConstraints="NO" id="q5D-0p-L6m">
                                                     <rect key="frame" x="320" y="16" width="40" height="35"/>
@@ -1203,7 +1227,7 @@ e autorizar cobrança</string>
                                         </tableViewCellContentView>
                                         <inset key="separatorInset" minX="1000" minY="0.0" maxX="0.0" maxY="0.0"/>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="locCell" rowHeight="56" id="i0Q-iz-Lfw" customClass="LOLocalizacaoCell" customModule="Loterias" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="locCell" rowHeight="56" id="i0Q-iz-Lfw">
                                         <rect key="frame" x="0.0" y="388" width="375" height="56"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="i0Q-iz-Lfw" id="XPR-Hl-VTc">
@@ -1226,6 +1250,9 @@ e autorizar cobrança</string>
                                                             <color key="value" red="0.81568627449999997" green="0.87843137250000003" blue="0.89019607840000003" alpha="1" colorSpace="calibratedRGB"/>
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
+                                                    <connections>
+                                                        <outlet property="delegate" destination="nTm-gw-pKd" id="6ks-3f-siL"/>
+                                                    </connections>
                                                 </textField>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Ano de validade" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="QQu-zU-tbe" customClass="HoshiTextField" customModule="TextFieldEffects">
                                                     <rect key="frame" x="174" y="6" width="185" height="45"/>
@@ -1246,6 +1273,9 @@ e autorizar cobrança</string>
                                                             <color key="value" red="0.81568627449999997" green="0.87843137250000003" blue="0.89019607840000003" alpha="1" colorSpace="calibratedRGB"/>
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
+                                                    <connections>
+                                                        <outlet property="delegate" destination="nTm-gw-pKd" id="2yp-aZ-VIe"/>
+                                                    </connections>
                                                 </textField>
                                             </subviews>
                                             <constraints>
@@ -1259,10 +1289,6 @@ e autorizar cobrança</string>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <inset key="separatorInset" minX="1000" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                        <connections>
-                                            <outlet property="cidade" destination="QQu-zU-tbe" id="8Bi-5P-uUU"/>
-                                            <outlet property="uf" destination="nEB-71-7Kd" id="9x4-Ug-dxJ"/>
-                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="termoCell" rowHeight="60" id="Ba9-Tv-ikV">
                                         <rect key="frame" x="0.0" y="444" width="375" height="60"/>
@@ -1472,7 +1498,7 @@ e autorizar cobrança</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="k3H-Sb-W5a">
-                                <rect key="frame" x="0.0" y="567" width="375" height="100"/>
+                                <rect key="frame" x="0.0" y="523" width="375" height="100"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-paginacao3" translatesAutoresizingMaskIntoConstraints="NO" id="HEL-UN-Qwz">
                                         <rect key="frame" x="99.5" y="71" width="175" height="13"/>
@@ -1546,7 +1572,7 @@ e autorizar cobrança</string>
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zCs-51-wzT">
-                                <rect key="frame" x="99.5" y="539" width="175" height="84"/>
+                                <rect key="frame" x="99.5" y="495" width="175" height="84"/>
                                 <color key="backgroundColor" red="0.29411764709999999" green="0.74117647060000003" blue="0.67450980390000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="zCs-51-wzT" secondAttribute="height" multiplier="25:12" id="Glh-cb-BSj"/>
@@ -1578,10 +1604,10 @@ ao início</string>
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-seta-esquerda" translatesAutoresizingMaskIntoConstraints="NO" id="PxW-B9-6cF">
-                                <rect key="frame" x="35" y="244" width="298" height="307"/>
+                                <rect key="frame" x="35" y="200" width="298" height="307"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Você pode vizualizá-las na área Apostas realizadas do aplicativo." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="QZs-zJ-R9h">
-                                <rect key="frame" x="75" y="256" width="225" height="56"/>
+                                <rect key="frame" x="75" y="212" width="225" height="56"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="225" id="7vY-38-Xmh"/>
                                     <constraint firstAttribute="height" constant="56" id="kHZ-wq-Kxe"/>
@@ -1591,7 +1617,7 @@ ao início</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Parabéns! Suas apostas foram efetivadas." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="y4g-bO-hd6">
-                                <rect key="frame" x="75" y="188" width="225" height="48"/>
+                                <rect key="frame" x="75" y="144" width="225" height="48"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="225" id="QAw-oU-t0T"/>
                                     <constraint firstAttribute="height" constant="48" id="sJX-xv-QY7"/>
@@ -1676,13 +1702,15 @@ ao início</string>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DZf-15-w4T">
                                 <rect key="frame" x="0.0" y="20" width="375" height="64"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Dgq-CK-2Bl">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Dgq-CK-2Bl">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="64"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </imageView>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LJW-Ad-1KY">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LJW-Ad-1KY">
                                         <rect key="frame" x="321" y="10" width="44" height="44"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="44" id="35j-55-k6y"/>
+                                            <constraint firstAttribute="height" constant="44" id="bU5-rr-A2U"/>
+                                        </constraints>
                                         <connections>
                                             <action selector="dissmiss" destination="OQO-sh-11a" eventType="touchUpInside" id="VdA-zn-RAZ"/>
                                         </connections>
@@ -1690,7 +1718,14 @@ ao início</string>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="LJW-Ad-1KY" secondAttribute="trailing" constant="10" id="DfJ-lK-a1N"/>
+                                    <constraint firstItem="Dgq-CK-2Bl" firstAttribute="leading" secondItem="DZf-15-w4T" secondAttribute="leading" id="HlG-2X-nsI"/>
+                                    <constraint firstAttribute="trailing" secondItem="Dgq-CK-2Bl" secondAttribute="trailing" id="hGy-Om-MPn"/>
+                                    <constraint firstItem="Dgq-CK-2Bl" firstAttribute="top" secondItem="DZf-15-w4T" secondAttribute="top" id="hME-Ny-bQ2"/>
                                     <constraint firstAttribute="height" constant="64" id="huh-W9-vLY"/>
+                                    <constraint firstItem="LJW-Ad-1KY" firstAttribute="top" secondItem="DZf-15-w4T" secondAttribute="top" constant="10" id="mtI-vG-xVw"/>
+                                    <constraint firstAttribute="bottom" secondItem="LJW-Ad-1KY" secondAttribute="bottom" constant="10" id="nOe-gw-HuO"/>
+                                    <constraint firstAttribute="bottom" secondItem="Dgq-CK-2Bl" secondAttribute="bottom" id="y6t-oT-vlo"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Izr-sm-osN">
@@ -1832,7 +1867,7 @@ ao início</string>
         <image name="mastercard" width="1024" height="576"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="J6P-rZ-dBg"/>
+        <segue reference="ApM-jx-dLc"/>
         <segue reference="JeW-ve-5ec"/>
     </inferredMetricsTieBreakers>
 </document>

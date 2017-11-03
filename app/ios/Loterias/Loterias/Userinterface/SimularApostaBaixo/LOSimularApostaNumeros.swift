@@ -389,7 +389,16 @@ class LOSimularApostaNumeros: UIView, UICollectionViewDelegateFlowLayout, UIColl
     }
     
     @objc func adicionarApostaNoCarrinho() {
-        self.delegateSimular.adicionarNoCarrinho()
+        let loadingView = addLoadingView(alpha: 0.8)
+        LOApostasBusinessService().completaJogo(quantidadeTotalNumeros: 6, numerosMarcados: sortedNumbers, menorPrognostico: 1, maiorPrognostico: 60) { (status, error) in
+            loadingView.removeFromSuperview()
+            if error != nil {
+                self.alertSimple(title: "Ops!", message: error!)
+            } else {
+                self.delegateSimular.adicionarNoCarrinho()
+            }
+        }
+        
     }
     
     @objc func completarComNumerosAleatorios() {
@@ -409,6 +418,10 @@ class LOSimularApostaNumeros: UIView, UICollectionViewDelegateFlowLayout, UIColl
         apresentaSalvarAposta(hidden: false)
         apresentaLimparApostas(hidden: false)
         aplicarEstiloBotaoCentral()
+        
+//        LOApostasBusinessService().completaJogo(quantidadeTotalNumeros: 6, numerosMarcados: [15, 18, 19, 48, 52, 58], menorPrognostico: 1, maiorPrognostico: 60) { (ok, ok2) in
+//            
+//        }
         
         self.collectionViewNumeros.reloadData()
     }
