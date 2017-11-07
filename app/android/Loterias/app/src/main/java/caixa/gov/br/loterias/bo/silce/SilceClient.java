@@ -2,13 +2,7 @@ package caixa.gov.br.loterias.bo.silce;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.google.common.base.Joiner;
-
 import java.util.LinkedHashMap;
-import java.util.List;
-
-import caixa.gov.br.loterias.bo.silce.data.CompletaJogoRsp;
-import caixa.gov.br.loterias.bo.silce.data.LoginReq;
 import caixa.gov.br.loterias.bo.silce.dto.AutenticacaoDTO;
 import caixa.gov.br.loterias.bo.silce.dto.UsuarioLogadoResponse;
 import caixa.gov.br.loterias.bo.silce.internals.SilceConnection;
@@ -38,11 +32,7 @@ public class SilceClient {
         AutenticacaoDTO autenticacaoDTO = new AutenticacaoDTO();
         autenticacaoDTO.setEmail(email);
         autenticacaoDTO.setSenha(senha);
-        /*
-        LoginReq req = new LoginReq();
-        req.setEmail(email);
-        req.setSenha(senha);
-        */
+
         conn.post(LOGIN_PATH, new LinkedHashMap<String, String>(),
                 autenticacaoDTO, UsuarioLogadoResponse.class,
                 volleyListener(listener, UsuarioLogadoResponse.class),

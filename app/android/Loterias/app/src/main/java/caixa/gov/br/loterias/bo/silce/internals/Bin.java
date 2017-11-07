@@ -1,13 +1,13 @@
 package caixa.gov.br.loterias.bo.silce.internals;
 
-import com.google.common.io.BaseEncoding;
-
+import android.util.Base64;
 import java.nio.charset.Charset;
 
 public class Bin {
     private static final Charset CHARSET_UTF8  = Charset.forName("UTF-8");
     private static final Charset CHARSET_UTF16 = Charset.forName("UTF-16");
     private static final Charset CHARSET_ISO_8859_1 = Charset.forName("ISO-8859-1");
+    public static final int FLAGS_BASE64 = Base64.NO_WRAP;
     byte[] data;
 
     protected Bin(byte[] data) {
@@ -15,7 +15,8 @@ public class Bin {
     }
 
     public String toBase64() {
-        return BaseEncoding.base64().encode(data);
+        //return BaseEncoding.base64().encode(data);
+        return Base64.encodeToString(data, FLAGS_BASE64);
     }
 
     public byte[] toBytes() {
@@ -35,7 +36,8 @@ public class Bin {
     }
 
     public static Bin fromBase64(String data) {
-        return new Bin(BaseEncoding.base64().decode(data));
+        //return new Bin(BaseEncoding.base64().decode(data));
+        return new Bin(Base64.decode(data, FLAGS_BASE64));
     }
 
     public static Bin fromBytes(byte[] data) {

@@ -120,8 +120,13 @@ public class SilceConnection {
     }
 
     public static String errorToString(VolleyError error) {
-        return "Network error: " +
-                error.networkResponse.statusCode + " - " +
-                Bin.fromBytes(error.networkResponse.data).toUtf8();
+        if (error.networkResponse != null) {
+            return "Network error: " +
+                    error.networkResponse.statusCode + " - " +
+                    Bin.fromBytes(error.networkResponse.data).toUtf8();
+        } else {
+            return "Exception when trying to reach the server: "
+                    + error.toString();
+        }
     }
 }

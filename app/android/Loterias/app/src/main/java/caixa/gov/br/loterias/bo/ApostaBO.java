@@ -2,8 +2,7 @@ package caixa.gov.br.loterias.bo;
 
 import android.content.Context;
 
-import com.google.common.base.Joiner;
-
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -40,12 +39,27 @@ public class ApostaBO{
         LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
 
         queryParams.put("quantidadeTotalNumeros", String.valueOf(quantidadeTotalNumeros));
-        queryParams.put("numerosMarcados", Joiner.on(",").join(numerosMarcados));
+        queryParams.put("numerosMarcados", join(numerosMarcados, ","));
         queryParams.put("menorPrognostico", String.valueOf(menorPrognostico));
         queryParams.put("maiorPrognostico", String.valueOf(maiorPrognostico));
 
         silceClient.getConnection().get(SilceClient.COMPLETA_JOGO_PATH, queryParams, CompletaJogoRsp.class,
                 silceClient.volleyListener(listener, CompletaJogoRsp.class),
                 silceClient.volleyErrorListener(errorListener));
+    }
+
+    private static <T> String join(Collection<T> collection, String delimiter){
+        StringBuffer result = new StringBuffer("");
+        boolean first = true;
+
+        for(T e : collection) {
+            if(!first) {
+                result.append(delimiter);
+                first = true;
+            }
+            result.append(e);
+        }
+
+        return result.toString();
     }
 }
