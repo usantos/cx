@@ -1,16 +1,22 @@
 package caixa.gov.br.loterias.view;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
+import org.jboss.aerogear.android.core.Callback;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.bo.keycloak.KeycloakBO;
 
 @EActivity(R.layout.activity_login)
+
 public class LoginActivity extends AppCompatActivity {
 
     @AfterViews
@@ -23,30 +29,32 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+
+
     private void connectKeycloak() {
-//        if (!KeycloakBO.isConnected()) {
-//
-//            KeycloakBO.connect(LoginActivity.this, new Callback() {
-//                        @Override
-//                        public void onSuccess(Object o) {
-//                            loginSucess();
-//                        }
-//
-//                        @Override
-//                        public void onFailure(Exception e) {
-//
-//                        }
-//                    }
-//            );
-//
-//        } else {
+        if (!KeycloakBO.isConnected()) {
+
+            KeycloakBO.connect(LoginActivity.this, new Callback() {
+                        @Override
+                        public void onSuccess(Object o) {
+                            loginSucess();
+                        }
+
+                        @Override
+                        public void onFailure(Exception e) {
+
+                        }
+                    }
+            );
+
+        } else {
             loginSucess();
-//        }
+        }
     }
 
     private void loginSucess(){
-        Intent activity = new Intent(this, HomeActivity.class);
-        startActivity(activity);
+        startActivity(new Intent(this, CadastrarActivity_.class));
+        finish();
     }
 
 }

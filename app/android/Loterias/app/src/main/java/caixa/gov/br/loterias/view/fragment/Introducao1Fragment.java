@@ -83,8 +83,9 @@ public class Introducao1Fragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Do something in response to button click
-                startActivity(new Intent(getActivity(), CadastrarActivity_.class));
-                getActivity().finish();
+//                startActivity(new Intent(getActivity(), CadastrarActivity_.class));
+//                getActivity().finish();
+//                viewPager.setCurrentItem(num, true);
             }
         });
 

@@ -11,6 +11,7 @@ import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.view.fragment.Introducao1Fragment;
 import caixa.gov.br.loterias.view.fragment.Introducao2Fragment;
 import caixa.gov.br.loterias.view.fragment.Introducao3Fragment;
+import caixa.gov.br.loterias.view.fragment.LoginFragment;
 import me.relex.circleindicator.CircleIndicator;
 
 public class IntroducaoActivity extends AppCompatActivity {
@@ -55,7 +56,7 @@ public class IntroducaoActivity extends AppCompatActivity {
     }
 
     public static class MyPagerAdapter extends FragmentPagerAdapter {
-        private static int NUM_ITEMS = 3;
+        private static int NUM_ITEMS = 4;
 
         public MyPagerAdapter(FragmentManager fragmentManager) {
             super(fragmentManager);
@@ -77,6 +78,8 @@ public class IntroducaoActivity extends AppCompatActivity {
                     return Introducao2Fragment.newInstance(1, "Page # 2");
                 case 2: // Fragment # 1 - This will show SecondFragment
                     return Introducao3Fragment.newInstance(2, "Page # 3");
+                case 3: // Fragment # 1 - This will show SecondFragment
+                    return LoginFragment.newInstance("", "Page # 4");
                 default:
                     return null;
             }

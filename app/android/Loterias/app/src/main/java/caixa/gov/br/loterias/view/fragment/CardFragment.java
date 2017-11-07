@@ -1,4 +1,4 @@
-package caixa.gov.br.loterias.ui.fragment;
+package caixa.gov.br.loterias.view.fragment;
 
 /**
  * Created by brfernan on 19/09/2017.

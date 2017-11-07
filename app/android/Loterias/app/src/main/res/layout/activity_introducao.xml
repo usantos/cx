@@ -5,8 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="caixa.gov.br.loterias.view.IntroducaoActivity"
-    >
-    <RelativeLayout
+    android:background="@drawable/splashscreen_triangulo">
+
+<RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
