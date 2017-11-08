@@ -1,26 +1,42 @@
 package caixa.gov.br.loterias.view;
 
+
 import android.animation.ArgbEvaluator;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
 import com.yarolegovich.discretescrollview.transform.ScaleTransformer;
 
 import java.util.List;
 
-import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.mock.ModalidadesMock;
 import caixa.gov.br.loterias.model.Modalidade;
 import caixa.gov.br.loterias.utils.TipoModalidadeEnum;
 import caixa.gov.br.loterias.view.adapter.HomeAdapter;
 
-public class HomeActivity extends AppCompatActivity implements
-        DiscreteScrollView.ScrollListener<HomeAdapter.ViewHolder>,
+
+import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.view.View;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
+import caixa.gov.br.loterias.R;
+
+
+
+
+
+public class PrincipalActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener, DiscreteScrollView.ScrollListener<HomeAdapter.ViewHolder>,
         DiscreteScrollView.OnItemChangedListener<HomeAdapter.ViewHolder>,
         View.OnClickListener {
 
@@ -29,10 +45,22 @@ public class HomeActivity extends AppCompatActivity implements
     private int overlayColor;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_principal);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
 
         evaluator = new ArgbEvaluator();
         currentOverlayColor = ContextCompat.getColor(this, R.color.verdesenaclaro);
@@ -52,12 +80,74 @@ public class HomeActivity extends AppCompatActivity implements
         findViewById(R.id.buttonHomeBet).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent activity = new Intent(HomeActivity.this, SimularApostaActivity_.class);
+                Intent activity = new Intent(PrincipalActivity.this, SimularApostaActivity_.class);
                 activity.putExtra("tipoAposta", TipoModalidadeEnum.MEGASENA);
                 startActivity(activity);
             }
         });
     }
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.principal, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_apresentar_trevo) {
+            return true;
+        }
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_camera) {
+            // Handle the camera action
+        } else if (id == R.id.nav_gallery) {
+
+        } else if (id == R.id.nav_slideshow) {
+
+        } else if (id == R.id.nav_manage) {
+
+        } else if (id == R.id.nav_share) {
+
+        } else if (id == R.id.nav_send) {
+
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+
 
     @Override
     public void onClick(View v) {

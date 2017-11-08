@@ -37,12 +37,6 @@
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.HomeActivity"
-            android:configChanges="orientation"
-            android:label="@string/title_activity_home"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".view.SimularApostaActivity_"
             android:configChanges="orientation"
             android:label="@string/title_activity_home"
@@ -66,10 +60,15 @@
             android:configChanges="orientation"
             android:label="@string/title_activity_confirmacao_pagamento"
             android:screenOrientation="portrait" />
-        <activity android:name=".view.NovaFormaPagamentoActivity"
+        <activity
+            android:name=".view.NovaFormaPagamentoActivity"
             android:configChanges="orientation"
             android:label="@string/title_activity_forma_pagamento"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.PrincipalActivity"
+            android:label=""
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

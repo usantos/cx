@@ -45,5 +45,7 @@
     <color name="laranjacaixa">#f39200</color>
 
     <color name="amareloQueimado">#f9b000</color>
+    <color name="transparente">#80000000</color>
+    <color name="textColorToolbar">#0164a8</color>
 
 </resources>

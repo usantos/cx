@@ -61,7 +61,7 @@
             android:id="@+id/textView2"
             android:layout_width="181dp"
             android:layout_height="33dp"
-            android:layout_below="@+id/button2"
+            android:layout_below="@+id/buttonFacaLogin"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="30dp"
             android:text="Você utilizará o sistema único de cadastro da caixa"

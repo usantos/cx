@@ -30,7 +30,7 @@ public class CadastrarPasso2Activity extends AppCompatActivity {
     private void addListenerFinalizar(){
         buttonFinalizarCadastro.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext(), HomeActivity.class);
+                Intent intent = new Intent(getBaseContext(), PrincipalActivity.class);
                 startActivity(intent);
             }
         });

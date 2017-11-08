@@ -1,6 +1,5 @@
 package caixa.gov.br.loterias.view.fragment;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,13 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import javax.security.auth.callback.Callback;
-
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.bo.keycloak.KeycloakBO;
 import caixa.gov.br.loterias.view.CadastrarActivity_;
-import caixa.gov.br.loterias.view.HomeActivity;
-import caixa.gov.br.loterias.view.LoginActivity;
+import caixa.gov.br.loterias.view.PrincipalActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -81,7 +77,7 @@ public class LoginFragment extends Fragment {
         buttonAposte.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Do something in response to button click
-                startActivity(new Intent(getActivity(), CadastrarActivity_.class));
+                startActivity(new Intent(getActivity(), PrincipalActivity.class));
                 getActivity().finish();
             }
         });

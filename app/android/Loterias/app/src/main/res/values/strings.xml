@@ -61,6 +61,9 @@
 
     <string name="novaFormaPagamentoTitulo">Cadastrar cartão</string>
     <string name="novaFormaPagamentoNenhumCartaoCadastrado">Notamos que você ainda não possui nenhum cartão de crédito cadastrado. Para contnuar, informe:</string>
+    <string name="title_activity_main_teste">MainTesteActivity</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="title_activity_principal">PrincipalActivity</string>
 
 
 </resources>
