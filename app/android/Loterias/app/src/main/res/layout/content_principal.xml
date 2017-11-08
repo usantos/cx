@@ -8,54 +8,49 @@
     tools:context="caixa.gov.br.loterias.view.PrincipalActivity"
     tools:showIn="@layout/app_bar_principal"
     android:background="@drawable/background_gradient_color">
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="552dp"
-            >
+            android:id="@+id/RelativeContentPrincipal">
+        >
 
             <com.yarolegovich.discretescrollview.DiscreteScrollView
                 android:id="@+id/home_carousel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="100dp"
                 app:dsv_orientation="horizontal"
                 />
 
-            <Button
-                android:id="@+id/buttonHomeBet"
-                android:layout_width="184dp"
-                android:layout_height="84dp"
-                android:background="@color/verdesenaclaro"
-                android:text="Aposte\npor R$0,00"
-                android:textAllCaps="false"
-                android:textColor="@color/branco"
-                android:textSize="16sp"
-                android:layout_marginTop="433dp"
-                android:layout_centerHorizontal="true"/>
+
+        </RelativeLayout>
+    
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:id="@+id/RelativeBlankView"
+            android:layout_alignParentBottom="true"
+            android:background="@color/cinza2">
 
             <TextView
                 android:id="@+id/textViewHomeMinimumPurchaseValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@id/buttonHomeBet"
                 android:layout_centerHorizontal="true"
                 android:text="valor mínimo da compra: R$0,00"
                 android:textColor="@color/azulescuro"
                 android:textSize="10sp"
-                android:layout_marginBottom="-15dp"/>
+                android:layout_marginTop="65dp"
+
+                />
 
             <RelativeLayout
-                android:layout_width="wrap_content"
+                android:layout_width="75dp"
                 android:layout_height="70dp"
-                android:layout_marginTop="465dp"
-                android:layout_marginLeft="12dp">
+                android:layout_marginTop="20dp"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="6dp"
+                >
 
                 <Button
                     android:id="@+id/textViewHomeButtonAllBets"
@@ -68,13 +63,15 @@
                     android:id="@+id/textViewHomeCountConfirmedBets"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="43dp"
                     android:textColor="@color/branco"
-                    android:text="0"
+                    android:text="3"
                     android:textSize="12sp"
                     android:background="@drawable/rounded_textview"
+                    android:layout_below="@+id/textViewHomeButtonAllBets"
                     android:gravity="center"
-                    android:layout_marginTop="14dp"/>
+                    android:layout_marginTop="-25dp"
+                    android:layout_marginLeft="52dp"
+                    />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -87,23 +84,12 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:layout_width="wrap_content"
+                android:layout_width="75dp"
                 android:layout_height="70dp"
-                android:layout_marginTop="465dp"
+                android:layout_marginTop="20dp"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="12dp">
-
-                <TextView
-                    android:id="@+id/textViewHomeCountBetsCart"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/branco"
-                    android:text="0"
-                    android:textSize="12sp"
-                    android:background="@drawable/rounded_textview"
-                    android:gravity="center"
-                    android:layout_marginTop="14dp"
-                    />
+                android:layout_marginRight="0dp"
+                >
 
                 <Button
                     android:id="@+id/homeButtonCart"
@@ -111,6 +97,20 @@
                     android:layout_height="40dp"
                     android:layout_centerHorizontal="true"
                     android:background="@drawable/icon_carrinho" />
+
+                <TextView
+                    android:id="@+id/textViewHomeCountBetsCart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/branco"
+                    android:text="3"
+                    android:textSize="12sp"
+                    android:background="@drawable/rounded_textview"
+                    android:gravity="center"
+                    android:layout_marginTop="-25dp"
+                    android:layout_marginLeft="0dp"
+                    android:layout_below="@id/homeButtonCart"
+                    />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -121,7 +121,20 @@
                     android:textColor="@color/azulescuro"
                     android:textSize="12sp" />
             </RelativeLayout>
+
         </RelativeLayout>
-    </ScrollView>
+
+    <Button
+        android:id="@+id/buttonHomeBet"
+        android:layout_width="184dp"
+        android:layout_height="84dp"
+        android:background="@color/verdesenaclaro"
+        android:text="Aposte\npor R$0,00"
+        android:textAllCaps="false"
+        android:textColor="@color/branco"
+        android:textSize="16sp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="40dp"
+        android:layout_centerHorizontal="true"/>
 
 </RelativeLayout>

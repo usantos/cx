@@ -2,6 +2,7 @@ package caixa.gov.br.loterias.view;
 
 
 import android.animation.ArgbEvaluator;
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -29,6 +30,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
+import android.widget.Button;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
+
 import caixa.gov.br.loterias.R;
 
 
@@ -43,12 +50,16 @@ public class PrincipalActivity extends AppCompatActivity
     private ArgbEvaluator evaluator;
     private int currentOverlayColor;
     private int overlayColor;
+    private Toolbar toolbar;
+    private RelativeLayout relativePrincipal;
+    private RelativeLayout relativeBlankView;
+    private Button buttonHomeBet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
 
@@ -69,6 +80,7 @@ public class PrincipalActivity extends AppCompatActivity
         ModalidadesMock modalidade = ModalidadesMock.get();
         List<Modalidade> data = modalidade.getData();
         DiscreteScrollView itemCarousel = (DiscreteScrollView) findViewById(R.id.home_carousel);
+        buttonHomeBet = (Button) findViewById(R.id.buttonHomeBet);
         itemCarousel.setAdapter(new HomeAdapter(this, data, findViewById(R.id.buttonHomeBet)));
         itemCarousel.addScrollListener(this);
         itemCarousel.addOnItemChangedListener(this);
@@ -83,6 +95,49 @@ public class PrincipalActivity extends AppCompatActivity
                 Intent activity = new Intent(PrincipalActivity.this, SimularApostaActivity_.class);
                 activity.putExtra("tipoAposta", TipoModalidadeEnum.MEGASENA);
                 startActivity(activity);
+            }
+        });
+
+        toolbarListener();
+
+    }
+
+    private void toolbarListener(){
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        relativePrincipal = (RelativeLayout) findViewById(R.id.RelativeContentPrincipal);
+        relativeBlankView = (RelativeLayout) findViewById(R.id.RelativeBlankView);
+        toolbar.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View v, int left, int top, int right, int bottom,
+                                       int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                View item = toolbar.findViewById(R.id.action_apresentar_trevo);
+                if (item != null) {
+                    toolbar.removeOnLayoutChangeListener(this);
+                    item.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (relativePrincipal.isEnabled()){
+                                ObjectAnimator animator = ObjectAnimator
+                                        .ofFloat(v, "rotation", v.getRotation() + 360).setDuration(500);
+                                animator.start();
+                                relativePrincipal.animate().translationX(0).translationY(400).setDuration(500);
+                                relativePrincipal.setEnabled(false);
+                                relativeBlankView.setBackgroundColor(ContextCompat.getColor(PrincipalActivity.this, R.color.transparente50));
+                                buttonHomeBet.setBackgroundColor(ContextCompat.getColor(PrincipalActivity.this, R.color.branco));
+                                buttonHomeBet.setTextColor(ContextCompat.getColor(PrincipalActivity.this, R.color.cinza));
+                            }else{
+                                ObjectAnimator animator = ObjectAnimator
+                                        .ofFloat(v, "rotation", v.getRotation() - 360).setDuration(500);
+                                animator.start();
+                                relativePrincipal.animate().translationX(0).translationY(0).setDuration(500);
+                                relativePrincipal.setEnabled(true);
+                                relativeBlankView.setBackgroundColor(ContextCompat.getColor(PrincipalActivity.this, R.color.cinza2));
+                                buttonHomeBet.setBackgroundColor(ContextCompat.getColor(PrincipalActivity.this, R.color.verdesenaclaro));
+                                buttonHomeBet.setTextColor(ContextCompat.getColor(PrincipalActivity.this, R.color.branco));
+                            }
+                        }
+                    });
+                }
             }
         });
     }
@@ -121,6 +176,16 @@ public class PrincipalActivity extends AppCompatActivity
 
         return super.onOptionsItemSelected(item);
     }
+//
+//    private void acaoApresentarTrevo(){
+//        RotateAnimation rotate = new RotateAnimation(0, 360,
+//                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
+//                0.5f);
+//
+//        rotate.setDuration(4000);
+//        rotate.setRepeatCount(Animation.INFINITE);
+//        item.setAnimation(rotate);
+//    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
