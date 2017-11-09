@@ -1,6 +1,7 @@
 package caixa.gov.br.loterias.view;
 
 
+import android.animation.Animator;
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
@@ -14,13 +15,12 @@ import java.util.List;
 
 import caixa.gov.br.loterias.mock.ModalidadesMock;
 import caixa.gov.br.loterias.model.Modalidade;
+import caixa.gov.br.loterias.utils.AnimacoesAcessoRapido;
 import caixa.gov.br.loterias.utils.TipoModalidadeEnum;
 import caixa.gov.br.loterias.view.adapter.HomeAdapter;
 
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -30,17 +30,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.animation.Animation;
-import android.view.animation.RotateAnimation;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
-
 import caixa.gov.br.loterias.R;
-
-
-
-
 
 public class PrincipalActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, DiscreteScrollView.ScrollListener<HomeAdapter.ViewHolder>,
@@ -54,6 +47,15 @@ public class PrincipalActivity extends AppCompatActivity
     private RelativeLayout relativePrincipal;
     private RelativeLayout relativeBlankView;
     private Button buttonHomeBet;
+
+    private View itemToolbarTrevo;
+
+    private LinearLayout linearAtalhoRapidoLoterias;
+    private RelativeLayout relativeLayoutContentRapidao;
+    private RelativeLayout relativeLayoutContentLerBilhetes;
+    private RelativeLayout relativeLayoutContentFavoritas;
+    private RelativeLayout relativeLayoutContentRepassados;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,40 +108,74 @@ public class PrincipalActivity extends AppCompatActivity
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         relativePrincipal = (RelativeLayout) findViewById(R.id.RelativeContentPrincipal);
         relativeBlankView = (RelativeLayout) findViewById(R.id.RelativeBlankView);
+        linearAtalhoRapidoLoterias = (LinearLayout) findViewById(R.id.atalhoRapidoLoterias);
+        relativeLayoutContentRapidao = (RelativeLayout) findViewById(R.id.RelativeLayoutContentRapidao);
+        relativeLayoutContentLerBilhetes = (RelativeLayout) findViewById(R.id.RelativeLayoutContentLerBilhetes);
+        relativeLayoutContentFavoritas = (RelativeLayout) findViewById(R.id.RelativeLayoutContentFavoritas);
+        relativeLayoutContentRepassados = (RelativeLayout) findViewById(R.id.RelativeLayoutContentRepassados);
+
         toolbar.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
             @Override
             public void onLayoutChange(View v, int left, int top, int right, int bottom,
                                        int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                View item = toolbar.findViewById(R.id.action_apresentar_trevo);
-                if (item != null) {
+                itemToolbarTrevo = toolbar.findViewById(R.id.action_apresentar_trevo);
+                if (itemToolbarTrevo != null) {
                     toolbar.removeOnLayoutChangeListener(this);
-                    item.setOnClickListener(new View.OnClickListener() {
+                    itemToolbarTrevo.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             if (relativePrincipal.isEnabled()){
-                                ObjectAnimator animator = ObjectAnimator
-                                        .ofFloat(v, "rotation", v.getRotation() + 360).setDuration(500);
-                                animator.start();
-                                relativePrincipal.animate().translationX(0).translationY(400).setDuration(500);
-                                relativePrincipal.setEnabled(false);
-                                relativeBlankView.setBackgroundColor(ContextCompat.getColor(PrincipalActivity.this, R.color.transparente50));
-                                buttonHomeBet.setBackgroundColor(ContextCompat.getColor(PrincipalActivity.this, R.color.branco));
-                                buttonHomeBet.setTextColor(ContextCompat.getColor(PrincipalActivity.this, R.color.cinza));
+                                AnimacaoAbrirMenuRapido(v);
                             }else{
-                                ObjectAnimator animator = ObjectAnimator
-                                        .ofFloat(v, "rotation", v.getRotation() - 360).setDuration(500);
-                                animator.start();
-                                relativePrincipal.animate().translationX(0).translationY(0).setDuration(500);
-                                relativePrincipal.setEnabled(true);
-                                relativeBlankView.setBackgroundColor(ContextCompat.getColor(PrincipalActivity.this, R.color.cinza2));
-                                buttonHomeBet.setBackgroundColor(ContextCompat.getColor(PrincipalActivity.this, R.color.verdesenaclaro));
-                                buttonHomeBet.setTextColor(ContextCompat.getColor(PrincipalActivity.this, R.color.branco));
+                                AnimacaoFecharMenuRapido(v);
                             }
                         }
                     });
                 }
             }
         });
+    }
+
+    private void AnimacaoAbrirMenuRapido(View v){
+        relativePrincipal.setEnabled(false);
+        itemToolbarTrevo.setEnabled(false);
+        linearAtalhoRapidoLoterias.setVisibility(View.VISIBLE);
+        AnimacoesAcessoRapido animacoesAcessoRapido = new AnimacoesAcessoRapido(
+                v,
+                relativePrincipal,
+                relativeLayoutContentRapidao,
+                relativeLayoutContentLerBilhetes,
+                relativeLayoutContentFavoritas,
+                relativeLayoutContentRepassados,
+                relativeBlankView,
+                linearAtalhoRapidoLoterias,
+                buttonHomeBet,
+                itemToolbarTrevo,
+                PrincipalActivity.this
+                );
+        animacoesAcessoRapido.AnimacaoDescerContent();
+    }
+
+
+
+    private void AnimacaoFecharMenuRapido(View v){
+        relativePrincipal.setEnabled(true);
+        itemToolbarTrevo.setEnabled(false);
+        AnimacoesAcessoRapido animacoesAcessoRapido = new AnimacoesAcessoRapido(
+                v,
+                relativePrincipal,
+                relativeLayoutContentRapidao,
+                relativeLayoutContentLerBilhetes,
+                relativeLayoutContentFavoritas,
+                relativeLayoutContentRepassados,
+                relativeBlankView,
+                linearAtalhoRapidoLoterias,
+                buttonHomeBet,
+                itemToolbarTrevo,
+                PrincipalActivity.this
+        );
+        animacoesAcessoRapido.AnimacaoSubirContent();
+
     }
 
     @Override

@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -67,6 +68,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         holder.game.setText(data.get(position).getNome());
         holder.resultados.setBackgroundColor(ContextCompat.getColor(context, estilo.getCorEscura()));
         holder.trevo.setBackground(ContextCompat.getDrawable(context, estilo.getTrevoBackground()));
+        holder.trevoFundo.setBackground(ContextCompat.getDrawable(context, estilo.getTrevoBackground()));
         holder.titulo.setBackgroundColor(ContextCompat.getColor(context, estilo.getCorClara()));
         holder.valor.setTextColor(ContextCompat.getColor(context, estilo.getCorClara()));
         aposta.setText("Aposte\npor R$" + data.get(position).getValor());
@@ -91,12 +93,15 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         private LinearLayout resultados;
         private TextView valor;
         private ImageView trevo;
+        private RelativeLayout trevoFundo;
+
 
         public ViewHolder (View itemView) {
             super(itemView);
             game = (TextView) itemView.findViewById(R.id.textViewCardTitle);
             resultados = (LinearLayout) itemView.findViewById(R.id.relativeLayoutTopResultados);
-            trevo = (ImageView) itemView.findViewById(R.id.trevobackground);
+            trevo = (ImageView) itemView.findViewById(R.id.trevoImagem);
+            trevoFundo = (RelativeLayout) itemView.findViewById(R.id.RelativeLayoutTrevo) ;
             calendario = (ImageView)  itemView.findViewById(R.id.imageCalendar);
             relogio = (ImageView)  itemView.findViewById(R.id.imageWatch);
             titulo = itemView.findViewById(R.id.relativeLayoutTopModalidades);
