@@ -103,7 +103,7 @@
                                 android:layout_alignParentRight="true"
                                 android:layout_alignParentTop="true"
                                 android:text="Ler bilhetes"
-                                android:textColor="@color/laranjacaixa"
+                                android:textColor="@color/vermelhoBilhetes"
                                 android:textSize="14sp"
                                 android:id="@+id/tituloLerBilhetes"
                                 android:textStyle="bold"
@@ -162,7 +162,7 @@
                                 android:layout_alignParentRight="true"
                                 android:layout_alignParentTop="true"
                                 android:text="Favoritas"
-                                android:textColor="@color/laranjacaixa"
+                                android:textColor="@color/azulfavoritas"
                                 android:textSize="14sp"
                                 android:id="@+id/tituloFavoritas"
                                 android:textStyle="bold"
@@ -221,7 +221,7 @@
                                 android:layout_alignParentRight="true"
                                 android:layout_alignParentTop="true"
                                 android:text="R$ 100.000,90"
-                                android:textColor="@color/laranjacaixa"
+                                android:textColor="@color/verdeazul"
                                 android:textSize="14sp"
                                 android:id="@+id/tituloRepassados"
                                 android:textStyle="bold"
@@ -265,12 +265,12 @@
                 android:layout_marginBottom="100dp"
                 />
         </RelativeLayout>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:id="@+id/RelativeBlankView"
             android:layout_alignParentBottom="true"
-            android:background="@color/cinza2">
+            >
 
             <TextView
                 android:id="@+id/textViewHomeMinimumPurchaseValue"
@@ -362,11 +362,21 @@
                     android:textSize="12sp" />
             </RelativeLayout>
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:id="@+id/RelativeBlankView"
+                android:layout_alignParentBottom="true"
+                android:background="@color/transparente80"
+                android:visibility="gone"
+                >
+            </RelativeLayout>
+
         </RelativeLayout>
 
     <Button
         android:id="@+id/buttonHomeBet"
-        android:layout_width="184dp"
+        android:layout_width="154dp"
         android:layout_height="84dp"
         android:background="@color/verdesenaclaro"
         android:text="Aposte\npor R$0,00"

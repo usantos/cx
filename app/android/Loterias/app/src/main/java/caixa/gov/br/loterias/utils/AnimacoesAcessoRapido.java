@@ -57,8 +57,8 @@ public class AnimacoesAcessoRapido {
 
     //public
 
-    public void AnimacaoDescerContent(){
-        translatePosicaoConteudoAbaixar();
+    public void AnimacaoDescerContent(int positionBottom){
+        translatePosicaoConteudoAbaixar(positionBottom);
     }
 
     public void AnimacaoSubirContent(){
@@ -132,7 +132,7 @@ public class AnimacoesAcessoRapido {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                relativeBlankView.setBackgroundColor(ContextCompat.getColor(activity, R.color.transparente50));
+                relativeBlankView.setVisibility(View.VISIBLE);
                 buttonHomeBet.setBackgroundColor(ContextCompat.getColor(activity, R.color.branco));
                 buttonHomeBet.setTextColor(ContextCompat.getColor(activity, R.color.cinza));
                 trevoToolbar.setEnabled(true);
@@ -226,11 +226,11 @@ public class AnimacoesAcessoRapido {
 
     //mudar conteudo de posicao
 
-    private void translatePosicaoConteudoAbaixar(){
+    private void translatePosicaoConteudoAbaixar(int positionBottom){
         ObjectAnimator animator = ObjectAnimator
                 .ofFloat(v, "rotation", v.getRotation() + 360).setDuration(500);
         animator.start();
-        relativePrincipal.animate().translationX(0).translationY(600).setDuration(500).setListener(new Animator.AnimatorListener() {
+        relativePrincipal.animate().translationX(0).translationY(positionBottom).setDuration(500).setListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {}
 
@@ -257,6 +257,7 @@ public class AnimacoesAcessoRapido {
 
             @Override
             public void onAnimationEnd(Animator animation) {
+                relativeBlankView.setVisibility(View.GONE);
                 linearAtalhoRapidoLoterias.setVisibility(View.GONE);
                 trevoToolbar.setEnabled(true);
             }

@@ -48,4 +48,9 @@
     <color name="transparente50">#64ffffff</color>
     <color name="textColorToolbar">#0164a8</color>
 
+    <color name="transparente80">#CCFFFFFF</color>
+    <color name="vermelhoBilhetes">#f9765e</color>
+    <color name="azulfavoritas">#00b5e5</color>
+
+
 </resources>

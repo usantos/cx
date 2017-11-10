@@ -153,7 +153,9 @@ public class PrincipalActivity extends AppCompatActivity
                 itemToolbarTrevo,
                 PrincipalActivity.this
                 );
-        animacoesAcessoRapido.AnimacaoDescerContent();
+        int positionTopBotao = (int)buttonHomeBet.getY();
+
+        animacoesAcessoRapido.AnimacaoDescerContent(positionTopBotao - 105);
     }
 
 
