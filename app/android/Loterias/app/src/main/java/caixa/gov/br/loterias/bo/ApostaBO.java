@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import caixa.gov.br.loterias.BuildConfig;
 import caixa.gov.br.loterias.bo.silce.SilceClient;
 import caixa.gov.br.loterias.bo.silce.data.CompletaJogoRsp;
 import caixa.gov.br.loterias.bo.silce.internals.SilceConnection;
@@ -15,7 +16,7 @@ public class ApostaBO{
 
     private SilceClient silceClient;
     private Context context;
-    private static final String SILCE_BASE_URL = "http://10.130.9.22:81/silce-servico-rest/rest/v1/";
+
 
     public ApostaBO(Context context){
        this.context = context;
@@ -25,7 +26,7 @@ public class ApostaBO{
 
     private void setupSilceClient(){
         SilceSingleton queue = new SilceSingleton(context);
-        SilceConnection conn = SilceConnection.create(queue.getRequestQueue(), SILCE_BASE_URL);
+        SilceConnection conn = SilceConnection.create(queue.getRequestQueue(), BuildConfig.CAIXA_BASE_URL_SILCE);
         silceClient = SilceClient.create(conn);
     }
 
