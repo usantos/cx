@@ -49,6 +49,8 @@ public class PrincipalActivity extends AppCompatActivity
     private Button buttonHomeBet;
 
     private View itemToolbarTrevo;
+    private View itemToolbarSettings;
+
 
     private LinearLayout linearAtalhoRapidoLoterias;
     private RelativeLayout relativeLayoutContentRapidao;
@@ -129,6 +131,17 @@ public class PrincipalActivity extends AppCompatActivity
                             }else{
                                 AnimacaoFecharMenuRapido(v);
                             }
+                        }
+                    });
+                }
+                itemToolbarSettings = toolbar.findViewById(R.id.action_settings);
+                if (itemToolbarSettings != null) {
+                    toolbar.removeOnLayoutChangeListener(this);
+                    itemToolbarSettings.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent activity = new Intent(PrincipalActivity.this, TermosUsoActivity.class);
+                            startActivity(activity);
                         }
                     });
                 }

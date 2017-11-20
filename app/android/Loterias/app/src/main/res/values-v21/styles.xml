@@ -1,1 +1,9 @@
-<resources></resources>
+<resources>
+    <style name="AppTheme.DegradeActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorPrimary">@drawable/background_dialogtitle_gradient_color</item>
+        <item name="colorPrimaryDark">@color/branco</item>
+        <item name="android:windowTranslucentStatus">true</item>
+    </style>
+</resources>
