@@ -367,8 +367,9 @@
                 android:layout_height="100dp"
                 android:id="@+id/RelativeBlankView"
                 android:layout_alignParentBottom="true"
-                android:background="@color/transparente80"
-                android:visibility="gone"
+                android:background="@color/branco"
+                android:visibility="visible"
+                android:alpha="0.0"
                 >
             </RelativeLayout>
 

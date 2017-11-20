@@ -132,7 +132,7 @@ public class AnimacoesAcessoRapido {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                relativeBlankView.setVisibility(View.VISIBLE);
+//                relativeBlankView.setVisibility(View.VISIBLE);
                 buttonHomeBet.setBackgroundColor(ContextCompat.getColor(activity, R.color.branco));
                 buttonHomeBet.setTextColor(ContextCompat.getColor(activity, R.color.cinza));
                 trevoToolbar.setEnabled(true);
@@ -230,6 +230,12 @@ public class AnimacoesAcessoRapido {
         ObjectAnimator animator = ObjectAnimator
                 .ofFloat(v, "rotation", v.getRotation() + 360).setDuration(500);
         animator.start();
+
+        ObjectAnimator animator2 = ObjectAnimator.ofFloat(relativeBlankView,"alpha",0.8f);
+        animator2.setDuration(500); // duration 3 seconds
+        animator2.start();
+
+
         relativePrincipal.animate().translationX(0).translationY(positionBottom).setDuration(500).setListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {}
@@ -257,7 +263,8 @@ public class AnimacoesAcessoRapido {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                relativeBlankView.setVisibility(View.GONE);
+//                relativeBlankView.setVisibility(View.GONE);
+
                 linearAtalhoRapidoLoterias.setVisibility(View.GONE);
                 trevoToolbar.setEnabled(true);
             }
@@ -268,6 +275,10 @@ public class AnimacoesAcessoRapido {
             @Override
             public void onAnimationRepeat(Animator animation) {}
         });
+
+        ObjectAnimator animator2 = ObjectAnimator.ofFloat(relativeBlankView,"alpha",0.0f);
+        animator2.setDuration(500); // duration 3 seconds
+        animator2.start();
     }
 
 }

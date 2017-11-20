@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.view.CadastrarActivity_;
+import caixa.gov.br.loterias.view.IntroducaoActivity;
 import caixa.gov.br.loterias.view.LoginActivity_;
 import caixa.gov.br.loterias.utils.ViewUtils;
 
@@ -86,6 +87,8 @@ public class Introducao1Fragment extends Fragment {
 //                startActivity(new Intent(getActivity(), CadastrarActivity_.class));
 //                getActivity().finish();
 //                viewPager.setCurrentItem(num, true);
+
+                ((IntroducaoActivity) getActivity()).pularIntroducao();
             }
         });
 

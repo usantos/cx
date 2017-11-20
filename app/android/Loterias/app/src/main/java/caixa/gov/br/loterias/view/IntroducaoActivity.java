@@ -17,6 +17,8 @@ import me.relex.circleindicator.CircleIndicator;
 public class IntroducaoActivity extends AppCompatActivity {
     FragmentPagerAdapter adapterViewPager;
 
+    ViewPager vpPager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,7 +26,7 @@ public class IntroducaoActivity extends AppCompatActivity {
 
 
         adapterViewPager = new MyPagerAdapter(getSupportFragmentManager());
-        ViewPager vpPager = (ViewPager) findViewById(R.id.vpPager);
+        vpPager = (ViewPager) findViewById(R.id.vpPager);
         CircleIndicator indicator = (CircleIndicator) findViewById(R.id.indicator_custom);
         vpPager.setAdapter(adapterViewPager);
         indicator.setViewPager(vpPager);
@@ -91,5 +93,9 @@ public class IntroducaoActivity extends AppCompatActivity {
             return "Page " + position;
         }
 
+    }
+
+    public void pularIntroducao(){
+        vpPager.setCurrentItem(3, true);
     }
 }
