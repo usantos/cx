@@ -27,6 +27,9 @@ import java.util.List;
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.bo.DadosCorporativosBO;
 import caixa.gov.br.loterias.bo.silce.SilceClient;
+import caixa.gov.br.loterias.bo.silce.dto.MunicipioDTO;
+import caixa.gov.br.loterias.bo.silce.dto.MunicipioDTOResponse;
+import caixa.gov.br.loterias.bo.silce.dto.UnidadeFederacaoDTO;
 import caixa.gov.br.loterias.bo.silce.dto.UnidadeFederacaoDTOResponse;
 import caixa.gov.br.loterias.utils.ViewUtils;
 
@@ -44,9 +47,11 @@ public class CadastrarActivity extends AppCompatActivity {
     final Context context = this;
 
     private String ufSelect = "";
+    private String municipioSelect = "";
+    private List<UnidadeFederacaoDTO> listUf;
 
     @Extra
-    List<String> listUF, listMunicipios;
+    List<String> listUFString, listMunicipios;
 
     @AfterViews
     protected void init() {
@@ -55,21 +60,13 @@ public class CadastrarActivity extends AppCompatActivity {
 
     public void addUFSpinner() {
 
-        listUF = new ArrayList<String>();
-        listUF.add("DF");
-        listUF.add("RJ");
-        listUF.add("GO");
+        listUFString = new ArrayList<String>();
 
         listMunicipios = new ArrayList<String>();
-        listMunicipios.add("Rio de janeiro");
-        listMunicipios.add("Goiania");
-        listMunicipios.add("São Paulo");
-        listMunicipios.add("Brasília");
+
         addListenerUF();
         addListenerMunicipio();
         addListenerContinuar();
-
-
     }
 
     private void addListenerUF(){
@@ -78,7 +75,6 @@ public class CadastrarActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-
                 getUFS();
             }
         });
@@ -90,7 +86,10 @@ public class CadastrarActivity extends AppCompatActivity {
         dadosCorporativosBO.ufs(new SilceClient.Listener<UnidadeFederacaoDTOResponse>() {
             @Override
             public void onResponse(UnidadeFederacaoDTOResponse response) {
-                System.out.print("response: " + response);
+                listUf = response.getPayload();
+                for (UnidadeFederacaoDTO uf : response.getPayload()) {
+                    listUFString.add(uf.getSigla());
+                }
                 modalUfs();
             }
         }, new SilceClient.ErrorListener() {
@@ -109,12 +108,10 @@ public class CadastrarActivity extends AppCompatActivity {
 
         // set the custom dialog components - listview and button
 
-
         final ListView listViewItens = (ListView) dialog.findViewById(R.id.listaItensDialog);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(CadastrarActivity.this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, listUF);
-
+                android.R.layout.simple_list_item_1, android.R.id.text1, listUFString);
 
         // Assign adapter to ListView
         listViewItens.setAdapter(adapter);
@@ -124,18 +121,15 @@ public class CadastrarActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-
                 // ListView Clicked item index
                 int itemPosition     = position;
 
                 // ListView Clicked item value
                 String  itemValue    = (String) listViewItens.getItemAtPosition(position);
                 ufSelect = itemValue;
-
             }
 
         });
-
 
         Button dialogButtonOk = (Button) dialog.findViewById(R.id.dialogButtonOK);
         Button dialogButtonCancelar = (Button) dialog.findViewById(R.id.dialogButtonCancelar);
@@ -167,11 +161,92 @@ public class CadastrarActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                // showDialog
-                Dialog dialog = onCreateDialogSingleChoice(listMunicipios, "Município");
-                dialog.show();            }
+                getMunicipios();
+            }
         });
     }
+
+    private void getMunicipios(){
+        String idUf = "";
+
+        for (UnidadeFederacaoDTO uf : listUf) {
+            if (uf.getSigla().equalsIgnoreCase(ufSelect)) {
+                idUf = uf.getId().toString();
+            }
+        }
+
+        DadosCorporativosBO dadosCorporativosBO = new DadosCorporativosBO(CadastrarActivity.this);
+        dadosCorporativosBO.municipios(idUf, new SilceClient.Listener<MunicipioDTOResponse>() {
+            @Override
+            public void onResponse(MunicipioDTOResponse response) {
+                System.out.print("response: " + response);
+                for (MunicipioDTO municipio : response.getPayload()) {
+                    listMunicipios.add(municipio.getNome());
+                }
+                modalMunicipios();
+            }
+        }, new SilceClient.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                ViewUtils.alert(CadastrarActivity.this, "ERRO");
+            }
+        });
+    }
+
+    private void modalMunicipios(){
+        // custom dialog
+        final Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.custom_dialog_list_view);
+
+        // set the custom dialog components - listview and button
+
+        final ListView listViewItens = (ListView) dialog.findViewById(R.id.listaItensDialog);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(CadastrarActivity.this,
+                android.R.layout.simple_list_item_1, android.R.id.text1, listMunicipios);
+
+        // Assign adapter to ListView
+        listViewItens.setAdapter(adapter);
+        // ListView Item Click Listener
+        listViewItens.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                // ListView Clicked item index
+                int itemPosition     = position;
+
+                // ListView Clicked item value
+                String  itemValue    = (String) listViewItens.getItemAtPosition(position);
+                municipioSelect = itemValue;
+            }
+
+        });
+
+        Button dialogButtonOk = (Button) dialog.findViewById(R.id.dialogButtonOK);
+        Button dialogButtonCancelar = (Button) dialog.findViewById(R.id.dialogButtonCancelar);
+
+        // if button is clicked, close the custom dialog
+        dialogButtonOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editTextMunicipioContent.setText(municipioSelect);
+                dialog.dismiss();
+            }
+        });
+
+        dialogButtonCancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                municipioSelect = "";
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+    }
+
 
     private void addListenerContinuar(){
         buttonContinuarIntroducao.setOnClickListener(new View.OnClickListener() {

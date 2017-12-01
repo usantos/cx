@@ -33,7 +33,7 @@ public class MunicipioDTOResponse {
     @SerializedName("errosValidacao")
     private List<ErroValidacao> errosValidacao = null;
     @SerializedName("payload")
-    private MunicipioDTO payload = null;
+    private List<MunicipioDTO> payload = null;
 
     /**
      * Código do erro
@@ -98,14 +98,13 @@ public class MunicipioDTOResponse {
     /**
      **/
     @ApiModelProperty(value = "")
-    public MunicipioDTO getPayload() {
+    public List<MunicipioDTO> getPayload() {
         return payload;
     }
 
-    public void setPayload(MunicipioDTO payload) {
+    public void setPayload(List<MunicipioDTO> payload) {
         this.payload = payload;
     }
-
 
     @Override
     public boolean equals(Object o) {

@@ -33,7 +33,7 @@ public class UnidadeFederacaoDTOResponse {
     @SerializedName("errosValidacao")
     private List<ErroValidacao> errosValidacao = null;
     @SerializedName("payload")
-    private UnidadeFederacaoDTO payload = null;
+    private List<UnidadeFederacaoDTO> payload = null;
 
     /**
      * Código do erro
@@ -98,11 +98,11 @@ public class UnidadeFederacaoDTOResponse {
     /**
      **/
     @ApiModelProperty(value = "")
-    public UnidadeFederacaoDTO getPayload() {
+    public List<UnidadeFederacaoDTO> getPayload() {
         return payload;
     }
 
-    public void setPayload(UnidadeFederacaoDTO payload) {
+    public void setPayload(List<UnidadeFederacaoDTO> payload) {
         this.payload = payload;
     }
 

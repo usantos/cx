@@ -19,51 +19,58 @@
             />
     </RelativeLayout>
 
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/listaItensDialog"
-        android:layout_below="@+id/relativeLayoutTopo"
-        android:choiceMode="singleChoice"
-        android:listSelector="@color/cinzaclaro"
-        >
-
-    </ListView>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/cinza2"
-        android:layout_below="@+id/listaItensDialog"
-        android:id="@+id/linhaDivisaoBotoes">
-    </RelativeLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:orientation="horizontal"
-        android:layout_below="@+id/linhaDivisaoBotoes"
-        >
-        <Button
-            android:id="@+id/dialogButtonCancelar"
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
-            android:text=" Cancelar "
-            android:textColor="@color/cinzaescuro"
-            android:textSize="15sp"
-            android:background="@color/branco"
-            android:layout_weight="0.5"
-            android:textStyle="bold"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/relativeLayoutTopo"
+        android:orientation="vertical">
 
-            />
-        <Button
-            android:id="@+id/dialogButtonOK"
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
-            android:text=" Ok "
-            android:textColor="@color/verdeazul"
-            android:textSize="15sp"
-            android:background="@color/branco"
-            android:layout_weight="0.5"
-            android:textStyle="bold"
-            />
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:id="@+id/listaItensDialog"
+            android:choiceMode="singleChoice"
+            android:listSelector="@color/cinzaclaro"
+            >
+        </ListView>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/cinza2"
+            android:layout_below="@+id/listaItensDialog"
+            android:id="@+id/linhaDivisaoBotoes">
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:orientation="horizontal"
+            android:layout_below="@+id/linhaDivisaoBotoes"
+            >
+            <Button
+                android:id="@+id/dialogButtonCancelar"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:text=" Cancelar "
+                android:textColor="@color/cinzaescuro"
+                android:textSize="15sp"
+                android:background="@color/branco"
+                android:layout_weight="0.5"
+                android:textStyle="bold"
+
+                />
+            <Button
+                android:id="@+id/dialogButtonOK"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:text=" Ok "
+                android:textColor="@color/verdeazul"
+                android:textSize="15sp"
+                android:background="@color/branco"
+                android:layout_weight="0.5"
+                android:textStyle="bold"
+                />
+        </LinearLayout>
     </LinearLayout>
 </RelativeLayout>
