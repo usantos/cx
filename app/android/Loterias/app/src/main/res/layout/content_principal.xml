@@ -198,6 +198,7 @@
                 android:layout_height="60dp"
                 android:id="@+id/RelativeLayoutContentRepassados"
                 android:alpha="0.0"
+                android:clickable="true"
                 >
 
                 <RelativeLayout
@@ -363,15 +364,15 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/RelativeBlankView"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:id="@+id/RelativeBlankView"
-                android:layout_alignParentBottom="true"
-                android:background="@color/branco"
-                android:visibility="visible"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
                 android:alpha="0.0"
-                >
-            </RelativeLayout>
+                android:background="@color/branco"
+                android:visibility="visible"></RelativeLayout>
 
         </RelativeLayout>
 

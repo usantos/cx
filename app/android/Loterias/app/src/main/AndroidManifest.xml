@@ -78,6 +78,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="caixa.gov.br.loterias.view.PrincipalActivity" />
         </activity>
+        <activity
+            android:name=".view.RepassesSociaisActivity"
+            android:label="@string/title_activity_repasses_sociais"
+            android:parentActivityName=".view.PrincipalActivity"
+            android:theme="@style/AppTheme.DegradeActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="caixa.gov.br.loterias.view.PrincipalActivity" />
+        </activity>
     </application>
 
 </manifest>

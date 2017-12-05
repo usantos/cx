@@ -35,19 +35,19 @@ android {
             initWith debug
             //applicationIdSuffix ".caixadev"
             buildConfigField "boolean", "CAIXA_NETWORK_STUB", "false"
-            buildConfigField "String", "CAIXA_BASE_URL_SILCE", "\"https://simlo.des.caixa/silce-servico-rest/rest/v1/\""
+            buildConfigField "String", "CAIXA_BASE_URL_SILCE", "\"http://simlo.des.caixa/silce-servico-rest/rest/v1/\""
         }
         caixahmg {
             initWith debug
             //applicationIdSuffix ".caixadev"
             buildConfigField "boolean", "CAIXA_NETWORK_STUB", "false"
-            buildConfigField "String", "CAIXA_BASE_URL_SILCE", "\"https://simlo.des.caixa/silce-servico-rest/rest/v1/\""
+            buildConfigField "String", "CAIXA_BASE_URL_SILCE", "\"http://simlo.des.caixa/silce-servico-rest/rest/v1/\""
         }
         caixadev {
             initWith debug
             //applicationIdSuffix ".caixadev"
             buildConfigField "boolean", "CAIXA_NETWORK_STUB", "false"
-            buildConfigField "String", "CAIXA_BASE_URL_SILCE", "\"https://simlo.des.caixa/silce-servico-rest/rest/v1/\""
+            buildConfigField "String", "CAIXA_BASE_URL_SILCE", "\"http://simlo.des.caixa/silce-servico-rest/rest/v1/\""
         }
         proxycap {
             initWith debug

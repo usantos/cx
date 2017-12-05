@@ -103,6 +103,7 @@ public class PrincipalActivity extends AppCompatActivity
         });
 
         toolbarListener();
+        listenerRepassados();
 
     }
 
@@ -304,5 +305,16 @@ public class PrincipalActivity extends AppCompatActivity
 
     private int interpolate(float fraction, int c1, int c2) {
         return (int) evaluator.evaluate(fraction, c1, c2);
+    }
+
+    private void listenerRepassados(){
+
+        RelativeLayout relativerepassados=(RelativeLayout)findViewById(R.id.RelativeLayoutContentRepassados);
+        relativerepassados.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                startActivity(new Intent(PrincipalActivity.this, RepassesSociaisActivity.class) );
+            }
+        });
     }
 }
