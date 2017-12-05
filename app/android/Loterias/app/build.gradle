@@ -84,7 +84,7 @@ dependencies {
     implementation "me.relex:circleindicator:1.2.2@aar"
     implementation "com.google.code.gson:gson:2.8.0"
     implementation "org.jboss.aerogear:aerogear-android-authz:3.0.1"
-    implementation 'com.github.ceryle:SegmentedButton:v2.0.1'
+//    implementation 'com.github.ceryle:SegmentedButton:v2.0.2'
     implementation 'commons-codec:commons-codec:1.10'
     implementation 'com.google.code.findbugs:jsr305:2.0.1'
     implementation 'com.android.volley:volley:1.0.0'

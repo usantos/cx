@@ -59,7 +59,7 @@
                 android:textColor="@color/cinza"
                 />
 
-            <co.ceryle.segmentedbutton.SegmentedButtonGroup
+            <caixa.gov.br.loterias.utils.segmentedbutton.SegmentedButtonGroup
                 android:id="@+id/segmentedButtonTipoBuscaLoterica"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
@@ -114,7 +114,7 @@
                     android:textAlignment="center"
                     />
 
-            </co.ceryle.segmentedbutton.SegmentedButtonGroup>
+            </caixa.gov.br.loterias.utils.segmentedbutton.SegmentedButtonGroup>
 
 
 

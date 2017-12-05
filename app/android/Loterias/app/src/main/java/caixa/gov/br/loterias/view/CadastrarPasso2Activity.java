@@ -10,7 +10,7 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
 import caixa.gov.br.loterias.R;
-import co.ceryle.segmentedbutton.SegmentedButton;
+import caixa.gov.br.loterias.utils.segmentedbutton.SegmentedButton;
 
 @EActivity(R.layout.activity_cadastrar_passo2)
 public class CadastrarPasso2Activity extends AppCompatActivity {
