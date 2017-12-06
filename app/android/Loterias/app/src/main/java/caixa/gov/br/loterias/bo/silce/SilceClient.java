@@ -11,6 +11,7 @@ public class SilceClient {
     public static final String COMPLETA_JOGO_PATH = "/apostas/completar-jogo";
     public static final String LOGIN_PATH = "/usuarios/autenticar";
     public static final String UFS_PATH = "/ufs";
+    public static final String TERMO_PATH = "/termos-de-uso/termo-vigente";
     public static final String MUNICIPIOS_PATH = "/municipios";
 
 

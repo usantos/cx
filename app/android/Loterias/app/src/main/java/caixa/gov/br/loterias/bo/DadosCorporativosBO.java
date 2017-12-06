@@ -8,6 +8,7 @@ import java.util.LinkedHashMap;
 import caixa.gov.br.loterias.BuildConfig;
 import caixa.gov.br.loterias.bo.silce.SilceClient;
 import caixa.gov.br.loterias.bo.silce.dto.MunicipioDTOResponse;
+import caixa.gov.br.loterias.bo.silce.dto.TermoDeUsoDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.UnidadeFederacaoDTOResponse;
 import caixa.gov.br.loterias.bo.silce.internals.SilceConnection;
 import caixa.gov.br.loterias.bo.silce.internals.SilceSingleton;
@@ -53,6 +54,17 @@ public class DadosCorporativosBO {
 
         silceClient.getConnection().get(SilceClient.MUNICIPIOS_PATH, queryParams, MunicipioDTOResponse.class,
                 silceClient.volleyListener(listener, MunicipioDTOResponse.class),
+                silceClient.volleyErrorListener(errorListener));
+    }
+
+    public void termo(final SilceClient.Listener<TermoDeUsoDTOResponse> listener,
+                    final SilceClient.ErrorListener errorListener) {
+
+        LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
+
+
+        silceClient.getConnection().get(SilceClient.TERMO_PATH, queryParams, TermoDeUsoDTOResponse.class,
+                silceClient.volleyListener(listener, TermoDeUsoDTOResponse.class),
                 silceClient.volleyErrorListener(errorListener));
     }
 

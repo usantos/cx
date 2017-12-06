@@ -61,10 +61,10 @@ public class GsonRequest<REQ, RSP> extends JsonRequest<RSP> {
 
     @Override
     protected Response<RSP> parseNetworkResponse(NetworkResponse response) {
+
         try {
-            String json = new String(
-                    response.data,
-                    HttpHeaderParser.parseCharset(response.headers));
+            String json = new String(response.data, "UTF-8");
+
             return Response.success(
                     gson.fromJson(json, responseKlazz),
                     HttpHeaderParser.parseCacheHeaders(response));

@@ -3,19 +3,31 @@ package caixa.gov.br.loterias.view;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.view.View;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.TextView;
 
 
+import com.android.volley.VolleyError;
+
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.bo.DadosCorporativosBO;
+import caixa.gov.br.loterias.bo.silce.SilceClient;
+import caixa.gov.br.loterias.bo.silce.dto.TermoDeUsoDTOResponse;
+import caixa.gov.br.loterias.bo.silce.dto.UnidadeFederacaoDTO;
+import caixa.gov.br.loterias.bo.silce.dto.UnidadeFederacaoDTOResponse;
+import caixa.gov.br.loterias.utils.ViewUtils;
 
 public class TermosUsoActivity extends AppCompatActivity {
 
     private Button termosUsoButton;
     private Button politicaButton;
     private Button duvidasButton;
-    private TextView textoConteudo;
+    private WebView webViewConteudo;
+    private String termoHtml;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,11 +40,39 @@ public class TermosUsoActivity extends AppCompatActivity {
         termosUsoButton = findViewById(R.id.buttonTermos);
         duvidasButton = findViewById(R.id.buttonDuvidas);
         politicaButton = findViewById(R.id.buttonPolitica);
-        textoConteudo = findViewById(R.id.textViewConteudoSobre);
+        webViewConteudo = findViewById(R.id.webViewConteudo);
+
+        webViewConteudo.setWebViewClient(new WebViewClient() {
+
+            public void onPageFinished(WebView view, String url) {
+                //Remover tela de carregamento.
+            }
+        });
+
         listenerTermosUso();
         listenerDuvidas();
         listenerPolitica();
 
+        getTermo();
+    }
+
+    private void getTermo () {
+        DadosCorporativosBO dadosCorporativosBO = new DadosCorporativosBO(TermosUsoActivity.this);
+
+        dadosCorporativosBO.termo(new SilceClient.Listener<TermoDeUsoDTOResponse>() {
+            @Override
+            public void onResponse(TermoDeUsoDTOResponse response) {
+                termoHtml = response.getPayload().getConteudo();
+
+                webViewConteudo.loadData(termoHtml, "text/html", "UTF-8");
+            }
+        }, new SilceClient.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                ViewUtils.alert(TermosUsoActivity.this, "ERRO");
+            }
+        });
     }
 
     private void listenerTermosUso(){
@@ -45,21 +85,7 @@ public class TermosUsoActivity extends AppCompatActivity {
                 politicaButton.setBackgroundResource(R.color.cinzaclaro);
                 politicaButton.setTextColor(getResources().getColor(R.color.verdeazul));
 
-                textoConteudo.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget.\n" +
-                        "\n" +
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n" +
-                        "\n" +
-                        "Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet.\n" +
-                        "\n" +
-                        "Proin gravida dolor sit amet lacus accumsan et viverra justo commodo.\n" +
-                        "\n" +
-                        "Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget.\n" +
-                        "\n" +
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget.\n" +
-                        "\n" +
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet.\n" +
-                        "\n" +
-                        "Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget.");
+                webViewConteudo.loadData(termoHtml, "text/html", "UTF-8");
             }
         });
     }
@@ -74,8 +100,6 @@ public class TermosUsoActivity extends AppCompatActivity {
                 politicaButton.setBackgroundResource(R.color.verdeazul);
                 politicaButton.setTextColor(getResources().getColor(R.color.branco));
 
-                textoConteudo.setText("Política");
-
             }
         });
     }
@@ -89,8 +113,6 @@ public class TermosUsoActivity extends AppCompatActivity {
                 duvidasButton.setTextColor(getResources().getColor(R.color.branco));
                 politicaButton.setBackgroundResource(R.color.cinzaclaro);
                 politicaButton.setTextColor(getResources().getColor(R.color.verdeazul));
-
-                textoConteudo.setText("Dúvidas");
 
             }
         });

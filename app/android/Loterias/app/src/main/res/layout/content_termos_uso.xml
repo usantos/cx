@@ -23,13 +23,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="0.33"
-                android:text="Termos\nde uso"
+                android:text="Termos de uso"
                 android:textSize="12sp"
                 android:textAlignment="center"
                 android:background="@color/verdeazul"
                 android:textColor="@color/branco"
                 android:id="@+id/buttonTermos"
+                android:drawableBottom="@drawable/seta_selecao"
                 />
+            
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -39,6 +41,7 @@
                 android:textAlignment="center"
                 android:background="@color/cinzaclaro"
                 android:textColor="@color/verdeazul"
+                android:visibility="invisible"
                 android:id="@+id/buttonPolitica"
 
                 />
@@ -51,6 +54,7 @@
                 android:textAlignment="center"
                 android:background="@color/cinzaclaro"
                 android:textColor="@color/verdeazul"
+                android:visibility="invisible"
                 android:id="@+id/buttonDuvidas"
                 />
         </LinearLayout>
@@ -62,29 +66,11 @@
             android:layout_marginBottom="30dp"
             >
 
-            <TextView
-                android:id="@+id/textViewConteudoSobre"
+            <WebView  xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/webViewConteudo"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scrollbars="vertical"
-                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget.
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-
-Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet.
-
-Proin gravida dolor sit amet lacus accumsan et viverra justo commodo.
-
-Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget.
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget.
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet.
-
-Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget."
-                android:textAlignment="textStart"
-                android:textColor="@color/cinza"
-                android:textSize="16sp" />
+                />
 
         </ScrollView>
 
