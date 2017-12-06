@@ -255,7 +255,7 @@ public class AnimacoesAcessoRapido {
 
     private void translatePosicaoConteudoSubir(){
         ObjectAnimator animator = ObjectAnimator
-                .ofFloat(v, "rotation", v.getRotation() + 360).setDuration(500);
+                .ofFloat(v, "rotation", v.getRotation() - 360).setDuration(500);
         animator.start();
         relativePrincipal.animate().translationX(0).translationY(0).setDuration(500).setListener(new Animator.AnimatorListener() {
             @Override

@@ -21,6 +21,7 @@ import caixa.gov.br.loterias.view.adapter.HomeAdapter;
 
 
 import android.os.Bundle;
+import android.text.Html;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -33,6 +34,8 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+
 import caixa.gov.br.loterias.R;
 
 public class PrincipalActivity extends AppCompatActivity
@@ -104,7 +107,22 @@ public class PrincipalActivity extends AppCompatActivity
 
         toolbarListener();
         listenerRepassados();
+        layoutTrevoAcessoRapido();
 
+    }
+
+    private void layoutTrevoAcessoRapido(){
+        String htmlTextViewBilhetesTexto = "<html>Ler <strong>Bilhetes</strong></html>";
+        String htmlTextViewRepassados = "<html><strong>repassados</strong> para boas causas</html>";
+        TextView TextViewBilhetesTexto = (TextView) findViewById(R.id.tituloLerBilhetes);
+        TextView TextViewRepassados = (TextView) findViewById(R.id.textoRepassados);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            TextViewBilhetesTexto.setText(Html.fromHtml(htmlTextViewBilhetesTexto, Html.FROM_HTML_MODE_LEGACY));
+            TextViewRepassados.setText(Html.fromHtml(htmlTextViewRepassados, Html.FROM_HTML_MODE_LEGACY));
+        } else {
+            TextViewBilhetesTexto.setText(Html.fromHtml(htmlTextViewBilhetesTexto));
+            TextViewRepassados.setText(Html.fromHtml(htmlTextViewRepassados));
+        }
     }
 
     private void toolbarListener(){
@@ -229,16 +247,6 @@ public class PrincipalActivity extends AppCompatActivity
 
         return super.onOptionsItemSelected(item);
     }
-//
-//    private void acaoApresentarTrevo(){
-//        RotateAnimation rotate = new RotateAnimation(0, 360,
-//                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
-//                0.5f);
-//
-//        rotate.setDuration(4000);
-//        rotate.setRepeatCount(Animation.INFINITE);
-//        item.setAnimation(rotate);
-//    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
