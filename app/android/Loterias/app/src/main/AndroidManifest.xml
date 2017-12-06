@@ -68,7 +68,7 @@
         <activity
             android:name=".view.PrincipalActivity"
             android:label=""
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.TransparentActionBar" />
         <activity
             android:name=".view.TermosUsoActivity"
             android:label="@string/title_activity_termos_uso"

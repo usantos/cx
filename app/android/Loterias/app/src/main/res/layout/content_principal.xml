@@ -7,7 +7,8 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="caixa.gov.br.loterias.view.PrincipalActivity"
     tools:showIn="@layout/app_bar_principal"
-    android:background="@drawable/background_gradient_color">
+    android:background="@drawable/background_gradient_color"
+    >
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
