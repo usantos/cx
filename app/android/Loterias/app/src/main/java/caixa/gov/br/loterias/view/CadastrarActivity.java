@@ -4,8 +4,13 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.NavUtils;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -15,6 +20,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.github.pinball83.maskededittext.MaskedEditText;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -64,9 +70,16 @@ public class CadastrarActivity extends AppCompatActivity {
 
         listMunicipios = new ArrayList<String>();
 
+        configuraNavigation();
         addListenerUF();
         addListenerMunicipio();
         addListenerContinuar();
+
+        addRightImg((EditText)findViewById(R.id.editTextNomeContent));
+        addRightImg((EditText)findViewById(R.id.editTextCepContent));
+        addRightImg((EditText)findViewById(R.id.editTextCpfContent));
+        addRightImg((EditText)findViewById(R.id.editTextNascimentoContent));
+        addRightImg((EditText)findViewById(R.id.editTextEmailContent));
     }
 
     private void addListenerUF(){
@@ -76,6 +89,43 @@ public class CadastrarActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 getUFS();
+            }
+        });
+    }
+
+    private void configuraNavigation(){
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
+        getSupportActionBar().setBackgroundDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.navigation_gradient, null));
+    }
+
+    private void addRightImg (EditText textField) {
+        textField.setOnFocusChangeListener(new EditText.OnFocusChangeListener() {
+
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+            /* When focus is lost check that the text field
+            * has valid values.
+            */
+                if (!hasFocus) {
+                    if (v.getClass() == MaskedEditText.class) {
+                        if (((MaskedEditText)v).getUnmaskedText().toString().equals(""))
+                        {
+                            ((MaskedEditText)v).setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                        } else {
+                            ((MaskedEditText)v).setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
+                        }
+                    } else {
+                        if (((EditText)v).getText().toString().equals(""))
+                        {
+                            ((EditText)v).setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                        } else {
+                            ((EditText)v).setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
+                        }
+                    }
+                }
             }
         });
     }
@@ -169,29 +219,51 @@ public class CadastrarActivity extends AppCompatActivity {
     private void getMunicipios(){
         String idUf = "";
 
-        for (UnidadeFederacaoDTO uf : listUf) {
-            if (uf.getSigla().equalsIgnoreCase(ufSelect)) {
-                idUf = uf.getId().toString();
-            }
-        }
-
-        DadosCorporativosBO dadosCorporativosBO = new DadosCorporativosBO(CadastrarActivity.this);
-        dadosCorporativosBO.municipios(idUf, new SilceClient.Listener<MunicipioDTOResponse>() {
-            @Override
-            public void onResponse(MunicipioDTOResponse response) {
-                System.out.print("response: " + response);
-                for (MunicipioDTO municipio : response.getPayload()) {
-                    listMunicipios.add(municipio.getNome());
+        if (ufSelect.isEmpty()) {
+            showDialog();
+        } else {
+            for (UnidadeFederacaoDTO uf : listUf) {
+                if (uf.getSigla().equalsIgnoreCase(ufSelect)) {
+                    idUf = uf.getId().toString();
                 }
-                modalMunicipios();
             }
-        }, new SilceClient.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
 
-                ViewUtils.alert(CadastrarActivity.this, "ERRO");
-            }
-        });
+            DadosCorporativosBO dadosCorporativosBO = new DadosCorporativosBO(CadastrarActivity.this);
+            dadosCorporativosBO.municipios(idUf, new SilceClient.Listener<MunicipioDTOResponse>() {
+                @Override
+                public void onResponse(MunicipioDTOResponse response) {
+                    System.out.print("response: " + response);
+                    for (MunicipioDTO municipio : response.getPayload()) {
+                        listMunicipios.add(municipio.getNome());
+                    }
+                    modalMunicipios();
+                }
+            }, new SilceClient.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                    ViewUtils.alert(CadastrarActivity.this, "ERRO");
+                }
+            });
+        }
+    }
+
+    private AlertDialog myDialog;
+
+    public void showDialog() {
+        if (myDialog == null) {
+            myDialog = new AlertDialog.Builder(this)
+                    .setTitle("Atenção")
+                    .setMessage("Selecione primeiro a UF, assim nossa precisão de municípios será incrível.")
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            myDialog.dismiss();
+                        }
+                    })
+                    .create();
+        }
+        myDialog.show();
     }
 
     private void modalMunicipios(){
@@ -247,7 +319,6 @@ public class CadastrarActivity extends AppCompatActivity {
         dialog.show();
     }
 
-
     private void addListenerContinuar(){
         buttonContinuarIntroducao.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -256,9 +327,6 @@ public class CadastrarActivity extends AppCompatActivity {
             }
         });
     }
-
-
-
 
     public Dialog onCreateDialogSingleChoice(List<String> listString, String TituloAlert) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);

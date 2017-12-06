@@ -28,14 +28,28 @@
             android:label="@string/title_activity_login"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".view.CadastrarActivity_" />
 
         <service android:name="org.jboss.aerogear.android.authorization.oauth2.OAuth2AuthzService" />
 
         <activity
+            android:name=".view.CadastrarActivity_"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".view.IntroducaoActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".view.IntroducaoActivity" />
+        </activity>
+
+        <activity
             android:name=".view.CadastrarPasso2Activity_"
             android:configChanges="orientation"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:parentActivityName=".view.CadastrarActivity_">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".view.CadastrarActivity_" />
+        </activity>
         <activity
             android:name=".view.SimularApostaActivity_"
             android:configChanges="orientation"

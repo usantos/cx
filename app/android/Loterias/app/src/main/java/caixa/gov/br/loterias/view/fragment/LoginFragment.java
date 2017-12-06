@@ -78,7 +78,6 @@ public class LoginFragment extends Fragment {
             public void onClick(View v) {
                 // Do something in response to button click
                 startActivity(new Intent(getActivity(), PrincipalActivity.class));
-                getActivity().finish();
             }
         });
 
@@ -120,7 +119,6 @@ public class LoginFragment extends Fragment {
 
     private void loginSucess(){
         startActivity(new Intent(getActivity(), CadastrarActivity_.class));
-        getActivity().finish();
     }
 
 

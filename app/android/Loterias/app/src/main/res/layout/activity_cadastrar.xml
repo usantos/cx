@@ -70,15 +70,17 @@
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="63dp">
 
-                <EditText
+                <com.github.pinball83.maskededittext.MaskedEditText
                     android:id="@+id/editTextCpfContent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="CPF"
-                    android:inputType="textNoSuggestions"
+                    android:inputType="number"
                     android:ems="10"
                     android:textSize="16sp"
                     android:textColor="@color/cinza"
+                    app:mask="***.***.***-**"
+                    app:notMaskedSymbol="*"
                     />
 
             </android.support.design.widget.TextInputLayout>
@@ -158,15 +160,17 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp">
 
-                <EditText
+                <com.github.pinball83.maskededittext.MaskedEditText
                     android:id="@+id/editTextCepContent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:inputType="textPersonName"
+                    android:inputType="number"
                     android:hint="CEP"
                     android:textSize="16sp"
                     android:textColor="@color/cinza"
+                    app:mask="*****-***"
+                    app:notMaskedSymbol="*"
                     />
             </android.support.design.widget.TextInputLayout>
 
@@ -190,6 +194,7 @@
                     android:focusableInTouchMode="false"
                     android:textSize="16sp"
                     android:textColor="@color/cinza"
+                    android:drawableRight="@drawable/combo"
                     />
             </android.support.design.widget.TextInputLayout>
 
@@ -214,6 +219,7 @@
                     android:focusableInTouchMode="false"
                     android:textSize="16sp"
                     android:textColor="@color/cinza"
+                    android:drawableRight="@drawable/combo"
                     />
             </android.support.design.widget.TextInputLayout>
 
@@ -226,15 +232,17 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp">
 
-                <EditText
+                <com.github.pinball83.maskededittext.MaskedEditText
                     android:id="@+id/editTextNascimentoContent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:inputType="textPersonName"
+                    android:inputType="number"
                     android:hint="Nascimento"
                     android:textSize="16sp"
                     android:textColor="@color/cinza"
+                    app:mask="**/**/****"
+                    app:notMaskedSymbol="*"
                     />
             </android.support.design.widget.TextInputLayout>
 
@@ -273,6 +281,7 @@
                 android:textSize="16sp"
                 android:textColor="@color/branco"
                 android:layout_marginBottom="20dp"
+                android:textAllCaps="false"
                 />
 
         </RelativeLayout>
