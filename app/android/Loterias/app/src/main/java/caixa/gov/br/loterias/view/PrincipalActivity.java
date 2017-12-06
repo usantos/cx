@@ -208,6 +208,7 @@ public class PrincipalActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.principal, menu);
+
         return true;
     }
 
@@ -245,17 +246,17 @@ public class PrincipalActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.nav_apostar) {
+
+        } else if (id == R.id.nav_bilhetes) {
 
         } else if (id == R.id.nav_slideshow) {
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_minhaarea) {
 
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.nav_rapidao) {
 
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_slideshow) {
 
         }
 
