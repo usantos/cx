@@ -5,6 +5,7 @@ import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,27 +27,30 @@ public class LoadingViewLoterias {
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
         LinearLayout layout = new LinearLayout(context);
         layout.setOrientation(LinearLayout.VERTICAL);
-        layout.setBackgroundColor(context.getResources().getColor(R.color.transparenteAzul20));
+        layout.setBackgroundColor(context.getResources().getColor(R.color.transparenteAzul10));
         layout.setGravity(Gravity.CENTER);
         layout.setAlpha(0.0f);
         layout.setClickable(true);
         ImageView imageView = new ImageView(context);
-        RelativeLayout.LayoutParams lpImage = new RelativeLayout.LayoutParams(100, 100);
+        RelativeLayout.LayoutParams lpImage = new RelativeLayout.LayoutParams(120, 120);
         imageView.setLayoutParams(lpImage);
-        imageView.setImageResource(R.drawable.trevo);
+        imageView.setImageResource(R.drawable.icon_loteria);
         layout.addView(imageView);
 
         TextView textView = new TextView(context);
-        RelativeLayout.LayoutParams lptextView = new RelativeLayout.LayoutParams(240, 60);
+        RelativeLayout.LayoutParams lptextView = new RelativeLayout.LayoutParams(280, 60);
+        lptextView.setMargins(0,40,0,0);
         textView.setLayoutParams(lptextView);
         textView.setText("Carregando...");
+        textView.setTextSize(17);
+        textView.setTypeface(null, Typeface.BOLD);
         textView.setGravity(Gravity.CENTER);
         textView.setTextColor(context.getResources().getColor(R.color.branco));
         layout.addView(textView);
 
 
         ObjectAnimator animator = ObjectAnimator
-                .ofFloat(imageView, "rotation", imageView.getRotation() + 360).setDuration(1000);
+                .ofFloat(imageView, "rotation", imageView.getRotation() + 360).setDuration(1200);
         animator.setRepeatCount(ObjectAnimator.INFINITE);
         animator.start();
         activity.getWindow().addContentView(layout,layoutParams);
