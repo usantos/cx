@@ -16,11 +16,14 @@ import caixa.gov.br.loterias.model.Modalidade;
 import caixa.gov.br.loterias.utils.AnimacoesAcessoRapido;
 import caixa.gov.br.loterias.utils.EstiloModalidade;
 import caixa.gov.br.loterias.utils.TipoModalidadeEnum;
+import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.adapter.HomeAdapter;
 
 
 import android.os.Bundle;
 import android.text.Html;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -105,29 +108,14 @@ public class PrincipalActivity extends AppCompatActivity
                 startActivity(activity);
             }
         });
-
+        LayoutGeral();
         toolbarListener();
         listenerRepassados();
         layoutTrevoAcessoRapido();
 
     }
 
-    private void layoutTrevoAcessoRapido(){
-        String htmlTextViewBilhetesTexto = "<html>Ler <strong>Bilhetes</strong></html>";
-        String htmlTextViewRepassados = "<html><strong>repassados</strong> para boas causas</html>";
-        TextView TextViewBilhetesTexto = (TextView) findViewById(R.id.tituloLerBilhetes);
-        TextView TextViewRepassados = (TextView) findViewById(R.id.textoRepassados);
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            TextViewBilhetesTexto.setText(Html.fromHtml(htmlTextViewBilhetesTexto, Html.FROM_HTML_MODE_LEGACY));
-            TextViewRepassados.setText(Html.fromHtml(htmlTextViewRepassados, Html.FROM_HTML_MODE_LEGACY));
-        } else {
-            TextViewBilhetesTexto.setText(Html.fromHtml(htmlTextViewBilhetesTexto));
-            TextViewRepassados.setText(Html.fromHtml(htmlTextViewRepassados));
-        }
-    }
-
-    private void toolbarListener(){
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+    private void LayoutGeral(){
         relativePrincipal = (RelativeLayout) findViewById(R.id.RelativeContentPrincipal);
         relativeBlankView = (RelativeLayout) findViewById(R.id.RelativeBlankView);
         linearAtalhoRapidoLoterias = (LinearLayout) findViewById(R.id.atalhoRapidoLoterias);
@@ -135,7 +123,20 @@ public class PrincipalActivity extends AppCompatActivity
         relativeLayoutContentLerBilhetes = (RelativeLayout) findViewById(R.id.RelativeLayoutContentLerBilhetes);
         relativeLayoutContentFavoritas = (RelativeLayout) findViewById(R.id.RelativeLayoutContentFavoritas);
         relativeLayoutContentRepassados = (RelativeLayout) findViewById(R.id.RelativeLayoutContentRepassados);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+    }
 
+    private void layoutTrevoAcessoRapido(){
+        String htmlTextViewBilhetesTexto = "<html>Ler <strong>Bilhetes</strong></html>";
+        String htmlTextViewRepassados = "<html><strong>repassados</strong> para boas causas</html>";
+        TextView TextViewBilhetesTexto = (TextView) findViewById(R.id.tituloLerBilhetes);
+        TextView TextViewRepassados = (TextView) findViewById(R.id.textoRepassados);
+        TextViewBilhetesTexto.setText(ViewUtils.fromHtml(htmlTextViewBilhetesTexto));
+        TextViewRepassados.setText(ViewUtils.fromHtml(htmlTextViewRepassados));
+
+    }
+
+    private void toolbarListener(){
         toolbar.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
             @Override
             public void onLayoutChange(View v, int left, int top, int right, int bottom,
@@ -303,6 +304,7 @@ public class PrincipalActivity extends AppCompatActivity
             Log.d("position", "position: "+ position);
             Log.d("currentIndex", "currentIndex: "+ currentIndex);
             Log.d("newIndex", "newIndex: "+ newIndex);
+
 //            currentHolder.setOverlayColor(interpolate(position, currentOverlayColor, overlayColor));
 //            newCurrent.setOverlayColor(interpolate(position, overlayColor, currentOverlayColor));
 

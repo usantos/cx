@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.utils.ViewUtils;
 
 public class RepassesSociaisActivity extends AppCompatActivity {
 
@@ -36,15 +37,9 @@ public class RepassesSociaisActivity extends AppCompatActivity {
         TextView TextViewRepasseQuadro1 = (TextView) findViewById(R.id.textViewRepasseQuadro1);
         TextView TextViewRepasseQuadro2 = (TextView) findViewById(R.id.textViewRepasseQuadro2);
         Button ButtonAposte = (Button) findViewById(R.id.ButtonAposteSociais);
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            TextViewRepasseQuadro1.setText(Html.fromHtml(htmlTextViewRepasseQuadro1, Html.FROM_HTML_MODE_LEGACY));
-            TextViewRepasseQuadro2.setText(Html.fromHtml(htmlTextViewRepasseQuadro2, Html.FROM_HTML_MODE_LEGACY));
-            ButtonAposte.setText(Html.fromHtml(htmlTextButtonAposte, Html.FROM_HTML_MODE_LEGACY));
-        } else {
-            TextViewRepasseQuadro1.setText(Html.fromHtml(htmlTextViewRepasseQuadro1));
-            TextViewRepasseQuadro2.setText(Html.fromHtml(htmlTextViewRepasseQuadro2));
-            ButtonAposte.setText(Html.fromHtml(htmlTextButtonAposte));
-        }
+        TextViewRepasseQuadro1.setText(ViewUtils.fromHtml(htmlTextViewRepasseQuadro1));
+        TextViewRepasseQuadro2.setText(ViewUtils.fromHtml(htmlTextViewRepasseQuadro2));
+        ButtonAposte.setText(ViewUtils.fromHtml(htmlTextButtonAposte));
 
 
         ButtonAposte.setOnClickListener(new View.OnClickListener() {

@@ -24,6 +24,7 @@ import org.w3c.dom.Text;
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.Modalidade;
 import caixa.gov.br.loterias.utils.EstiloModalidade;
+import caixa.gov.br.loterias.utils.ViewUtils;
 
 import java.util.List;
 
@@ -72,7 +73,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         holder.trevoFundo.setBackground(ContextCompat.getDrawable(context, estilo.getTrevoBackground()));
         holder.titulo.setBackgroundColor(ContextCompat.getColor(context, estilo.getCorClara()));
         holder.valor.setTextColor(ContextCompat.getColor(context, estilo.getCorClara()));
-        aposta.setText("Aposte\npor R$" + data.get(position).getValor());
+        aposta.setText(ViewUtils.fromHtml("<b>Aposte</b><br>por R$" + data.get(position).getValor()));
         Glide.with(holder.itemView.getContext())
                 .load(estilo.getImagemCalendario())
                 .into(holder.calendario);
