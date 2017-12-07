@@ -175,7 +175,8 @@
             app:layout_constraintLeft_toRightOf="@+id/imageViewPaginacao"
             android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="10dp">
+            android:layout_marginEnd="10dp"
+            android:clickable="true">
 
             <Button
                 android:id="@+id/botaoCarrinho"

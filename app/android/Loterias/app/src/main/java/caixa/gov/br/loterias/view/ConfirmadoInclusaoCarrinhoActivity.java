@@ -67,6 +67,8 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
 
         findViewById(R.id.botaoNovaAposta).setOnClickListener(this);
         findViewById(R.id.botaoVerCarrinhoAposta).setOnClickListener(this);
+        findViewById(R.id.carrinhoApostas).setOnClickListener(this);
+
     }
 
     private void configuraLayoutTela(String titleActivity, int lightColor, int darkColor){
@@ -123,7 +125,12 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
                 Intent activity = new Intent(this, CarrinhoActivity.class);
 
                 startActivityForResult(activity, 0);
-//                startActivity(activity);
+            }
+
+            case R.id.carrinhoApostas: {
+                Intent activity = new Intent(this, CarrinhoActivity.class);
+
+                startActivityForResult(activity, 0);
             }
         }
     }

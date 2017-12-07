@@ -1,0 +1,63 @@
+package caixa.gov.br.loterias.bo;
+
+import android.content.Context;
+
+import com.android.volley.Response;
+
+import java.util.LinkedHashMap;
+
+import caixa.gov.br.loterias.BuildConfig;
+import caixa.gov.br.loterias.bo.silce.SilceClient;
+import caixa.gov.br.loterias.bo.silce.dto.AutenticacaoDTO;
+import caixa.gov.br.loterias.bo.silce.dto.ListCartaoDTOResponse;
+import caixa.gov.br.loterias.bo.silce.dto.UsuarioLogadoResponse;
+import caixa.gov.br.loterias.bo.silce.internals.SilceConnection;
+import caixa.gov.br.loterias.bo.silce.internals.SilceSingleton;
+
+/**
+ * Created by cedesbr450 on 07/12/17.
+ */
+
+public class DadosUsuarioBO {
+
+    private SilceClient silceClient;
+    private Context context;
+
+
+    public DadosUsuarioBO(Context context){
+        this.context = context;
+
+        setupSilceClient();
+    }
+
+    private void setupSilceClient(){
+        SilceSingleton queue = new SilceSingleton(context);
+        SilceConnection conn = SilceConnection.create(queue.getRequestQueue(), BuildConfig.CAIXA_BASE_URL_SILCE);
+        silceClient = SilceClient.create(conn);
+    }
+
+    public void cartoes(final SilceClient.Listener<ListCartaoDTOResponse> listener,
+                         final SilceClient.ErrorListener errorListener) {
+
+        LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
+        queryParams.put("meioPagamento", "1");
+
+        silceClient.getConnection().get(SilceClient.LIST_CARTOES_PATH, queryParams, ListCartaoDTOResponse.class,
+                silceClient.volleyListener(listener, ListCartaoDTOResponse.class),
+                silceClient.volleyErrorListener(errorListener));
+    }
+
+    public void autenticar(final String email, final String senha,
+                           final SilceClient.Listener<UsuarioLogadoResponse> listener,
+                           final SilceClient.ErrorListener errorListener) {
+
+        AutenticacaoDTO autenticacaoDTO = new AutenticacaoDTO();
+        autenticacaoDTO.setEmail(email);
+        autenticacaoDTO.setSenha(senha);
+
+        silceClient.getConnection().post(SilceClient.LOGIN_PATH, new LinkedHashMap<String, String>(),
+                autenticacaoDTO, UsuarioLogadoResponse.class,
+                silceClient.volleyListener(listener, UsuarioLogadoResponse.class),
+                silceClient.volleyErrorListener(errorListener));
+    }
+}

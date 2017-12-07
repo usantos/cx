@@ -2,6 +2,8 @@ package caixa.gov.br.loterias.bo.silce.data;
 
 import java.util.List;
 
+import caixa.gov.br.loterias.bo.silce.dto.UsuarioLogado;
+
 public final class UsuarioLogadoResponse {
     String codigo;
     String mensagem;

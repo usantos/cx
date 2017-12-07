@@ -13,8 +13,7 @@ public class SilceClient {
     public static final String UFS_PATH = "/ufs";
     public static final String TERMO_PATH = "/termos-de-uso/termo-vigente";
     public static final String MUNICIPIOS_PATH = "/municipios";
-
-
+    public static final String LIST_CARTOES_PATH = "/usuarios/cartoes";
 
     public interface Listener<T> {
         public void onResponse(T response);
@@ -28,20 +27,6 @@ public class SilceClient {
 
     protected SilceClient(SilceConnection conn) {
         this.conn = conn;
-    }
-
-    public void autenticar(final String email, final String senha,
-                           final Listener<UsuarioLogadoResponse> listener,
-                           final ErrorListener errorListener) {
-
-        AutenticacaoDTO autenticacaoDTO = new AutenticacaoDTO();
-        autenticacaoDTO.setEmail(email);
-        autenticacaoDTO.setSenha(senha);
-
-        conn.post(LOGIN_PATH, new LinkedHashMap<String, String>(),
-                autenticacaoDTO, UsuarioLogadoResponse.class,
-                volleyListener(listener, UsuarioLogadoResponse.class),
-                volleyErrorListener(errorListener));
     }
 
     public <T> Response.Listener<T> volleyListener(final Listener<T> listener, final Class<T> klass) {

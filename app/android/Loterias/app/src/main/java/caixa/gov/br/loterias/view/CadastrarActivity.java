@@ -230,12 +230,13 @@ public class CadastrarActivity extends AppCompatActivity {
                     idUf = uf.getId().toString();
                 }
             }
+            final View loadViewProgress = LoadingViewLoterias.init(this);
 
             DadosCorporativosBO dadosCorporativosBO = new DadosCorporativosBO(CadastrarActivity.this);
             dadosCorporativosBO.municipios(idUf, new SilceClient.Listener<MunicipioDTOResponse>() {
                 @Override
                 public void onResponse(MunicipioDTOResponse response) {
-                    System.out.print("response: " + response);
+                    LoadingViewLoterias.stop(loadViewProgress);
                     for (MunicipioDTO municipio : response.getPayload()) {
                         listMunicipios.add(municipio.getNome());
                     }
@@ -244,7 +245,7 @@ public class CadastrarActivity extends AppCompatActivity {
             }, new SilceClient.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-
+                    LoadingViewLoterias.stop(loadViewProgress);
                     ViewUtils.alert(CadastrarActivity.this, "ERRO");
                 }
             });

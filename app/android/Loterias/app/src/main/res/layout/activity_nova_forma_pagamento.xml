@@ -77,28 +77,22 @@
                 android:id="@+id/editTextNumeroCartao"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_toLeftOf="@+id/imageNumeroCartaoCorrect"
-                android:layout_toStartOf="@+id/imageNumeroCartaoCorrect">
+                android:layout_alignParentTop="true">
 
-                <EditText
+                <com.github.pinball83.maskededittext.MaskedEditText
                     android:id="@+id/editTextNumeroCartaoContent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Numero cartão"
+                    android:ems="10"
                     android:inputType="number"
+                    android:hint="Numero cartão"
+                    android:textSize="16sp"
                     android:textColor="@color/cinza"
-                    android:textSize="16sp" />
+                    app:mask="**** **** **** ****"
+                    app:notMaskedSymbol="*"
+                    android:textColorHint="@color/azulFormNovoTipoPagamento"
+                    />
             </android.support.design.widget.TextInputLayout>
-
-            <ImageView
-                android:id="@+id/imageNumeroCartaoCorrect"
-                android:layout_width="12dp"
-                android:layout_height="10dp"
-                android:background="@drawable/icon_input_ok"
-                android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true" />
         </RelativeLayout>
 
 
@@ -120,9 +114,7 @@
                 android:id="@+id/editTextNomeClienteCartao"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_toLeftOf="@+id/imageNomeClienteCartaoCorrect"
-                android:layout_toStartOf="@+id/imageNomeClienteCartaoCorrect">
+                android:layout_alignParentTop="true">
 
                 <EditText
                     android:id="@+id/editTextNomeClienteCartaoContent"
@@ -130,18 +122,13 @@
                     android:layout_height="wrap_content"
                     android:hint="Nome igual ao do cartão"
                     android:inputType="textPersonName"
-                    android:textColor="@color/cinza"
-                    android:textSize="16sp" />
+                    android:textColor="@color/pretoLinhaFormNovoTipoPagamento"
+                    android:textSize="16sp"
+                    android:textColorHint="@color/azulFormNovoTipoPagamento"
+                    />
             </android.support.design.widget.TextInputLayout>
 
-            <ImageView
-                android:id="@+id/imageNomeClienteCartaoCorrect"
-                android:layout_width="12dp"
-                android:layout_height="10dp"
-                android:background="@drawable/icon_input_ok"
-                android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true" />
+
         </RelativeLayout>
 
 
@@ -163,30 +150,21 @@
                 android:id="@+id/editTextCodigoSeguranca"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_toLeftOf="@+id/imageCodigoSegurancaCorrect"
-                android:layout_toStartOf="@+id/imageCodigoSegurancaCorrect">
+                android:layout_alignParentTop="true">
 
                 <EditText
                     android:id="@+id/editTextCodigoSegurancaContent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Código de segurança"
+                    android:layout_marginRight="40dp"
                     android:inputType="number"
-                    android:textColor="@color/cinza"
-                    android:textSize="16sp" />
+                    android:textColor="@color/pretoLinhaFormNovoTipoPagamento"
+                    android:textSize="16sp"
+                    android:maxLength="3"
+                    android:textColorHint="@color/azulFormNovoTipoPagamento"
+                    />
             </android.support.design.widget.TextInputLayout>
-
-            <ImageView
-                android:id="@+id/imageCodigoSegurancaCorrect"
-                android:layout_width="12dp"
-                android:layout_height="10dp"
-                android:background="@drawable/icon_input_ok"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_toLeftOf="@+id/imageViewCVV"
-                android:layout_toStartOf="@+id/imageViewCVV" />
 
             <ImageView
                 android:id="@+id/imageViewCVV"
@@ -240,8 +218,10 @@
                         android:layout_height="wrap_content"
                         android:hint="Mês de validade"
                         android:inputType="textPersonName"
-                        android:textColor="@color/cinza"
-                        android:textSize="16sp" />
+                        android:textColor="@color/pretoLinhaFormNovoTipoPagamento"
+                        android:textSize="16sp"
+                        android:textColorHint="@color/azulFormNovoTipoPagamento"
+                        />
                 </android.support.design.widget.TextInputLayout>
 
                 <ImageView
@@ -280,8 +260,10 @@
                         android:layout_height="wrap_content"
                         android:hint="Ano de validade"
                         android:inputType="textPersonName"
-                        android:textColor="@color/cinza"
-                        android:textSize="16sp" />
+                        android:textColor="@color/pretoLinhaFormNovoTipoPagamento"
+                        android:textSize="16sp"
+                        android:textColorHint="@color/azulFormNovoTipoPagamento"
+                        />
                 </android.support.design.widget.TextInputLayout>
 
                 <ImageView
@@ -300,12 +282,9 @@
             android:layout_width="0dp"
             android:layout_height="60dp"
             app:layout_constraintTop_toBottomOf="@+id/containerValidadeCartao"
-            android:layout_marginLeft="16dp"
             app:layout_constraintLeft_toLeftOf="parent"
-            android:layout_marginRight="16dp"
             app:layout_constraintRight_toRightOf="parent"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp">
+            android:background="@color/cinzaclaro">
 
             <CheckBox
                 android:id="@+id/checkBoxSalvarCartao"
@@ -315,6 +294,7 @@
                 android:text="Salvar este cartão para futuras apostas"
                 android:textColor="@color/pretoLinhaFormNovoTipoPagamento"
                 android:textSize="16sp"
+                android:layout_marginLeft="16dp"
                 android:buttonTint="@color/verdeagua" />
         </LinearLayout>
 

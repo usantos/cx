@@ -9,6 +9,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+
+import com.github.pinball83.maskededittext.MaskedEditText;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,6 +42,10 @@ public class NovaFormaPagamentoActivity extends AppCompatActivity {
 
         configuraActivityCarrinho();
         configuraBotoesListener();
+
+        addRightImg((EditText)findViewById(R.id.editTextNumeroCartaoContent));
+        addRightImg((EditText)findViewById(R.id.editTextNomeClienteCartaoContent));
+        addRightImg((EditText)findViewById(R.id.editTextCodigoSegurancaContent));
     }
 
     @Override
@@ -70,6 +77,35 @@ public class NovaFormaPagamentoActivity extends AppCompatActivity {
         }
 
         getSupportActionBar().setBackgroundDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.navigation_gradient, null));
+    }
+
+    private void addRightImg (EditText textField) {
+        textField.setOnFocusChangeListener(new EditText.OnFocusChangeListener() {
+
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+            /* When focus is lost check that the text field
+            * has valid values.
+            */
+                if (!hasFocus) {
+                    if (v.getClass() == MaskedEditText.class) {
+                        if (((MaskedEditText)v).getUnmaskedText().toString().equals(""))
+                        {
+                            ((MaskedEditText)v).setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                        } else {
+                            ((MaskedEditText)v).setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
+                        }
+                    } else {
+                        if (((EditText)v).getText().toString().equals(""))
+                        {
+                            ((EditText)v).setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                        } else {
+                            ((EditText)v).setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
+                        }
+                    }
+                }
+            }
+        });
     }
 
     private ArrayList<String> montaCarrinhoApostaValores(String valores[]){

@@ -9,9 +9,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.android.volley.VolleyError;
+
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.bo.DadosUsuarioBO;
 import caixa.gov.br.loterias.bo.keycloak.KeycloakBO;
+import caixa.gov.br.loterias.bo.silce.SilceClient;
+import caixa.gov.br.loterias.bo.silce.data.UsuarioLogadoSingleton;
+import caixa.gov.br.loterias.bo.silce.dto.UsuarioLogado;
+import caixa.gov.br.loterias.bo.silce.dto.UsuarioLogadoResponse;
+import caixa.gov.br.loterias.utils.LoadingViewLoterias;
+import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.CadastrarActivity_;
+import caixa.gov.br.loterias.view.IntroducaoActivity;
 import caixa.gov.br.loterias.view.PrincipalActivity;
 
 /**
@@ -68,26 +78,56 @@ public class LoginFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-
         View v = inflater.inflate(R.layout.fragment_login, container, false);
-
 
         Button buttonAposte = (Button) v.findViewById(R.id.buttonAposteAgora);
         buttonAposte.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Do something in response to button click
-                startActivity(new Intent(getActivity(), PrincipalActivity.class));
+                final View loadViewProgress = LoadingViewLoterias.init(((IntroducaoActivity) getActivity()));
+
+                DadosUsuarioBO dadosUsuarioBO = new DadosUsuarioBO(((IntroducaoActivity) getActivity()));
+                dadosUsuarioBO.autenticar("vinicius.ferraz@gmail.com", "Vaibombar1", new SilceClient.Listener<UsuarioLogadoResponse>() {
+                    @Override
+                    public void onResponse(UsuarioLogadoResponse response) {
+                        LoadingViewLoterias.stop(loadViewProgress);
+
+                        UsuarioLogadoSingleton user = UsuarioLogadoSingleton.getInstance();
+                        user.token = response.getPayload().getToken();
+                        
+                        startActivity(new Intent(getActivity(), PrincipalActivity.class));
+                    }
+                }, new SilceClient.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        LoadingViewLoterias.stop(loadViewProgress);
+
+                        ViewUtils.alert(((IntroducaoActivity) getActivity()), "ERRO");
+                    }
+                });
             }
         });
 
         Button buttonLogin = (Button) v.findViewById(R.id.buttonFacaLogin);
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Do something in response to button click
-//                connectKeycloak();
-                loginSucess();
+                final View loadViewProgress = LoadingViewLoterias.init(((IntroducaoActivity) getActivity()));
 
+                DadosUsuarioBO dadosUsuarioBO = new DadosUsuarioBO(((IntroducaoActivity) getActivity()));
+                dadosUsuarioBO.autenticar("vinicius.ferraz@gmail.com", "Vaibombar1", new SilceClient.Listener<UsuarioLogadoResponse>() {
+                    @Override
+                    public void onResponse(UsuarioLogadoResponse response) {
+                        LoadingViewLoterias.stop(loadViewProgress);
+                        loginSucess();
+                    }
+                }, new SilceClient.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        LoadingViewLoterias.stop(loadViewProgress);
+
+                        ViewUtils.alert(((IntroducaoActivity) getActivity()), "ERRO");
+                    }
+                });
+//                connectKeycloak();
             }
         });
 

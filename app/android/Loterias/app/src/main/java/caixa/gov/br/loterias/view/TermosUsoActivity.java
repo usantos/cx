@@ -19,6 +19,7 @@ import caixa.gov.br.loterias.bo.silce.SilceClient;
 import caixa.gov.br.loterias.bo.silce.dto.TermoDeUsoDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.UnidadeFederacaoDTO;
 import caixa.gov.br.loterias.bo.silce.dto.UnidadeFederacaoDTOResponse;
+import caixa.gov.br.loterias.utils.LoadingViewLoterias;
 import caixa.gov.br.loterias.utils.ViewUtils;
 
 public class TermosUsoActivity extends AppCompatActivity {
@@ -41,22 +42,23 @@ public class TermosUsoActivity extends AppCompatActivity {
         duvidasButton = findViewById(R.id.buttonDuvidas);
         politicaButton = findViewById(R.id.buttonPolitica);
         webViewConteudo = findViewById(R.id.webViewConteudo);
+        getTermo();
 
         webViewConteudo.setWebViewClient(new WebViewClient() {
 
             public void onPageFinished(WebView view, String url) {
-                //Remover tela de carregamento.
+                LoadingViewLoterias.stop(loadViewProgress);
             }
         });
-
         listenerTermosUso();
         listenerDuvidas();
         listenerPolitica();
-
-        getTermo();
     }
 
+    private View loadViewProgress = null;
+
     private void getTermo () {
+        loadViewProgress = LoadingViewLoterias.init(this);
         DadosCorporativosBO dadosCorporativosBO = new DadosCorporativosBO(TermosUsoActivity.this);
 
         dadosCorporativosBO.termo(new SilceClient.Listener<TermoDeUsoDTOResponse>() {
@@ -69,7 +71,7 @@ public class TermosUsoActivity extends AppCompatActivity {
         }, new SilceClient.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                LoadingViewLoterias.stop(loadViewProgress);
                 ViewUtils.alert(TermosUsoActivity.this, "ERRO");
             }
         });
