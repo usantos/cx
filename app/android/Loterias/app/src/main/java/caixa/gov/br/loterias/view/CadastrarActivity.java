@@ -37,6 +37,7 @@ import caixa.gov.br.loterias.bo.silce.dto.MunicipioDTO;
 import caixa.gov.br.loterias.bo.silce.dto.MunicipioDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.UnidadeFederacaoDTO;
 import caixa.gov.br.loterias.bo.silce.dto.UnidadeFederacaoDTOResponse;
+import caixa.gov.br.loterias.utils.LoadingViewLoterias;
 import caixa.gov.br.loterias.utils.ViewUtils;
 
 
@@ -131,11 +132,13 @@ public class CadastrarActivity extends AppCompatActivity {
     }
 
     private void getUFS(){
+        final View loadViewProgress = LoadingViewLoterias.init(this);
         DadosCorporativosBO dadosCorporativosBO = new DadosCorporativosBO(CadastrarActivity.this);
 
         dadosCorporativosBO.ufs(new SilceClient.Listener<UnidadeFederacaoDTOResponse>() {
             @Override
             public void onResponse(UnidadeFederacaoDTOResponse response) {
+                LoadingViewLoterias.stop(loadViewProgress);
                 listUf = response.getPayload();
                 for (UnidadeFederacaoDTO uf : response.getPayload()) {
                     listUFString.add(uf.getSigla());
@@ -145,7 +148,7 @@ public class CadastrarActivity extends AppCompatActivity {
         }, new SilceClient.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                LoadingViewLoterias.stop(loadViewProgress);
                 ViewUtils.alert(CadastrarActivity.this, "ERRO");
             }
         });
