@@ -55,6 +55,7 @@
     <color name="statuscolorstart">#368378</color>
     <color name="statuscolorend">#034073</color>
     <color name="transparente">#00ff0000</color>
+    <color name="cinzabotaoapostedesativado">#f8f8f8</color>
 
 
 </resources>

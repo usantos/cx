@@ -14,12 +14,14 @@ import java.util.List;
 import caixa.gov.br.loterias.mock.ModalidadesMock;
 import caixa.gov.br.loterias.model.Modalidade;
 import caixa.gov.br.loterias.utils.AnimacoesAcessoRapido;
+import caixa.gov.br.loterias.utils.EstiloModalidade;
 import caixa.gov.br.loterias.utils.TipoModalidadeEnum;
 import caixa.gov.br.loterias.view.adapter.HomeAdapter;
 
 
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -58,7 +60,8 @@ public class PrincipalActivity extends AppCompatActivity
     private RelativeLayout relativeLayoutContentLerBilhetes;
     private RelativeLayout relativeLayoutContentFavoritas;
     private RelativeLayout relativeLayoutContentRepassados;
-
+    private List<Modalidade> data;
+    private DiscreteScrollView itemCarousel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,8 +86,8 @@ public class PrincipalActivity extends AppCompatActivity
         overlayColor = ContextCompat.getColor(this, R.color.cinza);
 
         ModalidadesMock modalidade = ModalidadesMock.get();
-        List<Modalidade> data = modalidade.getData();
-        DiscreteScrollView itemCarousel = (DiscreteScrollView) findViewById(R.id.home_carousel);
+        data = modalidade.getData();
+        itemCarousel = (DiscreteScrollView) findViewById(R.id.home_carousel);
         buttonHomeBet = (Button) findViewById(R.id.buttonHomeBet);
         itemCarousel.setAdapter(new HomeAdapter(this, data, findViewById(R.id.buttonHomeBet)));
         itemCarousel.addScrollListener(this);
@@ -170,6 +173,7 @@ public class PrincipalActivity extends AppCompatActivity
         relativePrincipal.setEnabled(false);
         itemToolbarTrevo.setEnabled(false);
         linearAtalhoRapidoLoterias.setVisibility(View.VISIBLE);
+        EstiloModalidade estilo = new EstiloModalidade(data.get(itemCarousel.getCurrentItem()).getTipoModalidade());
         AnimacoesAcessoRapido animacoesAcessoRapido = new AnimacoesAcessoRapido(
                 v,
                 relativePrincipal,
@@ -181,7 +185,8 @@ public class PrincipalActivity extends AppCompatActivity
                 linearAtalhoRapidoLoterias,
                 buttonHomeBet,
                 itemToolbarTrevo,
-                PrincipalActivity.this
+                PrincipalActivity.this,
+                estilo
                 );
         int positionTopBotao = (int)buttonHomeBet.getY();
 
@@ -193,6 +198,7 @@ public class PrincipalActivity extends AppCompatActivity
     private void AnimacaoFecharMenuRapido(View v){
         relativePrincipal.setEnabled(true);
         itemToolbarTrevo.setEnabled(false);
+        EstiloModalidade estilo = new EstiloModalidade(data.get(itemCarousel.getCurrentItem()).getTipoModalidade());
         AnimacoesAcessoRapido animacoesAcessoRapido = new AnimacoesAcessoRapido(
                 v,
                 relativePrincipal,
@@ -204,7 +210,8 @@ public class PrincipalActivity extends AppCompatActivity
                 linearAtalhoRapidoLoterias,
                 buttonHomeBet,
                 itemToolbarTrevo,
-                PrincipalActivity.this
+                PrincipalActivity.this,
+                estilo
         );
         animacoesAcessoRapido.AnimacaoSubirContent();
 
@@ -293,8 +300,12 @@ public class PrincipalActivity extends AppCompatActivity
             @Nullable HomeAdapter.ViewHolder newCurrent) {
         if (currentHolder != null && newCurrent != null) {
             float position = Math.abs(currentPosition);
-            currentHolder.setOverlayColor(interpolate(position, currentOverlayColor, overlayColor));
-            newCurrent.setOverlayColor(interpolate(position, overlayColor, currentOverlayColor));
+            Log.d("position", "position: "+ position);
+            Log.d("currentIndex", "currentIndex: "+ currentIndex);
+            Log.d("newIndex", "newIndex: "+ newIndex);
+//            currentHolder.setOverlayColor(interpolate(position, currentOverlayColor, overlayColor));
+//            newCurrent.setOverlayColor(interpolate(position, overlayColor, currentOverlayColor));
+
         }
     }
 
@@ -302,7 +313,8 @@ public class PrincipalActivity extends AppCompatActivity
     public void onCurrentItemChanged(@Nullable HomeAdapter.ViewHolder viewHolder, int adapterPosition) {
         //viewHolder will never be null, because we never remove items from adapter's list
         if (viewHolder != null) {
-            viewHolder.setOverlayColor(currentOverlayColor);
+            EstiloModalidade estilo = new EstiloModalidade(data.get(adapterPosition).getTipoModalidade());
+            viewHolder.setOverlayColor(this, estilo);
         }
     }
 

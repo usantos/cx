@@ -6,8 +6,10 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.utils.LoadingViewLoterias;
 import caixa.gov.br.loterias.view.fragment.Introducao1Fragment;
 import caixa.gov.br.loterias.view.fragment.Introducao2Fragment;
 import caixa.gov.br.loterias.view.fragment.Introducao3Fragment;
@@ -55,6 +57,7 @@ public class IntroducaoActivity extends AppCompatActivity {
                 // Code goes here
             }
         });
+
     }
 
     public static class MyPagerAdapter extends FragmentPagerAdapter {

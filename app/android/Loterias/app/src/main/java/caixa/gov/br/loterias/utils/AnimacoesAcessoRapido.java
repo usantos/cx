@@ -28,6 +28,7 @@ public class AnimacoesAcessoRapido {
     private Button buttonHomeBet;
     private Activity activity;
     private View trevoToolbar;
+    private EstiloModalidade estilo;
 
 
     //init
@@ -41,7 +42,7 @@ public class AnimacoesAcessoRapido {
                                  LinearLayout linearAtalhoRapidoLoterias,
                                  Button buttonHomeBet,
                                  View trevoToolbar,
-                                 Activity activity) {
+                                 Activity activity, EstiloModalidade estilo) {
         this.v = v;
         this.relativePrincipal = relativePrincipal;
         this.relativeLayoutContentRapidao = relativeLayoutContentRapidao;
@@ -53,11 +54,13 @@ public class AnimacoesAcessoRapido {
         this.buttonHomeBet = buttonHomeBet;
         this.trevoToolbar = trevoToolbar;
         this.activity = activity;
+        this.estilo = estilo;
     }
 
     //public
 
     public void AnimacaoDescerContent(int positionBottom){
+        buttonHomeBet.setEnabled(false);
         translatePosicaoConteudoAbaixar(positionBottom);
     }
 
@@ -133,8 +136,8 @@ public class AnimacoesAcessoRapido {
             @Override
             public void onAnimationEnd(Animator animation) {
 //                relativeBlankView.setVisibility(View.VISIBLE);
-                buttonHomeBet.setBackgroundColor(ContextCompat.getColor(activity, R.color.branco));
-                buttonHomeBet.setTextColor(ContextCompat.getColor(activity, R.color.cinza));
+                buttonHomeBet.setBackgroundColor(ContextCompat.getColor(activity, R.color.cinzabotaoapostedesativado));
+//                buttonHomeBet.setTextColor(ContextCompat.getColor(activity, R.color.cinza));
                 trevoToolbar.setEnabled(true);
             }
 
@@ -213,6 +216,10 @@ public class AnimacoesAcessoRapido {
 
             @Override
             public void onAnimationEnd(Animator animation) {
+
+                buttonHomeBet.setBackgroundColor(ContextCompat.getColor(activity.getApplicationContext(), estilo.getCorClara()));
+                buttonHomeBet.setTextColor(ContextCompat.getColor(activity.getApplicationContext(), R.color.branco));
+                buttonHomeBet.setEnabled(true);
                 translatePosicaoConteudoSubir();
             }
 
