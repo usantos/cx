@@ -29,7 +29,7 @@
                 android:background="@color/verdeazul"
                 android:textColor="@color/branco"
                 android:id="@+id/buttonTermos"
-                android:drawableBottom="@drawable/seta_selecao"
+                android:drawableBottom="@drawable/tab_seta"
                 />
             
             <Button
