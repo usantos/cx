@@ -111,6 +111,7 @@ public class PrincipalActivity extends AppCompatActivity
         LayoutGeral();
         toolbarListener();
         listenerRepassados();
+        listenerCarrinho();
         layoutTrevoAcessoRapido();
 
     }
@@ -338,4 +339,16 @@ public class PrincipalActivity extends AppCompatActivity
             }
         });
     }
+
+    private void listenerCarrinho(){
+
+        RelativeLayout relativecarrinho=(RelativeLayout)findViewById(R.id.RelativeLayoutCarrinho);
+        relativecarrinho.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                startActivity(new Intent(PrincipalActivity.this, CarrinhoActivity.class) );
+            }
+        });
+    }
+
 }
