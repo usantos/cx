@@ -43,7 +43,7 @@ public class DadosCorporativosBO {
 
         silceClient.getConnection().get(SilceClient.UFS_PATH, queryParams, UnidadeFederacaoDTOResponse.class,
                 silceClient.volleyListener(listener, UnidadeFederacaoDTOResponse.class),
-                silceClient.volleyErrorListener(errorListener));
+                silceClient.volleyErrorListener(errorListener), new LinkedHashMap<String, String>());
     }
 
     public void municipios(String idUf, final SilceClient.Listener<MunicipioDTOResponse> listener,
@@ -54,7 +54,7 @@ public class DadosCorporativosBO {
 
         silceClient.getConnection().get(SilceClient.MUNICIPIOS_PATH, queryParams, MunicipioDTOResponse.class,
                 silceClient.volleyListener(listener, MunicipioDTOResponse.class),
-                silceClient.volleyErrorListener(errorListener));
+                silceClient.volleyErrorListener(errorListener), new LinkedHashMap<String, String>());
     }
 
     public void termo(final SilceClient.Listener<TermoDeUsoDTOResponse> listener,
@@ -65,7 +65,7 @@ public class DadosCorporativosBO {
 
         silceClient.getConnection().get(SilceClient.TERMO_PATH, queryParams, TermoDeUsoDTOResponse.class,
                 silceClient.volleyListener(listener, TermoDeUsoDTOResponse.class),
-                silceClient.volleyErrorListener(errorListener));
+                silceClient.volleyErrorListener(errorListener), new LinkedHashMap<String, String>());
     }
 
     private static <T> String join(Collection<T> collection, String delimiter){

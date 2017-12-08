@@ -11,8 +11,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.bo.silce.dto.RetornoCartao;
 import caixa.gov.br.loterias.view.Inteface.FormaDePagamentoListener;
 import caixa.gov.br.loterias.utils.ViewUtils;
 
@@ -23,11 +25,11 @@ public class FormaPagamentoRecyclerViewAdapter  extends RecyclerView.Adapter<For
 
     public FormaDePagamentoListener formaDePagamentoListener;
     private Context context;
-    private ArrayList<String> valoresList;
+    private List<RetornoCartao> valoresList;
 
-    public FormaPagamentoRecyclerViewAdapter(ArrayList<String> valoresList, Context context){
+    public FormaPagamentoRecyclerViewAdapter(List<RetornoCartao> cartoes, Context context){
         this.context = context;
-        this.valoresList = valoresList;
+        this.valoresList = cartoes;
     }
 
     public class ApostaHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -79,6 +81,11 @@ public class FormaPagamentoRecyclerViewAdapter  extends RecyclerView.Adapter<For
 
     @Override
     public void onBindViewHolder(FormaPagamentoRecyclerViewAdapter.ApostaHolder holder, int position) {
+        RetornoCartao cartao = valoresList.get(position);
+
+        holder.numeroCartao.setText("**** **** **** " + cartao.getUltimosDigitos());
+        holder.textBandeiraCartao.setText(ViewUtils.capitalized(cartao.getNomeMetodoPagamento()));
+
         if (selected_position == position){
             holder.itemView.setBackgroundResource(R.color.cinzaclaro);
             holder.imageViewSelecionado.setVisibility(View.VISIBLE);

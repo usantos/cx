@@ -33,7 +33,7 @@ public class ResultadoConcursoDTOResponse {
     @SerializedName("errosValidacao")
     private List<ErroValidacao> errosValidacao = null;
     @SerializedName("payload")
-    private ResultadoConcursoDTO payload = null;
+    private  ResultadoConcursoDTO payload = null;
 
     /**
      * Código do erro

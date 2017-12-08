@@ -44,9 +44,9 @@ public class ApostaBO{
         queryParams.put("menorPrognostico", String.valueOf(menorPrognostico));
         queryParams.put("maiorPrognostico", String.valueOf(maiorPrognostico));
 
-        silceClient.getConnection().get(SilceClient.COMPLETA_JOGO_PATH, queryParams, CompletaJogoRsp.class,
-                silceClient.volleyListener(listener, CompletaJogoRsp.class),
-                silceClient.volleyErrorListener(errorListener));
+        silceClient.getConnection().get(SilceClient.COMPLETA_JOGO_PATH, queryParams, CompletaJogoRsp.class
+                , silceClient.volleyListener(listener, CompletaJogoRsp.class),
+                silceClient.volleyErrorListener(errorListener), new LinkedHashMap<String, String>());
     }
 
     private static <T> String join(Collection<T> collection, String delimiter){

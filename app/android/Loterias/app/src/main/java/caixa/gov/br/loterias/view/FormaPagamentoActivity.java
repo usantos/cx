@@ -15,18 +15,25 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.ScrollView;
+import com.android.volley.VolleyError;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.bo.DadosUsuarioBO;
+import caixa.gov.br.loterias.bo.silce.SilceClient;
+import caixa.gov.br.loterias.bo.silce.dto.ListCartaoDTOResponse;
+import caixa.gov.br.loterias.bo.silce.dto.RetornoCartao;
+import caixa.gov.br.loterias.utils.LoadingViewLoterias;
 import caixa.gov.br.loterias.view.Inteface.FormaDePagamentoListener;
 import caixa.gov.br.loterias.view.adapter.FormaPagamentoRecyclerViewAdapter;
 import caixa.gov.br.loterias.utils.ViewUtils;
 
 public class FormaPagamentoActivity extends AppCompatActivity implements FormaDePagamentoListener {
+    private List<RetornoCartao> listaCartoes = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +44,7 @@ public class FormaPagamentoActivity extends AppCompatActivity implements FormaDe
 
         configuraActivityCarrinho();
         configuraClickBotoes();
-        configuraRecyclerViewCarrinhoAposta();
+        callWebservice();
 
         ViewUtils.organizaTabLayout(this, R.id.formaPagamentoMainLayout, R.id.formasPagamentoRecyclerView, R.id.formaPagamentoScrollView);
     }
@@ -63,6 +70,27 @@ public class FormaPagamentoActivity extends AppCompatActivity implements FormaDe
         super.onPrepareOptionsMenu(menu);
 
         return true;
+    }
+
+    private void callWebservice () {
+        final View loadViewProgress = LoadingViewLoterias.init(this);
+
+        DadosUsuarioBO dadosUsuarioBO = new DadosUsuarioBO(FormaPagamentoActivity.this);
+        dadosUsuarioBO.cartoes(new SilceClient.Listener<ListCartaoDTOResponse>() {
+            @Override
+            public void onResponse(ListCartaoDTOResponse response) {
+                LoadingViewLoterias.stop(loadViewProgress);
+                listaCartoes = response.getPayload();
+                listaCartoes.addAll(listaCartoes);
+                configuraRecyclerViewCarrinhoAposta();
+            }
+        }, new SilceClient.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                LoadingViewLoterias.stop(loadViewProgress);
+                ViewUtils.alert(FormaPagamentoActivity.this, "ERRO");
+            }
+        });
     }
 
     private void configuraActivityCarrinho(){
@@ -96,26 +124,16 @@ public class FormaPagamentoActivity extends AppCompatActivity implements FormaDe
     }
 
     private void configuraRecyclerViewCarrinhoAposta(){
-        String[] values = new String[] {"01", "02", "03", "04"};
-
         RecyclerView recyclerView = findViewById(R.id.formasPagamentoRecyclerView);
         RecyclerView.LayoutManager layout = new LinearLayoutManager(this,
                 LinearLayoutManager.VERTICAL, false);
 
-        FormaPagamentoRecyclerViewAdapter formaPagamentoRecyclerViewAdapter = new FormaPagamentoRecyclerViewAdapter(montaCarrinhoApostaValores(values), this);
+        FormaPagamentoRecyclerViewAdapter formaPagamentoRecyclerViewAdapter = new FormaPagamentoRecyclerViewAdapter(listaCartoes, this);
         formaPagamentoRecyclerViewAdapter.formaDePagamentoListener = this;
 
         recyclerView.setAdapter(formaPagamentoRecyclerViewAdapter);
         recyclerView.setLayoutManager(layout);
         recyclerView.setNestedScrollingEnabled(false);
-    }
-
-    private ArrayList<String> montaCarrinhoApostaValores(String valores[]){
-        ArrayList<String> valoresTextoDialog = new ArrayList<>();
-
-        Collections.addAll(valoresTextoDialog, valores);
-
-        return valoresTextoDialog;
     }
 
     @Override

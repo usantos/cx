@@ -35,10 +35,10 @@ public class SilceConnection {
     public <T> void get(String path, Map<String, String> queryParams,
                                     Class<T> responseDataClass,
                                     Response.Listener<T> listener,
-                                    Response.ErrorListener errorListener) {
+                                    Response.ErrorListener errorListener, LinkedHashMap<String, String> headers) {
         String url = fillUrlWithQueryParams(path, queryParams);
         GsonRequest<String, T> req = new GsonRequest<>(GET, url, responseDataClass,
-                new LinkedHashMap<String, String>(), listener, errorListener);
+                headers, listener, errorListener);
         requestQueue.add(req);
         requestQueue.start();
     }
@@ -46,11 +46,11 @@ public class SilceConnection {
     public <REQ, RSP> void post(String path, Map<String, String> queryParams,
                                 REQ body, Class<RSP> responseDataClass,
                                 Response.Listener<RSP> listener,
-                                Response.ErrorListener errorListener) {
+                                Response.ErrorListener errorListener, LinkedHashMap<String, String> headers) {
         String url = fillUrlWithQueryParams(path, queryParams);
         GsonRequest<String, RSP> req = new GsonRequest<>(POST, url,
                 prepareBody(body), responseDataClass,
-                new LinkedHashMap<String, String>(), listener, errorListener);
+                headers, listener, errorListener);
         requestQueue.add(req);
         requestQueue.start();
     }

@@ -8,6 +8,7 @@ import java.util.LinkedHashMap;
 
 import caixa.gov.br.loterias.BuildConfig;
 import caixa.gov.br.loterias.bo.silce.SilceClient;
+import caixa.gov.br.loterias.bo.silce.data.UsuarioLogadoSingleton;
 import caixa.gov.br.loterias.bo.silce.dto.AutenticacaoDTO;
 import caixa.gov.br.loterias.bo.silce.dto.ListCartaoDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.UsuarioLogadoResponse;
@@ -42,9 +43,12 @@ public class DadosUsuarioBO {
         LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
         queryParams.put("meioPagamento", "1");
 
+        LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
+        headers.put("Authorization", "Bearer " + UsuarioLogadoSingleton.getInstance().token);
+
         silceClient.getConnection().get(SilceClient.LIST_CARTOES_PATH, queryParams, ListCartaoDTOResponse.class,
                 silceClient.volleyListener(listener, ListCartaoDTOResponse.class),
-                silceClient.volleyErrorListener(errorListener));
+                silceClient.volleyErrorListener(errorListener), headers);
     }
 
     public void autenticar(final String email, final String senha,
@@ -58,6 +62,6 @@ public class DadosUsuarioBO {
         silceClient.getConnection().post(SilceClient.LOGIN_PATH, new LinkedHashMap<String, String>(),
                 autenticacaoDTO, UsuarioLogadoResponse.class,
                 silceClient.volleyListener(listener, UsuarioLogadoResponse.class),
-                silceClient.volleyErrorListener(errorListener));
+                silceClient.volleyErrorListener(errorListener),new LinkedHashMap<String, String>());
     }
 }

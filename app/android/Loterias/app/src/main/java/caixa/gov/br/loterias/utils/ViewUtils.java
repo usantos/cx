@@ -117,6 +117,13 @@ public class ViewUtils {
         ViewUtils.abrirUrl( context, "http://www.caixa.gov.br" );
     }
 
+    public static String capitalized (String original) {
+        if (original == null || original.length() == 0) {
+            return original;
+        }
+        return original.substring(0, 1).toUpperCase() + original.substring(1);
+    }
+
     public static void closeKeyboard(Activity activity){
         // Check if no view has focus:
         View view = activity.getCurrentFocus();
@@ -507,5 +514,4 @@ public class ViewUtils {
 
         return size;
     }
-
 }
