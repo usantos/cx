@@ -18,6 +18,7 @@ import caixa.gov.br.loterias.bo.silce.SilceClient;
 import caixa.gov.br.loterias.bo.silce.data.UsuarioLogadoSingleton;
 import caixa.gov.br.loterias.bo.silce.dto.UsuarioLogadoResponse;
 import caixa.gov.br.loterias.utils.LoadingViewLoterias;
+import caixa.gov.br.loterias.utils.MensagensNetwork;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.CadastrarActivity_;
 import caixa.gov.br.loterias.view.PrincipalActivity;
@@ -83,7 +84,7 @@ public class LoginFragment extends Fragment {
                     public void onErrorResponse(VolleyError error) {
                         LoadingViewLoterias.stop(loadViewProgress);
 
-                        ViewUtils.alert(getActivity(), "ERRO");
+                        ViewUtils.alert(getActivity(), MensagensNetwork.setMensagem(error, getActivity()));
                     }
                 });
             }
@@ -106,7 +107,7 @@ public class LoginFragment extends Fragment {
                     public void onErrorResponse(VolleyError error) {
                         LoadingViewLoterias.stop(loadViewProgress);
 
-                        ViewUtils.alert((getActivity()), "ERRO");
+                        ViewUtils.alert(getActivity(), MensagensNetwork.setMensagem(error, getActivity()));
                     }
                 });
 //                connectKeycloak();

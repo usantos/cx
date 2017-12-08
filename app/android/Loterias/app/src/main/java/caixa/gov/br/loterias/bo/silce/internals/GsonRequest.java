@@ -64,14 +64,9 @@ public class GsonRequest<REQ, RSP> extends JsonRequest<RSP> {
 
     @Override
     public void deliverError(VolleyError error) {
-        if (error.networkResponse.statusCode == 400){
-
-        }else if(error.networkResponse.statusCode == 401) {
-
-        }else{
-
+        if (error != null){
+            mErrorListener.onErrorResponse(error);
         }
-        mErrorListener.onErrorResponse(error);
     }
 
     @Override

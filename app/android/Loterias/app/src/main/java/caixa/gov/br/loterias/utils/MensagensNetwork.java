@@ -13,6 +13,9 @@ import caixa.gov.br.loterias.R;
 public class MensagensNetwork {
 
     public static String setMensagem(VolleyError error, Context context){
+        if (error.networkResponse == null){
+            return context.getString(R.string.seminternet);
+        }
         String msgErro = "";
         switch (error.networkResponse.statusCode){
             case 400:
