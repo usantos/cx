@@ -11,10 +11,18 @@ import com.android.volley.VolleyError;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
 import com.yarolegovich.discretescrollview.transform.ScaleTransformer;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import caixa.gov.br.loterias.bo.DadosCorporativosBO;
 import caixa.gov.br.loterias.bo.DadosUsuarioBO;
 import caixa.gov.br.loterias.bo.silce.SilceClient;
+import caixa.gov.br.loterias.bo.silce.dto.ParametroSimulacao;
+import caixa.gov.br.loterias.bo.silce.dto.ParametrosSimulacao;
+import caixa.gov.br.loterias.bo.silce.dto.ParametrosSimulacaoResponse;
+import caixa.gov.br.loterias.bo.silce.dto.RepassometroDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.ResourceResponse;
 import caixa.gov.br.loterias.mock.ModalidadesMock;
 import caixa.gov.br.loterias.model.Modalidade;
@@ -73,6 +81,8 @@ public class PrincipalActivity extends AppCompatActivity
     private List<Modalidade> data;
     private DiscreteScrollView itemCarousel;
 
+    private List<ParametroSimulacao> modalidadesParaListar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,13 +100,22 @@ public class PrincipalActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        toolbarListener();
+        listenerRepassados();
+        listenerCarrinho();
+        layoutTrevoAcessoRapido();
 
+        callWebservice();
+    }
+
+    private void montarCarrossel () {
         evaluator = new ArgbEvaluator();
         currentOverlayColor = ContextCompat.getColor(this, R.color.verdesenaclaro);
         overlayColor = ContextCompat.getColor(this, R.color.cinza);
 
-        ModalidadesMock modalidade = ModalidadesMock.get();
-        data = modalidade.getData();
+//        ModalidadesMock modalidade = ModalidadesMock.get();
+//        data = modalidade.getData();
+        data = montaListaModalidades();
         itemCarousel = (DiscreteScrollView) findViewById(R.id.home_carousel);
         buttonHomeBet = (Button) findViewById(R.id.buttonHomeBet);
         itemCarousel.setAdapter(new HomeAdapter(this, data, findViewById(R.id.buttonHomeBet)));
@@ -107,20 +126,41 @@ public class PrincipalActivity extends AppCompatActivity
                 .setMinScale(0.8f)
                 .build());
 
-        findViewById(R.id.buttonHomeBet).setOnClickListener(new View.OnClickListener() {
+        LayoutGeral();
+    }
+
+    private void callWebservice () {
+        final View loadViewProgress = LoadingViewLoterias.init(this);
+
+        DadosCorporativosBO dadosCorporativosBO = new DadosCorporativosBO(PrincipalActivity.this);
+        dadosCorporativosBO.parametrosSimulacao(new SilceClient.Listener<ParametrosSimulacaoResponse>() {
             @Override
-            public void onClick(View view) {
-                Intent activity = new Intent(PrincipalActivity.this, SimularApostaActivity_.class);
-                activity.putExtra("tipoAposta", TipoModalidadeEnum.MEGASENA);
-                startActivity(activity);
+            public void onResponse(ParametrosSimulacaoResponse response) {
+                LoadingViewLoterias.stop(loadViewProgress);
+                modalidadesParaListar = response.getPayload().getParametros();
+                montaListaModalidades();
+                montarCarrossel();
+            }
+        }, new SilceClient.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                LoadingViewLoterias.stop(loadViewProgress);
+                ViewUtils.alert(PrincipalActivity.this, "ERRO");
             }
         });
-        LayoutGeral();
-        toolbarListener();
-        listenerRepassados();
-        listenerCarrinho();
-        layoutTrevoAcessoRapido();
+    }
 
+    private List<Modalidade> montaListaModalidades () {
+        List<Modalidade> listaModalidades = new ArrayList<Modalidade>();
+
+        for (ParametroSimulacao parametro : modalidadesParaListar) {
+            TipoModalidadeEnum tipo = TipoModalidadeEnum.fromString(parametro.getParametroJogo().getConcurso().getModalidadeDetalhada().getDescricao());
+
+            listaModalidades.add(new Modalidade(parametro.getParametroJogo().getConcurso().getModalidadeDetalhada().getDescricao(),
+                    parametro.getParametroJogo().getConcurso().getValorApostaMinima(),"","", tipo));
+        }
+
+        return listaModalidades;
     }
 
     private void LayoutGeral(){
@@ -201,8 +241,6 @@ public class PrincipalActivity extends AppCompatActivity
 
         animacoesAcessoRapido.AnimacaoDescerContent(positionTopBotao - 105);
     }
-
-
 
     private void AnimacaoFecharMenuRapido(View v){
         relativePrincipal.setEnabled(true);
@@ -292,8 +330,8 @@ public class PrincipalActivity extends AppCompatActivity
     private void sairLogin(){
         final View loadViewProgress = LoadingViewLoterias.init(this);
 
-        DadosUsuarioBO dadosCorporativosBO = new DadosUsuarioBO(PrincipalActivity.this);
-        dadosCorporativosBO.sair(new SilceClient.Listener<NetworkResponse>() {
+        DadosUsuarioBO dadosUsuarioBO = new DadosUsuarioBO(PrincipalActivity.this);
+        dadosUsuarioBO.sair(new SilceClient.Listener<NetworkResponse>() {
             @Override
             public void onResponse(NetworkResponse response) {
                 LoadingViewLoterias.stop(loadViewProgress);
@@ -320,13 +358,13 @@ public class PrincipalActivity extends AppCompatActivity
 //                break;
 //        }
     }
-
     @Override
     public void onScroll(
             float currentPosition,
             int currentIndex, int newIndex,
             @Nullable HomeAdapter.ViewHolder currentHolder,
             @Nullable HomeAdapter.ViewHolder newCurrent) {
+
         if (currentHolder != null && newCurrent != null) {
             float position = Math.abs(currentPosition);
             Log.d("position", "position: "+ position);
@@ -337,6 +375,7 @@ public class PrincipalActivity extends AppCompatActivity
 //            newCurrent.setOverlayColor(interpolate(position, overlayColor, currentOverlayColor));
 
         }
+
     }
 
     @Override
@@ -345,6 +384,20 @@ public class PrincipalActivity extends AppCompatActivity
         if (viewHolder != null) {
             EstiloModalidade estilo = new EstiloModalidade(data.get(adapterPosition).getTipoModalidade());
             viewHolder.setOverlayColor(this, estilo);
+
+            buttonHomeBet.setTag(adapterPosition);
+            buttonHomeBet.setText(ViewUtils.fromHtml("<b>Aposte</b><br>por R$" + modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima()));
+
+            findViewById(R.id.buttonHomeBet).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    TipoModalidadeEnum tipo = TipoModalidadeEnum.fromString(modalidadesParaListar.get((int)view.getTag()).getParametroJogo().getConcurso().getModalidadeDetalhada().getDescricao());
+
+                    Intent activity = new Intent(PrincipalActivity.this, SimularApostaActivity_.class);
+                    activity.putExtra("tipoAposta", tipo);
+                    startActivity(activity);
+                }
+            });
         }
     }
 

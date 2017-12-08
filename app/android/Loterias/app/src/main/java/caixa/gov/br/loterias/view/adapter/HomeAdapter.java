@@ -74,6 +74,11 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         holder.titulo.setBackgroundColor(ContextCompat.getColor(context, estilo.getCorClara()));
         holder.valor.setTextColor(ContextCompat.getColor(context, estilo.getCorClara()));
         aposta.setText(ViewUtils.fromHtml("<b>Aposte</b><br>por R$" + data.get(position).getValor()));
+        Log.d("nome", data.get(position).getNome());
+
+        Log.d("position", "" + position);
+
+        Log.d("valor", "" + data.get(position).getValor());
         Glide.with(holder.itemView.getContext())
                 .load(estilo.getImagemCalendario())
                 .into(holder.calendario);

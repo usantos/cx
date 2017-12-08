@@ -8,6 +8,8 @@ import java.util.LinkedHashMap;
 import caixa.gov.br.loterias.BuildConfig;
 import caixa.gov.br.loterias.bo.silce.SilceClient;
 import caixa.gov.br.loterias.bo.silce.dto.MunicipioDTOResponse;
+import caixa.gov.br.loterias.bo.silce.dto.ParametrosSimulacaoResponse;
+import caixa.gov.br.loterias.bo.silce.dto.RepassometroDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.TermoDeUsoDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.UnidadeFederacaoDTOResponse;
 import caixa.gov.br.loterias.bo.silce.internals.SilceConnection;
@@ -66,6 +68,28 @@ public class DadosCorporativosBO {
         silceClient.getConnection().get(SilceClient.TERMO_PATH, queryParams, TermoDeUsoDTOResponse.class,
                 silceClient.volleyListener(listener, TermoDeUsoDTOResponse.class),
                 silceClient.volleyErrorListener(errorListener), new LinkedHashMap<String, String>());
+    }
+
+    public void repasses(final SilceClient.Listener<RepassometroDTOResponse> listener,
+                          final SilceClient.ErrorListener errorListener) {
+
+        LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
+        LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
+
+        silceClient.getConnection().get(SilceClient.REPASSOMETRO_PATH, queryParams, RepassometroDTOResponse.class,
+                silceClient.volleyListener(listener, RepassometroDTOResponse.class),
+                silceClient.volleyErrorListener(errorListener), headers);
+    }
+
+    public void parametrosSimulacao(final SilceClient.Listener<ParametrosSimulacaoResponse> listener,
+                         final SilceClient.ErrorListener errorListener) {
+
+        LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
+        LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
+
+        silceClient.getConnection().get(SilceClient.PARAM_SIMULACAO_PATH, queryParams, ParametrosSimulacaoResponse.class,
+                silceClient.volleyListener(listener, ParametrosSimulacaoResponse.class),
+                silceClient.volleyErrorListener(errorListener), headers);
     }
 
     private static <T> String join(Collection<T> collection, String delimiter){

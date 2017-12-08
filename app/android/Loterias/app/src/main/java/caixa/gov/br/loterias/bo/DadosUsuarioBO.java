@@ -12,6 +12,7 @@ import caixa.gov.br.loterias.bo.silce.SilceClient;
 import caixa.gov.br.loterias.bo.silce.data.UsuarioLogadoSingleton;
 import caixa.gov.br.loterias.bo.silce.dto.AutenticacaoDTO;
 import caixa.gov.br.loterias.bo.silce.dto.ListCartaoDTOResponse;
+import caixa.gov.br.loterias.bo.silce.dto.RepassometroDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.ResourceResponse;
 import caixa.gov.br.loterias.bo.silce.dto.UsuarioLogadoResponse;
 import caixa.gov.br.loterias.bo.silce.internals.SilceConnection;
@@ -78,4 +79,6 @@ public class DadosUsuarioBO {
                 silceClient.volleyListener(listener, NetworkResponse.class),
                 silceClient.volleyErrorListener(errorListener), headers);
     }
+
+
 }

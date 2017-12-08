@@ -12,6 +12,9 @@ public class SilceClient {
     public static final String UFS_PATH = "/ufs";
     public static final String TERMO_PATH = "/termos-de-uso/termo-vigente";
     public static final String MUNICIPIOS_PATH = "/municipios";
+    public static final String REPASSOMETRO_PATH = "/repassometro";
+    public static final String PARAM_SIMULACAO_PATH = "/parametros-simulacao";
+
 
     public static final String LOGIN_PATH = "/usuarios/autenticar";
     public static final String LIST_CARTOES_PATH = "/usuarios/cartoes";
