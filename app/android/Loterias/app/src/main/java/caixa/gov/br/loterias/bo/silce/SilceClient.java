@@ -9,11 +9,13 @@ import caixa.gov.br.loterias.bo.silce.internals.SilceConnection;
 
 public class SilceClient {
     public static final String COMPLETA_JOGO_PATH = "/apostas/completar-jogo";
-    public static final String LOGIN_PATH = "/usuarios/autenticar";
     public static final String UFS_PATH = "/ufs";
     public static final String TERMO_PATH = "/termos-de-uso/termo-vigente";
     public static final String MUNICIPIOS_PATH = "/municipios";
+
+    public static final String LOGIN_PATH = "/usuarios/autenticar";
     public static final String LIST_CARTOES_PATH = "/usuarios/cartoes";
+    public static final String SAIR_PATH = "/usuarios/sair";
 
     public interface Listener<T> {
         public void onResponse(T response);

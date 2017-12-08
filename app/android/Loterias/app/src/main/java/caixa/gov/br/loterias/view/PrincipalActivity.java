@@ -6,15 +6,21 @@ import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 
+import com.android.volley.NetworkResponse;
+import com.android.volley.VolleyError;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
 import com.yarolegovich.discretescrollview.transform.ScaleTransformer;
 
 import java.util.List;
 
+import caixa.gov.br.loterias.bo.DadosUsuarioBO;
+import caixa.gov.br.loterias.bo.silce.SilceClient;
+import caixa.gov.br.loterias.bo.silce.dto.ResourceResponse;
 import caixa.gov.br.loterias.mock.ModalidadesMock;
 import caixa.gov.br.loterias.model.Modalidade;
 import caixa.gov.br.loterias.utils.AnimacoesAcessoRapido;
 import caixa.gov.br.loterias.utils.EstiloModalidade;
+import caixa.gov.br.loterias.utils.LoadingViewLoterias;
 import caixa.gov.br.loterias.utils.TipoModalidadeEnum;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.adapter.HomeAdapter;
@@ -282,12 +288,25 @@ public class PrincipalActivity extends AppCompatActivity
         return true;
     }
 
-
     private void sairLogin(){
-        startActivity(new Intent(PrincipalActivity.this, LoginActivity.class) );
-        finish();
-    }
+        final View loadViewProgress = LoadingViewLoterias.init(this);
 
+        DadosUsuarioBO dadosCorporativosBO = new DadosUsuarioBO(PrincipalActivity.this);
+        dadosCorporativosBO.sair(new SilceClient.Listener<NetworkResponse>() {
+            @Override
+            public void onResponse(NetworkResponse response) {
+                LoadingViewLoterias.stop(loadViewProgress);
+                startActivity(new Intent(PrincipalActivity.this, LoginActivity.class) );
+                finish();
+            }
+        }, new SilceClient.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                LoadingViewLoterias.stop(loadViewProgress);
+                ViewUtils.alert(PrincipalActivity.this, "ERRO");
+            }
+        });
+    }
 
     @Override
     public void onClick(View v) {

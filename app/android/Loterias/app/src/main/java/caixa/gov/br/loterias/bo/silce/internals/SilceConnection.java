@@ -32,7 +32,7 @@ public class SilceConnection {
         }
     }
 
-    public <T> void get(String path, Map<String, String> queryParams,
+    public <T> void  get(String path, Map<String, String> queryParams,
                                     Class<T> responseDataClass,
                                     Response.Listener<T> listener,
                                     Response.ErrorListener errorListener, LinkedHashMap<String, String> headers) {

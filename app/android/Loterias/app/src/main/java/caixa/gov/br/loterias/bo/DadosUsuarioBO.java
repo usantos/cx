@@ -2,6 +2,7 @@ package caixa.gov.br.loterias.bo;
 
 import android.content.Context;
 
+import com.android.volley.NetworkResponse;
 import com.android.volley.Response;
 
 import java.util.LinkedHashMap;
@@ -11,6 +12,7 @@ import caixa.gov.br.loterias.bo.silce.SilceClient;
 import caixa.gov.br.loterias.bo.silce.data.UsuarioLogadoSingleton;
 import caixa.gov.br.loterias.bo.silce.dto.AutenticacaoDTO;
 import caixa.gov.br.loterias.bo.silce.dto.ListCartaoDTOResponse;
+import caixa.gov.br.loterias.bo.silce.dto.ResourceResponse;
 import caixa.gov.br.loterias.bo.silce.dto.UsuarioLogadoResponse;
 import caixa.gov.br.loterias.bo.silce.internals.SilceConnection;
 import caixa.gov.br.loterias.bo.silce.internals.SilceSingleton;
@@ -63,5 +65,17 @@ public class DadosUsuarioBO {
                 autenticacaoDTO, UsuarioLogadoResponse.class,
                 silceClient.volleyListener(listener, UsuarioLogadoResponse.class),
                 silceClient.volleyErrorListener(errorListener),new LinkedHashMap<String, String>());
+    }
+
+    public void sair(final SilceClient.Listener<NetworkResponse> listener,
+                        final SilceClient.ErrorListener errorListener) {
+
+        LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
+        LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
+        headers.put("Authorization", "Bearer " + UsuarioLogadoSingleton.getInstance().token);
+
+        silceClient.getConnection().get(SilceClient.SAIR_PATH, queryParams, NetworkResponse.class,
+                silceClient.volleyListener(listener, NetworkResponse.class),
+                silceClient.volleyErrorListener(errorListener), headers);
     }
 }
