@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,14 +33,18 @@ public class LoadingViewLoterias {
         layout.setAlpha(0.0f);
         layout.setClickable(true);
         ImageView imageView = new ImageView(context);
-        RelativeLayout.LayoutParams lpImage = new RelativeLayout.LayoutParams(120, 120);
+        int sizeImage = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 44, activity.getResources().getDisplayMetrics());
+        int margemImage = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 20, activity.getResources().getDisplayMetrics());
+
+
+        RelativeLayout.LayoutParams lpImage = new RelativeLayout.LayoutParams(sizeImage, sizeImage);
         imageView.setLayoutParams(lpImage);
         imageView.setImageResource(R.drawable.icon_loteria);
         layout.addView(imageView);
 
         TextView textView = new TextView(context);
-        RelativeLayout.LayoutParams lptextView = new RelativeLayout.LayoutParams(280, 60);
-        lptextView.setMargins(0,40,0,0);
+        RelativeLayout.LayoutParams lptextView = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        lptextView.setMargins(0,margemImage,0,0);
         textView.setLayoutParams(lptextView);
         textView.setText("Carregando...");
         textView.setTextSize(17);
