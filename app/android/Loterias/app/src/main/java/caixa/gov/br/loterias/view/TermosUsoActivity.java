@@ -20,6 +20,7 @@ import caixa.gov.br.loterias.bo.silce.dto.TermoDeUsoDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.UnidadeFederacaoDTO;
 import caixa.gov.br.loterias.bo.silce.dto.UnidadeFederacaoDTOResponse;
 import caixa.gov.br.loterias.utils.LoadingViewLoterias;
+import caixa.gov.br.loterias.utils.MensagensNetwork;
 import caixa.gov.br.loterias.utils.ViewUtils;
 
 public class TermosUsoActivity extends AppCompatActivity {
@@ -72,7 +73,7 @@ public class TermosUsoActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 LoadingViewLoterias.stop(loadViewProgress);
-                ViewUtils.alert(TermosUsoActivity.this, "ERRO");
+                ViewUtils.alert(TermosUsoActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
             }
         });
     }

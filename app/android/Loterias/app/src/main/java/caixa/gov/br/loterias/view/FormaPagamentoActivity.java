@@ -28,6 +28,7 @@ import caixa.gov.br.loterias.bo.silce.SilceClient;
 import caixa.gov.br.loterias.bo.silce.dto.ListCartaoDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.RetornoCartao;
 import caixa.gov.br.loterias.utils.LoadingViewLoterias;
+import caixa.gov.br.loterias.utils.MensagensNetwork;
 import caixa.gov.br.loterias.view.Inteface.FormaDePagamentoListener;
 import caixa.gov.br.loterias.view.adapter.FormaPagamentoRecyclerViewAdapter;
 import caixa.gov.br.loterias.utils.ViewUtils;
@@ -88,7 +89,7 @@ public class FormaPagamentoActivity extends AppCompatActivity implements FormaDe
             @Override
             public void onErrorResponse(VolleyError error) {
                 LoadingViewLoterias.stop(loadViewProgress);
-                ViewUtils.alert(FormaPagamentoActivity.this, "ERRO");
+                ViewUtils.alert(FormaPagamentoActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
             }
         });
     }

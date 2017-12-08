@@ -21,6 +21,7 @@ import caixa.gov.br.loterias.bo.silce.SilceClient;
 import caixa.gov.br.loterias.bo.silce.dto.RepassometroDTO;
 import caixa.gov.br.loterias.bo.silce.dto.RepassometroDTOResponse;
 import caixa.gov.br.loterias.utils.LoadingViewLoterias;
+import caixa.gov.br.loterias.utils.MensagensNetwork;
 import caixa.gov.br.loterias.utils.ViewUtils;
 
 public class RepassesSociaisActivity extends AppCompatActivity {
@@ -53,7 +54,7 @@ public class RepassesSociaisActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 LoadingViewLoterias.stop(loadViewProgress);
-                ViewUtils.alert(RepassesSociaisActivity.this, "ERRO");
+                ViewUtils.alert(RepassesSociaisActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
             }
         });
     }
