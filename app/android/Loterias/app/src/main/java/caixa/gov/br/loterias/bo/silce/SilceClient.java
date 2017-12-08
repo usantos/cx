@@ -44,6 +44,7 @@ public class SilceClient {
         return new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+
                 errorListener.onErrorResponse(error);
             }
         };

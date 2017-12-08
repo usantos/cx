@@ -21,6 +21,7 @@ import caixa.gov.br.loterias.model.Modalidade;
 import caixa.gov.br.loterias.utils.AnimacoesAcessoRapido;
 import caixa.gov.br.loterias.utils.EstiloModalidade;
 import caixa.gov.br.loterias.utils.LoadingViewLoterias;
+import caixa.gov.br.loterias.utils.MensagensNetwork;
 import caixa.gov.br.loterias.utils.TipoModalidadeEnum;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.adapter.HomeAdapter;
@@ -303,7 +304,7 @@ public class PrincipalActivity extends AppCompatActivity
             @Override
             public void onErrorResponse(VolleyError error) {
                 LoadingViewLoterias.stop(loadViewProgress);
-                ViewUtils.alert(PrincipalActivity.this, "ERRO");
+                ViewUtils.alert(PrincipalActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
             }
         });
     }

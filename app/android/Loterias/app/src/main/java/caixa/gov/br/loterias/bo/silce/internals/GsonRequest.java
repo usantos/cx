@@ -4,6 +4,7 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonRequest;
 import com.google.gson.Gson;
@@ -17,6 +18,7 @@ public class GsonRequest<REQ, RSP> extends JsonRequest<RSP> {
     private final Class<RSP> responseKlazz;
     private final Map<String, String> headers;
     private final Response.Listener<RSP> listener;
+    private Response.ErrorListener mErrorListener;
 
     /**
      * Make a GET request and return a parsed object from JSON.
@@ -26,17 +28,18 @@ public class GsonRequest<REQ, RSP> extends JsonRequest<RSP> {
      * @param headers Map of request headers
      */
     public GsonRequest(int method, String url, Class<RSP> responseKlazz, Map<String, String> headers,
-                       Response.Listener<RSP> listener, Response.ErrorListener errorListener) {
-        this(method, url, null, responseKlazz, headers, listener, errorListener);
+                       Response.Listener<RSP> listener, Response.ErrorListener mErrorListener) {
+        this(method, url, null, responseKlazz, headers, listener, mErrorListener);
     }
 
     public GsonRequest(int method, String url, REQ requestBody, Class<RSP> responseKlazz,
                        Map<String, String> headers, Response.Listener<RSP> listener,
-                       Response.ErrorListener errorListener) {
-        super(method, url, bodyToJson(requestBody), listener, errorListener);
+                       Response.ErrorListener mErrorListener) {
+        super(method, url, bodyToJson(requestBody), listener, mErrorListener);
         this.responseKlazz = responseKlazz;
         this.headers = headers;
         this.listener = listener;
+        this.mErrorListener = mErrorListener;
     }
 
     private static <T> String bodyToJson(T requestBody) {
@@ -60,6 +63,18 @@ public class GsonRequest<REQ, RSP> extends JsonRequest<RSP> {
     }
 
     @Override
+    public void deliverError(VolleyError error) {
+        if (error.networkResponse.statusCode == 400){
+
+        }else if(error.networkResponse.statusCode == 401) {
+
+        }else{
+
+        }
+        mErrorListener.onErrorResponse(error);
+    }
+
+    @Override
     protected Response<RSP> parseNetworkResponse(NetworkResponse response) {
 
         try {
@@ -74,4 +89,6 @@ public class GsonRequest<REQ, RSP> extends JsonRequest<RSP> {
             return Response.error(new ParseError(e));
         }
     }
+
+
 }
