@@ -273,6 +273,8 @@ public class PrincipalActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_slideshow) {
 
+        }else if (id == R.id.nav_sair){
+            sairLogin();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -280,6 +282,11 @@ public class PrincipalActivity extends AppCompatActivity
         return true;
     }
 
+
+    private void sairLogin(){
+        startActivity(new Intent(PrincipalActivity.this, LoginActivity.class) );
+        finish();
+    }
 
 
     @Override

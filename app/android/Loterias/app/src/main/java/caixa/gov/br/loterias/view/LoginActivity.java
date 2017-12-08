@@ -1,60 +1,27 @@
 package caixa.gov.br.loterias.view;
 
-import android.content.Intent;
-import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
-
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.EActivity;
-import org.jboss.aerogear.android.core.Callback;
+import android.os.Bundle;
 
 import caixa.gov.br.loterias.R;
-import caixa.gov.br.loterias.bo.keycloak.KeycloakBO;
-
-@EActivity(R.layout.activity_login)
+import caixa.gov.br.loterias.view.fragment.LoginFragment;
 
 public class LoginActivity extends AppCompatActivity {
 
-    @AfterViews
-    protected void init() {
-        Button button = (Button) findViewById(R.id.buttonLogin);
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                connectKeycloak();
-            }
-        });
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
+
+        FragmentManager fm = getSupportFragmentManager();
+        // create a FragmentTransaction to begin the transaction and replace the Fragment
+        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+    // replace the FrameLayout with new Fragment
+        fragmentTransaction.replace(R.id.frameLayout, new LoginFragment());
+        fragmentTransaction.commit(); // save the changes
+
+
     }
-
-
-
-    private void connectKeycloak() {
-        if (!KeycloakBO.isConnected()) {
-
-            KeycloakBO.connect(LoginActivity.this, new Callback() {
-                        @Override
-                        public void onSuccess(Object o) {
-                            loginSucess();
-                        }
-
-                        @Override
-                        public void onFailure(Exception e) {
-
-                        }
-                    }
-            );
-
-        } else {
-            loginSucess();
-        }
-    }
-
-    private void loginSucess(){
-        startActivity(new Intent(this, CadastrarActivity_.class));
-        finish();
-    }
-
 }

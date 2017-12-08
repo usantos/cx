@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name">Loterias</string>
-    <string name="title_activity_login">Loterias Caixa</string>
-
     <string name="title_activity_introducao">introducaoActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
@@ -67,6 +65,7 @@
     <string name="title_activity_termos_uso">Loterias Caixa</string>
     <string name="title_activity_repasses_sociais">Repasses <b>Sociais</b></string>
     <string name="title_activity_teste">TesteActivity</string>
+    <string name="title_activity_login">Login</string>
 
 
 </resources>

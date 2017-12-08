@@ -16,12 +16,10 @@ import caixa.gov.br.loterias.bo.DadosUsuarioBO;
 import caixa.gov.br.loterias.bo.keycloak.KeycloakBO;
 import caixa.gov.br.loterias.bo.silce.SilceClient;
 import caixa.gov.br.loterias.bo.silce.data.UsuarioLogadoSingleton;
-import caixa.gov.br.loterias.bo.silce.dto.UsuarioLogado;
 import caixa.gov.br.loterias.bo.silce.dto.UsuarioLogadoResponse;
 import caixa.gov.br.loterias.utils.LoadingViewLoterias;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.CadastrarActivity_;
-import caixa.gov.br.loterias.view.IntroducaoActivity;
 import caixa.gov.br.loterias.view.PrincipalActivity;
 
 /**
@@ -33,14 +31,6 @@ import caixa.gov.br.loterias.view.PrincipalActivity;
  * create an instance of this fragment.
  */
 public class LoginFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     private OnFragmentInteractionListener mListener;
 
@@ -48,21 +38,10 @@ public class LoginFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment LoginFragment.
-     */
     // TODO: Rename and change types and number of parameters
-    public static LoginFragment newInstance(String param1, String param2) {
+    public static LoginFragment newInstance() {
         LoginFragment fragment = new LoginFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+
         return fragment;
     }
 
@@ -70,8 +49,7 @@ public class LoginFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+
         }
     }
 
@@ -83,9 +61,13 @@ public class LoginFragment extends Fragment {
         Button buttonAposte = (Button) v.findViewById(R.id.buttonAposteAgora);
         buttonAposte.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                final View loadViewProgress = LoadingViewLoterias.init(((IntroducaoActivity) getActivity()));
+                //mock login
+//                startActivity(new Intent(getActivity(), PrincipalActivity.class));
+//                getActivity().finish();
 
-                DadosUsuarioBO dadosUsuarioBO = new DadosUsuarioBO(((IntroducaoActivity) getActivity()));
+                final View loadViewProgress = LoadingViewLoterias.init(getActivity());
+
+                DadosUsuarioBO dadosUsuarioBO = new DadosUsuarioBO( getActivity());
                 dadosUsuarioBO.autenticar("vinicius.ferraz@gmail.com", "Vaibombar1", new SilceClient.Listener<UsuarioLogadoResponse>() {
                     @Override
                     public void onResponse(UsuarioLogadoResponse response) {
@@ -93,7 +75,7 @@ public class LoginFragment extends Fragment {
 
                         UsuarioLogadoSingleton user = UsuarioLogadoSingleton.getInstance();
                         user.token = response.getPayload().getToken();
-                        
+
                         startActivity(new Intent(getActivity(), PrincipalActivity.class));
                     }
                 }, new SilceClient.ErrorListener() {
@@ -101,7 +83,7 @@ public class LoginFragment extends Fragment {
                     public void onErrorResponse(VolleyError error) {
                         LoadingViewLoterias.stop(loadViewProgress);
 
-                        ViewUtils.alert(((IntroducaoActivity) getActivity()), "ERRO");
+                        ViewUtils.alert(getActivity(), "ERRO");
                     }
                 });
             }
@@ -110,9 +92,9 @@ public class LoginFragment extends Fragment {
         Button buttonLogin = (Button) v.findViewById(R.id.buttonFacaLogin);
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                final View loadViewProgress = LoadingViewLoterias.init(((IntroducaoActivity) getActivity()));
+                final View loadViewProgress = LoadingViewLoterias.init(getActivity());
 
-                DadosUsuarioBO dadosUsuarioBO = new DadosUsuarioBO(((IntroducaoActivity) getActivity()));
+                DadosUsuarioBO dadosUsuarioBO = new DadosUsuarioBO(getActivity());
                 dadosUsuarioBO.autenticar("vinicius.ferraz@gmail.com", "Vaibombar1", new SilceClient.Listener<UsuarioLogadoResponse>() {
                     @Override
                     public void onResponse(UsuarioLogadoResponse response) {
@@ -124,7 +106,7 @@ public class LoginFragment extends Fragment {
                     public void onErrorResponse(VolleyError error) {
                         LoadingViewLoterias.stop(loadViewProgress);
 
-                        ViewUtils.alert(((IntroducaoActivity) getActivity()), "ERRO");
+                        ViewUtils.alert((getActivity()), "ERRO");
                     }
                 });
 //                connectKeycloak();

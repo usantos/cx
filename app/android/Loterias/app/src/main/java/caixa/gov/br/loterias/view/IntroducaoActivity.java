@@ -84,7 +84,7 @@ public class IntroducaoActivity extends AppCompatActivity {
                 case 2: // Fragment # 1 - This will show SecondFragment
                     return Introducao3Fragment.newInstance(2, "Page # 3");
                 case 3: // Fragment # 1 - This will show SecondFragment
-                    return LoginFragment.newInstance("", "Page # 4");
+                    return LoginFragment.newInstance();
                 default:
                     return null;
             }
