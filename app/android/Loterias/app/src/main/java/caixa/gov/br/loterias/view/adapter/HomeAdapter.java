@@ -26,7 +26,21 @@ import caixa.gov.br.loterias.model.Modalidade;
 import caixa.gov.br.loterias.utils.EstiloModalidade;
 import caixa.gov.br.loterias.utils.ViewUtils;
 
+import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.EnumSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.TimeZone;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by brfernan on 26/10/2017.
@@ -72,19 +86,81 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         holder.trevo.setBackground(ContextCompat.getDrawable(context, estilo.getTrevoBackground()));
         holder.trevoFundo.setBackground(ContextCompat.getDrawable(context, estilo.getTrevoBackground()));
         holder.titulo.setBackgroundColor(ContextCompat.getColor(context, estilo.getCorClara()));
-        holder.valor.setTextColor(ContextCompat.getColor(context, estilo.getCorClara()));
+        holder.valorAcumulado.setTextColor(ContextCompat.getColor(context, estilo.getCorClara()));
+
+        String  estimativaFormatado = ViewUtils.getMoedaFormat(data.get(position).getConcurso().getEstimativa());
+        holder.valorAcumulado.setText(estimativaFormatado);
+
+        holder.premioEstimadoConcurso.setText("Prêmio estimado do concurso " + data.get(position).getConcurso().getNumero());
+
+        DateFormat formatterDay = new SimpleDateFormat("EEEE");
+        DateFormat formatterDate = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        Locale BRAZIL = new Locale("pt","BR");
+        formatterDay = SimpleDateFormat.getDateInstance(DateFormat.FULL, BRAZIL);
+        Date dataSorteioFormatada = null;
+        Date dataFechamandoSorteio = null;
+
+        try {
+            dataSorteioFormatada = formatterDate.parse(data.get(position).getConcurso().getDataHoraSorteio());
+            dataFechamandoSorteio = formatterDate.parse(data.get(position).getConcurso().getDataFechamento());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        String[] split = formatterDay.format(dataSorteioFormatada).split(",");
+        String[] splitDataFormatadaSilce = data.get(position).getConcurso().getDataSorteio().split(" ");
+        holder.dataSorteio.setText(ViewUtils.capitalized(split[0]) + ", " + splitDataFormatadaSilce[0] + " de " + splitDataFormatadaSilce[1]);
+
+        Map mapComDiferencaDeDatas = computeDiff(new Date(), dataFechamandoSorteio);
+
+        holder.tempoRestanteParaAposta.setText(retornaStringDias((Long) mapComDiferencaDeDatas.get(TimeUnit.DAYS))
+                +retornaStringHoras((Long) mapComDiferencaDeDatas.get(TimeUnit.DAYS), (Long) mapComDiferencaDeDatas.get(TimeUnit.HOURS)));
+
         aposta.setText(ViewUtils.fromHtml("<b>Aposte</b><br>por R$" + data.get(position).getValor()));
-        Log.d("nome", data.get(position).getNome());
-
-        Log.d("position", "" + position);
-
-        Log.d("valor", "" + data.get(position).getValor());
         Glide.with(holder.itemView.getContext())
                 .load(estilo.getImagemCalendario())
                 .into(holder.calendario);
         Glide.with(holder.itemView.getContext())
                 .load(estilo.getImagemRelogio())
                 .into(holder.relogio);
+    }
+
+    public static String retornaStringDias (Long dia) {
+        if (dia > 0) {
+            if (dia == 1) {
+                return String.format( "%d dia", dia);
+            }
+            return String.format( "%d dias", dia);
+        }
+        return "";
+    }
+
+    public static String retornaStringHoras (Long dia, Long hora) {
+        String string = "";
+        string = dia > 0 ? " e " : "";
+
+        if (hora > 0){
+            if (hora == 1) {
+                return string + String.format( "%d hora", hora);
+            }
+            return string + String.format( "%d horas", hora);
+        }
+        return "";
+    }
+
+    public static Map<TimeUnit,Long> computeDiff(Date date1, Date date2) {
+        long diffInMillies = date2.getTime() - date1.getTime();
+        List<TimeUnit> units = new ArrayList<TimeUnit>(EnumSet.allOf(TimeUnit.class));
+        Collections.reverse(units);
+        Map<TimeUnit,Long> result = new LinkedHashMap<TimeUnit,Long>();
+        long milliesRest = diffInMillies;
+        for ( TimeUnit unit : units ) {
+            long diff = unit.convert(milliesRest,TimeUnit.MILLISECONDS);
+            long diffInMilliesForUnit = unit.toMillis(diff);
+            milliesRest = milliesRest - diffInMilliesForUnit;
+            result.put(unit,diff);
+        }
+        return result;
     }
 
     @Override
@@ -98,9 +174,12 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         private ImageView relogio;
         private ImageView calendario;
         private LinearLayout resultados;
-        private TextView valor;
+        private TextView valorAcumulado;
         private ImageView trevo;
         private RelativeLayout trevoFundo;
+        private TextView premioEstimadoConcurso;
+        private TextView dataSorteio;
+        private TextView tempoRestanteParaAposta;
 
 
         public ViewHolder (View itemView) {
@@ -112,7 +191,10 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             calendario = (ImageView)  itemView.findViewById(R.id.imageCalendar);
             relogio = (ImageView)  itemView.findViewById(R.id.imageWatch);
             titulo = itemView.findViewById(R.id.relativeLayoutTopModalidades);
-            valor = itemView.findViewById(R.id.textVieCardAcumulatedValue);
+            valorAcumulado = itemView.findViewById(R.id.textVieCardAcumulatedValue);
+            premioEstimadoConcurso = (TextView) itemView.findViewById(R.id.textPremioEstimadoConcurso);
+            dataSorteio = (TextView) itemView.findViewById(R.id.textVieCardDrawDate);
+            tempoRestanteParaAposta = (TextView) itemView.findViewById(R.id.textVieCardClosingOfBets);
         }
 
         public void setOverlayColor(Context context, EstiloModalidade estilo) {

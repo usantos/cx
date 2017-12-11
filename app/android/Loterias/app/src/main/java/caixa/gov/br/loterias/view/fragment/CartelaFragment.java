@@ -1,5 +1,6 @@
 package caixa.gov.br.loterias.view.fragment;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
@@ -7,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,9 +25,11 @@ import com.android.volley.VolleyError;
 import caixa.gov.br.loterias.bo.ApostaBO;
 import caixa.gov.br.loterias.bo.silce.SilceClient;
 import caixa.gov.br.loterias.bo.silce.data.CompletaJogoRsp;
+import caixa.gov.br.loterias.bo.silce.dto.ParametroJogoDTO;
 import caixa.gov.br.loterias.view.Inteface.CartelaActivityInterface;
 import java.util.ArrayList;
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.view.SimularApostaActivity;
 import caixa.gov.br.loterias.view.custom.ExpandableHeightGridView;
 import caixa.gov.br.loterias.utils.ViewUtils;
 
@@ -33,9 +37,7 @@ import static java.lang.String.*;
 
 public class CartelaFragment extends Fragment implements CartelaActivityInterface, OnClickListener {
 
-    private String[] dezenas = {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20"
-            , "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43"
-            , "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59", "60"};
+    private ArrayList<String> dezenas = new ArrayList<String>();
 
     private ArrayList<Integer> dezenasSelecionadas = new ArrayList<>();
 
@@ -52,6 +54,7 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
     int numeroConcursoAtual;
     int qtdCartelasCarrinho = 0;
     String dataSorteioAtual;
+    private SimularApostaActivity parentActivity;
 
     private CartelaFragmentListener cartelaFragmentListener;
 
@@ -62,7 +65,12 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        parentActivity = ((SimularApostaActivity)getActivity());
+        ParametroJogoDTO teste = parentActivity.getParametroSimulacao();
 
+        for (int i = 1; i <= parentActivity.getParametroSimulacao().getPrognosticoMaximo() ; i++) {
+            dezenas.add("" + i);
+        }
     }
 
     @Override
@@ -288,7 +296,7 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
         listaDezenas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Integer valorSelecionado = Integer.valueOf(dezenas[position]);
+                Integer valorSelecionado = Integer.valueOf(dezenas.get(position));
 
                 if (dezenasSelecionadas.contains(valorSelecionado)) {
                     dezenasSelecionadas.remove(valorSelecionado);
@@ -319,21 +327,21 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
     // Adapter do gridview das dezenas
     private class SimularDezenasAdapter extends BaseAdapter {
         private Context context;
-        private String[] rows;
+        private ArrayList<String> rows;
 
-        SimularDezenasAdapter(Context context, String[] activitData){
+        SimularDezenasAdapter(Context context, ArrayList<String> activitData){
             this.context = context;
             this.rows = activitData;
         }
 
         @Override
         public int getCount() {
-            return rows.length;
+            return rows.size();
         }
 
         @Override
         public Object getItem(int i) {
-            return rows[i];
+            return rows.get(i);
         }
 
         @Override
@@ -353,7 +361,7 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
                 textView = (TextView) view;
             }
 
-            if (dezenasSelecionadas.contains(Integer.valueOf(rows[i]))){
+            if (dezenasSelecionadas.contains(Integer.valueOf(rows.get(i)))){
                 shape.setColor(ContextCompat.getColor(context, typeGameColorLight));
                 textView.setTextColor(Color.WHITE);
             }else{
@@ -364,8 +372,9 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
             shape.setCornerRadius(50);
             shape.setStroke(1, Color.GRAY);
             textView.setBackground(shape);
-            textView.setText(dezenas[i]);
+            textView.setText(dezenas.get(i));
             textView.setGravity(Gravity.CENTER);
+
 
             return textView;
         }

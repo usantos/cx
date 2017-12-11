@@ -8,6 +8,7 @@ import android.support.v4.content.ContextCompat;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
+import com.google.gson.Gson;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
 import com.yarolegovich.discretescrollview.transform.ScaleTransformer;
 
@@ -19,6 +20,7 @@ import java.util.List;
 import caixa.gov.br.loterias.bo.DadosCorporativosBO;
 import caixa.gov.br.loterias.bo.DadosUsuarioBO;
 import caixa.gov.br.loterias.bo.silce.SilceClient;
+import caixa.gov.br.loterias.bo.silce.dto.ParametroJogoDTO;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroSimulacao;
 import caixa.gov.br.loterias.bo.silce.dto.ParametrosSimulacao;
 import caixa.gov.br.loterias.bo.silce.dto.ParametrosSimulacaoResponse;
@@ -53,6 +55,8 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import caixa.gov.br.loterias.R;
 
@@ -105,8 +109,12 @@ public class PrincipalActivity extends AppCompatActivity
         listenerCarrinho();
         layoutTrevoAcessoRapido();
 
+
+
         callWebservice();
     }
+
+
 
     private void montarCarrossel () {
         evaluator = new ArgbEvaluator();
@@ -138,6 +146,8 @@ public class PrincipalActivity extends AppCompatActivity
             public void onResponse(ParametrosSimulacaoResponse response) {
                 LoadingViewLoterias.stop(loadViewProgress);
                 modalidadesParaListar = response.getPayload().getParametros();
+                TextView valorMinimoCompra = findViewById(R.id.textViewHomeMinimumPurchaseValue);
+                valorMinimoCompra.setText("valor mínimo da compra: " + ViewUtils.getMoedaFormat(response.getPayload().getValorMinimoCarrinho()));
                 montaListaModalidades();
                 montarCarrossel();
             }
@@ -157,7 +167,7 @@ public class PrincipalActivity extends AppCompatActivity
             TipoModalidadeEnum tipo = TipoModalidadeEnum.fromString(parametro.getParametroJogo().getConcurso().getModalidadeDetalhada().getDescricao());
 
             listaModalidades.add(new Modalidade(parametro.getParametroJogo().getConcurso().getModalidadeDetalhada().getDescricao(),
-                    parametro.getParametroJogo().getConcurso().getValorApostaMinima(),"","", tipo));
+                    parametro.getParametroJogo().getConcurso().getValorApostaMinima(),"","", tipo, parametro.getParametroJogo().getConcurso() ));
         }
 
         return listaModalidades;
@@ -335,7 +345,7 @@ public class PrincipalActivity extends AppCompatActivity
             @Override
             public void onResponse(NetworkResponse response) {
                 LoadingViewLoterias.stop(loadViewProgress);
-                startActivity(new Intent(PrincipalActivity.this, LoginActivity.class) );
+                startActivity(new Intent(PrincipalActivity.this, LoginActivity.class));
                 finish();
             }
         }, new SilceClient.ErrorListener() {
@@ -395,6 +405,7 @@ public class PrincipalActivity extends AppCompatActivity
 
                     Intent activity = new Intent(PrincipalActivity.this, SimularApostaActivity_.class);
                     activity.putExtra("tipoAposta", tipo);
+                    activity.putExtra("modalidade", (new Gson()).toJson(modalidadesParaListar.get((int)view.getTag()).getParametroJogo()));
                     startActivity(activity);
                 }
             });

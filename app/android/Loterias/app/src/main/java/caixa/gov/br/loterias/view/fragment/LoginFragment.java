@@ -96,7 +96,7 @@ public class LoginFragment extends Fragment {
                 final View loadViewProgress = LoadingViewLoterias.init(getActivity());
 
                 DadosUsuarioBO dadosUsuarioBO = new DadosUsuarioBO(getActivity());
-                dadosUsuarioBO.autenticar("vinicius.ferraz@gmail.com", "Vaibombar1", new SilceClient.Listener<UsuarioLogadoResponse>() {
+                dadosUsuarioBO.autenticar("felixunai@gmail.com", "Toshiba3", new SilceClient.Listener<UsuarioLogadoResponse>() {
                     @Override
                     public void onResponse(UsuarioLogadoResponse response) {
                         LoadingViewLoterias.stop(loadViewProgress);

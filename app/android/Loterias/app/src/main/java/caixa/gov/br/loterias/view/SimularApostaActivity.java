@@ -12,6 +12,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -19,12 +20,16 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.google.gson.Gson;
+
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 import java.util.ArrayList;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.bo.silce.dto.ParametroJogoDTO;
 import caixa.gov.br.loterias.utils.TipoModalidadeEnum;
 import caixa.gov.br.loterias.view.Inteface.CallbackDialog;
 import caixa.gov.br.loterias.view.Inteface.CartelaActivityInterface;
@@ -80,6 +85,15 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
 
     int alertDialogPosicaoSelecionada;
     TipoDialog tipoDialogMostrando;
+    public ParametroJogoDTO parametroSimulacao;
+
+    public ParametroJogoDTO getParametroSimulacao() {
+        return parametroSimulacao;
+    }
+
+    public void setParametroSimulacao(ParametroJogoDTO parametroSimulacao) {
+        this.parametroSimulacao = parametroSimulacao;
+    }
 
     @AfterViews
     protected void init() {
@@ -88,6 +102,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         configuraFragments();
         configuraActivity();
 
+        parametroSimulacao = new Gson().fromJson(getIntent().getStringExtra("modalidade"), ParametroJogoDTO.class);
     }
 
     private void configuraFragments(){

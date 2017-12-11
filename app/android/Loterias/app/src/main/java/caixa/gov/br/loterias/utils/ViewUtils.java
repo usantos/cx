@@ -43,9 +43,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.lang.reflect.InvocationTargetException;
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.view.FormaPagamentoActivity;
@@ -381,6 +384,12 @@ public class ViewUtils {
         formatter.setMinimumFractionDigits(2);
         formatter.setDecimalSeparatorAlwaysShown(true);
         return formatter;
+    }
+
+    public static String getMoedaFormat (BigDecimal valor) {
+        Locale ptBrLocale = new Locale( "pt", "BR" );
+        NumberFormat nf = NumberFormat.getCurrencyInstance(ptBrLocale);
+        return nf.format(valor);
     }
 
     public static int monthDiff(Calendar startCalendar, Calendar endCalendar){
