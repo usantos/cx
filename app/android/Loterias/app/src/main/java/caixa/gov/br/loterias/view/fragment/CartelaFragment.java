@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -353,10 +354,12 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
         public View getView(int i, View view, ViewGroup viewGroup) {
             TextView textView;
             GradientDrawable shape =  new GradientDrawable();
+            int sizeItens = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 45, getActivity().getResources().getDisplayMetrics());
 
             if (view == null){
                 textView = new TextView(this.context);
-                textView.setLayoutParams(new GridView.LayoutParams(80, 80));
+
+                textView.setLayoutParams(new GridView.LayoutParams(sizeItens, sizeItens));
             }else{
                 textView = (TextView) view;
             }
@@ -369,7 +372,7 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
                 textView.setTextColor(ContextCompat.getColor(context, typeGameColorLight));
             }
 
-            shape.setCornerRadius(50);
+            shape.setCornerRadius(sizeItens/2);
             shape.setStroke(1, Color.GRAY);
             textView.setBackground(shape);
             textView.setText(dezenas.get(i));
