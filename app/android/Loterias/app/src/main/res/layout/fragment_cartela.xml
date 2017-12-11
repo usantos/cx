@@ -118,7 +118,7 @@
 
             <Button
                 android:id="@+id/botaoAdicionarCompletarCartela"
-                android:layout_width="184dp"
+                android:layout_width="154dp"
                 android:layout_height="84dp"
                 android:layout_marginBottom="51dp"
                 android:background="@color/cinzaescuro"
@@ -183,7 +183,7 @@
                 <ImageView
                     android:id="@+id/imageViewPaginacao"
                     android:contentDescription="@string/imagemCarrinho"
-                    android:layout_width="184dp"
+                    android:layout_width="150dp"
                     android:layout_height="12dp"
                     android:layout_marginBottom="20dp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -212,19 +212,25 @@
                         android:layout_width="34dp"
                         android:layout_height="40dp"
                         android:background="@drawable/icon_carrinho"
-                        android:layout_centerHorizontal="true" />
+                        android:layout_centerHorizontal="true"
+                        />
 
-                    <TextView
-                        android:id="@+id/textViewCarrinhoCartelaCount"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/branco"
-                        android:text="0"
-                        android:textSize="12sp"
-                        android:background="@drawable/rounded_textview"
-                        android:gravity="center"
-                        android:layout_marginTop="14dp"
-                        android:layout_marginLeft="5dp"/>
+                    <RelativeLayout
+                        android:layout_width="76dp"
+                        android:layout_height="40dp"
+                        android:layout_centerHorizontal="true">
+                        <TextView
+                            android:id="@+id/textViewCarrinhoCartelaCount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/branco"
+                            android:text="0"
+                            android:textSize="12sp"
+                            android:background="@drawable/rounded_textview"
+                            android:gravity="center"
+                            android:layout_marginTop="13dp"
+                            />
+                    </RelativeLayout>
 
                     <TextView
                         android:id="@+id/textInfoCarrinho"
