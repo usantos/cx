@@ -13,7 +13,7 @@ import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.utils.segmentedbutton.SegmentedButton;
 
 @EActivity(R.layout.activity_cadastrar_passo2)
-public class CadastrarPasso2Activity extends AppCompatActivity {
+public class CadastrarPasso2Activity extends CadastroActivity {
 
     @ViewById
     SegmentedButton SegmentedButtonCodigoLoterica;
@@ -23,6 +23,7 @@ public class CadastrarPasso2Activity extends AppCompatActivity {
 
     @AfterViews
     protected void init() {
+        super.createToobar();
         addListenerFinalizar();
 
     }

@@ -43,7 +43,7 @@ import caixa.gov.br.loterias.utils.ViewUtils;
 
 @EActivity(R.layout.activity_cadastrar)
 
-public class CadastrarActivity extends AppCompatActivity {
+public class CadastrarActivity extends CadastroActivity {
     @ViewById
     EditText editTextCpfContent, editTextNomeContent, editTextCepContent, editTextNascimentoContent,
             editTextEmailContent, editTextMunicipioContent, editTextUFContent;
@@ -62,6 +62,7 @@ public class CadastrarActivity extends AppCompatActivity {
 
     @AfterViews
     protected void init() {
+        super.createToobar();
         addUFSpinner();
     }
 

@@ -65,11 +65,11 @@
     <string name="title_activity_termos_uso">Loterias Caixa</string>
     <string name="title_activity_repasses_sociais">Repasses <b>Sociais</b></string>
     <string name="title_activity_teste">TesteActivity</string>
+    <string name="title_activity_toolbar">Loterias Caixa</string>
     <string name="title_activity_login">Login</string>
     <string name="erro_401">Não autorizado</string>
     <string name="erro_408">Tempo de resposta esgotou</string>
     <string name="erro_500">Não foi possível concluir essa operação. Por favor, teste novamente.</string>
     <string name="seminternet">Sem conexão com a internet.</string>
-
 
 </resources>
