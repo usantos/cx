@@ -55,7 +55,7 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
     int qtdCartelasCarrinho = 0;
     String dataSorteioAtual;
     private SimularApostaActivity parentActivity;
-
+    private ParametroJogoDTO parametroJogo;
     private CartelaFragmentListener cartelaFragmentListener;
 
     public CartelaFragment() {
@@ -66,10 +66,12 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         parentActivity = ((SimularApostaActivity)getActivity());
-        ParametroJogoDTO teste = parentActivity.getParametroSimulacao();
+        parametroJogo = parentActivity.getParametroSimulacao();
 
-        for (int i = 1; i <= parentActivity.getParametroSimulacao().getPrognosticoMaximo() ; i++) {
-            dezenas.add("" + i);
+        if (dezenas.size() == 0) {
+            for (int i = 1; i <= parentActivity.getParametroSimulacao().getPrognosticoMaximo() ; i++) {
+                dezenas.add("" + i);
+            }
         }
     }
 
@@ -101,8 +103,6 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
         configuraListaDezenas(view);
         verificaSeMostraBotaoLimparAposta(view);
         verificaSeMostraSalvarApostaView(view);
-
-
 
         return view;
     }
@@ -205,7 +205,7 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
     private void preencheNumerosAleatorios(){
         ApostaBO apostaBO = new ApostaBO(getActivity());
 
-        apostaBO.completaJogo(qtdDezenasPossiveisSelecionado, dezenasSelecionadas, 1, 60, new SilceClient.Listener<CompletaJogoRsp>() {
+        apostaBO.completaJogo(qtdDezenasPossiveisSelecionado, dezenasSelecionadas, parametroJogo.getQuantidadeMinima(), parametroJogo.getQuantidadeMaxima(), new SilceClient.Listener<CompletaJogoRsp>() {
             @Override
             public void onResponse(CompletaJogoRsp response) {
                 dezenasSelecionadas.clear();

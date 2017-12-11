@@ -1,5 +1,6 @@
 package caixa.gov.br.loterias.view;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -14,9 +15,11 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -26,11 +29,18 @@ import com.google.gson.Gson;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroJogoDTO;
+import caixa.gov.br.loterias.bo.silce.dto.ParametroValorApostaDTO;
 import caixa.gov.br.loterias.utils.TipoModalidadeEnum;
+import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.Inteface.CallbackDialog;
 import caixa.gov.br.loterias.view.Inteface.CartelaActivityInterface;
 import caixa.gov.br.loterias.view.adapter.DialogListViewAdapter;
@@ -79,9 +89,12 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
     String dataSorteioAtual;
     int typeGameColorLight;
     int typeGameColorDark;
-    String qtdNumerosList[] = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
-    String qtdConcursosList[] = {"1", "2", "3", "4", "5"};
+    ArrayList<String> qtdNumerosList = new ArrayList<String>();
+    ArrayList<String> qtdConcursosList = new ArrayList<String>();
     TipoModalidadeEnum tipoJogo;
+
+    String numeroPrognosticoSelecionado = "";
+    String numeroTeimosinhasSelecionado = "";
 
     int alertDialogPosicaoSelecionada;
     TipoDialog tipoDialogMostrando;
@@ -99,10 +112,26 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
     protected void init() {
         invalidateOptionsMenu();
 
+        parametroSimulacao = new Gson().fromJson(getIntent().getStringExtra("modalidade"), ParametroJogoDTO.class);
+        configuraParametrosJogo();
         configuraFragments();
         configuraActivity();
+    }
 
-        parametroSimulacao = new Gson().fromJson(getIntent().getStringExtra("modalidade"), ParametroJogoDTO.class);
+    private void configuraParametrosJogo () {
+        for (ParametroValorApostaDTO parametro : parametroSimulacao.getValoresAposta()) {
+            qtdNumerosList.add("" + parametro.getNumeroPrognosticos() + " números por " + ViewUtils.getMoedaFormat(parametro.getValor()));
+        }
+
+        for (Integer numeroTeimosinha : parametroSimulacao.getTeimosinhas()) {
+            if (numeroTeimosinha == 0) {
+                qtdConcursosList.add("Nenhum");
+            } else if (numeroTeimosinha == 1) {
+                qtdConcursosList.add("" + numeroTeimosinha + " concurso");
+            } else {
+                qtdConcursosList.add("" + numeroTeimosinha + " concursos");
+            }
+        }
     }
 
     private void configuraFragments(){
@@ -137,17 +166,16 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         }
 
         // MOCK
-        qtdDezenasPossiveisSelecionado = 4;
-        qtdConcursoSelecionado = 1;
-        numeroConcursoAtual = 1456;
-        dataSorteioAtual = "16/06";
+        qtdDezenasPossiveisSelecionado = parametroSimulacao.getQuantidadeMinima();
+        qtdConcursoSelecionado = parametroSimulacao.getTeimosinhas().get(0) == 0 ? 0 : parametroSimulacao.getTeimosinhas().get(0);
+        dataSorteioAtual = parametroSimulacao.getConcurso().getDataSorteio();
 
 
         // Passando um link
         Bundle bundle = new Bundle();
         bundle.putInt("qtdDezenasPossiveisSelecionado", qtdDezenasPossiveisSelecionado);
         bundle.putInt("numeroConcursoAtual", numeroConcursoAtual);
-        bundle.putString("dataSorteioAtual", "16/06");
+        bundle.putString("dataSorteioAtual", dataSorteioAtual);
         bundle.putSerializable("typeGameColorLight", typeGameColorLight);
         bundle.putSerializable("typeGameColorDark", typeGameColorDark);
 
@@ -164,7 +192,11 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
 
     private void atualizaTextoBotoesQtdSelecionadas(){
         qtdNumerosButton.setText(format("%d números", qtdDezenasPossiveisSelecionado));
-        qtdConcursosButton.setText(format("%d concurso", qtdConcursoSelecionado));
+        if (qtdConcursoSelecionado == 0) {
+            qtdConcursosButton.setText("Nenhum");
+        } else {
+            qtdConcursosButton.setText(format("%d concurso", qtdConcursoSelecionado));
+        }
     }
 
     private void configuraBotoesListeners(){
@@ -175,6 +207,110 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
 
         simularTelaAposta.setBackgroundResource(R.drawable.icon_seleciona);
         surpresinhaTela.setBackgroundResource(R.drawable.icon_surpresinha);
+    }
+
+    private void modalNumeros(){
+        // custom dialog
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.custom_dialog_list_view);
+
+        // set the custom dialog components - listview and button
+
+        final ListView listViewItens = (ListView) dialog.findViewById(R.id.listaItensDialog);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(SimularApostaActivity.this,
+                android.R.layout.simple_list_item_1, android.R.id.text1, qtdNumerosList);
+
+        // Assign adapter to ListView
+        listViewItens.setAdapter(adapter);
+        // ListView Item Click Listener
+        listViewItens.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                // ListView Clicked item index
+                int itemPosition     = position;
+
+                // ListView Clicked item value
+                String  itemValue    = (String) listViewItens.getItemAtPosition(position);
+                numeroPrognosticoSelecionado =  parametroSimulacao.getValoresAposta().get(position).getNumeroPrognosticos() + " números";
+            }
+
+        });
+
+        Button dialogButtonOk = (Button) dialog.findViewById(R.id.dialogButtonOK);
+        Button dialogButtonCancelar = (Button) dialog.findViewById(R.id.dialogButtonCancelar);
+
+        // if button is clicked, close the custom dialog
+        dialogButtonOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                qtdNumerosButton.setText(numeroPrognosticoSelecionado);
+                dialog.dismiss();
+            }
+        });
+
+        dialogButtonCancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+    }
+
+    private void modalTeimosinhas(){
+        // custom dialog
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.custom_dialog_list_view);
+
+        // set the custom dialog components - listview and button
+
+        final ListView listViewItens = (ListView) dialog.findViewById(R.id.listaItensDialog);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(SimularApostaActivity.this,
+                android.R.layout.simple_list_item_1, android.R.id.text1, qtdConcursosList);
+
+        // Assign adapter to ListView
+        listViewItens.setAdapter(adapter);
+        // ListView Item Click Listener
+        listViewItens.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                // ListView Clicked item index
+                int itemPosition     = position;
+
+                // ListView Clicked item value
+                String  itemValue    = (String) listViewItens.getItemAtPosition(position);
+                numeroTeimosinhasSelecionado = itemValue;
+            }
+
+        });
+
+        Button dialogButtonOk = (Button) dialog.findViewById(R.id.dialogButtonOK);
+        Button dialogButtonCancelar = (Button) dialog.findViewById(R.id.dialogButtonCancelar);
+
+        // if button is clicked, close the custom dialog
+        dialogButtonOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                qtdConcursosButton.setText(numeroTeimosinhasSelecionado);
+                dialog.dismiss();
+            }
+        });
+
+        dialogButtonCancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
     }
 
     // Pegar o handle dos botoes que mostrarao o seu respectivo fragment na activity
@@ -197,71 +333,15 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
             }
 
             case R.id.qtdNumerosButton: {
-                CallbackDialog callback = new CallbackDialog() {
-                    @Override
-                    public void executeCallback(int position) {
-                        alertDialogPosicaoSelecionada = position;
-                        tipoDialogMostrando = TipoDialog.NUM_CARTELA;
-                    }
-                };
-
-                showDialogSelection(montaListDialog(TipoDialog.NUM_CARTELA, qtdNumerosList), "Quantidade de números", callback);
+                modalNumeros();
                 break;
             }
 
             case R.id.qtdConcursosButton: {
-                CallbackDialog callback = new CallbackDialog() {
-                    @Override
-                    public void executeCallback(int position) {
-                        alertDialogPosicaoSelecionada = position;
-                        tipoDialogMostrando = TipoDialog.NUM_CONCURSO;
-                    }
-                };
-
-                showDialogSelection(montaListDialog(TipoDialog.NUM_CONCURSO, qtdConcursosList), "Teimosinha", callback);
-                break;
-            }
-
-            case R.id.btnCancelarDialog: {
-                alertDialogPosicaoSelecionada = 0;
-                tipoDialogMostrando = null;
-
-                dialog.cancel();
-                break;
-            }
-
-            case R.id.btnOkDialog: {
-                if (tipoDialogMostrando == TipoDialog.NUM_CARTELA){
-                    qtdDezenasPossiveisSelecionado = Integer.parseInt(qtdNumerosList[alertDialogPosicaoSelecionada]);
-                    cartelaActivityInterface.qtdDezenasPossiveisSelecionado(qtdDezenasPossiveisSelecionado);
-                    surpresinhaActivityInterface.qtdDezenasPossiveisSelecionado(qtdDezenasPossiveisSelecionado);
-                }else if (tipoDialogMostrando == TipoDialog.NUM_CONCURSO){
-                    qtdConcursoSelecionado = Integer.parseInt(qtdConcursosList[alertDialogPosicaoSelecionada]);
-                }
-
-                atualizaTextoBotoesQtdSelecionadas();
-
-                dialog.cancel();
-
+                modalTeimosinhas();
                 break;
             }
         }
-    }
-
-    private ArrayList<String> montaListDialog(TipoDialog tipoDialog, String valores[]){
-        ArrayList<String> valoresTextoDialog = new ArrayList<>();
-
-        for (String valor: valores) {
-            if (tipoDialog == TipoDialog.NUM_CARTELA){
-                String numeroTexto = Integer.parseInt(valor) == 1 ? "número" : "números";
-                valoresTextoDialog.add(String.format("%s %s por R$ %.2f", valor, numeroTexto, Float.parseFloat(valor) * 2));
-            }else{
-                String concursoTexto = Integer.parseInt(valor) == 1 ? "concurso" : "concursos";
-                valoresTextoDialog.add(String.format("%s %s", valor, concursoTexto));
-            }
-        }
-
-        return valoresTextoDialog;
     }
 
     private void configuraTipoApostaTela(String titleActivity, int lightColor, int darkColor){
@@ -282,36 +362,6 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         typeGameColorDark = darkColor;
     }
 
-    private void showDialogSelection(ArrayList<String> valores, String titulo, final CallbackDialog callback){
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(SimularApostaActivity.this);
-        View dialogView = getLayoutInflater().inflate(R.layout.dialog_select_list, null);
-
-        dialogView.findViewById(R.id.btnCancelarDialog).setOnClickListener(this);
-        dialogView.findViewById(R.id.btnOkDialog).setOnClickListener(this);
-
-        final TextView dialogTitulo = dialogView.findViewById(R.id.dialog_titulo);
-        dialogTitulo.setText(titulo);
-
-        final DialogListViewAdapter qtdNumerosAdapter = new DialogListViewAdapter(this, valores);
-
-        final ListView numerosListView = dialogView.findViewById(R.id.listViewOpcoes);
-        numerosListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                qtdNumerosAdapter.setSelectedIndex(position);
-                callback.executeCallback(position);
-            }
-        });
-
-
-//        ArrayAdapter<String> qtdNumerosAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, valores);
-        numerosListView.setAdapter(qtdNumerosAdapter);
-
-        mBuilder.setView(dialogView);
-        dialog = mBuilder.create();
-        dialog.show();
-    }
-
     @Override
     public boolean onSupportNavigateUp(){
         finish();
@@ -325,6 +375,20 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.itens_simular_actionbar, menu);
 
+        MenuItem concursoAtual = menu.findItem(R.id.concursoAtual);
+        concursoAtual.setTitle("Concurso \n " + parametroSimulacao.getConcurso().getNumero());
+
+        SimpleDateFormat formatterDateFinal = new SimpleDateFormat("dd/MM");
+        DateFormat formatterDate = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        MenuItem dataSorteio = menu.findItem(R.id.sorteioAtual);
+
+        try {
+            Date dataFormatada = formatterDate.parse(parametroSimulacao.getConcurso().getDataHoraSorteio());
+            dataSorteio.setTitle("Sorteio \n " + formatterDateFinal.format(dataFormatada));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         return true;
     }
 
@@ -332,9 +396,6 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-
-        configuraMenuItem(R.id.concursoAtual, "Concurso\n" + numeroConcursoAtual);
-        configuraMenuItem(R.id.sorteioAtual, "Sorteio\n" + dataSorteioAtual);
 
         return true;
     }
@@ -352,7 +413,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
     // MÉTODOS DO FRAGMENT CARTELAFRAGMENTLISTENER
     @Override
     public int verificaNovoQtdDezenasMax(int qtdDezenasAtual) {
-        if (qtdDezenasAtual < qtdNumerosList.length){
+        if (qtdDezenasAtual < qtdNumerosList.size()){
             qtdDezenasPossiveisSelecionado += 1;
             atualizaTextoBotoesQtdSelecionadas();
             cartelaActivityInterface.qtdDezenasPossiveisSelecionado(qtdDezenasPossiveisSelecionado);
@@ -375,6 +436,4 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
 
         startActivity(activity);
     }
-
-
 }

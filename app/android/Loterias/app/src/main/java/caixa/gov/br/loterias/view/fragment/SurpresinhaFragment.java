@@ -20,7 +20,9 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.bo.silce.dto.ParametroJogoDTO;
 import caixa.gov.br.loterias.view.Inteface.CartelaActivityInterface;
+import caixa.gov.br.loterias.view.SimularApostaActivity;
 import caixa.gov.br.loterias.view.custom.ExpandableHeightGridView;
 import caixa.gov.br.loterias.utils.ViewUtils;
 
@@ -38,6 +40,8 @@ public class SurpresinhaFragment extends Fragment implements CartelaActivityInte
     Button botaoAdicionarSurpresinhaAoCarrinho;
 
     TextView qtdSurpresinhasTextView;
+    private ParametroJogoDTO parametroJogo;
+    private SimularApostaActivity parentActivity;
 
     private SurpresinhaFragmentListener surpresinhaFragmentListener;
 
@@ -75,6 +79,8 @@ public class SurpresinhaFragment extends Fragment implements CartelaActivityInte
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        parentActivity = ((SimularApostaActivity)getActivity());
+        parametroJogo = parentActivity.getParametroSimulacao();
     }
 
     @Override
