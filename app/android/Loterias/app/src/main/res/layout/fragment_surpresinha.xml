@@ -47,19 +47,16 @@
 
         <caixa.gov.br.loterias.view.custom.ExpandableHeightGridView
             android:id="@+id/listaDezenasSurpresinha"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:layout_marginEnd="15dp"
-            android:layout_marginStart="15dp"
             android:layout_marginTop="19dp"
-            android:columnWidth="40dp"
+            android:columnWidth="50dp"
             android:gravity="center"
             android:horizontalSpacing="15dp"
             android:numColumns="auto_fit"
             android:stretchMode="columnWidth"
             android:verticalSpacing="9dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginHorizontal="10dp"
             app:layout_constraintTop_toBottomOf="@+id/surpresinhaInfo" />
 
         <TextView
