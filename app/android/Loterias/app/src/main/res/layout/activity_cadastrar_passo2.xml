@@ -190,10 +190,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="20dp" />
-
-
             <LinearLayout
-
                 android:id="@+id/LinearLayoutLayoutHoriontalDeclararAceite"
                 android:layout_width="match_parent"
                 android:layout_height="92dp"
@@ -202,10 +199,34 @@
                 android:background="@color/cinzaclaro"
                 android:orientation="horizontal">
 
+                <android.support.v7.widget.AppCompatCheckBox
+                    android:id="@+id/aceiteTermo"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginLeft="20dp"
+                    android:background="@drawable/check_box_selected"
+                    android:button="@color/transparente50"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginLeft="10dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/declaracao_termo_uso_politica_privacidade" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/termoPolitica"
+                        android:text="@string/termo_de_uso_underline_política_de_privacidade" />
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
-
                 android:id="@+id/LinearLayoutLayoutHoriontalBotao"
                 android:layout_width="match_parent"
                 android:layout_height="92dp"
