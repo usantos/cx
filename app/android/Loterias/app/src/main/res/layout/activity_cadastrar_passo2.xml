@@ -106,90 +106,160 @@
                     app:sb_text="Código da lotérica"
                     app:sb_textColor="@color/verdeazul"
                     app:sb_textColor_onSelection="@color/branco"
-                    app:sb_textStyle="bold" />
+                    app:sb_textStyle="bold"/>
 
             </caixa.gov.br.loterias.utils.segmentedbutton.SegmentedButtonGroup>
 
-
             <LinearLayout
-
-                android:id="@+id/LinearLayoutLayoutHoriontalUfMunicipio"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/segmentedButtonTipoBuscaLoterica"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginTop="20dp"
-                android:orientation="horizontal">
-
-                >
-
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/editTextUFPasso2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1">
-
-                    <EditText
-                        android:id="@+id/editTextUFPasso2Content"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:hint="UF"
-                        android:inputType="textPersonName"
-                        android:textColor="@color/cinza"
-                        android:textSize="16sp" />
-                </android.support.design.widget.TextInputLayout>
-
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/editTextMunicipioPasso2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1">
-
-                    <EditText
-                        android:id="@+id/editTextMunicipioPasso2Content"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:hint="Cidade"
-                        android:inputType="textPersonName"
-                        android:textColor="@color/cinza"
-                        android:textSize="16sp" />
-                </android.support.design.widget.TextInputLayout>
-
-
-            </LinearLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/editTextBairroPasso2"
+                android:id="@+id/encontrarLoterica"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/LinearLayoutLayoutHoriontalUfMunicipio"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginTop="20dp">
+                android:layout_below="@id/segmentedButtonTipoBuscaLoterica"
+                android:orientation="vertical">
 
+                <LinearLayout
+                    android:id="@+id/localizacaoLoterica"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="visible">
 
-                <EditText
-                    android:id="@+id/editTextBairroPasso2Content"
+                    <LinearLayout
+                        android:id="@+id/LinearLayoutLayoutHoriontalUfMunicipio"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginTop="20dp"
+                        android:orientation="horizontal">
+
+                        <android.support.design.widget.TextInputLayout
+                            android:id="@+id/editTextUFPasso2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <EditText
+                                android:id="@+id/editTextUFPasso2Content"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:drawableRight="@drawable/combo"
+                                android:ems="10"
+                                android:focusableInTouchMode="false"
+                                android:hint="UF"
+                                android:inputType="textPersonName"
+                                android:textColor="@color/cinza"
+                                android:textSize="16sp" />
+                        </android.support.design.widget.TextInputLayout>
+
+                        <android.support.design.widget.TextInputLayout
+                            android:id="@+id/editTextMunicipioPasso2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <EditText
+                                android:id="@+id/editTextMunicipioPasso2Content"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:drawableRight="@drawable/combo"
+                                android:ems="10"
+                                android:focusableInTouchMode="false"
+                                android:hint="Cidade"
+                                android:inputType="textPersonName"
+                                android:textColor="@color/cinza"
+                                android:textSize="16sp" />
+                        </android.support.design.widget.TextInputLayout>
+                    </LinearLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/editTextBairroPasso2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/LinearLayoutLayoutHoriontalUfMunicipio"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginTop="20dp">
+
+                        <EditText
+                            android:id="@+id/editTextBairroPasso2Content"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:hint="Bairro"
+                            android:inputType="textPersonName"
+                            android:textColor="@color/cinza"
+                            android:textSize="16sp" />
+                    </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/cepLoterica"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="Bairro"
-                    android:inputType="textPersonName"
-                    android:textColor="@color/cinza"
-                    android:textSize="16sp" />
-            </android.support.design.widget.TextInputLayout>
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/editTextCEPPasso2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginTop="20dp">
+
+                        <com.github.pinball83.maskededittext.MaskedEditText
+                            android:id="@+id/editTextCEPPasso2Content"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:hint="@string/CEP"
+                            android:inputType="number"
+                            android:textColor="@color/cinza"
+                            android:textSize="16sp"
+                            app:mask="*****-***"
+                            app:notMaskedSymbol="*" />
+                    </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/codigoLoterica"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/editTextCodigoLotericaPasso2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginTop="20dp">
+
+                        <EditText
+                            android:id="@+id/editTextCodigoLotericaPasso2Content"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:hint="@string/codigo_loterica"
+                            android:inputType="number"
+                            android:textColor="@color/cinza"
+                            android:textSize="16sp"
+                            android:drawableRight="@drawable/icon_duvida" />
+                    </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
+            </LinearLayout>
 
             <ListView
                 android:id="@+id/ListViewLoterias"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/editTextBairroPasso2"
+                android:layout_below="@id/encontrarLoterica"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="20dp" />
+
             <LinearLayout
                 android:id="@+id/LinearLayoutLayoutHoriontalDeclararAceite"
                 android:layout_width="match_parent"
@@ -203,25 +273,27 @@
                     android:id="@+id/aceiteTermo"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:layout_marginTop="30dp"
                     android:layout_marginLeft="20dp"
+                    android:layout_marginTop="30dp"
                     android:background="@drawable/check_box_selected"
-                    android:button="@color/transparente50"/>
+                    android:button="@color/transparente50" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical"
+                    android:layout_marginLeft="10dp"
                     android:layout_marginTop="30dp"
-                    android:layout_marginLeft="10dp">
+                    android:orientation="vertical">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/declaracao_termo_uso_politica_privacidade" />
+
                     <TextView
+                        android:id="@+id/termoPolitica"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/termoPolitica"
                         android:text="@string/termo_de_uso_underline_política_de_privacidade" />
                 </LinearLayout>
             </LinearLayout>
