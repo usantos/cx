@@ -22,6 +22,8 @@ import java.util.List;
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.bo.DadosCorporativosBO;
 import caixa.gov.br.loterias.bo.silce.SilceClient;
+import caixa.gov.br.loterias.bo.silce.dto.ApostadorDTO;
+import caixa.gov.br.loterias.bo.silce.dto.Municipio;
 import caixa.gov.br.loterias.bo.silce.dto.MunicipioDTO;
 import caixa.gov.br.loterias.bo.silce.dto.MunicipioDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.UnidadeFederacaoDTO;
@@ -37,15 +39,17 @@ public class CadastroActivity extends AppCompatActivity {
 
     private EditText editTextUFContent, editTextMunicipioContent;
     private List<String> listUFString, listMunicipios;
+    private List<MunicipioDTO> municipioDTOList;
     protected List<UnidadeFederacaoDTO> listUf;
     protected String ufSelect = "";
     protected String municipioSelect = "";
+    protected ApostadorDTO apostadorDTO;
 
-    protected void createToobar(){
+    protected void createToobar() {
         setTitle(R.string.title_activity_toolbar);
 
 
-        if (getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
 
             ImageView imageView = new ImageView(getSupportActionBar().getThemedContext());
             imageView.setScaleType(ImageView.ScaleType.CENTER);
@@ -65,13 +69,13 @@ public class CadastroActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onSupportNavigateUp(){
+    public boolean onSupportNavigateUp() {
         finish();
 
         return true;
     }
 
-    protected void addRightImg (EditText textField) {
+    protected void addRightImg(EditText textField) {
         textField.setOnFocusChangeListener(new EditText.OnFocusChangeListener() {
 
             @Override
@@ -81,18 +85,16 @@ public class CadastroActivity extends AppCompatActivity {
             */
                 if (!hasFocus) {
                     if (v.getClass() == MaskedEditText.class) {
-                        if (((MaskedEditText)v).getUnmaskedText().toString().equals(""))
-                        {
-                            ((MaskedEditText)v).setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                        if (((MaskedEditText) v).getUnmaskedText().toString().equals("")) {
+                            ((MaskedEditText) v).setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                         } else {
-                            ((MaskedEditText)v).setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
+                            ((MaskedEditText) v).setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
                         }
                     } else {
-                        if (((EditText)v).getText().toString().equals(""))
-                        {
-                            ((EditText)v).setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                        if (((EditText) v).getText().toString().equals("")) {
+                            ((EditText) v).setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                         } else {
-                            ((EditText)v).setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
+                            ((EditText) v).setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
                         }
                     }
                 }
@@ -100,7 +102,7 @@ public class CadastroActivity extends AppCompatActivity {
         });
     }
 
-    protected void addListenerUF(EditText editTextUF, List<String> listUFString){
+    protected void addListenerUF(EditText editTextUF, List<String> listUFString) {
         this.listUFString = listUFString;
         editTextUFContent = editTextUF;
         editTextUFContent.setClickable(true);
@@ -113,7 +115,7 @@ public class CadastroActivity extends AppCompatActivity {
         });
     }
 
-    private void getUFS(){
+    private void getUFS() {
         final View loadViewProgress = LoadingViewLoterias.init(this);
         DadosCorporativosBO dadosCorporativosBO = new DadosCorporativosBO(CadastroActivity.this);
 
@@ -136,7 +138,7 @@ public class CadastroActivity extends AppCompatActivity {
         });
     }
 
-    private void modalUfs(){
+    private void modalUfs() {
         // custom dialog
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.custom_dialog_list_view);
@@ -157,10 +159,10 @@ public class CadastroActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 // ListView Clicked item index
-                int itemPosition     = position;
+                int itemPosition = position;
 
                 // ListView Clicked item value
-                String  itemValue    = (String) listViewItens.getItemAtPosition(position);
+                String itemValue = (String) listViewItens.getItemAtPosition(position);
                 ufSelect = itemValue;
             }
 
@@ -189,7 +191,7 @@ public class CadastroActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    protected void addListenerMunicipio(EditText editTextMunicipio, List<String> listMunicipios){
+    protected void addListenerMunicipio(EditText editTextMunicipio, List<String> listMunicipios) {
         editTextMunicipioContent = editTextMunicipio;
         this.listMunicipios = listMunicipios;
         editTextMunicipioContent.setClickable(true);
@@ -202,7 +204,7 @@ public class CadastroActivity extends AppCompatActivity {
         });
     }
 
-    private void getMunicipios(){
+    private void getMunicipios() {
         String idUf = "";
 
         if (ufSelect.isEmpty()) {
@@ -220,7 +222,8 @@ public class CadastroActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(MunicipioDTOResponse response) {
                     LoadingViewLoterias.stop(loadViewProgress);
-                    for (MunicipioDTO municipio : response.getPayload()) {
+                    municipioDTOList = response.getPayload();
+                    for (MunicipioDTO municipio : municipioDTOList) {
                         listMunicipios.add(municipio.getNome());
                     }
                     modalMunicipios();
@@ -253,7 +256,7 @@ public class CadastroActivity extends AppCompatActivity {
         myDialog.show();
     }
 
-    private void modalMunicipios(){
+    private void modalMunicipios() {
         // custom dialog
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.custom_dialog_list_view);
@@ -274,10 +277,10 @@ public class CadastroActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 // ListView Clicked item index
-                int itemPosition     = position;
+                int itemPosition = position;
 
                 // ListView Clicked item value
-                String  itemValue    = (String) listViewItens.getItemAtPosition(position);
+                String itemValue = (String) listViewItens.getItemAtPosition(position);
                 municipioSelect = itemValue;
             }
 
@@ -291,6 +294,12 @@ public class CadastroActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 editTextMunicipioContent.setText(municipioSelect);
+                for (MunicipioDTO municipio : municipioDTOList) {
+                    if (municipio.getNome().equals(municipioSelect)) {
+                        apostadorDTO.setMunicipioId(municipio.getId());
+                        break;
+                    }
+                }
                 dialog.dismiss();
             }
         });

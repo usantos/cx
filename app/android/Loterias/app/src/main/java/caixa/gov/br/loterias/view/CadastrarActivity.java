@@ -18,16 +18,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.bo.silce.dto.ApostadorDTO;
+import caixa.gov.br.loterias.bo.silce.dto.MunicipioIdDTO;
+import caixa.gov.br.loterias.bo.silce.dto.SexoAbrvEnum;
+import caixa.gov.br.loterias.utils.segmentedbutton.SegmentedButtonGroup;
 
 
 @EActivity(R.layout.activity_cadastrar)
 
 public class CadastrarActivity extends CadastroActivity {
+
+    private SexoAbrvEnum sexo;
+
     @ViewById
     EditText editTextCpfContent, editTextNomeContent, editTextCepContent, editTextNascimentoContent,
-            editTextEmailContent, editTextMunicipioContent, editTextUFContent;
+            editTextEmailContent, editTextMunicipioContent, editTextUFContent, editTextNomeMaeContent;
     @ViewById
     Button buttonContinuarIntroducao;
+
+    @ViewById
+    SegmentedButtonGroup segmentedButtonSexo;
 
     @Extra
     List<String> listUFString, listMunicipios;
@@ -36,6 +46,10 @@ public class CadastrarActivity extends CadastroActivity {
     protected void init() {
         super.createToobar();
         addUFSpinner();
+        if (apostadorDTO == null) {
+            apostadorDTO = new ApostadorDTO();
+            apostadorDTO.setMunicipioId(new MunicipioIdDTO());
+        }
     }
 
     public void addUFSpinner() {
@@ -43,16 +57,16 @@ public class CadastrarActivity extends CadastroActivity {
         listUFString = new ArrayList<String>();
         listMunicipios = new ArrayList<String>();
 
-        // configuraNavigation();
+        initOnclick();
         addListenerUF(editTextUFContent, listUFString);
         addListenerMunicipio(editTextMunicipioContent, listMunicipios);
-        addListenerContinuar();
 
         addRightImg((EditText) findViewById(R.id.editTextNomeContent));
         addRightImg((EditText) findViewById(R.id.editTextCepContent));
         addRightImg((EditText) findViewById(R.id.editTextCpfContent));
         addRightImg((EditText) findViewById(R.id.editTextNascimentoContent));
         addRightImg((EditText) findViewById(R.id.editTextEmailContent));
+        addListenerContinuar();
     }
 
 
@@ -65,10 +79,26 @@ public class CadastrarActivity extends CadastroActivity {
     }
 
     private void addListenerContinuar() {
+
         buttonContinuarIntroducao.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                carregaApostadorDTO();
                 Intent intent = new Intent(getBaseContext(), CadastrarPasso2Activity_.class);
                 startActivity(intent);
+            }
+        });
+    }
+
+    private void initOnclick() {
+
+        this.segmentedButtonSexo.setOnClickedButtonListener(new SegmentedButtonGroup.OnClickedButtonListener() {
+            @Override
+            public void onClickedButton(int position) {
+                if (position == 0) {
+                    sexo = SexoAbrvEnum.M;
+                } else {
+                    sexo = SexoAbrvEnum.F;
+                }
             }
         });
     }
@@ -99,5 +129,16 @@ public class CadastrarActivity extends CadastroActivity {
                 });
 
         return builder.create();
+    }
+
+    private void carregaApostadorDTO() {
+        apostadorDTO.setCpf(editTextCpfContent.getText().toString());
+        apostadorDTO.setEmail(editTextEmailContent.getText().toString());
+        apostadorDTO.setNome(editTextNomeContent.getText().toString());
+        apostadorDTO.setNomeMae(editTextNomeMaeContent.getText().toString());
+        apostadorDTO.setDataNascimento(editTextNascimentoContent.getText().toString());
+        apostadorDTO.setCep(editTextCepContent.getText().toString());
+        apostadorDTO.setAceitaReceberNoticias(Boolean.TRUE);
+        apostadorDTO.setSexo(sexo);
     }
 }

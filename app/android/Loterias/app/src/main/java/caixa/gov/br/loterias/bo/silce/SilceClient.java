@@ -2,7 +2,9 @@ package caixa.gov.br.loterias.bo.silce;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+
 import java.util.LinkedHashMap;
+
 import caixa.gov.br.loterias.bo.silce.dto.AutenticacaoDTO;
 import caixa.gov.br.loterias.bo.silce.dto.UsuarioLogadoResponse;
 import caixa.gov.br.loterias.bo.silce.internals.SilceConnection;
@@ -19,6 +21,7 @@ public class SilceClient {
     public static final String LOGIN_PATH = "/usuarios/autenticar";
     public static final String LIST_CARTOES_PATH = "/usuarios/cartoes";
     public static final String SAIR_PATH = "/usuarios/sair";
+    public static final String GRAVAR_USUARIO = "/usuarios";
 
     public interface Listener<T> {
         public void onResponse(T response);
