@@ -14,7 +14,8 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Configurações</string>
+    <string name="action_duvidas">Dúvidas</string>
 
     <string name="valorDessaAposta">Valor dessa aposta</string>
     <string name="imagemCarrinho">Carrinho</string>

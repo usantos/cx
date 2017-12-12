@@ -17,9 +17,11 @@
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_duvida"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
+        android:icon="@drawable/icon_duvida"
+        app:showAsAction="always"
+        android:title=""/>
+    <!--android:title="@string/action_duvidas"-->
 
 </menu>
