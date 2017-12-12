@@ -82,7 +82,6 @@ public class FormaPagamentoActivity extends AppCompatActivity implements FormaDe
             public void onResponse(ListCartaoDTOResponse response) {
                 LoadingViewLoterias.stop(loadViewProgress);
                 listaCartoes = response.getPayload();
-                listaCartoes.addAll(listaCartoes);
                 configuraRecyclerViewCarrinhoAposta();
             }
         }, new SilceClient.ErrorListener() {
