@@ -18,19 +18,29 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
+import com.google.gson.Gson;
 
 import org.w3c.dom.Text;
 
 import caixa.gov.br.loterias.bo.ApostaBO;
+import caixa.gov.br.loterias.bo.DadosCorporativosBO;
 import caixa.gov.br.loterias.bo.silce.SilceClient;
 import caixa.gov.br.loterias.bo.silce.data.CompletaJogoRsp;
+import caixa.gov.br.loterias.bo.silce.dto.ApostaFavoritaDTO;
+import caixa.gov.br.loterias.bo.silce.dto.DTOEnumInteger;
+import caixa.gov.br.loterias.bo.silce.dto.EquipeDTO;
+import caixa.gov.br.loterias.bo.silce.dto.ParametroEquipe;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroJogoDTO;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroValorApostaDTO;
+import caixa.gov.br.loterias.utils.LoadingViewLoterias;
 import caixa.gov.br.loterias.view.Inteface.CartelaActivityInterface;
 
 import java.math.BigDecimal;
@@ -181,6 +191,7 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
                 verificaSeMostraBotaoLimparAposta(getView());
                 verificaQtdDezenasJaSelecionadas();
                 simularDezenasAdapter.notifyDataSetChanged();
+                voltaSalvarApostaParaLayoutInicial();
             }
             break;
 
@@ -206,25 +217,87 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
             break;
 
             case R.id.btnSalvarAposta:{
-                RelativeLayout salvarApostaLayout = getView().findViewById(R.id.salvarApostaLayout);
-
-                salvarApostaLayout.setBackgroundResource(R.color.verdeazul);
-                ViewGroup.LayoutParams relativelayoutParams = salvarApostaLayout.getLayoutParams();
-
-                final float scale = getContext().getResources().getDisplayMetrics().density;
-                relativelayoutParams.height = (int) (64 * scale + 0.5f);
-
-                salvarApostaLayout.setLayoutParams(relativelayoutParams);
-
-                TextView tituloSalvarAposta = getView().findViewById(R.id.textoSalveEstaAposta);
-                tituloSalvarAposta.setText("Aposta salva :)");
-                tituloSalvarAposta.setGravity(Gravity.CENTER);
-
-                ImageView starSalvarApostaImageView = getView().findViewById(R.id.iconStarSalvar);
-                starSalvarApostaImageView.setBackgroundResource(R.drawable.icon_favoritado);
+                EditText nomeAposta = getView().findViewById(R.id.editNomeAposta);
+                salvarAposta(nomeAposta.getText().toString());
             }
 
         }
+    }
+
+    private Boolean flagApostaSalva = false;
+
+    private void salvarAposta (String nomeAposta) {
+        final DadosCorporativosBO dadosCorporativosBO = new DadosCorporativosBO(getActivity());
+        final View loadViewProgress = LoadingViewLoterias.init(getActivity());
+
+        final ApostaFavoritaDTO aposta = new ApostaFavoritaDTO();
+
+        DTOEnumInteger modalidade = new DTOEnumInteger();
+        modalidade.setDescricao(parametroJogo.getConcurso().getModalidadeDetalhada().getDescricao());
+        modalidade.setValor(parametroJogo.getConcurso().getModalidadeDetalhada().getValor());
+        aposta.setModalidade(modalidade);
+
+        aposta.setNome(nomeAposta);
+        aposta.setNumerosSelecionados(dezenasSelecionadas);
+        aposta.setId(new Long(0));
+
+        ParametroEquipe timeCoracao = new ParametroEquipe();
+        timeCoracao.setDescricaoCurta("");
+        timeCoracao.setDescricaoLonga("");
+        timeCoracao.setIndicadorSelecao(false);
+        timeCoracao.setNome("");
+        timeCoracao.setNomeClass("");
+        timeCoracao.setNumero(0);
+        timeCoracao.setPais("");
+        timeCoracao.setNumeroPais(0);
+        timeCoracao.setSiglaPais("");
+        timeCoracao.setUf("");
+
+        aposta.setTimeDoCoracao(timeCoracao);
+
+        dadosCorporativosBO.validarApostaFavorita(aposta, new SilceClient.Listener<NetworkResponse>() {
+            @Override
+            public void onResponse(NetworkResponse response) {
+
+                dadosCorporativosBO.salvarApostaFavorita(aposta, new SilceClient.Listener<NetworkResponse>() {
+                    @Override
+                    public void onResponse(NetworkResponse response) {
+                        LoadingViewLoterias.stop(loadViewProgress);
+
+                        RelativeLayout salvarApostaLayout = getView().findViewById(R.id.salvarApostaLayout);
+
+                        salvarApostaLayout.setBackgroundResource(R.color.verdeazul);
+                        ViewGroup.LayoutParams relativelayoutParams = salvarApostaLayout.getLayoutParams();
+
+                        final float scale = getContext().getResources().getDisplayMetrics().density;
+                        relativelayoutParams.height = (int) (64 * scale + 0.5f);
+
+                        salvarApostaLayout.setLayoutParams(relativelayoutParams);
+
+                        TextView tituloSalvarAposta = getView().findViewById(R.id.textoSalveEstaAposta);
+                        tituloSalvarAposta.setText("Aposta salva :)");
+                        tituloSalvarAposta.setGravity(Gravity.CENTER);
+
+                        ImageView starSalvarApostaImageView = getView().findViewById(R.id.iconStarSalvar);
+                        starSalvarApostaImageView.setBackgroundResource(R.drawable.icon_favoritado);
+
+                        flagApostaSalva = true;
+                    }
+                }, new SilceClient.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        LoadingViewLoterias.stop(loadViewProgress);
+                        ViewUtils.alert(getActivity(), "ERRO");
+                    }
+                });
+            }
+        }, new SilceClient.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                LoadingViewLoterias.stop(loadViewProgress);
+                ViewUtils.alert(getActivity(), "ERRO");
+            }
+        });
     }
 
     private void preencheNumerosAleatorios(){
@@ -249,7 +322,7 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
 
     private void configuraBotoes(View fragmentView){
         valorAposta = getView().findViewById(R.id.valorApostaCartela);
-        valorAposta.setText(ViewUtils.getMoedaFormat(parametroJogo.getValoresAposta().get(0).getValor()));
+        atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
 
         botaoFinalizar = fragmentView.findViewById(R.id.botaoAdicionarCompletarCartela);
         botaoFinalizar.setOnClickListener(this);
@@ -265,8 +338,32 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
 
         botaoLimparAposta = fragmentView.findViewById(R.id.botaoLimparAposta);
         botaoLimparAposta.setOnClickListener(this);
+    }
 
+    public void voltaSalvarApostaParaLayoutInicial () {
+        RelativeLayout salvarApostaLayout = getView().findViewById(R.id.salvarApostaLayout);
 
+        salvarApostaLayout.setBackgroundResource(R.color.cinzaescuro);
+        TextView tituloSalvarAposta = getView().findViewById(R.id.textoSalveEstaAposta);
+
+        tituloSalvarAposta.setText("Salve esta aposta :)");
+
+        ViewGroup.LayoutParams relativelayoutParams = salvarApostaLayout.getLayoutParams();
+
+        final float scale = getContext().getResources().getDisplayMetrics().density;
+        relativelayoutParams.height = (int) (64 * scale + 0.5f);
+
+        salvarApostaLayout.setLayoutParams(relativelayoutParams);
+        salvarApostaLayout.setOnClickListener(null);
+
+        ImageView starSalvarApostaImageView = getView().findViewById(R.id.iconStarSalvar);
+        starSalvarApostaImageView.setBackgroundResource(R.drawable.icon_favoritar);
+
+        salvarApostaLayout.setOnClickListener(this);
+
+        EditText nomeAposta = getView().findViewById(R.id.editNomeAposta);
+        nomeAposta.setText("");
+        getView().findViewById(R.id.salvarApostaLayout).setVisibility(View.GONE);
     }
 
     private void verificaSeMostraBotaoLimparAposta(View fragmentView){
@@ -329,6 +426,9 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
                         qtdDezenasPossiveisSelecionado = cartelaFragmentListener.verificaNovoQtdDezenasMax(qtdDezenasPossiveisSelecionado);
 
                         if (qtdDezenasPossiveisSelecionadoAtual < maxNumerosParaSelecionar) {
+                            if (flagApostaSalva) {
+                                voltaSalvarApostaParaLayoutInicial();
+                            }
                             dezenasSelecionadas.add(valorSelecionado);
                         } else {
                             ViewUtils.alert(getActivity(), "Número de dezenas máximo selecionadas.");

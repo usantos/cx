@@ -249,7 +249,9 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
             public void onClick(View v) {
                 qtdNumerosButton.setText(textoBotaoPrognosticosSelecionado);
                 cartelaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
-                surpresinhaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
+                if (surpresinhaFragment.parametroJogo != null) {
+                    surpresinhaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
+                }
                 dialog.dismiss();
             }
         });
@@ -304,7 +306,9 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
             public void onClick(View v) {
                 qtdConcursosButton.setText(textoBotaoSurpresinhasSelecionado);
                 cartelaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
-                surpresinhaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
+                if (surpresinhaFragment.parametroJogo != null) {
+                    surpresinhaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
+                }
                 dialog.dismiss();
             }
         });

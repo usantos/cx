@@ -11,6 +11,9 @@ import caixa.gov.br.loterias.bo.silce.internals.SilceConnection;
 
 public class SilceClient {
     public static final String COMPLETA_JOGO_PATH = "/apostas/completar-jogo";
+    public static final String VALIDAR_FAVORITA_PATH = "/apostas-favoritas/validar";
+    public static final String INCLUIR_FAVORITA_PATH = "/apostas-favoritas";
+
     public static final String UFS_PATH = "/ufs";
     public static final String TERMO_PATH = "/termos-de-uso/termo-vigente";
     public static final String MUNICIPIOS_PATH = "/municipios";

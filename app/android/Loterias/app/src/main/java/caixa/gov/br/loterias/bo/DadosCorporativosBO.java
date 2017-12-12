@@ -2,11 +2,15 @@ package caixa.gov.br.loterias.bo;
 
 import android.content.Context;
 
+import com.android.volley.NetworkResponse;
+
 import java.util.Collection;
 import java.util.LinkedHashMap;
 
 import caixa.gov.br.loterias.BuildConfig;
 import caixa.gov.br.loterias.bo.silce.SilceClient;
+import caixa.gov.br.loterias.bo.silce.data.UsuarioLogadoSingleton;
+import caixa.gov.br.loterias.bo.silce.dto.ApostaFavoritaDTO;
 import caixa.gov.br.loterias.bo.silce.dto.MunicipioDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.ParametrosSimulacaoResponse;
 import caixa.gov.br.loterias.bo.silce.dto.RepassometroDTOResponse;
@@ -91,6 +95,35 @@ public class DadosCorporativosBO {
                 silceClient.volleyListener(listener, ParametrosSimulacaoResponse.class),
                 silceClient.volleyErrorListener(errorListener), headers);
     }
+
+
+    public void validarApostaFavorita(final ApostaFavoritaDTO aposta,
+                                     final SilceClient.Listener<NetworkResponse> listener,
+                                     final SilceClient.ErrorListener errorListener) {
+
+        LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
+        headers.put("Authorization", "Bearer " + UsuarioLogadoSingleton.getInstance().token);
+
+        silceClient.getConnection().post(SilceClient.VALIDAR_FAVORITA_PATH, new LinkedHashMap<String, String>(),
+                aposta, NetworkResponse.class,
+                silceClient.volleyListener(listener, NetworkResponse.class),
+                silceClient.volleyErrorListener(errorListener),headers);
+    }
+
+    public void salvarApostaFavorita(final ApostaFavoritaDTO aposta,
+                           final SilceClient.Listener<NetworkResponse> listener,
+                           final SilceClient.ErrorListener errorListener) {
+
+        LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
+        headers.put("Authorization", "Bearer " + UsuarioLogadoSingleton.getInstance().token);
+
+
+        silceClient.getConnection().post(SilceClient.INCLUIR_FAVORITA_PATH, new LinkedHashMap<String, String>(),
+                aposta, NetworkResponse.class,
+                silceClient.volleyListener(listener, NetworkResponse.class),
+                silceClient.volleyErrorListener(errorListener),headers);
+    }
+
 
     private static <T> String join(Collection<T> collection, String delimiter){
         StringBuffer result = new StringBuffer("");

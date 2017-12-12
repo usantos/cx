@@ -45,7 +45,7 @@ public class SurpresinhaFragment extends Fragment implements CartelaActivityInte
     TextView qtdSurpresinhasTextView;
     TextView valorAposta;
 
-    private ParametroJogoDTO parametroJogo;
+    public ParametroJogoDTO parametroJogo;
     private SimularApostaActivity parentActivity;
 
     private SurpresinhaFragmentListener surpresinhaFragmentListener;
@@ -130,7 +130,9 @@ public class SurpresinhaFragment extends Fragment implements CartelaActivityInte
 
     private void configuraBotoes(View fragmentView){
         valorAposta = getView().findViewById(R.id.valorApostaSurpresinha);
-        valorAposta.setText(ViewUtils.getMoedaFormat(parametroJogo.getValoresAposta().get(0).getValor()));
+        if (parametroJogo != null) {
+            atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
+        }
 
         botaoMenosSurpresinha = fragmentView.findViewById(R.id.btnMenosSurpresinha);
         botaoMenosSurpresinha.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.cinzaescuro));
