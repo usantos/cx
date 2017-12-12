@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
@@ -44,7 +45,7 @@ public class CarrinhoActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.home, menu);
+        getMenuInflater().inflate(R.menu.settings, menu);
 
         return true;
     }
@@ -55,6 +56,26 @@ public class CarrinhoActivity extends AppCompatActivity {
         super.onPrepareOptionsMenu(menu);
 
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        if (id == R.id.action_settings) {
+            abrirTermos();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void abrirTermos(){
+        Intent activity = new Intent(CarrinhoActivity.this, TermosUsoActivity.class);
+        startActivity(activity);
     }
 
     private void configuraActivityCarrinho(){
