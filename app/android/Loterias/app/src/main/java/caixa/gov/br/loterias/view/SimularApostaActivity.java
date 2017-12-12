@@ -2,7 +2,6 @@ package caixa.gov.br.loterias.view;
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,7 +12,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,9 +39,7 @@ import caixa.gov.br.loterias.bo.silce.dto.ParametroJogoDTO;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroValorApostaDTO;
 import caixa.gov.br.loterias.utils.TipoModalidadeEnum;
 import caixa.gov.br.loterias.utils.ViewUtils;
-import caixa.gov.br.loterias.view.Inteface.CallbackDialog;
 import caixa.gov.br.loterias.view.Inteface.CartelaActivityInterface;
-import caixa.gov.br.loterias.view.adapter.DialogListViewAdapter;
 import caixa.gov.br.loterias.view.fragment.CartelaFragment;
 import caixa.gov.br.loterias.view.fragment.CartelaFragment.CartelaFragmentListener;
 import caixa.gov.br.loterias.view.fragment.SurpresinhaFragment;
@@ -83,8 +79,8 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
     private CartelaActivityInterface surpresinhaActivityInterface;
 
     //mocks
-    int qtdDezenasPossiveisSelecionado;
-    int qtdConcursoSelecionado;
+    public int qtdDezenasPossiveisSelecionado;
+    public int qtdConcursoSelecionado;
     int numeroConcursoAtual;
     String dataSorteioAtual;
     int typeGameColorLight;
@@ -93,8 +89,8 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
     ArrayList<String> qtdConcursosList = new ArrayList<String>();
     TipoModalidadeEnum tipoJogo;
 
-    String numeroPrognosticoSelecionado = "";
-    String numeroTeimosinhasSelecionado = "";
+    String textoBotaoPrognosticosSelecionado = "";
+    String textoBotaoSurpresinhasSelecionado = "";
 
     int alertDialogPosicaoSelecionada;
     TipoDialog tipoDialogMostrando;
@@ -153,16 +149,20 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
 
         switch (tipoJogo){
             case MEGASENA:
-                configuraTipoApostaTela("Mega Sena", R.color.megasenaclaro, R.color.megasenaescuro);
+                configuraTipoApostaTela("mega-sena", R.color.megasenaclaro, R.color.megasenaescuro);
                 break;
             case QUINA:
-                configuraTipoApostaTela("Quina", R.color.quinaclaro, R.color.quinaescuro);
+                configuraTipoApostaTela("quina", R.color.quinaclaro, R.color.quinaescuro);
                 break;
             case LOTOFACIL:
-                configuraTipoApostaTela("Lotofácil", R.color.lotofacilclaro, R.color.lotofacilescuro);
+                configuraTipoApostaTela("lotofácil", R.color.lotofacilclaro, R.color.lotofacilescuro);
                 break;
             case DUPLASENA:
-                configuraTipoApostaTela("Duplasena", R.color.duplasenaclaro, R.color.duplasenaescuro);
+                configuraTipoApostaTela("duplasena", R.color.duplasenaclaro, R.color.duplasenaescuro);
+            case TIMEMANIA:
+                configuraTipoApostaTela("timemania", R.color.timemaniaclaro, R.color.timemaniaescuro);
+            case LOTOMANIA:
+                configuraTipoApostaTela("lotomania", R.color.lotomaniaclaro, R.color.lotomaniaescuro);
         }
 
         // MOCK
@@ -230,11 +230,12 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 // ListView Clicked item index
-                int itemPosition     = position;
+                int itemPosition = position;
 
                 // ListView Clicked item value
-                String  itemValue    = (String) listViewItens.getItemAtPosition(position);
-                numeroPrognosticoSelecionado =  parametroSimulacao.getValoresAposta().get(position).getNumeroPrognosticos() + " números";
+                String  itemValue = (String) listViewItens.getItemAtPosition(position);
+                textoBotaoPrognosticosSelecionado = parametroSimulacao.getValoresAposta().get(position).getNumeroPrognosticos() + " números";
+                qtdDezenasPossiveisSelecionado = parametroSimulacao.getValoresAposta().get(position).getNumeroPrognosticos();
             }
 
         });
@@ -246,7 +247,9 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         dialogButtonOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                qtdNumerosButton.setText(numeroPrognosticoSelecionado);
+                qtdNumerosButton.setText(textoBotaoPrognosticosSelecionado);
+                cartelaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
+                surpresinhaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
                 dialog.dismiss();
             }
         });
@@ -286,7 +289,8 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
 
                 // ListView Clicked item value
                 String  itemValue    = (String) listViewItens.getItemAtPosition(position);
-                numeroTeimosinhasSelecionado = itemValue;
+                textoBotaoSurpresinhasSelecionado = itemValue;
+                qtdConcursoSelecionado = parametroSimulacao.getTeimosinhas().get(position);
             }
 
         });
@@ -298,7 +302,9 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         dialogButtonOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                qtdConcursosButton.setText(numeroTeimosinhasSelecionado);
+                qtdConcursosButton.setText(textoBotaoSurpresinhasSelecionado);
+                cartelaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
+                surpresinhaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
                 dialog.dismiss();
             }
         });

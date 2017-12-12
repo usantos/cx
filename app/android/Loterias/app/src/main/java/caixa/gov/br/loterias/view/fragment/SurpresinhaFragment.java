@@ -19,9 +19,11 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroJogoDTO;
+import caixa.gov.br.loterias.bo.silce.dto.ParametroValorApostaDTO;
 import caixa.gov.br.loterias.view.Inteface.CartelaActivityInterface;
 import caixa.gov.br.loterias.view.SimularApostaActivity;
 import caixa.gov.br.loterias.view.custom.ExpandableHeightGridView;
@@ -41,6 +43,8 @@ public class SurpresinhaFragment extends Fragment implements CartelaActivityInte
     Button botaoAdicionarSurpresinhaAoCarrinho;
 
     TextView qtdSurpresinhasTextView;
+    TextView valorAposta;
+
     private ParametroJogoDTO parametroJogo;
     private SimularApostaActivity parentActivity;
 
@@ -122,12 +126,12 @@ public class SurpresinhaFragment extends Fragment implements CartelaActivityInte
     private void atualizaDezenaAdapter(){
         simularDezenasAdapter.rows = montaListaDezenasSurpresinha();
         simularDezenasAdapter.notifyDataSetChanged();
-
-        TextView text = getView().findViewById(R.id.valorAposta);
-        text.setText(format("R$ %.2f", 4.5 * qtdDezenasPossiveisSelecionado));
     }
 
     private void configuraBotoes(View fragmentView){
+        valorAposta = getView().findViewById(R.id.valorApostaSurpresinha);
+        valorAposta.setText(ViewUtils.getMoedaFormat(parametroJogo.getValoresAposta().get(0).getValor()));
+
         botaoMenosSurpresinha = fragmentView.findViewById(R.id.btnMenosSurpresinha);
         botaoMenosSurpresinha.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.cinzaescuro));
         botaoMenosSurpresinha.setOnClickListener(this);
@@ -171,6 +175,33 @@ public class SurpresinhaFragment extends Fragment implements CartelaActivityInte
         return arrayDezenas;
     }
 
+    public void atualizaValorTotalAposta (int numPrognostico, int qtdTeimosinhas) {
+        BigDecimal valorEmReais = BigDecimal.ZERO;
+
+        for (ParametroValorApostaDTO parametro : parametroJogo.getValoresAposta()) {
+            if (parametro.getNumeroPrognosticos() == numPrognostico) {
+                valorEmReais = parametro.getValor();
+            }
+        }
+
+        if (qtdSurpresinhas > 0) {
+            if (qtdTeimosinhas == 0) {
+                valorEmReais = valorEmReais.multiply(new BigDecimal(1.0)).multiply(new BigDecimal(qtdSurpresinhas));
+                valorAposta.setText(ViewUtils.getMoedaFormat(valorEmReais));
+            } else {
+                valorEmReais = valorEmReais.multiply(new BigDecimal(qtdTeimosinhas)).multiply(new BigDecimal(qtdSurpresinhas));
+                valorAposta.setText(ViewUtils.getMoedaFormat(valorEmReais));
+            }
+        } else {
+            if (qtdTeimosinhas == 0) {
+                valorAposta.setText(ViewUtils.getMoedaFormat(valorEmReais));
+            } else {
+                valorEmReais = valorEmReais.multiply(new BigDecimal(qtdTeimosinhas));
+                valorAposta.setText(ViewUtils.getMoedaFormat(valorEmReais));
+            }
+        }
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -180,6 +211,7 @@ public class SurpresinhaFragment extends Fragment implements CartelaActivityInte
                     if (qtdSurpresinhas == 1){
                         botaoMenosSurpresinha.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.cinzaescuro));
                     }
+                    atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado ,parentActivity.qtdConcursoSelecionado);
                 }
             }
             break;
@@ -188,7 +220,10 @@ public class SurpresinhaFragment extends Fragment implements CartelaActivityInte
                 if (qtdSurpresinhas == 1){
                     botaoMenosSurpresinha.setBackgroundColor(ContextCompat.getColor(getActivity(), typeGameColorLight));
                 }
-                qtdSurpresinhas++;
+                if (qtdSurpresinhas < parametroJogo.getQuantidadeSurpresinhas()) {
+                    qtdSurpresinhas++;
+                }
+                atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado ,parentActivity.qtdConcursoSelecionado);
             }
             break;
 
@@ -262,10 +297,6 @@ public class SurpresinhaFragment extends Fragment implements CartelaActivityInte
     @Override
     public void qtdDezenasPossiveisSelecionado(int qtdDezenas) {
         qtdDezenasPossiveisSelecionado = qtdDezenas;
-
-        if (getView() != null){
-            atualizaDezenaAdapter();
-        }
     }
 
     // INTERFACE DO FRAGMENT PARA A ACTIVITY

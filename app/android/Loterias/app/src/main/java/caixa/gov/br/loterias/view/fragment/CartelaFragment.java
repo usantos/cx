@@ -23,11 +23,17 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.android.volley.VolleyError;
+
+import org.w3c.dom.Text;
+
 import caixa.gov.br.loterias.bo.ApostaBO;
 import caixa.gov.br.loterias.bo.silce.SilceClient;
 import caixa.gov.br.loterias.bo.silce.data.CompletaJogoRsp;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroJogoDTO;
+import caixa.gov.br.loterias.bo.silce.dto.ParametroValorApostaDTO;
 import caixa.gov.br.loterias.view.Inteface.CartelaActivityInterface;
+
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.view.SimularApostaActivity;
@@ -47,6 +53,7 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
 
     Button botaoFinalizar;
     Button botaoLimparAposta;
+    TextView valorAposta;
 
     SimularDezenasAdapter simularDezenasAdapter;
 
@@ -61,6 +68,24 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
 
     public CartelaFragment() {
         // Required empty public constructor
+    }
+
+    public void atualizaValorTotalAposta (int numPrognostico, int qtdTeimosinhas) {
+
+        BigDecimal valorEmReais = BigDecimal.ZERO;
+
+        for (ParametroValorApostaDTO parametro : parametroJogo.getValoresAposta()) {
+            if (parametro.getNumeroPrognosticos() == numPrognostico) {
+                valorEmReais = parametro.getValor();
+            }
+        }
+
+        if (qtdTeimosinhas == 0) {
+            valorAposta.setText(ViewUtils.getMoedaFormat(valorEmReais));
+        } else {
+            valorEmReais = valorEmReais.multiply(BigDecimal.valueOf(qtdTeimosinhas).movePointLeft(0));
+            valorAposta.setText(ViewUtils.getMoedaFormat(valorEmReais));
+        }
     }
 
     @Override
@@ -112,7 +137,6 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
     public void onResume() {
         super.onResume();
 
-        atualizaDezenaAdapter();
     }
 
     @Override
@@ -223,17 +247,13 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
         });
     }
 
-    private void atualizaDezenaAdapter(){
-        TextView text = getView().findViewById(R.id.valorAposta);
-        text.setText(format("R$ %.2f", 4.5 * qtdDezenasPossiveisSelecionado));
-
-        verificaQtdDezenasJaSelecionadas();
-    }
-
     private void configuraBotoes(View fragmentView){
+        valorAposta = getView().findViewById(R.id.valorApostaCartela);
+        valorAposta.setText(ViewUtils.getMoedaFormat(parametroJogo.getValoresAposta().get(0).getValor()));
+
         botaoFinalizar = fragmentView.findViewById(R.id.botaoAdicionarCompletarCartela);
         botaoFinalizar.setOnClickListener(this);
-        botaoFinalizar.setBackgroundColor(ContextCompat.getColor(fragmentView.getContext(), R.color.cinzaescuro));
+        botaoFinalizar.setBackgroundColor(ContextCompat.getColor(fragmentView.getContext(), typeGameColorLight));
         botaoFinalizar.setText(ViewUtils.configuraButtonText(fragmentView.getContext(), getString(R.string.completarCartela), 9));
 
 
@@ -277,13 +297,13 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
         }else if (dezenasSelecionadas.size() > qtdDezenasPossiveisSelecionado) {
             dezenasSelecionadas.clear();
             simularDezenasAdapter.notifyDataSetChanged();
-            botaoFinalizar.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.cinzaescuro));
+            botaoFinalizar.setBackgroundColor(ContextCompat.getColor(getActivity(), typeGameColorLight));
             botaoFinalizar.setText(ViewUtils.configuraButtonText(getActivity(), getString(R.string.completarCartela), 9));
 
             getView().findViewById(R.id.salvarApostaLayout).setVisibility(View.GONE);
             getView().findViewById(R.id.botaoLimparAposta).setVisibility(View.GONE);
         } else{
-            botaoFinalizar.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.cinzaescuro));
+            botaoFinalizar.setBackgroundColor(ContextCompat.getColor(getActivity(), typeGameColorLight));
             botaoFinalizar.setText(ViewUtils.configuraButtonText(getActivity(), getString(R.string.completarCartela), 9));
         }
     }
@@ -302,12 +322,13 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
                 if (dezenasSelecionadas.contains(valorSelecionado)) {
                     dezenasSelecionadas.remove(valorSelecionado);
                 } else {
+                    int maxNumerosParaSelecionar = parametroJogo.getQuantidadeMaxima();
                     if (dezenasSelecionadas.size() == qtdDezenasPossiveisSelecionado) {
                         // VERIFICA SE TEM OPÇÃO DE SELECIONAR MAIS DEZENAS
                         int qtdDezenasPossiveisSelecionadoAtual = qtdDezenasPossiveisSelecionado;
                         qtdDezenasPossiveisSelecionado = cartelaFragmentListener.verificaNovoQtdDezenasMax(qtdDezenasPossiveisSelecionado);
 
-                        if (qtdDezenasPossiveisSelecionadoAtual < qtdDezenasPossiveisSelecionado) {
+                        if (qtdDezenasPossiveisSelecionadoAtual < maxNumerosParaSelecionar) {
                             dezenasSelecionadas.add(valorSelecionado);
                         } else {
                             ViewUtils.alert(getActivity(), "Número de dezenas máximo selecionadas.");
@@ -386,11 +407,11 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
     // METODOS DA INTERFACE DA ACTIVITY
     @Override
     public void qtdDezenasPossiveisSelecionado(int qtdDezenas) {
-        qtdDezenasPossiveisSelecionado = qtdDezenas;
-
-        if (getView() != null){
-            atualizaDezenaAdapter();
+        if (qtdDezenasPossiveisSelecionado < qtdDezenas) {
+            atualizaValorTotalAposta(qtdDezenas, parentActivity.qtdConcursoSelecionado);
         }
+
+        qtdDezenasPossiveisSelecionado = qtdDezenas;
     }
 
     // INTERFACE DO FRAGMENT PARA A ACTIVITY
