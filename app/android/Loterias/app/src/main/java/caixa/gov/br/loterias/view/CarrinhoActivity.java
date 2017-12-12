@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,11 +28,17 @@ public class CarrinhoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_carrinho);
 
+        montarLayout();
         configuraActivityCarrinho();
         configuraRecyclerViewCarrinhoAposta();
         configuraListeners();
 
         ViewUtils.organizaTabLayout(this, R.id.carrinhoMainLayout, R.id.apostasListaRecycleView, R.id.carrinhoScrollView);
+    }
+
+    private void montarLayout(){
+        TextView infoValorMinimoTextView = (TextView) findViewById(R.id.infoValorMinimo);
+        infoValorMinimoTextView.setText(ViewUtils.fromHtml("Lembre-se que o valor mínimo do total de compras nesse aplicativo é <strong>R$24,00</strong>"));
     }
 
     @Override

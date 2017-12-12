@@ -4,7 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/cinzaclaro"
+        android:layout_centerVertical="true"
+        />
 
     <TextView
         android:id="@+id/numerosText"
@@ -47,8 +52,8 @@
         android:layout_width="70dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="14dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginRight="35dp"
+        android:layout_marginEnd="35dp"
         android:layout_marginTop="14dp"
         android:text="R$ 0,00"
         android:textAlignment="textStart"
@@ -58,4 +63,17 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:gravity="center"
+        android:background="@drawable/icon_excluir"
+        android:layout_marginHorizontal="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+
 </android.support.constraint.ConstraintLayout>
