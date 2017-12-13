@@ -185,6 +185,8 @@
                             android:id="@+id/editTextBairroPasso2Content"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:focusableInTouchMode="false"
+                            android:drawableRight="@drawable/combo"
                             android:ems="10"
                             android:hint="Bairro"
                             android:inputType="textPersonName"

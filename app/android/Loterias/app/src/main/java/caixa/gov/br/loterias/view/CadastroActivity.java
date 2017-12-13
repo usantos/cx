@@ -17,15 +17,21 @@ import android.widget.ListView;
 import com.android.volley.VolleyError;
 import com.github.pinball83.maskededittext.MaskedEditText;
 
+import org.apache.commons.lang.StringUtils;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.bo.DadosCorporativosBO;
 import caixa.gov.br.loterias.bo.silce.SilceClient;
 import caixa.gov.br.loterias.bo.silce.dto.ApostadorDTO;
+import caixa.gov.br.loterias.bo.silce.dto.BairroDTO;
+import caixa.gov.br.loterias.bo.silce.dto.BairroDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.Municipio;
 import caixa.gov.br.loterias.bo.silce.dto.MunicipioDTO;
 import caixa.gov.br.loterias.bo.silce.dto.MunicipioDTOResponse;
+import caixa.gov.br.loterias.bo.silce.dto.MunicipioIdDTO;
 import caixa.gov.br.loterias.bo.silce.dto.UnidadeFederacaoDTO;
 import caixa.gov.br.loterias.bo.silce.dto.UnidadeFederacaoDTOResponse;
 import caixa.gov.br.loterias.utils.LoadingViewLoterias;
@@ -37,13 +43,16 @@ import caixa.gov.br.loterias.utils.ViewUtils;
 
 public class CadastroActivity extends AppCompatActivity {
 
-    private EditText editTextUFContent, editTextMunicipioContent;
-    private List<String> listUFString, listMunicipios;
+    private EditText editTextUFContent, editTextMunicipioContent, editTextBairroContent;
+    private List<String> listUFString, listMunicipios, listBairros;
     private List<MunicipioDTO> municipioDTOList;
     protected List<UnidadeFederacaoDTO> listUf;
     protected String ufSelect = "";
     protected String municipioSelect = "";
+    protected String bairroSelected = "";
     protected ApostadorDTO apostadorDTO;
+    private boolean isMunicipioUsuario;
+    private MunicipioIdDTO municipioIdDTOLoteria;
 
     protected void createToobar() {
         setTitle(R.string.title_activity_toolbar);
@@ -191,9 +200,10 @@ public class CadastroActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    protected void addListenerMunicipio(EditText editTextMunicipio, List<String> listMunicipios) {
+    protected void addListenerMunicipio(EditText editTextMunicipio, List<String> listMunicipios, boolean isMunicipioUsuario) {
         editTextMunicipioContent = editTextMunicipio;
         this.listMunicipios = listMunicipios;
+        this.isMunicipioUsuario = isMunicipioUsuario;
         editTextMunicipioContent.setClickable(true);
         editTextMunicipioContent.setOnClickListener(new View.OnClickListener() {
 
@@ -294,10 +304,19 @@ public class CadastroActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 editTextMunicipioContent.setText(municipioSelect);
-                for (MunicipioDTO municipio : municipioDTOList) {
-                    if (municipio.getNome().equals(municipioSelect)) {
-                        apostadorDTO.setMunicipioId(municipio.getId());
-                        break;
+                if (isMunicipioUsuario) {
+                    for (MunicipioDTO municipio : municipioDTOList) {
+                        if (municipio.getNome().equals(municipioSelect)) {
+                            apostadorDTO.setMunicipioId(municipio.getId());
+                            break;
+                        }
+                    }
+                } else {
+                    for (MunicipioDTO municipio : municipioDTOList) {
+                        if (municipio.getNome().equals(municipioSelect)) {
+                            municipioIdDTOLoteria = municipio.getId();
+                            break;
+                        }
                     }
                 }
                 dialog.dismiss();
@@ -308,6 +327,117 @@ public class CadastroActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 municipioSelect = "";
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+    }
+
+    protected void addListenerBairro(EditText editTextBairro, List<String> listBairros) {
+        editTextBairroContent = editTextBairro;
+        this.listBairros = listBairros;
+        editTextBairroContent.setClickable(true);
+        editTextBairroContent.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                getBairros();
+            }
+        });
+    }
+
+    private void getBairros() {
+
+        if (StringUtils.isEmpty(municipioSelect)) {
+            showDialogBairro();
+        } else {
+            listBairros = new ArrayList<String>();
+            final View loadViewProgress = LoadingViewLoterias.init(this);
+
+            DadosCorporativosBO dadosCorporativosBO = new DadosCorporativosBO(CadastroActivity.this);
+            dadosCorporativosBO.bairros(municipioIdDTOLoteria.getIdUF().toString(), municipioIdDTOLoteria.getNumero().toString(),
+                    municipioIdDTOLoteria.getDigitoVerificador().toString(), null, new SilceClient.Listener<BairroDTOResponse>() {
+                        @Override
+                        public void onResponse(BairroDTOResponse response) {
+                            LoadingViewLoterias.stop(loadViewProgress);
+                            for (BairroDTO bairro : response.getPayload()) {
+                                listBairros.add(bairro.getNome());
+                            }
+                            modalBairros();
+                        }
+                    }, new SilceClient.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            LoadingViewLoterias.stop(loadViewProgress);
+                            ViewUtils.alert(CadastroActivity.this, "ERRO");
+                        }
+                    });
+        }
+    }
+
+    public void showDialogBairro() {
+        if (myDialog == null) {
+            myDialog = new AlertDialog.Builder(this)
+                    .setTitle("Atenção")
+                    .setMessage("Selecione primeiro o Município, assim nossa precisão de Bairros será incrível.")
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            myDialog.dismiss();
+                        }
+                    })
+                    .create();
+        }
+        myDialog.show();
+    }
+
+    private void modalBairros() {
+        // custom dialog
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.custom_dialog_list_view);
+
+        // set the custom dialog components - listview and button
+
+        final ListView listViewItens = (ListView) dialog.findViewById(R.id.listaItensDialog);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(CadastroActivity.this,
+                android.R.layout.simple_list_item_1, android.R.id.text1, listBairros);
+
+        // Assign adapter to ListView
+        listViewItens.setAdapter(adapter);
+        // ListView Item Click Listener
+        listViewItens.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                // ListView Clicked item index
+                int itemPosition = position;
+
+                // ListView Clicked item value
+                String itemValue = (String) listViewItens.getItemAtPosition(position);
+                bairroSelected = itemValue;
+            }
+
+        });
+
+        Button dialogButtonOk = (Button) dialog.findViewById(R.id.dialogButtonOK);
+        Button dialogButtonCancelar = (Button) dialog.findViewById(R.id.dialogButtonCancelar);
+
+        // if button is clicked, close the custom dialog
+        dialogButtonOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editTextBairroContent.setText(bairroSelected);
+                dialog.dismiss();
+            }
+        });
+
+        dialogButtonCancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bairroSelected = "";
                 dialog.dismiss();
             }
         });

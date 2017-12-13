@@ -19,12 +19,14 @@ public class SilceClient {
     public static final String MUNICIPIOS_PATH = "/municipios";
     public static final String REPASSOMETRO_PATH = "/repassometro";
     public static final String PARAM_SIMULACAO_PATH = "/parametros-simulacao";
-
+    public static final String BAIRROS_PATH = "/bairros";
 
     public static final String LOGIN_PATH = "/usuarios/autenticar";
     public static final String LIST_CARTOES_PATH = "/usuarios/cartoes";
     public static final String SAIR_PATH = "/usuarios/sair";
     public static final String GRAVAR_USUARIO = "/usuarios";
+
+    public static final String LOTERIAS_HABILITADAS = "/lotericas/buscas-habilitadas";
 
     public interface Listener<T> {
         public void onResponse(T response);
