@@ -15,7 +15,7 @@ public class SilceClient {
     public static final String INCLUIR_FAVORITA_PATH = "/apostas-favoritas";
 
     public static final String INCLUIR_APOSTA_CARRINHO_PATH = "/carrinhos/incluir-aposta";
-
+    public static final String INCLUIR_SURPRESINHA_CARRINHO_PATH = "/carrinhos/incluir-surpresinha";
 
     public static final String UFS_PATH = "/ufs";
     public static final String TERMO_PATH = "/termos-de-uso/termo-vigente";

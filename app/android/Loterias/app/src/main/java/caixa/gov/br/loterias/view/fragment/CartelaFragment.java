@@ -82,7 +82,7 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
     private SimularApostaActivity parentActivity;
     private ParametroJogoDTO parametroJogo;
     private CartelaFragmentListener cartelaFragmentListener;
-    BigDecimal valorTotalAposta;
+    public BigDecimal valorTotalAposta;
 
     public CartelaFragment() {
         // Required empty public constructor

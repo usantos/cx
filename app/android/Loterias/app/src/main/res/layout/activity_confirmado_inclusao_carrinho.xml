@@ -23,7 +23,7 @@
         app:layout_constraintRight_toLeftOf="@+id/viewTabBar" />
 
     <TextView
-        android:id="@+id/textObservacao"
+        android:id="@+id/textObservacaoConfirmacao"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="46dp"
@@ -130,7 +130,7 @@
             app:layout_constraintVertical_bias="0.0">
 
             <TextView
-                android:id="@+id/valorAposta"
+                android:id="@+id/valorApostaConfirmacao"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"

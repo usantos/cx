@@ -9,32 +9,45 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.google.gson.Gson;
+
+import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.bo.silce.dto.ParametroJogoDTO;
 import caixa.gov.br.loterias.utils.TipoModalidadeEnum;
 import caixa.gov.br.loterias.utils.ViewUtils;
 
 public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implements OnClickListener {
+    public ParametroJogoDTO parametroSimulacao;
+
+    public ParametroJogoDTO getParametroSimulacao() {
+        return parametroSimulacao;
+    }
+
+    public void setParametroSimulacao(ParametroJogoDTO parametroSimulacao) {
+        this.parametroSimulacao = parametroSimulacao;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirmado_inclusao_carrinho);
 
+        parametroSimulacao = new Gson().fromJson(getIntent().getStringExtra("modalidade"), ParametroJogoDTO.class);
+
         invalidateOptionsMenu();
         configuraActivityIncluidoApostaCarrinho();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.itens_simular_actionbar, menu);
-
-        return true;
     }
 
     @Override
@@ -46,6 +59,13 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
 
     private void configuraActivityIncluidoApostaCarrinho(){
         TipoModalidadeEnum tipoJogo = (TipoModalidadeEnum) getIntent().getSerializableExtra("tipoAposta");
+        BigDecimal valorAposta = (BigDecimal)getIntent().getSerializableExtra("valorAposta");
+
+        TextView valorApostaText = findViewById(R.id.valorApostaConfirmacao);
+        valorApostaText.setText(ViewUtils.getMoedaFormat(valorAposta));
+
+        TextView textObservacaoConfirmacao = findViewById(R.id.textObservacaoConfirmacao);
+        textObservacaoConfirmacao.setText(getString(R.string.infoValorMinimoCarrinho) + " " + ViewUtils.getMoedaFormat(parametroSimulacao.getValorApostaMinima() == null ?  new BigDecimal(0) : parametroSimulacao.getValorApostaMinima()));
 
         switch (tipoJogo){
             case MEGASENA:
@@ -99,6 +119,30 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
 
         configuraMenuItem(R.id.concursoAtual);
         configuraMenuItem(R.id.sorteioAtual);
+
+        return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.itens_simular_actionbar, menu);
+
+        MenuItem concursoAtual = menu.findItem(R.id.concursoAtual);
+        concursoAtual.setTitle("Concurso \n " + parametroSimulacao.getConcurso().getNumero());
+
+        SimpleDateFormat formatterDateFinal = new SimpleDateFormat("dd/MM");
+        DateFormat formatterDate = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        MenuItem dataSorteio = menu.findItem(R.id.sorteioAtual);
+
+        try {
+            Date dataFormatada = formatterDate.parse(parametroSimulacao.getConcurso().getDataHoraSorteio());
+            dataSorteio.setTitle("Sorteio \n " + formatterDateFinal.format(dataFormatada));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         return true;
     }

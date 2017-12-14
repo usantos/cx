@@ -39,7 +39,7 @@
     <string name="textoDeNome">Dê um nome</string>
 
     <string name="verCarrinho">Ver carrinho\nde apostas</string>
-    <string name="infoValorMinimoCarrinho">Lembre-se: o valor mínimo do total de compras nesse aplicativo é R$24,00</string>
+    <string name="infoValorMinimoCarrinho">Lembre-se: o valor mínimo do total de compras nesse aplicativo é </string>
     <string name="tituloApostaFeita">Essa aposta foi para o seu carrinho.</string>
     <string name="novaAposta">Fazer nova aposta</string>
     <string name="confirmarApostas">Confirme suas apostas e pressione AVANÇAR para continuar.</string>

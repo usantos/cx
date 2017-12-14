@@ -19,11 +19,26 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
 
+import com.android.volley.VolleyError;
+
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.bo.ApostaBO;
+import caixa.gov.br.loterias.bo.silce.SilceClient;
+import caixa.gov.br.loterias.bo.silce.dto.AgrupadorDTOApostaDTOResponse;
+import caixa.gov.br.loterias.bo.silce.dto.DTOEnumCharacter;
+import caixa.gov.br.loterias.bo.silce.dto.DTOEnumInteger;
+import caixa.gov.br.loterias.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
+import caixa.gov.br.loterias.bo.silce.dto.IncluirSurpresinhaDTO;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroJogoDTO;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroValorApostaDTO;
+import caixa.gov.br.loterias.bo.silce.dto.TipoConcursoEnum;
+import caixa.gov.br.loterias.utils.LoadingViewLoterias;
 import caixa.gov.br.loterias.view.Inteface.CartelaActivityInterface;
 import caixa.gov.br.loterias.view.SimularApostaActivity;
 import caixa.gov.br.loterias.view.custom.ExpandableHeightGridView;
@@ -204,6 +219,49 @@ public class SurpresinhaFragment extends Fragment implements CartelaActivityInte
         }
     }
 
+    private void adicionarSurpresinhaNoCarrinho () {
+        final ApostaBO apostaBO = new ApostaBO(getActivity());
+        final View loadViewProgress = LoadingViewLoterias.init(getActivity());
+
+        IncluirSurpresinhaDTO aposta = new IncluirSurpresinhaDTO();
+        aposta.setModalidade(parametroJogo.getConcurso().getModalidade());
+        aposta.setQuantidadeNumeros(parentActivity.qtdDezenasPossiveisSelecionado);
+        aposta.setQuantidadeSurpresinhas(qtdSurpresinhas);
+
+        DTOEnumCharacter tipoConcurso = new DTOEnumCharacter();
+
+        String valorTipoConcurso = parametroJogo.getConcurso().getTipoConcurso() == TipoConcursoEnum.NORMAL ? "1" : "2";
+        tipoConcurso.setValor(valorTipoConcurso);
+        tipoConcurso.setDescricao(parametroJogo.getConcurso().getTipoConcurso().toString());
+        aposta.setTipoConcurso(tipoConcurso);
+
+        DTOEnumInteger indicadorSurpresinha = new DTOEnumInteger();
+        indicadorSurpresinha.setValor(2);
+        indicadorSurpresinha.setDescricao("");
+
+        aposta.setIndicadorSurpresinha(indicadorSurpresinha);
+        aposta.setConcursoAlvo(parametroJogo.getConcurso().getNumero());
+        aposta.setQuantidadeTeimosinhas(parentActivity.qtdConcursoSelecionado);
+        aposta.setQuantidadeApostas(1);
+
+        aposta.setTimeDoCoracao(null);
+
+        apostaBO.adicionarSurpresinhaNoCarrinho(aposta, new SilceClient.Listener<AgrupadorDTOApostaDTOResponse>() {
+            @Override
+            public void onResponse(AgrupadorDTOApostaDTOResponse response) {
+                LoadingViewLoterias.stop(loadViewProgress);
+
+                surpresinhaFragmentListener.adicionarApostaCarrinho();
+            }
+        }, new SilceClient.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                LoadingViewLoterias.stop(loadViewProgress);
+                ViewUtils.alert(getActivity(), "ERRO");
+            }
+        });
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -230,7 +288,7 @@ public class SurpresinhaFragment extends Fragment implements CartelaActivityInte
             break;
 
             case R.id.btnAdicionarSurpresinhaAoCarrinho:{
-                surpresinhaFragmentListener.adicionarApostaCarrinho();
+                adicionarSurpresinhaNoCarrinho();
             }
             break;
 

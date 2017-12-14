@@ -217,6 +217,8 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         // set the custom dialog components - listview and button
 
         final ListView listViewItens = (ListView) dialog.findViewById(R.id.listaItensDialog);
+        TextView tituloDialog = (TextView)dialog.findViewById(R.id.tituloDialogCustom);
+        tituloDialog.setText("Quant. de Números");
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(SimularApostaActivity.this,
                 android.R.layout.simple_list_item_1, android.R.id.text1, qtdNumerosList);
@@ -274,7 +276,8 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         // set the custom dialog components - listview and button
 
         final ListView listViewItens = (ListView) dialog.findViewById(R.id.listaItensDialog);
-
+        TextView tituloDialog = (TextView)dialog.findViewById(R.id.tituloDialogCustom);
+        tituloDialog.setText("Teimosinhas");
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(SimularApostaActivity.this,
                 android.R.layout.simple_list_item_1, android.R.id.text1, qtdConcursosList);
 
@@ -437,6 +440,8 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
     public void adicionarApostaCarrinho(){
         Intent activity = new Intent(this, ConfirmadoInclusaoCarrinhoActivity.class);
         activity.putExtra("tipoAposta", tipoJogo);
+        activity.putExtra("valorAposta", cartelaFragment.valorTotalAposta);
+        activity.putExtra("modalidade", (new Gson()).toJson(parametroSimulacao));
         startActivity(activity);
     }
 
