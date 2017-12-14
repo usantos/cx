@@ -3,7 +3,6 @@ package caixa.gov.br.loterias.bo;
 import android.content.Context;
 
 import com.android.volley.NetworkResponse;
-import com.android.volley.Response;
 
 import java.util.LinkedHashMap;
 
@@ -13,8 +12,6 @@ import caixa.gov.br.loterias.bo.silce.data.UsuarioLogadoSingleton;
 import caixa.gov.br.loterias.bo.silce.dto.ApostadorDTO;
 import caixa.gov.br.loterias.bo.silce.dto.AutenticacaoDTO;
 import caixa.gov.br.loterias.bo.silce.dto.ListCartaoDTOResponse;
-import caixa.gov.br.loterias.bo.silce.dto.RepassometroDTOResponse;
-import caixa.gov.br.loterias.bo.silce.dto.ResourceResponse;
 import caixa.gov.br.loterias.bo.silce.dto.UsuarioLogadoResponse;
 import caixa.gov.br.loterias.bo.silce.internals.SilceConnection;
 import caixa.gov.br.loterias.bo.silce.internals.SilceSingleton;
@@ -84,7 +81,7 @@ public class DadosUsuarioBO {
     public void gravarUsuario(ApostadorDTO apostadorDTO, final SilceClient.Listener<UsuarioLogadoResponse> listener,
                               final SilceClient.ErrorListener errorListener) {
 
-        silceClient.getConnection().post(SilceClient.GRAVAR_USUARIO, new LinkedHashMap<String, String>(), apostadorDTO, UsuarioLogadoResponse.class,
+        silceClient.getConnection().post(SilceClient.GRAVAR_USUARIO_PATH, new LinkedHashMap<String, String>(), apostadorDTO, UsuarioLogadoResponse.class,
                 silceClient.volleyListener(listener, UsuarioLogadoResponse.class),
                 silceClient.volleyErrorListener(errorListener), new LinkedHashMap<String, String>());
 

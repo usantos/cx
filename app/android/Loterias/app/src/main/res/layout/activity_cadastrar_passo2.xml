@@ -75,38 +75,43 @@
                 app:sbg_selectorColor="@color/verdeazul">
 
                 <caixa.gov.br.loterias.utils.segmentedbutton.SegmentedButton
+                    android:id="@+id/segmentedButtonLocalizacao"
                     android:layout_width="0dp"
                     android:layout_height="56dp"
                     android:layout_weight="1"
                     android:textAlignment="center"
                     android:textSize="12sp"
+                    android:visibility="gone"
                     app:sb_text="Localização"
                     app:sb_textColor="@color/verdeazul"
                     app:sb_textColor_onSelection="@color/branco"
                     app:sb_textStyle="bold" />
 
                 <caixa.gov.br.loterias.utils.segmentedbutton.SegmentedButton
+                    android:id="@+id/segmentedButtonCEP"
                     android:layout_width="0dp"
                     android:layout_height="56dp"
                     android:layout_weight="1"
                     android:textAlignment="center"
                     android:textSize="12sp"
+                    android:visibility="gone"
                     app:sb_text="CEP"
                     app:sb_textColor="@color/verdeazul"
                     app:sb_textColor_onSelection="@color/branco"
                     app:sb_textStyle="bold" />
 
                 <caixa.gov.br.loterias.utils.segmentedbutton.SegmentedButton
-                    android:id="@+id/SegmentedButtonCodigoLoterica"
+                    android:id="@+id/segmentedButtonCodigoLoterica"
                     android:layout_width="0dp"
                     android:layout_height="56dp"
                     android:layout_weight="1"
                     android:textAlignment="center"
                     android:textSize="12sp"
+                    android:visibility="gone"
                     app:sb_text="Código da lotérica"
                     app:sb_textColor="@color/verdeazul"
                     app:sb_textColor_onSelection="@color/branco"
-                    app:sb_textStyle="bold"/>
+                    app:sb_textStyle="bold" />
 
             </caixa.gov.br.loterias.utils.segmentedbutton.SegmentedButtonGroup>
 
@@ -185,9 +190,9 @@
                             android:id="@+id/editTextBairroPasso2Content"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:focusableInTouchMode="false"
                             android:drawableRight="@drawable/combo"
                             android:ems="10"
+                            android:focusableInTouchMode="false"
                             android:hint="Bairro"
                             android:inputType="textPersonName"
                             android:textColor="@color/cinza"
@@ -243,30 +248,39 @@
                             android:id="@+id/editTextCodigoLotericaPasso2Content"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:drawableRight="@drawable/icon_duvida"
                             android:ems="10"
                             android:hint="@string/codigo_loterica"
                             android:inputType="number"
                             android:textColor="@color/cinza"
-                            android:textSize="16sp"
-                            android:drawableRight="@drawable/icon_duvida" />
+                            android:textSize="16sp" />
                     </android.support.design.widget.TextInputLayout>
                 </LinearLayout>
             </LinearLayout>
 
-            <ListView
-                android:id="@+id/ListViewLoterias"
+            <RadioGroup
+                android:id="@+id/radioListLoterias"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/encontrarLoterica"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginTop="20dp" />
+                android:layout_marginTop="20dp"
+                android:layout_below="@id/encontrarLoterica">
+            </RadioGroup>
+
+            <!--<ListView-->
+            <!--android:id="@+id/ListViewLoterias"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@id/encontrarLoterica"-->
+            <!--android:layout_marginLeft="16dp"-->
+            <!--android:layout_marginRight="16dp"-->
+            <!--android:layout_marginTop="20dp" >-->
+            <!--</ListView>>-->
 
             <LinearLayout
                 android:id="@+id/LinearLayoutLayoutHoriontalDeclararAceite"
                 android:layout_width="match_parent"
                 android:layout_height="92dp"
-                android:layout_below="@id/ListViewLoterias"
+                android:layout_below="@id/radioListLoterias"
                 android:layout_marginTop="20dp"
                 android:background="@color/cinzaclaro"
                 android:orientation="horizontal">

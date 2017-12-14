@@ -27,9 +27,10 @@ public class SilceClient {
     public static final String LOGIN_PATH = "/usuarios/autenticar";
     public static final String LIST_CARTOES_PATH = "/usuarios/cartoes";
     public static final String SAIR_PATH = "/usuarios/sair";
-    public static final String GRAVAR_USUARIO = "/usuarios";
+    public static final String GRAVAR_USUARIO_PATH = "/usuarios";
 
-    public static final String LOTERIAS_HABILITADAS = "/lotericas/buscas-habilitadas";
+    public static final String LOTERIAS_PATH = "/lotericas";
+    public static final String LOTERIAS_HABILITADAS_PATH = "/lotericas/buscas-habilitadas";
 
     public interface Listener<T> {
         public void onResponse(T response);

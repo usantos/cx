@@ -64,6 +64,7 @@ public class CadastrarActivity extends CadastroActivity {
         addRightImg((EditText) findViewById(R.id.editTextNomeContent));
         addRightImg((EditText) findViewById(R.id.editTextCepContent));
         addRightImg((EditText) findViewById(R.id.editTextCpfContent));
+        addRightImg((EditText) findViewById(R.id.editTextNomeMaeContent));
         addRightImg((EditText) findViewById(R.id.editTextNascimentoContent));
         addRightImg((EditText) findViewById(R.id.editTextEmailContent));
         addListenerContinuar();

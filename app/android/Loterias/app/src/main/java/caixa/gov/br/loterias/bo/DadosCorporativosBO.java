@@ -13,8 +13,10 @@ import caixa.gov.br.loterias.BuildConfig;
 import caixa.gov.br.loterias.bo.silce.SilceClient;
 import caixa.gov.br.loterias.bo.silce.data.UsuarioLogadoSingleton;
 import caixa.gov.br.loterias.bo.silce.dto.ApostaFavoritaDTO;
+import caixa.gov.br.loterias.bo.silce.dto.BairroDTO;
 import caixa.gov.br.loterias.bo.silce.dto.BairroDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.ListDTOEnumIntegerResponse;
+import caixa.gov.br.loterias.bo.silce.dto.LotericaDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.MunicipioDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.ParametrosSimulacaoResponse;
 import caixa.gov.br.loterias.bo.silce.dto.RepassometroDTOResponse;
@@ -151,8 +153,28 @@ public class DadosCorporativosBO {
 
     public void buscarLotericasHabilitadas(final SilceClient.Listener<ListDTOEnumIntegerResponse> listener, final SilceClient.ErrorListener errorListerner) {
 
-        silceClient.getConnection().get(SilceClient.LOTERIAS_HABILITADAS, new LinkedHashMap<String, String>(), ListDTOEnumIntegerResponse.class,
+        silceClient.getConnection().get(SilceClient.LOTERIAS_HABILITADAS_PATH, new LinkedHashMap<String, String>(), ListDTOEnumIntegerResponse.class,
                 silceClient.volleyListener(listener, ListDTOEnumIntegerResponse.class), silceClient.volleyErrorListener(errorListerner), new LinkedHashMap<String, String>());
+    }
+
+    public void buscarLotericas(String cep, BairroDTO bairroDTO, final SilceClient.Listener<LotericaDTOResponse> listener, final SilceClient.ErrorListener errorListerner) {
+
+        LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
+        if (StringUtils.isNotEmpty(cep)) {
+            queryParams.put("cep", cep);
+            queryParams.put("pesquisaInteligente", "false");
+        }
+        if (bairroDTO != null) {
+            queryParams.put("idBairro", bairroDTO.getId().toString());
+            //queryParams.put("codigoUF", bairroDTO.getMunicipio().getUf().ge);
+            queryParams.put("numero", bairroDTO.getMunicipio().getId().getNumero().toString());
+            queryParams.put("digitoVerificador", bairroDTO.getMunicipio().getId().getDigitoVerificador().toString());
+            queryParams.put("idUF", bairroDTO.getMunicipio().getUf().getId().toString());
+            queryParams.put("pesquisaInteligente", "true");
+        }
+
+        silceClient.getConnection().get(SilceClient.LOTERIAS_PATH, new LinkedHashMap<String, String>(), LotericaDTOResponse.class,
+                silceClient.volleyListener(listener, LotericaDTOResponse.class), silceClient.volleyErrorListener(errorListerner), new LinkedHashMap<String, String>());
     }
 
 

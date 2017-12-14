@@ -33,7 +33,7 @@ public class LotericaDTOResponse {
     @SerializedName("errosValidacao")
     private List<ErroValidacao> errosValidacao = null;
     @SerializedName("payload")
-    private LotericaDTO payload = null;
+    private LotericaDTOResponseManual payload = null;
 
     /**
      * Código do erro
@@ -98,11 +98,11 @@ public class LotericaDTOResponse {
     /**
      **/
     @ApiModelProperty(value = "")
-    public LotericaDTO getPayload() {
+    public LotericaDTOResponseManual getPayload() {
         return payload;
     }
 
-    public void setPayload(LotericaDTO payload) {
+    public void setPayload(LotericaDTOResponseManual payload) {
         this.payload = payload;
     }
 

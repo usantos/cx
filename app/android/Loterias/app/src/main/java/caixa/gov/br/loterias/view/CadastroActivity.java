@@ -50,7 +50,7 @@ public class CadastroActivity extends AppCompatActivity {
     protected String ufSelect = "";
     protected String municipioSelect = "";
     protected String bairroSelected = "";
-    protected ApostadorDTO apostadorDTO;
+    protected static ApostadorDTO apostadorDTO;
     private boolean isMunicipioUsuario;
     private MunicipioIdDTO municipioIdDTOLoteria;
 
