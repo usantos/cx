@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:drawable="@drawable/splashscreen_triangulo"/>
+    <item android:drawable="@drawable/fundo_splash"/>
+    <item android:drawable="@drawable/triangulo" android:gravity="top|left"/>
 
     <item>
         <bitmap android:src="@drawable/logo" android:gravity="center" />
