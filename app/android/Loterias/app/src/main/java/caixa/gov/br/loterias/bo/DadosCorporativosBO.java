@@ -4,6 +4,8 @@ import android.content.Context;
 
 import com.android.volley.NetworkResponse;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.util.Collection;
 import java.util.LinkedHashMap;
 
@@ -11,6 +13,7 @@ import caixa.gov.br.loterias.BuildConfig;
 import caixa.gov.br.loterias.bo.silce.SilceClient;
 import caixa.gov.br.loterias.bo.silce.data.UsuarioLogadoSingleton;
 import caixa.gov.br.loterias.bo.silce.dto.ApostaFavoritaDTO;
+import caixa.gov.br.loterias.bo.silce.dto.BairroDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.ListDTOEnumIntegerResponse;
 import caixa.gov.br.loterias.bo.silce.dto.MunicipioDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.ParametrosSimulacaoResponse;
@@ -61,6 +64,27 @@ public class DadosCorporativosBO {
 
         silceClient.getConnection().get(SilceClient.MUNICIPIOS_PATH, queryParams, MunicipioDTOResponse.class,
                 silceClient.volleyListener(listener, MunicipioDTOResponse.class),
+                silceClient.volleyErrorListener(errorListener), new LinkedHashMap<String, String>());
+    }
+
+    public void bairros(String idUf, String numeroCidade, String digitoVerificador, String cep, final SilceClient.Listener<BairroDTOResponse> listener,
+                        final SilceClient.ErrorListener errorListener) {
+
+        LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
+        if (StringUtils.isNotEmpty(idUf)) {
+            queryParams.put("idUF", idUf);
+        }
+        if (StringUtils.isNotEmpty(numeroCidade)) {
+            queryParams.put("numero", numeroCidade);
+        }
+        if (StringUtils.isNotEmpty(digitoVerificador)) {
+            queryParams.put("digitoVerificador", digitoVerificador);
+        }
+        if (StringUtils.isNotEmpty(cep)) {
+            queryParams.put("cep", cep);
+        }
+
+        silceClient.getConnection().get(SilceClient.BAIRROS_PATH, queryParams, BairroDTOResponse.class, silceClient.volleyListener(listener, BairroDTOResponse.class),
                 silceClient.volleyErrorListener(errorListener), new LinkedHashMap<String, String>());
     }
 
