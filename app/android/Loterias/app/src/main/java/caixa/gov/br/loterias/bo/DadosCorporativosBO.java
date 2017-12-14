@@ -153,11 +153,11 @@ public class DadosCorporativosBO {
 
     public void buscarLotericasHabilitadas(final SilceClient.Listener<ListDTOEnumIntegerResponse> listener, final SilceClient.ErrorListener errorListerner) {
 
-        silceClient.getConnection().get(SilceClient.LOTERIAS_HABILITADAS_PATH, new LinkedHashMap<String, String>(), ListDTOEnumIntegerResponse.class,
+        silceClient.getConnection().get(SilceClient.LOTERICAS_HABILITADAS_PATH, new LinkedHashMap<String, String>(), ListDTOEnumIntegerResponse.class,
                 silceClient.volleyListener(listener, ListDTOEnumIntegerResponse.class), silceClient.volleyErrorListener(errorListerner), new LinkedHashMap<String, String>());
     }
 
-    public void buscarLotericas(String cep, BairroDTO bairroDTO, final SilceClient.Listener<LotericaDTOResponse> listener, final SilceClient.ErrorListener errorListerner) {
+    public void buscarLotericasCepOrBairroDTO(String cep, BairroDTO bairroDTO, final SilceClient.Listener<LotericaDTOResponse> listener, final SilceClient.ErrorListener errorListerner) {
 
         LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
         if (StringUtils.isNotEmpty(cep)) {
@@ -173,7 +173,15 @@ public class DadosCorporativosBO {
             queryParams.put("pesquisaInteligente", "true");
         }
 
-        silceClient.getConnection().get(SilceClient.LOTERIAS_PATH, new LinkedHashMap<String, String>(), LotericaDTOResponse.class,
+        silceClient.getConnection().get(SilceClient.LOTERICAS_PATH, new LinkedHashMap<String, String>(), LotericaDTOResponse.class,
+                silceClient.volleyListener(listener, LotericaDTOResponse.class), silceClient.volleyErrorListener(errorListerner), new LinkedHashMap<String, String>());
+    }
+
+    public void buscarLoteriasCodigoCompleto(String codigoCompleto, final SilceClient.Listener<LotericaDTOResponse> listener, final SilceClient.ErrorListener errorListerner){
+        LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
+        queryParams.put("codigoCompleto", codigoCompleto);
+
+        silceClient.getConnection().get(SilceClient.LOTERICAS_CODIGO_COMPLETO_PATH, new LinkedHashMap<String, String>(), LotericaDTOResponse.class,
                 silceClient.volleyListener(listener, LotericaDTOResponse.class), silceClient.volleyErrorListener(errorListerner), new LinkedHashMap<String, String>());
     }
 

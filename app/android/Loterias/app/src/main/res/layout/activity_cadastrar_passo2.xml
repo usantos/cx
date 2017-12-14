@@ -251,7 +251,7 @@
                             android:drawableRight="@drawable/icon_duvida"
                             android:ems="10"
                             android:hint="@string/codigo_loterica"
-                            android:inputType="number"
+                            android:inputType="textPersonName"
                             android:textColor="@color/cinza"
                             android:textSize="16sp" />
                     </android.support.design.widget.TextInputLayout>

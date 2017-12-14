@@ -52,7 +52,7 @@ public class CadastroActivity extends AppCompatActivity {
     protected String bairroSelected = "";
     protected static ApostadorDTO apostadorDTO;
     private boolean isMunicipioUsuario;
-    private MunicipioIdDTO municipioIdDTOLoteria;
+    protected MunicipioIdDTO municipioIdDTOLoteria;
 
     protected void createToobar() {
         setTitle(R.string.title_activity_toolbar);
@@ -327,117 +327,6 @@ public class CadastroActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 municipioSelect = "";
-                dialog.dismiss();
-            }
-        });
-
-        dialog.show();
-    }
-
-    protected void addListenerBairro(EditText editTextBairro, List<String> listBairros) {
-        editTextBairroContent = editTextBairro;
-        this.listBairros = listBairros;
-        editTextBairroContent.setClickable(true);
-        editTextBairroContent.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                getBairros();
-            }
-        });
-    }
-
-    private void getBairros() {
-
-        if (StringUtils.isEmpty(municipioSelect)) {
-            showDialogBairro();
-        } else {
-            listBairros = new ArrayList<String>();
-            final View loadViewProgress = LoadingViewLoterias.init(this);
-
-            DadosCorporativosBO dadosCorporativosBO = new DadosCorporativosBO(CadastroActivity.this);
-            dadosCorporativosBO.bairros(municipioIdDTOLoteria.getIdUF().toString(), municipioIdDTOLoteria.getNumero().toString(),
-                    municipioIdDTOLoteria.getDigitoVerificador().toString(), null, new SilceClient.Listener<BairroDTOResponse>() {
-                        @Override
-                        public void onResponse(BairroDTOResponse response) {
-                            LoadingViewLoterias.stop(loadViewProgress);
-                            for (BairroDTO bairro : response.getPayload()) {
-                                listBairros.add(bairro.getNome());
-                            }
-                            modalBairros();
-                        }
-                    }, new SilceClient.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            LoadingViewLoterias.stop(loadViewProgress);
-                            ViewUtils.alert(CadastroActivity.this, "ERRO");
-                        }
-                    });
-        }
-    }
-
-    public void showDialogBairro() {
-        if (myDialog == null) {
-            myDialog = new AlertDialog.Builder(this)
-                    .setTitle("Atenção")
-                    .setMessage("Selecione primeiro o Município, assim nossa precisão de Bairros será incrível.")
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            myDialog.dismiss();
-                        }
-                    })
-                    .create();
-        }
-        myDialog.show();
-    }
-
-    private void modalBairros() {
-        // custom dialog
-        final Dialog dialog = new Dialog(this);
-        dialog.setContentView(R.layout.custom_dialog_list_view);
-
-        // set the custom dialog components - listview and button
-
-        final ListView listViewItens = (ListView) dialog.findViewById(R.id.listaItensDialog);
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(CadastroActivity.this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, listBairros);
-
-        // Assign adapter to ListView
-        listViewItens.setAdapter(adapter);
-        // ListView Item Click Listener
-        listViewItens.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                // ListView Clicked item index
-                int itemPosition = position;
-
-                // ListView Clicked item value
-                String itemValue = (String) listViewItens.getItemAtPosition(position);
-                bairroSelected = itemValue;
-            }
-
-        });
-
-        Button dialogButtonOk = (Button) dialog.findViewById(R.id.dialogButtonOK);
-        Button dialogButtonCancelar = (Button) dialog.findViewById(R.id.dialogButtonCancelar);
-
-        // if button is clicked, close the custom dialog
-        dialogButtonOk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editTextBairroContent.setText(bairroSelected);
-                dialog.dismiss();
-            }
-        });
-
-        dialogButtonCancelar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                bairroSelected = "";
                 dialog.dismiss();
             }
         });
