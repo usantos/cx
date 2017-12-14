@@ -34,17 +34,25 @@ import caixa.gov.br.loterias.bo.ApostaBO;
 import caixa.gov.br.loterias.bo.DadosCorporativosBO;
 import caixa.gov.br.loterias.bo.silce.SilceClient;
 import caixa.gov.br.loterias.bo.silce.data.CompletaJogoRsp;
+import caixa.gov.br.loterias.bo.silce.dto.AgrupadorDTOApostaDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.ApostaFavoritaDTO;
+import caixa.gov.br.loterias.bo.silce.dto.DTOEnumCharacter;
 import caixa.gov.br.loterias.bo.silce.dto.DTOEnumInteger;
 import caixa.gov.br.loterias.bo.silce.dto.EquipeDTO;
+import caixa.gov.br.loterias.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroEquipe;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroJogoDTO;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroValorApostaDTO;
+import caixa.gov.br.loterias.bo.silce.dto.TipoConcursoEnum;
 import caixa.gov.br.loterias.utils.LoadingViewLoterias;
 import caixa.gov.br.loterias.view.Inteface.CartelaActivityInterface;
 
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.view.SimularApostaActivity;
 import caixa.gov.br.loterias.view.custom.ExpandableHeightGridView;
@@ -68,13 +76,13 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
     SimularDezenasAdapter simularDezenasAdapter;
 
     //mocks
-    int qtdDezenasPossiveisSelecionado;
     int numeroConcursoAtual;
     int qtdCartelasCarrinho = 0;
     String dataSorteioAtual;
     private SimularApostaActivity parentActivity;
     private ParametroJogoDTO parametroJogo;
     private CartelaFragmentListener cartelaFragmentListener;
+    BigDecimal valorTotalAposta;
 
     public CartelaFragment() {
         // Required empty public constructor
@@ -96,6 +104,8 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
             valorEmReais = valorEmReais.multiply(BigDecimal.valueOf(qtdTeimosinhas).movePointLeft(0));
             valorAposta.setText(ViewUtils.getMoedaFormat(valorEmReais));
         }
+
+        valorTotalAposta = valorEmReais;
     }
 
     @Override
@@ -123,7 +133,6 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
 
     public void cartelaFragmentBuilder(Bundle dataBundle){
         if (dataBundle != null){
-            qtdDezenasPossiveisSelecionado = dataBundle.getInt("qtdDezenasPossiveisSelecionado");
             numeroConcursoAtual = dataBundle.getInt("numeroConcursoAtual");
             dataSorteioAtual = dataBundle.getString("dataSorteioAtual");
 
@@ -167,19 +176,80 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
         cartelaFragmentListener = null;
     }
 
+    private void adicionarApostaNoCarrinho () {
+        final ApostaBO apostaBO = new ApostaBO(getActivity());
+        final View loadViewProgress = LoadingViewLoterias.init(getActivity());
+
+        IdentificaoDeUmaApostaDas8Modalidades aposta = new IdentificaoDeUmaApostaDas8Modalidades();
+        aposta.setId(new Long(0));
+        aposta.setModalidade(parametroJogo.getConcurso().getModalidade());
+
+        DTOEnumCharacter tipoConcurso = new DTOEnumCharacter();
+
+        String valorTipoConcurso = parametroJogo.getConcurso().getTipoConcurso() == TipoConcursoEnum.NORMAL ? "1" : "2";
+        tipoConcurso.setValor(valorTipoConcurso);
+        tipoConcurso.setDescricao(parametroJogo.getConcurso().getTipoConcurso().toString());
+        aposta.setTipoConcurso(tipoConcurso);
+        aposta.setPartidasLotogol(null);
+        aposta.setPartidasLoteca(null);
+        aposta.setNumerosSelecionados(dezenasSelecionadas);
+
+        DTOEnumInteger indicadorSurpresinha = new DTOEnumInteger();
+        indicadorSurpresinha.setValor(1);
+        indicadorSurpresinha.setDescricao("");
+
+        aposta.setIndicadorSurpresinha(indicadorSurpresinha);
+        aposta.setValor(valorTotalAposta);
+        aposta.setConcursoAlvo(parametroJogo.getConcurso().getNumero());
+        aposta.setQuantidadeTeimosinhas(parentActivity.qtdConcursoSelecionado);
+        aposta.setQuantidadeApostas(1);
+        aposta.setEspelho(false);
+
+        aposta.setTimeDoCoracao(null);
+
+        aposta.setConcursoInicial(0);
+        aposta.setSituacao(null);
+        aposta.setTroca(false);
+
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Date date = new Date();
+
+        DateFormat hourFormat = new SimpleDateFormat("HH:mm:ss");
+        Date hour = new Date();
+
+        aposta.setDataEfetivacao(dateFormat.format(date));
+        aposta.setHoraEfetivacao(hourFormat.format(hour));
+        aposta.setVinculoEspelho(new Long(0));
+        aposta.setQuantidadeNumeros(dezenasSelecionadas.size());
+        aposta.setSurpresinha(false);
+
+        apostaBO.adicionarApostaNoCarrinho(aposta, new SilceClient.Listener<AgrupadorDTOApostaDTOResponse>() {
+            @Override
+            public void onResponse(AgrupadorDTOApostaDTOResponse response) {
+                TextView count = getView().findViewById(R.id.textViewCarrinhoCartelaCount);
+
+                qtdCartelasCarrinho++;
+
+                count.setText(String.format("%d", qtdCartelasCarrinho));
+
+                cartelaFragmentListener.adicionarApostaCarrinho();
+            }
+        }, new SilceClient.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                LoadingViewLoterias.stop(loadViewProgress);
+                ViewUtils.alert(getActivity(), "ERRO");
+            }
+        });
+    }
+
     // METODO DO PROTOCOLO ONCLICK
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case  R.id.botaoAdicionarCompletarCartela: {
-                if (dezenasSelecionadas.size() == qtdDezenasPossiveisSelecionado){
-                    TextView count = getView().findViewById(R.id.textViewCarrinhoCartelaCount);
-
-                    qtdCartelasCarrinho++;
-
-                    count.setText(String.format("%d", qtdCartelasCarrinho));
-
-                    cartelaFragmentListener.adicionarApostaCarrinho();
+                if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado){
+                    adicionarApostaNoCarrinho();
                 } else{
                     preencheNumerosAleatorios();
                 }
@@ -303,13 +373,15 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
     private void preencheNumerosAleatorios(){
         ApostaBO apostaBO = new ApostaBO(getActivity());
 
-        apostaBO.completaJogo(qtdDezenasPossiveisSelecionado, dezenasSelecionadas, parametroJogo.getQuantidadeMinima(), parametroJogo.getQuantidadeMaxima(), new SilceClient.Listener<CompletaJogoRsp>() {
+        apostaBO.completaJogo(parentActivity.qtdDezenasPossiveisSelecionado, dezenasSelecionadas, 1, parametroJogo.getPrognosticoMaximo(), new SilceClient.Listener<CompletaJogoRsp>() {
             @Override
             public void onResponse(CompletaJogoRsp response) {
                 dezenasSelecionadas.clear();
                 dezenasSelecionadas.addAll(response.getPayload());
                 simularDezenasAdapter.notifyDataSetChanged();
                 verificaQtdDezenasJaSelecionadas();
+                verificaSeMostraBotaoLimparAposta(getView());
+                verificaSeMostraSalvarApostaView(getView());
             }
         }, new SilceClient.ErrorListener() {
             @Override
@@ -375,7 +447,7 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
     }
 
     private void verificaSeMostraSalvarApostaView(View fragmentView){
-        if (dezenasSelecionadas.size() == qtdDezenasPossiveisSelecionado){
+        if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado){
             RelativeLayout salvarApostaLayout = fragmentView.findViewById(R.id.salvarApostaLayout);
 
             salvarApostaLayout.setVisibility(View.VISIBLE);
@@ -388,10 +460,10 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
     }
 
     private void verificaQtdDezenasJaSelecionadas(){
-        if (dezenasSelecionadas.size() == qtdDezenasPossiveisSelecionado){
+        if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado){
             botaoFinalizar.setBackgroundColor(ContextCompat.getColor(getActivity(), typeGameColorLight));
             botaoFinalizar.setText(ViewUtils.configuraButtonText(getActivity(), getString(R.string.adicionarAoCarrinho), 9));
-        }else if (dezenasSelecionadas.size() > qtdDezenasPossiveisSelecionado) {
+        }else if (dezenasSelecionadas.size() > parentActivity.qtdDezenasPossiveisSelecionado) {
             dezenasSelecionadas.clear();
             simularDezenasAdapter.notifyDataSetChanged();
             botaoFinalizar.setBackgroundColor(ContextCompat.getColor(getActivity(), typeGameColorLight));
@@ -420,10 +492,10 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
                     dezenasSelecionadas.remove(valorSelecionado);
                 } else {
                     int maxNumerosParaSelecionar = parametroJogo.getQuantidadeMaxima();
-                    if (dezenasSelecionadas.size() == qtdDezenasPossiveisSelecionado) {
+                    if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) {
                         // VERIFICA SE TEM OPÇÃO DE SELECIONAR MAIS DEZENAS
-                        int qtdDezenasPossiveisSelecionadoAtual = qtdDezenasPossiveisSelecionado;
-                        qtdDezenasPossiveisSelecionado = cartelaFragmentListener.verificaNovoQtdDezenasMax(qtdDezenasPossiveisSelecionado);
+                        int qtdDezenasPossiveisSelecionadoAtual = parentActivity.qtdDezenasPossiveisSelecionado;
+                        parentActivity.qtdDezenasPossiveisSelecionado = cartelaFragmentListener.verificaNovoQtdDezenasMax(parentActivity.qtdDezenasPossiveisSelecionado);
 
                         if (qtdDezenasPossiveisSelecionadoAtual < maxNumerosParaSelecionar) {
                             if (flagApostaSalva) {
@@ -507,11 +579,11 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
     // METODOS DA INTERFACE DA ACTIVITY
     @Override
     public void qtdDezenasPossiveisSelecionado(int qtdDezenas) {
-        if (qtdDezenasPossiveisSelecionado < qtdDezenas) {
+        if (parentActivity.qtdDezenasPossiveisSelecionado < qtdDezenas) {
             atualizaValorTotalAposta(qtdDezenas, parentActivity.qtdConcursoSelecionado);
         }
 
-        qtdDezenasPossiveisSelecionado = qtdDezenas;
+        parentActivity.qtdDezenasPossiveisSelecionado = qtdDezenas;
     }
 
     // INTERFACE DO FRAGMENT PARA A ACTIVITY

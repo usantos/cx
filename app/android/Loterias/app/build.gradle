@@ -49,6 +49,12 @@ android {
             buildConfigField "boolean", "CAIXA_NETWORK_STUB", "false"
             buildConfigField "String", "CAIXA_BASE_URL_SILCE", "\"http://simlo.des.caixa/silce-servico-rest/rest/v1/\""
         }
+        caixalab {
+            initWith debug
+            //applicationIdSuffix ".caixadev"
+            buildConfigField "boolean", "CAIXA_NETWORK_STUB", "false"
+            buildConfigField "String", "CAIXA_BASE_URL_SILCE", "\"http://172.16.141.157:80/silce-servico-rest/rest/v1/\""
+        }
         proxycap {
             initWith debug
             //applicationIdSuffix ".proxycap"

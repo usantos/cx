@@ -73,6 +73,8 @@ public class SilceConnection {
 
     private <T> String prepareBody(T body) {
         try {
+            String teste  = (new Gson()).toJson(body);
+
             Bin encryptedBody = silceCrypto.encryptBody((new Gson()).toJson(body));
             String bodyStr = encryptedBody.toIso8859_1()
                     + "!#!#!" + KEY.toIso8859_1()

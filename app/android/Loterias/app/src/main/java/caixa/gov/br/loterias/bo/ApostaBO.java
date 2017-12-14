@@ -2,6 +2,8 @@ package caixa.gov.br.loterias.bo;
 
 import android.content.Context;
 
+import com.android.volley.NetworkResponse;
+
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -9,6 +11,10 @@ import java.util.List;
 import caixa.gov.br.loterias.BuildConfig;
 import caixa.gov.br.loterias.bo.silce.SilceClient;
 import caixa.gov.br.loterias.bo.silce.data.CompletaJogoRsp;
+import caixa.gov.br.loterias.bo.silce.data.UsuarioLogadoSingleton;
+import caixa.gov.br.loterias.bo.silce.dto.AgrupadorDTOApostaDTOResponse;
+import caixa.gov.br.loterias.bo.silce.dto.ApostaFavoritaDTO;
+import caixa.gov.br.loterias.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import caixa.gov.br.loterias.bo.silce.internals.SilceConnection;
 import caixa.gov.br.loterias.bo.silce.internals.SilceSingleton;
 
@@ -47,6 +53,20 @@ public class ApostaBO{
         silceClient.getConnection().get(SilceClient.COMPLETA_JOGO_PATH, queryParams, CompletaJogoRsp.class
                 , silceClient.volleyListener(listener, CompletaJogoRsp.class),
                 silceClient.volleyErrorListener(errorListener), new LinkedHashMap<String, String>());
+    }
+
+    public void adicionarApostaNoCarrinho(final IdentificaoDeUmaApostaDas8Modalidades aposta,
+                                          final SilceClient.Listener<AgrupadorDTOApostaDTOResponse> listener,
+                                          final SilceClient.ErrorListener errorListener) {
+
+        LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
+        headers.put("Authorization", "Bearer " + UsuarioLogadoSingleton.getInstance().token);
+
+
+        silceClient.getConnection().post(SilceClient.INCLUIR_APOSTA_CARRINHO_PATH, new LinkedHashMap<String, String>(),
+                aposta, AgrupadorDTOApostaDTOResponse.class,
+                silceClient.volleyListener(listener, AgrupadorDTOApostaDTOResponse.class),
+                silceClient.volleyErrorListener(errorListener),headers);
     }
 
     private static <T> String join(Collection<T> collection, String delimiter){
