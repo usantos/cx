@@ -11,6 +11,7 @@ import java.net.URLEncoder;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import static com.android.volley.Request.Method.DELETE;
 import static com.android.volley.Request.Method.GET;
 import static com.android.volley.Request.Method.POST;
 
@@ -38,6 +39,18 @@ public class SilceConnection {
                                     Response.ErrorListener errorListener, LinkedHashMap<String, String> headers) {
         String url = fillUrlWithQueryParams(path, queryParams);
         GsonRequest<String, T> req = new GsonRequest<>(GET, url, responseDataClass,
+                headers, listener, errorListener);
+        requestQueue.add(req);
+        requestQueue.start();
+    }
+
+    public <T> void  delete(String path, String param,
+                         Class<T> responseDataClass,
+                         Response.Listener<T> listener,
+                         Response.ErrorListener errorListener, LinkedHashMap<String, String> headers) {
+        String url = (path + param);
+        url = fillUrl(url);
+        GsonRequest<String, T> req = new GsonRequest<>(DELETE, url, responseDataClass,
                 headers, listener, errorListener);
         requestQueue.add(req);
         requestQueue.start();

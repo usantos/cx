@@ -70,6 +70,7 @@
         android:gravity="center"
         android:background="@drawable/close"
         android:layout_marginHorizontal="10dp"
+        android:id="@+id/excluirApostaCarrinho"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"

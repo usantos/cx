@@ -14,6 +14,7 @@ import caixa.gov.br.loterias.bo.silce.data.CompletaJogoRsp;
 import caixa.gov.br.loterias.bo.silce.data.UsuarioLogadoSingleton;
 import caixa.gov.br.loterias.bo.silce.dto.AgrupadorDTOApostaDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.ApostaFavoritaDTO;
+import caixa.gov.br.loterias.bo.silce.dto.CarrinhoDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import caixa.gov.br.loterias.bo.silce.dto.IncluirSurpresinhaDTO;
 import caixa.gov.br.loterias.bo.silce.internals.SilceConnection;
@@ -82,6 +83,22 @@ public class ApostaBO{
                 aposta, AgrupadorDTOApostaDTOResponse.class,
                 silceClient.volleyListener(listener, AgrupadorDTOApostaDTOResponse.class),
                 silceClient.volleyErrorListener(errorListener),headers);
+    }
+
+    public void buscaCarrinho(final SilceClient.Listener<CarrinhoDTOResponse> listener, final SilceClient.ErrorListener errorListerner) {
+        LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
+        headers.put("Authorization", "Bearer " + UsuarioLogadoSingleton.getInstance().token);
+
+        silceClient.getConnection().get(SilceClient.BUSCA_CARRINHO_PATH, new LinkedHashMap<String, String>(), CarrinhoDTOResponse.class,
+                silceClient.volleyListener(listener, CarrinhoDTOResponse.class), silceClient.volleyErrorListener(errorListerner), headers);
+    }
+
+    public void deleteApostaCarrinho(String id ,final SilceClient.Listener<CarrinhoDTOResponse> listener, final SilceClient.ErrorListener errorListerner) {
+        LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
+        headers.put("Authorization", "Bearer " + UsuarioLogadoSingleton.getInstance().token);
+
+        silceClient.getConnection().delete(SilceClient.DELETE_APOSTA_CARRINHO_PATH, id, CarrinhoDTOResponse.class,
+                silceClient.volleyListener(listener, CarrinhoDTOResponse.class), silceClient.volleyErrorListener(errorListerner), headers);
     }
 
     private static <T> String join(Collection<T> collection, String delimiter){

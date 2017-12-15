@@ -189,14 +189,6 @@ public class DadosCorporativosBO {
                 silceClient.volleyListener(listener, LotericaCodigoWrapperResponse.class), silceClient.volleyErrorListener(errorListerner), new LinkedHashMap<String, String>());
     }
 
-    public void buscaCarrinho(final SilceClient.Listener<CarrinhoDTOResponse> listener, final SilceClient.ErrorListener errorListerner) {
-        LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
-        headers.put("Authorization", "Bearer " + UsuarioLogadoSingleton.getInstance().token);
-
-        silceClient.getConnection().get(SilceClient.BUSCA_CARRINHO_PATH, new LinkedHashMap<String, String>(), CarrinhoDTOResponse.class,
-                silceClient.volleyListener(listener, CarrinhoDTOResponse.class), silceClient.volleyErrorListener(errorListerner), headers);
-    }
-
 
     private static <T> String join(Collection<T> collection, String delimiter) {
         StringBuffer result = new StringBuffer("");

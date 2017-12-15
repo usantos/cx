@@ -9,23 +9,33 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.android.volley.VolleyError;
+
 import java.util.ArrayList;
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.bo.ApostaBO;
+import caixa.gov.br.loterias.bo.silce.SilceClient;
+import caixa.gov.br.loterias.bo.silce.dto.CarrinhoDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import caixa.gov.br.loterias.bo.silce.dto.ModalidadeEnum;
 import caixa.gov.br.loterias.model.Modalidade;
 import caixa.gov.br.loterias.utils.EstiloModalidade;
+import caixa.gov.br.loterias.utils.LoadingViewLoterias;
+import caixa.gov.br.loterias.utils.MensagensNetwork;
 import caixa.gov.br.loterias.utils.ViewUtils;
+import caixa.gov.br.loterias.view.CarrinhoActivity;
 
 public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<CarrinhoApostasListViewAdapter.ApostaHolder> {
     private Context context;
     private ArrayList<IdentificaoDeUmaApostaDas8Modalidades> apostas;
+    private CarrinhoActivity parentActivity;
 
-    public CarrinhoApostasListViewAdapter(ArrayList<IdentificaoDeUmaApostaDas8Modalidades> apostas, Context context){
+    public CarrinhoApostasListViewAdapter(CarrinhoActivity parentActivity, ArrayList<IdentificaoDeUmaApostaDas8Modalidades> apostas, Context context){
         this.context = context;
         this.apostas = apostas;
+        this.parentActivity = parentActivity;
     }
-
 
     static class ApostaHolder extends RecyclerView.ViewHolder{
         final TextView textViewTipoAposta;
@@ -49,12 +59,19 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
     }
 
     @Override
-    public void onBindViewHolder(ApostaHolder holder, int position) {
+    public void onBindViewHolder(ApostaHolder holder, final int position) {
         EstiloModalidade estilo = new EstiloModalidade(apostas.get(position).getModalidade());
 
         holder.textViewTipoAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorClara()));
         holder.valorAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorEscura()));
         holder.textViewTipoAposta.setText(ViewUtils.capitalized(ModalidadeEnum.fromString(apostas.get(position).getModalidade())));
+
+        holder.itemView.findViewById(R.id.excluirApostaCarrinho).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deletarAposta(apostas.get(position).getId().toString());
+            }
+        });
 
         String numeroStr = "";
         if (apostas.get(position).getIndicadorSurpresinha().getValor() == 2) {
@@ -79,6 +96,25 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
         holder.valorAposta.setText(caixa.gov.br.loterias.utils.ViewUtils.getMoedaFormat(apostas.get(position).getValor()));
     }
 
+    private void deletarAposta (String idAposta) {
+        final ApostaBO apostaBO = new ApostaBO(parentActivity);
+        final View loadViewProgress = LoadingViewLoterias.init(parentActivity);
+
+        apostaBO.deleteApostaCarrinho(idAposta, new SilceClient.Listener<CarrinhoDTOResponse>() {
+            @Override
+            public void onResponse(CarrinhoDTOResponse response) {
+                LoadingViewLoterias.stop(loadViewProgress);
+                parentActivity.carrinho = response.getPayload();
+                parentActivity.atualizaLayout();
+            }
+        }, new SilceClient.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                LoadingViewLoterias.stop(loadViewProgress);
+                ViewUtils.alert(parentActivity, MensagensNetwork.setMensagem(error, context));
+            }
+        });
+    }
 
     @Override
     public int getItemCount() {
