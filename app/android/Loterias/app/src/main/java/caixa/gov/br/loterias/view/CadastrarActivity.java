@@ -5,9 +5,16 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AlertDialog;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+
+import com.android.volley.VolleyError;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -21,12 +28,17 @@ import java.util.Date;
 import java.util.List;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.bo.DadosCorporativosBO;
+import caixa.gov.br.loterias.bo.silce.SilceClient;
 import caixa.gov.br.loterias.bo.silce.dto.ApostadorDTO;
+import caixa.gov.br.loterias.bo.silce.dto.BairroDTO;
+import caixa.gov.br.loterias.bo.silce.dto.BairroDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.MunicipioIdDTO;
 import caixa.gov.br.loterias.bo.silce.dto.SexoAbrvEnum;
 import caixa.gov.br.loterias.utils.AppUtils;
 import caixa.gov.br.loterias.utils.CustomAlert;
 import caixa.gov.br.loterias.utils.DateUtils;
+import caixa.gov.br.loterias.utils.LoadingViewLoterias;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.utils.segmentedbutton.SegmentedButtonGroup;
 
@@ -146,6 +158,39 @@ public class CadastrarActivity extends CadastroActivity {
                 }
             }
         });
+
+        this.editTextCepContent.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String cep = editable.toString().replace("-", "").trim();
+                if (cep.length() == 8) {
+                    buscarBairroPorCep(cep);
+                }
+            }
+        });
+
+//        this.editTextCepContent.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//            @Override
+//            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+//
+//                String cep = textView.getText().toString().replace("-", "").trim();
+//
+//                if (StringUtils.isNotEmpty(cep) && (keyEvent != null && (keyEvent.getKeyCode() == KeyEvent.KEYCODE_NAVIGATE_NEXT)) || (i == EditorInfo.IME_ACTION_NEXT)) {
+//                    buscarBairroPorCep(cep);
+//                }
+//                return false;
+//            }
+//        });
     }
 
     public Dialog onCreateDialogSingleChoice(List<String> listString, String TituloAlert) {
@@ -223,5 +268,37 @@ public class CadastrarActivity extends CadastroActivity {
         apostadorDTO.setAceitaReceberNoticias(Boolean.TRUE);
         apostadorDTO.setSexo(sexo);
         apostadorDTO.setMercadoPagoCustomerId("0");
+    }
+
+    private void buscarBairroPorCep(String cep) {
+        final View loadViewProgress = LoadingViewLoterias.init(this);
+        final DadosCorporativosBO dadosCorporativosBO = new DadosCorporativosBO(CadastrarActivity.this);
+        dadosCorporativosBO.bairros(null, null, null, cep, new SilceClient.Listener<BairroDTOResponse>() {
+            @Override
+            public void onResponse(BairroDTOResponse response) {
+                LoadingViewLoterias.stop(loadViewProgress);
+                if (response.getPayload() != null && !response.getPayload().isEmpty()) {
+                    BairroDTO bairroDTO = response.getPayload().get(0);
+                    editTextUFContent.setText(bairroDTO.getMunicipio().getUf().getSigla());
+                    editTextMunicipioContent.setText(bairroDTO.getMunicipio().getNome());
+                    apostadorDTO.setMunicipioId(bairroDTO.getMunicipio().getId());
+                } else {
+                    limparBuscaPorCep();
+                }
+            }
+        }, new SilceClient.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                LoadingViewLoterias.stop(loadViewProgress);
+                limparBuscaPorCep();
+                ViewUtils.alert(CadastrarActivity.this, "ERRO");
+            }
+        });
+    }
+
+    private void limparBuscaPorCep() {
+        editTextUFContent.setText("");
+        editTextMunicipioContent.setText("");
+        apostadorDTO.setMunicipioId(null);
     }
 }

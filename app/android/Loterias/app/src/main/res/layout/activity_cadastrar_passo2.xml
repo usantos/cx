@@ -310,7 +310,7 @@
                         android:id="@+id/termoPolitica"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/termo_de_uso_underline_política_de_privacidade" />
+                        android:text="@string/termo_de_uso_underline" />
                 </LinearLayout>
             </LinearLayout>
 

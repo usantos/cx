@@ -227,6 +227,7 @@ public class CadastroActivity extends AppCompatActivity {
                 }
             }
             final View loadViewProgress = LoadingViewLoterias.init(this);
+            listMunicipios = new ArrayList<String>();
 
             DadosCorporativosBO dadosCorporativosBO = new DadosCorporativosBO(CadastroActivity.this);
             dadosCorporativosBO.municipios(idUf, new SilceClient.Listener<MunicipioDTOResponse>() {

@@ -134,12 +134,16 @@ public class CadastrarPasso2Activity extends CadastroActivity {
                 }
             }
         });
+
         this.editTextCEPPasso2Content.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                if ((keyEvent != null && (keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (i == EditorInfo.IME_ACTION_DONE)) {
-                    buscarLoteriasLocalizacaoCep(textView.getText().toString().replace("-", ""), null);
+
+                String cep = textView.getText().toString().replace("-", "").trim();
+
+                if (StringUtils.isNotEmpty(cep) && (keyEvent != null && (keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (i == EditorInfo.IME_ACTION_DONE)) {
+                    buscarLoteriasLocalizacaoCep(cep, null);
                 }
                 return false;
             }

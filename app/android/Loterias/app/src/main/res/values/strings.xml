@@ -74,8 +74,8 @@
     <string name="erro_500">Não foi possível concluir essa operação. Por favor, teste novamente.</string>
     <string name="seminternet">Sem conexão com a internet.</string>
     <string name="btn_finalizar">Finalizar</string>
-    <string name="declaracao_termo_uso_politica_privacidade">Declaro ter lido e concordado com os </string>
-    <string name="termo_de_uso_underline_política_de_privacidade"><u>termos de uso</u> e <u>política de privacidade</u>.</string>
+    <string name="declaracao_termo_uso_politica_privacidade">Declaro ter lido e concordado com o</string>
+    <string name="termo_de_uso_underline"><u>termos de uso</u>.</string>
     <string name="CEP">CEP</string>
     <string name="codigo_loterica">Código Lotérica</string>
     <string name="MA002">Por favor, verifique o preenchimento dos campos:</string>
