@@ -43,6 +43,8 @@ import caixa.gov.br.loterias.bo.silce.dto.DTOEnumInteger;
 import caixa.gov.br.loterias.bo.silce.dto.ListDTOEnumIntegerResponse;
 import caixa.gov.br.loterias.bo.silce.dto.LoteriasHabilitadaEnum;
 import caixa.gov.br.loterias.bo.silce.dto.Loterica;
+import caixa.gov.br.loterias.bo.silce.dto.LotericaCodigoWrapperResponse;
+import caixa.gov.br.loterias.bo.silce.dto.LotericaDTO;
 import caixa.gov.br.loterias.bo.silce.dto.LotericaDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.UsuarioLogadoResponse;
 import caixa.gov.br.loterias.utils.LoadingViewLoterias;
@@ -421,9 +423,9 @@ public class CadastrarPasso2Activity extends CadastroActivity {
 
     private void buscarLoteriasCodigoCompleto() {
         DadosCorporativosBO dadosCorporativosBO = new DadosCorporativosBO(CadastrarPasso2Activity.this);
-        dadosCorporativosBO.buscarLoteriasCodigoCompleto(editTextCodigoLotericaPasso2Content.getText().toString(), new SilceClient.Listener<LotericaDTOResponse>() {
+        dadosCorporativosBO.buscarLoteriasCodigoCompleto(editTextCodigoLotericaPasso2Content.getText().toString(), new SilceClient.Listener<LotericaCodigoWrapperResponse>() {
             @Override
-            public void onResponse(LotericaDTOResponse response) {
+            public void onResponse(LotericaCodigoWrapperResponse response) {
                 popularRadio(new ArrayList<Loterica>());
 
             }
