@@ -68,7 +68,7 @@
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:gravity="center"
-        android:background="@drawable/icon_excluir"
+        android:background="@drawable/close"
         android:layout_marginHorizontal="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"

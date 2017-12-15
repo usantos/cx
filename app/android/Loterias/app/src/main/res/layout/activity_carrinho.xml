@@ -107,7 +107,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="14dp"
                 android:layout_marginStart="14dp"
-                app:srcCompat="@drawable/icon_excluir" />
+                app:srcCompat="@drawable/close" />
         </RelativeLayout>
 
         <Button
