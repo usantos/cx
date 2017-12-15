@@ -187,7 +187,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         configuraBotoesListeners();
     }
 
-    private void atualizaTextoBotoesQtdSelecionadas(){
+    public void atualizaTextoBotoesQtdSelecionadas(){
         qtdNumerosButton.setText(format("%d números", qtdDezenasPossiveisSelecionado));
         if (qtdConcursoSelecionado == 0) {
             qtdConcursosButton.setText("Nenhum");
@@ -248,6 +248,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
             public void onClick(View v) {
                 qtdNumerosButton.setText(textoBotaoPrognosticosSelecionado);
                 cartelaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
+                cartelaFragment.atualizaStatusBotaoFinalizar();
                 if (surpresinhaFragment.parametroJogo != null) {
                     surpresinhaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
                 }
@@ -422,8 +423,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
     // MÉTODOS DO FRAGMENT CARTELAFRAGMENTLISTENER
     @Override
     public int verificaNovoQtdDezenasMax(int qtdDezenasAtual) {
-        if (qtdDezenasAtual < qtdNumerosList.size()){
-            qtdDezenasPossiveisSelecionado += 1;
+        if (qtdDezenasAtual <= parametroSimulacao.getQuantidadeMaxima()){
             atualizaTextoBotoesQtdSelecionadas();
         }
 

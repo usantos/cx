@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.android.volley.NetworkResponse;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -101,14 +102,13 @@ public class ApostaBO{
                 silceClient.volleyListener(listener, CarrinhoDTOResponse.class), silceClient.volleyErrorListener(errorListerner), headers);
     }
 
-    private static <T> String join(Collection<T> collection, String delimiter){
+    private static String join(List<Integer> collection, String delimiter){
         StringBuffer result = new StringBuffer("");
-        boolean first = true;
+        boolean first = false;
 
-        for(T e : collection) {
-            if(!first) {
+        for(Integer e : collection) {
+            if(! (e == collection.get(0))) {
                 result.append(delimiter);
-                first = true;
             }
             result.append(e);
         }

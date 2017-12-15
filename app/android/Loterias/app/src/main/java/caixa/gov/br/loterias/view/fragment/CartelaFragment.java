@@ -80,7 +80,6 @@ public class CartelaFragment extends Fragment implements OnClickListener {
     }
 
     public void atualizaValorTotalAposta (int numPrognostico, int qtdTeimosinhas) {
-
         BigDecimal valorEmReais = BigDecimal.ZERO;
 
         for (ParametroValorApostaDTO parametro : parametroJogo.getValoresAposta()) {
@@ -250,7 +249,7 @@ public class CartelaFragment extends Fragment implements OnClickListener {
             case R.id.botaoLimparAposta:{
                 dezenasSelecionadas.clear();
                 verificaSeMostraBotaoLimparAposta(getView());
-                verificaQtdDezenasJaSelecionadas();
+                atualizaStatusBotaoFinalizar();
                 simularDezenasAdapter.notifyDataSetChanged();
                 voltaSalvarApostaParaLayoutInicial();
             }
@@ -370,7 +369,7 @@ public class CartelaFragment extends Fragment implements OnClickListener {
                 dezenasSelecionadas.clear();
                 dezenasSelecionadas.addAll(response.getPayload());
                 simularDezenasAdapter.notifyDataSetChanged();
-                verificaQtdDezenasJaSelecionadas();
+                atualizaStatusBotaoFinalizar();
                 verificaSeMostraBotaoLimparAposta(getView());
                 verificaSeMostraSalvarApostaView(getView());
             }
@@ -391,7 +390,6 @@ public class CartelaFragment extends Fragment implements OnClickListener {
         botaoFinalizar.setOnClickListener(this);
         botaoFinalizar.setBackgroundColor(ContextCompat.getColor(fragmentView.getContext(), typeGameColorLight));
         botaoFinalizar.setText(ViewUtils.configuraButtonText(fragmentView.getContext(), getString(R.string.completarCartela), 9));
-
 
         Button carrinhoImageView = fragmentView.findViewById(R.id.botaoCarrinho);
         carrinhoImageView.setOnClickListener(this);
@@ -450,12 +448,12 @@ public class CartelaFragment extends Fragment implements OnClickListener {
         }
     }
 
-    private void verificaQtdDezenasJaSelecionadas(){
+    public void atualizaStatusBotaoFinalizar(){
         if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado){
             botaoFinalizar.setBackgroundColor(ContextCompat.getColor(getActivity(), typeGameColorLight));
             botaoFinalizar.setText(ViewUtils.configuraButtonText(getActivity(), getString(R.string.adicionarAoCarrinho), 9));
         }else if (dezenasSelecionadas.size() > parentActivity.qtdDezenasPossiveisSelecionado) {
-            dezenasSelecionadas.clear();
+            //dezenasSelecionadas.clear();
             simularDezenasAdapter.notifyDataSetChanged();
             botaoFinalizar.setBackgroundColor(ContextCompat.getColor(getActivity(), typeGameColorLight));
             botaoFinalizar.setText(ViewUtils.configuraButtonText(getActivity(), getString(R.string.completarCartela), 9));
@@ -490,8 +488,9 @@ public class CartelaFragment extends Fragment implements OnClickListener {
                         parentActivity.qtdDezenasPossiveisSelecionado = cartelaFragmentListener.verificaNovoQtdDezenasMax(parentActivity.qtdDezenasPossiveisSelecionado);
 
                         if (qtdDezenasPossiveisSelecionadoAtual < maxNumerosParaSelecionar) {
+                            parentActivity.qtdDezenasPossiveisSelecionado += 1;
+                            parentActivity.verificaNovoQtdDezenasMax(parentActivity.qtdDezenasPossiveisSelecionado);
                             atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
-
                             if (flagApostaSalva) {
                                 voltaSalvarApostaParaLayoutInicial();
                             }
@@ -506,7 +505,7 @@ public class CartelaFragment extends Fragment implements OnClickListener {
 
                 verificaSeMostraSalvarApostaView(getView());
                 verificaSeMostraBotaoLimparAposta(getView());
-                verificaQtdDezenasJaSelecionadas();
+                atualizaStatusBotaoFinalizar();
                 simularDezenasAdapter.notifyDataSetChanged();
             }
         });
