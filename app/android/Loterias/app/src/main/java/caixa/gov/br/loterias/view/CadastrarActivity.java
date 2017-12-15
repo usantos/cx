@@ -90,6 +90,7 @@ public class CadastrarActivity extends CadastroActivity {
 
 
     private void configuraNavigation() {
+
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
@@ -122,12 +123,12 @@ public class CadastrarActivity extends CadastroActivity {
                 Date dateBorn = DateUtils.stringToDate(textNascimento, DateUtils.PATTERN_DDMM_YYYY);
                 int age = DateUtils.getBetweenAges(calendar, DateUtils.DateToCalendar(dateBorn));
                 if (age < 18) {
-                    CustomAlert.showAlertMessage(this, R.string.label_atencao, R.string.idade_menor_18);
+                    CustomAlert.showAlertMessage(this, R.string.label_atencao, R.string.MN002,null);
                     return false;
                 }
                 return true;
             }
-            CustomAlert.showAlertMessage(this, R.string.label_atencao, R.string.erro_data_invalida);
+            CustomAlert.showAlertMessage(this, R.string.label_atencao, R.string.msg_erro_data_invalida, null);
             return false;
         }
         return true;

@@ -12,15 +12,16 @@ public class CustomAlert {
 
     private static final String TAG = "TAG_CUSTOM_ALERT";
 
-    public static void showAlertMessage(Context context, int titleId, int titleMessage) {
-        showAlertMessage(context, titleId, titleMessage, true);
+    public static void showAlertMessage(Context context, int titleId, int titleMessage, String buttonName) {
+        showAlertMessage(context, titleId, titleMessage, true, buttonName);
     }
 
-    public static void showAlertMessage(Context context, int titleId, int titleMessage, Boolean canCancel) {
-        showAlertMessage(context, context.getResources().getString(titleId), context.getResources().getString(titleMessage), canCancel);
+    public static void showAlertMessage(Context context, int titleId, int titleMessage, Boolean canCancel,String buttonName) {
+        showAlertMessage(context, context.getResources().getString(titleId), context.getResources().getString(titleMessage), canCancel,
+                buttonName);
     }
 
-    public static void showAlertMessage(Context context, String title, String titleMessage, Boolean canCancel) {
+    public static void showAlertMessage(Context context, String title, String titleMessage, Boolean canCancel, String buttonName) {
         try {
             AlertDialog.Builder builder;
 
@@ -28,7 +29,12 @@ public class CustomAlert {
 
             builder.setTitle(title);
             builder.setMessage(titleMessage);
-            builder.setPositiveButton(R.string.ok, null);
+
+            if (!AppUtils.isStringEmpty(buttonName)) {
+                builder.setPositiveButton(buttonName, null);
+            }else{
+                builder.setPositiveButton(R.string.ok, null);
+            }
             builder.setCancelable(canCancel);
             builder.show();
 
@@ -36,7 +42,6 @@ public class CustomAlert {
             Log.e(TAG, Log.getStackTraceString(ex));
         }
     }
-
 
 
     public interface OnMessageButtonPress {
