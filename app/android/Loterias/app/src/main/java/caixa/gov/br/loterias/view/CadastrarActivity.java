@@ -112,14 +112,16 @@ public class CadastrarActivity extends CadastroActivity {
         if(textNascimento != null){
 
             if(DateUtils.isLegalDate(textNascimento, DateUtils.PATTERN_DDMM_YYYY)){
-
-                Calendar calendar  = Calendar.getInstance();
-                calendar.get(Calendar.YEAR);
-
-                CustomAlert.showAlertMessage(this, R.string.label_atencao, R.string.idade_menor_18);
-            }else{
-                CustomAlert.showAlertMessage(this,R.string.label_atencao, R.string.erro_data_invalida);
+                    Calendar calendar  = Calendar.getInstance();
+                    Date dateBorn = DateUtils.stringToDate(textNascimento, DateUtils.PATTERN_DDMM_YYYY);
+                    int age = DateUtils.getBetweenAges(calendar, DateUtils.DateToCalendar(dateBorn));
+                    if(age < 18){
+                        CustomAlert.showAlertMessage(this, R.string.label_atencao, R.string.idade_menor_18);
+                        return false;
+                    }
+                    return true;
             }
+            CustomAlert.showAlertMessage(this,R.string.label_atencao, R.string.erro_data_invalida);
             return false;
         }
         return true;

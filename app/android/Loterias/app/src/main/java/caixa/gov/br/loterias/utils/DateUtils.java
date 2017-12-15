@@ -1,6 +1,7 @@
 package caixa.gov.br.loterias.utils;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import java.text.ParseException;
 import java.text.ParsePosition;
@@ -15,6 +16,7 @@ import java.util.Date;
 public class DateUtils {
 
     public static String PATTERN_DDMM_YYYY = "dd/MM/yyyy";
+    public static String TAG = DateUtils.class.getSimpleName();
 
 
     public static boolean isLegalDate(String date, String paternDate) {
@@ -23,9 +25,14 @@ public class DateUtils {
         return sdf.parse(date, new ParsePosition(0)) != null;
     }
 
-    public static Date fomatDate(String dateString, String paternDate) throws ParseException {
+    public static Date stringToDate(String dateString, String paternDate){
         SimpleDateFormat dt = getSimpleDateFormat(paternDate);
-        Date date = dt.parse(dateString);
+        Date date = null;
+        try {
+            date = dt.parse(dateString);
+        } catch (ParseException e) {
+            Log.e(TAG, e.getMessage());
+        }
         return date;
     }
 
@@ -41,10 +48,19 @@ public class DateUtils {
     }
 
     public static int getBetweenAges(Calendar current, Calendar born){
-//        if(){
-//
-//        }
 
+        int currentYear = current.get(Calendar.YEAR);
+        int currentMonth = current.get(Calendar.MONTH);
+        int currentDay = current.get(Calendar.DAY_OF_MONTH);
+
+        int bornYear = born.get(Calendar.YEAR);
+        int bornMonth = born.get(Calendar.MONTH);
+        int bornDay = born.get(Calendar.DAY_OF_MONTH);
+
+        if(bornMonth > currentMonth || (bornMonth == currentMonth && bornDay > currentDay)){
+            return currentYear - bornYear -1;
+        }
+        return currentYear - bornYear;
     }
 
 
