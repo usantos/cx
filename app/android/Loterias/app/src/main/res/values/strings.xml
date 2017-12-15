@@ -77,6 +77,7 @@
     <string name="termo_de_uso_underline_política_de_privacidade"><u>termos de uso</u> e <u>política de privacidade</u>.</string>
     <string name="CEP">CEP</string>
     <string name="codigo_loterica">Código Lotérica</string>
+    <string name="MA002">Por favor, verifique o preenchimento dos campos:</string>
 
     <!-- Messages-->
 

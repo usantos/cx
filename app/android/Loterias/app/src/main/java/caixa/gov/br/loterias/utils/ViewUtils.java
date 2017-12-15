@@ -164,12 +164,34 @@ public class ViewUtils {
                 .setMessage( mensagem );
     }
 
+    public static AlertDialog.Builder dialogo(Context context, int titulo, String mensagem) {
+        return new AlertDialog.Builder(context, R.style.Theme_AppCompat_Light_Dialog_Alert)
+                .setTitle(titulo)
+                .setMessage( mensagem );
+    }
+
     public static void alert(Context context, String mensagem){
         alert(context, mensagem, null);
     }
 
+    public static void alertTitulo(Context context, int titulo, String mensagem){
+        alertTitulo(context, titulo, mensagem, null);
+    }
+
     public static void alert(Context context, String mensagem, DialogInterface.OnDismissListener listener) {
         ViewUtils.dialogo(context, mensagem)
+                .setCancelable(false)
+                .setOnDismissListener(listener)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).create().show();
+    }
+
+    public static void alertTitulo(Context context, int titulo, String mensagem, DialogInterface.OnDismissListener listener) {
+        ViewUtils.dialogo(context, titulo, mensagem)
                 .setCancelable(false)
                 .setOnDismissListener(listener)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {

@@ -409,6 +409,7 @@ public class CadastrarPasso2Activity extends CadastroActivity {
 
     private void popularRadio(List<LotericaDTO> listLotericas) {
         radioListLoterias.removeAllViews();
+        apostadorDTO.setLotericaId(null);
         if (listLotericas != null) {
 
             for (LotericaDTO lotericaDTO : listLotericas) {
@@ -466,7 +467,7 @@ public class CadastrarPasso2Activity extends CadastroActivity {
         String campos = "";
 
         if (apostadorDTO.getLotericaId() == null) {
-            campos += "Lotérica";
+            campos += "\nLotérica";
         }
         if(aceiteTermo.isChecked()){
             apostadorDTO.setAceitaTermosUso(Boolean.TRUE);
@@ -478,7 +479,7 @@ public class CadastrarPasso2Activity extends CadastroActivity {
             return true;
         }else{
 
-            ViewUtils.alert(CadastrarPasso2Activity.this, "ERRO");
+            ViewUtils.alertTitulo(CadastrarPasso2Activity.this, R.string.MA002, campos);
             return false;
         }
     }

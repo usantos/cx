@@ -151,6 +151,7 @@ public class CadastroActivity extends AppCompatActivity {
         // custom dialog
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.custom_dialog_list_view);
+        dialog.setTitle("UF");
 
         // set the custom dialog components - listview and button
 

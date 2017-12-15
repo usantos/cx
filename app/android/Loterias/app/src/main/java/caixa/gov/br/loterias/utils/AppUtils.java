@@ -72,7 +72,7 @@ public class AppUtils {
     }
 
     public static String removeMasckCPF(String cpf) {
-        return cpf.replaceAll("[.-]", "");
+        return cpf.replaceAll("[.-]", "").trim();
     }
 
     public static String dateFormatteAaaaMmDd(String data, String formato){
