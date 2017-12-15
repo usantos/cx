@@ -15,6 +15,7 @@ import caixa.gov.br.loterias.bo.silce.data.UsuarioLogadoSingleton;
 import caixa.gov.br.loterias.bo.silce.dto.ApostaFavoritaDTO;
 import caixa.gov.br.loterias.bo.silce.dto.BairroDTO;
 import caixa.gov.br.loterias.bo.silce.dto.BairroDTOResponse;
+import caixa.gov.br.loterias.bo.silce.dto.CarrinhoDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.ListDTOEnumIntegerResponse;
 import caixa.gov.br.loterias.bo.silce.dto.LotericaDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.MunicipioDTOResponse;
@@ -183,6 +184,14 @@ public class DadosCorporativosBO {
 
         silceClient.getConnection().get(SilceClient.LOTERICAS_CODIGO_COMPLETO_PATH, new LinkedHashMap<String, String>(), LotericaDTOResponse.class,
                 silceClient.volleyListener(listener, LotericaDTOResponse.class), silceClient.volleyErrorListener(errorListerner), new LinkedHashMap<String, String>());
+    }
+
+    public void buscaCarrinho(final SilceClient.Listener<CarrinhoDTOResponse> listener, final SilceClient.ErrorListener errorListerner) {
+        LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
+        headers.put("Authorization", "Bearer " + UsuarioLogadoSingleton.getInstance().token);
+
+        silceClient.getConnection().get(SilceClient.BUSCA_CARRINHO_PATH, new LinkedHashMap<String, String>(), CarrinhoDTOResponse.class,
+                silceClient.volleyListener(listener, CarrinhoDTOResponse.class), silceClient.volleyErrorListener(errorListerner), headers);
     }
 
 

@@ -7,7 +7,9 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 
 import com.android.volley.NetworkResponse;
+import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
 import com.yarolegovich.discretescrollview.transform.ScaleTransformer;
@@ -20,10 +22,12 @@ import java.util.List;
 import caixa.gov.br.loterias.bo.DadosCorporativosBO;
 import caixa.gov.br.loterias.bo.DadosUsuarioBO;
 import caixa.gov.br.loterias.bo.silce.SilceClient;
+import caixa.gov.br.loterias.bo.silce.dto.ModalidadeEnum;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroJogoDTO;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroSimulacao;
 import caixa.gov.br.loterias.bo.silce.dto.ParametrosSimulacao;
 import caixa.gov.br.loterias.bo.silce.dto.ParametrosSimulacaoResponse;
+import caixa.gov.br.loterias.bo.silce.dto.RepassometroDTO;
 import caixa.gov.br.loterias.bo.silce.dto.RepassometroDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.ResourceResponse;
 import caixa.gov.br.loterias.mock.ModalidadesMock;
@@ -32,7 +36,6 @@ import caixa.gov.br.loterias.utils.AnimacoesAcessoRapido;
 import caixa.gov.br.loterias.utils.EstiloModalidade;
 import caixa.gov.br.loterias.utils.LoadingViewLoterias;
 import caixa.gov.br.loterias.utils.MensagensNetwork;
-import caixa.gov.br.loterias.utils.TipoModalidadeEnum;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.adapter.HomeAdapter;
 
@@ -76,7 +79,6 @@ public class PrincipalActivity extends AppCompatActivity
     private View itemToolbarTrevo;
     private View itemToolbarSettings;
 
-
     private LinearLayout linearAtalhoRapidoLoterias;
     private RelativeLayout relativeLayoutContentRapidao;
     private RelativeLayout relativeLayoutContentLerBilhetes;
@@ -86,7 +88,7 @@ public class PrincipalActivity extends AppCompatActivity
     private DiscreteScrollView itemCarousel;
 
     private List<ParametroSimulacao> modalidadesParaListar;
-
+    private RepassometroDTO repassesSociais;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,9 +109,6 @@ public class PrincipalActivity extends AppCompatActivity
         toolbarListener();
         listenerRepassados();
         listenerCarrinho();
-        layoutTrevoAcessoRapido();
-
-
 
         callWebservice();
     }
@@ -140,16 +139,21 @@ public class PrincipalActivity extends AppCompatActivity
     private void callWebservice () {
         final View loadViewProgress = LoadingViewLoterias.init(this);
 
-        DadosCorporativosBO dadosCorporativosBO = new DadosCorporativosBO(PrincipalActivity.this);
+        final DadosCorporativosBO dadosCorporativosBO = new DadosCorporativosBO(PrincipalActivity.this);
+
         dadosCorporativosBO.parametrosSimulacao(new SilceClient.Listener<ParametrosSimulacaoResponse>() {
             @Override
             public void onResponse(ParametrosSimulacaoResponse response) {
                 LoadingViewLoterias.stop(loadViewProgress);
+
                 modalidadesParaListar = response.getPayload().getParametros();
                 TextView valorMinimoCompra = findViewById(R.id.textViewHomeMinimumPurchaseValue);
                 valorMinimoCompra.setText("valor mínimo da compra: " + ViewUtils.getMoedaFormat(response.getPayload().getValorMinimoCarrinho()));
+
                 montaListaModalidades();
                 montarCarrossel();
+
+                callRepassesSociais();
             }
         }, new SilceClient.ErrorListener() {
             @Override
@@ -160,14 +164,29 @@ public class PrincipalActivity extends AppCompatActivity
         });
     }
 
+    private void callRepassesSociais () {
+        final DadosCorporativosBO dadosCorporativosBO = new DadosCorporativosBO(PrincipalActivity.this);
+        dadosCorporativosBO.repasses(new SilceClient.Listener<RepassometroDTOResponse>() {
+            @Override
+            public void onResponse(RepassometroDTOResponse response) {
+                repassesSociais = response.getPayload();
+                layoutTrevoAcessoRapido();
+            }
+        }, new SilceClient.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                ViewUtils.alert(PrincipalActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
+            }
+        });
+    }
+
     private List<Modalidade> montaListaModalidades () {
         List<Modalidade> listaModalidades = new ArrayList<Modalidade>();
 
         for (ParametroSimulacao parametro : modalidadesParaListar) {
-            TipoModalidadeEnum tipo = TipoModalidadeEnum.fromString(parametro.getParametroJogo().getConcurso().getModalidadeDetalhada().getDescricao());
 
             listaModalidades.add(new Modalidade(parametro.getParametroJogo().getConcurso().getModalidadeDetalhada().getDescricao(),
-                    parametro.getParametroJogo().getConcurso().getValorApostaMinima(),"","", tipo, parametro.getParametroJogo().getConcurso() ));
+                    parametro.getParametroJogo().getConcurso().getValorApostaMinima(),"","", parametro.getParametroJogo().getConcurso().getModalidade(), parametro.getParametroJogo().getConcurso() ));
         }
 
         return listaModalidades;
@@ -189,6 +208,9 @@ public class PrincipalActivity extends AppCompatActivity
         String htmlTextViewRepassados = "<html><strong>repassados</strong> para boas causas</html>";
         TextView TextViewBilhetesTexto = (TextView) findViewById(R.id.tituloLerBilhetes);
         TextView TextViewRepassados = (TextView) findViewById(R.id.textoRepassados);
+        TextView valorRepassesSociais = (TextView) findViewById(R.id.valorRepassesPrincipal);
+        valorRepassesSociais.setText(ViewUtils.getMoedaFormat(repassesSociais.getArrecadacaoAcumulada()));
+
         TextViewBilhetesTexto.setText(ViewUtils.fromHtml(htmlTextViewBilhetesTexto));
         TextViewRepassados.setText(ViewUtils.fromHtml(htmlTextViewRepassados));
 
@@ -401,10 +423,8 @@ public class PrincipalActivity extends AppCompatActivity
             findViewById(R.id.buttonHomeBet).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    TipoModalidadeEnum tipo = TipoModalidadeEnum.fromString(modalidadesParaListar.get((int)view.getTag()).getParametroJogo().getConcurso().getModalidadeDetalhada().getDescricao());
-
                     Intent activity = new Intent(PrincipalActivity.this, SimularApostaActivity_.class);
-                    activity.putExtra("tipoAposta", tipo);
+                    activity.putExtra("tipoAposta", modalidadesParaListar.get((int)view.getTag()).getParametroJogo().getConcurso().getModalidade());
                     activity.putExtra("modalidade", (new Gson()).toJson(modalidadesParaListar.get((int)view.getTag()).getParametroJogo()));
                     startActivity(activity);
                 }

@@ -22,10 +22,7 @@ import android.widget.TextView;
 import com.android.volley.VolleyError;
 
 import java.math.BigDecimal;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.bo.ApostaBO;
@@ -33,20 +30,18 @@ import caixa.gov.br.loterias.bo.silce.SilceClient;
 import caixa.gov.br.loterias.bo.silce.dto.AgrupadorDTOApostaDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.DTOEnumCharacter;
 import caixa.gov.br.loterias.bo.silce.dto.DTOEnumInteger;
-import caixa.gov.br.loterias.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import caixa.gov.br.loterias.bo.silce.dto.IncluirSurpresinhaDTO;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroJogoDTO;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroValorApostaDTO;
 import caixa.gov.br.loterias.bo.silce.dto.TipoConcursoEnum;
 import caixa.gov.br.loterias.utils.LoadingViewLoterias;
-import caixa.gov.br.loterias.view.Inteface.CartelaActivityInterface;
 import caixa.gov.br.loterias.view.SimularApostaActivity;
 import caixa.gov.br.loterias.view.custom.ExpandableHeightGridView;
 import caixa.gov.br.loterias.utils.ViewUtils;
 
 import static java.lang.String.format;
 
-public class SurpresinhaFragment extends Fragment implements CartelaActivityInterface, OnClickListener {
+public class SurpresinhaFragment extends Fragment implements OnClickListener {
 
     int typeGameColorLight;
     int typeGameColorDark;
@@ -66,7 +61,6 @@ public class SurpresinhaFragment extends Fragment implements CartelaActivityInte
     private SurpresinhaFragmentListener surpresinhaFragmentListener;
 
     //mocks
-    int qtdDezenasPossiveisSelecionado;
     int numeroConcursoAtual;
     String dataSorteioAtual;
     int qtdSurpresinhas = 1;
@@ -86,7 +80,6 @@ public class SurpresinhaFragment extends Fragment implements CartelaActivityInte
     public void surpresinhaFragmentBuilder(Bundle dataBundle){
         if (dataBundle != null) {
             //mocks
-            qtdDezenasPossiveisSelecionado = dataBundle.getInt("qtdDezenasPossiveisSelecionado");
             numeroConcursoAtual = dataBundle.getInt("numeroConcursoAtual");
             dataSorteioAtual = dataBundle.getString("dataSorteioAtual");
 
@@ -185,7 +178,7 @@ public class SurpresinhaFragment extends Fragment implements CartelaActivityInte
 
     private ArrayList<String> montaListaDezenasSurpresinha(){
         ArrayList<String> arrayDezenas = new ArrayList<>();
-        for (int i = 0; i < qtdDezenasPossiveisSelecionado; i++) {
+        for (int i = 0; i < parentActivity.qtdDezenasPossiveisSelecionado; i++) {
             arrayDezenas.add("XX");
         }
 
@@ -193,6 +186,8 @@ public class SurpresinhaFragment extends Fragment implements CartelaActivityInte
     }
 
     public void atualizaValorTotalAposta (int numPrognostico, int qtdTeimosinhas) {
+        configuraListaDezenas(getView());
+
         BigDecimal valorEmReais = BigDecimal.ZERO;
 
         for (ParametroValorApostaDTO parametro : parametroJogo.getValoresAposta()) {
@@ -351,12 +346,6 @@ public class SurpresinhaFragment extends Fragment implements CartelaActivityInte
 
             return textView;
         }
-    }
-
-    // METODOS DA INTERFACE DA ACTIVITY
-    @Override
-    public void qtdDezenasPossiveisSelecionado(int qtdDezenas) {
-        qtdDezenasPossiveisSelecionado = qtdDezenas;
     }
 
     // INTERFACE DO FRAGMENT PARA A ACTIVITY

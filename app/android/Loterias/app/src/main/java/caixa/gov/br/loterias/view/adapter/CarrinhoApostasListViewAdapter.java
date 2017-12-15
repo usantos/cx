@@ -11,14 +11,19 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import java.util.ArrayList;
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
+import caixa.gov.br.loterias.bo.silce.dto.ModalidadeEnum;
+import caixa.gov.br.loterias.model.Modalidade;
+import caixa.gov.br.loterias.utils.EstiloModalidade;
+import caixa.gov.br.loterias.utils.ViewUtils;
 
 public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<CarrinhoApostasListViewAdapter.ApostaHolder> {
     private Context context;
-    private ArrayList<String> valoresList;
+    private ArrayList<IdentificaoDeUmaApostaDas8Modalidades> apostas;
 
-    public CarrinhoApostasListViewAdapter(ArrayList<String> valoresList, Context context){
+    public CarrinhoApostasListViewAdapter(ArrayList<IdentificaoDeUmaApostaDas8Modalidades> apostas, Context context){
         this.context = context;
-        this.valoresList = valoresList;
+        this.apostas = apostas;
     }
 
 
@@ -45,16 +50,39 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
 
     @Override
     public void onBindViewHolder(ApostaHolder holder, int position) {
-        holder.textViewTipoAposta.setTextColor(ContextCompat.getColor(context, R.color.megasenaclaro));
-        holder.valorAposta.setTextColor(ContextCompat.getColor(context, R.color.megasenaclaro));
-        holder.textViewTipoAposta.setText("Mega-sena\nConc. 433");
-        holder.numerosAposta.setText("01  02  03  04  05  06  07  08  09  10  11  12  13  14  15");
-        holder.valorAposta.setText("R$ 10.000,00");
+        EstiloModalidade estilo = new EstiloModalidade(apostas.get(position).getModalidade());
+
+        holder.textViewTipoAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorClara()));
+        holder.valorAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorEscura()));
+        holder.textViewTipoAposta.setText(ViewUtils.capitalized(ModalidadeEnum.fromString(apostas.get(position).getModalidade())));
+
+        String numeroStr = "";
+        if (apostas.get(position).getIndicadorSurpresinha().getValor() == 2) {
+            for (int i = 0; i < apostas.get(position).getQuantidadeNumeros(); i++) {
+                if (i == apostas.get(position).getQuantidadeNumeros() - 1) {
+                    numeroStr += "XX";
+                }else {
+                    numeroStr += "XX - ";
+                }
+            }
+        } else {
+            for (Integer num: apostas.get(position).getNumerosSelecionados()) {
+                if (num == (apostas.get(position).getNumerosSelecionados().get(apostas.get(position).getNumerosSelecionados().size() - 1))) {
+                    numeroStr += String.format("%02d", num);
+                }else {
+                    numeroStr += String.format("%02d - ", num);
+                }
+            }
+        }
+
+        holder.numerosAposta.setText(numeroStr);
+        holder.valorAposta.setText(caixa.gov.br.loterias.utils.ViewUtils.getMoedaFormat(apostas.get(position).getValor()));
     }
+
 
     @Override
     public int getItemCount() {
-        return valoresList.size();
+        return apostas.size();
     }
 
 }

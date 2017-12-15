@@ -24,8 +24,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.bo.silce.dto.ModalidadeEnum;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroJogoDTO;
-import caixa.gov.br.loterias.utils.TipoModalidadeEnum;
+import caixa.gov.br.loterias.model.Modalidade;
+import caixa.gov.br.loterias.utils.EstiloModalidade;
 import caixa.gov.br.loterias.utils.ViewUtils;
 
 public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implements OnClickListener {
@@ -58,7 +60,7 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
     }
 
     private void configuraActivityIncluidoApostaCarrinho(){
-        TipoModalidadeEnum tipoJogo = (TipoModalidadeEnum) getIntent().getSerializableExtra("tipoAposta");
+        ModalidadeEnum tipoJogo = (ModalidadeEnum) getIntent().getSerializableExtra("tipoAposta");
         BigDecimal valorAposta = (BigDecimal)getIntent().getSerializableExtra("valorAposta");
 
         TextView valorApostaText = findViewById(R.id.valorApostaConfirmacao);
@@ -67,19 +69,7 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
         TextView textObservacaoConfirmacao = findViewById(R.id.textObservacaoConfirmacao);
         textObservacaoConfirmacao.setText(getString(R.string.infoValorMinimoCarrinho) + " " + ViewUtils.getMoedaFormat(parametroSimulacao.getValorApostaMinima() == null ?  new BigDecimal(0) : parametroSimulacao.getValorApostaMinima()));
 
-        switch (tipoJogo){
-            case MEGASENA:
-                configuraLayoutTela("Mega Sena", R.color.megasenaclaro, R.color.megasenaescuro);
-                break;
-            case QUINA:
-                configuraLayoutTela("Quina", R.color.quinaclaro, R.color.quinaescuro);
-                break;
-            case LOTOFACIL:
-                configuraLayoutTela("Lotofácil", R.color.lotofacilclaro, R.color.lotofacilescuro);
-                break;
-            case DUPLASENA:
-                configuraLayoutTela("Duplasena", R.color.duplasenaclaro, R.color.duplasenaescuro);
-        }
+        configuraLayoutTela(tipoJogo);
 
         if (getSupportActionBar() != null){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -91,17 +81,19 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
 
     }
 
-    private void configuraLayoutTela(String titleActivity, int lightColor, int darkColor){
-        setTitle(titleActivity);
+    private void configuraLayoutTela(ModalidadeEnum modalidadeEnum){
+        EstiloModalidade estilo = new EstiloModalidade(modalidadeEnum);
+
+        setTitle(ModalidadeEnum.fromString(modalidadeEnum));
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(ContextCompat.getColor(this, darkColor));
+            getWindow().setStatusBarColor(ContextCompat.getColor(this, estilo.getCorEscura()));
         }
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(this, lightColor)));
-        getWindow().getDecorView().setBackground(new ColorDrawable(ContextCompat.getColor(this, lightColor)));
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(this, estilo.getCorClara())));
+        getWindow().getDecorView().setBackground(new ColorDrawable(ContextCompat.getColor(this, estilo.getCorClara())));
 
         GradientDrawable gd = new GradientDrawable();
-        gd.setColor(ContextCompat.getColor(this, lightColor));
+        gd.setColor(ContextCompat.getColor(this, estilo.getCorClara()));
         gd.setCornerRadius(5);
         gd.setStroke(2, Color.WHITE);
 

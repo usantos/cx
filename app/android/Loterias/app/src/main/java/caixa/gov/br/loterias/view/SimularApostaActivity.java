@@ -35,11 +35,10 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.bo.silce.dto.ModalidadeEnum;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroJogoDTO;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroValorApostaDTO;
-import caixa.gov.br.loterias.utils.TipoModalidadeEnum;
 import caixa.gov.br.loterias.utils.ViewUtils;
-import caixa.gov.br.loterias.view.Inteface.CartelaActivityInterface;
 import caixa.gov.br.loterias.view.fragment.CartelaFragment;
 import caixa.gov.br.loterias.view.fragment.CartelaFragment.CartelaFragmentListener;
 import caixa.gov.br.loterias.view.fragment.SurpresinhaFragment;
@@ -75,9 +74,6 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
 
     AlertDialog dialog;
 
-    private CartelaActivityInterface cartelaActivityInterface ;
-    private CartelaActivityInterface surpresinhaActivityInterface;
-
     //mocks
     public int qtdDezenasPossiveisSelecionado;
     public int qtdConcursoSelecionado;
@@ -87,7 +83,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
     int typeGameColorDark;
     ArrayList<String> qtdNumerosList = new ArrayList<String>();
     ArrayList<String> qtdConcursosList = new ArrayList<String>();
-    TipoModalidadeEnum tipoJogo;
+    ModalidadeEnum tipoJogo;
 
     String textoBotaoPrognosticosSelecionado = "";
     String textoBotaoSurpresinhasSelecionado = "";
@@ -136,8 +132,6 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         cartelaFragment = new CartelaFragment();
         surpresinhaFragment = new SurpresinhaFragment();
 
-        cartelaActivityInterface = cartelaFragment;
-        surpresinhaActivityInterface = surpresinhaFragment;
 
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
@@ -145,10 +139,10 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
     }
 
     private void configuraActivity() {
-        tipoJogo = (TipoModalidadeEnum) getIntent().getSerializableExtra("tipoAposta");
+        tipoJogo = (ModalidadeEnum) getIntent().getSerializableExtra("tipoAposta");
 
         switch (tipoJogo){
-            case MEGASENA:
+            case MEGA_SENA:
                 configuraTipoApostaTela("mega-sena", R.color.megasenaclaro, R.color.megasenaescuro);
                 break;
             case QUINA:
@@ -157,12 +151,15 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
             case LOTOFACIL:
                 configuraTipoApostaTela("lotofácil", R.color.lotofacilclaro, R.color.lotofacilescuro);
                 break;
-            case DUPLASENA:
+            case DUPLA_SENA:
                 configuraTipoApostaTela("duplasena", R.color.duplasenaclaro, R.color.duplasenaescuro);
+                break;
             case TIMEMANIA:
                 configuraTipoApostaTela("timemania", R.color.timemaniaclaro, R.color.timemaniaescuro);
+                break;
             case LOTOMANIA:
                 configuraTipoApostaTela("lotomania", R.color.lotomaniaclaro, R.color.lotomaniaescuro);
+                break;
         }
 
         // MOCK
@@ -368,7 +365,6 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-
         toolBarSimularAposta.setBackgroundColor(ContextCompat.getColor(this, darkColor));
 
         typeGameColorLight = lightColor;
@@ -429,8 +425,6 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         if (qtdDezenasAtual < qtdNumerosList.size()){
             qtdDezenasPossiveisSelecionado += 1;
             atualizaTextoBotoesQtdSelecionadas();
-            cartelaActivityInterface.qtdDezenasPossiveisSelecionado(qtdDezenasPossiveisSelecionado);
-            surpresinhaActivityInterface.qtdDezenasPossiveisSelecionado(qtdDezenasPossiveisSelecionado);
         }
 
         return qtdDezenasPossiveisSelecionado;

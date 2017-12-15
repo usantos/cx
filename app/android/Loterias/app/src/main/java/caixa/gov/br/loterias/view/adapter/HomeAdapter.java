@@ -22,6 +22,7 @@ import com.bumptech.glide.Glide;
 import org.w3c.dom.Text;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.bo.silce.dto.ModalidadeEnum;
 import caixa.gov.br.loterias.model.Modalidade;
 import caixa.gov.br.loterias.utils.EstiloModalidade;
 import caixa.gov.br.loterias.utils.ViewUtils;
@@ -81,7 +82,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder holder, int position) {
         estilo = new EstiloModalidade(data.get(position).getTipoModalidade());
 
-        holder.game.setText(data.get(position).getNome());
+        holder.game.setText(ModalidadeEnum.fromString(data.get(position).getTipoModalidade()));
         holder.resultados.setBackgroundColor(ContextCompat.getColor(context, estilo.getCorEscura()));
         holder.trevo.setBackground(ContextCompat.getDrawable(context, estilo.getTrevoBackground()));
         holder.trevoFundo.setBackground(ContextCompat.getDrawable(context, estilo.getTrevoBackground()));

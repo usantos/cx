@@ -12,14 +12,26 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.android.volley.VolleyError;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.bo.DadosCorporativosBO;
+import caixa.gov.br.loterias.bo.silce.SilceClient;
+import caixa.gov.br.loterias.bo.silce.dto.CarrinhoDTO;
+import caixa.gov.br.loterias.bo.silce.dto.CarrinhoDTOResponse;
+import caixa.gov.br.loterias.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
+import caixa.gov.br.loterias.utils.EstiloModalidade;
+import caixa.gov.br.loterias.utils.LoadingViewLoterias;
+import caixa.gov.br.loterias.utils.MensagensNetwork;
 import caixa.gov.br.loterias.view.adapter.CarrinhoApostasListViewAdapter;
 import caixa.gov.br.loterias.utils.ViewUtils;
 
 public class CarrinhoActivity extends AppCompatActivity {
+
+    private CarrinhoDTO carrinho;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,10 +40,7 @@ public class CarrinhoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_carrinho);
 
-        montarLayout();
-        configuraActivityCarrinho();
-        configuraRecyclerViewCarrinhoAposta();
-        configuraListeners();
+        callWebservice();
 
         ViewUtils.organizaTabLayout(this, R.id.carrinhoMainLayout, R.id.apostasListaRecycleView, R.id.carrinhoScrollView);
     }
@@ -39,6 +48,32 @@ public class CarrinhoActivity extends AppCompatActivity {
     private void montarLayout(){
         TextView infoValorMinimoTextView = (TextView) findViewById(R.id.infoValorMinimo);
         infoValorMinimoTextView.setText(ViewUtils.fromHtml("Lembre-se que o valor mínimo do total de compras nesse aplicativo é <strong>R$24,00</strong>"));
+    }
+
+    private void callWebservice () {
+
+        final View loadViewProgress = LoadingViewLoterias.init(this);
+        final DadosCorporativosBO dadosCorporativosBO = new DadosCorporativosBO(CarrinhoActivity.this);
+
+        dadosCorporativosBO.buscaCarrinho(new SilceClient.Listener<CarrinhoDTOResponse>() {
+            @Override
+            public void onResponse(CarrinhoDTOResponse response) {
+                LoadingViewLoterias.stop(loadViewProgress);
+                carrinho = response.getPayload();
+
+                montarLayout();
+                configuraActivityCarrinho();
+                configuraRecyclerViewCarrinhoAposta();
+                configuraListeners();
+
+            }
+        }, new SilceClient.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                LoadingViewLoterias.stop(loadViewProgress);
+                ViewUtils.alert(CarrinhoActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
+            }
+        });
     }
 
     @Override
@@ -131,23 +166,13 @@ public class CarrinhoActivity extends AppCompatActivity {
     }
 
     private void configuraRecyclerViewCarrinhoAposta(){
-        String[] values = new String[] { "01", "02"};
-
         RecyclerView recyclerView = findViewById(R.id.apostasListaRecycleView);
         RecyclerView.LayoutManager layout = new LinearLayoutManager(this,
                 LinearLayoutManager.VERTICAL, false);
 
-        recyclerView.setAdapter(new CarrinhoApostasListViewAdapter(montaCarrinhoApostaValores(values), this));
+        recyclerView.setAdapter(new CarrinhoApostasListViewAdapter((ArrayList<IdentificaoDeUmaApostaDas8Modalidades>) carrinho.getApostas(), this));
         recyclerView.setLayoutManager(layout);
         recyclerView.setNestedScrollingEnabled(false);
-    }
-
-    private ArrayList<String> montaCarrinhoApostaValores(String valores[]){
-        ArrayList<String> valoresTextoDialog = new ArrayList<>();
-
-        Collections.addAll(valoresTextoDialog, valores);
-
-        return valoresTextoDialog;
     }
 
     private void limpaCarrinho(){

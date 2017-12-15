@@ -1,6 +1,5 @@
 package caixa.gov.br.loterias.view.fragment;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
@@ -8,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -26,9 +24,6 @@ import android.widget.TextView;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
-import com.google.gson.Gson;
-
-import org.w3c.dom.Text;
 
 import caixa.gov.br.loterias.bo.ApostaBO;
 import caixa.gov.br.loterias.bo.DadosCorporativosBO;
@@ -38,14 +33,12 @@ import caixa.gov.br.loterias.bo.silce.dto.AgrupadorDTOApostaDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.ApostaFavoritaDTO;
 import caixa.gov.br.loterias.bo.silce.dto.DTOEnumCharacter;
 import caixa.gov.br.loterias.bo.silce.dto.DTOEnumInteger;
-import caixa.gov.br.loterias.bo.silce.dto.EquipeDTO;
 import caixa.gov.br.loterias.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroEquipe;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroJogoDTO;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroValorApostaDTO;
 import caixa.gov.br.loterias.bo.silce.dto.TipoConcursoEnum;
 import caixa.gov.br.loterias.utils.LoadingViewLoterias;
-import caixa.gov.br.loterias.view.Inteface.CartelaActivityInterface;
 
 import java.math.BigDecimal;
 import java.text.DateFormat;
@@ -58,9 +51,7 @@ import caixa.gov.br.loterias.view.SimularApostaActivity;
 import caixa.gov.br.loterias.view.custom.ExpandableHeightGridView;
 import caixa.gov.br.loterias.utils.ViewUtils;
 
-import static java.lang.String.*;
-
-public class CartelaFragment extends Fragment implements CartelaActivityInterface, OnClickListener {
+public class CartelaFragment extends Fragment implements OnClickListener {
 
     private ArrayList<String> dezenas = new ArrayList<String>();
 
@@ -495,9 +486,12 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
                     if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) {
                         // VERIFICA SE TEM OPÇÃO DE SELECIONAR MAIS DEZENAS
                         int qtdDezenasPossiveisSelecionadoAtual = parentActivity.qtdDezenasPossiveisSelecionado;
+
                         parentActivity.qtdDezenasPossiveisSelecionado = cartelaFragmentListener.verificaNovoQtdDezenasMax(parentActivity.qtdDezenasPossiveisSelecionado);
 
                         if (qtdDezenasPossiveisSelecionadoAtual < maxNumerosParaSelecionar) {
+                            atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
+
                             if (flagApostaSalva) {
                                 voltaSalvarApostaParaLayoutInicial();
                             }
@@ -574,16 +568,6 @@ public class CartelaFragment extends Fragment implements CartelaActivityInterfac
 
             return textView;
         }
-    }
-
-    // METODOS DA INTERFACE DA ACTIVITY
-    @Override
-    public void qtdDezenasPossiveisSelecionado(int qtdDezenas) {
-        if (parentActivity.qtdDezenasPossiveisSelecionado < qtdDezenas) {
-            atualizaValorTotalAposta(qtdDezenas, parentActivity.qtdConcursoSelecionado);
-        }
-
-        parentActivity.qtdDezenasPossiveisSelecionado = qtdDezenas;
     }
 
     // INTERFACE DO FRAGMENT PARA A ACTIVITY

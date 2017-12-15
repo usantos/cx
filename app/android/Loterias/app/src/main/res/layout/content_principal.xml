@@ -225,7 +225,7 @@
                                 android:text="R$ 100.000,90"
                                 android:textColor="@color/verdeazul"
                                 android:textSize="14sp"
-                                android:id="@+id/tituloRepassados"
+                                android:id="@+id/valorRepassesPrincipal"
                                 android:textStyle="bold"
                                 />
                             <TextView
@@ -236,7 +236,7 @@
                                 android:textColor="@color/cinza"
                                 android:layout_alignParentEnd="true"
                                 android:layout_alignParentRight="true"
-                                android:layout_below="@+id/tituloRepassados"
+                                android:layout_below="@+id/valorRepassesPrincipal"
                                 android:id="@+id/textoRepassados"/>
                         </RelativeLayout>
                         <RelativeLayout

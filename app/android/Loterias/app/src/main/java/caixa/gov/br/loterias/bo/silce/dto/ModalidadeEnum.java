@@ -15,5 +15,31 @@ public enum ModalidadeEnum {
     @SerializedName("LOTOMANIA")LOTOMANIA,
     @SerializedName("MEGA_SENA")MEGA_SENA,
     @SerializedName("QUINA")QUINA,
-    @SerializedName("TIMEMANIA")TIMEMANIA,
+    @SerializedName("FEDERAL")FEDERAL,
+    @SerializedName("TIMEMANIA")TIMEMANIA;
+
+    public static String fromString(ModalidadeEnum modalidade) {
+        switch (modalidade) {
+            case QUINA:
+                return "quina";
+            case LOTECA:
+                return "loteca";
+            case LOTOGOL:
+                return "lotogol";
+            case LOTOFACIL:
+                return "lotofácil";
+            case LOTOMANIA:
+                return "lotomania";
+            case MEGA_SENA:
+                return "mega-sena";
+            case TIMEMANIA:
+                return "timemania";
+            case DUPLA_SENA:
+                return "dupla-sena";
+            case FEDERAL:
+                return "federal";
+
+        }
+        return "";
+    }
 }

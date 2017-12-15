@@ -9,13 +9,14 @@ import android.view.View;
 import com.bumptech.glide.Glide;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.bo.silce.dto.ModalidadeEnum;
 
 /**
  * Created by brfernan on 27/10/2017.
  */
 
 public class EstiloModalidade {
-    private final TipoModalidadeEnum tipoModalidade;
+    private final ModalidadeEnum tipoModalidade;
     private final int corClara;
     private final int corMedia;
     private final int corEscura;
@@ -23,7 +24,7 @@ public class EstiloModalidade {
     private final int imagemRelogio;
     private final int trevoBackground;
 
-    public EstiloModalidade(TipoModalidadeEnum tipoModalidade) {
+    public EstiloModalidade(ModalidadeEnum tipoModalidade) {
         this.tipoModalidade = tipoModalidade;
 
         switch (tipoModalidade) {
@@ -59,7 +60,7 @@ public class EstiloModalidade {
                 imagemRelogio = R.drawable.icon_horario_lotogol;
                 trevoBackground = R.drawable.background_trapeze_lotogol;
                 break;
-            case MEGASENA:
+            case MEGA_SENA:
                 this.corClara = R.color.megasenaclaro;
                 this.corMedia = R.color.megasenamedio;
                 this.corEscura = R.color.megasenaescuro;
@@ -67,7 +68,7 @@ public class EstiloModalidade {
                 imagemRelogio = R.drawable.icon_horario_megasena;
                 trevoBackground = R.drawable.background_trapeze_megasena;
                 break;
-            case DUPLASENA:
+            case DUPLA_SENA:
                 this.corClara = R.color.duplasenaclaro;
                 this.corMedia = R.color.duplasenamedio;
                 this.corEscura = R.color.duplasenaescuro;
@@ -110,7 +111,7 @@ public class EstiloModalidade {
         }
     }
 
-    public TipoModalidadeEnum getTipoModalidade() {
+    public ModalidadeEnum getTipoModalidade() {
         return tipoModalidade;
     }
 

@@ -3,7 +3,7 @@ package caixa.gov.br.loterias.model;
 import java.math.BigDecimal;
 
 import caixa.gov.br.loterias.bo.silce.dto.ConcursoDTO;
-import caixa.gov.br.loterias.utils.TipoModalidadeEnum;
+import caixa.gov.br.loterias.bo.silce.dto.ModalidadeEnum;
 
 /**
  * Created by brfernan on 27/10/2017.
@@ -14,10 +14,10 @@ public class Modalidade {
     private BigDecimal valor;
     private String descricao;
     private String descricaoEspecial;
-    private TipoModalidadeEnum tipoModalidade;
+    private ModalidadeEnum tipoModalidade;
     private ConcursoDTO concurso;
 
-    public Modalidade (String nome, BigDecimal valor, String descricao, String descricaoEspecial, TipoModalidadeEnum tipoModalidade, ConcursoDTO concurso) {
+    public Modalidade (String nome, BigDecimal valor, String descricao, String descricaoEspecial, ModalidadeEnum tipoModalidade, ConcursoDTO concurso) {
         this.nome = nome;
         this.valor = valor;
         this.descricao = descricao;
@@ -58,11 +58,11 @@ public class Modalidade {
         return descricaoEspecial;
     }
 
-    public void setTipoModalidade(TipoModalidadeEnum tipoModalidade) {
+    public void setTipoModalidade(ModalidadeEnum tipoModalidade) {
         this.tipoModalidade = tipoModalidade;
     }
 
-    public TipoModalidadeEnum getTipoModalidade() {
+    public ModalidadeEnum getTipoModalidade() {
         return tipoModalidade;
     }
 
