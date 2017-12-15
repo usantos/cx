@@ -34,7 +34,7 @@
     <string name="titulo_dialog">Titulo da dialog</string>
     <string name="cancelar">Cancelar</string>
     <string name="ok">OK</string>
-
+    <string name= "label_atencao">Atenção</string>
     <string name="tituloSalvarAposta">Salve esta aposta :)</string>
     <string name="textoDeNome">Dê um nome</string>
 
@@ -77,5 +77,10 @@
     <string name="termo_de_uso_underline_política_de_privacidade"><u>termos de uso</u> e <u>política de privacidade</u>.</string>
     <string name="CEP">CEP</string>
     <string name="codigo_loterica">Código Lotérica</string>
+
+    <!-- Messages-->
+
+    <string name ="idade_menor_18"> Idade informada menor que 18 anos.</string>
+    <string name ="erro_data_invalida"> Data Inválida</string>
 
 </resources>

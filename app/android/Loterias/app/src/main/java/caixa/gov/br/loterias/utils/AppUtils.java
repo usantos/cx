@@ -14,10 +14,13 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.FileProvider;
 import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.widget.EditText;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 
 
 /**
@@ -76,6 +79,16 @@ public class AppUtils {
     public static boolean isStringEmpty(String string) {
         // Null-safe, short-circuit evaluation.
         return string == null || string.trim().isEmpty();
+    }
+
+
+    public static String getEditTextValue(EditText editText) {
+        assert editText != null;
+
+        if (editText.getText() != null) {
+            return editText.getText().toString();
+        }
+        return null;
     }
 
 }

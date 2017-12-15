@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,13 +15,20 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 
+import java.time.DateTimeException;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.bo.silce.dto.ApostadorDTO;
 import caixa.gov.br.loterias.bo.silce.dto.MunicipioIdDTO;
 import caixa.gov.br.loterias.bo.silce.dto.SexoAbrvEnum;
+import caixa.gov.br.loterias.utils.AppUtils;
+import caixa.gov.br.loterias.utils.CustomAlert;
+import caixa.gov.br.loterias.utils.DateUtils;
 import caixa.gov.br.loterias.utils.segmentedbutton.SegmentedButtonGroup;
 
 
@@ -33,6 +41,7 @@ public class CadastrarActivity extends CadastroActivity {
     @ViewById
     EditText editTextCpfContent, editTextNomeContent, editTextCepContent, editTextNascimentoContent,
             editTextEmailContent, editTextMunicipioContent, editTextUFContent, editTextNomeMaeContent;
+
     @ViewById
     Button buttonContinuarIntroducao;
 
@@ -45,11 +54,17 @@ public class CadastrarActivity extends CadastroActivity {
     @AfterViews
     protected void init() {
         super.createToobar();
+        loadFields();
+        loadFields();
         addUFSpinner();
         if (apostadorDTO == null) {
             apostadorDTO = new ApostadorDTO();
             apostadorDTO.setMunicipioId(new MunicipioIdDTO());
         }
+    }
+
+    private void loadFields(){
+        editTextNascimentoContent = (EditText) findViewById(R.id.editTextNascimentoContent);
     }
 
     public void addUFSpinner() {
@@ -83,14 +98,34 @@ public class CadastrarActivity extends CadastroActivity {
 
         buttonContinuarIntroducao.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                carregaApostadorDTO();
-                Intent intent = new Intent(getBaseContext(), CadastrarPasso2Activity_.class);
-                startActivity(intent);
+                if(validate()){
+                    carregaApostadorDTO();
+                    Intent intent = new Intent(getBaseContext(), CadastrarPasso2Activity_.class);
+                    startActivity(intent);
+                }
             }
         });
     }
 
-    private void initOnclick() {
+    private boolean validate(){
+        String textNascimento = AppUtils.getEditTextValue(editTextNascimentoContent);
+        if(textNascimento != null){
+
+            if(DateUtils.isLegalDate(textNascimento, DateUtils.PATTERN_DDMM_YYYY)){
+
+                Calendar calendar  = Calendar.getInstance();
+                calendar.get(Calendar.YEAR);
+
+                CustomAlert.showAlertMessage(this, R.string.label_atencao, R.string.idade_menor_18);
+            }else{
+                CustomAlert.showAlertMessage(this,R.string.label_atencao, R.string.erro_data_invalida);
+            }
+            return false;
+        }
+        return true;
+    }
+
+      private void initOnclick() {
 
         this.segmentedButtonSexo.setOnClickedButtonListener(new SegmentedButtonGroup.OnClickedButtonListener() {
             @Override
@@ -137,7 +172,7 @@ public class CadastrarActivity extends CadastroActivity {
         apostadorDTO.setEmail(editTextEmailContent.getText().toString());
         apostadorDTO.setNome(editTextNomeContent.getText().toString());
         apostadorDTO.setNomeMae(editTextNomeMaeContent.getText().toString());
-        apostadorDTO.setDataNascimento(editTextNascimentoContent.getText().toString());
+        apostadorDTO.setDataNascimento(AppUtils.getEditTextValue(editTextNascimentoContent));
         apostadorDTO.setCep(editTextCepContent.getText().toString());
         apostadorDTO.setAceitaReceberNoticias(Boolean.TRUE);
         apostadorDTO.setSexo(sexo);
