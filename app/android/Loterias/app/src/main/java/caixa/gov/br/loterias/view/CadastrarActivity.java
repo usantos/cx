@@ -37,6 +37,7 @@ import caixa.gov.br.loterias.utils.segmentedbutton.SegmentedButtonGroup;
 public class CadastrarActivity extends CadastroActivity {
 
     private SexoAbrvEnum sexo;
+    private static final String FORMATO_YYYYMMDD =  "yyyyMMdd";
 
     @ViewById
     EditText editTextCpfContent, editTextNomeContent, editTextCepContent, editTextNascimentoContent,
@@ -72,6 +73,9 @@ public class CadastrarActivity extends CadastroActivity {
         listUFString = new ArrayList<String>();
         listMunicipios = new ArrayList<String>();
 
+        if(sexo == null){
+            sexo = SexoAbrvEnum.M;
+        }
         initOnclick();
         addListenerUF(editTextUFContent, listUFString);
         addListenerMunicipio(editTextMunicipioContent, listMunicipios, Boolean.TRUE);
@@ -171,12 +175,16 @@ public class CadastrarActivity extends CadastroActivity {
 
     private void carregaApostadorDTO() {
         apostadorDTO.setCpf(editTextCpfContent.getText().toString());
+        apostadorDTO.setCpf(AppUtils.removeMasckCPF(editTextCpfContent.getText().toString()));
         apostadorDTO.setEmail(editTextEmailContent.getText().toString());
         apostadorDTO.setNome(editTextNomeContent.getText().toString());
         apostadorDTO.setNomeMae(editTextNomeMaeContent.getText().toString());
-        apostadorDTO.setDataNascimento(AppUtils.getEditTextValue(editTextNascimentoContent));
+        apostadorDTO.setDataNascimento(editTextNascimentoContent.getText().toString());
         apostadorDTO.setCep(editTextCepContent.getText().toString());
+        apostadorDTO.setDataNascimento(AppUtils.dateFormatteAaaaMmDd(editTextNascimentoContent.getText().toString(), FORMATO_YYYYMMDD));
+        apostadorDTO.setCep(AppUtils.removeMasckCPF(editTextCepContent.getText().toString()));
         apostadorDTO.setAceitaReceberNoticias(Boolean.TRUE);
         apostadorDTO.setSexo(sexo);
+        apostadorDTO.setMercadoPagoCustomerId("0");
     }
 }

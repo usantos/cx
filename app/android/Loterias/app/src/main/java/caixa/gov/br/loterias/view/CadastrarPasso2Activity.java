@@ -134,23 +134,14 @@ public class CadastrarPasso2Activity extends CadastroActivity {
                 }
             }
         });
+        this.editTextCEPPasso2Content.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 
-        this.editTextCEPPasso2Content.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (i == 8) {
-                    buscarLoteriasLocalizacaoCep(charSequence.toString().replace("-", ""), null);
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if ((keyEvent != null && (keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (i == EditorInfo.IME_ACTION_DONE)) {
+                    buscarLoteriasLocalizacaoCep(textView.getText().toString().replace("-", ""), null);
                 }
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
+                return false;
             }
         });
 
@@ -226,7 +217,6 @@ public class CadastrarPasso2Activity extends CadastroActivity {
             @Override
             public void onResponse(LotericaDTOResponse response) {
 
-                //Loterica lotericaDTO : response.getPayload().getLotericas()
                 if (response.getPayload() == null || response.getPayload().getLotericas() == null) {
                     dadosCorporativosBO.bairros(null, null, null, cep, new SilceClient.Listener<BairroDTOResponse>() {
                         @Override
@@ -245,7 +235,7 @@ public class CadastrarPasso2Activity extends CadastroActivity {
                     });
                 } else {
                     LoadingViewLoterias.stop(loadViewProgress);
-                    popularRadio(new ArrayList<Loterica>());
+                    popularRadio(response.getPayload().getLotericas());
                 }
 
 
@@ -267,9 +257,29 @@ public class CadastrarPasso2Activity extends CadastroActivity {
             @Override
             public void onResponse(LotericaDTOResponse response) {
                 LoadingViewLoterias.stop(loadViewProgress);
-                //Loterica lotericaDTO : response.getPayload().getLotericas()
+                popularRadio(response.getPayload().getLotericas());
 
-                popularRadio(new ArrayList<Loterica>());
+            }
+        }, new SilceClient.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                LoadingViewLoterias.stop(loadViewProgress);
+                ViewUtils.alert(CadastrarPasso2Activity.this, "ERRO");
+            }
+        });
+    }
+
+    private void buscarLoteriasCodigoCompleto() {
+        final View loadViewProgress = LoadingViewLoterias.init(this);
+
+        DadosCorporativosBO dadosCorporativosBO = new DadosCorporativosBO(CadastrarPasso2Activity.this);
+        dadosCorporativosBO.buscarLoteriasCodigoCompleto(editTextCodigoLotericaPasso2Content.getText().toString(), new SilceClient.Listener<LotericaCodigoWrapperResponse>() {
+            @Override
+            public void onResponse(LotericaCodigoWrapperResponse response) {
+                LoadingViewLoterias.stop(loadViewProgress);
+                List<LotericaDTO> lotericaDTOList = new ArrayList<LotericaDTO>();
+                lotericaDTOList.add(response.getPayload());
+                popularRadio(lotericaDTOList);
 
             }
         }, new SilceClient.ErrorListener() {
@@ -397,50 +407,36 @@ public class CadastrarPasso2Activity extends CadastroActivity {
         dialog.show();
     }
 
-    private void popularRadio(List<Loterica> listLotericas) {
+    private void popularRadio(List<LotericaDTO> listLotericas) {
         radioListLoterias.removeAllViews();
-        for (int i = 0; i < 2; i++) {
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            RadioButton radioButton = new RadioButton(CadastrarPasso2Activity.this);
-            radioButton.setLayoutParams(params);
-            radioButton.setButtonDrawable(R.drawable.check_radio_selected);
-            radioButton.setPadding(20, 20, 0, 10);
-            radioButton.setText("Nome da lotérica lorem mono dolor\nCódigo. 2538985");
-            radioButton.setTextSize(16);
-            radioButton.setTextColor(getResources().getColor(R.color.cinza));
-            radioButton.setScaleX(0.8f);
-            radioButton.setScaleY(0.8f);
-            radioButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    //Loterica retornada getId
-                    apostadorDTO.setLotericaId(1L);
-                }
-            });
-            radioListLoterias.addView(radioButton);
+        if (listLotericas != null) {
+
+            for (LotericaDTO lotericaDTO : listLotericas) {
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                RadioButton radioButton = new RadioButton(CadastrarPasso2Activity.this);
+                radioButton.setLayoutParams(params);
+                radioButton.setButtonDrawable(R.drawable.check_radio_selected);
+                radioButton.setPadding(20, 20, 0, 10);
+                radioButton.setText(lotericaDTO.getNomeFantasia() + "\nCódigo. " + lotericaDTO.getCodigo());
+                radioButton.setTextSize(16);
+                radioButton.setTextColor(getResources().getColor(R.color.cinza));
+                radioButton.setScaleX(0.8f);
+                radioButton.setScaleY(0.8f);
+                radioButton.setTag(String.valueOf(lotericaDTO.getId()));
+                radioButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        apostadorDTO.setLotericaId(Long.parseLong(view.getTag().toString()));
+                    }
+                });
+                radioListLoterias.addView(radioButton);
+            }
         }
-    }
-
-    private void buscarLoteriasCodigoCompleto() {
-        DadosCorporativosBO dadosCorporativosBO = new DadosCorporativosBO(CadastrarPasso2Activity.this);
-        dadosCorporativosBO.buscarLoteriasCodigoCompleto(editTextCodigoLotericaPasso2Content.getText().toString(), new SilceClient.Listener<LotericaCodigoWrapperResponse>() {
-            @Override
-            public void onResponse(LotericaCodigoWrapperResponse response) {
-                popularRadio(new ArrayList<Loterica>());
-
-            }
-        }, new SilceClient.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                ViewUtils.alert(CadastrarPasso2Activity.this, "ERRO");
-            }
-        });
     }
 
     private void addListenerFinalizar() {
         buttonFinalizarCadastro.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                apostadorDTO.setAceitaTermosUso(Boolean.TRUE);
                 if (validarCampos()) {
 
                     final View loadViewProgress = LoadingViewLoterias.init(CadastrarPasso2Activity.this);
@@ -469,17 +465,21 @@ public class CadastrarPasso2Activity extends CadastroActivity {
 
         String campos = "";
 
-        if (localizacaoLoterica.getVisibility() == View.VISIBLE) {
-            if (StringUtils.isEmpty(editTextUFPasso2Content.getText().toString())) {
-                //campos.
-                ViewUtils.alert(CadastrarPasso2Activity.this, "ERRO");
-                localizacaoLoterica.setVisibility(View.VISIBLE);
-                cepLoterica.setVisibility(View.GONE);
-                codigoLoterica.setVisibility(View.GONE);
-            }
+        if (apostadorDTO.getLotericaId() == null) {
+            campos += "Lotérica";
+        }
+        if(aceiteTermo.isChecked()){
+            apostadorDTO.setAceitaTermosUso(Boolean.TRUE);
+        }else{
+            campos += "\nTermo de Uso";
         }
 
+        if(StringUtils.isEmpty(campos)){
+            return true;
+        }else{
 
-        return true;
+            ViewUtils.alert(CadastrarPasso2Activity.this, "ERRO");
+            return false;
+        }
     }
 }

@@ -177,7 +177,7 @@ public class DadosCorporativosBO {
             queryParams.put("pesquisaInteligente", "true");
         }
 
-        silceClient.getConnection().get(SilceClient.LOTERICAS_PATH, new LinkedHashMap<String, String>(), LotericaDTOResponse.class,
+        silceClient.getConnection().get(SilceClient.LOTERICAS_PATH, queryParams, LotericaDTOResponse.class,
                 silceClient.volleyListener(listener, LotericaDTOResponse.class), silceClient.volleyErrorListener(errorListerner), new LinkedHashMap<String, String>());
     }
 

@@ -15,7 +15,7 @@ import java.util.List;
 
 public class LotericaDTOResponseManual {
     @SerializedName("lotericas")
-    private List<Loterica> lotericas = null;
+    private List<LotericaDTO> lotericas = null;
     @SerializedName("municipio")
     private Municipio municipio = null;
     @SerializedName("uf")
@@ -23,11 +23,11 @@ public class LotericaDTOResponseManual {
     @SerializedName("bairro")
     private BairroDTO bairro = null;
 
-    public List<Loterica> getLotericas() {
+    public List<LotericaDTO> getLotericas() {
         return lotericas;
     }
 
-    public void setLotericas(List<Loterica> lotericas) {
+    public void setLotericas(List<LotericaDTO> lotericas) {
         this.lotericas = lotericas;
     }
 
