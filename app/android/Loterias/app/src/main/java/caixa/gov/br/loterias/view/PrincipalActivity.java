@@ -45,6 +45,7 @@ import android.text.Html;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -271,7 +272,9 @@ public class PrincipalActivity extends AppCompatActivity
                 );
         int positionTopBotao = (int)buttonHomeBet.getY();
 
-        animacoesAcessoRapido.AnimacaoDescerContent(positionTopBotao - 105);
+        int itemSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 105, this.getResources().getDisplayMetrics());
+
+        animacoesAcessoRapido.AnimacaoDescerContent(positionTopBotao - itemSize);
     }
 
     private void AnimacaoFecharMenuRapido(View v){

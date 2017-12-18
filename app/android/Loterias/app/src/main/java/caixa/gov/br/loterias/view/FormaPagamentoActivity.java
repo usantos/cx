@@ -2,6 +2,7 @@ package caixa.gov.br.loterias.view;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -127,6 +128,13 @@ public class FormaPagamentoActivity extends AppCompatActivity implements FormaDe
         RecyclerView recyclerView = findViewById(R.id.formasPagamentoRecyclerView);
         RecyclerView.LayoutManager layout = new LinearLayoutManager(this,
                 LinearLayoutManager.VERTICAL, false);
+
+        int sizeitem = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 48 * listaCartoes.size(), this.getResources().getDisplayMetrics());
+
+
+        ConstraintLayout.LayoutParams layoutFormasPagamento = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, sizeitem);
+        layoutFormasPagamento.topToBottom = R.id.textoInfoSelecioneFormaPagamento;
+        recyclerView.setLayoutParams(layoutFormasPagamento);
 
         FormaPagamentoRecyclerViewAdapter formaPagamentoRecyclerViewAdapter = new FormaPagamentoRecyclerViewAdapter(listaCartoes, this);
         formaPagamentoRecyclerViewAdapter.formaDePagamentoListener = this;

@@ -21,6 +21,8 @@ import caixa.gov.br.loterias.utils.LoadingViewLoterias;
 import caixa.gov.br.loterias.utils.MensagensNetwork;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.CadastrarActivity_;
+import caixa.gov.br.loterias.view.CarrinhoActivity;
+import caixa.gov.br.loterias.view.FormaPagamentoActivity;
 import caixa.gov.br.loterias.view.PrincipalActivity;
 
 /**
@@ -63,7 +65,7 @@ public class LoginFragment extends Fragment {
         buttonAposte.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //mock login
-//                startActivity(new Intent(getActivity(), PrincipalActivity.class));
+//                startActivity(new Intent(getActivity(), CarrinhoActivity.class));
 //                getActivity().finish();
 
                 final View loadViewProgress = LoadingViewLoterias.init(getActivity());

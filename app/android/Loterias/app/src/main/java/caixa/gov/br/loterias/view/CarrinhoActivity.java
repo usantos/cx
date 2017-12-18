@@ -1,18 +1,23 @@
 package caixa.gov.br.loterias.view;
 
 import android.content.Intent;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
+
+import org.w3c.dom.Text;
 
 import java.math.BigDecimal;
 import java.text.DateFormat;
@@ -42,6 +47,9 @@ import caixa.gov.br.loterias.utils.ViewUtils;
 public class CarrinhoActivity extends AppCompatActivity {
 
     public  CarrinhoDTO carrinho;
+    private RecyclerView recyclerView;
+    private List<IdentificaoDeUmaApostaDas8Modalidades> apostas;
+    TextView infoValorMinimoTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +58,11 @@ public class CarrinhoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_carrinho);
 
+        recyclerView = findViewById(R.id.apostasListaRecycleView);
+
+
         callWebservice();
-        //mockCarrinho();
+//        mockCarrinho();
 
         ViewUtils.organizaTabLayout(this, R.id.carrinhoMainLayout, R.id.apostasListaRecycleView, R.id.carrinhoScrollView);
     }
@@ -59,7 +70,7 @@ public class CarrinhoActivity extends AppCompatActivity {
     private void mockCarrinho () {
         carrinho = new CarrinhoDTO();
 
-        List<IdentificaoDeUmaApostaDas8Modalidades> apostas = new ArrayList<IdentificaoDeUmaApostaDas8Modalidades>();
+        apostas = new ArrayList<IdentificaoDeUmaApostaDas8Modalidades>();
 
         IdentificaoDeUmaApostaDas8Modalidades aposta = new IdentificaoDeUmaApostaDas8Modalidades();
         aposta.setId(new Long(0));
@@ -128,6 +139,20 @@ public class CarrinhoActivity extends AppCompatActivity {
         apostas.add(aposta);
         apostas.add(aposta);
         apostas.add(aposta);
+        apostas.add(aposta);
+        apostas.add(aposta);
+        apostas.add(aposta);
+        apostas.add(aposta);
+        apostas.add(aposta);
+        apostas.add(aposta);
+        apostas.add(aposta);
+        apostas.add(aposta);
+        apostas.add(aposta);
+        apostas.add(aposta);
+
+
+
+
 
         carrinho.setApostas(apostas);
 
@@ -135,7 +160,7 @@ public class CarrinhoActivity extends AppCompatActivity {
     }
 
     private void montarLayout(){
-        TextView infoValorMinimoTextView = (TextView) findViewById(R.id.infoValorMinimo);
+        infoValorMinimoTextView = (TextView) findViewById(R.id.infoValorMinimo);
         infoValorMinimoTextView.setText(ViewUtils.fromHtml("Lembre-se que o valor mínimo do total de compras nesse aplicativo é <strong>R$24,00</strong>"));
     }
 
@@ -258,10 +283,16 @@ public class CarrinhoActivity extends AppCompatActivity {
     }
 
     private void configuraRecyclerViewCarrinhoAposta(){
-        RecyclerView recyclerView = findViewById(R.id.apostasListaRecycleView);
         RecyclerView.LayoutManager layout = new LinearLayoutManager(this,
                 LinearLayoutManager.VERTICAL, false);
 
+
+        int sizeitem = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 48 * apostas.size(), this.getResources().getDisplayMetrics());
+
+
+        ConstraintLayout.LayoutParams layoutCarrinhoAposta = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, sizeitem);
+        layoutCarrinhoAposta.topToBottom = R.id.infoValorMinimo;
+        recyclerView.setLayoutParams(layoutCarrinhoAposta);
         recyclerView.setAdapter(new CarrinhoApostasListViewAdapter(this, (ArrayList<IdentificaoDeUmaApostaDas8Modalidades>) carrinho.getApostas(), this));
         recyclerView.setLayoutManager(layout);
         recyclerView.setNestedScrollingEnabled(false);
