@@ -83,7 +83,9 @@ public class FormaPagamentoActivity extends AppCompatActivity implements FormaDe
             public void onResponse(ListCartaoDTOResponse response) {
                 LoadingViewLoterias.stop(loadViewProgress);
                 listaCartoes = response.getPayload();
-                configuraRecyclerViewCarrinhoAposta();
+                if (listaCartoes != null && listaCartoes.size() > 0){
+                    configuraRecyclerViewCarrinhoAposta();
+                }
             }
         }, new SilceClient.ErrorListener() {
             @Override
@@ -129,7 +131,7 @@ public class FormaPagamentoActivity extends AppCompatActivity implements FormaDe
         RecyclerView.LayoutManager layout = new LinearLayoutManager(this,
                 LinearLayoutManager.VERTICAL, false);
 
-        int sizeitem = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 48 * listaCartoes.size(), this.getResources().getDisplayMetrics());
+        int sizeitem = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 75 * listaCartoes.size(), this.getResources().getDisplayMetrics());
 
 
         ConstraintLayout.LayoutParams layoutFormasPagamento = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, sizeitem);

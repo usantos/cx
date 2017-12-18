@@ -173,7 +173,7 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/apostasListaRecycleView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@+id/infoValorMinimo"
             android:layout_marginLeft="0dp"
             app:layout_constraintLeft_toLeftOf="parent"

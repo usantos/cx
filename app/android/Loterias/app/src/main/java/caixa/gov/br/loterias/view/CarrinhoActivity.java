@@ -189,7 +189,9 @@ public class CarrinhoActivity extends AppCompatActivity {
     public void atualizaLayout () {
         montarLayout();
         configuraActivityCarrinho();
-        configuraRecyclerViewCarrinhoAposta();
+        if (apostas != null){
+            configuraRecyclerViewCarrinhoAposta();
+        }
         configuraListeners();
     }
 
