@@ -35,7 +35,7 @@
     <string name="cancelar">Cancelar</string>
     <string name="ok">OK</string>
     <string name="label_sim">Sim</string>
-    <string name= "label_atencao">Atenção</string>
+    <string name="label_atencao">Atenção</string>
     <string name="tituloSalvarAposta">Salve esta aposta :)</string>
     <string name="textoDeNome">Dê um nome</string>
 
@@ -82,8 +82,10 @@
 
     <!-- Messages-->
 
-    <string name ="MN002"> Idade informada menor que 18 anos.</string>
-    <string name ="MA003"> Você tem mais de 18 anos?</string>
-    <string name ="msg_erro_data_invalida"> Data Inválida</string>
+    <string name="MN002"> Idade informada menor que 18 anos.</string>
+    <string name="MA003"> Você tem mais de 18 anos?</string>
+    <string name="msg_erro_data_invalida"> Data Inválida</string>
+    <string name="title_activity_lista_rapidao">Rapidão</string>
+    <string name="titulo_lista_rapidao">O jeito mais fácil para apostar</string>
 
 </resources>

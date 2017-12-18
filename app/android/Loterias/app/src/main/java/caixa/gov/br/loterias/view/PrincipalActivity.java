@@ -110,6 +110,7 @@ public class PrincipalActivity extends AppCompatActivity
         toolbarListener();
         listenerRepassados();
         listenerCarrinho();
+        listenerRapidao();
 
         callWebservice();
     }
@@ -450,6 +451,17 @@ public class PrincipalActivity extends AppCompatActivity
             @Override
             public void onClick(View v){
                 startActivity(new Intent(PrincipalActivity.this, RepassesSociaisActivity.class) );
+            }
+        });
+    }
+
+    private void listenerRapidao(){
+
+        RelativeLayout relativerapidao=(RelativeLayout)findViewById(R.id.RelativeLayoutContentRapidao);
+        relativerapidao.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                startActivity(new Intent(PrincipalActivity.this, ListaRapidaoActivity.class) );
             }
         });
     }
