@@ -31,6 +31,7 @@ import org.androidannotations.annotations.ViewById;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import caixa.gov.br.loterias.R;
@@ -261,7 +262,11 @@ public class CadastrarPasso2Activity extends CadastroActivity {
             @Override
             public void onResponse(LotericaDTOResponse response) {
                 LoadingViewLoterias.stop(loadViewProgress);
-                popularRadio(response.getPayload().getLotericas());
+               if(response.getPayload()!= null &&  response.getPayload().getLotericas() != null ){
+                 popularRadio(response.getPayload().getLotericas());
+               }else{
+                   ViewUtils.alert(CadastrarPasso2Activity.this, response.getMensagem());
+               }
 
             }
         }, new SilceClient.ErrorListener() {
