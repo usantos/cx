@@ -76,7 +76,6 @@ public class CadastroActivity extends AppCompatActivity {
     @Override
     public boolean onSupportNavigateUp() {
         finish();
-
         return true;
     }
 

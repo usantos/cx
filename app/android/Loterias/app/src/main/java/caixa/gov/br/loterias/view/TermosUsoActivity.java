@@ -56,6 +56,12 @@ public class TermosUsoActivity extends AppCompatActivity {
         listenerPolitica();
     }
 
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
+    }
+
     private View loadViewProgress = null;
 
     private void getTermo () {
