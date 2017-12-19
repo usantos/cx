@@ -7,12 +7,9 @@ import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 
@@ -39,6 +36,7 @@ import caixa.gov.br.loterias.utils.AppUtils;
 import caixa.gov.br.loterias.utils.CustomAlert;
 import caixa.gov.br.loterias.utils.DateUtils;
 import caixa.gov.br.loterias.utils.LoadingViewLoterias;
+import caixa.gov.br.loterias.utils.MensagensNetwork;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.utils.segmentedbutton.SegmentedButtonGroup;
 
@@ -65,7 +63,7 @@ public class CadastrarActivity extends CadastroActivity {
 
     @AfterViews
     protected void init() {
-        super.createToobar();
+        super.createToolbar();
         loadFields();
         loadFields();
         addUFSpinner();
@@ -291,7 +289,7 @@ public class CadastrarActivity extends CadastroActivity {
             public void onErrorResponse(VolleyError error) {
                 LoadingViewLoterias.stop(loadViewProgress);
                 limparBuscaPorCep();
-                ViewUtils.alert(CadastrarActivity.this, "ERRO");
+                ViewUtils.alert(CadastrarActivity.this, MensagensNetwork.setMensagem(error, CadastrarActivity.this));
             }
         });
     }

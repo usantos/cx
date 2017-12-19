@@ -44,10 +44,11 @@ import caixa.gov.br.loterias.view.fragment.CartelaFragment.CartelaFragmentListen
 import caixa.gov.br.loterias.view.fragment.SurpresinhaFragment;
 import caixa.gov.br.loterias.view.fragment.SurpresinhaFragment.SurpresinhaFragmentListener;
 import caixa.gov.br.loterias.utils.TipoDialog;
+
 import static java.lang.String.*;
 
 @EActivity(R.layout.activity_simular_aposta)
-public class SimularApostaActivity extends AppCompatActivity implements OnClickListener, CartelaFragmentListener, SurpresinhaFragmentListener{
+public class SimularApostaActivity extends AppCompatActivity implements OnClickListener, CartelaFragmentListener, SurpresinhaFragmentListener {
 
     @ViewById
     DrawerLayout drawer_layout;
@@ -110,7 +111,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         configuraActivity();
     }
 
-    private void configuraParametrosJogo () {
+    private void configuraParametrosJogo() {
         for (ParametroValorApostaDTO parametro : parametroSimulacao.getValoresAposta()) {
             qtdNumerosList.add("" + parametro.getNumeroPrognosticos() + " números por " + ViewUtils.getMoedaFormat(parametro.getValor()));
         }
@@ -126,7 +127,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         }
     }
 
-    private void configuraFragments(){
+    private void configuraFragments() {
         fragmentManager = getSupportFragmentManager();
 
         cartelaFragment = new CartelaFragment();
@@ -141,7 +142,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
     private void configuraActivity() {
         tipoJogo = (ModalidadeEnum) getIntent().getSerializableExtra("tipoAposta");
 
-        switch (tipoJogo){
+        switch (tipoJogo) {
             case MEGA_SENA:
                 configuraTipoApostaTela("mega-sena", R.color.megasenaclaro, R.color.megasenaescuro);
                 break;
@@ -187,7 +188,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         configuraBotoesListeners();
     }
 
-    public void atualizaTextoBotoesQtdSelecionadas(){
+    public void atualizaTextoBotoesQtdSelecionadas() {
         qtdNumerosButton.setText(format("%d números", qtdDezenasPossiveisSelecionado));
         if (qtdConcursoSelecionado == 0) {
             qtdConcursosButton.setText("Nenhum");
@@ -196,7 +197,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         }
     }
 
-    private void configuraBotoesListeners(){
+    private void configuraBotoesListeners() {
         simularTelaAposta.setOnClickListener(this);
         surpresinhaTela.setOnClickListener(this);
         qtdNumerosButton.setOnClickListener(this);
@@ -206,7 +207,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         surpresinhaTela.setBackgroundResource(R.drawable.icon_surpresinha);
     }
 
-    private void modalNumeros(){
+    private void modalNumeros() {
         // custom dialog
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.custom_dialog_list_view);
@@ -214,7 +215,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         // set the custom dialog components - listview and button
 
         final ListView listViewItens = (ListView) dialog.findViewById(R.id.listaItensDialog);
-        TextView tituloDialog = (TextView)dialog.findViewById(R.id.tituloDialogCustom);
+        TextView tituloDialog = (TextView) dialog.findViewById(R.id.tituloDialogCustom);
         tituloDialog.setText("Quant. de Números");
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(SimularApostaActivity.this,
@@ -232,7 +233,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
                 int itemPosition = position;
 
                 // ListView Clicked item value
-                String  itemValue = (String) listViewItens.getItemAtPosition(position);
+                String itemValue = (String) listViewItens.getItemAtPosition(position);
                 textoBotaoPrognosticosSelecionado = parametroSimulacao.getValoresAposta().get(position).getNumeroPrognosticos() + " números";
                 qtdDezenasPossiveisSelecionado = parametroSimulacao.getValoresAposta().get(position).getNumeroPrognosticos();
             }
@@ -266,7 +267,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         dialog.show();
     }
 
-    private void modalTeimosinhas(){
+    private void modalTeimosinhas() {
         // custom dialog
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.custom_dialog_list_view);
@@ -274,7 +275,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         // set the custom dialog components - listview and button
 
         final ListView listViewItens = (ListView) dialog.findViewById(R.id.listaItensDialog);
-        TextView tituloDialog = (TextView)dialog.findViewById(R.id.tituloDialogCustom);
+        TextView tituloDialog = (TextView) dialog.findViewById(R.id.tituloDialogCustom);
         tituloDialog.setText("Teimosinhas");
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(SimularApostaActivity.this,
                 android.R.layout.simple_list_item_1, android.R.id.text1, qtdConcursosList);
@@ -288,10 +289,10 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 // ListView Clicked item index
-                int itemPosition     = position;
+                int itemPosition = position;
 
                 // ListView Clicked item value
-                String  itemValue    = (String) listViewItens.getItemAtPosition(position);
+                String itemValue = (String) listViewItens.getItemAtPosition(position);
                 textoBotaoSurpresinhasSelecionado = itemValue;
                 qtdConcursoSelecionado = parametroSimulacao.getTeimosinhas().get(position);
             }
@@ -327,7 +328,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
     // Pegar o handle dos botoes que mostrarao o seu respectivo fragment na activity
     public void onClick(View v) {
         switch (v.getId()) {
-            case  R.id.simularTelaAposta: {
+            case R.id.simularTelaAposta: {
                 fragmentManager.beginTransaction().replace(R.id.fragmentSimularApostas, cartelaFragment).commit();
 
                 simularTelaAposta.setBackgroundResource(R.drawable.icon_seleciona);
@@ -355,14 +356,14 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         }
     }
 
-    private void configuraTipoApostaTela(String titleActivity, int lightColor, int darkColor){
+    private void configuraTipoApostaTela(String titleActivity, int lightColor, int darkColor) {
         setTitle(titleActivity);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(ContextCompat.getColor(this, darkColor));
         }
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(this, lightColor)));
 
-        if (getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
@@ -373,7 +374,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
     }
 
     @Override
-    public boolean onSupportNavigateUp(){
+    public boolean onSupportNavigateUp() {
         finish();
 
         return true;
@@ -386,7 +387,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         getMenuInflater().inflate(R.menu.itens_simular_actionbar, menu);
 
         MenuItem concursoAtual = menu.findItem(R.id.concursoAtual);
-        concursoAtual.setTitle("Concurso \n " + parametroSimulacao.getConcurso().getNumero());
+        concursoAtual.setTitle(ViewUtils.fromHtml("<b>Concurso<br>" + parametroSimulacao.getConcurso().getNumero() + "</b>"));
 
         SimpleDateFormat formatterDateFinal = new SimpleDateFormat("dd/MM");
         DateFormat formatterDate = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
@@ -410,7 +411,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         return true;
     }
 
-    private void configuraMenuItem(int id, String texto){
+    private void configuraMenuItem(int id, String texto) {
         View menuItem = findViewById(id);
 
         if (menuItem != null && menuItem instanceof TextView) {
@@ -423,7 +424,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
     // MÉTODOS DO FRAGMENT CARTELAFRAGMENTLISTENER
     @Override
     public int verificaNovoQtdDezenasMax(int qtdDezenasAtual) {
-        if (qtdDezenasAtual <= parametroSimulacao.getQuantidadeMaxima()){
+        if (qtdDezenasAtual <= parametroSimulacao.getQuantidadeMaxima()) {
             atualizaTextoBotoesQtdSelecionadas();
         }
 
@@ -431,7 +432,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
     }
 
     @Override
-    public void adicionarApostaCarrinho(){
+    public void adicionarApostaCarrinho() {
         Intent activity = new Intent(this, ConfirmadoInclusaoCarrinhoActivity.class);
         activity.putExtra("tipoAposta", tipoJogo);
         activity.putExtra("valorAposta", cartelaFragment.valorTotalAposta);

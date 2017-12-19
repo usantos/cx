@@ -17,8 +17,6 @@ import android.widget.ListView;
 import com.android.volley.VolleyError;
 import com.github.pinball83.maskededittext.MaskedEditText;
 
-import org.apache.commons.lang.StringUtils;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,15 +24,13 @@ import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.bo.DadosCorporativosBO;
 import caixa.gov.br.loterias.bo.silce.SilceClient;
 import caixa.gov.br.loterias.bo.silce.dto.ApostadorDTO;
-import caixa.gov.br.loterias.bo.silce.dto.BairroDTO;
-import caixa.gov.br.loterias.bo.silce.dto.BairroDTOResponse;
-import caixa.gov.br.loterias.bo.silce.dto.Municipio;
 import caixa.gov.br.loterias.bo.silce.dto.MunicipioDTO;
 import caixa.gov.br.loterias.bo.silce.dto.MunicipioDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.MunicipioIdDTO;
 import caixa.gov.br.loterias.bo.silce.dto.UnidadeFederacaoDTO;
 import caixa.gov.br.loterias.bo.silce.dto.UnidadeFederacaoDTOResponse;
 import caixa.gov.br.loterias.utils.LoadingViewLoterias;
+import caixa.gov.br.loterias.utils.MensagensNetwork;
 import caixa.gov.br.loterias.utils.ViewUtils;
 
 /**
@@ -54,7 +50,7 @@ public class CadastroActivity extends AppCompatActivity {
     private boolean isMunicipioUsuario;
     protected MunicipioIdDTO municipioIdDTOLoteria;
 
-    protected void createToobar() {
+    protected void createToolbar() {
         setTitle(R.string.title_activity_toolbar);
 
 
@@ -143,7 +139,7 @@ public class CadastroActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 LoadingViewLoterias.stop(loadViewProgress);
-                ViewUtils.alert(CadastroActivity.this, "ERRO");
+                ViewUtils.alert(CadastroActivity.this, MensagensNetwork.setMensagem(error, CadastroActivity.this));
             }
         });
     }
@@ -245,7 +241,7 @@ public class CadastroActivity extends AppCompatActivity {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     LoadingViewLoterias.stop(loadViewProgress);
-                    ViewUtils.alert(CadastroActivity.this, "ERRO");
+                    ViewUtils.alert(CadastroActivity.this, MensagensNetwork.setMensagem(error, CadastroActivity.this));
                 }
             });
         }

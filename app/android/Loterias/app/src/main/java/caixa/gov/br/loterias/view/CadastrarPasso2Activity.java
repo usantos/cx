@@ -51,6 +51,7 @@ import caixa.gov.br.loterias.bo.silce.dto.LotericaDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.UsuarioLogadoResponse;
 import caixa.gov.br.loterias.utils.AppUtils;
 import caixa.gov.br.loterias.utils.LoadingViewLoterias;
+import caixa.gov.br.loterias.utils.MensagensNetwork;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.utils.segmentedbutton.SegmentedButton;
 import caixa.gov.br.loterias.utils.segmentedbutton.SegmentedButtonGroup;
@@ -96,7 +97,7 @@ public class CadastrarPasso2Activity extends CadastroActivity {
 
     @AfterViews
     protected void init() {
-        super.createToobar();
+        super.createToolbar();
         addListenerFinalizar();
         initOnclick();
         initRightImg();
@@ -248,7 +249,7 @@ public class CadastrarPasso2Activity extends CadastroActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 LoadingViewLoterias.stop(loadViewProgress);
-                ViewUtils.alert(CadastrarPasso2Activity.this, "ERRO");
+                ViewUtils.alert(CadastrarPasso2Activity.this, MensagensNetwork.setMensagem(error, CadastrarPasso2Activity.this));
             }
         });
     }
@@ -275,7 +276,7 @@ public class CadastrarPasso2Activity extends CadastroActivity {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             LoadingViewLoterias.stop(loadViewProgress);
-                            ViewUtils.alert(CadastrarPasso2Activity.this, "ERRO");
+                            ViewUtils.alert(CadastrarPasso2Activity.this, MensagensNetwork.setMensagem(error, CadastrarPasso2Activity.this));
                         }
                     });
                 } else {
@@ -289,7 +290,7 @@ public class CadastrarPasso2Activity extends CadastroActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 LoadingViewLoterias.stop(loadViewProgress);
-                ViewUtils.alert(CadastrarPasso2Activity.this, "ERRO");
+                ViewUtils.alert(CadastrarPasso2Activity.this, MensagensNetwork.setMensagem(error, CadastrarPasso2Activity.this));
             }
         });
     }
@@ -313,7 +314,7 @@ public class CadastrarPasso2Activity extends CadastroActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 LoadingViewLoterias.stop(loadViewProgress);
-                ViewUtils.alert(CadastrarPasso2Activity.this, "ERRO");
+                ViewUtils.alert(CadastrarPasso2Activity.this, MensagensNetwork.setMensagem(error, CadastrarPasso2Activity.this));
             }
         });
     }
@@ -335,7 +336,7 @@ public class CadastrarPasso2Activity extends CadastroActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 LoadingViewLoterias.stop(loadViewProgress);
-                ViewUtils.alert(CadastrarPasso2Activity.this, "ERRO");
+                ViewUtils.alert(CadastrarPasso2Activity.this, MensagensNetwork.setMensagem(error, CadastrarPasso2Activity.this));
             }
         });
     }
@@ -376,7 +377,7 @@ public class CadastrarPasso2Activity extends CadastroActivity {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             LoadingViewLoterias.stop(loadViewProgress);
-                            ViewUtils.alert(CadastrarPasso2Activity.this, "ERRO");
+                            ViewUtils.alert(CadastrarPasso2Activity.this, MensagensNetwork.setMensagem(error, CadastrarPasso2Activity.this));
                         }
                     });
         }
@@ -502,7 +503,7 @@ public class CadastrarPasso2Activity extends CadastroActivity {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             LoadingViewLoterias.stop(loadViewProgress);
-                            ViewUtils.alert(CadastrarPasso2Activity.this, "ERRO");
+                            ViewUtils.alert(CadastrarPasso2Activity.this, MensagensNetwork.setMensagem(error, CadastrarPasso2Activity.this));
                         }
                     });
 

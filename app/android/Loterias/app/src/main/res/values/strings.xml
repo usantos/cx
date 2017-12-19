@@ -7,7 +7,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_home">HomeActivity</string>
-    <string name="title_activity_carrinho">Carrinho de apostas</string>
+    <string name="title_activity_carrinho"><b>Carrinho</b> de apostas</string>
     <string name="title_activity_forma_pagamento">Forma de pagamento</string>
     <string name="title_activity_confirmacao_pagamento">Confirmação</string>
 

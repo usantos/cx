@@ -81,8 +81,8 @@
                     android:layout_weight="1"
                     android:textAlignment="center"
                     android:textSize="12sp"
-                    android:visibility="gone"
                     app:sb_text="Localização"
+                    android:visibility="gone"
                     app:sb_textColor="@color/verdeazul"
                     app:sb_textColor_onSelection="@color/branco"
                     app:sb_textStyle="bold" />
@@ -98,7 +98,7 @@
                     app:sb_text="CEP"
                     app:sb_textColor="@color/verdeazul"
                     app:sb_textColor_onSelection="@color/branco"
-                    app:sb_textStyle="bold" />
+                    app:sb_textStyle="bold"/>
 
                 <caixa.gov.br.loterias.utils.segmentedbutton.SegmentedButton
                     android:id="@+id/segmentedButtonCodigoLoterica"
@@ -111,7 +111,7 @@
                     app:sb_text="Código da lotérica"
                     app:sb_textColor="@color/verdeazul"
                     app:sb_textColor_onSelection="@color/branco"
-                    app:sb_textStyle="bold" />
+                    app:sb_textStyle="bold"/>
 
             </caixa.gov.br.loterias.utils.segmentedbutton.SegmentedButtonGroup>
 
