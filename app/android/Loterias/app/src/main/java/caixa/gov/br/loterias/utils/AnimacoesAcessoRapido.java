@@ -3,6 +3,8 @@ package caixa.gov.br.loterias.utils;
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.TransitionDrawable;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.Button;
@@ -135,9 +137,6 @@ public class AnimacoesAcessoRapido {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-//                relativeBlankView.setVisibility(View.VISIBLE);
-                buttonHomeBet.setBackgroundColor(ContextCompat.getColor(activity, R.color.cinzabotaoapostedesativado));
-//                buttonHomeBet.setTextColor(ContextCompat.getColor(activity, R.color.cinza));
                 trevoToolbar.setEnabled(true);
             }
 
@@ -241,6 +240,11 @@ public class AnimacoesAcessoRapido {
         ObjectAnimator animator2 = ObjectAnimator.ofFloat(relativeBlankView,"alpha",0.8f);
         animator2.setDuration(500); // duration 3 seconds
         animator2.start();
+
+        ColorDrawable[] color = {new ColorDrawable(ContextCompat.getColor(activity.getApplicationContext(), estilo.getCorClara())), new ColorDrawable(ContextCompat.getColor(activity, R.color.cinzabotaoapostedesativado))};
+        TransitionDrawable trans = new TransitionDrawable(color);
+        buttonHomeBet.setBackground(trans);
+        trans.startTransition(500); //
 
 
         relativePrincipal.animate().translationX(0).translationY(positionBottom).setDuration(500).setListener(new Animator.AnimatorListener() {
