@@ -87,5 +87,6 @@
     <string name="msg_erro_data_invalida"> Data Inválida</string>
     <string name="title_activity_lista_rapidao">Rapidão</string>
     <string name="titulo_lista_rapidao">O jeito mais fácil para apostar</string>
+    <string name="title_activity_rapidao_config">RapidaoConfigActivity</string>
 
 </resources>

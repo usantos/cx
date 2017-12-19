@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="caixa.gov.br.loterias.view.RapidaoConfigActivity"
+    tools:showIn="@layout/activity_rapidao_config">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="91dp"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="12dp"
+                android:background="@color/cinza"
+                android:orientation="vertical">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:text="Prêmio mínimo"
+                        android:textSize="14.2sp"
+                        android:id="@+id/tituloPrecoMinimo"
+                        android:textColor="@color/branco"
+                        android:textStyle="bold"
+
+                        />
+                    <TextView
+                        android:id="@+id/tituloValorPrecoMinimo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_gravity="end"
+                        android:layout_toLeftOf="@+id/limparPrecoMinimo"
+                        android:layout_toStartOf="@+id/limparPrecoMinimo"
+                        android:text="R$ 00,00"
+                        android:textColor="@color/verdeazul"
+                        android:layout_marginRight="5dp"
+                        android:textSize="15.8sp"/>
+                    <Button
+                        android:id="@+id/limparPrecoMinimo"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:background="@drawable/close" />
+                </RelativeLayout>
+                <SeekBar
+                    android:id="@+id/seekBarPremiumMimimun"
+                    android:layout_width="match_parent"
+                    android:layout_height="26dp"
+                    android:backgroundTint="@color/verdeazul"
+                    android:thumb="@drawable/custom_thumb"
+                    />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:text="1 milhão"
+                        android:textSize="14.2sp"
+                        android:id="@+id/tituloValorMinimoPremiumMiminum"
+                        android:textColor="@color/branco"
+                        />
+                    <TextView
+                        android:id="@+id/tituloValorMaximoPremiumMiminum"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:text="100 milhões"
+                        android:textColor="@color/branco"
+                        android:layout_marginRight="5dp"
+                        android:textSize="14.2sp"/>
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="111dp"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="12dp"
+            android:background="@color/linhaDivisa"
+            android:orientation="vertical">
+            <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tituloValorMinimoAposta"
+                    android:layout_width="155dp"
+                    android:layout_height="wrap_content"
+                    android:text="Valor mínimo da aposta"
+                    android:textColor="@color/cinza"
+                    android:textSize="14.2sp"
+                    android:textStyle="bold"
+
+                    />
+            <TextView
+            android:id="@+id/tituloValorValorMinimoAPosta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="end"
+            android:layout_toLeftOf="@+id/limparValorMinimoAposta"
+            android:layout_toStartOf="@+id/limparValorMinimoAposta"
+            android:text="R$ 00,00"
+            android:textColor="@color/verdeazul"
+            android:layout_marginRight="5dp"
+            android:textSize="15.8sp"/>
+            <Button
+            android:id="@+id/limparValorMinimoAposta"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/close" />
+            </RelativeLayout>
+            <SeekBar
+            android:id="@+id/seekBarValorMinimoAposta"
+            android:layout_width="match_parent"
+            android:layout_height="26dp"
+            android:backgroundTint="@color/verdeazul"
+            android:thumb="@drawable/custom_thumb"
+            />
+            <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="24 reais"
+            android:textSize="14.2sp"
+            android:id="@+id/tituloValorMinimoApostaValorMinimo"
+            android:textColor="@color/azulFormNovoTipoPagamento"
+            />
+            <TextView
+            android:id="@+id/tituloValorMinimoApostaValorMaximo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:text="100 reais"
+            android:textColor="@color/azulFormNovoTipoPagamento"
+            android:layout_marginRight="5dp"
+            android:textSize="14.2sp"/>
+            </RelativeLayout>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="111dp"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="12dp"
+                android:background="@color/cinzaclaro"
+                android:orientation="vertical">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tituloValorMaximoAposta"
+                        android:layout_width="155dp"
+                        android:layout_height="wrap_content"
+                        android:text="Valor máximo da aposta"
+                        android:textStyle="bold"
+                        android:textColor="@color/cinza"
+                        android:textSize="14.2sp" />
+                    <TextView
+                        android:id="@+id/tituloValorValorMaximoAposta"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_gravity="end"
+                        android:layout_toLeftOf="@+id/limparValorMaximoAposta"
+                        android:layout_toStartOf="@+id/limparValorMaximoAposta"
+                        android:text="R$ 00,00"
+                        android:textColor="@color/verdeazul"
+                        android:layout_marginRight="5dp"
+                        android:textSize="15.8sp"/>
+                    <Button
+                        android:id="@+id/limparValorMaximoAposta"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:background="@drawable/close" />
+                </RelativeLayout>
+                <SeekBar
+                    android:id="@+id/seekBarValorMaximoAposta"
+                    android:layout_width="match_parent"
+                    android:layout_height="26dp"
+                    android:backgroundTint="@color/verdeazul"
+                    android:thumb="@drawable/custom_thumb"
+                    />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:text="24 reais"
+                        android:textSize="14.2sp"
+                        android:id="@+id/tituloValorMaximoApostaValorMinimo"
+                        android:textColor="@color/azulFormNovoTipoPagamento"
+                        />
+                    <TextView
+                        android:id="@+id/tituloValorMaximoApostaValorMaximo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:text="100 reais"
+                        android:textColor="@color/azulFormNovoTipoPagamento"
+                        android:layout_marginRight="5dp"
+                        android:textSize="14.2sp"/>
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@color/branco"
+                android:paddingTop="40dp"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Quais apostas você quer no rapidão?"
+                    android:textSize="14.2sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/azulFormNovoTipoPagamento"
+                    android:paddingHorizontal="16dp"
+                    />
+
+                <GridView
+                    android:id="@+id/gridviewTiposApostasRapidao"
+                    android:layout_width="match_parent"
+                    android:layout_height="500dp"
+                    android:gravity="center"
+                    android:columnWidth="156dp"
+                    android:numColumns="2"
+                    android:verticalSpacing="17dp"
+                    android:horizontalSpacing="0dp"
+                    android:stretchMode="spacingWidthUniform"
+                    android:layout_marginTop="19dp"
+                    />
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</android.support.constraint.ConstraintLayout>

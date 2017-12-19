@@ -461,7 +461,7 @@ public class PrincipalActivity extends AppCompatActivity
         relativerapidao.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                startActivity(new Intent(PrincipalActivity.this, ListaRapidaoActivity.class) );
+                startActivity(new Intent(PrincipalActivity.this, RapidaoConfigActivity.class) );
             }
         });
     }
