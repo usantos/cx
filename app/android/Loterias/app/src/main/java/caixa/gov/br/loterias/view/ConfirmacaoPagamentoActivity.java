@@ -12,7 +12,7 @@ import android.widget.Button;
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.utils.ViewUtils;
 
-public class ConfirmacaoPagamentoActivity extends AppCompatActivity {
+public class ConfirmacaoPagamentoActivity extends SettingToolbarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,40 +21,8 @@ public class ConfirmacaoPagamentoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirmacao_pagamento);
 
-        configuraActivityCarrinho();
         configuraBotoes();
 
-    }
-
-    @Override
-    public boolean onSupportNavigateUp(){
-        finish();
-
-        return true;
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.home, menu);
-
-        return true;
-    }
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-
-        return true;
-    }
-
-    private void configuraActivityCarrinho(){
-        if (getSupportActionBar() != null){
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
-
-        getSupportActionBar().setBackgroundDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.navigation_gradient, null));
     }
 
     private void configuraBotoes(){

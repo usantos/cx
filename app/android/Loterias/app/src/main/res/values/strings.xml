@@ -8,8 +8,8 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_home">HomeActivity</string>
     <string name="title_activity_carrinho"><b>Carrinho</b> de apostas</string>
-    <string name="title_activity_forma_pagamento">Forma de pagamento</string>
-    <string name="title_activity_confirmacao_pagamento">Confirmação</string>
+    <string name="title_activity_forma_pagamento">Forma de <b>pagamento</b></string>
+    <string name="title_activity_confirmacao_pagamento"><b>Confirmação</b></string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -65,7 +65,7 @@
     <string name="title_activity_main2">Main2Activity</string>
     <string name="title_activity_principal">PrincipalActivity</string>
     <string name="title_activity_termos_uso">Loterias Caixa</string>
-    <string name="title_activity_repasses_sociais">Repasses <b>Sociais</b></string>
+    <string name="title_activity_repasses_sociais">Repasses <b>sociais</b></string>
     <string name="title_activity_teste">TesteActivity</string>
     <string name="title_activity_toolbar">Loterias Caixa</string>
     <string name="title_activity_login">Login</string>

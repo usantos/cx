@@ -20,7 +20,7 @@ import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.view.adapter.NovaFormaPagamentoBandeiraAdapter;
 import caixa.gov.br.loterias.utils.ViewUtils;
 
-public class NovaFormaPagamentoActivity extends AppCompatActivity {
+public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +29,7 @@ public class NovaFormaPagamentoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nova_forma_pagamento);
 
-        String[] values = new String[] { "01", "02", "02", "02", "02", "02", "02", "02", "02"};
+        String[] values = new String[]{"01", "02", "02", "02", "02", "02", "02", "02", "02"};
 
         RecyclerView recyclerView = findViewById(R.id.novaFormaPagamentoRecyclerView);
         LinearLayoutManager layoutManager
@@ -40,46 +40,14 @@ public class NovaFormaPagamentoActivity extends AppCompatActivity {
 
         recyclerView.setAdapter(new NovaFormaPagamentoBandeiraAdapter(montaCarrinhoApostaValores(values), this));
 
-        configuraActivityCarrinho();
         configuraBotoesListener();
 
-        addRightImg((EditText)findViewById(R.id.editTextNumeroCartaoContent));
-        addRightImg((EditText)findViewById(R.id.editTextNomeClienteCartaoContent));
-        addRightImg((EditText)findViewById(R.id.editTextCodigoSegurancaContent));
+        addRightImg((EditText) findViewById(R.id.editTextNumeroCartaoContent));
+        addRightImg((EditText) findViewById(R.id.editTextNomeClienteCartaoContent));
+        addRightImg((EditText) findViewById(R.id.editTextCodigoSegurancaContent));
     }
 
-    @Override
-    public boolean onSupportNavigateUp(){
-        finish();
-
-        return true;
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.home, menu);
-
-        return true;
-    }
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-
-        return true;
-    }
-
-    private void configuraActivityCarrinho(){
-        if (getSupportActionBar() != null){
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
-
-        getSupportActionBar().setBackgroundDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.navigation_gradient, null));
-    }
-
-    private void addRightImg (EditText textField) {
+    private void addRightImg(EditText textField) {
         textField.setOnFocusChangeListener(new EditText.OnFocusChangeListener() {
 
             @Override
@@ -89,18 +57,16 @@ public class NovaFormaPagamentoActivity extends AppCompatActivity {
             */
                 if (!hasFocus) {
                     if (v.getClass() == MaskedEditText.class) {
-                        if (((MaskedEditText)v).getUnmaskedText().toString().equals(""))
-                        {
-                            ((MaskedEditText)v).setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                        if (((MaskedEditText) v).getUnmaskedText().toString().equals("")) {
+                            ((MaskedEditText) v).setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                         } else {
-                            ((MaskedEditText)v).setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
+                            ((MaskedEditText) v).setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
                         }
                     } else {
-                        if (((EditText)v).getText().toString().equals(""))
-                        {
-                            ((EditText)v).setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                        if (((EditText) v).getText().toString().equals("")) {
+                            ((EditText) v).setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                         } else {
-                            ((EditText)v).setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
+                            ((EditText) v).setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
                         }
                     }
                 }
@@ -108,7 +74,7 @@ public class NovaFormaPagamentoActivity extends AppCompatActivity {
         });
     }
 
-    private ArrayList<String> montaCarrinhoApostaValores(String valores[]){
+    private ArrayList<String> montaCarrinhoApostaValores(String valores[]) {
         ArrayList<String> valoresTextoDialog = new ArrayList<>();
 
         Collections.addAll(valoresTextoDialog, valores);
@@ -116,7 +82,7 @@ public class NovaFormaPagamentoActivity extends AppCompatActivity {
         return valoresTextoDialog;
     }
 
-    private void configuraBotoesListener(){
+    private void configuraBotoesListener() {
         ((Button) findViewById(R.id.botaoAvancarPagamento)).setText(ViewUtils.configuraButtonText(this, getString(R.string.apostarAutorizarCobranca), 7));
 
         findViewById(R.id.botaoAvancarPagamento).setOnClickListener(new View.OnClickListener() {

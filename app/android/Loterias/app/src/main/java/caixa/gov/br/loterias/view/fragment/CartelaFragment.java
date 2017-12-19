@@ -47,6 +47,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.utils.MensagensNetwork;
 import caixa.gov.br.loterias.view.SimularApostaActivity;
 import caixa.gov.br.loterias.view.custom.ExpandableHeightGridView;
 import caixa.gov.br.loterias.utils.ViewUtils;
@@ -228,7 +229,7 @@ public class CartelaFragment extends Fragment implements OnClickListener {
             @Override
             public void onErrorResponse(VolleyError error) {
                 LoadingViewLoterias.stop(loadViewProgress);
-                ViewUtils.alert(getActivity(), "ERRO");
+                ViewUtils.alert(getActivity(), MensagensNetwork.setMensagem(error, getActivity()));
             }
         });
     }
@@ -347,7 +348,7 @@ public class CartelaFragment extends Fragment implements OnClickListener {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         LoadingViewLoterias.stop(loadViewProgress);
-                        ViewUtils.alert(getActivity(), "ERRO");
+                        ViewUtils.alert(getActivity(), MensagensNetwork.setMensagem(error, getActivity()));
                     }
                 });
             }
@@ -355,7 +356,7 @@ public class CartelaFragment extends Fragment implements OnClickListener {
             @Override
             public void onErrorResponse(VolleyError error) {
                 LoadingViewLoterias.stop(loadViewProgress);
-                ViewUtils.alert(getActivity(), "ERRO");
+                ViewUtils.alert(getActivity(), MensagensNetwork.setMensagem(error, getActivity()));
             }
         });
     }
@@ -377,7 +378,7 @@ public class CartelaFragment extends Fragment implements OnClickListener {
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                ViewUtils.alert(getActivity(), "ERRO");
+                ViewUtils.alert(getActivity(), MensagensNetwork.setMensagem(error, getActivity()));
             }
         });
     }

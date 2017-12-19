@@ -7,19 +7,21 @@
     <item
         android:id="@+id/concursoAtual"
         android:checkable="false"
-        android:title="Concurso \n 1456"
-        app:showAsAction="always" />
+        android:title=""
+        app:actionLayout="@layout/custom_menu_item"
+        app:showAsAction="always"/>
 
     <item
         android:id="@+id/sorteioAtual"
         android:checkable="false"
-        android:title="Sorteio \n 16/06"
+        android:title=""
+        app:actionLayout="@layout/custom_menu_item"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/action_duvida"
         android:orderInCategory="100"
-        android:icon="@drawable/icon_duvida"
+        android:icon="@drawable/menu_options"
         app:showAsAction="always"
         android:title=""/>
     <!--android:title="@string/action_duvidas"-->

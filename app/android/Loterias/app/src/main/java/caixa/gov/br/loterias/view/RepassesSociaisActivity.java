@@ -24,17 +24,17 @@ import caixa.gov.br.loterias.utils.LoadingViewLoterias;
 import caixa.gov.br.loterias.utils.MensagensNetwork;
 import caixa.gov.br.loterias.utils.ViewUtils;
 
-public class RepassesSociaisActivity extends AppCompatActivity {
+public class RepassesSociaisActivity extends SettingToolbarActivity {
     private RepassometroDTO repasseOBj;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_repasses_sociais);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
+//
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         callWebservice();
     }

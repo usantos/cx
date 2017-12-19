@@ -35,6 +35,8 @@ import caixa.gov.br.loterias.bo.silce.dto.ParametroJogoDTO;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroValorApostaDTO;
 import caixa.gov.br.loterias.bo.silce.dto.TipoConcursoEnum;
 import caixa.gov.br.loterias.utils.LoadingViewLoterias;
+import caixa.gov.br.loterias.utils.MensagensNetwork;
+import caixa.gov.br.loterias.view.CadastrarActivity;
 import caixa.gov.br.loterias.view.SimularApostaActivity;
 import caixa.gov.br.loterias.view.custom.ExpandableHeightGridView;
 import caixa.gov.br.loterias.utils.ViewUtils;
@@ -77,7 +79,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         configuraListaDezenas(getView());
     }
 
-    public void surpresinhaFragmentBuilder(Bundle dataBundle){
+    public void surpresinhaFragmentBuilder(Bundle dataBundle) {
         if (dataBundle != null) {
             //mocks
             numeroConcursoAtual = dataBundle.getInt("numeroConcursoAtual");
@@ -92,7 +94,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        parentActivity = ((SimularApostaActivity)getActivity());
+        parentActivity = ((SimularApostaActivity) getActivity());
         parametroJogo = parentActivity.getParametroSimulacao();
     }
 
@@ -131,12 +133,12 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
     }
 
     // METODOS DE CONFIGURACOES
-    private void atualizaDezenaAdapter(){
+    private void atualizaDezenaAdapter() {
         simularDezenasAdapter.rows = montaListaDezenasSurpresinha();
         simularDezenasAdapter.notifyDataSetChanged();
     }
 
-    private void configuraBotoes(View fragmentView){
+    private void configuraBotoes(View fragmentView) {
         valorAposta = getView().findViewById(R.id.valorApostaSurpresinha);
         if (parametroJogo != null) {
             atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
@@ -167,7 +169,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         textInfoCarrinho.setOnClickListener(this);
     }
 
-    private void configuraListaDezenas(View fragmentView){
+    private void configuraListaDezenas(View fragmentView) {
         ExpandableHeightGridView listaDezenas = fragmentView.findViewById(R.id.listaDezenasSurpresinha);
 
         listaDezenas.setExpanded(true);
@@ -176,7 +178,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         listaDezenas.setAdapter(simularDezenasAdapter);
     }
 
-    private ArrayList<String> montaListaDezenasSurpresinha(){
+    private ArrayList<String> montaListaDezenasSurpresinha() {
         ArrayList<String> arrayDezenas = new ArrayList<>();
         for (int i = 0; i < parentActivity.qtdDezenasPossiveisSelecionado; i++) {
             arrayDezenas.add("XX");
@@ -185,7 +187,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         return arrayDezenas;
     }
 
-    public void atualizaValorTotalAposta (int numPrognostico, int qtdTeimosinhas) {
+    public void atualizaValorTotalAposta(int numPrognostico, int qtdTeimosinhas) {
         configuraListaDezenas(getView());
 
         BigDecimal valorEmReais = BigDecimal.ZERO;
@@ -214,7 +216,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         }
     }
 
-    private void adicionarSurpresinhaNoCarrinho () {
+    private void adicionarSurpresinhaNoCarrinho() {
         final ApostaBO apostaBO = new ApostaBO(getActivity());
         final View loadViewProgress = LoadingViewLoterias.init(getActivity());
 
@@ -252,7 +254,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
             @Override
             public void onErrorResponse(VolleyError error) {
                 LoadingViewLoterias.stop(loadViewProgress);
-                ViewUtils.alert(getActivity(), "ERRO");
+                ViewUtils.alert(getActivity(), MensagensNetwork.setMensagem(error, getActivity()));
             }
         });
     }
@@ -260,35 +262,35 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case  R.id.btnMenosSurpresinha: {
-                if (qtdSurpresinhas > 1){
+            case R.id.btnMenosSurpresinha: {
+                if (qtdSurpresinhas > 1) {
                     qtdSurpresinhas--;
-                    if (qtdSurpresinhas == 1){
+                    if (qtdSurpresinhas == 1) {
                         botaoMenosSurpresinha.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.cinzaescuro));
                     }
-                    atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado ,parentActivity.qtdConcursoSelecionado);
+                    atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
                 }
             }
             break;
 
-            case R.id.btnMaisSurpresinha:{
-                if (qtdSurpresinhas == 1){
+            case R.id.btnMaisSurpresinha: {
+                if (qtdSurpresinhas == 1) {
                     botaoMenosSurpresinha.setBackgroundColor(ContextCompat.getColor(getActivity(), typeGameColorLight));
                 }
                 if (qtdSurpresinhas < parametroJogo.getQuantidadeSurpresinhas()) {
                     qtdSurpresinhas++;
                 }
-                atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado ,parentActivity.qtdConcursoSelecionado);
+                atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
             }
             break;
 
-            case R.id.btnAdicionarSurpresinhaAoCarrinho:{
+            case R.id.btnAdicionarSurpresinhaAoCarrinho: {
                 adicionarSurpresinhaNoCarrinho();
             }
             break;
 
             case R.id.botaoCarrinho:
-            case R.id.textInfoCarrinho:{
+            case R.id.textInfoCarrinho: {
                 surpresinhaFragmentListener.abreCarrinhoApostas();
             }
         }
@@ -301,7 +303,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         private Context context;
         private ArrayList<String> rows;
 
-        SurpresinhaGridViewAdapter(Context context, ArrayList<String> activitData){
+        SurpresinhaGridViewAdapter(Context context, ArrayList<String> activitData) {
             this.context = context;
             this.rows = activitData;
         }
@@ -324,21 +326,21 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         @Override
         public View getView(int i, View view, ViewGroup viewGroup) {
             TextView textView;
-            GradientDrawable shape =  new GradientDrawable();
+            GradientDrawable shape = new GradientDrawable();
 
             int sizeItens = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 45, getActivity().getResources().getDisplayMetrics());
 
-            if (view == null){
+            if (view == null) {
                 textView = new TextView(this.context);
                 textView.setLayoutParams(new GridView.LayoutParams(sizeItens, sizeItens));
-            }else{
+            } else {
                 textView = (TextView) view;
             }
 
             shape.setColor(Color.WHITE);
             textView.setTextColor(ContextCompat.getColor(context, typeGameColorLight));
 
-            shape.setCornerRadius(sizeItens/2);
+            shape.setCornerRadius(sizeItens / 2);
             shape.setStroke(1, Color.GRAY);
             textView.setBackground(shape);
             textView.setText(rows.get(i));
@@ -351,6 +353,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
     // INTERFACE DO FRAGMENT PARA A ACTIVITY
     public interface SurpresinhaFragmentListener {
         void adicionarApostaCarrinho();
+
         void abreCarrinhoApostas();
     }
 

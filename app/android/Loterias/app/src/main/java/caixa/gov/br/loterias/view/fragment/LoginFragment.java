@@ -21,9 +21,11 @@ import caixa.gov.br.loterias.utils.LoadingViewLoterias;
 import caixa.gov.br.loterias.utils.MensagensNetwork;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.CadastrarActivity_;
+import caixa.gov.br.loterias.view.CadastrarPasso2Activity_;
 import caixa.gov.br.loterias.view.CarrinhoActivity;
 import caixa.gov.br.loterias.view.FormaPagamentoActivity;
 import caixa.gov.br.loterias.view.PrincipalActivity;
+import caixa.gov.br.loterias.view.RepassesSociaisActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -70,7 +72,7 @@ public class LoginFragment extends Fragment {
 
                 final View loadViewProgress = LoadingViewLoterias.init(getActivity());
 
-                DadosUsuarioBO dadosUsuarioBO = new DadosUsuarioBO( getActivity());
+                DadosUsuarioBO dadosUsuarioBO = new DadosUsuarioBO(getActivity());
 //                dadosUsuarioBO.autenticar("vinicius.ferraz@gmail.com", "Vaibombar2", new SilceClient.Listener<UsuarioLogadoResponse>() {
 
                 dadosUsuarioBO.autenticar("symoneresio@yahoo.com.br", "Vaibombar10", new SilceClient.Listener<UsuarioLogadoResponse>() {
@@ -110,7 +112,6 @@ public class LoginFragment extends Fragment {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         LoadingViewLoterias.stop(loadViewProgress);
-
                         ViewUtils.alert(getActivity(), MensagensNetwork.setMensagem(error, getActivity()));
                     }
                 });
@@ -144,10 +145,9 @@ public class LoginFragment extends Fragment {
         }
     }
 
-    private void loginSucess(){
+    private void loginSucess() {
         startActivity(new Intent(getActivity(), CadastrarActivity_.class));
     }
-
 
 
     // TODO: Rename method, update argument and hook method into UI event

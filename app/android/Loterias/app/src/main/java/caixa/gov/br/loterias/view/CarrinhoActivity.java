@@ -3,33 +3,25 @@ package caixa.gov.br.loterias.view;
 import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.res.ResourcesCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
-
-import org.w3c.dom.Text;
 
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.bo.ApostaBO;
-import caixa.gov.br.loterias.bo.DadosCorporativosBO;
 import caixa.gov.br.loterias.bo.silce.SilceClient;
 import caixa.gov.br.loterias.bo.silce.dto.CarrinhoDTO;
 import caixa.gov.br.loterias.bo.silce.dto.CarrinhoDTOResponse;
@@ -37,16 +29,14 @@ import caixa.gov.br.loterias.bo.silce.dto.DTOEnumCharacter;
 import caixa.gov.br.loterias.bo.silce.dto.DTOEnumInteger;
 import caixa.gov.br.loterias.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import caixa.gov.br.loterias.bo.silce.dto.ModalidadeEnum;
-import caixa.gov.br.loterias.bo.silce.dto.TipoConcursoEnum;
-import caixa.gov.br.loterias.utils.EstiloModalidade;
 import caixa.gov.br.loterias.utils.LoadingViewLoterias;
 import caixa.gov.br.loterias.utils.MensagensNetwork;
 import caixa.gov.br.loterias.view.adapter.CarrinhoApostasListViewAdapter;
 import caixa.gov.br.loterias.utils.ViewUtils;
 
-public class CarrinhoActivity extends AppCompatActivity {
+public class CarrinhoActivity extends SettingToolbarActivity {
 
-    public  CarrinhoDTO carrinho;
+    public CarrinhoDTO carrinho;
     private RecyclerView recyclerView;
     private List<IdentificaoDeUmaApostaDas8Modalidades> apostas;
     TextView infoValorMinimoTextView;
@@ -67,7 +57,7 @@ public class CarrinhoActivity extends AppCompatActivity {
         ViewUtils.organizaTabLayout(this, R.id.carrinhoMainLayout, R.id.apostasListaRecycleView, R.id.carrinhoScrollView);
     }
 
-    private void mockCarrinho () {
+    private void mockCarrinho() {
         carrinho = new CarrinhoDTO();
 
         apostas = new ArrayList<IdentificaoDeUmaApostaDas8Modalidades>();
@@ -150,21 +140,17 @@ public class CarrinhoActivity extends AppCompatActivity {
         apostas.add(aposta);
         apostas.add(aposta);
 
-
-
-
-
         carrinho.setApostas(apostas);
 
         atualizaLayout();
     }
 
-    private void montarLayout(){
+    private void montarLayout() {
         infoValorMinimoTextView = (TextView) findViewById(R.id.infoValorMinimo);
         infoValorMinimoTextView.setText(ViewUtils.fromHtml("Lembre-se que o valor mínimo do total de compras nesse aplicativo é <strong>R$24,00</strong>"));
     }
 
-    private void callWebservice () {
+    private void callWebservice() {
 
         final View loadViewProgress = LoadingViewLoterias.init(this);
         final ApostaBO apostaBO = new ApostaBO(CarrinhoActivity.this);
@@ -181,73 +167,20 @@ public class CarrinhoActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 LoadingViewLoterias.stop(loadViewProgress);
-                configuraActivityCarrinho();
                 ViewUtils.alert(CarrinhoActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
             }
         });
     }
 
-    public void atualizaLayout () {
+    public void atualizaLayout() {
         montarLayout();
-        configuraActivityCarrinho();
-        if (apostas != null){
+        if (apostas != null) {
             configuraRecyclerViewCarrinhoAposta();
         }
         configuraListeners();
     }
 
-    @Override
-    public boolean onSupportNavigateUp(){
-        finish();
-
-        return true;
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.settings, menu);
-
-        return true;
-    }
-
-    // Mudando o texto dos MenuItem de acordo com os dados
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        if (id == R.id.action_settings) {
-            abrirTermos();
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void abrirTermos(){
-        Intent activity = new Intent(CarrinhoActivity.this, TermosUsoActivity.class);
-        startActivity(activity);
-    }
-
-    private void configuraActivityCarrinho(){
-        if (getSupportActionBar() != null){
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
-        getSupportActionBar().setBackgroundDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.navigation_gradient, null));
-    }
-
-    private void configuraListeners(){
+    private void configuraListeners() {
         ((Button) findViewById(R.id.botaoAvancarPagamento)).setText(ViewUtils.configuraButtonText(this, getString(R.string.avancarFormaPagamento), 7));
 
 
@@ -284,7 +217,7 @@ public class CarrinhoActivity extends AppCompatActivity {
         });
     }
 
-    private void configuraRecyclerViewCarrinhoAposta(){
+    private void configuraRecyclerViewCarrinhoAposta() {
         RecyclerView.LayoutManager layout = new LinearLayoutManager(this,
                 LinearLayoutManager.VERTICAL, false);
 
@@ -300,7 +233,7 @@ public class CarrinhoActivity extends AppCompatActivity {
         recyclerView.setNestedScrollingEnabled(false);
     }
 
-    private void limpaCarrinho(){
+    private void limpaCarrinho() {
         ViewUtils.alert(this, "LIMPAR CARRINHO");
     }
 

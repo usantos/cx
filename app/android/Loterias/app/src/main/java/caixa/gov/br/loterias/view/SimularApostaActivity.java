@@ -399,7 +399,8 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         getMenuInflater().inflate(R.menu.itens_simular_actionbar_termos, menu);
 
         MenuItem concursoAtual = menu.findItem(R.id.concursoAtual);
-        concursoAtual.setTitle(ViewUtils.fromHtml("<b>Concurso<br>" + parametroSimulacao.getConcurso().getNumero() + "</b>"));
+        ((TextView) concursoAtual.getActionView().findViewById(R.id.item_titulo)).setText("Concurso");
+        ((TextView) concursoAtual.getActionView().findViewById(R.id.item_descricao)).setText(parametroSimulacao.getConcurso().getNumero().toString());
 
         SimpleDateFormat formatterDateFinal = new SimpleDateFormat("dd/MM");
         DateFormat formatterDate = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
@@ -407,7 +408,8 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
 
         try {
             Date dataFormatada = formatterDate.parse(parametroSimulacao.getConcurso().getDataHoraSorteio());
-            dataSorteio.setTitle("Sorteio \n " + formatterDateFinal.format(dataFormatada));
+            ((TextView) dataSorteio.getActionView().findViewById(R.id.item_titulo)).setText("Sorteio");
+            ((TextView) dataSorteio.getActionView().findViewById(R.id.item_descricao)).setText(formatterDateFinal.format(dataFormatada));
         } catch (ParseException e) {
             e.printStackTrace();
         }
