@@ -82,6 +82,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
     String dataSorteioAtual;
     int typeGameColorLight;
     int typeGameColorDark;
+
     ArrayList<String> qtdNumerosList = new ArrayList<String>();
     ArrayList<String> qtdConcursosList = new ArrayList<String>();
     ModalidadeEnum tipoJogo;
@@ -92,6 +93,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
     int alertDialogPosicaoSelecionada;
     TipoDialog tipoDialogMostrando;
     public ParametroJogoDTO parametroSimulacao;
+
 
     public ParametroJogoDTO getParametroSimulacao() {
         return parametroSimulacao;
@@ -380,11 +382,21 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         return true;
     }
 
+    // Mudando o texto dos MenuItem de acordo com os dados
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        configuraMenuItem(R.id.concursoAtual);
+        configuraMenuItem(R.id.sorteioAtual);
+
+        return true;
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.itens_simular_actionbar, menu);
+        getMenuInflater().inflate(R.menu.itens_simular_actionbar_termos, menu);
 
         MenuItem concursoAtual = menu.findItem(R.id.concursoAtual);
         concursoAtual.setTitle(ViewUtils.fromHtml("<b>Concurso<br>" + parametroSimulacao.getConcurso().getNumero() + "</b>"));
@@ -403,19 +415,35 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         return true;
     }
 
-    // Mudando o texto dos MenuItem de acordo com os dados
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
 
-        return true;
+        if (id == R.id.action_termos) {
+            abrirTermos();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
-    private void configuraMenuItem(int id, String texto) {
+//    private void configuraMenuItem(int id, String texto){
+//        View menuItem = findViewById(id);
+//
+//        if (menuItem != null && menuItem instanceof TextView) {
+//            ((TextView) menuItem).setText(texto);
+//            ((TextView) menuItem).setTextSize(10);
+//            menuItem.setPadding(5, 5, 5, 5);
+//        }
+//    }
+
+    private void configuraMenuItem(int id) {
         View menuItem = findViewById(id);
 
         if (menuItem != null && menuItem instanceof TextView) {
-            ((TextView) menuItem).setText(texto);
             ((TextView) menuItem).setTextSize(10);
             menuItem.setPadding(5, 5, 5, 5);
         }
@@ -446,4 +474,10 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
 
         startActivity(activity);
     }
+
+    private void abrirTermos() {
+        Intent activity = new Intent(SimularApostaActivity.this, TermosUsoActivity.class);
+        startActivity(activity);
+    }
+
 }
