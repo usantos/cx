@@ -87,6 +87,7 @@ public class CadastroActivity extends AppCompatActivity {
     protected void addRightImg(EditText textField) {
         textField.setOnFocusChangeListener(new EditText.OnFocusChangeListener() {
 
+
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
             /* When focus is lost check that the text field

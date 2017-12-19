@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
@@ -48,6 +49,7 @@ import caixa.gov.br.loterias.bo.silce.dto.LotericaCodigoWrapperResponse;
 import caixa.gov.br.loterias.bo.silce.dto.LotericaDTO;
 import caixa.gov.br.loterias.bo.silce.dto.LotericaDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.UsuarioLogadoResponse;
+import caixa.gov.br.loterias.utils.AppUtils;
 import caixa.gov.br.loterias.utils.LoadingViewLoterias;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.utils.segmentedbutton.SegmentedButton;
@@ -110,8 +112,46 @@ public class CadastrarPasso2Activity extends CadastroActivity {
     }
 
     private void initRightImg() {
-        addRightImg((EditText) findViewById(R.id.editTextBairroPasso2Content));
+        // addRightImg((EditText) findViewById(R.id.editTextBairroPasso2Content));
         addRightImg((EditText) findViewById(R.id.editTextCEPPasso2Content));
+    }
+
+
+    @Override
+    protected void addRightImg(final EditText textField) {
+        textField.addTextChangedListener(new TextWatcher() {
+
+            private boolean isChanged = false;
+
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+                if ( isChanged ) {
+                    return;
+                }
+
+                isChanged = true;
+
+                String texto = textField.getText().toString();
+                if (!TextUtils.isEmpty( texto )
+                        && texto.trim().length() == 9) {
+                    textField.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
+                } else {
+                    textField.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                }
+
+                isChanged = false;
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
     }
 
     private void initOnclick() {
@@ -262,11 +302,11 @@ public class CadastrarPasso2Activity extends CadastroActivity {
             @Override
             public void onResponse(LotericaDTOResponse response) {
                 LoadingViewLoterias.stop(loadViewProgress);
-               if(response.getPayload()!= null &&  response.getPayload().getLotericas() != null ){
-                 popularRadio(response.getPayload().getLotericas());
-               }else{
-                   ViewUtils.alert(CadastrarPasso2Activity.this, response.getMensagem());
-               }
+                if (response.getPayload() != null && response.getPayload().getLotericas() != null) {
+                    popularRadio(response.getPayload().getLotericas());
+                } else {
+                    ViewUtils.alert(CadastrarPasso2Activity.this, response.getMensagem());
+                }
 
             }
         }, new SilceClient.ErrorListener() {
@@ -478,15 +518,15 @@ public class CadastrarPasso2Activity extends CadastroActivity {
         if (apostadorDTO.getLotericaId() == null) {
             campos += "\nLotérica";
         }
-        if(aceiteTermo.isChecked()){
+        if (aceiteTermo.isChecked()) {
             apostadorDTO.setAceitaTermosUso(Boolean.TRUE);
-        }else{
+        } else {
             campos += "\nTermo de Uso";
         }
 
-        if(StringUtils.isEmpty(campos)){
+        if (StringUtils.isEmpty(campos)) {
             return true;
-        }else{
+        } else {
 
             ViewUtils.alertTitulo(CadastrarPasso2Activity.this, R.string.MA002, campos);
             return false;
