@@ -8,6 +8,7 @@ import android.support.v7.widget.AppCompatCheckBox;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -469,7 +470,7 @@ public class CadastrarPasso2Activity extends CadastroActivity {
                 radioButton.setButtonDrawable(R.drawable.check_radio_selected);
                 radioButton.setPadding(20, 20, 0, 10);
                 radioButton.setText(lotericaDTO.getNomeFantasia() + "\nCódigo. " + lotericaDTO.getCodigo());
-                radioButton.setTextSize(16);
+                radioButton.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
                 radioButton.setTextColor(getResources().getColor(R.color.cinza));
                 radioButton.setScaleX(0.8f);
                 radioButton.setScaleY(0.8f);

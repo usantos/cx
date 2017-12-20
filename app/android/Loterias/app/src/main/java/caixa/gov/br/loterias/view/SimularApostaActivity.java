@@ -12,6 +12,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -446,7 +447,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         View menuItem = findViewById(id);
 
         if (menuItem != null && menuItem instanceof TextView) {
-            ((TextView) menuItem).setTextSize(10);
+            ((TextView) menuItem).setTextSize(TypedValue.COMPLEX_UNIT_SP, 10);
             menuItem.setPadding(5, 5, 5, 5);
         }
     }

@@ -47,7 +47,7 @@ public class LoadingViewLoterias {
         lptextView.setMargins(0,margemImage,0,0);
         textView.setLayoutParams(lptextView);
         textView.setText("Carregando...");
-        textView.setTextSize(17);
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 17);
         textView.setTypeface(null, Typeface.BOLD);
         textView.setGravity(Gravity.CENTER);
         textView.setTextColor(context.getResources().getColor(R.color.branco));

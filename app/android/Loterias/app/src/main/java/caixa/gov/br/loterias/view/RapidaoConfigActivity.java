@@ -10,6 +10,7 @@ import android.widget.GridView;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.TipoAposta;
+import caixa.gov.br.loterias.view.adapter.NumerosRapidaoAdapter;
 import caixa.gov.br.loterias.view.adapter.TiposApostasAdapter;
 import caixa.gov.br.loterias.view.custom.ExpandableHeightGridView;
 
@@ -34,10 +35,29 @@ public class RapidaoConfigActivity extends AppCompatActivity {
         tipoApostaLista[2] = tipoAposta3;
         tipoApostaLista[3] = tipoAposta4;
 
-        ExpandableHeightGridView gridView = (ExpandableHeightGridView)findViewById(R.id.gridviewTiposApostasRapidao);
+        ExpandableHeightGridView gridViewTiposAposta = (ExpandableHeightGridView)findViewById(R.id.gridviewTiposApostasRapidao);
         TiposApostasAdapter tiposApostasAdapter = new TiposApostasAdapter(this, tipoApostaLista);
-        gridView.setAdapter(tiposApostasAdapter);
-        gridView.setExpanded(true);
+        gridViewTiposAposta.setAdapter(tiposApostasAdapter);
+        gridViewTiposAposta.setExpanded(true);
+
+        int[] listaNumerosObrigatorios = new int[12];
+        listaNumerosObrigatorios[0] = 1;
+        listaNumerosObrigatorios[1] = 2;
+        listaNumerosObrigatorios[2] = 3;
+        listaNumerosObrigatorios[3] = 4;
+        listaNumerosObrigatorios[4] = 10;
+        listaNumerosObrigatorios[5] = 11;
+        listaNumerosObrigatorios[6] = 12;
+        listaNumerosObrigatorios[7] = 13;
+        listaNumerosObrigatorios[8] = 14;
+        listaNumerosObrigatorios[9] = 30;
+        listaNumerosObrigatorios[10] = 34;
+        listaNumerosObrigatorios[11] = 100;
+
+        ExpandableHeightGridView gridViewNumerosRapidaoObrigatorios = (ExpandableHeightGridView)findViewById(R.id.gridviewNumerosObrigatoriosRapidao);
+        NumerosRapidaoAdapter numerosRapidaoAdapter = new NumerosRapidaoAdapter(this, listaNumerosObrigatorios);
+        gridViewNumerosRapidaoObrigatorios.setAdapter(numerosRapidaoAdapter);
+        gridViewNumerosRapidaoObrigatorios.setExpanded(true);
     }
 
 }

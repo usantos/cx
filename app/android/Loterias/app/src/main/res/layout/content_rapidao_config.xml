@@ -270,6 +270,41 @@
 
             </LinearLayout>
 
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@color/branco"
+                android:paddingTop="40dp"
+                android:paddingBottom="40dp"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Números obrigatórios"
+                    android:textSize="14.2sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/azulFormNovoTipoPagamento"
+                    android:paddingHorizontal="16dp"
+                    />
+
+                <caixa.gov.br.loterias.view.custom.ExpandableHeightGridView
+                    android:id="@+id/gridviewNumerosObrigatoriosRapidao"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:columnWidth="56dp"
+                    android:numColumns="auto_fit"
+                    android:verticalSpacing="17dp"
+                    android:stretchMode="spacingWidthUniform"
+                    android:layout_marginTop="19dp"
+                    android:isScrollContainer="false"
+                    android:layout_marginHorizontal="10dp"
+                    />
+
+            </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
 
