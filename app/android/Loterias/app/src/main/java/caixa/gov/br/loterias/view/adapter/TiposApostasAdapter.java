@@ -6,16 +6,17 @@ package caixa.gov.br.loterias.view.adapter;
 
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
+import android.text.Layout;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
-
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.TipoAposta;
 
@@ -34,7 +35,7 @@ public class TiposApostasAdapter extends BaseAdapter {
     // 2
     @Override
     public int getCount() {
-        return tiposAposta.length;
+        return tiposAposta.length +1;
     }
 
     // 3
@@ -52,20 +53,42 @@ public class TiposApostasAdapter extends BaseAdapter {
     // 5
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        final TipoAposta tipoAposta = tiposAposta[position];
+
 
         if (convertView == null) {
             final LayoutInflater layoutInflater = LayoutInflater.from(mContext);
             convertView = layoutInflater.inflate(R.layout.linearlayout_tipos_apostas, null);
         }
-        final ImageView imageViewTipoAPosta = (ImageView)convertView.findViewById(R.id.imageviewTrevoTipoAposta);
-        imageViewTipoAPosta.setImageResource(tipoAposta.getImagemTrevo());
 
-        final LinearLayout linearLayoutTipoAposta = (LinearLayout)convertView.findViewById(R.id.LinearLayoutContentTiposAposta);
-        linearLayoutTipoAposta.setBackgroundColor(tipoAposta.getCorBackground());
+        if (position == tiposAposta.length){
+            final LinearLayout linearLayoutTipoAposta = (LinearLayout)convertView.findViewById(R.id.LinearLayoutContentTiposAposta);
+            linearLayoutTipoAposta.setBackgroundColor(ContextCompat.getColor(mContext, R.color.branco));
+            linearLayoutTipoAposta.setBackground(ContextCompat.getDrawable(mContext,R.drawable.customborder));
 
-        final TextView tituloTipoAposta = (TextView)convertView.findViewById(R.id.tituloTipoApostaTextView);
-        tituloTipoAposta.setText(tipoAposta.getTitulo());
+            final TextView tituloTipoAposta = (TextView)convertView.findViewById(R.id.tituloTipoApostaTextView);
+            tituloTipoAposta.setText("Adicionar");
+            tituloTipoAposta.setTextColor(ContextCompat.getColor(mContext, R.color.verdeazul));
+            final ImageView imageViewTipoAPosta = (ImageView)convertView.findViewById(R.id.imageviewTrevoTipoAposta);
+            imageViewTipoAPosta.setVisibility(View.GONE);
+
+
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            params.gravity = Gravity.CENTER_HORIZONTAL|Gravity.CENTER_VERTICAL;
+            params.setMargins(0,0,0,0);
+            tituloTipoAposta.setLayoutParams(params);
+
+        }else{
+            final TipoAposta tipoAposta = tiposAposta[position];
+            final ImageView imageViewTipoAPosta = (ImageView)convertView.findViewById(R.id.imageviewTrevoTipoAposta);
+            imageViewTipoAPosta.setImageResource(tipoAposta.getImagemTrevo());
+
+            final LinearLayout linearLayoutTipoAposta = (LinearLayout)convertView.findViewById(R.id.LinearLayoutContentTiposAposta);
+            linearLayoutTipoAposta.setBackgroundColor(ContextCompat.getColor(mContext, tipoAposta.getCorBackground()));
+
+            final TextView tituloTipoAposta = (TextView)convertView.findViewById(R.id.tituloTipoApostaTextView);
+            tituloTipoAposta.setText(tipoAposta.getTitulo());
+        }
 
         return convertView;
     }
