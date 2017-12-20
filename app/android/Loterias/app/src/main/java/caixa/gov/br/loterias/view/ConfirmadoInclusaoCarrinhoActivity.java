@@ -53,25 +53,25 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
     }
 
     @Override
-    public boolean onSupportNavigateUp(){
+    public boolean onSupportNavigateUp() {
         finish();
 
         return true;
     }
 
-    private void configuraActivityIncluidoApostaCarrinho(){
+    private void configuraActivityIncluidoApostaCarrinho() {
         ModalidadeEnum tipoJogo = (ModalidadeEnum) getIntent().getSerializableExtra("tipoAposta");
-        BigDecimal valorAposta = (BigDecimal)getIntent().getSerializableExtra("valorAposta");
+        BigDecimal valorAposta = (BigDecimal) getIntent().getSerializableExtra("valorAposta");
 
         TextView valorApostaText = findViewById(R.id.valorApostaConfirmacao);
         valorApostaText.setText(ViewUtils.getMoedaFormat(valorAposta));
 
         TextView textObservacaoConfirmacao = findViewById(R.id.textObservacaoConfirmacao);
-        textObservacaoConfirmacao.setText(getString(R.string.infoValorMinimoCarrinho) + " " + ViewUtils.getMoedaFormat(parametroSimulacao.getValorApostaMinima() == null ?  new BigDecimal(0) : parametroSimulacao.getValorApostaMinima()));
+        textObservacaoConfirmacao.setText(getString(R.string.infoValorMinimoCarrinho) + " " + ViewUtils.getMoedaFormat(parametroSimulacao.getValorApostaMinima() == null ? new BigDecimal(0) : parametroSimulacao.getValorApostaMinima()));
 
         configuraLayoutTela(tipoJogo);
 
-        if (getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
@@ -81,7 +81,7 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
 
     }
 
-    private void configuraLayoutTela(ModalidadeEnum modalidadeEnum){
+    private void configuraLayoutTela(ModalidadeEnum modalidadeEnum) {
         EstiloModalidade estilo = new EstiloModalidade(modalidadeEnum);
 
         setTitle(ModalidadeEnum.fromString(modalidadeEnum));
@@ -139,7 +139,7 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
         return true;
     }
 
-    private void configuraMenuItem(int id){
+    private void configuraMenuItem(int id) {
         View menuItem = findViewById(id);
 
         if (menuItem != null && menuItem instanceof TextView) {
@@ -151,23 +151,23 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.botaoNovaAposta:{
+            case R.id.botaoNovaAposta: {
                 finish();
             }
 
             break;
 
-            case R.id.botaoVerCarrinhoAposta:{
+            case R.id.botaoVerCarrinhoAposta: {
                 Intent activity = new Intent(this, CarrinhoActivity.class);
-
                 startActivityForResult(activity, 0);
             }
-
+            break;
             case R.id.carrinhoApostas: {
                 Intent activity = new Intent(this, CarrinhoActivity.class);
 
                 startActivityForResult(activity, 0);
             }
+            break;
         }
     }
 
@@ -175,7 +175,7 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == 2){
+        if (resultCode == 2) {
             finish();
         }
     }

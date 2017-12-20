@@ -217,6 +217,7 @@ public class CartelaFragment extends Fragment implements OnClickListener {
         apostaBO.adicionarApostaNoCarrinho(aposta, new SilceClient.Listener<AgrupadorDTOApostaDTOResponse>() {
             @Override
             public void onResponse(AgrupadorDTOApostaDTOResponse response) {
+                LoadingViewLoterias.stop(loadViewProgress);
                 TextView count = getView().findViewById(R.id.textViewCarrinhoCartelaCount);
 
                 qtdCartelasCarrinho++;
