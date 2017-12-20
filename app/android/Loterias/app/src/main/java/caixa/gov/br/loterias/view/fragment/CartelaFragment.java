@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -80,7 +81,7 @@ public class CartelaFragment extends Fragment implements OnClickListener {
         // Required empty public constructor
     }
 
-    public void atualizaValorTotalAposta (int numPrognostico, int qtdTeimosinhas) {
+    public void atualizaValorTotalAposta(int numPrognostico, int qtdTeimosinhas) {
         BigDecimal valorEmReais = BigDecimal.ZERO;
 
         for (ParametroValorApostaDTO parametro : parametroJogo.getValoresAposta()) {
@@ -102,11 +103,11 @@ public class CartelaFragment extends Fragment implements OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        parentActivity = ((SimularApostaActivity)getActivity());
+        parentActivity = ((SimularApostaActivity) getActivity());
         parametroJogo = parentActivity.getParametroSimulacao();
 
         if (dezenas.size() == 0) {
-            for (int i = 1; i <= parentActivity.getParametroSimulacao().getPrognosticoMaximo() ; i++) {
+            for (int i = 1; i <= parentActivity.getParametroSimulacao().getPrognosticoMaximo(); i++) {
                 dezenas.add("" + i);
             }
         }
@@ -122,8 +123,8 @@ public class CartelaFragment extends Fragment implements OnClickListener {
 
     }
 
-    public void cartelaFragmentBuilder(Bundle dataBundle){
-        if (dataBundle != null){
+    public void cartelaFragmentBuilder(Bundle dataBundle) {
+        if (dataBundle != null) {
             numeroConcursoAtual = dataBundle.getInt("numeroConcursoAtual");
             dataSorteioAtual = dataBundle.getString("dataSorteioAtual");
 
@@ -135,7 +136,7 @@ public class CartelaFragment extends Fragment implements OnClickListener {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_cartela,container,false);
+        View view = inflater.inflate(R.layout.fragment_cartela, container, false);
         configuraListaDezenas(view);
         verificaSeMostraBotaoLimparAposta(view);
         verificaSeMostraSalvarApostaView(view);
@@ -167,7 +168,7 @@ public class CartelaFragment extends Fragment implements OnClickListener {
         cartelaFragmentListener = null;
     }
 
-    private void adicionarApostaNoCarrinho () {
+    private void adicionarApostaNoCarrinho() {
         final ApostaBO apostaBO = new ApostaBO(getActivity());
         final View loadViewProgress = LoadingViewLoterias.init(getActivity());
 
@@ -239,16 +240,16 @@ public class CartelaFragment extends Fragment implements OnClickListener {
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case  R.id.botaoAdicionarCompletarCartela: {
-                if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado){
+            case R.id.botaoAdicionarCompletarCartela: {
+                if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) {
                     adicionarApostaNoCarrinho();
-                } else{
+                } else {
                     preencheNumerosAleatorios();
                 }
             }
             break;
 
-            case R.id.botaoLimparAposta:{
+            case R.id.botaoLimparAposta: {
                 dezenasSelecionadas.clear();
                 verificaSeMostraBotaoLimparAposta(getView());
                 atualizaStatusBotaoFinalizar();
@@ -258,12 +259,12 @@ public class CartelaFragment extends Fragment implements OnClickListener {
             break;
 
             case R.id.botaoCarrinho:
-            case R.id.textInfoCarrinho:{
+            case R.id.textInfoCarrinho: {
                 cartelaFragmentListener.abreCarrinhoApostas();
             }
             break;
 
-            case R.id.salvarApostaLayout:{
+            case R.id.salvarApostaLayout: {
                 RelativeLayout salvarApostaLayout = view.findViewById(R.id.salvarApostaLayout);
 
                 ViewGroup.LayoutParams relativelayoutParams = salvarApostaLayout.getLayoutParams();
@@ -278,9 +279,14 @@ public class CartelaFragment extends Fragment implements OnClickListener {
             }
             break;
 
-            case R.id.btnSalvarAposta:{
+            case R.id.btnSalvarAposta: {
                 EditText nomeAposta = getView().findViewById(R.id.editNomeAposta);
-                salvarAposta(nomeAposta.getText().toString());
+
+                if (!TextUtils.isEmpty(nomeAposta.getText().toString())) {
+                    salvarAposta(nomeAposta.getText().toString());
+                } else {
+                    ViewUtils.alert(getActivity(), getString(R.string.msg_favor_inserir_nome_aposta));
+                }
             }
 
         }
@@ -288,7 +294,7 @@ public class CartelaFragment extends Fragment implements OnClickListener {
 
     private Boolean flagApostaSalva = false;
 
-    private void salvarAposta (String nomeAposta) {
+    private void salvarAposta(String nomeAposta) {
         final DadosCorporativosBO dadosCorporativosBO = new DadosCorporativosBO(getActivity());
         final View loadViewProgress = LoadingViewLoterias.init(getActivity());
 
@@ -362,7 +368,7 @@ public class CartelaFragment extends Fragment implements OnClickListener {
         });
     }
 
-    private void preencheNumerosAleatorios(){
+    private void preencheNumerosAleatorios() {
         ApostaBO apostaBO = new ApostaBO(getActivity());
 
         apostaBO.completaJogo(parentActivity.qtdDezenasPossiveisSelecionado, dezenasSelecionadas, 1, parametroJogo.getPrognosticoMaximo(), new SilceClient.Listener<CompletaJogoRsp>() {
@@ -384,7 +390,7 @@ public class CartelaFragment extends Fragment implements OnClickListener {
         });
     }
 
-    private void configuraBotoes(View fragmentView){
+    private void configuraBotoes(View fragmentView) {
         valorAposta = getView().findViewById(R.id.valorApostaCartela);
         atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
 
@@ -403,7 +409,7 @@ public class CartelaFragment extends Fragment implements OnClickListener {
         botaoLimparAposta.setOnClickListener(this);
     }
 
-    public void voltaSalvarApostaParaLayoutInicial () {
+    public void voltaSalvarApostaParaLayoutInicial() {
         RelativeLayout salvarApostaLayout = getView().findViewById(R.id.salvarApostaLayout);
 
         salvarApostaLayout.setBackgroundResource(R.color.cinzaescuro);
@@ -429,32 +435,32 @@ public class CartelaFragment extends Fragment implements OnClickListener {
         getView().findViewById(R.id.salvarApostaLayout).setVisibility(View.GONE);
     }
 
-    private void verificaSeMostraBotaoLimparAposta(View fragmentView){
-        if (dezenasSelecionadas.isEmpty()){
+    private void verificaSeMostraBotaoLimparAposta(View fragmentView) {
+        if (dezenasSelecionadas.isEmpty()) {
             fragmentView.findViewById(R.id.botaoLimparAposta).setVisibility(View.GONE);
-        }else{
+        } else {
             fragmentView.findViewById(R.id.botaoLimparAposta).setVisibility(View.VISIBLE);
         }
     }
 
-    private void verificaSeMostraSalvarApostaView(View fragmentView){
-        if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado){
+    private void verificaSeMostraSalvarApostaView(View fragmentView) {
+        if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) {
             RelativeLayout salvarApostaLayout = fragmentView.findViewById(R.id.salvarApostaLayout);
 
             salvarApostaLayout.setVisibility(View.VISIBLE);
             final float scale = getContext().getResources().getDisplayMetrics().density;
             salvarApostaLayout.getLayoutParams().height = (int) (64 * scale + 0.5f);
             salvarApostaLayout.setOnClickListener(this);
-        }else{
+        } else {
             fragmentView.findViewById(R.id.salvarApostaLayout).setVisibility(View.GONE);
         }
     }
 
-    public void atualizaStatusBotaoFinalizar(){
-        if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado){
+    public void atualizaStatusBotaoFinalizar() {
+        if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) {
             botaoFinalizar.setBackgroundColor(ContextCompat.getColor(getActivity(), typeGameColorLight));
             botaoFinalizar.setText(ViewUtils.configuraButtonText(getActivity(), getString(R.string.adicionarAoCarrinho), 9));
-        }else if (dezenasSelecionadas.size() > parentActivity.qtdDezenasPossiveisSelecionado) {
+        } else if (dezenasSelecionadas.size() > parentActivity.qtdDezenasPossiveisSelecionado) {
             //dezenasSelecionadas.clear();
             simularDezenasAdapter.notifyDataSetChanged();
             botaoFinalizar.setBackgroundColor(ContextCompat.getColor(getActivity(), typeGameColorLight));
@@ -462,13 +468,13 @@ public class CartelaFragment extends Fragment implements OnClickListener {
 
             getView().findViewById(R.id.salvarApostaLayout).setVisibility(View.GONE);
             getView().findViewById(R.id.botaoLimparAposta).setVisibility(View.GONE);
-        } else{
+        } else {
             botaoFinalizar.setBackgroundColor(ContextCompat.getColor(getActivity(), typeGameColorLight));
             botaoFinalizar.setText(ViewUtils.configuraButtonText(getActivity(), getString(R.string.completarCartela), 9));
         }
     }
 
-    private void configuraListaDezenas(View fragmentView){
+    private void configuraListaDezenas(View fragmentView) {
         ExpandableHeightGridView listaDezenas = fragmentView.findViewById(R.id.listaDezenas);
         listaDezenas.setExpanded(true);
         simularDezenasAdapter = new SimularDezenasAdapter(getActivity(), dezenas);
@@ -500,7 +506,7 @@ public class CartelaFragment extends Fragment implements OnClickListener {
                         } else {
                             ViewUtils.alert(getActivity(), "Número de dezenas máximo selecionadas.");
                         }
-                    }else{
+                    } else {
                         dezenasSelecionadas.add(valorSelecionado);
                     }
                 }
@@ -518,7 +524,7 @@ public class CartelaFragment extends Fragment implements OnClickListener {
         private Context context;
         private ArrayList<String> rows;
 
-        SimularDezenasAdapter(Context context, ArrayList<String> activitData){
+        SimularDezenasAdapter(Context context, ArrayList<String> activitData) {
             this.context = context;
             this.rows = activitData;
         }
@@ -541,26 +547,26 @@ public class CartelaFragment extends Fragment implements OnClickListener {
         @Override
         public View getView(int i, View view, ViewGroup viewGroup) {
             TextView textView;
-            GradientDrawable shape =  new GradientDrawable();
+            GradientDrawable shape = new GradientDrawable();
             int sizeItens = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 45, getActivity().getResources().getDisplayMetrics());
 
-            if (view == null){
+            if (view == null) {
                 textView = new TextView(this.context);
 
                 textView.setLayoutParams(new GridView.LayoutParams(sizeItens, sizeItens));
-            }else{
+            } else {
                 textView = (TextView) view;
             }
 
-            if (dezenasSelecionadas.contains(Integer.valueOf(rows.get(i)))){
+            if (dezenasSelecionadas.contains(Integer.valueOf(rows.get(i)))) {
                 shape.setColor(ContextCompat.getColor(context, typeGameColorLight));
                 textView.setTextColor(Color.WHITE);
-            }else{
+            } else {
                 shape.setColor(Color.WHITE);
                 textView.setTextColor(ContextCompat.getColor(context, typeGameColorLight));
             }
 
-            shape.setCornerRadius(sizeItens/2);
+            shape.setCornerRadius(sizeItens / 2);
             shape.setStroke(1, Color.GRAY);
             textView.setBackground(shape);
             textView.setText(dezenas.get(i));
@@ -574,7 +580,9 @@ public class CartelaFragment extends Fragment implements OnClickListener {
     // INTERFACE DO FRAGMENT PARA A ACTIVITY
     public interface CartelaFragmentListener {
         int verificaNovoQtdDezenasMax(int qtdDezenasAtual);
+
         void adicionarApostaCarrinho();
+
         void abreCarrinhoApostas();
     }
 }
