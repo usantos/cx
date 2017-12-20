@@ -21,11 +21,7 @@ import caixa.gov.br.loterias.utils.LoadingViewLoterias;
 import caixa.gov.br.loterias.utils.MensagensNetwork;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.CadastrarActivity_;
-import caixa.gov.br.loterias.view.CadastrarPasso2Activity_;
-import caixa.gov.br.loterias.view.CarrinhoActivity;
-import caixa.gov.br.loterias.view.FormaPagamentoActivity;
 import caixa.gov.br.loterias.view.PrincipalActivity;
-import caixa.gov.br.loterias.view.RepassesSociaisActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -80,9 +76,7 @@ public class LoginFragment extends Fragment {
                     public void onResponse(UsuarioLogadoResponse response) {
                         LoadingViewLoterias.stop(loadViewProgress);
 
-                        UsuarioLogadoSingleton user = UsuarioLogadoSingleton.getInstance();
-                        user.token = response.getPayload().getToken();
-
+                        setUser(response);
                         startActivity(new Intent(getActivity(), PrincipalActivity.class));
                     }
                 }, new SilceClient.ErrorListener() {
@@ -106,6 +100,7 @@ public class LoginFragment extends Fragment {
                     @Override
                     public void onResponse(UsuarioLogadoResponse response) {
                         LoadingViewLoterias.stop(loadViewProgress);
+                        setUser(response);
                         loginSucess();
                     }
                 }, new SilceClient.ErrorListener() {
@@ -121,6 +116,11 @@ public class LoginFragment extends Fragment {
 
 
         return v;
+    }
+
+    private void setUser(UsuarioLogadoResponse response) {
+        UsuarioLogadoSingleton user = UsuarioLogadoSingleton.getInstance();
+        user.token = response.getPayload().getToken();
     }
 
 
