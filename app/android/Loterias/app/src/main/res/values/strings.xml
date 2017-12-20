@@ -78,10 +78,11 @@
     <string name="termo_de_uso_underline"><u>termos de uso</u>.</string>
     <string name="CEP">CEP</string>
     <string name="codigo_loterica">Código Lotérica</string>
-    <string name="MA002">Por favor, verifique o preenchimento dos campos:</string>
+    <string name ="enviando_email">Enviando e-mail usando:"</string>
 
     <!-- Messages-->
 
+    <string name="MA002">Por favor, verifique o preenchimento dos campos:</string>
     <string name="MN002"> Idade informada menor que 18 anos.</string>
     <string name="MA003"> Você tem mais de 18 anos?</string>
     <string name="msg_erro_data_invalida"> Data Inválida</string>

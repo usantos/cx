@@ -1,5 +1,8 @@
 package caixa.gov.br.loterias.view;
 
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -45,10 +48,29 @@ public class TermosUsoActivity extends AppCompatActivity {
         webViewConteudo = findViewById(R.id.webViewConteudo);
         getTermo();
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            WebView.setWebContentsDebuggingEnabled(true);
+        }
+
         webViewConteudo.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                if (url.startsWith("mailto:")) {
+                    Intent intent = new Intent(Intent.ACTION_SENDTO);
+                    intent.setData(Uri.parse(url));
+                    startActivity(Intent.createChooser(intent, getString(R.string.enviando_email)));
+                } else {
+                    view.loadUrl(url);
+                }
+                return true;
+            }
+
 
             public void onPageFinished(WebView view, String url) {
-                LoadingViewLoterias.stop(loadViewProgress);
+                if (loadViewProgress != null) {
+                    LoadingViewLoterias.stop(loadViewProgress);
+                    loadViewProgress = null;
+                }
             }
         });
         listenerTermosUso();
@@ -64,7 +86,7 @@ public class TermosUsoActivity extends AppCompatActivity {
 
     private View loadViewProgress = null;
 
-    private void getTermo () {
+    private void getTermo() {
         loadViewProgress = LoadingViewLoterias.init(this);
         DadosCorporativosBO dadosCorporativosBO = new DadosCorporativosBO(TermosUsoActivity.this);
 
@@ -84,7 +106,7 @@ public class TermosUsoActivity extends AppCompatActivity {
         });
     }
 
-    private void listenerTermosUso(){
+    private void listenerTermosUso() {
         termosUsoButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 termosUsoButton.setBackgroundResource(R.color.verdeazul);
@@ -99,7 +121,7 @@ public class TermosUsoActivity extends AppCompatActivity {
         });
     }
 
-    private void listenerPolitica(){
+    private void listenerPolitica() {
         politicaButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 termosUsoButton.setBackgroundResource(R.color.cinzaclaro);
@@ -113,7 +135,7 @@ public class TermosUsoActivity extends AppCompatActivity {
         });
     }
 
-    private void listenerDuvidas(){
+    private void listenerDuvidas() {
         duvidasButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 termosUsoButton.setBackgroundResource(R.color.cinzaclaro);
