@@ -67,7 +67,7 @@
     <string name="title_activity_termos_uso">Loterias Caixa</string>
     <string name="title_activity_repasses_sociais">Repasses <b>sociais</b></string>
     <string name="title_activity_teste">TesteActivity</string>
-    <string name="title_activity_toolbar">Loterias Caixa</string>
+    <string name="title_activity_toolbar"><b>Loterias Caixa</b></string>
     <string name="title_activity_login">Login</string>
     <string name="erro_401">Não autorizado</string>
     <string name="erro_408">Tempo de resposta esgotou</string>

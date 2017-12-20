@@ -3,6 +3,7 @@ package caixa.gov.br.loterias.utils;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -19,6 +20,7 @@ import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
 import android.support.v4.graphics.ColorUtils;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.DialogTitle;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.SpannableString;
@@ -67,7 +69,7 @@ public class ViewUtils {
 
     public static Typeface getFontFutura(Context context) {
         if (fontFutura == null) {
-            fontFutura = Typeface.createFromAsset(context.getAssets(), "fonts/FTN45__W.ttf");
+            fontFutura = Typeface.createFromAsset(context.getAssets(), "fonts/futura_std_book.otf");
         }
 
         return fontFutura;
@@ -76,7 +78,7 @@ public class ViewUtils {
 
     public static Typeface getFontFuturaBold(Context context) {
         if (fontFuturaBold == null) {
-            fontFuturaBold = Typeface.createFromAsset(context.getAssets(), "fonts/futuraBold.ttf");
+            fontFuturaBold = Typeface.createFromAsset(context.getAssets(), "fonts/FuturaStd-HeavyOblique.otf");
         }
 
         return fontFuturaBold;
@@ -182,7 +184,7 @@ public class ViewUtils {
     }
 
     public static void alert(Context context, String mensagem, DialogInterface.OnDismissListener listener) {
-        ViewUtils.dialogo(context, mensagem)
+        Dialog dialog = ViewUtils.dialogo(context, mensagem)
                 .setCancelable(false)
                 .setOnDismissListener(listener)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -190,11 +192,13 @@ public class ViewUtils {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                     }
-                }).create().show();
+                }).show();
+        TextView textView = ((TextView) dialog.findViewById(android.R.id.message));
+        textView.setTypeface(getFontFutura(context));
     }
 
     public static void alertTitulo(Context context, int titulo, String mensagem, DialogInterface.OnDismissListener listener) {
-        ViewUtils.dialogo(context, titulo, mensagem)
+        Dialog dialog = ViewUtils.dialogo(context, titulo, mensagem)
                 .setCancelable(false)
                 .setOnDismissListener(listener)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -202,11 +206,16 @@ public class ViewUtils {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                     }
-                }).create().show();
+                }).show();
+
+        DialogTitle textTitleView = ((DialogTitle) dialog.findViewById(R.id.alertTitle));
+        TextView textMessageView = ((TextView) dialog.findViewById(android.R.id.message));
+        textTitleView.setTypeface(getFontFutura(context));
+        textMessageView.setTypeface(getFontFutura(context));
     }
 
     public static void alertTitleButton(Context context, int title, String message, String buttonName, DialogInterface.OnDismissListener listener) {
-        ViewUtils.dialogo(context, title, message)
+        Dialog dialog = ViewUtils.dialogo(context, title, message)
                 .setCancelable(false)
                 .setOnDismissListener(listener)
                 .setPositiveButton(buttonName, new DialogInterface.OnClickListener() {
@@ -214,7 +223,12 @@ public class ViewUtils {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                     }
-                }).create().show();
+                }).show();
+
+        DialogTitle textTitleView = ((DialogTitle) dialog.findViewById(R.id.alertTitle));
+        TextView textMessageView = ((TextView) dialog.findViewById(android.R.id.message));
+        textTitleView.setTypeface(getFontFutura(context));
+        textMessageView.setTypeface(getFontFutura(context));
     }
 
     public static void loading(Context context) {

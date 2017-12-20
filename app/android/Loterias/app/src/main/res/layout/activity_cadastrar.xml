@@ -120,9 +120,7 @@
                 app:sbg_backgroundColor="@color/cinzaclaro"
                 app:sbg_position="0"
                 app:sbg_ripple="true"
-                app:sbg_selectorColor="@color/verdeazul"
-
-                >
+                app:sbg_selectorColor="@color/verdeazul">
 
                 <caixa.gov.br.loterias.utils.segmentedbutton.SegmentedButton
                     android:layout_width="0dp"
@@ -132,7 +130,7 @@
                     app:sb_text="Masculino"
                     app:sb_textColor="@color/verdeazul"
                     app:sb_textColor_onSelection="@color/branco"
-                    app:sb_textStyle="bold" />
+                    app:sb_textStyle="bold"/>
 
                 <caixa.gov.br.loterias.utils.segmentedbutton.SegmentedButton
                     android:layout_width="0dp"

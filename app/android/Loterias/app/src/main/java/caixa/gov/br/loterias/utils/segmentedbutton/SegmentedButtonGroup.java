@@ -53,6 +53,7 @@ import android.widget.LinearLayout;
 import java.util.ArrayList;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.utils.ViewUtils;
 
 public class SegmentedButtonGroup extends LinearLayout {
 
@@ -235,6 +236,7 @@ public class SegmentedButtonGroup extends LinearLayout {
             button.setSelectorColor(selectorColor);
             button.setSelectorRadius(radius);
             button.setBorderSize(borderSize);
+            button.setTypeface(ViewUtils.getFontFutura(getContext()));
 
             if (position == 0)
                 button.hasBorderLeft(true);

@@ -475,6 +475,7 @@ public class CadastrarPasso2Activity extends CadastroActivity {
                 radioButton.setScaleX(0.8f);
                 radioButton.setScaleY(0.8f);
                 radioButton.setTag(String.valueOf(lotericaDTO.getId()));
+                radioButton.setTypeface(ViewUtils.getFontFutura(this));
                 radioButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

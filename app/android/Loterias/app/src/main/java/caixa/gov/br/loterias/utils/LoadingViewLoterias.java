@@ -51,6 +51,7 @@ public class LoadingViewLoterias {
         textView.setTypeface(null, Typeface.BOLD);
         textView.setGravity(Gravity.CENTER);
         textView.setTextColor(context.getResources().getColor(R.color.branco));
+        textView.setTypeface(ViewUtils.getFontFutura(activity));
         layout.addView(textView);
 
 
