@@ -193,19 +193,6 @@ public class CarrinhoActivity extends SettingToolbarActivity {
             }
         });
 
-        findViewById(R.id.imagemLixeiraCarrinho).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                limpaCarrinho();
-            }
-        });
-
-        findViewById(R.id.textoLimparCarrinho).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                limpaCarrinho();
-            }
-        });
 
         findViewById(R.id.botaoAvancarPagamento).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -231,10 +218,6 @@ public class CarrinhoActivity extends SettingToolbarActivity {
         recyclerView.setAdapter(new CarrinhoApostasListViewAdapter(this, (ArrayList<IdentificaoDeUmaApostaDas8Modalidades>) carrinho.getApostas(), this));
         recyclerView.setLayoutManager(layout);
         recyclerView.setNestedScrollingEnabled(false);
-    }
-
-    private void limpaCarrinho() {
-        ViewUtils.alert(this, "LIMPAR CARRINHO");
     }
 
 }

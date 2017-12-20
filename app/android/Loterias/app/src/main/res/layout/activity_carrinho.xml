@@ -21,7 +21,7 @@
             android:layout_marginRight="17dp"
             android:layout_marginTop="20dp"
             android:gravity="start"
-            android:text="Lembre-se que o valor mínimo do total de compras nesse aplicativo é R$24,00"
+            android:text="@string/label_lembrar_valor_minimo"
             android:textAlignment="textStart"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -86,28 +86,6 @@
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/textoLimparCarrinho"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="6dp"
-                android:layout_marginStart="6dp"
-                android:layout_toEndOf="@+id/imagemLixeiraCarrinho"
-                android:layout_toRightOf="@+id/imagemLixeiraCarrinho"
-                android:text="@string/limparCarrinho"
-                android:textColor="@color/amareloQueimado"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-
-            <ImageView
-                android:id="@+id/imagemLixeiraCarrinho"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="14dp"
-                android:layout_marginStart="14dp"
-                app:srcCompat="@drawable/close" />
         </RelativeLayout>
 
         <Button
