@@ -57,6 +57,7 @@
     <color name="transparente">#00ff0000</color>
     <color name="cinzabotaoapostedesativado">#f8f8f8</color>
     <color name="cinzaseekbar">#b3c7cb</color>
+    <color name="azulescuroapostafavorita">#1f2948</color>
 
 
 </resources>

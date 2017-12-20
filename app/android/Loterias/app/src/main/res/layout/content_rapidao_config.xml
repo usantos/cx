@@ -242,7 +242,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:background="@color/branco"
-                android:paddingTop="40dp"
+                android:paddingVertical="40dp"
                 >
                 <TextView
                     android:layout_width="wrap_content"
@@ -270,6 +270,10 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/cinzaclaro"></LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -303,6 +307,104 @@
                     android:layout_marginHorizontal="10dp"
                     />
 
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/cinzaclaro"></LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@color/branco"
+                android:paddingTop="40dp"
+                android:paddingBottom="40dp"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Números proibidos"
+                    android:textSize="14.2sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/azulFormNovoTipoPagamento"
+                    android:paddingHorizontal="16dp"
+                    />
+
+                <caixa.gov.br.loterias.view.custom.ExpandableHeightGridView
+                    android:id="@+id/gridviewNumerosProibidosRapidao"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:columnWidth="56dp"
+                    android:numColumns="auto_fit"
+                    android:verticalSpacing="17dp"
+                    android:stretchMode="spacingWidthUniform"
+                    android:layout_marginTop="19dp"
+                    android:isScrollContainer="false"
+                    android:layout_marginHorizontal="10dp"
+                    />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@color/branco"
+                android:paddingTop="40dp"
+                android:paddingBottom="40dp"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Apostas favoritas"
+                    android:textSize="14.2sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/azulFormNovoTipoPagamento"
+                    android:paddingHorizontal="16dp"
+                    />
+
+                <caixa.gov.br.loterias.view.custom.ExpandableHeightGridView
+                    android:id="@+id/gridViewApostaFavorita"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:verticalSpacing="0dp"
+                    android:horizontalSpacing="0dp"
+                    android:stretchMode="columnWidth"
+                    android:numColumns="1"
+                    android:layout_marginTop="19dp"
+                    android:layout_marginBottom="50dp"
+                    />
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="135dp"
+                android:orientation="vertical">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="84dp"
+                    >
+                    <Button
+                        android:layout_width="184dp"
+                        android:layout_height="84dp"
+                        android:background="@color/verdeazul"
+                        android:textColor="@color/branco"
+                        android:textSize="17.7sp"
+                        android:textStyle="bold"
+                        android:text="Salvar"
+                        android:layout_centerInParent="true"/>
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="95dp"
+                    android:background="@color/linhaDivisa"
+                    android:layout_marginTop="-44dp"
+                    ></RelativeLayout>
+                
             </LinearLayout>
 
         </LinearLayout>

@@ -20,11 +20,13 @@ public class NumerosRapidaoAdapter extends BaseAdapter {
 
     private final Context mContext;
     private final int[] numeroslista;
+    private final Boolean isObrigatorio;
 
     // 1
-    public NumerosRapidaoAdapter(Context context, int[] numeroslista) {
+    public NumerosRapidaoAdapter(Context context, int[] numeroslista, Boolean isObrigatorio) {
         this.mContext = context;
         this.numeroslista = numeroslista;
+        this.isObrigatorio = isObrigatorio;
     }
 
     // 2
@@ -56,17 +58,26 @@ public class NumerosRapidaoAdapter extends BaseAdapter {
         }
 
         if (position == numeroslista.length){
-            final LinearLayout linearLayoutTipoAposta = (LinearLayout)convertView.findViewById(R.id.LinearLayoutContentNumerosRapidao);
-            linearLayoutTipoAposta.setBackground(ContextCompat.getDrawable(mContext, R.drawable.custom_border_radius_verde_azul));
+            final LinearLayout linearLayoutNumerosRapidao = (LinearLayout)convertView.findViewById(R.id.LinearLayoutContentNumerosRapidao);
 
             final TextView tituloTipoAposta = (TextView)convertView.findViewById(R.id.tituloNumeroRapidao);
             tituloTipoAposta.setText("+");
-            tituloTipoAposta.setTextColor(ContextCompat.getColor(mContext, R.color.verdeazul));
+            if (isObrigatorio != true){
+                linearLayoutNumerosRapidao.setBackground(ContextCompat.getDrawable(mContext, R.drawable.custom_border_radius_vermelho_bilhetes));
+                tituloTipoAposta.setTextColor(ContextCompat.getColor(mContext, R.color.vermelhoBilhetes));
+            }else{
+                linearLayoutNumerosRapidao.setBackground(ContextCompat.getDrawable(mContext, R.drawable.custom_border_radius_verde_azul));
+                tituloTipoAposta.setTextColor(ContextCompat.getColor(mContext, R.color.verdeazul));
+            }
 
         }else{
             final int numeroRapidao = numeroslista[position];
             final TextView tituloTipoAposta = (TextView)convertView.findViewById(R.id.tituloNumeroRapidao);
             tituloTipoAposta.setText(""+numeroRapidao);
+            if (isObrigatorio != true){
+                final LinearLayout linearLayoutNumerosRapidao = (LinearLayout)convertView.findViewById(R.id.LinearLayoutContentNumerosRapidao);
+                linearLayoutNumerosRapidao.setBackground(ContextCompat.getDrawable(mContext, R.drawable.circle_numeros_proibidos));
+            }
 
         }
 
