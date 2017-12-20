@@ -62,11 +62,11 @@ public class ViewUtils {
     private static Toast toast;
     private static ProgressDialog progress;
 
-    private static Typeface fontFutura  = null;
-    private static Typeface fontFuturaBold  = null;
+    private static Typeface fontFutura = null;
+    private static Typeface fontFuturaBold = null;
 
     public static Typeface getFontFutura(Context context) {
-        if ( fontFutura == null ) {
+        if (fontFutura == null) {
             fontFutura = Typeface.createFromAsset(context.getAssets(), "fonts/FTN45__W.ttf");
         }
 
@@ -74,9 +74,8 @@ public class ViewUtils {
     }
 
 
-
     public static Typeface getFontFuturaBold(Context context) {
-        if ( fontFuturaBold == null ) {
+        if (fontFuturaBold == null) {
             fontFuturaBold = Typeface.createFromAsset(context.getAssets(), "fonts/futuraBold.ttf");
         }
 
@@ -89,9 +88,9 @@ public class ViewUtils {
         return px;
     }
 
-    public static void configuraStatusBarGradientLayout(Context context, Window window){
+    public static void configuraStatusBarGradientLayout(Context context, Window window) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Drawable background =  context.getResources().getDrawable(R.drawable.navigation_gradient);
+            Drawable background = context.getResources().getDrawable(R.drawable.navigation_gradient);
 
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setStatusBarColor(ColorUtils.setAlphaComponent(Color.BLACK, 77));
@@ -99,13 +98,13 @@ public class ViewUtils {
         }
     }
 
-    public static SpannableString configuraButtonText(Context context, String texto, int posicaoTrocaStyle){
-        SpannableString spannableString=  new SpannableString(texto);
+    public static SpannableString configuraButtonText(Context context, String texto, int posicaoTrocaStyle) {
+        SpannableString spannableString = new SpannableString(texto);
         spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0, posicaoTrocaStyle, 0);
         spannableString.setSpan(new AbsoluteSizeSpan(convertSpToPixels(17.7f, context)), 0, posicaoTrocaStyle, 0);
 
-        spannableString.setSpan(new StyleSpan(Typeface.NORMAL), posicaoTrocaStyle+1, spannableString.length(), 0);
-        spannableString.setSpan(new AbsoluteSizeSpan(convertSpToPixels(14.2f, context)), posicaoTrocaStyle+1, spannableString.length(), 0);
+        spannableString.setSpan(new StyleSpan(Typeface.NORMAL), posicaoTrocaStyle + 1, spannableString.length(), 0);
+        spannableString.setSpan(new AbsoluteSizeSpan(convertSpToPixels(14.2f, context)), posicaoTrocaStyle + 1, spannableString.length(), 0);
 
         return spannableString;
     }
@@ -113,41 +112,41 @@ public class ViewUtils {
     public static void abrirUrl(Context context, String url) {
         Intent intent = new Intent(Intent.ACTION_VIEW)
                 .setData(Uri.parse(url));
-        context.startActivity( intent );
+        context.startActivity(intent);
     }
 
     public static void abrirSiteInternetBanking(Context context) {
-        ViewUtils.abrirUrl( context, "http://www.caixa.gov.br" );
+        ViewUtils.abrirUrl(context, "http://www.caixa.gov.br");
     }
 
-    public static String capitalized (String original) {
+    public static String capitalized(String original) {
         if (original == null || original.length() == 0) {
             return original;
         }
         return original.substring(0, 1).toUpperCase() + original.substring(1);
     }
 
-    public static void closeKeyboard(Activity activity){
+    public static void closeKeyboard(Activity activity) {
         // Check if no view has focus:
         View view = activity.getCurrentFocus();
         if (view != null) {
-            InputMethodManager imm = (InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
 
     @SuppressWarnings("deprecation")
-    public static Spanned fromHtml(String html){
+    public static Spanned fromHtml(String html) {
         Spanned result;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            result = Html.fromHtml(html,Html.FROM_HTML_MODE_LEGACY);
+            result = Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY);
         } else {
             result = Html.fromHtml(html);
         }
         return result;
     }
 
-    public static void toast(Context context, String text, int length)  {
+    public static void toast(Context context, String text, int length) {
         if (toast != null) {
             toast.cancel();
         }
@@ -161,21 +160,25 @@ public class ViewUtils {
 
     public static AlertDialog.Builder dialogo(Context context, String mensagem) {
         return new AlertDialog.Builder(context, R.style.Theme_AppCompat_Light_Dialog_Alert)
-                .setMessage( mensagem );
+                .setMessage(mensagem);
     }
 
     public static AlertDialog.Builder dialogo(Context context, int titulo, String mensagem) {
         return new AlertDialog.Builder(context, R.style.Theme_AppCompat_Light_Dialog_Alert)
                 .setTitle(titulo)
-                .setMessage( mensagem );
+                .setMessage(mensagem);
     }
 
-    public static void alert(Context context, String mensagem){
+    public static void alert(Context context, String mensagem) {
         alert(context, mensagem, null);
     }
 
-    public static void alertTitulo(Context context, int titulo, String mensagem){
+    public static void alertTitulo(Context context, int titulo, String mensagem) {
         alertTitulo(context, titulo, mensagem, null);
+    }
+
+    public static void alertTitleButton(Context context, int title, String message, String buttonName) {
+        alertTitleButton(context, title, message, buttonName, null);
     }
 
     public static void alert(Context context, String mensagem, DialogInterface.OnDismissListener listener) {
@@ -202,53 +205,65 @@ public class ViewUtils {
                 }).create().show();
     }
 
+    public static void alertTitleButton(Context context, int title, String message, String buttonName, DialogInterface.OnDismissListener listener) {
+        ViewUtils.dialogo(context, title, message)
+                .setCancelable(false)
+                .setOnDismissListener(listener)
+                .setPositiveButton(buttonName, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).create().show();
+    }
+
     public static void loading(Context context) {
         ViewUtils.dismissLoading();
         progress = ProgressDialog.show(
                 new ContextThemeWrapper(context, R.style.Theme_AppCompat_Light_Dialog),
-                "", "Carregando...", true );
+                "", "Carregando...", true);
     }
 
     public static void dismissLoading() {
-        if ( progress != null ) {
+        if (progress != null) {
             progress.dismiss();
             progress = null;
         }
     }
 
-    public static void cancelAnimation(View view){
+    public static void cancelAnimation(View view) {
         Animation a = view.getAnimation();
-        if(a != null){
+        if (a != null) {
             a.cancel();
             a.setAnimationListener(null);
         }
         view.clearAnimation();
     }
 
-    public interface AnimationEndListener{
+    public interface AnimationEndListener {
         void onAnimationEnd();
     }
 
-    public static void flipTop(final View view,  final AnimationEndListener listenerAdapter){
+    public static void flipTop(final View view, final AnimationEndListener listenerAdapter) {
         view.animate().rotationX(90).setDuration(200).setListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
                 view.setRotationX(-90);
                 view.animate().rotationX(0).setDuration(200).setListener(null);
-                if(listenerAdapter != null){
+                if (listenerAdapter != null) {
                     listenerAdapter.onAnimationEnd();
                 }
             }
         });
     }
 
-    public static void flipBottom(final View view, final AnimationEndListener listenerAdapter){
+    public static void flipBottom(final View view, final AnimationEndListener listenerAdapter) {
         view.animate().rotationX(-90).setDuration(200).setListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
                 view.setRotationX(90);
                 view.animate().rotationX(0).setDuration(200).setListener(null);
-                if(listenerAdapter != null){
+                if (listenerAdapter != null) {
                     listenerAdapter.onAnimationEnd();
                 }
             }
@@ -264,7 +279,7 @@ public class ViewUtils {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                view.setVisibility( finalVisibility );
+                view.setVisibility(finalVisibility);
             }
 
             @Override
@@ -283,7 +298,7 @@ public class ViewUtils {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                view.setVisibility( finalVisibility );
+                view.setVisibility(finalVisibility);
             }
 
             @Override
@@ -295,11 +310,12 @@ public class ViewUtils {
 
     public interface KeyboardListener {
         void abriu();
+
         void fechou();
     }
 
-    public static void removeKeyboardListener( final Activity activity, final ViewTreeObserver.OnGlobalLayoutListener listener) {
-        if ( Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN ) {
+    public static void removeKeyboardListener(final Activity activity, final ViewTreeObserver.OnGlobalLayoutListener listener) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
             return;
         }
 
@@ -307,7 +323,7 @@ public class ViewUtils {
         rootView.getViewTreeObserver().removeOnGlobalLayoutListener(listener);
     }
 
-    public static ViewTreeObserver.OnGlobalLayoutListener setKeyboardListener(final Activity activity, final KeyboardListener listener ) {
+    public static ViewTreeObserver.OnGlobalLayoutListener setKeyboardListener(final Activity activity, final KeyboardListener listener) {
 
         DisplayMetrics dm = new DisplayMetrics();
         activity.getWindowManager().getDefaultDisplay().getMetrics(dm);
@@ -344,16 +360,16 @@ public class ViewUtils {
 
                 int heightDiff = screenHeight - resultBottom;
 
-                int pixelHeightDiff = (int)(heightDiff / density);
+                int pixelHeightDiff = (int) (heightDiff / density);
                 if (pixelHeightDiff > 100 && pixelHeightDiff != previousHeightDiff) { // if more than 100 pixels, its probably a keyboard...
                     listener.abriu();
-                } else if ( pixelHeightDiff != previousHeightDiff && ( previousHeightDiff - pixelHeightDiff ) > 100 ) {
+                } else if (pixelHeightDiff != previousHeightDiff && (previousHeightDiff - pixelHeightDiff) > 100) {
                     listener.fechou();
                 }
                 previousHeightDiff = pixelHeightDiff;
             }
         };
-        rootView.getViewTreeObserver().addOnGlobalLayoutListener( layoutListener );
+        rootView.getViewTreeObserver().addOnGlobalLayoutListener(layoutListener);
         return layoutListener;
     }
 
@@ -361,7 +377,7 @@ public class ViewUtils {
      * Used to scroll to the given view.
      *
      * @param scrollViewParent Parent ScrollView
-     * @param view View to which we need to scroll.
+     * @param view             View to which we need to scroll.
      */
     public static void scrollToView(final ScrollView scrollViewParent, final View view) {
         // Get deepChild Offset
@@ -384,7 +400,7 @@ public class ViewUtils {
      * @param accumulatedOffset Accumalated Offset.
      */
     private static void getDeepChildOffset(final ViewGroup mainParent, final ViewParent parent, final View child, final Point accumulatedOffset) {
-        if(!(parent instanceof ViewGroup)){
+        if (!(parent instanceof ViewGroup)) {
             return;
         }
 
@@ -397,7 +413,7 @@ public class ViewUtils {
         getDeepChildOffset(mainParent, parentGroup.getParent(), parentGroup, accumulatedOffset);
     }
 
-    public static DecimalFormat getMoedaFormatter(){
+    public static DecimalFormat getMoedaFormatter() {
         DecimalFormatSymbols sym = new DecimalFormatSymbols();
         sym.setDecimalSeparator(',');
         sym.setGroupingSeparator('.');
@@ -408,23 +424,23 @@ public class ViewUtils {
         return formatter;
     }
 
-    public static String getMoedaFormat (BigDecimal valor) {
-        Locale ptBrLocale = new Locale( "pt", "BR" );
+    public static String getMoedaFormat(BigDecimal valor) {
+        Locale ptBrLocale = new Locale("pt", "BR");
         NumberFormat nf = NumberFormat.getCurrencyInstance(ptBrLocale);
         return nf.format(valor);
     }
 
-    public static int monthDiff(Calendar startCalendar, Calendar endCalendar){
+    public static int monthDiff(Calendar startCalendar, Calendar endCalendar) {
         int diffYear = endCalendar.get(Calendar.YEAR) - startCalendar.get(Calendar.YEAR);
         return diffYear * 12 + endCalendar.get(Calendar.MONTH) - startCalendar.get(Calendar.MONTH);
     }
 
-    public static boolean compareCalendarsMonths(Calendar cal1, Calendar cal2){
+    public static boolean compareCalendarsMonths(Calendar cal1, Calendar cal2) {
         return cal1.get(Calendar.MONTH) == cal2.get(Calendar.MONTH)
                 && cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR);
     }
 
-    public static boolean compareCalendarDay(Calendar cal1, Calendar cal2){
+    public static boolean compareCalendarDay(Calendar cal1, Calendar cal2) {
         return cal1.get(Calendar.DAY_OF_MONTH) == cal2.get(Calendar.DAY_OF_MONTH)
                 && cal1.get(Calendar.MONTH) == cal2.get(Calendar.MONTH)
                 && cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR);
@@ -432,42 +448,43 @@ public class ViewUtils {
 
     /**
      * Para ativar as fontes bold com o Calligraphy
+     *
      * @param textViews lista de textviews
      */
-    public static void setBold( TextView... textViews ) {
-        if ( textViews == null || textViews.length == 0 ) {
+    public static void setBold(TextView... textViews) {
+        if (textViews == null || textViews.length == 0) {
             return;
         }
 
         for (TextView tv : textViews) {
-            if ( tv == null ) {
+            if (tv == null) {
                 continue;
             }
 
-            tv.setTypeface( tv.getTypeface(), Typeface.BOLD );
+            tv.setTypeface(tv.getTypeface(), Typeface.BOLD);
         }
     }
 
-    public static void setFontFuturaBold( Context context, TextView... textViews ) {
-        if ( textViews == null || textViews.length == 0 ) {
+    public static void setFontFuturaBold(Context context, TextView... textViews) {
+        if (textViews == null || textViews.length == 0) {
             return;
         }
 
-        Typeface typeface = ViewUtils.getFontFuturaBold( context );
+        Typeface typeface = ViewUtils.getFontFuturaBold(context);
 
         for (TextView tv : textViews) {
-            if ( tv == null ) {
+            if (tv == null) {
                 continue;
             }
 
-            tv.setTypeface( typeface );
+            tv.setTypeface(typeface);
         }
     }
 
 
     // Metodos relacionados a caso o conteudo da tela seja inferior o ao height do dispositivo, mantenha a tab no bottom da tela
 
-    public static void organizaTabLayout(final Activity activity, int idMainLayout, final int idViewToExpand, final int idScrollView){
+    public static void organizaTabLayout(final Activity activity, int idMainLayout, final int idViewToExpand, final int idScrollView) {
         final ConstraintLayout constraintLayout = activity.findViewById(idMainLayout);
         ViewTreeObserver viewTreeObserver = constraintLayout.getViewTreeObserver();
 
@@ -481,20 +498,20 @@ public class ViewUtils {
                     activity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
                     int heightWindow = displayMetrics.heightPixels;
 
-                    if(constraintLayout.getMeasuredHeight()> 0){
+                    if (constraintLayout.getMeasuredHeight() > 0) {
                         Resources resources = activity.getResources();
                         int resourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android");
-                        int heightNavigationBar =  resources.getDimensionPixelSize(resourceId);
+                        int heightNavigationBar = resources.getDimensionPixelSize(resourceId);
 
                         int heightLayout = constraintLayout.getMeasuredHeight();
                         int heightElementToExpand = activity.findViewById(idViewToExpand).getMeasuredHeight();
                         float heightStatusBar = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 25, resources.getDisplayMetrics());
 
-                        if (!((ScrollView) activity.findViewById(idScrollView)).canScrollVertically(1)){
+                        if (!((ScrollView) activity.findViewById(idScrollView)).canScrollVertically(1)) {
                             ConstraintSet set = new ConstraintSet();
 
                             set.clone(constraintLayout);
-                            set.constrainHeight(idViewToExpand, (heightElementToExpand + heightWindow-(int)heightStatusBar-heightLayout-heightNavigationBar-14));
+                            set.constrainHeight(idViewToExpand, (heightElementToExpand + heightWindow - (int) heightStatusBar - heightLayout - heightNavigationBar - 14));
                             set.applyTo(constraintLayout);
                         }
                     }
@@ -521,6 +538,7 @@ public class ViewUtils {
         // navigation bar is not present
         return new Point();
     }
+
     public static Point getAppUsableScreenSize(Context context) {
         WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         Display display = windowManager.getDefaultDisplay();
@@ -540,7 +558,10 @@ public class ViewUtils {
             try {
                 size.x = (Integer) Display.class.getMethod("getRawWidth").invoke(display);
                 size.y = (Integer) Display.class.getMethod("getRawHeight").invoke(display);
-            } catch (IllegalAccessException e) {} catch (InvocationTargetException e) {} catch (NoSuchMethodException e) {}
+            } catch (IllegalAccessException e) {
+            } catch (InvocationTargetException e) {
+            } catch (NoSuchMethodException e) {
+            }
         }
 
         return size;

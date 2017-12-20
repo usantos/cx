@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import caixa.gov.br.loterias.R;
-import caixa.gov.br.loterias.utils.CustomAlert;
 import caixa.gov.br.loterias.view.IntroducaoActivity;
 import caixa.gov.br.loterias.utils.ViewUtils;
 
@@ -90,7 +89,7 @@ public class Introducao1Fragment extends Fragment {
             }
         });
 
-        CustomAlert.showAlertMessage(getContext(), R.string.label_atencao, R.string.MA003, getString(R.string.label_sim));
+        ViewUtils.alertTitleButton(getContext(), R.string.label_atencao, getString(R.string.MA003), getString(R.string.label_sim));
 
         return v;
     }

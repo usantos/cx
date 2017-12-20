@@ -33,7 +33,6 @@ import caixa.gov.br.loterias.bo.silce.dto.BairroDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.MunicipioIdDTO;
 import caixa.gov.br.loterias.bo.silce.dto.SexoAbrvEnum;
 import caixa.gov.br.loterias.utils.AppUtils;
-import caixa.gov.br.loterias.utils.CustomAlert;
 import caixa.gov.br.loterias.utils.DateUtils;
 import caixa.gov.br.loterias.utils.LoadingViewLoterias;
 import caixa.gov.br.loterias.utils.MensagensNetwork;
@@ -133,12 +132,12 @@ public class CadastrarActivity extends CadastroActivity {
                 Date dateBorn = DateUtils.stringToDate(textNascimento, DateUtils.PATTERN_DDMM_YYYY);
                 int age = DateUtils.getBetweenAges(calendar, DateUtils.DateToCalendar(dateBorn));
                 if (age < 18) {
-                    CustomAlert.showAlertMessage(this, R.string.label_atencao, R.string.MN002,null);
+                    ViewUtils.alertTitulo(this, R.string.label_atencao, getString(R.string.MN002));
                     return false;
                 }
                 return true;
             }
-            CustomAlert.showAlertMessage(this, R.string.label_atencao, R.string.msg_erro_data_invalida, null);
+            ViewUtils.alertTitulo(this,R.string.label_atencao, getString(R.string.msg_erro_data_invalida));
             return false;
         }
         return true;
