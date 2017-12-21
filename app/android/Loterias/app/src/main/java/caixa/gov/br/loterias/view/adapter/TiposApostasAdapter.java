@@ -81,7 +81,7 @@ public class TiposApostasAdapter extends BaseAdapter {
         }else{
             final TipoAposta tipoAposta = tiposAposta[position];
             final ImageView imageViewTipoAPosta = (ImageView)convertView.findViewById(R.id.imageviewTrevoTipoAposta);
-            imageViewTipoAPosta.setImageResource(tipoAposta.getImagemTrevo());
+            imageViewTipoAPosta.setImageResource(R.drawable.trevo);
 
             final LinearLayout linearLayoutTipoAposta = (LinearLayout)convertView.findViewById(R.id.LinearLayoutContentTiposAposta);
             linearLayoutTipoAposta.setBackgroundColor(ContextCompat.getColor(mContext, tipoAposta.getCorBackground()));

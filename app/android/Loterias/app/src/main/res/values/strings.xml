@@ -78,7 +78,7 @@
     <string name="termo_de_uso_underline"><u>termos de uso</u>.</string>
     <string name="CEP">CEP</string>
     <string name="codigo_loterica">Código Lotérica</string>
-    <string name ="enviando_email">Enviando e-mail usando:"</string>
+    <string name="enviando_email">Enviando e-mail usando:"</string>
     <string name="label_lembrar_valor_minimo">Lembre-se que o valor mínimo do total de compras nesse aplicativo é R$24,00</string>
 
     <!-- Messages-->
@@ -92,5 +92,7 @@
     <string name="title_activity_lista_rapidao">Rapidão</string>
     <string name="titulo_lista_rapidao">O jeito mais fácil para apostar</string>
     <string name="title_activity_rapidao_config">RapidaoConfigActivity</string>
+    <string name="title_activity_selecao_modalidades_rapidao">SelecaoModalidadesRapidaoActivity
+    </string>
 
 </resources>
