@@ -115,12 +115,12 @@
         <activity
             android:name=".view.RapidaoConfigActivity"
             android:label="@string/title_activity_lista_rapidao"
-            android:parentActivityName=".view.PrincipalActivity"
+            android:parentActivityName=".view.ListaRapidaoActivity"
             android:theme="@style/AppTheme.DegradeActionBar">
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="caixa.gov.br.loterias.view.PrincipalActivity" />
+                android:value="caixa.gov.br.loterias.view.ListaRapidaoActivity" />
         </activity>
     </application>
 

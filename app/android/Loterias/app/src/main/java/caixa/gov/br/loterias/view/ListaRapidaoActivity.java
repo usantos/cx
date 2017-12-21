@@ -201,7 +201,7 @@ public class ListaRapidaoActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.settings, menu);
+        getMenuInflater().inflate(R.menu.rapidao, menu);
 
         return true;
     }
@@ -221,18 +221,22 @@ public class ListaRapidaoActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        if (id == R.id.action_settings) {
-            abrirTermos();
+        if (id == R.id.action_duvida) {
+            return true;
+        }
+        if (id == R.id.action_config_rapidao){
+            abrirConfigRapidao();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    private void abrirTermos(){
-        Intent activity = new Intent(this, TermosUsoActivity.class);
+    private void abrirConfigRapidao(){
+        Intent activity = new Intent(this, RapidaoConfigActivity.class);
         startActivity(activity);
     }
+
 
     private void configuraActivityCarrinho(){
         if (getSupportActionBar() != null){
