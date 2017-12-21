@@ -380,32 +380,29 @@
                     />
 
             </LinearLayout>
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="135dp"
                 android:orientation="vertical">
-                <RelativeLayout
-                    android:layout_width="match_parent"
+                <Button
+                    android:layout_width="184dp"
                     android:layout_height="84dp"
-                    >
-                    <Button
-                        android:layout_width="184dp"
-                        android:layout_height="84dp"
-                        android:background="@color/verdeazul"
-                        android:textColor="@color/branco"
-                        android:textSize="17.7sp"
-                        android:textStyle="bold"
-                        android:text="Salvar"
-                        android:layout_centerInParent="true"/>
-                </RelativeLayout>
-                <RelativeLayout
+                    android:background="@color/verdeazul"
+                    android:textColor="@color/branco"
+                    android:textSize="17.7sp"
+                    android:textStyle="bold"
+                    android:text="Salvar"
+                    android:layout_centerHorizontal="true"/>
+                <View
                     android:layout_width="match_parent"
                     android:layout_height="95dp"
                     android:background="@color/linhaDivisa"
-                    android:layout_marginTop="-44dp"
-                    ></RelativeLayout>
-                
-            </LinearLayout>
+                    android:layout_marginTop="44dp"
+                    >
+
+                </View>
+
+            </RelativeLayout>
 
         </LinearLayout>
     </ScrollView>
