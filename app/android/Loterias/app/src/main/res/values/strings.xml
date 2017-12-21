@@ -95,6 +95,7 @@
     <string name="title_activity_rapidao_config">RapidaoConfigActivity</string>
     <string name="title_activity_selecao_modalidades_rapidao">SelecaoModalidadesRapidaoActivity
     </string>
+    <string name="title_activity_numeros_rapidao">NumerosRapidaoActivity</string>
 
     <string name="label_cpf">CPF</string>
     <string name="label_nome">Nome</string>

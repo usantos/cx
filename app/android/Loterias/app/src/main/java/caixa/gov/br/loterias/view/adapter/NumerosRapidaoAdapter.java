@@ -62,6 +62,7 @@ public class NumerosRapidaoAdapter extends BaseAdapter {
 
             final TextView tituloTipoAposta = (TextView)convertView.findViewById(R.id.tituloNumeroRapidao);
             tituloTipoAposta.setText("+");
+            tituloTipoAposta.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
             if (isObrigatorio != true){
                 linearLayoutNumerosRapidao.setBackground(ContextCompat.getDrawable(mContext, R.drawable.custom_border_radius_vermelho_bilhetes));
                 tituloTipoAposta.setTextColor(ContextCompat.getColor(mContext, R.color.vermelhoBilhetes));

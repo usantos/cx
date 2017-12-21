@@ -94,6 +94,16 @@ public class RapidaoConfigActivity extends AppCompatActivity {
         NumerosRapidaoAdapter numerosRapidaoAdapter = new NumerosRapidaoAdapter(this, listaNumerosObrigatorios, true);
         gridViewNumerosRapidaoObrigatorios.setAdapter(numerosRapidaoAdapter);
         gridViewNumerosRapidaoObrigatorios.setExpanded(true);
+
+        gridViewNumerosRapidaoObrigatorios.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                if (position == listaNumerosObrigatorios.length){
+                    Intent activity = new Intent(RapidaoConfigActivity.this, NumerosRapidaoActivity.class);
+                    startActivity(activity);
+                }
+            }
+        });
     }
 
     private void gridViewNumerosProibidos(){
@@ -112,6 +122,16 @@ public class RapidaoConfigActivity extends AppCompatActivity {
         NumerosRapidaoAdapter numerosRapidaoAdapter2 = new NumerosRapidaoAdapter(this, listaNumerosProibidos, false);
         gridViewNumerosRapidaoProibidos.setAdapter(numerosRapidaoAdapter2);
         gridViewNumerosRapidaoProibidos.setExpanded(true);
+
+        gridViewNumerosRapidaoProibidos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                if (position == listaNumerosProibidos.length){
+                    Intent activity = new Intent(RapidaoConfigActivity.this, NumerosRapidaoActivity.class);
+                    startActivity(activity);
+                }
+            }
+        });
 
     }
 
