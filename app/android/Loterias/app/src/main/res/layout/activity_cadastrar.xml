@@ -130,7 +130,7 @@
                     app:sb_text="Masculino"
                     app:sb_textColor="@color/verdeazul"
                     app:sb_textColor_onSelection="@color/branco"
-                    app:sb_textStyle="bold"/>
+                    app:sb_textStyle="bold" />
 
                 <caixa.gov.br.loterias.utils.segmentedbutton.SegmentedButton
                     android:layout_width="0dp"
@@ -278,6 +278,7 @@
 
             <Button
                 android:id="@+id/buttonContinuarIntroducao"
+                style="@style/ButtonFutura"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/editTextEmail"

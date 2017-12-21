@@ -62,5 +62,5 @@
          android:text="Pular introdução"
          android:textAllCaps="false"
          android:textColor="@color/branco"
-         android:textSize="12sp" />
+         android:textSize="12sp"/>
  </RelativeLayout>

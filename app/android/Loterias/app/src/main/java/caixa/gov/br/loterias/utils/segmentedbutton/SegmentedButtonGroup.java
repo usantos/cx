@@ -236,7 +236,7 @@ public class SegmentedButtonGroup extends LinearLayout {
             button.setSelectorColor(selectorColor);
             button.setSelectorRadius(radius);
             button.setBorderSize(borderSize);
-            button.setTypeface(ViewUtils.getFontFutura(getContext()));
+            button.setTypeface(ViewUtils.getFontFuturaBold(getContext()));
 
             if (position == 0)
                 button.hasBorderLeft(true);

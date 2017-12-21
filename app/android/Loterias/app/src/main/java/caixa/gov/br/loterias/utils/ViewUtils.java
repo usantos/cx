@@ -78,7 +78,7 @@ public class ViewUtils {
 
     public static Typeface getFontFuturaBold(Context context) {
         if (fontFuturaBold == null) {
-            fontFuturaBold = Typeface.createFromAsset(context.getAssets(), "fonts/FuturaStd-HeavyOblique.otf");
+            fontFuturaBold = Typeface.createFromAsset(context.getAssets(), "fonts/futura_std_bold.otf");
         }
 
         return fontFuturaBold;
@@ -210,7 +210,7 @@ public class ViewUtils {
 
         DialogTitle textTitleView = ((DialogTitle) dialog.findViewById(R.id.alertTitle));
         TextView textMessageView = ((TextView) dialog.findViewById(android.R.id.message));
-        textTitleView.setTypeface(getFontFutura(context));
+        textTitleView.setTypeface(getFontFuturaBold(context));
         textMessageView.setTypeface(getFontFutura(context));
     }
 
@@ -227,7 +227,7 @@ public class ViewUtils {
 
         DialogTitle textTitleView = ((DialogTitle) dialog.findViewById(R.id.alertTitle));
         TextView textMessageView = ((TextView) dialog.findViewById(android.R.id.message));
-        textTitleView.setTypeface(getFontFutura(context));
+        textTitleView.setTypeface(getFontFuturaBold(context));
         textMessageView.setTypeface(getFontFutura(context));
     }
 
