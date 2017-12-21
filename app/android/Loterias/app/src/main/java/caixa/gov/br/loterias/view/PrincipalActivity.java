@@ -423,7 +423,6 @@ public class PrincipalActivity extends AppCompatActivity
             viewHolder.setOverlayColor(this, estilo);
 
             buttonHomeBet.setTag(adapterPosition);
-//            buttonHomeBet.setText(ViewUtils.fromHtml("<b>Aposte</b><br>por R$" + modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima()));
             buttonHomeBet.setText(ViewUtils.textFuturaAndFuturaBold(this, "_Aposte_\npor R$" + modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima()));
 
             findViewById(R.id.buttonHomeBet).setOnClickListener(new View.OnClickListener() {

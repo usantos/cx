@@ -21,11 +21,11 @@
     <string name="imagemCarrinho">Carrinho</string>
     <string name="carrinhoDeApostas">Carrinho de apostas</string>
 
-    <string name="adicionarAoCarrinho">Adicionar\nao carrinho de apostas</string>
+    <string name="adicionarAoCarrinho">_Adicionar_\nao carrinho de apostas</string>
     <string name="limparAposta">Limpar aposta</string>
     <string name="limparCarrinho">Limpar carrinho</string>
 
-    <string name="completarCartela">Completar\ncom números aleatórios</string>
+    <string name="completarCartela">_Completar_\ncom números aleatórios</string>
 
     <string name="surpresinhaTitulo">Surpresinha</string>
     <string name="surpresinhaInfo">Na Surpresinha os números ficam mascarados com a interrogação até a efetivação da compra.</string>

@@ -147,22 +147,22 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
 
         switch (tipoJogo) {
             case MEGA_SENA:
-                configuraTipoApostaTela("mega-sena", R.color.megasenaclaro, R.color.megasenaescuro);
+                configuraTipoApostaTela("_mega-sena_", R.color.megasenaclaro, R.color.megasenaescuro);
                 break;
             case QUINA:
-                configuraTipoApostaTela("quina", R.color.quinaclaro, R.color.quinaescuro);
+                configuraTipoApostaTela("_quina_", R.color.quinaclaro, R.color.quinaescuro);
                 break;
             case LOTOFACIL:
-                configuraTipoApostaTela("lotofácil", R.color.lotofacilclaro, R.color.lotofacilescuro);
+                configuraTipoApostaTela("_lotofácil_", R.color.lotofacilclaro, R.color.lotofacilescuro);
                 break;
             case DUPLA_SENA:
-                configuraTipoApostaTela("duplasena", R.color.duplasenaclaro, R.color.duplasenaescuro);
+                configuraTipoApostaTela("_dupla sena_", R.color.duplasenaclaro, R.color.duplasenaescuro);
                 break;
             case TIMEMANIA:
-                configuraTipoApostaTela("timemania", R.color.timemaniaclaro, R.color.timemaniaescuro);
+                configuraTipoApostaTela("_timemania_", R.color.timemaniaclaro, R.color.timemaniaescuro);
                 break;
             case LOTOMANIA:
-                configuraTipoApostaTela("lotomania", R.color.lotomaniaclaro, R.color.lotomaniaescuro);
+                configuraTipoApostaTela("_lotomania_", R.color.lotomaniaclaro, R.color.lotomaniaescuro);
                 break;
         }
 
@@ -360,7 +360,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
     }
 
     private void configuraTipoApostaTela(String titleActivity, int lightColor, int darkColor) {
-        setTitle(titleActivity);
+        setTitle(ViewUtils.textFuturaAndFuturaBold(this, titleActivity));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(ContextCompat.getColor(this, darkColor));
         }

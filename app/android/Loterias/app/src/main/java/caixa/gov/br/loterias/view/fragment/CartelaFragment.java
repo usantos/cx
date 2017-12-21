@@ -397,7 +397,7 @@ public class CartelaFragment extends Fragment implements OnClickListener {
         botaoFinalizar = fragmentView.findViewById(R.id.botaoAdicionarCompletarCartela);
         botaoFinalizar.setOnClickListener(this);
         botaoFinalizar.setBackgroundColor(ContextCompat.getColor(fragmentView.getContext(), typeGameColorLight));
-        botaoFinalizar.setText(ViewUtils.configuraButtonText(fragmentView.getContext(), getString(R.string.completarCartela), 9));
+        botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(fragmentView.getContext(), getString(R.string.completarCartela)));
 
         Button carrinhoImageView = fragmentView.findViewById(R.id.botaoCarrinho);
         carrinhoImageView.setOnClickListener(this);
@@ -459,18 +459,18 @@ public class CartelaFragment extends Fragment implements OnClickListener {
     public void atualizaStatusBotaoFinalizar() {
         if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) {
             botaoFinalizar.setBackgroundColor(ContextCompat.getColor(getActivity(), typeGameColorLight));
-            botaoFinalizar.setText(ViewUtils.configuraButtonText(getActivity(), getString(R.string.adicionarAoCarrinho), 9));
+            botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(getActivity(), getString(R.string.adicionarAoCarrinho)));
         } else if (dezenasSelecionadas.size() > parentActivity.qtdDezenasPossiveisSelecionado) {
             //dezenasSelecionadas.clear();
             simularDezenasAdapter.notifyDataSetChanged();
             botaoFinalizar.setBackgroundColor(ContextCompat.getColor(getActivity(), typeGameColorLight));
-            botaoFinalizar.setText(ViewUtils.configuraButtonText(getActivity(), getString(R.string.completarCartela), 9));
+            botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(getActivity(), getString(R.string.completarCartela)));
 
             getView().findViewById(R.id.salvarApostaLayout).setVisibility(View.GONE);
             getView().findViewById(R.id.botaoLimparAposta).setVisibility(View.GONE);
         } else {
             botaoFinalizar.setBackgroundColor(ContextCompat.getColor(getActivity(), typeGameColorLight));
-            botaoFinalizar.setText(ViewUtils.configuraButtonText(getActivity(), getString(R.string.completarCartela), 9));
+            botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(getActivity(), getString(R.string.completarCartela)));
         }
     }
 
@@ -569,7 +569,13 @@ public class CartelaFragment extends Fragment implements OnClickListener {
             shape.setCornerRadius(sizeItens / 2);
             shape.setStroke(1, Color.GRAY);
             textView.setBackground(shape);
-            textView.setText(dezenas.get(i));
+            if(dezenas.get(i).length() == 1){
+                textView.setText("0"+dezenas.get(i));
+            }else{
+
+                textView.setText(dezenas.get(i));
+            }
+            textView.setTypeface(ViewUtils.getFontFuturaBold(context));
             textView.setGravity(Gravity.CENTER);
 
 
