@@ -21,7 +21,6 @@ import android.support.constraint.ConstraintSet;
 import android.support.v4.graphics.ColorUtils;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DialogTitle;
-import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
@@ -54,7 +53,6 @@ import java.util.Calendar;
 import java.util.Locale;
 
 import caixa.gov.br.loterias.R;
-import caixa.gov.br.loterias.view.FormaPagamentoActivity;
 
 /**
  * Created by lsimas on 05/04/2017.
@@ -67,6 +65,7 @@ public class ViewUtils {
 
     private static Typeface fontFutura = null;
     private static Typeface fontFuturaBold = null;
+    private static Typeface fontAriallMT = null;
 
     public static Typeface getFontFutura(Context context) {
         if (fontFutura == null) {
@@ -84,6 +83,15 @@ public class ViewUtils {
 
         return fontFuturaBold;
     }
+
+    public static Typeface getFontArial(Context context) {
+        if (fontAriallMT == null) {
+            fontAriallMT = Typeface.createFromAsset(context.getAssets(), "fonts/arialmt.ttf");
+        }
+
+        return fontAriallMT;
+    }
+
 
     private static int convertSpToPixels(float sp, Context context) {
         int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp, context.getResources().getDisplayMetrics());

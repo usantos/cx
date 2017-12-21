@@ -87,12 +87,25 @@
     <string name="MN002"> Idade informada menor que 18 anos.</string>
     <string name="MA003"> Você tem mais de 18 anos?</string>
     <string name="msg_favor_inserir_nome_aposta">Favor inserir um nome para sua aposta favorita</string>
-
     <string name="msg_erro_data_invalida"> Data Inválida</string>
+
+
     <string name="title_activity_lista_rapidao">Rapidão</string>
     <string name="titulo_lista_rapidao">O jeito mais fácil para apostar</string>
     <string name="title_activity_rapidao_config">RapidaoConfigActivity</string>
     <string name="title_activity_selecao_modalidades_rapidao">SelecaoModalidadesRapidaoActivity
     </string>
+
+    <string name="label_cpf">CPF</string>
+    <string name="label_nome">Nome</string>
+    <string name="label_nome_mae">Nome da Mãe</string>
+    <string name="label_cep">CEP</string>
+    <string name="label_municipio">Município</string>
+    <string name="label_uf">UF</string>
+    <string name="label_nascimento">Nascimento</string>
+    <string name="label_email">E-mail</string>
+    <string name="label_boas_vindas">Que bom ver você por aqui :)</string>
+    <string name="label_cadastro_rapido">O cadastro é bem rápido.\nPara começar, informe os dados abaixo:</string>
+    <string name="label_cadastrar">Cadastrar</string>
 
 </resources>
