@@ -90,6 +90,7 @@ public class PrincipalActivity extends AppCompatActivity
 
     private List<ParametroSimulacao> modalidadesParaListar;
     private RepassometroDTO repassesSociais;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -116,8 +117,7 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
 
-
-    private void montarCarrossel () {
+    private void montarCarrossel() {
         evaluator = new ArgbEvaluator();
         currentOverlayColor = ContextCompat.getColor(this, R.color.verdesenaclaro);
         overlayColor = ContextCompat.getColor(this, R.color.cinza);
@@ -138,7 +138,7 @@ public class PrincipalActivity extends AppCompatActivity
         LayoutGeral();
     }
 
-    private void callWebservice () {
+    private void callWebservice() {
         final View loadViewProgress = LoadingViewLoterias.init(this);
 
         final DadosCorporativosBO dadosCorporativosBO = new DadosCorporativosBO(PrincipalActivity.this);
@@ -166,7 +166,7 @@ public class PrincipalActivity extends AppCompatActivity
         });
     }
 
-    private void callRepassesSociais () {
+    private void callRepassesSociais() {
         final DadosCorporativosBO dadosCorporativosBO = new DadosCorporativosBO(PrincipalActivity.this);
         dadosCorporativosBO.repasses(new SilceClient.Listener<RepassometroDTOResponse>() {
             @Override
@@ -182,19 +182,19 @@ public class PrincipalActivity extends AppCompatActivity
         });
     }
 
-    private List<Modalidade> montaListaModalidades () {
+    private List<Modalidade> montaListaModalidades() {
         List<Modalidade> listaModalidades = new ArrayList<Modalidade>();
 
         for (ParametroSimulacao parametro : modalidadesParaListar) {
 
             listaModalidades.add(new Modalidade(parametro.getParametroJogo().getConcurso().getModalidadeDetalhada().getDescricao(),
-                    parametro.getParametroJogo().getConcurso().getValorApostaMinima(),"","", parametro.getParametroJogo().getConcurso().getModalidade(), parametro.getParametroJogo().getConcurso() ));
+                    parametro.getParametroJogo().getConcurso().getValorApostaMinima(), "", "", parametro.getParametroJogo().getConcurso().getModalidade(), parametro.getParametroJogo().getConcurso()));
         }
 
         return listaModalidades;
     }
 
-    private void LayoutGeral(){
+    private void LayoutGeral() {
         relativePrincipal = (RelativeLayout) findViewById(R.id.RelativeContentPrincipal);
         relativeBlankView = (RelativeLayout) findViewById(R.id.RelativeBlankView);
         linearAtalhoRapidoLoterias = (LinearLayout) findViewById(R.id.atalhoRapidoLoterias);
@@ -205,20 +205,20 @@ public class PrincipalActivity extends AppCompatActivity
         toolbar = (Toolbar) findViewById(R.id.toolbar);
     }
 
-    private void layoutTrevoAcessoRapido(){
-        String htmlTextViewBilhetesTexto = "<html>Ler <strong>Bilhetes</strong></html>";
-        String htmlTextViewRepassados = "<html><strong>repassados</strong> para boas causas</html>";
+    private void layoutTrevoAcessoRapido() {
+        String htmlTextViewBilhetesTexto = "Ler _bilhetes_";
+        String htmlTextViewRepassados = "_repassados_ para boas causas.";
         TextView TextViewBilhetesTexto = (TextView) findViewById(R.id.tituloLerBilhetes);
         TextView TextViewRepassados = (TextView) findViewById(R.id.textoRepassados);
         TextView valorRepassesSociais = (TextView) findViewById(R.id.valorRepassesPrincipal);
         valorRepassesSociais.setText(ViewUtils.getMoedaFormat(repassesSociais.getArrecadacaoAcumulada()));
 
-        TextViewBilhetesTexto.setText(ViewUtils.fromHtml(htmlTextViewBilhetesTexto));
-        TextViewRepassados.setText(ViewUtils.fromHtml(htmlTextViewRepassados));
+        TextViewBilhetesTexto.setText(ViewUtils.textFuturaAndFuturaBold(this, htmlTextViewBilhetesTexto));
+        TextViewRepassados.setText(ViewUtils.textFuturaAndFuturaBold(this, htmlTextViewRepassados));
 
     }
 
-    private void toolbarListener(){
+    private void toolbarListener() {
         toolbar.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
             @Override
             public void onLayoutChange(View v, int left, int top, int right, int bottom,
@@ -229,9 +229,9 @@ public class PrincipalActivity extends AppCompatActivity
                     itemToolbarTrevo.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            if (relativePrincipal.isEnabled()){
+                            if (relativePrincipal.isEnabled()) {
                                 AnimacaoAbrirMenuRapido(v);
-                            }else{
+                            } else {
                                 AnimacaoFecharMenuRapido(v);
                             }
                         }
@@ -252,7 +252,7 @@ public class PrincipalActivity extends AppCompatActivity
         });
     }
 
-    private void AnimacaoAbrirMenuRapido(View v){
+    private void AnimacaoAbrirMenuRapido(View v) {
         relativePrincipal.setEnabled(false);
         itemToolbarTrevo.setEnabled(false);
         linearAtalhoRapidoLoterias.setVisibility(View.VISIBLE);
@@ -270,15 +270,15 @@ public class PrincipalActivity extends AppCompatActivity
                 itemToolbarTrevo,
                 PrincipalActivity.this,
                 estilo
-                );
-        int positionTopBotao = (int)buttonHomeBet.getY();
+        );
+        int positionTopBotao = (int) buttonHomeBet.getY();
 
         int itemSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 105, this.getResources().getDisplayMetrics());
 
         animacoesAcessoRapido.AnimacaoDescerContent(positionTopBotao - itemSize);
     }
 
-    private void AnimacaoFecharMenuRapido(View v){
+    private void AnimacaoFecharMenuRapido(View v) {
         relativePrincipal.setEnabled(true);
         itemToolbarTrevo.setEnabled(false);
         EstiloModalidade estilo = new EstiloModalidade(data.get(itemCarousel.getCurrentItem()).getTipoModalidade());
@@ -354,7 +354,7 @@ public class PrincipalActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_slideshow) {
 
-        }else if (id == R.id.nav_sair){
+        } else if (id == R.id.nav_sair) {
             sairLogin();
         }
 
@@ -363,7 +363,7 @@ public class PrincipalActivity extends AppCompatActivity
         return true;
     }
 
-    private void sairLogin(){
+    private void sairLogin() {
         final View loadViewProgress = LoadingViewLoterias.init(this);
 
         DadosUsuarioBO dadosUsuarioBO = new DadosUsuarioBO(PrincipalActivity.this);
@@ -394,6 +394,7 @@ public class PrincipalActivity extends AppCompatActivity
 //                break;
 //        }
     }
+
     @Override
     public void onScroll(
             float currentPosition,
@@ -403,9 +404,9 @@ public class PrincipalActivity extends AppCompatActivity
 
         if (currentHolder != null && newCurrent != null) {
             float position = Math.abs(currentPosition);
-            Log.d("position", "position: "+ position);
-            Log.d("currentIndex", "currentIndex: "+ currentIndex);
-            Log.d("newIndex", "newIndex: "+ newIndex);
+            Log.d("position", "position: " + position);
+            Log.d("currentIndex", "currentIndex: " + currentIndex);
+            Log.d("newIndex", "newIndex: " + newIndex);
 
 //            currentHolder.setOverlayColor(interpolate(position, currentOverlayColor, overlayColor));
 //            newCurrent.setOverlayColor(interpolate(position, overlayColor, currentOverlayColor));
@@ -422,14 +423,15 @@ public class PrincipalActivity extends AppCompatActivity
             viewHolder.setOverlayColor(this, estilo);
 
             buttonHomeBet.setTag(adapterPosition);
-            buttonHomeBet.setText(ViewUtils.fromHtml("<b>Aposte</b><br>por R$" + modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima()));
+//            buttonHomeBet.setText(ViewUtils.fromHtml("<b>Aposte</b><br>por R$" + modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima()));
+            buttonHomeBet.setText(ViewUtils.textFuturaAndFuturaBold(this, "_Aposte_\npor R$" + modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima()));
 
             findViewById(R.id.buttonHomeBet).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent activity = new Intent(PrincipalActivity.this, SimularApostaActivity_.class);
-                    activity.putExtra("tipoAposta", modalidadesParaListar.get((int)view.getTag()).getParametroJogo().getConcurso().getModalidade());
-                    activity.putExtra("modalidade", (new Gson()).toJson(modalidadesParaListar.get((int)view.getTag()).getParametroJogo()));
+                    activity.putExtra("tipoAposta", modalidadesParaListar.get((int) view.getTag()).getParametroJogo().getConcurso().getModalidade());
+                    activity.putExtra("modalidade", (new Gson()).toJson(modalidadesParaListar.get((int) view.getTag()).getParametroJogo()));
                     startActivity(activity);
                 }
             });
@@ -444,21 +446,22 @@ public class PrincipalActivity extends AppCompatActivity
         return (int) evaluator.evaluate(fraction, c1, c2);
     }
 
-    private void listenerRepassados(){
+    private void listenerRepassados() {
 
-        RelativeLayout relativerepassados=(RelativeLayout)findViewById(R.id.RelativeLayoutContentRepassados);
-        relativerepassados.setOnClickListener(new View.OnClickListener(){
+        RelativeLayout relativerepassados = (RelativeLayout) findViewById(R.id.RelativeLayoutContentRepassados);
+        relativerepassados.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
-                startActivity(new Intent(PrincipalActivity.this, RepassesSociaisActivity.class) );
+            public void onClick(View v) {
+                startActivity(new Intent(PrincipalActivity.this, RepassesSociaisActivity.class));
             }
         });
     }
 
-    private void listenerRapidao(){
 
-        RelativeLayout relativerapidao=(RelativeLayout)findViewById(R.id.RelativeLayoutContentRapidao);
-        relativerapidao.setOnClickListener(new View.OnClickListener(){
+    private void listenerRapidao() {
+
+        RelativeLayout relativerapidao = (RelativeLayout) findViewById(R.id.RelativeLayoutContentRapidao);
+        relativerapidao.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
                 startActivity(new Intent(PrincipalActivity.this, ListaRapidaoActivity.class) );
@@ -466,13 +469,13 @@ public class PrincipalActivity extends AppCompatActivity
         });
     }
 
-    private void listenerCarrinho(){
+    private void listenerCarrinho() {
 
-        RelativeLayout relativecarrinho=(RelativeLayout)findViewById(R.id.RelativeLayoutCarrinho);
-        relativecarrinho.setOnClickListener(new View.OnClickListener(){
+        RelativeLayout relativecarrinho = (RelativeLayout) findViewById(R.id.RelativeLayoutCarrinho);
+        relativecarrinho.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
-                startActivity(new Intent(PrincipalActivity.this, CarrinhoActivity.class) );
+            public void onClick(View v) {
+                startActivity(new Intent(PrincipalActivity.this, CarrinhoActivity.class));
             }
         });
     }

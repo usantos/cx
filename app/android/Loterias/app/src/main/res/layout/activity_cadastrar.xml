@@ -44,7 +44,7 @@
                 android:layout_below="@id/imageViewIcoPasso1"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="20dp"
-                android:text="Que bom ver você por aqui :)"
+                android:text=""
                 android:textColor="@color/verdeazul"
                 android:textSize="18sp" />
 
@@ -278,7 +278,6 @@
 
             <Button
                 android:id="@+id/buttonContinuarIntroducao"
-                style="@style/ButtonFutura"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/editTextEmail"
@@ -290,7 +289,8 @@
                 android:text="Continuar"
                 android:textAllCaps="false"
                 android:textColor="@color/branco"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:textStyle="bold"/>
 
         </RelativeLayout>
     </ScrollView>

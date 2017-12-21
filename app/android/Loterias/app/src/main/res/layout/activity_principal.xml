@@ -24,5 +24,4 @@
         app:headerLayout="@layout/nav_header_principal"
         app:menu="@menu/activity_principal_drawer"
         app:itemBackground="@drawable/drawer_item_bg"/>
-
 </android.support.v4.widget.DrawerLayout>

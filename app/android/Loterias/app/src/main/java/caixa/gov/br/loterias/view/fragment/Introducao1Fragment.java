@@ -1,8 +1,14 @@
 package caixa.gov.br.loterias.view.fragment;
 
+import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.TextPaint;
+import android.text.style.TypefaceSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,7 +81,8 @@ public class Introducao1Fragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_introducao1, container, false);
 
         textView1 = (TextView) v.findViewById(R.id.textView1Fragment1);
-        textView1.setText(ViewUtils.fromHtml("Uma nova <b>experiência</b>"));
+//        textView1.setText(ViewUtils.fromHtml("Uma nova <font face='Futura Book'>experiência</font>"));
+        textView1.setText(ViewUtils.textFuturaAndFuturaBold(getContext(), "Uma nova _experiência_"));
 
         Button button = (Button) v.findViewById(R.id.buttonPularIntroducao);
         button.setOnClickListener(new View.OnClickListener() {

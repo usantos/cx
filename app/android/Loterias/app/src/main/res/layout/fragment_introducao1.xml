@@ -32,7 +32,7 @@
          android:layout_height="wrap_content"
          android:layout_gravity="center_horizontal"
          android:layout_marginTop="19dp"
-         android:text="Uma nova experiência "
+         android:text="Uma nova experiência"
          android:textColor="@color/branco"
          android:textSize="18sp"
          android:layout_below="@+id/imageViewTelefone"

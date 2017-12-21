@@ -10,6 +10,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 
@@ -57,6 +58,9 @@ public class CadastrarActivity extends CadastroActivity {
     @ViewById
     SegmentedButtonGroup segmentedButtonSexo;
 
+    @ViewById
+    TextView textViewTituloCadastrar2;
+
     @Extra
     List<String> listUFString, listMunicipios;
 
@@ -74,6 +78,7 @@ public class CadastrarActivity extends CadastroActivity {
 
     private void loadFields() {
         editTextNascimentoContent = (EditText) findViewById(R.id.editTextNascimentoContent);
+        textViewTituloCadastrar2.setText(ViewUtils.textFuturaAndFuturaBold(this,"Que bom ver _você por aqui_ :)"));
     }
 
     public void addUFSpinner() {

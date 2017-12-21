@@ -24,6 +24,7 @@ import android.support.v7.widget.DialogTitle;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.StyleSpan;
@@ -579,5 +580,28 @@ public class ViewUtils {
         }
 
         return size;
+    }
+
+    /**
+     * O texto que estiver dentro de _ receberá fonte FuturaBold, ex: Texto Normal _Texto Bold_
+     * @param context
+     * @param texto
+     * @return
+     */
+    public static SpannableStringBuilder textFuturaAndFuturaBold(Context context, String texto) {
+        Typeface font = ViewUtils.getFontFuturaBold(context);
+
+        PositionStringBold positionStringBold = positionString(texto);
+        SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(texto.replace("_", ""));
+        spannableStringBuilder.setSpan(new CustomTypefaceSpan("", font), positionStringBold.getStart(), positionStringBold.getEnd(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+
+        return spannableStringBuilder;
+    }
+
+    private static PositionStringBold positionString(String texto){
+        String[] listaString = texto.split("_");
+        int start = listaString[0].length();
+        int end = listaString[1].length() + start;
+        return new PositionStringBold(start, end);
     }
 }

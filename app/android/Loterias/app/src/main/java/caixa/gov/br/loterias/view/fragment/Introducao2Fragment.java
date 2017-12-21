@@ -73,7 +73,7 @@ public class Introducao2Fragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_introducao2, container, false);
 
         textView1 = (TextView) v.findViewById(R.id.textView1Fragment2);
-        textView1.setText(ViewUtils.fromHtml("Novas <b>funcionalidades</b>"));
+        textView1.setText(ViewUtils.textFuturaAndFuturaBold(getContext(), "Novas _funcionalidades_"));
 
         return v;
     }

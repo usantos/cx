@@ -6,7 +6,7 @@
         <item name="colorPrimary">@color/cinzaclaro</item>
         <item name="colorPrimaryDark">@color/colorAccent</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:fontFamily">@font/futura_std_book</item>
+        <item name="android:fontFamily">@font/font_family_futura</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -48,10 +48,5 @@
         <item name="colorPrimary">@color/branco</item>
         <item name="colorPrimaryDark">@color/colorAccent</item>
         <item name="colorAccent">@color/colorAccent</item>
-    </style>
-
-    <style name="ButtonFutura" parent="Base.Widget.AppCompat.Button">
-        <item name="android:fontFamily">@font/futura_std_bold</item>
-        <item name="android:textColor">@color/amarelo</item>
     </style>
 </resources>
