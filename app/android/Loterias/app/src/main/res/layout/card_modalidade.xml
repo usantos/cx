@@ -36,7 +36,8 @@
                 android:text="Resultados"
                 android:background="@null"
                 android:textColor="@color/branco"
-                android:gravity="center"/>
+                android:gravity="center"
+                style="@style/editTextArialMTTheme"/>
             <ImageView
                 android:src="@drawable/seta_direita"
                 android:layout_width="8dp"
@@ -126,6 +127,7 @@
                         android:text="Prêmio estimado do concurso "
                         android:textSize="14sp"
                         android:textColor="@color/cinzaescuro"
+                        style="@style/editTextArialMTTheme"
                         />
                 </LinearLayout>
 
@@ -184,6 +186,7 @@
                                 android:textColor="@color/cinzaescuro"
                                 android:textStyle="bold"
                                 android:gravity="bottom"
+                                style="@style/editTextArialMTTheme"
                                 />
                         </RelativeLayout>
                     </LinearLayout>
@@ -216,6 +219,7 @@
                                 android:text="Apostas se encerram em"
                                 android:textSize="13sp"
                                 android:textColor="@color/cinzaescuro"
+                                style="@style/editTextArialMTTheme"
                                 />
                             <TextView
                                 android:id="@+id/textVieCardClosingOfBets"
@@ -226,6 +230,7 @@
                                 android:textColor="@color/cinzaescuro"
                                 android:textStyle="bold"
                                 android:gravity="bottom"
+                                style="@style/editTextArialMTTheme"
                                 />
                         </RelativeLayout>
                     </LinearLayout>

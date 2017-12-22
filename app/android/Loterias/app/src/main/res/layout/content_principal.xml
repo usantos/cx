@@ -284,7 +284,7 @@
                 android:textColor="@color/azulescuro"
                 android:textSize="10sp"
                 android:layout_marginTop="65dp"
-
+                style="@style/editTextArialMTTheme"
                 />
 
             <RelativeLayout
@@ -323,7 +323,8 @@
                     android:text="Apostas\nconfirmadas"
                     android:textAlignment="center"
                     android:textColor="@color/azulescuro"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    style="@style/editTextArialMTTheme"/>
             </RelativeLayout>
 
             <RelativeLayout
@@ -365,7 +366,8 @@
                     android:text="Carrinho\nde apostas"
                     android:textAlignment="center"
                     android:textColor="@color/azulescuro"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    style="@style/editTextArialMTTheme"/>
             </RelativeLayout>
 
             <RelativeLayout
@@ -386,7 +388,7 @@
         android:layout_width="154dp"
         android:layout_height="84dp"
         android:background="@color/verdesenaclaro"
-        android:text="Aposte\npor R$0,00"
+        android:text=""
         android:textAllCaps="false"
         android:textColor="@color/branco"
         android:textSize="16sp"

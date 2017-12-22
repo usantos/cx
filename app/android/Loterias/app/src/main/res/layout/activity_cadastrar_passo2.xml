@@ -49,6 +49,7 @@
 
             <TextView
                 android:id="@+id/textViewTituloCadastrar3Passo2"
+                style="@style/ArialMT"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/textViewTituloCadastrar2Passo2"
@@ -56,7 +57,6 @@
                 android:layout_marginTop="20dp"
                 android:text="@string/label_encontre_lotorica_atraves_endereco_cep_codigo"
                 android:textColor="@color/cinza"
-                style="@style/ArialMT"
                 android:textSize="14sp" />
 
             <caixa.gov.br.loterias.utils.segmentedbutton.SegmentedButtonGroup
@@ -67,14 +67,14 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginTop="20dp"
                 android:elevation="2dp"
+                android:weightSum="1"
                 app:sb_textStyle="bold"
                 app:sbg_animateSelector="fastOutSlowIn"
                 app:sbg_animateSelectorDuration="1000"
                 app:sbg_backgroundColor="@color/cinzaclaro"
                 app:sbg_position="0"
                 app:sbg_ripple="true"
-                app:sbg_selectorColor="@color/verdeazul"
-                android:weightSum="1">
+                app:sbg_selectorColor="@color/verdeazul">
 
                 <caixa.gov.br.loterias.utils.segmentedbutton.SegmentedButton
                     android:id="@+id/segmentedButtonLocalizacao"
@@ -83,8 +83,8 @@
                     android:layout_weight="0.33"
                     android:textAlignment="center"
                     android:textSize="12sp"
-                    app:sb_text="Localização"
                     android:visibility="gone"
+                    app:sb_text="Localização"
                     app:sb_textColor="@color/verdeazul"
                     app:sb_textColor_onSelection="@color/branco" />
 
@@ -98,19 +98,19 @@
                     android:visibility="gone"
                     app:sb_text="CEP"
                     app:sb_textColor="@color/verdeazul"
-                    app:sb_textColor_onSelection="@color/branco"/>
+                    app:sb_textColor_onSelection="@color/branco" />
 
                 <caixa.gov.br.loterias.utils.segmentedbutton.SegmentedButton
                     android:id="@+id/segmentedButtonCodigoLoterica"
                     android:layout_width="0dp"
                     android:layout_height="56dp"
                     android:layout_weight="0.33"
+                    android:textSize="12sp"
                     android:visibility="gone"
                     app:sb_text="Código \nda lotérica"
                     app:sb_textColor="@color/verdeazul"
                     app:sb_textColor_onSelection="@color/branco"
-                    app:sb_textGravity="center"
-                    android:textSize="12sp"/>
+                    app:sb_textGravity="center" />
 
             </caixa.gov.br.loterias.utils.segmentedbutton.SegmentedButtonGroup>
 
@@ -145,6 +145,7 @@
 
                             <EditText
                                 android:id="@+id/editTextUFPasso2Content"
+                                style="@style/editTextRegisterTheme"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:drawableRight="@drawable/combo"
@@ -152,8 +153,7 @@
                                 android:focusableInTouchMode="false"
                                 android:hint="UF"
                                 android:inputType="textPersonName"
-                                android:textColor="@color/cinza"
-                                android:textSize="16sp" />
+                                android:textColor="@color/cinza" />
                         </android.support.design.widget.TextInputLayout>
 
                         <android.support.design.widget.TextInputLayout
@@ -164,6 +164,7 @@
 
                             <EditText
                                 android:id="@+id/editTextMunicipioPasso2Content"
+                                style="@style/editTextRegisterTheme"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:drawableRight="@drawable/combo"
@@ -171,8 +172,7 @@
                                 android:focusableInTouchMode="false"
                                 android:hint="Cidade"
                                 android:inputType="textPersonName"
-                                android:textColor="@color/cinza"
-                                android:textSize="16sp" />
+                                android:textColor="@color/cinza" />
                         </android.support.design.widget.TextInputLayout>
                     </LinearLayout>
 
@@ -187,6 +187,7 @@
 
                         <EditText
                             android:id="@+id/editTextBairroPasso2Content"
+                            style="@style/editTextRegisterTheme"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:drawableRight="@drawable/combo"
@@ -194,8 +195,7 @@
                             android:focusableInTouchMode="false"
                             android:hint="Bairro"
                             android:inputType="textPersonName"
-                            android:textColor="@color/cinza"
-                            android:textSize="16sp" />
+                            android:textColor="@color/cinza" />
                     </android.support.design.widget.TextInputLayout>
                 </LinearLayout>
 
@@ -249,7 +249,7 @@
                             android:hint="@string/codigo_loterica"
                             android:inputType="textPersonName"
                             android:textColor="@color/cinza"
-                            android:textSize="16sp" />
+                            style="@style/editTextRegisterTheme"/>
                     </android.support.design.widget.TextInputLayout>
                 </LinearLayout>
             </LinearLayout>
@@ -258,9 +258,8 @@
                 android:id="@+id/radioListLoterias"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_below="@id/encontrarLoterica">
-            </RadioGroup>
+                android:layout_below="@id/encontrarLoterica"
+                android:layout_marginTop="20dp"></RadioGroup>
 
             <!--<ListView-->
             <!--android:id="@+id/ListViewLoterias"-->
@@ -300,13 +299,15 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        style="@style/editTextArialMTTheme"
                         android:text="@string/declaracao_termo_uso_politica_privacidade" />
 
                     <TextView
                         android:id="@+id/termoPolitica"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/termo_de_uso_underline" />
+                        android:text="@string/termo_de_uso_underline"
+                        style="@style/editTextArialMTTheme"/>
                 </LinearLayout>
             </LinearLayout>
 
@@ -330,7 +331,7 @@
                     android:textAllCaps="false"
                     android:textColor="@color/branco"
                     android:textSize="16sp"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
             </LinearLayout>
         </RelativeLayout>
     </ScrollView>
