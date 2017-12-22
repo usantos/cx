@@ -36,6 +36,7 @@ public class FormaPagamentoActivity extends SettingToolbarActivity implements Fo
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forma_pagamento);
+        setTitle(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.title_activity_forma_pagamento)));
         
         configuraClickBotoes();
         callWebservice();
@@ -66,8 +67,8 @@ public class FormaPagamentoActivity extends SettingToolbarActivity implements Fo
     }
 
     private void configuraClickBotoes() {
-        ((Button) findViewById(R.id.botaoAvancarPagamento)).setText(ViewUtils.configuraButtonText(this, getString(R.string.apostarAutorizarCobranca), 7));
-        ((Button) findViewById(R.id.botaoAdicionarFormaPagamento)).setText(ViewUtils.configuraButtonText(this, getString(R.string.adicionarFormaPagamento), 9));
+        ((Button) findViewById(R.id.botaoAvancarPagamento)).setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.apostarAutorizarCobranca)));
+        ((Button) findViewById(R.id.botaoAdicionarFormaPagamento)).setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.adicionarFormaPagamento)));
 
         findViewById(R.id.botaoAvancarPagamento).setOnClickListener(new View.OnClickListener() {
             @Override

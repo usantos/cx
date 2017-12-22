@@ -10,6 +10,7 @@ import android.widget.Button;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.TipoAposta;
+import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.adapter.TiposApostasMultiplaSelecaoAdapter;
 import caixa.gov.br.loterias.view.custom.ExpandableHeightGridView;
 
@@ -22,6 +23,7 @@ public class SelecaoModalidadesRapidaoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selecao_modalidades_rapidao);
+        setTitle(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.title_activity_lista_rapidao)));
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 

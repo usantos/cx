@@ -73,46 +73,44 @@
                 app:sbg_backgroundColor="@color/cinzaclaro"
                 app:sbg_position="0"
                 app:sbg_ripple="true"
-                app:sbg_selectorColor="@color/verdeazul">
+                app:sbg_selectorColor="@color/verdeazul"
+                android:weightSum="1">
 
                 <caixa.gov.br.loterias.utils.segmentedbutton.SegmentedButton
                     android:id="@+id/segmentedButtonLocalizacao"
                     android:layout_width="0dp"
                     android:layout_height="56dp"
-                    android:layout_weight="1"
+                    android:layout_weight="0.33"
                     android:textAlignment="center"
                     android:textSize="12sp"
                     app:sb_text="Localização"
                     android:visibility="gone"
                     app:sb_textColor="@color/verdeazul"
-                    app:sb_textColor_onSelection="@color/branco"
-                    app:sb_textStyle="bold" />
+                    app:sb_textColor_onSelection="@color/branco" />
 
                 <caixa.gov.br.loterias.utils.segmentedbutton.SegmentedButton
                     android:id="@+id/segmentedButtonCEP"
                     android:layout_width="0dp"
                     android:layout_height="56dp"
-                    android:layout_weight="1"
+                    android:layout_weight="0.33"
                     android:textAlignment="center"
                     android:textSize="12sp"
                     android:visibility="gone"
                     app:sb_text="CEP"
                     app:sb_textColor="@color/verdeazul"
-                    app:sb_textColor_onSelection="@color/branco"
-                    app:sb_textStyle="bold"/>
+                    app:sb_textColor_onSelection="@color/branco"/>
 
                 <caixa.gov.br.loterias.utils.segmentedbutton.SegmentedButton
                     android:id="@+id/segmentedButtonCodigoLoterica"
                     android:layout_width="0dp"
                     android:layout_height="56dp"
-                    android:layout_weight="1"
-                    android:textAlignment="center"
-                    android:textSize="12sp"
+                    android:layout_weight="0.33"
                     android:visibility="gone"
-                    app:sb_text="Código da lotérica"
+                    app:sb_text="Código \nda lotérica"
                     app:sb_textColor="@color/verdeazul"
                     app:sb_textColor_onSelection="@color/branco"
-                    app:sb_textStyle="bold"/>
+                    app:sb_textGravity="center"
+                    android:textSize="12sp"/>
 
             </caixa.gov.br.loterias.utils.segmentedbutton.SegmentedButtonGroup>
 

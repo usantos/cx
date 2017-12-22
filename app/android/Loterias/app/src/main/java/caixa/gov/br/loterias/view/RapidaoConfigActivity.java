@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.ApostaFavorita;
 import caixa.gov.br.loterias.model.TipoAposta;
+import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.adapter.ApostaFavoritaAdapter;
 import caixa.gov.br.loterias.view.adapter.NumerosRapidaoAdapter;
 import caixa.gov.br.loterias.view.adapter.TiposApostasAdapter;
@@ -29,6 +30,7 @@ public class RapidaoConfigActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rapidao_config);
+        setTitle(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.title_activity_lista_rapidao)));
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

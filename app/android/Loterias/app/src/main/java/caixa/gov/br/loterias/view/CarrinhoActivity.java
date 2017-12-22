@@ -47,6 +47,7 @@ public class CarrinhoActivity extends SettingToolbarActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_carrinho);
+        setTitle(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.title_activity_carrinho)));
 
         recyclerView = findViewById(R.id.apostasListaRecycleView);
 
@@ -181,7 +182,7 @@ public class CarrinhoActivity extends SettingToolbarActivity {
     }
 
     private void configuraListeners() {
-        ((Button) findViewById(R.id.botaoAvancarPagamento)).setText(ViewUtils.configuraButtonText(this, getString(R.string.avancarFormaPagamento), 7));
+        ((Button) findViewById(R.id.botaoAvancarPagamento)).setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.avancarFormaPagamento)));
 
 
         findViewById(R.id.botaoFazerNovaAposta).setOnClickListener(new View.OnClickListener() {

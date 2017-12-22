@@ -68,7 +68,7 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
         valorApostaText.setText(ViewUtils.getMoedaFormat(valorAposta));
 
         TextView textObservacaoConfirmacao = findViewById(R.id.textObservacaoConfirmacao);
-        textObservacaoConfirmacao.setText(getString(R.string.infoValorMinimoCarrinho) + " " + ViewUtils.getMoedaFormat(parametroSimulacao.getValorApostaMinima() == null ? new BigDecimal(0) : parametroSimulacao.getValorApostaMinima()));
+        textObservacaoConfirmacao.setText(ViewUtils.textFuturaAndFuturaBold(this,  getString(R.string.infoValorMinimoCarrinho)+" _" + ViewUtils.getMoedaFormat(parametroSimulacao.getValorApostaMinima() == null ? new BigDecimal(0) : parametroSimulacao.getValorApostaMinima())+"_"));
 
         configuraLayoutTela(tipoJogo);
 
@@ -85,7 +85,7 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
     private void configuraLayoutTela(ModalidadeEnum modalidadeEnum) {
         EstiloModalidade estilo = new EstiloModalidade(modalidadeEnum);
 
-        setTitle(ModalidadeEnum.fromString(modalidadeEnum));
+        setTitle(ViewUtils.textFuturaAndFuturaBold(this, "_"+ModalidadeEnum.fromString(modalidadeEnum)+"_"));
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(ContextCompat.getColor(this, estilo.getCorEscura()));
@@ -100,8 +100,8 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
 
         findViewById(R.id.botaoNovaAposta).setBackground(gd);
 
-        ((Button) findViewById(R.id.botaoVerCarrinhoAposta)).setText(ViewUtils.configuraButtonText(this, getString(R.string.verCarrinho), 12));
-        ((Button) findViewById(R.id.botaoAdicionarCompletarCartela)).setText(ViewUtils.configuraButtonText(this, getString(R.string.adicionarAoCarrinho), 9));
+        ((Button) findViewById(R.id.botaoVerCarrinhoAposta)).setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.verCarrinho)));
+        ((Button) findViewById(R.id.botaoAdicionarCompletarCartela)).setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.adicionarAoCarrinho)));
 
     }
 

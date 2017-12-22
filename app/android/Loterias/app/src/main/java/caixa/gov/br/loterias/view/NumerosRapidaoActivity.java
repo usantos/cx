@@ -15,6 +15,7 @@ import android.widget.ScrollView;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.NumerosSelecionadosRapidao;
+import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.adapter.NumeroSelecionadoRapidaoAdapter;
 import caixa.gov.br.loterias.view.adapter.NumerosRapidaoAdapter;
 import caixa.gov.br.loterias.view.custom.ExpandableHeightGridView;
@@ -25,6 +26,7 @@ public class NumerosRapidaoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_numeros_rapidao);
+        setTitle(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.title_activity_lista_rapidao)));
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

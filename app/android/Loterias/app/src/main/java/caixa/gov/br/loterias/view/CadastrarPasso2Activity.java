@@ -409,6 +409,8 @@ public class CadastrarPasso2Activity extends CadastroActivity {
         // set the custom dialog components - listview and button
 
         final ListView listViewItens = (ListView) dialog.findViewById(R.id.listaItensDialog);
+        TextView tituloDialog = (TextView) dialog.findViewById(R.id.tituloDialogCustom);
+        tituloDialog.setText("Bairro");
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(CadastrarPasso2Activity.this,
                 android.R.layout.simple_list_item_1, android.R.id.text1, listBairros);

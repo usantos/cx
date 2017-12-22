@@ -160,7 +160,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         botaoAdicionarSurpresinhaAoCarrinho.setBackgroundColor(ContextCompat.getColor(getActivity(), typeGameColorLight));
         botaoAdicionarSurpresinhaAoCarrinho.setTextColor(Color.WHITE);
         botaoAdicionarSurpresinhaAoCarrinho.setOnClickListener(this);
-        botaoAdicionarSurpresinhaAoCarrinho.setText(ViewUtils.configuraButtonText(getActivity(), getString(R.string.adicionarAoCarrinho), 9));
+        botaoAdicionarSurpresinhaAoCarrinho.setText(ViewUtils.textFuturaAndFuturaBold(getActivity(), getString(R.string.adicionarAoCarrinho)));
 
         Button carrinhoImageView = fragmentView.findViewById(R.id.botaoCarrinho);
         carrinhoImageView.setOnClickListener(this);

@@ -40,6 +40,7 @@
             android:text="@string/novaFormaPagamentoTitulo"
             android:textColor="@color/colorAccent"
             android:textStyle="bold"
+            android:textSize="14.2sp"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -282,7 +283,7 @@
         <LinearLayout
             android:id="@+id/containerComboSalvar"
             android:layout_width="0dp"
-            android:layout_height="60dp"
+            android:layout_height="80dp"
             app:layout_constraintTop_toBottomOf="@+id/containerValidadeCartao"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -290,14 +291,26 @@
 
             <CheckBox
                 android:id="@+id/checkBoxSalvarCartao"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="30dp"
+                android:checked="false"
+                android:textColor="@color/pretoLinhaFormNovoTipoPagamento"
+                android:background="@drawable/check_box_selected"
+                android:button="@color/transparente50"/>
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:checked="false"
-                android:text="Salvar este cartão para futuras apostas"
-                android:textColor="@color/pretoLinhaFormNovoTipoPagamento"
-                android:textSize="16sp"
-                android:layout_marginLeft="16dp"
-                android:buttonTint="@color/verdeagua" />
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="30dp"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:text="Salvar este cartão para futuras apostas"/>
+            </LinearLayout>
         </LinearLayout>
 
 

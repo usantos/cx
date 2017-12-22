@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 import com.github.pinball83.maskededittext.MaskedEditText;
@@ -147,11 +148,12 @@ public class CadastroActivity extends AppCompatActivity {
         // custom dialog
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.custom_dialog_list_view);
-        dialog.setTitle("UF");
 
         // set the custom dialog components - listview and button
 
         final ListView listViewItens = (ListView) dialog.findViewById(R.id.listaItensDialog);
+        TextView tituloDialog = (TextView) dialog.findViewById(R.id.tituloDialogCustom);
+        tituloDialog.setText("UF");
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(CadastroActivity.this,
                 android.R.layout.simple_list_item_1, android.R.id.text1, listUFString);
@@ -272,6 +274,8 @@ public class CadastroActivity extends AppCompatActivity {
         // set the custom dialog components - listview and button
 
         final ListView listViewItens = (ListView) dialog.findViewById(R.id.listaItensDialog);
+        TextView tituloDialog = (TextView) dialog.findViewById(R.id.tituloDialogCustom);
+        tituloDialog.setText("Cidade");
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(CadastroActivity.this,
                 android.R.layout.simple_list_item_1, android.R.id.text1, listMunicipios);

@@ -28,6 +28,7 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nova_forma_pagamento);
+        setTitle(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.title_activity_forma_pagamento)));
 
         String[] values = new String[]{"01", "02", "02", "02", "02", "02", "02", "02", "02"};
 
@@ -83,7 +84,7 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
     }
 
     private void configuraBotoesListener() {
-        ((Button) findViewById(R.id.botaoAvancarPagamento)).setText(ViewUtils.configuraButtonText(this, getString(R.string.apostarAutorizarCobranca), 7));
+        ((Button) findViewById(R.id.botaoAvancarPagamento)).setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.apostarAutorizarCobranca)));
 
         findViewById(R.id.botaoAvancarPagamento).setOnClickListener(new View.OnClickListener() {
             @Override

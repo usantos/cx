@@ -1,22 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+    android:layout_height="fill_parent">
+
     <RelativeLayout
+        android:id="@+id/relativeLayoutTopo"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:background="@drawable/gradiente_titulo_caixa"
-        android:id="@+id/relativeLayoutTopo">
+        android:background="@drawable/gradiente_titulo_caixa">
+
         <TextView
+            android:id="@+id/tituloDialogCustom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Titulo"
-            android:textSize="16sp"
-            android:id="@+id/tituloDialogCustom"
             android:layout_marginLeft="17dp"
             android:layout_marginTop="18dp"
+            android:text="Titulo"
             android:textColor="@color/branco"
-            />
+            android:textSize="16sp"
+            android:textStyle="bold" />
     </RelativeLayout>
 
     <LinearLayout
@@ -26,51 +28,47 @@
         android:orientation="vertical">
 
         <ListView
+            android:id="@+id/listaItensDialog"
             android:layout_width="match_parent"
             android:layout_height="300dp"
-            android:id="@+id/listaItensDialog"
             android:choiceMode="singleChoice"
-            android:listSelector="@color/cinzaclaro"
-            >
-        </ListView>
+            android:listSelector="@color/cinzaclaro"></ListView>
 
         <RelativeLayout
+            android:id="@+id/linhaDivisaoBotoes"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/cinza2"
             android:layout_below="@+id/listaItensDialog"
-            android:id="@+id/linhaDivisaoBotoes">
-        </RelativeLayout>
+            android:background="@color/cinza2"></RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="55dp"
-            android:orientation="horizontal"
             android:layout_below="@+id/linhaDivisaoBotoes"
-            >
+            android:orientation="horizontal">
+
             <Button
                 android:id="@+id/dialogButtonCancelar"
                 android:layout_width="100dp"
                 android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:background="@color/branco"
                 android:text=" Cancelar "
+                android:textAllCaps="false"
                 android:textColor="@color/cinzaescuro"
                 android:textSize="15sp"
-                android:background="@color/branco"
-                android:layout_weight="0.5"
-                android:textStyle="bold"
+                android:textStyle="bold" />
 
-                />
             <Button
                 android:id="@+id/dialogButtonOK"
                 android:layout_width="100dp"
                 android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:background="@color/branco"
                 android:text=" Ok "
                 android:textColor="@color/verdeazul"
                 android:textSize="15sp"
-                android:background="@color/branco"
-                android:layout_weight="0.5"
-                android:textStyle="bold"
-                />
+                android:textStyle="bold" />
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

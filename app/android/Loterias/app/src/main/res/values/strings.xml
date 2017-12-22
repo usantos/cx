@@ -7,9 +7,9 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_home">HomeActivity</string>
-    <string name="title_activity_carrinho"><b>Carrinho</b> de apostas</string>
-    <string name="title_activity_forma_pagamento">Forma de <b>pagamento</b></string>
-    <string name="title_activity_confirmacao_pagamento"><b>Confirmação</b></string>
+    <string name="title_activity_carrinho">_Carrinho_ de apostas</string>
+    <string name="title_activity_forma_pagamento">Forma de _pagamento_</string>
+    <string name="title_activity_confirmacao_pagamento">_Confirmação_</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -39,25 +39,25 @@
     <string name="tituloSalvarAposta">Salve esta aposta :)</string>
     <string name="textoDeNome">Dê um nome</string>
 
-    <string name="verCarrinho">Ver carrinho\nde apostas</string>
+    <string name="verCarrinho">_Ver carrinho_\nde apostas</string>
     <string name="infoValorMinimoCarrinho">Lembre-se: o valor mínimo do total de compras nesse aplicativo é </string>
     <string name="tituloApostaFeita">Essa aposta foi para o seu carrinho.</string>
     <string name="novaAposta">Fazer nova aposta</string>
     <string name="confirmarApostas">Confirme suas apostas e pressione AVANÇAR para continuar.</string>
-    <string name="avancarFormaPagamento">Avançar\npara a forma de pagamento</string>
+    <string name="avancarFormaPagamento">_Avançar_\npara a forma de pagamento</string>
     <string name="fazerNovaAposta">Fazer nova aposta</string>
 
-    <string name="adicionarFormaPagamento">Adicionar\nforma de pagamento</string>
+    <string name="adicionarFormaPagamento">_Adicionar_\nforma de pagamento</string>
     <string name="tituloFormaPagamento">Agora é pra valer!</string>
     <string name="infoFormaPagamento">Selecione sua forma de pagamento para prosseguir</string>
-    <string name="apostarAutorizarCobranca">Apostar\ne autorizar cobrança</string>
+    <string name="apostarAutorizarCobranca">_Apostar_\ne autorizar cobrança</string>
 
     <string name="total">Total</string>
 
     <string name="confirmacaoPagamentoInfoApostas">Você pode visualizá-las na área Apostas realizadas do aplicativo</string>
     <string name="confirmacaopagamentoParabens">Parabéns!\nSuas apostas foram efetivadas.</string>
     <string name="minhasApostas">Minhas apostas</string>
-    <string name="confirmacaoPagamentoBotaoVoltarInicio">Voltar\nao início</string>
+    <string name="confirmacaoPagamentoBotaoVoltarInicio">_Voltar_\nao início</string>
 
     <string name="novaFormaPagamentoTitulo">Cadastrar cartão</string>
     <string name="novaFormaPagamentoNenhumCartaoCadastrado">Notamos que você ainda não possui nenhum cartão de crédito cadastrado. Para contnuar, informe:</string>
@@ -65,7 +65,7 @@
     <string name="title_activity_main2">Main2Activity</string>
     <string name="title_activity_principal">PrincipalActivity</string>
     <string name="title_activity_termos_uso">Loterias Caixa</string>
-    <string name="title_activity_repasses_sociais">Repasses <b>sociais</b></string>
+    <string name="title_activity_repasses_sociais">Repasses _sociais_</string>
     <string name="title_activity_teste">TesteActivity</string>
     <string name="title_activity_toolbar"><b>Loterias Caixa</b></string>
     <string name="title_activity_login">Login</string>
@@ -90,7 +90,7 @@
     <string name="msg_erro_data_invalida"> Data Inválida</string>
 
 
-    <string name="title_activity_lista_rapidao">Rapidão</string>
+    <string name="title_activity_lista_rapidao">_Rapidão_</string>
     <string name="titulo_lista_rapidao">O jeito mais fácil para apostar</string>
     <string name="title_activity_rapidao_config">RapidaoConfigActivity</string>
     <string name="title_activity_selecao_modalidades_rapidao">SelecaoModalidadesRapidaoActivity

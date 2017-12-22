@@ -20,13 +20,14 @@ public class ConfirmacaoPagamentoActivity extends SettingToolbarActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirmacao_pagamento);
+        setTitle(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.title_activity_confirmacao_pagamento)));
 
         configuraBotoes();
 
     }
 
     private void configuraBotoes(){
-        ((Button) findViewById(R.id.botaoVoltarInicio)).setText(ViewUtils.configuraButtonText(this, getString(R.string.confirmacaoPagamentoBotaoVoltarInicio), 6));
+        ((Button) findViewById(R.id.botaoVoltarInicio)).setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.confirmacaoPagamentoBotaoVoltarInicio)));
 
         findViewById(R.id.botaoVoltarInicio).setOnClickListener(new View.OnClickListener() {
             @Override

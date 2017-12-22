@@ -52,6 +52,7 @@ public class ListaRapidaoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_rapidao);
+        setTitle(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.title_activity_lista_rapidao)));
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -247,7 +248,7 @@ public class ListaRapidaoActivity extends AppCompatActivity {
     }
 
     private void configuraListeners(){
-        ((Button) findViewById(R.id.botaoAvancarPagamentoRapidao)).setText(ViewUtils.configuraButtonText(this, getString(R.string.avancarFormaPagamento), 7));
+        ((Button) findViewById(R.id.botaoAvancarPagamentoRapidao)).setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.avancarFormaPagamento)));
 
 
         findViewById(R.id.botaoFazerNovaApostaRapidao).setOnClickListener(new View.OnClickListener() {

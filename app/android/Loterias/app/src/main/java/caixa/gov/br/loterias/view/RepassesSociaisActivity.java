@@ -31,11 +31,7 @@ public class RepassesSociaisActivity extends SettingToolbarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_repasses_sociais);
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-//
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        setTitle(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.title_activity_repasses_sociais)));
         callWebservice();
     }
 
@@ -63,7 +59,7 @@ public class RepassesSociaisActivity extends SettingToolbarActivity {
 
         String htmlTextViewRepasseQuadro1 = "<html>Para cada <br><strong><font color=\"#ff7f00\">R$1,00</font></strong><br>apostados nas<br>loterias federais</html>";
         String htmlTextViewRepasseQuadro2 = "<html><strong><font color=\"#345ca5\">R$0,48*</font></strong><br>são destinados<br>a programas sociais</html>";
-        String htmlTextButtonAposte = "<html><strong>Aposte</strong><br>e ajude ainda mais</html>";
+        String htmlTextButtonAposte = "_Aposte_\ne ajude ainda mais";
         TextView TextViewRepasseQuadro1 = (TextView) findViewById(R.id.textViewRepasseQuadro1);
         TextView TextViewRepasseQuadro2 = (TextView) findViewById(R.id.textViewRepasseQuadro2);
         TextView valorRepasses = (TextView) findViewById(R.id.valorRepassesSociais);
@@ -75,7 +71,7 @@ public class RepassesSociaisActivity extends SettingToolbarActivity {
         Button ButtonAposte = (Button) findViewById(R.id.ButtonAposteSociais);
         TextViewRepasseQuadro1.setText(ViewUtils.fromHtml(htmlTextViewRepasseQuadro1));
         TextViewRepasseQuadro2.setText(ViewUtils.fromHtml(htmlTextViewRepasseQuadro2));
-        ButtonAposte.setText(ViewUtils.fromHtml(htmlTextButtonAposte));
+        ButtonAposte.setText(ViewUtils.textFuturaAndFuturaBold(this, htmlTextButtonAposte));
 
 
         ButtonAposte.setOnClickListener(new View.OnClickListener() {
