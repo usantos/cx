@@ -30,7 +30,8 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textoFormaPagamentoTitulo" />
+            app:layout_constraintTop_toBottomOf="@+id/textoFormaPagamentoTitulo"
+            style="@style/editTextArialMTTheme"/>
 
         <TextView
             android:id="@+id/textoFormaPagamentoTitulo"
@@ -73,7 +74,8 @@
                 android:text="@string/total"
                 android:textColor="@color/branco"
                 android:textSize="14sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                style="@style/editTextArialMTTheme"/>
 
             <TextView
                 android:id="@+id/valorTotalCarrinho"
@@ -87,7 +89,8 @@
                 android:text="R$ 00,00"
                 android:textColor="@color/branco"
                 android:textSize="14sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                style="@style/editTextArialMTTheme"/>
         </RelativeLayout>
 
         <Button
@@ -153,6 +156,7 @@
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/formasPagamentoRecyclerView"
+            style="@style/editTextArialMTTheme"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintHorizontal_bias="0.0"

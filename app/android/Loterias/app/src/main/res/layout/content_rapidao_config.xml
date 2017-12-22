@@ -35,7 +35,7 @@
                         android:id="@+id/tituloPrecoMinimo"
                         android:textColor="@color/branco"
                         android:textStyle="bold"
-
+                        style="@style/editTextArialMTTheme"
                         />
                     <TextView
                         android:id="@+id/tituloValorPrecoMinimo"
@@ -75,6 +75,7 @@
                         android:textSize="14.2sp"
                         android:id="@+id/tituloValorMinimoPremiumMiminum"
                         android:textColor="@color/branco"
+                        style="@style/editTextArialMTTheme"
                         />
                     <TextView
                         android:id="@+id/tituloValorMaximoPremiumMiminum"
@@ -86,7 +87,8 @@
                         android:text="100 milhões"
                         android:textColor="@color/branco"
                         android:layout_marginRight="5dp"
-                        android:textSize="14.2sp"/>
+                        android:textSize="14.2sp"
+                        style="@style/editTextArialMTTheme"/>
                 </RelativeLayout>
             </LinearLayout>
 
@@ -109,7 +111,7 @@
                     android:textColor="@color/cinza"
                     android:textSize="14.2sp"
                     android:textStyle="bold"
-
+                    style="@style/editTextArialMTTheme"
                     />
             <TextView
             android:id="@+id/tituloValorValorMinimoAPosta"
@@ -149,6 +151,7 @@
             android:textSize="14.2sp"
             android:id="@+id/tituloValorMinimoApostaValorMinimo"
             android:textColor="@color/azulFormNovoTipoPagamento"
+                style="@style/editTextArialMTTheme"
             />
             <TextView
             android:id="@+id/tituloValorMinimoApostaValorMaximo"
@@ -160,7 +163,8 @@
             android:text="100 reais"
             android:textColor="@color/azulFormNovoTipoPagamento"
             android:layout_marginRight="5dp"
-            android:textSize="14.2sp"/>
+            android:textSize="14.2sp"
+                style="@style/editTextArialMTTheme"/>
             </RelativeLayout>
             </LinearLayout>
 
@@ -183,7 +187,8 @@
                         android:text="Valor máximo da aposta"
                         android:textStyle="bold"
                         android:textColor="@color/cinza"
-                        android:textSize="14.2sp" />
+                        android:textSize="14.2sp"
+                        style="@style/editTextArialMTTheme"/>
                     <TextView
                         android:id="@+id/tituloValorValorMaximoAposta"
                         android:layout_width="wrap_content"
@@ -222,6 +227,7 @@
                         android:textSize="14.2sp"
                         android:id="@+id/tituloValorMaximoApostaValorMinimo"
                         android:textColor="@color/azulFormNovoTipoPagamento"
+                        style="@style/editTextArialMTTheme"
                         />
                     <TextView
                         android:id="@+id/tituloValorMaximoApostaValorMaximo"
@@ -231,6 +237,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_alignParentTop="true"
                         android:text="100 reais"
+                        style="@style/editTextArialMTTheme"
                         android:textColor="@color/azulFormNovoTipoPagamento"
                         android:layout_marginRight="5dp"
                         android:textSize="14.2sp"/>

@@ -139,6 +139,7 @@ ao imposto de renda sobre os prêmios."
                             android:layout_centerHorizontal="true"
                             android:layout_marginBottom="14dp"
                             android:textStyle="bold"
+                            style="@style/editTextArialMTTheme"
                             />
                     </RelativeLayout>
                     <RelativeLayout

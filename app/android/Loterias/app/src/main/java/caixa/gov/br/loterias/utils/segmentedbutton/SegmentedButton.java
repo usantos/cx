@@ -136,6 +136,9 @@ public class SegmentedButton extends View {
     }
     
     private void measureTextWidth(int width) {
+
+        Layout.Alignment alignment = Layout.Alignment.ALIGN_NORMAL;
+
         if (!hasText)
             return;
 
@@ -146,8 +149,13 @@ public class SegmentedButton extends View {
         if (textWidth < 0)
             return;
 
-        mStaticLayout = new StaticLayout(text, mTextPaint, textWidth, Layout.Alignment.ALIGN_NORMAL, 1.0f, 0, false);
-        mStaticLayoutOverlay = new StaticLayout(text, mTextPaint, textWidth, Layout.Alignment.ALIGN_NORMAL, 1.0f, 0, false);
+        if(text.length() > 11){
+            alignment = Layout.Alignment.ALIGN_CENTER;
+        }else{
+            alignment = Layout.Alignment.ALIGN_NORMAL;
+        }
+        mStaticLayout = new StaticLayout(text, mTextPaint, textWidth, alignment, 1.0f, 0, false);
+        mStaticLayoutOverlay = new StaticLayout(text, mTextPaint, textWidth, alignment, 1.0f, 0, false);
     }
 
     @Override

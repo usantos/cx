@@ -33,7 +33,8 @@
                 android:textAlignment="textStart"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tituloConfirmaApostasRapidao" />
+                app:layout_constraintTop_toBottomOf="@+id/tituloConfirmaApostasRapidao"
+                style="@style/editTextArialMTTheme"/>
 
             <TextView
                 android:id="@+id/tituloConfirmaApostasRapidao"
@@ -79,7 +80,8 @@
                     android:text="@string/total"
                     android:textColor="@color/branco"
                     android:textSize="14sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    style="@style/editTextArialMTTheme"/>
 
                 <TextView
                     android:id="@+id/valorTotalCarrinhoRapidao"
@@ -93,7 +95,8 @@
                     android:text="R$ 00,00"
                     android:textColor="@color/branco"
                     android:textSize="14sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    style="@style/editTextArialMTTheme"/>
 
                 <TextView
                     android:id="@+id/textoLimparCarrinhoRapidao"

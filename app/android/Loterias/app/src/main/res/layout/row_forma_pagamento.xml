@@ -25,7 +25,8 @@
         android:layout_marginTop="7dp"
         android:layout_below="@+id/textBandeiraCartao"
         android:layout_alignLeft="@+id/textBandeiraCartao"
-        android:layout_alignStart="@+id/textBandeiraCartao" />
+        android:layout_alignStart="@+id/textBandeiraCartao"
+        style="@style/editTextArialMTTheme"/>
 
     <TextView
         android:id="@+id/textBandeiraCartao"
@@ -38,7 +39,8 @@
         android:layout_marginStart="9dp"
         android:layout_marginTop="15dp"
         android:layout_toRightOf="@+id/imageViewSelecionado"
-        android:layout_toEndOf="@+id/imageViewSelecionado" />
+        android:layout_toEndOf="@+id/imageViewSelecionado"
+        style="@style/editTextArialMTTheme"/>
 
     <ImageView
         android:id="@+id/imageViewSelecionado"

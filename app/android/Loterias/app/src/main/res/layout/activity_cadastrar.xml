@@ -104,7 +104,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:layout_below="@id/editTextNome"
-                android:layout_gravity="center_vertical"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="20dp"
@@ -124,8 +123,11 @@
                     android:textSize="16sp"
                     app:sb_text="Masculino"
                     app:sb_textColor="@color/verdeazul"
+                    android:textAlignment="center"
                     app:sb_textColor_onSelection="@color/branco"
-                    app:sb_textStyle="bold" />
+                    app:sb_textStyle="bold"
+                    app:sb_textGravity="center"
+                    android:layout_gravity="center_vertical"/>
 
                 <caixa.gov.br.loterias.utils.segmentedbutton.SegmentedButton
                     android:layout_width="0dp"

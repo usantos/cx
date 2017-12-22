@@ -28,7 +28,8 @@
         app:layout_constraintLeft_toRightOf="@+id/tipoAposta"
         app:layout_constraintRight_toLeftOf="@+id/valorAposta"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0"
+        style="@style/editTextArialMTTheme"/>
 
     <TextView
         android:id="@+id/tipoAposta"
@@ -45,7 +46,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0"
+        style="@style/editTextArialMTTheme"/>
 
     <TextView
         android:id="@+id/valorAposta"
@@ -62,7 +64,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0"
+        style="@style/editTextArialMTTheme"/>
 
     <Button
         android:layout_width="25dp"

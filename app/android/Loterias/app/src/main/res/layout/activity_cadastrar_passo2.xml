@@ -68,13 +68,15 @@
                 android:layout_marginTop="20dp"
                 android:elevation="2dp"
                 android:weightSum="1"
-                app:sb_textStyle="bold"
                 app:sbg_animateSelector="fastOutSlowIn"
                 app:sbg_animateSelectorDuration="1000"
                 app:sbg_backgroundColor="@color/cinzaclaro"
                 app:sbg_position="0"
                 app:sbg_ripple="true"
-                app:sbg_selectorColor="@color/verdeazul">
+                app:sbg_selectorColor="@color/verdeazul"
+                android:gravity="center_vertical"
+                android:textAlignment="center">
+
 
                 <caixa.gov.br.loterias.utils.segmentedbutton.SegmentedButton
                     android:id="@+id/segmentedButtonLocalizacao"
@@ -83,7 +85,7 @@
                     android:layout_weight="0.33"
                     android:textAlignment="center"
                     android:textSize="12sp"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     app:sb_text="Localização"
                     app:sb_textColor="@color/verdeazul"
                     app:sb_textColor_onSelection="@color/branco" />
@@ -95,7 +97,7 @@
                     android:layout_weight="0.33"
                     android:textAlignment="center"
                     android:textSize="12sp"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     app:sb_text="CEP"
                     app:sb_textColor="@color/verdeazul"
                     app:sb_textColor_onSelection="@color/branco" />
@@ -106,11 +108,10 @@
                     android:layout_height="56dp"
                     android:layout_weight="0.33"
                     android:textSize="12sp"
-                    android:visibility="gone"
-                    app:sb_text="Código \nda lotérica"
+                    android:visibility="visible"
+                    app:sb_text="Código\nda lotérica"
                     app:sb_textColor="@color/verdeazul"
-                    app:sb_textColor_onSelection="@color/branco"
-                    app:sb_textGravity="center" />
+                    app:sb_textColor_onSelection="@color/branco"/>
 
             </caixa.gov.br.loterias.utils.segmentedbutton.SegmentedButtonGroup>
 
@@ -300,12 +301,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         style="@style/editTextArialMTTheme"
+                        android:textColor="@color/cinza"
                         android:text="@string/declaracao_termo_uso_politica_privacidade" />
 
                     <TextView
                         android:id="@+id/termoPolitica"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/cinza"
                         android:text="@string/termo_de_uso_underline"
                         style="@style/editTextArialMTTheme"/>
                 </LinearLayout>

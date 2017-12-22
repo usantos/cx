@@ -36,7 +36,8 @@
         app:layout_constraintRight_toRightOf="@+id/imageSetaApontandoCarrinho"
         app:layout_constraintTop_toTopOf="@+id/imageSetaApontandoCarrinho"
         android:layout_marginStart="46dp"
-        android:layout_marginEnd="46dp" />
+        android:layout_marginEnd="46dp"
+        style="@style/editTextArialMTTheme"/>
 
     <TextView
         android:id="@+id/textTituloTela"
@@ -148,7 +149,8 @@
                 android:text="@string/valorDessaAposta"
                 android:textAlignment="center"
                 android:textColor="@color/azulescuro"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                style="@style/editTextArialMTTheme"/>
         </RelativeLayout>
 
         <ImageView
@@ -208,7 +210,8 @@
                 android:text="@string/carrinhoDeApostas"
                 android:textAlignment="center"
                 android:textColor="@color/azulescuro"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                style="@style/editTextArialMTTheme"/>
         </RelativeLayout>
     </android.support.constraint.ConstraintLayout>
 

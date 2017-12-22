@@ -24,7 +24,8 @@
         app:layout_constraintLeft_toLeftOf="@+id/imageViewSetaParaApostas"
         app:layout_constraintRight_toRightOf="@+id/imageViewSetaParaApostas"
         app:layout_constraintTop_toTopOf="@+id/imageViewSetaParaApostas"
-        app:layout_constraintHorizontal_bias="0.0" />
+        app:layout_constraintHorizontal_bias="0.0"
+        style="@style/editTextArialMTTheme"/>
 
     <ImageView
         android:id="@+id/imageViewSetaParaApostas"
@@ -116,7 +117,8 @@
                 android:text="@string/minhasApostas"
                 android:textAlignment="center"
                 android:textColor="@color/azulescuro"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                style="@style/editTextArialMTTheme"/>
 
 
         </RelativeLayout>

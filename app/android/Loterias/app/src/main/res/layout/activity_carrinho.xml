@@ -25,7 +25,8 @@
             android:textAlignment="textStart"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tituloConfirmaApostas" />
+            app:layout_constraintTop_toBottomOf="@+id/tituloConfirmaApostas"
+            style="@style/editTextArialMTTheme"/>
 
         <TextView
             android:id="@+id/tituloConfirmaApostas"
@@ -71,7 +72,8 @@
                 android:text="@string/total"
                 android:textColor="@color/branco"
                 android:textSize="14sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                style="@style/editTextArialMTTheme"/>
 
             <TextView
                 android:id="@+id/valorTotalCarrinho"
@@ -85,7 +87,8 @@
                 android:text="R$ 00,00"
                 android:textColor="@color/branco"
                 android:textSize="14sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                style="@style/editTextArialMTTheme"/>
 
         </RelativeLayout>
 
@@ -151,8 +154,10 @@
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/apostasListaRecycleView"
+            style="@style/editTextArialMTTheme"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             app:layout_constraintTop_toBottomOf="@+id/infoValorMinimo"
             android:layout_marginLeft="0dp"
             app:layout_constraintLeft_toLeftOf="parent"

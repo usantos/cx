@@ -199,6 +199,7 @@
                         android:layout_marginBottom="0dp"
                         android:background="@color/branco"
                         android:layout_marginTop="5dp"
+
                         >
                         <ImageView
                             android:layout_width="20dp"

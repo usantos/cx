@@ -43,7 +43,8 @@
                         android:textSize="14sp"
                         android:textColor="@color/cinza"
                         android:layout_centerHorizontal="true"
-                        android:textAlignment="center"/>
+                        android:textAlignment="center"
+                        style="@style/editTextArialMTTheme"/>
                 </RelativeLayout>
 
                 <RelativeLayout
