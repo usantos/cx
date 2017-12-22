@@ -54,8 +54,9 @@
                 android:layout_below="@id/textViewTituloCadastrar2Passo2"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="20dp"
-                android:text="Para isso, encontre a lotérica através\nde seu endereço, CEP ou código."
+                android:text="@string/label_encontre_lotorica_atraves_endereco_cep_codigo"
                 android:textColor="@color/cinza"
+                style="@style/ArialMT"
                 android:textSize="14sp" />
 
             <caixa.gov.br.loterias.utils.segmentedbutton.SegmentedButtonGroup
@@ -217,13 +218,10 @@
 
                         <com.github.pinball83.maskededittext.MaskedEditText
                             android:id="@+id/editTextCEPPasso2Content"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            style="@style/editTextRegisterTheme"
                             android:ems="10"
                             android:hint="@string/CEP"
                             android:inputType="number"
-                            android:textColor="@color/cinza"
-                            android:textSize="16sp"
                             app:mask="*****-***"
                             app:notMaskedSymbol="*" />
                     </android.support.design.widget.TextInputLayout>

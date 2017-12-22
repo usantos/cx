@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.text.Editable;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.TypedValue;
@@ -469,7 +470,10 @@ public class CadastrarPasso2Activity extends CadastroActivity {
                 radioButton.setLayoutParams(params);
                 radioButton.setButtonDrawable(R.drawable.check_radio_selected);
                 radioButton.setPadding(20, 20, 0, 10);
-                radioButton.setText(lotericaDTO.getNomeFantasia() + "\nCódigo. " + lotericaDTO.getCodigo());
+
+                String htmlTextBreakLine = "<font color=\"#48586c\" size = \"16\"> " + lotericaDTO.getNomeFantasia() + "</font> <br/> <font color=\"#40a797\" size = \"14\"> Código. "+ lotericaDTO.getCodigo() + "</font>";
+                Spanned stringText = ViewUtils.fromHtml(htmlTextBreakLine);
+                radioButton.setText(stringText);
                 radioButton.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
                 radioButton.setTextColor(getResources().getColor(R.color.cinza));
                 radioButton.setScaleX(0.8f);

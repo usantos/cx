@@ -84,7 +84,7 @@ public class ViewUtils {
         return fontFuturaBold;
     }
 
-    public static Typeface getFontArial(Context context) {
+    public static Typeface getFontArialMT(Context context) {
         if (fontAriallMT == null) {
             fontAriallMT = Typeface.createFromAsset(context.getAssets(), "fonts/arialmt.ttf");
         }
@@ -589,6 +589,7 @@ public class ViewUtils {
 
         return size;
     }
+
 
     /**
      * O texto que estiver dentro de _ receberá fonte FuturaBold, ex: Texto Normal _Texto Bold_
