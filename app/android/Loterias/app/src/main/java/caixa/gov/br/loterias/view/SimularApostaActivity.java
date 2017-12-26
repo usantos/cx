@@ -164,6 +164,9 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
             case LOTOMANIA:
                 configuraTipoApostaTela("_lotomania_", R.color.lotomaniaclaro, R.color.lotomaniaescuro);
                 break;
+            case LOTECA:
+                configuraTipoApostaTela("_loteca_", R.color.lotecaclaro, R.color.lotecaescuro);
+                break;
         }
 
         // MOCK

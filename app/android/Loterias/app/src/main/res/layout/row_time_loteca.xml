@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="17dp"
+    android:layout_marginTop="17dp"
+    android:layout_gravity="center_horizontal"
+    android:id="@+id/row_time_loteca">
+
+    <include layout="@layout/item_loteca"
+        android:id="@+id/loteca_time_um"/>
+    <include layout="@layout/item_loteca"
+        android:id="@+id/loteca_empate"/>
+    <include layout="@layout/item_loteca"
+        android:id="@+id/loteca_time_dois"/>
+</LinearLayout>
