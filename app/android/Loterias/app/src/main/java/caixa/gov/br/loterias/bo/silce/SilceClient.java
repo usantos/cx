@@ -35,6 +35,7 @@ public class SilceClient {
     public static final String LOTERICAS_PATH = "/lotericas";
     public static final String LOTERICAS_HABILITADAS_PATH = "/lotericas/buscas-habilitadas";
     public static final String LOTERICAS_CODIGO_COMPLETO_PATH = "/lotericas/codigo-completo";
+    public static final String GERAR_APOSTAS_RAPIDAO_PATH = "/rapidoes/gerar-apostas";
 
     public interface Listener<T> {
         public void onResponse(T response);

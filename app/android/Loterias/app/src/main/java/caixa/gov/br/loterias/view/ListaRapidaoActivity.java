@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,6 +19,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
+import com.google.gson.JsonParser;
+
+import org.json.JSONObject;
 
 import java.math.BigDecimal;
 import java.text.DateFormat;
@@ -61,8 +65,8 @@ public class ListaRapidaoActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.apostasListaRecycleViewRapidao);
 
 
-//        callWebservice();
-        mockCarrinho();
+        callWebservice();
+//        mockCarrinho();
 
         ViewUtils.organizaTabLayout(this, R.id.carrinhoRapidaoMainLayout, R.id.apostasListaRecycleViewRapidao, R.id.carrinhoRapidaoScrollView);
     }
@@ -160,28 +164,6 @@ public class ListaRapidaoActivity extends AppCompatActivity {
         atualizaLayout();
     }
 
-
-    private void callWebservice () {
-
-        final View loadViewProgress = LoadingViewLoterias.init(this);
-        final ApostaBO apostaBO = new ApostaBO(this);
-
-        apostaBO.buscaCarrinho(new SilceClient.Listener<CarrinhoDTOResponse>() {
-            @Override
-            public void onResponse(CarrinhoDTOResponse response) {
-                LoadingViewLoterias.stop(loadViewProgress);
-                carrinho = response.getPayload();
-
-                atualizaLayout();
-            }
-        }, new SilceClient.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                LoadingViewLoterias.stop(loadViewProgress);
-                ViewUtils.alert( ListaRapidaoActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
-            }
-        });
-    }
 
     public void atualizaLayout () {
         configuraActivityCarrinho();
@@ -302,6 +284,31 @@ public class ListaRapidaoActivity extends AppCompatActivity {
 
     private void limpaCarrinho(){
         ViewUtils.alert(this, "LIMPAR CARRINHO");
+    }
+
+
+    private void callWebservice() {
+
+        final View loadViewProgress = LoadingViewLoterias.init(this);
+        final ApostaBO apostaBO = new ApostaBO(ListaRapidaoActivity.this);
+
+        apostaBO.gerarApostas(new SilceClient.Listener<CarrinhoDTOResponse>() {
+            @Override
+            public void onResponse(CarrinhoDTOResponse response) {
+                LoadingViewLoterias.stop(loadViewProgress);
+                carrinho = response.getPayload();
+
+                carrinho.setApostas(apostas);
+
+                atualizaLayout();
+            }
+        }, new SilceClient.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                LoadingViewLoterias.stop(loadViewProgress);
+                ViewUtils.alert(ListaRapidaoActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
+            }
+        });
     }
 
 }

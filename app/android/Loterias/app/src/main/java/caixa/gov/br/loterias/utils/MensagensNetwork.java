@@ -1,8 +1,14 @@
 package caixa.gov.br.loterias.utils;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.android.volley.VolleyError;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
 
 import caixa.gov.br.loterias.R;
 
@@ -17,9 +23,23 @@ public class MensagensNetwork {
             return context.getString(R.string.seminternet);
         }
         String msgErro = "";
+
+        byte[] textBytes = error.networkResponse.data;
+        String object = new String(textBytes);
+        String msgErroResponse = "";
+        try {
+            String json = new String(error.networkResponse.data, "UTF-8");
+            JSONObject jsonObj = new JSONObject(json);
+            msgErroResponse = jsonObj.getString("mensagem");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         switch (error.networkResponse.statusCode){
             case 400:
-                msgErro = error.getClass().getSimpleName();
+                msgErro = msgErroResponse;
                 break;
             case 401:
                 msgErro = context.getString(R.string.erro_401);
@@ -31,7 +51,7 @@ public class MensagensNetwork {
                 msgErro = context.getString(R.string.erro_500);
                 break;
             default:
-                msgErro = error.getClass().getSimpleName();
+                msgErro = msgErroResponse;
                 break;
         }
         return msgErro;

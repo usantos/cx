@@ -4,7 +4,7 @@
     <item
         android:id="@+id/action_config_rapidao"
         android:orderInCategory="100"
-        android:icon="@drawable/ic_menu_share"
+        android:icon="@drawable/icon_configuracao"
         android:title=""
         app:showAsAction="ifRoom" />
     <item

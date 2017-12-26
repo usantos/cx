@@ -115,4 +115,12 @@ public class ApostaBO{
 
         return result.toString();
     }
+
+    public void gerarApostas(final SilceClient.Listener<CarrinhoDTOResponse> listener, final SilceClient.ErrorListener errorListerner) {
+        LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
+        headers.put("Authorization", "Bearer " + UsuarioLogadoSingleton.getInstance().token);
+
+        silceClient.getConnection().get(SilceClient.GERAR_APOSTAS_RAPIDAO_PATH, new LinkedHashMap<String, String>(), CarrinhoDTOResponse.class,
+                silceClient.volleyListener(listener, CarrinhoDTOResponse.class), silceClient.volleyErrorListener(errorListerner), headers);
+    }
 }
