@@ -20,7 +20,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -36,19 +35,19 @@ import caixa.gov.br.loterias.bo.silce.dto.ApostaFavoritaDTO;
 import caixa.gov.br.loterias.bo.silce.dto.DTOEnumCharacter;
 import caixa.gov.br.loterias.bo.silce.dto.DTOEnumInteger;
 import caixa.gov.br.loterias.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
+import caixa.gov.br.loterias.bo.silce.dto.ModalidadeEnum;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroEquipe;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroJogoDTO;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroPartida;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroValorApostaDTO;
 import caixa.gov.br.loterias.bo.silce.dto.TipoConcursoEnum;
-import caixa.gov.br.loterias.mock.TimesLotecaMock;
 import caixa.gov.br.loterias.utils.LoadingViewLoterias;
 
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -56,6 +55,7 @@ import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.utils.MensagensNetwork;
 import caixa.gov.br.loterias.view.SimularApostaActivity;
 import caixa.gov.br.loterias.view.adapter.LotecaAdapter;
+import caixa.gov.br.loterias.view.adapter.TimeCoracaoAdapter;
 import caixa.gov.br.loterias.view.custom.ExpandableHeightGridView;
 import caixa.gov.br.loterias.utils.ViewUtils;
 
@@ -81,7 +81,9 @@ public class CartelaFragment extends Fragment implements OnClickListener {
     private SimularApostaActivity parentActivity;
     private ParametroJogoDTO parametroJogo;
     private CartelaFragmentListener cartelaFragmentListener;
+    private boolean tipoTimeMania;
     public BigDecimal valorTotalAposta;
+
 
     public CartelaFragment() {
         // Required empty public constructor
@@ -147,6 +149,7 @@ public class CartelaFragment extends Fragment implements OnClickListener {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_cartela, container, false);
         configuraListaDezenas(view);
+        identificarTipoJogo();
         verificaSeMostraBotaoLimparAposta(view);
         verificaSeMostraSalvarApostaView(view);
 
@@ -176,6 +179,29 @@ public class CartelaFragment extends Fragment implements OnClickListener {
 
         cartelaFragmentListener = null;
     }
+
+    private void identificarTipoJogo() {
+        ModalidadeEnum tipoJogo = (ModalidadeEnum) getActivity().getIntent().getSerializableExtra("tipoAposta");
+
+        switch (tipoJogo) {
+            case MEGA_SENA:
+                break;
+            case QUINA:
+                break;
+            case LOTOFACIL:
+                break;
+            case DUPLA_SENA:
+                break;
+            case TIMEMANIA:
+                tipoTimeMania = true;
+                break;
+            case LOTOMANIA:
+                break;
+            case LOTECA:
+                break;
+        }
+    }
+
 
     private void adicionarApostaNoCarrinho() {
         final ApostaBO apostaBO = new ApostaBO(getActivity());
@@ -487,6 +513,8 @@ public class CartelaFragment extends Fragment implements OnClickListener {
 
         ExpandableHeightGridView listaDezenas = fragmentView.findViewById(R.id.listaDezenas);
         ExpandableHeightGridView gridView = fragmentView.findViewById(R.id.gridItens);
+        ExpandableHeightGridView gridTimes = fragmentView.findViewById(R.id.gridTimes);
+
         if (dezenas != null && dezenas.size() > 0){
 
             listaDezenas.setExpanded(true);
@@ -530,7 +558,6 @@ public class CartelaFragment extends Fragment implements OnClickListener {
                 }
             });
         }else{
-
             LotecaAdapter lotecaAdapter = new LotecaAdapter(getActivity(), loadListEquipe(parametroJogo.getPartidas()));
             gridView.setAdapter(lotecaAdapter);
             gridView.setExpanded(true);
@@ -544,9 +571,28 @@ public class CartelaFragment extends Fragment implements OnClickListener {
                     }
                 }
             });
+
+
+            configurarSelecaoTimeCoracao(gridTimes);
         }
 
 
+    }
+
+    private void configurarSelecaoTimeCoracao(ExpandableHeightGridView gridTimes) {
+        TimeCoracaoAdapter timeCoracaoAdapter = new TimeCoracaoAdapter(getActivity(), loadListTimes());
+        gridTimes.setAdapter(timeCoracaoAdapter);
+        gridTimes.setExpanded(true);
+        gridTimes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                if (view.isSelected()) {
+                    view.setSelected(Boolean.FALSE);
+                } else {
+                    view.setSelected(Boolean.TRUE);
+                }
+            }
+        });
     }
 
     // Adapter do gridview das dezenas
@@ -631,5 +677,9 @@ public class CartelaFragment extends Fragment implements OnClickListener {
         }
 
         return listaEquipesEmpates;
+    }
+
+    private List<String> loadListTimes(){
+       return Arrays.asList(new String []{"Flamengo", "Curitiba", "Bahia"});
     }
 }
