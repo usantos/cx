@@ -189,7 +189,6 @@ public class DadosCorporativosBO {
                 silceClient.volleyListener(listener, LotericaCodigoWrapperResponse.class), silceClient.volleyErrorListener(errorListerner), new LinkedHashMap<String, String>());
     }
 
-
     private static <T> String join(Collection<T> collection, String delimiter) {
         StringBuffer result = new StringBuffer("");
         boolean first = true;

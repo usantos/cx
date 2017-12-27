@@ -118,14 +118,15 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         for (ParametroValorApostaDTO parametro : parametroSimulacao.getValoresAposta()) {
             qtdNumerosList.add("" + parametro.getNumeroPrognosticos() + " números por " + ViewUtils.getMoedaFormat(parametro.getValor()));
         }
-
-        for (Integer numeroTeimosinha : parametroSimulacao.getTeimosinhas()) {
-            if (numeroTeimosinha == 0) {
-                qtdConcursosList.add("Nenhum");
-            } else if (numeroTeimosinha == 1) {
-                qtdConcursosList.add("" + numeroTeimosinha + " concurso");
-            } else {
-                qtdConcursosList.add("" + numeroTeimosinha + " concursos");
+        if (parametroSimulacao.getTeimosinhas() != null) {
+            for (Integer numeroTeimosinha : parametroSimulacao.getTeimosinhas()) {
+                if (numeroTeimosinha == 0) {
+                    qtdConcursosList.add("Nenhum");
+                } else if (numeroTeimosinha == 1) {
+                    qtdConcursosList.add("" + numeroTeimosinha + " concurso");
+                } else {
+                    qtdConcursosList.add("" + numeroTeimosinha + " concursos");
+                }
             }
         }
     }
@@ -170,8 +171,8 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         }
 
         // MOCK
-        qtdDezenasPossiveisSelecionado = parametroSimulacao.getQuantidadeMinima();
-        qtdConcursoSelecionado = parametroSimulacao.getTeimosinhas().get(0) == 0 ? 0 : parametroSimulacao.getTeimosinhas().get(0);
+        qtdDezenasPossiveisSelecionado = parametroSimulacao.getQuantidadeMinima() != null ? parametroSimulacao.getQuantidadeMinima() : 0;
+        qtdConcursoSelecionado = parametroSimulacao.getTeimosinhas() != null ? parametroSimulacao.getTeimosinhas().get(0) == 0 ? 0 : parametroSimulacao.getTeimosinhas().get(0) : 0;
         dataSorteioAtual = parametroSimulacao.getConcurso().getDataSorteio();
 
 

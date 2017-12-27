@@ -263,7 +263,18 @@
                     android:gravity="center"
                     android:numColumns="auto_fit"
                     android:stretchMode="columnWidth"
+                    />
 
+                <caixa.gov.br.loterias.view.custom.ExpandableHeightGridView
+                    android:id="@+id/gridItens"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginHorizontal="10dp"
+                    app:layout_goneMarginBottom="10dp"
+                    android:verticalSpacing="16dp"
+                    android:gravity="center"
+                    android:numColumns="3"
+                    android:stretchMode="columnWidth"
                     />
 
 

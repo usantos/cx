@@ -1,74 +1,93 @@
 package caixa.gov.br.loterias.view.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import org.apache.commons.lang.StringUtils;
 
 import java.util.List;
 
 import caixa.gov.br.loterias.R;
-import caixa.gov.br.loterias.mock.TimesLotecaMock;
+import caixa.gov.br.loterias.bo.silce.dto.ParametroEquipe;
+import caixa.gov.br.loterias.bo.silce.dto.ParametroPartida;
 
 /**
  * Created by joafilho on 26/12/2017.
  */
 
-public class LotecaAdapter extends RecyclerView.Adapter<LotecaAdapter.LotecaHolder> {
+public class LotecaAdapter extends BaseAdapter {
 
     private Context context;
-    private List<TimesLotecaMock> listaTimes;
+    private List<ParametroPartida> listaPartida;
+    private List<Object> listaEquipesEmpates;
+    private ParametroEquipe equipeEmpate;
 
-    public LotecaAdapter(Context context, List<TimesLotecaMock> listaTimes) {
+    public LotecaAdapter(Context context, List<Object> listaEquipesEmpates) {
         this.context = context;
-        this.listaTimes = listaTimes;
+        this.listaEquipesEmpates = listaEquipesEmpates;
+        this.equipeEmpate = new ParametroEquipe();
+        equipeEmpate.setNome(context.getString(R.string.label_empate));
+        equipeEmpate.setDescricaoCurta(StringUtils.EMPTY);
     }
 
     @Override
-    public LotecaHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View v = inflater.inflate(R.layout.row_time_loteca, parent, false);
-        return new LotecaHolder(v);
+    public int getCount() {
+        return listaEquipesEmpates.size();
     }
 
     @Override
-    public void onBindViewHolder(LotecaHolder holder, int position) {
-
-        TimesLotecaMock timesLotecaMock = listaTimes.get(position);
-
-        if (position % 2 == 0) {
-            ((ImageView) holder.layoutTimeUm.findViewById(R.id.item_image)).setImageResource(timesLotecaMock.getImage());
-            ((TextView) holder.layoutTimeUm.findViewById(R.id.item_title)).setText(timesLotecaMock.getTitle());
-            ((TextView) holder.layoutTimeUm.findViewById(R.id.item_description)).setText(timesLotecaMock.getDescription());
-        } else {
-            ((ImageView) holder.layoutTimeDois.findViewById(R.id.item_image)).setImageResource(timesLotecaMock.getImage());
-            ((TextView) holder.layoutTimeDois.findViewById(R.id.item_title)).setText(timesLotecaMock.getTitle());
-            ((TextView) holder.layoutTimeDois.findViewById(R.id.item_description)).setText(timesLotecaMock.getDescription());
-        }
+    public Object getItem(int i) {
+        return listaEquipesEmpates.get(i);
     }
 
     @Override
-    public int getItemCount() {
+    public long getItemId(int i) {
         return 0;
     }
 
-    public class LotecaHolder extends RecyclerView.ViewHolder {
+    @Override
+    public View getView(int i, View view, ViewGroup viewGroup) {
 
-        private LinearLayout layoutTimeUm;
-        private LinearLayout layoutEmpate;
-        private LinearLayout layoutTimeDois;
+        LotecaHolder holder;
+
+        if (view == null) {
+            view = LayoutInflater.from(context).inflate(R.layout.item_loteca, null, false);
+        }
+        holder = new LotecaHolder(view);
+
+        Object objeto = listaEquipesEmpates.get(i);
+
+        if (objeto instanceof ParametroEquipe) {
+            loadHolder(holder, R.drawable.time_flamengo, (ParametroEquipe) objeto);
+        } else {
+            loadHolder(holder, R.drawable.icon_fechar, equipeEmpate);
+        }
+
+        return view;
+    }
+
+    public class LotecaHolder {
+
+        private ImageView imageView;
+        private TextView title;
+        private TextView description;
 
         public LotecaHolder(View itemView) {
-            super(itemView);
-
-            layoutTimeUm = (LinearLayout) itemView.findViewById(R.id.loteca_time_um);
-            layoutEmpate = (LinearLayout) itemView.findViewById(R.id.loteca_empate);
-            layoutTimeDois = (LinearLayout) itemView.findViewById(R.id.loteca_time_dois);
+            imageView = (ImageView) itemView.findViewById(R.id.item_image);
+            title = (TextView) itemView.findViewById(R.id.item_title);
+            description = (TextView) itemView.findViewById(R.id.item_description);
         }
+    }
+
+    private void loadHolder(LotecaHolder holder, int image, ParametroEquipe equipe) {
+        holder.imageView.setImageResource(image);
+        holder.title.setText(equipe.getNome());
+        holder.description.setText(equipe.getDescricaoCurta());
     }
 
 }

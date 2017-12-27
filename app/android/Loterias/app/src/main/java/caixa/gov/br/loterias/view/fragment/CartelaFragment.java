@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -37,19 +38,24 @@ import caixa.gov.br.loterias.bo.silce.dto.DTOEnumInteger;
 import caixa.gov.br.loterias.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroEquipe;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroJogoDTO;
+import caixa.gov.br.loterias.bo.silce.dto.ParametroPartida;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroValorApostaDTO;
 import caixa.gov.br.loterias.bo.silce.dto.TipoConcursoEnum;
+import caixa.gov.br.loterias.mock.TimesLotecaMock;
 import caixa.gov.br.loterias.utils.LoadingViewLoterias;
 
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.utils.MensagensNetwork;
 import caixa.gov.br.loterias.view.SimularApostaActivity;
+import caixa.gov.br.loterias.view.adapter.LotecaAdapter;
 import caixa.gov.br.loterias.view.custom.ExpandableHeightGridView;
 import caixa.gov.br.loterias.utils.ViewUtils;
 
@@ -59,7 +65,7 @@ public class CartelaFragment extends Fragment implements OnClickListener {
 
     private ArrayList<Integer> dezenasSelecionadas = new ArrayList<>();
 
-    int typeGameColorLight;
+        int typeGameColorLight;
     int typeGameColorDark;
 
     Button botaoFinalizar;
@@ -84,12 +90,15 @@ public class CartelaFragment extends Fragment implements OnClickListener {
     public void atualizaValorTotalAposta(int numPrognostico, int qtdTeimosinhas) {
         BigDecimal valorEmReais = BigDecimal.ZERO;
 
-        for (ParametroValorApostaDTO parametro : parametroJogo.getValoresAposta()) {
-            if (parametro.getNumeroPrognosticos() == numPrognostico) {
-                valorEmReais = parametro.getValor();
+        if (numPrognostico != 0) {
+            for (ParametroValorApostaDTO parametro : parametroJogo.getValoresAposta()) {
+                if (parametro.getNumeroPrognosticos() == numPrognostico) {
+                    valorEmReais = parametro.getValor();
+                }
             }
+        } else {
+            valorEmReais = parametroJogo.getValorApostaMinima();
         }
-
         if (qtdTeimosinhas == 0) {
             valorAposta.setText(ViewUtils.getMoedaFormat(valorEmReais));
         } else {
@@ -106,7 +115,7 @@ public class CartelaFragment extends Fragment implements OnClickListener {
         parentActivity = ((SimularApostaActivity) getActivity());
         parametroJogo = parentActivity.getParametroSimulacao();
 
-        if (dezenas.size() == 0) {
+        if (dezenas.size() == 0 && parentActivity.getParametroSimulacao().getPrognosticoMaximo() != null) {
             for (int i = 1; i <= parentActivity.getParametroSimulacao().getPrognosticoMaximo(); i++) {
                 dezenas.add("" + i);
             }
@@ -475,48 +484,69 @@ public class CartelaFragment extends Fragment implements OnClickListener {
     }
 
     private void configuraListaDezenas(View fragmentView) {
+
         ExpandableHeightGridView listaDezenas = fragmentView.findViewById(R.id.listaDezenas);
-        listaDezenas.setExpanded(true);
-        simularDezenasAdapter = new SimularDezenasAdapter(getActivity(), dezenas);
-        listaDezenas.setAdapter(simularDezenasAdapter);
+        ExpandableHeightGridView gridView = fragmentView.findViewById(R.id.gridItens);
+        if (dezenas != null && dezenas.size() > 0){
 
-        listaDezenas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Integer valorSelecionado = Integer.valueOf(dezenas.get(position));
+            listaDezenas.setExpanded(true);
+            simularDezenasAdapter = new SimularDezenasAdapter(getActivity(), dezenas);
+            listaDezenas.setAdapter(simularDezenasAdapter);
+            listaDezenas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                    Integer valorSelecionado = Integer.valueOf(dezenas.get(position));
 
-                if (dezenasSelecionadas.contains(valorSelecionado)) {
-                    dezenasSelecionadas.remove(valorSelecionado);
-                } else {
-                    int maxNumerosParaSelecionar = parametroJogo.getQuantidadeMaxima();
-                    if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) {
-                        // VERIFICA SE TEM OPÇÃO DE SELECIONAR MAIS DEZENAS
-                        int qtdDezenasPossiveisSelecionadoAtual = parentActivity.qtdDezenasPossiveisSelecionado;
-
-                        parentActivity.qtdDezenasPossiveisSelecionado = cartelaFragmentListener.verificaNovoQtdDezenasMax(parentActivity.qtdDezenasPossiveisSelecionado);
-
-                        if (qtdDezenasPossiveisSelecionadoAtual < maxNumerosParaSelecionar) {
-                            parentActivity.qtdDezenasPossiveisSelecionado += 1;
-                            parentActivity.verificaNovoQtdDezenasMax(parentActivity.qtdDezenasPossiveisSelecionado);
-                            atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
-                            if (flagApostaSalva) {
-                                voltaSalvarApostaParaLayoutInicial();
-                            }
-                            dezenasSelecionadas.add(valorSelecionado);
-                        } else {
-                            ViewUtils.alert(getActivity(), "Número de dezenas máximo selecionadas.");
-                        }
+                    if (dezenasSelecionadas.contains(valorSelecionado)) {
+                        dezenasSelecionadas.remove(valorSelecionado);
                     } else {
-                        dezenasSelecionadas.add(valorSelecionado);
+                        int maxNumerosParaSelecionar = parametroJogo.getQuantidadeMaxima();
+                        if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) {
+                            // VERIFICA SE TEM OPÇÃO DE SELECIONAR MAIS DEZENAS
+                            int qtdDezenasPossiveisSelecionadoAtual = parentActivity.qtdDezenasPossiveisSelecionado;
+
+                            parentActivity.qtdDezenasPossiveisSelecionado = cartelaFragmentListener.verificaNovoQtdDezenasMax(parentActivity.qtdDezenasPossiveisSelecionado);
+
+                            if (qtdDezenasPossiveisSelecionadoAtual < maxNumerosParaSelecionar) {
+                                parentActivity.qtdDezenasPossiveisSelecionado += 1;
+                                parentActivity.verificaNovoQtdDezenasMax(parentActivity.qtdDezenasPossiveisSelecionado);
+                                atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
+                                if (flagApostaSalva) {
+                                    voltaSalvarApostaParaLayoutInicial();
+                                }
+                                dezenasSelecionadas.add(valorSelecionado);
+                            } else {
+                                ViewUtils.alert(getActivity(), "Número de dezenas máximo selecionadas.");
+                            }
+                        } else {
+                            dezenasSelecionadas.add(valorSelecionado);
+                        }
+                    }
+
+                    verificaSeMostraSalvarApostaView(getView());
+                    verificaSeMostraBotaoLimparAposta(getView());
+                    atualizaStatusBotaoFinalizar();
+                    simularDezenasAdapter.notifyDataSetChanged();
+                }
+            });
+        }else{
+
+            LotecaAdapter lotecaAdapter = new LotecaAdapter(getActivity(), loadListEquipe(parametroJogo.getPartidas()));
+            gridView.setAdapter(lotecaAdapter);
+            gridView.setExpanded(true);
+            gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    if(view.isSelected()){
+                        view.setSelected(Boolean.FALSE);
+                    }else{
+                        view.setSelected(Boolean.TRUE);
                     }
                 }
+            });
+        }
 
-                verificaSeMostraSalvarApostaView(getView());
-                verificaSeMostraBotaoLimparAposta(getView());
-                atualizaStatusBotaoFinalizar();
-                simularDezenasAdapter.notifyDataSetChanged();
-            }
-        });
+
     }
 
     // Adapter do gridview das dezenas
@@ -569,9 +599,9 @@ public class CartelaFragment extends Fragment implements OnClickListener {
             shape.setCornerRadius(sizeItens / 2);
             shape.setStroke(1, Color.GRAY);
             textView.setBackground(shape);
-            if(dezenas.get(i).length() == 1){
-                textView.setText("0"+dezenas.get(i));
-            }else{
+            if (dezenas.get(i).length() == 1) {
+                textView.setText("0" + dezenas.get(i));
+            } else {
 
                 textView.setText(dezenas.get(i));
             }
@@ -590,5 +620,16 @@ public class CartelaFragment extends Fragment implements OnClickListener {
         void adicionarApostaCarrinho();
 
         void abreCarrinhoApostas();
+    }
+
+    private List<Object> loadListEquipe(List<ParametroPartida> listaPartida) {
+        List<Object> listaEquipesEmpates = new ArrayList<>();
+        for (ParametroPartida partida : listaPartida) {
+            listaEquipesEmpates.add(partida.getEquipe1());
+            listaEquipesEmpates.add(getActivity().getString(R.string.label_empate));
+            listaEquipesEmpates.add(partida.getEquipe2());
+        }
+
+        return listaEquipesEmpates;
     }
 }

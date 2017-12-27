@@ -19,7 +19,6 @@ public class SilceClient {
     public static final String BUSCA_CARRINHO_PATH = "/carrinhos";
     public static final String DELETE_APOSTA_CARRINHO_PATH = "carrinhos/apostas/";
 
-
     public static final String UFS_PATH = "/ufs";
     public static final String TERMO_PATH = "/termos-de-uso/termo-vigente";
     public static final String MUNICIPIOS_PATH = "/municipios";
@@ -36,6 +35,8 @@ public class SilceClient {
     public static final String LOTERICAS_HABILITADAS_PATH = "/lotericas/buscas-habilitadas";
     public static final String LOTERICAS_CODIGO_COMPLETO_PATH = "/lotericas/codigo-completo";
     public static final String GERAR_APOSTAS_RAPIDAO_PATH = "/rapidoes/gerar-apostas";
+
+    public static final String EQUIPES_ESPORTIVAS_PATH = "/equipes-esportivas/{id}/escudo";
 
     public interface Listener<T> {
         public void onResponse(T response);

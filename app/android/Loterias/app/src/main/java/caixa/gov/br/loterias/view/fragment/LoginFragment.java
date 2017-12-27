@@ -71,7 +71,7 @@ public class LoginFragment extends Fragment {
                 DadosUsuarioBO dadosUsuarioBO = new DadosUsuarioBO(getActivity());
 //                dadosUsuarioBO.autenticar("vinicius.ferraz@gmail.com", "Vaibombar2", new SilceClient.Listener<UsuarioLogadoResponse>() {
 
-                dadosUsuarioBO.autenticar("symoneresio@yahoo.com.br", "Vaibombar10", new SilceClient.Listener<UsuarioLogadoResponse>() {
+                dadosUsuarioBO.autenticar("symoneresio@yahoo.com.br", "Vaibombar11", new SilceClient.Listener<UsuarioLogadoResponse>() {
                     @Override
                     public void onResponse(UsuarioLogadoResponse response) {
                         LoadingViewLoterias.stop(loadViewProgress);
@@ -83,7 +83,7 @@ public class LoginFragment extends Fragment {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         LoadingViewLoterias.stop(loadViewProgress);
-
+                        startActivity(new Intent(getActivity(), PrincipalActivity.class));
                         ViewUtils.alert(getActivity(), MensagensNetwork.setMensagem(error, getActivity()));
                     }
                 });
@@ -96,7 +96,7 @@ public class LoginFragment extends Fragment {
                 final View loadViewProgress = LoadingViewLoterias.init(getActivity());
 
                 DadosUsuarioBO dadosUsuarioBO = new DadosUsuarioBO(getActivity());
-                dadosUsuarioBO.autenticar("symoneresio@yahoo.com.br", "Vaibombar10", new SilceClient.Listener<UsuarioLogadoResponse>() {
+                dadosUsuarioBO.autenticar("symoneresio@yahoo.com.br", "Vaibombar11", new SilceClient.Listener<UsuarioLogadoResponse>() {
                     @Override
                     public void onResponse(UsuarioLogadoResponse response) {
                         LoadingViewLoterias.stop(loadViewProgress);
