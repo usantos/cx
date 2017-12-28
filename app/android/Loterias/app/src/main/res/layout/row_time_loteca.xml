@@ -1,16 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
+    android:id="@+id/row_time_loteca"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
     android:layout_marginLeft="17dp"
     android:layout_marginTop="17dp"
-    android:layout_gravity="center_horizontal"
-    android:id="@+id/row_time_loteca">
+    android:orientation="horizontal">
 
-    <include layout="@layout/item_loteca"
-        android:id="@+id/loteca_time_um"/>
-    <include layout="@layout/item_loteca"
-        android:id="@+id/loteca_empate"/>
-    <include layout="@layout/item_loteca"
-        android:id="@+id/loteca_time_dois"/>
+    <caixa.gov.br.loterias.utils.ItemEquipeView_
+        android:id="@+id/loteca_time_um"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <caixa.gov.br.loterias.utils.ItemEquipeView_
+        android:id="@+id/loteca_empate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <caixa.gov.br.loterias.utils.ItemEquipeView_
+        android:id="@+id/loteca_time_dois"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 </LinearLayout>

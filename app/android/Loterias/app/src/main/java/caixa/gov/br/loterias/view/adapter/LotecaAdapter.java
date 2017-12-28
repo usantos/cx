@@ -1,48 +1,40 @@
 package caixa.gov.br.loterias.view.adapter;
 
-import android.content.Context;
-import android.view.LayoutInflater;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import org.apache.commons.lang.StringUtils;
 
 import java.util.List;
 
-import caixa.gov.br.loterias.R;
-import caixa.gov.br.loterias.bo.silce.dto.ParametroEquipe;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroPartida;
+import caixa.gov.br.loterias.utils.PartidaView;
+import caixa.gov.br.loterias.utils.PartidaView_;
 
 /**
  * Created by joafilho on 26/12/2017.
  */
 
-public class LotecaAdapter extends BaseAdapter {
+public class LotecaAdapter extends RecyclerView.Adapter<LotecaAdapter.LotecaHolder> {
 
-    private Context context;
-    private List<ParametroPartida> listaPartida;
-    private List<Object> listaEquipesEmpates;
-    private ParametroEquipe equipeEmpate;
+    private List<ParametroPartida> listaPartidas;
+    private LocateAdapterListener listener;
 
-    public LotecaAdapter(Context context, List<Object> listaEquipesEmpates) {
-        this.context = context;
-        this.listaEquipesEmpates = listaEquipesEmpates;
-        this.equipeEmpate = new ParametroEquipe();
-        equipeEmpate.setNome(context.getString(R.string.label_empate));
-        equipeEmpate.setDescricaoCurta(StringUtils.EMPTY);
+    public LotecaAdapter(List<ParametroPartida> listaPartidas, LocateAdapterListener listener) {
+        this.listaPartidas = listaPartidas;
+        this.listener = listener;
     }
 
     @Override
-    public int getCount() {
-        return listaEquipesEmpates.size();
+    public LotecaHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        PartidaView view = PartidaView_.build(parent.getContext());
+
+        return new LotecaHolder(view);
     }
 
     @Override
-    public Object getItem(int i) {
-        return listaEquipesEmpates.get(i);
+    public void onBindViewHolder(LotecaHolder holder, int position) {
+        holder.partidaRow.setListener(listener);
+        holder.partidaRow.setLayout(listaPartidas.get(position));
     }
 
     @Override
@@ -51,43 +43,22 @@ public class LotecaAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
-
-        LotecaHolder holder;
-
-        if (view == null) {
-            view = LayoutInflater.from(context).inflate(R.layout.item_loteca, null, false);
-        }
-        holder = new LotecaHolder(view);
-
-        Object objeto = listaEquipesEmpates.get(i);
-
-        if (objeto instanceof ParametroEquipe) {
-            loadHolder(holder, R.drawable.time_flamengo, (ParametroEquipe) objeto);
-        } else {
-            loadHolder(holder, R.drawable.icon_fechar, equipeEmpate);
-        }
-
-        return view;
+    public int getItemCount() {
+        return listaPartidas.size();
     }
 
-    public class LotecaHolder {
+    public class LotecaHolder extends RecyclerView.ViewHolder {
 
-        private ImageView imageView;
-        private TextView title;
-        private TextView description;
+        private PartidaView partidaRow;
 
         public LotecaHolder(View itemView) {
-            imageView = (ImageView) itemView.findViewById(R.id.item_image);
-            title = (TextView) itemView.findViewById(R.id.item_title);
-            description = (TextView) itemView.findViewById(R.id.item_description);
+            super(itemView);
+            partidaRow = (PartidaView) itemView;
         }
     }
 
-    private void loadHolder(LotecaHolder holder, int image, ParametroEquipe equipe) {
-        holder.imageView.setImageResource(image);
-        holder.title.setText(equipe.getNome());
-        holder.description.setText(equipe.getDescricaoCurta());
+    public interface LocateAdapterListener{
+        void clickado(ParametroPartida parametroPartida);
     }
 
 }

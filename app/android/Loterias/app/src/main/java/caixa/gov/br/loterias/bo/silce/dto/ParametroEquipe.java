@@ -41,6 +41,8 @@ public class ParametroEquipe {
     @SerializedName("nomeClass")
     private String nomeClass = null;
 
+    private boolean selecionado;
+
     /**
      **/
     @ApiModelProperty(value = "")
@@ -206,5 +208,13 @@ public class ParametroEquipe {
         sb.append("  nomeClass: ").append(nomeClass).append("\n");
         sb.append("}\n");
         return sb.toString();
+    }
+
+    public boolean isSelecionado() {
+        return selecionado;
+    }
+
+    public void setSelecionado(boolean selecionado) {
+        this.selecionado = selecionado;
     }
 }

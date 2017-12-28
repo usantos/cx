@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -22,10 +24,20 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
 
+import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+
+import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.bo.ApostaBO;
 import caixa.gov.br.loterias.bo.DadosCorporativosBO;
 import caixa.gov.br.loterias.bo.silce.SilceClient;
@@ -42,24 +54,14 @@ import caixa.gov.br.loterias.bo.silce.dto.ParametroPartida;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroValorApostaDTO;
 import caixa.gov.br.loterias.bo.silce.dto.TipoConcursoEnum;
 import caixa.gov.br.loterias.utils.LoadingViewLoterias;
-
-import java.math.BigDecimal;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-
-import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.utils.MensagensNetwork;
+import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.SimularApostaActivity;
 import caixa.gov.br.loterias.view.adapter.LotecaAdapter;
 import caixa.gov.br.loterias.view.adapter.TimeCoracaoAdapter;
 import caixa.gov.br.loterias.view.custom.ExpandableHeightGridView;
-import caixa.gov.br.loterias.utils.ViewUtils;
 
-public class CartelaFragment extends Fragment implements OnClickListener {
+public class CartelaFragment extends Fragment implements OnClickListener, LotecaAdapter.LocateAdapterListener {
 
     private ArrayList<String> dezenas = new ArrayList<String>();
 
@@ -84,10 +86,10 @@ public class CartelaFragment extends Fragment implements OnClickListener {
     private boolean tipoTimeMania;
     private ExpandableHeightGridView mGridTimeCoracao;
     private ExpandableHeightGridView listaDezenas;
-    private ExpandableHeightGridView gridView;
     private ModalidadeEnum tipoJogo;
     private View view;
-
+    private boolean tipoLoteca = false;
+    private RecyclerView recyclerViewLoteca;
     public BigDecimal valorTotalAposta;
 
 
@@ -154,8 +156,8 @@ public class CartelaFragment extends Fragment implements OnClickListener {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_cartela, container, false);
-        configuraListaDezenas(view);
         identificarTipoJogo();
+        configuraListaDezenas(view);
         verificaSeMostraBotaoLimparAposta(view);
         verificaSeMostraSalvarApostaView(view);
 
@@ -204,6 +206,7 @@ public class CartelaFragment extends Fragment implements OnClickListener {
             case LOTOMANIA:
                 break;
             case LOTECA:
+                tipoLoteca = true;
                 break;
         }
     }
@@ -228,6 +231,7 @@ public class CartelaFragment extends Fragment implements OnClickListener {
             case LOTOMANIA:
                 break;
             case LOTECA:
+                preencherVisibilidaeGridView(View.GONE, View.VISIBLE, View.GONE);
                 break;
         }
     }
@@ -235,7 +239,7 @@ public class CartelaFragment extends Fragment implements OnClickListener {
     private void preencherVisibilidaeGridView(int visibilidadeEscolhaTimeCoracao, int visibilidadeEscolhaLoteca,
                                               int visibilidadeDezanas) {
         mGridTimeCoracao.setVisibility(visibilidadeEscolhaTimeCoracao);
-        gridView.setVisibility(visibilidadeEscolhaLoteca);
+        recyclerViewLoteca.setVisibility(visibilidadeEscolhaLoteca);
         listaDezenas.setVisibility(visibilidadeDezanas);
     }
 
@@ -563,7 +567,8 @@ public class CartelaFragment extends Fragment implements OnClickListener {
     private void configuraListaDezenas(View fragmentView) {
 
         listaDezenas = fragmentView.findViewById(R.id.listaDezenas);
-        gridView = fragmentView.findViewById(R.id.gridItens);
+        mGridTimeCoracao = fragmentView.findViewById(R.id.gridItens);
+        recyclerViewLoteca = fragmentView.findViewById(R.id.recyclerViewLoteca);
 
         if (dezenas != null && dezenas.size() > 0) {
 
@@ -608,21 +613,20 @@ public class CartelaFragment extends Fragment implements OnClickListener {
                 }
             });
         } else {
-            LotecaAdapter lotecaAdapter = new LotecaAdapter(getActivity(), loadListEquipe(parametroJogo.getPartidas()));
-            gridView.setAdapter(lotecaAdapter);
-            gridView.setExpanded(true);
-            gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    if (view.isSelected()) {
-                        view.setSelected(Boolean.FALSE);
-                    } else {
-                        view.setSelected(Boolean.TRUE);
-                    }
-                }
-            });
+            if (tipoLoteca) {
+                configurarTimesLoteca();
+            } else if(tipoTimeMania){
+                configurarSelecaoTimeCoracao(mGridTimeCoracao);
+            }
 
         }
+
+    }
+
+    private void configurarTimesLoteca() {
+        LotecaAdapter lotecaAdapter = new LotecaAdapter(parametroJogo.getPartidas(), this);
+        recyclerViewLoteca.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerViewLoteca.setAdapter(lotecaAdapter);
 
     }
 
@@ -646,6 +650,11 @@ public class CartelaFragment extends Fragment implements OnClickListener {
                 }
             }
         });
+    }
+
+    @Override
+    public void clickado(ParametroPartida parametroPartida) {
+        Toast.makeText(getActivity(), "Selecionado", Toast.LENGTH_LONG).show();
     }
 
     // Adapter do gridview das dezenas

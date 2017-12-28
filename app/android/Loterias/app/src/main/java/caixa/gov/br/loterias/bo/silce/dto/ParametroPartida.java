@@ -27,6 +27,9 @@ public class ParametroPartida {
     @SerializedName("equipe2")
     private ParametroEquipe equipe2 = null;
 
+    private boolean selecionado;
+    private boolean empate;
+
     /**
      **/
     @ApiModelProperty(value = "")
@@ -94,5 +97,21 @@ public class ParametroPartida {
         sb.append("  equipe2: ").append(equipe2).append("\n");
         sb.append("}\n");
         return sb.toString();
+    }
+
+    public boolean isSelecionado() {
+        return selecionado;
+    }
+
+    public void setSelecionado(boolean selecionado) {
+        this.selecionado = selecionado;
+    }
+
+    public boolean isEmpate() {
+        return empate;
+    }
+
+    public void setEmpate(boolean empate) {
+        this.empate = empate;
     }
 }
