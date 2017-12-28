@@ -65,7 +65,7 @@ public class CartelaFragment extends Fragment implements OnClickListener {
 
     private ArrayList<Integer> dezenasSelecionadas = new ArrayList<>();
 
-        int typeGameColorLight;
+    int typeGameColorLight;
     int typeGameColorDark;
 
     Button botaoFinalizar;
@@ -82,6 +82,12 @@ public class CartelaFragment extends Fragment implements OnClickListener {
     private ParametroJogoDTO parametroJogo;
     private CartelaFragmentListener cartelaFragmentListener;
     private boolean tipoTimeMania;
+    private ExpandableHeightGridView mGridTimeCoracao;
+    private ExpandableHeightGridView listaDezenas;
+    private ExpandableHeightGridView gridView;
+    private ModalidadeEnum tipoJogo;
+    private View view;
+
     public BigDecimal valorTotalAposta;
 
 
@@ -147,7 +153,7 @@ public class CartelaFragment extends Fragment implements OnClickListener {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_cartela, container, false);
+        view = inflater.inflate(R.layout.fragment_cartela, container, false);
         configuraListaDezenas(view);
         identificarTipoJogo();
         verificaSeMostraBotaoLimparAposta(view);
@@ -181,7 +187,7 @@ public class CartelaFragment extends Fragment implements OnClickListener {
     }
 
     private void identificarTipoJogo() {
-        ModalidadeEnum tipoJogo = (ModalidadeEnum) getActivity().getIntent().getSerializableExtra("tipoAposta");
+        tipoJogo = (ModalidadeEnum) getActivity().getIntent().getSerializableExtra("tipoAposta");
 
         switch (tipoJogo) {
             case MEGA_SENA:
@@ -200,6 +206,37 @@ public class CartelaFragment extends Fragment implements OnClickListener {
             case LOTECA:
                 break;
         }
+    }
+
+    private void preencherVisibilidadeGridPorTipo() {
+        if (tipoJogo == null) {
+            tipoJogo = (ModalidadeEnum) getActivity().getIntent().getSerializableExtra("tipoAposta");
+        }
+
+        switch (tipoJogo) {
+            case MEGA_SENA:
+                break;
+            case QUINA:
+                break;
+            case LOTOFACIL:
+                break;
+            case DUPLA_SENA:
+                break;
+            case TIMEMANIA:
+                preencherVisibilidaeGridView(View.VISIBLE, View.GONE, View.GONE);
+                break;
+            case LOTOMANIA:
+                break;
+            case LOTECA:
+                break;
+        }
+    }
+
+    private void preencherVisibilidaeGridView(int visibildadeEscolhaTimeCoracao, int vibilidadeEscolhaLoteca,
+                                              int visibiliaddeDezanas) {
+        mGridTimeCoracao.setVisibility(visibildadeEscolhaTimeCoracao);
+        gridView.setVisibility(View.GONE);
+        listaDezenas.setVisibility(View.GONE);
     }
 
 
@@ -413,6 +450,13 @@ public class CartelaFragment extends Fragment implements OnClickListener {
                 dezenasSelecionadas.addAll(response.getPayload());
                 simularDezenasAdapter.notifyDataSetChanged();
                 atualizaStatusBotaoFinalizar();
+                // Estando a aposta completa
+                if (tipoTimeMania) {
+                    mGridTimeCoracao = view.findViewById(R.id.gridTimes);
+                    preencherVisibilidadeGridPorTipo();
+                    configurarSelecaoTimeCoracao(mGridTimeCoracao);
+                }
+
                 verificaSeMostraBotaoLimparAposta(getView());
                 verificaSeMostraSalvarApostaView(getView());
             }
@@ -511,11 +555,10 @@ public class CartelaFragment extends Fragment implements OnClickListener {
 
     private void configuraListaDezenas(View fragmentView) {
 
-        ExpandableHeightGridView listaDezenas = fragmentView.findViewById(R.id.listaDezenas);
-        ExpandableHeightGridView gridView = fragmentView.findViewById(R.id.gridItens);
-        ExpandableHeightGridView gridTimes = fragmentView.findViewById(R.id.gridTimes);
+        listaDezenas = fragmentView.findViewById(R.id.listaDezenas);
+        gridView = fragmentView.findViewById(R.id.gridItens);
 
-        if (dezenas != null && dezenas.size() > 0){
+        if (dezenas != null && dezenas.size() > 0) {
 
             listaDezenas.setExpanded(true);
             simularDezenasAdapter = new SimularDezenasAdapter(getActivity(), dezenas);
@@ -557,29 +600,32 @@ public class CartelaFragment extends Fragment implements OnClickListener {
                     simularDezenasAdapter.notifyDataSetChanged();
                 }
             });
-        }else{
+        } else {
             LotecaAdapter lotecaAdapter = new LotecaAdapter(getActivity(), loadListEquipe(parametroJogo.getPartidas()));
             gridView.setAdapter(lotecaAdapter);
             gridView.setExpanded(true);
             gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    if(view.isSelected()){
+                    if (view.isSelected()) {
                         view.setSelected(Boolean.FALSE);
-                    }else{
+                    } else {
                         view.setSelected(Boolean.TRUE);
                     }
                 }
             });
 
-
-            configurarSelecaoTimeCoracao(gridTimes);
         }
-
 
     }
 
+    /**
+     * Metodo configura a cartela de times do coracao
+     *
+     * @param gridTimes
+     */
     private void configurarSelecaoTimeCoracao(ExpandableHeightGridView gridTimes) {
+
         TimeCoracaoAdapter timeCoracaoAdapter = new TimeCoracaoAdapter(getActivity(), loadListTimes());
         gridTimes.setAdapter(timeCoracaoAdapter);
         gridTimes.setExpanded(true);
@@ -679,7 +725,7 @@ public class CartelaFragment extends Fragment implements OnClickListener {
         return listaEquipesEmpates;
     }
 
-    private List<String> loadListTimes(){
-       return Arrays.asList(new String []{"Flamengo", "Curitiba", "Bahia"});
+    private List<String> loadListTimes() {
+        return Arrays.asList(new String[]{"Flamengo", "Curitiba", "Bahia"});
     }
 }
