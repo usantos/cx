@@ -1,27 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="110dp"
+    android:layout_height="110dp"
     android:layout_gravity="center_horizontal"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:id="@+id/item_time_coracao_linear_layout">
 
     <ImageView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="27dp"
+        android:maxHeight="41dp"
         android:id="@+id/time_coracao_image"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="16dp" />
 
     <TextView
         android:id="@+id/time_coracao_nome"
-        android:layout_marginTop="20dp"
         android:layout_alignBottom="@id/time_coracao_image"
         style="@style/editTextArialMTTheme"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:textSize="12sp"
+        android:textSize="14.2sp"
         android:textStyle="bold" />
 
-</RelativeLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/time_coracao_uf"
+        android:textSize="14.2sp"
+        style="@style/editTextArialMTTheme"
+        android:layout_gravity="center_horizontal" />
+
+</LinearLayout>

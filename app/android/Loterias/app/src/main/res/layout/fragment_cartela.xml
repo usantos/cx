@@ -10,7 +10,7 @@
         android:id="@+id/cartelaFragmentMainLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
+        
         <RelativeLayout
             android:id="@+id/salvarApostaLayout"
             android:layout_width="184dp"
@@ -250,6 +250,8 @@
             app:layout_constraintBottom_toTopOf="@+id/salvarApostaLayout"
             app:layout_constraintHorizontal_bias="0.0">
 
+            <include layout="@layout/escolha_time_coracao"/>
+
             <caixa.gov.br.loterias.view.custom.ExpandableHeightGridView
                 android:id="@+id/listaDezenas"
                 android:layout_width="match_parent"
@@ -270,8 +272,7 @@
                 android:gravity="center"
                 android:numColumns="3"
                 android:stretchMode="columnWidth"
-                android:verticalSpacing="16dp"
-                app:layout_goneMarginBottom="10dp" />
+                android:verticalSpacing="16dp"/>
 
             <caixa.gov.br.loterias.view.custom.ExpandableHeightGridView
                 android:id="@+id/gridTimes"

@@ -110,5 +110,6 @@
     <string name="label_cadastrar">Cadastrar</string>
     <string name="label_encontre_lotorica_atraves_endereco_cep_codigo">Para isso, encontre a lotérica através\nde seu endereço, CEP ou código.</string>
     <string name="label_empate">Empate</string>
+    <string name="label_nome_do_seu_time">Nome do seu time</string>
 
 </resources>

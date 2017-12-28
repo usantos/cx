@@ -11,6 +11,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.bo.silce.dto.ParametroEquipe;
 
 /**
  * Created by ramluz on 27/12/2017.
@@ -18,31 +19,21 @@ import caixa.gov.br.loterias.R;
 
 public class TimeCoracaoAdapter extends BaseAdapter {
     private Context context;
-    private List<String> rows;
+    private List<ParametroEquipe> times;
 
-    private class ViewHolder {
-        TextView textTimeNome;
-        ImageView imageTime;
-
-        public ViewHolder (View itemView){
-            textTimeNome = itemView.findViewById(R.id.time_coracao_image);
-            imageTime = itemView.findViewById(R.id.time_coracao_nome);
-        }
-    }
-
-   public TimeCoracaoAdapter(Context context, List<String> times) {
+   public TimeCoracaoAdapter(Context context, List<ParametroEquipe> times) {
         this.context = context;
-        this.rows = times;
+        this.times = times;
     }
 
     @Override
     public int getCount() {
-        return rows.size();
+        return times.size();
     }
 
     @Override
     public Object getItem(int i) {
-        return rows.get(i);
+        return times.get(i);
     }
 
     @Override
@@ -53,16 +44,17 @@ public class TimeCoracaoAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View convertView, ViewGroup viewGroup) {
 
-        TimeCoracaoAdapter.ViewHolder holder;
         if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.item_time_coracao, null);
         }
 
-        TextView textTimeNome = convertView.findViewById(R.id.time_coracao_nome);
+        TextView nameTime = convertView.findViewById(R.id.time_coracao_nome);
+        TextView ufTime = convertView.findViewById(R.id.time_coracao_uf);
         ImageView imageTime = convertView.findViewById(R.id.time_coracao_image);
 
         imageTime.setImageResource(R.drawable.time_acf);
-        textTimeNome.setText(rows.get(i));
+        nameTime.setText(times.get(i).getNome());
+        ufTime.setText(times.get(i).getUf());
 
         return convertView;
     }

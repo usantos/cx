@@ -567,7 +567,6 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
     private void configuraListaDezenas(View fragmentView) {
 
         listaDezenas = fragmentView.findViewById(R.id.listaDezenas);
-        mGridTimeCoracao = fragmentView.findViewById(R.id.gridItens);
         recyclerViewLoteca = fragmentView.findViewById(R.id.recyclerViewLoteca);
 
         if (dezenas != null && dezenas.size() > 0) {
@@ -615,8 +614,6 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         } else {
             if (tipoLoteca) {
                 configurarTimesLoteca();
-            } else if(tipoTimeMania){
-                configurarSelecaoTimeCoracao(mGridTimeCoracao);
             }
 
         }
@@ -637,7 +634,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
      */
     private void configurarSelecaoTimeCoracao(ExpandableHeightGridView gridTimes) {
 
-        TimeCoracaoAdapter timeCoracaoAdapter = new TimeCoracaoAdapter(getActivity(), loadListTimes());
+        TimeCoracaoAdapter timeCoracaoAdapter = new TimeCoracaoAdapter(getActivity(), parametroJogo.getEquipes());
         gridTimes.setAdapter(timeCoracaoAdapter);
         gridTimes.setExpanded(true);
         gridTimes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -741,7 +738,4 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         return listaEquipesEmpates;
     }
 
-    private List<String> loadListTimes() {
-        return Arrays.asList(new String[]{"Flamengo", "Curitiba", "Bahia"});
-    }
 }
