@@ -232,11 +232,11 @@ public class CartelaFragment extends Fragment implements OnClickListener {
         }
     }
 
-    private void preencherVisibilidaeGridView(int visibildadeEscolhaTimeCoracao, int vibilidadeEscolhaLoteca,
-                                              int visibiliaddeDezanas) {
-        mGridTimeCoracao.setVisibility(visibildadeEscolhaTimeCoracao);
-        gridView.setVisibility(View.GONE);
-        listaDezenas.setVisibility(View.GONE);
+    private void preencherVisibilidaeGridView(int visibilidadeEscolhaTimeCoracao, int visibilidadeEscolhaLoteca,
+                                              int visibilidadeDezanas) {
+        mGridTimeCoracao.setVisibility(visibilidadeEscolhaTimeCoracao);
+        gridView.setVisibility(visibilidadeEscolhaLoteca);
+        listaDezenas.setVisibility(visibilidadeDezanas);
     }
 
 
