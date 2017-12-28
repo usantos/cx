@@ -450,16 +450,16 @@ public class CartelaFragment extends Fragment implements OnClickListener {
                 dezenasSelecionadas.addAll(response.getPayload());
                 simularDezenasAdapter.notifyDataSetChanged();
                 atualizaStatusBotaoFinalizar();
-                // Estando a aposta completa
                 if (tipoTimeMania) {
-                    mGridTimeCoracao = view.findViewById(R.id.gridTimes);
-                    preencherVisibilidadeGridPorTipo();
-                    configurarSelecaoTimeCoracao(mGridTimeCoracao);
-                }
+                    mostrarCartelaEscolhaTimeCoracao();
+                }else{
+                    verificaSeMostraBotaoLimparAposta(getView());
+                    verificaSeMostraSalvarApostaView(getView());
 
-                verificaSeMostraBotaoLimparAposta(getView());
-                verificaSeMostraSalvarApostaView(getView());
+                }
             }
+
+
         }, new SilceClient.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
@@ -467,6 +467,13 @@ public class CartelaFragment extends Fragment implements OnClickListener {
                 ViewUtils.alert(getActivity(), MensagensNetwork.setMensagem(error, getActivity()));
             }
         });
+    }
+
+    private void mostrarCartelaEscolhaTimeCoracao() {
+        // Estando a aposta completa apresenta a tela de escolha do time
+        mGridTimeCoracao = view.findViewById(R.id.gridTimes);
+        preencherVisibilidadeGridPorTipo();
+        configurarSelecaoTimeCoracao(mGridTimeCoracao);
     }
 
     private void configuraBotoes(View fragmentView) {
