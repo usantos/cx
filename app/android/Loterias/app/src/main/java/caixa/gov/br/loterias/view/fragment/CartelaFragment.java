@@ -37,6 +37,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 import caixa.gov.br.loterias.R;
@@ -68,6 +69,8 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
     private ArrayList<String> dezenas = new ArrayList<String>();
 
     private ArrayList<Integer> dezenasSelecionadas = new ArrayList<>();
+
+    private HashSet<ParametroPartida> partidasSelecionadas;
 
     int typeGameColorLight;
     int typeGameColorDark;
@@ -681,6 +684,8 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         } else {
             if (tipoLoteca) {
                 configurarTimesLoteca();
+                partidasSelecionadas = new HashSet<>();
+                fragmentView.findViewById(R.id.layoutTitleLoteca).setVisibility(View.VISIBLE);
             }
 
         }
@@ -717,7 +722,28 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
     @Override
     public void clickado(ParametroPartida parametroPartida) {
-        Toast.makeText(getActivity(), "Selecionado", Toast.LENGTH_LONG).show();
+        if(parametroPartida.isSelecionado()){
+            if(parametroPartida.getQtdItensSelecionados() == 1){
+                parentActivity.setLabelValueSimplesLoteca(String.valueOf(Integer.parseInt(parentActivity.getLabelValueSimplesLoteca().getText().toString()) + 1));
+                if(parametroPartida.getQtdItensSelecionadosAnterior() == 2){
+                    parentActivity.setLabelValueDuplasLoteca(String.valueOf(Integer.parseInt(parentActivity.getLabelValueDuplasLoteca().getText().toString()) - 1));
+                }
+            }else if(parametroPartida.getQtdItensSelecionados() == 2){
+                parentActivity.setLabelValueDuplasLoteca(String.valueOf(Integer.parseInt(parentActivity.getLabelValueDuplasLoteca().getText().toString()) + 1));
+                if(parametroPartida.getQtdItensSelecionadosAnterior() == 3){
+                    parentActivity.setLabelValueTriplasLoteca(String.valueOf(Integer.parseInt(parentActivity.getLabelValueTriplasLoteca().getText().toString()) - 1));
+                }else{
+                    parentActivity.setLabelValueSimplesLoteca(String.valueOf(Integer.parseInt(parentActivity.getLabelValueSimplesLoteca().getText().toString()) - 1));
+                }
+            }else if(parametroPartida.getQtdItensSelecionados() == 3){
+                parentActivity.setLabelValueDuplasLoteca(String.valueOf(Integer.parseInt(parentActivity.getLabelValueDuplasLoteca().getText().toString()) - 1));
+                parentActivity.setLabelValueTriplasLoteca(String.valueOf(Integer.parseInt(parentActivity.getLabelValueTriplasLoteca().getText().toString()) + 1));
+            }
+            partidasSelecionadas.add(parametroPartida);
+        }else{
+            parentActivity.setLabelValueSimplesLoteca(String.valueOf(Integer.parseInt(parentActivity.getLabelValueSimplesLoteca().getText().toString()) - 1));
+            partidasSelecionadas.remove(parametroPartida);
+        }
     }
 
     // Adapter do gridview das dezenas
@@ -792,16 +818,4 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
         void abreCarrinhoApostas();
     }
-
-    private List<Object> loadListEquipe(List<ParametroPartida> listaPartida) {
-        List<Object> listaEquipesEmpates = new ArrayList<>();
-        for (ParametroPartida partida : listaPartida) {
-            listaEquipesEmpates.add(partida.getEquipe1());
-            listaEquipesEmpates.add(getActivity().getString(R.string.label_empate));
-            listaEquipesEmpates.add(partida.getEquipe2());
-        }
-
-        return listaEquipesEmpates;
-    }
-
 }

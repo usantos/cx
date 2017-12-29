@@ -496,15 +496,27 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         startActivity(activity);
     }
 
-    public void setLabelValueSimplesLoteca(TextView labelValueSimplesLoteca) {
-        this.labelValueSimplesLoteca = labelValueSimplesLoteca;
+    public void setLabelValueSimplesLoteca(String labelValueSimplesLoteca) {
+        this.labelValueSimplesLoteca.setText(labelValueSimplesLoteca);
     }
 
-    public void setLabelValueDuplasLoteca(TextView labelValueDuplasLoteca) {
-        this.labelValueDuplasLoteca = labelValueDuplasLoteca;
+    public void setLabelValueDuplasLoteca(String labelValueDuplasLoteca) {
+        this.labelValueDuplasLoteca.setText(labelValueDuplasLoteca);
     }
 
-    public void setLabelValueTriplasLoteca(TextView labelValueTriplasLoteca) {
-        this.labelValueTriplasLoteca = labelValueTriplasLoteca;
+    public void setLabelValueTriplasLoteca(String labelValueTriplasLoteca) {
+        this.labelValueTriplasLoteca.setText(labelValueTriplasLoteca);
+    }
+
+    public TextView getLabelValueSimplesLoteca() {
+        return labelValueSimplesLoteca;
+    }
+
+    public TextView getLabelValueDuplasLoteca() {
+        return labelValueDuplasLoteca;
+    }
+
+    public TextView getLabelValueTriplasLoteca() {
+        return labelValueTriplasLoteca;
     }
 }

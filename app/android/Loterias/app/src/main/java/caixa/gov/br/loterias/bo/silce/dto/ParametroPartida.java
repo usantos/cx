@@ -29,6 +29,8 @@ public class ParametroPartida {
 
     private boolean selecionado;
     private boolean empate;
+    private int qtdItensSelecionados;
+    private int qtdItensSelecionadosAnterior;
 
     /**
      **/
@@ -113,5 +115,21 @@ public class ParametroPartida {
 
     public void setEmpate(boolean empate) {
         this.empate = empate;
+    }
+
+    public int getQtdItensSelecionados() {
+        return qtdItensSelecionados;
+    }
+
+    public void setQtdItensSelecionados(int qtdItensSelecionados) {
+        this.qtdItensSelecionados = qtdItensSelecionados;
+    }
+
+    public int getQtdItensSelecionadosAnterior() {
+        return qtdItensSelecionadosAnterior;
+    }
+
+    public void setQtdItensSelecionadosAnterior(int qtdItensSelecionadosAnterior) {
+        this.qtdItensSelecionadosAnterior = qtdItensSelecionadosAnterior;
     }
 }

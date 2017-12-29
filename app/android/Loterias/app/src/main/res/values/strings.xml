@@ -116,5 +116,7 @@
     <string name="label_duplas">Duplas</string>
     <string name="label_triplas">Triplas</string>
     <string name="label_dois_pontos">:</string>
+    <string name="label_informe">Informe</string>
+    <string name="label_resultado_das_partidas.">o resultado das partidas.</string>
 
 </resources>

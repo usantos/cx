@@ -34,9 +34,11 @@ public class PartidaView extends LinearLayout {
 
     @Click(R.id.loteca_time_um)
     public void clickTimeUm() {
+        parametroPartida.setQtdItensSelecionadosAnterior(parametroPartida.getQtdItensSelecionados());
         if (lotecaTimeUm.isSelected()) {
             lotecaTimeUm.setSelected(Boolean.FALSE);
             parametroPartida.getEquipe1().setSelecionado(Boolean.FALSE);
+            parametroPartida.setQtdItensSelecionados(parametroPartida.getQtdItensSelecionados() -1);
 
             if (!parametroPartida.isEmpate() && !parametroPartida.getEquipe2().isSelecionado()) {
                 parametroPartida.setSelecionado(Boolean.FALSE);
@@ -45,15 +47,18 @@ public class PartidaView extends LinearLayout {
             lotecaTimeUm.setSelected(Boolean.TRUE);
             parametroPartida.setSelecionado(Boolean.TRUE);
             parametroPartida.getEquipe1().setSelecionado(Boolean.TRUE);
+            parametroPartida.setQtdItensSelecionados(parametroPartida.getQtdItensSelecionados() +1);
         }
         listener.clickado(parametroPartida);
     }
 
     @Click(R.id.loteca_time_dois)
     public void clickTimeDois() {
+        parametroPartida.setQtdItensSelecionadosAnterior(parametroPartida.getQtdItensSelecionados());
         if (lotecaTimeDois.isSelected()) {
             lotecaTimeDois.setSelected(Boolean.FALSE);
             parametroPartida.getEquipe2().setSelecionado(Boolean.FALSE);
+            parametroPartida.setQtdItensSelecionados(parametroPartida.getQtdItensSelecionados() -1);
 
             if (!parametroPartida.isEmpate() && !parametroPartida.getEquipe1().isSelecionado()) {
                 parametroPartida.setSelecionado(Boolean.FALSE);
@@ -62,15 +67,18 @@ public class PartidaView extends LinearLayout {
             lotecaTimeDois.setSelected(Boolean.TRUE);
             parametroPartida.setSelecionado(Boolean.TRUE);
             parametroPartida.getEquipe2().setSelecionado(Boolean.TRUE);
+            parametroPartida.setQtdItensSelecionados(parametroPartida.getQtdItensSelecionados() +1);
         }
         listener.clickado(parametroPartida);
     }
 
     @Click(R.id.loteca_empate)
     public void clickEmpate() {
+        parametroPartida.setQtdItensSelecionadosAnterior(parametroPartida.getQtdItensSelecionados());
         if (lotecaEmpate.isSelected()) {
             lotecaEmpate.setSelected(Boolean.FALSE);
-            parametroPartida.setSelecionado(Boolean.FALSE);
+            parametroPartida.setEmpate(Boolean.FALSE);
+            parametroPartida.setQtdItensSelecionados(parametroPartida.getQtdItensSelecionados() -1);
 
             if (!parametroPartida.getEquipe1().isSelecionado() && !parametroPartida.getEquipe2().isSelecionado()) {
                 parametroPartida.setSelecionado(Boolean.FALSE);
@@ -79,6 +87,7 @@ public class PartidaView extends LinearLayout {
             lotecaEmpate.setSelected(Boolean.TRUE);
             parametroPartida.setEmpate(Boolean.TRUE);
             parametroPartida.setSelecionado(Boolean.TRUE);
+            parametroPartida.setQtdItensSelecionados(parametroPartida.getQtdItensSelecionados() +1);
         }
         listener.clickado(parametroPartida);
     }

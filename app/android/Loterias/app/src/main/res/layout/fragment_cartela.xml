@@ -10,7 +10,7 @@
         android:id="@+id/cartelaFragmentMainLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        
+
         <RelativeLayout
             android:id="@+id/salvarApostaLayout"
             android:layout_width="184dp"
@@ -250,7 +250,40 @@
             app:layout_constraintBottom_toTopOf="@+id/salvarApostaLayout"
             app:layout_constraintHorizontal_bias="0.0">
 
-            <include layout="@layout/escolha_time_coracao"/>
+            <include layout="@layout/escolha_time_coracao" />
+
+            <LinearLayout
+                android:id="@+id/layoutTitleLoteca"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginLeft="17dp"
+                android:visibility="visible">
+
+                <TextView
+                    android:id="@+id/titleLotecaInforme"
+                    style="@style/ArialMT"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_informe"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/verdeazul"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"/>
+
+                <TextView
+                    android:id="@+id/titleLotecaContinue"
+                    style="@style/ArialMT"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_resultado_das_partidas."
+                    android:textSize="14sp"
+                    android:textColor="@color/verdeazul"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginLeft="6dp"/>
+            </LinearLayout>
 
             <caixa.gov.br.loterias.view.custom.ExpandableHeightGridView
                 android:id="@+id/listaDezenas"
@@ -272,7 +305,7 @@
                 android:gravity="center"
                 android:numColumns="3"
                 android:stretchMode="columnWidth"
-                android:verticalSpacing="16dp"/>
+                android:verticalSpacing="16dp" />
 
             <caixa.gov.br.loterias.view.custom.ExpandableHeightGridView
                 android:id="@+id/gridTimes"
@@ -286,10 +319,12 @@
                 app:layout_goneMarginBottom="10dp" />
 
             <android.support.v7.widget.RecyclerView
+                android:layout_marginTop="60dp"
                 android:id="@+id/recyclerViewLoteca"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clickable="false" />
+                android:layout_height="match_parent"
+                android:clickable="false"
+                />
 
         </android.support.constraint.ConstraintLayout>
 
