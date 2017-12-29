@@ -21,7 +21,8 @@ public class TimeCoracaoAdapter extends BaseAdapter {
     private Context context;
     private List<ParametroEquipe> times;
 
-   public TimeCoracaoAdapter(Context context, List<ParametroEquipe> times) {
+
+    public TimeCoracaoAdapter(Context context, List<ParametroEquipe> times) {
         this.context = context;
         this.times = times;
     }
@@ -48,8 +49,8 @@ public class TimeCoracaoAdapter extends BaseAdapter {
             convertView = LayoutInflater.from(context).inflate(R.layout.item_time_coracao, null);
         }
 
-        TextView nameTime = convertView.findViewById(R.id.time_coracao_nome);
-        TextView ufTime = convertView.findViewById(R.id.time_coracao_uf);
+        TextView nameTime = convertView.findViewById(R.id.timeCoracaoNome);
+        TextView ufTime = convertView.findViewById(R.id.timeCoracaoUf);
         ImageView imageTime = convertView.findViewById(R.id.time_coracao_image);
 
         imageTime.setImageResource(R.drawable.time_acf);
@@ -57,5 +58,13 @@ public class TimeCoracaoAdapter extends BaseAdapter {
         ufTime.setText(times.get(i).getUf());
 
         return convertView;
+    }
+
+    public List<ParametroEquipe> getTimes() {
+        return times;
+    }
+
+    public void setTimes(List<ParametroEquipe> times) {
+        this.times = times;
     }
 }

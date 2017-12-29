@@ -4,7 +4,7 @@
     android:layout_height="110dp"
     android:layout_gravity="center_horizontal"
     android:orientation="vertical"
-    android:id="@+id/item_time_coracao_linear_layout">
+    android:id="@+id/itemTimeCoracaoLinearLayout">
 
     <ImageView
         android:layout_width="wrap_content"
@@ -15,7 +15,7 @@
         android:layout_marginTop="16dp" />
 
     <TextView
-        android:id="@+id/time_coracao_nome"
+        android:id="@+id/timeCoracaoNome"
         android:layout_alignBottom="@id/time_coracao_image"
         style="@style/editTextArialMTTheme"
         android:layout_width="wrap_content"
@@ -27,7 +27,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/time_coracao_uf"
+        android:id="@+id/timeCoracaoUf"
         android:textSize="14.2sp"
         style="@style/editTextArialMTTheme"
         android:layout_gravity="center_horizontal" />

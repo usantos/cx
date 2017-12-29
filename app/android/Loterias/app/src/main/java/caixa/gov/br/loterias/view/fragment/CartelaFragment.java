@@ -9,7 +9,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -22,6 +24,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,7 +36,6 @@ import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -80,17 +82,23 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
     int numeroConcursoAtual;
     int qtdCartelasCarrinho = 0;
     String dataSorteioAtual;
+
     private SimularApostaActivity parentActivity;
     private ParametroJogoDTO parametroJogo;
     private CartelaFragmentListener cartelaFragmentListener;
-    private boolean tipoTimeMania;
     private ExpandableHeightGridView mGridTimeCoracao;
     private ExpandableHeightGridView listaDezenas;
+    private LinearLayout selecioneTimeCoracaoLayout;
+    private EditText informeNomeTime;
     private ModalidadeEnum tipoJogo;
     private View view;
-    private boolean tipoLoteca = false;
     private RecyclerView recyclerViewLoteca;
+    private TimeCoracaoAdapter timeCoracaoAdapter;
+
     public BigDecimal valorTotalAposta;
+
+    private boolean tipoLoteca = false;
+    private boolean tipoTimeMania;
 
 
     public CartelaFragment() {
@@ -226,21 +234,35 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
             case DUPLA_SENA:
                 break;
             case TIMEMANIA:
-                preencherVisibilidaeGridView(View.VISIBLE, View.GONE, View.GONE);
+                preencherVisibilidaeGridView(View.VISIBLE, View.GONE, View.GONE, View.GONE);
                 break;
             case LOTOMANIA:
                 break;
             case LOTECA:
-                preencherVisibilidaeGridView(View.GONE, View.VISIBLE, View.GONE);
+                preencherVisibilidaeGridView(View.GONE, View.GONE, View.VISIBLE, View.GONE);
                 break;
         }
     }
 
-    private void preencherVisibilidaeGridView(int visibilidadeEscolhaTimeCoracao, int visibilidadeEscolhaLoteca,
+    private void preencherVisibilidaeGridView(int visibilidadeEscolhaTimeCoracao, int visibilidadeSelecioneTimeCoracao, int visibilidadeEscolhaLoteca,
                                               int visibilidadeDezanas) {
-        mGridTimeCoracao.setVisibility(visibilidadeEscolhaTimeCoracao);
-        recyclerViewLoteca.setVisibility(visibilidadeEscolhaLoteca);
-        listaDezenas.setVisibility(visibilidadeDezanas);
+        if (mGridTimeCoracao != null) {
+            mGridTimeCoracao.setVisibility(visibilidadeEscolhaTimeCoracao);
+        }
+
+        if (selecioneTimeCoracaoLayout != null) {
+            selecioneTimeCoracaoLayout.setVisibility(visibilidadeSelecioneTimeCoracao);
+        }
+
+        if (recyclerViewLoteca != null) {
+            recyclerViewLoteca.setVisibility(visibilidadeEscolhaLoteca);
+
+        }
+
+        if (listaDezenas != null) {
+            listaDezenas.setVisibility(visibilidadeDezanas);
+        }
+
     }
 
 
@@ -456,7 +478,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                 atualizaStatusBotaoFinalizar();
                 if (tipoTimeMania) {
                     mostrarCartelaEscolhaTimeCoracao();
-                }else{
+                } else {
                     verificaSeMostraBotaoLimparAposta(getView());
                     verificaSeMostraSalvarApostaView(getView());
 
@@ -476,8 +498,53 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
     private void mostrarCartelaEscolhaTimeCoracao() {
         // Estando a aposta completa apresenta a tela de escolha do time
         mGridTimeCoracao = view.findViewById(R.id.gridTimes);
-        preencherVisibilidadeGridPorTipo();
+        selecioneTimeCoracaoLayout = (LinearLayout) getLayoutInflater().from(getActivity()).inflate(R.layout.escolha_time_coracao, null);
+        informeNomeTime = selecioneTimeCoracaoLayout.findViewById(R.id.informe_nome_time);
+        onChangeInformeNomeTime();
+        preencherVisibilidaeGridView(View.VISIBLE, View.VISIBLE, View.GONE, View.GONE);
         configurarSelecaoTimeCoracao(mGridTimeCoracao);
+    }
+
+    private void onChangeInformeNomeTime() {
+        informeNomeTime.addTextChangedListener(new TextWatcher() {
+            private boolean isChanged = false;
+
+
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (isChanged) {
+                     return;
+                }
+
+                isChanged = true;
+
+                if(charSequence.length() > 3){
+
+                    List<ParametroEquipe> parametroEquipeList =  parametroJogo.getEquipes();
+                    List<ParametroEquipe> filter = new ArrayList<>();
+
+                    for(ParametroEquipe parametroEquipe :parametroEquipeList){
+                         parametroEquipe.getNome().contains(charSequence);
+                        filter.add(parametroEquipe);
+                    }
+                    timeCoracaoAdapter.setTimes(filter);
+                    timeCoracaoAdapter.notifyDataSetChanged();
+                }
+
+                isChanged = false;
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
     }
 
     private void configuraBotoes(View fragmentView) {
@@ -624,7 +691,6 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         LotecaAdapter lotecaAdapter = new LotecaAdapter(parametroJogo.getPartidas(), this);
         recyclerViewLoteca.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerViewLoteca.setAdapter(lotecaAdapter);
-
     }
 
     /**
@@ -634,7 +700,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
      */
     private void configurarSelecaoTimeCoracao(ExpandableHeightGridView gridTimes) {
 
-        TimeCoracaoAdapter timeCoracaoAdapter = new TimeCoracaoAdapter(getActivity(), parametroJogo.getEquipes());
+        timeCoracaoAdapter = new TimeCoracaoAdapter(getActivity(), parametroJogo.getEquipes());
         gridTimes.setAdapter(timeCoracaoAdapter);
         gridTimes.setExpanded(true);
         gridTimes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
