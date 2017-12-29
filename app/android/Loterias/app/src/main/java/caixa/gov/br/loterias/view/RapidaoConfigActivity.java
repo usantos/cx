@@ -22,6 +22,7 @@ import java.util.List;
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.bo.ApostaBO;
 import caixa.gov.br.loterias.bo.silce.SilceClient;
+import caixa.gov.br.loterias.bo.silce.dto.ApostaFavoritaDTO;
 import caixa.gov.br.loterias.bo.silce.dto.ModalidadeDTO;
 import caixa.gov.br.loterias.bo.silce.dto.ModalidadeEnum;
 import caixa.gov.br.loterias.bo.silce.dto.RapidaoDTO;
@@ -39,14 +40,16 @@ import caixa.gov.br.loterias.view.custom.ExpandableHeightGridView;
 public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener {
 
     ArrayList<TipoAposta> tipoApostaLista = new ArrayList<TipoAposta>();
-    ApostaFavorita[] apostaFavoritaLista;
-    int[] listaNumerosProibidos = new int[7];
-    int[] listaNumerosObrigatorios = new int[12];
+    List<ApostaFavoritaDTO> apostaFavoritaLista = new ArrayList<ApostaFavoritaDTO>();
+    List<Integer> listaNumerosObrigatorios = new ArrayList<Integer>();
+    List<Integer> listaNumerosProibidos = new ArrayList<Integer>();
     public RapidaoDTO rapidao;
     SeekBar seekBarValorMinimoAposta;
     SeekBar seekBarValorMaximoAposta;
+    SeekBar seekBarValorPremiumMinimun;
     TextView tituloValorMinimoAposta;
     TextView tituloValorMaximoAposta;
+    TextView tituloValorPremiumMinimum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,21 +99,23 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
 
     private void gridViewNumerosObrigatorios(){
         //mock numeros obrigatorios
-
-        listaNumerosObrigatorios[0] = 1;
-        listaNumerosObrigatorios[1] = 2;
-        listaNumerosObrigatorios[2] = 3;
-        listaNumerosObrigatorios[3] = 4;
-        listaNumerosObrigatorios[4] = 10;
-        listaNumerosObrigatorios[5] = 11;
-        listaNumerosObrigatorios[6] = 12;
-        listaNumerosObrigatorios[7] = 13;
-        listaNumerosObrigatorios[8] = 14;
-        listaNumerosObrigatorios[9] = 30;
-        listaNumerosObrigatorios[10] = 34;
-        listaNumerosObrigatorios[11] = 100;
+//        listaNumerosObrigatorios = new int[12];
+//        listaNumerosObrigatorios[0] = 1;
+//        listaNumerosObrigatorios[1] = 2;
+//        listaNumerosObrigatorios[2] = 3;
+//        listaNumerosObrigatorios[3] = 4;
+//        listaNumerosObrigatorios[4] = 10;
+//        listaNumerosObrigatorios[5] = 11;
+//        listaNumerosObrigatorios[6] = 12;
+//        listaNumerosObrigatorios[7] = 13;
+//        listaNumerosObrigatorios[8] = 14;
+//        listaNumerosObrigatorios[9] = 30;
+//        listaNumerosObrigatorios[10] = 34;
+//        listaNumerosObrigatorios[11] = 100;
 
         //gridview
+
+        listaNumerosObrigatorios = rapidao.getPrognosticosObrigatorios();
 
         ExpandableHeightGridView gridViewNumerosRapidaoObrigatorios = (ExpandableHeightGridView)findViewById(R.id.gridviewNumerosObrigatoriosRapidao);
         NumerosRapidaoAdapter numerosRapidaoAdapter = new NumerosRapidaoAdapter(this, listaNumerosObrigatorios, true);
@@ -120,7 +125,7 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
         gridViewNumerosRapidaoObrigatorios.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                if (position == listaNumerosObrigatorios.length){
+                if (position == listaNumerosObrigatorios.size()){
                     Intent activity = new Intent(RapidaoConfigActivity.this, NumerosRapidaoActivity.class);
                     startActivity(activity);
                 }
@@ -131,13 +136,17 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
     private void gridViewNumerosProibidos(){
 
         //mock numeros proibidos
-        listaNumerosProibidos[0] = 13;
-        listaNumerosProibidos[1] = 66;
-        listaNumerosProibidos[2] = 77;
-        listaNumerosProibidos[3] = 99;
-        listaNumerosProibidos[4] = 23;
-        listaNumerosProibidos[5] = 66;
-        listaNumerosProibidos[6] = 44;
+//        listaNumerosProibidos[0] = 13;
+//        listaNumerosProibidos[1] = 66;
+//        listaNumerosProibidos[2] = 77;
+//        listaNumerosProibidos[3] = 99;
+//        listaNumerosProibidos[4] = 23;
+//        listaNumerosProibidos[5] = 66;
+//        listaNumerosProibidos[6] = 44;
+
+
+        listaNumerosProibidos = rapidao.getPrognosticosProibidos();
+
 
         //gridview
         ExpandableHeightGridView gridViewNumerosRapidaoProibidos = (ExpandableHeightGridView)findViewById(R.id.gridviewNumerosProibidosRapidao);
@@ -148,7 +157,7 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
         gridViewNumerosRapidaoProibidos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                if (position == listaNumerosProibidos.length){
+                if (position == listaNumerosProibidos.size()){
                     Intent activity = new Intent(RapidaoConfigActivity.this, NumerosRapidaoActivity.class);
                     startActivity(activity);
                 }
@@ -159,13 +168,9 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
 
     private void gridViewApostaFavorita(){
 
-        //mock aposta favorita
-        ApostaFavorita apostaFavorita = new ApostaFavorita("Mega Sena", listaNumerosObrigatorios);
-        ApostaFavorita apostaFavorita2 = new ApostaFavorita("Sena", listaNumerosProibidos);
+//        //mock aposta favorita
 
-        apostaFavoritaLista = new ApostaFavorita[2];
-        apostaFavoritaLista[0] = apostaFavorita;
-        apostaFavoritaLista[1] = apostaFavorita2;
+        apostaFavoritaLista = rapidao.getApostasFavoritas();
 
         //gridview
         ExpandableHeightGridView gridViewApostaFavorita = (ExpandableHeightGridView)findViewById(R.id.gridViewApostaFavorita);
@@ -237,16 +242,44 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
     }
 
     private void atualizaLayout(){
+        tituloValorMinimoAposta = (TextView)findViewById(R.id.tituloValorValorMinimoAPosta);
+        tituloValorMaximoAposta = (TextView)findViewById(R.id.tituloValorValorMaximoAposta);
+        tituloValorPremiumMinimum = (TextView)findViewById(R.id.tituloValorPrecoMinimo);
+
         seekBarValorMinimoAposta = (SeekBar) findViewById(R.id.seekBarValorMinimoAposta);
-        seekBarValorMinimoAposta.setMax(200);
+        seekBarValorMinimoAposta.setMax(1000);
+
+        Float valueMinApostaFloat = rapidao.getValorMinimo().floatValue();
+        int valueMinApostaInt = Math.round(valueMinApostaFloat*2);
+        seekBarValorMinimoAposta.setProgress((int)Math.round(valueMinApostaInt));
+        BigDecimal valorProgressValMin = new BigDecimal(Float.toString((float)valueMinApostaInt/2));;
+        tituloValorMinimoAposta.setText(ViewUtils.getMoedaFormat(valorProgressValMin));
         seekBarValorMinimoAposta.setOnSeekBarChangeListener(this);
 
         seekBarValorMaximoAposta = (SeekBar) findViewById(R.id.seekBarValorMaximoAposta);
-        seekBarValorMaximoAposta.setMax(200);
+        seekBarValorMaximoAposta.setMax(1000);
+
+        Float valueMaxApostaFloat = rapidao.getValorMaximo().floatValue();
+        int valueMaxApostaInt = Math.round(valueMaxApostaFloat*2);
+        seekBarValorMaximoAposta.setProgress((int)Math.round(valueMaxApostaInt));
+        BigDecimal valorProgressValMax = new BigDecimal(Float.toString((float)valueMaxApostaInt/2));;
+        tituloValorMaximoAposta.setText(ViewUtils.getMoedaFormat(valorProgressValMax));
+
         seekBarValorMaximoAposta.setOnSeekBarChangeListener(this);
 
-        tituloValorMinimoAposta = (TextView)findViewById(R.id.tituloValorValorMinimoAPosta);
-        tituloValorMaximoAposta = (TextView)findViewById(R.id.tituloValorValorMaximoAposta);
+
+        seekBarValorPremiumMinimun = (SeekBar) findViewById(R.id.seekBarPremiumMimimun);
+        seekBarValorMaximoAposta.setMax(1000);
+
+        Float valuePremMinFloat = rapidao.getValorMinimoPremioPrincipal().floatValue();
+        int valuePremMinInt = Math.round(valuePremMinFloat*2);
+        seekBarValorPremiumMinimun.setProgress((int)Math.round(valuePremMinInt));
+        BigDecimal valorProgressPremMin = new BigDecimal(Float.toString((float)valuePremMinInt/2));;
+        tituloValorPremiumMinimum.setText(ViewUtils.getMoedaFormat(valorProgressPremMin));
+
+        seekBarValorPremiumMinimun.setOnSeekBarChangeListener(this);
+
+
 
         montarListaEstilo();
 
@@ -265,6 +298,9 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
         }
         if (seekBar == seekBarValorMaximoAposta){
             tituloValorMaximoAposta.setText(ViewUtils.getMoedaFormat(valorProgress));
+        }
+        if (seekBar == seekBarValorPremiumMinimun){
+            tituloValorPremiumMinimum.setText(ViewUtils.getMoedaFormat(valorProgress));
         }
     }
     @Override

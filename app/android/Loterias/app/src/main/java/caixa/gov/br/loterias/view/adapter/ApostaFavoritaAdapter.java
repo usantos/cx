@@ -10,17 +10,21 @@ package caixa.gov.br.loterias.view.adapter;
         import android.view.View;
         import android.view.ViewGroup;
         import android.widget.BaseAdapter;
+        import android.widget.TextView;
+
+        import java.util.List;
+
         import caixa.gov.br.loterias.R;
-        import caixa.gov.br.loterias.model.ApostaFavorita;
+        import caixa.gov.br.loterias.bo.silce.dto.ApostaFavoritaDTO;
 
 
 public class ApostaFavoritaAdapter extends BaseAdapter {
 
     private final Context mContext;
-    private final ApostaFavorita[] apostaFavorita;
+    private final List<ApostaFavoritaDTO> apostaFavorita;
 
     // 1
-    public ApostaFavoritaAdapter(Context context, ApostaFavorita[] apostaFavorita) {
+    public ApostaFavoritaAdapter(Context context, List<ApostaFavoritaDTO> apostaFavorita) {
         this.mContext = context;
         this.apostaFavorita = apostaFavorita;
     }
@@ -28,7 +32,7 @@ public class ApostaFavoritaAdapter extends BaseAdapter {
     // 2
     @Override
     public int getCount() {
-        return apostaFavorita.length +1;
+        return apostaFavorita.size();
     }
 
     // 3
@@ -53,35 +57,27 @@ public class ApostaFavoritaAdapter extends BaseAdapter {
             convertView = layoutInflater.inflate(R.layout.linearlayout_aposta_favorita, null);
         }
 
-        if (position == apostaFavorita.length){
-//            final LinearLayout linearLayoutTipoAposta = (LinearLayout)convertView.findViewById(R.id.LinearLayoutContentTiposAposta);
-//            linearLayoutTipoAposta.setBackgroundColor(ContextCompat.getColor(mContext, R.color.branco));
-//            linearLayoutTipoAposta.setBackground(ContextCompat.getDrawable(mContext,R.drawable.customborder));
-//
-//            final TextView tituloTipoAposta = (TextView)convertView.findViewById(R.id.tituloTipoApostaTextView);
-//            tituloTipoAposta.setText("Adicionar");
-//            tituloTipoAposta.setTextColor(ContextCompat.getColor(mContext, R.color.verdeazul));
-//            final ImageView imageViewTipoAPosta = (ImageView)convertView.findViewById(R.id.imageviewTrevoTipoAposta);
-//            imageViewTipoAPosta.setVisibility(View.GONE);
-//
-//
-//            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-//                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-//            params.gravity = Gravity.CENTER_HORIZONTAL|Gravity.CENTER_VERTICAL;
-//            params.setMargins(0,0,0,0);
-//            tituloTipoAposta.setLayoutParams(params);
+        final ApostaFavoritaDTO aposta = apostaFavorita.get(position);
 
-        }else{
-            final ApostaFavorita aposta = apostaFavorita[position];
-//            final ImageView imageViewTipoAPosta = (ImageView)convertView.findViewById(R.id.imageviewTrevoTipoAposta);
-//            imageViewTipoAPosta.setImageResource(tipoAposta.getImagemTrevo());
 //
 //            final LinearLayout linearLayoutTipoAposta = (LinearLayout)convertView.findViewById(R.id.LinearLayoutContentTiposAposta);
 //            linearLayoutTipoAposta.setBackgroundColor(ContextCompat.getColor(mContext, tipoAposta.getCorBackground()));
-//
-//            final TextView tituloTipoAposta = (TextView)convertView.findViewById(R.id.tituloTipoApostaTextView);
-//            tituloTipoAposta.setText(tipoAposta.getTitulo());
+
+        final TextView tituloApostaFavorira = (TextView)convertView.findViewById(R.id.tituloApostaFavorira);
+        tituloApostaFavorira.setText(aposta.getModalidade().getDescricao());
+
+        final TextView numerosApostaFavorita = (TextView)convertView.findViewById(R.id.numerosApostaFavorita);
+        String numeroStr = "";
+        for (Integer num: aposta.getNumerosSelecionados()) {
+            if (num == (aposta.getNumerosSelecionados().get(aposta.getNumerosSelecionados().size() - 1))) {
+                numeroStr += String.format("%02d", num);
+            }else {
+                numeroStr += String.format("%02d - ", num);
+            }
         }
+        numerosApostaFavorita.setText(numeroStr);
+
+
 
         return convertView;
     }

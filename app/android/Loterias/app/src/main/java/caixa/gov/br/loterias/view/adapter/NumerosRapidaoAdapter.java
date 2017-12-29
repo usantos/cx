@@ -13,17 +13,19 @@ package caixa.gov.br.loterias.view.adapter;
         import android.widget.LinearLayout;
         import android.widget.TextView;
 
+        import java.util.List;
+
         import caixa.gov.br.loterias.R;
 
 
 public class NumerosRapidaoAdapter extends BaseAdapter {
 
     private final Context mContext;
-    private final int[] numeroslista;
+    private final List<Integer> numeroslista;
     private final Boolean isObrigatorio;
 
     // 1
-    public NumerosRapidaoAdapter(Context context, int[] numeroslista, Boolean isObrigatorio) {
+    public NumerosRapidaoAdapter(Context context, List<Integer> numeroslista, Boolean isObrigatorio) {
         this.mContext = context;
         this.numeroslista = numeroslista;
         this.isObrigatorio = isObrigatorio;
@@ -32,7 +34,7 @@ public class NumerosRapidaoAdapter extends BaseAdapter {
     // 2
     @Override
     public int getCount() {
-        return numeroslista.length +1;
+        return numeroslista.size() +1;
     }
 
     // 3
@@ -57,7 +59,7 @@ public class NumerosRapidaoAdapter extends BaseAdapter {
             convertView = layoutInflater.inflate(R.layout.linearlayout_numeros_rapidao, null);
         }
 
-        if (position == numeroslista.length){
+        if (position == numeroslista.size()){
             final LinearLayout linearLayoutNumerosRapidao = (LinearLayout)convertView.findViewById(R.id.LinearLayoutContentNumerosRapidao);
 
             final TextView tituloTipoAposta = (TextView)convertView.findViewById(R.id.tituloNumeroRapidao);
@@ -72,7 +74,7 @@ public class NumerosRapidaoAdapter extends BaseAdapter {
             }
 
         }else{
-            final int numeroRapidao = numeroslista[position];
+            final int numeroRapidao = numeroslista.get(position);
             final TextView tituloTipoAposta = (TextView)convertView.findViewById(R.id.tituloNumeroRapidao);
             tituloTipoAposta.setText(""+numeroRapidao);
             if (isObrigatorio != true){
