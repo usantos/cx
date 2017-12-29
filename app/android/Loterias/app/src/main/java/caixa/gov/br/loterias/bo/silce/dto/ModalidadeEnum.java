@@ -42,4 +42,30 @@ public enum ModalidadeEnum {
         }
         return "";
     }
+
+
+    public static ModalidadeEnum toString(String modalidade) {
+        switch (modalidade) {
+            case "Quina":
+                return ModalidadeEnum.QUINA;
+            case "Loteca":
+                return ModalidadeEnum.LOTECA;
+            case "Lotogol":
+                return ModalidadeEnum.LOTOGOL;
+            case "Lotofácil":
+                return ModalidadeEnum.LOTOFACIL;
+            case "Lotomania":
+                return ModalidadeEnum.LOTOMANIA;
+            case "Mega-Sena":
+                return ModalidadeEnum.MEGA_SENA;
+            case "Timemania":
+                return ModalidadeEnum.TIMEMANIA;
+            case "Dupla-Sena":
+                return ModalidadeEnum.DUPLA_SENA;
+            case "Federal":
+                return ModalidadeEnum.FEDERAL;
+            default:
+                return null;
+        }
+    }
 }

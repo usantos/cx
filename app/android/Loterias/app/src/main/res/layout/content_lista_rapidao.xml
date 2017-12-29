@@ -98,28 +98,28 @@
                     android:textStyle="bold"
                     style="@style/editTextArialMTTheme"/>
 
-                <TextView
-                    android:id="@+id/textoLimparCarrinhoRapidao"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="6dp"
-                    android:layout_marginStart="6dp"
-                    android:layout_toEndOf="@+id/imagemLixeiraCarrinhoRapidao"
-                    android:layout_toRightOf="@+id/imagemLixeiraCarrinhoRapidao"
-                    android:text="@string/limparCarrinho"
-                    android:textColor="@color/amareloQueimado"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
+                <!--<TextView-->
+                    <!--android:id="@+id/textoLimparCarrinhoRapidao"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_centerVertical="true"-->
+                    <!--android:layout_marginLeft="6dp"-->
+                    <!--android:layout_marginStart="6dp"-->
+                    <!--android:layout_toEndOf="@+id/imagemLixeiraCarrinhoRapidao"-->
+                    <!--android:layout_toRightOf="@+id/imagemLixeiraCarrinhoRapidao"-->
+                    <!--android:text="@string/limparCarrinho"-->
+                    <!--android:textColor="@color/amareloQueimado"-->
+                    <!--android:textSize="14sp"-->
+                    <!--android:textStyle="bold" />-->
 
-                <ImageView
-                    android:id="@+id/imagemLixeiraCarrinhoRapidao"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="14dp"
-                    android:layout_marginStart="14dp"
-                    app:srcCompat="@drawable/close" />
+                <!--<ImageView-->
+                    <!--android:id="@+id/imagemLixeiraCarrinhoRapidao"-->
+                    <!--android:layout_width="20dp"-->
+                    <!--android:layout_height="20dp"-->
+                    <!--android:layout_centerVertical="true"-->
+                    <!--android:layout_marginLeft="14dp"-->
+                    <!--android:layout_marginStart="14dp"-->
+                    <!--app:srcCompat="@drawable/close" />-->
             </RelativeLayout>
 
             <Button

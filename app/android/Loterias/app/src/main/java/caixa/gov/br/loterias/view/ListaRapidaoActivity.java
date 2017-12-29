@@ -242,19 +242,19 @@ public class ListaRapidaoActivity extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.imagemLixeiraCarrinhoRapidao).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                limpaCarrinho();
-            }
-        });
-
-        findViewById(R.id.textoLimparCarrinhoRapidao).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                limpaCarrinho();
-            }
-        });
+//        findViewById(R.id.imagemLixeiraCarrinhoRapidao).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                limpaCarrinho();
+//            }
+//        });
+//
+//        findViewById(R.id.textoLimparCarrinhoRapidao).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                limpaCarrinho();
+//            }
+//        });
 
         findViewById(R.id.botaoAvancarPagamentoRapidao).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -282,9 +282,9 @@ public class ListaRapidaoActivity extends AppCompatActivity {
         recyclerView.setNestedScrollingEnabled(false);
     }
 
-    private void limpaCarrinho(){
-        ViewUtils.alert(this, "LIMPAR CARRINHO");
-    }
+//    private void limpaCarrinho(){
+//        ViewUtils.alert(this, "LIMPAR CARRINHO");
+//    }
 
 
     private void callWebservice() {

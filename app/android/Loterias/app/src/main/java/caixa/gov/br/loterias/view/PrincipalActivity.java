@@ -114,6 +114,7 @@ public class PrincipalActivity extends AppCompatActivity
         listenerRapidao();
 
         callWebservice();
+
     }
 
 
@@ -149,6 +150,11 @@ public class PrincipalActivity extends AppCompatActivity
                 LoadingViewLoterias.stop(loadViewProgress);
 
                 modalidadesParaListar = response.getPayload().getParametros();
+                if(modalidadesParaListar == null || modalidadesParaListar.size() == 0){
+                    startActivity(new Intent(PrincipalActivity.this, ListaRapidaoActivity.class));
+                    finish();
+                    return;
+                }
                 TextView valorMinimoCompra = findViewById(R.id.textViewHomeMinimumPurchaseValue);
                 valorMinimoCompra.setText("valor mínimo da compra: " + ViewUtils.getMoedaFormat(response.getPayload().getValorMinimoCarrinho()));
 
@@ -229,10 +235,12 @@ public class PrincipalActivity extends AppCompatActivity
                     itemToolbarTrevo.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            if (relativePrincipal.isEnabled()) {
-                                AnimacaoAbrirMenuRapido(v);
-                            } else {
-                                AnimacaoFecharMenuRapido(v);
+                            if(modalidadesParaListar != null && modalidadesParaListar.size() > 0){
+                                if (relativePrincipal.isEnabled()) {
+                                    AnimacaoAbrirMenuRapido(v);
+                                } else {
+                                    AnimacaoFecharMenuRapido(v);
+                                }
                             }
                         }
                     });

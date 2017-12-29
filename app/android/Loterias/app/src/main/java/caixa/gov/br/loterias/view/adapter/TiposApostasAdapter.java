@@ -17,6 +17,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.TipoAposta;
 
@@ -24,10 +27,10 @@ import caixa.gov.br.loterias.model.TipoAposta;
 public class TiposApostasAdapter extends BaseAdapter {
 
     private final Context mContext;
-    private final TipoAposta[] tiposAposta;
+    private final ArrayList<TipoAposta> tiposAposta;
 
     // 1
-    public TiposApostasAdapter(Context context, TipoAposta[] tiposAposta) {
+    public TiposApostasAdapter(Context context, ArrayList<TipoAposta> tiposAposta) {
         this.mContext = context;
         this.tiposAposta = tiposAposta;
     }
@@ -35,7 +38,7 @@ public class TiposApostasAdapter extends BaseAdapter {
     // 2
     @Override
     public int getCount() {
-        return tiposAposta.length +1;
+        return tiposAposta.size() +1;
     }
 
     // 3
@@ -60,7 +63,7 @@ public class TiposApostasAdapter extends BaseAdapter {
             convertView = layoutInflater.inflate(R.layout.linearlayout_tipos_apostas, null);
         }
 
-        if (position == tiposAposta.length){
+        if (position == tiposAposta.size()){
             final LinearLayout linearLayoutTipoAposta = (LinearLayout)convertView.findViewById(R.id.LinearLayoutContentTiposAposta);
             linearLayoutTipoAposta.setBackgroundColor(ContextCompat.getColor(mContext, R.color.branco));
             linearLayoutTipoAposta.setBackground(ContextCompat.getDrawable(mContext,R.drawable.customborder));
@@ -79,7 +82,7 @@ public class TiposApostasAdapter extends BaseAdapter {
             tituloTipoAposta.setLayoutParams(params);
 
         }else{
-            final TipoAposta tipoAposta = tiposAposta[position];
+            final TipoAposta tipoAposta = tiposAposta.get(position);
             final ImageView imageViewTipoAPosta = (ImageView)convertView.findViewById(R.id.imageviewTrevoTipoAposta);
             imageViewTipoAPosta.setImageResource(R.drawable.trevo);
 

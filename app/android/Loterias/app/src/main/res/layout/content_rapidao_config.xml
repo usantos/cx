@@ -144,15 +144,15 @@
             <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <TextView
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:text="24 reais"
-            android:textSize="14.2sp"
-            android:id="@+id/tituloValorMinimoApostaValorMinimo"
-            android:textColor="@color/azulFormNovoTipoPagamento"
-                style="@style/editTextArialMTTheme"
-            />
+
+                <TextView
+                    android:id="@+id/tituloValorMinimoApostaValorMinimo"
+                    style="@style/editTextArialMTTheme"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:text="1 real"
+                    android:textColor="@color/azulFormNovoTipoPagamento"
+                    android:textSize="14.2sp" />
             <TextView
             android:id="@+id/tituloValorMinimoApostaValorMaximo"
             android:layout_width="wrap_content"
@@ -220,15 +220,15 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+
                     <TextView
+                        android:id="@+id/tituloValorMaximoApostaValorMinimo"
+                        style="@style/editTextArialMTTheme"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
-                        android:text="24 reais"
-                        android:textSize="14.2sp"
-                        android:id="@+id/tituloValorMaximoApostaValorMinimo"
+                        android:text="1 reail"
                         android:textColor="@color/azulFormNovoTipoPagamento"
-                        style="@style/editTextArialMTTheme"
-                        />
+                        android:textSize="14.2sp" />
                     <TextView
                         android:id="@+id/tituloValorMaximoApostaValorMaximo"
                         android:layout_width="wrap_content"
