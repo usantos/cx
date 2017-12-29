@@ -7,105 +7,231 @@
     tools:context="caixa.gov.br.loterias.view.SimularApostaActivity">
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/toolBarSimularAposta"
-        android:layout_width="0dp"
-        android:layout_height="61dp"
-        android:background="@color/azulclaro"
-        android:orientation="horizontal"
-        app:layout_constraintHorizontal_bias="0.0"
+        android:id="@+id/toolBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <Button
-            android:id="@+id/simularTelaAposta"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_alignBottom="@+id/surpresinhaTela"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginBottom="8dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/icon_seleciona2"
-            app:layout_constraintBottom_toBottomOf="parent"
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/toolBarSimularAposta"
+            android:layout_width="0dp"
+            android:layout_height="61dp"
+            android:background="@color/azulclaro"
+            android:orientation="horizontal"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.466" />
-
-        <Button
-            android:id="@+id/surpresinhaTela"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_toEndOf="@+id/simularTelaAposta"
-            android:layout_toRightOf="@+id/simularTelaAposta"
-            android:background="@drawable/icon_surpresinha"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@+id/simularTelaAposta"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/qtdNumerosButton"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="8dp"
-            android:drawableEnd="@drawable/combo2"
-            android:drawablePadding="5dp"
-            android:drawableRight="@drawable/combo2"
-            android:fontFamily="@font/arialmt"
-            android:padding="0dp"
-            android:text="6 números"
-            android:textAlignment="textStart"
-            android:textColor="@color/branco"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/qtdConcursosButton"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
-
-        <Button
-            android:id="@+id/qtdConcursosButton"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginRight="12dp"
-            android:layout_marginTop="8dp"
-            android:drawableEnd="@drawable/combo2"
-            android:drawablePadding="5dp"
-            android:drawableRight="@drawable/combo2"
-            android:fontFamily="@font/arialmt"
-            android:padding="0dp"
-            android:text="1 concurso"
-            android:textAlignment="textStart"
-            android:textColor="@color/branco"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toTopOf="parent">
 
+            <Button
+                android:id="@+id/simularTelaAposta"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignBottom="@+id/surpresinhaTela"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/icon_seleciona2"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.466" />
+
+            <Button
+                android:id="@+id/surpresinhaTela"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_toEndOf="@+id/simularTelaAposta"
+                android:layout_toRightOf="@+id/simularTelaAposta"
+                android:background="@drawable/icon_surpresinha"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@+id/simularTelaAposta"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/qtdNumerosButton"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="8dp"
+                android:drawableEnd="@drawable/combo2"
+                android:drawablePadding="5dp"
+                android:drawableRight="@drawable/combo2"
+                android:fontFamily="@font/arialmt"
+                android:padding="0dp"
+                android:text="6 números"
+                android:textAlignment="textStart"
+                android:textColor="@color/branco"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/qtdConcursosButton"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <Button
+                android:id="@+id/qtdConcursosButton"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginRight="12dp"
+                android:layout_marginTop="8dp"
+                android:drawableEnd="@drawable/combo2"
+                android:drawablePadding="5dp"
+                android:drawableRight="@drawable/combo2"
+                android:fontFamily="@font/arialmt"
+                android:padding="0dp"
+                android:text="1 concurso"
+                android:textAlignment="textStart"
+                android:textColor="@color/branco"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
+
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/toolBarLoteca"
+            android:layout_width="0dp"
+            android:layout_height="98dp"
+            android:background="@drawable/drawer_linha_divisao_bg"
+            android:orientation="vertical"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/labelTituloLoteca"
+                style="@style/editTextArialMTTheme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="17dp"
+                android:paddingTop="36dp"
+                android:text="@string/label_suas_apostas"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/labelSimplesLoteca"
+                style="@style/editTextArialMTTheme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="17dp"
+                android:paddingTop="59dp"
+                android:text="@string/label_simples"
+                android:textSize="14sp" />
+
+            <TextView
+                style="@style/ArialMT"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="67dp"
+                android:paddingTop="59dp"
+                android:text="@string/label_dois_pontos"
+                android:textColor="@color/verdeazul"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/labelValueSimplesLoteca"
+                style="@style/ArialMT"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="74dp"
+                android:paddingTop="57dp"
+                android:text="0"
+                android:textColor="@color/verdeazul"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/labelDuplasLoteca"
+                style="@style/editTextArialMTTheme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="17dp"
+                android:paddingLeft="100dp"
+                android:paddingTop="59dp"
+                android:text="@string/label_duplas"
+                android:textSize="14sp" />
+
+            <TextView
+                style="@style/ArialMT"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="143dp"
+                android:paddingTop="59dp"
+                android:text="@string/label_dois_pontos"
+                android:textColor="@color/verdeazul"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/labelValueDuplasLoteca"
+                style="@style/editTextArialMTTheme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="152dp"
+                android:paddingTop="57dp"
+                android:text="0"
+                android:textColor="@color/verdeazul"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/labelTriplasLoteca"
+                style="@style/editTextArialMTTheme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="17dp"
+                android:paddingLeft="180dp"
+                android:paddingTop="59dp"
+                android:text="@string/label_triplas"
+                android:textSize="14sp" />
+
+            <TextView
+                style="@style/ArialMT"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="221dp"
+                android:paddingTop="59dp"
+                android:text="@string/label_dois_pontos"
+                android:textColor="@color/verdeazul"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/labelValueTriplasLoteca"
+                style="@style/editTextArialMTTheme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="229dp"
+                android:paddingTop="57dp"
+                android:text="0"
+                android:textColor="@color/verdeazul"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </android.support.constraint.ConstraintLayout>
     </android.support.constraint.ConstraintLayout>
-
 
     <FrameLayout
         android:id="@+id/fragmentSimularApostas"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:paddingTop="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolBarSimularAposta"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:paddingTop="10dp"/>
-
-
+        app:layout_constraintTop_toBottomOf="@+id/toolBar" />
 </android.support.constraint.ConstraintLayout>

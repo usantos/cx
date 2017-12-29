@@ -20,6 +20,7 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -55,7 +56,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
     DrawerLayout drawer_layout;
 
     @ViewById
-    ConstraintLayout toolBarSimularAposta;
+    ConstraintLayout toolBarSimularAposta, toolBarLoteca;
 
     @ViewById
     Button simularTelaAposta;
@@ -68,6 +69,12 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
 
     @ViewById
     Button qtdConcursosButton;
+
+    @ViewById
+    FrameLayout fragmentSimularApostas;
+
+    @ViewById
+    TextView labelValueSimplesLoteca, labelValueDuplasLoteca, labelValueTriplasLoteca;
 
     // Fragments
     FragmentManager fragmentManager;
@@ -148,25 +155,25 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
 
         switch (tipoJogo) {
             case MEGA_SENA:
-                configuraTipoApostaTela("_mega-sena_", R.color.megasenaclaro, R.color.megasenaescuro);
+                configuraTipoApostaTela("_mega-sena_", R.color.megasenaclaro, R.color.megasenaescuro, View.VISIBLE, View.GONE);
                 break;
             case QUINA:
-                configuraTipoApostaTela("_quina_", R.color.quinaclaro, R.color.quinaescuro);
+                configuraTipoApostaTela("_quina_", R.color.quinaclaro, R.color.quinaescuro, View.VISIBLE, View.GONE);
                 break;
             case LOTOFACIL:
-                configuraTipoApostaTela("_lotofácil_", R.color.lotofacilclaro, R.color.lotofacilescuro);
+                configuraTipoApostaTela("_lotofácil_", R.color.lotofacilclaro, R.color.lotofacilescuro, View.VISIBLE, View.GONE);
                 break;
             case DUPLA_SENA:
-                configuraTipoApostaTela("_dupla sena_", R.color.duplasenaclaro, R.color.duplasenaescuro);
+                configuraTipoApostaTela("_dupla sena_", R.color.duplasenaclaro, R.color.duplasenaescuro, View.VISIBLE, View.GONE);
                 break;
             case TIMEMANIA:
-                configuraTipoApostaTela("_timemania_", R.color.timemaniaclaro, R.color.timemaniaescuro);
+                configuraTipoApostaTela("_timemania_", R.color.timemaniaclaro, R.color.timemaniaescuro, View.VISIBLE, View.GONE);
                 break;
             case LOTOMANIA:
-                configuraTipoApostaTela("_lotomania_", R.color.lotomaniaclaro, R.color.lotomaniaescuro);
+                configuraTipoApostaTela("_lotomania_", R.color.lotomaniaclaro, R.color.lotomaniaescuro, View.VISIBLE, View.GONE);
                 break;
             case LOTECA:
-                configuraTipoApostaTela("_loteca_", R.color.lotecaclaro, R.color.lotecaescuro);
+                configuraTipoApostaTela("_loteca_", R.color.lotecaclaro, R.color.lotecaescuro, View.GONE, View.VISIBLE);
                 break;
         }
 
@@ -363,7 +370,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         }
     }
 
-    private void configuraTipoApostaTela(String titleActivity, int lightColor, int darkColor) {
+    private void configuraTipoApostaTela(String titleActivity, int lightColor, int darkColor, int visibilityToolBarSimularAposta, int visibilityToolBarLoteca) {
         setTitle(ViewUtils.textFuturaAndFuturaBold(this, titleActivity));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(ContextCompat.getColor(this, darkColor));
@@ -375,6 +382,8 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         }
 
         toolBarSimularAposta.setBackgroundColor(ContextCompat.getColor(this, darkColor));
+        toolBarSimularAposta.setVisibility(visibilityToolBarSimularAposta);
+        toolBarLoteca.setVisibility(visibilityToolBarLoteca);
 
         typeGameColorLight = lightColor;
         typeGameColorDark = darkColor;
@@ -487,4 +496,15 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         startActivity(activity);
     }
 
+    public void setLabelValueSimplesLoteca(TextView labelValueSimplesLoteca) {
+        this.labelValueSimplesLoteca = labelValueSimplesLoteca;
+    }
+
+    public void setLabelValueDuplasLoteca(TextView labelValueDuplasLoteca) {
+        this.labelValueDuplasLoteca = labelValueDuplasLoteca;
+    }
+
+    public void setLabelValueTriplasLoteca(TextView labelValueTriplasLoteca) {
+        this.labelValueTriplasLoteca = labelValueTriplasLoteca;
+    }
 }

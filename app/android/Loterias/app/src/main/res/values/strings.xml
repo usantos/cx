@@ -111,5 +111,10 @@
     <string name="label_encontre_lotorica_atraves_endereco_cep_codigo">Para isso, encontre a lotérica através\nde seu endereço, CEP ou código.</string>
     <string name="label_empate">Empate</string>
     <string name="label_nome_do_seu_time">Nome do seu time</string>
+    <string name="label_suas_apostas">Suas apostas</string>
+    <string name="label_simples">Simples</string>
+    <string name="label_duplas">Duplas</string>
+    <string name="label_triplas">Triplas</string>
+    <string name="label_dois_pontos">:</string>
 
 </resources>
