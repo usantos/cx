@@ -300,16 +300,6 @@
                 android:stretchMode="columnWidth"
                 android:verticalSpacing="10dp" />
 
-            <caixa.gov.br.loterias.view.custom.ExpandableHeightGridView
-                android:id="@+id/gridItens"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_marginHorizontal="10dp"
-                android:gravity="center"
-                android:numColumns="3"
-                android:stretchMode="columnWidth"
-                android:verticalSpacing="16dp" />
-
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
@@ -350,14 +340,13 @@
                     android:paddingBottom="55dp"/>
 
             </LinearLayout>
-
-
             <caixa.gov.br.loterias.view.custom.ExpandableHeightRecyclerView
                 android:id="@+id/recyclerViewLoteca"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="60dp"
-                android:clickable="false" />
+                android:layout_height="200dp"
+                android:paddingTop="60dp"
+                android:clickable="false"
+                android:nestedScrollingEnabled="false"/>
 
         </android.support.constraint.ConstraintLayout>
 

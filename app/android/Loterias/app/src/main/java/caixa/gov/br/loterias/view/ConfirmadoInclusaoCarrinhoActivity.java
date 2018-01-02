@@ -120,7 +120,7 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
         super.onCreateOptionsMenu(menu);
 
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.itens_simular_actionbar, menu);
+        getMenuInflater().inflate(R.menu.itens_simular_actionbar_termos, menu);
 
         MenuItem concursoAtual = menu.findItem(R.id.concursoAtual);
         concursoAtual.setTitle("Concurso \n " + parametroSimulacao.getConcurso().getNumero());

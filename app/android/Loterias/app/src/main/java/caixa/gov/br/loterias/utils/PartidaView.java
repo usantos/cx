@@ -125,27 +125,4 @@ public class PartidaView extends LinearLayout {
         super(context, attrs, defStyleAttr);
     }
 
-    public ItemEquipeView getLotecaTimeUm() {
-        return lotecaTimeUm;
-    }
-
-    public void setLotecaTimeUm(ItemEquipeView lotecaTimeUm) {
-        this.lotecaTimeUm = lotecaTimeUm;
-    }
-
-    public ItemEquipeView getLotecaEmpate() {
-        return lotecaEmpate;
-    }
-
-    public void setLotecaEmpate(ItemEquipeView lotecaEmpate) {
-        this.lotecaEmpate = lotecaEmpate;
-    }
-
-    public ItemEquipeView getLotecaTimeDois() {
-        return lotecaTimeDois;
-    }
-
-    public void setLotecaTimeDois(ItemEquipeView lotecaTimeDois) {
-        this.lotecaTimeDois = lotecaTimeDois;
-    }
 }

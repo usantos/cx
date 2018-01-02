@@ -102,6 +102,8 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
     TipoDialog tipoDialogMostrando;
     public ParametroJogoDTO parametroSimulacao;
 
+    private int toolBarMenu;
+
 
     public ParametroJogoDTO getParametroSimulacao() {
         return parametroSimulacao;
@@ -156,24 +158,31 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         switch (tipoJogo) {
             case MEGA_SENA:
                 configuraTipoApostaTela("_mega-sena_", R.color.megasenaclaro, R.color.megasenaescuro, View.VISIBLE, View.GONE);
+                this.toolBarMenu = R.menu.itens_simular_actionbar_termos;
                 break;
             case QUINA:
                 configuraTipoApostaTela("_quina_", R.color.quinaclaro, R.color.quinaescuro, View.VISIBLE, View.GONE);
+                this.toolBarMenu = R.menu.itens_simular_actionbar_termos;
                 break;
             case LOTOFACIL:
                 configuraTipoApostaTela("_lotofácil_", R.color.lotofacilclaro, R.color.lotofacilescuro, View.VISIBLE, View.GONE);
+                this.toolBarMenu = R.menu.itens_simular_actionbar_termos;
                 break;
             case DUPLA_SENA:
                 configuraTipoApostaTela("_dupla sena_", R.color.duplasenaclaro, R.color.duplasenaescuro, View.VISIBLE, View.GONE);
+                this.toolBarMenu = R.menu.itens_simular_actionbar_termos;
                 break;
             case TIMEMANIA:
                 configuraTipoApostaTela("_timemania_", R.color.timemaniaclaro, R.color.timemaniaescuro, View.VISIBLE, View.GONE);
+                this.toolBarMenu = R.menu.itens_simular_actionbar_duvida;
                 break;
             case LOTOMANIA:
                 configuraTipoApostaTela("_lotomania_", R.color.lotomaniaclaro, R.color.lotomaniaescuro, View.VISIBLE, View.GONE);
+                this.toolBarMenu = R.menu.itens_simular_actionbar_termos;
                 break;
             case LOTECA:
                 configuraTipoApostaTela("_loteca_", R.color.lotecaclaro, R.color.lotecaescuro, View.GONE, View.VISIBLE);
+                this.toolBarMenu = R.menu.itens_simular_actionbar_duvida;
                 break;
         }
 
@@ -410,7 +419,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.itens_simular_actionbar_termos, menu);
+        getMenuInflater().inflate(toolBarMenu, menu);
 
         MenuItem concursoAtual = menu.findItem(R.id.concursoAtual);
         ((TextView) concursoAtual.getActionView().findViewById(R.id.item_titulo)).setText("Concurso");

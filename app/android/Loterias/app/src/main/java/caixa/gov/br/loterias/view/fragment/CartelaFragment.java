@@ -25,6 +25,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.android.volley.NetworkResponse;
@@ -147,10 +148,19 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        int idList = 0;
+
+        if(tipoLoteca){
+            idList = R.id.recyclerViewLoteca;
+        }else{
+            idList = R.id.listaDezenas;
+        }
 
         configuraBotoes(getView());
 
-        ViewUtils.organizaTabLayout(getActivity(), R.id.cartelaFragmentMainLayout, R.id.listaDezenas, R.id.cartelaFragmentScrollView);
+
+        ViewUtils.organizaTabLayout(getActivity(), R.id.cartelaFragmentMainLayout, idList, R.id.cartelaFragmentScrollView);
+        ((ScrollView) getView().findViewById(R.id.cartelaFragmentScrollView)).fullScroll(ScrollView.FOCUS_UP);
 
     }
 
