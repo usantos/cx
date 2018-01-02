@@ -18,6 +18,7 @@ import caixa.gov.br.loterias.bo.silce.dto.ApostaFavoritaDTO;
 import caixa.gov.br.loterias.bo.silce.dto.CarrinhoDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import caixa.gov.br.loterias.bo.silce.dto.IncluirSurpresinhaDTO;
+import caixa.gov.br.loterias.bo.silce.dto.ModalidadeDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.RapidaoDTOResponse;
 import caixa.gov.br.loterias.bo.silce.internals.SilceConnection;
 import caixa.gov.br.loterias.bo.silce.internals.SilceSingleton;
@@ -131,5 +132,13 @@ public class ApostaBO{
 
         silceClient.getConnection().get(SilceClient.RAPIDOES_PATH, new LinkedHashMap<String, String>(), RapidaoDTOResponse.class,
                 silceClient.volleyListener(listener, RapidaoDTOResponse.class), silceClient.volleyErrorListener(errorListerner), headers);
+    }
+
+    public void getModalidades(final SilceClient.Listener<ModalidadeDTOResponse> listener, final SilceClient.ErrorListener errorListerner) {
+        LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
+        headers.put("Authorization", "Bearer " + UsuarioLogadoSingleton.getInstance().token);
+
+        silceClient.getConnection().get(SilceClient.MODALIDADES_PATH, new LinkedHashMap<String, String>(), ModalidadeDTOResponse.class,
+                silceClient.volleyListener(listener, ModalidadeDTOResponse.class), silceClient.volleyErrorListener(errorListerner), headers);
     }
 }

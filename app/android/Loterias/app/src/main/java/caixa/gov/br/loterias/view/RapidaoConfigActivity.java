@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,9 +15,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.google.gson.Gson;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import caixa.gov.br.loterias.R;
@@ -27,7 +30,6 @@ import caixa.gov.br.loterias.bo.silce.dto.ModalidadeDTO;
 import caixa.gov.br.loterias.bo.silce.dto.ModalidadeEnum;
 import caixa.gov.br.loterias.bo.silce.dto.RapidaoDTO;
 import caixa.gov.br.loterias.bo.silce.dto.RapidaoDTOResponse;
-import caixa.gov.br.loterias.model.ApostaFavorita;
 import caixa.gov.br.loterias.model.TipoAposta;
 import caixa.gov.br.loterias.utils.LoadingViewLoterias;
 import caixa.gov.br.loterias.utils.MensagensNetwork;
@@ -39,7 +41,8 @@ import caixa.gov.br.loterias.view.custom.ExpandableHeightGridView;
 
 public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener {
 
-    ArrayList<TipoAposta> tipoApostaLista = new ArrayList<TipoAposta>();
+
+    List<TipoAposta> tipoApostaLista = new ArrayList<TipoAposta>();
     List<ApostaFavoritaDTO> apostaFavoritaLista = new ArrayList<ApostaFavoritaDTO>();
     List<Integer> listaNumerosObrigatorios = new ArrayList<Integer>();
     List<Integer> listaNumerosProibidos = new ArrayList<Integer>();
@@ -67,31 +70,31 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
 
     }
 
+
     private void gridViewTipoAposta(){
         //mock tipo aposta
 
-//        TipoAposta tipoAposta = new TipoAposta("Mega Sena", R.drawable.trevo, R.color.megasenaclaro, true);
-//        TipoAposta tipoAposta2 = new TipoAposta("Quina", R.drawable.trevo, R.color.quinaclaro, true);
-//        TipoAposta tipoAposta3 = new TipoAposta("Loteca", R.drawable.trevo, R.color.lotecaclaro, true);
-//        tipoApostaLista = new TipoAposta[4];
-//        tipoApostaLista[0] = tipoAposta;
-//        tipoApostaLista[1] = tipoAposta2;
-//        tipoApostaLista[2] = tipoAposta3;
-//        tipoApostaLista[3] = tipoAposta4;
-
+        final ArrayList<TipoAposta> tipoApostaArrayList = new ArrayList<TipoAposta>();
+        for(TipoAposta tipoAposta: tipoApostaLista){
+            if(tipoAposta.getSelect() == true){
+                tipoApostaArrayList.add(tipoAposta);
+            }
+        }
         //gridview
 
         ExpandableHeightGridView gridViewTiposAposta = (ExpandableHeightGridView)findViewById(R.id.gridviewTiposApostasRapidao);
-        TiposApostasAdapter tiposApostasAdapter = new TiposApostasAdapter(this, tipoApostaLista);
+        TiposApostasAdapter tiposApostasAdapter = new TiposApostasAdapter(this, tipoApostaArrayList);
         gridViewTiposAposta.setAdapter(tiposApostasAdapter);
         gridViewTiposAposta.setExpanded(true);
 
         gridViewTiposAposta.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                if (position == tipoApostaLista.size()){
+                if (position == tipoApostaArrayList.size()){
                     Intent activity = new Intent(RapidaoConfigActivity.this, SelecaoModalidadesRapidaoActivity.class);
-                    startActivity(activity);
+                    String arrayAsString = new Gson().toJson(tipoApostaLista);
+                    activity.putExtra("tiposAposta", arrayAsString);
+                    startActivityForResult(activity, 5);
                 }
             }
         });
@@ -169,7 +172,6 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
     private void gridViewApostaFavorita(){
 
 //        //mock aposta favorita
-
         apostaFavoritaLista = rapidao.getApostasFavoritas();
 
         //gridview
@@ -355,6 +357,18 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
             }
         }
         gridViewTipoAposta();
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK && requestCode == 5) {
+            String arrayAsString = data.getExtras().getString("tiposAposta");
+            tipoApostaLista = Arrays.asList(new Gson().fromJson(arrayAsString, TipoAposta[].class));
+            gridViewTipoAposta();
+        }
 
     }
 }

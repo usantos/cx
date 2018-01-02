@@ -22,8 +22,8 @@ package caixa.gov.br.loterias.view.adapter;
         import caixa.gov.br.loterias.bo.silce.SilceClient;
         import caixa.gov.br.loterias.bo.silce.dto.CarrinhoDTOResponse;
         import caixa.gov.br.loterias.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
+
         import caixa.gov.br.loterias.bo.silce.dto.ModalidadeEnum;
-        import caixa.gov.br.loterias.model.Modalidade;
         import caixa.gov.br.loterias.utils.EstiloModalidade;
         import caixa.gov.br.loterias.utils.LoadingViewLoterias;
         import caixa.gov.br.loterias.utils.MensagensNetwork;

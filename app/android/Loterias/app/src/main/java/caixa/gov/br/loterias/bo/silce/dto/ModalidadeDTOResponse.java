@@ -33,7 +33,7 @@ public class ModalidadeDTOResponse {
     @SerializedName("errosValidacao")
     private List<ErroValidacao> errosValidacao = null;
     @SerializedName("payload")
-    private ModalidadeDTO payload = null;
+    private List<ModalidadeDTO> payload = null;
 
     /**
      * Código do erro
@@ -98,11 +98,11 @@ public class ModalidadeDTOResponse {
     /**
      **/
     @ApiModelProperty(value = "")
-    public ModalidadeDTO getPayload() {
+    public List<ModalidadeDTO> getPayload() {
         return payload;
     }
 
-    public void setPayload(ModalidadeDTO payload) {
+    public void setPayload(List<ModalidadeDTO> payload) {
         this.payload = payload;
     }
 

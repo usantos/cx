@@ -13,6 +13,9 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import java.util.List;
+
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.TipoAposta;
 import caixa.gov.br.loterias.view.SelecaoModalidadesRapidaoActivity;
@@ -21,11 +24,11 @@ import caixa.gov.br.loterias.view.SelecaoModalidadesRapidaoActivity;
 public class TiposApostasMultiplaSelecaoAdapter extends BaseAdapter {
 
     private final Context mContext;
-    private final TipoAposta[] tiposAposta;
+    private final List<TipoAposta> tiposAposta;
     private final SelecaoModalidadesRapidaoActivity parentActivity;
 
     // 1
-    public TiposApostasMultiplaSelecaoAdapter(SelecaoModalidadesRapidaoActivity parentActivity, Context context, TipoAposta[] tiposAposta) {
+    public TiposApostasMultiplaSelecaoAdapter(SelecaoModalidadesRapidaoActivity parentActivity, Context context, List<TipoAposta> tiposAposta) {
         this.mContext = context;
         this.tiposAposta = tiposAposta;
         this.parentActivity = parentActivity;
@@ -34,7 +37,7 @@ public class TiposApostasMultiplaSelecaoAdapter extends BaseAdapter {
     // 2
     @Override
     public int getCount() {
-        return tiposAposta.length;
+        return tiposAposta.size();
     }
 
     // 3
@@ -59,7 +62,7 @@ public class TiposApostasMultiplaSelecaoAdapter extends BaseAdapter {
             convertView = layoutInflater.inflate(R.layout.linearlayout_tipos_apostas, null);
         }
 
-        final TipoAposta tipoAposta = tiposAposta[position];
+        final TipoAposta tipoAposta = tiposAposta.get(position);
         final ImageView imageViewTipoAPosta = (ImageView)convertView.findViewById(R.id.imageviewTrevoTipoAposta);
 
         final LinearLayout linearLayoutTipoAposta = (LinearLayout)convertView.findViewById(R.id.LinearLayoutContentTiposAposta);
@@ -81,14 +84,14 @@ public class TiposApostasMultiplaSelecaoAdapter extends BaseAdapter {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (tiposAposta[position].getSelect()){
-                    tiposAposta[position].setSelect(false);
+                if (tiposAposta.get(position).getSelect()){
+                    tiposAposta.get(position).setSelect(false);
                     imageViewTipoAPosta.setImageResource(tipoAposta.getImagemTrevo());
                     linearLayoutTipoAposta.setBackgroundColor(ContextCompat.getColor(mContext, R.color.branco));
                     linearLayoutTipoAposta.setBackground(ContextCompat.getDrawable(mContext,R.drawable.custom_border_cinza));
                     tituloTipoAposta.setTextColor(ContextCompat.getColor(mContext, R.color.cinzatextoselecionado));
                 }else{
-                    tiposAposta[position].setSelect(true);
+                    tiposAposta.get(position).setSelect(true);
                     imageViewTipoAPosta.setImageResource(R.drawable.trevo);
                     linearLayoutTipoAposta.setBackgroundColor(ContextCompat.getColor(mContext, tipoAposta.getCorBackground()));
                     tituloTipoAposta.setTextColor(ContextCompat.getColor(mContext, R.color.branco));
@@ -101,6 +104,7 @@ public class TiposApostasMultiplaSelecaoAdapter extends BaseAdapter {
                     }
                 }
                 parentActivity.mudarLayoutBotaoSalvar(false);
+
             }
         });
 
@@ -108,8 +112,5 @@ public class TiposApostasMultiplaSelecaoAdapter extends BaseAdapter {
         return convertView;
     }
 
-    public void testeXXX(){
-
-    }
 
 }

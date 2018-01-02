@@ -27,7 +27,6 @@ import java.util.Date;
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.bo.silce.dto.ModalidadeEnum;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroJogoDTO;
-import caixa.gov.br.loterias.model.Modalidade;
 import caixa.gov.br.loterias.utils.EstiloModalidade;
 import caixa.gov.br.loterias.utils.ViewUtils;
 
@@ -85,7 +84,7 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
     private void configuraLayoutTela(ModalidadeEnum modalidadeEnum) {
         EstiloModalidade estilo = new EstiloModalidade(modalidadeEnum);
 
-        setTitle(ViewUtils.textFuturaAndFuturaBold(this, "_"+ModalidadeEnum.fromString(modalidadeEnum)+"_"));
+        setTitle(ViewUtils.textFuturaAndFuturaBold(this, "_"+ ModalidadeEnum.fromString(modalidadeEnum)+"_"));
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(ContextCompat.getColor(this, estilo.getCorEscura()));
