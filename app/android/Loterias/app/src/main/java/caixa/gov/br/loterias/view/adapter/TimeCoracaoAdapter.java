@@ -53,7 +53,7 @@ public class TimeCoracaoAdapter extends BaseAdapter {
         TextView ufTime = convertView.findViewById(R.id.timeCoracaoUf);
         ImageView imageTime = convertView.findViewById(R.id.time_coracao_image);
 
-        imageTime.setImageResource(R.drawable.time_acf);
+        imageTime.setImageResource(R.drawable.time);
         nameTime.setText(times.get(i).getNome());
         ufTime.setText(times.get(i).getUf());
 
