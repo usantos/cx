@@ -62,6 +62,7 @@
     <color name="azulescuroapostafavorita">#1f2948</color>
     <color name="cinzabordanaoselecionado">#d3e2e5</color>
     <color name="cinzatextoselecionado">#d3e3e6</color>
+    <color name="cinzaHeaderTelaAjuda">#3a4859</color>
 
 
 </resources>

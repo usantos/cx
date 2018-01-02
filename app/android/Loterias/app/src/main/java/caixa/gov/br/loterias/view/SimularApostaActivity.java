@@ -450,6 +450,9 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         if (id == R.id.action_termos) {
             abrirTermos();
             return true;
+        } else if (id == R.id.action_duvida) {
+            abrirAjuda();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -502,6 +505,11 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
 
     private void abrirTermos() {
         Intent activity = new Intent(SimularApostaActivity.this, TermosUsoActivity.class);
+        startActivity(activity);
+    }
+
+    private void abrirAjuda() {
+        Intent activity = new Intent(SimularApostaActivity.this, AjudaActivity_.class);
         startActivity(activity);
     }
 

@@ -26,82 +26,83 @@
                 android:id="@+id/salvarApostaLayout"
                 android:layout_width="184dp"
                 android:layout_height="140dp">
-            <RelativeLayout
-                android:layout_width="152dp"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/textoDeNomeInfo"
-                android:layout_alignStart="@+id/textoDeNomeInfo"
-                android:layout_below="@+id/textoDeNomeInfo"
-                android:layout_marginTop="10dp">
 
-                <ImageButton
-                    android:id="@+id/btnSalvarAposta"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_centerInParent="true"
-
-                    android:layout_marginLeft="7dp"
-                    android:layout_marginStart="7dp"
-                    android:layout_toEndOf="@+id/editNomeAposta"
-                    android:layout_toRightOf="@+id/editNomeAposta"
-                    android:background="@drawable/seta_verde" />
-
-                <EditText
-                    android:id="@+id/editNomeAposta"
-                    android:layout_width="125dp"
+                <RelativeLayout
+                    android:layout_width="152dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="0dp"
-                    android:backgroundTint="@color/branco"
-                    android:inputType="textNoSuggestions"
-                    android:paddingBottom="7dp"
-                    android:paddingLeft="0dp"
-                    android:paddingTop="0dp"
-                    android:text=""
+                    android:layout_alignLeft="@+id/textoDeNomeInfo"
+                    android:layout_alignStart="@+id/textoDeNomeInfo"
+                    android:layout_below="@+id/textoDeNomeInfo"
+                    android:layout_marginTop="10dp">
+
+                    <ImageButton
+                        android:id="@+id/btnSalvarAposta"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_centerInParent="true"
+
+                        android:layout_marginLeft="7dp"
+                        android:layout_marginStart="7dp"
+                        android:layout_toEndOf="@+id/editNomeAposta"
+                        android:layout_toRightOf="@+id/editNomeAposta"
+                        android:background="@drawable/seta_verde" />
+
+                    <EditText
+                        android:id="@+id/editNomeAposta"
+                        android:layout_width="125dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="0dp"
+                        android:backgroundTint="@color/branco"
+                        android:inputType="textNoSuggestions"
+                        android:paddingBottom="7dp"
+                        android:paddingLeft="0dp"
+                        android:paddingTop="0dp"
+                        android:text=""
+                        android:textColor="@color/branco"
+                        android:textCursorDrawable="@null"
+                        android:textSize="16sp" />
+                </RelativeLayout>
+
+
+                <TextView
+                    android:id="@+id/textoDeNomeInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/iconStarSalvar"
+                    android:layout_alignStart="@+id/iconStarSalvar"
+                    android:layout_below="@+id/textoSalveEstaAposta"
+                    android:layout_marginTop="29dp"
+                    android:text="@string/textoDeNome"
+                    android:textColor="@color/verdeazul"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/textoSalveEstaAposta"
+                    android:layout_width="match_parent"
+                    android:layout_height="21dp"
+                    android:layout_alignBottom="@+id/iconStarSalvar"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_toEndOf="@+id/iconStarSalvar"
+                    android:layout_toRightOf="@+id/iconStarSalvar"
+                    android:gravity="center_vertical"
+                    android:padding="0dp"
+                    android:text="@string/tituloSalvarAposta"
                     android:textColor="@color/branco"
-                    android:textCursorDrawable="@null"
-                    android:textSize="16sp" />
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:id="@+id/iconStarSalvar"
+                    android:layout_width="21dp"
+                    android:layout_height="21dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="20dp"
+                    app:srcCompat="@drawable/icon_favoritar" />
             </RelativeLayout>
-
-
-            <TextView
-                android:id="@+id/textoDeNomeInfo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/iconStarSalvar"
-                android:layout_alignStart="@+id/iconStarSalvar"
-                android:layout_below="@+id/textoSalveEstaAposta"
-                android:layout_marginTop="29dp"
-                android:text="@string/textoDeNome"
-                android:textColor="@color/verdeazul"
-                android:textSize="12sp" />
-
-            <TextView
-                android:id="@+id/textoSalveEstaAposta"
-                android:layout_width="match_parent"
-                android:layout_height="21dp"
-                android:layout_alignBottom="@+id/iconStarSalvar"
-                android:layout_marginLeft="5dp"
-                android:layout_marginStart="5dp"
-                android:layout_toEndOf="@+id/iconStarSalvar"
-                android:layout_toRightOf="@+id/iconStarSalvar"
-                android:gravity="center_vertical"
-                android:padding="0dp"
-                android:text="@string/tituloSalvarAposta"
-                android:textColor="@color/branco"
-                android:textSize="14sp" />
-
-            <ImageView
-                android:id="@+id/iconStarSalvar"
-                android:layout_width="21dp"
-                android:layout_height="21dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="15dp"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="20dp"
-                app:srcCompat="@drawable/icon_favoritar" />
-        </RelativeLayout>
         </RelativeLayout>
 
         <Button
@@ -259,8 +260,8 @@
                 android:id="@+id/layoutTitleLoteca"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:layout_marginLeft="17dp"
+                android:orientation="horizontal"
                 android:visibility="gone">
 
                 <TextView
@@ -268,24 +269,24 @@
                     style="@style/ArialMT"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/label_informe"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/verdeazul"
+                    android:layout_marginBottom="20dp"
                     android:layout_marginTop="20dp"
-                    android:layout_marginBottom="20dp"/>
+                    android:text="@string/label_informe"
+                    android:textColor="@color/verdeazul"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/titleLotecaContinue"
                     style="@style/ArialMT"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/label_resultado_das_partidas."
-                    android:textSize="14sp"
-                    android:textColor="@color/verdeazul"
-                    android:layout_marginTop="20dp"
                     android:layout_marginBottom="20dp"
-                    android:layout_marginLeft="6dp"/>
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/label_resultado_das_partidas."
+                    android:textColor="@color/verdeazul"
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <caixa.gov.br.loterias.view.custom.ExpandableHeightGridView
@@ -301,31 +302,31 @@
                 android:verticalSpacing="10dp" />
 
             <LinearLayout
-                android:orientation="vertical"
+                android:id="@+id/selecioneTimeCoracao"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:id="@+id/selecioneTimeCoracao" >
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <TextView
+                    style="@style/ArialMT"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="12sp"
-                    style="@style/ArialMT"
-                    android:textColor="@color/azulFormNovoTipoPagamento"
-                    android:text="@string/label_nome_do_seu_time"
                     android:layout_marginLeft="45dp"
-                    android:layout_marginRight="45dp"/>
+                    android:layout_marginRight="45dp"
+                    android:text="@string/label_nome_do_seu_time"
+                    android:textColor="@color/azulFormNovoTipoPagamento"
+                    android:textSize="12sp" />
 
                 <EditText
+                    android:id="@+id/informe_nome_time"
                     style="@style/ArialMT"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/cinza"
-                    android:textSize="16sp"
-                    android:id="@+id/informe_nome_time"
                     android:layout_marginLeft="45dp"
-                    android:layout_marginRight="45dp"/>
+                    android:layout_marginRight="45dp"
+                    android:textColor="@color/cinza"
+                    android:textSize="16sp" />
 
                 <caixa.gov.br.loterias.view.custom.ExpandableHeightGridView
                     android:id="@+id/gridTimes"
@@ -334,19 +335,20 @@
                     android:layout_marginHorizontal="10dp"
                     android:gravity="center"
                     android:numColumns="3"
+                    android:paddingBottom="55dp"
                     android:stretchMode="columnWidth"
                     android:verticalSpacing="16dp"
-                    app:layout_goneMarginBottom="10dp"
-                    android:paddingBottom="55dp"/>
+                    app:layout_goneMarginBottom="10dp" />
 
             </LinearLayout>
+
             <caixa.gov.br.loterias.view.custom.ExpandableHeightRecyclerView
                 android:id="@+id/recyclerViewLoteca"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:paddingTop="60dp"
                 android:clickable="false"
-                android:nestedScrollingEnabled="false"/>
+                android:nestedScrollingEnabled="false"
+                android:paddingTop="60dp" />
 
         </android.support.constraint.ConstraintLayout>
 

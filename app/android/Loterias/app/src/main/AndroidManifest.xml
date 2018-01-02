@@ -139,6 +139,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="caixa.gov.br.loterias.view.RapidaoConfigActivity" />
         </activity>
+        <activity android:name=".view.AjudaActivity_"></activity>
     </application>
 
 </manifest>
