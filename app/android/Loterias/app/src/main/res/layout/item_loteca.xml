@@ -13,20 +13,24 @@
         android:layout_marginTop="24dp"
         android:layout_marginBottom="15dp"/>
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/item_title"
         android:textSize="14.2sp"
-        android:text="Empate"
+        android:text="@string/label_empate"
+        android:textAlignment="center"
+        android:gravity="center_horizontal"
         android:textStyle="bold"
         style="@style/editTextArialMTTheme"
         android:layout_gravity="center_horizontal"/>
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/item_description"
         android:textSize="14.2sp"
         android:text=""
+        android:textAlignment="center"
+        android:gravity="center_horizontal"
         style="@style/editTextArialMTTheme"
         android:layout_gravity="center_horizontal" />
 

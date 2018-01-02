@@ -58,7 +58,7 @@ public class LotecaAdapter extends RecyclerView.Adapter<LotecaAdapter.LotecaHold
     }
 
     public interface LocateAdapterListener{
-        void clickado(ParametroPartida parametroPartida);
+        void clickEquipeLoteca(ParametroPartida parametroPartida);
     }
 
 }

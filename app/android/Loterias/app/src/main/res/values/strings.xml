@@ -118,5 +118,6 @@
     <string name="label_dois_pontos">:</string>
     <string name="label_informe">Informe</string>
     <string name="label_resultado_das_partidas.">o resultado das partidas.</string>
+    <string name="label_selecionar_times_aleatoriamente">_Selecionar_ times aleatoriamente</string>
 
 </resources>

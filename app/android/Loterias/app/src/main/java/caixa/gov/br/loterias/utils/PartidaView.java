@@ -49,7 +49,7 @@ public class PartidaView extends LinearLayout {
             parametroPartida.getEquipe1().setSelecionado(Boolean.TRUE);
             parametroPartida.setQtdItensSelecionados(parametroPartida.getQtdItensSelecionados() +1);
         }
-        listener.clickado(parametroPartida);
+        listener.clickEquipeLoteca(parametroPartida);
     }
 
     @Click(R.id.loteca_time_dois)
@@ -69,7 +69,7 @@ public class PartidaView extends LinearLayout {
             parametroPartida.getEquipe2().setSelecionado(Boolean.TRUE);
             parametroPartida.setQtdItensSelecionados(parametroPartida.getQtdItensSelecionados() +1);
         }
-        listener.clickado(parametroPartida);
+        listener.clickEquipeLoteca(parametroPartida);
     }
 
     @Click(R.id.loteca_empate)
@@ -89,7 +89,7 @@ public class PartidaView extends LinearLayout {
             parametroPartida.setSelecionado(Boolean.TRUE);
             parametroPartida.setQtdItensSelecionados(parametroPartida.getQtdItensSelecionados() +1);
         }
-        listener.clickado(parametroPartida);
+        listener.clickEquipeLoteca(parametroPartida);
     }
 
     public void setListener(LotecaAdapter.LocateAdapterListener listener) {

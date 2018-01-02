@@ -12,9 +12,9 @@
         android:layout_height="wrap_content">
 
         <RelativeLayout
-            android:id="@+id/salvarApostaLayout"
-            android:layout_width="184dp"
-            android:layout_height="140dp"
+            android:id="@+id/layoutSalvarApostaLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:background="@color/cinza"
             android:clickable="true"
@@ -22,6 +22,10 @@
             app:layout_constraintLeft_toRightOf="@+id/viewTabBar"
             app:layout_constraintRight_toLeftOf="@+id/viewTabBar">
 
+            <RelativeLayout
+                android:id="@+id/salvarApostaLayout"
+                android:layout_width="184dp"
+                android:layout_height="140dp">
             <RelativeLayout
                 android:layout_width="152dp"
                 android:layout_height="wrap_content"
@@ -97,6 +101,7 @@
                 android:layout_marginStart="15dp"
                 android:layout_marginTop="20dp"
                 app:srcCompat="@drawable/icon_favoritar" />
+        </RelativeLayout>
         </RelativeLayout>
 
         <Button
@@ -246,7 +251,7 @@
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_constraintBottom_toTopOf="@+id/salvarApostaLayout"
+            app:layout_constraintBottom_toTopOf="@+id/layoutSalvarApostaLayout"
             app:layout_constraintHorizontal_bias="0.0">
 
 
@@ -256,7 +261,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginLeft="17dp"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/titleLotecaInforme"
@@ -347,13 +352,12 @@
             </LinearLayout>
 
 
-            <android.support.v7.widget.RecyclerView
-                android:layout_marginTop="60dp"
+            <caixa.gov.br.loterias.view.custom.ExpandableHeightRecyclerView
                 android:id="@+id/recyclerViewLoteca"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:clickable="false"
-                />
+                android:layout_marginTop="60dp"
+                android:clickable="false" />
 
         </android.support.constraint.ConstraintLayout>
 
