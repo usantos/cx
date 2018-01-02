@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="110dp"
     android:layout_height="110dp"
@@ -12,7 +13,7 @@
         android:maxHeight="41dp"
         android:id="@+id/time_coracao_image"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="16dp" />
+        android:layout_marginTop="16dp"/>
 
     <TextView
         android:id="@+id/timeCoracaoNome"
@@ -20,6 +21,7 @@
         style="@style/editTextArialMTTheme"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
         android:layout_gravity="center_horizontal"
         android:textSize="14.2sp"
         android:textStyle="bold" />

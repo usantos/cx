@@ -517,33 +517,34 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         informeNomeTime.addTextChangedListener(new TextWatcher() {
             private boolean isChanged = false;
 
-
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
             }
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
                 if (isChanged) {
                     return;
                 }
 
                 isChanged = true;
 
-                if (charSequence.length() > 3) {
-
-                    List<ParametroEquipe> parametroEquipeList = parametroJogo.getEquipes();
-                    List<ParametroEquipe> filter = new ArrayList<>();
-
+                List<ParametroEquipe> parametroEquipeList = parametroJogo.getEquipes();
+                List<ParametroEquipe> filter = new ArrayList<>();
+                if (charSequence.length() >= 3) {
                       for (ParametroEquipe parametroEquipe : parametroEquipeList) {
                         if (parametroEquipe.getNome().toUpperCase().contains(charSequence.toString().toUpperCase())) {
                             filter.add(parametroEquipe);
                         }                    }
-                    timeCoracaoAdapter.setTimes(filter);
-                    timeCoracaoAdapter.notifyDataSetChanged();
+                    informeNomeTime.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
+                } else {
+                    filter = parametroEquipeList;
+                    informeNomeTime.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                 }
 
+                timeCoracaoAdapter.setTimes(filter);
+                timeCoracaoAdapter.notifyDataSetChanged();
                 isChanged = false;
 
             }
