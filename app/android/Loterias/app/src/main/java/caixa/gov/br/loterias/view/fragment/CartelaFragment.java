@@ -103,8 +103,8 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
     public BigDecimal valorTotalAposta;
 
     private boolean tipoLoteca = false;
-    private boolean tipoTimeMania;
-    private boolean isTimeCoracao;
+    private boolean isTipoTimeMania;
+    private boolean isEcolhaTimeBtnAtivado;
 
 
     public CartelaFragment() {
@@ -151,9 +151,9 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         super.onActivityCreated(savedInstanceState);
         int idList = 0;
 
-        if(tipoLoteca){
+        if (tipoLoteca) {
             idList = R.id.recyclerViewLoteca;
-        }else{
+        } else {
             idList = R.id.listaDezenas;
         }
 
@@ -224,7 +224,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
             case DUPLA_SENA:
                 break;
             case TIMEMANIA:
-                tipoTimeMania = true;
+                isTipoTimeMania = true;
                 break;
             case LOTOMANIA:
                 break;
@@ -354,15 +354,15 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.botaoAdicionarCompletarCartela: {
-                if(tipoTimeMania){
-                    if (isTimeCoracao && dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) {
-                       mostrarCartelaEscolhaTimeCoracao();
+                if (isTipoTimeMania) {
+                    if (isEcolhaTimeBtnAtivado && dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) {
+                        mostrarCartelaEscolhaTimeCoracao();
                     } else {
                         AdcionarApostaPreencherNumerosAleatorios();
                     }
-                    
+                } else {
+                    AdcionarApostaPreencherNumerosAleatorios();
                 }
-                AdcionarApostaPreencherNumerosAleatorios();
             }
             break;
 
@@ -500,17 +500,18 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
     private void preencheNumerosAleatorios() {
         ApostaBO apostaBO = new ApostaBO(getActivity());
 
-        apostaBO.completaJogo(parentActivity.qtdDezenasPossiveisSelecionado, dezenasSelecionadas, 1, parametroJogo.getPrognosticoMaximo(), new SilceClient.Listener<CompletaJogoRsp>() {
+        apostaBO.completaJogo(parentActivity.qtdDezenasPossiveisSelecionado, dezenasSelecionadas, 1,
+                parametroJogo.getPrognosticoMaximo(), new SilceClient.Listener<CompletaJogoRsp>() {
             @Override
             public void onResponse(CompletaJogoRsp response) {
+                isEcolhaTimeBtnAtivado = true;
                 dezenasSelecionadas.clear();
                 dezenasSelecionadas.addAll(response.getPayload());
                 simularDezenasAdapter.notifyDataSetChanged();
                 atualizaStatusBotaoFinalizar();
-                /*if (tipoTimeMania) {
+                /*if (isTipoTimeMania) {
                     mostrarCartelaEscolhaTimeCoracao();
                 }*/
-                isTimeCoracao = true;
                 verificaSeMostraBotaoLimparAposta(getView());
                 verificaSeMostraSalvarApostaView(getView());
             }
@@ -527,12 +528,14 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
     private void mostrarCartelaEscolhaTimeCoracao() {
         // Estando a aposta completa apresenta a tela de escolha do time
+        isEcolhaTimeBtnAtivado = false;
         selecioneTimeCoracaoLayout = view.findViewById(R.id.selecioneTimeCoracao);
         mGridTimeCoracao = view.findViewById(R.id.gridTimes);
         preencherVisibilidaeGridView(View.VISIBLE, View.VISIBLE, View.GONE, View.GONE);
         informeNomeTime = selecioneTimeCoracaoLayout.findViewById(R.id.informe_nome_time);
         onChangeInformeNomeTime();
         configurarSelecaoTimeCoracao(mGridTimeCoracao);
+        atualizaStatusBotaoFinalizar();
     }
 
     private void onChangeInformeNomeTime() {
@@ -646,7 +649,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
     private void verificaSeMostraSalvarApostaView(View fragmentView) {
 
-        if ((!tipoLoteca) && (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado)) {
+        if ( (!tipoLoteca) && (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) && isEcolhaTimeBtnAtivado == false) {
 
             RelativeLayout salvarApostaLayout = fragmentView.findViewById(R.id.salvarApostaLayout);
 
@@ -667,33 +670,44 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                 botaoFinalizar.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.cinza));
                 botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(getActivity(), getString(R.string.label_selecionar_times_aleatoriamente)));
             } else {
-                botaoFinalizar.setBackgroundColor(ContextCompat.getColor(getActivity(), typeGameColorLight));
-                botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(getActivity(), getString(R.string.adicionarAoCarrinho)));
+                atualizarBotaoFinalizarAdicionarCarrinho();
             }
         }
-        if (tipoTimeMania) {
-            if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) {
+        if (isTipoTimeMania) {
+            if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado && isEcolhaTimeBtnAtivado ==true) {
                 botaoFinalizar.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.timemaniaescuro));
                 botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(getActivity(), getString(R.string.label_escolha_time_coracao)));
+            }else{
+                atualizarAdicionarCarinhoCompletarCartela();
             }
         } else {
-
-            if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) {
-                botaoFinalizar.setBackgroundColor(ContextCompat.getColor(getActivity(), typeGameColorLight));
-                botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(getActivity(), getString(R.string.adicionarAoCarrinho)));
-            } else if (dezenasSelecionadas.size() > parentActivity.qtdDezenasPossiveisSelecionado) {
-                //dezenasSelecionadas.clear();
-                simularDezenasAdapter.notifyDataSetChanged();
-                botaoFinalizar.setBackgroundColor(ContextCompat.getColor(getActivity(), typeGameColorLight));
-                botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(getActivity(), getString(R.string.completarCartela)));
-
-                getView().findViewById(R.id.salvarApostaLayout).setVisibility(View.GONE);
-                getView().findViewById(R.id.botaoLimparAposta).setVisibility(View.GONE);
-            } else {
-                botaoFinalizar.setBackgroundColor(ContextCompat.getColor(getActivity(), typeGameColorLight));
-                botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(getActivity(), getString(R.string.completarCartela)));
-            }
+            atualizarAdicionarCarinhoCompletarCartela();
         }
+    }
+
+    private void atualizarAdicionarCarinhoCompletarCartela() {
+        if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) {
+            atualizarBotaoFinalizarAdicionarCarrinho();
+        } else if (dezenasSelecionadas.size() > parentActivity.qtdDezenasPossiveisSelecionado) {
+            //dezenasSelecionadas.clear();
+            simularDezenasAdapter.notifyDataSetChanged();
+            atualizarBotaoFinalizarCompletarCartela();
+
+            getView().findViewById(R.id.salvarApostaLayout).setVisibility(View.GONE);
+            getView().findViewById(R.id.botaoLimparAposta).setVisibility(View.GONE);
+        } else {
+            atualizarBotaoFinalizarCompletarCartela();
+        }
+    }
+
+    private void atualizarBotaoFinalizarCompletarCartela() {
+        botaoFinalizar.setBackgroundColor(ContextCompat.getColor(getActivity(), typeGameColorLight));
+        botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(getActivity(), getString(R.string.completarCartela)));
+    }
+
+    private void atualizarBotaoFinalizarAdicionarCarrinho() {
+        botaoFinalizar.setBackgroundColor(ContextCompat.getColor(getActivity(), typeGameColorLight));
+        botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(getActivity(), getString(R.string.adicionarAoCarrinho)));
     }
 
     private void configuraListaDezenas(View fragmentView) {
