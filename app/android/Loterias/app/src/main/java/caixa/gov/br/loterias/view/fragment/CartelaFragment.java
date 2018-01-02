@@ -500,11 +500,11 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
     private void mostrarCartelaEscolhaTimeCoracao() {
         // Estando a aposta completa apresenta a tela de escolha do time
+        selecioneTimeCoracaoLayout = view.findViewById(R.id.selecioneTimeCoracao);
         mGridTimeCoracao = view.findViewById(R.id.gridTimes);
-        selecioneTimeCoracaoLayout = (LinearLayout) getLayoutInflater().from(getActivity()).inflate(R.layout.escolha_time_coracao, null);
+        preencherVisibilidaeGridView(View.VISIBLE, View.VISIBLE, View.GONE, View.GONE);
         informeNomeTime = selecioneTimeCoracaoLayout.findViewById(R.id.informe_nome_time);
         onChangeInformeNomeTime();
-        preencherVisibilidaeGridView(View.VISIBLE, View.VISIBLE, View.GONE, View.GONE);
         configurarSelecaoTimeCoracao(mGridTimeCoracao);
     }
 
@@ -521,19 +521,20 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (isChanged) {
-                     return;
+                    return;
                 }
 
                 isChanged = true;
 
-                if(charSequence.length() > 3){
+                if (charSequence.length() > 3) {
 
-                    List<ParametroEquipe> parametroEquipeList =  parametroJogo.getEquipes();
+                    List<ParametroEquipe> parametroEquipeList = parametroJogo.getEquipes();
                     List<ParametroEquipe> filter = new ArrayList<>();
 
-                    for(ParametroEquipe parametroEquipe :parametroEquipeList){
-                         parametroEquipe.getNome().contains(charSequence);
-                        filter.add(parametroEquipe);
+                    for (ParametroEquipe parametroEquipe : parametroEquipeList) {
+                        if (parametroEquipe.getNome().toUpperCase().contains(charSequence.toString().toUpperCase())) {
+                            filter.add(parametroEquipe);
+                        }
                     }
                     timeCoracaoAdapter.setTimes(filter);
                     timeCoracaoAdapter.notifyDataSetChanged();

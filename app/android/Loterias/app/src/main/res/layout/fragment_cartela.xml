@@ -246,11 +246,9 @@
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginVertical="10dp"
             app:layout_constraintBottom_toTopOf="@+id/salvarApostaLayout"
             app:layout_constraintHorizontal_bias="0.0">
 
-            <include layout="@layout/escolha_time_coracao" />
 
             <LinearLayout
                 android:id="@+id/layoutTitleLoteca"
@@ -307,16 +305,47 @@
                 android:stretchMode="columnWidth"
                 android:verticalSpacing="16dp" />
 
-            <caixa.gov.br.loterias.view.custom.ExpandableHeightGridView
-                android:id="@+id/gridTimes"
+            <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_marginHorizontal="10dp"
-                android:gravity="center"
-                android:numColumns="auto_fit"
-                android:stretchMode="columnWidth"
-                android:verticalSpacing="16dp"
-                app:layout_goneMarginBottom="10dp" />
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:id="@+id/selecioneTimeCoracao" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    style="@style/ArialMT"
+                    android:textColor="@color/azulFormNovoTipoPagamento"
+                    android:text="@string/label_nome_do_seu_time"
+                    android:layout_marginLeft="45dp"
+                    android:layout_marginRight="45dp"/>
+
+                <EditText
+                    style="@style/ArialMT"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/cinza"
+                    android:textSize="16sp"
+                    android:id="@+id/informe_nome_time"
+                    android:layout_marginLeft="45dp"
+                    android:layout_marginRight="45dp"/>
+
+                <caixa.gov.br.loterias.view.custom.ExpandableHeightGridView
+                    android:id="@+id/gridTimes"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginHorizontal="10dp"
+                    android:gravity="center"
+                    android:numColumns="3"
+                    android:stretchMode="columnWidth"
+                    android:verticalSpacing="16dp"
+                    app:layout_goneMarginBottom="10dp"
+                    android:paddingBottom="55dp"/>
+
+            </LinearLayout>
+
 
             <android.support.v7.widget.RecyclerView
                 android:layout_marginTop="60dp"
