@@ -4,23 +4,39 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
+import android.widget.TextView;
+
+import com.google.gson.Gson;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.NumerosSelecionadosRapidao;
+
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.adapter.NumeroSelecionadoRapidaoAdapter;
-import caixa.gov.br.loterias.view.adapter.NumerosRapidaoAdapter;
 import caixa.gov.br.loterias.view.custom.ExpandableHeightGridView;
 
 public class NumerosRapidaoActivity extends AppCompatActivity {
+    NumerosSelecionadosRapidao[] listaNumerosSelecionadosRapidao;
+    List<Integer> numerosLista =  new ArrayList<Integer>();
+    Button salvarNumerosApostaRapidaoSelecao;
+    TextView titleNumerosRapidaoObrigatorios;
+    TextView textoSelecaoNumerosRapidao;
+    ExpandableHeightGridView gridViewNumerosRapidaoSlc;
+    Boolean isTipoNrObrigatorios;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +46,56 @@ public class NumerosRapidaoActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        salvarNumerosApostaRapidaoSelecao = (Button)findViewById(R.id.salvarNumerosApostaRapidaoSelecao);
+        titleNumerosRapidaoObrigatorios  = (TextView)findViewById(R.id.titleNumerosRapidao);
+        textoSelecaoNumerosRapidao  = (TextView)findViewById(R.id.textoSelecaoNumerosRapidao);
+
+        isTipoNrObrigatorios =  getIntent().getExtras().getBoolean("isTipoNrObrigatorios");
+        if(isTipoNrObrigatorios == true){
+            List<Integer> numerosObrigadoriosSalvos =  new ArrayList<Integer>();
+            String arrayObrigarios =  getIntent().getExtras().getString("numerosobrigatorios");
+            numerosObrigadoriosSalvos = Arrays.asList(new Gson().fromJson(arrayObrigarios, Integer[].class));
+            numerosLista = numerosObrigadoriosSalvos;
+            gridViewNumerosRapidaoSlc = (ExpandableHeightGridView)findViewById(R.id.gridviewNumerosRapidaoSelecao);
+
+        }else{
+            List<Integer> numerosProibidosSalvos =  new ArrayList<Integer>();
+            String arrayProibidos =  getIntent().getExtras().getString("numerosProibidos");
+            numerosProibidosSalvos = Arrays.asList(new Gson().fromJson(arrayProibidos, Integer[].class));
+            numerosLista = numerosProibidosSalvos;
+            titleNumerosRapidaoObrigatorios.setText("Números proíbidos");
+            textoSelecaoNumerosRapidao.setText("Selecione os números que não deverão aparecer em suas apostas.");
+            titleNumerosRapidaoObrigatorios.setTextColor(ContextCompat.getColor(this, R.color.vermelhoBilhetes));
+            salvarNumerosApostaRapidaoSelecao.setBackgroundColor(ContextCompat.getColor(this, R.color.vermelhoBilhetes));
+            gridViewNumerosRapidaoSlc = (ExpandableHeightGridView)findViewById(R.id.gridviewNumerosRapidaoSelecao);
+        }
+
+
+
+        salvarNumerosApostaRapidaoSelecao.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent();
+
+                List<Integer> salvarNumero = new ArrayList<Integer>();
+                for (NumerosSelecionadosRapidao numero : listaNumerosSelecionadosRapidao){
+                    if (numero.getSelecionado() == true){
+                        salvarNumero.add(numero.getNumero());
+                    }
+                }
+                String arrayNumeros = new Gson().toJson(salvarNumero);
+                intent.putExtra("numerosRapidao", arrayNumeros);
+                setResult(RESULT_OK, intent);
+                finish();
+            }
+        });
 
         gridViewNumeros();
+    }
+    @Override
+    public boolean onSupportNavigateUp(){
+        finish();
+        return true;
     }
 
     @Override
@@ -73,17 +137,29 @@ public class NumerosRapidaoActivity extends AppCompatActivity {
 
 
     private void gridViewNumeros(){
-        NumerosSelecionadosRapidao[] listaNumerosSelecionadosRapidao = new NumerosSelecionadosRapidao[100];
+        listaNumerosSelecionadosRapidao = new NumerosSelecionadosRapidao[100];
         for (int i =0 ; i<100; i++){
             NumerosSelecionadosRapidao numeSel = new NumerosSelecionadosRapidao(i+1, false);
+            for(Integer numerosalvo : numerosLista){
+                if(numerosalvo == i+1){
+                    numeSel.setSelecionado(true);
+                }
+            }
             listaNumerosSelecionadosRapidao[i] = numeSel;
         }
 
-        ExpandableHeightGridView gridViewNumerosRapidaoSlc = (ExpandableHeightGridView)findViewById(R.id.gridviewNumerosRapidaoSelecao);
-        NumeroSelecionadoRapidaoAdapter numerosSlcRapidaoAdapter = new NumeroSelecionadoRapidaoAdapter(this, this, listaNumerosSelecionadosRapidao);
+
+        NumeroSelecionadoRapidaoAdapter numerosSlcRapidaoAdapter = new NumeroSelecionadoRapidaoAdapter(this, this, listaNumerosSelecionadosRapidao, isTipoNrObrigatorios);
         gridViewNumerosRapidaoSlc.setAdapter(numerosSlcRapidaoAdapter);
         gridViewNumerosRapidaoSlc.setExpanded(true);
 
+        final ScrollView scrollNumerosRapidao = (ScrollView)findViewById(R.id.scrollNumerosRapidao);
+        scrollNumerosRapidao.post(new Runnable()
+        {
+            public void run() {
+                scrollNumerosRapidao.fullScroll(ScrollView.FOCUS_UP);
+            }
+        });
     }
 
 

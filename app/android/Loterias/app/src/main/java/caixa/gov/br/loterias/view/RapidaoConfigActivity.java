@@ -53,6 +53,8 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
     TextView tituloValorMinimoAposta;
     TextView tituloValorMaximoAposta;
     TextView tituloValorPremiumMinimum;
+    ExpandableHeightGridView gridViewNumerosRapidaoProibidos;
+    ExpandableHeightGridView gridViewNumerosRapidaoObrigatorios;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,9 +64,6 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-
-
 
         callWebservice();
 
@@ -101,26 +100,10 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
     }
 
     private void gridViewNumerosObrigatorios(){
-        //mock numeros obrigatorios
-//        listaNumerosObrigatorios = new int[12];
-//        listaNumerosObrigatorios[0] = 1;
-//        listaNumerosObrigatorios[1] = 2;
-//        listaNumerosObrigatorios[2] = 3;
-//        listaNumerosObrigatorios[3] = 4;
-//        listaNumerosObrigatorios[4] = 10;
-//        listaNumerosObrigatorios[5] = 11;
-//        listaNumerosObrigatorios[6] = 12;
-//        listaNumerosObrigatorios[7] = 13;
-//        listaNumerosObrigatorios[8] = 14;
-//        listaNumerosObrigatorios[9] = 30;
-//        listaNumerosObrigatorios[10] = 34;
-//        listaNumerosObrigatorios[11] = 100;
 
         //gridview
 
-        listaNumerosObrigatorios = rapidao.getPrognosticosObrigatorios();
-
-        ExpandableHeightGridView gridViewNumerosRapidaoObrigatorios = (ExpandableHeightGridView)findViewById(R.id.gridviewNumerosObrigatoriosRapidao);
+        gridViewNumerosRapidaoObrigatorios = (ExpandableHeightGridView)findViewById(R.id.gridviewNumerosObrigatoriosRapidao);
         NumerosRapidaoAdapter numerosRapidaoAdapter = new NumerosRapidaoAdapter(this, listaNumerosObrigatorios, true);
         gridViewNumerosRapidaoObrigatorios.setAdapter(numerosRapidaoAdapter);
         gridViewNumerosRapidaoObrigatorios.setExpanded(true);
@@ -130,7 +113,10 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 if (position == listaNumerosObrigatorios.size()){
                     Intent activity = new Intent(RapidaoConfigActivity.this, NumerosRapidaoActivity.class);
-                    startActivity(activity);
+                    String arrayAsString = new Gson().toJson(listaNumerosObrigatorios);
+                    activity.putExtra("numerosobrigatorios", arrayAsString);
+                    activity.putExtra("isTipoNrObrigatorios", true);
+                    startActivityForResult(activity, 6);
                 }
             }
         });
@@ -138,21 +124,8 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
 
     private void gridViewNumerosProibidos(){
 
-        //mock numeros proibidos
-//        listaNumerosProibidos[0] = 13;
-//        listaNumerosProibidos[1] = 66;
-//        listaNumerosProibidos[2] = 77;
-//        listaNumerosProibidos[3] = 99;
-//        listaNumerosProibidos[4] = 23;
-//        listaNumerosProibidos[5] = 66;
-//        listaNumerosProibidos[6] = 44;
-
-
-        listaNumerosProibidos = rapidao.getPrognosticosProibidos();
-
-
         //gridview
-        ExpandableHeightGridView gridViewNumerosRapidaoProibidos = (ExpandableHeightGridView)findViewById(R.id.gridviewNumerosProibidosRapidao);
+        gridViewNumerosRapidaoProibidos = (ExpandableHeightGridView)findViewById(R.id.gridviewNumerosProibidosRapidao);
         NumerosRapidaoAdapter numerosRapidaoAdapter2 = new NumerosRapidaoAdapter(this, listaNumerosProibidos, false);
         gridViewNumerosRapidaoProibidos.setAdapter(numerosRapidaoAdapter2);
         gridViewNumerosRapidaoProibidos.setExpanded(true);
@@ -162,7 +135,10 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 if (position == listaNumerosProibidos.size()){
                     Intent activity = new Intent(RapidaoConfigActivity.this, NumerosRapidaoActivity.class);
-                    startActivity(activity);
+                    String arrayAsString = new Gson().toJson(listaNumerosProibidos);
+                    activity.putExtra("numerosProibidos", arrayAsString);
+                    activity.putExtra("isTipoNrObrigatorios", false);
+                    startActivityForResult(activity, 7);
                 }
             }
         });
@@ -170,9 +146,6 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
     }
 
     private void gridViewApostaFavorita(){
-
-//        //mock aposta favorita
-        apostaFavoritaLista = rapidao.getApostasFavoritas();
 
         //gridview
         ExpandableHeightGridView gridViewApostaFavorita = (ExpandableHeightGridView)findViewById(R.id.gridViewApostaFavorita);
@@ -229,7 +202,12 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
             @Override
             public void onResponse(RapidaoDTOResponse response) {
                 LoadingViewLoterias.stop(loadViewProgress);
+
                 rapidao = response.getPayload();
+
+                listaNumerosObrigatorios = rapidao.getPrognosticosObrigatorios();
+                listaNumerosProibidos = rapidao.getPrognosticosProibidos();
+                apostaFavoritaLista = rapidao.getApostasFavoritas();
 
 
                 atualizaLayout();
@@ -368,6 +346,18 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
             String arrayAsString = data.getExtras().getString("tiposAposta");
             tipoApostaLista = Arrays.asList(new Gson().fromJson(arrayAsString, TipoAposta[].class));
             gridViewTipoAposta();
+        }
+
+        if (resultCode == RESULT_OK && requestCode == 6) {
+            String arrayAsString = data.getExtras().getString("numerosRapidao");
+            listaNumerosObrigatorios = Arrays.asList(new Gson().fromJson(arrayAsString, Integer[].class));
+            gridViewNumerosObrigatorios();
+        }
+
+        if (resultCode == RESULT_OK && requestCode == 7) {
+            String arrayAsString = data.getExtras().getString("numerosRapidao");
+            listaNumerosProibidos = Arrays.asList(new Gson().fromJson(arrayAsString, Integer[].class));
+            gridViewNumerosProibidos();
         }
 
     }

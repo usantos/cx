@@ -23,12 +23,14 @@ public class NumeroSelecionadoRapidaoAdapter extends BaseAdapter {
     private final Context mContext;
     private final NumerosSelecionadosRapidao[] numerosSelecionadosRapidao;
     private final NumerosRapidaoActivity parentActivity;
+    private final Boolean isObrigatorio;
 
     // 1
-    public NumeroSelecionadoRapidaoAdapter(NumerosRapidaoActivity parentActivity, Context context, NumerosSelecionadosRapidao[] numerosSelecionadosRapidao) {
+    public NumeroSelecionadoRapidaoAdapter(NumerosRapidaoActivity parentActivity, Context context, NumerosSelecionadosRapidao[] numerosSelecionadosRapidao, Boolean isObrigatorio) {
         this.parentActivity = parentActivity;
         this.mContext = context;
         this.numerosSelecionadosRapidao = numerosSelecionadosRapidao;
+        this.isObrigatorio = isObrigatorio;
     }
 
     // 2
@@ -69,29 +71,51 @@ public class NumeroSelecionadoRapidaoAdapter extends BaseAdapter {
             linearLayoutNumerosRapidao.setBackground(ContextCompat.getDrawable(mContext, R.drawable.custom_border_radius_verde_azul));
         }
 
-        if (numerosSelecionadosRapidao[position].getSelecionado()) {
-            numerosSelecionadosRapidao[position].setSelecionado(false);
-            linearLayoutNumerosRapidao.setBackground(ContextCompat.getDrawable(mContext, R.drawable.circle_numeros_obrigatorios));
-            tituloTipoAposta.setTextColor(ContextCompat.getColor(mContext, R.color.branco));
-        } else {
-            numerosSelecionadosRapidao[position].setSelecionado(true);
-            linearLayoutNumerosRapidao.setBackground(ContextCompat.getDrawable(mContext, R.drawable.custom_border_radius_verde_azul));
-            tituloTipoAposta.setTextColor(ContextCompat.getColor(mContext, R.color.verdeazul));
+        if (isObrigatorio == true){
+            if (numerosSelecionadosRapidao[position].getSelecionado()) {
+                linearLayoutNumerosRapidao.setBackground(ContextCompat.getDrawable(mContext, R.drawable.circle_numeros_obrigatorios));
+                tituloTipoAposta.setTextColor(ContextCompat.getColor(mContext, R.color.branco));
+            } else {
+                linearLayoutNumerosRapidao.setBackground(ContextCompat.getDrawable(mContext, R.drawable.custom_border_radius_verde_azul));
+                tituloTipoAposta.setTextColor(ContextCompat.getColor(mContext, R.color.verdeazul));
 
+            }
+        }else{
+            if (numerosSelecionadosRapidao[position].getSelecionado()) {
+                linearLayoutNumerosRapidao.setBackground(ContextCompat.getDrawable(mContext, R.drawable.circle_numeros_proibidos));
+                tituloTipoAposta.setTextColor(ContextCompat.getColor(mContext, R.color.branco));
+            } else {
+                linearLayoutNumerosRapidao.setBackground(ContextCompat.getDrawable(mContext, R.drawable.custom_border_radius_vermelho_bilhetes));
+                tituloTipoAposta.setTextColor(ContextCompat.getColor(mContext, R.color.vermelhoBilhetes));
+
+            }
         }
+
+
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (numerosSelecionadosRapidao[position].getSelecionado()) {
-                    numerosSelecionadosRapidao[position].setSelecionado(false);
-                    linearLayoutNumerosRapidao.setBackground(ContextCompat.getDrawable(mContext, R.drawable.circle_numeros_obrigatorios));
-                    tituloTipoAposta.setTextColor(ContextCompat.getColor(mContext, R.color.branco));
-                } else {
-                    numerosSelecionadosRapidao[position].setSelecionado(true);
-                    linearLayoutNumerosRapidao.setBackground(ContextCompat.getDrawable(mContext, R.drawable.custom_border_radius_verde_azul));
-                    tituloTipoAposta.setTextColor(ContextCompat.getColor(mContext, R.color.verdeazul));
-
+                if (isObrigatorio == true){
+                    if (numerosSelecionadosRapidao[position].getSelecionado()) {
+                        numerosSelecionadosRapidao[position].setSelecionado(false);
+                        linearLayoutNumerosRapidao.setBackground(ContextCompat.getDrawable(mContext, R.drawable.custom_border_radius_verde_azul));
+                        tituloTipoAposta.setTextColor(ContextCompat.getColor(mContext, R.color.verdeazul));
+                    } else {
+                        numerosSelecionadosRapidao[position].setSelecionado(true);
+                        linearLayoutNumerosRapidao.setBackground(ContextCompat.getDrawable(mContext, R.drawable.circle_numeros_obrigatorios));
+                        tituloTipoAposta.setTextColor(ContextCompat.getColor(mContext, R.color.branco));
+                    }
+                }else{
+                    if (numerosSelecionadosRapidao[position].getSelecionado()) {
+                        numerosSelecionadosRapidao[position].setSelecionado(false);
+                        linearLayoutNumerosRapidao.setBackground(ContextCompat.getDrawable(mContext, R.drawable.custom_border_radius_vermelho_bilhetes));
+                        tituloTipoAposta.setTextColor(ContextCompat.getColor(mContext, R.color.vermelhoBilhetes));
+                    } else {
+                        numerosSelecionadosRapidao[position].setSelecionado(true);
+                        linearLayoutNumerosRapidao.setBackground(ContextCompat.getDrawable(mContext, R.drawable.circle_numeros_proibidos));
+                        tituloTipoAposta.setTextColor(ContextCompat.getColor(mContext, R.color.branco));
+                    }
                 }
 
                 for (NumerosSelecionadosRapidao item : numerosSelecionadosRapidao) {

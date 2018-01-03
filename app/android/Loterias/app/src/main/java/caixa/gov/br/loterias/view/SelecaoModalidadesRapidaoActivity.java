@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ScrollView;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
@@ -67,6 +68,13 @@ public class SelecaoModalidadesRapidaoActivity extends AppCompatActivity{
         callWebservice();
     }
 
+
+
+    @Override
+    public boolean onSupportNavigateUp(){
+        finish();
+        return true;
+    }
 
 
     @Override
@@ -204,6 +212,14 @@ public class SelecaoModalidadesRapidaoActivity extends AppCompatActivity{
                }
             }
             gridViewTipoAposta();
+
+            final ScrollView scrollModalides = (ScrollView)findViewById(R.id.scrollViewSelecaoModalidadesRapidao);
+            scrollModalides.post(new Runnable()
+            {
+                public void run() {
+                    scrollModalides.fullScroll(ScrollView.FOCUS_UP);
+                }
+            });
         }
     }
 

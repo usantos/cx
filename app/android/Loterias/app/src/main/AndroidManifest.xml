@@ -124,20 +124,12 @@
         <activity
             android:name=".view.SelecaoModalidadesRapidaoActivity"
             android:label="@string/title_activity_lista_rapidao"
-            android:parentActivityName=".view.RapidaoConfigActivity"
             android:theme="@style/AppTheme.DegradeActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="caixa.gov.br.loterias.view.RapidaoConfigActivity" />
         </activity>
         <activity
             android:name=".view.NumerosRapidaoActivity"
             android:label="@string/title_activity_lista_rapidao"
-            android:parentActivityName=".view.RapidaoConfigActivity"
             android:theme="@style/AppTheme.DegradeActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="caixa.gov.br.loterias.view.RapidaoConfigActivity" />
         </activity>
         <activity android:name=".view.AjudaActivity_"></activity>
     </application>
