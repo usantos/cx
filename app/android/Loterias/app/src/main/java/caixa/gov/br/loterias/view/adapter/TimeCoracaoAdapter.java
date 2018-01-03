@@ -20,11 +20,14 @@ import caixa.gov.br.loterias.bo.silce.dto.ParametroEquipe;
 public class TimeCoracaoAdapter extends BaseAdapter {
     private Context context;
     private List<ParametroEquipe> times;
-
+    private int bordaTimeSelecionado;
+    private int bordaTimeDesselecionado;
 
     public TimeCoracaoAdapter(Context context, List<ParametroEquipe> times) {
         this.context = context;
         this.times = times;
+        this.bordaTimeSelecionado = context.getResources().getColor(R.color.borderImageTimeColor);
+        this.bordaTimeDesselecionado = context.getResources().getColor(R.color.cinza);
     }
 
     @Override
@@ -53,9 +56,22 @@ public class TimeCoracaoAdapter extends BaseAdapter {
         TextView ufTime = convertView.findViewById(R.id.timeCoracaoUf);
         ImageView imageTime = convertView.findViewById(R.id.time_coracao_image);
 
-        imageTime.setImageResource(R.drawable.time);
-        nameTime.setText(times.get(i).getNome());
-        ufTime.setText(times.get(i).getUf());
+        ParametroEquipe equipe = times.get(i);
+        equipe.setBrasaoSelecionadoId(R.drawable.time_selecionado);
+        equipe.setBrasaoId(R.drawable.time);
+
+        if (equipe.isSelecionado()) {
+            imageTime.setImageResource(equipe.getBrasaoSelecionadoId());
+            nameTime.setTextColor(bordaTimeSelecionado);
+            ufTime.setTextColor(bordaTimeSelecionado);
+        } else {
+            imageTime.setImageResource(equipe.getBrasaoId());
+            nameTime.setTextColor(bordaTimeDesselecionado);
+            ufTime.setTextColor(bordaTimeDesselecionado);
+        }
+
+        nameTime.setText(equipe.getNome());
+        ufTime.setText(equipe.getUf());
 
         return convertView;
     }
@@ -64,7 +80,4 @@ public class TimeCoracaoAdapter extends BaseAdapter {
         return times;
     }
 
-    public void setTimes(List<ParametroEquipe> times) {
-        this.times = times;
-    }
 }

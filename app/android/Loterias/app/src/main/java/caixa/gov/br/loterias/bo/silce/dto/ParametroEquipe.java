@@ -54,6 +54,11 @@ public class ParametroEquipe {
     @Expose(serialize = false, deserialize = false)
     private transient boolean selecionado;
 
+    private int brasaoId;
+
+    private int brasaoSelecionadoId;
+
+
     /**
      **/
     @ApiModelProperty(value = "")
@@ -227,5 +232,21 @@ public class ParametroEquipe {
 
     public void setSelecionado(boolean selecionado) {
         this.selecionado = selecionado;
+    }
+
+    public int getBrasaoId() {
+        return brasaoId;
+    }
+
+    public void setBrasaoId(int brasaoId) {
+        this.brasaoId = brasaoId;
+    }
+
+    public int getBrasaoSelecionadoId() {
+        return brasaoSelecionadoId;
+    }
+
+    public void setBrasaoSelecionadoId(int brasaoSelecionadoId) {
+        this.brasaoSelecionadoId = brasaoSelecionadoId;
     }
 }

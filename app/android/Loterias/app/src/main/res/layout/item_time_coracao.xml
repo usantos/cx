@@ -8,9 +8,9 @@
     android:id="@+id/itemTimeCoracaoLinearLayout">
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="27dp"
-        android:maxHeight="41dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:scaleType="fitCenter"
         android:id="@+id/time_coracao_image"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="16dp"/>

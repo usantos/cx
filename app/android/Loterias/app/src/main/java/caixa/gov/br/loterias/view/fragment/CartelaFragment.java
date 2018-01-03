@@ -70,6 +70,8 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
     private ArrayList<Integer> dezenasSelecionadas = new ArrayList<>();
 
+    private List<ParametroEquipe> listaEquipefiltro;
+
     private HashSet<ParametroPartida> partidasSelecionadas;
 
     private static final String ZERO = "0";
@@ -103,8 +105,11 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
     public BigDecimal valorTotalAposta;
 
     private boolean tipoLoteca = false;
-    private boolean isTipoTimeMania;
-    private boolean isEcolhaTimeBtnAtivado;
+    private boolean isTipoTimeMania = false;
+    private boolean isEcolhaTimeBtnAtivado = false;
+    private boolean isTelaSelecaoTimeAtivado = false;
+
+    private ParametroEquipe equipeSelecionada = null;
 
 
     public CartelaFragment() {
@@ -310,7 +315,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         aposta.setQuantidadeApostas(1);
         aposta.setEspelho(false);
 
-        aposta.setTimeDoCoracao(null);
+        aposta.setTimeDoCoracao(equipeSelecionada);
 
         aposta.setConcursoInicial(0);
         aposta.setSituacao(null);
@@ -369,6 +374,9 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
             case R.id.botaoLimparAposta: {
                 if (tipoLoteca && partidasSelecionadas != null) {
                     limparPartidadasSelecionas(Boolean.FALSE);
+                } else if (isTipoTimeMania && isTelaSelecaoTimeAtivado) {
+                    equipeSelecionada.setSelecionado(false);
+                    timeCoracaoAdapter.notifyDataSetChanged();
                 } else {
                     dezenasSelecionadas.clear();
                     simularDezenasAdapter.notifyDataSetChanged();
@@ -414,7 +422,10 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
     }
 
     private void AdcionarApostaPreencherNumerosAleatorios() {
-        if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) {
+        if (isTipoTimeMania && dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado
+                && equipeSelecionada != null) {
+            adicionarApostaNoCarrinho();
+        } else if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) {
             adicionarApostaNoCarrinho();
         } else {
             preencheNumerosAleatorios();
@@ -509,9 +520,6 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                         dezenasSelecionadas.addAll(response.getPayload());
                         simularDezenasAdapter.notifyDataSetChanged();
                         atualizaStatusBotaoFinalizar();
-                /*if (isTipoTimeMania) {
-                    mostrarCartelaEscolhaTimeCoracao();
-                }*/
                         verificaSeMostraBotaoLimparAposta(getView());
                         verificaSeMostraSalvarApostaView(getView());
                     }
@@ -529,6 +537,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
     private void mostrarCartelaEscolhaTimeCoracao() {
         // Estando a aposta completa apresenta a tela de escolha do time
         isEcolhaTimeBtnAtivado = false;
+        isTelaSelecaoTimeAtivado = true;
         selecioneTimeCoracaoLayout = view.findViewById(R.id.selecioneTimeCoracao);
         mGridTimeCoracao = view.findViewById(R.id.gridTimes);
         preencherVisibilidaeGridView(View.VISIBLE, View.VISIBLE, View.GONE, View.GONE);
@@ -536,6 +545,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         onChangeInformeNomeTime();
         configurarSelecaoTimeCoracao(mGridTimeCoracao);
         atualizaStatusBotaoFinalizar();
+        verificaSeMostraBotaoLimparAposta(view);
     }
 
     private void onChangeInformeNomeTime() {
@@ -556,20 +566,19 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                 isChanged = true;
 
                 List<ParametroEquipe> parametroEquipeList = parametroJogo.getEquipes();
-                List<ParametroEquipe> filter = new ArrayList<>();
+                listaEquipefiltro.clear();
                 if (charSequence.length() >= 3) {
                     for (ParametroEquipe parametroEquipe : parametroEquipeList) {
                         if (parametroEquipe.getNome().toUpperCase().contains(charSequence.toString().toUpperCase())) {
-                            filter.add(parametroEquipe);
+                            listaEquipefiltro.add(parametroEquipe);
                         }
                     }
                     informeNomeTime.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
                 } else {
-                    filter = parametroEquipeList;
+                    listaEquipefiltro.addAll(parametroEquipeList);
                     informeNomeTime.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                 }
 
-                timeCoracaoAdapter.setTimes(filter);
                 timeCoracaoAdapter.notifyDataSetChanged();
                 isChanged = false;
             }
@@ -638,13 +647,15 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
             } else {
                 fragmentView.findViewById(R.id.botaoLimparAposta).setVisibility(View.VISIBLE);
             }
+        } else if (dezenasSelecionadas.isEmpty()) {
+            fragmentView.findViewById(R.id.botaoLimparAposta).setVisibility(View.GONE);
+        } else if (isTipoTimeMania && isTelaSelecaoTimeAtivado && (equipeSelecionada == null || !equipeSelecionada.isSelecionado())) {
+            fragmentView.findViewById(R.id.botaoLimparAposta).setVisibility(View.GONE);
         } else {
-            if (dezenasSelecionadas.isEmpty()) {
-                fragmentView.findViewById(R.id.botaoLimparAposta).setVisibility(View.GONE);
-            } else {
-                fragmentView.findViewById(R.id.botaoLimparAposta).setVisibility(View.VISIBLE);
-            }
+            fragmentView.findViewById(R.id.botaoLimparAposta).setVisibility(View.VISIBLE);
         }
+
+
     }
 
     private void verificaSeMostraSalvarApostaView(View fragmentView) {
@@ -687,6 +698,12 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
     private void atualizarAdicionarCarinhoCompletarCartela() {
         if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) {
             atualizarBotaoFinalizarAdicionarCarrinho();
+            if (isTipoTimeMania && equipeSelecionada != null && equipeSelecionada.isSelecionado()) {
+                botaoFinalizar.setEnabled(true);
+            } else {
+                botaoFinalizar.setEnabled(false);
+            }
+
         } else if (dezenasSelecionadas.size() > parentActivity.qtdDezenasPossiveisSelecionado) {
             //dezenasSelecionadas.clear();
             simularDezenasAdapter.notifyDataSetChanged();
@@ -779,19 +796,22 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
      *
      * @param gridTimes
      */
-    private void configurarSelecaoTimeCoracao(ExpandableHeightGridView gridTimes) {
-
-        timeCoracaoAdapter = new TimeCoracaoAdapter(getActivity(), parametroJogo.getEquipes());
+    private void configurarSelecaoTimeCoracao(final ExpandableHeightGridView gridTimes) {
+        listaEquipefiltro = new ArrayList<>(parametroJogo.getEquipes());
+        timeCoracaoAdapter = new TimeCoracaoAdapter(getActivity(), listaEquipefiltro);
         gridTimes.setAdapter(timeCoracaoAdapter);
         gridTimes.setExpanded(true);
         gridTimes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                if (view.isSelected()) {
-                    view.setSelected(Boolean.FALSE);
-                } else {
-                    view.setSelected(Boolean.TRUE);
+            public void onItemClick(AdapterView<?> adapterView, View viewItem, int i, long l) {
+                if (equipeSelecionada != null) {
+                    equipeSelecionada.setSelecionado(false);
                 }
+                equipeSelecionada = listaEquipefiltro.get(i);
+                equipeSelecionada.setSelecionado(true);
+                timeCoracaoAdapter.notifyDataSetChanged();
+                verificaSeMostraBotaoLimparAposta(view);
+                atualizarAdicionarCarinhoCompletarCartela();
             }
         });
     }
