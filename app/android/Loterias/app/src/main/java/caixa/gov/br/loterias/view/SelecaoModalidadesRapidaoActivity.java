@@ -172,31 +172,31 @@ public class SelecaoModalidadesRapidaoActivity extends AppCompatActivity{
             TipoAposta tipoAposta = null;
             switch (ModalidadeEnumSelecaoModalidades.toString(item.getDescricao())) {
                 case QUINA:
-                    tipoAposta = new TipoAposta("Quina", R.drawable.trevo, R.color.quinaclaro, false);
+                    tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo, R.color.quinaclaro, false, item.getValor(), item.getDescricaoEspecial());
                     break;
                 case LOTECA:
-                    tipoAposta = new TipoAposta("Loteca", R.drawable.trevo, R.color.lotecaclaro, false);
+                    tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo, R.color.lotecaclaro, false, item.getValor(), item.getDescricaoEspecial());
                     break;
                 case LOTOGOL:
-                    tipoAposta = new TipoAposta("Lotogol", R.drawable.trevo, R.color.lotogolclaro, false);
+                    tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo, R.color.lotogolclaro, false, item.getValor(), item.getDescricaoEspecial());
                     break;
                 case LOTOFACIL:
-                    tipoAposta = new TipoAposta("Lotofácil", R.drawable.trevo, R.color.lotofacilclaro, false);
+                    tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo, R.color.lotofacilclaro, false, item.getValor(), item.getDescricaoEspecial());
                     break;
                 case LOTOMANIA:
-                    tipoAposta = new TipoAposta("Lotomania", R.drawable.trevo, R.color.lotomaniaclaro, false);
+                    tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo, R.color.lotomaniaclaro, false, item.getValor(), item.getDescricaoEspecial());
                     break;
                 case MEGA_SENA:
-                    tipoAposta = new TipoAposta("Mega-Sena", R.drawable.trevo, R.color.megasenaclaro, false);
+                    tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo, R.color.megasenaclaro, false, item.getValor(), item.getDescricaoEspecial());
                     break;
                 case TIMEMANIA:
-                    tipoAposta = new TipoAposta("Timemania", R.drawable.trevo, R.color.timemaniaclaro, false);
+                    tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo, R.color.timemaniaclaro, false, item.getValor(), item.getDescricaoEspecial());
                     break;
                 case DUPLA_SENA:
-                    tipoAposta = new TipoAposta("Dupla-Sena", R.drawable.trevo, R.color.duplasenaclaro, false);
+                    tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo, R.color.duplasenaclaro, false, item.getValor(), item.getDescricaoEspecial());
                     break;
                 case FEDERAL:
-                    tipoAposta = new TipoAposta("Federal", R.drawable.trevo, R.color.federalclaro, false);
+                    tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo, R.color.federalclaro, false, item.getValor(), item.getDescricaoEspecial());
                     break;
             }
             if (tipoAposta != null){
@@ -213,14 +213,15 @@ public class SelecaoModalidadesRapidaoActivity extends AppCompatActivity{
             }
             gridViewTipoAposta();
 
-            final ScrollView scrollModalides = (ScrollView)findViewById(R.id.scrollViewSelecaoModalidadesRapidao);
-            scrollModalides.post(new Runnable()
-            {
-                public void run() {
-                    scrollModalides.fullScroll(ScrollView.FOCUS_UP);
-                }
-            });
+
         }
+        final ScrollView scrollModalides = (ScrollView)findViewById(R.id.scrollViewSelecaoModalidadesRapidao);
+        scrollModalides.post(new Runnable()
+        {
+            public void run() {
+                scrollModalides.fullScroll(ScrollView.FOCUS_UP);
+            }
+        });
     }
 
 }

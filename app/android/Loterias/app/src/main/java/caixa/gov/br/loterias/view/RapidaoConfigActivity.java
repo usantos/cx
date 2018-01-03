@@ -10,12 +10,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -25,9 +28,11 @@ import java.util.List;
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.bo.ApostaBO;
 import caixa.gov.br.loterias.bo.silce.SilceClient;
+import caixa.gov.br.loterias.bo.silce.dto.AgrupadorDTOApostaDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.ApostaFavoritaDTO;
 import caixa.gov.br.loterias.bo.silce.dto.ModalidadeDTO;
 import caixa.gov.br.loterias.bo.silce.dto.ModalidadeEnum;
+import caixa.gov.br.loterias.bo.silce.dto.ModalidadeEnumSelecaoModalidades;
 import caixa.gov.br.loterias.bo.silce.dto.RapidaoDTO;
 import caixa.gov.br.loterias.bo.silce.dto.RapidaoDTOResponse;
 import caixa.gov.br.loterias.model.TipoAposta;
@@ -66,6 +71,16 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         callWebservice();
+
+        Button SalvarApostaRapidaoButton = (Button)findViewById(R.id.SalvarApostaRapidao);
+        SalvarApostaRapidaoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               postRapidoesWebservice();
+            }
+        });
+
+
 
     }
 
@@ -205,6 +220,11 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
 
                 rapidao = response.getPayload();
 
+                Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+                String json = gson.toJson(rapidao);
+                rapidao = gson.fromJson(json, RapidaoDTO.class);
+
+
                 listaNumerosObrigatorios = rapidao.getPrognosticosObrigatorios();
                 listaNumerosProibidos = rapidao.getPrognosticosProibidos();
                 apostaFavoritaLista = rapidao.getApostasFavoritas();
@@ -266,6 +286,15 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
         gridViewNumerosObrigatorios();
         gridViewNumerosProibidos();
         gridViewApostaFavorita();
+
+
+        final ScrollView scrollConfigRapidao = (ScrollView)findViewById(R.id.scrollViewRapidaoConfig);
+        scrollConfigRapidao.post(new Runnable()
+        {
+            public void run() {
+                scrollConfigRapidao.fullScroll(ScrollView.FOCUS_UP);
+            }
+        });
     }
 
 
@@ -274,12 +303,15 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
                                   boolean fromUser) {
         BigDecimal valorProgress = new BigDecimal(Float.toString((float)progress/2));
         if(seekBar == seekBarValorMinimoAposta){
+            rapidao.setValorMinimo(valorProgress);
             tituloValorMinimoAposta.setText(ViewUtils.getMoedaFormat(valorProgress));
         }
         if (seekBar == seekBarValorMaximoAposta){
+            rapidao.setValorMaximo(valorProgress);
             tituloValorMaximoAposta.setText(ViewUtils.getMoedaFormat(valorProgress));
         }
         if (seekBar == seekBarValorPremiumMinimun){
+            rapidao.setValorMinimoPremioPrincipal(valorProgress);
             tituloValorPremiumMinimum.setText(ViewUtils.getMoedaFormat(valorProgress));
         }
     }
@@ -301,33 +333,33 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
         List<ModalidadeDTO> modalides = rapidao.getModalidades();
         for (ModalidadeDTO item : modalides) {
             TipoAposta tipoAposta = null;
-            switch (ModalidadeEnum.toString(item.getDescricao())) {
+            switch (ModalidadeEnumSelecaoModalidades.toString(item.getDescricao())) {
                 case QUINA:
-                    tipoAposta = new TipoAposta("Quina", R.drawable.trevo, R.color.quinaclaro, true);
+                    tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo, R.color.quinaclaro, true, item.getValor(), item.getDescricaoEspecial());
                     break;
                 case LOTECA:
-                    tipoAposta = new TipoAposta("Loteca", R.drawable.trevo, R.color.lotecaclaro, true);
+                    tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo, R.color.lotecaclaro, true, item.getValor(), item.getDescricaoEspecial());
                     break;
                 case LOTOGOL:
-                    tipoAposta = new TipoAposta("Lotogol", R.drawable.trevo, R.color.lotogolclaro, true);
+                    tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo, R.color.lotogolclaro, true, item.getValor(), item.getDescricaoEspecial());
                     break;
                 case LOTOFACIL:
-                    tipoAposta = new TipoAposta("Lotofácil", R.drawable.trevo, R.color.lotofacilclaro, true);
+                    tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo, R.color.lotofacilclaro, true, item.getValor(), item.getDescricaoEspecial());
                     break;
                 case LOTOMANIA:
-                    tipoAposta = new TipoAposta("Lotomania", R.drawable.trevo, R.color.lotomaniaclaro, true);
+                    tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo, R.color.lotomaniaclaro, true, item.getValor(), item.getDescricaoEspecial());
                     break;
                 case MEGA_SENA:
-                    tipoAposta = new TipoAposta("Mega-Sena", R.drawable.trevo, R.color.megasenaclaro, true);
+                    tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo, R.color.megasenaclaro, true, item.getValor(), item.getDescricaoEspecial());
                     break;
                 case TIMEMANIA:
-                    tipoAposta = new TipoAposta("Timemania", R.drawable.trevo, R.color.timemaniaclaro, true);
+                    tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo, R.color.timemaniaclaro, true, item.getValor(), item.getDescricaoEspecial());
                     break;
                 case DUPLA_SENA:
-                    tipoAposta = new TipoAposta("Dupla-Sena", R.drawable.trevo, R.color.duplasenaclaro, true);
+                    tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo, R.color.duplasenaclaro, true, item.getValor(), item.getDescricaoEspecial());
                     break;
                 case FEDERAL:
-                    tipoAposta = new TipoAposta("Federal", R.drawable.trevo, R.color.federalclaro, true);
+                    tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo, R.color.federalclaro, true, item.getValor(), item.getDescricaoEspecial());
                     break;
             }
             if (tipoAposta != null){
@@ -360,5 +392,41 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
             gridViewNumerosProibidos();
         }
 
+    }
+
+
+    private void postRapidoesWebservice() {
+
+        final View loadViewProgress = LoadingViewLoterias.init(this);
+        final ApostaBO apostaBO = new ApostaBO(RapidaoConfigActivity.this);
+
+
+        final List<ModalidadeDTO> tipoApostaArrayList = new ArrayList<ModalidadeDTO>();
+        for(TipoAposta tipoAposta: tipoApostaLista){
+            if (tipoAposta.getSelect() == true){
+                ModalidadeDTO modalidadeDTO = new ModalidadeDTO();
+                modalidadeDTO.setDescricao(tipoAposta.getTitulo());
+                modalidadeDTO.setDescricaoEspecial(tipoAposta.getDescricaoEspecial());
+                modalidadeDTO.setValor(tipoAposta.getValor());
+                tipoApostaArrayList.add(modalidadeDTO);
+            }
+        }
+        rapidao.setModalidades(tipoApostaArrayList);
+        rapidao.setPrognosticosObrigatorios(listaNumerosObrigatorios);
+        rapidao.setPrognosticosProibidos(listaNumerosProibidos);
+
+        apostaBO.postRapidoes(rapidao, new SilceClient.Listener<RapidaoDTOResponse>() {
+            @Override
+            public void onResponse(RapidaoDTOResponse response) {
+                LoadingViewLoterias.stop(loadViewProgress);
+
+            }
+        }, new SilceClient.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                LoadingViewLoterias.stop(loadViewProgress);
+                ViewUtils.alert(RapidaoConfigActivity.this, MensagensNetwork.setMensagem(error, RapidaoConfigActivity.this));
+            }
+        });
     }
 }

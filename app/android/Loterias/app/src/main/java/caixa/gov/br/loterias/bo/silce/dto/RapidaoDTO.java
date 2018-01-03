@@ -12,6 +12,7 @@
 
 package caixa.gov.br.loterias.bo.silce.dto;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.math.BigDecimal;
@@ -21,21 +22,28 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel(description = "")
-public class RapidaoDTO {
+public class    RapidaoDTO {
 
     @SerializedName("valorMinimo")
+    @Expose(serialize = true, deserialize = true)
     private BigDecimal valorMinimo = null;
     @SerializedName("valorMaximo")
+    @Expose(serialize = true, deserialize = true)
     private BigDecimal valorMaximo = null;
     @SerializedName("valorMinimoPremioPrincipal")
+    @Expose(serialize = true, deserialize = true)
     private BigDecimal valorMinimoPremioPrincipal = null;
     @SerializedName("prognosticosObrigatorios")
+    @Expose(serialize = true, deserialize = true)
     private List<Integer> prognosticosObrigatorios = null;
     @SerializedName("prognosticosProibidos")
+    @Expose(serialize = true, deserialize = true)
     private List<Integer> prognosticosProibidos = null;
     @SerializedName("modalidades")
+    @Expose(serialize = true, deserialize = true)
     private List<ModalidadeDTO> modalidades = null;
     @SerializedName("apostasFavoritas")
+    @Expose(serialize = true, deserialize = true)
     private List<ApostaFavoritaDTO> apostasFavoritas = null;
 
     /**

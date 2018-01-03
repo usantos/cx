@@ -33,6 +33,7 @@ public class NumerosRapidaoActivity extends AppCompatActivity {
     NumerosSelecionadosRapidao[] listaNumerosSelecionadosRapidao;
     List<Integer> numerosLista =  new ArrayList<Integer>();
     Button salvarNumerosApostaRapidaoSelecao;
+    Button limparButtonRapidaoSelecionados;
     TextView titleNumerosRapidaoObrigatorios;
     TextView textoSelecaoNumerosRapidao;
     ExpandableHeightGridView gridViewNumerosRapidaoSlc;
@@ -90,8 +91,29 @@ public class NumerosRapidaoActivity extends AppCompatActivity {
             }
         });
 
+
+        limparButtonRapidaoSelecionados = (Button)findViewById(R.id.botaoLimparSelecaoApostaRapidaSelecao);
+        limparButtonRapidaoSelecionados.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                for (NumerosSelecionadosRapidao numero : listaNumerosSelecionadosRapidao){
+                    numero.setSelecionado(false);
+                }
+                reloadGridView();
+            }
+        });
+
         gridViewNumeros();
     }
+
+    private void reloadGridView(){
+        NumeroSelecionadoRapidaoAdapter numerosSlcRapidaoAdapter = new NumeroSelecionadoRapidaoAdapter(this, this, listaNumerosSelecionadosRapidao, isTipoNrObrigatorios);
+        gridViewNumerosRapidaoSlc.setAdapter(numerosSlcRapidaoAdapter);
+        gridViewNumerosRapidaoSlc.setExpanded(true);
+        mudarLayoutBotaoLimparSelecao(false);
+    }
+
+
     @Override
     public boolean onSupportNavigateUp(){
         finish();

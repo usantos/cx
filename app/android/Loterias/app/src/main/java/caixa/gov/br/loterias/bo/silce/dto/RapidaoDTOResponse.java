@@ -12,6 +12,7 @@
 
 package caixa.gov.br.loterias.bo.silce.dto;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -23,16 +24,22 @@ import io.swagger.annotations.ApiModelProperty;
 public class RapidaoDTOResponse {
 
     @SerializedName("codigo")
+    @Expose(serialize = true, deserialize = true)
     private String codigo = null;
     @SerializedName("mensagem")
+    @Expose(serialize = true, deserialize = true)
     private String mensagem = null;
     @SerializedName("tipo")
+    @Expose(serialize = true, deserialize = true)
     private TipoEnum tipo = null;
     @SerializedName("redirect")
+    @Expose(serialize = true, deserialize = true)
     private RedirectEnum redirect = null;
     @SerializedName("errosValidacao")
+    @Expose(serialize = true, deserialize = true)
     private List<ErroValidacao> errosValidacao = null;
     @SerializedName("payload")
+    @Expose(serialize = true, deserialize = true)
     private RapidaoDTO payload = null;
 
     /**

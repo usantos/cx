@@ -12,6 +12,7 @@
 
 package caixa.gov.br.loterias.bo.silce.dto;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -23,14 +24,19 @@ import io.swagger.annotations.ApiModelProperty;
 public class ApostaFavoritaDTO {
 
     @SerializedName("modalidade")
+    @Expose(serialize = true, deserialize = true)
     private DTOEnumInteger modalidade = null;
     @SerializedName("nome")
+    @Expose(serialize = true, deserialize = true)
     private String nome = null;
     @SerializedName("numerosSelecionados")
+    @Expose(serialize = true, deserialize = true)
     private List<Integer> numerosSelecionados = null;
     @SerializedName("timeDoCoracao")
+    @Expose(serialize = true, deserialize = true)
     private ParametroEquipe timeDoCoracao = null;
     @SerializedName("id")
+    @Expose(serialize = true, deserialize = true)
     private Long id = null;
 
     /**

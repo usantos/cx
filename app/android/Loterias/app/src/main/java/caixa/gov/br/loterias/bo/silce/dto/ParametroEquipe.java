@@ -12,6 +12,7 @@
 
 package caixa.gov.br.loterias.bo.silce.dto;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import io.swagger.annotations.ApiModel;
@@ -21,27 +22,37 @@ import io.swagger.annotations.ApiModelProperty;
 public class ParametroEquipe {
 
     @SerializedName("indicadorSelecao")
+    @Expose(serialize = true, deserialize = true)
     private Boolean indicadorSelecao = null;
     @SerializedName("nome")
+    @Expose(serialize = true, deserialize = true)
     private String nome = null;
     @SerializedName("numero")
+    @Expose(serialize = true, deserialize = true)
     private Integer numero = null;
     @SerializedName("numeroPais")
+    @Expose(serialize = true, deserialize = true)
     private Integer numeroPais = null;
     @SerializedName("descricaoCurta")
+    @Expose(serialize = true, deserialize = true)
     private String descricaoCurta = null;
     @SerializedName("descricaoLonga")
+    @Expose(serialize = true, deserialize = true)
     private String descricaoLonga = null;
     @SerializedName("pais")
+    @Expose(serialize = true, deserialize = true)
     private String pais = null;
     @SerializedName("siglaPais")
+    @Expose(serialize = true, deserialize = true)
     private String siglaPais = null;
     @SerializedName("uf")
+    @Expose(serialize = true, deserialize = true)
     private String uf = null;
     @SerializedName("nomeClass")
+    @Expose(serialize = true, deserialize = true)
     private String nomeClass = null;
-
-    private boolean selecionado;
+    @Expose(serialize = false, deserialize = false)
+    private transient boolean selecionado;
 
     /**
      **/
