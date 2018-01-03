@@ -502,28 +502,28 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
         apostaBO.completaJogo(parentActivity.qtdDezenasPossiveisSelecionado, dezenasSelecionadas, 1,
                 parametroJogo.getPrognosticoMaximo(), new SilceClient.Listener<CompletaJogoRsp>() {
-            @Override
-            public void onResponse(CompletaJogoRsp response) {
-                isEcolhaTimeBtnAtivado = true;
-                dezenasSelecionadas.clear();
-                dezenasSelecionadas.addAll(response.getPayload());
-                simularDezenasAdapter.notifyDataSetChanged();
-                atualizaStatusBotaoFinalizar();
+                    @Override
+                    public void onResponse(CompletaJogoRsp response) {
+                        isEcolhaTimeBtnAtivado = true;
+                        dezenasSelecionadas.clear();
+                        dezenasSelecionadas.addAll(response.getPayload());
+                        simularDezenasAdapter.notifyDataSetChanged();
+                        atualizaStatusBotaoFinalizar();
                 /*if (isTipoTimeMania) {
                     mostrarCartelaEscolhaTimeCoracao();
                 }*/
-                verificaSeMostraBotaoLimparAposta(getView());
-                verificaSeMostraSalvarApostaView(getView());
-            }
+                        verificaSeMostraBotaoLimparAposta(getView());
+                        verificaSeMostraSalvarApostaView(getView());
+                    }
 
 
-        }, new SilceClient.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
+                }, new SilceClient.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
 
-                ViewUtils.alert(getActivity(), MensagensNetwork.setMensagem(error, getActivity()));
-            }
-        });
+                        ViewUtils.alert(getActivity(), MensagensNetwork.setMensagem(error, getActivity()));
+                    }
+                });
     }
 
     private void mostrarCartelaEscolhaTimeCoracao() {
@@ -649,7 +649,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
     private void verificaSeMostraSalvarApostaView(View fragmentView) {
 
-        if ( (!tipoLoteca) && (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) && isEcolhaTimeBtnAtivado == false) {
+        if ((!tipoLoteca) && (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) && isEcolhaTimeBtnAtivado == false) {
 
             RelativeLayout salvarApostaLayout = fragmentView.findViewById(R.id.salvarApostaLayout);
 
@@ -672,12 +672,11 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
             } else {
                 atualizarBotaoFinalizarAdicionarCarrinho();
             }
-        }
-        if (isTipoTimeMania) {
-            if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado && isEcolhaTimeBtnAtivado ==true) {
+        } else if (isTipoTimeMania) {
+            if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado && isEcolhaTimeBtnAtivado == true) {
                 botaoFinalizar.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.timemaniaescuro));
                 botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(getActivity(), getString(R.string.label_escolha_time_coracao)));
-            }else{
+            } else {
                 atualizarAdicionarCarinhoCompletarCartela();
             }
         } else {
