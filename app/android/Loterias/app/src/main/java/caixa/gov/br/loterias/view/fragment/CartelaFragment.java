@@ -366,6 +366,8 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                     } else {
                         AdcionarApostaPreencherNumerosAleatorios();
                     }
+                } else if (tipoLoteca) {
+                    cartelaFragmentListener.adicionarApostaCarrinho();
                 } else {
                     AdcionarApostaPreencherNumerosAleatorios();
                 }
@@ -776,7 +778,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                     }
 
                     if (isTipoTimeMania) {
-                          isEcolhaTimeBtnAtivado = true;
+                        isEcolhaTimeBtnAtivado = true;
                     }
                     verificaSeMostraSalvarApostaView(getView());
                     verificaSeMostraBotaoLimparAposta(getView());
