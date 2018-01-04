@@ -744,20 +744,23 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                 public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                     Integer valorSelecionado = Integer.valueOf(dezenas.get(position));
 
+                    int qtdDezenasPossiveisSelecionado = parentActivity.qtdDezenasPossiveisSelecionado;
+                    int size = dezenasSelecionadas.size();
                     if (dezenasSelecionadas.contains(valorSelecionado)) {
                         dezenasSelecionadas.remove(valorSelecionado);
                     } else {
                         int maxNumerosParaSelecionar = parametroJogo.getQuantidadeMaxima();
-                        if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) {
-                            // VERIFICA SE TEM OPÇÃO DE SELECIONAR MAIS DEZENAS
-                            int qtdDezenasPossiveisSelecionadoAtual = parentActivity.qtdDezenasPossiveisSelecionado;
 
-                            parentActivity.qtdDezenasPossiveisSelecionado = cartelaFragmentListener.verificaNovoQtdDezenasMax(parentActivity.qtdDezenasPossiveisSelecionado);
+                        if (size == qtdDezenasPossiveisSelecionado) {
+                            // VERIFICA SE TEM OPÇÃO DE SELECIONAR MAIS DEZENAS
+                            int qtdDezenasPossiveisSelecionadoAtual = qtdDezenasPossiveisSelecionado;
+
+                            qtdDezenasPossiveisSelecionado = cartelaFragmentListener.verificaNovoQtdDezenasMax(qtdDezenasPossiveisSelecionado);
 
                             if (qtdDezenasPossiveisSelecionadoAtual < maxNumerosParaSelecionar) {
-                                parentActivity.qtdDezenasPossiveisSelecionado += 1;
-                                parentActivity.verificaNovoQtdDezenasMax(parentActivity.qtdDezenasPossiveisSelecionado);
-                                atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
+                                qtdDezenasPossiveisSelecionado += 1;
+                                parentActivity.verificaNovoQtdDezenasMax(qtdDezenasPossiveisSelecionado);
+                                atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
                                 if (flagApostaSalva) {
                                     voltaSalvarApostaParaLayoutInicial();
                                 }
@@ -767,9 +770,14 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                             }
                         } else {
                             dezenasSelecionadas.add(valorSelecionado);
+
+                            // aparecer o botao escolha time do coracação
                         }
                     }
 
+                    if (isTipoTimeMania) {
+                          isEcolhaTimeBtnAtivado = true;
+                    }
                     verificaSeMostraSalvarApostaView(getView());
                     verificaSeMostraBotaoLimparAposta(getView());
                     atualizaStatusBotaoFinalizar();
