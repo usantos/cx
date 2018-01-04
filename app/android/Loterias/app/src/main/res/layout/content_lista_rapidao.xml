@@ -92,7 +92,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="36dp"
                     android:layout_marginRight="36dp"
-                    android:text="R$ 00,00"
+                    android:text="R$ 0,00"
                     android:textColor="@color/branco"
                     android:textSize="14sp"
                     android:textStyle="bold"
@@ -159,15 +159,13 @@
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/viewTabBarRapidao"
                 android:layout_width="0dp"
-                android:layout_height="94dp"
+                android:layout_height="99dp"
+                android:layout_marginTop="42dp"
                 android:background="@color/azulclaro"
                 android:orientation="horizontal"
-                app:layout_constraintTop_toTopOf="@+id/botaoAvancarPagamentoRapidao"
-                android:layout_marginTop="42dp"
-                android:layout_marginLeft="0dp"
                 app:layout_constraintLeft_toLeftOf="parent"
-                android:layout_marginRight="0dp"
-                app:layout_constraintRight_toRightOf="parent">
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/botaoAvancarPagamentoRapidao">
 
                 <ImageView
                     android:id="@+id/imageViewPaginacaoRapidao"

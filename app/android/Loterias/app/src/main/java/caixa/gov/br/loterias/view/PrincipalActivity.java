@@ -459,6 +459,7 @@ public class PrincipalActivity extends AppCompatActivity
         relativerepassados.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                AnimacaoFecharMenuRapido(relativePrincipal);
                 startActivity(new Intent(PrincipalActivity.this, RepassesSociaisActivity.class));
             }
         });
@@ -471,6 +472,7 @@ public class PrincipalActivity extends AppCompatActivity
         relativerapidao.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
+                AnimacaoFecharMenuRapido(relativePrincipal);
                 startActivity(new Intent(PrincipalActivity.this, ListaRapidaoActivity.class) );
             }
         });
