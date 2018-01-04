@@ -2,6 +2,7 @@ package caixa.gov.br.loterias.view.fragment;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -699,9 +700,11 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) {
             atualizarBotaoFinalizarAdicionarCarrinho();
             if (isTipoTimeMania && equipeSelecionada != null && equipeSelecionada.isSelecionado()) {
-                botaoFinalizar.setEnabled(true);
+                botaoFinalizar.setClickable(true);
+                botaoFinalizar.setAlpha(1f);
             } else {
-                botaoFinalizar.setEnabled(false);
+                botaoFinalizar.setClickable(false);
+                botaoFinalizar.setAlpha(0.6f);
             }
 
         } else if (dezenasSelecionadas.size() > parentActivity.qtdDezenasPossiveisSelecionado) {
