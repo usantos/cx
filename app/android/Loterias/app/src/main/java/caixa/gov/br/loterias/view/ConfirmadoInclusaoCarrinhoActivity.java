@@ -31,6 +31,9 @@ import caixa.gov.br.loterias.utils.EstiloModalidade;
 import caixa.gov.br.loterias.utils.ViewUtils;
 
 public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implements OnClickListener {
+
+    private boolean isLoteca;
+    private static int RESULT_FINISH = 3;
     public ParametroJogoDTO parametroSimulacao;
 
     public ParametroJogoDTO getParametroSimulacao() {
@@ -63,11 +66,13 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
         ModalidadeEnum tipoJogo = (ModalidadeEnum) getIntent().getSerializableExtra("tipoAposta");
         BigDecimal valorAposta = (BigDecimal) getIntent().getSerializableExtra("valorAposta");
 
+        isLoteca = tipoJogo == ModalidadeEnum.LOTECA;
+
         TextView valorApostaText = findViewById(R.id.valorApostaConfirmacao);
         valorApostaText.setText(ViewUtils.getMoedaFormat(valorAposta));
 
         TextView textObservacaoConfirmacao = findViewById(R.id.textObservacaoConfirmacao);
-        textObservacaoConfirmacao.setText(ViewUtils.textFuturaAndFuturaBold(this,  getString(R.string.infoValorMinimoCarrinho)+" _" + ViewUtils.getMoedaFormat(parametroSimulacao.getValorApostaMinima() == null ? new BigDecimal(0) : parametroSimulacao.getValorApostaMinima())+"_"));
+        textObservacaoConfirmacao.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.infoValorMinimoCarrinho) + " _" + ViewUtils.getMoedaFormat(parametroSimulacao.getValorApostaMinima() == null ? new BigDecimal(0) : parametroSimulacao.getValorApostaMinima()) + "_"));
 
         configuraLayoutTela(tipoJogo);
 
@@ -84,7 +89,7 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
     private void configuraLayoutTela(ModalidadeEnum modalidadeEnum) {
         EstiloModalidade estilo = new EstiloModalidade(modalidadeEnum);
 
-        setTitle(ViewUtils.textFuturaAndFuturaBold(this, "_"+ ModalidadeEnum.fromString(modalidadeEnum)+"_"));
+        setTitle(ViewUtils.textFuturaAndFuturaBold(this, "_" + ModalidadeEnum.fromString(modalidadeEnum) + "_"));
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(ContextCompat.getColor(this, estilo.getCorEscura()));
@@ -97,10 +102,21 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
         gd.setCornerRadius(5);
         gd.setStroke(2, Color.WHITE);
 
-        findViewById(R.id.botaoNovaAposta).setBackground(gd);
+        Button botaoNovaAposta = (Button) findViewById(R.id.botaoNovaAposta);
 
-        ((Button) findViewById(R.id.botaoVerCarrinhoAposta)).setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.verCarrinho)));
-        ((Button) findViewById(R.id.botaoAdicionarCompletarCartela)).setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.adicionarAoCarrinho)));
+        Button botaoVerCarrinhoAposta = (Button) findViewById(R.id.botaoVerCarrinhoAposta);
+        Button botaoAdicionarCompletarCartela = (Button) findViewById(R.id.botaoAdicionarCompletarCartela);
+        if (isLoteca) {
+            botaoNovaAposta.setVisibility(View.INVISIBLE);
+            botaoVerCarrinhoAposta.setVisibility(View.INVISIBLE);
+            botaoAdicionarCompletarCartela.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.confirmacaoPagamentoBotaoVoltarInicio)));
+            botaoAdicionarCompletarCartela.setBackgroundColor(getResources().getColor(R.color.cinza));
+            botaoAdicionarCompletarCartela.setOnClickListener(this);
+        } else {
+            botaoNovaAposta.setBackground(gd);
+            botaoVerCarrinhoAposta.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.verCarrinho)));
+            botaoAdicionarCompletarCartela.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.adicionarAoCarrinho)));
+        }
 
     }
 
@@ -164,8 +180,13 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
             break;
             case R.id.carrinhoApostas: {
                 Intent activity = new Intent(this, CarrinhoActivity.class);
-
                 startActivityForResult(activity, 0);
+            }
+            case R.id.botaoAdicionarCompletarCartela: {
+                if (isLoteca) {
+                    setResult(RESULT_FINISH);
+                    finish();
+                }
             }
             break;
         }

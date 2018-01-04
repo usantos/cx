@@ -76,6 +76,8 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
     @ViewById
     TextView labelValueSimplesLoteca, labelValueDuplasLoteca, labelValueTriplasLoteca;
 
+    private static int RESULT_FINISH = 3;
+
     // Fragments
     FragmentManager fragmentManager;
     CartelaFragment cartelaFragment;
@@ -493,7 +495,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         activity.putExtra("tipoAposta", tipoJogo);
         activity.putExtra("valorAposta", cartelaFragment.valorTotalAposta);
         activity.putExtra("modalidade", (new Gson()).toJson(parametroSimulacao));
-        startActivity(activity);
+        startActivityForResult(activity, 0);
     }
 
     @Override
@@ -512,6 +514,14 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         Intent activity = new Intent(SimularApostaActivity.this, AjudaActivity.class);
         activity.putExtra("tipoAposta", tipoJogo);
         startActivity(activity);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_FINISH) {
+            finish();
+        }
     }
 
     public void setLabelValueSimplesLoteca(String labelValueSimplesLoteca) {
