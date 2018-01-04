@@ -380,6 +380,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                 } else if (isTipoTimeMania && isTelaSelecaoTimeAtivado) {
                     equipeSelecionada.setSelecionado(false);
                     timeCoracaoAdapter.notifyDataSetChanged();
+                    voltaSalvarApostaParaLayoutInicial();
                 } else {
                     dezenasSelecionadas.clear();
                     simularDezenasAdapter.notifyDataSetChanged();
@@ -657,8 +658,6 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         } else {
             fragmentView.findViewById(R.id.botaoLimparAposta).setVisibility(View.VISIBLE);
         }
-
-
     }
 
     private void verificaSeMostraSalvarApostaView(View fragmentView) {
@@ -670,7 +669,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                 ocutarSalvarAposta(fragmentView);
             }
         } else if (isTipoTimeMania) {
-            if (!isEcolhaTimeBtnAtivado) {
+            if (isTelaSelecaoTimeAtivado && (equipeSelecionada != null && equipeSelecionada.isSelecionado())) {
                 mostrarSalvarAposta(fragmentView);
             } else {
                 ocutarSalvarAposta(fragmentView);
@@ -723,10 +722,10 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
             if (isTipoTimeMania) {
                 if (equipeSelecionada != null && equipeSelecionada.isSelecionado()) {
                     botaoFinalizar.setClickable(true);
-                    botaoFinalizar.setAlpha(1f);
+                    botaoFinalizar.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.timemaniaescuro));
                 } else {
                     botaoFinalizar.setClickable(false);
-                    botaoFinalizar.setAlpha(0.6f);
+                    botaoFinalizar.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.azulclaro));
                 }
             }
 
@@ -840,6 +839,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                 equipeSelecionada.setSelecionado(true);
                 timeCoracaoAdapter.notifyDataSetChanged();
                 verificaSeMostraBotaoLimparAposta(view);
+                verificaSeMostraSalvarApostaView(view);
                 atualizarAdicionarCarinhoCompletarCartela();
             }
         });
