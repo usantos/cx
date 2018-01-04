@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="caixa.gov.br.loterias.view.AjudaActivity">
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="caixa.gov.br.loterias.view.AjudaActivity"
+    tools:showIn="@layout/custom_toolbar_ajuda">
 
     <LinearLayout
         android:id="@+id/layoutHeaderAjuda"
@@ -153,6 +155,7 @@
                     style="@style/ArialMT"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginBottom="39dp"
                     android:text="@string/label_regras_jogo"
                     android:textColor="@color/branco"
                     android:textSize="14.2sp" />

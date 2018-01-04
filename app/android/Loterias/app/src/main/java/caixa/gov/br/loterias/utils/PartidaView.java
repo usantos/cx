@@ -101,12 +101,12 @@ public class PartidaView extends LinearLayout {
         this.parametroPartida = parametroPartida;
 
         lotecaTimeUm.setSelected(parametroPartida.getEquipe1().isSelecionado());
-        lotecaTimeUm.getItemImage().setImageResource(R.drawable.time_flamengo);
+        lotecaTimeUm.getItemImage().setImageResource(R.drawable.time);
         lotecaTimeUm.getItemTitle().setText(parametroPartida.getEquipe1().getNome());
         lotecaTimeUm.getItemDescription().setText(parametroPartida.getEquipe1().getIndicadorSelecao() ? "" : parametroPartida.getEquipe1().getPais());
 
         lotecaTimeDois.setSelected(parametroPartida.getEquipe2().isSelecionado());
-        lotecaTimeDois.getItemImage().setImageResource(R.drawable.time_acf);
+        lotecaTimeDois.getItemImage().setImageResource(R.drawable.time);
         lotecaTimeDois.getItemTitle().setText(parametroPartida.getEquipe2().getNome());
         lotecaTimeDois.getItemDescription().setText(parametroPartida.getEquipe2().getIndicadorSelecao() ? "" : parametroPartida.getEquipe2().getPais());
 

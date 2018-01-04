@@ -50,7 +50,6 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-
     <style name="ArialMT" parent="TextAppearance.AppCompat">
         <item name="android:fontFamily">@font/arialmt</item>
     </style>

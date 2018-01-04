@@ -36,6 +36,8 @@
     <color name="lotogolescuro">#009fc5</color>
     <color name="lotomaniaclaro">#ff9a2f</color>
     <color name="lotomaniaescuro">#dd8628</color>
+    <color name="lotecaClaroTollbar">#ed1c24</color>
+    <color name="lotecaEscuroTollbar">#d71920</color>
     <color name="timemaniaclaro">#a8cd4a</color>
     <color name="timemaniaescuro">#92b240</color>
     <color name="verdesenatrevo">#579a66</color>

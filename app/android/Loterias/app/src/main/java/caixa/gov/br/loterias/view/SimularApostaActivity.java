@@ -40,14 +40,14 @@ import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.bo.silce.dto.ModalidadeEnum;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroJogoDTO;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroValorApostaDTO;
+import caixa.gov.br.loterias.utils.TipoDialog;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.fragment.CartelaFragment;
 import caixa.gov.br.loterias.view.fragment.CartelaFragment.CartelaFragmentListener;
 import caixa.gov.br.loterias.view.fragment.SurpresinhaFragment;
 import caixa.gov.br.loterias.view.fragment.SurpresinhaFragment.SurpresinhaFragmentListener;
-import caixa.gov.br.loterias.utils.TipoDialog;
 
-import static java.lang.String.*;
+import static java.lang.String.format;
 
 @EActivity(R.layout.activity_simular_aposta)
 public class SimularApostaActivity extends AppCompatActivity implements OnClickListener, CartelaFragmentListener, SurpresinhaFragmentListener {
@@ -509,7 +509,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
     }
 
     private void abrirAjuda() {
-        Intent activity = new Intent(SimularApostaActivity.this, AjudaActivity_.class);
+        Intent activity = new Intent(SimularApostaActivity.this, AjudaActivity.class);
         startActivity(activity);
     }
 
