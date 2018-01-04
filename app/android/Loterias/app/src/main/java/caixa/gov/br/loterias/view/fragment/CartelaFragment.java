@@ -663,19 +663,38 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
     private void verificaSeMostraSalvarApostaView(View fragmentView) {
 
-        if ((!tipoLoteca) && (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) && isEcolhaTimeBtnAtivado == false) {
-
-            RelativeLayout salvarApostaLayout = fragmentView.findViewById(R.id.salvarApostaLayout);
-
-            salvarApostaLayout.setVisibility(View.VISIBLE);
-            final float scale = getContext().getResources().getDisplayMetrics().density;
-            salvarApostaLayout.getLayoutParams().height = (int) (64 * scale + 0.5f);
-            salvarApostaLayout.setOnClickListener(this);
+        if (tipoLoteca) {
+            if (partidasSelecionadas.size() > 0) {
+                mostrarSalvarAposta(fragmentView);
+            } else {
+                ocutarSalvarAposta(fragmentView);
+            }
+        } else if (isTipoTimeMania) {
+            if (!isEcolhaTimeBtnAtivado) {
+                mostrarSalvarAposta(fragmentView);
+            } else {
+                ocutarSalvarAposta(fragmentView);
+            }
+        } else if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) {
+            mostrarSalvarAposta(fragmentView);
         } else {
-            RelativeLayout salvarApostaLayout = fragmentView.findViewById(R.id.salvarApostaLayout);
-
-            salvarApostaLayout.setVisibility(View.GONE);
+            ocutarSalvarAposta(fragmentView);
         }
+    }
+
+    private void ocutarSalvarAposta(View fragmentView) {
+        RelativeLayout salvarApostaLayout = fragmentView.findViewById(R.id.salvarApostaLayout);
+
+        salvarApostaLayout.setVisibility(View.GONE);
+    }
+
+    private void mostrarSalvarAposta(View fragmentView) {
+        RelativeLayout salvarApostaLayout = fragmentView.findViewById(R.id.salvarApostaLayout);
+
+        salvarApostaLayout.setVisibility(View.VISIBLE);
+        final float scale = getContext().getResources().getDisplayMetrics().density;
+        salvarApostaLayout.getLayoutParams().height = (int) (64 * scale + 0.5f);
+        salvarApostaLayout.setOnClickListener(this);
     }
 
     public void atualizaStatusBotaoFinalizar() {
@@ -701,7 +720,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
     private void atualizarAdicionarCarinhoCompletarCartela() {
         if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) {
             atualizarBotaoFinalizarAdicionarCarrinho();
-            if (isTipoTimeMania){
+            if (isTipoTimeMania) {
                 if (equipeSelecionada != null && equipeSelecionada.isSelecionado()) {
                     botaoFinalizar.setClickable(true);
                     botaoFinalizar.setAlpha(1f);
@@ -851,6 +870,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
             partidasSelecionadas.remove(parametroPartida);
         }
         atualizaStatusBotaoFinalizar();
+        verificaSeMostraSalvarApostaView(getView());
         verificaSeMostraBotaoLimparAposta(getView());
     }
 
@@ -869,6 +889,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         partidasSelecionadas.clear();
         recyclerViewLoteca.setExpanded(true);
         recyclerViewLoteca.getAdapter().notifyDataSetChanged();
+        verificaSeMostraSalvarApostaView(getView());
     }
 
     // Adapter do gridview das dezenas
