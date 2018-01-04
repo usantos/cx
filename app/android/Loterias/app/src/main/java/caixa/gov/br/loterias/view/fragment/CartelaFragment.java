@@ -701,12 +701,14 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
     private void atualizarAdicionarCarinhoCompletarCartela() {
         if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) {
             atualizarBotaoFinalizarAdicionarCarrinho();
-            if (isTipoTimeMania && equipeSelecionada != null && equipeSelecionada.isSelecionado()) {
-                botaoFinalizar.setClickable(true);
-                botaoFinalizar.setAlpha(1f);
-            } else {
-                botaoFinalizar.setClickable(false);
-                botaoFinalizar.setAlpha(0.6f);
+            if (isTipoTimeMania){
+                if (equipeSelecionada != null && equipeSelecionada.isSelecionado()) {
+                    botaoFinalizar.setClickable(true);
+                    botaoFinalizar.setAlpha(1f);
+                } else {
+                    botaoFinalizar.setClickable(false);
+                    botaoFinalizar.setAlpha(0.6f);
+                }
             }
 
         } else if (dezenasSelecionadas.size() > parentActivity.qtdDezenasPossiveisSelecionado) {
@@ -746,23 +748,20 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                 public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                     Integer valorSelecionado = Integer.valueOf(dezenas.get(position));
 
-                    int qtdDezenasPossiveisSelecionado = parentActivity.qtdDezenasPossiveisSelecionado;
-                    int size = dezenasSelecionadas.size();
                     if (dezenasSelecionadas.contains(valorSelecionado)) {
                         dezenasSelecionadas.remove(valorSelecionado);
                     } else {
                         int maxNumerosParaSelecionar = parametroJogo.getQuantidadeMaxima();
-
-                        if (size == qtdDezenasPossiveisSelecionado) {
+                        if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) {
                             // VERIFICA SE TEM OPÇÃO DE SELECIONAR MAIS DEZENAS
-                            int qtdDezenasPossiveisSelecionadoAtual = qtdDezenasPossiveisSelecionado;
+                            int qtdDezenasPossiveisSelecionadoAtual = parentActivity.qtdDezenasPossiveisSelecionado;
 
-                            qtdDezenasPossiveisSelecionado = cartelaFragmentListener.verificaNovoQtdDezenasMax(qtdDezenasPossiveisSelecionado);
+                            parentActivity.qtdDezenasPossiveisSelecionado = cartelaFragmentListener.verificaNovoQtdDezenasMax(parentActivity.qtdDezenasPossiveisSelecionado);
 
                             if (qtdDezenasPossiveisSelecionadoAtual < maxNumerosParaSelecionar) {
-                                qtdDezenasPossiveisSelecionado += 1;
-                                parentActivity.verificaNovoQtdDezenasMax(qtdDezenasPossiveisSelecionado);
-                                atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
+                                parentActivity.qtdDezenasPossiveisSelecionado += 1;
+                                parentActivity.verificaNovoQtdDezenasMax(parentActivity.qtdDezenasPossiveisSelecionado);
+                                atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
                                 if (flagApostaSalva) {
                                     voltaSalvarApostaParaLayoutInicial();
                                 }
@@ -772,8 +771,6 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                             }
                         } else {
                             dezenasSelecionadas.add(valorSelecionado);
-
-                            // aparecer o botao escolha time do coracação
                         }
                     }
 
