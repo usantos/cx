@@ -126,4 +126,13 @@
     <string name="label_proximo_sorteio">Próximo sorteio</string>
     <string name="label_encerramento">Encerramento</string>
     <string name="label_regras_jogo">Regras do jogo</string>
+    <string name="label_mega_sena">mega-sena</string>
+    <string name="label_lotofacil">lotofácil</string>
+    <string name="label_quina">quina</string>
+    <string name="label_dupla_sena">dupla sena</string>
+    <string name="label_lotomania">lotomania</string>
+    <string name="label_timemania">timemania</string>
+    <string name="label_loteca">loteca</string>
+    <string name="label_lotogol">lotogol</string>
+    <string name="label_ajuda">ajuda</string>
 </resources>

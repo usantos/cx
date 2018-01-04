@@ -3,22 +3,28 @@ package caixa.gov.br.loterias.view;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.bo.silce.dto.ModalidadeEnum;
 
 public class AjudaActivity extends AppCompatActivity {
 
-    TextView textConcurso, textAbertura, textProximoSorteio, textEncerramento, titleTextScroll, textScroll;
+    private ModalidadeEnum tipoJogo;
+    private TextView textConcurso, textAbertura, textProximoSorteio, textEncerramento, titleTextScroll, textScroll;
+    private static final String TIPO_APOSTA = "tipoAposta";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        creatToolBar();
+        tipoJogo();
         init();
         carregarCampos();
     }
@@ -32,19 +38,106 @@ public class AjudaActivity extends AppCompatActivity {
         textScroll = (TextView) findViewById(R.id.textScroll);
     }
 
-    private void creatToolBar() {
+    private void tipoJogo() {
+        tipoJogo = (ModalidadeEnum) getIntent().getSerializableExtra(TIPO_APOSTA);
+
+        int titulo;
+        int corEscura;
+        int backGroundToolBar;
+        int toolBarTrapezio;
+        int iconFechar;
+
+        switch (tipoJogo) {
+            case MEGA_SENA:
+                titulo = R.string.label_mega_sena;
+                corEscura = R.color.megasenaescuro;
+                backGroundToolBar = R.color.megasenaclaro;
+                toolBarTrapezio = R.drawable.background_trapeze_mega_sena_tollbar;
+                iconFechar = R.drawable.btn_fechar;
+                break;
+            case LOTOFACIL:
+                titulo = R.string.label_lotofacil;
+                corEscura = R.color.lotofacilescuro;
+                backGroundToolBar = R.color.lotofacilclaro;
+                toolBarTrapezio = R.drawable.background_trapeze_lotofacil_tollbar;
+                iconFechar = R.drawable.btn_fechar;
+                break;
+            case QUINA:
+                titulo = R.string.label_quina;
+                corEscura = R.color.quinaescuro;
+                backGroundToolBar = R.color.quinaclaro;
+                toolBarTrapezio = R.drawable.background_trapeze_quina_tollbar;
+                iconFechar = R.drawable.btn_fechar;
+                break;
+            case DUPLA_SENA:
+                titulo = R.string.label_dupla_sena;
+                corEscura = R.color.duplasenaescuro;
+                backGroundToolBar = R.color.duplasenaclaro;
+                toolBarTrapezio = R.drawable.background_trapeze_dupla_sena_tollbar;
+                iconFechar = R.drawable.btn_fechar;
+                break;
+            case LOTOMANIA:
+                titulo = R.string.label_lotomania;
+                corEscura = R.color.lotomaniaescuro;
+                backGroundToolBar = R.color.lotomaniaEscuroToolBar;
+                toolBarTrapezio = R.drawable.background_trapeze_lotomania_tollbar;
+                iconFechar = R.drawable.btn_fechar;
+                break;
+            case TIMEMANIA:
+                titulo = R.string.label_timemania;
+                corEscura = R.color.timemaniaescuro;
+                backGroundToolBar = R.color.timemaniaClaroToolBar;
+                toolBarTrapezio = R.drawable.background_trapeze_timemania_tollbar;
+                iconFechar = R.drawable.fechar_verde;
+                break;
+            case LOTECA:
+                titulo = R.string.label_loteca;
+                corEscura = R.color.lotecaescuro;
+                backGroundToolBar = R.color.lotecaEscuroToolbar;
+                toolBarTrapezio = R.drawable.background_trapeze_loteca_tollbar;
+                iconFechar = R.drawable.btn_fechar;
+                break;
+            case LOTOGOL:
+                titulo = R.string.label_lotogol;
+                corEscura = R.color.lotogolescuro;
+                backGroundToolBar = R.color.lotogolEscuroToolBar;
+                toolBarTrapezio = R.drawable.background_trapeze_lotogol_tollbar;
+                iconFechar = R.drawable.btn_fechar;
+                break;
+            default:
+                titulo = R.string.label_ajuda;
+                corEscura = R.color.megasenaescuro;
+                backGroundToolBar = R.color.megasenaclaro;
+                toolBarTrapezio = R.drawable.background_trapeze_mega_sena_tollbar;
+                iconFechar = R.drawable.btn_fechar;
+                break;
+        }
+
+        creatToolBar(titulo, corEscura, backGroundToolBar, toolBarTrapezio, iconFechar);
+    }
+
+    private void creatToolBar(int titulo, int corEscura, int backGroundToolBar, int toolBarTrapezio, int iconFechar) {
+
         setContentView(R.layout.custom_toolbar_ajuda);
         Toolbar tb = (Toolbar) findViewById(R.id.toolBarAjuda);
-        setSupportActionBar(tb);
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(this, R.color.lotecaEscuroTollbar)));
-        getSupportActionBar().setTitle(null);
-        View view = findViewById(R.id.action_fechar);
-        view.setOnClickListener(new View.OnClickListener() {
+
+        ((AppBarLayout) tb.getParent()).setBackgroundColor(getResources().getColor(corEscura));
+        ((LinearLayout) tb.findViewById(R.id.layoutTrevo)).setBackgroundResource(toolBarTrapezio);
+
+        ((TextView) tb.findViewById(R.id.titulo_modalidade)).setText(titulo);
+
+        ImageView fecharImageView = (ImageView) tb.findViewById(R.id.action_fechar);
+        fecharImageView.setImageResource(iconFechar);
+        fecharImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
             }
         });
+
+        setSupportActionBar(tb);
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(this, backGroundToolBar)));
+        getSupportActionBar().setTitle(null);
     }
 
     private void carregarCampos() {
