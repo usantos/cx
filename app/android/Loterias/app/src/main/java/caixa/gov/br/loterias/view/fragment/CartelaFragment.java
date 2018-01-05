@@ -64,8 +64,7 @@ import caixa.gov.br.loterias.view.adapter.TimeCoracaoAdapter;
 import caixa.gov.br.loterias.view.custom.ExpandableHeightGridView;
 import caixa.gov.br.loterias.view.custom.ExpandableHeightRecyclerView;
 
-public class CartelaFragment extends Fragment implements OnClickListener, LotecaAdapter.LocateAdapterListener,
-        EscolhaTimeCoracaoFragment.EscololhaTimeCoracaoListener {
+public class CartelaFragment extends Fragment implements OnClickListener, LotecaAdapter.LocateAdapterListener{
 
     private ArrayList<String> dezenas = new ArrayList<String>();
 
@@ -75,7 +74,6 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
     private HashSet<ParametroPartida> partidasSelecionadas;
 
-    private EscolhaTimeCoracaoFragment.EscololhaTimeCoracaoListener  escololhaTimeCoracaoListener;
 
     private static final String ZERO = "0";
 
@@ -892,11 +890,6 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         recyclerViewLoteca.setExpanded(true);
         recyclerViewLoteca.getAdapter().notifyDataSetChanged();
         verificaSeMostraSalvarApostaView(getView());
-    }
-
-    @Override
-    public void adicionarCarrinho(ParametroEquipe equpiEscolhida) {
-
     }
 
     // Adapter do gridview das dezenas
