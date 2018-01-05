@@ -51,6 +51,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
     SurpresinhaGridViewAdapter simularDezenasAdapter;
 
     Button botaoMenosSurpresinha;
+    Button botaoEscolhaOutrotime;
     Button botaoMaisSurpresinha;
     Button botaoAdicionarSurpresinhaAoCarrinho;
 
@@ -143,6 +144,9 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         if (parametroJogo != null) {
             atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
         }
+
+        botaoEscolhaOutrotime = fragmentView.findViewById(R.id.escolherOutroTimeBtn);
+        botaoEscolhaOutrotime.setOnClickListener(this);
 
         botaoMenosSurpresinha = fragmentView.findViewById(R.id.btnMenosSurpresinha);
         botaoMenosSurpresinha.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.cinzaescuro));
@@ -262,6 +266,9 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.escolherOutroTimeBtn:
+
+                break;
             case R.id.btnMenosSurpresinha: {
                 if (qtdSurpresinhas > 1) {
                     qtdSurpresinhas--;
@@ -292,6 +299,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
             case R.id.botaoCarrinho:
             case R.id.textInfoCarrinho: {
                 surpresinhaFragmentListener.abreCarrinhoApostas();
+
             }
         }
 
