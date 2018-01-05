@@ -7,8 +7,8 @@
         <item
             android:id="@+id/nav_minhaarea"
             android:icon="@drawable/menu1_area"
-            android:title="Minha área"
-            />
+            android:title="Minha área">
+        </item>
         <item
             android:id="@+id/nav_apostar"
             android:icon="@drawable/menu2_apostar"

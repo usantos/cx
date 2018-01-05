@@ -360,8 +360,12 @@ public class PrincipalActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_rapidao) {
 
-        } else if (id == R.id.nav_slideshow) {
+            startActivity(new Intent(PrincipalActivity.this, ListaRapidaoActivity.class) );
+        } else if (id == R.id.nav_bilhetes) {
 
+        } else if (id == R.id.nav_sociais) {
+
+            startActivity(new Intent(PrincipalActivity.this, RepassesSociaisActivity.class));
         } else if (id == R.id.nav_sair) {
             sairLogin();
         }

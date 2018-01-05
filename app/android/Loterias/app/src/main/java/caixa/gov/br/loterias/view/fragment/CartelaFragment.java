@@ -2,7 +2,6 @@ package caixa.gov.br.loterias.view.fragment;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -62,8 +61,8 @@ import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.SimularApostaActivity;
 import caixa.gov.br.loterias.view.adapter.LotecaAdapter;
 import caixa.gov.br.loterias.view.adapter.TimeCoracaoAdapter;
-import caixa.gov.br.loterias.view.custom.ExpandableHeightRecyclerView;
 import caixa.gov.br.loterias.view.custom.ExpandableHeightGridView;
+import caixa.gov.br.loterias.view.custom.ExpandableHeightRecyclerView;
 
 public class CartelaFragment extends Fragment implements OnClickListener, LotecaAdapter.LocateAdapterListener {
 

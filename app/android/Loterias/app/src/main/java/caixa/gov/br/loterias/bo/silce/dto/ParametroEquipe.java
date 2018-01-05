@@ -15,6 +15,8 @@ package caixa.gov.br.loterias.bo.silce.dto;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.androidannotations.annotations.IgnoreWhen;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -53,10 +55,10 @@ public class ParametroEquipe {
     private String nomeClass = null;
     @Expose(serialize = false, deserialize = false)
     private transient boolean selecionado;
-
-    private int brasaoId;
-
-    private int brasaoSelecionadoId;
+    @Expose(serialize = false, deserialize = false)
+    private transient int brasaoId;
+    @Expose(serialize = false, deserialize = false)
+    private transient int brasaoSelecionadoId;
 
 
     /**

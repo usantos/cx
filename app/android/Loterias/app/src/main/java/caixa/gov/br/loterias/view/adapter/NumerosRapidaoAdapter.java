@@ -3,19 +3,20 @@ package caixa.gov.br.loterias.view.adapter;
 /**
  * Created by cedesbr450 on 20/12/17.
  */
-        import android.content.Context;
-        import android.support.v4.content.ContextCompat;
-        import android.util.TypedValue;
-        import android.view.LayoutInflater;
-        import android.view.View;
-        import android.view.ViewGroup;
-        import android.widget.BaseAdapter;
-        import android.widget.LinearLayout;
-        import android.widget.TextView;
 
-        import java.util.List;
+import android.content.Context;
+import android.support.v4.content.ContextCompat;
+import android.util.TypedValue;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
-        import caixa.gov.br.loterias.R;
+import java.util.List;
+
+import caixa.gov.br.loterias.R;
 
 
 public class NumerosRapidaoAdapter extends BaseAdapter {
@@ -34,7 +35,7 @@ public class NumerosRapidaoAdapter extends BaseAdapter {
     // 2
     @Override
     public int getCount() {
-        return numeroslista.size() +1;
+        return numeroslista.size() + 1;
     }
 
     // 3
@@ -59,26 +60,26 @@ public class NumerosRapidaoAdapter extends BaseAdapter {
             convertView = layoutInflater.inflate(R.layout.linearlayout_numeros_rapidao, null);
         }
 
-        if (position == numeroslista.size()){
-            final LinearLayout linearLayoutNumerosRapidao = (LinearLayout)convertView.findViewById(R.id.LinearLayoutContentNumerosRapidao);
+        if (position == numeroslista.size()) {
+            final LinearLayout linearLayoutNumerosRapidao = (LinearLayout) convertView.findViewById(R.id.LinearLayoutContentNumerosRapidao);
 
-            final TextView tituloTipoAposta = (TextView)convertView.findViewById(R.id.tituloNumeroRapidao);
-            tituloTipoAposta.setText("+");
+            final TextView tituloTipoAposta = (TextView) convertView.findViewById(R.id.tituloNumeroRapidao);
+            tituloTipoAposta.setText("✙");
             tituloTipoAposta.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
-            if (isObrigatorio != true){
+            if (isObrigatorio != true) {
                 linearLayoutNumerosRapidao.setBackground(ContextCompat.getDrawable(mContext, R.drawable.custom_border_radius_vermelho_bilhetes));
                 tituloTipoAposta.setTextColor(ContextCompat.getColor(mContext, R.color.vermelhoBilhetes));
-            }else{
+            } else {
                 linearLayoutNumerosRapidao.setBackground(ContextCompat.getDrawable(mContext, R.drawable.custom_border_radius_verde_azul));
                 tituloTipoAposta.setTextColor(ContextCompat.getColor(mContext, R.color.verdeazul));
             }
 
-        }else{
+        } else {
             final int numeroRapidao = numeroslista.get(position);
-            final TextView tituloTipoAposta = (TextView)convertView.findViewById(R.id.tituloNumeroRapidao);
-            tituloTipoAposta.setText(""+numeroRapidao);
-            if (isObrigatorio != true){
-                final LinearLayout linearLayoutNumerosRapidao = (LinearLayout)convertView.findViewById(R.id.LinearLayoutContentNumerosRapidao);
+            final TextView tituloTipoAposta = (TextView) convertView.findViewById(R.id.tituloNumeroRapidao);
+            tituloTipoAposta.setText(numeroRapidao < 10 ? "0" + numeroRapidao : "" + numeroRapidao);
+            if (isObrigatorio != true) {
+                final LinearLayout linearLayoutNumerosRapidao = (LinearLayout) convertView.findViewById(R.id.LinearLayoutContentNumerosRapidao);
                 linearLayoutNumerosRapidao.setBackground(ContextCompat.getDrawable(mContext, R.drawable.circle_numeros_proibidos));
             }
 
