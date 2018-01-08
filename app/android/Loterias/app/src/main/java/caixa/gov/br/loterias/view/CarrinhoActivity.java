@@ -1,9 +1,8 @@
 package caixa.gov.br.loterias.view;
 
 import android.content.Intent;
-import android.support.constraint.ConstraintLayout;
-import android.support.v4.content.res.ResourcesCompat;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
@@ -21,6 +20,7 @@ import java.util.Date;
 import java.util.List;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.bean.SessaoUsuario;
 import caixa.gov.br.loterias.bo.ApostaBO;
 import caixa.gov.br.loterias.bo.silce.SilceClient;
 import caixa.gov.br.loterias.bo.silce.dto.CarrinhoDTO;
@@ -31,13 +31,14 @@ import caixa.gov.br.loterias.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import caixa.gov.br.loterias.bo.silce.dto.ModalidadeEnum;
 import caixa.gov.br.loterias.utils.LoadingViewLoterias;
 import caixa.gov.br.loterias.utils.MensagensNetwork;
-import caixa.gov.br.loterias.view.adapter.CarrinhoApostasListViewAdapter;
 import caixa.gov.br.loterias.utils.ViewUtils;
+import caixa.gov.br.loterias.view.adapter.CarrinhoApostasListViewAdapter;
+import caixa.gov.br.loterias.view.custom.ExpandableHeightRecyclerView;
 
 public class CarrinhoActivity extends SettingToolbarActivity {
 
     public CarrinhoDTO carrinho;
-    private RecyclerView recyclerView;
+    private ExpandableHeightRecyclerView recyclerView;
     private List<IdentificaoDeUmaApostaDas8Modalidades> apostas;
     TextView infoValorMinimoTextView;
 
@@ -147,8 +148,10 @@ public class CarrinhoActivity extends SettingToolbarActivity {
     }
 
     private void montarLayout() {
+        SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
+        String valorCarrinho = ViewUtils.getMoedaFormat(sessaoUsuario.getValorMinimimoAposta() == null ? BigDecimal.ZERO : sessaoUsuario.getValorMinimimoAposta());
         infoValorMinimoTextView = (TextView) findViewById(R.id.infoValorMinimo);
-        infoValorMinimoTextView.setText(ViewUtils.fromHtml("Lembre-se que o valor mínimo do total de compras nesse aplicativo é <strong>R$24,00</strong>"));
+        infoValorMinimoTextView.setText(ViewUtils.fromHtml("Lembre-se que o valor mínimo do total de compras nesse aplicativo é <strong>" + valorCarrinho + "</strong>"));
     }
 
     private void callWebservice() {
@@ -175,8 +178,9 @@ public class CarrinhoActivity extends SettingToolbarActivity {
 
     public void atualizaLayout() {
         montarLayout();
-        if (apostas != null) {
+        if (carrinho.getApostas() != null) {
             configuraRecyclerViewCarrinhoAposta();
+            setValorTotalCarrinho();
         }
         configuraListeners();
     }
@@ -206,19 +210,19 @@ public class CarrinhoActivity extends SettingToolbarActivity {
     }
 
     private void configuraRecyclerViewCarrinhoAposta() {
-        RecyclerView.LayoutManager layout = new LinearLayoutManager(this,
-                LinearLayoutManager.VERTICAL, false);
-
-
-        int sizeitem = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 48 * apostas.size(), this.getResources().getDisplayMetrics());
-
-
-        ConstraintLayout.LayoutParams layoutCarrinhoAposta = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, sizeitem);
-        layoutCarrinhoAposta.topToBottom = R.id.infoValorMinimo;
-        recyclerView.setLayoutParams(layoutCarrinhoAposta);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(new CarrinhoApostasListViewAdapter(this, (ArrayList<IdentificaoDeUmaApostaDas8Modalidades>) carrinho.getApostas(), this));
-        recyclerView.setLayoutManager(layout);
-        recyclerView.setNestedScrollingEnabled(false);
+        recyclerView.setExpanded(Boolean.TRUE);
+    }
+
+    private void setValorTotalCarrinho() {
+
+        BigDecimal valorTotalCarrinho = BigDecimal.ZERO;
+        for (IdentificaoDeUmaApostaDas8Modalidades aposta : carrinho.getApostas()) {
+            valorTotalCarrinho = valorTotalCarrinho.add(aposta.getValor());
+        }
+
+        ((TextView) findViewById(R.id.valorTotalCarrinho)).setText(ViewUtils.getMoedaFormat(valorTotalCarrinho));
     }
 
 }

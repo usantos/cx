@@ -445,8 +445,8 @@ public class PrincipalActivity extends AppCompatActivity
                 @Override
                 public void onClick(View view) {
                     Intent activity = new Intent(PrincipalActivity.this, SimularApostaActivity_.class);
-                    activity.putExtra("tipoAposta", modalidadesParaListar.get((int) view.getTag()).getParametroJogo().getConcurso().getModalidade());
-                    activity.putExtra("modalidade", (new Gson()).toJson(modalidadesParaListar.get((int) view.getTag()).getParametroJogo()));
+                    activity.putExtra("tipoAposta", modalidadesParaListar.get(Integer.parseInt(view.getTag().toString())).getParametroJogo().getConcurso().getModalidade());
+                    activity.putExtra("modalidade", (new Gson()).toJson(modalidadesParaListar.get(Integer.parseInt(view.getTag().toString())).getParametroJogo()));
                     startActivity(activity);
                 }
             });
