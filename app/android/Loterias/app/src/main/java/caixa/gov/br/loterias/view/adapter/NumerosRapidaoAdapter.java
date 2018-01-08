@@ -6,7 +6,6 @@ package caixa.gov.br.loterias.view.adapter;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,14 +63,11 @@ public class NumerosRapidaoAdapter extends BaseAdapter {
             final LinearLayout linearLayoutNumerosRapidao = (LinearLayout) convertView.findViewById(R.id.LinearLayoutContentNumerosRapidao);
 
             final TextView tituloTipoAposta = (TextView) convertView.findViewById(R.id.tituloNumeroRapidao);
-            tituloTipoAposta.setText("✙");
-            tituloTipoAposta.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
+            tituloTipoAposta.setText("");
             if (isObrigatorio != true) {
-                linearLayoutNumerosRapidao.setBackground(ContextCompat.getDrawable(mContext, R.drawable.custom_border_radius_vermelho_bilhetes));
-                tituloTipoAposta.setTextColor(ContextCompat.getColor(mContext, R.color.vermelhoBilhetes));
+                linearLayoutNumerosRapidao.setBackground(ContextCompat.getDrawable(mContext, R.drawable.icon_config_mais2));
             } else {
-                linearLayoutNumerosRapidao.setBackground(ContextCompat.getDrawable(mContext, R.drawable.custom_border_radius_verde_azul));
-                tituloTipoAposta.setTextColor(ContextCompat.getColor(mContext, R.color.verdeazul));
+                linearLayoutNumerosRapidao.setBackground(ContextCompat.getDrawable(mContext, R.drawable.icon_config_mais));
             }
 
         } else {

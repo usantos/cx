@@ -734,7 +734,6 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
             simularDezenasAdapter.notifyDataSetChanged();
             atualizarBotaoFinalizarCompletarCartela();
 
-            getView().findViewById(R.id.salvarApostaLayout).setVisibility(View.GONE);
             getView().findViewById(R.id.botaoLimparAposta).setVisibility(View.GONE);
         } else {
             atualizarBotaoFinalizarCompletarCartela();
@@ -744,6 +743,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
     private void atualizarBotaoFinalizarCompletarCartela() {
         botaoFinalizar.setBackgroundColor(ContextCompat.getColor(getActivity(), typeGameColorLight));
         botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(getActivity(), getString(R.string.completarCartela)));
+        getView().findViewById(R.id.salvarApostaLayout).setVisibility(View.GONE);
     }
 
     private void atualizarBotaoFinalizarAdicionarCarrinho() {
