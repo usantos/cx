@@ -116,7 +116,8 @@
             android:name=".view.RapidaoConfigActivity"
             android:label="@string/title_activity_lista_rapidao"
             android:parentActivityName=".view.ListaRapidaoActivity"
-            android:theme="@style/AppTheme.DegradeActionBar">
+            android:theme="@style/AppTheme.DegradeActionBar"
+            android:windowSoftInputMode="stateHidden" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="caixa.gov.br.loterias.view.ListaRapidaoActivity" />

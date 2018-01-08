@@ -38,8 +38,8 @@
                         android:textStyle="bold"
                         style="@style/editTextArialMTTheme"
                         />
-                    <TextView
-                        android:id="@+id/tituloValorPrecoMinimo"
+                    <com.blackcat.currencyedittext.CurrencyEditText
+                        android:id="@+id/tituloValorPremiumMinimum"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
@@ -72,7 +72,7 @@
                     <TextView
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
-                        android:text="1 milhão"
+                        android:text="0 milhões"
                         android:textSize="14.2sp"
                         android:id="@+id/tituloValorMinimoPremiumMiminum"
                         android:textColor="@color/branco"
@@ -105,7 +105,6 @@
             android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/tituloValorMinimoAposta"
                     android:layout_width="155dp"
                     android:layout_height="wrap_content"
                     android:text="Valor mínimo da aposta"
@@ -114,8 +113,8 @@
                     android:textStyle="bold"
                     style="@style/editTextArialMTTheme"
                     />
-            <TextView
-            android:id="@+id/tituloValorValorMinimoAPosta"
+            <com.blackcat.currencyedittext.CurrencyEditText
+            android:id="@+id/tituloValorValorMinimoAposta"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -125,7 +124,8 @@
             android:text="R$ 00,00"
             android:textColor="@color/verdeazul"
             android:layout_marginRight="5dp"
-            android:textSize="15.8sp"/>
+            android:textSize="15.8sp"
+                android:inputType="number"/>
             <Button
             android:id="@+id/limparValorMinimoAposta"
             android:layout_width="20dp"
@@ -182,7 +182,6 @@
                     android:layout_height="wrap_content">
 
                     <TextView
-                        android:id="@+id/tituloValorMaximoAposta"
                         android:layout_width="155dp"
                         android:layout_height="wrap_content"
                         android:text="Valor máximo da aposta"
@@ -190,7 +189,7 @@
                         android:textColor="@color/cinza"
                         android:textSize="14.2sp"
                         style="@style/editTextArialMTTheme"/>
-                    <TextView
+                    <com.blackcat.currencyedittext.CurrencyEditText
                         android:id="@+id/tituloValorValorMaximoAposta"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -201,7 +200,9 @@
                         android:text="R$ 00,00"
                         android:textColor="@color/verdeazul"
                         android:layout_marginRight="5dp"
-                        android:textSize="15.8sp"/>
+                        android:textSize="15.8sp"
+                        android:inputType="number"
+                       />
                     <Button
                         android:id="@+id/limparValorMaximoAposta"
                         android:layout_width="20dp"
@@ -227,7 +228,7 @@
                         style="@style/editTextArialMTTheme"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
-                        android:text="1 reail"
+                        android:text="1 real"
                         android:textColor="@color/azulFormNovoTipoPagamento"
                         android:textSize="14.2sp" />
                     <TextView

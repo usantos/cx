@@ -297,9 +297,7 @@ public class ListaRapidaoActivity extends AppCompatActivity {
             public void onResponse(CarrinhoDTOResponse response) {
                 LoadingViewLoterias.stop(loadViewProgress);
                 carrinho = response.getPayload();
-
-                carrinho.setApostas(apostas);
-
+                apostas = carrinho.getApostas();
                 atualizaLayout();
             }
         }, new SilceClient.ErrorListener() {

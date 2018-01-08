@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import caixa.gov.br.loterias.bean.SessaoUsuario;
 import caixa.gov.br.loterias.bo.DadosCorporativosBO;
 import caixa.gov.br.loterias.bo.DadosUsuarioBO;
 import caixa.gov.br.loterias.bo.silce.SilceClient;
@@ -60,7 +61,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
 
 import caixa.gov.br.loterias.R;
 
@@ -150,6 +150,10 @@ public class PrincipalActivity extends AppCompatActivity
                 LoadingViewLoterias.stop(loadViewProgress);
 
                 modalidadesParaListar = response.getPayload().getParametros();
+                SessaoUsuario sessaoUser = SessaoUsuario.getInstance();
+                sessaoUser.setValorMinimimoAposta(response.getPayload().getValorMinimoCarrinho());
+                sessaoUser.setValorMaximoAposta(response.getPayload().getValorLimiteDiario());
+
                 if(modalidadesParaListar == null || modalidadesParaListar.size() == 0){
                     startActivity(new Intent(PrincipalActivity.this, ListaRapidaoActivity.class));
                     finish();
