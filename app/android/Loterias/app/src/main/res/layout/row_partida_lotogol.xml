@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/row_partida_lotogol"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginLeft="14dp"
+    android:layout_marginTop="28dp"
+    android:orientation="horizontal">
+
+    <caixa.gov.br.loterias.utils.ItemEquipeViewLotogol_
+        android:id="@+id/lotogol_time_um"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <ImageView
+        android:id="@+id/lotogol_versus"
+        android:layout_width="18dp"
+        android:layout_height="17dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:layout_gravity="center_vertical"
+        android:src="@drawable/icon_fechar"/>
+
+    <caixa.gov.br.loterias.utils.ItemEquipeViewLotogol_
+        android:id="@+id/lotogol_time_dois"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</LinearLayout>

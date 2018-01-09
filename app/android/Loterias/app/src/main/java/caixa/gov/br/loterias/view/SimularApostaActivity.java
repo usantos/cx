@@ -191,6 +191,10 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
                 configuraTipoApostaTela("_loteca_", R.color.lotecaclaro, R.color.lotecaescuro, View.GONE, View.VISIBLE);
                 this.toolBarMenu = R.menu.itens_simular_actionbar_duvida;
                 break;
+            case LOTOGOL:
+                configuraTipoApostaTela("_lotogol_", R.color.lotogolclaro, R.color.lotogolescuro, View.GONE, View.GONE);
+                this.toolBarMenu = R.menu.itens_simular_actionbar_duvida;
+                break;
         }
 
         // MOCK

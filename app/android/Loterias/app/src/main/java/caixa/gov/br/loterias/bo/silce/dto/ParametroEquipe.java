@@ -59,6 +59,8 @@ public class ParametroEquipe {
     private transient int brasaoId;
     @Expose(serialize = false, deserialize = false)
     private transient int brasaoSelecionadoId;
+    @Expose(serialize = false, deserialize = false)
+    private transient String placar;
 
 
     /**
@@ -250,5 +252,13 @@ public class ParametroEquipe {
 
     public void setBrasaoSelecionadoId(int brasaoSelecionadoId) {
         this.brasaoSelecionadoId = brasaoSelecionadoId;
+    }
+
+    public String getPlacar() {
+        return placar;
+    }
+
+    public void setPlacar(String placar) {
+        this.placar = placar;
     }
 }
