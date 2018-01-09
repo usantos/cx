@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -20,6 +21,7 @@ import android.widget.GridView;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
+import com.google.gson.Gson;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -31,6 +33,7 @@ import caixa.gov.br.loterias.bo.silce.dto.AgrupadorDTOApostaDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.DTOEnumCharacter;
 import caixa.gov.br.loterias.bo.silce.dto.DTOEnumInteger;
 import caixa.gov.br.loterias.bo.silce.dto.IncluirSurpresinhaDTO;
+import caixa.gov.br.loterias.bo.silce.dto.ParametroEquipe;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroJogoDTO;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroValorApostaDTO;
 import caixa.gov.br.loterias.bo.silce.dto.TipoConcursoEnum;
@@ -62,10 +65,12 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
     private SimularApostaActivity parentActivity;
 
     private SurpresinhaFragmentListener surpresinhaFragmentListener;
+    private ParametroEquipe equipeSelecionada = null;
 
     //mocks
     int numeroConcursoAtual;
     String dataSorteioAtual;
+
     int qtdSurpresinhas = 1;
 
     public SurpresinhaFragment() {
@@ -78,6 +83,11 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
 
         configuraBotoes(getView());
         configuraListaDezenas(getView());
+
+        if (equipeSelecionada != null) {
+            adicionarSurpresinhaNoCarrinho();
+        }
+
     }
 
     public void surpresinhaFragmentBuilder(Bundle dataBundle) {
@@ -105,6 +115,11 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
 //        View view = inflater.inflate(R.layout.fragment_surpresinha, container, false);
 //        configuraListaDezenas(view);
 //        verificaSeMostraBotaoLimparAposta(view);
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            equipeSelecionada = new Gson().fromJson(bundle.getString("equipeSelecionada"), ParametroEquipe.class);
+        }
+
         return inflater.inflate(R.layout.fragment_surpresinha, container, false);
     }
 
@@ -220,7 +235,8 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         }
     }
 
-    private void adicionarSurpresinhaNoCarrinho() {
+    public void adicionarSurpresinhaNoCarrinho() {
+
         final ApostaBO apostaBO = new ApostaBO(getActivity());
         final View loadViewProgress = LoadingViewLoterias.init(getActivity());
 
@@ -245,7 +261,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         aposta.setQuantidadeTeimosinhas(parentActivity.qtdConcursoSelecionado);
         aposta.setQuantidadeApostas(1);
 
-        aposta.setTimeDoCoracao(null);
+        aposta.setTimeDoCoracao(equipeSelecionada);
 
         apostaBO.adicionarSurpresinhaNoCarrinho(aposta, new SilceClient.Listener<AgrupadorDTOApostaDTOResponse>() {
             @Override
@@ -267,7 +283,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.escolherOutroTimeBtn:
-
+                parentActivity.escolherOutroTimeSurpresinha();
                 break;
             case R.id.btnMenosSurpresinha: {
                 if (qtdSurpresinhas > 1) {
@@ -304,6 +320,10 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         }
 
         qtdSurpresinhasTextView.setText(String.format("%d", qtdSurpresinhas));
+    }
+
+    public void setEquipeSelecionada(ParametroEquipe equipeSelecionada) {
+        this.equipeSelecionada = equipeSelecionada;
     }
 
     // Adapter do gridview das dezenas
@@ -363,6 +383,8 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         void adicionarApostaCarrinho();
 
         void abreCarrinhoApostas();
+
+        void escolherOutroTimeSurpresinha();
     }
 
 }

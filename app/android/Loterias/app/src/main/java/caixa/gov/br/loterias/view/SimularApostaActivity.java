@@ -38,6 +38,7 @@ import java.util.Date;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.bo.silce.dto.ModalidadeEnum;
+import caixa.gov.br.loterias.bo.silce.dto.ParametroEquipe;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroJogoDTO;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroValorApostaDTO;
 import caixa.gov.br.loterias.utils.TipoDialog;
@@ -52,6 +53,7 @@ import static java.lang.String.format;
 @EActivity(R.layout.activity_simular_aposta)
 public class SimularApostaActivity extends AppCompatActivity implements OnClickListener, CartelaFragmentListener, SurpresinhaFragmentListener {
 
+    public static final String ESCOLHA_TIME_CORACAO_SURPRESINHA = "escolhaTimeCoracaoSurpresinha";
     @ViewById
     DrawerLayout drawer_layout;
 
@@ -93,6 +95,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
     int typeGameColorLight;
     int typeGameColorDark;
 
+
     ArrayList<String> qtdNumerosList = new ArrayList<String>();
     ArrayList<String> qtdConcursosList = new ArrayList<String>();
     ModalidadeEnum tipoJogo;
@@ -105,6 +108,8 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
     public ParametroJogoDTO parametroSimulacao;
 
     private int toolBarMenu;
+
+    private Bundle bundle;
 
 
     public ParametroJogoDTO getParametroSimulacao() {
@@ -195,7 +200,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
 
 
         // Passando um link
-        Bundle bundle = new Bundle();
+        bundle = new Bundle();
         bundle.putInt("qtdDezenasPossiveisSelecionado", qtdDezenasPossiveisSelecionado);
         bundle.putInt("numeroConcursoAtual", numeroConcursoAtual);
         bundle.putString("dataSorteioAtual", dataSorteioAtual);
@@ -354,18 +359,14 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.simularTelaAposta: {
-                fragmentManager.beginTransaction().replace(R.id.fragmentSimularApostas, cartelaFragment).commit();
-
-                simularTelaAposta.setBackgroundResource(R.drawable.icon_seleciona);
-                surpresinhaTela.setBackgroundResource(R.drawable.icon_surpresinha);
+                cartelaFragment.setEscolhaTimeCoracaoSurpresinha(false);
+                abrirTelaCartela();
                 break;
             }
 
             case R.id.surpresinhaTela: {
-                fragmentManager.beginTransaction().replace(R.id.fragmentSimularApostas, surpresinhaFragment).commit();
-
-                simularTelaAposta.setBackgroundResource(R.drawable.icon_seleciona2);
-                surpresinhaTela.setBackgroundResource(R.drawable.icon_surpresinha2);
+                surpresinhaFragment.setArguments(new Bundle());
+                abrirTelaSurprezinha();
                 break;
             }
 
@@ -379,6 +380,13 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
                 break;
             }
         }
+    }
+
+    private void abrirTelaCartela() {
+        fragmentManager.beginTransaction().replace(R.id.fragmentSimularApostas, cartelaFragment).commit();
+
+        simularTelaAposta.setBackgroundResource(R.drawable.icon_seleciona);
+        surpresinhaTela.setBackgroundResource(R.drawable.icon_surpresinha);
     }
 
     private void configuraTipoApostaTela(String titleActivity, int lightColor, int darkColor, int visibilityToolBarSimularAposta, int visibilityToolBarLoteca) {
@@ -503,6 +511,27 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         Intent activity = new Intent(this, CarrinhoActivity.class);
 
         startActivity(activity);
+    }
+
+    @Override
+    public void adicionarTimeSurpresa(ParametroEquipe equipeSelecionada) {
+        Bundle bundle = new Bundle();
+        bundle.putString("equipeSelecionada", (new Gson()).toJson(equipeSelecionada));
+        surpresinhaFragment.setArguments(bundle);
+        abrirTelaSurprezinha();
+    }
+
+    private void abrirTelaSurprezinha() {
+        fragmentManager.beginTransaction().replace(R.id.fragmentSimularApostas, surpresinhaFragment).commit();
+
+        simularTelaAposta.setBackgroundResource(R.drawable.icon_seleciona2);
+        surpresinhaTela.setBackgroundResource(R.drawable.icon_surpresinha2);
+    }
+
+    @Override
+    public void escolherOutroTimeSurpresinha() {
+        cartelaFragment.setEscolhaTimeCoracaoSurpresinha(true);
+        abrirTelaCartela();
     }
 
     private void abrirTermos() {
