@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -18,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -33,13 +33,13 @@ import caixa.gov.br.loterias.bo.silce.dto.AgrupadorDTOApostaDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.DTOEnumCharacter;
 import caixa.gov.br.loterias.bo.silce.dto.DTOEnumInteger;
 import caixa.gov.br.loterias.bo.silce.dto.IncluirSurpresinhaDTO;
+import caixa.gov.br.loterias.bo.silce.dto.ModalidadeEnum;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroEquipe;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroJogoDTO;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroValorApostaDTO;
 import caixa.gov.br.loterias.bo.silce.dto.TipoConcursoEnum;
 import caixa.gov.br.loterias.utils.LoadingViewLoterias;
 import caixa.gov.br.loterias.utils.MensagensNetwork;
-import caixa.gov.br.loterias.view.CadastrarActivity;
 import caixa.gov.br.loterias.view.SimularApostaActivity;
 import caixa.gov.br.loterias.view.custom.ExpandableHeightGridView;
 import caixa.gov.br.loterias.utils.ViewUtils;
@@ -58,14 +58,22 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
     Button botaoMaisSurpresinha;
     Button botaoAdicionarSurpresinhaAoCarrinho;
 
+    private View divisaoLinhaUm;
+    private View divisaoLinhaDois;
+
+    private ImageView brasaoTimeSurpresa;
+
     TextView qtdSurpresinhasTextView;
     TextView valorAposta;
+    private TextView infoTimeSurpresa;
 
     public ParametroJogoDTO parametroJogo;
     private SimularApostaActivity parentActivity;
 
     private SurpresinhaFragmentListener surpresinhaFragmentListener;
     private ParametroEquipe equipeSelecionada = null;
+    private ModalidadeEnum tipoJogo;
+    private boolean isTipoTimeMania;
 
     //mocks
     int numeroConcursoAtual;
@@ -80,14 +88,29 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        configuraBotoes(getView());
-        configuraListaDezenas(getView());
+        View fragmentView = getView();
+        configuraBotoes(fragmentView);
+        configuraListaDezenas(fragmentView);
+        configurarComponentesTimeMania();
 
         if (equipeSelecionada != null) {
             adicionarSurpresinhaNoCarrinho();
         }
 
+        if(!isTipoTimeMania){
+            divisaoLinhaUm.setVisibility(View.GONE);
+            divisaoLinhaDois.setVisibility(View.GONE);
+            brasaoTimeSurpresa.setVisibility(View.GONE);
+            infoTimeSurpresa.setVisibility(View.GONE);;
+            botaoEscolhaOutrotime.setVisibility(View.GONE);
+        }
+    }
+
+    private void configurarComponentesTimeMania() {
+        divisaoLinhaUm = getView().findViewById(R.id.divisaoLinhaUm);
+        divisaoLinhaDois = getView().findViewById(R.id.divisaoLinhaDois);
+        brasaoTimeSurpresa = getView().findViewById(R.id.brasaoTimeSurpresa);
+        infoTimeSurpresa = getView().findViewById(R.id.infoTimeSurpresa);
     }
 
     public void surpresinhaFragmentBuilder(Bundle dataBundle) {
@@ -120,7 +143,18 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
             equipeSelecionada = new Gson().fromJson(bundle.getString("equipeSelecionada"), ParametroEquipe.class);
         }
 
+        identificarTipoJogo();
+
         return inflater.inflate(R.layout.fragment_surpresinha, container, false);
+    }
+
+    private void identificarTipoJogo() {
+        tipoJogo = (ModalidadeEnum) getActivity().getIntent().getSerializableExtra("tipoAposta");
+        switch (tipoJogo) {
+            case TIMEMANIA:
+                  isTipoTimeMania = true;
+                break;
+        }
     }
 
     @Override
