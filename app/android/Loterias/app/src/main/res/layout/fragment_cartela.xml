@@ -299,7 +299,41 @@
                 android:horizontalSpacing="16dp"
                 android:numColumns="auto_fit"
                 android:stretchMode="columnWidth"
-                android:verticalSpacing="10dp" />
+                android:verticalSpacing="10dp"
+                android:paddingBottom="40dp"
+                android:paddingTop="40dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"/>
+
+            <RelativeLayout
+                android:id="@+id/infoEscolhaPaginacaoLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/ArialMT"
+                    android:id="@+id/infoEscolha"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="@color/megasenamedio"
+                    android:textSize="14sp" />
+
+                <TextView
+                    style="@style/ArialMT"
+                    android:id="@+id/infoPaginacao"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignRight="@id/infoEscolha"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:textColor="@color/megasenamedio"
+                    android:textSize="14sp" />
+
+
+            </RelativeLayout>
 
             <LinearLayout
                 android:id="@+id/selecioneTimeCoracao"
@@ -316,7 +350,7 @@
                     android:layout_marginRight="45dp"
                     android:text="@string/label_nome_do_seu_time"
                     android:textColor="@color/azulFormNovoTipoPagamento"
-                    android:textSize="12sp" />
+                    android:textSize="16sp" />
 
                 <EditText
                     android:id="@+id/informe_nome_time"

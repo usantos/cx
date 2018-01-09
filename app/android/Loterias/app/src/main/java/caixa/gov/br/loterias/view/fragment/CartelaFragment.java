@@ -94,13 +94,21 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
     private SimularApostaActivity parentActivity;
     private ParametroJogoDTO parametroJogo;
     private CartelaFragmentListener cartelaFragmentListener;
+
     private ExpandableHeightGridView mGridTimeCoracao;
     private ExpandableHeightGridView listaDezenas;
+    private ExpandableHeightRecyclerView recyclerViewLoteca;
+
     private LinearLayout selecioneTimeCoracaoLayout;
+    private RelativeLayout infoEscolhaPaginacaoLayout;
+
     private EditText informeNomeTime;
+
+    private TextView infoEscolha;
+    private TextView infoPaginacao;
+
     private ModalidadeEnum tipoJogo;
     private View view;
-    private ExpandableHeightRecyclerView recyclerViewLoteca;
     private TimeCoracaoAdapter timeCoracaoAdapter;
 
     public BigDecimal valorTotalAposta;
@@ -161,13 +169,22 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         super.onActivityCreated(savedInstanceState);
         int idList = 0;
 
+        View fragmentView = getView();
+
         if (isTipoLoteca) {
             idList = R.id.recyclerViewLoteca;
         } else {
             idList = R.id.listaDezenas;
         }
 
-        configuraBotoes(getView());
+        if (isTipoTimeMania) {
+            infoEscolhaPaginacaoLayout = fragmentView.findViewById(R.id.infoEscolhaPaginacaoLayout);
+            infoEscolha = infoEscolhaPaginacaoLayout.findViewById(R.id.infoEscolha);
+            infoPaginacao = infoEscolhaPaginacaoLayout.findViewById(R.id.infoPaginacao);
+            infoEscolhaPaginacaoLayout.setVisibility(View.VISIBLE);
+        }
+
+        configuraBotoes(fragmentView);
         // Chama a tela de escolha de time
         if (isEscolhaTimeCoracaoSurpresinha) {
             mostrarCartelaEscolhaTimeCoracao();
@@ -176,9 +193,15 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
             limparTimeSelecionado();
         }
 
+        if (isTipoTimeMania && !isTelaSelecaoTimeAtivado) {
+            // Tela de escolha de números
+            infoEscolha.setText(ViewUtils.textFuturaAndFuturaBold(getActivity(), getString(R.string.label_escolha_numeros)));
+            infoPaginacao.setText(ViewUtils.textFuturaAndFuturaBold(getActivity(), getString(R.string.paginacao_um_de_dois)));
+        }
+
 
         ViewUtils.organizaTabLayout(getActivity(), R.id.cartelaFragmentMainLayout, idList, R.id.cartelaFragmentScrollView);
-        ((ScrollView) getView().findViewById(R.id.cartelaFragmentScrollView)).fullScroll(ScrollView.FOCUS_UP);
+        ((ScrollView) fragmentView.findViewById(R.id.cartelaFragmentScrollView)).fullScroll(ScrollView.FOCUS_UP);
 
     }
 
@@ -579,6 +602,11 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
     private void mostrarCartelaEscolhaTimeCoracao() {
         // Estando a aposta completa apresenta a tela de escolha do time
+        // Seta a paginação
+        infoEscolha.setText(getString(R.string.label_escolha_time_seu_coracao));
+        infoEscolha.setTypeface(ViewUtils.getFontFutura(getActivity()));
+        infoPaginacao.setText(ViewUtils.textFuturaAndFuturaBold(getActivity(), getString(R.string.paginacao_dois_de_dois)));
+
         isEcolhaTimeBtnAtivado = false;
         isTelaSelecaoTimeAtivado = true;
         selecioneTimeCoracaoLayout = view.findViewById(R.id.selecioneTimeCoracao);
@@ -590,6 +618,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         atualizaStatusBotaoFinalizar();
         verificaSeMostraBotaoLimparAposta(view);
         verificaSeMostraSalvarApostaView(view);
+
     }
 
     private void onChangeInformeNomeTime() {
