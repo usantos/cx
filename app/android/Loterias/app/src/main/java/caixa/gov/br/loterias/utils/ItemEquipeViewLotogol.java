@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.bo.silce.dto.ParametroPartida;
 import caixa.gov.br.loterias.view.adapter.NumerosLotogolAdapter;
 import caixa.gov.br.loterias.view.custom.ExpandableHeightGridView;
 
@@ -31,15 +32,18 @@ public class ItemEquipeViewLotogol extends LinearLayout {
     TextView itemTitle;
 
     @ViewById
-    ExpandableHeightGridView gridViewPlacar;
+    ExpandableHeightGridView gridViewPlacarTresColunas, gridViewPlacarDuasColunas;
 
-    private List<String> placarList;
+    private List<String> placarListUm;
+    private List<String> placarListDois;
 
-    private static final String VALORES_PLACAR = "0_1_2_3_+";
+    private static final String VALORES_PLACAR_LINHA_UM = "0_1_2";
+    private static final String VALORES_PLACAR_LINHA_DOIS = "3_+";
 
     @AfterViews
     protected void init() {
-        placarList = new ArrayList<>();
+        placarListUm = new ArrayList<>();
+        placarListDois = new ArrayList<>();
         criarListaPlacar();
     }
 
@@ -67,21 +71,22 @@ public class ItemEquipeViewLotogol extends LinearLayout {
         this.itemTitle = itemTitle;
     }
 
-    public ExpandableHeightGridView getGridViewPlacar() {
-        return gridViewPlacar;
-    }
-
-    public void setGridViewPlacar(ExpandableHeightGridView gridViewPlacar) {
-        this.gridViewPlacar = gridViewPlacar;
-    }
 
     private void criarListaPlacar() {
-        String[] arrayValor = VALORES_PLACAR.split("_");
+        String[] arrayValor = VALORES_PLACAR_LINHA_UM.split("_");
         for (int i = 0; i < arrayValor.length; i++) {
-            placarList.add(arrayValor[i]);
+            placarListUm.add(arrayValor[i]);
         }
 
-        gridViewPlacar.setAdapter(new NumerosLotogolAdapter(getContext(), placarList));
-        gridViewPlacar.setExpanded(true);
+        gridViewPlacarTresColunas.setAdapter(new NumerosLotogolAdapter(getContext(), placarListUm));
+        gridViewPlacarTresColunas.setExpanded(true);
+
+        arrayValor = VALORES_PLACAR_LINHA_DOIS.split("_");
+        for (int i = 0; i < arrayValor.length; i++) {
+            placarListDois.add(arrayValor[i]);
+        }
+
+        gridViewPlacarDuasColunas.setAdapter(new NumerosLotogolAdapter(getContext(), placarListDois));
+        gridViewPlacarDuasColunas.setExpanded(true);
     }
 }

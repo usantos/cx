@@ -1,15 +1,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layoutCirculoPlacar"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    >
+    android:gravity="center">
     <LinearLayout
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:orientation="horizontal"
         android:id="@+id/linearLayoutNumerosPlacar"
-        android:background="@drawable/select_unslect_circle_placar"
+        android:background="@drawable/custom_border_cinza_lotogol_circle"
         android:layout_marginHorizontal="8dp">
 
         <TextView
@@ -19,7 +18,7 @@
             android:layout_gravity="center"
             android:text="1"
             android:textAlignment="center"
-            android:textColor="@drawable/select_unslect_color_text_placar"
+            android:textColor="@color/lotogolEscuroToolBar"
             android:textSize="14.1sp"
             android:textStyle="bold"/>
     </LinearLayout>

@@ -46,8 +46,8 @@ public class PartidaViewLotogol extends LinearLayout {
 
         this.parametroPartida = parametroPartida;
 
-        String paisTime1 = parametroPartida.getEquipe1().getIndicadorSelecao() ? "" : " / " + parametroPartida.getEquipe1().getPais();
-        String paisTime2 = parametroPartida.getEquipe2().getIndicadorSelecao() ? "" : " / " + parametroPartida.getEquipe2().getPais();
+        String paisTime1 = (parametroPartida.getEquipe1().getIndicadorSelecao() ? " / " + parametroPartida.getEquipe1().getPais() : "");
+        String paisTime2 = (parametroPartida.getEquipe2().getIndicadorSelecao() ? " / " + parametroPartida.getEquipe2().getPais() : "");
 
         lotogolTimeUm.getItemImage().setImageResource(R.drawable.time);
         lotogolTimeUm.getItemTitle().setText(ViewUtils.fromHtml("<strong>" + parametroPartida.getEquipe1().getNome() + "</strong>" + paisTime1));

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="117dp"
-    android:layout_height="130dp"
+    android:layout_width="140dp"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <ImageView
@@ -25,17 +25,27 @@
         android:textSize="14.2sp" />
 
     <caixa.gov.br.loterias.view.custom.ExpandableHeightGridView
-        android:id="@+id/gridViewPlacar"
+        android:id="@+id/gridViewPlacarTresColunas"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="5dp"
         android:layout_marginTop="19dp"
-        android:columnWidth="56dp"
-        android:gravity="center"
+        android:gravity="center_vertical"
         android:isScrollContainer="false"
         android:numColumns="3"
-        android:stretchMode="spacingWidthUniform"
-        android:verticalSpacing="17dp" />
+        android:verticalSpacing="5dp" />
+
+    <caixa.gov.br.loterias.view.custom.ExpandableHeightGridView
+        android:id="@+id/gridViewPlacarDuasColunas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="22dp"
+        android:layout_marginRight="22dp"
+        android:gravity="center_horizontal"
+        android:isScrollContainer="false"
+        android:numColumns="2"
+        android:verticalSpacing="5dp"
+        />
 
 
 </LinearLayout>
