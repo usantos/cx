@@ -25,6 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.bean.SessaoUsuario;
 import caixa.gov.br.loterias.bo.silce.dto.ModalidadeEnum;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroJogoDTO;
 import caixa.gov.br.loterias.utils.EstiloModalidade;
@@ -71,8 +72,10 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
         TextView valorApostaText = findViewById(R.id.valorApostaConfirmacao);
         valorApostaText.setText(ViewUtils.getMoedaFormat(valorAposta));
 
+        SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
+        String valorCarrinho = ViewUtils.getMoedaFormat(sessaoUsuario.getValorMinimimoAposta() == null ? BigDecimal.ZERO : sessaoUsuario.getValorMinimimoAposta());
         TextView textObservacaoConfirmacao = findViewById(R.id.textObservacaoConfirmacao);
-        textObservacaoConfirmacao.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.infoValorMinimoCarrinho) + " _" + ViewUtils.getMoedaFormat(parametroSimulacao.getValorApostaMinima() == null ? new BigDecimal(0) : parametroSimulacao.getValorApostaMinima()) + "_"));
+        textObservacaoConfirmacao.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.infoValorMinimoCarrinho) + " _" + valorCarrinho + "_"));
 
         configuraLayoutTela(tipoJogo);
 
