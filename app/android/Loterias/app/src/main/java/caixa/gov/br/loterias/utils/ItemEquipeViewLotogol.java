@@ -141,12 +141,10 @@ public class ItemEquipeViewLotogol extends LinearLayout {
     }
 
     public void tirarSelecaoAnterior() {
-//        if(selecionadoAnterior != null) {
-            LinearLayout layoutCircle = (LinearLayout) selecionadoAnterior.findViewById(R.id.linearLayoutNumerosPlacar);
-            TextView valorPlacar = (TextView) selecionadoAnterior.findViewById(R.id.tituloPlacar);
+        LinearLayout layoutCircle = (LinearLayout) selecionadoAnterior.findViewById(R.id.linearLayoutNumerosPlacar);
+        TextView valorPlacar = (TextView) selecionadoAnterior.findViewById(R.id.tituloPlacar);
 
-            layoutCircle.setBackgroundResource(R.drawable.custom_border_cinza_lotogol_circle);
-            valorPlacar.setTextColor(getResources().getColor(R.color.lotogolEscuroToolBar));
-//        }
+        layoutCircle.setBackgroundResource(R.drawable.custom_border_cinza_lotogol_circle);
+        valorPlacar.setTextColor(getResources().getColor(R.color.lotogolEscuroToolBar));
     }
 }
