@@ -100,7 +100,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
     private ExpandableHeightGridView mGridTimeCoracao;
     private ExpandableHeightGridView listaDezenas;
-    private ExpandableHeightRecyclerView recyclerViewLoteca;
+    private ExpandableHeightRecyclerView recyclerViewPartida;
 
     private LinearLayout selecioneTimeCoracaoLayout;
     private RelativeLayout infoEscolhaPaginacaoLayout;
@@ -318,8 +318,8 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
             selecioneTimeCoracaoLayout.setVisibility(visibilidadeSelecioneTimeCoracao);
         }
 
-        if (recyclerViewLoteca != null) {
-            recyclerViewLoteca.setVisibility(visibilidadeEscolhaLoteca);
+        if (recyclerViewPartida != null) {
+            recyclerViewPartida.setVisibility(visibilidadeEscolhaLoteca);
 
         }
 
@@ -853,7 +853,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
     private void configuraListaDezenas(View fragmentView) {
 
         listaDezenas = fragmentView.findViewById(R.id.listaDezenas);
-        recyclerViewLoteca = fragmentView.findViewById(R.id.recyclerViewPartida);
+        recyclerViewPartida = fragmentView.findViewById(R.id.recyclerViewPartida);
 
         if (dezenas != null && dezenas.size() > 0) {
 
@@ -920,16 +920,16 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
     private void configurarTimesLoteca() {
         LotecaAdapter lotecaAdapter = new LotecaAdapter(parametroJogo.getPartidas(), this);
-        recyclerViewLoteca.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerViewLoteca.setAdapter(lotecaAdapter);
-        recyclerViewLoteca.setExpanded(true);
+        recyclerViewPartida.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerViewPartida.setAdapter(lotecaAdapter);
+        recyclerViewPartida.setExpanded(true);
     }
 
     private void configurarTimesLotogol() {
         LotogolAdapter lotogolAdapter = new LotogolAdapter(parametroJogo.getPartidas(), this);
-        recyclerViewLoteca.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerViewLoteca.setAdapter(lotogolAdapter);
-        recyclerViewLoteca.setExpanded(true);
+        recyclerViewPartida.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerViewPartida.setAdapter(lotogolAdapter);
+        recyclerViewPartida.setExpanded(true);
     }
 
     /**
@@ -1000,8 +1000,8 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
             parentActivity.setLabelValueTriplasLoteca(ZERO);
         }
         partidasSelecionadas.clear();
-        recyclerViewLoteca.setExpanded(true);
-        recyclerViewLoteca.getAdapter().notifyDataSetChanged();
+        recyclerViewPartida.setExpanded(true);
+        recyclerViewPartida.getAdapter().notifyDataSetChanged();
         verificaSeMostraSalvarApostaView(getView());
     }
 
@@ -1013,8 +1013,8 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
         }
         partidasSelecionadas.clear();
-        recyclerViewLoteca.setExpanded(true);
-        recyclerViewLoteca.getAdapter().notifyDataSetChanged();
+        recyclerViewPartida.setExpanded(true);
+        recyclerViewPartida.setAdapter(new LotogolAdapter(parametroJogo.getPartidas(), this));
         verificaSeMostraSalvarApostaView(getView());
     }
 

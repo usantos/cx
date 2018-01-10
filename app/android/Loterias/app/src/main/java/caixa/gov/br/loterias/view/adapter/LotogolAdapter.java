@@ -57,5 +57,4 @@ public class LotogolAdapter extends RecyclerView.Adapter<LotogolAdapter.LotogolH
             partidaRow = (PartidaViewLotogol) itemView;
         }
     }
-
 }

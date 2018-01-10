@@ -59,19 +59,8 @@ public class PartidaViewLotogol extends LinearLayout implements LotogolListener 
 
         lotogolTimeDois.getItemImage().setImageResource(R.drawable.time);
         lotogolTimeDois.getItemTitle().setText(ViewUtils.fromHtml("<strong>" + parametroPartida.getEquipe2().getNome() + "</strong>" + paisTime2));
-    }
 
-//    @Click(R.id.lotogol_time_um)
-//    public void clickEquipeUm() {
-//        lotogolTimeUm.setListerner(this);
-//        lotogolTimeUm.setParametroEquipe(parametroPartida.getEquipe1());
-//    }
-//
-//    @Click(R.id.lotogol_time_dois)
-//    public void clickEquipeDois() {
-//        lotogolTimeDois.setListerner(this);
-//        lotogolTimeDois.setParametroEquipe(parametroPartida.getEquipe2());
-//    }
+    }
 
     public void setListener(LotogolListener listener) {
         this.listener = listener;

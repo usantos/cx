@@ -71,16 +71,8 @@ public class ItemEquipeViewLotogol extends LinearLayout {
         return itemImage;
     }
 
-    public void setItemImage(ImageView itemImage) {
-        this.itemImage = itemImage;
-    }
-
     public TextView getItemTitle() {
         return itemTitle;
-    }
-
-    public void setItemTitle(TextView itemTitle) {
-        this.itemTitle = itemTitle;
     }
 
     public void setParametroEquipe(ParametroEquipe parametroEquipe) {
@@ -148,11 +140,13 @@ public class ItemEquipeViewLotogol extends LinearLayout {
         listerner.partidaSelecionada();
     }
 
-    private void tirarSelecaoAnterior(){
-        LinearLayout layoutCircle = (LinearLayout) selecionadoAnterior.findViewById(R.id.linearLayoutNumerosPlacar);
-        TextView valorPlacar = (TextView) selecionadoAnterior.findViewById(R.id.tituloPlacar);
+    public void tirarSelecaoAnterior() {
+//        if(selecionadoAnterior != null) {
+            LinearLayout layoutCircle = (LinearLayout) selecionadoAnterior.findViewById(R.id.linearLayoutNumerosPlacar);
+            TextView valorPlacar = (TextView) selecionadoAnterior.findViewById(R.id.tituloPlacar);
 
-        layoutCircle.setBackgroundResource(R.drawable.custom_border_cinza_lotogol_circle);
-        valorPlacar.setTextColor(getResources().getColor(R.color.lotogolEscuroToolBar));
+            layoutCircle.setBackgroundResource(R.drawable.custom_border_cinza_lotogol_circle);
+            valorPlacar.setTextColor(getResources().getColor(R.color.lotogolEscuroToolBar));
+//        }
     }
 }
