@@ -139,4 +139,6 @@
     <string name="escolha_outro_time">Escolha outro time</string>
     <string name="paginacao_um_de_dois">_1_ | 2</string>
     <string name="paginacao_dois_de_dois">_2_ | 2</string>
+    <string name="label_complete_placar_aleatoriamente">_Complete_ o placar aleatoriamente</string>
+    <string name="label_quantidade_gols_cada_time">a quantidade de gols de cada time.</string>
 </resources>

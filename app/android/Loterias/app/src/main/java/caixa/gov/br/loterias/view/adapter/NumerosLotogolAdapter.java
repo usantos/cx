@@ -49,7 +49,9 @@ public class NumerosLotogolAdapter extends BaseAdapter {
             view = layoutInflater.inflate(R.layout.linearlayout_numeros_lotogol, null);
         }
 
+        ((LinearLayout) view.findViewById(R.id.linearLayoutNumerosPlacar)).setBackgroundResource(R.drawable.custom_border_cinza_lotogol_circle);
         ((TextView) view.findViewById(R.id.tituloPlacar)).setText(placarList.get(i));
+        ((TextView) view.findViewById(R.id.tituloPlacar)).setTextColor(context.getResources().getColor(R.color.lotogolEscuroToolBar));
         return view;
     }
 }

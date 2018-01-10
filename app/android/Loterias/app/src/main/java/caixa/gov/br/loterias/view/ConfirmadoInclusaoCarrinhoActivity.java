@@ -5,9 +5,9 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,7 +33,7 @@ import caixa.gov.br.loterias.utils.ViewUtils;
 
 public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implements OnClickListener {
 
-    private boolean isLoteca;
+    private boolean isLotecaOrLotogol;
     private static int RESULT_FINISH = 3;
     public ParametroJogoDTO parametroSimulacao;
 
@@ -67,7 +67,7 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
         ModalidadeEnum tipoJogo = (ModalidadeEnum) getIntent().getSerializableExtra("tipoAposta");
         BigDecimal valorAposta = (BigDecimal) getIntent().getSerializableExtra("valorAposta");
 
-        isLoteca = tipoJogo == ModalidadeEnum.LOTECA;
+        isLotecaOrLotogol = ((tipoJogo == ModalidadeEnum.LOTECA) || (tipoJogo == ModalidadeEnum.LOTOGOL));
 
         TextView valorApostaText = findViewById(R.id.valorApostaConfirmacao);
         valorApostaText.setText(ViewUtils.getMoedaFormat(valorAposta));
@@ -109,7 +109,7 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
 
         Button botaoVerCarrinhoAposta = (Button) findViewById(R.id.botaoVerCarrinhoAposta);
         Button botaoAdicionarCompletarCartela = (Button) findViewById(R.id.botaoAdicionarCompletarCartela);
-        if (isLoteca) {
+        if (isLotecaOrLotogol) {
             botaoNovaAposta.setVisibility(View.INVISIBLE);
             botaoVerCarrinhoAposta.setVisibility(View.INVISIBLE);
             botaoAdicionarCompletarCartela.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.confirmacaoPagamentoBotaoVoltarInicio)));
@@ -186,7 +186,7 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
                 startActivityForResult(activity, 0);
             }
             case R.id.botaoAdicionarCompletarCartela: {
-                if (isLoteca) {
+                if (isLotecaOrLotogol) {
                     setResult(RESULT_FINISH);
                     finish();
                 }

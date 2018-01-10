@@ -265,7 +265,7 @@
                 android:visibility="gone">
 
                 <TextView
-                    android:id="@+id/titleLotecaInforme"
+                    android:id="@+id/titleInformeBold"
                     style="@style/ArialMT"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -277,7 +277,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/titleLotecaContinue"
+                    android:id="@+id/titleContinue"
                     style="@style/ArialMT"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -380,7 +380,7 @@
             </LinearLayout>
 
             <caixa.gov.br.loterias.view.custom.ExpandableHeightRecyclerView
-                android:id="@+id/recyclerViewLoteca"
+                android:id="@+id/recyclerViewPartida"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:clickable="false"

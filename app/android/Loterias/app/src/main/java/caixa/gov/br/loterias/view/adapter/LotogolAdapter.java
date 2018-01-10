@@ -9,6 +9,7 @@ import java.util.List;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroPartida;
 import caixa.gov.br.loterias.utils.PartidaViewLotogol;
 import caixa.gov.br.loterias.utils.PartidaViewLotogol_;
+import caixa.gov.br.loterias.utils.interfaces.LotogolListener;
 
 /**
  * Created by joafilho on 26/12/2017.
@@ -17,9 +18,9 @@ import caixa.gov.br.loterias.utils.PartidaViewLotogol_;
 public class LotogolAdapter extends RecyclerView.Adapter<LotogolAdapter.LotogolHolder> {
 
     private List<ParametroPartida> listaPartidas;
-    private LotogolAdapterListener listener;
+    private LotogolListener listener;
 
-    public LotogolAdapter(List<ParametroPartida> listaPartidas, LotogolAdapterListener listener) {
+    public LotogolAdapter(List<ParametroPartida> listaPartidas, LotogolListener listener) {
         this.listaPartidas = listaPartidas;
         this.listener = listener;
     }
@@ -55,10 +56,6 @@ public class LotogolAdapter extends RecyclerView.Adapter<LotogolAdapter.LotogolH
             super(itemView);
             partidaRow = (PartidaViewLotogol) itemView;
         }
-    }
-
-    public interface LotogolAdapterListener{
-        void click(ParametroPartida parametroPartida);
     }
 
 }
