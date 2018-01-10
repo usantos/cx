@@ -195,15 +195,16 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
         if (isTipoTimeMania && !isTelaSelecaoTimeAtivado) {
             // Tela de escolha de números
-            infoEscolha.setText(ViewUtils.textFuturaAndFuturaBold(getActivity(), getString(R.string.label_escolha_numeros)));
-            infoPaginacao.setText(ViewUtils.textFuturaAndFuturaBold(getActivity(), getString(R.string.paginacao_um_de_dois)));
-        }
 
+            infoEscolha.setText(ViewUtils.fromHtml("Escolha os " + "<strong>"+ "números" +"</strong>"));
+            infoPaginacao.setText(ViewUtils.fromHtml("<strong>"+ "1 | " +"</strong>" + "2"));
+        }
 
         ViewUtils.organizaTabLayout(getActivity(), R.id.cartelaFragmentMainLayout, idList, R.id.cartelaFragmentScrollView);
         ((ScrollView) fragmentView.findViewById(R.id.cartelaFragmentScrollView)).fullScroll(ScrollView.FOCUS_UP);
 
     }
+
 
     public void cartelaFragmentBuilder(Bundle dataBundle) {
         if (dataBundle != null) {
@@ -603,9 +604,8 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
     private void mostrarCartelaEscolhaTimeCoracao() {
         // Estando a aposta completa apresenta a tela de escolha do time
         // Seta a paginação
-        infoEscolha.setText(getString(R.string.label_escolha_time_seu_coracao));
-        infoEscolha.setTypeface(ViewUtils.getFontFutura(getActivity()));
-        infoPaginacao.setText(ViewUtils.textFuturaAndFuturaBold(getActivity(), getString(R.string.paginacao_dois_de_dois)));
+        infoEscolha.setText( "Escolha o time do seu coração");
+        infoPaginacao.setText(ViewUtils.fromHtml("<strong>"+ "2 | " +"</strong>" + "2" ));
 
         isEcolhaTimeBtnAtivado = false;
         isTelaSelecaoTimeAtivado = true;

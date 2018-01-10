@@ -120,8 +120,6 @@
     <string name="label_resultado_das_partidas.">o resultado das partidas.</string>
     <string name="label_selecionar_times_aleatoriamente">_Selecionar_ times aleatoriamente</string>
     <string name="label_escolha_time_coracao">_Escolha_ \no time do coração</string>
-    <string name="label_escolha_numeros">Escolha os _números_</string>
-    <string name="label_escolha_time_seu_coracao"> Escolha o time do seu coração</string>
 
     <string name="label_concurso">Concurso</string>
     <string name="label_abertura">Abertura</string>
