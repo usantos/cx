@@ -28,8 +28,8 @@
     <string name="completarCartela">_Completar_\ncom números aleatórios</string>
 
     <string name="surpresinhaTitulo">Surpresinha</string>
-    <string name="surpresinhaInfo">Na Surpresinha os números ficam mascarados com a interrogação até a efetivação da compra.</string>
-    <string name="surpresinhaQtdInfo">Você ainda pode escolher quantas Surpresinhas quer apostar neste concurso.</string>
+    <string name="surpresinhaInfo">Na Surpresinha os números ficam\nmascarados até a efetivação da compra.</string>
+    <string name="surpresinhaQtdInfo">Você ainda pode escolher quantas\nSurpresinhas quer apostar neste concurso.</string>
 
     <string name="titulo_dialog">Titulo da dialog</string>
     <string name="cancelar">Cancelar</string>
