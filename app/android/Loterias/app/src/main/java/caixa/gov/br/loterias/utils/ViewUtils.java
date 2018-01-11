@@ -613,4 +613,10 @@ public class ViewUtils {
         int end = listaString[1].length() + start;
         return new PositionStringBold(start, end);
     }
+
+    public static int setDisplayMetric(int valor, Context context) {
+
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, valor, context.getResources().getDisplayMetrics());
+    }
+
 }

@@ -22,7 +22,7 @@
         android:text="**** **** **** 4395"
         android:textSize="14sp"
         android:layout_marginBottom="15dp"
-        android:layout_marginTop="7dp"
+        android:layout_marginTop="0dp"
         android:layout_below="@+id/textBandeiraCartao"
         android:layout_alignLeft="@+id/textBandeiraCartao"
         android:layout_alignStart="@+id/textBandeiraCartao"

@@ -13,6 +13,7 @@ import android.widget.Button;
 
 import com.android.volley.VolleyError;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import caixa.gov.br.loterias.R;
@@ -41,7 +42,30 @@ public class FormaPagamentoActivity extends SettingToolbarActivity implements Fo
         configuraClickBotoes();
         callWebservice();
 
+//        mockFormasPagamento();
+
         ViewUtils.organizaTabLayout(this, R.id.formaPagamentoMainLayout, R.id.formasPagamentoRecyclerView, R.id.formaPagamentoScrollView);
+    }
+
+    private void mockFormasPagamento(){
+        RetornoCartao retornoCartao = new RetornoCartao();
+        retornoCartao.setIdCartao(new Long(1));
+        retornoCartao.setMesValidade(new Long(12));
+        retornoCartao.setAnoValidade(new Long(2020));
+        retornoCartao.setNomeMetodoPagamento("VISA");
+        retornoCartao.setPrimeirosDigitos("DDDD");
+        retornoCartao.setUltimosDigitos("AAAA");
+        listaCartoes =  new ArrayList<>();
+        listaCartoes.add(retornoCartao);
+        listaCartoes.add(retornoCartao);
+        listaCartoes.add(retornoCartao);
+        listaCartoes.add(retornoCartao);
+        listaCartoes.add(retornoCartao);
+        listaCartoes.add(retornoCartao);
+        listaCartoes.add(retornoCartao);
+        if (listaCartoes != null && listaCartoes.size() > 0) {
+            configuraRecyclerViewCarrinhoAposta();
+        }
     }
 
     private void callWebservice() {
@@ -93,11 +117,10 @@ public class FormaPagamentoActivity extends SettingToolbarActivity implements Fo
         RecyclerView.LayoutManager layout = new LinearLayoutManager(this,
                 LinearLayoutManager.VERTICAL, false);
 
-        int sizeitem = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 75 * listaCartoes.size(), this.getResources().getDisplayMetrics());
-
-
+        int sizeitem = ViewUtils.setDisplayMetric(75 * listaCartoes.size(), this);
         ConstraintLayout.LayoutParams layoutFormasPagamento = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, sizeitem);
         layoutFormasPagamento.topToBottom = R.id.textoInfoSelecioneFormaPagamento;
+        layoutFormasPagamento.setMargins(0, ViewUtils.setDisplayMetric(40, this), 0, 0);
         recyclerView.setLayoutParams(layoutFormasPagamento);
 
         FormaPagamentoRecyclerViewAdapter formaPagamentoRecyclerViewAdapter = new FormaPagamentoRecyclerViewAdapter(listaCartoes, this);
