@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.utils.MaskEditUtil;
 import caixa.gov.br.loterias.view.adapter.NovaFormaPagamentoBandeiraAdapter;
 import caixa.gov.br.loterias.utils.ViewUtils;
 
@@ -43,6 +44,8 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
 
         configuraBotoesListener();
 
+        EditText editTextNumeroCartaoContent = (EditText) findViewById(R.id.editTextNumeroCartaoContent);
+        editTextNumeroCartaoContent.addTextChangedListener(MaskEditUtil.mask(editTextNumeroCartaoContent, MaskEditUtil.FORMAT_CRED_CARD));
         addRightImg((EditText) findViewById(R.id.editTextNumeroCartaoContent));
         addRightImg((EditText) findViewById(R.id.editTextNomeClienteCartaoContent));
         addRightImg((EditText) findViewById(R.id.editTextCodigoSegurancaContent));

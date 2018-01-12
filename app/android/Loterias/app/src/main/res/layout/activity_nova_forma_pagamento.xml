@@ -81,7 +81,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true">
 
-                <com.github.pinball83.maskededittext.MaskedEditText
+                <EditText
                     android:id="@+id/editTextNumeroCartaoContent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -90,8 +90,6 @@
                     android:hint="Numero cartão"
                     android:textSize="16sp"
                     android:textColor="@color/cinza"
-                    app:mask="**** **** **** ****"
-                    app:notMaskedSymbol="*"
                     android:textColorHint="@color/azulFormNovoTipoPagamento"
                     style="@style/editTextRegisterTheme"
                     />
