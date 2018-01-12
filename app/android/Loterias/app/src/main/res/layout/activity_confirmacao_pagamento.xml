@@ -43,7 +43,9 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textTitulo"
-        app:srcCompat="@drawable/seta_apontando_apostas" />
+        app:srcCompat="@drawable/rectangle_5_copy"
+        android:scaleY="-1"
+        android:rotation="180"/>
 
     <TextView
         android:id="@+id/textTitulo"
@@ -86,7 +88,8 @@
             app:layout_constraintLeft_toLeftOf="parent"
             android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="10dp">
+            android:layout_marginEnd="10dp"
+            android:clipToPadding="false">
 
             <TextView
                 android:id="@+id/textViewCarrinhoCartelaCount"
@@ -96,10 +99,13 @@
                 android:layout_alignEnd="@+id/textInfoCarrinho"
                 android:layout_alignRight="@+id/textInfoCarrinho"
                 android:background="@drawable/rounded_textview"
+                android:layout_marginRight="6dp"
                 android:gravity="center"
                 android:text="0"
                 android:textColor="@color/branco"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:outlineProvider="none"
+                android:translationZ="3dp"/>
 
             <Button
                 android:id="@+id/botaoCarrinho"
@@ -107,6 +113,8 @@
                 android:layout_height="40dp"
                 android:background="@drawable/icon_apostas"
                 android:layout_centerHorizontal="true" />
+
+
 
             <TextView
                 android:id="@+id/textInfoCarrinho"
