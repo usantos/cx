@@ -1,4 +1,5 @@
 <resources>
+
     <style name="AppTheme.DegradeActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -20,7 +21,13 @@
         <item name="android:colorControlActivated">@color/verdeazul</item>
         <item name="android:colorControlNormal">@color/cinzaseekbar</item>
     </style>
+
     <style name="SplashTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
         <item name="android:windowBackground">@drawable/background_splash_screen</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:elevation">0dp</item>
+        <item name="elevation">0dp</item>
     </style>
 </resources>

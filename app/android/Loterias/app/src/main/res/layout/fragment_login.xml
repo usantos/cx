@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="caixa.gov.br.loterias.view.fragment.LoginFragment"
-    android:background="@color/colorAccent">
+    android:background="@color/colorAccent"
+    tools:context="caixa.gov.br.loterias.view.fragment.LoginFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <RelativeLayout
@@ -31,10 +31,10 @@
             android:layout_weight="1"
             android:background="@drawable/button_border"
             android:text="Aposte agora"
+            android:textAllCaps="false"
             android:textColor="@color/branco"
             android:textSize="16sp"
-            android:textStyle="bold"
-            android:textAllCaps="false"/>
+            android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/imageView3"
@@ -55,11 +55,10 @@
             android:layout_marginTop="30dp"
             android:background="@color/laranjacaixa"
             android:text="Faça login/cadastre-se"
+            android:textAllCaps="false"
             android:textColor="@color/branco"
             android:textSize="16sp"
-            android:textStyle="bold"
-            android:textAllCaps="false"
-            />
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/textView2"
