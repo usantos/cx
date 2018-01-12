@@ -1,5 +1,6 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cartelaFragmentScrollView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -289,6 +290,39 @@
                     android:textSize="14sp" />
             </LinearLayout>
 
+            <RelativeLayout
+                android:id="@+id/opcaoOutrosNumerosLayout"
+                android:layout_width="match_parent"
+                android:layout_height="74dp"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                app:layout_constraintTop_toTopOf="parent"
+                android:background="@color/cinza" >
+
+                <android.support.v7.widget.AppCompatCheckBox
+                    android:id="@+id/selcioneOutrosNumeros"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/check_box_selected"
+                    android:button="@color/verdeagua" />
+
+                <TextView
+                    style="@style/ArialMT"
+                    android:id="@+id/infoSelecioneOutrosNumeros"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_toRightOf="@+id/selcioneOutrosNumeros"
+                    android:textColor="@color/branco"
+                    android:textSize="14sp"
+                    tools:ignore="NotSibling" />
+
+            </RelativeLayout>
+
             <caixa.gov.br.loterias.view.custom.ExpandableHeightGridView
                 android:id="@+id/listaDezenas"
                 android:layout_width="match_parent"
@@ -305,12 +339,13 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"/>
 
+
             <RelativeLayout
                 android:id="@+id/infoEscolhaPaginacaoLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:visibility="visible"
+                android:visibility="gone"
                 app:layout_constraintLeft_toLeftOf="parent">
 
                 <TextView

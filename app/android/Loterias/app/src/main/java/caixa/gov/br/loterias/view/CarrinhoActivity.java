@@ -40,6 +40,7 @@ public class CarrinhoActivity extends SettingToolbarActivity {
     public CarrinhoDTO carrinho;
     private ExpandableHeightRecyclerView recyclerView;
     private List<IdentificaoDeUmaApostaDas8Modalidades> apostas;
+    private TextView valorTotalCarrinho;
     TextView infoValorMinimoTextView;
 
     @Override
@@ -48,6 +49,10 @@ public class CarrinhoActivity extends SettingToolbarActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_carrinho);
+
+        valorTotalCarrinho = findViewById(R.id.valorTotalCarrinho);
+        setValorTotalFormatoHtmlt(BigDecimal.ZERO);
+
         setTitle(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.title_activity_carrinho)));
 
         recyclerView = findViewById(R.id.apostasListaRecycleView);
@@ -222,7 +227,14 @@ public class CarrinhoActivity extends SettingToolbarActivity {
             valorTotalCarrinho = valorTotalCarrinho.add(aposta.getValor());
         }
 
-        ((TextView) findViewById(R.id.valorTotalCarrinho)).setText(ViewUtils.getMoedaFormat(valorTotalCarrinho));
+        setValorTotalFormatoHtmlt(valorTotalCarrinho);
+    }
+
+    private void setValorTotalFormatoHtmlt(BigDecimal valorTotalCarrinho) {
+        String valorApostaFormatoMoeda = ViewUtils.getMoedaFormat(valorTotalCarrinho);
+        String[] valorApostaFormatoMoedaArray = valorApostaFormatoMoeda.split("\\s");
+
+        this.valorTotalCarrinho.setText(ViewUtils.fromHtml(valorApostaFormatoMoedaArray[0] + "<strong>" + valorApostaFormatoMoedaArray[1] + "</strong>"));
     }
 
 }

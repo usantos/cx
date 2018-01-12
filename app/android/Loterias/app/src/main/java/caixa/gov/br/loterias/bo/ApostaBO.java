@@ -75,6 +75,20 @@ public class ApostaBO{
                 silceClient.volleyErrorListener(errorListener),headers);
     }
 
+    public void adicionarApostasNoCarrinho(final  List<IdentificaoDeUmaApostaDas8Modalidades> apostas,
+                                          final SilceClient.Listener<AgrupadorDTOApostaDTOResponse> listener,
+                                          final SilceClient.ErrorListener errorListener) {
+
+        LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
+        headers.put("Authorization", "Bearer " + UsuarioLogadoSingleton.getInstance().token);
+
+
+        silceClient.getConnection().post(SilceClient.INCLUIR_APOSTAS_CARRINHO_PATH, new LinkedHashMap<String, String>(),
+                apostas, AgrupadorDTOApostaDTOResponse.class,
+                silceClient.volleyListener(listener, AgrupadorDTOApostaDTOResponse.class),
+                silceClient.volleyErrorListener(errorListener),headers);
+    }
+
     public void adicionarSurpresinhaNoCarrinho(final IncluirSurpresinhaDTO aposta,
                                           final SilceClient.Listener<AgrupadorDTOApostaDTOResponse> listener,
                                           final SilceClient.ErrorListener errorListener) {

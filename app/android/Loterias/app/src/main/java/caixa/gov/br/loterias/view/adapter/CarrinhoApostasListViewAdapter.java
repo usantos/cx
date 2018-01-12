@@ -19,6 +19,7 @@ import caixa.gov.br.loterias.bo.silce.SilceClient;
 import caixa.gov.br.loterias.bo.silce.dto.CarrinhoDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import caixa.gov.br.loterias.bo.silce.dto.ModalidadeEnum;
+import caixa.gov.br.loterias.utils.Constantes;
 import caixa.gov.br.loterias.utils.EstiloModalidade;
 import caixa.gov.br.loterias.utils.LoadingViewLoterias;
 import caixa.gov.br.loterias.utils.MensagensNetwork;
@@ -92,7 +93,10 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
         }
 
         holder.numerosAposta.setText(numeroStr);
-        holder.valorAposta.setText(caixa.gov.br.loterias.utils.ViewUtils.getMoedaFormat(apostas.get(position).getValor()));
+
+        String valorApostaFormatoMoeda = ViewUtils.getMoedaFormat(apostas.get(position).getValor());
+        String[] valorApostaFormatoMoedaArray = valorApostaFormatoMoeda.split("\\s");
+        holder.valorAposta.setText(ViewUtils.fromHtml(valorApostaFormatoMoedaArray[0] + "<strong>" + valorApostaFormatoMoedaArray[1] + "</strong>") );
     }
 
     private void deletarAposta (String idAposta) {
