@@ -10,7 +10,8 @@
     <android.support.constraint.ConstraintLayout
         android:id="@+id/cartelaFragmentMainLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/branco">
 
         <RelativeLayout
             android:id="@+id/layoutSalvarApostaLayout"
@@ -183,7 +184,9 @@
                     android:text="@string/valorDessaAposta"
                     android:textAlignment="center"
                     android:textColor="@color/azulescuro"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    style="@style/ArialMT"
+                    />
             </RelativeLayout>
 
             <ImageView
@@ -239,14 +242,34 @@
 
                 <TextView
                     android:id="@+id/textInfoCarrinho"
+                    style="@style/ArialMT"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignTop="@+id/textInfoValorAposta"
+                    android:layout_marginLeft="168dp"
+                    android:layout_marginStart="168dp"
                     android:text="@string/carrinhoDeApostas"
                     android:textAlignment="center"
                     android:textColor="@color/azulescuro"
                     android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/titleInformeBold"
+                    style="@style/ArialMT"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginBottom="444dp"
+                    android:layout_marginEnd="271dp"
+                    android:layout_marginRight="271dp"
+                    android:text="@string/label_informe"
+                    android:textColor="@color/verdeazul"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
             </RelativeLayout>
         </android.support.constraint.ConstraintLayout>
 
@@ -264,18 +287,6 @@
                 android:layout_marginLeft="17dp"
                 android:orientation="horizontal"
                 android:visibility="gone">
-
-                <TextView
-                    android:id="@+id/titleInformeBold"
-                    style="@style/ArialMT"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginTop="20dp"
-                    android:text="@string/label_informe"
-                    android:textColor="@color/verdeazul"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/titleContinue"
