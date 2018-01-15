@@ -102,7 +102,6 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
 
         GradientDrawable gd = new GradientDrawable();
         gd.setColor(ContextCompat.getColor(this, estilo.getCorClara()));
-        gd.setCornerRadius(5);
         gd.setStroke(2, Color.WHITE);
 
         Button botaoNovaAposta = (Button) findViewById(R.id.botaoNovaAposta);
@@ -142,7 +141,8 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
         getMenuInflater().inflate(R.menu.itens_simular_actionbar_termos, menu);
 
         MenuItem concursoAtual = menu.findItem(R.id.concursoAtual);
-        concursoAtual.setTitle("Concurso \n " + parametroSimulacao.getConcurso().getNumero());
+        ((TextView) concursoAtual.getActionView().findViewById(R.id.item_titulo)).setText("Concurso");
+        ((TextView) concursoAtual.getActionView().findViewById(R.id.item_descricao)).setText(parametroSimulacao.getConcurso().getNumero().toString());
 
         SimpleDateFormat formatterDateFinal = new SimpleDateFormat("dd/MM");
         DateFormat formatterDate = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
@@ -150,8 +150,9 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
 
         try {
             Date dataFormatada = formatterDate.parse(parametroSimulacao.getConcurso().getDataHoraSorteio());
-            dataSorteio.setTitle("Sorteio \n " + formatterDateFinal.format(dataFormatada));
-        } catch (ParseException e) {
+            ((TextView) dataSorteio.getActionView().findViewById(R.id.item_titulo)).setText("Sorteio");
+            ((TextView) dataSorteio.getActionView().findViewById(R.id.item_descricao)).setText(formatterDateFinal.format(dataFormatada));
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
