@@ -30,4 +30,8 @@
         <item name="android:elevation">0dp</item>
         <item name="elevation">0dp</item>
     </style>
+
+    <style name="ButtonNotShadow" parent="Base.Widget.AppCompat.Button">
+        <item name="android:outlineProvider">none</item>
+    </style>
 </resources>

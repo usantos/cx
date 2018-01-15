@@ -16,7 +16,11 @@
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".view.IntroducaoActivity"
@@ -59,14 +63,7 @@
             android:name=".view.CarrinhoActivity"
             android:configChanges="orientation"
             android:label="@string/title_activity_carrinho"
-            android:screenOrientation="portrait" >
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".view.FormaPagamentoActivity"
             android:configChanges="orientation"
