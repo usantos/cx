@@ -450,7 +450,7 @@ public class ViewUtils {
     public static String getMoedaFormat(BigDecimal valor) {
         Locale ptBrLocale = new Locale("pt", "BR");
         NumberFormat nf = NumberFormat.getCurrencyInstance(ptBrLocale);
-        return nf.format(valor);
+        return nf.format(valor).replace("R$", "R$ ");
     }
 
     public static int monthDiff(Calendar startCalendar, Calendar endCalendar) {
