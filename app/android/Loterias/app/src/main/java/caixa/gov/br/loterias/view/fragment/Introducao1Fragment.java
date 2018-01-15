@@ -1,14 +1,8 @@
 package caixa.gov.br.loterias.view.fragment;
 
-import android.graphics.Paint;
-import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.SpannableStringBuilder;
-import android.text.Spanned;
-import android.text.TextPaint;
-import android.text.style.TypefaceSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +10,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import caixa.gov.br.loterias.R;
-import caixa.gov.br.loterias.view.IntroducaoActivity;
 import caixa.gov.br.loterias.utils.ViewUtils;
+import caixa.gov.br.loterias.view.IntroducaoActivity;
 
 /**
  * A simple {@link Fragment} subclass.

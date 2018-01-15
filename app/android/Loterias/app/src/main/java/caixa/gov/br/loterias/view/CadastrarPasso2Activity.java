@@ -413,7 +413,7 @@ public class CadastrarPasso2Activity extends CadastroActivity {
         tituloDialog.setText("Bairro");
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(CadastrarPasso2Activity.this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, listBairros);
+                R.layout.item_text_popup, R.id.textList, listBairros);
 
         // Assign adapter to ListView
         listViewItens.setAdapter(adapter);

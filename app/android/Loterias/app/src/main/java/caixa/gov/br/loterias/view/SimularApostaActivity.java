@@ -253,7 +253,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         tituloDialog.setText("Quant. de Números");
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(SimularApostaActivity.this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, qtdNumerosList);
+                R.layout.item_text_popup, R.id.textList, qtdNumerosList);
 
         // Assign adapter to ListView
         listViewItens.setAdapter(adapter);
@@ -312,7 +312,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         TextView tituloDialog = (TextView) dialog.findViewById(R.id.tituloDialogCustom);
         tituloDialog.setText("Teimosinhas");
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(SimularApostaActivity.this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, qtdConcursosList);
+                R.layout.item_text_popup, R.id.textList, qtdConcursosList);
 
         // Assign adapter to ListView
         listViewItens.setAdapter(adapter);

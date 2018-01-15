@@ -673,12 +673,12 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
     private void selecionarDezenasApostaEspelho() {
         ApostaBO apostaBO = new ApostaBO(getActivity());
         apostaBO.completaJogo(100, dezenasSelecionadas, 1,
-              100, new SilceClient.Listener<CompletaJogoRsp>() {
+                100, new SilceClient.Listener<CompletaJogoRsp>() {
                     @Override
                     public void onResponse(CompletaJogoRsp response) {
-                        for(Integer dezena: response.getPayload()){
-                            if(!dezenasSelecionadas.contains(dezena)){
-                                 dezenasApostaEspelho.add(dezena);
+                        for (Integer dezena : response.getPayload()) {
+                            if (!dezenasSelecionadas.contains(dezena)) {
+                                dezenasApostaEspelho.add(dezena);
                             }
                         }
 
@@ -973,7 +973,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                                 }
                                 dezenasSelecionadas.add(valorSelecionado);
                             } else {
-                                ViewUtils.alert(getActivity(), "Número de dezenas máximo selecionadas.");
+                                ViewUtils.alert(getActivity(), getString(R.string.label_nao_possivel_selecionar_quantidade_numeros_superior_limite_modalidade_loterica));
                             }
                         } else {
                             dezenasSelecionadas.add(valorSelecionado);

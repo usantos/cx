@@ -156,7 +156,7 @@ public class CadastroActivity extends AppCompatActivity {
         tituloDialog.setText("UF");
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(CadastroActivity.this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, listUFString);
+                R.layout.item_text_popup, R.id.textList, listUFString);
 
         // Assign adapter to ListView
         listViewItens.setAdapter(adapter);
@@ -278,7 +278,7 @@ public class CadastroActivity extends AppCompatActivity {
         tituloDialog.setText("Cidade");
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(CadastroActivity.this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, listMunicipios);
+                R.layout.item_text_popup, R.id.textList, listMunicipios);
 
         // Assign adapter to ListView
         listViewItens.setAdapter(adapter);
