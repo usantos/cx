@@ -150,13 +150,11 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         } else if (parametroJogo.getValorApostaMinima() != null) {
             valorEmReais = parametroJogo.getValorApostaMinima();
         }
-        if (qtdTeimosinhas == 0) {
-            valorAposta.setText(ViewUtils.getMoedaFormat(valorEmReais));
-        } else {
+        if (qtdTeimosinhas != 0) {
             valorEmReais = valorEmReais.multiply(BigDecimal.valueOf(qtdTeimosinhas).movePointLeft(0));
-            valorAposta.setText(ViewUtils.getMoedaFormat(valorEmReais));
         }
 
+        ViewUtils.setMoedaFormatHtml(valorEmReais, valorAposta);
         valorTotalAposta = valorEmReais;
     }
 

@@ -171,7 +171,6 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:layout_centerHorizontal="true"
-                    android:text="R$ 4,50"
                     android:textAlignment="center"
                     android:textStyle="bold" />
 
@@ -245,11 +244,8 @@
                     style="@style/ArialMT"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignTop="@+id/textInfoValorAposta"
-                    android:layout_marginLeft="168dp"
-                    android:layout_marginStart="168dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
                     android:text="@string/carrinhoDeApostas"
                     android:textAlignment="center"
                     android:textColor="@color/azulescuro"

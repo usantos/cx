@@ -254,17 +254,17 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         if (qtdSurpresinhas > 0) {
             if (qtdTeimosinhas == 0) {
                 valorEmReais = valorEmReais.multiply(new BigDecimal(1.0)).multiply(new BigDecimal(qtdSurpresinhas));
-                valorAposta.setText(ViewUtils.getMoedaFormat(valorEmReais));
+                ViewUtils.setMoedaFormatHtml(valorEmReais, valorAposta);
             } else {
                 valorEmReais = valorEmReais.multiply(new BigDecimal(qtdTeimosinhas)).multiply(new BigDecimal(qtdSurpresinhas));
-                valorAposta.setText(ViewUtils.getMoedaFormat(valorEmReais));
+                ViewUtils.setMoedaFormatHtml(valorEmReais, valorAposta);
             }
         } else {
             if (qtdTeimosinhas == 0) {
-                valorAposta.setText(ViewUtils.getMoedaFormat(valorEmReais));
+                ViewUtils.setMoedaFormatHtml(valorEmReais, valorAposta);
             } else {
                 valorEmReais = valorEmReais.multiply(new BigDecimal(qtdTeimosinhas));
-                valorAposta.setText(ViewUtils.getMoedaFormat(valorEmReais));
+                ViewUtils.setMoedaFormatHtml(valorEmReais, valorAposta);
             }
         }
     }

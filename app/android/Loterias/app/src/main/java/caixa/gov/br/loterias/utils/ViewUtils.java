@@ -44,6 +44,8 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -453,6 +455,13 @@ public class ViewUtils {
         return nf.format(valor).replace("R$", "R$ ");
     }
 
+     public static void setMoedaFormatHtml(BigDecimal valor, TextView valorTextView) {
+         String valoFormatoMoeda = getMoedaFormat(valor);
+         String[] valorFormatoMoedaArray = valoFormatoMoeda.split("\\s");
+
+         valorTextView.setText(fromHtml(valorFormatoMoedaArray[0] + "<strong>" + valorFormatoMoedaArray[1] + "</strong>"));
+    }
+
     public static int monthDiff(Calendar startCalendar, Calendar endCalendar) {
         int diffYear = endCalendar.get(Calendar.YEAR) - startCalendar.get(Calendar.YEAR);
         return diffYear * 12 + endCalendar.get(Calendar.MONTH) - startCalendar.get(Calendar.MONTH);
@@ -618,5 +627,7 @@ public class ViewUtils {
 
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, valor, context.getResources().getDisplayMetrics());
     }
+
+
 
 }

@@ -51,7 +51,7 @@ public class CarrinhoActivity extends SettingToolbarActivity {
         setContentView(R.layout.activity_carrinho);
 
         valorTotalCarrinho = findViewById(R.id.valorTotalCarrinho);
-        setValorTotalFormatoHtmlt(BigDecimal.ZERO);
+        ViewUtils.setMoedaFormatHtml(BigDecimal.ZERO, this.valorTotalCarrinho);
 
         setTitle(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.title_activity_carrinho)));
 
@@ -227,14 +227,7 @@ public class CarrinhoActivity extends SettingToolbarActivity {
             valorTotalCarrinho = valorTotalCarrinho.add(aposta.getValor());
         }
 
-        setValorTotalFormatoHtmlt(valorTotalCarrinho);
-    }
-
-    private void setValorTotalFormatoHtmlt(BigDecimal valorTotalCarrinho) {
-        String valorApostaFormatoMoeda = ViewUtils.getMoedaFormat(valorTotalCarrinho);
-        String[] valorApostaFormatoMoedaArray = valorApostaFormatoMoeda.split("\\s");
-
-        this.valorTotalCarrinho.setText(ViewUtils.fromHtml(valorApostaFormatoMoedaArray[0] + "<strong>" + valorApostaFormatoMoedaArray[1] + "</strong>"));
+        ViewUtils.setMoedaFormatHtml(valorTotalCarrinho, this.valorTotalCarrinho);
     }
 
 }
