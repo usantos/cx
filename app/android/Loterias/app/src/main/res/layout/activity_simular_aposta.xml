@@ -14,94 +14,93 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <android.support.constraint.ConstraintLayout
+        <LinearLayout
             android:id="@+id/toolBarSimularAposta"
-            android:layout_width="0dp"
-            android:layout_height="61dp"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
             android:background="@color/azulclaro"
             android:orientation="horizontal"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:weightSum="1">
 
-            <Button
-                android:id="@+id/simularTelaAposta"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_alignBottom="@+id/surpresinhaTela"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_marginBottom="8dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/icon_seleciona2"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.466" />
+            <LinearLayout
+                android:id="@+id/layoutFragments"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.4"
+                android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/surpresinhaTela"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_toEndOf="@+id/simularTelaAposta"
-                android:layout_toRightOf="@+id/simularTelaAposta"
-                android:background="@drawable/icon_surpresinha"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toRightOf="@+id/simularTelaAposta"
-                app:layout_constraintTop_toTopOf="parent" />
+                <Button
+                    android:id="@+id/simularTelaAposta"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="17dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/icon_seleciona2" />
 
-            <Button
-                android:id="@+id/qtdNumerosButton"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="wrap_content"
-                android:layout_height="48dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginTop="8dp"
-                android:drawableEnd="@drawable/combo2"
-                android:drawablePadding="5dp"
-                android:drawableRight="@drawable/combo2"
-                android:fontFamily="@font/arialmt"
-                android:padding="0dp"
-                android:text="6 números"
-                android:textAlignment="textStart"
-                android:textColor="@color/branco"
-                android:textSize="12sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintRight_toLeftOf="@+id/qtdConcursosButton"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0" />
+                <Button
+                    android:id="@+id/surpresinhaTela"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/icon_surpresinha" />
+            </LinearLayout>
 
-            <Button
-                android:id="@+id/qtdConcursosButton"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="wrap_content"
-                android:layout_height="48dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginRight="12dp"
-                android:layout_marginTop="8dp"
-                android:drawableEnd="@drawable/combo2"
-                android:drawablePadding="5dp"
-                android:drawableRight="@drawable/combo2"
-                android:fontFamily="@font/arialmt"
-                android:padding="0dp"
-                android:text="1 concurso"
-                android:textAlignment="textStart"
-                android:textColor="@color/branco"
-                android:textSize="12sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0" />
+            <RelativeLayout
+                android:id="@+id/layoutPrognosticoTeimosinha"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.6"
+                android:gravity="right"
+                android:orientation="horizontal">
 
-        </android.support.constraint.ConstraintLayout>
+                <Button
+                    android:id="@+id/qtdNumerosButton"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentLeft="true"
+                    android:fontFamily="@font/arialmt"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="3dp"
+                    android:text="1 concurso"
+                    android:textAllCaps="false"
+                    android:textColor="@color/branco"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:id="@+id/imageQtdNumerosButton"
+                    android:layout_width="12dp"
+                    android:layout_height="8dp"
+                    android:layout_alignRight="@+id/qtdNumerosButton"
+                    android:layout_marginTop="25dp"
+                    android:src="@drawable/combo2" />
+
+                <Button
+                    android:id="@+id/qtdConcursosButton"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="16dp"
+                    android:fontFamily="@font/arialmt"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="3dp"
+                    android:text="1 concurso"
+                    android:textAllCaps="false"
+                    android:textColor="@color/branco"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:id="@+id/imageQtdConcursosButton"
+                    android:layout_width="12dp"
+                    android:layout_height="8dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="25dp"
+                    android:src="@drawable/combo2" />
+            </RelativeLayout>
+        </LinearLayout>
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/toolBarLoteca"
@@ -109,10 +108,11 @@
             android:layout_height="98dp"
             android:background="@drawable/drawer_linha_divisao_bg"
             android:orientation="vertical"
+            android:visibility="gone"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintHorizontal_bias="0.0">
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:id="@+id/labelTituloLoteca"

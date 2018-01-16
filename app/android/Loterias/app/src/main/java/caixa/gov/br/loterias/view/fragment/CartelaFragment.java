@@ -140,14 +140,15 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
     public void atualizaValorTotalAposta(int numPrognostico, int qtdTeimosinhas) {
         BigDecimal valorEmReais = BigDecimal.ZERO;
-
-        if (numPrognostico != 0) {
+        //TODO mock
+        if (numPrognostico != 0 && parametroJogo != null) {
             for (ParametroValorApostaDTO parametro : parametroJogo.getValoresAposta()) {
                 if (parametro.getNumeroPrognosticos() == numPrognostico) {
                     valorEmReais = parametro.getValor();
                 }
             }
-        } else if (parametroJogo.getValorApostaMinima() != null) {
+            //TODO mock
+        } else if (parametroJogo != null && parametroJogo.getValorApostaMinima() != null) {
             valorEmReais = parametroJogo.getValorApostaMinima();
         }
         if (qtdTeimosinhas != 0) {
@@ -164,7 +165,9 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         parentActivity = ((SimularApostaActivity) getActivity());
         parametroJogo = parentActivity.getParametroSimulacao();
 
-        if (dezenas.size() == 0 && parentActivity.getParametroSimulacao().getPrognosticoMaximo() != null) {
+        //TODO mock
+
+        if (parentActivity.getParametroSimulacao() != null && dezenas.size() == 0 && parentActivity.getParametroSimulacao().getPrognosticoMaximo() != null) {
             for (int i = 1; i <= parentActivity.getParametroSimulacao().getPrognosticoMaximo(); i++) {
                 dezenas.add("" + i);
             }
@@ -262,6 +265,8 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
     private void identificarTipoJogo() {
         tipoJogo = (ModalidadeEnum) getActivity().getIntent().getSerializableExtra("tipoAposta");
+        //TODO mock
+        tipoJogo = ModalidadeEnum.MEGA_SENA;
 
         switch (tipoJogo) {
             case MEGA_SENA:
@@ -768,17 +773,15 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
             } else if (isTipoLotogol) {
                 textoBotao = getString(R.string.label_complete_placar_aleatoriamente);
             }
-            botaoFinalizar.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.cinza));
             botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(getActivity(), textoBotao));
         } else if (!isEscolhaTimeCoracaoSurpresinha) {
-            botaoFinalizar.setBackgroundColor(ContextCompat.getColor(fragmentView.getContext(), typeGameColorLight));
             botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(fragmentView.getContext(), getString(R.string.completarCartela)));
             verificaSeMostraBotaoLimparAposta(fragmentView);
         } else {
-            botaoFinalizar.setBackgroundColor(ContextCompat.getColor(fragmentView.getContext(), typeGameColorLight));
             botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(fragmentView.getContext(), getString(R.string.completarCartela)));
         }
 
+        botaoFinalizar.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.cinza));
         Button carrinhoImageView = fragmentView.findViewById(R.id.botaoCarrinho);
         carrinhoImageView.setOnClickListener(this);
 

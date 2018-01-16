@@ -21,6 +21,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -58,7 +59,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
     DrawerLayout drawer_layout;
 
     @ViewById
-    ConstraintLayout toolBarSimularAposta, toolBarLoteca;
+    ConstraintLayout toolBarLoteca;
 
     @ViewById
     Button simularTelaAposta;
@@ -77,6 +78,9 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
 
     @ViewById
     TextView labelValueSimplesLoteca, labelValueDuplasLoteca, labelValueTriplasLoteca;
+
+    @ViewById
+    LinearLayout toolBarSimularAposta;
 
     private static int RESULT_FINISH = 3;
 
@@ -131,17 +135,20 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
     }
 
     private void configuraParametrosJogo() {
-        for (ParametroValorApostaDTO parametro : parametroSimulacao.getValoresAposta()) {
-            qtdNumerosList.add("" + parametro.getNumeroPrognosticos() + " números por " + ViewUtils.getMoedaFormat(parametro.getValor()));
-        }
-        if (parametroSimulacao.getTeimosinhas() != null) {
-            for (Integer numeroTeimosinha : parametroSimulacao.getTeimosinhas()) {
-                if (numeroTeimosinha == 0) {
-                    qtdConcursosList.add("Nenhum");
-                } else if (numeroTeimosinha == 1) {
-                    qtdConcursosList.add("" + numeroTeimosinha + " concurso");
-                } else {
-                    qtdConcursosList.add("" + numeroTeimosinha + " concursos");
+        //TODO mock
+        if(parametroSimulacao != null) {
+            for (ParametroValorApostaDTO parametro : parametroSimulacao.getValoresAposta()) {
+                qtdNumerosList.add("" + parametro.getNumeroPrognosticos() + " números por " + ViewUtils.getMoedaFormat(parametro.getValor()));
+            }
+            if (parametroSimulacao.getTeimosinhas() != null) {
+                for (Integer numeroTeimosinha : parametroSimulacao.getTeimosinhas()) {
+                    if (numeroTeimosinha == 0) {
+                        qtdConcursosList.add("Nenhum");
+                    } else if (numeroTeimosinha == 1) {
+                        qtdConcursosList.add("" + numeroTeimosinha + " concurso");
+                    } else {
+                        qtdConcursosList.add("" + numeroTeimosinha + " concursos");
+                    }
                 }
             }
         }
@@ -160,7 +167,11 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
     }
 
     private void configuraActivity() {
+
         tipoJogo = (ModalidadeEnum) getIntent().getSerializableExtra("tipoAposta");
+
+        //TODO mock
+        tipoJogo= ModalidadeEnum.MEGA_SENA;
 
         switch (tipoJogo) {
             case MEGA_SENA:
@@ -197,10 +208,11 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
                 break;
         }
 
+        //TODO mock
         // MOCK
-        qtdDezenasPossiveisSelecionado = parametroSimulacao.getQuantidadeMinima() != null ? parametroSimulacao.getQuantidadeMinima() : 0;
-        qtdConcursoSelecionado = parametroSimulacao.getTeimosinhas() != null ? parametroSimulacao.getTeimosinhas().get(0) == 0 ? 0 : parametroSimulacao.getTeimosinhas().get(0) : 0;
-        dataSorteioAtual = parametroSimulacao.getConcurso().getDataSorteio();
+        qtdDezenasPossiveisSelecionado = 6;//parametroSimulacao.getQuantidadeMinima() != null ? parametroSimulacao.getQuantidadeMinima() : 0;
+        qtdConcursoSelecionado = 0;//parametroSimulacao.getTeimosinhas() != null ? parametroSimulacao.getTeimosinhas().get(0) == 0 ? 0 : parametroSimulacao.getTeimosinhas().get(0) : 0;
+        dataSorteioAtual = "02/10/2018";//parametroSimulacao.getConcurso().getDataSorteio();
 
 
         // Passando um link
@@ -225,7 +237,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
     public void atualizaTextoBotoesQtdSelecionadas() {
         qtdNumerosButton.setText(format("%d números", qtdDezenasPossiveisSelecionado));
         if (qtdConcursoSelecionado == 0) {
-            qtdConcursosButton.setText("Nenhum");
+            qtdConcursosButton.setText("1 concurso");
         } else {
             qtdConcursosButton.setText(format("%d concurso", qtdConcursoSelecionado));
         }
@@ -402,6 +414,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setElevation(0);
         }
 
         toolBarSimularAposta.setBackgroundColor(ContextCompat.getColor(this, darkColor));
@@ -437,19 +450,21 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
 
         MenuItem concursoAtual = menu.findItem(R.id.concursoAtual);
         ((TextView) concursoAtual.getActionView().findViewById(R.id.item_titulo)).setText("Concurso");
-        ((TextView) concursoAtual.getActionView().findViewById(R.id.item_descricao)).setText(parametroSimulacao.getConcurso().getNumero().toString());
+        //TODO mock
+        ((TextView) concursoAtual.getActionView().findViewById(R.id.item_descricao)).setText("2222");//parametroSimulacao.getConcurso().getNumero().toString());
 
         SimpleDateFormat formatterDateFinal = new SimpleDateFormat("dd/MM");
         DateFormat formatterDate = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         MenuItem dataSorteio = menu.findItem(R.id.sorteioAtual);
 
-        try {
-            Date dataFormatada = formatterDate.parse(parametroSimulacao.getConcurso().getDataHoraSorteio());
+        //TODO mock
+//        try {
+            Date dataFormatada = new Date();//formatterDate.parse(parametroSimulacao.getConcurso().getDataHoraSorteio());
             ((TextView) dataSorteio.getActionView().findViewById(R.id.item_titulo)).setText("Sorteio");
             ((TextView) dataSorteio.getActionView().findViewById(R.id.item_descricao)).setText(formatterDateFinal.format(dataFormatada));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
 
         return true;
     }
