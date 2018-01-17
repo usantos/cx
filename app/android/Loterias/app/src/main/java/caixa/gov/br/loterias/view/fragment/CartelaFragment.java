@@ -140,15 +140,14 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
     public void atualizaValorTotalAposta(int numPrognostico, int qtdTeimosinhas) {
         BigDecimal valorEmReais = BigDecimal.ZERO;
-        //TODO mock
-        if (numPrognostico != 0 && parametroJogo != null) {
+
+        if (numPrognostico != 0) {
             for (ParametroValorApostaDTO parametro : parametroJogo.getValoresAposta()) {
                 if (parametro.getNumeroPrognosticos() == numPrognostico) {
                     valorEmReais = parametro.getValor();
                 }
             }
-            //TODO mock
-        } else if (parametroJogo != null && parametroJogo.getValorApostaMinima() != null) {
+        } else if (parametroJogo.getValorApostaMinima() != null) {
             valorEmReais = parametroJogo.getValorApostaMinima();
         }
         if (qtdTeimosinhas != 0) {
@@ -165,14 +164,8 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         parentActivity = ((SimularApostaActivity) getActivity());
         parametroJogo = parentActivity.getParametroSimulacao();
 
-        //TODO mock
-
         if (parentActivity.getParametroSimulacao() != null && dezenas.size() == 0 && parentActivity.getParametroSimulacao().getPrognosticoMaximo() != null) {
             for (int i = 1; i <= parentActivity.getParametroSimulacao().getPrognosticoMaximo(); i++) {
-                dezenas.add("" + i);
-            }
-        } else {
-            for (int i = 1; i <= 60; i++) {
                 dezenas.add("" + i);
             }
         }
@@ -268,8 +261,6 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
     private void identificarTipoJogo() {
         tipoJogo = (ModalidadeEnum) getActivity().getIntent().getSerializableExtra("tipoAposta");
-        //TODO mock
-        tipoJogo = ModalidadeEnum.MEGA_SENA;
 
         switch (tipoJogo) {
             case MEGA_SENA:

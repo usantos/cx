@@ -143,7 +143,6 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
     }
 
     private void configuraParametrosJogo() {
-        //TODO mock
         if(parametroSimulacao != null) {
             for (ParametroValorApostaDTO parametro : parametroSimulacao.getValoresAposta()) {
                 qtdNumerosList.add("" + parametro.getNumeroPrognosticos() + " números por " + ViewUtils.getMoedaFormat(parametro.getValor()));
@@ -177,9 +176,6 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
     private void configuraActivity() {
 
         tipoJogo = (ModalidadeEnum) getIntent().getSerializableExtra("tipoAposta");
-
-        //TODO mock
-        tipoJogo= ModalidadeEnum.MEGA_SENA;
 
         switch (tipoJogo) {
             case MEGA_SENA:
@@ -216,11 +212,9 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
                 break;
         }
 
-        //TODO mock
-        // MOCK
-        qtdDezenasPossiveisSelecionado = 6;//parametroSimulacao.getQuantidadeMinima() != null ? parametroSimulacao.getQuantidadeMinima() : 0;
-        qtdConcursoSelecionado = 0;//parametroSimulacao.getTeimosinhas() != null ? parametroSimulacao.getTeimosinhas().get(0) == 0 ? 0 : parametroSimulacao.getTeimosinhas().get(0) : 0;
-        dataSorteioAtual = "02/10/2018";//parametroSimulacao.getConcurso().getDataSorteio();
+        qtdDezenasPossiveisSelecionado = parametroSimulacao.getQuantidadeMinima() != null ? parametroSimulacao.getQuantidadeMinima() : 0;
+        qtdConcursoSelecionado = parametroSimulacao.getTeimosinhas() != null ? parametroSimulacao.getTeimosinhas().get(0) == 0 ? 0 : parametroSimulacao.getTeimosinhas().get(0) : 0;
+        dataSorteioAtual = parametroSimulacao.getConcurso().getDataSorteio();
 
 
         // Passando um link
@@ -458,21 +452,19 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
 
         MenuItem concursoAtual = menu.findItem(R.id.concursoAtual);
         ((TextView) concursoAtual.getActionView().findViewById(R.id.item_titulo)).setText("Concurso");
-        //TODO mock
-        ((TextView) concursoAtual.getActionView().findViewById(R.id.item_descricao)).setText("2222");//parametroSimulacao.getConcurso().getNumero().toString());
+        ((TextView) concursoAtual.getActionView().findViewById(R.id.item_descricao)).setText(parametroSimulacao.getConcurso().getNumero().toString());
 
         SimpleDateFormat formatterDateFinal = new SimpleDateFormat("dd/MM");
         DateFormat formatterDate = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         MenuItem dataSorteio = menu.findItem(R.id.sorteioAtual);
 
-        //TODO mock
-//        try {
-            Date dataFormatada = new Date();//formatterDate.parse(parametroSimulacao.getConcurso().getDataHoraSorteio());
+        try {
+            Date dataFormatada = formatterDate.parse(parametroSimulacao.getConcurso().getDataHoraSorteio());
             ((TextView) dataSorteio.getActionView().findViewById(R.id.item_titulo)).setText("Sorteio");
             ((TextView) dataSorteio.getActionView().findViewById(R.id.item_descricao)).setText(formatterDateFinal.format(dataFormatada));
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         return true;
     }

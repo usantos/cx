@@ -59,6 +59,7 @@ public class SettingToolbarActivity extends AppCompatActivity {
     private void configuraActivityBack() {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setElevation(0);
         }
 
         getSupportActionBar().setBackgroundDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.navigation_gradient, null));
