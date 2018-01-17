@@ -172,7 +172,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                 dezenas.add("" + i);
             }
         } else {
-            for (int i = 1; i <= 61; i++) {
+            for (int i = 1; i <= 60; i++) {
                 dezenas.add("" + i);
             }
         }
@@ -931,7 +931,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
     }
 
     private void atualizarBotaoFinalizarCompletarCartela() {
-        botaoFinalizar.setBackgroundColor(ContextCompat.getColor(getActivity(), typeGameColorLight));
+        botaoFinalizar.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.cinza));
         botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(getActivity(), getString(R.string.completarCartela)));
         parentActivity.getSalvarApostaLayout().setVisibility(View.GONE);
     }
@@ -959,7 +959,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                     if (dezenasSelecionadas.contains(valorSelecionado)) {
                         dezenasSelecionadas.remove(valorSelecionado);
                     } else {
-                        int maxNumerosParaSelecionar = parametroJogo.getQuantidadeMaxima();
+                        int maxNumerosParaSelecionar = 6;//parametroJogo.getQuantidadeMaxima();
                         if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) {
                             // VERIFICA SE TEM OPÇÃO DE SELECIONAR MAIS DEZENAS
                             int qtdDezenasPossiveisSelecionadoAtual = parentActivity.qtdDezenasPossiveisSelecionado;
