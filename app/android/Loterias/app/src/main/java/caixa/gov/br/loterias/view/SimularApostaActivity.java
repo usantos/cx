@@ -20,9 +20,13 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -59,28 +63,32 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
     DrawerLayout drawer_layout;
 
     @ViewById
-    ConstraintLayout toolBarLoteca;
+    ConstraintLayout toolBarLoteca, viewTabBar;
 
     @ViewById
-    Button simularTelaAposta;
-
-    @ViewById
-    Button surpresinhaTela;
-
-    @ViewById
-    Button qtdNumerosButton;
-
-    @ViewById
-    Button qtdConcursosButton;
+    Button simularTelaAposta, surpresinhaTela, qtdNumerosButton, qtdConcursosButton, botaoLimparAposta, botaoAdicionarCompletarCartela, botaoCarrinho;
 
     @ViewById
     FrameLayout fragmentSimularApostas;
 
     @ViewById
-    TextView labelValueSimplesLoteca, labelValueDuplasLoteca, labelValueTriplasLoteca;
+    TextView labelValueSimplesLoteca, labelValueDuplasLoteca, labelValueTriplasLoteca, textoDeNomeInfo, textoSalveEstaAposta, valorApostaCartela, textInfoValorAposta, textViewCarrinhoCartelaCount,
+            textInfoCarrinho;
 
     @ViewById
     LinearLayout toolBarSimularAposta;
+
+    @ViewById
+    RelativeLayout salvarApostaLayout, carrinhoApostas;
+
+    @ViewById
+    ImageButton btnSalvarAposta;
+
+    @ViewById
+    EditText editNomeAposta;
+
+    @ViewById
+    ImageView imageViewPaginacao, iconStarSalvar;
 
     private static int RESULT_FINISH = 3;
 
@@ -594,5 +602,101 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
 
     public TextView getLabelValueTriplasLoteca() {
         return labelValueTriplasLoteca;
+    }
+
+    public DrawerLayout getDrawer_layout() {
+        return drawer_layout;
+    }
+
+    public ConstraintLayout getToolBarLoteca() {
+        return toolBarLoteca;
+    }
+
+    public ConstraintLayout getViewTabBar() {
+        return viewTabBar;
+    }
+
+    public Button getSimularTelaAposta() {
+        return simularTelaAposta;
+    }
+
+    public Button getSurpresinhaTela() {
+        return surpresinhaTela;
+    }
+
+    public Button getQtdNumerosButton() {
+        return qtdNumerosButton;
+    }
+
+    public Button getQtdConcursosButton() {
+        return qtdConcursosButton;
+    }
+
+    public Button getBotaoLimparAposta() {
+        return botaoLimparAposta;
+    }
+
+    public Button getBotaoAdicionarCompletarCartela() {
+        return botaoAdicionarCompletarCartela;
+    }
+
+    public Button getBotaoCarrinho() {
+        return botaoCarrinho;
+    }
+
+    public FrameLayout getFragmentSimularApostas() {
+        return fragmentSimularApostas;
+    }
+
+    public TextView getTextoDeNomeInfo() {
+        return textoDeNomeInfo;
+    }
+
+    public TextView getTextoSalveEstaAposta() {
+        return textoSalveEstaAposta;
+    }
+
+    public TextView getValorApostaCartela() {
+        return valorApostaCartela;
+    }
+
+    public TextView getTextInfoValorAposta() {
+        return textInfoValorAposta;
+    }
+
+    public TextView getTextViewCarrinhoCartelaCount() {
+        return textViewCarrinhoCartelaCount;
+    }
+
+    public TextView getTextInfoCarrinho() {
+        return textInfoCarrinho;
+    }
+
+    public LinearLayout getToolBarSimularAposta() {
+        return toolBarSimularAposta;
+    }
+
+    public RelativeLayout getSalvarApostaLayout() {
+        return salvarApostaLayout;
+    }
+
+    public RelativeLayout getCarrinhoApostas() {
+        return carrinhoApostas;
+    }
+
+    public ImageButton getBtnSalvarAposta() {
+        return btnSalvarAposta;
+    }
+
+    public EditText getEditNomeAposta() {
+        return editNomeAposta;
+    }
+
+    public ImageView getImageViewPaginacao() {
+        return imageViewPaginacao;
+    }
+
+    public ImageView getIconStarSalvar() {
+        return iconStarSalvar;
     }
 }
