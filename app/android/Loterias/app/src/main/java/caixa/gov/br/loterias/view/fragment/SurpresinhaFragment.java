@@ -150,6 +150,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
 
     private void identificarTipoJogo() {
         tipoJogo = (ModalidadeEnum) getActivity().getIntent().getSerializableExtra("tipoAposta");
+
         switch (tipoJogo) {
             case TIMEMANIA:
                   isTipoTimeMania = true;
@@ -189,7 +190,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
     }
 
     private void configuraBotoes(View fragmentView) {
-        valorAposta = getView().findViewById(R.id.valorApostaSurpresinha);
+        valorAposta = parentActivity.getValorApostaCartela();
         if (parametroJogo != null) {
             atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
         }
@@ -209,17 +210,20 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         qtdSurpresinhasTextView.setTextColor(ContextCompat.getColor(getActivity(), typeGameColorLight));
         qtdSurpresinhasTextView.setText(String.format("%d", qtdSurpresinhas));
 
-        botaoAdicionarSurpresinhaAoCarrinho = fragmentView.findViewById(R.id.btnAdicionarSurpresinhaAoCarrinho);
+        botaoAdicionarSurpresinhaAoCarrinho = parentActivity.getBotaoAdicionarCompletarCartela();
         botaoAdicionarSurpresinhaAoCarrinho.setBackgroundColor(ContextCompat.getColor(getActivity(), typeGameColorLight));
         botaoAdicionarSurpresinhaAoCarrinho.setTextColor(Color.WHITE);
         botaoAdicionarSurpresinhaAoCarrinho.setOnClickListener(this);
         botaoAdicionarSurpresinhaAoCarrinho.setText(ViewUtils.textFuturaAndFuturaBold(getActivity(), getString(R.string.adicionarAoCarrinho)));
 
-        Button carrinhoImageView = fragmentView.findViewById(R.id.botaoCarrinho);
+        Button carrinhoImageView =  parentActivity.getBotaoCarrinho();
         carrinhoImageView.setOnClickListener(this);
 
-        TextView textInfoCarrinho = fragmentView.findViewById(R.id.textInfoCarrinho);
+        TextView textInfoCarrinho = parentActivity.getTextInfoCarrinho();
         textInfoCarrinho.setOnClickListener(this);
+
+        parentActivity.getBotaoLimparAposta().setVisibility(View.GONE);
+        parentActivity.getSalvarApostaLayout().setVisibility(View.GONE);
     }
 
     private void configuraListaDezenas(View fragmentView) {
@@ -341,7 +345,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
             }
             break;
 
-            case R.id.btnAdicionarSurpresinhaAoCarrinho: {
+            case R.id.botaoAdicionarCompletarCartela: {
                 adicionarSurpresinhaNoCarrinho();
             }
             break;
