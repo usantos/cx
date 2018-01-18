@@ -459,7 +459,14 @@ public class ViewUtils {
          String valoFormatoMoeda = getMoedaFormat(valor);
          String[] valorFormatoMoedaArray = valoFormatoMoeda.split("\\s");
 
-         valorTextView.setText(fromHtml(valorFormatoMoedaArray[0] + "<strong>" + valorFormatoMoedaArray[1] + "</strong>"));
+         valorTextView.setText(fromHtml(valorFormatoMoedaArray[0] + "<strong> " + valorFormatoMoedaArray[1] + "</strong>"));
+    }
+
+    public static void setMoedaFormatHtml(BigDecimal valor, TextView valorTextView, String complemento) {
+         String valoFormatoMoeda = getMoedaFormat(valor);
+         String[] valorFormatoMoedaArray = valoFormatoMoeda.split("\\s");
+
+         valorTextView.setText(fromHtml(complemento + valorFormatoMoedaArray[0] + "<strong> " + valorFormatoMoedaArray[1] + "</strong>"));
     }
 
     public static int monthDiff(Calendar startCalendar, Calendar endCalendar) {

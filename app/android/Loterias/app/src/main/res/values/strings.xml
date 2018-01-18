@@ -79,7 +79,7 @@
     <string name="CEP">CEP</string>
     <string name="codigo_loterica">Código Lotérica</string>
     <string name="enviando_email">Enviando e-mail usando:"</string>
-    <string name="label_lembrar_valor_minimo">Lembre-se que o valor mínimo do total de compras nesse aplicativo é R$0,00</string>
+    <string name="label_lembrar_valor_minimo">Lembre-se que o valor mínimo do total de compras nesse aplicativo</string>
 
     <!-- Messages-->
 

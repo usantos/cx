@@ -154,9 +154,9 @@ public class CarrinhoActivity extends SettingToolbarActivity {
 
     private void montarLayout() {
         SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
-        String valorCarrinho = ViewUtils.getMoedaFormat(sessaoUsuario.getValorMinimimoAposta() == null ? BigDecimal.ZERO : sessaoUsuario.getValorMinimimoAposta());
+        BigDecimal valorCarrinho = sessaoUsuario.getValorMinimimoAposta() == null ? BigDecimal.ZERO : sessaoUsuario.getValorMinimimoAposta();
         infoValorMinimoTextView = (TextView) findViewById(R.id.infoValorMinimo);
-        infoValorMinimoTextView.setText(ViewUtils.fromHtml("Lembre-se que o valor mínimo do total de compras nesse aplicativo é <strong>" + valorCarrinho + "</strong>"));
+        ViewUtils.setMoedaFormatHtml(valorCarrinho,infoValorMinimoTextView, getResources().getString(R.string.label_lembrar_valor_minimo) + " ");
     }
 
     private void callWebservice() {

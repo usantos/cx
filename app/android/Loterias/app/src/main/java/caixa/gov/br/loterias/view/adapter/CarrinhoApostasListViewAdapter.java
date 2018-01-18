@@ -94,9 +94,8 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
 
         holder.numerosAposta.setText(numeroStr);
 
-        String valorApostaFormatoMoeda = ViewUtils.getMoedaFormat(apostas.get(position).getValor());
-        String[] valorApostaFormatoMoedaArray = valorApostaFormatoMoeda.split("\\s");
-        holder.valorAposta.setText(ViewUtils.fromHtml(valorApostaFormatoMoedaArray[0] + "<strong>" + valorApostaFormatoMoedaArray[1] + "</strong>") );
+        ViewUtils.setMoedaFormatHtml(apostas.get(position).getValor(), holder.valorAposta);
+
     }
 
     private void deletarAposta (String idAposta) {
