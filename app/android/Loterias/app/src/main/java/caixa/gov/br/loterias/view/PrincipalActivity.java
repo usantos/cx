@@ -112,6 +112,7 @@ public class PrincipalActivity extends AppCompatActivity
         listenerRepassados();
         listenerCarrinho();
         listenerRapidao();
+        listenerFavoritas();
 
         callWebservice();
 
@@ -493,6 +494,19 @@ public class PrincipalActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(PrincipalActivity.this, CarrinhoActivity.class));
+            }
+        });
+    }
+
+
+    private void listenerFavoritas() {
+
+        RelativeLayout relativefavoritas = (RelativeLayout) findViewById(R.id.RelativeLayoutContentFavoritas);
+        relativefavoritas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                AnimacaoFecharMenuRapido(relativePrincipal);
+                startActivity(new Intent(PrincipalActivity.this, FavoritasActivity.class) );
             }
         });
     }

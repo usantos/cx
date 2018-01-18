@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="caixa.gov.br.loterias.view.FavoritasActivity"
+    tools:showIn="@layout/activity_favoritas">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:id="@+id/tituloFavoritas"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:layout_marginLeft="17dp"
+                android:text="Os seus números da sorte no mesmo lugar"
+                android:textSize="14.2sp"
+                android:fontFamily="@font/futura_std_bold"
+                android:textColor="@color/colorAccent"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/subTituloFavoritas"
+                android:text="Nesta área estão todas as suas apostas da sorte. É só escolher e apostar. Boa Sorte!"
+                android:textSize="14.2sp"
+                android:fontFamily="@font/arialmt"
+                android:textColor="@color/cinza"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="17dp"
+                />
+
+        <caixa.gov.br.loterias.view.custom.ExpandableHeightGridView
+            android:id="@+id/gridViewFavoritas"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:verticalSpacing="0dp"
+            android:horizontalSpacing="0dp"
+            android:stretchMode="columnWidth"
+            android:numColumns="1"
+            android:layout_marginTop="19dp"
+            android:layout_marginBottom="50dp"
+            />
+    </LinearLayout>
+
+
+
+</android.support.constraint.ConstraintLayout>

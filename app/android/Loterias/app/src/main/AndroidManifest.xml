@@ -117,7 +117,7 @@
             android:label="@string/title_activity_lista_rapidao"
             android:parentActivityName=".view.ListaRapidaoActivity"
             android:theme="@style/AppTheme.DegradeActionBar"
-            android:windowSoftInputMode="stateHidden" >
+            android:windowSoftInputMode="stateHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="caixa.gov.br.loterias.view.ListaRapidaoActivity" />
@@ -125,13 +125,11 @@
         <activity
             android:name=".view.SelecaoModalidadesRapidaoActivity"
             android:label="@string/title_activity_lista_rapidao"
-            android:theme="@style/AppTheme.DegradeActionBar">
-        </activity>
+            android:theme="@style/AppTheme.DegradeActionBar" />
         <activity
             android:name=".view.NumerosRapidaoActivity"
             android:label="@string/title_activity_lista_rapidao"
-            android:theme="@style/AppTheme.DegradeActionBar">
-        </activity>
+            android:theme="@style/AppTheme.DegradeActionBar" />
         <activity
             android:name=".view.AjudaActivity"
             android:parentActivityName=".view.SimularApostaActivity"
@@ -140,6 +138,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="caixa.gov.br.loterias.view.SimularApostaActivity" />
         </activity>
+        <activity
+            android:name=".view.FavoritasActivity"
+            android:label="@string/title_activity_favoritas"
+            android:theme="@style/AppTheme.DegradeActionBar" />
+        <activity
+            android:name=".view.ListaComprasActivity"
+            android:label="@string/title_activity_lista_compras"
+            android:theme="@style/AppTheme.DegradeActionBar"></activity>
     </application>
 
 </manifest>

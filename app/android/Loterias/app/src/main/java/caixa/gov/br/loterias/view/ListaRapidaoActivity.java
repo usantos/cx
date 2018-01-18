@@ -65,7 +65,7 @@ public class ListaRapidaoActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.apostasListaRecycleViewRapidao);
 
 
-        callWebservice();
+        callWebservice(0);
 //        mockCarrinho();
 
         ViewUtils.organizaTabLayout(this, R.id.carrinhoRapidaoMainLayout, R.id.apostasListaRecycleViewRapidao, R.id.carrinhoRapidaoScrollView);
@@ -236,9 +236,11 @@ public class ListaRapidaoActivity extends AppCompatActivity {
         findViewById(R.id.botaoFazerNovaApostaRapidao).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setResult(2);
+//                setResult(2);
+//
+//                finish();
+                callWebservice(1);
 
-                finish();
             }
         });
 
@@ -287,12 +289,12 @@ public class ListaRapidaoActivity extends AppCompatActivity {
 //    }
 
 
-    private void callWebservice() {
+    private void callWebservice(int quantidade) {
 
         final View loadViewProgress = LoadingViewLoterias.init(this);
         final ApostaBO apostaBO = new ApostaBO(ListaRapidaoActivity.this);
 
-        apostaBO.gerarApostas(new SilceClient.Listener<CarrinhoDTOResponse>() {
+        apostaBO.gerarApostas(quantidade, new SilceClient.Listener<CarrinhoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoDTOResponse response) {
                 LoadingViewLoterias.stop(loadViewProgress);

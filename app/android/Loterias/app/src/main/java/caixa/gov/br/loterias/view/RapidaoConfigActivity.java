@@ -5,6 +5,8 @@ import android.os.Bundle;
 
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.blackcat.currencyedittext.CurrencyEditText;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -72,6 +75,7 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
         callWebservice();
 
@@ -247,11 +251,19 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
     private void atualizaLayout(){
 
         SessaoUsuario sessaoUser = SessaoUsuario.getInstance();
-        int valorMinApostaInt = (int) sessaoUser.getValorMinimimoAposta().floatValue();
-        int valorMaxApostaInt = (int) sessaoUser.getValorMaximoAposta().floatValue();
+        final int valorMinApostaInt = (int) sessaoUser.getValorMinimimoAposta().floatValue();
+        final int valorMaxApostaInt = (int) sessaoUser.getValorMaximoAposta().floatValue();
+
+        tituloValorMinimoAposta = (com.blackcat.currencyedittext.CurrencyEditText) findViewById(R.id.tituloValorValorMinimoAposta);
+        tituloValorMinimoAposta.addTextChangedListener(textWatcher);
+
+        tituloValorMaximoAposta = (com.blackcat.currencyedittext.CurrencyEditText) findViewById(R.id.tituloValorValorMaximoAposta);
+        tituloValorMaximoAposta.addTextChangedListener(textWatcher);
+
+        tituloValorPremiumMinimum = (com.blackcat.currencyedittext.CurrencyEditText)findViewById(R.id.tituloValorPremiumMinimum);
+        tituloValorPremiumMinimum.addTextChangedListener(textWatcher);
 
         // Valor Minimo Aposta
-        tituloValorMinimoAposta = (com.blackcat.currencyedittext.CurrencyEditText) findViewById(R.id.tituloValorValorMinimoAposta);
 
         TextView tituloValorMinimoApostaValorMinimo = (TextView) findViewById(R.id.tituloValorMinimoApostaValorMinimo);
         TextView tituloValorMinimoApostaValorMaximo = (TextView) findViewById(R.id.tituloValorMinimoApostaValorMaximo);
@@ -273,9 +285,17 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
         seekBarValorMinimoAposta.setMax(valorMaxApostaInt);
         seekBarValorMinimoAposta.setMin(valorMinApostaInt);
 
+        Button limparValorMinimoAposta = (Button) findViewById(R.id.limparValorMinimoAposta);
+        limparValorMinimoAposta.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                seekBarValorMinimoAposta.setProgress(valorMinApostaInt);
+            }
+        });
+
 
         // Valor Máximo Aposta
-        tituloValorMaximoAposta = (com.blackcat.currencyedittext.CurrencyEditText) findViewById(R.id.tituloValorValorMaximoAposta);
+
 
         TextView tituloValorMaximoApostaValorMaximo = (TextView) findViewById(R.id.tituloValorMaximoApostaValorMaximo);
         TextView tituloValorMaximoApostaValorMinimo = (TextView) findViewById(R.id.tituloValorMaximoApostaValorMinimo);
@@ -294,8 +314,16 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
         seekBarValorMaximoAposta.setMax(valorMaxApostaInt);
         seekBarValorMaximoAposta.setMin(valorMinApostaInt);
 
+
+        Button limparValorMaximoAposta = (Button) findViewById(R.id.limparValorMaximoAposta);
+        limparValorMaximoAposta.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                seekBarValorMaximoAposta.setProgress(valorMinApostaInt);
+            }
+        });
+
         //Premium Minimum
-        tituloValorPremiumMinimum = (com.blackcat.currencyedittext.CurrencyEditText)findViewById(R.id.tituloValorPremiumMinimum);
 
         seekBarValorPremiumMinimun = (SeekBar) findViewById(R.id.seekBarPremiumMimimun);
 
@@ -307,6 +335,15 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
 
         seekBarValorPremiumMinimun.setOnSeekBarChangeListener(this);
         seekBarValorPremiumMinimun.setMax(100);
+        seekBarValorMaximoAposta.setMin(1);
+
+        Button limparPremioMinimoAposta = (Button) findViewById(R.id.limparPremioMinimoAposta);
+        limparPremioMinimoAposta.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                seekBarValorPremiumMinimun.setProgress(1);
+            }
+        });
 
         //fim
 
@@ -460,4 +497,39 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
             }
         });
     }
+
+    private TextWatcher textWatcher = new TextWatcher() {
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            //after text changed
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count,
+                                      int after) {
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            String valorSetado = s.toString();
+            valorSetado= valorSetado.replace("R$", "");
+            valorSetado= valorSetado.replace(".", "");
+            valorSetado = valorSetado.replace(",",".");
+
+            if (tituloValorMinimoAposta.getText().hashCode() == s.hashCode())
+            {
+                seekBarValorMinimoAposta.setProgress((int)Math.round(Float.parseFloat(valorSetado)));
+
+            }
+            else if (tituloValorMaximoAposta.getText().hashCode() == s.hashCode())
+            {
+                seekBarValorMaximoAposta.setProgress((int)Math.round(Float.parseFloat(valorSetado)));
+
+            }else if (tituloValorPremiumMinimum.getText().hashCode() == s.hashCode()) {
+                seekBarValorPremiumMinimun.setProgress((int)Math.round(Float.parseFloat(valorSetado)/ 1000000));
+
+            }
+        }
+    };
 }

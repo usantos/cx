@@ -39,6 +39,7 @@ public class SilceClient {
     public static final String GERAR_APOSTAS_RAPIDAO_PATH = "/rapidoes/gerar-apostas";
     public static final String RAPIDOES_PATH = "/rapidoes";
     public static final String MODALIDADES_PATH = "/modalidades";
+    public static final String APOSTAS_FAVORITAS_PATH = "/apostas-favoritas";
 
     public static final String EQUIPES_ESPORTIVAS_PATH = "/equipes-esportivas/{id}/escudo";
 
