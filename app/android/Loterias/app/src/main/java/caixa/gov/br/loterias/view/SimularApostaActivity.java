@@ -150,7 +150,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
             if (parametroSimulacao.getTeimosinhas() != null) {
                 for (Integer numeroTeimosinha : parametroSimulacao.getTeimosinhas()) {
                     if (numeroTeimosinha == 0) {
-                        qtdConcursosList.add("Nenhum");
+                        qtdConcursosList.add("nenhum");
                     } else if (numeroTeimosinha == 1) {
                         qtdConcursosList.add("" + numeroTeimosinha + " concurso");
                     } else {

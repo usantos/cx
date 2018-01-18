@@ -81,6 +81,7 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setElevation(0);
         }
 
         findViewById(R.id.botaoNovaAposta).setOnClickListener(this);
