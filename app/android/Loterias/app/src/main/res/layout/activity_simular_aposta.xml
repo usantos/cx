@@ -352,8 +352,6 @@
         android:layout_height="84dp"
         android:layout_marginBottom="51dp"
         android:background="@color/cinzaescuro"
-        android:paddingLeft="14dp"
-        android:paddingRight="14dp"
         android:text="@string/adicionarAoCarrinho"
         android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
         android:textColor="@color/branco"

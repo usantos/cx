@@ -987,7 +987,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                 configurarTimesLotogol();
                 partidasSelecionadas = new HashSet<>();
                 fragmentView.findViewById(R.id.layoutTitleLoteca).setVisibility(View.VISIBLE);
-                fragmentView.findViewById(R.id.layoutTitleLoteca).setPadding(0, 40, 0, 0);
+                fragmentView.findViewById(R.id.layoutTitleLoteca).setPadding(20, 80, 0, 0);
                 ((TextView) fragmentView.findViewById(R.id.titleContinue)).setText(R.string.label_quantidade_gols_cada_time);
 
             }

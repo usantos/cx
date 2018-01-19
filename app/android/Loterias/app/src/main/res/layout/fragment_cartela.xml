@@ -61,9 +61,10 @@
 
             <LinearLayout
                 android:id="@+id/layoutTitleLoteca"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="17dp"
+                android:paddingLeft="17dp"
+                android:paddingTop="20dp"
                 android:orientation="horizontal"
                 android:visibility="gone">
 
@@ -72,12 +73,6 @@
                     style="@style/ArialMT"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginBottom="444dp"
-                    android:layout_marginEnd="271dp"
-                    android:layout_marginRight="271dp"
                     android:text="@string/label_informe"
                     android:textColor="@color/verdeazul"
                     android:textSize="14sp"
@@ -90,7 +85,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="20dp"
                     android:layout_marginLeft="6dp"
-                    android:layout_marginTop="20dp"
                     android:text="@string/label_resultado_das_partidas."
                     android:textColor="@color/verdeazul"
                     android:textSize="14sp" />
@@ -151,7 +145,7 @@
             android:id="@+id/selecioneTimeCoracao"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
+            android:layout_marginTop="81dp"
             android:orientation="vertical"
             android:visibility="gone"
             app:layout_constraintTop_toTopOf="parent">
@@ -183,7 +177,7 @@
                 android:layout_marginHorizontal="10dp"
                 android:gravity="center"
                 android:numColumns="3"
-                android:paddingBottom="55dp"
+                android:paddingBottom="119dp"
                 android:stretchMode="columnWidth"
                 android:verticalSpacing="16dp"
                 app:layout_goneMarginBottom="10dp" />
@@ -196,7 +190,8 @@
             android:layout_height="200dp"
             android:clickable="false"
             android:nestedScrollingEnabled="false"
-            android:paddingTop="60dp" />
+            android:paddingTop="60dp"
+            android:paddingBottom="119dp"/>
 
     </android.support.constraint.ConstraintLayout>
 </ScrollView>
