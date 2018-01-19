@@ -73,7 +73,7 @@ import caixa.gov.br.loterias.view.custom.ExpandableHeightRecyclerView;
 public class CartelaFragment extends Fragment implements OnClickListener, LotecaAdapter.LocateAdapterListener, LotogolListener {
     private ArrayList<String> dezenas = new ArrayList<String>();
 
-    private ArrayList<Integer> dezenasSelecionadas = new ArrayList<>();
+    private List<Integer> dezenasSelecionadas = new ArrayList<>();
     private ArrayList<Integer> dezenasApostaEspelho = new ArrayList<>();
 
     private List<ParametroEquipe> listaEquipefiltro;
@@ -451,12 +451,12 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                     if (isEcolhaTimeBtnAtivado && dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) {
                         mostrarCartelaEscolhaTimeCoracao();
                     } else {
-                        AdcionarApostaPreencherNumerosAleatorios();
+                        adcionarApostaPreencherNumerosAleatorios();
                     }
                 } else if (isTipoLoteca || isTipoLotogol) {
                     cartelaFragmentListener.adicionarApostaCarrinho();
                 } else {
-                    AdcionarApostaPreencherNumerosAleatorios();
+                    adcionarApostaPreencherNumerosAleatorios();
                 }
             }
             break;
@@ -524,7 +524,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         voltaSalvarApostaParaLayoutInicial();
     }
 
-    private void AdcionarApostaPreencherNumerosAleatorios() {
+    private void adcionarApostaPreencherNumerosAleatorios() {
         if (isTipoTimemania) {
             adicionarApostaPreencherNumerosTimemania();
         } else if (isTipoLotomania) {
@@ -645,6 +645,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
     private void preencheNumerosAleatorios() {
         ApostaBO apostaBO = new ApostaBO(getActivity());
+        orderAscDezenas();
         apostaBO.completaJogo(parentActivity.qtdDezenasPossiveisSelecionado, dezenasSelecionadas, 1,
                 parametroJogo.getPrognosticoMaximo(), new SilceClient.Listener<CompletaJogoRsp>() {
                     @Override
@@ -903,11 +904,12 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                 } else {
                     botaoFinalizar.setClickable(false);
                     botaoFinalizar.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.azulclaro));
+                    parentActivity.getSalvarApostaLayout().setVisibility(View.GONE);
                 }
             }
 
         } else if (dezenasSelecionadas.size() > parentActivity.qtdDezenasPossiveisSelecionado) {
-            //dezenasSelecionadas.clear();
+            dezenasSelecionadas.clear();
             simularDezenasAdapter.notifyDataSetChanged();
             atualizarBotaoFinalizarCompletarCartela();
 
@@ -926,6 +928,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
     private void atualizarBotaoFinalizarAdicionarCarrinho() {
         botaoFinalizar.setBackgroundColor(ContextCompat.getColor(getActivity(), typeGameColorLight));
         botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(getActivity(), getString(R.string.adicionarAoCarrinho)));
+        parentActivity.getSalvarApostaLayout().setVisibility(View.VISIBLE);
     }
 
     private void configuraListaDezenas(View fragmentView) {
@@ -1111,6 +1114,24 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         atualizaStatusBotaoFinalizar();
         verificaSeMostraSalvarApostaView(getView());
         verificaSeMostraBotaoLimparAposta();
+    }
+
+    private void orderAscDezenas(){
+        Integer menorDezenaAtual = null;
+        List<Integer> listaOrdenadaAsc = new ArrayList<>();
+        while(dezenasSelecionadas.size() > 0){
+            for (Integer dezena : dezenasSelecionadas){
+                if(menorDezenaAtual == null){
+                    menorDezenaAtual = dezena;
+                }else if(menorDezenaAtual > dezena){
+                    menorDezenaAtual = dezena;
+                }
+            }
+            listaOrdenadaAsc.add(menorDezenaAtual);
+            dezenasSelecionadas.remove(menorDezenaAtual);
+            menorDezenaAtual = null;
+        }
+        dezenasSelecionadas = listaOrdenadaAsc;
     }
 
     // Adapter do gridview das dezenas
