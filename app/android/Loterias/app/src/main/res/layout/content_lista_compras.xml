@@ -7,9 +7,10 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="caixa.gov.br.loterias.view.ListaComprasActivity"
     tools:showIn="@layout/activity_lista_compras">
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -20,6 +21,15 @@
             android:layout_marginHorizontal="17dp"
             android:layout_marginTop="40dp"/>
 
-    </ScrollView>
+        <ExpandableListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/comprasExpandableListView"
+            android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft"
+            android:divider="@color/cinza"
+            android:dividerHeight="0.5dp"
+            android:layout_marginTop="40dp"></ExpandableListView>
+
+        </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

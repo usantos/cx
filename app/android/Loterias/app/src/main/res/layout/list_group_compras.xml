@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="13dp"
+        android:orientation="horizontal"
+        android:layout_marginBottom="12dp"
+        android:layout_marginTop="12dp">
+
+
+
+
+        <LinearLayout
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3"
+            android:orientation="vertical"
+            android:id="@+id/LinearLayoutGroupComprasLeft">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Compra 001"
+                android:textSize="14.2sp"
+                android:textColor="@color/cinza"
+                android:fontFamily="@font/arialmt"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="23/07/2017"
+                android:textSize="14.2sp"
+                android:textColor="@color/cinza"
+                android:fontFamily="@font/arialmt"/>
+        </LinearLayout>
+
+
+
+
+
+        <LinearLayout
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:orientation="horizontal"
+            android:id="@+id/LinearLayoutGroupComprasCenter"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14.2sp"
+                android:textColor="@color/cinza"
+                android:fontFamily="@font/arialmt"
+                android:text="Mega-sena, lotomania, lotofácil, Mega-sena, lotomania, lotofácil, Mega-sena, lotomania, lotofácil, Mega-sena, lotomania, lotofácil"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:orientation="horizontal"
+            android:id="@+id/LinearLayoutGroupComprasRight"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="R$ 4,50"
+                android:textSize="14.2sp"
+                android:textColor="@color/cinza"
+                android:fontFamily="@font/arialmt"
+                android:gravity="end"
+                />
+        </LinearLayout>
+
+
+    </LinearLayout>
+</LinearLayout>
+
