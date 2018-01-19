@@ -61,7 +61,6 @@ public class CarrinhoActivity extends SettingToolbarActivity {
         callWebservice();
 //        mockCarrinho();
 
-        ViewUtils.organizaTabLayout(this, R.id.carrinhoMainLayout, R.id.apostasListaRecycleView, R.id.carrinhoScrollView);
     }
 
     private void mockCarrinho() {

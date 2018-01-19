@@ -37,6 +37,7 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
         this.parentActivity = parentActivity;
     }
 
+
     static class ApostaHolder extends RecyclerView.ViewHolder{
         final TextView textViewTipoAposta;
         final TextView numerosAposta;
@@ -60,31 +61,32 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
 
     @Override
     public void onBindViewHolder(ApostaHolder holder, final int position) {
-        EstiloModalidade estilo = new EstiloModalidade(apostas.get(position).getModalidade());
+        final IdentificaoDeUmaApostaDas8Modalidades aposta = apostas.get(position);
+        EstiloModalidade estilo = new EstiloModalidade(aposta.getModalidade());
 
         holder.textViewTipoAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorClara()));
         holder.valorAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorEscura()));
-        holder.textViewTipoAposta.setText(ViewUtils.capitalized(ModalidadeEnum.fromString(apostas.get(position).getModalidade())));
+        holder.textViewTipoAposta.setText(ViewUtils.capitalized(ModalidadeEnum.fromString(aposta.getModalidade())));
 
         holder.itemView.findViewById(R.id.excluirApostaCarrinho).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                deletarAposta(apostas.get(position).getId().toString());
+                deletarAposta(aposta.getId().toString());
             }
         });
 
         String numeroStr = "";
-        if (apostas.get(position).getIndicadorSurpresinha().getValor() == 2) {
-            for (int i = 0; i < apostas.get(position).getQuantidadeNumeros(); i++) {
-                if (i == apostas.get(position).getQuantidadeNumeros() - 1) {
+        if (aposta.getIndicadorSurpresinha().getValor() == 2) {
+            for (int i = 0; i < aposta.getQuantidadeNumeros(); i++) {
+                if (i == aposta.getQuantidadeNumeros() - 1) {
                     numeroStr += "XX";
                 }else {
                     numeroStr += "XX - ";
                 }
             }
         } else {
-            for (Integer num: apostas.get(position).getNumerosSelecionados()) {
-                if (num == (apostas.get(position).getNumerosSelecionados().get(apostas.get(position).getNumerosSelecionados().size() - 1))) {
+            for (Integer num: aposta.getNumerosSelecionados()) {
+                if (num == (aposta.getNumerosSelecionados().get(aposta.getNumerosSelecionados().size() - 1))) {
                     numeroStr += String.format("%02d", num);
                 }else {
                     numeroStr += String.format("%02d - ", num);
@@ -94,7 +96,7 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
 
         holder.numerosAposta.setText(numeroStr);
 
-        ViewUtils.setMoedaFormatHtml(apostas.get(position).getValor(), holder.valorAposta);
+        ViewUtils.setMoedaFormatHtml(aposta.getValor(), holder.valorAposta);
 
     }
 
