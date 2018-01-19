@@ -6,7 +6,8 @@
     android:layout_gravity="center_horizontal"
     android:layout_marginLeft="17dp"
     android:layout_marginTop="17dp"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:background="@color/branco">
 
     <caixa.gov.br.loterias.utils.ItemEquipeView_
         android:id="@+id/loteca_time_um"
@@ -16,10 +17,10 @@
     <caixa.gov.br.loterias.utils.ItemEquipeView_
         android:id="@+id/loteca_empate"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"/>
 
     <caixa.gov.br.loterias.utils.ItemEquipeView_
         android:id="@+id/loteca_time_dois"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"/>
 </LinearLayout>

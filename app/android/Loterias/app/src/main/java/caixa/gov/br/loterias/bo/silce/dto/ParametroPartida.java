@@ -12,6 +12,7 @@
 
 package caixa.gov.br.loterias.bo.silce.dto;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import io.swagger.annotations.ApiModel;
@@ -26,11 +27,14 @@ public class ParametroPartida {
     private ParametroEquipe equipe1 = null;
     @SerializedName("equipe2")
     private ParametroEquipe equipe2 = null;
-
-    private boolean selecionado;
-    private boolean empate;
-    private int qtdItensSelecionados;
-    private int qtdItensSelecionadosAnterior;
+    @Expose(serialize = false, deserialize = false)
+    private transient boolean selecionado;
+    @Expose(serialize = false, deserialize = false)
+    private transient boolean empate;
+    @Expose(serialize = false, deserialize = false)
+    private transient int qtdItensSelecionados;
+    @Expose(serialize = false, deserialize = false)
+    private transient int qtdItensSelecionadosAnterior;
 
     /**
      **/
