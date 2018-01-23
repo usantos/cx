@@ -3,6 +3,7 @@ package caixa.gov.br.loterias.view.fragment;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -190,6 +191,12 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
             infoEscolha = infoEscolhaPaginacaoLayout.findViewById(R.id.infoEscolha);
             infoPaginacao = infoEscolhaPaginacaoLayout.findViewById(R.id.infoPaginacao);
             infoEscolhaPaginacaoLayout.setVisibility(View.VISIBLE);
+        }
+
+        if(isTipoLotomania){
+            opcaoOutrosNumerosLayout = view.findViewById(R.id.opcaoOutrosNumerosLayout);
+            selcioneOutrosNumeros = opcaoOutrosNumerosLayout.findViewById(R.id.selcioneOutrosNumeros);
+            infoSelecioneOutrosNumeros = opcaoOutrosNumerosLayout.findViewById(R.id.infoSelecioneOutrosNumeros);
         }
 
         configuraBotoes(fragmentView);
@@ -478,6 +485,8 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                     simularDezenasAdapter.notifyDataSetChanged();
                     voltaSalvarApostaParaLayoutInicial();
                 }
+                limparOpcaoOutrosNumerosLayout();
+
                 verificaSeMostraBotaoLimparAposta();
                 atualizaStatusBotaoFinalizar();
             }
@@ -517,6 +526,18 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
         }
     }
+
+    private void limparOpcaoOutrosNumerosLayout() {
+        if(isTipoLotomania && opcaoOutrosNumerosLayout.getVisibility() == View.VISIBLE){
+            setVisibilityCheckedNumerosLayout(View.GONE, false);
+        }
+    }
+
+    private void setVisibilityCheckedNumerosLayout(int visibility, boolean isSelcioneOutrosNumeros) {
+        opcaoOutrosNumerosLayout.setVisibility(visibility);
+        selcioneOutrosNumeros.setChecked(isSelcioneOutrosNumeros);
+    }
+
 
     private void limparTimeSelecionado() {
         if (equipeSelecionada != null) {
@@ -566,11 +587,24 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
         } else {
             preencheNumerosAleatorios();
-            opcaoOutrosNumerosLayout = view.findViewById(R.id.opcaoOutrosNumerosLayout);
-            selcioneOutrosNumeros = opcaoOutrosNumerosLayout.findViewById(R.id.selcioneOutrosNumeros);
-            infoSelecioneOutrosNumeros = opcaoOutrosNumerosLayout.findViewById(R.id.infoSelecioneOutrosNumeros);
+            infoSelecioneOutrosNumeros.setText(ViewUtils.fromHtml(Constantes.INFO_OUTROS_50_NUMEROS));
             opcaoOutrosNumerosLayout.setVisibility(View.VISIBLE);
+            onClickOutrosNumerosLayout();
+
         }
+    }
+
+    private void onClickOutrosNumerosLayout() {
+        opcaoOutrosNumerosLayout.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (selcioneOutrosNumeros.isChecked()) {
+                    selcioneOutrosNumeros.setChecked(false);
+                } else {
+                    selcioneOutrosNumeros.setChecked(true);
+                }
+            }
+        });
     }
 
     private void adicionarApostaPreencherNumerosTimemania() {
@@ -986,6 +1020,17 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                     if (isTipoTimemania) {
                         isEcolhaTimeBtnAtivado = true;
                     }
+
+                    if(isTipoLotomania){
+                        if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado
+                                && opcaoOutrosNumerosLayout.getVisibility() == View.GONE) {
+                            setVisibilityCheckedNumerosLayout(View.VISIBLE, false);
+                        }else{
+                            setVisibilityCheckedNumerosLayout(View.GONE, false);
+                        }
+                    }
+
+
                     verificaSeMostraSalvarApostaView(getView());
                     verificaSeMostraBotaoLimparAposta();
                     atualizaStatusBotaoFinalizar();
