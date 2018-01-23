@@ -12,6 +12,8 @@
 
 package caixa.gov.br.loterias.bo.silce.dto;
 
+import android.graphics.Bitmap;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -61,6 +63,8 @@ public class ParametroEquipe {
     private transient int brasaoSelecionadoId;
     @Expose(serialize = false, deserialize = false)
     private transient String placar;
+    @Expose(serialize = false, deserialize = false)
+    private transient Bitmap escudo;
 
 
     /**
@@ -260,5 +264,13 @@ public class ParametroEquipe {
 
     public void setPlacar(String placar) {
         this.placar = placar;
+    }
+
+    public Bitmap getEscudo() {
+        return escudo;
+    }
+
+    public void setEscudo(Bitmap escudo) {
+        this.escudo = escudo;
     }
 }

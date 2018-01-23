@@ -38,6 +38,11 @@ public class ItemEquipeView extends LinearLayout {
         super(context, attrs);
     }
 
+    @Override
+    protected void drawableStateChanged() {
+        super.drawableStateChanged();
+    }
+
     public ImageView getItemImage() {
         return itemImage;
     }

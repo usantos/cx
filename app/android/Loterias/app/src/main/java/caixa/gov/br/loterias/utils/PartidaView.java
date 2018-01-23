@@ -1,7 +1,10 @@
 package caixa.gov.br.loterias.utils;
 
 import android.content.Context;
+import android.os.Build;
+import android.renderscript.Float2;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
@@ -27,6 +30,10 @@ public class PartidaView extends LinearLayout {
 
     private LotecaAdapter.LocateAdapterListener listener;
 
+    private static final float DOIS = 2;
+
+    private static final float ZERO= 0;
+
     @AfterViews
     protected void init() {
 
@@ -43,11 +50,17 @@ public class PartidaView extends LinearLayout {
             if (!parametroPartida.isEmpate() && !parametroPartida.getEquipe2().isSelecionado()) {
                 parametroPartida.setSelecionado(Boolean.FALSE);
             }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                lotecaTimeUm.setTranslationZ(ZERO);
+            }
         } else {
             lotecaTimeUm.setSelected(Boolean.TRUE);
             parametroPartida.setSelecionado(Boolean.TRUE);
             parametroPartida.getEquipe1().setSelecionado(Boolean.TRUE);
             parametroPartida.setQtdItensSelecionados(parametroPartida.getQtdItensSelecionados() +1);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                lotecaTimeUm.setTranslationZ(DOIS);
+            }
         }
         listener.clickEquipeLoteca(parametroPartida);
     }
@@ -63,11 +76,17 @@ public class PartidaView extends LinearLayout {
             if (!parametroPartida.isEmpate() && !parametroPartida.getEquipe1().isSelecionado()) {
                 parametroPartida.setSelecionado(Boolean.FALSE);
             }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                lotecaTimeDois.setTranslationZ(ZERO);
+            }
         } else {
             lotecaTimeDois.setSelected(Boolean.TRUE);
             parametroPartida.setSelecionado(Boolean.TRUE);
             parametroPartida.getEquipe2().setSelecionado(Boolean.TRUE);
             parametroPartida.setQtdItensSelecionados(parametroPartida.getQtdItensSelecionados() +1);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                lotecaTimeDois.setTranslationZ(DOIS);
+            }
         }
         listener.clickEquipeLoteca(parametroPartida);
     }
@@ -83,11 +102,17 @@ public class PartidaView extends LinearLayout {
             if (!parametroPartida.getEquipe1().isSelecionado() && !parametroPartida.getEquipe2().isSelecionado()) {
                 parametroPartida.setSelecionado(Boolean.FALSE);
             }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                lotecaEmpate.setTranslationZ(ZERO);
+            }
         } else {
             lotecaEmpate.setSelected(Boolean.TRUE);
             parametroPartida.setEmpate(Boolean.TRUE);
             parametroPartida.setSelecionado(Boolean.TRUE);
             parametroPartida.setQtdItensSelecionados(parametroPartida.getQtdItensSelecionados() +1);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                lotecaEmpate.setTranslationZ(DOIS);
+            }
         }
         listener.clickEquipeLoteca(parametroPartida);
     }

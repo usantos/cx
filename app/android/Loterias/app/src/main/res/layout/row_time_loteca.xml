@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/row_time_loteca"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -12,15 +12,22 @@
     <caixa.gov.br.loterias.utils.ItemEquipeView_
         android:id="@+id/loteca_time_um"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:outlineProvider="none"/>
 
     <caixa.gov.br.loterias.utils.ItemEquipeView_
         android:id="@+id/loteca_empate"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="109dp"
+        android:outlineProvider="none"/>
 
     <caixa.gov.br.loterias.utils.ItemEquipeView_
         android:id="@+id/loteca_time_dois"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-</LinearLayout>
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="218dp"
+        android:outlineProvider="none"/>
+</RelativeLayout>

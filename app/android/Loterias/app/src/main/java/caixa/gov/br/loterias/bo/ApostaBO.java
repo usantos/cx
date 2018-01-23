@@ -17,6 +17,7 @@ import caixa.gov.br.loterias.bo.silce.dto.AgrupadorDTOApostaDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.AgrupadorDTOApostaFavoritaDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.ApostaFavoritaDTO;
 import caixa.gov.br.loterias.bo.silce.dto.CarrinhoDTOResponse;
+import caixa.gov.br.loterias.bo.silce.dto.EscudoEquipeEsportivaDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import caixa.gov.br.loterias.bo.silce.dto.IncluirSurpresinhaDTO;
 import caixa.gov.br.loterias.bo.silce.dto.ModalidadeDTOResponse;
@@ -25,19 +26,19 @@ import caixa.gov.br.loterias.bo.silce.dto.RapidaoDTOResponse;
 import caixa.gov.br.loterias.bo.silce.internals.SilceConnection;
 import caixa.gov.br.loterias.bo.silce.internals.SilceSingleton;
 
-public class ApostaBO{
+public class ApostaBO {
 
     private SilceClient silceClient;
     private Context context;
 
 
-    public ApostaBO(Context context){
-       this.context = context;
+    public ApostaBO(Context context) {
+        this.context = context;
 
         setupSilceClient();
     }
 
-    private void setupSilceClient(){
+    private void setupSilceClient() {
         SilceSingleton queue = new SilceSingleton(context);
         SilceConnection conn = SilceConnection.create(queue.getRequestQueue(), BuildConfig.CAIXA_BASE_URL_SILCE);
         silceClient = SilceClient.create(conn);
@@ -73,12 +74,12 @@ public class ApostaBO{
         silceClient.getConnection().post(SilceClient.INCLUIR_APOSTA_CARRINHO_PATH, new LinkedHashMap<String, String>(),
                 aposta, AgrupadorDTOApostaDTOResponse.class,
                 silceClient.volleyListener(listener, AgrupadorDTOApostaDTOResponse.class),
-                silceClient.volleyErrorListener(errorListener),headers);
+                silceClient.volleyErrorListener(errorListener), headers);
     }
 
-    public void adicionarApostasNoCarrinho(final  List<IdentificaoDeUmaApostaDas8Modalidades> apostas,
-                                          final SilceClient.Listener<AgrupadorDTOApostaDTOResponse> listener,
-                                          final SilceClient.ErrorListener errorListener) {
+    public void adicionarApostasNoCarrinho(final List<IdentificaoDeUmaApostaDas8Modalidades> apostas,
+                                           final SilceClient.Listener<AgrupadorDTOApostaDTOResponse> listener,
+                                           final SilceClient.ErrorListener errorListener) {
 
         LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
         headers.put("Authorization", "Bearer " + UsuarioLogadoSingleton.getInstance().token);
@@ -87,12 +88,12 @@ public class ApostaBO{
         silceClient.getConnection().post(SilceClient.INCLUIR_APOSTAS_CARRINHO_PATH, new LinkedHashMap<String, String>(),
                 apostas, AgrupadorDTOApostaDTOResponse.class,
                 silceClient.volleyListener(listener, AgrupadorDTOApostaDTOResponse.class),
-                silceClient.volleyErrorListener(errorListener),headers);
+                silceClient.volleyErrorListener(errorListener), headers);
     }
 
     public void adicionarSurpresinhaNoCarrinho(final IncluirSurpresinhaDTO aposta,
-                                          final SilceClient.Listener<AgrupadorDTOApostaDTOResponse> listener,
-                                          final SilceClient.ErrorListener errorListener) {
+                                               final SilceClient.Listener<AgrupadorDTOApostaDTOResponse> listener,
+                                               final SilceClient.ErrorListener errorListener) {
 
         LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
         headers.put("Authorization", "Bearer " + UsuarioLogadoSingleton.getInstance().token);
@@ -101,7 +102,7 @@ public class ApostaBO{
         silceClient.getConnection().post(SilceClient.INCLUIR_SURPRESINHA_CARRINHO_PATH, new LinkedHashMap<String, String>(),
                 aposta, AgrupadorDTOApostaDTOResponse.class,
                 silceClient.volleyListener(listener, AgrupadorDTOApostaDTOResponse.class),
-                silceClient.volleyErrorListener(errorListener),headers);
+                silceClient.volleyErrorListener(errorListener), headers);
     }
 
     public void buscaCarrinho(final SilceClient.Listener<CarrinhoDTOResponse> listener, final SilceClient.ErrorListener errorListerner) {
@@ -112,7 +113,7 @@ public class ApostaBO{
                 silceClient.volleyListener(listener, CarrinhoDTOResponse.class), silceClient.volleyErrorListener(errorListerner), headers);
     }
 
-    public void deleteApostaCarrinho(String id ,final SilceClient.Listener<CarrinhoDTOResponse> listener, final SilceClient.ErrorListener errorListerner) {
+    public void deleteApostaCarrinho(String id, final SilceClient.Listener<CarrinhoDTOResponse> listener, final SilceClient.ErrorListener errorListerner) {
         LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
         headers.put("Authorization", "Bearer " + UsuarioLogadoSingleton.getInstance().token);
 
@@ -120,12 +121,22 @@ public class ApostaBO{
                 silceClient.volleyListener(listener, CarrinhoDTOResponse.class), silceClient.volleyErrorListener(errorListerner), headers);
     }
 
-    private static String join(List<Integer> collection, String delimiter){
+    public void obterEscudoTime(String id, final SilceClient.Listener<EscudoEquipeEsportivaDTOResponse> listener, final SilceClient.ErrorListener errorListerner) {
+        LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
+        headers.put("Authorization", "Bearer " + UsuarioLogadoSingleton.getInstance().token);
+
+        String url = SilceClient.EQUIPES_ESPORTIVAS_ESCUDO_PATH.replace("{id}", id);
+
+        silceClient.getConnection().get(url, new LinkedHashMap<String, String>(), EscudoEquipeEsportivaDTOResponse.class,
+                silceClient.volleyListener(listener, EscudoEquipeEsportivaDTOResponse.class), silceClient.volleyErrorListener(errorListerner), headers);
+    }
+
+    private static String join(List<Integer> collection, String delimiter) {
         StringBuffer result = new StringBuffer("");
         boolean first = false;
 
-        for(Integer e : collection) {
-            if(! (e == collection.get(0))) {
+        for (Integer e : collection) {
+            if (!(e == collection.get(0))) {
                 result.append(delimiter);
             }
             result.append(e);
@@ -164,8 +175,8 @@ public class ApostaBO{
 
 
     public void postRapidoes(final RapidaoDTO rapidao,
-                                               final SilceClient.Listener<RapidaoDTOResponse> listener,
-                                               final SilceClient.ErrorListener errorListener) {
+                             final SilceClient.Listener<RapidaoDTOResponse> listener,
+                             final SilceClient.ErrorListener errorListener) {
 
         LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
         headers.put("Authorization", "Bearer " + UsuarioLogadoSingleton.getInstance().token);
@@ -173,7 +184,7 @@ public class ApostaBO{
         silceClient.getConnection().post(SilceClient.RAPIDOES_PATH, new LinkedHashMap<String, String>(),
                 rapidao, RapidaoDTOResponse.class,
                 silceClient.volleyListener(listener, RapidaoDTOResponse.class),
-                silceClient.volleyErrorListener(errorListener),headers);
+                silceClient.volleyErrorListener(errorListener), headers);
     }
 
     public void getApostasFavoritas(final SilceClient.Listener<AgrupadorDTOApostaFavoritaDTOResponse> listener, final SilceClient.ErrorListener errorListerner) {
