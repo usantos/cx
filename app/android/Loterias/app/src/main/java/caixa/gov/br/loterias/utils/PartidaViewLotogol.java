@@ -68,7 +68,7 @@ public class PartidaViewLotogol extends LinearLayout implements LotogolListener 
 
     @Override
     public void partidaSelecionada() {
-        if (StringUtils.isNotEmpty(parametroPartida.getEquipe1().getPlacar()) || StringUtils.isNotEmpty(parametroPartida.getEquipe2().getPlacar())) {
+        if (StringUtils.isNotEmpty(parametroPartida.getEquipe1().getPlacar()) && StringUtils.isNotEmpty(parametroPartida.getEquipe2().getPlacar())) {
             parametroPartida.setSelecionado(Boolean.TRUE);
         } else {
             parametroPartida.setSelecionado(Boolean.FALSE);

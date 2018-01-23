@@ -60,6 +60,7 @@ import caixa.gov.br.loterias.bo.silce.dto.ParametroJogoDTO;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroPartida;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroValorApostaDTO;
 import caixa.gov.br.loterias.bo.silce.dto.PartidaLotecaDTO;
+import caixa.gov.br.loterias.bo.silce.dto.PartidaLotogolDTO;
 import caixa.gov.br.loterias.bo.silce.dto.TipoConcursoEnum;
 import caixa.gov.br.loterias.utils.Constantes;
 import caixa.gov.br.loterias.utils.LoadingViewLoterias;
@@ -402,6 +403,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         aposta.setSurpresinha(false);
 
         this.setApostaLoteca(aposta);
+        this.setApostaLotogol(aposta);
 
         return aposta;
     }
@@ -465,8 +467,6 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                     } else {
                         adcionarApostaPreencherNumerosAleatorios();
                     }
-                } else if (isTipoLotogol) {
-                    cartelaFragmentListener.adicionarApostaCarrinho();
                 } else {
                     adcionarApostaPreencherNumerosAleatorios();
                 }
@@ -492,12 +492,9 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
             }
             break;
 
-            case R.id.botaoCarrinho:
-            case R.id.textInfoCarrinho:
-            case R.id.textViewCarrinhoCartelaCount: {
+            case R.id.simularApostaLayoutCarrinhoApostas:
                 cartelaFragmentListener.abreCarrinhoApostas();
-            }
-            break;
+                break;
 
             case R.id.salvarApostaLayout: {
                 RelativeLayout salvarApostaLayout = parentActivity.getSalvarApostaLayout();
@@ -556,7 +553,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
             adicionarApostaPreencherNumerosTimemania();
         } else if (isTipoLotomania) {
             adicionarApostaPreencherNumerosLotomania();
-        } else if ((dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) || (isTipoLoteca)) {
+        } else if ((dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) || (isTipoLoteca) || (isTipoLotogol)) {
             adicionarApostaNoCarrinho();
         } else {
             preencheNumerosAleatorios();
@@ -801,11 +798,9 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         botaoFinalizar = parentActivity.getBotaoAdicionarCompletarCartela();
         botaoFinalizar.setOnClickListener(this);
         botaoFinalizar.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.cinza));
-        Button carrinhoImageView = parentActivity.getBotaoCarrinho();
-        carrinhoImageView.setOnClickListener(this);
 
-        TextView textInfoCarrinho = parentActivity.getTextInfoCarrinho();
-        textInfoCarrinho.setOnClickListener(this);
+        parentActivity.getSimularApostaLayoutCarrinhoApostas().setOnClickListener(this);
+
         botaoLimparAposta = parentActivity.getBotaoLimparAposta();
         botaoLimparAposta.setOnClickListener(this);
 
@@ -853,7 +848,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
     }
 
     private void verificaSeMostraBotaoLimparAposta() {
-        if (isTipoLoteca || isTipoLotogol) {
+        if (isTipoLoteca) {
             if (partidasSelecionadas.isEmpty()) {
                 botaoLimparAposta.setVisibility(View.GONE);
             } else {
@@ -919,7 +914,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                 botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(getActivity(), getString(R.string.label_selecionar_times_aleatoriamente)));
             }
         } else if (isTipoLotogol) {
-            if (partidasSelecionadas.size() == 0) {
+            if (partidasSelecionadas.size() < 5) {
                 botaoFinalizar.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.cinza));
                 botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(getActivity(), getString(R.string.label_complete_placar_aleatoriamente)));
             } else {
@@ -1144,7 +1139,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
     }
 
     private void limparPartidasSelecionadasLotogol(boolean desativado) {
-        for (ParametroPartida partida : partidasSelecionadas) {
+        for (ParametroPartida partida : parametroJogo.getPartidas()) {
             partida.setSelecionado(desativado);
             partida.getEquipe1().setPlacar(StringUtils.EMPTY);
             partida.getEquipe2().setPlacar(StringUtils.EMPTY);
@@ -1168,9 +1163,14 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         } else {
             partidasSelecionadas.remove(parametroPartida);
         }
+
+        if (StringUtils.isNotEmpty(parametroPartida.getEquipe1().getPlacar()) || StringUtils.isNotEmpty(parametroPartida.getEquipe2().getPlacar())) {
+            botaoLimparAposta.setVisibility(View.VISIBLE);
+        } else {
+            botaoLimparAposta.setVisibility(View.GONE);
+        }
         atualizaStatusBotaoFinalizar();
         verificaSeMostraSalvarApostaView(getView());
-        verificaSeMostraBotaoLimparAposta();
     }
 
     private void orderAscDezenas() {
@@ -1199,31 +1199,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                 EquipeDTO equipeDTO1 = new EquipeDTO();
                 EquipeDTO equipeDTO2 = new EquipeDTO();
 
-                equipeDTO1.setVitoria(partida.getEquipe1().isSelecionado());
-                equipeDTO1.setParametroEquipe(partida.getEquipe1());
-                equipeDTO1.setIndicadorSelecao(partida.getEquipe1().getIndicadorSelecao());
-                equipeDTO1.setDescricaoCurta(partida.getEquipe1().getDescricaoCurta());
-                equipeDTO1.setDescricaoLonga(partida.getEquipe1().getDescricaoLonga());
-                equipeDTO1.setNumero(partida.getEquipe1().getNumero());
-                equipeDTO1.setNumeroPais(partida.getEquipe1().getNumeroPais());
-                equipeDTO1.setPais(partida.getEquipe1().getPais());
-                equipeDTO1.setSiglaPais(partida.getEquipe1().getSiglaPais());
-                equipeDTO1.setUf(partida.getEquipe1().getUf());
-                equipeDTO1.setNomeClass(partida.getEquipe1().getNomeClass());
-                equipeDTO1.setNome(partida.getEquipe1().getNome());
-
-                equipeDTO2.setVitoria(partida.getEquipe2().isSelecionado());
-                equipeDTO2.setParametroEquipe(partida.getEquipe2());
-                equipeDTO2.setIndicadorSelecao(partida.getEquipe2().getIndicadorSelecao());
-                equipeDTO2.setDescricaoCurta(partida.getEquipe2().getDescricaoCurta());
-                equipeDTO2.setDescricaoLonga(partida.getEquipe2().getDescricaoLonga());
-                equipeDTO2.setNumero(partida.getEquipe2().getNumero());
-                equipeDTO2.setNumeroPais(partida.getEquipe2().getNumeroPais());
-                equipeDTO2.setPais(partida.getEquipe2().getPais());
-                equipeDTO2.setSiglaPais(partida.getEquipe2().getSiglaPais());
-                equipeDTO2.setUf(partida.getEquipe2().getUf());
-                equipeDTO2.setNomeClass(partida.getEquipe2().getNomeClass());
-                equipeDTO2.setNome(partida.getEquipe2().getNome());
+                this.setValorEquipe1Equipe2(partida, equipeDTO1, equipeDTO2);
 
                 lotecaDTO.setEquipe1(equipeDTO1);
                 lotecaDTO.setEquipe2(equipeDTO2);
@@ -1232,6 +1208,54 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                 aposta.getPartidasLoteca().add(lotecaDTO);
             }
         }
+    }
+
+    private void setApostaLotogol(IdentificaoDeUmaApostaDas8Modalidades aposta){
+        if (isTipoLotogol) {
+            aposta.setPartidasLotogol(new ArrayList<PartidaLotogolDTO>());
+            for (ParametroPartida partida : partidasSelecionadas) {
+                PartidaLotogolDTO lotogolDTO = new PartidaLotogolDTO();
+                EquipeDTO equipeDTO1 = new EquipeDTO();
+                EquipeDTO equipeDTO2 = new EquipeDTO();
+
+                this.setValorEquipe1Equipe2(partida, equipeDTO1, equipeDTO2);
+
+                lotogolDTO.setEquipe1(equipeDTO1);
+                lotogolDTO.setEquipe2(equipeDTO2);
+
+                aposta.getPartidasLotogol().add(lotogolDTO);
+            }
+        }
+    }
+
+    private void setValorEquipe1Equipe2(ParametroPartida partida, EquipeDTO equipeDTO1, EquipeDTO equipeDTO2) {
+        equipeDTO1.setPlacar(partida.getEquipe1().getPlacar());
+        equipeDTO1.setVitoria(partida.getEquipe1().isSelecionado());
+        equipeDTO1.setParametroEquipe(partida.getEquipe1());
+        equipeDTO1.setIndicadorSelecao(partida.getEquipe1().getIndicadorSelecao());
+        equipeDTO1.setDescricaoCurta(partida.getEquipe1().getDescricaoCurta());
+        equipeDTO1.setDescricaoLonga(partida.getEquipe1().getDescricaoLonga());
+        equipeDTO1.setNumero(partida.getEquipe1().getNumero());
+        equipeDTO1.setNumeroPais(partida.getEquipe1().getNumeroPais());
+        equipeDTO1.setPais(partida.getEquipe1().getPais());
+        equipeDTO1.setSiglaPais(partida.getEquipe1().getSiglaPais());
+        equipeDTO1.setUf(partida.getEquipe1().getUf());
+        equipeDTO1.setNomeClass(partida.getEquipe1().getNomeClass());
+        equipeDTO1.setNome(partida.getEquipe1().getNome());
+
+        equipeDTO2.setPlacar(partida.getEquipe2().getPlacar());
+        equipeDTO2.setVitoria(partida.getEquipe2().isSelecionado());
+        equipeDTO2.setParametroEquipe(partida.getEquipe2());
+        equipeDTO2.setIndicadorSelecao(partida.getEquipe2().getIndicadorSelecao());
+        equipeDTO2.setDescricaoCurta(partida.getEquipe2().getDescricaoCurta());
+        equipeDTO2.setDescricaoLonga(partida.getEquipe2().getDescricaoLonga());
+        equipeDTO2.setNumero(partida.getEquipe2().getNumero());
+        equipeDTO2.setNumeroPais(partida.getEquipe2().getNumeroPais());
+        equipeDTO2.setPais(partida.getEquipe2().getPais());
+        equipeDTO2.setSiglaPais(partida.getEquipe2().getSiglaPais());
+        equipeDTO2.setUf(partida.getEquipe2().getUf());
+        equipeDTO2.setNomeClass(partida.getEquipe2().getNomeClass());
+        equipeDTO2.setNome(partida.getEquipe2().getNome());
     }
 
     private void atualizaValorApostaLoteca() {

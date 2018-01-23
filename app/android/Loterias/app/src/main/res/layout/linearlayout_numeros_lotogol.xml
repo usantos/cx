@@ -8,19 +8,6 @@
         android:layout_height="40dp"
         android:orientation="horizontal"
         android:id="@+id/linearLayoutNumerosPlacar"
-        android:background="@drawable/custom_border_cinza_lotogol_circle"
-        android:layout_marginHorizontal="8dp">
-
-        <TextView
-            android:id="@+id/tituloPlacar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="1"
-            android:textAlignment="center"
-            android:textColor="@color/lotogolEscuroToolBar"
-            android:textSize="14.1sp"
-            android:textStyle="bold"/>
+        android:background="@drawable/dezena_lotogol_selected_0">
     </LinearLayout>
-
 </LinearLayout>

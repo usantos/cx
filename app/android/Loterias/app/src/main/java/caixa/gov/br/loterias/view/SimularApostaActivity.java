@@ -79,7 +79,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
     LinearLayout toolBarSimularAposta;
 
     @ViewById
-    RelativeLayout salvarApostaLayout, carrinhoApostas;
+    RelativeLayout salvarApostaLayout, carrinhoApostas, simularApostaLayoutCarrinhoApostas;
 
     @ViewById
     ImageButton btnSalvarAposta;
@@ -690,5 +690,9 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
 
     public ImageView getIconStarSalvar() {
         return iconStarSalvar;
+    }
+
+    public RelativeLayout getSimularApostaLayoutCarrinhoApostas() {
+        return simularApostaLayoutCarrinhoApostas;
     }
 }

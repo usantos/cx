@@ -11,6 +11,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.bo.silce.dto.DezenaLotogol;
 
 /**
  * Created by joafilho on 09/01/2018.
@@ -19,9 +20,9 @@ import caixa.gov.br.loterias.R;
 public class NumerosLotogolAdapter extends BaseAdapter {
 
     private final Context context;
-    private final List<String> placarList;
+    private final List<DezenaLotogol> placarList;
 
-    public NumerosLotogolAdapter(Context mContext, List<String> placarList) {
+    public NumerosLotogolAdapter(Context mContext, List<DezenaLotogol> placarList) {
         this.context = mContext;
         this.placarList = placarList;
     }
@@ -49,9 +50,8 @@ public class NumerosLotogolAdapter extends BaseAdapter {
             view = layoutInflater.inflate(R.layout.linearlayout_numeros_lotogol, null);
         }
 
-        ((LinearLayout) view.findViewById(R.id.linearLayoutNumerosPlacar)).setBackgroundResource(R.drawable.custom_border_cinza_lotogol_circle);
-        ((TextView) view.findViewById(R.id.tituloPlacar)).setText(placarList.get(i));
-        ((TextView) view.findViewById(R.id.tituloPlacar)).setTextColor(context.getResources().getColor(R.color.lotogolEscuroToolBar));
+        ((LinearLayout) view.findViewById(R.id.linearLayoutNumerosPlacar)).setBackgroundResource(placarList.get(i).getBackGround());
+        view.setTag(placarList.get(i).getValor());
         return view;
     }
 }

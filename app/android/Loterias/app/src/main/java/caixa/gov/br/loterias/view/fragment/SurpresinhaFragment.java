@@ -97,11 +97,12 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
             adicionarSurpresinhaNoCarrinho();
         }
 
-        if(!isTipoTimeMania){
+        if (!isTipoTimeMania) {
             divisaoLinhaUm.setVisibility(View.GONE);
             divisaoLinhaDois.setVisibility(View.GONE);
             brasaoTimeSurpresa.setVisibility(View.GONE);
-            infoTimeSurpresa.setVisibility(View.GONE);;
+            infoTimeSurpresa.setVisibility(View.GONE);
+            ;
             botaoEscolhaOutrotime.setVisibility(View.GONE);
         }
     }
@@ -153,7 +154,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
 
         switch (tipoJogo) {
             case TIMEMANIA:
-                  isTipoTimeMania = true;
+                isTipoTimeMania = true;
                 break;
         }
     }
@@ -195,6 +196,8 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
             atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
         }
 
+        parentActivity.getSimularApostaLayoutCarrinhoApostas().setOnClickListener(this);
+
         botaoEscolhaOutrotime = fragmentView.findViewById(R.id.escolherOutroTimeBtn);
         botaoEscolhaOutrotime.setOnClickListener(this);
 
@@ -215,12 +218,6 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         botaoAdicionarSurpresinhaAoCarrinho.setTextColor(Color.WHITE);
         botaoAdicionarSurpresinhaAoCarrinho.setOnClickListener(this);
         botaoAdicionarSurpresinhaAoCarrinho.setText(ViewUtils.textFuturaAndFuturaBold(getActivity(), getString(R.string.adicionarAoCarrinho)));
-
-        Button carrinhoImageView =  parentActivity.getBotaoCarrinho();
-        carrinhoImageView.setOnClickListener(this);
-
-        TextView textInfoCarrinho = parentActivity.getTextInfoCarrinho();
-        textInfoCarrinho.setOnClickListener(this);
 
         parentActivity.getBotaoLimparAposta().setVisibility(View.GONE);
         parentActivity.getSalvarApostaLayout().setVisibility(View.GONE);
@@ -350,11 +347,9 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
             }
             break;
 
-            case R.id.botaoCarrinho:
-            case R.id.textInfoCarrinho: {
+            case R.id.simularApostaLayoutCarrinhoApostas:
                 surpresinhaFragmentListener.abreCarrinhoApostas();
-
-            }
+                break;
         }
 
         qtdSurpresinhasTextView.setText(String.format("%d", qtdSurpresinhas));

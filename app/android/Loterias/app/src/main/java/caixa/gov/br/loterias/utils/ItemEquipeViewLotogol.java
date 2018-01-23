@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.bo.silce.dto.DezenaLotogol;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroEquipe;
 import caixa.gov.br.loterias.utils.interfaces.LotogolListener;
 import caixa.gov.br.loterias.view.adapter.NumerosLotogolAdapter;
@@ -41,16 +42,13 @@ public class ItemEquipeViewLotogol extends LinearLayout {
     private ParametroEquipe parametroEquipe;
     private LotogolListener listerner;
 
-    private List<String> placarListUm;
-    private List<String> placarListDois;
+    private List<DezenaLotogol> placarListUm;
+    private List<DezenaLotogol> placarListDois;
 
     private NumerosLotogolAdapter numerosLotogolAdapterListUm;
     private NumerosLotogolAdapter numerosLotogolAdapterListDois;
 
     private View selecionadoAnterior;
-
-    private static final String VALORES_PLACAR_LINHA_UM = "0_1_2";
-    private static final String VALORES_PLACAR_LINHA_DOIS = "3_+";
 
     @AfterViews
     protected void init() {
@@ -84,10 +82,9 @@ public class ItemEquipeViewLotogol extends LinearLayout {
     }
 
     private void criarListaPlacar() {
-        String[] arrayValor = VALORES_PLACAR_LINHA_UM.split("_");
-        for (int i = 0; i < arrayValor.length; i++) {
-            placarListUm.add(arrayValor[i]);
-        }
+        placarListUm.add(new DezenaLotogol(R.drawable.dezena_lotogol_selected_0, Constantes.ZERO_STRING));
+        placarListUm.add(new DezenaLotogol(R.drawable.dezena_lotogol_selected_1, Constantes.UM_STRING));
+        placarListUm.add(new DezenaLotogol(R.drawable.dezena_lotogol_selected_2, Constantes.DOIS_STRING));
         numerosLotogolAdapterListUm = new NumerosLotogolAdapter(getContext(), placarListUm);
         gridViewPlacarTresColunas.setAdapter(numerosLotogolAdapterListUm);
         gridViewPlacarTresColunas.setExpanded(true);
@@ -98,10 +95,8 @@ public class ItemEquipeViewLotogol extends LinearLayout {
             }
         });
 
-        arrayValor = VALORES_PLACAR_LINHA_DOIS.split("_");
-        for (int i = 0; i < arrayValor.length; i++) {
-            placarListDois.add(arrayValor[i]);
-        }
+        placarListDois.add(new DezenaLotogol(R.drawable.dezena_lotogol_selected_3, Constantes.TRES_STRING));
+        placarListDois.add(new DezenaLotogol(R.drawable.dezena_lotogol_selected_plus, Constantes.PLUS_STRING));
 
         numerosLotogolAdapterListDois = new NumerosLotogolAdapter(getContext(), placarListDois);
         gridViewPlacarDuasColunas.setAdapter(numerosLotogolAdapterListDois);
@@ -115,36 +110,29 @@ public class ItemEquipeViewLotogol extends LinearLayout {
     }
 
     private void clickItem(AdapterView<?> adapterView, View view) {
-        LinearLayout layoutCircle = (LinearLayout) view.findViewById(R.id.linearLayoutNumerosPlacar);
-        TextView valorPlacar = (TextView) view.findViewById(R.id.tituloPlacar);
 
-        if (valorPlacar.getText().toString().equals(parametroEquipe.getPlacar())) {
+        if (view.getTag().toString().equals(parametroEquipe.getPlacar())) {
             parametroEquipe.setPlacar(StringUtils.EMPTY);
-            layoutCircle.setBackgroundResource(R.drawable.custom_border_cinza_lotogol_circle);
-            valorPlacar.setTextColor(getResources().getColor(R.color.lotogolEscuroToolBar));
             selecionadoAnterior = null;
         } else {
             if (StringUtils.isNotEmpty(parametroEquipe.getPlacar())) {
-                parametroEquipe.setPlacar(valorPlacar.getText().toString());
+                parametroEquipe.setPlacar(view.getTag().toString());
                 tirarSelecaoAnterior();
-                layoutCircle.setBackgroundResource(R.drawable.circle_numeros_azul_escuro_toolbar);
-                valorPlacar.setTextColor(getResources().getColor(R.color.branco));
-                selecionadoAnterior = view;
+                selecionarViewSetAnterior(view);
             } else {
-                parametroEquipe.setPlacar(valorPlacar.getText().toString());
-                layoutCircle.setBackgroundResource(R.drawable.circle_numeros_azul_escuro_toolbar);
-                valorPlacar.setTextColor(getResources().getColor(R.color.branco));
-                selecionadoAnterior = view;
+                parametroEquipe.setPlacar(view.getTag().toString());
+                selecionarViewSetAnterior(view);
             }
         }
         listerner.partidaSelecionada();
     }
 
-    public void tirarSelecaoAnterior() {
-        LinearLayout layoutCircle = (LinearLayout) selecionadoAnterior.findViewById(R.id.linearLayoutNumerosPlacar);
-        TextView valorPlacar = (TextView) selecionadoAnterior.findViewById(R.id.tituloPlacar);
+    private void selecionarViewSetAnterior(View view) {
+        view.setSelected(Boolean.TRUE);
+        selecionadoAnterior = view;
+    }
 
-        layoutCircle.setBackgroundResource(R.drawable.custom_border_cinza_lotogol_circle);
-        valorPlacar.setTextColor(getResources().getColor(R.color.lotogolEscuroToolBar));
+    private void tirarSelecaoAnterior() {
+        selecionadoAnterior.setSelected(Boolean.FALSE);
     }
 }

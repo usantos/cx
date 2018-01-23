@@ -421,7 +421,7 @@
             app:srcCompat="@drawable/paginacao1" />
 
         <RelativeLayout
-            android:id="@+id/carrinhoApostas"
+            android:id="@+id/simularApostaLayoutCarrinhoApostas"
             android:layout_width="88dp"
             android:layout_height="0dp"
             android:layout_alignParentBottom="true"
@@ -441,7 +441,8 @@
                 android:layout_width="34dp"
                 android:layout_height="40dp"
                 android:layout_centerHorizontal="true"
-                android:background="@drawable/icon_carrinho" />
+                android:background="@drawable/icon_carrinho"
+                android:clickable="false"/>
 
             <RelativeLayout
                 android:layout_width="76dp"
@@ -461,7 +462,8 @@
                     android:gravity="center"
                     android:text="0"
                     android:textColor="@color/branco"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    android:clickable="false"/>
             </RelativeLayout>
 
             <TextView
@@ -475,7 +477,8 @@
                 android:text="@string/carrinhoDeApostas"
                 android:textAlignment="center"
                 android:textColor="@color/azulescuro"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:clickable="false"/>
         </RelativeLayout>
     </android.support.constraint.ConstraintLayout>
 </android.support.constraint.ConstraintLayout>
