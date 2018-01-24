@@ -13,6 +13,7 @@ import com.yarolegovich.discretescrollview.DiscreteScrollView;
 import com.yarolegovich.discretescrollview.transform.ScaleTransformer;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import caixa.gov.br.loterias.bean.SessaoUsuario;
@@ -27,6 +28,7 @@ import caixa.gov.br.loterias.model.Modalidade;
 import caixa.gov.br.loterias.utils.AnimacoesAcessoRapido;
 import caixa.gov.br.loterias.utils.EstiloModalidade;
 import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
+import caixa.gov.br.loterias.utils.ExpandableListDataSideMenu;
 import caixa.gov.br.loterias.utils.MensagensNetwork;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.adapter.HomeAdapter;
@@ -45,12 +47,16 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.ExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.view.adapter.SideMenuExpandleAdapter;
 
 public class PrincipalActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, DiscreteScrollView.ScrollListener<HomeAdapter.ViewHolder>,
@@ -79,6 +85,8 @@ public class PrincipalActivity extends AppCompatActivity
     private List<ParametroSimulacao> modalidadesParaListar;
     private RepassometroDTO repassesSociais;
 
+    private DrawerLayout drawerSideMenu;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,11 +95,13 @@ public class PrincipalActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerSideMenu = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
+                this, drawerSideMenu, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerSideMenu.addDrawerListener(toggle);
         toggle.syncState();
+
+        layoutSideMenu();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -495,6 +505,95 @@ public class PrincipalActivity extends AppCompatActivity
             public void onClick(View v){
                 AnimacaoFecharMenuRapido(relativePrincipal);
                 startActivity(new Intent(PrincipalActivity.this, FavoritasActivity.class) );
+            }
+        });
+    }
+
+    private void AbrirMenusGroup(int groupPosition){
+        if (groupPosition == 0){
+
+        }else if (groupPosition == 1){
+            drawerSideMenu.closeDrawers();
+        }else if (groupPosition == 2){
+
+        }else if (groupPosition == 3){
+            startActivity(new Intent(PrincipalActivity.this, ListaRapidaoActivity.class) );
+        }else if(groupPosition == 4){
+
+        }else if(groupPosition == 5){
+            startActivity(new Intent(PrincipalActivity.this, RepassesSociaisActivity.class));
+        }else if(groupPosition == 6){
+            sairLogin();
+        }
+    }
+
+    private void AbrirMenusItens(int itemPosition){
+        if (itemPosition == 0){
+
+        }else if (itemPosition == 1){
+
+        }else if (itemPosition == 2){
+            startActivity(new Intent(PrincipalActivity.this, ListaComprasActivity.class));
+        }else if (itemPosition == 3){
+            startActivity(new Intent(PrincipalActivity.this, FavoritasActivity.class));
+        }else if(itemPosition == 4){
+
+        }
+    }
+
+    private void layoutSideMenu(){
+
+        final ExpandableListView expandableListView;
+        final ExpandableListAdapter expandableListAdapter;
+        final List<String> expandableListTitle;
+        final HashMap<String, List<String>> expandableListDetail;
+
+        expandableListView = (ExpandableListView) findViewById(R.id.sideMenuExpandableListView);
+        expandableListView.setGroupIndicator(null);
+        expandableListDetail = ExpandableListDataSideMenu.getData();
+        expandableListTitle = new ArrayList<String>(expandableListDetail.keySet());
+        expandableListAdapter = new SideMenuExpandleAdapter(this, expandableListTitle, expandableListDetail);
+        expandableListView.setAdapter(expandableListAdapter);
+        expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+
+            @Override
+            public void onGroupExpand(int groupPosition) {
+//                Toast.makeText(getApplicationContext(),
+//                        expandableListTitle.get(groupPosition) + " List Expanded.",
+//                        Toast.LENGTH_SHORT).show();
+                AbrirMenusGroup(groupPosition);
+            }
+        });
+
+        expandableListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
+
+            @Override
+            public void onGroupCollapse(int groupPosition) {
+//                Toast.makeText(getApplicationContext(),
+//                        expandableListTitle.get(groupPosition) + " List Collapsed.",
+//                        Toast.LENGTH_SHORT).show();
+                AbrirMenusGroup(groupPosition);
+            }
+        });
+
+
+
+        expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v,
+                                        int groupPosition, int childPosition, long id) {
+//                Toast.makeText(
+//                        getApplicationContext(),
+//                        expandableListTitle.get(groupPosition)
+//                                + " -> "
+//                                + expandableListDetail.get(
+//                                expandableListTitle.get(groupPosition)).get(
+//                                childPosition), Toast.LENGTH_SHORT
+//
+//                ).show();
+//
+                AbrirMenusItens(childPosition);
+                return false;
             }
         });
     }

@@ -11,15 +11,38 @@
         layout="@layout/app_bar_principal"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+    <!--<android.support.design.widget.NavigationView-->
+        <!--android:id="@+id/nav_view"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_gravity="start"-->
+        <!--android:fitsSystemWindows="true"-->
+        <!--app:itemIconTint="@color/verdeazul"-->
+        <!--app:itemTextColor="@color/cinza"-->
+        <!--app:headerLayout="@layout/nav_header_principal"-->
+        <!--app:menu="@menu/activity_principal_drawer"-->
+        <!--app:itemBackground="@drawable/drawer_item_bg"/>-->
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:fitsSystemWindows="true"
-        app:itemIconTint="@color/verdeazul"
-        app:itemTextColor="@color/cinza"
-        app:headerLayout="@layout/nav_header_principal"
-        app:menu="@menu/activity_principal_drawer"
-        app:itemBackground="@drawable/drawer_item_bg"/>
+        android:fitsSystemWindows="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <include layout="@layout/nav_header_principal" />
+
+            <ExpandableListView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/sideMenuExpandableListView"
+                android:divider="@color/linhaDivisa"
+                android:dividerHeight="0.0dp"
+                android:layout_marginTop="40dp"></ExpandableListView>
+        </LinearLayout>
+    </android.support.design.widget.NavigationView>
 </android.support.v4.widget.DrawerLayout>
