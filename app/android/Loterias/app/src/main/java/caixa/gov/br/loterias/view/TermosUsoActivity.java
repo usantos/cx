@@ -6,12 +6,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
-import android.widget.TextView;
 
 
 import com.android.volley.VolleyError;
@@ -20,9 +18,7 @@ import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.bo.DadosCorporativosBO;
 import caixa.gov.br.loterias.bo.silce.SilceClient;
 import caixa.gov.br.loterias.bo.silce.dto.TermoDeUsoDTOResponse;
-import caixa.gov.br.loterias.bo.silce.dto.UnidadeFederacaoDTO;
-import caixa.gov.br.loterias.bo.silce.dto.UnidadeFederacaoDTOResponse;
-import caixa.gov.br.loterias.utils.LoadingViewLoterias;
+import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
 import caixa.gov.br.loterias.utils.MensagensNetwork;
 import caixa.gov.br.loterias.utils.ViewUtils;
 

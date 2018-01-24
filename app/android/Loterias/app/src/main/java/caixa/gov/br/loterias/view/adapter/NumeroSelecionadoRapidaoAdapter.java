@@ -71,7 +71,7 @@ public class NumeroSelecionadoRapidaoAdapter extends BaseAdapter {
             linearLayoutNumerosRapidao.setBackground(ContextCompat.getDrawable(mContext, R.drawable.custom_border_radius_verde_azul));
         }
 
-        if (isObrigatorio == true){
+        if (isObrigatorio){
             if (numerosSelecionadosRapidao[position].getSelecionado()) {
                 linearLayoutNumerosRapidao.setBackground(ContextCompat.getDrawable(mContext, R.drawable.circle_numeros_obrigatorios));
                 tituloTipoAposta.setTextColor(ContextCompat.getColor(mContext, R.color.branco));
@@ -96,7 +96,7 @@ public class NumeroSelecionadoRapidaoAdapter extends BaseAdapter {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isObrigatorio == true){
+                if (isObrigatorio){
                     if (numerosSelecionadosRapidao[position].getSelecionado()) {
                         numerosSelecionadosRapidao[position].setSelecionado(false);
                         linearLayoutNumerosRapidao.setBackground(ContextCompat.getDrawable(mContext, R.drawable.custom_border_radius_verde_azul));

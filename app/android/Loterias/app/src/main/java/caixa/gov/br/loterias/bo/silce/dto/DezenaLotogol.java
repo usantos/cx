@@ -18,10 +18,6 @@ public class DezenaLotogol {
         return backGround;
     }
 
-    public void setBackGround(Integer backGround) {
-        this.backGround = backGround;
-    }
-
     public String getValor() {
         return valor;
     }

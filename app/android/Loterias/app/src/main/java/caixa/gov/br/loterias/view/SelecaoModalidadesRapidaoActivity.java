@@ -24,7 +24,7 @@ import caixa.gov.br.loterias.bo.silce.dto.ModalidadeDTO;
 import caixa.gov.br.loterias.bo.silce.dto.ModalidadeDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.ModalidadeEnumSelecaoModalidades;
 import caixa.gov.br.loterias.model.TipoAposta;
-import caixa.gov.br.loterias.utils.LoadingViewLoterias;
+import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
 import caixa.gov.br.loterias.utils.MensagensNetwork;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.adapter.TiposApostasMultiplaSelecaoAdapter;

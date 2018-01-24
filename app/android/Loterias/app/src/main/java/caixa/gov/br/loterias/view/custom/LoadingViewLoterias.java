@@ -1,4 +1,4 @@
-package caixa.gov.br.loterias.utils;
+package caixa.gov.br.loterias.view.custom;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
@@ -16,6 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.utils.ViewUtils;
 
 
 /**

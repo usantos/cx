@@ -1,10 +1,8 @@
-package caixa.gov.br.loterias.utils;
+package caixa.gov.br.loterias.view.custom;
 
 import android.content.Context;
 import android.os.Build;
-import android.renderscript.Float2;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 

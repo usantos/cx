@@ -7,12 +7,13 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import caixa.gov.br.loterias.bo.silce.dto.ParametroPartida;
-import caixa.gov.br.loterias.utils.PartidaViewLotogol;
-import caixa.gov.br.loterias.utils.PartidaViewLotogol_;
+import caixa.gov.br.loterias.view.custom.PartidaViewLotogol;
 import caixa.gov.br.loterias.utils.interfaces.LotogolListener;
+import caixa.gov.br.loterias.view.custom.PartidaViewLotogol_;
 
 /**
  * Created by joafilho on 26/12/2017.
+ * Class LotogolAdapter
  */
 
 public class LotogolAdapter extends RecyclerView.Adapter<LotogolAdapter.LotogolHolder> {
@@ -48,11 +49,11 @@ public class LotogolAdapter extends RecyclerView.Adapter<LotogolAdapter.LotogolH
         return listaPartidas.size();
     }
 
-    public class LotogolHolder extends RecyclerView.ViewHolder {
+    class LotogolHolder extends RecyclerView.ViewHolder {
 
         private PartidaViewLotogol partidaRow;
 
-        public LotogolHolder(View itemView) {
+        LotogolHolder(View itemView) {
             super(itemView);
             partidaRow = (PartidaViewLotogol) itemView;
         }

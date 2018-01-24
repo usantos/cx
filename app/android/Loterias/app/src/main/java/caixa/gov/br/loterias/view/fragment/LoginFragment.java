@@ -17,7 +17,7 @@ import caixa.gov.br.loterias.bo.keycloak.KeycloakBO;
 import caixa.gov.br.loterias.bo.silce.SilceClient;
 import caixa.gov.br.loterias.bo.silce.data.UsuarioLogadoSingleton;
 import caixa.gov.br.loterias.bo.silce.dto.UsuarioLogadoResponse;
-import caixa.gov.br.loterias.utils.LoadingViewLoterias;
+import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
 import caixa.gov.br.loterias.utils.MensagensNetwork;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.CadastrarActivity_;

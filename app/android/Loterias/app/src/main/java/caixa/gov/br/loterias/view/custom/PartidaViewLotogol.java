@@ -1,4 +1,4 @@
-package caixa.gov.br.loterias.utils;
+package caixa.gov.br.loterias.view.custom;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
@@ -12,7 +12,9 @@ import org.apache.commons.lang.StringUtils;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroPartida;
+import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.utils.interfaces.LotogolListener;
+import caixa.gov.br.loterias.view.custom.ItemEquipeViewLotogol;
 
 /**
  * Created by joafilho on 09/01/2018.

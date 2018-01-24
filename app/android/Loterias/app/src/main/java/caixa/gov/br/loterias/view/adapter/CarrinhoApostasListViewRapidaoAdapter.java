@@ -5,8 +5,6 @@
 package caixa.gov.br.loterias.view.adapter;
 
         import android.content.Context;
-        import android.graphics.Color;
-        import android.support.annotation.ColorInt;
         import android.support.v4.content.ContextCompat;
         import android.support.v7.widget.RecyclerView;
         import android.view.LayoutInflater;
@@ -25,7 +23,7 @@ package caixa.gov.br.loterias.view.adapter;
 
         import caixa.gov.br.loterias.bo.silce.dto.ModalidadeEnum;
         import caixa.gov.br.loterias.utils.EstiloModalidade;
-        import caixa.gov.br.loterias.utils.LoadingViewLoterias;
+        import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
         import caixa.gov.br.loterias.utils.MensagensNetwork;
         import caixa.gov.br.loterias.utils.ViewUtils;
         import caixa.gov.br.loterias.view.ListaRapidaoActivity;

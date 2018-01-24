@@ -7,11 +7,12 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import caixa.gov.br.loterias.bo.silce.dto.ParametroPartida;
-import caixa.gov.br.loterias.utils.PartidaView;
-import caixa.gov.br.loterias.utils.PartidaView_;
+import caixa.gov.br.loterias.view.custom.PartidaView;
+import caixa.gov.br.loterias.view.custom.PartidaView_;
 
 /**
  * Created by joafilho on 26/12/2017.
+ * Class LotecaAdapter
  */
 
 public class LotecaAdapter extends RecyclerView.Adapter<LotecaAdapter.LotecaHolder> {
@@ -47,11 +48,11 @@ public class LotecaAdapter extends RecyclerView.Adapter<LotecaAdapter.LotecaHold
         return listaPartidas.size();
     }
 
-    public class LotecaHolder extends RecyclerView.ViewHolder {
+    class LotecaHolder extends RecyclerView.ViewHolder {
 
         private PartidaView partidaRow;
 
-        public LotecaHolder(View itemView) {
+        LotecaHolder(View itemView) {
             super(itemView);
             partidaRow = (PartidaView) itemView;
         }

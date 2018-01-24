@@ -86,7 +86,7 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
 
         findViewById(R.id.botaoNovaAposta).setOnClickListener(this);
         findViewById(R.id.botaoVerCarrinhoAposta).setOnClickListener(this);
-        findViewById(R.id.carrinhoApostas).setOnClickListener(this);
+        findViewById(R.id.confirmarInclusaoApostaLayoutCarrinhoApostas).setOnClickListener(this);
 
     }
 
@@ -183,7 +183,7 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
                 startActivityForResult(activity, 0);
             }
             break;
-            case R.id.carrinhoApostas: {
+            case R.id.confirmarInclusaoApostaLayoutCarrinhoApostas: {
                 Intent activity = new Intent(this, CarrinhoActivity.class);
                 startActivityForResult(activity, 0);
             }

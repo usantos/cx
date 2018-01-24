@@ -3,7 +3,6 @@ package caixa.gov.br.loterias.view.fragment;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
-import android.opengl.Visibility;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -42,6 +41,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.bo.ApostaBO;
@@ -52,6 +52,7 @@ import caixa.gov.br.loterias.bo.silce.dto.AgrupadorDTOApostaDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.ApostaFavoritaDTO;
 import caixa.gov.br.loterias.bo.silce.dto.DTOEnumCharacter;
 import caixa.gov.br.loterias.bo.silce.dto.DTOEnumInteger;
+import caixa.gov.br.loterias.bo.silce.dto.Dezena;
 import caixa.gov.br.loterias.bo.silce.dto.EquipeDTO;
 import caixa.gov.br.loterias.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import caixa.gov.br.loterias.bo.silce.dto.ModalidadeEnum;
@@ -63,9 +64,10 @@ import caixa.gov.br.loterias.bo.silce.dto.PartidaLotecaDTO;
 import caixa.gov.br.loterias.bo.silce.dto.PartidaLotogolDTO;
 import caixa.gov.br.loterias.bo.silce.dto.TipoConcursoEnum;
 import caixa.gov.br.loterias.utils.Constantes;
-import caixa.gov.br.loterias.utils.LoadingViewLoterias;
+import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
 import caixa.gov.br.loterias.utils.MensagensNetwork;
 import caixa.gov.br.loterias.utils.ViewUtils;
+import caixa.gov.br.loterias.utils.interfaces.CartelaFragmentListener;
 import caixa.gov.br.loterias.utils.interfaces.LotogolListener;
 import caixa.gov.br.loterias.view.SimularApostaActivity;
 import caixa.gov.br.loterias.view.adapter.LotecaAdapter;
@@ -75,68 +77,38 @@ import caixa.gov.br.loterias.view.custom.ExpandableHeightGridView;
 import caixa.gov.br.loterias.view.custom.ExpandableHeightRecyclerView;
 
 public class CartelaFragment extends Fragment implements OnClickListener, LotecaAdapter.LocateAdapterListener, LotogolListener {
-    private ArrayList<String> dezenas = new ArrayList<String>();
 
+    private List<Dezena> dezenas = new ArrayList<>();
     private List<Integer> dezenasSelecionadas = new ArrayList<>();
-    private ArrayList<Integer> dezenasApostaEspelho = new ArrayList<>();
-
+    private List<Integer> dezenasApostaEspelho = new ArrayList<>();
     private List<ParametroEquipe> listaEquipefiltro;
-
     private HashSet<ParametroPartida> partidasSelecionadas;
 
-
-    private static final String ZERO = "0";
-
-    int typeGameColorLight;
-    int typeGameColorDark;
-
-    Button botaoFinalizar;
-    Button botaoLimparAposta;
-    TextView valorAposta;
-
-    SimularDezenasAdapter simularDezenasAdapter;
-
-    //mocks
-    int numeroConcursoAtual;
-    int qtdCartelasCarrinho = 0;
-    String dataSorteioAtual;
-
-    private SimularApostaActivity parentActivity;
-    private ParametroJogoDTO parametroJogo;
     private CartelaFragmentListener cartelaFragmentListener;
 
-    private ExpandableHeightGridView mGridTimeCoracao;
-    private ExpandableHeightGridView listaDezenas;
-    private ExpandableHeightRecyclerView recyclerViewPartida;
-
-    private LinearLayout selecioneTimeCoracaoLayout;
-    private RelativeLayout infoEscolhaPaginacaoLayout, opcaoOutrosNumerosLayout;
-
-    private EditText informeNomeTime;
-
-    private TextView infoEscolha, infoPaginacao, infoSelecioneOutrosNumeros;
-
+    private ParametroEquipe equipeSelecionada = null;
+    private ParametroJogoDTO parametroJogo;
     private ModalidadeEnum tipoJogo;
-    private View view;
     private TimeCoracaoAdapter timeCoracaoAdapter;
 
+    private SimularApostaActivity parentActivity;
     private AppCompatCheckBox selcioneOutrosNumeros;
+    private View view;
+    private TextView infoEscolha, infoPaginacao, infoSelecioneOutrosNumeros;
+    private EditText informeNomeTime;
+    private RelativeLayout opcaoOutrosNumerosLayout;
+    private LinearLayout selecioneTimeCoracaoLayout;
+    private ExpandableHeightGridView mGridTimeCoracao, listaDezenas;
+    private ExpandableHeightRecyclerView recyclerViewPartida;
+
+    private boolean isTipoLoteca, isTipoTimemania, isEcolhaTimeBtnAtivado, isTelaSelecaoTimeAtivado, isTipoLotogol, isTipoLotomania, isEscolhaTimeCoracaoSurpresinha;
 
     public BigDecimal valorTotalAposta;
-
-
-    private boolean isTipoLoteca = false;
-    private boolean isTipoTimemania = false;
-    private boolean isEcolhaTimeBtnAtivado = false;
-    private boolean isTelaSelecaoTimeAtivado = false;
-    private boolean isTipoLotogol = false;
-    private boolean isTipoLotomania = false;
-
-
-    private boolean isEscolhaTimeCoracaoSurpresinha = false;
-
-    private ParametroEquipe equipeSelecionada = null;
-
+    public int typeGameColorLight, typeGameColorDark, numeroConcursoAtual, qtdCartelasCarrinho = 0;
+    public Button botaoFinalizar, botaoLimparAposta;
+    public TextView valorAposta;
+    public SimularDezenasAdapter simularDezenasAdapter;
+    public String dataSorteioAtual;
 
     public CartelaFragment() {
         // Required empty public constructor
@@ -167,11 +139,13 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         parentActivity = ((SimularApostaActivity) getActivity());
-        parametroJogo = parentActivity.getParametroSimulacao();
+        if (parentActivity != null) {
+            parametroJogo = parentActivity.getParametroSimulacao();
+        }
 
-        if (parentActivity.getParametroSimulacao() != null && dezenas.size() == 0 && parentActivity.getParametroSimulacao().getPrognosticoMaximo() != null) {
-            for (int i = 1; i <= parentActivity.getParametroSimulacao().getPrognosticoMaximo(); i++) {
-                dezenas.add("" + i);
+        if (parametroJogo != null && dezenas.size() == 0 && parametroJogo.getPrognosticoMaximo() != null) {
+            for (int i = 1; i <= parametroJogo.getPrognosticoMaximo(); i++) {
+                dezenas.add(new Dezena("" + i, Boolean.FALSE));
             }
         }
     }
@@ -179,8 +153,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        int idList = 0;
-        View fragmentView = getView();
+        int idList;
         if (isTipoLoteca || isTipoLotogol) {
             idList = R.id.recyclerViewPartida;
         } else {
@@ -188,19 +161,19 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         }
 
         if (isTipoTimemania) {
-            infoEscolhaPaginacaoLayout = fragmentView.findViewById(R.id.infoEscolhaPaginacaoLayout);
+            RelativeLayout infoEscolhaPaginacaoLayout = view.findViewById(R.id.infoEscolhaPaginacaoLayout);
             infoEscolha = infoEscolhaPaginacaoLayout.findViewById(R.id.infoEscolha);
             infoPaginacao = infoEscolhaPaginacaoLayout.findViewById(R.id.infoPaginacao);
             infoEscolhaPaginacaoLayout.setVisibility(View.VISIBLE);
         }
 
-        if(isTipoLotomania){
+        if (isTipoLotomania) {
             opcaoOutrosNumerosLayout = view.findViewById(R.id.opcaoOutrosNumerosLayout);
             selcioneOutrosNumeros = opcaoOutrosNumerosLayout.findViewById(R.id.selcioneOutrosNumeros);
             infoSelecioneOutrosNumeros = opcaoOutrosNumerosLayout.findViewById(R.id.infoSelecioneOutrosNumeros);
         }
 
-        configuraBotoes(fragmentView);
+        configuraBotoes(view);
         // Chama a tela de escolha de time
         if (isEscolhaTimeCoracaoSurpresinha) {
             mostrarCartelaEscolhaTimeCoracao();
@@ -216,12 +189,12 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         }
 
         ViewUtils.organizaTabLayout(getActivity(), R.id.cartelaFragmentMainLayout, idList, R.id.cartelaFragmentScrollView);
-        ((ScrollView) fragmentView.findViewById(R.id.cartelaFragmentScrollView)).fullScroll(ScrollView.FOCUS_UP);
+        ((ScrollView) view.findViewById(R.id.cartelaFragmentScrollView)).fullScroll(ScrollView.FOCUS_UP);
 
         if (!isEscolhaTimeCoracaoSurpresinha) {
             configuraListaDezenas(view);
             verificaSeMostraBotaoLimparAposta();
-            verificaSeMostraSalvarApostaView(view);
+            verificaSeMostraSalvarApostaView();
         }
 
     }
@@ -271,7 +244,10 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
     }
 
     private void identificarTipoJogo() {
-        tipoJogo = (ModalidadeEnum) getActivity().getIntent().getSerializableExtra("tipoAposta");
+
+        if (parentActivity.getIntent() != null) {
+            tipoJogo = (ModalidadeEnum) parentActivity.getIntent().getSerializableExtra("tipoAposta");
+        }
 
         switch (tipoJogo) {
             case MEGA_SENA:
@@ -293,31 +269,6 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                 break;
             case LOTOGOL:
                 isTipoLotogol = true;
-                break;
-        }
-    }
-
-    private void preencherVisibilidadeGridPorTipo() {
-        if (tipoJogo == null) {
-            tipoJogo = (ModalidadeEnum) getActivity().getIntent().getSerializableExtra("tipoAposta");
-        }
-
-        switch (tipoJogo) {
-            case MEGA_SENA:
-                break;
-            case QUINA:
-                break;
-            case LOTOFACIL:
-                break;
-            case DUPLA_SENA:
-                break;
-            case TIMEMANIA:
-                preencherVisibilidaeGridView(View.VISIBLE, View.GONE, View.GONE, View.GONE);
-                break;
-            case LOTOMANIA:
-                break;
-            case LOTECA:
-                preencherVisibilidaeGridView(View.GONE, View.GONE, View.VISIBLE, View.GONE);
                 break;
         }
     }
@@ -360,7 +311,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
         IdentificaoDeUmaApostaDas8Modalidades aposta = new IdentificaoDeUmaApostaDas8Modalidades();
 
-        aposta.setId(new Long(0));
+        aposta.setId(Constantes.ZERO_LONG);
         aposta.setModalidade(parametroJogo.getConcurso().getModalidade());
 
         DTOEnumCharacter tipoConcurso = new DTOEnumCharacter();
@@ -390,15 +341,15 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         aposta.setSituacao(null);
         aposta.setTroca(false);
 
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
         Date date = new Date();
 
-        DateFormat hourFormat = new SimpleDateFormat("HH:mm:ss");
+        DateFormat hourFormat = new SimpleDateFormat("HH:mm:ss", Locale.US);
         Date hour = new Date();
 
         aposta.setDataEfetivacao(dateFormat.format(date));
         aposta.setHoraEfetivacao(hourFormat.format(hour));
-        aposta.setVinculoEspelho(new Long(0));
+        aposta.setVinculoEspelho(Constantes.ZERO_LONG);
         aposta.setQuantidadeNumeros(dezenasSelecionadas.size());
         aposta.setSurpresinha(false);
 
@@ -417,7 +368,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
                 qtdCartelasCarrinho++;
 
-                count.setText(String.format("%d", qtdCartelasCarrinho));
+                count.setText(String.format(Locale.getDefault(), "%d", qtdCartelasCarrinho));
 
                 cartelaFragmentListener.adicionarApostaCarrinho();
             }
@@ -440,7 +391,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
                 qtdCartelasCarrinho++;
 
-                count.setText(String.format("%d", qtdCartelasCarrinho));
+                count.setText(String.format(Locale.getDefault(), "%d", qtdCartelasCarrinho));
 
                 valorTotalAposta = valorTotalAposta.multiply(new BigDecimal(apostas.size()));
 
@@ -501,7 +452,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
                 ViewGroup.LayoutParams relativelayoutParams = salvarApostaLayout.getLayoutParams();
 
-                final float scale = getContext().getResources().getDisplayMetrics().density;
+                final float scale = parentActivity.getResources().getDisplayMetrics().density;
                 relativelayoutParams.height = (int) (140 * scale + 0.5f);
 
                 salvarApostaLayout.setLayoutParams(relativelayoutParams);
@@ -525,14 +476,14 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
     }
 
     private void limparOpcaoOutrosNumerosLayout() {
-        if(isTipoLotomania && opcaoOutrosNumerosLayout.getVisibility() == View.VISIBLE){
-            setVisibilityCheckedNumerosLayout(View.GONE, false);
+        if (isTipoLotomania && opcaoOutrosNumerosLayout.getVisibility() == View.VISIBLE) {
+            setVisibilityCheckedNumerosLayout(View.GONE);
         }
     }
 
-    private void setVisibilityCheckedNumerosLayout(int visibility, boolean isSelcioneOutrosNumeros) {
+    private void setVisibilityCheckedNumerosLayout(int visibility) {
         opcaoOutrosNumerosLayout.setVisibility(visibility);
-        selcioneOutrosNumeros.setChecked(isSelcioneOutrosNumeros);
+        selcioneOutrosNumeros.setChecked(Boolean.FALSE);
     }
 
 
@@ -549,12 +500,29 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
     }
 
     private void adcionarApostaPreencherNumerosAleatorios() {
+
         if (isTipoTimemania) {
             adicionarApostaPreencherNumerosTimemania();
         } else if (isTipoLotomania) {
             adicionarApostaPreencherNumerosLotomania();
-        } else if ((dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) || (isTipoLoteca) || (isTipoLotogol)) {
+        }else if(isTipoLoteca){
+            int duplo = Integer.parseInt(parentActivity.getLabelValueDuplasLoteca().getText().toString());
+            int triplo = Integer.parseInt(parentActivity.getLabelValueTriplasLoteca().getText().toString());
+
+            if (partidasSelecionadas.size() > 0 && (duplo > 0 || triplo > 0)) {
+                adicionarApostaNoCarrinho();
+            } else {
+                ViewUtils.alert(getActivity(), "Serviço indisponível.");
+            }
+        } else if (isTipoLotogol) {
+            if (partidasSelecionadas.size() == parametroJogo.getPartidas().size()) {
+                adicionarApostaNoCarrinho();
+            } else {
+                ViewUtils.alert(getActivity(), "Serviço indisponível.");
+            }
+        } else if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) {
             adicionarApostaNoCarrinho();
+
         } else {
             preencheNumerosAleatorios();
         }
@@ -567,7 +535,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                 // Gera uma nova aposta com os outros 50 números não selecionados
                 selecionarDezenasApostaEspelho();
 
-                List<IdentificaoDeUmaApostaDas8Modalidades> apostas = new ArrayList<IdentificaoDeUmaApostaDas8Modalidades>(2);
+                List<IdentificaoDeUmaApostaDas8Modalidades> apostas = new ArrayList<>(2);
                 IdentificaoDeUmaApostaDas8Modalidades aposta = getApostaPreenchida();
                 IdentificaoDeUmaApostaDas8Modalidades apostaEspelho = getApostaPreenchida();
 
@@ -629,7 +597,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
         aposta.setNome(nomeAposta);
         aposta.setNumerosSelecionados(dezenasSelecionadas);
-        aposta.setId(new Long(0));
+        aposta.setId(Constantes.ZERO_LONG);
 
         if (isTipoTimemania && equipeSelecionada != null) {
             aposta.setTimeDoCoracao(equipeSelecionada);
@@ -649,13 +617,13 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                         salvarApostaLayout.setBackgroundResource(R.color.verdeazul);
                         ViewGroup.LayoutParams relativelayoutParams = salvarApostaLayout.getLayoutParams();
 
-                        final float scale = getContext().getResources().getDisplayMetrics().density;
+                        final float scale = parentActivity.getResources().getDisplayMetrics().density;
                         relativelayoutParams.height = (int) (64 * scale + 0.5f);
 
                         salvarApostaLayout.setLayoutParams(relativelayoutParams);
 
                         TextView tituloSalvarAposta = parentActivity.getTextoSalveEstaAposta();
-                        tituloSalvarAposta.setText("Aposta salva :)");
+                        tituloSalvarAposta.setText(R.string.aposta_salva_carinha);
                         tituloSalvarAposta.setGravity(Gravity.CENTER);
 
                         ImageView starSalvarApostaImageView = parentActivity.getIconStarSalvar();
@@ -693,7 +661,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                         simularDezenasAdapter.notifyDataSetChanged();
                         atualizaStatusBotaoFinalizar();
                         verificaSeMostraBotaoLimparAposta();
-                        verificaSeMostraSalvarApostaView(getView());
+                        verificaSeMostraSalvarApostaView();
                     }
 
 
@@ -707,26 +675,11 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
     }
 
     private void selecionarDezenasApostaEspelho() {
-        ApostaBO apostaBO = new ApostaBO(getActivity());
-        apostaBO.completaJogo(100, dezenasSelecionadas, 1,
-                100, new SilceClient.Listener<CompletaJogoRsp>() {
-                    @Override
-                    public void onResponse(CompletaJogoRsp response) {
-                        for (Integer dezena : response.getPayload()) {
-                            if (!dezenasSelecionadas.contains(dezena)) {
-                                dezenasApostaEspelho.add(dezena);
-                            }
-                        }
-
-                    }
-
-                }, new SilceClient.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                        ViewUtils.alert(getActivity(), MensagensNetwork.setMensagem(error, getActivity()));
-                    }
-                });
+        for (Dezena dezena : dezenas) {
+            if (!dezena.isSelected()) {
+                dezenasApostaEspelho.add(Integer.parseInt(dezena.getValue()));
+            }
+        }
     }
 
     private void mostrarCartelaEscolhaTimeCoracao() {
@@ -745,7 +698,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         configurarSelecaoTimeCoracao(mGridTimeCoracao);
         atualizaStatusBotaoFinalizar();
         verificaSeMostraBotaoLimparAposta();
-        verificaSeMostraSalvarApostaView(view);
+        verificaSeMostraSalvarApostaView();
 
     }
 
@@ -797,7 +750,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
         botaoFinalizar = parentActivity.getBotaoAdicionarCompletarCartela();
         botaoFinalizar.setOnClickListener(this);
-        botaoFinalizar.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.cinza));
+        botaoFinalizar.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.cinza));
 
         parentActivity.getSimularApostaLayoutCarrinhoApostas().setOnClickListener(this);
 
@@ -806,10 +759,10 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
 
         if (isTipoLoteca || isTipoLotogol) {
-            String textoBotao = "";
+            String textoBotao;
             if (isTipoLoteca) {
                 textoBotao = getString(R.string.label_selecionar_times_aleatoriamente);
-            } else if (isTipoLotogol) {
+            } else {
                 textoBotao = getString(R.string.label_complete_placar_aleatoriamente);
             }
             botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(getActivity(), textoBotao));
@@ -827,11 +780,11 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         salvarApostaLayout.setBackgroundResource(R.color.cinzaescuro);
         TextView tituloSalvarAposta = parentActivity.getTextoSalveEstaAposta();
 
-        tituloSalvarAposta.setText("Salve esta aposta :)");
+        tituloSalvarAposta.setText(R.string.salve_esta_aposta_carinha);
 
         ViewGroup.LayoutParams relativelayoutParams = salvarApostaLayout.getLayoutParams();
 
-        final float scale = getContext().getResources().getDisplayMetrics().density;
+        final float scale = parentActivity.getResources().getDisplayMetrics().density;
         relativelayoutParams.height = (int) (64 * scale + 0.5f);
 
         salvarApostaLayout.setLayoutParams(relativelayoutParams);
@@ -854,6 +807,16 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
             } else {
                 botaoLimparAposta.setVisibility(View.VISIBLE);
             }
+        } else if (isTipoLotogol) {
+
+            int visibility = View.GONE;
+            for (ParametroPartida parametroPartida : parametroJogo.getPartidas()) {
+                if (StringUtils.isNotEmpty(parametroPartida.getEquipe1().getPlacar()) || StringUtils.isNotEmpty(parametroPartida.getEquipe2().getPlacar())) {
+                    visibility = View.VISIBLE;
+                    break;
+                }
+            }
+            botaoLimparAposta.setVisibility(visibility);
         } else if (isTipoTimemania) {
             if (isTelaSelecaoTimeAtivado && (equipeSelecionada == null || !equipeSelecionada.isSelecionado())) {
                 botaoLimparAposta.setVisibility(View.GONE);
@@ -869,7 +832,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         }
     }
 
-    private void verificaSeMostraSalvarApostaView(View fragmentView) {
+    private void verificaSeMostraSalvarApostaView() {
 
         if (isTipoLoteca || isTipoLotogol) {
             ocutarSalvarAposta();
@@ -896,7 +859,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         RelativeLayout salvarApostaLayout = parentActivity.getSalvarApostaLayout();
 
         salvarApostaLayout.setVisibility(View.VISIBLE);
-        final float scale = getContext().getResources().getDisplayMetrics().density;
+        final float scale = parentActivity.getResources().getDisplayMetrics().density;
         salvarApostaLayout.getLayoutParams().height = (int) (64 * scale + 0.5f);
         salvarApostaLayout.setOnClickListener(this);
     }
@@ -910,20 +873,20 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
             if (duplo > 0 || triplo > 0) {
                 atualizarBotaoFinalizarAdicionarCarrinho();
             } else {
-                botaoFinalizar.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.cinza));
-                botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(getActivity(), getString(R.string.label_selecionar_times_aleatoriamente)));
+                botaoFinalizar.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.cinza));
+                botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(parentActivity, getString(R.string.label_selecionar_times_aleatoriamente)));
             }
         } else if (isTipoLotogol) {
-            if (partidasSelecionadas.size() < 5) {
-                botaoFinalizar.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.cinza));
-                botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(getActivity(), getString(R.string.label_complete_placar_aleatoriamente)));
+            if (partidasSelecionadas.size() < parametroJogo.getPartidas().size()) {
+                botaoFinalizar.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.cinza));
+                botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(parentActivity, getString(R.string.label_complete_placar_aleatoriamente)));
             } else {
                 atualizarBotaoFinalizarAdicionarCarrinho();
             }
         } else if (isTipoTimemania) {
-            if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado && isEcolhaTimeBtnAtivado == true) {
-                botaoFinalizar.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.timemaniaescuro));
-                botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(getActivity(), getString(R.string.label_escolha_time_coracao)));
+            if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado && isEcolhaTimeBtnAtivado) {
+                botaoFinalizar.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.timemaniaescuro));
+                botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(parentActivity, getString(R.string.label_escolha_time_coracao)));
             } else {
                 atualizarAdicionarCarinhoCompletarCartela();
             }
@@ -938,10 +901,10 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
             if (isTipoTimemania) {
                 if (equipeSelecionada != null && equipeSelecionada.isSelecionado()) {
                     botaoFinalizar.setClickable(true);
-                    botaoFinalizar.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.timemaniaescuro));
+                    botaoFinalizar.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.timemaniaescuro));
                 } else {
                     botaoFinalizar.setClickable(false);
-                    botaoFinalizar.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.azulclaro));
+                    botaoFinalizar.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.azulclaro));
                     parentActivity.getSalvarApostaLayout().setVisibility(View.GONE);
                 }
             }
@@ -958,14 +921,14 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
     }
 
     private void atualizarBotaoFinalizarCompletarCartela() {
-        botaoFinalizar.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.cinza));
-        botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(getActivity(), getString(R.string.completarCartela)));
+        botaoFinalizar.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.cinza));
+        botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(parentActivity, getString(R.string.completarCartela)));
         parentActivity.getSalvarApostaLayout().setVisibility(View.GONE);
     }
 
     private void atualizarBotaoFinalizarAdicionarCarrinho() {
-        botaoFinalizar.setBackgroundColor(ContextCompat.getColor(getActivity(), typeGameColorLight));
-        botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(getActivity(), getString(R.string.adicionarAoCarrinho)));
+        botaoFinalizar.setBackgroundColor(ContextCompat.getColor(parentActivity, typeGameColorLight));
+        botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(parentActivity, getString(R.string.adicionarAoCarrinho)));
         if (!isTipoLoteca && !isTipoLotogol) {
             parentActivity.getSalvarApostaLayout().setVisibility(View.VISIBLE);
         }
@@ -984,12 +947,13 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
             listaDezenas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                    Integer valorSelecionado = Integer.valueOf(dezenas.get(position));
+                    Dezena dezena = dezenas.get(position);
+                    Integer valorSelecionado = Integer.valueOf(dezena.getValue());
 
                     if (dezenasSelecionadas.contains(valorSelecionado)) {
                         dezenasSelecionadas.remove(valorSelecionado);
                     } else {
-                        int maxNumerosParaSelecionar = 6;//parametroJogo.getQuantidadeMaxima();
+                        int maxNumerosParaSelecionar = parametroJogo.getQuantidadeMaxima();
                         if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) {
                             // VERIFICA SE TEM OPÇÃO DE SELECIONAR MAIS DEZENAS
                             int qtdDezenasPossiveisSelecionadoAtual = parentActivity.qtdDezenasPossiveisSelecionado;
@@ -1016,17 +980,17 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                         isEcolhaTimeBtnAtivado = true;
                     }
 
-                    if(isTipoLotomania){
+                    if (isTipoLotomania) {
                         if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado
                                 && opcaoOutrosNumerosLayout.getVisibility() == View.GONE) {
-                            setVisibilityCheckedNumerosLayout(View.VISIBLE, false);
-                        }else{
-                            setVisibilityCheckedNumerosLayout(View.GONE, false);
+                            setVisibilityCheckedNumerosLayout(View.VISIBLE);
+                        } else {
+                            setVisibilityCheckedNumerosLayout(View.GONE);
                         }
                     }
 
 
-                    verificaSeMostraSalvarApostaView(getView());
+                    verificaSeMostraSalvarApostaView();
                     verificaSeMostraBotaoLimparAposta();
                     atualizaStatusBotaoFinalizar();
                     simularDezenasAdapter.notifyDataSetChanged();
@@ -1066,8 +1030,6 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
     /**
      * Metodo configura a cartela de times do coracao
-     *
-     * @param gridTimes
      */
     private void configurarSelecaoTimeCoracao(final ExpandableHeightGridView gridTimes) {
         listaEquipefiltro = new ArrayList<>(parametroJogo.getEquipes());
@@ -1084,7 +1046,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                 equipeSelecionada.setSelecionado(true);
                 timeCoracaoAdapter.notifyDataSetChanged();
                 verificaSeMostraBotaoLimparAposta();
-                verificaSeMostraSalvarApostaView(view);
+                verificaSeMostraSalvarApostaView();
                 atualizarAdicionarCarinhoCompletarCartela();
             }
         });
@@ -1127,14 +1089,14 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
             partida.setSelecionado(desativado);
             partida.setQtdItensSelecionadosAnterior(0);
             partida.setQtdItensSelecionados(0);
-            parentActivity.setLabelValueSimplesLoteca(ZERO);
-            parentActivity.setLabelValueDuplasLoteca(ZERO);
-            parentActivity.setLabelValueTriplasLoteca(ZERO);
+            parentActivity.setLabelValueSimplesLoteca(Constantes.ZERO_STRING);
+            parentActivity.setLabelValueDuplasLoteca(Constantes.ZERO_STRING);
+            parentActivity.setLabelValueTriplasLoteca(Constantes.ZERO_STRING);
         }
         partidasSelecionadas.clear();
         recyclerViewPartida.setExpanded(true);
         recyclerViewPartida.getAdapter().notifyDataSetChanged();
-        verificaSeMostraSalvarApostaView(getView());
+        verificaSeMostraSalvarApostaView();
         atualizaValorApostaLoteca();
     }
 
@@ -1148,7 +1110,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         partidasSelecionadas.clear();
         recyclerViewPartida.setExpanded(true);
         recyclerViewPartida.setAdapter(new LotogolAdapter(parametroJogo.getPartidas(), this));
-        verificaSeMostraSalvarApostaView(getView());
+        verificaSeMostraSalvarApostaView();
     }
 
     @Override
@@ -1163,14 +1125,13 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         } else {
             partidasSelecionadas.remove(parametroPartida);
         }
-
-        if (StringUtils.isNotEmpty(parametroPartida.getEquipe1().getPlacar()) || StringUtils.isNotEmpty(parametroPartida.getEquipe2().getPlacar())) {
-            botaoLimparAposta.setVisibility(View.VISIBLE);
-        } else {
-            botaoLimparAposta.setVisibility(View.GONE);
-        }
+        verificaSeMostraBotaoLimparAposta();
         atualizaStatusBotaoFinalizar();
-        verificaSeMostraSalvarApostaView(getView());
+        verificaSeMostraSalvarApostaView();
+    }
+
+    public void setEscolhaTimeCoracaoSurpresinha(boolean escolhaTimeCoracaoSurpresinha) {
+        isEscolhaTimeCoracaoSurpresinha = escolhaTimeCoracaoSurpresinha;
     }
 
     private void orderAscDezenas() {
@@ -1199,7 +1160,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                 EquipeDTO equipeDTO1 = new EquipeDTO();
                 EquipeDTO equipeDTO2 = new EquipeDTO();
 
-                this.setValorEquipe1Equipe2(partida, equipeDTO1, equipeDTO2);
+                this.setValorEquipe1DTOEquipe2DTO(partida, equipeDTO1, equipeDTO2);
 
                 lotecaDTO.setEquipe1(equipeDTO1);
                 lotecaDTO.setEquipe2(equipeDTO2);
@@ -1210,7 +1171,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         }
     }
 
-    private void setApostaLotogol(IdentificaoDeUmaApostaDas8Modalidades aposta){
+    private void setApostaLotogol(IdentificaoDeUmaApostaDas8Modalidades aposta) {
         if (isTipoLotogol) {
             aposta.setPartidasLotogol(new ArrayList<PartidaLotogolDTO>());
             for (ParametroPartida partida : partidasSelecionadas) {
@@ -1218,7 +1179,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                 EquipeDTO equipeDTO1 = new EquipeDTO();
                 EquipeDTO equipeDTO2 = new EquipeDTO();
 
-                this.setValorEquipe1Equipe2(partida, equipeDTO1, equipeDTO2);
+                this.setValorEquipe1DTOEquipe2DTO(partida, equipeDTO1, equipeDTO2);
 
                 lotogolDTO.setEquipe1(equipeDTO1);
                 lotogolDTO.setEquipe2(equipeDTO2);
@@ -1228,7 +1189,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         }
     }
 
-    private void setValorEquipe1Equipe2(ParametroPartida partida, EquipeDTO equipeDTO1, EquipeDTO equipeDTO2) {
+    private void setValorEquipe1DTOEquipe2DTO(ParametroPartida partida, EquipeDTO equipeDTO1, EquipeDTO equipeDTO2) {
         equipeDTO1.setPlacar(partida.getEquipe1().getPlacar());
         equipeDTO1.setVitoria(partida.getEquipe1().isSelecionado());
         equipeDTO1.setParametroEquipe(partida.getEquipe1());
@@ -1283,9 +1244,9 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
     // Adapter do gridview das dezenas
     private class SimularDezenasAdapter extends BaseAdapter {
         private Context context;
-        private ArrayList<String> rows;
+        private List<Dezena> rows;
 
-        SimularDezenasAdapter(Context context, ArrayList<String> activitData) {
+        SimularDezenasAdapter(Context context, List<Dezena> activitData) {
             this.context = context;
             this.rows = activitData;
         }
@@ -1309,7 +1270,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         public View getView(int i, View view, ViewGroup viewGroup) {
             TextView textView;
             GradientDrawable shape = new GradientDrawable();
-            int sizeItens = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 45, getActivity().getResources().getDisplayMetrics());
+            int sizeItens = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 45, parentActivity.getResources().getDisplayMetrics());
 
             if (view == null) {
                 textView = new TextView(this.context);
@@ -1319,22 +1280,24 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                 textView = (TextView) view;
             }
 
-            if (dezenasSelecionadas.contains(Integer.valueOf(rows.get(i)))) {
+            if (dezenasSelecionadas.contains(Integer.valueOf(rows.get(i).getValue()))) {
                 shape.setColor(ContextCompat.getColor(context, typeGameColorLight));
                 textView.setTextColor(Color.WHITE);
+                rows.get(i).setSelected(Boolean.TRUE);
             } else {
                 shape.setColor(Color.WHITE);
                 textView.setTextColor(ContextCompat.getColor(context, typeGameColorLight));
+                rows.get(i).setSelected(Boolean.FALSE);
             }
 
             shape.setCornerRadius(sizeItens / 2);
             shape.setStroke(1, Color.GRAY);
             textView.setBackground(shape);
-            if (dezenas.get(i).length() == 1) {
-                textView.setText("0" + dezenas.get(i));
+            if (dezenas.get(i).getValue().length() == 1) {
+                textView.setText(String.format("0%s", dezenas.get(i).getValue()));
             } else {
 
-                textView.setText(dezenas.get(i));
+                textView.setText(dezenas.get(i).getValue());
             }
             textView.setTypeface(ViewUtils.getFontFuturaBold(context));
             textView.setGravity(Gravity.CENTER);
@@ -1342,21 +1305,5 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
             return textView;
         }
-    }
-
-
-    public void setEscolhaTimeCoracaoSurpresinha(boolean escolhaTimeCoracaoSurpresinha) {
-        isEscolhaTimeCoracaoSurpresinha = escolhaTimeCoracaoSurpresinha;
-    }
-
-    // INTERFACE DO FRAGMENT PARA A ACTIVITY
-    public interface CartelaFragmentListener {
-        int verificaNovoQtdDezenasMax(int qtdDezenasAtual);
-
-        void adicionarApostaCarrinho();
-
-        void abreCarrinhoApostas();
-
-        void adicionarTimeSurpresa(ParametroEquipe equipeSelecionada);
     }
 }

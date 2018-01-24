@@ -48,8 +48,8 @@ import caixa.gov.br.loterias.bo.silce.dto.ParametroJogoDTO;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroValorApostaDTO;
 import caixa.gov.br.loterias.utils.TipoDialog;
 import caixa.gov.br.loterias.utils.ViewUtils;
+import caixa.gov.br.loterias.utils.interfaces.CartelaFragmentListener;
 import caixa.gov.br.loterias.view.fragment.CartelaFragment;
-import caixa.gov.br.loterias.view.fragment.CartelaFragment.CartelaFragmentListener;
 import caixa.gov.br.loterias.view.fragment.SurpresinhaFragment;
 import caixa.gov.br.loterias.view.fragment.SurpresinhaFragment.SurpresinhaFragmentListener;
 
@@ -487,16 +487,6 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         return super.onOptionsItemSelected(item);
     }
 
-//    private void configuraMenuItem(int id, String texto){
-//        View menuItem = findViewById(id);
-//
-//        if (menuItem != null && menuItem instanceof TextView) {
-//            ((TextView) menuItem).setText(texto);
-//            ((TextView) menuItem).setTextSize(10);
-//            menuItem.setPadding(5, 5, 5, 5);
-//        }
-//    }
-
     private void configuraMenuItem(int id) {
         View menuItem = findViewById(id);
 
@@ -596,52 +586,12 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         return labelValueTriplasLoteca;
     }
 
-    public DrawerLayout getDrawer_layout() {
-        return drawer_layout;
-    }
-
-    public ConstraintLayout getToolBarLoteca() {
-        return toolBarLoteca;
-    }
-
-    public ConstraintLayout getViewTabBar() {
-        return viewTabBar;
-    }
-
-    public Button getSimularTelaAposta() {
-        return simularTelaAposta;
-    }
-
-    public Button getSurpresinhaTela() {
-        return surpresinhaTela;
-    }
-
-    public Button getQtdNumerosButton() {
-        return qtdNumerosButton;
-    }
-
-    public Button getQtdConcursosButton() {
-        return qtdConcursosButton;
-    }
-
     public Button getBotaoLimparAposta() {
         return botaoLimparAposta;
     }
 
     public Button getBotaoAdicionarCompletarCartela() {
         return botaoAdicionarCompletarCartela;
-    }
-
-    public Button getBotaoCarrinho() {
-        return botaoCarrinho;
-    }
-
-    public FrameLayout getFragmentSimularApostas() {
-        return fragmentSimularApostas;
-    }
-
-    public TextView getTextoDeNomeInfo() {
-        return textoDeNomeInfo;
     }
 
     public TextView getTextoSalveEstaAposta() {
@@ -652,41 +602,19 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         return valorApostaCartela;
     }
 
-    public TextView getTextInfoValorAposta() {
-        return textInfoValorAposta;
-    }
 
     public TextView getTextViewCarrinhoCartelaCount() {
         return textViewCarrinhoCartelaCount;
-    }
-
-    public TextView getTextInfoCarrinho() {
-        return textInfoCarrinho;
-    }
-
-    public LinearLayout getToolBarSimularAposta() {
-        return toolBarSimularAposta;
     }
 
     public RelativeLayout getSalvarApostaLayout() {
         return salvarApostaLayout;
     }
 
-    public RelativeLayout getCarrinhoApostas() {
-        return carrinhoApostas;
-    }
-
-    public ImageButton getBtnSalvarAposta() {
-        return btnSalvarAposta;
-    }
-
     public EditText getEditNomeAposta() {
         return editNomeAposta;
     }
 
-    public ImageView getImageViewPaginacao() {
-        return imageViewPaginacao;
-    }
 
     public ImageView getIconStarSalvar() {
         return iconStarSalvar;

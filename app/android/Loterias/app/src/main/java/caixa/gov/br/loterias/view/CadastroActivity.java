@@ -30,7 +30,7 @@ import caixa.gov.br.loterias.bo.silce.dto.MunicipioDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.MunicipioIdDTO;
 import caixa.gov.br.loterias.bo.silce.dto.UnidadeFederacaoDTO;
 import caixa.gov.br.loterias.bo.silce.dto.UnidadeFederacaoDTOResponse;
-import caixa.gov.br.loterias.utils.LoadingViewLoterias;
+import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
 import caixa.gov.br.loterias.utils.MensagensNetwork;
 import caixa.gov.br.loterias.utils.ViewUtils;
 

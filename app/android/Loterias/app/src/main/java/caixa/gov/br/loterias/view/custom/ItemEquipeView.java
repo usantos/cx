@@ -1,4 +1,4 @@
-package caixa.gov.br.loterias.utils;
+package caixa.gov.br.loterias.view.custom;
 
 import android.content.Context;
 import android.support.annotation.Nullable;

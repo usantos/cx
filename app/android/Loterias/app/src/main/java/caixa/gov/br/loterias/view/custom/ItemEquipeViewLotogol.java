@@ -1,4 +1,4 @@
-package caixa.gov.br.loterias.utils;
+package caixa.gov.br.loterias.view.custom;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
@@ -20,6 +20,7 @@ import java.util.List;
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.bo.silce.dto.DezenaLotogol;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroEquipe;
+import caixa.gov.br.loterias.utils.Constantes;
 import caixa.gov.br.loterias.utils.interfaces.LotogolListener;
 import caixa.gov.br.loterias.view.adapter.NumerosLotogolAdapter;
 import caixa.gov.br.loterias.view.custom.ExpandableHeightGridView;

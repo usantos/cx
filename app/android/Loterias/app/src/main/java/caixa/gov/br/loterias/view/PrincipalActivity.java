@@ -7,44 +7,32 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 
 import com.android.volley.NetworkResponse;
-import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
 import com.yarolegovich.discretescrollview.transform.ScaleTransformer;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import caixa.gov.br.loterias.bean.SessaoUsuario;
 import caixa.gov.br.loterias.bo.DadosCorporativosBO;
 import caixa.gov.br.loterias.bo.DadosUsuarioBO;
 import caixa.gov.br.loterias.bo.silce.SilceClient;
-import caixa.gov.br.loterias.bo.silce.dto.ModalidadeEnum;
-import caixa.gov.br.loterias.bo.silce.dto.ParametroJogoDTO;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroSimulacao;
-import caixa.gov.br.loterias.bo.silce.dto.ParametrosSimulacao;
 import caixa.gov.br.loterias.bo.silce.dto.ParametrosSimulacaoResponse;
 import caixa.gov.br.loterias.bo.silce.dto.RepassometroDTO;
 import caixa.gov.br.loterias.bo.silce.dto.RepassometroDTOResponse;
-import caixa.gov.br.loterias.bo.silce.dto.ResourceResponse;
-import caixa.gov.br.loterias.mock.ModalidadesMock;
 import caixa.gov.br.loterias.model.Modalidade;
 import caixa.gov.br.loterias.utils.AnimacoesAcessoRapido;
 import caixa.gov.br.loterias.utils.EstiloModalidade;
-import caixa.gov.br.loterias.utils.LoadingViewLoterias;
+import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
 import caixa.gov.br.loterias.utils.MensagensNetwork;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.adapter.HomeAdapter;
 
 
 import android.os.Bundle;
-import android.text.Html;
-import android.text.SpannableString;
-import android.text.Spanned;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;

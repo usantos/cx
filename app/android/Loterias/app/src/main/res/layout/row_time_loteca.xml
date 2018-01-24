@@ -9,13 +9,13 @@
     android:orientation="horizontal"
     android:background="@color/branco">
 
-    <caixa.gov.br.loterias.utils.ItemEquipeView_
+    <caixa.gov.br.loterias.view.custom.ItemEquipeView_
         android:id="@+id/loteca_time_um"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:outlineProvider="none"/>
 
-    <caixa.gov.br.loterias.utils.ItemEquipeView_
+    <caixa.gov.br.loterias.view.custom.ItemEquipeView_
         android:id="@+id/loteca_empate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -23,7 +23,7 @@
         android:layout_marginLeft="109dp"
         android:outlineProvider="none"/>
 
-    <caixa.gov.br.loterias.utils.ItemEquipeView_
+    <caixa.gov.br.loterias.view.custom.ItemEquipeView_
         android:id="@+id/loteca_time_dois"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

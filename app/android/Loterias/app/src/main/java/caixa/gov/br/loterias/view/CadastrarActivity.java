@@ -35,7 +35,7 @@ import caixa.gov.br.loterias.bo.silce.dto.MunicipioIdDTO;
 import caixa.gov.br.loterias.bo.silce.dto.SexoAbrvEnum;
 import caixa.gov.br.loterias.utils.AppUtils;
 import caixa.gov.br.loterias.utils.DateUtils;
-import caixa.gov.br.loterias.utils.LoadingViewLoterias;
+import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
 import caixa.gov.br.loterias.utils.MensagensNetwork;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.utils.segmentedbutton.SegmentedButtonGroup;

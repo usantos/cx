@@ -2,12 +2,9 @@ package caixa.gov.br.loterias.view;
 
 import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
-import android.support.v4.content.res.ResourcesCompat;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.TypedValue;
-import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 
@@ -21,7 +18,7 @@ import caixa.gov.br.loterias.bo.DadosUsuarioBO;
 import caixa.gov.br.loterias.bo.silce.SilceClient;
 import caixa.gov.br.loterias.bo.silce.dto.ListCartaoDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.RetornoCartao;
-import caixa.gov.br.loterias.utils.LoadingViewLoterias;
+import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
 import caixa.gov.br.loterias.utils.MensagensNetwork;
 import caixa.gov.br.loterias.view.Inteface.FormaDePagamentoListener;
 import caixa.gov.br.loterias.view.adapter.FormaPagamentoRecyclerViewAdapter;

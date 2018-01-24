@@ -34,7 +34,6 @@ import org.androidannotations.annotations.ViewById;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import caixa.gov.br.loterias.R;
@@ -46,13 +45,11 @@ import caixa.gov.br.loterias.bo.silce.dto.BairroDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.DTOEnumInteger;
 import caixa.gov.br.loterias.bo.silce.dto.ListDTOEnumIntegerResponse;
 import caixa.gov.br.loterias.bo.silce.dto.LoteriasHabilitadaEnum;
-import caixa.gov.br.loterias.bo.silce.dto.Loterica;
 import caixa.gov.br.loterias.bo.silce.dto.LotericaCodigoWrapperResponse;
 import caixa.gov.br.loterias.bo.silce.dto.LotericaDTO;
 import caixa.gov.br.loterias.bo.silce.dto.LotericaDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.UsuarioLogadoResponse;
-import caixa.gov.br.loterias.utils.AppUtils;
-import caixa.gov.br.loterias.utils.LoadingViewLoterias;
+import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
 import caixa.gov.br.loterias.utils.MensagensNetwork;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.utils.segmentedbutton.SegmentedButton;
