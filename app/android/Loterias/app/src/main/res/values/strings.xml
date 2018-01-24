@@ -43,7 +43,7 @@
     <string name="infoValorMinimoCarrinho">Lembre-se: o valor mínimo do total de compras nesse aplicativo é </string>
     <string name="tituloApostaFeita">Essa aposta foi para o seu carrinho.</string>
     <string name="novaAposta">Fazer nova aposta</string>
-    <string name="confirmarApostas">Confirme suas apostas e pressione AVANÇAR para continuar.</string>
+    <string name="confirmarApostas">Confirme suas apostas e pressione\nAVANÇAR para continuar.</string>
     <string name="avancarFormaPagamento">_Avançar_\npara a forma de pagamento</string>
     <string name="fazerNovaAposta">Fazer nova aposta</string>
 
@@ -79,7 +79,7 @@
     <string name="CEP">CEP</string>
     <string name="codigo_loterica">Código Lotérica</string>
     <string name="enviando_email">Enviando e-mail usando:"</string>
-    <string name="label_lembrar_valor_minimo">Lembre-se que o valor mínimo do total de compras nesse aplicativo</string>
+    <string name="label_lembrar_valor_minimo">Lembre-se que o valor mínimo do total_de compras nesse aplicativo</string>
 
     <!-- Messages-->
 
@@ -146,6 +146,7 @@
     <string name="title_activity_lista_compras">Compras</string>
 
     <string name="label_nao_possivel_selecionar_quantidade_numeros_superior_limite_modalidade_loterica">Não é possível selecionar quantidade de números superior ao limite para modalidade Lotérica.</string>
-    <string name="aposta_salva_carinha">Aposta salva :)</string>
-    <string name="salve_esta_aposta_carinha">Salve esta aposta :)</string>
+    <string name="label_aposta_salva_carinha">Aposta salva :)</string>
+    <string name="label_salve_esta_aposta_carinha">Salve esta aposta :)</string>
+    <string name="label_aposta_espelho">Aposta espelho</string>
 </resources>

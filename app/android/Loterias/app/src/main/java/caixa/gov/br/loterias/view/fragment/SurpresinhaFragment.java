@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.AppCompatCheckBox;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -48,24 +50,19 @@ import static java.lang.String.format;
 
 public class SurpresinhaFragment extends Fragment implements OnClickListener {
 
-    int typeGameColorLight;
-    int typeGameColorDark;
+    int typeGameColorLight, typeGameColorDark, numeroConcursoAtual;
+    int qtdSurpresinhas = 1;
 
     SurpresinhaGridViewAdapter simularDezenasAdapter;
 
-    Button botaoMenosSurpresinha;
-    Button botaoEscolhaOutrotime;
-    Button botaoMaisSurpresinha;
-    Button botaoAdicionarSurpresinhaAoCarrinho;
+    Button botaoMenosSurpresinha, botaoEscolhaOutrotime, botaoMaisSurpresinha, botaoAdicionarSurpresinhaAoCarrinho;
 
-    private View divisaoLinhaUm;
-    private View divisaoLinhaDois;
+    private View divisaoLinhaUm, divisaoLinhaDois;
+
+    private TextView infoTimeSurpresa;
 
     private ImageView brasaoTimeSurpresa;
-
-    TextView qtdSurpresinhasTextView;
-    TextView valorAposta;
-    private TextView infoTimeSurpresa;
+    TextView qtdSurpresinhasTextView, valorAposta;
 
     public ParametroJogoDTO parametroJogo;
     private SimularApostaActivity parentActivity;
@@ -73,13 +70,10 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
     private SurpresinhaFragmentListener surpresinhaFragmentListener;
     private ParametroEquipe equipeSelecionada = null;
     private ModalidadeEnum tipoJogo;
-    private boolean isTipoTimeMania;
+    private boolean isTipoTimeMania, isTipoLotomania;
+    private AppCompatCheckBox selcioneEspelhoSurpresinha;
 
-    //mocks
-    int numeroConcursoAtual;
     String dataSorteioAtual;
-
-    int qtdSurpresinhas = 1;
 
     public SurpresinhaFragment() {
         // Required empty public constructor
@@ -104,6 +98,13 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
             infoTimeSurpresa.setVisibility(View.GONE);
             ;
             botaoEscolhaOutrotime.setVisibility(View.GONE);
+        }
+        if(isTipoLotomania){
+            LinearLayout layoutEspelhoSurpresinha = fragmentView.findViewById(R.id.layoutEspelhoSurpresinha);
+            layoutEspelhoSurpresinha.setVisibility(View.VISIBLE);
+            layoutEspelhoSurpresinha.setOnClickListener(this);
+
+            selcioneEspelhoSurpresinha = (AppCompatCheckBox) layoutEspelhoSurpresinha.findViewById(R.id.selcioneEspelhoSurpresinha);
         }
     }
 
@@ -155,6 +156,9 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         switch (tipoJogo) {
             case TIMEMANIA:
                 isTipoTimeMania = true;
+                break;
+            case LOTOMANIA:
+                isTipoLotomania = true;
                 break;
         }
     }
@@ -297,12 +301,14 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         aposta.setQuantidadeApostas(1);
 
         aposta.setTimeDoCoracao(equipeSelecionada);
+        if(isTipoLotomania){
+            aposta.setGerarEspelho(selcioneEspelhoSurpresinha.isChecked());
+        }
 
         apostaBO.adicionarSurpresinhaNoCarrinho(aposta, new SilceClient.Listener<AgrupadorDTOApostaDTOResponse>() {
             @Override
             public void onResponse(AgrupadorDTOApostaDTOResponse response) {
                 LoadingViewLoterias.stop(loadViewProgress);
-
                 surpresinhaFragmentListener.adicionarApostaCarrinho();
             }
         }, new SilceClient.ErrorListener() {
@@ -350,6 +356,10 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
             case R.id.simularApostaLayoutCarrinhoApostas:
                 surpresinhaFragmentListener.abreCarrinhoApostas();
                 break;
+
+            case R.id.layoutEspelhoSurpresinha:
+                selecionarEspelho();
+                break;
         }
 
         qtdSurpresinhasTextView.setText(String.format("%d", qtdSurpresinhas));
@@ -357,6 +367,14 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
 
     public void setEquipeSelecionada(ParametroEquipe equipeSelecionada) {
         this.equipeSelecionada = equipeSelecionada;
+    }
+
+    private void selecionarEspelho(){
+        if(selcioneEspelhoSurpresinha.isChecked()){
+            selcioneEspelhoSurpresinha.setChecked(Boolean.FALSE);
+        }else {
+            selcioneEspelhoSurpresinha.setChecked(Boolean.TRUE);
+        }
     }
 
     // Adapter do gridview das dezenas

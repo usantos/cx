@@ -623,7 +623,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                         salvarApostaLayout.setLayoutParams(relativelayoutParams);
 
                         TextView tituloSalvarAposta = parentActivity.getTextoSalveEstaAposta();
-                        tituloSalvarAposta.setText(R.string.aposta_salva_carinha);
+                        tituloSalvarAposta.setText(R.string.label_aposta_salva_carinha);
                         tituloSalvarAposta.setGravity(Gravity.CENTER);
 
                         ImageView starSalvarApostaImageView = parentActivity.getIconStarSalvar();
@@ -780,7 +780,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         salvarApostaLayout.setBackgroundResource(R.color.cinzaescuro);
         TextView tituloSalvarAposta = parentActivity.getTextoSalveEstaAposta();
 
-        tituloSalvarAposta.setText(R.string.salve_esta_aposta_carinha);
+        tituloSalvarAposta.setText(R.string.label_salve_esta_aposta_carinha);
 
         ViewGroup.LayoutParams relativelayoutParams = salvarApostaLayout.getLayoutParams();
 

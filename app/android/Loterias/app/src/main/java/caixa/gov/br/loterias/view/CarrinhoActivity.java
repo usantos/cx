@@ -152,7 +152,7 @@ public class CarrinhoActivity extends SettingToolbarActivity {
         SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
         BigDecimal valorCarrinho = sessaoUsuario.getValorMinimimoAposta() == null ? BigDecimal.ZERO : sessaoUsuario.getValorMinimimoAposta();
         infoValorMinimoTextView = (TextView) findViewById(R.id.infoValorMinimo);
-        ViewUtils.setMoedaFormatHtml(valorCarrinho,infoValorMinimoTextView, getResources().getString(R.string.label_lembrar_valor_minimo) + " ");
+        ViewUtils.setMoedaFormatHtml(valorCarrinho, infoValorMinimoTextView, getResources().getString(R.string.label_lembrar_valor_minimo).replace("_", "<br>") + " ");
     }
 
     private void callWebservice() {

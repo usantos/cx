@@ -173,5 +173,41 @@
             app:layout_constraintLeft_toRightOf="@+id/qtdSurpresinhasSelecionadas"
             app:layout_constraintTop_toBottomOf="@+id/surpresinhaQtdInfo" />
 
+        <LinearLayout
+            android:id="@+id/layoutEspelhoSurpresinha"
+            android:layout_width="183dp"
+            android:layout_height="56dp"
+            android:layout_marginTop="30dp"
+            android:background="@color/cinza"
+            android:visibility="gone"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnMaisSurpresinha">
+
+            <android.support.v7.widget.AppCompatCheckBox
+                android:id="@+id/selcioneEspelhoSurpresinha"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginLeft="17dp"
+                android:layout_marginStart="17dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/check_box_selected"
+                android:button="@color/transparente50"
+                android:clickable="false" />
+
+            <TextView
+                android:id="@+id/textoEspelhoSurpresinha"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="17dp"
+                android:layout_marginStart="17dp"
+                android:layout_marginTop="20dp"
+                android:clickable="false"
+                android:text="@string/label_aposta_espelho"
+                android:textColor="@color/branco"
+                android:textSize="14.2sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
     </android.support.constraint.ConstraintLayout>
 </ScrollView>
