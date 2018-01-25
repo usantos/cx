@@ -94,7 +94,8 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
     private SimularApostaActivity parentActivity;
     private AppCompatCheckBox selcioneOutrosNumeros;
     private View view;
-    private TextView infoEscolha, infoPaginacao, infoSelecioneOutrosNumeros;
+    private TextView infoEscolha;
+    private TextView infoPaginacao;
     private EditText informeNomeTime;
     private RelativeLayout opcaoOutrosNumerosLayout;
     private LinearLayout selecioneTimeCoracaoLayout;
@@ -170,28 +171,46 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         if (isTipoLotomania) {
             opcaoOutrosNumerosLayout = view.findViewById(R.id.opcaoOutrosNumerosLayout);
             selcioneOutrosNumeros = opcaoOutrosNumerosLayout.findViewById(R.id.selcioneOutrosNumeros);
-            infoSelecioneOutrosNumeros = opcaoOutrosNumerosLayout.findViewById(R.id.infoSelecioneOutrosNumeros);
+            TextView infoSelecioneOutrosNumeros = opcaoOutrosNumerosLayout.findViewById(R.id.infoSelecioneOutrosNumeros);
+            infoSelecioneOutrosNumeros.setText(ViewUtils.fromHtml(Constantes.INFO_OUTROS_50_NUMEROS));
+            if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) {
+                setVisibilityCheckedNumerosLayout(View.VISIBLE);
+            } else {
+                setVisibilityCheckedNumerosLayout(View.GONE);
+            }
         }
 
         configuraBotoes(view);
         // Chama a tela de escolha de time
-        if (isEscolhaTimeCoracaoSurpresinha) {
+        if (isEscolhaTimeCoracaoSurpresinha)
+
+        {
             mostrarCartelaEscolhaTimeCoracao();
-        } else {
+        } else
+
+        {
             isTelaSelecaoTimeAtivado = false;
             limparTimeSelecionado();
         }
 
-        if (isTipoTimemania && !isTelaSelecaoTimeAtivado) {
+        if (isTipoTimemania && !isTelaSelecaoTimeAtivado)
+
+        {
             // Tela de escolha de números
             infoEscolha.setText(ViewUtils.fromHtml(Constantes.ESCOLHA_NUMEROS_HTML));
             infoPaginacao.setText(ViewUtils.fromHtml(Constantes.PAGINACAO_UM_DOIS));
         }
 
-        ViewUtils.organizaTabLayout(getActivity(), R.id.cartelaFragmentMainLayout, idList, R.id.cartelaFragmentScrollView);
-        ((ScrollView) view.findViewById(R.id.cartelaFragmentScrollView)).fullScroll(ScrollView.FOCUS_UP);
+        ViewUtils.organizaTabLayout(
 
-        if (!isEscolhaTimeCoracaoSurpresinha) {
+                getActivity(), R.id.cartelaFragmentMainLayout, idList, R.id.cartelaFragmentScrollView);
+        ((ScrollView) view.findViewById(R.id.cartelaFragmentScrollView)).
+
+                fullScroll(ScrollView.FOCUS_UP);
+
+        if (!isEscolhaTimeCoracaoSurpresinha)
+
+        {
             configuraListaDezenas(view);
             verificaSeMostraBotaoLimparAposta();
             verificaSeMostraSalvarApostaView();
@@ -505,7 +524,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
             adicionarApostaPreencherNumerosTimemania();
         } else if (isTipoLotomania) {
             adicionarApostaPreencherNumerosLotomania();
-        }else if(isTipoLoteca){
+        } else if (isTipoLoteca) {
             int duplo = Integer.parseInt(parentActivity.getLabelValueDuplasLoteca().getText().toString());
             int triplo = Integer.parseInt(parentActivity.getLabelValueTriplasLoteca().getText().toString());
 
@@ -552,8 +571,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
         } else {
             preencheNumerosAleatorios();
-            infoSelecioneOutrosNumeros.setText(ViewUtils.fromHtml(Constantes.INFO_OUTROS_50_NUMEROS));
-            opcaoOutrosNumerosLayout.setVisibility(View.VISIBLE);
+            setVisibilityCheckedNumerosLayout(View.VISIBLE);
             onClickOutrosNumerosLayout();
 
         }
@@ -981,8 +999,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                     }
 
                     if (isTipoLotomania) {
-                        if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado
-                                && opcaoOutrosNumerosLayout.getVisibility() == View.GONE) {
+                        if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) {
                             setVisibilityCheckedNumerosLayout(View.VISIBLE);
                         } else {
                             setVisibilityCheckedNumerosLayout(View.GONE);

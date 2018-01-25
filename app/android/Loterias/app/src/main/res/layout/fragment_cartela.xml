@@ -1,199 +1,199 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/cartelaFragmentScrollView"
+    android:id="@+id/layoutCartelaFragmentScrollView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:fillViewport="false"
     android:orientation="vertical">
 
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/cartelaFragmentMainLayout"
+    <ScrollView
+        android:id="@+id/cartelaFragmentScrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/branco">
-
-
+        android:fillViewport="false"
+        android:orientation="vertical">
 
         <android.support.constraint.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <LinearLayout
-                android:id="@+id/layotLabelTimimania"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="19dp">
-
-                <RelativeLayout
-                    android:id="@+id/infoEscolhaPaginacaoLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:visibility="gone"
-                    app:layout_constraintLeft_toLeftOf="parent">
-
-                    <TextView
-                        android:id="@+id/infoEscolha"
-                        style="@style/ArialMT"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        android:layout_marginLeft="45dp"
-                        android:layout_marginTop="41dp"
-                        android:textColor="@color/megasenamedio"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:id="@+id/infoPaginacao"
-                        style="@style/ArialMT"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignRight="@id/infoEscolha"
-                        android:layout_marginRight="45dp"
-                        android:layout_marginTop="41dp"
-                        android:textColor="@color/megasenamedio"
-                        android:textSize="14sp" />
-                </RelativeLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/layoutTitleLoteca"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="17dp"
-                android:paddingTop="20dp"
-                android:orientation="horizontal"
-                android:visibility="gone">
-
-                <TextView
-                    android:id="@+id/titleInformeBold"
-                    style="@style/ArialMT"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/label_informe"
-                    android:textColor="@color/verdeazul"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/titleContinue"
-                    style="@style/ArialMT"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginLeft="6dp"
-                    android:text="@string/label_resultado_das_partidas."
-                    android:textColor="@color/verdeazul"
-                    android:textSize="14sp" />
-            </LinearLayout>
-
-            <RelativeLayout
-                android:id="@+id/opcaoOutrosNumerosLayout"
-                android:layout_width="match_parent"
-                android:layout_height="74dp"
-                android:background="@color/cinza"
-                android:orientation="horizontal"
-                android:visibility="gone"
-                android:elevation="2dp"
-                app:layout_constraintTop_toTopOf="parent"
-                android:clickable="true">
-
-                <android.support.v7.widget.AppCompatCheckBox
-                    android:id="@+id/selcioneOutrosNumeros"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginTop="15dp"
-                    android:background="@drawable/check_box_selected"
-                    android:button="@color/verdeagua" />
-
-                <TextView
-                    android:id="@+id/infoSelecioneOutrosNumeros"
-                    style="@style/ArialMT"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_toRightOf="@+id/selcioneOutrosNumeros"
-                    android:textColor="@color/branco"
-                    android:textSize="14sp"
-                    tools:ignore="NotSibling" />
-
-            </RelativeLayout>
-
-            <caixa.gov.br.loterias.view.custom.ExpandableHeightGridView
-                android:id="@+id/listaDezenas"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_marginHorizontal="10dp"
-                android:columnWidth="50dp"
-                android:gravity="center"
-                android:horizontalSpacing="16dp"
-                android:numColumns="auto_fit"
-                android:paddingBottom="119dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:paddingTop="40dp"
-                android:stretchMode="columnWidth"
-                android:verticalSpacing="10dp"
-                app:layout_constraintTop_toBottomOf="@+id/layotLabelTimimania"/>
-        </android.support.constraint.ConstraintLayout>
-
-        <LinearLayout
-            android:id="@+id/selecioneTimeCoracao"
+            android:id="@+id/cartelaFragmentMainLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="81dp"
-            android:orientation="vertical"
-            android:visibility="gone"
-            app:layout_constraintTop_toTopOf="parent">
+            android:background="@color/branco">
 
-            <TextView
-                style="@style/ArialMT"
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:id="@+id/layotLabelTimimania"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="19dp">
+
+                    <RelativeLayout
+                        android:id="@+id/infoEscolhaPaginacaoLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:visibility="gone"
+                        app:layout_constraintLeft_toLeftOf="parent">
+
+                        <TextView
+                            android:id="@+id/infoEscolha"
+                            style="@style/ArialMT"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:layout_marginLeft="45dp"
+                            android:layout_marginTop="41dp"
+                            android:textColor="@color/megasenamedio"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/infoPaginacao"
+                            style="@style/ArialMT"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignRight="@id/infoEscolha"
+                            android:layout_marginRight="45dp"
+                            android:layout_marginTop="41dp"
+                            android:textColor="@color/megasenamedio"
+                            android:textSize="14sp" />
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layoutTitleLoteca"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingLeft="17dp"
+                    android:paddingTop="20dp"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/titleInformeBold"
+                        style="@style/ArialMT"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/label_informe"
+                        android:textColor="@color/verdeazul"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/titleContinue"
+                        style="@style/ArialMT"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:layout_marginLeft="6dp"
+                        android:text="@string/label_resultado_das_partidas."
+                        android:textColor="@color/verdeazul"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <caixa.gov.br.loterias.view.custom.ExpandableHeightGridView
+                    android:id="@+id/listaDezenas"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginHorizontal="10dp"
+                    android:columnWidth="50dp"
+                    android:gravity="center"
+                    android:horizontalSpacing="16dp"
+                    android:numColumns="auto_fit"
+                    android:paddingBottom="119dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="40dp"
+                    android:stretchMode="columnWidth"
+                    android:verticalSpacing="10dp"
+                    app:layout_constraintTop_toBottomOf="@+id/layotLabelTimimania" />
+            </android.support.constraint.ConstraintLayout>
+
+            <LinearLayout
+                android:id="@+id/selecioneTimeCoracao"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="45dp"
-                android:layout_marginRight="45dp"
-                android:text="@string/label_nome_do_seu_time"
-                android:textColor="@color/azulFormNovoTipoPagamento"
-                android:textSize="16sp" />
+                android:layout_marginTop="81dp"
+                android:orientation="vertical"
+                android:visibility="gone"
+                app:layout_constraintTop_toTopOf="parent">
 
-            <EditText
-                android:id="@+id/informe_nome_time"
-                style="@style/ArialMT"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="45dp"
-                android:layout_marginRight="45dp"
-                android:textColor="@color/cinza"
-                android:textSize="16sp" />
+                <TextView
+                    style="@style/ArialMT"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="45dp"
+                    android:layout_marginRight="45dp"
+                    android:text="@string/label_nome_do_seu_time"
+                    android:textColor="@color/azulFormNovoTipoPagamento"
+                    android:textSize="16sp" />
 
-            <caixa.gov.br.loterias.view.custom.ExpandableHeightGridView
-                android:id="@+id/gridTimes"
+                <EditText
+                    android:id="@+id/informe_nome_time"
+                    style="@style/ArialMT"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="45dp"
+                    android:layout_marginRight="45dp"
+                    android:textColor="@color/cinza"
+                    android:textSize="16sp" />
+
+                <caixa.gov.br.loterias.view.custom.ExpandableHeightGridView
+                    android:id="@+id/gridTimes"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginHorizontal="10dp"
+                    android:gravity="center"
+                    android:numColumns="3"
+                    android:paddingBottom="119dp"
+                    android:stretchMode="columnWidth"
+                    android:verticalSpacing="16dp"
+                    app:layout_goneMarginBottom="10dp" />
+
+            </LinearLayout>
+
+            <caixa.gov.br.loterias.view.custom.ExpandableHeightRecyclerView
+                android:id="@+id/recyclerViewPartida"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:layout_marginHorizontal="10dp"
-                android:gravity="center"
-                android:numColumns="3"
+                android:clickable="false"
+                android:nestedScrollingEnabled="false"
                 android:paddingBottom="119dp"
-                android:stretchMode="columnWidth"
-                android:verticalSpacing="16dp"
-                app:layout_goneMarginBottom="10dp" />
+                android:paddingTop="60dp" />
 
-        </LinearLayout>
+        </android.support.constraint.ConstraintLayout>
+    </ScrollView>
 
-        <caixa.gov.br.loterias.view.custom.ExpandableHeightRecyclerView
-            android:id="@+id/recyclerViewPartida"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:clickable="false"
-            android:nestedScrollingEnabled="false"
-            android:paddingTop="60dp"
-            android:paddingBottom="119dp"/>
+    <RelativeLayout
+        android:id="@+id/opcaoOutrosNumerosLayout"
+        android:layout_width="match_parent"
+        android:layout_height="74dp"
+        android:background="@color/cinza"
+        android:orientation="horizontal">
 
-    </android.support.constraint.ConstraintLayout>
-</ScrollView>
+        <android.support.v7.widget.AppCompatCheckBox
+            android:id="@+id/selcioneOutrosNumeros"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/check_box_selected"
+            android:button="@color/verdeagua" />
+
+        <TextView
+            android:id="@+id/infoSelecioneOutrosNumeros"
+            style="@style/ArialMT"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="15dp"
+            android:layout_toRightOf="@+id/selcioneOutrosNumeros"
+            android:textColor="@color/branco"
+            android:textSize="14sp" />
+    </RelativeLayout>
+</RelativeLayout>
