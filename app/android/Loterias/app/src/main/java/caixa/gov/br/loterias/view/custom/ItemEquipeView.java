@@ -15,6 +15,7 @@ import caixa.gov.br.loterias.R;
 
 /**
  * Created by joafilho on 28/12/2017.
+ * Class ItemEquipeView
  */
 @EViewGroup(R.layout.item_loteca)
 public class ItemEquipeView extends LinearLayout {
@@ -47,23 +48,12 @@ public class ItemEquipeView extends LinearLayout {
         return itemImage;
     }
 
-    public void setItemImage(ImageView itemImage) {
-        this.itemImage = itemImage;
-    }
-
     public TextView getItemTitle() {
         return itemTitle;
-    }
-
-    public void setItemTitle(TextView itemTitle) {
-        this.itemTitle = itemTitle;
     }
 
     public TextView getItemDescription() {
         return itemDescription;
     }
 
-    public void setItemDescription(TextView itemDescription) {
-        this.itemDescription = itemDescription;
-    }
 }

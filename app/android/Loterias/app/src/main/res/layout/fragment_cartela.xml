@@ -173,7 +173,9 @@
         android:layout_width="match_parent"
         android:layout_height="74dp"
         android:background="@color/cinza"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:clickable="true"
+        android:visibility="gone">
 
         <android.support.v7.widget.AppCompatCheckBox
             android:id="@+id/selcioneOutrosNumeros"

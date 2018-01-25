@@ -16,6 +16,7 @@ public class Constantes {
     public static final String DOIS_STRING = "2";
     public static final String TRES_STRING = "3";
     public static final String PLUS_STRING = "+";
+    public static final String X_STRING = "x";
 
     public static final Long ZERO_LONG = 0L;
 }

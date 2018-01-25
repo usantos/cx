@@ -285,7 +285,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/cinzaclaro"></LinearLayout>
+                android:background="@color/cinzaclaro"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -324,7 +324,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/cinzaclaro"></LinearLayout>
+                android:background="@color/cinzaclaro"/>
 
             <LinearLayout
                 android:layout_width="match_parent"

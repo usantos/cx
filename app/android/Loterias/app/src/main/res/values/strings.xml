@@ -149,4 +149,6 @@
     <string name="label_aposta_salva_carinha">Aposta salva :)</string>
     <string name="label_salve_esta_aposta_carinha">Salve esta aposta :)</string>
     <string name="label_aposta_espelho">Aposta espelho</string>
+    <string name="label_aposte_agora">Aposte agora</string>
+    <string name="label_faca_login_cadastre">Faça login/cadastre-se</string>
 </resources>
