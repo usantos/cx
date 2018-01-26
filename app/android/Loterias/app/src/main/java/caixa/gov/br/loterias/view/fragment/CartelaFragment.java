@@ -509,6 +509,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
     private void limparTimeSelecionado() {
         if (equipeSelecionada != null) {
             equipeSelecionada.setSelecionado(false);
+            informeNomeTime.setText(StringUtils.EMPTY);
         }
 
         if (timeCoracaoAdapter != null) {
@@ -735,11 +736,12 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                     return;
                 }
 
+                boolean contemIfem = charSequence.toString().contains("-");
                 isChanged = true;
 
                 List<ParametroEquipe> parametroEquipeList = parametroJogo.getEquipes();
                 listaEquipefiltro.clear();
-                if (charSequence.length() >= 3) {
+                if (charSequence.length() >= 3 && !contemIfem) {
                     for (ParametroEquipe parametroEquipe : parametroEquipeList) {
                         if (parametroEquipe.getNome().toUpperCase().contains(charSequence.toString().toUpperCase())) {
                             listaEquipefiltro.add(parametroEquipe);
@@ -1056,11 +1058,13 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         gridTimes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View viewItem, int i, long l) {
-                if (equipeSelecionada != null) {
+                if (equipeSelecionada != null && equipeSelecionada.isSelecionado()) {
                     equipeSelecionada.setSelecionado(false);
                 }
                 equipeSelecionada = listaEquipefiltro.get(i);
                 equipeSelecionada.setSelecionado(true);
+                String nomeTime = String.format("%s-%s", equipeSelecionada.getNome(), equipeSelecionada.getUf());
+                informeNomeTime.setText(nomeTime);
                 timeCoracaoAdapter.notifyDataSetChanged();
                 verificaSeMostraBotaoLimparAposta();
                 verificaSeMostraSalvarApostaView();

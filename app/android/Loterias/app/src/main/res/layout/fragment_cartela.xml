@@ -139,7 +139,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="45dp"
                     android:layout_marginRight="45dp"
-                    android:textColor="@color/cinza"
+                    android:textColor="@color/pretoLinhaFormNovoTipoPagamento"
                     android:textSize="16sp" />
 
                 <caixa.gov.br.loterias.view.custom.ExpandableHeightGridView
