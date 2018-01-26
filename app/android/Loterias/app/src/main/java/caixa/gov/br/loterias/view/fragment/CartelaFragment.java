@@ -531,14 +531,13 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
             if (partidasSelecionadas.size() == parametroJogo.getPartidas().size() && (duplo > 0 || triplo > 0)) {
                 adicionarApostaNoCarrinho();
             } else {
-                ViewUtils.alert(getActivity(), "Serviço indisponível.");
+                //TODO implementar regra de completar placar
             }
         } else if (isTipoLotogol) {
             if (partidasSelecionadas.size() == parametroJogo.getPartidas().size()) {
                 adicionarApostaNoCarrinho();
             } else {
-                preencheNumerosAleatorios();
-//                ViewUtils.alert(getActivity(), "Serviço indisponível.");
+                //TODO implementar regra de completar placar
             }
         } else if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) {
             adicionarApostaNoCarrinho();
