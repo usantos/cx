@@ -40,6 +40,7 @@ import caixa.gov.br.loterias.bo.silce.dto.ParametroEquipe;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroJogoDTO;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroValorApostaDTO;
 import caixa.gov.br.loterias.bo.silce.dto.TipoConcursoEnum;
+import caixa.gov.br.loterias.utils.Constantes;
 import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
 import caixa.gov.br.loterias.utils.MensagensNetwork;
 import caixa.gov.br.loterias.view.SimularApostaActivity;
@@ -238,7 +239,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
 
     private ArrayList<String> montaListaDezenasSurpresinha() {
         ArrayList<String> arrayDezenas = new ArrayList<>();
-        for (int i = 0; i < parentActivity.qtdDezenasPossiveisSelecionado; i++) {
+        for (int i = 0; i < Constantes.CINCO_INTEIRO; i++) {
             arrayDezenas.add("XX");
         }
 

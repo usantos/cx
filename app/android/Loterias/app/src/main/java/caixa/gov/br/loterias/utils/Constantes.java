@@ -19,4 +19,6 @@ public class Constantes {
     public static final String X_STRING = "x";
 
     public static final Long ZERO_LONG = 0L;
+
+    public static final int CINCO_INTEIRO = 5;
 }

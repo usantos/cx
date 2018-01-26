@@ -528,7 +528,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
             int duplo = Integer.parseInt(parentActivity.getLabelValueDuplasLoteca().getText().toString());
             int triplo = Integer.parseInt(parentActivity.getLabelValueTriplasLoteca().getText().toString());
 
-            if (partidasSelecionadas.size() > 0 && (duplo > 0 || triplo > 0)) {
+            if (partidasSelecionadas.size() == parametroJogo.getPartidas().size() && (duplo > 0 || triplo > 0)) {
                 adicionarApostaNoCarrinho();
             } else {
                 ViewUtils.alert(getActivity(), "Serviço indisponível.");
@@ -537,7 +537,8 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
             if (partidasSelecionadas.size() == parametroJogo.getPartidas().size()) {
                 adicionarApostaNoCarrinho();
             } else {
-                ViewUtils.alert(getActivity(), "Serviço indisponível.");
+                preencheNumerosAleatorios();
+//                ViewUtils.alert(getActivity(), "Serviço indisponível.");
             }
         } else if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) {
             adicionarApostaNoCarrinho();
@@ -888,7 +889,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
             int duplo = Integer.parseInt(parentActivity.getLabelValueDuplasLoteca().getText().toString());
             int triplo = Integer.parseInt(parentActivity.getLabelValueTriplasLoteca().getText().toString());
 
-            if (duplo > 0 || triplo > 0) {
+            if (partidasSelecionadas.size() == parametroJogo.getPartidas().size() && (duplo > 0 || triplo > 0)) {
                 atualizarBotaoFinalizarAdicionarCarrinho();
             } else {
                 botaoFinalizar.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.cinza));
