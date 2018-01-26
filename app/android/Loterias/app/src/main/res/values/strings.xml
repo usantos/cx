@@ -155,4 +155,5 @@
     <string name="label_time">Time</string>
     <string name="title_activity_ler_bilhetes">LerBilhetesActivity</string>
     <string name="title_activity_ler_bilhetes_escolha_jogo">Resultado</string>
+    <string name="label_x_minusculo">x</string>
 </resources>
