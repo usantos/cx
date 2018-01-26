@@ -151,4 +151,6 @@
     <string name="label_aposta_espelho">Aposta espelho</string>
     <string name="label_aposte_agora">Aposte agora</string>
     <string name="label_faca_login_cadastre">Faça login/cadastre-se</string>
+    <string name="label_coluna">Coluna</string>
+    <string name="label_time">Time</string>
 </resources>

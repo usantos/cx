@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -44,6 +45,7 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
         final TextView numerosAposta;
         final TextView valorAposta;
         final ExpandableHeightRecyclerView recycleViewDetalheAposta;
+        final RelativeLayout layoutCabecalhoLoteca;
 
         ApostaHolder(View view) {
             super(view);
@@ -52,6 +54,7 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
             numerosAposta = view.findViewById(R.id.numerosText);
             valorAposta = view.findViewById(R.id.valorAposta);
             recycleViewDetalheAposta = view.findViewById(R.id.recycleViewDetalheAposta);
+            layoutCabecalhoLoteca = view.findViewById(R.id.layoutCabecalhoLoteca);
         }
     }
 
@@ -83,6 +86,8 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
             holder.recycleViewDetalheAposta.setLayoutManager(new LinearLayoutManager(parentActivity));
             holder.recycleViewDetalheAposta.setAdapter(detalheApostaLotecaAdapter);
             holder.recycleViewDetalheAposta.setExpanded(true);
+
+            holder.layoutCabecalhoLoteca.setVisibility(View.VISIBLE);
         }
 
         String numeroStr = "";

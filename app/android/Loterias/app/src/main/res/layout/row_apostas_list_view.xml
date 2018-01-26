@@ -30,6 +30,42 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
+    <RelativeLayout
+        android:id="@+id/layoutCabecalhoLoteca"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="14dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="14dp"
+        android:visibility="gone"
+        android:gravity="start"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toRightOf="@+id/tipoAposta"
+        app:layout_constraintRight_toLeftOf="@+id/valorAposta"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+        <TextView
+            android:id="@+id/texto_coluna_loteca"
+            style="@style/editTextArialMTTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_coluna"
+            android:textStyle="bold" />
+        <TextView
+            android:id="@+id/texto_time_loteca"
+            style="@style/editTextArialMTTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/texto_coluna_loteca"
+            android:layout_marginStart="14dp"
+            android:text="@string/label_time"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
     <TextView
         android:id="@+id/tipoAposta"
         style="@style/editTextArialMTTheme"
@@ -84,10 +120,9 @@
         android:id="@+id/recycleViewDetalheAposta"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="@+id/numerosText"
-        app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="55dp"
         android:clickable="false"
         android:nestedScrollingEnabled="false"
-        />
+        app:layout_constraintLeft_toLeftOf="@+id/numerosText"
+        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>

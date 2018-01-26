@@ -11,7 +11,7 @@
         android:id="@+id/image_aposta_partida_loteca"
         android:layout_width="10dp"
         android:layout_height="10dp"
-        android:layout_marginStart="27dp"
+        android:layout_marginStart="19dp"
         android:background="@drawable/select_unselect_circle_loteca" />
 
     <TextView
