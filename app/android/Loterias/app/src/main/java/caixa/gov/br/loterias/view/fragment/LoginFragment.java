@@ -21,6 +21,10 @@ import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
 import caixa.gov.br.loterias.utils.MensagensNetwork;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.CadastrarActivity_;
+import caixa.gov.br.loterias.view.FavoritasActivity;
+import caixa.gov.br.loterias.view.FormaPagamentoActivity;
+import caixa.gov.br.loterias.view.ListaComprasActivity;
+import caixa.gov.br.loterias.view.ListaRapidaoActivity;
 import caixa.gov.br.loterias.view.PrincipalActivity;
 
 /**
@@ -63,15 +67,15 @@ public class LoginFragment extends Fragment {
         buttonAposte.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //mock login
-//                startActivity(new Intent(getActivity(), CarrinhoActivity.class));
+//                startActivity(new Intent(getActivity(), ListaComprasActivity.class));
 //                getActivity().finish();
 
                 final View loadViewProgress = LoadingViewLoterias.init(getActivity());
 
                 DadosUsuarioBO dadosUsuarioBO = new DadosUsuarioBO(getActivity());
-//                dadosUsuarioBO.autenticar("vinicius.ferraz@gmail.com", "Vaibombar2", new SilceClient.Listener<UsuarioLogadoResponse>() {
+                dadosUsuarioBO.autenticar("vinicius.ferraz@gmail.com", "Vaibombar7", new SilceClient.Listener<UsuarioLogadoResponse>() {
 
-                dadosUsuarioBO.autenticar("symoneresio@yahoo.com.br", "Vaibombar11", new SilceClient.Listener<UsuarioLogadoResponse>() {
+//                dadosUsuarioBO.autenticar("symoneresio@yahoo.com.br", "Vaibombar11", new SilceClient.Listener<UsuarioLogadoResponse>() {
                     @Override
                     public void onResponse(UsuarioLogadoResponse response) {
                         LoadingViewLoterias.stop(loadViewProgress);
@@ -92,24 +96,24 @@ public class LoginFragment extends Fragment {
         Button buttonLogin = (Button) v.findViewById(R.id.buttonFacaLogin);
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                final View loadViewProgress = LoadingViewLoterias.init(getActivity());
+//                final View loadViewProgress = LoadingViewLoterias.init(getActivity());
 
-                DadosUsuarioBO dadosUsuarioBO = new DadosUsuarioBO(getActivity());
-                dadosUsuarioBO.autenticar("symoneresio@yahoo.com.br", "Vaibombar11", new SilceClient.Listener<UsuarioLogadoResponse>() {
-                    @Override
-                    public void onResponse(UsuarioLogadoResponse response) {
-                        LoadingViewLoterias.stop(loadViewProgress);
-                        setUser(response);
-                        loginSucess();
-                    }
-                }, new SilceClient.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        LoadingViewLoterias.stop(loadViewProgress);
-                        ViewUtils.alert(getActivity(), MensagensNetwork.setMensagem(error, getActivity()));
-                    }
-                });
-//                connectKeycloak();
+//                DadosUsuarioBO dadosUsuarioBO = new DadosUsuarioBO(getActivity());
+//                dadosUsuarioBO.autenticar("symoneresio@yahoo.com.br", "Vaibombar11", new SilceClient.Listener<UsuarioLogadoResponse>() {
+//                    @Override
+//                    public void onResponse(UsuarioLogadoResponse response) {
+//                        LoadingViewLoterias.stop(loadViewProgress);
+//                        setUser(response);
+//                        loginSucess();
+//                    }
+//                }, new SilceClient.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//                        LoadingViewLoterias.stop(loadViewProgress);
+//                        ViewUtils.alert(getActivity(), MensagensNetwork.setMensagem(error, getActivity()));
+//                    }
+//                });
+                connectKeycloak();
             }
         });
 

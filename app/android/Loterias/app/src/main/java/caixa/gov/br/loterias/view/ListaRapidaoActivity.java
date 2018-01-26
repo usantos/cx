@@ -42,7 +42,7 @@ public class ListaRapidaoActivity extends AppCompatActivity {
 
     public CarrinhoDTO carrinho;
     private RecyclerView recyclerView;
-    private List<IdentificaoDeUmaApostaDas8Modalidades> apostas;
+    public List<IdentificaoDeUmaApostaDas8Modalidades> apostas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,8 +57,8 @@ public class ListaRapidaoActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.apostasListaRecycleViewRapidao);
 
 
-        callWebservice(0);
-//        mockCarrinho();
+//        callWebservice(0);
+        mockCarrinho();
 
         ViewUtils.organizaTabLayout(this, R.id.carrinhoRapidaoMainLayout, R.id.apostasListaRecycleViewRapidao, R.id.carrinhoRapidaoScrollView);
     }
@@ -228,10 +228,7 @@ public class ListaRapidaoActivity extends AppCompatActivity {
         findViewById(R.id.botaoFazerNovaApostaRapidao).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                setResult(2);
-//
-//                finish();
-                callWebservice(1);
+//                callWebservice(1);
 
             }
         });
@@ -286,7 +283,7 @@ public class ListaRapidaoActivity extends AppCompatActivity {
         final View loadViewProgress = LoadingViewLoterias.init(this);
         final ApostaBO apostaBO = new ApostaBO(ListaRapidaoActivity.this);
 
-        apostaBO.gerarApostas(quantidade, new SilceClient.Listener<CarrinhoDTOResponse>() {
+        apostaBO.gerarApostas(new SilceClient.Listener<CarrinhoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoDTOResponse response) {
                 LoadingViewLoterias.stop(loadViewProgress);

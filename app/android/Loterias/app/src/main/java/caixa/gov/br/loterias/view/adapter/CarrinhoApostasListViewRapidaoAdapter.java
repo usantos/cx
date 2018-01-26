@@ -71,7 +71,9 @@ public class CarrinhoApostasListViewRapidaoAdapter extends RecyclerView.Adapter<
         holder.itemView.findViewById(R.id.excluirApostaCarrinho).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                deletarAposta(apostas.get(position).getId().toString());
+//                deletarAposta(apostas.get(position).getId().toString());
+                deletarAposta(position);
+
             }
         });
 
@@ -98,24 +100,26 @@ public class CarrinhoApostasListViewRapidaoAdapter extends RecyclerView.Adapter<
         holder.valorAposta.setText(caixa.gov.br.loterias.utils.ViewUtils.getMoedaFormat(apostas.get(position).getValor()));
     }
 
-    private void deletarAposta (String idAposta) {
-        final ApostaBO apostaBO = new ApostaBO(parentActivity);
-        final View loadViewProgress = LoadingViewLoterias.init(parentActivity);
+    private void deletarAposta (int position) {
+//        final ApostaBO apostaBO = new ApostaBO(parentActivity);
+//        final View loadViewProgress = LoadingViewLoterias.init(parentActivity);
 
-        apostaBO.deleteApostaCarrinho(idAposta, new SilceClient.Listener<CarrinhoDTOResponse>() {
-            @Override
-            public void onResponse(CarrinhoDTOResponse response) {
-                LoadingViewLoterias.stop(loadViewProgress);
-                parentActivity.carrinho = response.getPayload();
-                parentActivity.atualizaLayout();
-            }
-        }, new SilceClient.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                LoadingViewLoterias.stop(loadViewProgress);
-                ViewUtils.alert(parentActivity, MensagensNetwork.setMensagem(error, context));
-            }
-        });
+//        apostaBO.deleteApostaCarrinho(idAposta, new SilceClient.Listener<CarrinhoDTOResponse>() {
+//            @Override
+//            public void onResponse(CarrinhoDTOResponse response) {
+//                LoadingViewLoterias.stop(loadViewProgress);
+//                parentActivity.carrinho = response.getPayload();
+//                parentActivity.atualizaLayout();
+//            }
+//        }, new SilceClient.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                LoadingViewLoterias.stop(loadViewProgress);
+//                ViewUtils.alert(parentActivity, MensagensNetwork.setMensagem(error, context));
+//            }
+//        });
+        parentActivity.apostas.remove(position);
+        parentActivity.atualizaLayout();
     }
 
     @Override

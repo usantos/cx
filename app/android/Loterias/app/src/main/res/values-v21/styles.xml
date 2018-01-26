@@ -34,4 +34,11 @@
     <style name="ButtonNotShadow" parent="Base.Widget.AppCompat.Button">
         <item name="android:outlineProvider">none</item>
     </style>
+
+    <style name="AppFullScreenTheme" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
 </resources>

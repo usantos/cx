@@ -81,6 +81,7 @@
                 android:textSize="17.7sp"
                 android:textStyle="bold"
                 android:text="Salvar"
+                android:textAllCaps="false"
                 android:layout_centerHorizontal="true"
                 android:id="@+id/salvarModalidadesApostaRapidaoSelececao"/>
             <View

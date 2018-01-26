@@ -73,7 +73,7 @@
                     <TextView
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
-                        android:text="0 milhões"
+                        android:text="1 milhão"
                         android:textSize="14.2sp"
                         android:id="@+id/tituloValorMinimoPremiumMiminum"
                         android:textColor="@color/branco"
@@ -404,6 +404,7 @@
                     android:textSize="17.7sp"
                     android:textStyle="bold"
                     android:text="Salvar"
+                    android:textAllCaps="false"
                     android:layout_centerHorizontal="true"
                     android:id="@+id/SalvarApostaRapidao"/>
                 <View

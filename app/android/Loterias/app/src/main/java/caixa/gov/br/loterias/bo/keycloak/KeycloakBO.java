@@ -18,8 +18,8 @@ import java.net.URL;
     public class KeycloakBO {
         private static final String TAG = KeycloakBO.class.getName();
 
-        //  private static final String SERVER_URL = "https://logindes.caixa.gov.br";
-        private static final String SERVER_URL = "http://10.130.9.22:81";
+          private static final String SERVER_URL = "https://logindes.caixa.gov.br";
+//        private static final String SERVER_URL = "http://10.130.9.22:81";
         private static final String AUTH_URL = SERVER_URL +"/auth";
         private static final String AUTH_ENDPOINT = "/realms/r_inter_auth_basic/protocol/openid-connect/auth";
         private static final String ACCESS_TOKEN_ENDPOINT = "/realms/r_inter_auth_basic/protocol/openid-connect/token";

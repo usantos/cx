@@ -1,9 +1,12 @@
 package caixa.gov.br.loterias.view;
 
 
+import android.Manifest;
 import android.animation.ArgbEvaluator;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 
 import com.android.volley.NetworkResponse;
@@ -55,6 +58,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.view.adapter.SideMenuExpandleAdapter;
 
@@ -86,6 +90,8 @@ public class PrincipalActivity extends AppCompatActivity
     private RepassometroDTO repassesSociais;
 
     private DrawerLayout drawerSideMenu;
+
+    private static final int ZXING_CAMERA_PERMISSION = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -519,7 +525,13 @@ public class PrincipalActivity extends AppCompatActivity
         }else if (groupPosition == 3){
             startActivity(new Intent(PrincipalActivity.this, ListaRapidaoActivity.class) );
         }else if(groupPosition == 4){
-
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                    != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.CAMERA}, ZXING_CAMERA_PERMISSION);
+            } else {
+                startActivity(new Intent(PrincipalActivity.this, LerBilhetesEscolhaJogoActivity.class));
+            }
         }else if(groupPosition == 5){
             startActivity(new Intent(PrincipalActivity.this, RepassesSociaisActivity.class));
         }else if(groupPosition == 6){
@@ -596,6 +608,20 @@ public class PrincipalActivity extends AppCompatActivity
                 return false;
             }
         });
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,  String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case ZXING_CAMERA_PERMISSION:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    startActivity(new Intent(PrincipalActivity.this, LerBilhetesActivity.class));
+                } else {
+                    Toast.makeText(this, "Por favor conceda a permissão da câmera para usar o leitor de bilhetes.", Toast.LENGTH_SHORT).show();
+                }
+                return;
+        }
     }
 
 }
