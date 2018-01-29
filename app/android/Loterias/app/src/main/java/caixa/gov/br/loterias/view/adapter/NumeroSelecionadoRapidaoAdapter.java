@@ -13,8 +13,12 @@ import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.NumerosSelecionadosRapidao;
+import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.NumerosRapidaoActivity;
 
 
@@ -24,13 +28,14 @@ public class NumeroSelecionadoRapidaoAdapter extends BaseAdapter {
     private final NumerosSelecionadosRapidao[] numerosSelecionadosRapidao;
     private final NumerosRapidaoActivity parentActivity;
     private final Boolean isObrigatorio;
-
+    private List<Integer> listaNumerosContrariosRapidao = new ArrayList<Integer>();
     // 1
-    public NumeroSelecionadoRapidaoAdapter(NumerosRapidaoActivity parentActivity, Context context, NumerosSelecionadosRapidao[] numerosSelecionadosRapidao, Boolean isObrigatorio) {
+    public NumeroSelecionadoRapidaoAdapter(NumerosRapidaoActivity parentActivity, Context context, NumerosSelecionadosRapidao[] numerosSelecionadosRapidao, Boolean isObrigatorio, List<Integer> listaNumerosContrariosRapidao) {
         this.parentActivity = parentActivity;
         this.mContext = context;
         this.numerosSelecionadosRapidao = numerosSelecionadosRapidao;
         this.isObrigatorio = isObrigatorio;
+        this.listaNumerosContrariosRapidao = listaNumerosContrariosRapidao;
     }
 
     // 2
@@ -96,6 +101,12 @@ public class NumeroSelecionadoRapidaoAdapter extends BaseAdapter {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                for(Integer item : listaNumerosContrariosRapidao){
+                    if (item == numerosSelecionadosRapidao[position].getNumero()){
+                        ViewUtils.alert(mContext, mContext.getString(R.string.MA016));
+                        return;
+                    }
+                }
                 if (isObrigatorio){
                     if (numerosSelecionadosRapidao[position].getSelecionado()) {
                         numerosSelecionadosRapidao[position].setSelecionado(false);

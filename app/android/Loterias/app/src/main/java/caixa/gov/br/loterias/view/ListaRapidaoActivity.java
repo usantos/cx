@@ -57,8 +57,8 @@ public class ListaRapidaoActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.apostasListaRecycleViewRapidao);
 
 
-//        callWebservice(0);
-        mockCarrinho();
+        callWebservice(0);
+//        mockCarrinho();
 
         ViewUtils.organizaTabLayout(this, R.id.carrinhoRapidaoMainLayout, R.id.apostasListaRecycleViewRapidao, R.id.carrinhoRapidaoScrollView);
     }

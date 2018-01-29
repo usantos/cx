@@ -141,6 +141,8 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
                     Intent activity = new Intent(RapidaoConfigActivity.this, NumerosRapidaoActivity.class);
                     String arrayAsString = new Gson().toJson(listaNumerosObrigatorios);
                     activity.putExtra("numerosobrigatorios", arrayAsString);
+                    arrayAsString = new Gson().toJson(listaNumerosProibidos);
+                    activity.putExtra("numerosContrarios", arrayAsString);
                     activity.putExtra("isTipoNrObrigatorios", true);
                     startActivityForResult(activity, 6);
                 }
@@ -163,6 +165,8 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
                     Intent activity = new Intent(RapidaoConfigActivity.this, NumerosRapidaoActivity.class);
                     String arrayAsString = new Gson().toJson(listaNumerosProibidos);
                     activity.putExtra("numerosProibidos", arrayAsString);
+                    arrayAsString = new Gson().toJson(listaNumerosObrigatorios);
+                    activity.putExtra("numerosContrarios", arrayAsString);
                     activity.putExtra("isTipoNrObrigatorios", false);
                     startActivityForResult(activity, 7);
                 }
