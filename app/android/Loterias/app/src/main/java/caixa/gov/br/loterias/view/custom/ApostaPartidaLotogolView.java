@@ -21,6 +21,9 @@ import caixa.gov.br.loterias.bo.silce.dto.PartidaLotogolDTO;
 public class ApostaPartidaLotogolView extends LinearLayout {
 
     @ViewById
+    LinearLayout layoutRowApostaPartidaLotogol;
+
+    @ViewById
     ApostaEquipeLototgolView apostaEquipeLotogolUm, apostaEquipeLotogolDois;
 
     @AfterViews
@@ -43,5 +46,9 @@ public class ApostaPartidaLotogolView extends LinearLayout {
     public void setLayout(PartidaLotogolDTO partidaLotogolDTO) {
         apostaEquipeLotogolUm.setLayout(partidaLotogolDTO.getEquipe1());
         apostaEquipeLotogolDois.setLayout(partidaLotogolDTO.getEquipe2());
+    }
+
+    public LinearLayout getLayoutRowApostaPartidaLotogol() {
+        return layoutRowApostaPartidaLotogol;
     }
 }

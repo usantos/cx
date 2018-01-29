@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
+import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroPartida;
 import caixa.gov.br.loterias.view.custom.PartidaViewLotogol;
 import caixa.gov.br.loterias.utils.interfaces.LotogolListener;
@@ -37,6 +38,9 @@ public class LotogolAdapter extends RecyclerView.Adapter<LotogolAdapter.LotogolH
     public void onBindViewHolder(LotogolHolder holder, int position) {
         holder.partidaRow.setListener(listener);
         holder.partidaRow.setLayout(listaPartidas.get(position));
+        if(position != 0){
+            holder.partidaRow.getRowPartidaLotogol().setBackgroundResource(R.drawable.drawer_linha_divisao_cinza_claro);
+        }
     }
 
     @Override

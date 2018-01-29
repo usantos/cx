@@ -23,6 +23,9 @@ import caixa.gov.br.loterias.view.custom.ItemEquipeViewLotogol;
 public class PartidaViewLotogol extends LinearLayout implements LotogolListener {
 
     @ViewById
+    LinearLayout rowPartidaLotogol;
+
+    @ViewById
     ItemEquipeViewLotogol lotogolTimeUm, lotogolTimeDois;
 
     private ParametroPartida parametroPartida;
@@ -81,5 +84,9 @@ public class PartidaViewLotogol extends LinearLayout implements LotogolListener 
     @Override
     public void atualizarParametrosLotogol(ParametroPartida parametroPartida) {
 
+    }
+
+    public LinearLayout getRowPartidaLotogol() {
+        return rowPartidaLotogol;
     }
 }

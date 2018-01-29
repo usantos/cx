@@ -81,13 +81,22 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
             }
         });
 
-        if(apostas.get(position).getPartidasLoteca() != null && !apostas.get(position).getPartidasLoteca().isEmpty()){
+        if (apostas.get(position).getPartidasLoteca() != null && !apostas.get(position).getPartidasLoteca().isEmpty()) {
             DetalheApostaLotecaAdapter detalheApostaLotecaAdapter = new DetalheApostaLotecaAdapter(apostas.get(position).getPartidasLoteca());
             holder.recycleViewDetalheAposta.setLayoutManager(new LinearLayoutManager(parentActivity));
             holder.recycleViewDetalheAposta.setAdapter(detalheApostaLotecaAdapter);
             holder.recycleViewDetalheAposta.setExpanded(true);
 
             holder.layoutCabecalhoLoteca.setVisibility(View.VISIBLE);
+        } else if (apostas.get(position).getPartidasLotogol() != null && !apostas.get(position).getPartidasLotogol().isEmpty()) {
+            DetalheApostaLotogolAdapter detalheApostaLotogolAdapter = new DetalheApostaLotogolAdapter(apostas.get(position).getPartidasLotogol());
+            holder.recycleViewDetalheAposta.setLayoutManager(new LinearLayoutManager(parentActivity));
+            holder.recycleViewDetalheAposta.setAdapter(detalheApostaLotogolAdapter);
+            holder.recycleViewDetalheAposta.setExpanded(true);
+
+            ViewGroup.MarginLayoutParams marginLayoutParams = (ViewGroup.MarginLayoutParams) holder.recycleViewDetalheAposta.getLayoutParams();
+            marginLayoutParams.setMargins(0, 16, 0, 0);
+            holder.recycleViewDetalheAposta.setLayoutParams(marginLayoutParams);
         }
 
         String numeroStr = "";

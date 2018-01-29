@@ -47,8 +47,9 @@ public class ApostaEquipeLototgolView extends LinearLayout {
     }
 
     public void setLayout(EquipeDTO equipeDTO) {
+        String paisTime = (equipeDTO.getIndicadorSelecao() ? "" : equipeDTO.getSiglaPais());
 
-        String descricao = String.format("%s%n%s", equipeDTO.getNome(), equipeDTO.getUf());
+        String descricao = String.format("%s%n%s", equipeDTO.getNome(), paisTime);
 
         this.imagemEscudoApostaPartidaLotogol.setImageResource(R.drawable.time);
         this.imagemPlacarApostaPartidaLotogol.setImageResource(placarImagem(equipeDTO.getPlacar()));
