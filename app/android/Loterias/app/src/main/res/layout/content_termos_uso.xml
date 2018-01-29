@@ -31,7 +31,7 @@
                 android:textAlignment="center"
                 android:textColor="@color/branco"
                 android:textSize="12sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/buttonPolitica"
@@ -43,8 +43,8 @@
                 android:textAlignment="center"
                 android:textColor="@color/verdeazul"
                 android:textSize="12sp"
-                android:visibility="invisible"
                 android:textStyle="bold"
+                android:visibility="invisible"
 
                 />
 
@@ -62,22 +62,80 @@
                 android:visibility="invisible" />
         </LinearLayout>
 
-        <ScrollView
+        <RelativeLayout
+            android:id="@+id/relativeLayouTermoAceite"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="30dp"
-            android:layout_marginHorizontal="15dp"
-            android:layout_marginTop="40dp">
+            android:layout_height="wrap_content">
 
-            <WebView xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/webViewConteudo"
+            <ScrollView
+                android:id="@+id/scrollViewTermoAceite"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:layout_marginBottom="30dp"
+                android:layout_marginHorizontal="15dp"
+                android:layout_marginTop="40dp">
 
-        </ScrollView>
+                <WebView xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/webViewConteudo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
 
+            </ScrollView>
 
+            <RelativeLayout
+                android:id="@+id/footerAceiteTermo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/drawer_linha_divisao_cinza_claro">
+
+                <LinearLayout
+                    android:id="@+id/layoutClickAceiteTermo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <android.support.v7.widget.AppCompatCheckBox
+                        android:id="@+id/selcioneAceiteTermoUso"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="17dp"
+                        android:layout_marginTop="16dp"
+                        android:background="@drawable/check_box_selected"
+                        android:button="@color/transparente50"
+                        android:clickable="false"
+                        android:checked="true"/>
+
+                    <TextView
+                        android:id="@+id/textoTermoAceite"
+                        style="@style/ArialMT"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="10dp"
+                        android:clickable="false"
+                        android:text="@string/label_declaracao_termo_uso"
+                        android:textColor="@color/cinza"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/buttonTermoAceite"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:layout_alignTop="@+id/layoutClickAceiteTermo"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="55dp"
+                    android:background="@color/amarelo"
+                    android:text="@string/label_cotinuar"
+                    android:textAllCaps="false"
+                    android:textColor="@color/branco"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+            </RelativeLayout>
+
+        </RelativeLayout>
     </LinearLayout>
-
-
 </android.support.constraint.ConstraintLayout>

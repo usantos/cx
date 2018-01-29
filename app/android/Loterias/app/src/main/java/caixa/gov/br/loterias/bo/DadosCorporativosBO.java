@@ -24,6 +24,7 @@ import caixa.gov.br.loterias.bo.silce.dto.LotericaDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.MunicipioDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.ParametrosSimulacaoResponse;
 import caixa.gov.br.loterias.bo.silce.dto.RepassometroDTOResponse;
+import caixa.gov.br.loterias.bo.silce.dto.ResourceResponse;
 import caixa.gov.br.loterias.bo.silce.dto.TermoDeUsoDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.UnidadeFederacaoDTOResponse;
 import caixa.gov.br.loterias.bo.silce.internals.SilceConnection;
@@ -39,20 +40,20 @@ public class DadosCorporativosBO {
     private Context context;
 
 
-    public DadosCorporativosBO(Context context){
+    public DadosCorporativosBO(Context context) {
         this.context = context;
 
         setupSilceClient();
     }
 
-    private void setupSilceClient(){
+    private void setupSilceClient() {
         SilceSingleton queue = new SilceSingleton(context);
         SilceConnection conn = SilceConnection.create(queue.getRequestQueue(), BuildConfig.CAIXA_BASE_URL_SILCE);
         silceClient = SilceClient.create(conn);
     }
 
     public void ufs(final SilceClient.Listener<UnidadeFederacaoDTOResponse> listener,
-                             final SilceClient.ErrorListener errorListener) {
+                    final SilceClient.ErrorListener errorListener) {
 
         LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
 
@@ -63,7 +64,7 @@ public class DadosCorporativosBO {
     }
 
     public void municipios(String idUf, final SilceClient.Listener<MunicipioDTOResponse> listener,
-                    final SilceClient.ErrorListener errorListener) {
+                           final SilceClient.ErrorListener errorListener) {
 
         LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
         queryParams.put("idUF", idUf);
@@ -95,7 +96,7 @@ public class DadosCorporativosBO {
     }
 
     public void termo(final SilceClient.Listener<TermoDeUsoDTOResponse> listener,
-                    final SilceClient.ErrorListener errorListener) {
+                      final SilceClient.ErrorListener errorListener) {
 
         LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
 
@@ -106,7 +107,7 @@ public class DadosCorporativosBO {
     }
 
     public void repasses(final SilceClient.Listener<RepassometroDTOResponse> listener,
-                          final SilceClient.ErrorListener errorListener) {
+                         final SilceClient.ErrorListener errorListener) {
 
         LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
         LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
@@ -117,7 +118,7 @@ public class DadosCorporativosBO {
     }
 
     public void parametrosSimulacao(final SilceClient.Listener<ParametrosSimulacaoResponse> listener,
-                         final SilceClient.ErrorListener errorListener) {
+                                    final SilceClient.ErrorListener errorListener) {
 
         LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
         LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
@@ -129,8 +130,8 @@ public class DadosCorporativosBO {
 
 
     public void validarApostaFavorita(final ApostaFavoritaDTO aposta,
-                                     final SilceClient.Listener<NetworkResponse> listener,
-                                     final SilceClient.ErrorListener errorListener) {
+                                      final SilceClient.Listener<NetworkResponse> listener,
+                                      final SilceClient.ErrorListener errorListener) {
 
         LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
         headers.put("Authorization", "Bearer " + UsuarioLogadoSingleton.getInstance().token);
@@ -138,12 +139,12 @@ public class DadosCorporativosBO {
         silceClient.getConnection().post(SilceClient.VALIDAR_FAVORITA_PATH, new LinkedHashMap<String, String>(),
                 aposta, NetworkResponse.class,
                 silceClient.volleyListener(listener, NetworkResponse.class),
-                silceClient.volleyErrorListener(errorListener),headers);
+                silceClient.volleyErrorListener(errorListener), headers);
     }
 
     public void salvarApostaFavorita(final ApostaFavoritaDTO aposta,
-                           final SilceClient.Listener<NetworkResponse> listener,
-                           final SilceClient.ErrorListener errorListener) {
+                                     final SilceClient.Listener<NetworkResponse> listener,
+                                     final SilceClient.ErrorListener errorListener) {
 
         LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
         headers.put("Authorization", "Bearer " + UsuarioLogadoSingleton.getInstance().token);
@@ -152,7 +153,7 @@ public class DadosCorporativosBO {
         silceClient.getConnection().post(SilceClient.INCLUIR_FAVORITA_PATH, new LinkedHashMap<String, String>(),
                 aposta, NetworkResponse.class,
                 silceClient.volleyListener(listener, NetworkResponse.class),
-                silceClient.volleyErrorListener(errorListener),headers);
+                silceClient.volleyErrorListener(errorListener), headers);
     }
 
     public void buscarLotericasHabilitadas(final SilceClient.Listener<ListDTOEnumIntegerResponse> listener, final SilceClient.ErrorListener errorListerner) {
@@ -181,7 +182,7 @@ public class DadosCorporativosBO {
                 silceClient.volleyListener(listener, LotericaDTOResponse.class), silceClient.volleyErrorListener(errorListerner), new LinkedHashMap<String, String>());
     }
 
-    public void buscarLoteriasCodigoCompleto(String codigoCompleto, final SilceClient.Listener<LotericaCodigoWrapperResponse> listener, final SilceClient.ErrorListener errorListerner){
+    public void buscarLoteriasCodigoCompleto(String codigoCompleto, final SilceClient.Listener<LotericaCodigoWrapperResponse> listener, final SilceClient.ErrorListener errorListerner) {
         LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
         queryParams.put("codigoCompleto", codigoCompleto);
 
@@ -189,12 +190,36 @@ public class DadosCorporativosBO {
                 silceClient.volleyListener(listener, LotericaCodigoWrapperResponse.class), silceClient.volleyErrorListener(errorListerner), new LinkedHashMap<String, String>());
     }
 
+    public void validaTermoAceito(final SilceClient.Listener<ResourceResponse> listener,
+                                  final SilceClient.ErrorListener errorListener) {
+
+        LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
+        headers.put("Authorization", "Bearer " + UsuarioLogadoSingleton.getInstance().token);
+
+        silceClient.getConnection().get(SilceClient.TERMO_VALIDA_ACEITO_PATH, new LinkedHashMap<String, String>(), ResourceResponse.class,
+                silceClient.volleyListener(listener, ResourceResponse.class),
+                silceClient.volleyErrorListener(errorListener), headers);
+
+    }
+
+    public void aceiteTermo(final SilceClient.Listener<ResourceResponse> listener,
+                                  final SilceClient.ErrorListener errorListener) {
+
+        LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
+        headers.put("Authorization", "Bearer " + UsuarioLogadoSingleton.getInstance().token);
+
+        silceClient.getConnection().post(SilceClient.TERMO_ACEITAR_PATH, new LinkedHashMap<String, String>(), null, ResourceResponse.class,
+                silceClient.volleyListener(listener, ResourceResponse.class),
+                silceClient.volleyErrorListener(errorListener), headers);
+
+    }
+
     private static <T> String join(Collection<T> collection, String delimiter) {
         StringBuffer result = new StringBuffer("");
         boolean first = true;
 
-        for(T e : collection) {
-            if(!first) {
+        for (T e : collection) {
+            if (!first) {
                 result.append(delimiter);
                 first = true;
             }

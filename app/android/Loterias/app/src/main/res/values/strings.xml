@@ -157,4 +157,6 @@
     <string name="title_activity_ler_bilhetes">LerBilhetesActivity</string>
     <string name="title_activity_ler_bilhetes_escolha_jogo">Resultado</string>
     <string name="label_x_minusculo">x</string>
+    <string name="label_declaracao_termo_uso">Declaro ter lido e concordado com os\ntermos de uso</string>
+    <string name="label_cotinuar">Continuar</string>
 </resources>
