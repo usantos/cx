@@ -75,6 +75,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
     private AppCompatCheckBox selcioneEspelhoSurpresinha;
 
     String dataSorteioAtual;
+    public BigDecimal valorTotalAposta;
 
     public SurpresinhaFragment() {
         // Required empty public constructor
@@ -84,6 +85,14 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         View fragmentView = getView();
+
+        if(isTipoLotomania){
+            LinearLayout layoutEspelhoSurpresinha = fragmentView.findViewById(R.id.layoutEspelhoSurpresinha);
+            layoutEspelhoSurpresinha.setVisibility(View.VISIBLE);
+            layoutEspelhoSurpresinha.setOnClickListener(this);
+
+            selcioneEspelhoSurpresinha = layoutEspelhoSurpresinha.findViewById(R.id.selcioneEspelhoSurpresinha);
+        }
         configuraBotoes(fragmentView);
         configuraListaDezenas(fragmentView);
         configurarComponentesTimeMania();
@@ -96,16 +105,9 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
             divisaoLinhaDois.setVisibility(View.GONE);
             brasaoTimeSurpresa.setVisibility(View.GONE);
             infoTimeSurpresa.setVisibility(View.GONE);
-            ;
             botaoEscolhaOutrotime.setVisibility(View.GONE);
         }
-        if(isTipoLotomania){
-            LinearLayout layoutEspelhoSurpresinha = fragmentView.findViewById(R.id.layoutEspelhoSurpresinha);
-            layoutEspelhoSurpresinha.setVisibility(View.VISIBLE);
-            layoutEspelhoSurpresinha.setOnClickListener(this);
 
-            selcioneEspelhoSurpresinha = (AppCompatCheckBox) layoutEspelhoSurpresinha.findViewById(R.id.selcioneEspelhoSurpresinha);
-        }
     }
 
     private void configurarComponentesTimeMania() {
@@ -271,6 +273,12 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
                 ViewUtils.setMoedaFormatHtml(valorEmReais, valorAposta);
             }
         }
+        if (isTipoLotomania && selcioneEspelhoSurpresinha.isChecked()) {
+            valorEmReais = valorEmReais.multiply(Constantes.DOIS_BIG_DECIMAL);
+            ViewUtils.setMoedaFormatHtml(valorEmReais, valorAposta);
+        }
+
+        valorTotalAposta = valorEmReais;
     }
 
     public void adicionarSurpresinhaNoCarrinho() {
@@ -374,6 +382,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         }else {
             selcioneEspelhoSurpresinha.setChecked(Boolean.TRUE);
         }
+        atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
     }
 
     // Adapter do gridview das dezenas

@@ -54,11 +54,11 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 
 
 import caixa.gov.br.loterias.R;
@@ -161,7 +161,7 @@ public class PrincipalActivity extends AppCompatActivity
                 sessaoUser.setValorMinimimoAposta(response.getPayload().getValorMinimoCarrinho());
                 sessaoUser.setValorMaximoAposta(response.getPayload().getValorLimiteDiario());
 
-                if(modalidadesParaListar == null || modalidadesParaListar.size() == 0){
+                if (modalidadesParaListar == null || modalidadesParaListar.size() == 0) {
                     startActivity(new Intent(PrincipalActivity.this, ListaRapidaoActivity.class));
                     finish();
                     return;
@@ -246,7 +246,7 @@ public class PrincipalActivity extends AppCompatActivity
                     itemToolbarTrevo.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            if(modalidadesParaListar != null && modalidadesParaListar.size() > 0){
+                            if (modalidadesParaListar != null && modalidadesParaListar.size() > 0) {
                                 if (relativePrincipal.isEnabled()) {
                                     AnimacaoAbrirMenuRapido(v);
                                 } else {
@@ -371,7 +371,7 @@ public class PrincipalActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_rapidao) {
 
-            startActivity(new Intent(PrincipalActivity.this, ListaRapidaoActivity.class) );
+            startActivity(new Intent(PrincipalActivity.this, ListaRapidaoActivity.class));
         } else if (id == R.id.nav_bilhetes) {
 
         } else if (id == R.id.nav_sociais) {
@@ -492,9 +492,9 @@ public class PrincipalActivity extends AppCompatActivity
         RelativeLayout relativerapidao = (RelativeLayout) findViewById(R.id.RelativeLayoutContentRapidao);
         relativerapidao.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 AnimacaoFecharMenuRapido(relativePrincipal);
-                startActivity(new Intent(PrincipalActivity.this, ListaRapidaoActivity.class) );
+                startActivity(new Intent(PrincipalActivity.this, ListaRapidaoActivity.class));
             }
         });
     }
@@ -516,23 +516,23 @@ public class PrincipalActivity extends AppCompatActivity
         RelativeLayout relativefavoritas = (RelativeLayout) findViewById(R.id.RelativeLayoutContentFavoritas);
         relativefavoritas.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 AnimacaoFecharMenuRapido(relativePrincipal);
-                startActivity(new Intent(PrincipalActivity.this, FavoritasActivity.class) );
+                startActivity(new Intent(PrincipalActivity.this, FavoritasActivity.class));
             }
         });
     }
 
-    private void AbrirMenusGroup(int groupPosition){
-        if (groupPosition == 0){
+    private void AbrirMenusGroup(int groupPosition) {
+        if (groupPosition == 0) {
 
-        }else if (groupPosition == 1){
+        } else if (groupPosition == 1) {
             drawerSideMenu.closeDrawers();
-        }else if (groupPosition == 2){
+        } else if (groupPosition == 2) {
 
-        }else if (groupPosition == 3){
-            startActivity(new Intent(PrincipalActivity.this, ListaRapidaoActivity.class) );
-        }else if(groupPosition == 4){
+        } else if (groupPosition == 3) {
+            startActivity(new Intent(PrincipalActivity.this, ListaRapidaoActivity.class));
+        } else if (groupPosition == 4) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
                     != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this,
@@ -540,28 +540,28 @@ public class PrincipalActivity extends AppCompatActivity
             } else {
                 startActivity(new Intent(PrincipalActivity.this, ResultadoLerBilhetesActivity.class));
             }
-        }else if(groupPosition == 5){
+        } else if (groupPosition == 5) {
             startActivity(new Intent(PrincipalActivity.this, RepassesSociaisActivity.class));
-        }else if(groupPosition == 6){
+        } else if (groupPosition == 6) {
             sairLogin();
         }
     }
 
-    private void AbrirMenusItens(int itemPosition){
-        if (itemPosition == 0){
+    private void AbrirMenusItens(int itemPosition) {
+        if (itemPosition == 0) {
 
-        }else if (itemPosition == 1){
+        } else if (itemPosition == 1) {
 
-        }else if (itemPosition == 2){
+        } else if (itemPosition == 2) {
             startActivity(new Intent(PrincipalActivity.this, ListaComprasActivity.class));
-        }else if (itemPosition == 3){
+        } else if (itemPosition == 3) {
             startActivity(new Intent(PrincipalActivity.this, FavoritasActivity.class));
-        }else if(itemPosition == 4){
+        } else if (itemPosition == 4) {
 
         }
     }
 
-    private void layoutSideMenu(){
+    private void layoutSideMenu() {
 
         final ExpandableListView expandableListView;
         final ExpandableListAdapter expandableListAdapter;
@@ -594,10 +594,8 @@ public class PrincipalActivity extends AppCompatActivity
 //                        Toast.LENGTH_SHORT).show();
                 AbrirMenusGroup(groupPosition);
             }
+
         });
-
-
-
         expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v,
@@ -620,7 +618,7 @@ public class PrincipalActivity extends AppCompatActivity
 
 
     @Override
-    public void onRequestPermissionsResult(int requestCode,  String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
             case ZXING_CAMERA_PERMISSION:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {

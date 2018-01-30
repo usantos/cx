@@ -238,10 +238,8 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
 
     public void atualizaTextoBotoesQtdSelecionadas() {
         qtdNumerosButton.setText(format("%d números", qtdDezenasPossiveisSelecionado));
-        if (qtdConcursosList.size() == 1) {
+        if ((qtdConcursosList != null && !qtdConcursosList.isEmpty()) && (qtdConcursosList.size() == 1 || qtdConcursoSelecionado == 0)) {
             qtdConcursosButton.setText(qtdConcursosList.get(0));
-        } else if (qtdConcursoSelecionado == 0) {
-            qtdConcursosButton.setText("1 concurso");
         } else {
             qtdConcursosButton.setText(format("%d concurso", qtdConcursoSelecionado));
         }
@@ -523,7 +521,14 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
     public void adicionarApostaCarrinho() {
         Intent activity = new Intent(this, ConfirmadoInclusaoCarrinhoActivity.class);
         activity.putExtra("tipoAposta", tipoJogo);
-        activity.putExtra("valorAposta", cartelaFragment.valorTotalAposta);
+
+        if(fragmentManager.findFragmentById(R.id.fragmentSimularApostas) instanceof CartelaFragment){
+
+            activity.putExtra("valorAposta", cartelaFragment.valorTotalAposta);
+        }else{
+
+            activity.putExtra("valorAposta", surpresinhaFragment.valorTotalAposta);
+        }
         activity.putExtra("modalidade", (new Gson()).toJson(parametroSimulacao));
         startActivityForResult(activity, 0);
     }

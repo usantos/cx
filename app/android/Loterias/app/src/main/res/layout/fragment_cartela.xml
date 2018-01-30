@@ -160,10 +160,13 @@
                 android:id="@+id/recyclerViewPartida"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center"
+                android:orientation="vertical"
                 android:clickable="false"
                 android:nestedScrollingEnabled="false"
                 android:paddingBottom="119dp"
-                android:paddingTop="60dp" />
+                android:paddingTop="60dp"/>
 
         </android.support.constraint.ConstraintLayout>
     </ScrollView>

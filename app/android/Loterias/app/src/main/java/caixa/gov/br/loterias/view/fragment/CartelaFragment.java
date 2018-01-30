@@ -127,9 +127,15 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
             }
         } else if (parametroJogo.getValorApostaMinima() != null) {
             valorEmReais = parametroJogo.getValorApostaMinima();
+        } else if (parametroJogo.getConcurso().getValorApostaMinima() != null) {
+            valorEmReais = parametroJogo.getConcurso().getValorApostaMinima();
         }
         if (qtdTeimosinhas != 0) {
             valorEmReais = valorEmReais.multiply(BigDecimal.valueOf(qtdTeimosinhas).movePointLeft(0));
+        }
+
+        if (isTipoLotomania && selcioneOutrosNumeros.isChecked()) {
+            valorEmReais = valorEmReais.multiply(Constantes.DOIS_BIG_DECIMAL);
         }
 
         ViewUtils.setMoedaFormatHtml(valorEmReais, valorAposta);
@@ -412,8 +418,6 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
                 count.setText(String.format(Locale.getDefault(), "%d", qtdCartelasCarrinho));
 
-                valorTotalAposta = valorTotalAposta.multiply(new BigDecimal(apostas.size()));
-
                 cartelaFragmentListener.adicionarApostaCarrinho();
             }
         }, new SilceClient.ErrorListener() {
@@ -497,6 +501,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
     private void limparOpcaoOutrosNumerosLayout() {
         if (isTipoLotomania && opcaoOutrosNumerosLayout.getVisibility() == View.VISIBLE) {
             setVisibilityCheckedNumerosLayout(View.GONE);
+            atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
         }
     }
 
@@ -560,7 +565,11 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                 IdentificaoDeUmaApostaDas8Modalidades apostaEspelho = getApostaPreenchida();
 
                 aposta.setEspelho(true);
+                aposta.setValor(aposta.getValor().divide(Constantes.DOIS_BIG_DECIMAL));
+
                 apostaEspelho.setNumerosSelecionados(dezenasApostaEspelho);
+                apostaEspelho.setValor(aposta.getValor());
+
                 apostas.add(aposta);
                 apostas.add(apostaEspelho);
 
@@ -587,6 +596,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                 } else {
                     selcioneOutrosNumeros.setChecked(true);
                 }
+                atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
             }
         });
     }
@@ -741,13 +751,15 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
                 List<ParametroEquipe> parametroEquipeList = parametroJogo.getEquipes();
                 listaEquipefiltro.clear();
-                if (charSequence.length() >= 3 && !contemIfem) {
+                if (StringUtils.isNotEmpty(charSequence.toString()) && !contemIfem) {
                     for (ParametroEquipe parametroEquipe : parametroEquipeList) {
                         if (parametroEquipe.getNome().toUpperCase().contains(charSequence.toString().toUpperCase())) {
                             listaEquipefiltro.add(parametroEquipe);
                         }
                     }
+                } else if (contemIfem) {
                     informeNomeTime.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
+                    listaEquipefiltro.addAll(parametroEquipeList);
                 } else {
                     listaEquipefiltro.addAll(parametroEquipeList);
                     informeNomeTime.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);

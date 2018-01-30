@@ -134,6 +134,7 @@ public class PartidaView extends LinearLayout {
         lotecaTimeDois.getItemDescription().setText(parametroPartida.getEquipe2().getIndicadorSelecao() ? "" : parametroPartida.getEquipe2().getSiglaPais());
 
         lotecaEmpate.setSelected(parametroPartida.isEmpate());
+        lotecaEmpate.getItemImage().setPadding(14,18,14,18);
     }
 
     public PartidaView(Context context) {
