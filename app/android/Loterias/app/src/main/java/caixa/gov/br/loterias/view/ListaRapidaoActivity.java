@@ -90,8 +90,6 @@ public class ListaRapidaoActivity extends AppCompatActivity {
         thisIsAnIntArray.add(6);
         thisIsAnIntArray.add(5);
 
-        aposta.setNumerosSelecionados(thisIsAnIntArray);
-
         DTOEnumInteger indicadorSurpresinha = new DTOEnumInteger();
         indicadorSurpresinha.setValor(1);
         indicadorSurpresinha.setDescricao("");

@@ -41,14 +41,12 @@ public class CarrinhoApostasListViewRapidaoAdapter extends RecyclerView.Adapter<
 
     static class ApostaHolder extends RecyclerView.ViewHolder{
         final TextView textViewTipoAposta;
-        final TextView numerosAposta;
         final TextView valorAposta;
 
         ApostaHolder(View view){
             super(view);
 
             textViewTipoAposta = view.findViewById(R.id.tipoAposta);
-            numerosAposta = view.findViewById(R.id.numerosText);
             valorAposta = view.findViewById(R.id.valorAposta);
         }
     }
@@ -96,7 +94,6 @@ public class CarrinhoApostasListViewRapidaoAdapter extends RecyclerView.Adapter<
             }
         }
 
-        holder.numerosAposta.setText(numeroStr);
         holder.valorAposta.setText(caixa.gov.br.loterias.utils.ViewUtils.getMoedaFormat(apostas.get(position).getValor()));
     }
 

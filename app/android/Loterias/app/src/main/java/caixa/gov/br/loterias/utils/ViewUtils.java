@@ -242,6 +242,23 @@ public class ViewUtils {
         textMessageView.setTypeface(getFontFutura(context));
     }
 
+    public static void alertTitleButtonPositiveListener(Context context, int title, String message, int buttonName, DialogInterface.OnClickListener listener) {
+        Dialog dialog = ViewUtils.dialogo(context, title, message)
+                .setCancelable(true)
+                .setNegativeButton(R.string.cancelar, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .setPositiveButton(buttonName, listener).show();
+
+        DialogTitle textTitleView = ((DialogTitle) dialog.findViewById(R.id.alertTitle));
+        TextView textMessageView = ((TextView) dialog.findViewById(android.R.id.message));
+        textTitleView.setTypeface(getFontFuturaBold(context));
+        textMessageView.setTypeface(getFontFutura(context));
+    }
+
     public static void loading(Context context) {
         ViewUtils.dismissLoading();
         progress = ProgressDialog.show(

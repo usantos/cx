@@ -3,6 +3,8 @@ package caixa.gov.br.loterias.view;
 
 import android.Manifest;
 import android.animation.ArgbEvaluator;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.Nullable;
@@ -385,21 +387,27 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     private void sairLogin() {
-        final View loadViewProgress = LoadingViewLoterias.init(this);
 
-        DadosUsuarioBO dadosUsuarioBO = new DadosUsuarioBO(PrincipalActivity.this);
-        dadosUsuarioBO.sair(new SilceClient.Listener<NetworkResponse>() {
+        ViewUtils.alertTitleButtonPositiveListener(this, R.string.label_atencao, getResources().getString(R.string.MA008), R.string.label_cotinuar, new DialogInterface.OnClickListener() {
             @Override
-            public void onResponse(NetworkResponse response) {
-                LoadingViewLoterias.stop(loadViewProgress);
-                startActivity(new Intent(PrincipalActivity.this, LoginActivity.class));
-                finish();
-            }
-        }, new SilceClient.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                LoadingViewLoterias.stop(loadViewProgress);
-                ViewUtils.alert(PrincipalActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
+            public void onClick(DialogInterface dialog, int which) {
+                final View loadViewProgress = LoadingViewLoterias.init(PrincipalActivity.this);
+
+                DadosUsuarioBO dadosUsuarioBO = new DadosUsuarioBO(PrincipalActivity.this);
+                dadosUsuarioBO.sair(new SilceClient.Listener<NetworkResponse>() {
+                    @Override
+                    public void onResponse(NetworkResponse response) {
+                        LoadingViewLoterias.stop(loadViewProgress);
+                        startActivity(new Intent(PrincipalActivity.this, LoginActivity.class));
+                        finish();
+                    }
+                }, new SilceClient.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        LoadingViewLoterias.stop(loadViewProgress);
+                        ViewUtils.alert(PrincipalActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
+                    }
+                });
             }
         });
     }
