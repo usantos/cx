@@ -58,7 +58,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
 
     Button botaoMenosSurpresinha, botaoEscolhaOutrotime, botaoMaisSurpresinha, botaoAdicionarSurpresinhaAoCarrinho;
 
-    private View divisaoLinhaUm, divisaoLinhaDois;
+    private View divisaoLinhaDois;
 
     private TextView infoTimeSurpresa;
 
@@ -93,7 +93,6 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         }
 
         if (!isTipoTimeMania) {
-            divisaoLinhaUm.setVisibility(View.GONE);
             divisaoLinhaDois.setVisibility(View.GONE);
             brasaoTimeSurpresa.setVisibility(View.GONE);
             infoTimeSurpresa.setVisibility(View.GONE);
@@ -110,7 +109,6 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
     }
 
     private void configurarComponentesTimeMania() {
-        divisaoLinhaUm = getView().findViewById(R.id.divisaoLinhaUm);
         divisaoLinhaDois = getView().findViewById(R.id.divisaoLinhaDois);
         brasaoTimeSurpresa = getView().findViewById(R.id.brasaoTimeSurpresa);
         infoTimeSurpresa = getView().findViewById(R.id.infoTimeSurpresa);
@@ -408,7 +406,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
             TextView textView;
             GradientDrawable shape = new GradientDrawable();
 
-            int sizeItens = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 45, getActivity().getResources().getDisplayMetrics());
+            int sizeItens = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40, getActivity().getResources().getDisplayMetrics());
 
             if (view == null) {
                 textView = new TextView(this.context);

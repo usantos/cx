@@ -46,10 +46,16 @@
         <caixa.gov.br.loterias.view.custom.ExpandableHeightGridView
             android:id="@+id/listaDezenasSurpresinha"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_marginHorizontal="10dp"
-            android:layout_marginTop="61dp"
-            android:columnWidth="50dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="17dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="40dp"
+            android:paddingStart="29dp"
+            android:paddingEnd="29dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:background="@drawable/drawer_linha_divisao_cinza_claro_top_bottom"
+            android:columnWidth="40dp"
             android:gravity="center"
             android:horizontalSpacing="15dp"
             android:numColumns="auto_fit"
@@ -57,24 +63,15 @@
             android:verticalSpacing="9dp"
             app:layout_constraintTop_toBottomOf="@+id/surpresinhaInfo" />
 
-        <View
-            android:id="@+id/divisaoLinhaUm"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="20dp"
-            android:background="@color/cinzaclaro"
-            app:layout_constraintTop_toBottomOf="@+id/listaDezenasSurpresinha" />
-
         <ImageView
             android:id="@+id/brasaoTimeSurpresa"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="106dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:src="@drawable/time_surpresa"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/divisaoLinhaUm" />
+            app:layout_constraintTop_toBottomOf="@+id/listaDezenasSurpresinha" />
 
         <TextView
             android:id="@+id/infoTimeSurpresa"
@@ -82,7 +79,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="31dp"
             android:text="@string/time_surpresa"
             android:textAlignment="center"
             android:textColor="@color/megasenamedio"
@@ -107,8 +104,10 @@
             android:id="@+id/divisaoLinhaDois"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginBottom="40dp"
             android:layout_marginTop="20dp"
+            android:layout_marginBottom="21dp"
+            android:layout_marginStart="17dp"
+            android:layout_marginEnd="16dp"
             android:background="@color/cinzaclaro"
             app:layout_constraintTop_toBottomOf="@+id/escolherOutroTimeBtn" />
 
@@ -122,7 +121,7 @@
             android:layout_marginLeft="45dp"
             android:layout_marginRight="45dp"
             android:layout_marginStart="45dp"
-            android:layout_marginTop="41dp"
+            android:layout_marginTop="20dp"
             android:text="@string/surpresinhaQtdInfo"
             android:textAlignment="center"
             android:textColor="@color/cinza"

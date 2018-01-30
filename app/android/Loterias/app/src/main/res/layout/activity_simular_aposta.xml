@@ -88,7 +88,7 @@
                     android:fontFamily="@font/arialmt"
                     android:gravity="center_vertical"
                     android:paddingLeft="3dp"
-                    android:text="1 concurso"
+                    android:text=""
                     android:textAllCaps="false"
                     android:textColor="@color/branco"
                     android:textSize="14sp" />

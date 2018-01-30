@@ -143,7 +143,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
     }
 
     private void configuraParametrosJogo() {
-        if(parametroSimulacao != null) {
+        if (parametroSimulacao != null) {
             for (ParametroValorApostaDTO parametro : parametroSimulacao.getValoresAposta()) {
                 qtdNumerosList.add("" + parametro.getNumeroPrognosticos() + " números por " + ViewUtils.getMoedaFormat(parametro.getValor()));
             }
@@ -238,7 +238,9 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
 
     public void atualizaTextoBotoesQtdSelecionadas() {
         qtdNumerosButton.setText(format("%d números", qtdDezenasPossiveisSelecionado));
-        if (qtdConcursoSelecionado == 0) {
+        if (qtdConcursosList.size() == 1) {
+            qtdConcursosButton.setText(qtdConcursosList.get(0));
+        } else if (qtdConcursoSelecionado == 0) {
             qtdConcursosButton.setText("1 concurso");
         } else {
             qtdConcursosButton.setText(format("%d concurso", qtdConcursoSelecionado));
@@ -296,10 +298,14 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
             @Override
             public void onClick(View v) {
                 qtdNumerosButton.setText(textoBotaoPrognosticosSelecionado);
-                cartelaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
-                cartelaFragment.atualizaStatusBotaoFinalizar();
-                if (surpresinhaFragment.parametroJogo != null) {
-                    surpresinhaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
+
+                if (fragmentManager.findFragmentById(R.id.fragmentSimularApostas) instanceof CartelaFragment) {
+                    cartelaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
+                    cartelaFragment.atualizaStatusBotaoFinalizar();
+                } else {
+                    if (surpresinhaFragment.parametroJogo != null) {
+                        surpresinhaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
+                    }
                 }
                 dialog.dismiss();
             }
@@ -355,10 +361,17 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
             @Override
             public void onClick(View v) {
                 qtdConcursosButton.setText(textoBotaoSurpresinhasSelecionado);
-                cartelaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
-                if (surpresinhaFragment.parametroJogo != null) {
-                    surpresinhaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
+
+                if (fragmentManager.findFragmentById(R.id.fragmentSimularApostas) instanceof CartelaFragment) {
+
+                    cartelaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
+                } else {
+
+                    if (surpresinhaFragment.parametroJogo != null) {
+                        surpresinhaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
+                    }
                 }
+
                 dialog.dismiss();
             }
         });
