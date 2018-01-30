@@ -6,8 +6,10 @@ import com.android.volley.NetworkResponse;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import caixa.gov.br.loterias.BuildConfig;
 import caixa.gov.br.loterias.bo.silce.SilceClient;
@@ -17,12 +19,16 @@ import caixa.gov.br.loterias.bo.silce.dto.AgrupadorDTOApostaDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.AgrupadorDTOApostaFavoritaDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.ApostaFavoritaDTO;
 import caixa.gov.br.loterias.bo.silce.dto.CarrinhoDTOResponse;
+import caixa.gov.br.loterias.bo.silce.dto.ConsultaBilheteDTO;
 import caixa.gov.br.loterias.bo.silce.dto.EscudoEquipeEsportivaDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import caixa.gov.br.loterias.bo.silce.dto.IncluirSurpresinhaDTO;
 import caixa.gov.br.loterias.bo.silce.dto.ModalidadeDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.RapidaoDTO;
 import caixa.gov.br.loterias.bo.silce.dto.RapidaoDTOResponse;
+import caixa.gov.br.loterias.bo.silce.dto.ResultadoConsultaBilheteDTOResponse;
+import caixa.gov.br.loterias.bo.silce.dto.ResultadoPesquisaPaginadaDTO;
+import caixa.gov.br.loterias.bo.silce.dto.ResultadoPesquisaPaginadaDTOCompraDTOResponse;
 import caixa.gov.br.loterias.bo.silce.internals.SilceConnection;
 import caixa.gov.br.loterias.bo.silce.internals.SilceSingleton;
 
@@ -193,5 +199,40 @@ public class ApostaBO {
 
         silceClient.getConnection().get(SilceClient.APOSTAS_FAVORITAS_PATH, new LinkedHashMap<String, String>(), AgrupadorDTOApostaFavoritaDTOResponse.class,
                 silceClient.volleyListener(listener, AgrupadorDTOApostaFavoritaDTOResponse.class), silceClient.volleyErrorListener(errorListerner), headers);
+    }
+
+    public void postConferirBilhetes(final String codigoBilhete,
+                             final SilceClient.Listener<ResultadoConsultaBilheteDTOResponse> listener,
+                             final SilceClient.ErrorListener errorListener) {
+
+        LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
+        headers.put("Authorization", "Bearer " + UsuarioLogadoSingleton.getInstance().token);
+
+        Map<String,String> params = new HashMap<String, String>();
+        params.put("codigo", codigoBilhete);
+        params.put("grecaptchaResponse", " ");
+
+
+        silceClient.getConnection().post(SilceClient.BILHETES_CONFERIR_BILHETE_PATH, new LinkedHashMap<String, String>(),
+                params, ResultadoConsultaBilheteDTOResponse.class,
+                silceClient.volleyListener(listener, ResultadoConsultaBilheteDTOResponse.class),
+                silceClient.volleyErrorListener(errorListener), headers);
+    }
+
+    public void getCompras(final SilceClient.Listener<ResultadoPesquisaPaginadaDTOCompraDTOResponse> listener, final SilceClient.ErrorListener errorListerner) {
+        LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
+        headers.put("Authorization", "Bearer " + UsuarioLogadoSingleton.getInstance().token);
+
+        LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
+
+        queryParams.put("mes", String.valueOf("2018"));
+        queryParams.put("ano", String.valueOf("1"));
+        queryParams.put("offset", String.valueOf("0"));
+        queryParams.put("size", String.valueOf("5"));
+
+        silceClient.getConnection().get(SilceClient.COMPRAS_PATH, queryParams, ResultadoPesquisaPaginadaDTOCompraDTOResponse.class,
+                silceClient.volleyListener(listener, ResultadoPesquisaPaginadaDTOCompraDTOResponse.class),
+                silceClient.volleyErrorListener(errorListerner), headers);
+
     }
 }

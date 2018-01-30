@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="caixa.gov.br.loterias.view.ResultadoLerBilhetesActivity"
+    tools:showIn="@layout/activity_resultado_ler_bilhetes">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:orientation="horizontal"
+                android:background="@color/megasenaclaro"
+                >
+
+                <LinearLayout
+                    android:layout_width="90dp"
+                    android:layout_height="56dp"
+                    android:background="@drawable/background_trapeze_megasena">
+                    <ImageView
+                        android:layout_width="22sp"
+                        android:layout_height="22dp"
+                        android:src="@drawable/trevo"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="16dp"/>
+                </LinearLayout>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="mega-sena"
+                    android:layout_gravity="center_vertical"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/futura_std_bold"
+                    android:textColor="@color/branco"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="111dp"
+                android:background="@color/megasenaescuro">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Não foi dessa vez :("
+                    android:textColor="@color/branco"
+                    android:textAlignment="center"
+                    android:layout_gravity="center_vertical"
+                    android:textSize="21sp"
+                    android:fontFamily="@font/futura_std_bold"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="156dp"
+                android:background="@color/cinza"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="78dp"
+                    android:orientation="horizontal"
+                    >
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="78dp"
+                        android:layout_weight="0.5"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="40dp"
+                            android:fontFamily="@font/arialmt"
+                            android:text="Limite diário"
+                            android:textAlignment="textStart"
+                            android:textColor="@color/branco"
+                            android:textSize="14.2sp"
+                            android:textStyle="bold"
+                            android:layout_marginLeft="16dp"
+                            />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/arialmt"
+                            android:text="nº 1456"
+                            android:textAlignment="textStart"
+                            android:textColor="@color/branco"
+                            android:textSize="14.2sp"
+                            android:layout_marginLeft="16dp"
+                            />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="78dp"
+                        android:layout_weight="0.5"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="40dp"
+                            android:fontFamily="@font/arialmt"
+                            android:text="Próximo sorteio"
+                            android:textAlignment="textEnd"
+                            android:textColor="@color/branco"
+                            android:textSize="14.2sp"
+                            android:textStyle="bold"
+                            android:layout_marginRight="16dp"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/arialmt"
+                            android:text="09/12"
+                            android:textAlignment="textEnd"
+                            android:textColor="@color/branco"
+                            android:textSize="14.2sp"
+                            android:layout_marginRight="16dp"/>
+
+
+                    </LinearLayout>
+                </LinearLayout>
+                <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="78dp"
+                android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="78dp"
+                        android:layout_weight="0.5"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:fontFamily="@font/arialmt"
+                            android:text="Abertura da aposta"
+                            android:textAlignment="textStart"
+                            android:textColor="@color/branco"
+                            android:textSize="14.2sp"
+                            android:textStyle="bold"
+                            android:layout_marginLeft="16dp"
+                            />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/arialmt"
+                            android:text="10/04 | 18:00"
+                            android:textAlignment="textStart"
+                            android:textColor="@color/branco"
+                            android:textSize="14.2sp"
+                            android:layout_marginLeft="16dp"
+                            />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="78dp"
+                        android:layout_weight="0.5"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:fontFamily="@font/arialmt"
+                            android:text="Encerramento"
+                            android:textAlignment="textEnd"
+                            android:textColor="@color/branco"
+                            android:textSize="14.2sp"
+                            android:textStyle="bold"
+                            android:layout_marginRight="16dp"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/arialmt"
+                            android:text="11/04 | 15h50"
+                            android:textAlignment="textEnd"
+                            android:textColor="@color/branco"
+                            android:textSize="14.2sp"
+                            android:layout_marginRight="16dp"/>
+
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="147dp"
+                android:background="@color/branco"
+                android:orientation="vertical"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:textAlignment="center"
+                    android:text="Prêmio"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/arialmt"
+                    android:textColor="@color/cinza"
+                    />
+                <TextView
+                    android:layout_marginTop="7dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="R$ 999.999.999,99"
+                    android:textColor="@color/verdeazul"
+                    android:textSize="20.1sp"
+                    android:fontFamily="@font/futura_std_bold"
+                    android:textAlignment="center"/>
+            </LinearLayout>
+        
+    </LinearLayout>
+
+</LinearLayout>

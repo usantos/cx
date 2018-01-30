@@ -44,6 +44,9 @@ public class SilceClient {
     public static final String APOSTAS_FAVORITAS_PATH = "/apostas-favoritas";
 
     public static final String EQUIPES_ESPORTIVAS_ESCUDO_PATH = "/equipes-esportivas/{id}/escudo";
+    public static final String BILHETES_CONFERIR_BILHETE_PATH = "/bilhetes/conferir-bilhete";
+
+    public static final String COMPRAS_PATH = "/compras";
 
     public interface Listener<T> {
         public void onResponse(T response);

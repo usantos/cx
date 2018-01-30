@@ -8,25 +8,42 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.ListView;
 import android.widget.Toast;
+
+import com.android.volley.VolleyError;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.bo.ApostaBO;
+import caixa.gov.br.loterias.bo.silce.SilceClient;
+import caixa.gov.br.loterias.bo.silce.dto.CarrinhoDTOResponse;
+import caixa.gov.br.loterias.bo.silce.dto.DetalhesPremioDTO;
+import caixa.gov.br.loterias.bo.silce.dto.ResultadoPesquisaPaginadaCompraDTO;
+import caixa.gov.br.loterias.bo.silce.dto.ResultadoPesquisaPaginadaDTOCompraDTOResponse;
 import caixa.gov.br.loterias.utils.ExpandableListDataPump;
+import caixa.gov.br.loterias.utils.MensagensNetwork;
+import caixa.gov.br.loterias.utils.ViewUtils;
+import caixa.gov.br.loterias.view.adapter.ListaComprasAdapter;
 import caixa.gov.br.loterias.view.adapter.ListaComprasExpandleAdapter;
+import caixa.gov.br.loterias.view.adapter.TiposApostasMultiplaSelecaoAdapter;
+import caixa.gov.br.loterias.view.custom.ExpandableHeightGridView;
+import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
 
 public class ListaComprasActivity extends AppCompatActivity {
 
-    ExpandableListView expandableListView;
-    ExpandableListAdapter expandableListAdapter;
-    List<String> expandableListTitle;
-    HashMap<String, List<String>> expandableListDetail;
+//    ExpandableListView expandableListView;
+//    ExpandableListAdapter expandableListAdapter;
+//    List<String> expandableListTitle;
+//    HashMap<String, List<String>> expandableListDetail;
 
+    ResultadoPesquisaPaginadaCompraDTO resultadoPesquisaPaginadaCompraDTO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +54,7 @@ public class ListaComprasActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        layoutListView();
+        callWebService();
 
     }
 
@@ -84,49 +101,84 @@ public class ListaComprasActivity extends AppCompatActivity {
         startActivity(activity);
     }
 
+    private void callWebService(){
 
-    private void layoutListView(){
-        expandableListView = (ExpandableListView) findViewById(R.id.comprasExpandableListView);
-        expandableListDetail = ExpandableListDataPump.getData();
-        expandableListTitle = new ArrayList<String>(expandableListDetail.keySet());
-        expandableListAdapter = new ListaComprasExpandleAdapter(this, expandableListTitle, expandableListDetail);
-        expandableListView.setAdapter(expandableListAdapter);
-        expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+        final View loadViewProgress = LoadingViewLoterias.init(this);
+        final ApostaBO apostaBO = new ApostaBO(ListaComprasActivity.this);
 
+        apostaBO.getCompras(new SilceClient.Listener<ResultadoPesquisaPaginadaDTOCompraDTOResponse>() {
             @Override
-            public void onGroupExpand(int groupPosition) {
-                Toast.makeText(getApplicationContext(),
-                        expandableListTitle.get(groupPosition) + " List Expanded.",
-                        Toast.LENGTH_SHORT).show();
+            public void onResponse(ResultadoPesquisaPaginadaDTOCompraDTOResponse response) {
+                LoadingViewLoterias.stop(loadViewProgress);
+                resultadoPesquisaPaginadaCompraDTO = response.getPayload();
+
+                montarLayout();
             }
-        });
-
-        expandableListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
-
+        }, new SilceClient.ErrorListener() {
             @Override
-            public void onGroupCollapse(int groupPosition) {
-                Toast.makeText(getApplicationContext(),
-                        expandableListTitle.get(groupPosition) + " List Collapsed.",
-                        Toast.LENGTH_SHORT).show();
-
-            }
-        });
-
-        expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v,
-                                        int groupPosition, int childPosition, long id) {
-                Toast.makeText(
-                        getApplicationContext(),
-                        expandableListTitle.get(groupPosition)
-                                + " -> "
-                                + expandableListDetail.get(
-                                expandableListTitle.get(groupPosition)).get(
-                                childPosition), Toast.LENGTH_SHORT
-                ).show();
-                return false;
+            public void onErrorResponse(VolleyError error) {
+                LoadingViewLoterias.stop(loadViewProgress);
+                ViewUtils.alert(ListaComprasActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
             }
         });
     }
+
+    private void montarLayout(){
+        ListView listView = (ListView)findViewById(R.id.gridviewCompras);
+        ListaComprasAdapter listaAdapter = new ListaComprasAdapter(this, resultadoPesquisaPaginadaCompraDTO.getLista());
+        listView.setAdapter(listaAdapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                startActivity(new Intent(ListaComprasActivity.this, DetalhesComprasActivity.class));
+            }
+        });
+    }
+
+
+//    private void layoutListView(){
+//        expandableListView = (ExpandableListView) findViewById(R.id.comprasExpandableListView);
+//        expandableListDetail = ExpandableListDataPump.getData();
+//        expandableListTitle = new ArrayList<String>(expandableListDetail.keySet());
+//        expandableListAdapter = new ListaComprasExpandleAdapter(this, expandableListTitle, expandableListDetail);
+//        expandableListView.setAdapter(expandableListAdapter);
+//        expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+//
+//            @Override
+//            public void onGroupExpand(int groupPosition) {
+//                Toast.makeText(getApplicationContext(),
+//                        expandableListTitle.get(groupPosition) + " List Expanded.",
+//                        Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//
+//        expandableListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
+//
+//            @Override
+//            public void onGroupCollapse(int groupPosition) {
+//                Toast.makeText(getApplicationContext(),
+//                        expandableListTitle.get(groupPosition) + " List Collapsed.",
+//                        Toast.LENGTH_SHORT).show();
+//
+//            }
+//        });
+//
+//        expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+//            @Override
+//            public boolean onChildClick(ExpandableListView parent, View v,
+//                                        int groupPosition, int childPosition, long id) {
+//                Toast.makeText(
+//                        getApplicationContext(),
+//                        expandableListTitle.get(groupPosition)
+//                                + " -> "
+//                                + expandableListDetail.get(
+//                                expandableListTitle.get(groupPosition)).get(
+//                                childPosition), Toast.LENGTH_SHORT
+//                ).show();
+//                return false;
+//            }
+//        });
+//    }
 
 }

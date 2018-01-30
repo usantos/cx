@@ -87,8 +87,6 @@
     <string name="MN002"> Idade informada menor que 18 anos.</string>
     <string name="MA003"> Você tem mais de 18 anos?</string>
     <string name="MA016">Um número não pode ser marcado como obrigatório e proibido.</string>
-    <string name="MA008">Tem certeza que deseja sair?</string>
-
     <string name="msg_favor_inserir_nome_aposta">Favor inserir um nome para sua aposta favorita</string>
     <string name="msg_erro_data_invalida"> Data Inválida</string>
 
@@ -159,6 +157,8 @@
     <string name="title_activity_ler_bilhetes">LerBilhetesActivity</string>
     <string name="title_activity_ler_bilhetes_escolha_jogo">Resultado</string>
     <string name="label_x_minusculo">x</string>
+    <string name="title_activity_resultado_ler_bilhetes">Resultado</string>
+    <string name="title_activity_detalhes_compras">Apostas da Compra</string>
     <string name="label_declaracao_termo_uso">Declaro ter lido e concordado com os\ntermos de uso</string>
     <string name="label_cotinuar">Continuar</string>
 </resources>

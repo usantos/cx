@@ -35,8 +35,13 @@ public class LerBilhetesActivity extends AppCompatActivity{
         if(result != null) {
             if(result.getContents() == null) {
                 Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
+                finish();
             } else {
-                Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
+//                Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
+                Intent activity = new Intent(this, ResultadoLerBilhetesActivity.class);
+                activity.putExtra("codigoBarras", result.getContents());
+                startActivity(activity);
+                finish();
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);

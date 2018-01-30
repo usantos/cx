@@ -167,8 +167,17 @@
             android:theme="@style/AppFullScreenTheme" />
         <activity
             android:name=".view.LerBilhetesEscolhaJogoActivity"
-            android:screenOrientation="portrait"
             android:label="@string/title_activity_ler_bilhetes_escolha_jogo"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.DegradeActionBar" />
+        <activity
+            android:name=".view.ResultadoLerBilhetesActivity"
+            android:label="@string/title_activity_resultado_ler_bilhetes"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.DegradeActionBar" />
+        <activity
+            android:name=".view.DetalhesComprasActivity"
+            android:label="@string/title_activity_detalhes_compras"
             android:theme="@style/AppTheme.DegradeActionBar"></activity>
     </application>
 

@@ -538,7 +538,7 @@ public class PrincipalActivity extends AppCompatActivity
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.CAMERA}, ZXING_CAMERA_PERMISSION);
             } else {
-                startActivity(new Intent(PrincipalActivity.this, LerBilhetesEscolhaJogoActivity.class));
+                startActivity(new Intent(PrincipalActivity.this, ResultadoLerBilhetesActivity.class));
             }
         }else if(groupPosition == 5){
             startActivity(new Intent(PrincipalActivity.this, RepassesSociaisActivity.class));

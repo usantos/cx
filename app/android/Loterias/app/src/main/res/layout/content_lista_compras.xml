@@ -21,14 +21,21 @@
             android:layout_marginHorizontal="17dp"
             android:layout_marginTop="40dp"/>
 
-        <ExpandableListView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/comprasExpandableListView"
-            android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft"
-            android:divider="@color/cinza"
-            android:dividerHeight="0.5dp"
-            android:layout_marginTop="40dp"></ExpandableListView>
+        <!--<ExpandableListView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:id="@+id/comprasExpandableListView"-->
+            <!--android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft"-->
+            <!--android:divider="@color/cinza"-->
+            <!--android:dividerHeight="0.5dp"-->
+            <!--android:layout_marginTop="40dp"></ExpandableListView>-->
+                <ListView
+                    android:id="@+id/gridviewCompras"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="19dp"
+                    android:layout_marginBottom="10dp"
+                    />
 
         </LinearLayout>
 
