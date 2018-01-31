@@ -138,7 +138,7 @@ public class TermosUsoActivity extends AppCompatActivity {
             public void onResponse(TermoDeUsoDTOResponse response) {
                 termoHtml = response.getPayload().getConteudo();
 
-                webViewConteudo.loadData(termoHtml, "text/html", "UTF-8");
+                webViewConteudo.loadData(termoHtml, "text/html; charset=UTF-8", "UTF-8");
                 LoadingViewLoterias.stop(loadViewProgress);
                 verificaTermoAceito();
             }

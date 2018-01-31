@@ -40,6 +40,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.bo.silce.dto.ModalidadeEnum;
@@ -108,12 +109,12 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
     int typeGameColorDark;
 
 
-    ArrayList<String> qtdNumerosList = new ArrayList<String>();
-    ArrayList<String> qtdConcursosList = new ArrayList<String>();
+    List<String> qtdNumerosList;
+    List<String> qtdConcursosList;
     ModalidadeEnum tipoJogo;
 
-    String textoBotaoPrognosticosSelecionado = "";
-    String textoBotaoSurpresinhasSelecionado = "";
+    String textoBotaoPrognosticosSelecionado;
+    String textoBotaoSurpresinhasSelecionado;
 
     int alertDialogPosicaoSelecionada;
     TipoDialog tipoDialogMostrando;
@@ -135,6 +136,11 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
     @AfterViews
     protected void init() {
         invalidateOptionsMenu();
+        qtdNumerosList = new ArrayList<String>();
+        qtdConcursosList= new ArrayList<String>();
+
+        String textoBotaoPrognosticosSelecionado = "";
+        String textoBotaoSurpresinhasSelecionado = "";
 
         parametroSimulacao = new Gson().fromJson(getIntent().getStringExtra("modalidade"), ParametroJogoDTO.class);
         configuraParametrosJogo();
@@ -530,6 +536,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
             activity.putExtra("valorAposta", surpresinhaFragment.valorTotalAposta);
         }
         activity.putExtra("modalidade", (new Gson()).toJson(parametroSimulacao));
+        this.init();
         startActivityForResult(activity, 0);
     }
 
