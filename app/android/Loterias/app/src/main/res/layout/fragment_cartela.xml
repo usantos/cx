@@ -64,36 +64,6 @@
                     </RelativeLayout>
                 </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/layoutTitleLoteca"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingLeft="17dp"
-                    android:paddingTop="20dp"
-                    android:visibility="gone">
-
-                    <TextView
-                        android:id="@+id/titleInformeBold"
-                        style="@style/ArialMT"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/label_informe"
-                        android:textColor="@color/verdeazul"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/titleContinue"
-                        style="@style/ArialMT"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="20dp"
-                        android:layout_marginLeft="6dp"
-                        android:text="@string/label_resultado_das_partidas."
-                        android:textColor="@color/verdeazul"
-                        android:textSize="14sp" />
-                </LinearLayout>
 
                 <caixa.gov.br.loterias.view.custom.ExpandableHeightGridView
                     android:id="@+id/listaDezenas"
@@ -156,18 +126,60 @@
 
             </LinearLayout>
 
-            <caixa.gov.br.loterias.view.custom.ExpandableHeightRecyclerView
-                android:id="@+id/recyclerViewPartida"
+            <LinearLayout
+                android:id="@+id/layoutRecyclerViewPartida"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_gravity="center_horizontal"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:clickable="false"
-                android:nestedScrollingEnabled="false"
-                android:paddingBottom="119dp"
-                android:paddingTop="60dp"/>
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/layoutTitleLoteca"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:orientation="horizontal"
+                        android:paddingTop="20dp"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:id="@+id/titleInformeBold"
+                            style="@style/ArialMT"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/label_informe"
+                            android:textColor="@color/verdeazul"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/titleContinue"
+                            style="@style/ArialMT"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="20dp"
+                            android:layout_marginStart="6dp"
+                            android:text="@string/label_resultado_das_partidas."
+                            android:textColor="@color/verdeazul"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <caixa.gov.br.loterias.view.custom.ExpandableHeightRecyclerView
+                        android:id="@+id/recyclerViewPartida"
+                        android:layout_width="wrap_content"
+                        android:layout_height="200dp"
+                        android:layout_gravity="center_horizontal"
+                        android:clickable="false"
+                        android:nestedScrollingEnabled="false"
+                        android:orientation="vertical"
+                        android:paddingBottom="119dp" />
+                </LinearLayout>
+            </LinearLayout>
         </android.support.constraint.ConstraintLayout>
     </ScrollView>
 
@@ -176,8 +188,8 @@
         android:layout_width="match_parent"
         android:layout_height="74dp"
         android:background="@color/cinza"
-        android:orientation="horizontal"
         android:clickable="true"
+        android:orientation="horizontal"
         android:visibility="gone">
 
         <android.support.v7.widget.AppCompatCheckBox

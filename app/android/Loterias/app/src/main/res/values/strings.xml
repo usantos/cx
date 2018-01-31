@@ -161,4 +161,6 @@
     <string name="title_activity_detalhes_compras">Apostas da Compra</string>
     <string name="label_declaracao_termo_uso">Declaro ter lido e concordado com os\ntermos de uso</string>
     <string name="label_cotinuar">Continuar</string>
+    <string name="MA008">Tem certeza que deseja sair?</string>
+
 </resources>

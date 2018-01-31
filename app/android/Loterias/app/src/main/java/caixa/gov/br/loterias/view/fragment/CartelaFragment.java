@@ -207,13 +207,6 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
             infoPaginacao.setText(ViewUtils.fromHtml(Constantes.PAGINACAO_UM_DOIS));
         }
 
-        ViewUtils.organizaTabLayout(
-
-                getActivity(), R.id.cartelaFragmentMainLayout, idList, R.id.cartelaFragmentScrollView);
-        ((ScrollView) view.findViewById(R.id.cartelaFragmentScrollView)).
-
-                fullScroll(ScrollView.FOCUS_UP);
-
         if (!isEscolhaTimeCoracaoSurpresinha)
 
         {
@@ -222,6 +215,8 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
             verificaSeMostraSalvarApostaView();
         }
 
+        ViewUtils.organizaTabLayout(getActivity(), R.id.cartelaFragmentMainLayout, idList, R.id.cartelaFragmentScrollView);
+        ((ScrollView) view.findViewById(R.id.cartelaFragmentScrollView)).fullScroll(ScrollView.FOCUS_UP);
     }
 
 
