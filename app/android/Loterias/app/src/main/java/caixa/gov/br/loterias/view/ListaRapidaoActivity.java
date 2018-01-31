@@ -2,17 +2,16 @@ package caixa.gov.br.loterias.view;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 
@@ -32,17 +31,19 @@ import caixa.gov.br.loterias.bo.silce.dto.DTOEnumCharacter;
 import caixa.gov.br.loterias.bo.silce.dto.DTOEnumInteger;
 import caixa.gov.br.loterias.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import caixa.gov.br.loterias.bo.silce.dto.ModalidadeEnum;
-import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
 import caixa.gov.br.loterias.utils.MensagensNetwork;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.adapter.CarrinhoApostasListViewRapidaoAdapter;
+import caixa.gov.br.loterias.view.custom.ExpandableHeightRecyclerView;
+import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
 
 public class ListaRapidaoActivity extends AppCompatActivity {
 
 
     public CarrinhoDTO carrinho;
-    private RecyclerView recyclerView;
+    private ExpandableHeightRecyclerView recyclerView;
     public List<IdentificaoDeUmaApostaDas8Modalidades> apostas;
+    private TextView valorTotalCarrinhoRapidao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +56,7 @@ public class ListaRapidaoActivity extends AppCompatActivity {
 
 
         recyclerView = findViewById(R.id.apostasListaRecycleViewRapidao);
+        valorTotalCarrinhoRapidao = findViewById(R.id.valorTotalCarrinhoRapidao);
 
 
         callWebservice(0);
@@ -64,7 +66,7 @@ public class ListaRapidaoActivity extends AppCompatActivity {
     }
 
 
-    private void mockCarrinho () {
+    private void mockCarrinho() {
         carrinho = new CarrinhoDTO();
 
         apostas = new ArrayList<IdentificaoDeUmaApostaDas8Modalidades>();
@@ -118,35 +120,34 @@ public class ListaRapidaoActivity extends AppCompatActivity {
         aposta.setVinculoEspelho(new Long(0));
         aposta.setQuantidadeNumeros(6);
         aposta.setSurpresinha(false);
-        apostas.add(aposta);
-        apostas.add(aposta);
-        apostas.add(aposta);
-        apostas.add(aposta);
-        apostas.add(aposta);
-        apostas.add(aposta);
-        apostas.add(aposta);
-        apostas.add(aposta);
-        apostas.add(aposta);
-        apostas.add(aposta);
-        apostas.add(aposta);
-        apostas.add(aposta);
-        apostas.add(aposta);
-        apostas.add(aposta);
-        apostas.add(aposta);
-        apostas.add(aposta);
-        apostas.add(aposta);
-        apostas.add(aposta);
-        apostas.add(aposta);
-        apostas.add(aposta);
-        apostas.add(aposta);
-        apostas.add(aposta);
-        apostas.add(aposta);
-        apostas.add(aposta);
-        apostas.add(aposta);
-        apostas.add(aposta);
+        aposta.setNumerosSelecionados(thisIsAnIntArray);
 
-
-
+        apostas.add(aposta);
+        apostas.add(aposta);
+        apostas.add(aposta);
+        apostas.add(aposta);
+        apostas.add(aposta);
+        apostas.add(aposta);
+        apostas.add(aposta);
+        apostas.add(aposta);
+        apostas.add(aposta);
+        apostas.add(aposta);
+        apostas.add(aposta);
+        apostas.add(aposta);
+        apostas.add(aposta);
+        apostas.add(aposta);
+        apostas.add(aposta);
+        apostas.add(aposta);
+        apostas.add(aposta);
+        apostas.add(aposta);
+        apostas.add(aposta);
+        apostas.add(aposta);
+        apostas.add(aposta);
+        apostas.add(aposta);
+        apostas.add(aposta);
+        apostas.add(aposta);
+        apostas.add(aposta);
+        apostas.add(aposta);
 
 
         carrinho.setApostas(apostas);
@@ -155,16 +156,16 @@ public class ListaRapidaoActivity extends AppCompatActivity {
     }
 
 
-    public void atualizaLayout () {
+    public void atualizaLayout() {
         configuraActivityCarrinho();
-        if (apostas != null){
+        if (apostas != null) {
             configuraRecyclerViewCarrinhoAposta();
         }
         configuraListeners();
     }
 
     @Override
-    public boolean onSupportNavigateUp(){
+    public boolean onSupportNavigateUp() {
         finish();
 
         return true;
@@ -197,7 +198,7 @@ public class ListaRapidaoActivity extends AppCompatActivity {
         if (id == R.id.action_duvida) {
             return true;
         }
-        if (id == R.id.action_config_rapidao){
+        if (id == R.id.action_config_rapidao) {
             abrirConfigRapidao();
             return true;
         }
@@ -205,21 +206,21 @@ public class ListaRapidaoActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void abrirConfigRapidao(){
+    private void abrirConfigRapidao() {
         Intent activity = new Intent(this, RapidaoConfigActivity.class);
         startActivity(activity);
     }
 
 
-    private void configuraActivityCarrinho(){
-        if (getSupportActionBar() != null){
+    private void configuraActivityCarrinho() {
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
         getSupportActionBar().setBackgroundDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.navigation_gradient, null));
     }
 
-    private void configuraListeners(){
+    private void configuraListeners() {
         ((Button) findViewById(R.id.botaoAvancarPagamentoRapidao)).setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.avancarFormaPagamento)));
 
 
@@ -255,20 +256,15 @@ public class ListaRapidaoActivity extends AppCompatActivity {
         });
     }
 
-    private void configuraRecyclerViewCarrinhoAposta(){
+    private void configuraRecyclerViewCarrinhoAposta() {
         RecyclerView.LayoutManager layout = new LinearLayoutManager(this,
                 LinearLayoutManager.VERTICAL, false);
 
-
-        int sizeitem = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 48 * apostas.size(), this.getResources().getDisplayMetrics());
-
-
-        ConstraintLayout.LayoutParams layoutCarrinhoAposta = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, sizeitem);
-        layoutCarrinhoAposta.topToBottom = R.id.infoPacoteRapidao;
-        recyclerView.setLayoutParams(layoutCarrinhoAposta);
-        recyclerView.setAdapter(new CarrinhoApostasListViewRapidaoAdapter(this, (ArrayList<IdentificaoDeUmaApostaDas8Modalidades>) carrinho.getApostas(), this));
+        recyclerView.setAdapter(new CarrinhoApostasListViewRapidaoAdapter(this, (ArrayList<IdentificaoDeUmaApostaDas8Modalidades>) apostas, this));
         recyclerView.setLayoutManager(layout);
         recyclerView.setNestedScrollingEnabled(false);
+        recyclerView.setExpanded(true);
+        valorTotal();
     }
 
 //    private void limpaCarrinho(){
@@ -296,6 +292,16 @@ public class ListaRapidaoActivity extends AppCompatActivity {
                 ViewUtils.alert(ListaRapidaoActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
             }
         });
+    }
+
+    private void valorTotal(){
+        BigDecimal valorTotal = BigDecimal.ZERO;
+
+        for (IdentificaoDeUmaApostaDas8Modalidades aposta: apostas){
+            valorTotal = valorTotal.add(aposta.getValor());
+        }
+
+        ViewUtils.setMoedaFormatHtml(valorTotal, valorTotalCarrinhoRapidao);
     }
 
 }

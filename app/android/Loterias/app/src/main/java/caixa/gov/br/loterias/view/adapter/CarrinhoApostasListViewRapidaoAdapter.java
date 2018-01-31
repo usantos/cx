@@ -117,6 +117,7 @@ public class CarrinhoApostasListViewRapidaoAdapter extends RecyclerView.Adapter<
 //        });
         parentActivity.apostas.remove(position);
         parentActivity.atualizaLayout();
+
     }
 
     @Override
