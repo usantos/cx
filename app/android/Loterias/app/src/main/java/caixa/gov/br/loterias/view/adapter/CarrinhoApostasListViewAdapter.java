@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -87,14 +88,15 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
         holder.textViewTipoAposta.setText(ViewUtils.capitalized(ModalidadeEnum.fromString(aposta.getModalidade())));
         holder.dadosApostaCarrinho.setBackgroundResource(estilo.getCorEscura());
 
-        TextView quantidadeApostadas = (TextView) holder.dadosApostaCarrinho.findViewById(R.id.quantidadeApostadas);
-        TextView quantidadeSorteios = (TextView) holder.dadosApostaCarrinho.findViewById(R.id.quantidadeSorteios);
+        TextView quantidadeApostadas = holder.dadosApostaCarrinho.findViewById(R.id.quantidadeApostadas);
+        TextView quantidadeSorteios = holder.dadosApostaCarrinho.findViewById(R.id.quantidadeSorteios);
+        Button buttonApostaEspelho = holder.dadosApostaCarrinho.findViewById(R.id.buttonApostaEspelho);
 
         String quantidadeApostadasString = "";
         String quantidadeSorteiosString = "";
 
         int quantidadeNumeros = aposta.getQuantidadeNumeros() != null ? aposta.getQuantidadeNumeros() : 0;
-        int uantidadeTeimosinhas = aposta.getQuantidadeTeimosinhas() == null && aposta.getQuantidadeTeimosinhas() == 0 ? 1 : aposta.getQuantidadeTeimosinhas();
+        int quantidadeTeimosinhas = aposta.getQuantidadeTeimosinhas() == null || aposta.getQuantidadeTeimosinhas() == 0 ? 1 : aposta.getQuantidadeTeimosinhas();
 
         if (quantidadeNumeros > 1) {
             quantidadeApostadasString = context.getString(R.string.label_numeros);
@@ -102,14 +104,18 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
             quantidadeApostadasString = context.getString(R.string.label_numero);
         }
 
-        if (uantidadeTeimosinhas > 1) {
+        if (quantidadeTeimosinhas > 1) {
             quantidadeSorteiosString = context.getString(R.string.label_sorteios);
         } else {
             quantidadeSorteiosString = context.getString(R.string.label_sorteio);
         }
 
         quantidadeApostadas.setText(String.format(Locale.getDefault(), "%d %s", quantidadeNumeros, quantidadeApostadasString));
-        quantidadeSorteios.setText(String.format(Locale.getDefault(), "%d %s", uantidadeTeimosinhas, quantidadeSorteiosString));
+        quantidadeSorteios.setText(String.format(Locale.getDefault(), "%d %s", quantidadeTeimosinhas, quantidadeSorteiosString));
+
+        if(aposta.getEspelho()){
+            buttonApostaEspelho.setVisibility(View.VISIBLE);
+        }
 
         holder.itemView.findViewById(R.id.excluirApostaCarrinho).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,7 +138,6 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
             holder.recycleViewDetalheAposta.setExpanded(true);
 
             ViewGroup.MarginLayoutParams marginLayoutParams = (ViewGroup.MarginLayoutParams) holder.recycleViewDetalheAposta.getLayoutParams();
-            marginLayoutParams.setMargins(0, 5, 0, 0);
             holder.recycleViewDetalheAposta.setLayoutParams(marginLayoutParams);
         }
 
