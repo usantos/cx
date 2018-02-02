@@ -163,4 +163,10 @@
     <string name="label_cotinuar">Continuar</string>
     <string name="MA008">Tem certeza que deseja sair?</string>
 
+    <string name="label_voce_apostou">Você apostou</string>
+    <string name="label_para">Para</string>
+    <string name="label_numero">número</string>
+    <string name="label_numeros">números</string>
+    <string name="label_sorteio">sorteio</string>
+    <string name="label_sorteios">sorteios</string>
 </resources>

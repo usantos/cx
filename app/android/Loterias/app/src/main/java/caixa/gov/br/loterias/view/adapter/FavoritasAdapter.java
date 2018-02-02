@@ -22,7 +22,6 @@ import caixa.gov.br.loterias.utils.ViewUtils;
  */
 
 
-
 public class FavoritasAdapter extends BaseAdapter {
 
     private final Context mContext;
@@ -66,27 +65,28 @@ public class FavoritasAdapter extends BaseAdapter {
         final ApostaFavoritaDTO aposta = apostaFavorita.get(position);
 
 
-        final RelativeLayout relativeLayoutContentFavoritas = (RelativeLayout)convertView.findViewById(R.id.RelativeLayoutContentFavoritas);
-        final RelativeLayout relativeLayoutContentAlterarFavoritas = (RelativeLayout)convertView.findViewById(R.id.RelativeLayoutContentAlterarFavoritas);
+        final RelativeLayout relativeLayoutContentFavoritas = (RelativeLayout) convertView.findViewById(R.id.RelativeLayoutContentFavoritas);
+        final RelativeLayout relativeLayoutContentAlterarFavoritas = (RelativeLayout) convertView.findViewById(R.id.RelativeLayoutContentAlterarFavoritas);
 
 
-        final TextView tituloApostaFavorira = (TextView)convertView.findViewById(R.id.tituloApostaFavorira);
+        final TextView tituloApostaFavorira = (TextView) convertView.findViewById(R.id.tituloApostaFavorira);
 //        tituloApostaFavorira.setText(aposta.getModalidade().getDescricao());
 
-        final TextView numerosApostaFavorita = (TextView)convertView.findViewById(R.id.numerosApostaFavorita);
+        final TextView numerosApostaFavorita = (TextView) convertView.findViewById(R.id.numerosApostaFavorita);
         String numeroStr = "";
-        for (Integer num: aposta.getNumerosSelecionados()) {
+        for (Integer num : aposta.getNumerosSelecionados()) {
             if (num == (aposta.getNumerosSelecionados().get(aposta.getNumerosSelecionados().size() - 1))) {
                 numeroStr += String.format("%02d", num);
-            }else {
+            } else {
                 numeroStr += String.format("%02d - ", num);
             }
         }
         numerosApostaFavorita.setText(numeroStr);
 
-            convertView.setOnTouchListener(new View.OnTouchListener() {
-                private String TAG = "Favoritas";
-                float initialX;
+        convertView.setOnTouchListener(new View.OnTouchListener() {
+            private String TAG = "Favoritas";
+            float initialX;
+
             @Override
             public boolean onTouch(View v, final MotionEvent event) {
                 int action = event.getActionMasked();
@@ -100,7 +100,7 @@ public class FavoritasAdapter extends BaseAdapter {
                     case MotionEvent.ACTION_MOVE:
                         Log.d(TAG, "Action was MOVE");
 //                        Log.d("event.getX()", "event.getX(): " + event.getX());
-                        Float now =  event.getX();
+                        Float now = event.getX();
                         Float distX = now - initialX;
                         int widthView = relativeLayoutContentFavoritas.getWidth();
                         int d = (int) Math.min(distX, widthView - ViewUtils.setDisplayMetric(70, mContext));
@@ -124,7 +124,7 @@ public class FavoritasAdapter extends BaseAdapter {
                         break;
 
                     case MotionEvent.ACTION_CANCEL:
-                        Log.d(TAG,"Action was CANCEL");
+                        Log.d(TAG, "Action was CANCEL");
                         break;
 
                     case MotionEvent.ACTION_OUTSIDE:
