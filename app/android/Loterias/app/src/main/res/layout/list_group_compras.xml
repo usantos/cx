@@ -82,6 +82,7 @@
                 android:src="@drawable/seta_verde"
                 android:layout_marginTop="20dp"
                 android:layout_gravity="end"
+                android:id="@+id/setaComprasGroup"
                 />
         </LinearLayout>
 

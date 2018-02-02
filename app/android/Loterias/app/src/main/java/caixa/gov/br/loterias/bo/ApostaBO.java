@@ -15,6 +15,7 @@ import caixa.gov.br.loterias.BuildConfig;
 import caixa.gov.br.loterias.bo.silce.SilceClient;
 import caixa.gov.br.loterias.bo.silce.data.CompletaJogoRsp;
 import caixa.gov.br.loterias.bo.silce.data.UsuarioLogadoSingleton;
+import caixa.gov.br.loterias.bo.silce.dto.AgrupadorApostaCompraDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.AgrupadorDTOApostaDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.AgrupadorDTOApostaFavoritaDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.ApostaFavoritaDTO;
@@ -225,13 +226,27 @@ public class ApostaBO {
 
         LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
 
-        queryParams.put("mes", String.valueOf("2018"));
-        queryParams.put("ano", String.valueOf("1"));
+        queryParams.put("mes", String.valueOf("1"));
+        queryParams.put("ano", String.valueOf("2018"));
         queryParams.put("offset", String.valueOf("0"));
         queryParams.put("size", String.valueOf("5"));
 
         silceClient.getConnection().get(SilceClient.COMPRAS_PATH, queryParams, ResultadoPesquisaPaginadaDTOCompraDTOResponse.class,
                 silceClient.volleyListener(listener, ResultadoPesquisaPaginadaDTOCompraDTOResponse.class),
+                silceClient.volleyErrorListener(errorListerner), headers);
+
+    }
+
+    public void getDetalhesCompras(final String idSelecionado, final SilceClient.Listener<AgrupadorApostaCompraDTOResponse> listener, final SilceClient.ErrorListener errorListerner) {
+        LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
+        headers.put("Authorization", "Bearer " + UsuarioLogadoSingleton.getInstance().token);
+
+
+        String url = SilceClient.DETALHES_COMPRAS_PATH.replace("{id}", idSelecionado);
+
+
+        silceClient.getConnection().get(url,  new LinkedHashMap<String, String>(), AgrupadorApostaCompraDTOResponse.class,
+                silceClient.volleyListener(listener, AgrupadorApostaCompraDTOResponse.class),
                 silceClient.volleyErrorListener(errorListerner), headers);
 
     }

@@ -423,4 +423,55 @@ public class ApostaDTO {
     sb.append("}\n");
     return sb.toString();
   }
+
+  public static String fromStringModalidade(ModalidadeEnum modalidade) {
+    switch (modalidade) {
+      case QUINA:
+        return "Quina";
+      case LOTECA:
+        return "Loteca";
+      case LOTOGOL:
+        return "Lotogol";
+      case LOTOFACIL:
+        return "Lotofácil";
+      case LOTOMANIA:
+        return "Lotomania";
+      case MEGA_SENA:
+        return "Mega-Sena";
+      case TIMEMANIA:
+        return "Timemania";
+      case DUPLA_SENA:
+        return "Dupla-Sena";
+//      case FEDERAL:
+//        return "Federal";
+
+    }
+    return "";
+  }
+
+
+  public static ModalidadeEnum toStringModalidade(String modalidade) {
+    switch (modalidade) {
+      case "Quina":
+        return ModalidadeEnum.QUINA;
+      case "Loteca":
+        return ModalidadeEnum.LOTECA;
+      case "Lotogol":
+        return ModalidadeEnum.LOTOGOL;
+      case "Lotofácil":
+        return ModalidadeEnum.LOTOFACIL;
+      case "Lotomania":
+        return ModalidadeEnum.LOTOMANIA;
+      case "Mega-Sena":
+        return ModalidadeEnum.MEGA_SENA;
+      case "Timemania":
+        return ModalidadeEnum.TIMEMANIA;
+      case "Dupla-Sena":
+        return ModalidadeEnum.DUPLA_SENA;
+//      case "Federal":
+//        return ModalidadeEnum.FEDERAL;
+      default:
+        return null;
+    }
+  }
 }

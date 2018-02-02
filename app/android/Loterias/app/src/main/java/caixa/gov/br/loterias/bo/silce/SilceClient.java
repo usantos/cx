@@ -47,6 +47,7 @@ public class SilceClient {
     public static final String BILHETES_CONFERIR_BILHETE_PATH = "/bilhetes/conferir-bilhete";
 
     public static final String COMPRAS_PATH = "/compras";
+    public static final String DETALHES_COMPRAS_PATH = "/compras/{id}/apostas";
 
     public interface Listener<T> {
         public void onResponse(T response);

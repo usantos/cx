@@ -15,6 +15,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -131,7 +132,10 @@ public class ListaComprasActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                startActivity(new Intent(ListaComprasActivity.this, DetalhesComprasActivity.class));
+                Intent activity = new Intent(ListaComprasActivity.this, DetalhesComprasActivity.class);
+                String arrayAsString = new Gson().toJson(resultadoPesquisaPaginadaCompraDTO.getLista().get(position));
+                activity.putExtra("CompraDTO", arrayAsString);
+                startActivity(activity);
             }
         });
     }

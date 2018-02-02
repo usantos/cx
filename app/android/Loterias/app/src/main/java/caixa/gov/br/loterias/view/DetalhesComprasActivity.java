@@ -7,18 +7,32 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
+
+import com.android.volley.VolleyError;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.bo.ApostaBO;
+import caixa.gov.br.loterias.bo.silce.SilceClient;
+import caixa.gov.br.loterias.bo.silce.dto.AgrupadorApostaCompraDTO;
+import caixa.gov.br.loterias.bo.silce.dto.AgrupadorApostaCompraDTOResponse;
+import caixa.gov.br.loterias.bo.silce.dto.ApostaDTO;
+import caixa.gov.br.loterias.bo.silce.dto.CompraDTO;
 import caixa.gov.br.loterias.bo.silce.dto.DetalhesPremioDTO;
-import caixa.gov.br.loterias.view.adapter.ListaComprasAdapter;
+import caixa.gov.br.loterias.utils.MensagensNetwork;
+import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.adapter.ListaComprasDetalhesAdapter;
+import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
 
 public class DetalhesComprasActivity extends AppCompatActivity {
+
+    CompraDTO compraDTO;
+    AgrupadorApostaCompraDTO agrupadorApostaCompraDTO;
+    List<ApostaDTO> listaAposta;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +43,11 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-        montarLayout();
+        String compraDTOJson =  getIntent().getExtras().getString("CompraDTO");
+        compraDTO = new Gson().fromJson(compraDTOJson, CompraDTO.class);
+
+        callWebService();
+
     }
 
     @Override
@@ -49,9 +67,31 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         listaPremio.add(det);
 
         ListView listView = (ListView)findViewById(R.id.gridviewDetalhesCompras);
-        ListaComprasDetalhesAdapter listaAdapter = new ListaComprasDetalhesAdapter(this, listaPremio);
+        ListaComprasDetalhesAdapter listaAdapter = new ListaComprasDetalhesAdapter(this, listaAposta, compraDTO);
         listView.setAdapter(listaAdapter);
 
+    }
+
+    private void callWebService(){
+
+        final View loadViewProgress = LoadingViewLoterias.init(this);
+        final ApostaBO apostaBO = new ApostaBO(DetalhesComprasActivity.this);
+
+        apostaBO.getDetalhesCompras(compraDTO.getId().toString() ,new SilceClient.Listener<AgrupadorApostaCompraDTOResponse>() {
+            @Override
+            public void onResponse(AgrupadorApostaCompraDTOResponse response) {
+                LoadingViewLoterias.stop(loadViewProgress);
+                agrupadorApostaCompraDTO = response.getPayload();
+                listaAposta = agrupadorApostaCompraDTO.getApostas();
+                montarLayout();
+            }
+        }, new SilceClient.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                LoadingViewLoterias.stop(loadViewProgress);
+                ViewUtils.alert(DetalhesComprasActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
+            }
+        });
     }
 
 }
