@@ -72,7 +72,7 @@ public class CarrinhoActivity extends SettingToolbarActivity {
                 LoadingViewLoterias.stop(loadViewProgress);
                 carrinho = response.getPayload();
 
-                atualizaLayout();
+                atualizaLayout(Boolean.TRUE);
             }
         }, new SilceClient.ErrorListener() {
             @Override
@@ -83,10 +83,10 @@ public class CarrinhoActivity extends SettingToolbarActivity {
         });
     }
 
-    public void atualizaLayout() {
+    public void atualizaLayout(boolean animacao) {
         montarLayout();
         if (carrinho.getApostas() != null) {
-            configuraRecyclerViewCarrinhoAposta();
+            configuraRecyclerViewCarrinhoAposta(animacao);
             setValorTotalCarrinho();
         }
         configuraListeners();
@@ -115,10 +115,10 @@ public class CarrinhoActivity extends SettingToolbarActivity {
         });
     }
 
-    private void configuraRecyclerViewCarrinhoAposta() {
+    private void configuraRecyclerViewCarrinhoAposta(boolean animacao) {
 
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(new CarrinhoApostasListViewAdapter(this, (ArrayList<IdentificaoDeUmaApostaDas8Modalidades>) carrinho.getApostas(), this));
+        recyclerView.setAdapter(new CarrinhoApostasListViewAdapter(this, (ArrayList<IdentificaoDeUmaApostaDas8Modalidades>) carrinho.getApostas(), this, animacao));
         recyclerView.setExpanded(Boolean.TRUE);
 
     }

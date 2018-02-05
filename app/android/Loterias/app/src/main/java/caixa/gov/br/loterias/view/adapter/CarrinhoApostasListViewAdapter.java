@@ -47,12 +47,14 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
     private Context context;
     private ArrayList<IdentificaoDeUmaApostaDas8Modalidades> apostas;
     private CarrinhoActivity parentActivity;
+    private boolean animacao;
     private static final String TAG = "TAG_CARRINHO";
 
-    public CarrinhoApostasListViewAdapter(CarrinhoActivity parentActivity, ArrayList<IdentificaoDeUmaApostaDas8Modalidades> apostas, Context context) {
+    public CarrinhoApostasListViewAdapter(CarrinhoActivity parentActivity, ArrayList<IdentificaoDeUmaApostaDas8Modalidades> apostas, Context context, boolean animacao) {
         this.context = context;
         this.apostas = apostas;
         this.parentActivity = parentActivity;
+        this.animacao = animacao;
     }
 
 
@@ -177,7 +179,9 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
         holder.numerosAposta.setText(numeroStr);
         ViewUtils.setMoedaFormatHtml(aposta.getValor(), holder.valorAposta);
 
-        AnimacaoSwipeList.animacaoSwipeList(context, position, swipeLayout);
+        if(animacao){
+            AnimacaoSwipeList.animacaoSwipeList(context, position, swipeLayout);
+        }
     }
 
     private void deletarAposta(String idAposta) {
@@ -189,7 +193,7 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
             public void onResponse(CarrinhoDTOResponse response) {
                 LoadingViewLoterias.stop(loadViewProgress);
                 parentActivity.carrinho = response.getPayload();
-                parentActivity.atualizaLayout();
+                parentActivity.atualizaLayout(Boolean.FALSE);
             }
         }, new SilceClient.ErrorListener() {
             @Override
