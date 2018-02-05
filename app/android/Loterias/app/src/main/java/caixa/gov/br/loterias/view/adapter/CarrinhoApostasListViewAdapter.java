@@ -2,6 +2,7 @@ package caixa.gov.br.loterias.view.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,7 +11,10 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -21,6 +25,7 @@ import com.daimajia.swipe.SwipeLayout;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 
 import caixa.gov.br.loterias.R;
@@ -29,6 +34,7 @@ import caixa.gov.br.loterias.bo.silce.SilceClient;
 import caixa.gov.br.loterias.bo.silce.dto.CarrinhoDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import caixa.gov.br.loterias.bo.silce.dto.ModalidadeEnum;
+import caixa.gov.br.loterias.utils.AnimacaoSwipeList;
 import caixa.gov.br.loterias.utils.Constantes;
 import caixa.gov.br.loterias.utils.EstiloModalidade;
 import caixa.gov.br.loterias.view.custom.ExpandableHeightRecyclerView;
@@ -41,6 +47,7 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
     private Context context;
     private ArrayList<IdentificaoDeUmaApostaDas8Modalidades> apostas;
     private CarrinhoActivity parentActivity;
+    private static final String TAG = "TAG_CARRINHO";
 
     public CarrinhoApostasListViewAdapter(CarrinhoActivity parentActivity, ArrayList<IdentificaoDeUmaApostaDas8Modalidades> apostas, Context context) {
         this.context = context;
@@ -56,6 +63,7 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
         final ExpandableHeightRecyclerView recycleViewDetalheAposta;
         final RelativeLayout layoutCabecalhoLoteca;
         final LinearLayout dadosApostaCarrinho;
+        final RelativeLayout dadosCarrinho;
 
         ApostaHolder(View view) {
             super(view);
@@ -66,6 +74,7 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
             recycleViewDetalheAposta = view.findViewById(R.id.recycleViewDetalheAposta);
             layoutCabecalhoLoteca = view.findViewById(R.id.layoutCabecalhoLoteca);
             dadosApostaCarrinho = view.findViewById(R.id.dadosApostaCarrinho);
+            dadosCarrinho = view.findViewById(R.id.dadosCarrinho);
         }
     }
 
@@ -82,6 +91,10 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
         EstiloModalidade estilo = new EstiloModalidade(aposta.getModalidade());
 
         final SwipeLayout swipeLayout = (SwipeLayout) holder.itemView;
+        swipeLayout.setClickToClose(true);
+        swipeLayout.getDragEdgeMap().clear();
+        swipeLayout.addDrag(SwipeLayout.DragEdge.Left, swipeLayout.findViewById(R.id.dadosApostaCarrinho));
+        swipeLayout.setDragEdge(SwipeLayout.DragEdge.Left);
 
         holder.textViewTipoAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorClara()));
         holder.valorAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorEscura()));
@@ -113,7 +126,7 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
         quantidadeApostadas.setText(String.format(Locale.getDefault(), "%d %s", quantidadeNumeros, quantidadeApostadasString));
         quantidadeSorteios.setText(String.format(Locale.getDefault(), "%d %s", quantidadeTeimosinhas, quantidadeSorteiosString));
 
-        if(aposta.getEspelho()){
+        if (aposta.getEspelho()) {
             buttonApostaEspelho.setVisibility(View.VISIBLE);
         }
 
@@ -138,6 +151,7 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
             holder.recycleViewDetalheAposta.setExpanded(true);
 
             ViewGroup.MarginLayoutParams marginLayoutParams = (ViewGroup.MarginLayoutParams) holder.recycleViewDetalheAposta.getLayoutParams();
+            marginLayoutParams.setMargins(0, 3, 0, 0);
             holder.recycleViewDetalheAposta.setLayoutParams(marginLayoutParams);
         }
 
@@ -163,6 +177,7 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
         holder.numerosAposta.setText(numeroStr);
         ViewUtils.setMoedaFormatHtml(aposta.getValor(), holder.valorAposta);
 
+        AnimacaoSwipeList.animacaoSwipeList(context, position, swipeLayout);
     }
 
     private void deletarAposta(String idAposta) {
@@ -189,5 +204,4 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
     public int getItemCount() {
         return apostas.size();
     }
-
 }
