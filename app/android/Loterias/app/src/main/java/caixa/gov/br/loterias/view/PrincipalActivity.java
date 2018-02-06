@@ -29,6 +29,7 @@ import caixa.gov.br.loterias.bo.silce.dto.ParametroSimulacao;
 import caixa.gov.br.loterias.bo.silce.dto.ParametrosSimulacaoResponse;
 import caixa.gov.br.loterias.bo.silce.dto.RepassometroDTO;
 import caixa.gov.br.loterias.bo.silce.dto.RepassometroDTOResponse;
+import caixa.gov.br.loterias.dao.DBLoteriasHelper;
 import caixa.gov.br.loterias.model.Modalidade;
 import caixa.gov.br.loterias.utils.AnimacoesAcessoRapido;
 import caixa.gov.br.loterias.utils.EstiloModalidade;
@@ -94,6 +95,7 @@ public class PrincipalActivity extends AppCompatActivity
     private DrawerLayout drawerSideMenu;
 
     private static final int ZXING_CAMERA_PERMISSION = 1;
+    private DBLoteriasHelper dbLoteriasHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,7 +123,12 @@ public class PrincipalActivity extends AppCompatActivity
         listenerFavoritas();
 
         callWebservice();
+        iniciarBancoLocal();
+    }
 
+    private void iniciarBancoLocal() {
+        dbLoteriasHelper = new DBLoteriasHelper(getApplicationContext());
+        dbLoteriasHelper.getReadableDatabase();
     }
 
 
@@ -630,4 +637,9 @@ public class PrincipalActivity extends AppCompatActivity
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        dbLoteriasHelper.close();
+        super.onDestroy();
+    }
 }

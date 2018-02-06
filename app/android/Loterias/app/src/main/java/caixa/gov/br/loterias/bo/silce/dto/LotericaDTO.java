@@ -12,6 +12,7 @@
 
 package caixa.gov.br.loterias.bo.silce.dto;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import io.swagger.annotations.ApiModel;
@@ -50,6 +51,8 @@ public class LotericaDTO {
     private Long dv = null;
     @SerializedName("numeroFormatado")
     private String numeroFormatado = null;
+    @Expose(deserialize = false, serialize = false)
+    private Long idDB;
 
     /**
      * Nome Fantasia da Unidade Lotérica
@@ -230,6 +233,13 @@ public class LotericaDTO {
         this.numeroFormatado = numeroFormatado;
     }
 
+    public Long getIdDB() {
+        return idDB;
+    }
+
+    public void setIdDB(Long idDB) {
+        this.idDB = idDB;
+    }
 
     @Override
     public boolean equals(Object o) {

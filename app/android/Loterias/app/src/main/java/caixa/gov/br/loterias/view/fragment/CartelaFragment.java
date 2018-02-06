@@ -12,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -55,6 +56,7 @@ import caixa.gov.br.loterias.bo.silce.dto.DTOEnumInteger;
 import caixa.gov.br.loterias.bo.silce.dto.Dezena;
 import caixa.gov.br.loterias.bo.silce.dto.EquipeDTO;
 import caixa.gov.br.loterias.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
+import caixa.gov.br.loterias.bo.silce.dto.LotericaDTO;
 import caixa.gov.br.loterias.bo.silce.dto.ModalidadeEnum;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroEquipe;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroJogoDTO;
@@ -63,6 +65,7 @@ import caixa.gov.br.loterias.bo.silce.dto.ParametroValorApostaDTO;
 import caixa.gov.br.loterias.bo.silce.dto.PartidaLotecaDTO;
 import caixa.gov.br.loterias.bo.silce.dto.PartidaLotogolDTO;
 import caixa.gov.br.loterias.bo.silce.dto.TipoConcursoEnum;
+import caixa.gov.br.loterias.dao.DBLoteriasCrud;
 import caixa.gov.br.loterias.utils.Constantes;
 import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
 import caixa.gov.br.loterias.utils.MensagensNetwork;
@@ -179,6 +182,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
             selcioneOutrosNumeros = opcaoOutrosNumerosLayout.findViewById(R.id.selcioneOutrosNumeros);
             TextView infoSelecioneOutrosNumeros = opcaoOutrosNumerosLayout.findViewById(R.id.infoSelecioneOutrosNumeros);
             infoSelecioneOutrosNumeros.setText(ViewUtils.fromHtml(Constantes.INFO_OUTROS_50_NUMEROS));
+            onClickOutrosNumerosLayout();
             if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) {
                 setVisibilityCheckedNumerosLayout(View.VISIBLE);
             } else {
@@ -323,6 +327,9 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         }
 
         IdentificaoDeUmaApostaDas8Modalidades aposta = getApostaPreenchida();
+
+        DBLoteriasCrud crud = new DBLoteriasCrud(getContext());
+        crud.insertIdentificaoDeUmaApostaDas8Modalidades(aposta);
 
         adicionarApostaCarrinhoRequest(new ApostaBO(getActivity()), LoadingViewLoterias.init(getActivity()), aposta);
     }
@@ -567,6 +574,10 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
                 apostas.add(aposta);
                 apostas.add(apostaEspelho);
+
+                DBLoteriasCrud crud = new DBLoteriasCrud(getContext());
+                crud.insertIdentificaoDeUmaApostaDas8Modalidades(aposta);
+                crud.insertIdentificaoDeUmaApostaDas8Modalidades(apostaEspelho);
 
                 adicionarApostasCarrinhoRequest(new ApostaBO(getActivity()), LoadingViewLoterias.init(getActivity()), apostas);
 

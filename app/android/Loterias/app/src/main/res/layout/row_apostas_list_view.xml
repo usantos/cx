@@ -87,7 +87,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="14dp"
             android:background="@drawable/button_border"
-            android:text="@string/label_aposte_agora"
+            android:text="@string/label_aposta_espelho"
             android:textAllCaps="false"
             android:textColor="@color/branco"
             android:textSize="14.2sp"

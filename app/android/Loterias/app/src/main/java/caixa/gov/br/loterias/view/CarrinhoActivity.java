@@ -21,6 +21,7 @@ import caixa.gov.br.loterias.bo.silce.SilceClient;
 import caixa.gov.br.loterias.bo.silce.dto.CarrinhoDTO;
 import caixa.gov.br.loterias.bo.silce.dto.CarrinhoDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
+import caixa.gov.br.loterias.dao.DBLoteriasCrud;
 import caixa.gov.br.loterias.utils.MensagensNetwork;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.adapter.CarrinhoApostasListViewAdapter;
@@ -79,8 +80,16 @@ public class CarrinhoActivity extends SettingToolbarActivity {
             public void onErrorResponse(VolleyError error) {
                 LoadingViewLoterias.stop(loadViewProgress);
                 ViewUtils.alert(CarrinhoActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
+                lerCarrinhoLocal();
             }
         });
+    }
+
+    private void lerCarrinhoLocal() {
+        DBLoteriasCrud crud = new DBLoteriasCrud(getApplicationContext());
+        carrinho = new CarrinhoDTO();
+        carrinho.setApostas(crud.readAllIdentificaoDeUmaApostaDas8Modalidades());
+        atualizaLayout(Boolean.TRUE);
     }
 
     public void atualizaLayout(boolean animacao) {

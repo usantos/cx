@@ -1,7 +1,9 @@
 package caixa.gov.br.loterias.view;
 
 import android.app.Dialog;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -43,10 +45,14 @@ import java.util.Date;
 import java.util.List;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.bo.silce.dto.CarrinhoDTO;
+import caixa.gov.br.loterias.bo.silce.dto.LotericaDTO;
 import caixa.gov.br.loterias.bo.silce.dto.ModalidadeEnum;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroEquipe;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroJogoDTO;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroValorApostaDTO;
+import caixa.gov.br.loterias.dao.DBLoteriasHelper;
+import caixa.gov.br.loterias.dao.DBTabelasLoterias;
 import caixa.gov.br.loterias.utils.TipoDialog;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.utils.interfaces.CartelaFragmentListener;
@@ -123,6 +129,10 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
     private int toolBarMenu;
 
     private Bundle bundle;
+
+
+
+    private SQLiteDatabase lerBanco;
 
 
     public ParametroJogoDTO getParametroSimulacao() {

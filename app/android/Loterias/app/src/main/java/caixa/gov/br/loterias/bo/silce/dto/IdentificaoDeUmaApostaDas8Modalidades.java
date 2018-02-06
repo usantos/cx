@@ -12,6 +12,7 @@
 
 package caixa.gov.br.loterias.bo.silce.dto;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.math.BigDecimal;
@@ -67,6 +68,8 @@ public class IdentificaoDeUmaApostaDas8Modalidades {
     private Integer quantidadeNumeros = null;
     @SerializedName("surpresinha")
     private Boolean surpresinha = null;
+    @Expose(serialize = false, deserialize = false)
+    private Long idDB;
 
     /**
      * Identificador da Aposta
@@ -325,6 +328,13 @@ public class IdentificaoDeUmaApostaDas8Modalidades {
         this.surpresinha = surpresinha;
     }
 
+    public Long getIdDB() {
+        return idDB;
+    }
+
+    public void setIdDB(Long idDB) {
+        this.idDB = idDB;
+    }
 
     @Override
     public boolean equals(Object o) {
