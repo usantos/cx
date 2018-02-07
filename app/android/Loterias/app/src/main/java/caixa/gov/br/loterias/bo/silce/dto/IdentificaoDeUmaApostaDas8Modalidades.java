@@ -70,6 +70,8 @@ public class IdentificaoDeUmaApostaDas8Modalidades {
     private Boolean surpresinha = null;
     @Expose(serialize = false, deserialize = false)
     private Long idDB;
+    @Expose(serialize = false, deserialize = false)
+    private Integer quantidadeSurpresinhas = null;
 
     /**
      * Identificador da Aposta
@@ -315,6 +317,14 @@ public class IdentificaoDeUmaApostaDas8Modalidades {
 
     public void setQuantidadeNumeros(Integer quantidadeNumeros) {
         this.quantidadeNumeros = quantidadeNumeros;
+    }
+
+    public Integer getQuantidadeSurpresinhas() {
+        return quantidadeSurpresinhas;
+    }
+
+    public void setQuantidadeSurpresinhas(Integer quantidadeSurpresinhas) {
+        this.quantidadeSurpresinhas = quantidadeSurpresinhas;
     }
 
     /**

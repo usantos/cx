@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -196,8 +198,10 @@ public class DBLoteriasCrud {
                 this.db = dbLoteriasHelper.getWritableDatabase();
                 ContentValues values = new ContentValues();
 
-                for (Integer numeroSelecionado : aposta.getNumerosSelecionados()) {
-                    numerosSelecionados = numerosSelecionados + numeroSelecionado.toString() + "_";
+                if (aposta.getNumerosSelecionados() != null) {
+                    for (Integer numeroSelecionado : aposta.getNumerosSelecionados()) {
+                        numerosSelecionados = numerosSelecionados + numeroSelecionado.toString() + "_";
+                    }
                 }
 
                 values.put(DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_ID_IDENTIFICADOR, aposta.getId());
@@ -216,6 +220,7 @@ public class DBLoteriasCrud {
                 values.put(DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_VINCULO_ESPELHO, aposta.getVinculoEspelho());
                 values.put(DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_QUANTIDADE_NUMEROS, aposta.getQuantidadeNumeros());
                 values.put(DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_SURPRESINHA, aposta.getSurpresinha());
+                values.put(DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_QUANTIDADE_SURPRESINHA, aposta.getQuantidadeSurpresinhas());
 
                 if (aposta.getTipoConcurso() != null) {
 
@@ -282,7 +287,8 @@ public class DBLoteriasCrud {
                     DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_LOTERICA_ID,
                     DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_VINCULO_ESPELHO,
                     DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_QUANTIDADE_NUMEROS,
-                    DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_SURPRESINHA
+                    DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_SURPRESINHA,
+                    DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_QUANTIDADE_SURPRESINHA
             };
 
             cursor = db.query(
@@ -310,10 +316,14 @@ public class DBLoteriasCrud {
                 aposta.setTipoConcurso(dtoEnumCharacter);
 
                 List<Integer> numerosSelecionados = new ArrayList<>();
-                String[] numerosSelecionadosList = cursor.getString(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_NUMEROS_SELECIONADOS)).split("_");
+                String numerosSelecionadosString = cursor.getString(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_NUMEROS_SELECIONADOS));
 
-                for (int i = 0; i < numerosSelecionadosList.length; i++) {
-                    numerosSelecionados.add(Integer.parseInt(numerosSelecionadosList[i]));
+                if (StringUtils.isNotEmpty(numerosSelecionadosString)) {
+                    String[] numerosSelecionadosList = numerosSelecionadosString.split("_");
+
+                    for (int i = 0; i < numerosSelecionadosList.length; i++) {
+                        numerosSelecionados.add(Integer.parseInt(numerosSelecionadosList[i]));
+                    }
                 }
                 aposta.setNumerosSelecionados(numerosSelecionados);
 
@@ -341,7 +351,7 @@ public class DBLoteriasCrud {
                 aposta.setVinculoEspelho(cursor.getLong(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_VINCULO_ESPELHO)));
                 aposta.setQuantidadeNumeros(cursor.getInt(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_QUANTIDADE_NUMEROS)));
                 aposta.setSurpresinha(cursor.getInt(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_SURPRESINHA)) == 1 ? Boolean.TRUE : Boolean.FALSE);
-                aposta.setIdDB(cursor.getLong(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades._ID)));
+                aposta.setQuantidadeSurpresinhas(cursor.getInt(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_QUANTIDADE_SURPRESINHA)));
 
                 apostas.add(aposta);
             }
@@ -354,6 +364,32 @@ public class DBLoteriasCrud {
             if (cursor != null) {
                 cursor.close();
             }
+        }
+    }
+
+    public void deleteLoterica(LotericaDTO lotericaDTO) {
+        if (lotericaDTO != null) {
+            deleteItem(lotericaDTO.getIdDB(), DBTabelasLoterias.DBLoterica.NOME_TABELA);
+        }
+    }
+
+    public void deleteIdentificaoDeUmaApostaDas8Modalidades(IdentificaoDeUmaApostaDas8Modalidades aposta) {
+        if (aposta != null) {
+            deleteLoterica(aposta.getLoterica());
+            deleteItem(aposta.getIdDB(), DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.NOME_TABELA);
+        }
+    }
+
+    private void deleteItem(Long id, String table) {
+        this.initDBLoteriasHelper();
+        try {
+            this.db = dbLoteriasHelper.getWritableDatabase();
+            String selection = DBTabelasLoterias.DBLoterica._ID + "=" + id;
+            db.delete(table, selection, null);
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        } finally {
+            this.closeDBLoteriasHelper();
         }
     }
 }

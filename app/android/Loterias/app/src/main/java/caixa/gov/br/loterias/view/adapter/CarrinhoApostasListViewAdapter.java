@@ -3,6 +3,7 @@ package caixa.gov.br.loterias.view.adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Handler;
+import android.provider.ContactsContract;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -34,6 +35,7 @@ import caixa.gov.br.loterias.bo.silce.SilceClient;
 import caixa.gov.br.loterias.bo.silce.dto.CarrinhoDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import caixa.gov.br.loterias.bo.silce.dto.ModalidadeEnum;
+import caixa.gov.br.loterias.dao.DBLoteriasCrud;
 import caixa.gov.br.loterias.utils.AnimacaoSwipeList;
 import caixa.gov.br.loterias.utils.Constantes;
 import caixa.gov.br.loterias.utils.EstiloModalidade;
@@ -135,7 +137,7 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
         holder.itemView.findViewById(R.id.excluirApostaCarrinho).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                deletarAposta(aposta.getId().toString());
+                deletarAposta(aposta);
             }
         });
 
@@ -184,11 +186,13 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
         }
     }
 
-    private void deletarAposta(String idAposta) {
+    private void deletarAposta(IdentificaoDeUmaApostaDas8Modalidades aposta) {
         final ApostaBO apostaBO = new ApostaBO(parentActivity);
         final View loadViewProgress = LoadingViewLoterias.init(parentActivity);
 
-        apostaBO.deleteApostaCarrinho(idAposta, new SilceClient.Listener<CarrinhoDTOResponse>() {
+        deletarApostaBaseLocal(aposta);
+
+        apostaBO.deleteApostaCarrinho(aposta.getId().toString(), new SilceClient.Listener<CarrinhoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoDTOResponse response) {
                 LoadingViewLoterias.stop(loadViewProgress);
@@ -208,4 +212,12 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
     public int getItemCount() {
         return apostas.size();
     }
+
+    private void deletarApostaBaseLocal(IdentificaoDeUmaApostaDas8Modalidades aposta){
+        DBLoteriasCrud crud = new DBLoteriasCrud(context);
+        crud.deleteIdentificaoDeUmaApostaDas8Modalidades(aposta);
+        parentActivity.lerCarrinhoLocal(Boolean.FALSE);
+    }
+
+
 }

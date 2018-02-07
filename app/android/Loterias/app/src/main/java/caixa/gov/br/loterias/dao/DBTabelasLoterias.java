@@ -79,7 +79,8 @@ public final class DBTabelasLoterias {
         sb.append(DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_VINCULO_ESPELHO + " NUMERIC, ");
         sb.append(DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_QUANTIDADE_NUMEROS + " INTEGER, ");
         sb.append(DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_SURPRESINHA + " INTEGER, ");
-        sb.append(DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_CARRINHO_ID + " NUMERIC ");
+        sb.append(DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_CARRINHO_ID + " NUMERIC, ");
+        sb.append(DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_QUANTIDADE_SURPRESINHA + " INTEGER ");
         sb.append(" ) ");
 
         return sb.toString();
@@ -163,6 +164,7 @@ public final class DBTabelasLoterias {
         static final String COLUNA_VINCULO_ESPELHO = "vinculo_espelho";
         static final String COLUNA_QUANTIDADE_NUMEROS = "quantidade_numeros";
         static final String COLUNA_SURPRESINHA = "surpresinha";
+        static final String COLUNA_QUANTIDADE_SURPRESINHA = "quantidade_surpresinha";
     }
 
     static class DBCarrinho implements BaseColumns {

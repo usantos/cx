@@ -34,12 +34,14 @@ import caixa.gov.br.loterias.bo.silce.SilceClient;
 import caixa.gov.br.loterias.bo.silce.dto.AgrupadorDTOApostaDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.DTOEnumCharacter;
 import caixa.gov.br.loterias.bo.silce.dto.DTOEnumInteger;
+import caixa.gov.br.loterias.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import caixa.gov.br.loterias.bo.silce.dto.IncluirSurpresinhaDTO;
 import caixa.gov.br.loterias.bo.silce.dto.ModalidadeEnum;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroEquipe;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroJogoDTO;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroValorApostaDTO;
 import caixa.gov.br.loterias.bo.silce.dto.TipoConcursoEnum;
+import caixa.gov.br.loterias.dao.DBLoteriasCrud;
 import caixa.gov.br.loterias.utils.Constantes;
 import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
 import caixa.gov.br.loterias.utils.MensagensNetwork;
@@ -86,7 +88,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         super.onActivityCreated(savedInstanceState);
         View fragmentView = getView();
 
-        if(isTipoLotomania){
+        if (isTipoLotomania) {
             LinearLayout layoutEspelhoSurpresinha = fragmentView.findViewById(R.id.layoutEspelhoSurpresinha);
             layoutEspelhoSurpresinha.setVisibility(View.VISIBLE);
             layoutEspelhoSurpresinha.setOnClickListener(this);
@@ -308,21 +310,30 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         aposta.setQuantidadeApostas(1);
 
         aposta.setTimeDoCoracao(equipeSelecionada);
-        if(isTipoLotomania){
+        if (isTipoLotomania) {
             aposta.setGerarEspelho(selcioneEspelhoSurpresinha.isChecked());
         }
 
+        final IncluirSurpresinhaDTO apostaSurpresinha = aposta;
         apostaBO.adicionarSurpresinhaNoCarrinho(aposta, new SilceClient.Listener<AgrupadorDTOApostaDTOResponse>() {
             @Override
             public void onResponse(AgrupadorDTOApostaDTOResponse response) {
                 LoadingViewLoterias.stop(loadViewProgress);
+                if (!isTipoTimeMania) {
+                    inserirSuspresinhaBaseLocal(apostaSurpresinha);
+                }
                 surpresinhaFragmentListener.adicionarApostaCarrinho();
             }
         }, new SilceClient.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 LoadingViewLoterias.stop(loadViewProgress);
-                ViewUtils.alert(getActivity(), MensagensNetwork.setMensagem(error, getActivity()));
+                if ((!isTipoTimeMania) && (error.networkResponse == null || error.networkResponse.statusCode == 401)) {
+                    inserirSuspresinhaBaseLocal(apostaSurpresinha);
+                    surpresinhaFragmentListener.adicionarApostaCarrinho();
+                } else {
+                    ViewUtils.alert(getActivity(), MensagensNetwork.setMensagem(error, getActivity()));
+                }
             }
         });
     }
@@ -376,13 +387,29 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         this.equipeSelecionada = equipeSelecionada;
     }
 
-    private void selecionarEspelho(){
-        if(selcioneEspelhoSurpresinha.isChecked()){
+    private void selecionarEspelho() {
+        if (selcioneEspelhoSurpresinha.isChecked()) {
             selcioneEspelhoSurpresinha.setChecked(Boolean.FALSE);
-        }else {
+        } else {
             selcioneEspelhoSurpresinha.setChecked(Boolean.TRUE);
         }
         atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
+    }
+
+    private void inserirSuspresinhaBaseLocal(IncluirSurpresinhaDTO aposta) {
+        IdentificaoDeUmaApostaDas8Modalidades apostaDas8Modalidades = new IdentificaoDeUmaApostaDas8Modalidades();
+        apostaDas8Modalidades.setModalidade(aposta.getModalidade());
+        apostaDas8Modalidades.setQuantidadeNumeros(aposta.getQuantidadeNumeros());
+        apostaDas8Modalidades.setQuantidadeSurpresinhas(aposta.getQuantidadeSurpresinhas());
+        apostaDas8Modalidades.setTipoConcurso(aposta.getTipoConcurso());
+        apostaDas8Modalidades.setIndicadorSurpresinha(aposta.getIndicadorSurpresinha());
+        apostaDas8Modalidades.setConcursoAlvo(aposta.getConcursoAlvo());
+        apostaDas8Modalidades.setQuantidadeTeimosinhas(aposta.getQuantidadeTeimosinhas());
+        apostaDas8Modalidades.setQuantidadeApostas(aposta.getQuantidadeApostas());
+        apostaDas8Modalidades.setValor(valorTotalAposta);
+
+        DBLoteriasCrud crud = new DBLoteriasCrud(getContext());
+        crud.insertIdentificaoDeUmaApostaDas8Modalidades(apostaDas8Modalidades);
     }
 
     // Adapter do gridview das dezenas

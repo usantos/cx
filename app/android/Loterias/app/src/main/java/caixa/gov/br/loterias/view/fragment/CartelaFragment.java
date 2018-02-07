@@ -45,6 +45,7 @@ import java.util.List;
 import java.util.Locale;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.bean.SessaoUsuario;
 import caixa.gov.br.loterias.bo.ApostaBO;
 import caixa.gov.br.loterias.bo.DadosCorporativosBO;
 import caixa.gov.br.loterias.bo.silce.SilceClient;
@@ -328,9 +329,6 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
         IdentificaoDeUmaApostaDas8Modalidades aposta = getApostaPreenchida();
 
-        DBLoteriasCrud crud = new DBLoteriasCrud(getContext());
-        crud.insertIdentificaoDeUmaApostaDas8Modalidades(aposta);
-
         adicionarApostaCarrinhoRequest(new ApostaBO(getActivity()), LoadingViewLoterias.init(getActivity()), aposta);
     }
 
@@ -386,7 +384,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         return aposta;
     }
 
-    private void adicionarApostaCarrinhoRequest(ApostaBO apostaBO, final View loadViewProgress, IdentificaoDeUmaApostaDas8Modalidades aposta) {
+    private void adicionarApostaCarrinhoRequest(ApostaBO apostaBO, final View loadViewProgress, final IdentificaoDeUmaApostaDas8Modalidades aposta) {
         apostaBO.adicionarApostaNoCarrinho(aposta, new SilceClient.Listener<AgrupadorDTOApostaDTOResponse>() {
             @Override
             public void onResponse(AgrupadorDTOApostaDTOResponse response) {
@@ -396,17 +394,30 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                 qtdCartelasCarrinho++;
 
                 count.setText(String.format(Locale.getDefault(), "%d", qtdCartelasCarrinho));
-
+                if (!isTipoTimemania || !isTipoLoteca || !isTipoLotogol) {
+                    inserirApostaCarrinhoLocal(aposta);
+                }
                 cartelaFragmentListener.adicionarApostaCarrinho();
             }
         }, new SilceClient.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 LoadingViewLoterias.stop(loadViewProgress);
-                ViewUtils.alert(getActivity(), MensagensNetwork.setMensagem(error, getActivity()));
+
+                if ((!isTipoTimemania || !isTipoLoteca || !isTipoLotogol) && (error.networkResponse == null || error.networkResponse.statusCode == 401)) {
+                    inserirApostaCarrinhoLocal(aposta);
+                    cartelaFragmentListener.adicionarApostaCarrinho();
+                } else {
+                    ViewUtils.alert(getActivity(), MensagensNetwork.setMensagem(error, getActivity()));
+                }
             }
         });
 
+    }
+
+    private void inserirApostaCarrinhoLocal(IdentificaoDeUmaApostaDas8Modalidades aposta) {
+        DBLoteriasCrud crud = new DBLoteriasCrud(getContext());
+        crud.insertIdentificaoDeUmaApostaDas8Modalidades(aposta);
     }
 
     private void adicionarApostasCarrinhoRequest(ApostaBO apostaBO, final View loadViewProgress, final List<IdentificaoDeUmaApostaDas8Modalidades> apostas) {

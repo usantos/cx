@@ -72,7 +72,6 @@ public class CarrinhoActivity extends SettingToolbarActivity {
             public void onResponse(CarrinhoDTOResponse response) {
                 LoadingViewLoterias.stop(loadViewProgress);
                 carrinho = response.getPayload();
-
                 atualizaLayout(Boolean.TRUE);
             }
         }, new SilceClient.ErrorListener() {
@@ -80,16 +79,16 @@ public class CarrinhoActivity extends SettingToolbarActivity {
             public void onErrorResponse(VolleyError error) {
                 LoadingViewLoterias.stop(loadViewProgress);
                 ViewUtils.alert(CarrinhoActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
-                lerCarrinhoLocal();
+                lerCarrinhoLocal(Boolean.TRUE);
             }
         });
     }
 
-    private void lerCarrinhoLocal() {
+    public void lerCarrinhoLocal(Boolean animacao) {
         DBLoteriasCrud crud = new DBLoteriasCrud(getApplicationContext());
         carrinho = new CarrinhoDTO();
         carrinho.setApostas(crud.readAllIdentificaoDeUmaApostaDas8Modalidades());
-        atualizaLayout(Boolean.TRUE);
+        atualizaLayout(animacao);
     }
 
     public void atualizaLayout(boolean animacao) {
