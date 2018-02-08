@@ -79,26 +79,108 @@ public final class DBTabelasLoterias {
         sb.append(DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_VINCULO_ESPELHO + " NUMERIC, ");
         sb.append(DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_QUANTIDADE_NUMEROS + " INTEGER, ");
         sb.append(DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_SURPRESINHA + " INTEGER, ");
-        sb.append(DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_CARRINHO_ID + " NUMERIC, ");
-        sb.append(DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_QUANTIDADE_SURPRESINHA + " INTEGER ");
+        sb.append(DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_QUANTIDADE_SURPRESINHA + " INTEGER, ");
+        sb.append(DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_ID_TIME_CORACAO + " NUMERIC ");
         sb.append(" ) ");
 
         return sb.toString();
     }
 
     /**
-     * Método para criar tabela de CarrinhoDTO
+     * Método para criar tabela de EquipeDTO
      *
      * @return sb
      */
-    public static String criarTabelaCarrinho() {
+    public static String criarTabelaEquipe() {
 
         StringBuilder sb = new StringBuilder();
 
-        sb.append(" CREATE TABLE " + DBCarrinho.NOME_TABELA);
+        sb.append(" CREATE TABLE " + DBEquipe.NOME_TABELA);
         sb.append(" ( ");
-        sb.append(DBCarrinho._ID + " INTEGER PRIMARY KEY, ");
-        sb.append(DBCarrinho.COLUNA_VALOR_TOTAL + " REAL ");
+        sb.append(DBEquipe._ID + " INTEGER PRIMARY KEY, ");
+        sb.append(DBEquipe.COLUNA_PLACAR + " TEXT, ");
+        sb.append(DBEquipe.COLUNA_VITORIA + " INTEGER, ");
+        sb.append(DBEquipe.COLUNA_ID_PARAMETRO_EQUIPE + " NUMERIC, ");
+        sb.append(DBEquipe.COLUNA_NOME + " TEXT, ");
+        sb.append(DBEquipe.COLUNA_NUMERO + " INTEGER, ");
+        sb.append(DBEquipe.COLUNA_NUMERO_PAIS + " INTEGER, ");
+        sb.append(DBEquipe.COLUNA_PAIS + " TEXT, ");
+        sb.append(DBEquipe.COLUNA_SIGLA_PAIS + " TEXT, ");
+        sb.append(DBEquipe.COLUNA_UF + " TEXT, ");
+        sb.append(DBEquipe.COLUNA_NOME_CLASS + " TEXT, ");
+        sb.append(DBEquipe.COLUNA_INDICADOR_SELECAO + " INTEGER, ");
+        sb.append(DBEquipe.COLUNA_DESCRICAO_CURTA + " TEXT, ");
+        sb.append(DBEquipe.COLUNA_DESCRICAO_LONGA + " TEXT ");
+        sb.append(" ) ");
+
+        return sb.toString();
+    }
+
+    /**
+     * Método para criar tabela de ParametroEquipe
+     *
+     * @return sb
+     */
+    public static String criarTabelaParametroEquipe() {
+
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(" CREATE TABLE " + DBParametroEquipe.NOME_TABELA);
+        sb.append(" ( ");
+        sb.append(DBParametroEquipe._ID + " INTEGER PRIMARY KEY, ");
+        sb.append(DBParametroEquipe.COLUNA_INDICADOR_SELECAO + " INTEGER, ");
+        sb.append(DBParametroEquipe.COLUNA_NOME + " TEXT, ");
+        sb.append(DBParametroEquipe.COLUNA_NUMERO + " INTEGER, ");
+        sb.append(DBParametroEquipe.COLUNA_NUMERO_PAIS + " INTEGER, ");
+        sb.append(DBParametroEquipe.COLUNA_DESCRICAO_CURTA + " TEXT, ");
+        sb.append(DBParametroEquipe.COLUNA_DESCRICAO_LONGA + " TEXT, ");
+        sb.append(DBParametroEquipe.COLUNA_PAIS + " TEXT, ");
+        sb.append(DBParametroEquipe.COLUNA_SIGLA_PAIS + " TEXT, ");
+        sb.append(DBParametroEquipe.COLUNA_UF + " TEXT, ");
+        sb.append(DBParametroEquipe.COLUNA_NOME_CLASS + " TEXT ");
+        sb.append(" ) ");
+
+        return sb.toString();
+    }
+
+    /**
+     * Método para criar tabela de PartidaLotogolDTO
+     *
+     * @return sb
+     */
+    public static String criarTabelaLotogol() {
+
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(" CREATE TABLE " + DBPartidaLotogol.NOME_TABELA);
+        sb.append(" ( ");
+        sb.append(DBPartidaLotogol._ID + " INTEGER PRIMARY KEY, ");
+        sb.append(DBPartidaLotogol.COLUNA_ID_IDENTIFICAO_DE_UMA_APOSTA_DAS_8_MODALIDADES + " NUMERIC, ");
+        sb.append(DBPartidaLotogol.COLUNA_ID_EQUIPE_UM + " NUMERIC, ");
+        sb.append(DBPartidaLotogol.COLUNA_ID_EQUIPE_DOIS + " NUMERIC, ");
+        sb.append(DBPartidaLotogol.COLUNA_INDEX_PLACAR_EQUIPE_UM + " INTEGER, ");
+        sb.append(DBPartidaLotogol.COLUNA_INDEX_PLACAR_EQUIPE_DOIS + " INTEGER ");
+        sb.append(" ) ");
+
+        return sb.toString();
+    }
+
+    /**
+     * Método para criar tabela de PartidaLotecaDTO
+     *
+     * @return sb
+     */
+    public static String criarTabelaLoteca(){
+
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(" CREATE TABLE " + DBPartidaLoteca.NOME_TABELA);
+        sb.append(" ( ");
+        sb.append(DBPartidaLoteca._ID + " INTEGER PRIMARY KEY, ");
+        sb.append(DBPartidaLoteca.COLUNA_ID_IDENTIFICAO_DE_UMA_APOSTA_DAS_8_MODALIDADES + " NUMERIC, ");
+        sb.append(DBPartidaLoteca.COLUNA_ID_EQUIPE_UM + " NUMERIC, ");
+        sb.append(DBPartidaLoteca.COLUNA_ID_EQUIPE_DOIS + " NUMERIC, ");
+        sb.append(DBPartidaLoteca.COLUNA_EMPATE + " INTEGER ");
         sb.append(" ) ");
 
         return sb.toString();
@@ -119,6 +201,9 @@ public final class DBTabelasLoterias {
         return sb.toString();
     }
 
+    /**
+     * Mapea colunas da tabela DBLoterica
+     */
     static class DBLoterica implements BaseColumns {
         static final String NOME_TABELA = "tb_loterica";
         static final String COLUNA_NOME_FANTASIA = "nome_fantasia";
@@ -139,9 +224,11 @@ public final class DBTabelasLoterias {
         static final String COLUNA_NUMERO_FORMATADO = "numero_formatado";
     }
 
+    /**
+     * Mapea colunas da tabela DBIdentificaoDeUmaApostaDas8Modalidades
+     */
     static class DBIdentificaoDeUmaApostaDas8Modalidades implements BaseColumns {
         static final String NOME_TABELA = "tb_identificao_de_uma_aposta_das_8_modalidades";
-        static final String COLUNA_CARRINHO_ID = "id_carrinho";
         static final String COLUNA_ID_IDENTIFICADOR = "id_identificador";
         static final String COLUNA_MODALIDADE = "modalidade";
         static final String COLUNA_TIPO_CONCURSO_VALOR = "tipo_concurso_valor";
@@ -165,11 +252,67 @@ public final class DBTabelasLoterias {
         static final String COLUNA_QUANTIDADE_NUMEROS = "quantidade_numeros";
         static final String COLUNA_SURPRESINHA = "surpresinha";
         static final String COLUNA_QUANTIDADE_SURPRESINHA = "quantidade_surpresinha";
+        static final String COLUNA_ID_TIME_CORACAO = "id_time_coracao";
     }
 
-    static class DBCarrinho implements BaseColumns {
-        static final String NOME_TABELA = "tb_carrinho";
-        static final String COLUNA_VALOR_TOTAL = "valor_total";
+    /**
+     * Mapea colunas da tabela DBEquipe
+     */
+    static class DBEquipe implements BaseColumns {
+        static final String NOME_TABELA = "tb_equipe";
+        static final String COLUNA_PLACAR = "placar";
+        static final String COLUNA_VITORIA = "vitoria";
+        static final String COLUNA_ID_PARAMETRO_EQUIPE = "id_parametro_equipe";
+        static final String COLUNA_NOME = "nome";
+        static final String COLUNA_NUMERO = "numero";
+        static final String COLUNA_NUMERO_PAIS = "numero_pais";
+        static final String COLUNA_PAIS = "pais";
+        static final String COLUNA_SIGLA_PAIS = "sigla_pais";
+        static final String COLUNA_UF = "uf";
+        static final String COLUNA_NOME_CLASS = "nome_class";
+        static final String COLUNA_INDICADOR_SELECAO = "indicador_selecao";
+        static final String COLUNA_DESCRICAO_CURTA = "descricao_curta";
+        static final String COLUNA_DESCRICAO_LONGA = "descricao_longa";
+    }
+
+    /**
+     * Mapea colunas da tabela DBParametroEquipe
+     */
+    static class DBParametroEquipe implements BaseColumns {
+        static final String NOME_TABELA = "tb_parametro_equipe";
+        static final String COLUNA_INDICADOR_SELECAO = "indicadorSelecao";
+        static final String COLUNA_NOME = "nome";
+        static final String COLUNA_NUMERO = "numero";
+        static final String COLUNA_NUMERO_PAIS = "numero_pais";
+        static final String COLUNA_DESCRICAO_CURTA = "descricao_curta";
+        static final String COLUNA_DESCRICAO_LONGA = "descricao_longa";
+        static final String COLUNA_PAIS = "pais";
+        static final String COLUNA_SIGLA_PAIS = "sigla_pais";
+        static final String COLUNA_UF = "uf";
+        static final String COLUNA_NOME_CLASS = "nome_class";
+    }
+
+    /**
+     * Mapea colunas da tabela DBPartidaLotogol
+     */
+    static class DBPartidaLotogol implements BaseColumns {
+        static final String NOME_TABELA = "tb_partida_lotogol";
+        static final String COLUNA_ID_IDENTIFICAO_DE_UMA_APOSTA_DAS_8_MODALIDADES = "id_identificao_de_uma_aposta_das_8_modalidades";
+        static final String COLUNA_ID_EQUIPE_UM = "id_equipe_um";
+        static final String COLUNA_ID_EQUIPE_DOIS = "id_equipe_dois";
+        static final String COLUNA_INDEX_PLACAR_EQUIPE_UM = "index_placar_equipe_um";
+        static final String COLUNA_INDEX_PLACAR_EQUIPE_DOIS = "index_placar_equipe_dois";
+    }
+
+    /**
+     * Mapea colunas da tabela DBPartidaLoteca
+     */
+    static class DBPartidaLoteca implements BaseColumns {
+        static final String NOME_TABELA = "tb_partida_loteca";
+        static final String COLUNA_ID_IDENTIFICAO_DE_UMA_APOSTA_DAS_8_MODALIDADES = "id_identificao_de_uma_aposta_das_8_modalidades";
+        static final String COLUNA_ID_EQUIPE_UM = "id_equipe_um";
+        static final String COLUNA_ID_EQUIPE_DOIS = "id_equipe_dois";
+        static final String COLUNA_EMPATE = "empate";
     }
 
 }

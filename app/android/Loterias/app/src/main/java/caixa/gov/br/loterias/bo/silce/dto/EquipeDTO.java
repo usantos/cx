@@ -12,6 +12,7 @@
 
 package caixa.gov.br.loterias.bo.silce.dto;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import io.swagger.annotations.ApiModel;
@@ -45,6 +46,8 @@ public class EquipeDTO {
     private String descricaoCurta = null;
     @SerializedName("descricaoLonga")
     private String descricaoLonga = null;
+    @Expose(deserialize = false, serialize = false)
+    private Long idDB;
 
     /**
      * Identificação do Placar de cada jogo da Lotogol
@@ -191,6 +194,13 @@ public class EquipeDTO {
         this.descricaoLonga = descricaoLonga;
     }
 
+    public Long getIdDB() {
+        return idDB;
+    }
+
+    public void setIdDB(Long idDB) {
+        this.idDB = idDB;
+    }
 
     @Override
     public boolean equals(Object o) {

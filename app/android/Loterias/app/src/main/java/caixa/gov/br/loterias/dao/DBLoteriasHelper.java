@@ -28,7 +28,10 @@ public class DBLoteriasHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         criarTabela(sqLiteDatabase, DBTabelasLoterias.criarTebelaLoteria());
         criarTabela(sqLiteDatabase, DBTabelasLoterias.criarTabelaIdentificaoDeUmaApostaDas8Modalidades());
-        criarTabela(sqLiteDatabase, DBTabelasLoterias.criarTabelaCarrinho());
+        criarTabela(sqLiteDatabase, DBTabelasLoterias.criarTabelaEquipe());
+        criarTabela(sqLiteDatabase, DBTabelasLoterias.criarTabelaParametroEquipe());
+        criarTabela(sqLiteDatabase, DBTabelasLoterias.criarTabelaLotogol());
+        criarTabela(sqLiteDatabase, DBTabelasLoterias.criarTabelaLoteca());
     }
 
     @Override
@@ -40,7 +43,10 @@ public class DBLoteriasHelper extends SQLiteOpenHelper {
     private void onDelete(SQLiteDatabase sqLiteDatabase) {
         deletaTabela(sqLiteDatabase, DBTabelasLoterias.deleteTabela(DBTabelasLoterias.DBLoterica.NOME_TABELA));
         deletaTabela(sqLiteDatabase, DBTabelasLoterias.deleteTabela(DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.NOME_TABELA));
-        deletaTabela(sqLiteDatabase, DBTabelasLoterias.deleteTabela(DBTabelasLoterias.DBCarrinho.NOME_TABELA));
+        deletaTabela(sqLiteDatabase, DBTabelasLoterias.deleteTabela(DBTabelasLoterias.DBEquipe.NOME_TABELA));
+        deletaTabela(sqLiteDatabase, DBTabelasLoterias.deleteTabela(DBTabelasLoterias.DBParametroEquipe.NOME_TABELA));
+        deletaTabela(sqLiteDatabase, DBTabelasLoterias.deleteTabela(DBTabelasLoterias.DBPartidaLotogol.NOME_TABELA));
+        deletaTabela(sqLiteDatabase, DBTabelasLoterias.deleteTabela(DBTabelasLoterias.DBPartidaLoteca.NOME_TABELA));
     }
 
     private void criarTabela(SQLiteDatabase sqLiteDatabase, String tabela) {

@@ -15,9 +15,14 @@ import java.util.List;
 import caixa.gov.br.loterias.bo.silce.dto.DTOEnumCharacter;
 import caixa.gov.br.loterias.bo.silce.dto.DTOEnumInteger;
 import caixa.gov.br.loterias.bo.silce.dto.DTOEnumLong;
+import caixa.gov.br.loterias.bo.silce.dto.EquipeDTO;
 import caixa.gov.br.loterias.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import caixa.gov.br.loterias.bo.silce.dto.LotericaDTO;
 import caixa.gov.br.loterias.bo.silce.dto.ModalidadeEnum;
+import caixa.gov.br.loterias.bo.silce.dto.ParametroEquipe;
+import caixa.gov.br.loterias.bo.silce.dto.ParametroPartida;
+import caixa.gov.br.loterias.bo.silce.dto.PartidaLotecaDTO;
+import caixa.gov.br.loterias.bo.silce.dto.PartidaLotogolDTO;
 
 /**
  * Created by joafilho on 06/02/2018.
@@ -36,13 +41,18 @@ public class DBLoteriasCrud {
     }
 
     private void initDBLoteriasHelper() {
-        this.dbLoteriasHelper = new DBLoteriasHelper(context);
+        if (this.dbLoteriasHelper == null) {
+            this.dbLoteriasHelper = new DBLoteriasHelper(context);
+        }
     }
 
     private void closeDBLoteriasHelper() {
         if (this.dbLoteriasHelper != null) {
             this.db.close();
             this.dbLoteriasHelper.close();
+
+            this.db = null;
+            this.dbLoteriasHelper = null;
         }
     }
 
@@ -50,9 +60,9 @@ public class DBLoteriasCrud {
      * Método que insere uma nova LotericaDTO na base
      *
      * @param lotericaDTO LotericaDTO
-     * @return Long
+     * @return id
      */
-    public Long insertLotericaDTO(LotericaDTO lotericaDTO) {
+    private Long insertLotericaDTO(LotericaDTO lotericaDTO) {
 
         if (lotericaDTO != null) {
             this.initDBLoteriasHelper();
@@ -85,8 +95,6 @@ public class DBLoteriasCrud {
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
                 return null;
-            } finally {
-                this.closeDBLoteriasHelper();
             }
         } else {
             return null;
@@ -99,7 +107,7 @@ public class DBLoteriasCrud {
      * @param id Long
      * @return lotericaDTO
      */
-    public LotericaDTO readLotericaDTO(Long id) {
+    private LotericaDTO readLotericaDTO(Long id) {
 
         if (id != null) {
             this.initDBLoteriasHelper();
@@ -172,7 +180,6 @@ public class DBLoteriasCrud {
                 Log.e(TAG, e.getMessage());
                 return null;
             } finally {
-                this.closeDBLoteriasHelper();
                 if (cursor != null) {
                     cursor.close();
                 }
@@ -185,8 +192,8 @@ public class DBLoteriasCrud {
     /**
      * Método responsável por inserir uma IdentificaoDeUmaApostaDas8Modalidades (Aposta) na base
      *
-     * @param aposta
-     * @return
+     * @param aposta IdentificaoDeUmaApostaDas8Modalidades
+     * @return id
      */
     public Long insertIdentificaoDeUmaApostaDas8Modalidades(IdentificaoDeUmaApostaDas8Modalidades aposta) {
 
@@ -221,6 +228,7 @@ public class DBLoteriasCrud {
                 values.put(DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_QUANTIDADE_NUMEROS, aposta.getQuantidadeNumeros());
                 values.put(DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_SURPRESINHA, aposta.getSurpresinha());
                 values.put(DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_QUANTIDADE_SURPRESINHA, aposta.getQuantidadeSurpresinhas());
+                values.put(DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_ID_TIME_CORACAO, this.insertParametroEquipe(aposta.getTimeDoCoracao()));
 
                 if (aposta.getTipoConcurso() != null) {
 
@@ -265,7 +273,6 @@ public class DBLoteriasCrud {
 
             String[] projection = {
                     DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades._ID,
-                    DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_CARRINHO_ID,
                     DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_ID_IDENTIFICADOR,
                     DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_MODALIDADE,
                     DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_TIPO_CONCURSO_VALOR,
@@ -288,7 +295,8 @@ public class DBLoteriasCrud {
                     DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_VINCULO_ESPELHO,
                     DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_QUANTIDADE_NUMEROS,
                     DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_SURPRESINHA,
-                    DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_QUANTIDADE_SURPRESINHA
+                    DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_QUANTIDADE_SURPRESINHA,
+                    DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_ID_TIME_CORACAO
             };
 
             cursor = db.query(
@@ -352,6 +360,9 @@ public class DBLoteriasCrud {
                 aposta.setQuantidadeNumeros(cursor.getInt(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_QUANTIDADE_NUMEROS)));
                 aposta.setSurpresinha(cursor.getInt(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_SURPRESINHA)) == 1 ? Boolean.TRUE : Boolean.FALSE);
                 aposta.setQuantidadeSurpresinhas(cursor.getInt(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_QUANTIDADE_SURPRESINHA)));
+                aposta.setTimeDoCoracao(this.readParametroEquipe(cursor.getLong(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_ID_TIME_CORACAO))));
+                aposta.setPartidasLotogol(this.readPartidaLotogolDTO(aposta.getIdDB()));
+                aposta.setPartidasLoteca(this.readPartidaLotecaDTO(aposta.getIdDB()));
 
                 apostas.add(aposta);
             }
@@ -367,16 +378,479 @@ public class DBLoteriasCrud {
         }
     }
 
-    public void deleteLoterica(LotericaDTO lotericaDTO) {
+    /**
+     * Método responsável por inserir uma EquipeDTO na base
+     *
+     * @param equipe EquipeDTO
+     * @return id
+     */
+    private Long insertEquipe(EquipeDTO equipe) {
+
+        if (equipe != null) {
+            this.initDBLoteriasHelper();
+            try {
+
+                this.db = dbLoteriasHelper.getWritableDatabase();
+                ContentValues values = new ContentValues();
+
+                values.put(DBTabelasLoterias.DBEquipe.COLUNA_PLACAR, equipe.getPlacar());
+                values.put(DBTabelasLoterias.DBEquipe.COLUNA_VITORIA, equipe.getVitoria());
+                values.put(DBTabelasLoterias.DBEquipe.COLUNA_ID_PARAMETRO_EQUIPE, this.insertParametroEquipe(equipe.getParametroEquipe()));
+                values.put(DBTabelasLoterias.DBEquipe.COLUNA_NOME, equipe.getNome());
+                values.put(DBTabelasLoterias.DBEquipe.COLUNA_NUMERO, equipe.getNumero());
+                values.put(DBTabelasLoterias.DBEquipe.COLUNA_NUMERO_PAIS, equipe.getNumeroPais());
+                values.put(DBTabelasLoterias.DBEquipe.COLUNA_PAIS, equipe.getPais());
+                values.put(DBTabelasLoterias.DBEquipe.COLUNA_SIGLA_PAIS, equipe.getSiglaPais());
+                values.put(DBTabelasLoterias.DBEquipe.COLUNA_UF, equipe.getUf());
+                values.put(DBTabelasLoterias.DBEquipe.COLUNA_NOME_CLASS, equipe.getNomeClass());
+                values.put(DBTabelasLoterias.DBEquipe.COLUNA_INDICADOR_SELECAO, equipe.getIndicadorSelecao());
+                values.put(DBTabelasLoterias.DBEquipe.COLUNA_DESCRICAO_CURTA, equipe.getDescricaoCurta());
+                values.put(DBTabelasLoterias.DBEquipe.COLUNA_DESCRICAO_LONGA, equipe.getDescricaoLonga());
+
+                return db.insert(DBTabelasLoterias.DBEquipe.NOME_TABELA, null, values);
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Método responsável por ler EquipeDTO da base local por ID
+     *
+     * @param id Long
+     * @return EquipeDTO
+     */
+    private EquipeDTO readEquipeDTO(Long id) {
+
+        if (id != null) {
+            this.initDBLoteriasHelper();
+            Cursor cursor = null;
+
+            try {
+                this.db = dbLoteriasHelper.getReadableDatabase();
+
+                String[] projection = {
+                        DBTabelasLoterias.DBEquipe._ID,
+                        DBTabelasLoterias.DBEquipe.COLUNA_PLACAR,
+                        DBTabelasLoterias.DBEquipe.COLUNA_VITORIA,
+                        DBTabelasLoterias.DBEquipe.COLUNA_ID_PARAMETRO_EQUIPE,
+                        DBTabelasLoterias.DBEquipe.COLUNA_NOME,
+                        DBTabelasLoterias.DBEquipe.COLUNA_NUMERO,
+                        DBTabelasLoterias.DBEquipe.COLUNA_NUMERO_PAIS,
+                        DBTabelasLoterias.DBEquipe.COLUNA_PAIS,
+                        DBTabelasLoterias.DBEquipe.COLUNA_SIGLA_PAIS,
+                        DBTabelasLoterias.DBEquipe.COLUNA_UF,
+                        DBTabelasLoterias.DBEquipe.COLUNA_NOME_CLASS,
+                        DBTabelasLoterias.DBEquipe.COLUNA_INDICADOR_SELECAO,
+                        DBTabelasLoterias.DBEquipe.COLUNA_DESCRICAO_CURTA,
+                        DBTabelasLoterias.DBEquipe.COLUNA_DESCRICAO_LONGA
+                };
+
+                String selection = DBTabelasLoterias.DBEquipe._ID + " = " + id;
+
+                cursor = db.query(
+                        DBTabelasLoterias.DBEquipe.NOME_TABELA,
+                        projection,
+                        selection,
+                        null,
+                        null,
+                        null,
+                        null
+                );
+
+                EquipeDTO equipeDTO = new EquipeDTO();
+                while (cursor.moveToNext()) {
+                    equipeDTO.setIdDB(cursor.getLong(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBEquipe._ID)));
+                    equipeDTO.setPlacar(cursor.getString(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBEquipe.COLUNA_PLACAR)));
+                    equipeDTO.setVitoria(cursor.getInt(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBEquipe.COLUNA_VITORIA)) == 1 ? Boolean.TRUE : Boolean.FALSE);
+                    equipeDTO.setParametroEquipe(this.readParametroEquipe(cursor.getLong(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBEquipe.COLUNA_ID_PARAMETRO_EQUIPE))));
+                    equipeDTO.setNome(cursor.getString(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBEquipe.COLUNA_NOME)));
+                    equipeDTO.setNumero(cursor.getInt(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBEquipe.COLUNA_NUMERO)));
+                    equipeDTO.setNumeroPais(cursor.getInt(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBEquipe.COLUNA_NUMERO_PAIS)));
+                    equipeDTO.setPais(cursor.getString(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBEquipe.COLUNA_PAIS)));
+                    equipeDTO.setSiglaPais(cursor.getString(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBEquipe.COLUNA_SIGLA_PAIS)));
+                    equipeDTO.setUf(cursor.getString(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBEquipe.COLUNA_UF)));
+                    equipeDTO.setNomeClass(cursor.getString(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBEquipe.COLUNA_NOME_CLASS)));
+                    equipeDTO.setIndicadorSelecao(cursor.getInt(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBEquipe.COLUNA_INDICADOR_SELECAO)) == 1 ? Boolean.TRUE : Boolean.FALSE);
+                    equipeDTO.setDescricaoCurta(cursor.getString(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBEquipe.COLUNA_DESCRICAO_CURTA)));
+                    equipeDTO.setDescricaoLonga(cursor.getString(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBEquipe.COLUNA_DESCRICAO_LONGA)));
+                }
+
+                return equipeDTO;
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+                return null;
+            } finally {
+                if (cursor != null) {
+                    cursor.close();
+                }
+            }
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Método responsável por inserir uma ParametroEquipe na base
+     *
+     * @param parametroEquipe ParametroEquipe
+     * @return id
+     */
+    private Long insertParametroEquipe(ParametroEquipe parametroEquipe) {
+
+        if (parametroEquipe != null) {
+            this.initDBLoteriasHelper();
+            try {
+
+                this.db = dbLoteriasHelper.getWritableDatabase();
+                ContentValues values = new ContentValues();
+
+                values.put(DBTabelasLoterias.DBParametroEquipe.COLUNA_INDICADOR_SELECAO, parametroEquipe.getIndicadorSelecao());
+                values.put(DBTabelasLoterias.DBParametroEquipe.COLUNA_NOME, parametroEquipe.getNome());
+                values.put(DBTabelasLoterias.DBParametroEquipe.COLUNA_NUMERO, parametroEquipe.getNumero());
+                values.put(DBTabelasLoterias.DBParametroEquipe.COLUNA_NUMERO_PAIS, parametroEquipe.getNumeroPais());
+                values.put(DBTabelasLoterias.DBParametroEquipe.COLUNA_DESCRICAO_CURTA, parametroEquipe.getDescricaoCurta());
+                values.put(DBTabelasLoterias.DBParametroEquipe.COLUNA_DESCRICAO_LONGA, parametroEquipe.getDescricaoLonga());
+                values.put(DBTabelasLoterias.DBParametroEquipe.COLUNA_PAIS, parametroEquipe.getPais());
+                values.put(DBTabelasLoterias.DBParametroEquipe.COLUNA_SIGLA_PAIS, parametroEquipe.getSiglaPais());
+                values.put(DBTabelasLoterias.DBParametroEquipe.COLUNA_UF, parametroEquipe.getUf());
+                values.put(DBTabelasLoterias.DBParametroEquipe.COLUNA_NOME_CLASS, parametroEquipe.getNomeClass());
+
+                return db.insert(DBTabelasLoterias.DBParametroEquipe.NOME_TABELA, null, values);
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Método responsável por ler ParametroEquipe da base local  por ID
+     *
+     * @param id Long
+     * @return ParametroEquipe
+     */
+    private ParametroEquipe readParametroEquipe(Long id) {
+
+        if (id != null) {
+            this.initDBLoteriasHelper();
+            Cursor cursor = null;
+
+            try {
+                this.db = dbLoteriasHelper.getReadableDatabase();
+
+                String[] projection = {
+                        DBTabelasLoterias.DBParametroEquipe._ID,
+                        DBTabelasLoterias.DBParametroEquipe.COLUNA_INDICADOR_SELECAO,
+                        DBTabelasLoterias.DBParametroEquipe.COLUNA_NOME,
+                        DBTabelasLoterias.DBParametroEquipe.COLUNA_NUMERO,
+                        DBTabelasLoterias.DBParametroEquipe.COLUNA_NUMERO_PAIS,
+                        DBTabelasLoterias.DBParametroEquipe.COLUNA_DESCRICAO_CURTA,
+                        DBTabelasLoterias.DBParametroEquipe.COLUNA_DESCRICAO_LONGA,
+                        DBTabelasLoterias.DBParametroEquipe.COLUNA_PAIS,
+                        DBTabelasLoterias.DBParametroEquipe.COLUNA_SIGLA_PAIS,
+                        DBTabelasLoterias.DBParametroEquipe.COLUNA_UF,
+                        DBTabelasLoterias.DBParametroEquipe.COLUNA_NOME_CLASS
+                };
+
+                String selection = DBTabelasLoterias.DBParametroEquipe._ID + " = " + id;
+
+                cursor = db.query(
+                        DBTabelasLoterias.DBParametroEquipe.NOME_TABELA,
+                        projection,
+                        selection,
+                        null,
+                        null,
+                        null,
+                        null
+                );
+
+                ParametroEquipe parametroEquipe = new ParametroEquipe();
+                while (cursor.moveToNext()) {
+                    parametroEquipe.setIdDB(cursor.getLong(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBParametroEquipe._ID)));
+                    parametroEquipe.setIndicadorSelecao(cursor.getInt(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBParametroEquipe.COLUNA_INDICADOR_SELECAO)) == 1 ? Boolean.TRUE : Boolean.FALSE);
+                    parametroEquipe.setNome(cursor.getString(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBParametroEquipe.COLUNA_NOME)));
+                    parametroEquipe.setNumero(cursor.getInt(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBParametroEquipe.COLUNA_NUMERO)));
+                    parametroEquipe.setNumeroPais(cursor.getInt(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBParametroEquipe.COLUNA_NUMERO_PAIS)));
+                    parametroEquipe.setDescricaoCurta(cursor.getString(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBParametroEquipe.COLUNA_DESCRICAO_CURTA)));
+                    parametroEquipe.setDescricaoLonga(cursor.getString(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBParametroEquipe.COLUNA_DESCRICAO_LONGA)));
+                    parametroEquipe.setPais(cursor.getString(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBParametroEquipe.COLUNA_PAIS)));
+                    parametroEquipe.setSiglaPais(cursor.getString(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBParametroEquipe.COLUNA_SIGLA_PAIS)));
+                    parametroEquipe.setUf(cursor.getString(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBParametroEquipe.COLUNA_UF)));
+                    parametroEquipe.setNomeClass(cursor.getString(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBParametroEquipe.COLUNA_NOME_CLASS)));
+                }
+
+                return parametroEquipe;
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+                return null;
+            } finally {
+                if (cursor != null) {
+                    cursor.close();
+                }
+            }
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Método responsável por inserir uma PartidaLotogolDTO na base
+     *
+     * @param partidaLotogolDTO PartidaLotogolDTO
+     * @param idDbAposta        Long
+     * @return id
+     */
+    public Long inserirPartidaLotogol(PartidaLotogolDTO partidaLotogolDTO, Long idDbAposta) {
+
+        if (partidaLotogolDTO != null) {
+            this.initDBLoteriasHelper();
+            try {
+
+                this.db = dbLoteriasHelper.getWritableDatabase();
+                ContentValues values = new ContentValues();
+
+                values.put(DBTabelasLoterias.DBPartidaLotogol.COLUNA_ID_IDENTIFICAO_DE_UMA_APOSTA_DAS_8_MODALIDADES, idDbAposta);
+                values.put(DBTabelasLoterias.DBPartidaLotogol.COLUNA_ID_EQUIPE_UM, this.insertEquipe(partidaLotogolDTO.getEquipe1()));
+                values.put(DBTabelasLoterias.DBPartidaLotogol.COLUNA_ID_EQUIPE_DOIS, this.insertEquipe(partidaLotogolDTO.getEquipe2()));
+                values.put(DBTabelasLoterias.DBPartidaLotogol.COLUNA_INDEX_PLACAR_EQUIPE_UM, partidaLotogolDTO.getIndexPlacarEquipe1());
+                values.put(DBTabelasLoterias.DBPartidaLotogol.COLUNA_INDEX_PLACAR_EQUIPE_DOIS, partidaLotogolDTO.getIndexPlacarEquipe2());
+
+                return db.insert(DBTabelasLoterias.DBPartidaLotogol.NOME_TABELA, null, values);
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+                return null;
+            } finally {
+                this.closeDBLoteriasHelper();
+            }
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Método responsável por ler todas PartidaLotogolDTO da base local  por ID da aposta
+     *
+     * @param idDbAposta Long
+     * @return List<PartidaLotogolDTO>
+     */
+    private List<PartidaLotogolDTO> readPartidaLotogolDTO(Long idDbAposta) {
+
+        if (idDbAposta != null) {
+            this.initDBLoteriasHelper();
+            Cursor cursor = null;
+
+            try {
+                this.db = dbLoteriasHelper.getReadableDatabase();
+
+                String[] projection = {
+                        DBTabelasLoterias.DBPartidaLotogol._ID,
+                        DBTabelasLoterias.DBPartidaLotogol.COLUNA_ID_EQUIPE_UM,
+                        DBTabelasLoterias.DBPartidaLotogol.COLUNA_ID_EQUIPE_DOIS,
+                        DBTabelasLoterias.DBPartidaLotogol.COLUNA_INDEX_PLACAR_EQUIPE_UM,
+                        DBTabelasLoterias.DBPartidaLotogol.COLUNA_INDEX_PLACAR_EQUIPE_DOIS
+                };
+
+                String selection = DBTabelasLoterias.DBPartidaLotogol.COLUNA_ID_IDENTIFICAO_DE_UMA_APOSTA_DAS_8_MODALIDADES + " = " + idDbAposta;
+
+                cursor = db.query(
+                        DBTabelasLoterias.DBPartidaLotogol.NOME_TABELA,
+                        projection,
+                        selection,
+                        null,
+                        null,
+                        null,
+                        null
+                );
+
+                List<PartidaLotogolDTO> partidaLotogolDTOList = new ArrayList<>();
+                while (cursor.moveToNext()) {
+                    PartidaLotogolDTO partidaLotogolDTO = new PartidaLotogolDTO();
+                    partidaLotogolDTO.setIdDB(cursor.getLong(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBPartidaLotogol._ID)));
+                    partidaLotogolDTO.setEquipe1(this.readEquipeDTO(cursor.getLong(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBPartidaLotogol.COLUNA_ID_EQUIPE_UM))));
+                    partidaLotogolDTO.setEquipe2(this.readEquipeDTO(cursor.getLong(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBPartidaLotogol.COLUNA_ID_EQUIPE_DOIS))));
+                    partidaLotogolDTO.setIndexPlacarEquipe1(cursor.getInt(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBPartidaLotogol.COLUNA_INDEX_PLACAR_EQUIPE_UM)));
+                    partidaLotogolDTO.setIndexPlacarEquipe2(cursor.getInt(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBPartidaLotogol.COLUNA_INDEX_PLACAR_EQUIPE_DOIS)));
+
+                    partidaLotogolDTOList.add(partidaLotogolDTO);
+                }
+
+                if (partidaLotogolDTOList.isEmpty()) {
+                    return null;
+                } else {
+                    return partidaLotogolDTOList;
+                }
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+                return null;
+            } finally {
+                if (cursor != null) {
+                    cursor.close();
+                }
+            }
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Método responsável por inserir uma PartidaLotecaDTO na base
+     *
+     * @param partidaLotecaDTO PartidaLotecaDTO
+     * @param idDbAposta       Long
+     * @return id
+     */
+    public Long inserirPartidaLoteca(PartidaLotecaDTO partidaLotecaDTO, Long idDbAposta) {
+
+        if (partidaLotecaDTO != null) {
+            this.initDBLoteriasHelper();
+            try {
+
+                this.db = dbLoteriasHelper.getWritableDatabase();
+                ContentValues values = new ContentValues();
+
+                values.put(DBTabelasLoterias.DBPartidaLoteca.COLUNA_ID_IDENTIFICAO_DE_UMA_APOSTA_DAS_8_MODALIDADES, idDbAposta);
+                values.put(DBTabelasLoterias.DBPartidaLoteca.COLUNA_ID_EQUIPE_UM, this.insertEquipe(partidaLotecaDTO.getEquipe1()));
+                values.put(DBTabelasLoterias.DBPartidaLoteca.COLUNA_ID_EQUIPE_DOIS, this.insertEquipe(partidaLotecaDTO.getEquipe2()));
+                values.put(DBTabelasLoterias.DBPartidaLoteca.COLUNA_EMPATE, partidaLotecaDTO.getEmpate());
+
+                return db.insert(DBTabelasLoterias.DBPartidaLoteca.NOME_TABELA, null, values);
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+                return null;
+            } finally {
+                this.closeDBLoteriasHelper();
+            }
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Método responsável por ler todas PartidaLotecaDTO da base local  por ID da aposta
+     *
+     * @param idDbAposta Long
+     * @return List<PartidaLotecaDTO>
+     */
+    private List<PartidaLotecaDTO> readPartidaLotecaDTO(Long idDbAposta) {
+
+        if (idDbAposta != null) {
+            this.initDBLoteriasHelper();
+            Cursor cursor = null;
+
+            try {
+                this.db = dbLoteriasHelper.getReadableDatabase();
+
+                String[] projection = {
+                        DBTabelasLoterias.DBPartidaLoteca._ID,
+                        DBTabelasLoterias.DBPartidaLoteca.COLUNA_ID_EQUIPE_UM,
+                        DBTabelasLoterias.DBPartidaLoteca.COLUNA_ID_EQUIPE_DOIS,
+                        DBTabelasLoterias.DBPartidaLoteca.COLUNA_EMPATE
+                };
+
+                String selection = DBTabelasLoterias.DBPartidaLoteca.COLUNA_ID_IDENTIFICAO_DE_UMA_APOSTA_DAS_8_MODALIDADES + " = " + idDbAposta;
+
+                cursor = db.query(
+                        DBTabelasLoterias.DBPartidaLoteca.NOME_TABELA,
+                        projection,
+                        selection,
+                        null,
+                        null,
+                        null,
+                        null
+                );
+
+                List<PartidaLotecaDTO> partidaLotogolDTOList = new ArrayList<>();
+                while (cursor.moveToNext()) {
+                    PartidaLotecaDTO partidaLotecaDTO = new PartidaLotecaDTO();
+                    partidaLotecaDTO.setIdDB(cursor.getLong(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBPartidaLoteca._ID)));
+                    partidaLotecaDTO.setEquipe1(this.readEquipeDTO(cursor.getLong(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBPartidaLoteca.COLUNA_ID_EQUIPE_UM))));
+                    partidaLotecaDTO.setEquipe2(this.readEquipeDTO(cursor.getLong(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBPartidaLoteca.COLUNA_ID_EQUIPE_DOIS))));
+                    partidaLotecaDTO.setEmpate(cursor.getLong(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBPartidaLoteca.COLUNA_EMPATE)) == 1 ? Boolean.TRUE : Boolean.FALSE);
+
+                    partidaLotogolDTOList.add(partidaLotecaDTO);
+                }
+
+                if (partidaLotogolDTOList.isEmpty()) {
+                    return null;
+                } else {
+                    return partidaLotogolDTOList;
+                }
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+                return null;
+            } finally {
+                if (cursor != null) {
+                    cursor.close();
+                }
+            }
+        } else {
+            return null;
+        }
+    }
+
+    private void deleteLoterica(LotericaDTO lotericaDTO) {
         if (lotericaDTO != null) {
-            deleteItem(lotericaDTO.getIdDB(), DBTabelasLoterias.DBLoterica.NOME_TABELA);
+            this.deleteItem(lotericaDTO.getIdDB(), DBTabelasLoterias.DBLoterica.NOME_TABELA);
         }
     }
 
     public void deleteIdentificaoDeUmaApostaDas8Modalidades(IdentificaoDeUmaApostaDas8Modalidades aposta) {
-        if (aposta != null) {
-            deleteLoterica(aposta.getLoterica());
-            deleteItem(aposta.getIdDB(), DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.NOME_TABELA);
+        try {
+            if (aposta != null) {
+                this.deleteLoterica(aposta.getLoterica());
+                this.deleteParametroEquipe(aposta.getTimeDoCoracao());
+
+                if (aposta.getPartidasLotogol() != null) {
+                    for (PartidaLotogolDTO partidaLotogolDTO : aposta.getPartidasLotogol()) {
+                        this.deletePartidaLotogol(partidaLotogolDTO);
+                    }
+                }
+                if (aposta.getPartidasLoteca() != null) {
+                    for (PartidaLotecaDTO partidaLotecaDTO : aposta.getPartidasLoteca()) {
+                        this.deletePartidaLoteca(partidaLotecaDTO);
+                    }
+                }
+                this.deleteItem(aposta.getIdDB(), DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.NOME_TABELA);
+            }
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        } finally {
+            this.closeDBLoteriasHelper();
+        }
+    }
+
+    private void deleteEquipe(EquipeDTO equipeDTO) {
+        if (equipeDTO != null) {
+            this.deleteParametroEquipe(equipeDTO.getParametroEquipe());
+            this.deleteItem(equipeDTO.getIdDB(), DBTabelasLoterias.DBEquipe.NOME_TABELA);
+        }
+    }
+
+    private void deleteParametroEquipe(ParametroEquipe parametroEquipe) {
+        if (parametroEquipe != null) {
+            this.deleteItem(parametroEquipe.getIdDB(), DBTabelasLoterias.DBParametroEquipe.NOME_TABELA);
+        }
+    }
+
+    private void deletePartidaLotogol(PartidaLotogolDTO partidaLotogolDTO) {
+        if (partidaLotogolDTO != null) {
+            this.deleteEquipe(partidaLotogolDTO.getEquipe1());
+            this.deleteEquipe(partidaLotogolDTO.getEquipe2());
+            this.deleteItem(partidaLotogolDTO.getIdDB(), DBTabelasLoterias.DBPartidaLotogol.NOME_TABELA);
+        }
+    }
+
+    private void deletePartidaLoteca(PartidaLotecaDTO partidaLotecaDTO) {
+        if (partidaLotecaDTO != null) {
+            this.deleteEquipe(partidaLotecaDTO.getEquipe1());
+            this.deleteEquipe(partidaLotecaDTO.getEquipe2());
+            this.deleteItem(partidaLotecaDTO.getIdDB(), DBTabelasLoterias.DBPartidaLoteca.NOME_TABELA);
         }
     }
 
@@ -388,8 +862,6 @@ public class DBLoteriasCrud {
             db.delete(table, selection, null);
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
-        } finally {
-            this.closeDBLoteriasHelper();
         }
     }
 }

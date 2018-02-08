@@ -394,9 +394,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                 qtdCartelasCarrinho++;
 
                 count.setText(String.format(Locale.getDefault(), "%d", qtdCartelasCarrinho));
-                if (!isTipoTimemania || !isTipoLoteca || !isTipoLotogol) {
-                    inserirApostaCarrinhoLocal(aposta);
-                }
+                inserirApostaCarrinhoLocal(aposta);
                 cartelaFragmentListener.adicionarApostaCarrinho();
             }
         }, new SilceClient.ErrorListener() {
@@ -404,7 +402,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
             public void onErrorResponse(VolleyError error) {
                 LoadingViewLoterias.stop(loadViewProgress);
 
-                if ((!isTipoTimemania || !isTipoLoteca || !isTipoLotogol) && (error.networkResponse == null || error.networkResponse.statusCode == 401)) {
+                if (error.networkResponse == null || error.networkResponse.statusCode == 401) {
                     inserirApostaCarrinhoLocal(aposta);
                     cartelaFragmentListener.adicionarApostaCarrinho();
                 } else {
@@ -417,7 +415,17 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
     private void inserirApostaCarrinhoLocal(IdentificaoDeUmaApostaDas8Modalidades aposta) {
         DBLoteriasCrud crud = new DBLoteriasCrud(getContext());
-        crud.insertIdentificaoDeUmaApostaDas8Modalidades(aposta);
+        Long id = crud.insertIdentificaoDeUmaApostaDas8Modalidades(aposta);
+
+        if (isTipoLotogol) {
+            for (PartidaLotogolDTO partidaLotogolDTO : aposta.getPartidasLotogol()) {
+                crud.inserirPartidaLotogol(partidaLotogolDTO, id);
+            }
+        } else if (isTipoLoteca) {
+            for (PartidaLotecaDTO partidaLotecaDTO : aposta.getPartidasLoteca()) {
+                crud.inserirPartidaLoteca(partidaLotecaDTO, id);
+            }
+        }
     }
 
     private void adicionarApostasCarrinhoRequest(ApostaBO apostaBO, final View loadViewProgress, final List<IdentificaoDeUmaApostaDas8Modalidades> apostas) {
@@ -430,6 +438,9 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                 qtdCartelasCarrinho++;
 
                 count.setText(String.format(Locale.getDefault(), "%d", qtdCartelasCarrinho));
+                for (IdentificaoDeUmaApostaDas8Modalidades aposta : apostas) {
+                    inserirApostaCarrinhoLocal(aposta);
+                }
 
                 cartelaFragmentListener.adicionarApostaCarrinho();
             }
@@ -437,7 +448,14 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
             @Override
             public void onErrorResponse(VolleyError error) {
                 LoadingViewLoterias.stop(loadViewProgress);
-                ViewUtils.alert(getActivity(), MensagensNetwork.setMensagem(error, getActivity()));
+                if (error.networkResponse == null || error.networkResponse.statusCode == 401) {
+                    for (IdentificaoDeUmaApostaDas8Modalidades aposta : apostas) {
+                        inserirApostaCarrinhoLocal(aposta);
+                    }
+                    cartelaFragmentListener.adicionarApostaCarrinho();
+                } else {
+                    ViewUtils.alert(getActivity(), MensagensNetwork.setMensagem(error, getActivity()));
+                }
             }
         });
     }
@@ -585,10 +603,6 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
                 apostas.add(aposta);
                 apostas.add(apostaEspelho);
-
-                DBLoteriasCrud crud = new DBLoteriasCrud(getContext());
-                crud.insertIdentificaoDeUmaApostaDas8Modalidades(aposta);
-                crud.insertIdentificaoDeUmaApostaDas8Modalidades(apostaEspelho);
 
                 adicionarApostasCarrinhoRequest(new ApostaBO(getActivity()), LoadingViewLoterias.init(getActivity()), apostas);
 

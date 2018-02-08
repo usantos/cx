@@ -69,9 +69,9 @@ public class IdentificaoDeUmaApostaDas8Modalidades {
     @SerializedName("surpresinha")
     private Boolean surpresinha = null;
     @Expose(serialize = false, deserialize = false)
-    private Long idDB;
+    private transient Long idDB;
     @Expose(serialize = false, deserialize = false)
-    private Integer quantidadeSurpresinhas = null;
+    private transient Integer quantidadeSurpresinhas = null;
 
     /**
      * Identificador da Aposta

@@ -52,7 +52,7 @@ public class LotericaDTO {
     @SerializedName("numeroFormatado")
     private String numeroFormatado = null;
     @Expose(deserialize = false, serialize = false)
-    private Long idDB;
+    private transient Long idDB;
 
     /**
      * Nome Fantasia da Unidade Lotérica

@@ -65,6 +65,8 @@ public class ParametroEquipe {
     private transient String placar;
     @Expose(serialize = false, deserialize = false)
     private transient Bitmap escudo;
+    @Expose(serialize = false, deserialize = false)
+    private transient Long idDB;
 
 
     /**
@@ -177,6 +179,13 @@ public class ParametroEquipe {
         this.nomeClass = nomeClass;
     }
 
+    public Long getIdDB() {
+        return idDB;
+    }
+
+    public void setIdDB(Long idDB) {
+        this.idDB = idDB;
+    }
 
     @Override
     public boolean equals(Object o) {

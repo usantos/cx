@@ -12,6 +12,7 @@
 
 package caixa.gov.br.loterias.bo.silce.dto;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import io.swagger.annotations.ApiModel;
@@ -25,6 +26,8 @@ public class PartidaLotecaDTO {
     private EquipeDTO equipe2 = null;
     @SerializedName("empate")
     private Boolean empate = null;
+    @Expose(serialize = false, deserialize = false)
+    private transient Long idDB;
 
     /**
      **/
@@ -59,6 +62,13 @@ public class PartidaLotecaDTO {
         this.empate = empate;
     }
 
+    public Long getIdDB() {
+        return idDB;
+    }
+
+    public void setIdDB(Long idDB) {
+        this.idDB = idDB;
+    }
 
     @Override
     public boolean equals(Object o) {

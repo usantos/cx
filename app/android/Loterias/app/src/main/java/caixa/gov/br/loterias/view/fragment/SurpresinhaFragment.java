@@ -319,16 +319,14 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
             @Override
             public void onResponse(AgrupadorDTOApostaDTOResponse response) {
                 LoadingViewLoterias.stop(loadViewProgress);
-                if (!isTipoTimeMania) {
-                    inserirSuspresinhaBaseLocal(apostaSurpresinha);
-                }
+                inserirSuspresinhaBaseLocal(apostaSurpresinha);
                 surpresinhaFragmentListener.adicionarApostaCarrinho();
             }
         }, new SilceClient.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 LoadingViewLoterias.stop(loadViewProgress);
-                if ((!isTipoTimeMania) && (error.networkResponse == null || error.networkResponse.statusCode == 401)) {
+                if (error.networkResponse == null || error.networkResponse.statusCode == 401) {
                     inserirSuspresinhaBaseLocal(apostaSurpresinha);
                     surpresinhaFragmentListener.adicionarApostaCarrinho();
                 } else {
@@ -406,6 +404,8 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         apostaDas8Modalidades.setConcursoAlvo(aposta.getConcursoAlvo());
         apostaDas8Modalidades.setQuantidadeTeimosinhas(aposta.getQuantidadeTeimosinhas());
         apostaDas8Modalidades.setQuantidadeApostas(aposta.getQuantidadeApostas());
+        apostaDas8Modalidades.setTimeDoCoracao(aposta.getTimeDoCoracao());
+        apostaDas8Modalidades.setEspelho(aposta.getGerarEspelho());
         apostaDas8Modalidades.setValor(valorTotalAposta);
 
         DBLoteriasCrud crud = new DBLoteriasCrud(getContext());
