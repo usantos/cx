@@ -121,6 +121,7 @@ public class PrincipalActivity extends AppCompatActivity
         listenerCarrinho();
         listenerRapidao();
         listenerFavoritas();
+        listenerLerBilhetes();
 
         callWebservice();
         iniciarBancoLocal();
@@ -526,6 +527,18 @@ public class PrincipalActivity extends AppCompatActivity
             public void onClick(View v) {
                 AnimacaoFecharMenuRapido(relativePrincipal);
                 startActivity(new Intent(PrincipalActivity.this, FavoritasActivity.class));
+            }
+        });
+    }
+
+    private void listenerLerBilhetes() {
+
+        RelativeLayout lerBilhetes = (RelativeLayout) findViewById(R.id.RelativeLayoutContentLerBilhetes);
+        lerBilhetes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AnimacaoFecharMenuRapido(relativePrincipal);
+                startActivity(new Intent(PrincipalActivity.this, ResultadoLerBilhetesActivity.class));
             }
         });
     }

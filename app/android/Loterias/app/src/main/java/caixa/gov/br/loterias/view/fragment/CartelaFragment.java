@@ -396,6 +396,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                 count.setText(String.format(Locale.getDefault(), "%d", qtdCartelasCarrinho));
                 inserirApostaCarrinhoLocal(aposta);
                 cartelaFragmentListener.adicionarApostaCarrinho();
+
             }
         }, new SilceClient.ErrorListener() {
             @Override
@@ -415,15 +416,22 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
     private void inserirApostaCarrinhoLocal(IdentificaoDeUmaApostaDas8Modalidades aposta) {
         DBLoteriasCrud crud = new DBLoteriasCrud(getContext());
-        Long id = crud.insertIdentificaoDeUmaApostaDas8Modalidades(aposta);
+        int quantidadeApostaCarrinho = crud.readAllIdentificaoDeUmaApostaDas8Modalidades().size();
 
-        if (isTipoLotogol) {
-            for (PartidaLotogolDTO partidaLotogolDTO : aposta.getPartidasLotogol()) {
-                crud.inserirPartidaLotogol(partidaLotogolDTO, id);
-            }
-        } else if (isTipoLoteca) {
-            for (PartidaLotecaDTO partidaLotecaDTO : aposta.getPartidasLoteca()) {
-                crud.inserirPartidaLoteca(partidaLotecaDTO, id);
+        //TODO subistituir por quantidade máxima
+        if (quantidadeApostaCarrinho > (10 - 1)) {
+            ViewUtils.alert(getActivity(), getString(R.string.MA013));
+        } else {
+            Long id = crud.insertIdentificaoDeUmaApostaDas8Modalidades(aposta);
+
+            if (isTipoLotogol) {
+                for (PartidaLotogolDTO partidaLotogolDTO : aposta.getPartidasLotogol()) {
+                    crud.inserirPartidaLotogol(partidaLotogolDTO, id);
+                }
+            } else if (isTipoLoteca) {
+                for (PartidaLotecaDTO partidaLotecaDTO : aposta.getPartidasLoteca()) {
+                    crud.inserirPartidaLoteca(partidaLotecaDTO, id);
+                }
             }
         }
     }
@@ -441,7 +449,6 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                 for (IdentificaoDeUmaApostaDas8Modalidades aposta : apostas) {
                     inserirApostaCarrinhoLocal(aposta);
                 }
-
                 cartelaFragmentListener.adicionarApostaCarrinho();
             }
         }, new SilceClient.ErrorListener() {
@@ -1153,9 +1160,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
             partida.setSelecionado(desativado);
             partida.setQtdItensSelecionadosAnterior(0);
             partida.setQtdItensSelecionados(0);
-            parentActivity.setLabelValueSimplesLoteca(Constantes.ZERO_STRING);
-            parentActivity.setLabelValueDuplasLoteca(Constantes.ZERO_STRING);
-            parentActivity.setLabelValueTriplasLoteca(Constantes.ZERO_STRING);
+            parentActivity.zerarApostasLoteca();
         }
         partidasSelecionadas.clear();
         recyclerViewPartida.setExpanded(true);

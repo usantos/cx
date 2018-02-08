@@ -53,6 +53,7 @@ import caixa.gov.br.loterias.bo.silce.dto.ParametroJogoDTO;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroValorApostaDTO;
 import caixa.gov.br.loterias.dao.DBLoteriasHelper;
 import caixa.gov.br.loterias.dao.DBTabelasLoterias;
+import caixa.gov.br.loterias.utils.Constantes;
 import caixa.gov.br.loterias.utils.TipoDialog;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.utils.interfaces.CartelaFragmentListener;
@@ -156,6 +157,13 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         configuraParametrosJogo();
         configuraFragments();
         configuraActivity();
+        zerarApostasLoteca();
+    }
+
+    public void zerarApostasLoteca() {
+        this.setLabelValueSimplesLoteca(Constantes.ZERO_STRING);
+        this.setLabelValueDuplasLoteca(Constantes.ZERO_STRING);
+        this.setLabelValueTriplasLoteca(Constantes.ZERO_STRING);
     }
 
     private void configuraParametrosJogo() {

@@ -117,6 +117,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="13dp"
                 android:paddingEnd="0dp"
+                android:textSize="14.2sp"
                 android:text="Mega-sena" />
 
             <RelativeLayout
@@ -132,6 +133,7 @@
                     style="@style/editTextArialMTTheme"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="14.2sp"
                     android:text="@string/label_coluna"
                     android:textStyle="bold" />
 
@@ -141,6 +143,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="14dp"
+                    android:textSize="14.2sp"
                     android:layout_toRightOf="@+id/texto_coluna_loteca"
                     android:text="@string/label_time"
                     android:textStyle="bold" />
@@ -154,6 +157,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_toEndOf="@+id/tipoAposta"
                 android:layout_toStartOf="@+id/valorAposta"
+                android:textSize="14.2sp"
                 android:text="Dezenas"
                 android:textColor="@color/cinza" />
 
@@ -166,8 +170,8 @@
                 android:layout_marginEnd="11dp"
                 android:layout_toStartOf="@+id/excluirApostaCarrinho"
                 android:text="R$ 0,00"
-                android:textAlignment="textEnd"
-                android:textSize="12sp" />
+                android:textSize="14.2sp"
+                android:textAlignment="textEnd" />
 
             <Button
                 android:id="@+id/excluirApostaCarrinho"

@@ -78,8 +78,11 @@ public class CarrinhoActivity extends SettingToolbarActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 LoadingViewLoterias.stop(loadViewProgress);
-                ViewUtils.alert(CarrinhoActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
-                lerCarrinhoLocal(Boolean.TRUE);
+                if (error.networkResponse == null || error.networkResponse.statusCode == 401) {
+                    lerCarrinhoLocal(Boolean.TRUE);
+                }else{
+                    ViewUtils.alert(CarrinhoActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
+                }
             }
         });
     }

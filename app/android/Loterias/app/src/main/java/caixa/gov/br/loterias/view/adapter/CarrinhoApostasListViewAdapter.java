@@ -186,24 +186,27 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
         }
     }
 
-    private void deletarAposta(IdentificaoDeUmaApostaDas8Modalidades aposta) {
+    private void deletarAposta(final IdentificaoDeUmaApostaDas8Modalidades aposta) {
         final ApostaBO apostaBO = new ApostaBO(parentActivity);
         final View loadViewProgress = LoadingViewLoterias.init(parentActivity);
-
-        deletarApostaBaseLocal(aposta);
 
         apostaBO.deleteApostaCarrinho(aposta.getId().toString(), new SilceClient.Listener<CarrinhoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoDTOResponse response) {
                 LoadingViewLoterias.stop(loadViewProgress);
                 parentActivity.carrinho = response.getPayload();
+                deletarApostaBaseLocal(aposta, Boolean.FALSE);
                 parentActivity.atualizaLayout(Boolean.FALSE);
             }
         }, new SilceClient.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 LoadingViewLoterias.stop(loadViewProgress);
-                ViewUtils.alert(parentActivity, MensagensNetwork.setMensagem(error, context));
+                if (error.networkResponse != null && error.networkResponse.statusCode != 401) {
+                    ViewUtils.alert(parentActivity, MensagensNetwork.setMensagem(error, context));
+                }else{
+                    deletarApostaBaseLocal(aposta, Boolean.TRUE);
+                }
             }
         });
     }
@@ -213,10 +216,12 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
         return apostas.size();
     }
 
-    private void deletarApostaBaseLocal(IdentificaoDeUmaApostaDas8Modalidades aposta){
+    private void deletarApostaBaseLocal(IdentificaoDeUmaApostaDas8Modalidades aposta, boolean local){
         DBLoteriasCrud crud = new DBLoteriasCrud(context);
         crud.deleteIdentificaoDeUmaApostaDas8Modalidades(aposta);
-        parentActivity.lerCarrinhoLocal(Boolean.FALSE);
+        if(local){
+            parentActivity.lerCarrinhoLocal(Boolean.FALSE);
+        }
     }
 
 
