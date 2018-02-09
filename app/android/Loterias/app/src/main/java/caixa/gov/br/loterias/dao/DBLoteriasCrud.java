@@ -201,9 +201,9 @@ public class DBLoteriasCrud {
             this.initDBLoteriasHelper();
             try {
 
-                String numerosSelecionados = "";
                 this.db = dbLoteriasHelper.getWritableDatabase();
                 ContentValues values = new ContentValues();
+                String numerosSelecionados = "";
 
                 if (aposta.getNumerosSelecionados() != null) {
                     for (Integer numeroSelecionado : aposta.getNumerosSelecionados()) {
@@ -320,7 +320,7 @@ public class DBLoteriasCrud {
 
                 DTOEnumCharacter dtoEnumCharacter = new DTOEnumCharacter();
                 dtoEnumCharacter.setValor(cursor.getString(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_TIPO_CONCURSO_VALOR)));
-                dtoEnumCharacter.setValor(cursor.getString(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_TIPO_CONCURSO_DESCRICAO)));
+                dtoEnumCharacter.setDescricao(cursor.getString(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_TIPO_CONCURSO_DESCRICAO)));
                 aposta.setTipoConcurso(dtoEnumCharacter);
 
                 List<Integer> numerosSelecionados = new ArrayList<>();
@@ -370,6 +370,151 @@ public class DBLoteriasCrud {
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
             return null;
+        } finally {
+            this.closeDBLoteriasHelper();
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+    }
+
+    public boolean existIdentificaoDeUmaApostaDas8Modalidades(IdentificaoDeUmaApostaDas8Modalidades aposta) {
+
+        boolean retorno = Boolean.FALSE;
+
+        this.initDBLoteriasHelper();
+        Cursor cursor = null;
+
+        try {
+            this.db = dbLoteriasHelper.getReadableDatabase();
+            String numerosSelecionados = "";
+
+            if (aposta.getNumerosSelecionados() != null) {
+                for (Integer numeroSelecionado : aposta.getNumerosSelecionados()) {
+                    numerosSelecionados = numerosSelecionados + numeroSelecionado.toString() + "_";
+                }
+            }
+
+            String[] projection = {
+                    DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades._ID
+            };
+
+            StringBuilder selectionBuilder = new StringBuilder();
+            selectionBuilder.append(DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_MODALIDADE + " = ? AND ");
+            selectionBuilder.append(DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_CONCURSO_INICIAL + " = ? AND ");
+            selectionBuilder.append(DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_CONCURSO_ALVO + " = ? AND ");
+            selectionBuilder.append(DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_NUMEROS_SELECIONADOS + " = ? ");
+
+            String[] selectionArgs = {
+                    ModalidadeEnum.fromString(aposta.getModalidade()),
+                    aposta.getConcursoInicial().toString(),
+                    aposta.getConcursoAlvo().toString(),
+                    numerosSelecionados
+            };
+
+
+            cursor = db.query(
+                    DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.NOME_TABELA,
+                    projection,
+                    selectionBuilder.toString(),
+                    selectionArgs,
+                    null,
+                    null,
+                    null
+            );
+
+            retorno = (cursor.getCount() > 0);
+
+            return retorno;
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+            return retorno;
+        } finally {
+            this.closeDBLoteriasHelper();
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+    }
+
+    /**
+     * Método responsável por obter quantidade de registros na base local
+     *
+     * @return Integer qtd
+     */
+    public Integer qtdIdentificaoDeUmaApostaDas8Modalidades() {
+
+        this.initDBLoteriasHelper();
+        Cursor cursor = null;
+        Integer qtd = 0;
+
+        try {
+            this.db = dbLoteriasHelper.getReadableDatabase();
+
+            String[] projection = {
+                    DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades._ID
+            };
+
+            cursor = db.query(
+                    DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.NOME_TABELA,
+                    projection,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+            );
+
+            qtd = cursor.getCount();
+
+            return qtd;
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+            return qtd;
+        } finally {
+            this.closeDBLoteriasHelper();
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+    }
+
+    /**
+     * Método responsável por retornar valor total do carrinho
+     *
+     * @return BigDecimal value
+     */
+    public BigDecimal sumValorIdentificaoDeUmaApostaDas8Modalidades() {
+
+        this.initDBLoteriasHelper();
+        Cursor cursor = null;
+        BigDecimal value = BigDecimal.ZERO;
+
+        try {
+            this.db = dbLoteriasHelper.getReadableDatabase();
+
+            String[] projection = {
+                    DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_VALOR
+            };
+
+            cursor = db.query(
+                    DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.NOME_TABELA,
+                    projection,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+            );
+
+            while (cursor.moveToNext()) {
+                value = value.add((BigDecimal.valueOf(cursor.getDouble(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_VALOR)))));
+            }
+
+            return value;
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+            return value;
         } finally {
             this.closeDBLoteriasHelper();
             if (cursor != null) {

@@ -325,8 +325,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
             @Override
             public void onResponse(AgrupadorDTOApostaDTOResponse response) {
                 LoadingViewLoterias.stop(loadViewProgress);
-                inserirSuspresinhaBaseLocal(apostaSurpresinha);
-
+                surpresinhaFragmentListener.adicionarApostaCarrinho();
             }
         }, new SilceClient.ErrorListener() {
             @Override
@@ -401,10 +400,17 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
 
     private void inserirSuspresinhaBaseLocal(IncluirSurpresinhaDTO aposta) {
         DBLoteriasCrud crud = new DBLoteriasCrud(getContext());
-        int quantidadeApostaCarrinho = crud.readAllIdentificaoDeUmaApostaDas8Modalidades().size();
+        int quantidadeApostaCarrinho = crud.qtdIdentificaoDeUmaApostaDas8Modalidades();
+        BigDecimal valorTotalCarrinho = crud.sumValorIdentificaoDeUmaApostaDas8Modalidades();
+        valorTotalCarrinho = valorTotalCarrinho.add(valorTotalAposta);
 
-        if (quantidadeApostaCarrinho > (parametroJogo.getQuantidadeMaxima() - 1)) {
+        //TODO subistituir por quantidade máxima
+        if (quantidadeApostaCarrinho > (4 - 1)) {
             ViewUtils.alert(getActivity(), getString(R.string.MA013));
+        }
+        //TODO subistituir por valor máxima
+        else if (valorTotalCarrinho.compareTo(BigDecimal.TEN) == 1) {
+            ViewUtils.alert(getActivity(), getString(R.string.MA014));
         } else {
             IdentificaoDeUmaApostaDas8Modalidades apostaDas8Modalidades = new IdentificaoDeUmaApostaDas8Modalidades();
             apostaDas8Modalidades.setModalidade(aposta.getModalidade());

@@ -327,8 +327,8 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
             return;
         }
 
+        orderAscDezenas();
         IdentificaoDeUmaApostaDas8Modalidades aposta = getApostaPreenchida();
-
         adicionarApostaCarrinhoRequest(new ApostaBO(getActivity()), LoadingViewLoterias.init(getActivity()), aposta);
     }
 
@@ -394,7 +394,6 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                 qtdCartelasCarrinho++;
 
                 count.setText(String.format(Locale.getDefault(), "%d", qtdCartelasCarrinho));
-                inserirApostaCarrinhoLocal(aposta);
                 cartelaFragmentListener.adicionarApostaCarrinho();
 
             }
@@ -404,8 +403,9 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                 LoadingViewLoterias.stop(loadViewProgress);
 
                 if (error.networkResponse == null || error.networkResponse.statusCode == 401) {
-                    inserirApostaCarrinhoLocal(aposta);
-                    cartelaFragmentListener.adicionarApostaCarrinho();
+                    if (inserirApostaCarrinhoLocal(aposta)) {
+                        cartelaFragmentListener.adicionarApostaCarrinho();
+                    }
                 } else {
                     ViewUtils.alert(getActivity(), MensagensNetwork.setMensagem(error, getActivity()));
                 }
@@ -414,13 +414,26 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
     }
 
-    private void inserirApostaCarrinhoLocal(IdentificaoDeUmaApostaDas8Modalidades aposta) {
+    private boolean inserirApostaCarrinhoLocal(IdentificaoDeUmaApostaDas8Modalidades aposta) {
         DBLoteriasCrud crud = new DBLoteriasCrud(getContext());
-        int quantidadeApostaCarrinho = crud.readAllIdentificaoDeUmaApostaDas8Modalidades().size();
+        int quantidadeApostaCarrinho = crud.qtdIdentificaoDeUmaApostaDas8Modalidades();
+        BigDecimal valorTotalCarrinho = crud.sumValorIdentificaoDeUmaApostaDas8Modalidades();
+        valorTotalCarrinho = valorTotalCarrinho.add(aposta.getValor());
 
+        //TODO Verificar os parametros que indicam aposta igual
+        if (crud.existIdentificaoDeUmaApostaDas8Modalidades(aposta) && (!isTipoLoteca && !isTipoLotogol)) {
+            ViewUtils.alert(getActivity(), getString(R.string.MA015));
+            return Boolean.FALSE;
+        }
         //TODO subistituir por quantidade máxima
-        if (quantidadeApostaCarrinho > (10 - 1)) {
+        else if (quantidadeApostaCarrinho > (4 - 1)) {
             ViewUtils.alert(getActivity(), getString(R.string.MA013));
+            return Boolean.FALSE;
+        }
+        //TODO subistituir por valor máxima
+        else if (valorTotalCarrinho.compareTo(BigDecimal.TEN) == 1) {
+            ViewUtils.alert(getActivity(), getString(R.string.MA014));
+            return Boolean.FALSE;
         } else {
             Long id = crud.insertIdentificaoDeUmaApostaDas8Modalidades(aposta);
 
@@ -433,6 +446,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                     crud.inserirPartidaLoteca(partidaLotecaDTO, id);
                 }
             }
+            return Boolean.TRUE;
         }
     }
 
@@ -446,9 +460,6 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                 qtdCartelasCarrinho++;
 
                 count.setText(String.format(Locale.getDefault(), "%d", qtdCartelasCarrinho));
-                for (IdentificaoDeUmaApostaDas8Modalidades aposta : apostas) {
-                    inserirApostaCarrinhoLocal(aposta);
-                }
                 cartelaFragmentListener.adicionarApostaCarrinho();
             }
         }, new SilceClient.ErrorListener() {
@@ -456,10 +467,13 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
             public void onErrorResponse(VolleyError error) {
                 LoadingViewLoterias.stop(loadViewProgress);
                 if (error.networkResponse == null || error.networkResponse.statusCode == 401) {
+                    boolean retorno = false;
                     for (IdentificaoDeUmaApostaDas8Modalidades aposta : apostas) {
-                        inserirApostaCarrinhoLocal(aposta);
+                        retorno = inserirApostaCarrinhoLocal(aposta);
                     }
-                    cartelaFragmentListener.adicionarApostaCarrinho();
+                    if (retorno) {
+                        cartelaFragmentListener.adicionarApostaCarrinho();
+                    }
                 } else {
                     ViewUtils.alert(getActivity(), MensagensNetwork.setMensagem(error, getActivity()));
                 }
@@ -593,6 +607,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
     private void adicionarApostaPreencherNumerosLotomania() {
         if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) {
+            orderAscDezenas();
             //verifica se foi marcada a opção para gerar outros números
             if (selcioneOutrosNumeros.isChecked()) {
                 // Gera uma nova aposta com os outros 50 números não selecionados
