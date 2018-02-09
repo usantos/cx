@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 
@@ -58,7 +59,8 @@ public class ListaComprasActivity extends AppCompatActivity {
         setContentView(R.layout.activity_lista_compras);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        TextView textBottomInformacaoTextView = (TextView) findViewById(R.id.textBottomInformacaoTextView);
+        textBottomInformacaoTextView.setText("Compras mais antigas\npodem ser consultadas no site");
         scrollViewContentViewCompras = (NestedScrollView) findViewById(R.id.scrollViewContentViewCompras);
 
         progressLoadingMore = (ProgressBar) findViewById(R.id.compras_loading_more);
@@ -235,8 +237,8 @@ public class ListaComprasActivity extends AppCompatActivity {
         for(MesAnoDTO item : listaMesAnoDTO){
             list.add(item.getMes().getDescricao() + " - " + item.getAno());
         }
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, list);
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, R.layout.spinner_item,list);
+
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         SelecaoMesSpinner.setAdapter(dataAdapter);
         SelecaoMesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

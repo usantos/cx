@@ -40,6 +40,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Selecione o mês"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/arialmt"
+                            android:textColor="@color/azulFormNovoTipoPagamento"
                             />
                         <Spinner
                             android:layout_width="match_parent"
@@ -82,6 +85,25 @@
                     android:padding="5dp"
                     android:visibility="gone"
                     />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:text="Compras mais antigas podem ser consultadas no site"
+                    android:textSize="14.2sp"
+                    android:textColor="@color/cinza"
+                    android:fontFamily="@font/arialmt"
+                    android:id="@+id/textBottomInformacaoTextView"
+                    android:paddingTop="5dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:text="www.loteriasonline.caixa.gov.br"
+                    android:textColor="@color/amareloQueimado"
+                    android:textSize="14.2sp"
+                    android:fontFamily="@font/futura_std_bold"
+                    android:paddingBottom="25dp"/>
 
 
         </LinearLayout>
