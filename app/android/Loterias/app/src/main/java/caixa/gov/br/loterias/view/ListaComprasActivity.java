@@ -3,48 +3,54 @@ package caixa.gov.br.loterias.view;
 import android.content.Intent;
 import android.os.Bundle;
 
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ExpandableListAdapter;
-import android.widget.ExpandableListView;
-import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.ArrayAdapter;
+import android.widget.ProgressBar;
+import android.widget.Spinner;
 
 import com.android.volley.VolleyError;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.bo.ApostaBO;
 import caixa.gov.br.loterias.bo.silce.SilceClient;
-import caixa.gov.br.loterias.bo.silce.dto.CarrinhoDTOResponse;
-import caixa.gov.br.loterias.bo.silce.dto.DetalhesPremioDTO;
-import caixa.gov.br.loterias.bo.silce.dto.ResultadoPesquisaPaginadaCompraDTO;
+import caixa.gov.br.loterias.bo.silce.dto.CompraDTO;
+import caixa.gov.br.loterias.bo.silce.dto.MesAnoDTO;
+import caixa.gov.br.loterias.bo.silce.dto.MesAnoDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.ResultadoPesquisaPaginadaDTOCompraDTOResponse;
-import caixa.gov.br.loterias.utils.ExpandableListDataPump;
 import caixa.gov.br.loterias.utils.MensagensNetwork;
 import caixa.gov.br.loterias.utils.ViewUtils;
-import caixa.gov.br.loterias.view.adapter.ListaComprasAdapter;
-import caixa.gov.br.loterias.view.adapter.ListaComprasExpandleAdapter;
-import caixa.gov.br.loterias.view.adapter.TiposApostasMultiplaSelecaoAdapter;
-import caixa.gov.br.loterias.view.custom.ExpandableHeightGridView;
+import caixa.gov.br.loterias.view.adapter.ListaComprasRecyclerViewAdapter;
 import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
 
 public class ListaComprasActivity extends AppCompatActivity {
 
-//    ExpandableListView expandableListView;
-//    ExpandableListAdapter expandableListAdapter;
-//    List<String> expandableListTitle;
-//    HashMap<String, List<String>> expandableListDetail;
 
-    ResultadoPesquisaPaginadaCompraDTO resultadoPesquisaPaginadaCompraDTO;
+
+    List<MesAnoDTO> listaMesAnoDTO;
+    List<CompraDTO> listaComprasDto;
+    Boolean isMaisCompras = true;
+    Boolean bloquearRequestScroll = false;
+    int offsetItem = 0;
+    int mes;
+    int ano;
+
+    ListaComprasRecyclerViewAdapter listaComprasRecyclerViewAdapter;
+
+    LinearLayoutManager layoutManager;
+    public RecyclerView recyclerViewCompras;
+    public ProgressBar progressLoadingMore;
+    NestedScrollView scrollViewContentViewCompras;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,9 +59,14 @@ public class ListaComprasActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        scrollViewContentViewCompras = (NestedScrollView) findViewById(R.id.scrollViewContentViewCompras);
+
+        progressLoadingMore = (ProgressBar) findViewById(R.id.compras_loading_more);
+        recyclerViewCompras = (RecyclerView)findViewById(R.id.recyclerCompras);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        callWebService();
+        callWebServiceMesCompras();
+
 
     }
 
@@ -102,18 +113,49 @@ public class ListaComprasActivity extends AppCompatActivity {
         startActivity(activity);
     }
 
-    private void callWebService(){
+    private void callWebServiceCompras(){
+        offsetItem = 0;
+        isMaisCompras = true;
+        bloquearRequestScroll = false;
+        final View loadViewProgress = LoadingViewLoterias.init(this);
+        final ApostaBO apostaBO = new ApostaBO(ListaComprasActivity.this);
+
+        apostaBO.getCompras(mes, ano, offsetItem ,new SilceClient.Listener<ResultadoPesquisaPaginadaDTOCompraDTOResponse>() {
+            @Override
+            public void onResponse(ResultadoPesquisaPaginadaDTOCompraDTOResponse response) {
+                LoadingViewLoterias.stop(loadViewProgress);
+                listaComprasDto = response.getPayload().getLista();
+                offsetItem = 5;
+                initRecyclerView();
+
+
+            }
+        }, new SilceClient.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                LoadingViewLoterias.stop(loadViewProgress);
+                ViewUtils.alert(ListaComprasActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
+            }
+        });
+    }
+
+
+    private void callWebServiceMesCompras(){
 
         final View loadViewProgress = LoadingViewLoterias.init(this);
         final ApostaBO apostaBO = new ApostaBO(ListaComprasActivity.this);
 
-        apostaBO.getCompras(new SilceClient.Listener<ResultadoPesquisaPaginadaDTOCompraDTOResponse>() {
+        apostaBO.getMesesCompras(new SilceClient.Listener<MesAnoDTOResponse>() {
             @Override
-            public void onResponse(ResultadoPesquisaPaginadaDTOCompraDTOResponse response) {
+            public void onResponse(MesAnoDTOResponse response) {
                 LoadingViewLoterias.stop(loadViewProgress);
-                resultadoPesquisaPaginadaCompraDTO = response.getPayload();
+                listaMesAnoDTO = response.getPayload();
 
-                montarLayout();
+                addSpinner();
+                mes = listaMesAnoDTO.get(0).getMes().getValor().intValue();
+                ano = listaMesAnoDTO.get(0).getAno().intValue();
+
+                callWebServiceCompras();
             }
         }, new SilceClient.ErrorListener() {
             @Override
@@ -125,19 +167,19 @@ public class ListaComprasActivity extends AppCompatActivity {
     }
 
     private void montarLayout(){
-        ListView listView = (ListView)findViewById(R.id.gridviewCompras);
-        ListaComprasAdapter listaAdapter = new ListaComprasAdapter(this, resultadoPesquisaPaginadaCompraDTO.getLista());
-        listView.setAdapter(listaAdapter);
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent activity = new Intent(ListaComprasActivity.this, DetalhesComprasActivity.class);
-                String arrayAsString = new Gson().toJson(resultadoPesquisaPaginadaCompraDTO.getLista().get(position));
-                activity.putExtra("CompraDTO", arrayAsString);
-                startActivity(activity);
-            }
-        });
+//        ListView listView = (ListView)findViewById(R.id.gridviewCompras);
+//        ListaComprasAdapter listaAdapter = new ListaComprasAdapter(this, resultadoPesquisaPaginadaCompraDTO.getLista());
+//        listView.setAdapter(listaAdapter);
+//
+//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Intent activity = new Intent(ListaComprasActivity.this, DetalhesComprasActivity.class);
+//                String arrayAsString = new Gson().toJson(resultadoPesquisaPaginadaCompraDTO.getLista().get(position));
+//                activity.putExtra("CompraDTO", arrayAsString);
+//                startActivity(activity);
+//            }
+//        });
     }
 
 
@@ -184,5 +226,99 @@ public class ListaComprasActivity extends AppCompatActivity {
 //            }
 //        });
 //    }
+
+
+    private void addSpinner(){
+        Spinner SelecaoMesSpinner;
+        SelecaoMesSpinner = (Spinner) findViewById(R.id.SelecaoMesSpinner);
+        List<String> list = new ArrayList<String>();
+        for(MesAnoDTO item : listaMesAnoDTO){
+            list.add(item.getMes().getDescricao() + " - " + item.getAno());
+        }
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, list);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        SelecaoMesSpinner.setAdapter(dataAdapter);
+        SelecaoMesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                // Your code here
+                mes = listaMesAnoDTO.get(i).getMes().getValor().intValue();
+                ano = listaMesAnoDTO.get(i).getAno().intValue();
+                callWebServiceCompras();
+
+            }
+
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                return;
+            }
+        });
+    }
+
+
+
+    private void initRecyclerView() {
+        layoutManager = new LinearLayoutManager(this);
+        recyclerViewCompras.setHasFixedSize(true);
+
+        listaComprasRecyclerViewAdapter = new ListaComprasRecyclerViewAdapter(this, listaComprasDto);
+        recyclerViewCompras.setAdapter(listaComprasRecyclerViewAdapter);
+        recyclerViewCompras.setLayoutManager(layoutManager);
+
+
+        scrollViewContentViewCompras.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                View view = (View) v.getChildAt(v.getChildCount() - 1);
+                int diff = (view.getBottom() - (v.getHeight() + v.getScrollY()));
+
+                // if diff is zero, then the bottom has been reached
+                if (diff == 0 && bloquearRequestScroll == false) {
+                    // do stuff
+                    getComprasScroll();
+                    bloquearRequestScroll = true;
+                }
+            }
+        });
+
+
+
+
+    }
+
+    private void getComprasScroll(){
+        if (isMaisCompras == false) {
+            return;
+        }
+        final ApostaBO apostaBO = new ApostaBO(ListaComprasActivity.this);
+        progressLoadingMore.setVisibility(View.VISIBLE);
+
+        apostaBO.getCompras(mes, ano, offsetItem ,new SilceClient.Listener<ResultadoPesquisaPaginadaDTOCompraDTOResponse>() {
+            @Override
+            public void onResponse(ResultadoPesquisaPaginadaDTOCompraDTOResponse response) {
+                progressLoadingMore.setVisibility(View.GONE);
+                if(response.getPayload().getLista().size() == 0){
+                    isMaisCompras = false;
+                }else{
+                    listaComprasDto.addAll(response.getPayload().getLista());
+                    listaComprasRecyclerViewAdapter.notifyDataSetChanged();
+                    offsetItem = offsetItem +5;
+                }
+                bloquearRequestScroll = false;
+            }
+        }, new SilceClient.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                progressLoadingMore.setVisibility(View.GONE);
+                bloquearRequestScroll = false;
+                ViewUtils.alert(ListaComprasActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
+            }
+        });
+    }
+
+
+
+
+
+
 
 }

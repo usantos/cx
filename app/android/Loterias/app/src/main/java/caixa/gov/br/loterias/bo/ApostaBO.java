@@ -24,6 +24,7 @@ import caixa.gov.br.loterias.bo.silce.dto.ConsultaBilheteDTO;
 import caixa.gov.br.loterias.bo.silce.dto.EscudoEquipeEsportivaDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import caixa.gov.br.loterias.bo.silce.dto.IncluirSurpresinhaDTO;
+import caixa.gov.br.loterias.bo.silce.dto.MesAnoDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.ModalidadeDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.RapidaoDTO;
 import caixa.gov.br.loterias.bo.silce.dto.RapidaoDTOResponse;
@@ -220,15 +221,15 @@ public class ApostaBO {
                 silceClient.volleyErrorListener(errorListener), headers);
     }
 
-    public void getCompras(final SilceClient.Listener<ResultadoPesquisaPaginadaDTOCompraDTOResponse> listener, final SilceClient.ErrorListener errorListerner) {
+    public void getCompras(final int mes, final int ano, final int offset,final SilceClient.Listener<ResultadoPesquisaPaginadaDTOCompraDTOResponse> listener, final SilceClient.ErrorListener errorListerner) {
         LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
         headers.put("Authorization", "Bearer " + UsuarioLogadoSingleton.getInstance().token);
 
         LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
 
-        queryParams.put("mes", String.valueOf("1"));
-        queryParams.put("ano", String.valueOf("2018"));
-        queryParams.put("offset", String.valueOf("0"));
+        queryParams.put("mes", String.valueOf(mes));
+        queryParams.put("ano", String.valueOf(ano));
+        queryParams.put("offset", String.valueOf(offset));
         queryParams.put("size", String.valueOf("5"));
 
         silceClient.getConnection().get(SilceClient.COMPRAS_PATH, queryParams, ResultadoPesquisaPaginadaDTOCompraDTOResponse.class,
@@ -249,5 +250,16 @@ public class ApostaBO {
                 silceClient.volleyListener(listener, AgrupadorApostaCompraDTOResponse.class),
                 silceClient.volleyErrorListener(errorListerner), headers);
 
+
+
+    }
+
+    public void getMesesCompras(final SilceClient.Listener<MesAnoDTOResponse> listener, final SilceClient.ErrorListener errorListerner) {
+        LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
+        headers.put("Authorization", "Bearer " + UsuarioLogadoSingleton.getInstance().token);
+
+        silceClient.getConnection().get(SilceClient.COMPRAS_MESES_PATH, new LinkedHashMap<String, String>(), MesAnoDTOResponse.class,
+                silceClient.volleyListener(listener, MesAnoDTOResponse.class),
+                silceClient.volleyErrorListener(errorListerner), headers);
     }
 }

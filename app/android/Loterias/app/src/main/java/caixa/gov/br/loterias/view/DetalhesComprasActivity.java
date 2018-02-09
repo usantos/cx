@@ -31,8 +31,8 @@ import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
 public class DetalhesComprasActivity extends AppCompatActivity {
 
     CompraDTO compraDTO;
-    AgrupadorApostaCompraDTO agrupadorApostaCompraDTO;
-    List<ApostaDTO> listaAposta;
+    List<ApostaDTO> listaAposta = new ArrayList<>();
+    int ordemCompra;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +44,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
 
 
         String compraDTOJson =  getIntent().getExtras().getString("CompraDTO");
+        ordemCompra = getIntent().getExtras().getInt("ordem");
         compraDTO = new Gson().fromJson(compraDTOJson, CompraDTO.class);
 
         callWebService();
@@ -67,7 +68,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         listaPremio.add(det);
 
         ListView listView = (ListView)findViewById(R.id.gridviewDetalhesCompras);
-        ListaComprasDetalhesAdapter listaAdapter = new ListaComprasDetalhesAdapter(this, listaAposta, compraDTO);
+        ListaComprasDetalhesAdapter listaAdapter = new ListaComprasDetalhesAdapter(this, listaAposta, compraDTO, ordemCompra);
         listView.setAdapter(listaAdapter);
 
     }
@@ -81,8 +82,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
             @Override
             public void onResponse(AgrupadorApostaCompraDTOResponse response) {
                 LoadingViewLoterias.stop(loadViewProgress);
-                agrupadorApostaCompraDTO = response.getPayload();
-                listaAposta = agrupadorApostaCompraDTO.getApostas();
+                listaAposta = response.getPayload().getApostas();
                 montarLayout();
             }
         }, new SilceClient.ErrorListener() {
@@ -90,6 +90,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 LoadingViewLoterias.stop(loadViewProgress);
                 ViewUtils.alert(DetalhesComprasActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
+                montarLayout();
             }
         });
     }
