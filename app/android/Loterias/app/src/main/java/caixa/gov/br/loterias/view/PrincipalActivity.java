@@ -538,7 +538,7 @@ public class PrincipalActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 AnimacaoFecharMenuRapido(relativePrincipal);
-                startActivity(new Intent(PrincipalActivity.this, ResultadoLerBilhetesActivity.class));
+                startActivity(new Intent(PrincipalActivity.this, LerBilhetesActivity.class));
             }
         });
     }
@@ -558,7 +558,7 @@ public class PrincipalActivity extends AppCompatActivity
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.CAMERA}, ZXING_CAMERA_PERMISSION);
             } else {
-                startActivity(new Intent(PrincipalActivity.this, ResultadoLerBilhetesActivity.class));
+                startActivity(new Intent(PrincipalActivity.this, LerBilhetesActivity.class));
             }
         } else if (groupPosition == 5) {
             startActivity(new Intent(PrincipalActivity.this, RepassesSociaisActivity.class));
