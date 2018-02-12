@@ -172,4 +172,6 @@
     <string name="label_numeros">números</string>
     <string name="label_sorteio">sorteio</string>
     <string name="label_sorteios">sorteios</string>
+    <string name="label_posicione_ler_bilhetes">Posicione a linha abaixo sobre o código de barras\ne aguarde a focalização da câmera.</string>
+    <string name="label_digite_aposta_realizada">_Digitar_ sua aposta realizada</string>
 </resources>

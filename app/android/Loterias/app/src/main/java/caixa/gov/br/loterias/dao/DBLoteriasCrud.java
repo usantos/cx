@@ -378,6 +378,11 @@ public class DBLoteriasCrud {
         }
     }
 
+    /**
+     * Método responsável por pesquisar IdentificaoDeUmaApostaDas8Modalidades de acordo com dados solicitados
+     * @param aposta IdentificaoDeUmaApostaDas8Modalidades
+     * @return  boolean retorno
+     */
     public boolean existIdentificaoDeUmaApostaDas8Modalidades(IdentificaoDeUmaApostaDas8Modalidades aposta) {
 
         boolean retorno = Boolean.FALSE;

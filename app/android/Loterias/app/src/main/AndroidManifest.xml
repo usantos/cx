@@ -178,7 +178,11 @@
         <activity
             android:name=".view.DetalhesComprasActivity"
             android:label="@string/title_activity_detalhes_compras"
-            android:theme="@style/AppTheme.DegradeActionBar"></activity>
+            android:theme="@style/AppTheme.DegradeActionBar" />
+        <activity
+            android:name=".view.CustomCaptureActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

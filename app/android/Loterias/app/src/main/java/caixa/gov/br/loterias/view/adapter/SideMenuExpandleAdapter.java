@@ -5,21 +5,21 @@ package caixa.gov.br.loterias.view.adapter;
  */
 
 
-        import java.util.HashMap;
-        import java.util.List;
-        import android.content.Context;
-        import android.graphics.Typeface;
-        import android.graphics.drawable.Drawable;
-        import android.media.Image;
-        import android.view.LayoutInflater;
-        import android.view.View;
-        import android.view.ViewGroup;
-        import android.widget.BaseExpandableListAdapter;
-        import android.widget.ImageView;
-        import android.widget.TextView;
+import java.util.HashMap;
+import java.util.List;
 
-        import caixa.gov.br.loterias.R;
+import android.content.Context;
+import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
+import android.media.Image;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseExpandableListAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import caixa.gov.br.loterias.R;
 
 
 public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
@@ -29,7 +29,7 @@ public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
     private HashMap<String, List<String>> expandableListDetail;
 
     public SideMenuExpandleAdapter(Context context, List<String> expandableListTitle,
-                                       HashMap<String, List<String>> expandableListDetail) {
+                                   HashMap<String, List<String>> expandableListDetail) {
         this.context = context;
         this.expandableListTitle = expandableListTitle;
         this.expandableListDetail = expandableListDetail;
@@ -100,43 +100,55 @@ public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
 
         ImageView imageViewGroup = (ImageView) convertView
                 .findViewById(R.id.imagemItemGroupSideMenu);
-        switch (listPosition){
+        switch (listPosition) {
             case 0:
                 imageViewGroup.setImageResource(R.drawable.menu1_area);
                 listTitleTextView.setTextColor(context.getResources().getColor(R.color.cinza));
                 convertView.setBackgroundColor(context.getResources().getColor(R.color.branco));
                 imagemMaisOpcoes.setVisibility(View.VISIBLE);
+                convertView.findViewById(R.id.layoutItem).setBackgroundResource(R.drawable.drawer_linha_divisao_bg);
                 imagemMaisOpcoes.setSelected(isExpanded);
-            break;
+                break;
             case 1:
                 imageViewGroup.setImageResource(R.drawable.menu2_apostar);
                 listTitleTextView.setTextColor(context.getResources().getColor(R.color.cinza));
                 convertView.setBackgroundColor(context.getResources().getColor(R.color.branco));
+                imagemMaisOpcoes.setVisibility(View.GONE);
+                convertView.findViewById(R.id.layoutItem).setBackgroundResource(R.drawable.drawer_linha_divisao_bg);
                 break;
             case 2:
                 imageViewGroup.setImageResource(R.drawable.menu3_resultados);
                 listTitleTextView.setTextColor(context.getResources().getColor(R.color.cinza));
                 convertView.setBackgroundColor(context.getResources().getColor(R.color.branco));
+                imagemMaisOpcoes.setVisibility(View.GONE);
+                convertView.findViewById(R.id.layoutItem).setBackgroundResource(R.drawable.drawer_linha_divisao_bg);
                 break;
             case 3:
                 imageViewGroup.setImageResource(R.drawable.menu4_rapidao);
                 listTitleTextView.setTextColor(context.getResources().getColor(R.color.cinza));
                 convertView.setBackgroundColor(context.getResources().getColor(R.color.branco));
+                convertView.findViewById(R.id.layoutItem).setBackgroundResource(R.drawable.drawer_linha_divisao_bg);
                 break;
             case 4:
                 imageViewGroup.setImageResource(R.drawable.menu5_bilhetes);
                 listTitleTextView.setTextColor(context.getResources().getColor(R.color.cinza));
                 convertView.setBackgroundColor(context.getResources().getColor(R.color.branco));
+                imagemMaisOpcoes.setVisibility(View.GONE);
+                convertView.findViewById(R.id.layoutItem).setBackgroundResource(R.drawable.drawer_linha_divisao_bg);
                 break;
             case 5:
                 imageViewGroup.setImageResource(R.drawable.menu6_repasses);
                 listTitleTextView.setTextColor(context.getResources().getColor(R.color.cinza));
                 convertView.setBackgroundColor(context.getResources().getColor(R.color.branco));
+                imagemMaisOpcoes.setVisibility(View.GONE);
+                convertView.findViewById(R.id.layoutItem).setBackgroundResource(R.drawable.drawer_linha_divisao_bg);
                 break;
             case 6:
                 imageViewGroup.setImageResource(R.drawable.icon_sair);
                 listTitleTextView.setTextColor(context.getResources().getColor(R.color.verdeazul));
                 convertView.setBackgroundColor(context.getResources().getColor(R.color.colorAccent));
+                imagemMaisOpcoes.setVisibility(View.GONE);
+                convertView.findViewById(R.id.layoutItem).setBackgroundResource(R.color.colorAccent);
             default:
                 break;
         }
