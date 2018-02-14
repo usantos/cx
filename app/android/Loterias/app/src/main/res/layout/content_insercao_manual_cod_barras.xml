@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="caixa.gov.br.loterias.view.InsercaoManualCodBarrasActivity"
+    tools:showIn="@layout/activity_insercao_manual_cod_barras"
+    android:orientation="vertical">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Por favor, informe o número do seu bilhete."
+        android:textColor="@color/azulTexto"
+        android:fontFamily="@font/futura_std_bold"
+        android:textSize="16sp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="50dp"/>
+
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="20dp"
+        android:textColorHint="@color/verdeazul">
+        <EditText
+            android:id="@+id/editTextNumeroBilhete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Número do bilhete"
+            android:textColorHint="@color/verdeazul"/>
+
+    </android.support.design.widget.TextInputLayout>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_marginHorizontal="20dp"
+        android:text="Continuar"
+        android:textAllCaps="false"
+        android:textColor="@color/branco"
+        android:background="@color/verdeazul"
+        android:layout_marginTop="20dp"
+        android:id="@+id/buttonContinuarInsercaoManualBilhetes"
+        />
+
+</LinearLayout>

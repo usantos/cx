@@ -32,12 +32,13 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-//        String codBarras =  getIntent().getExtras().getString("codigoBarras");
+        String codBarras =  getIntent().getExtras().getString("codigoBarras");
 //        Toast.makeText(this, "Scanned: " + codBarras, Toast.LENGTH_LONG).show();
 //        ViewUtils.alert(this, codBarras);
         //01416145
 
-        postLerBilhetes(new ApostaBO(this), LoadingViewLoterias.init(this), "60002952423640400130000000158355b");
+//        postLerBilhetes(new ApostaBO(this), LoadingViewLoterias.init(this), "60002952423640400130000000158355b");
+        postLerBilhetes(new ApostaBO(this), LoadingViewLoterias.init(this), codBarras);
 
 
     }
