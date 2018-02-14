@@ -12,11 +12,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Por favor, informe o número do seu bilhete."
-        android:textColor="@color/azulTexto"
+        android:textColor="@color/colorAccent"
         android:fontFamily="@font/futura_std_bold"
-        android:textSize="16sp"
+        android:textSize="14.2sp"
         android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="50dp"/>
+        android:layout_marginTop="40dp"/>
 
 
     <android.support.design.widget.TextInputLayout
@@ -24,13 +24,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="40dp"
         android:textColorHint="@color/verdeazul">
         <EditText
             android:id="@+id/editTextNumeroBilhete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Número do bilhete"
+            android:textSize="14sp"
+            android:fontFamily="@font/arialmt"
             android:textColorHint="@color/verdeazul"/>
 
     </android.support.design.widget.TextInputLayout>
@@ -40,10 +42,13 @@
         android:layout_marginHorizontal="20dp"
         android:text="Continuar"
         android:textAllCaps="false"
-        android:textColor="@color/branco"
-        android:background="@color/verdeazul"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="49dp"
+        android:fontFamily="@font/futura_std_bold"
+        android:textSize="16sp"
         android:id="@+id/buttonContinuarInsercaoManualBilhetes"
+        android:enabled="false"
+        android:textColor="@color/cinzaDisable"
+        android:background="@color/cinzaclaro"
         />
 
 </LinearLayout>

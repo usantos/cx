@@ -5,6 +5,8 @@ import android.os.Bundle;
 
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,7 +19,8 @@ import caixa.gov.br.loterias.R;
 public class InsercaoManualCodBarrasActivity extends AppCompatActivity {
 
     EditText editTextNumeroBilhete;
-    
+    Button buttonContinuarInsercaoManualBilhetes;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,8 +29,9 @@ public class InsercaoManualCodBarrasActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        Button buttonContinuarInsercaoManualBilhetes = (Button) findViewById(R.id.buttonContinuarInsercaoManualBilhetes);
-        editTextNumeroBilhete = (EditText) findViewById(R.id.editTextNumeroBilhete); 
+        buttonContinuarInsercaoManualBilhetes = (Button) findViewById(R.id.buttonContinuarInsercaoManualBilhetes);
+        editTextNumeroBilhete = (EditText) findViewById(R.id.editTextNumeroBilhete);
+        editTextNumeroBilhete.addTextChangedListener(textWatcher);
         buttonContinuarInsercaoManualBilhetes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,5 +92,31 @@ public class InsercaoManualCodBarrasActivity extends AppCompatActivity {
         startActivity(activity);
     }
 
+    private TextWatcher textWatcher = new TextWatcher() {
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            //after text changed
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count,
+                                      int after) {
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            if (editTextNumeroBilhete.getText().toString().equals("")){
+                buttonContinuarInsercaoManualBilhetes.setEnabled(false);
+                buttonContinuarInsercaoManualBilhetes.setTextColor(getResources().getColor(R.color.cinzaDisable));
+                buttonContinuarInsercaoManualBilhetes.setBackgroundColor(getResources().getColor(R.color.cinzaclaro));
+            }else{
+                buttonContinuarInsercaoManualBilhetes.setEnabled(true);
+                buttonContinuarInsercaoManualBilhetes.setTextColor(getResources().getColor(R.color.branco));
+                buttonContinuarInsercaoManualBilhetes.setBackgroundColor(getResources().getColor(R.color.verdeazul));
+            }
+
+        }
+    };
 
 }
