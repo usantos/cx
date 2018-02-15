@@ -88,8 +88,6 @@ public class LoginFragment extends Fragment {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         LoadingViewLoterias.stop(loadViewProgress);
-                        startActivity(new Intent(getActivity(), LerBilhetesActivity.class));
-
                         ViewUtils.alert(getActivity(), MensagensNetwork.setMensagem(error, getActivity()));
                     }
                 });
