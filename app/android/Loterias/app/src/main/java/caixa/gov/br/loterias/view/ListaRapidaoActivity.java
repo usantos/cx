@@ -227,7 +227,7 @@ public class ListaRapidaoActivity extends AppCompatActivity {
         findViewById(R.id.botaoFazerNovaApostaRapidao).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                callWebservice(1);
+                callWebservice(1);
 
             }
         });
@@ -277,7 +277,7 @@ public class ListaRapidaoActivity extends AppCompatActivity {
         final View loadViewProgress = LoadingViewLoterias.init(this);
         final ApostaBO apostaBO = new ApostaBO(ListaRapidaoActivity.this);
 
-        apostaBO.gerarApostas(new SilceClient.Listener<CarrinhoDTOResponse>() {
+        apostaBO.gerarApostas(quantidade, new SilceClient.Listener<CarrinhoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoDTOResponse response) {
                 LoadingViewLoterias.stop(loadViewProgress);
