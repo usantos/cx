@@ -506,7 +506,9 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
             @Override
             public void onResponse(RapidaoDTOResponse response) {
                 LoadingViewLoterias.stop(loadViewProgress);
-
+                Intent intent = new Intent();
+                setResult(RESULT_OK, intent);
+                finish();
             }
         }, new SilceClient.ErrorListener() {
             @Override

@@ -60,100 +60,12 @@ public class ListaRapidaoActivity extends AppCompatActivity {
 
 
         callWebservice(0);
-//        mockCarrinho();
 
         ViewUtils.organizaTabLayout(this, R.id.carrinhoRapidaoMainLayout, R.id.apostasListaRecycleViewRapidao, R.id.carrinhoRapidaoScrollView);
     }
 
 
-    private void mockCarrinho() {
-        carrinho = new CarrinhoDTO();
 
-        apostas = new ArrayList<IdentificaoDeUmaApostaDas8Modalidades>();
-
-        IdentificaoDeUmaApostaDas8Modalidades aposta = new IdentificaoDeUmaApostaDas8Modalidades();
-        aposta.setId(new Long(0));
-        aposta.setModalidade(ModalidadeEnum.MEGA_SENA);
-
-        DTOEnumCharacter tipoConcurso = new DTOEnumCharacter();
-
-        String valorTipoConcurso = "1";
-        tipoConcurso.setValor(valorTipoConcurso);
-        tipoConcurso.setDescricao("Teste");
-        aposta.setTipoConcurso(tipoConcurso);
-        aposta.setPartidasLotogol(null);
-        aposta.setPartidasLoteca(null);
-
-        List<Integer> thisIsAnIntArray = new ArrayList<Integer>();
-        thisIsAnIntArray.add(1);
-        thisIsAnIntArray.add(2);
-        thisIsAnIntArray.add(3);
-        thisIsAnIntArray.add(4);
-        thisIsAnIntArray.add(6);
-        thisIsAnIntArray.add(5);
-
-        DTOEnumInteger indicadorSurpresinha = new DTOEnumInteger();
-        indicadorSurpresinha.setValor(1);
-        indicadorSurpresinha.setDescricao("");
-
-        aposta.setIndicadorSurpresinha(indicadorSurpresinha);
-        aposta.setValor(new BigDecimal(10.0));
-        aposta.setConcursoAlvo(12334);
-        aposta.setQuantidadeTeimosinhas(1);
-        aposta.setQuantidadeApostas(1);
-        aposta.setEspelho(false);
-
-        aposta.setTimeDoCoracao(null);
-
-        aposta.setConcursoInicial(0);
-        aposta.setSituacao(null);
-        aposta.setTroca(false);
-
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        Date date = new Date();
-
-        DateFormat hourFormat = new SimpleDateFormat("HH:mm:ss");
-        Date hour = new Date();
-
-        aposta.setDataEfetivacao(dateFormat.format(date));
-        aposta.setHoraEfetivacao(hourFormat.format(hour));
-        aposta.setVinculoEspelho(new Long(0));
-        aposta.setQuantidadeNumeros(6);
-        aposta.setSurpresinha(false);
-        aposta.setNumerosSelecionados(thisIsAnIntArray);
-
-        apostas.add(aposta);
-        apostas.add(aposta);
-        apostas.add(aposta);
-        apostas.add(aposta);
-        apostas.add(aposta);
-        apostas.add(aposta);
-        apostas.add(aposta);
-        apostas.add(aposta);
-        apostas.add(aposta);
-        apostas.add(aposta);
-        apostas.add(aposta);
-        apostas.add(aposta);
-        apostas.add(aposta);
-        apostas.add(aposta);
-        apostas.add(aposta);
-        apostas.add(aposta);
-        apostas.add(aposta);
-        apostas.add(aposta);
-        apostas.add(aposta);
-        apostas.add(aposta);
-        apostas.add(aposta);
-        apostas.add(aposta);
-        apostas.add(aposta);
-        apostas.add(aposta);
-        apostas.add(aposta);
-        apostas.add(aposta);
-
-
-        carrinho.setApostas(apostas);
-
-        atualizaLayout();
-    }
 
 
     public void atualizaLayout() {
@@ -208,9 +120,15 @@ public class ListaRapidaoActivity extends AppCompatActivity {
 
     private void abrirConfigRapidao() {
         Intent activity = new Intent(this, RapidaoConfigActivity.class);
-        startActivity(activity);
+        startActivityForResult(activity, 1);
     }
-
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == 1) {
+            callWebservice(0);
+        }
+    }
 
     private void configuraActivityCarrinho() {
         if (getSupportActionBar() != null) {
@@ -252,6 +170,7 @@ public class ListaRapidaoActivity extends AppCompatActivity {
                 Intent activity = new Intent(ListaRapidaoActivity.this, FormaPagamentoActivity.class);
 
                 startActivity(activity);
+
             }
         });
     }
