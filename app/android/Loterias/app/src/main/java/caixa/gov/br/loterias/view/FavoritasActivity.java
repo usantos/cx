@@ -3,6 +3,8 @@ package caixa.gov.br.loterias.view;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,11 +28,10 @@ import caixa.gov.br.loterias.bo.silce.dto.AgrupadorDTOApostaFavoritaDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.ApostaFavoritaDTO;
 import caixa.gov.br.loterias.bo.silce.dto.DTOEnumInteger;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroEquipe;
+import caixa.gov.br.loterias.view.adapter.FavoritasRecyclerViewAdapter;
 import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
 import caixa.gov.br.loterias.utils.MensagensNetwork;
 import caixa.gov.br.loterias.utils.ViewUtils;
-import caixa.gov.br.loterias.view.adapter.FavoritasAdapter;
-import caixa.gov.br.loterias.view.custom.ExpandableHeightGridView;
 
 
 public class FavoritasActivity extends AppCompatActivity {
@@ -38,6 +39,9 @@ public class FavoritasActivity extends AppCompatActivity {
     AgrupadorDTOApostaFavoritaDTO agrupadorDTOApostaFavoritaDTO;
 
     List<ApostaFavoritaDTO> apostaFavoritaLista = new ArrayList<ApostaFavoritaDTO>();
+    RecyclerView recyclerViewFavoritas;
+    LinearLayoutManager layoutManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,11 +141,14 @@ public class FavoritasActivity extends AppCompatActivity {
                 apostaFavoritaLista.add(apostaFavoritaDTO);
                 apostaFavoritaLista.add(apostaFavoritaDTO);
 
-                //gridview
-                ExpandableHeightGridView gridViewApostaFavorita = (ExpandableHeightGridView)findViewById(R.id.gridViewFavoritas);
-                FavoritasAdapter favoritasAdapter = new FavoritasAdapter(FavoritasActivity.this, apostaFavoritaLista);
-                gridViewApostaFavorita.setAdapter(favoritasAdapter);
-                gridViewApostaFavorita.setExpanded(true);
+                //recyclerView
+                recyclerViewFavoritas = (RecyclerView) findViewById(R.id.recyclerFavoritas);
+                FavoritasRecyclerViewAdapter favoritasAdapter = new FavoritasRecyclerViewAdapter(FavoritasActivity.this, apostaFavoritaLista);
+                layoutManager = new LinearLayoutManager(FavoritasActivity.this);
+
+                recyclerViewFavoritas.setHasFixedSize(true);
+                recyclerViewFavoritas.setAdapter(favoritasAdapter);
+                recyclerViewFavoritas.setLayoutManager(layoutManager);
 
                 atualizaLayout();
             }
