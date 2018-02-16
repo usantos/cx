@@ -2,17 +2,18 @@ package caixa.gov.br.loterias.view.custom;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.view.DetalheDuvidaActivity_;
 
 /**
  * Created by joafilho on 15/02/2018.
@@ -54,5 +55,10 @@ public class ItemDuvidaView extends LinearLayout {
 
     public LinearLayout getItemDuvida() {
         return itemDuvida;
+    }
+
+    @Click(R.id.itemDuvida)
+    public void clickItemDuvida(){
+        DetalheDuvidaActivity_.intent(getContext()).nome(textItemDuvida.getText().toString()).start();
     }
 }

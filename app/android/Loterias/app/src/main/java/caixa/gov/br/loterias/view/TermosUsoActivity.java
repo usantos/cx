@@ -188,7 +188,7 @@ public class TermosUsoActivity extends AppCompatActivity {
         termosUsoButton.setSelected(Boolean.TRUE);
         termosUsoButton.setTextColor(getResources().getColor(R.color.branco));
         relativeLayouTermoAceite.setVisibility(View.VISIBLE);
-        getTermo();
+        webViewConteudo.loadData(termoHtml, "text/html; charset=UTF-8", "UTF-8");
         unSelectPoliticas();
         unSelectDuvidas();
     }
@@ -276,6 +276,7 @@ public class TermosUsoActivity extends AppCompatActivity {
     }
 
     private void initReciclerViewDuvidas() {
+        //TODO mock
         List<String> mocks = new ArrayList<>();
         mocks.add("Lorem ipsum dolor sit amet");
         mocks.add("Consectetur adipiscing elit. Aenean euismod");

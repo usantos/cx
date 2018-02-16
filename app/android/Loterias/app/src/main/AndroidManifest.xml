@@ -178,13 +178,15 @@
         <activity
             android:name=".view.DetalhesComprasActivity"
             android:label="@string/title_activity_detalhes_compras"
-            android:theme="@style/AppTheme.DegradeActionBar"></activity>
-
-        <activity android:name=".view.InsercaoManualCodBarrasActivity"
+            android:theme="@style/AppTheme.DegradeActionBar" />
+        <activity
+            android:name=".view.InsercaoManualCodBarrasActivity"
             android:label=""
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.DegradeActionBar"
-            ></activity>
+            android:theme="@style/AppTheme.DegradeActionBar" />
+        <activity
+            android:name=".view.DetalheDuvidaActivity_"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

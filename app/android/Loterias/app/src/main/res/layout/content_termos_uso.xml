@@ -63,8 +63,7 @@
         <RelativeLayout
             android:id="@+id/relativeLayouTermoAceite"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone">
+            android:layout_height="wrap_content">
 
             <ScrollView
                 android:id="@+id/scrollViewTermoAceite"
@@ -77,7 +76,7 @@
                 <WebView xmlns:android="http://schemas.android.com/apk/res/android"
                     android:id="@+id/webViewConteudo"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="wrap_content" />
 
             </ScrollView>
 
@@ -151,6 +150,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="22dp"
+                    android:clickable="false"
                     android:layout_gravity="center_horizontal"/>
             </ScrollView>
         </LinearLayout>
