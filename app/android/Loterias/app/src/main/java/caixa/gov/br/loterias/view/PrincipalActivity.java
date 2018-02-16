@@ -531,8 +531,14 @@ public class PrincipalActivity extends AppCompatActivity
         lerBilhetes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AnimacaoFecharMenuRapido(relativePrincipal);
-                startActivity(new Intent(PrincipalActivity.this, LerBilhetesActivity.class));
+                if (ContextCompat.checkSelfPermission(PrincipalActivity.this, Manifest.permission.CAMERA)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(PrincipalActivity.this,
+                            new String[]{Manifest.permission.CAMERA}, ZXING_CAMERA_PERMISSION);
+                } else {
+                    AnimacaoFecharMenuRapido(relativePrincipal);
+                    startActivity(new Intent(PrincipalActivity.this, LerBilhetesActivity.class));
+                }
             }
         });
     }
@@ -636,6 +642,7 @@ public class PrincipalActivity extends AppCompatActivity
         switch (requestCode) {
             case ZXING_CAMERA_PERMISSION:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    AnimacaoFecharMenuRapido(relativePrincipal);
                     startActivity(new Intent(PrincipalActivity.this, LerBilhetesActivity.class));
                 } else {
                     Toast.makeText(this, "Por favor conceda a permissão da câmera para usar o leitor de bilhetes.", Toast.LENGTH_SHORT).show();
