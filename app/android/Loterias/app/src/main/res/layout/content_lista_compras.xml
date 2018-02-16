@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -13,6 +13,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/scrollViewContentViewCompras"
+            android:layout_marginBottom="73dp"
             >
         <LinearLayout
             android:layout_width="match_parent"
@@ -85,27 +86,36 @@
                     android:padding="5dp"
                     android:visibility="gone"
                     />
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textAlignment="center"
-                    android:text="Compras mais antigas podem ser consultadas no site"
-                    android:textSize="14.2sp"
-                    android:textColor="@color/cinza"
-                    android:fontFamily="@font/arialmt"
-                    android:id="@+id/textBottomInformacaoTextView"
-                    android:paddingTop="5dp"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textAlignment="center"
-                    android:text="www.loteriasonline.caixa.gov.br"
-                    android:textColor="@color/amareloQueimado"
-                    android:textSize="14.2sp"
-                    android:fontFamily="@font/futura_std_bold"
-                    android:paddingBottom="25dp"/>
-
-
         </LinearLayout>
         </android.support.v4.widget.NestedScrollView>
-</android.support.constraint.ConstraintLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="73dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/verdeazul"
+            android:orientation="vertical"
+
+            >
+
+                <TextView
+                    android:id="@+id/textBottomInformacaoTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/arialmt"
+                    android:paddingTop="10dp"
+                    android:text="Compras mais antigas podem ser consultadas no site"
+                    android:textAlignment="center"
+                    android:textColor="@color/cinza"
+                    android:textSize="14.2sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/futura_std_bold"
+                    android:text="www.loteriasonline.caixa.gov.br"
+                    android:textAlignment="center"
+                    android:textColor="@color/amareloQueimado"
+                    android:textSize="14.2sp" />
+        </LinearLayout>
+</RelativeLayout>
