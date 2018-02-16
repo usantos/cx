@@ -23,7 +23,10 @@ import java.util.List;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.bo.DadosCorporativosBO;
+import caixa.gov.br.loterias.bo.DadosUsuarioBO;
 import caixa.gov.br.loterias.bo.silce.SilceClient;
+import caixa.gov.br.loterias.bo.silce.dto.ListSecaoDTO;
+import caixa.gov.br.loterias.bo.silce.dto.ListSecaoDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.ResourceResponse;
 import caixa.gov.br.loterias.bo.silce.dto.TermoDeUsoDTOResponse;
 import caixa.gov.br.loterias.utils.MensagensNetwork;
@@ -43,6 +46,7 @@ public class TermosUsoActivity extends AppCompatActivity {
     private LinearLayout layoutClickAceiteTermo, layoutDuvidas;
     private AppCompatCheckBox selcioneAceiteTermoUso;
     private ExpandableHeightRecyclerView recyclerViewDuvidas;
+    private List<ListSecaoDTO> secaoDuvidas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -276,24 +280,31 @@ public class TermosUsoActivity extends AppCompatActivity {
     }
 
     private void initReciclerViewDuvidas() {
-        //TODO mock
-        List<String> mocks = new ArrayList<>();
-        mocks.add("Lorem ipsum dolor sit amet");
-        mocks.add("Consectetur adipiscing elit. Aenean euismod");
-        mocks.add("Bibendum laoreet. Proin");
-        mocks.add("Lacus accumsan et viverra justo commodo.");
-        mocks.add("Proin sodales pulvinar tempor. Cum sociis");
-        mocks.add("Natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.");
-        mocks.add("Montes, nascetur ridiculus mus.");
-        mocks.add("Lorem ipsum dolor sit amet");
-        mocks.add("Consectetur adipiscing elit. Aenean euismod");
-        mocks.add("Bibendum laoreet. Proin");
-        mocks.add("Lacus accumsan et viverra justo commodo.");
-        mocks.add("Proin sodales pulvinar tempor. Cum sociis");
-        mocks.add("Natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.");
-        mocks.add("Montes, nascetur ridiculus mus.");
+        if (secaoDuvidas == null) {
+            final View loadViewProgress = LoadingViewLoterias.init(this);
+            DadosCorporativosBO dadosCorporativosBO = new DadosCorporativosBO(getApplicationContext());
 
-        ItemDuvidaAdapter itemDuvidaAdapter = new ItemDuvidaAdapter(mocks);
+            dadosCorporativosBO.secaoDuvidas(new SilceClient.Listener<ListSecaoDTOResponse>() {
+                @Override
+                public void onResponse(ListSecaoDTOResponse response) {
+                    secaoDuvidas = response.getPayload();
+                    createRecyclerView();
+                    LoadingViewLoterias.stop(loadViewProgress);
+                }
+            }, new SilceClient.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    LoadingViewLoterias.stop(loadViewProgress);
+                    ViewUtils.alert(TermosUsoActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
+                }
+            });
+        } else {
+            createRecyclerView();
+        }
+    }
+
+    private void createRecyclerView() {
+        ItemDuvidaAdapter itemDuvidaAdapter = new ItemDuvidaAdapter(secaoDuvidas);
         recyclerViewDuvidas.setAdapter(itemDuvidaAdapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerViewDuvidas.setLayoutManager(layoutManager);

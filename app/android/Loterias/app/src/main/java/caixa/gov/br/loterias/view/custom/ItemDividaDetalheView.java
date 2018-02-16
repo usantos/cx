@@ -13,7 +13,7 @@ import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
 
 import caixa.gov.br.loterias.R;
-import caixa.gov.br.loterias.bo.silce.dto.DTOEnumCharacter;
+import caixa.gov.br.loterias.bo.silce.dto.DuvidaDTO;
 import caixa.gov.br.loterias.utils.ViewUtils;
 
 /**
@@ -53,9 +53,9 @@ public class ItemDividaDetalheView extends LinearLayout {
         return layoutItemDetalheDuvida;
     }
 
-    public void setLayout(DTOEnumCharacter dtoEnumCharacter) {
-        textDuvidaDetalhe.setText(dtoEnumCharacter.getValor());
-        textDetalhe.setText(dtoEnumCharacter.getDescricao());
+    public void setLayout(DuvidaDTO duvidaDTO) {
+        textDuvidaDetalhe.setText(duvidaDTO.getPergunta());
+        textDetalhe.setText(duvidaDTO.getResposta());
     }
 
     @Click(R.id.layoutCabecalhoDuvidaDetalhe)

@@ -50,6 +50,9 @@ public class SilceClient {
     public static final String COMPRAS_MESES_PATH = "/compras/meses";
     public static final String DETALHES_COMPRAS_PATH = "/compras/{id}/apostas";
 
+    public static final String DUVIDAS_SECOES_PATH = "/duvidas/secoes";
+    public static final String DUVIDAS_PATH = "/duvidas";
+
     public interface Listener<T> {
         public void onResponse(T response);
     }

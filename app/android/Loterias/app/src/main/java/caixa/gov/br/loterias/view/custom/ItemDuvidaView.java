@@ -13,6 +13,7 @@ import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.bo.silce.dto.ListSecaoDTO;
 import caixa.gov.br.loterias.view.DetalheDuvidaActivity_;
 
 /**
@@ -32,6 +33,8 @@ public class ItemDuvidaView extends LinearLayout {
     @ViewById
     LinearLayout itemDuvida;
 
+    private ListSecaoDTO listSecaoDTO;
+
     @AfterViews
     protected void init() {
 
@@ -49,8 +52,10 @@ public class ItemDuvidaView extends LinearLayout {
         super(context, attrs, defStyleAttr);
     }
 
-    public void setLayout(String titulo) {
-        this.textItemDuvida.setText(titulo);
+    public void setLayout(ListSecaoDTO secaoDTO) {
+        this.listSecaoDTO = secaoDTO;
+        this.textItemDuvida.setTag(secaoDTO.getId());
+        this.textItemDuvida.setText(secaoDTO.getNome());
     }
 
     public LinearLayout getItemDuvida() {
@@ -58,7 +63,7 @@ public class ItemDuvidaView extends LinearLayout {
     }
 
     @Click(R.id.itemDuvida)
-    public void clickItemDuvida(){
-        DetalheDuvidaActivity_.intent(getContext()).nome(textItemDuvida.getText().toString()).start();
+    public void clickItemDuvida() {
+        DetalheDuvidaActivity_.intent(getContext()).secaoDTO(listSecaoDTO).start();
     }
 }

@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import caixa.gov.br.loterias.R;
-import caixa.gov.br.loterias.bo.silce.dto.DTOEnumCharacter;
+import caixa.gov.br.loterias.bo.silce.dto.DuvidaDTO;
 import caixa.gov.br.loterias.view.custom.ItemDividaDetalheView;
 import caixa.gov.br.loterias.view.custom.ItemDividaDetalheView_;
 
@@ -19,10 +19,10 @@ import caixa.gov.br.loterias.view.custom.ItemDividaDetalheView_;
 
 public class DetalheDuvidaAdapter extends RecyclerView.Adapter<DetalheDuvidaAdapter.DetalheDuvidaHolder> {
 
-    private List<DTOEnumCharacter> listDetalhes;
+    private List<DuvidaDTO> duvidasDetalhe;
 
-    public DetalheDuvidaAdapter(List<DTOEnumCharacter> listDetalhes) {
-        this.listDetalhes = listDetalhes;
+    public DetalheDuvidaAdapter(List<DuvidaDTO> duvidasDetalhe) {
+        this.duvidasDetalhe = duvidasDetalhe;
     }
 
     @Override
@@ -37,7 +37,7 @@ public class DetalheDuvidaAdapter extends RecyclerView.Adapter<DetalheDuvidaAdap
 
     @Override
     public void onBindViewHolder(DetalheDuvidaHolder holder, int position) {
-        holder.itemDividaDetalheView.setLayout(listDetalhes.get(position));
+        holder.itemDividaDetalheView.setLayout(duvidasDetalhe.get(position));
         if (position != 0) {
             holder.itemDividaDetalheView.getLayoutItemDetalheDuvida().setBackgroundResource(R.drawable.drawer_linha_divisao_cinza_2_top);
         }
@@ -46,7 +46,7 @@ public class DetalheDuvidaAdapter extends RecyclerView.Adapter<DetalheDuvidaAdap
 
     @Override
     public int getItemCount() {
-        return listDetalhes.size();
+        return duvidasDetalhe.size();
     }
 
     class DetalheDuvidaHolder extends HomeAdapter.ViewHolder {

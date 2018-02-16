@@ -7,6 +7,7 @@ import com.android.volley.NetworkResponse;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 import caixa.gov.br.loterias.BuildConfig;
@@ -17,6 +18,7 @@ import caixa.gov.br.loterias.bo.silce.dto.BairroDTO;
 import caixa.gov.br.loterias.bo.silce.dto.BairroDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.CarrinhoDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.ListDTOEnumIntegerResponse;
+import caixa.gov.br.loterias.bo.silce.dto.ListSecaoDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.Loterica;
 import caixa.gov.br.loterias.bo.silce.dto.LotericaCodigoWrapperResponse;
 import caixa.gov.br.loterias.bo.silce.dto.LotericaDTO;
@@ -203,7 +205,7 @@ public class DadosCorporativosBO {
     }
 
     public void aceiteTermo(final SilceClient.Listener<ResourceResponse> listener,
-                                  final SilceClient.ErrorListener errorListener) {
+                            final SilceClient.ErrorListener errorListener) {
 
         LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
         headers.put("Authorization", "Bearer " + UsuarioLogadoSingleton.getInstance().token);
@@ -212,6 +214,25 @@ public class DadosCorporativosBO {
                 silceClient.volleyListener(listener, ResourceResponse.class),
                 silceClient.volleyErrorListener(errorListener), headers);
 
+    }
+
+    public void secaoDuvidas(final SilceClient.Listener<ListSecaoDTOResponse> listener, final SilceClient.ErrorListener errorListener) {
+        LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
+        headers.put("Authorization", "Bearer " + UsuarioLogadoSingleton.getInstance().token);
+
+        silceClient.getConnection().get(SilceClient.DUVIDAS_SECOES_PATH, new LinkedHashMap<String, String>(), ListSecaoDTOResponse.class,
+                silceClient.volleyListener(listener, ListSecaoDTOResponse.class), silceClient.volleyErrorListener(errorListener), headers);
+    }
+
+    public void duvidasPerguntasRespostas(Integer secao, final SilceClient.Listener<ListSecaoDTOResponse> listener, final SilceClient.ErrorListener errorListener) {
+        LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
+        headers.put("Authorization", "Bearer " + UsuarioLogadoSingleton.getInstance().token);
+
+        HashMap queryParams = new LinkedHashMap<String, String>();
+        queryParams.put("secao", secao.toString());
+
+        silceClient.getConnection().get(SilceClient.DUVIDAS_PATH, queryParams, ListSecaoDTOResponse.class,
+                silceClient.volleyListener(listener, ListSecaoDTOResponse.class), silceClient.volleyErrorListener(errorListener), headers);
     }
 
     private static <T> String join(Collection<T> collection, String delimiter) {

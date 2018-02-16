@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.bo.silce.dto.ListSecaoDTO;
 import caixa.gov.br.loterias.view.custom.ItemDuvidaView;
 import caixa.gov.br.loterias.view.custom.ItemDuvidaView_;
 
@@ -17,9 +18,9 @@ import caixa.gov.br.loterias.view.custom.ItemDuvidaView_;
 
 public class ItemDuvidaAdapter extends RecyclerView.Adapter<ItemDuvidaAdapter.ItemDuvidaViewHolder> {
 
-    private List<String> itensDuvida;
+    private List<ListSecaoDTO> itensDuvida;
 
-    public ItemDuvidaAdapter(List<String> itensDuvida) {
+    public ItemDuvidaAdapter(List<ListSecaoDTO> itensDuvida) {
         this.itensDuvida = itensDuvida;
     }
 
