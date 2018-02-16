@@ -2,6 +2,9 @@ package caixa.gov.br.loterias.bean;
 
 import java.math.BigDecimal;
 
+import caixa.gov.br.loterias.bo.silce.dto.ParametroSimulacao;
+import caixa.gov.br.loterias.bo.silce.dto.ParametrosSimulacao;
+
 /**
  * Created by cedesbr450 on 08/01/18.
  */
@@ -16,6 +19,17 @@ public class SessaoUsuario {
     private String token;
     private String nome;
     private String email;
+
+
+    public ParametrosSimulacao getParametrosSimulacao() {
+        return parametrosSimulacao;
+    }
+
+    public void setParametrosSimulacao(ParametrosSimulacao parametrosSimulacao) {
+        this.parametrosSimulacao = parametrosSimulacao;
+    }
+
+    public ParametrosSimulacao parametrosSimulacao;
 
 
     public static SessaoUsuario getInstance() {
@@ -68,4 +82,6 @@ public class SessaoUsuario {
     public void setEmail(String email) {
         this.email = email;
     }
+
+
 }

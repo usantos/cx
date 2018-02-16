@@ -1,20 +1,33 @@
 package caixa.gov.br.loterias.view;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 
+import org.w3c.dom.Text;
+
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.bean.SessaoUsuario;
 import caixa.gov.br.loterias.bo.ApostaBO;
 import caixa.gov.br.loterias.bo.silce.SilceClient;
+import caixa.gov.br.loterias.bo.silce.data.UsuarioLogadoSingleton;
+import caixa.gov.br.loterias.bo.silce.dto.ApostaDTO;
+import caixa.gov.br.loterias.bo.silce.dto.ModalidadeEnum;
 import caixa.gov.br.loterias.bo.silce.dto.ResultadoConsultaBilheteDTO;
 import caixa.gov.br.loterias.bo.silce.dto.ResultadoConsultaBilheteDTOResponse;
+import caixa.gov.br.loterias.model.Modalidade;
+import caixa.gov.br.loterias.utils.EstiloModalidade;
+import caixa.gov.br.loterias.utils.EstiloModalidadeAposta;
 import caixa.gov.br.loterias.utils.MensagensNetwork;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
@@ -93,8 +106,9 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
             public void onResponse(ResultadoConsultaBilheteDTOResponse response) {
                 LoadingViewLoterias.stop(loadViewProgress);
                 resultadoConsultaBilheteDTO = response.getPayload();
-                AtulizarLayout();
-
+                if (resultadoConsultaBilheteDTO.getSituacao().getDescricao().equals("Premiada")){
+                    AtualizarLayout();
+                }
             }
         }, new SilceClient.ErrorListener() {
             @Override
@@ -107,11 +121,40 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
     }
 
 
-    private void AtulizarLayout(){
-//        switch (resultadoConsultaBilheteDTO.getSituacao().getValor().intValue()){
-//            case
-//        }
-//        String a = resultadoConsultaBilheteDTO.
-    }
+    private void AtualizarLayout(){
+        ApostaDTO.ModalidadeEnum modalidadeEnum = ApostaDTO.toStringModalidade(resultadoConsultaBilheteDTO.getModalidadeDTO().getDescricao());
+        EstiloModalidadeAposta   estiloModalidade = new EstiloModalidadeAposta(modalidadeEnum);
+        SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
 
+
+
+        LinearLayout topoModalidadeResultadoLinearLayout = (LinearLayout) findViewById(R.id.topoModalidadeResultadoLinearLayout);
+        topoModalidadeResultadoLinearLayout.setBackgroundColor(ContextCompat.getColor(this, estiloModalidade.getCorClara()));
+
+        LinearLayout topo2ModalidadeResultadoLinearLayout = (LinearLayout) findViewById(R.id.topo2ModalidadeResultadoLinearLayout);
+        topo2ModalidadeResultadoLinearLayout.setBackgroundColor(ContextCompat.getColor(this, estiloModalidade.getCorEscura()));
+
+        LinearLayout fundoBackgroundTrapezeResultadoLinearLayout = (LinearLayout) findViewById(R.id.fundoBackgroundTrapezeResultadoLinearLayout);
+        fundoBackgroundTrapezeResultadoLinearLayout.setBackground(ContextCompat.getDrawable(this, estiloModalidade.getTrevoBackground()));
+
+        TextView tituloModalidadeTextView = (TextView) findViewById(R.id.tituloModalidadeTextView);
+        tituloModalidadeTextView.setText(resultadoConsultaBilheteDTO.getModalidadeDTO().getDescricao());
+
+        TextView statusResultadoTextView = (TextView) findViewById(R.id.statusResultadoTextView);
+        statusResultadoTextView.setText(resultadoConsultaBilheteDTO.getSituacao().getDescricao());
+
+        TextView limiteDiarioResultadoTextView = (TextView) findViewById(R.id.limiteDiarioResultadoTextView);
+        limiteDiarioResultadoTextView.setText(sessaoUsuario.getParametrosSimulacao().getValorLimiteDiario().toString());
+
+        TextView proximoSorteioTextView = (TextView) findViewById(R.id.proximoSorteioTextView);
+
+        TextView aberturaApostaResultadoTextView = (TextView) findViewById(R.id.aberturaApostaResultadoTextView);
+
+        TextView encerramentoResultadoTextView = (TextView) findViewById(R.id.encerramentoResultadoTextView);
+
+        TextView premioResultadoTextView = (TextView) findViewById(R.id.premioResultadoTextView);
+        if (resultadoConsultaBilheteDTO.getValorPremio() != null){
+            premioResultadoTextView.setText(ViewUtils.getMoedaFormat(resultadoConsultaBilheteDTO.getValorPremio()));
+        }
+    }
 }

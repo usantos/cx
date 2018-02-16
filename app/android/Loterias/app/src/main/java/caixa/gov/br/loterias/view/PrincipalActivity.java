@@ -162,6 +162,7 @@ public class PrincipalActivity extends AppCompatActivity
                 SessaoUsuario sessaoUser = SessaoUsuario.getInstance();
                 sessaoUser.setValorMinimimoAposta(response.getPayload().getValorMinimoCarrinho());
                 sessaoUser.setValorMaximoAposta(response.getPayload().getValorLimiteDiario());
+                sessaoUser.setParametrosSimulacao(response.getPayload());
 
                 if (modalidadesParaListar == null || modalidadesParaListar.size() == 0) {
                     startActivity(new Intent(PrincipalActivity.this, ListaRapidaoActivity.class));

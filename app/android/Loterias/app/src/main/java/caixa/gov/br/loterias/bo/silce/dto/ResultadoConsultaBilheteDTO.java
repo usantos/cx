@@ -30,6 +30,17 @@ public class ResultadoConsultaBilheteDTO {
     @SerializedName("locaisParaRecebimento")
     private List<TipoPagamentoDTO> locaisParaRecebimento = null;
 
+    public ModalidadeDTO getModalidadeDTO() {
+        return modalidadeDTO;
+    }
+
+    public void setModalidadeDTO(ModalidadeDTO modalidadeDTO) {
+        this.modalidadeDTO = modalidadeDTO;
+    }
+
+    @SerializedName("modalidade")
+    private ModalidadeDTO modalidadeDTO = null;
+
     /**
      **/
     @ApiModelProperty(value = "")
