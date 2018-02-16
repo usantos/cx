@@ -41,7 +41,6 @@ public class InsercaoManualCodBarrasActivity extends AppCompatActivity {
                     Intent activity = new Intent(InsercaoManualCodBarrasActivity.this, ResultadoLerBilhetesActivity.class);
                     activity.putExtra("codigoBarras", editTextNumeroBilhete.getText().toString());
                     startActivity(activity);
-                    finish();
                 }
             }
         });

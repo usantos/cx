@@ -33,7 +33,6 @@ public class LerBilhetesActivity extends AppCompatActivity{
                 Intent activity = new Intent(LerBilhetesActivity.this, ResultadoLerBilhetesActivity.class);
                 activity.putExtra("codigoBarras", result.getText());
                 startActivity(activity);
-                finish();
         }
 
         @Override
@@ -63,7 +62,6 @@ public class LerBilhetesActivity extends AppCompatActivity{
             public void onClick(View v) {
                 Intent activity = new Intent(LerBilhetesActivity.this, InsercaoManualCodBarrasActivity.class);
                 startActivity(activity);
-                finish();
             }
         });
 
