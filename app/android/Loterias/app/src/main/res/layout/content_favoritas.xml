@@ -7,6 +7,12 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="caixa.gov.br.loterias.view.FavoritasActivity"
     tools:showIn="@layout/activity_favoritas">
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/scrollViewContentViewFavoritas"
+        android:layout_marginBottom="0dp"
+        >
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -39,5 +45,15 @@
             android:layout_height="match_parent"
             android:layout_marginTop="19dp"
             />
+
+        <ProgressBar
+            android:id="@+id/favoritas_loading_more"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:padding="5dp"
+            android:visibility="gone"
+            />
     </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
 </android.support.constraint.ConstraintLayout>

@@ -13,6 +13,7 @@ import java.util.Map;
 
 import caixa.gov.br.loterias.BuildConfig;
 import caixa.gov.br.loterias.bo.silce.SilceClient;
+import caixa.gov.br.loterias.bo.silce.data.CarrinhoDTO;
 import caixa.gov.br.loterias.bo.silce.data.CompletaJogoRsp;
 import caixa.gov.br.loterias.bo.silce.data.UsuarioLogadoSingleton;
 import caixa.gov.br.loterias.bo.silce.dto.AgrupadorApostaCompraDTOResponse;
@@ -161,10 +162,8 @@ public class ApostaBO {
         if (quantidade > 0){
             queryParams.put("quantidade", String.valueOf(quantidade));
         }
-
-
-        silceClient.getConnection().get(SilceClient.GERAR_APOSTAS_RAPIDAO_PATH, queryParams, CarrinhoDTOResponse.class,
-                silceClient.volleyListener(listener, CarrinhoDTOResponse.class), silceClient.volleyErrorListener(errorListerner), headers);
+        silceClient.getConnection().post(SilceClient.GERAR_APOSTAS_RAPIDAO_PATH, queryParams,
+                "", CarrinhoDTOResponse.class, silceClient.volleyListener(listener, CarrinhoDTOResponse.class), silceClient.volleyErrorListener(errorListerner), headers);
     }
 
     public void getRapidoes(final SilceClient.Listener<RapidaoDTOResponse> listener, final SilceClient.ErrorListener errorListerner) {

@@ -93,11 +93,10 @@
             android:layout_width="match_parent"
             android:layout_height="73dp"
             android:layout_alignParentBottom="true"
-            android:background="@color/verdeazul"
+            android:background="@color/branco"
             android:orientation="vertical"
 
             >
-
                 <TextView
                     android:id="@+id/textBottomInformacaoTextView"
                     android:layout_width="match_parent"

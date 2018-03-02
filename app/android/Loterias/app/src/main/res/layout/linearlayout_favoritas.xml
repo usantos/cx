@@ -4,71 +4,150 @@
 android:layout_width="match_parent"
 android:layout_height="wrap_content"
     >
-    <RelativeLayout
+    <HorizontalScrollView
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:background="@color/vermelhoBilhetes"
-        android:id="@+id/RelativeLayoutContentAlterarFavoritas"
+        android:layout_height="match_parent"
+        android:id="@+id/HorizontalScrollViewFavoritasItem"
+        android:scrollbars="none"
         >
-
-        <LinearLayout
-            android:id="@+id/LinearLayoutContentAlterarFavoritas"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingBottom="20dp"
-            android:paddingTop="20dp">
+            android:layout_height="match_parent"
+            >
 
-        </LinearLayout>
-
-    </RelativeLayout>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:background="@color/amarelo"
-        android:id="@+id/RelativeLayoutContentFavoritas"
-        >
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:id="@+id/LinearLayoutContentApostaFavorita"
-            android:paddingTop="20dp"
-            android:paddingBottom="20dp">
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingBottom="12dp">
+                android:layout_height="100dp"
+                android:background="@color/branco"
+                android:id="@+id/RelativeLayoutContentFavoritas"
+                android:layout_alignParentLeft="true"
 
-                <TextView
+                >
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Mega-Sena"
-                    android:textSize="14.2sp"
-                    android:textColor="@color/verdeazul"
-                    android:id="@+id/tituloApostaFavorira"
-                    android:layout_marginLeft="16dp"
-                    />
-            </LinearLayout>
+                    android:orientation="vertical"
+                    android:id="@+id/LinearLayoutContentApostaFavorita"
+                    android:paddingTop="20dp"
+                    android:paddingBottom="20dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingBottom="12dp">
 
-            <TextView
-                android:id="@+id/numerosApostaFavorita"
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Mega-Sena"
+                            android:textSize="14.2sp"
+                            android:textColor="@color/verdeazul"
+                            android:id="@+id/tituloApostaFavorita"
+                            android:layout_marginLeft="16dp"
+                            android:fontFamily="@font/arialmt"
+                            android:textStyle="bold"
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=" | agora vai"
+                            android:textSize="14.2sp"
+                            android:textColor="@color/cinza"
+                            android:id="@+id/tituloNomeApostaFavorita"
+                            android:fontFamily="@font/arialmt"
+                            android:textStyle="bold"
+                            />
+                    </LinearLayout>
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:id="@+id/numerosApostaFavorita"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="80dp"
+                            android:text="01 - 02 - 03 - 04 - 05 - 06 - 10 - 11 - 12 - 20 - 33 - 100"
+                            android:textColor="@color/azulescuroapostafavorita"
+                            android:textSize="14.2sp"
+                            android:textStyle="bold"
+
+                            />
+                        <LinearLayout
+                            android:layout_width="76dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_alignParentRight="true">
+                            <Button
+                                android:layout_width="21dp"
+                                android:layout_height="21dp"
+                                android:background="@drawable/icon_reload"/>
+                            <Button
+                                android:layout_width="21dp"
+                                android:layout_height="21dp"
+                                android:background="@drawable/icon_reload"
+                                android:layout_marginLeft="5dp"/>
+                            <Button
+                                android:layout_width="21dp"
+                                android:layout_height="21dp"
+                                android:background="@drawable/close"
+                                android:layout_marginLeft="5dp"/>
+                        </LinearLayout>
+                    </RelativeLayout>
+
+
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="10dp"
-                android:text="01 - 02 - 03 - 04 - 05 - 06 - 10 - 11 - 12 - 20 - 33 - 100"
-                android:textColor="@color/azulescuroapostafavorita"
-                android:textSize="14.2sp"
-                android:textStyle="bold"
+                android:layout_height="100dp"
+                android:background="@color/cinza"
+                android:id="@+id/RelativeLayoutContentAlterarFavoritas"
+                android:layout_alignParentLeft="true"
+                >
 
-                />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Dê um novo nome para sua aposta"
+                    android:textColor="@color/verdeazul"
+                    android:fontFamily="@font/arialmt"
+                    android:textSize="12sp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="17dp"
+                    />
 
-        </LinearLayout>
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginRight="122dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginTop="37dp"
+                    android:layout_marginLeft="16dp"
+                    android:textColor="@color/branco"
+                    android:backgroundTint="@color/edittextlinecinza"
+                    android:id="@+id/EditTextNomeDaAposta"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    />
 
-    </RelativeLayout>
+                <Button
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/seta_verde"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="86dp"
+                    android:layout_marginTop="37dp"
+                    android:id="@+id/button"
+                    />
 
+            </RelativeLayout>
 
+        </RelativeLayout>
+    </HorizontalScrollView>
 </RelativeLayout>
 

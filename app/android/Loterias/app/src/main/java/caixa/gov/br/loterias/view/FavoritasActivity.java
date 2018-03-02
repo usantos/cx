@@ -2,14 +2,17 @@ package caixa.gov.br.loterias.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 
@@ -39,9 +42,14 @@ public class FavoritasActivity extends AppCompatActivity {
     AgrupadorDTOApostaFavoritaDTO agrupadorDTOApostaFavoritaDTO;
 
     List<ApostaFavoritaDTO> apostaFavoritaLista = new ArrayList<ApostaFavoritaDTO>();
-    RecyclerView recyclerViewFavoritas;
+    public RecyclerView recyclerViewFavoritas;
     LinearLayoutManager layoutManager;
+    Boolean isMaisCompras = true;
+    Boolean bloquearRequestScroll = false;
+    int offsetItem = 0;
 
+    public ProgressBar progressLoadingMore;
+    public NestedScrollView scrollViewContentViewFavoritas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +57,10 @@ public class FavoritasActivity extends AppCompatActivity {
         setContentView(R.layout.activity_favoritas);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        scrollViewContentViewFavoritas = (NestedScrollView) findViewById(R.id.scrollViewContentViewFavoritas);
+
+        progressLoadingMore = (ProgressBar) findViewById(R.id.favoritas_loading_more);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -114,6 +126,9 @@ public class FavoritasActivity extends AppCompatActivity {
     }
 
     private void callWebservice() {
+        offsetItem = 0;
+        isMaisCompras = true;
+        bloquearRequestScroll = false;
 
         final View loadViewProgress = LoadingViewLoterias.init(this);
         final ApostaBO apostaBO = new ApostaBO(this);
@@ -122,6 +137,9 @@ public class FavoritasActivity extends AppCompatActivity {
             @Override
             public void onResponse(AgrupadorDTOApostaFavoritaDTOResponse response) {
                 LoadingViewLoterias.stop(loadViewProgress);
+
+                offsetItem = 5;
+
 
 //                agrupadorDTOApostaFavoritaDTO = response.getPayload();
 
@@ -140,6 +158,12 @@ public class FavoritasActivity extends AppCompatActivity {
                 apostaFavoritaLista.add(apostaFavoritaDTO);
                 apostaFavoritaLista.add(apostaFavoritaDTO);
                 apostaFavoritaLista.add(apostaFavoritaDTO);
+                apostaFavoritaLista.add(apostaFavoritaDTO);
+                apostaFavoritaLista.add(apostaFavoritaDTO);
+                apostaFavoritaLista.add(apostaFavoritaDTO);
+                apostaFavoritaLista.add(apostaFavoritaDTO);
+                apostaFavoritaLista.add(apostaFavoritaDTO);
+                apostaFavoritaLista.add(apostaFavoritaDTO);
 
                 //recyclerView
                 recyclerViewFavoritas = (RecyclerView) findViewById(R.id.recyclerFavoritas);
@@ -150,6 +174,24 @@ public class FavoritasActivity extends AppCompatActivity {
                 recyclerViewFavoritas.setAdapter(favoritasAdapter);
                 recyclerViewFavoritas.setLayoutManager(layoutManager);
 
+
+
+                scrollViewContentViewFavoritas.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+                    @Override
+                    public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                        View view = (View) v.getChildAt(v.getChildCount() - 1);
+                        int diff = (view.getBottom() - (v.getHeight() + v.getScrollY()));
+
+                        // if diff is zero, then the bottom has been reached
+                        if (diff == 0 && bloquearRequestScroll == false) {
+                            // do stuff
+//                            getComprasScroll();
+//                            bloquearRequestScroll = true;
+                        }
+                    }
+                });
+
+
                 atualizaLayout();
             }
         }, new SilceClient.ErrorListener() {
@@ -157,6 +199,62 @@ public class FavoritasActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 LoadingViewLoterias.stop(loadViewProgress);
                 ViewUtils.alert(FavoritasActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
+
+                offsetItem = 5;
+
+
+//                agrupadorDTOApostaFavoritaDTO = response.getPayload();
+
+                ApostaFavoritaDTO apostaFavoritaDTO = new ApostaFavoritaDTO();
+                apostaFavoritaDTO.setId(new Long(1));
+                apostaFavoritaDTO.setNome("Favorita xxx");
+                apostaFavoritaDTO.setModalidade(new DTOEnumInteger());
+                apostaFavoritaDTO.setTimeDoCoracao(new ParametroEquipe());
+                List<Integer> numerosLista = new ArrayList<Integer>();
+                numerosLista.add(1);
+                numerosLista.add(10);
+                numerosLista.add(50);
+                apostaFavoritaDTO.setNumerosSelecionados(numerosLista);
+
+                apostaFavoritaLista.add(apostaFavoritaDTO);
+                apostaFavoritaLista.add(apostaFavoritaDTO);
+                apostaFavoritaLista.add(apostaFavoritaDTO);
+                apostaFavoritaLista.add(apostaFavoritaDTO);
+                apostaFavoritaLista.add(apostaFavoritaDTO);
+                apostaFavoritaLista.add(apostaFavoritaDTO);
+                apostaFavoritaLista.add(apostaFavoritaDTO);
+                apostaFavoritaLista.add(apostaFavoritaDTO);
+                apostaFavoritaLista.add(apostaFavoritaDTO);
+                apostaFavoritaLista.add(apostaFavoritaDTO);
+
+                //recyclerView
+                recyclerViewFavoritas = (RecyclerView) findViewById(R.id.recyclerFavoritas);
+                FavoritasRecyclerViewAdapter favoritasAdapter = new FavoritasRecyclerViewAdapter(FavoritasActivity.this, apostaFavoritaLista);
+                layoutManager = new LinearLayoutManager(FavoritasActivity.this);
+
+                recyclerViewFavoritas.setHasFixedSize(true);
+                recyclerViewFavoritas.setAdapter(favoritasAdapter);
+                recyclerViewFavoritas.setLayoutManager(layoutManager);
+
+
+
+                scrollViewContentViewFavoritas.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+                    @Override
+                    public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                        View view = (View) v.getChildAt(v.getChildCount() - 1);
+                        int diff = (view.getBottom() - (v.getHeight() + v.getScrollY()));
+
+                        // if diff is zero, then the bottom has been reached
+                        if (diff == 0 && bloquearRequestScroll == false) {
+                            // do stuff
+//                            getComprasScroll();
+//                            bloquearRequestScroll = true;
+                        }
+                    }
+                });
+
+
+                atualizaLayout();
             }
         });
     }

@@ -68,29 +68,34 @@ public class LoginFragment extends Fragment {
         buttonAposte.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //mock login
+
+                UsuarioLogadoSingleton user = UsuarioLogadoSingleton.getInstance();
+                user.token = null;
+                 startActivity(new Intent(getActivity(), PrincipalActivity.class));
+
 //                startActivity(new Intent(getActivity(), ListaComprasActivity.class));
 //                getActivity().finish();
 
-                final View loadViewProgress = LoadingViewLoterias.init(getActivity());
-
-                DadosUsuarioBO dadosUsuarioBO = new DadosUsuarioBO(getActivity());
-                dadosUsuarioBO.autenticar("vinicius.ferraz@gmail.com", "Vaibombar7", new SilceClient.Listener<UsuarioLogadoResponse>() {
-
-//                dadosUsuarioBO.autenticar("symoneresio@yahoo.com.br", "Vaibombar11", new SilceClient.Listener<UsuarioLogadoResponse>() {
-                    @Override
-                    public void onResponse(UsuarioLogadoResponse response) {
-                        LoadingViewLoterias.stop(loadViewProgress);
-
-                        setUser(response);
-                        startActivity(new Intent(getActivity(), PrincipalActivity.class));
-                    }
-                }, new SilceClient.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        LoadingViewLoterias.stop(loadViewProgress);
-                        ViewUtils.alert(getActivity(), MensagensNetwork.setMensagem(error, getActivity()));
-                    }
-                });
+//                final View loadViewProgress = LoadingViewLoterias.init(getActivity());
+//
+//                DadosUsuarioBO dadosUsuarioBO = new DadosUsuarioBO(getActivity());
+//                dadosUsuarioBO.autenticar("vinicius.ferraz@gmail.com", "Vaibombar7", new SilceClient.Listener<UsuarioLogadoResponse>() {
+//
+////                dadosUsuarioBO.autenticar("symoneresio@yahoo.com.br", "Vaibombar11", new SilceClient.Listener<UsuarioLogadoResponse>() {
+//                    @Override
+//                    public void onResponse(UsuarioLogadoResponse response) {
+//                        LoadingViewLoterias.stop(loadViewProgress);
+//
+//                        setUser(response);
+//                        startActivity(new Intent(getActivity(), PrincipalActivity.class));
+//                    }
+//                }, new SilceClient.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//                        LoadingViewLoterias.stop(loadViewProgress);
+//                        ViewUtils.alert(getActivity(), MensagensNetwork.setMensagem(error, getActivity()));
+//                    }
+//                });
             }
         });
 
@@ -129,12 +134,15 @@ public class LoginFragment extends Fragment {
 
 
     private void connectKeycloak() {
-        if (!KeycloakBO.isConnected()) {
+//        if (!KeycloakBO.isConnected()) {
 
             KeycloakBO.connect(getActivity(), new org.jboss.aerogear.android.core.Callback() {
                         @Override
                         public void onSuccess(Object o) {
-                            loginSucess();
+                            UsuarioLogadoSingleton user = UsuarioLogadoSingleton.getInstance();
+                            user.token = o.toString();
+                            startActivity(new Intent(getActivity(), PrincipalActivity.class));
+//                            loginSucess();
                         }
 
                         @Override
@@ -144,9 +152,9 @@ public class LoginFragment extends Fragment {
                     }
             );
 
-        } else {
-            loginSucess();
-        }
+//        } else {
+//            loginSucess();
+//        }
     }
 
     private void loginSucess() {
