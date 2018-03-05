@@ -165,7 +165,7 @@ public class PrincipalActivity extends AppCompatActivity
                 sessaoUser.setParametrosSimulacao(response.getPayload());
 
                 if (modalidadesParaListar == null || modalidadesParaListar.size() == 0) {
-                    startActivity(new Intent(PrincipalActivity.this, ListaRapidaoActivity.class));
+                    startActivity(new Intent(PrincipalActivity.this, FavoritasActivity.class));
                     finish();
                     return;
                 }

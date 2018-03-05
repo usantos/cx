@@ -14,8 +14,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -58,9 +60,12 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
     public void onBindViewHolder(final ViewHolder holder, final int position) {
 
         final ApostaFavoritaDTO aposta = listaApostaFavorita.get(position);
+
+        final RelativeLayout relativeLayoutFavoritasAdapter = (RelativeLayout) holder.itemView.findViewById(R.id.RelativeLayoutFavoritasAdapter);
+
         final RelativeLayout relativeLayoutContentFavoritas = (RelativeLayout) holder.itemView.findViewById(R.id.RelativeLayoutContentFavoritas);
 
-        final RelativeLayout RelativeLayoutContentAlterarFavoritas = (RelativeLayout) holder.itemView.findViewById(R.id.RelativeLayoutContentAlterarFavoritas);
+        final RelativeLayout relativeLayoutContentAlterarFavoritas = (RelativeLayout) holder.itemView.findViewById(R.id.RelativeLayoutContentAlterarFavoritas);
 
         final HorizontalScrollView horizontalScrollViewFavoritasItem = (HorizontalScrollView) holder.itemView.findViewById(R.id.HorizontalScrollViewFavoritasItem);
 
@@ -76,38 +81,76 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
         }
         holder.numerosApostaFavorita.setText(numeroStr);
 
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewUtils.getAppUsableScreenSize(context).x, ViewUtils.setDisplayMetric(100, context));
+        relativeLayoutFavoritasAdapter.setLayoutParams(params);
+
+        final Button editarButtonFavoritos = (Button) holder.itemView.findViewById(R.id.editarButtonFavoritos);
+
+        editarButtonFavoritos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Do things Here
+                translatePosicaoVoltarCard(relativeLayoutContentFavoritas,
+                        ViewUtils.setDisplayMetric(
+                                ViewUtils.getAppUsableScreenSize(context).x/2 -
+                                        ViewUtils.setDisplayMetric(40,
+                                                context) , context));
+                EditTextNomeDaAposta.setEnabled(true);
+            }
+        });
+
+        final Button exluirButtonFavoritos = (Button) holder.itemView.findViewById(R.id.exluirButtonFavoritos);
+        exluirButtonFavoritos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Do things Here
+            }
+        });
 
 
-//        LinearLayout.LayoutParams LLParams = new LinearLayout.LayoutParams(((FavoritasActivity) context).recyclerViewFavoritas.getWidth() - ViewUtils.setDisplayMetric(70, context), LinearLayout.LayoutParams.MATCH_PARENT);
-//
-//        RelativeLayoutContentAlterarFavoritas.setLayoutParams(LLParams);
-//
-//        LinearLayout.LayoutParams LLParams2 = new LinearLayout.LayoutParams(((FavoritasActivity) context).recyclerViewFavoritas.getWidth(), LinearLayout.LayoutParams.MATCH_PARENT);
-//
-//        relativeLayoutContentFavoritas.setLayoutParams(LLParams2);
-
-
-//        // Scrolling to button 5.
-//        horizontalScrollViewFavoritasItem.post(new Runnable() {
-//            @Override
-//            public void run() {
-//                horizontalScrollViewFavoritasItem.scrollTo(((FavoritasActivity) context).recyclerViewFavoritas.getWidth(), horizontalScrollViewFavoritasItem.getScrollY());
-//            }
-//        });
 
         horizontalScrollViewFavoritasItem.setOnTouchListener(new View.OnTouchListener() {
             float initialX = 0;
+            boolean cancelarAnimacao = false;
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        initialX = event.getX();
+                        if (relativeLayoutContentFavoritas.getX() == ViewUtils.setDisplayMetric(
+                                ViewUtils.getAppUsableScreenSize(context).x/2 -
+                                        ViewUtils.setDisplayMetric(40,
+                                                context) , context)){
+                            if (event.getX()<relativeLayoutContentFavoritas.getX()){
+                                cancelarAnimacao = true;
+                            }else {
+                                cancelarAnimacao = false;
+                            }
+                            initialX = -10;
+                        }else{
+                            initialX = event.getX();
+                        }
                     case MotionEvent.ACTION_MOVE:
                         Log.d("ACTION_MOVE", "ACTION_MOVE: "+ event.getX());
                         Log.d("initialX", "initialX: "+ initialX);
+                        if (event.getX()>= initialX && initialX != -10){
+                            relativeLayoutContentFavoritas.setX(event.getX()-initialX);
+                        }
                     break;
                     case MotionEvent.ACTION_UP:
-
+                        if (relativeLayoutContentFavoritas.getX() > relativeLayoutContentFavoritas.getWidth()/2 && initialX != -10){
+                            translatePosicaoVoltarCard(relativeLayoutContentFavoritas,
+                                    ViewUtils.setDisplayMetric(
+                                            ViewUtils.getAppUsableScreenSize(context).x/2 -
+                                                    ViewUtils.setDisplayMetric(40,
+                                                            context) , context));
+                            EditTextNomeDaAposta.setEnabled(true);
+                        }else{
+                            if (cancelarAnimacao != true){
+                                translatePosicaoVoltarCard(relativeLayoutContentFavoritas,
+                                        ViewUtils.setDisplayMetric(0, context));
+                                EditTextNomeDaAposta.setEnabled(false);
+                            }
+                        }
                     case MotionEvent.ACTION_CANCEL:
 
 
@@ -152,39 +195,23 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
     }
 
 
-    private void translatePosicaoVoltarCard(final HorizontalScrollView favoritasHorizontalScrollView, int eixoX){
-        ObjectAnimator xTranslate = ObjectAnimator.ofInt(favoritasHorizontalScrollView, "scrollX", eixoX);
-        ObjectAnimator yTranslate = ObjectAnimator.ofInt(favoritasHorizontalScrollView, "scrollY", favoritasHorizontalScrollView.getScrollY());
+    private void translatePosicaoVoltarCard(final RelativeLayout favoritasRelativeLayout, int eixoX){
 
-        AnimatorSet animators = new AnimatorSet();
-        animators.setDuration(10000L);
-        animators.playTogether(xTranslate, yTranslate);
-        animators.addListener(new Animator.AnimatorListener() {
+        favoritasRelativeLayout.animate().translationX(eixoX).translationY(0).setDuration(500).setListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animation) {}
 
-            @Override
-            public void onAnimationStart(Animator arg0) {
-                // TODO Auto-generated method stub
-            }
+                @Override
+                public void onAnimationEnd(Animator animation) {
 
-            @Override
-            public void onAnimationRepeat(Animator arg0) {
-                // TODO Auto-generated method stub
+                }
 
-            }
+                @Override
+                public void onAnimationCancel(Animator animation) {}
 
-            @Override
-            public void onAnimationEnd(Animator arg0) {
-                // TODO Auto-generated method stub
-
-            }
-
-            @Override
-            public void onAnimationCancel(Animator arg0) {
-                // TODO Auto-generated method stub
-
-            }
-        });
-        animators.start();
+                @Override
+                public void onAnimationRepeat(Animator animation) {}
+            });
     }
 
 }
