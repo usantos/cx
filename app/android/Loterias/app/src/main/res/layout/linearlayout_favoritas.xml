@@ -62,7 +62,7 @@ android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="86dp"
                 android:layout_marginTop="50dp"
-                android:id="@+id/button"
+                android:id="@+id/buttonSalvarNomeAposta"
                 android:enabled="false"
                 />
 
@@ -93,7 +93,7 @@ android:layout_height="wrap_content"
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Mega-Sena"
+                            android:text=""
                             android:textSize="14.2sp"
                             android:textColor="@color/verdeazul"
                             android:id="@+id/tituloApostaFavorita"
@@ -138,7 +138,7 @@ android:layout_height="wrap_content"
                                 android:layout_width="21dp"
                                 android:layout_height="21dp"
                                 android:layout_marginHorizontal="10dp"
-                                android:background="@android:drawable/ic_menu_edit" />
+                                android:background="@drawable/iconfavedit" />
                             <Button
                                 android:layout_width="21dp"
                                 android:layout_height="21dp"

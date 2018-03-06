@@ -69,9 +69,7 @@ import java.net.URL;
         public static void connect(final Activity activity, final Callback callback) {
             try {
                 final AuthzModule authzModule = AuthorizationManager.getModule(MODULE_NAME);
-
                 Log.i(TAG, "authzModule = " + authzModule.getClass().getName());
-
                 authzModule.requestAccess(activity, new Callback<String>() {
                     @SuppressWarnings("unchecked")
                     @Override

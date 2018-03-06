@@ -9,28 +9,17 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
-
-
 import com.android.volley.VolleyError;
-
-
 import java.util.ArrayList;
 import java.util.List;
-
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.bo.ApostaBO;
 import caixa.gov.br.loterias.bo.silce.SilceClient;
-import caixa.gov.br.loterias.bo.silce.dto.AgrupadorDTOApostaFavoritaDTO;
-import caixa.gov.br.loterias.bo.silce.dto.AgrupadorDTOApostaFavoritaDTOResponse;
 import caixa.gov.br.loterias.bo.silce.dto.ApostaFavoritaDTO;
-import caixa.gov.br.loterias.bo.silce.dto.DTOEnumInteger;
-import caixa.gov.br.loterias.bo.silce.dto.ParametroEquipe;
+import caixa.gov.br.loterias.bo.silce.dto.ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse;
 import caixa.gov.br.loterias.view.adapter.FavoritasRecyclerViewAdapter;
 import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
 import caixa.gov.br.loterias.utils.MensagensNetwork;
@@ -39,7 +28,6 @@ import caixa.gov.br.loterias.utils.ViewUtils;
 
 public class FavoritasActivity extends AppCompatActivity {
 
-    AgrupadorDTOApostaFavoritaDTO agrupadorDTOApostaFavoritaDTO;
 
     List<ApostaFavoritaDTO> apostaFavoritaLista = new ArrayList<ApostaFavoritaDTO>();
     public RecyclerView recyclerViewFavoritas;
@@ -50,6 +38,7 @@ public class FavoritasActivity extends AppCompatActivity {
 
     public ProgressBar progressLoadingMore;
     public NestedScrollView scrollViewContentViewFavoritas;
+    FavoritasRecyclerViewAdapter favoritasAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,12 +107,8 @@ public class FavoritasActivity extends AppCompatActivity {
         tituloFavoritas.setText("Os seus números da sorte\nno mesmo lugar");
         subTituloFavoritas.setText("Nesta área estão todas as suas apostas da sorte.\nÉ só escolher e apostar. Boa Sorte!");
 
-        montarListaFavoritas();
     }
 
-    private void montarListaFavoritas(){
-
-    }
 
     private void callWebservice() {
         offsetItem = 0;
@@ -133,48 +118,22 @@ public class FavoritasActivity extends AppCompatActivity {
         final View loadViewProgress = LoadingViewLoterias.init(this);
         final ApostaBO apostaBO = new ApostaBO(this);
 
-        apostaBO.getApostasFavoritas(new SilceClient.Listener<AgrupadorDTOApostaFavoritaDTOResponse>() {
+        apostaBO.getApostasFavoritas(offsetItem, new SilceClient.Listener<ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse>() {
             @Override
-            public void onResponse(AgrupadorDTOApostaFavoritaDTOResponse response) {
+            public void onResponse(ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse response) {
                 LoadingViewLoterias.stop(loadViewProgress);
 
-                offsetItem = 5;
+                offsetItem = 8;
 
-
-//                agrupadorDTOApostaFavoritaDTO = response.getPayload();
-
-                ApostaFavoritaDTO apostaFavoritaDTO = new ApostaFavoritaDTO();
-                apostaFavoritaDTO.setId(new Long(1));
-                apostaFavoritaDTO.setNome("Favorita xxx");
-                apostaFavoritaDTO.setModalidade(new DTOEnumInteger());
-                apostaFavoritaDTO.setTimeDoCoracao(new ParametroEquipe());
-                List<Integer> numerosLista = new ArrayList<Integer>();
-                numerosLista.add(1);
-                numerosLista.add(10);
-                numerosLista.add(50);
-                apostaFavoritaDTO.setNumerosSelecionados(numerosLista);
-
-                apostaFavoritaLista.add(apostaFavoritaDTO);
-                apostaFavoritaLista.add(apostaFavoritaDTO);
-                apostaFavoritaLista.add(apostaFavoritaDTO);
-                apostaFavoritaLista.add(apostaFavoritaDTO);
-                apostaFavoritaLista.add(apostaFavoritaDTO);
-                apostaFavoritaLista.add(apostaFavoritaDTO);
-                apostaFavoritaLista.add(apostaFavoritaDTO);
-                apostaFavoritaLista.add(apostaFavoritaDTO);
-                apostaFavoritaLista.add(apostaFavoritaDTO);
-                apostaFavoritaLista.add(apostaFavoritaDTO);
-
+                apostaFavoritaLista = response.getPayload().getLista();
                 //recyclerView
                 recyclerViewFavoritas = (RecyclerView) findViewById(R.id.recyclerFavoritas);
-                FavoritasRecyclerViewAdapter favoritasAdapter = new FavoritasRecyclerViewAdapter(FavoritasActivity.this, apostaFavoritaLista);
+                favoritasAdapter = new FavoritasRecyclerViewAdapter(FavoritasActivity.this, FavoritasActivity.this, apostaFavoritaLista);
                 layoutManager = new LinearLayoutManager(FavoritasActivity.this);
 
                 recyclerViewFavoritas.setHasFixedSize(true);
                 recyclerViewFavoritas.setAdapter(favoritasAdapter);
                 recyclerViewFavoritas.setLayoutManager(layoutManager);
-
-
 
                 scrollViewContentViewFavoritas.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
                     @Override
@@ -185,8 +144,8 @@ public class FavoritasActivity extends AppCompatActivity {
                         // if diff is zero, then the bottom has been reached
                         if (diff == 0 && bloquearRequestScroll == false) {
                             // do stuff
-//                            getComprasScroll();
-//                            bloquearRequestScroll = true;
+                            getFavoritasScroll();
+                            bloquearRequestScroll = true;
                         }
                     }
                 });
@@ -200,61 +159,6 @@ public class FavoritasActivity extends AppCompatActivity {
                 LoadingViewLoterias.stop(loadViewProgress);
                 ViewUtils.alert(FavoritasActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
 
-                offsetItem = 5;
-
-
-//                agrupadorDTOApostaFavoritaDTO = response.getPayload();
-
-                ApostaFavoritaDTO apostaFavoritaDTO = new ApostaFavoritaDTO();
-                apostaFavoritaDTO.setId(new Long(1));
-                apostaFavoritaDTO.setNome("Favorita xxx");
-                apostaFavoritaDTO.setModalidade(new DTOEnumInteger());
-                apostaFavoritaDTO.setTimeDoCoracao(new ParametroEquipe());
-                List<Integer> numerosLista = new ArrayList<Integer>();
-                numerosLista.add(1);
-                numerosLista.add(10);
-                numerosLista.add(50);
-                apostaFavoritaDTO.setNumerosSelecionados(numerosLista);
-
-                apostaFavoritaLista.add(apostaFavoritaDTO);
-                apostaFavoritaLista.add(apostaFavoritaDTO);
-                apostaFavoritaLista.add(apostaFavoritaDTO);
-                apostaFavoritaLista.add(apostaFavoritaDTO);
-                apostaFavoritaLista.add(apostaFavoritaDTO);
-                apostaFavoritaLista.add(apostaFavoritaDTO);
-                apostaFavoritaLista.add(apostaFavoritaDTO);
-                apostaFavoritaLista.add(apostaFavoritaDTO);
-                apostaFavoritaLista.add(apostaFavoritaDTO);
-                apostaFavoritaLista.add(apostaFavoritaDTO);
-
-                //recyclerView
-                recyclerViewFavoritas = (RecyclerView) findViewById(R.id.recyclerFavoritas);
-                FavoritasRecyclerViewAdapter favoritasAdapter = new FavoritasRecyclerViewAdapter(FavoritasActivity.this, apostaFavoritaLista);
-                layoutManager = new LinearLayoutManager(FavoritasActivity.this);
-
-                recyclerViewFavoritas.setHasFixedSize(true);
-                recyclerViewFavoritas.setAdapter(favoritasAdapter);
-                recyclerViewFavoritas.setLayoutManager(layoutManager);
-
-
-
-                scrollViewContentViewFavoritas.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
-                    @Override
-                    public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                        View view = (View) v.getChildAt(v.getChildCount() - 1);
-                        int diff = (view.getBottom() - (v.getHeight() + v.getScrollY()));
-
-                        // if diff is zero, then the bottom has been reached
-                        if (diff == 0 && bloquearRequestScroll == false) {
-                            // do stuff
-//                            getComprasScroll();
-//                            bloquearRequestScroll = true;
-                        }
-                    }
-                });
-
-
-                atualizaLayout();
             }
         });
     }
@@ -262,6 +166,35 @@ public class FavoritasActivity extends AppCompatActivity {
 
 
 
+    private void getFavoritasScroll(){
+        if (isMaisCompras == false) {
+            return;
+        }
+        final ApostaBO apostaBO = new ApostaBO(FavoritasActivity.this);
+        progressLoadingMore.setVisibility(View.VISIBLE);
+
+        apostaBO.getApostasFavoritas(offsetItem ,new SilceClient.Listener<ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse>() {
+            @Override
+            public void onResponse(ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse response) {
+                progressLoadingMore.setVisibility(View.GONE);
+                if(response.getPayload().getLista().size() == 0){
+                    isMaisCompras = false;
+                }else{
+                    apostaFavoritaLista.addAll(response.getPayload().getLista());
+                    favoritasAdapter.notifyDataSetChanged();
+                    offsetItem = offsetItem +5;
+                }
+                bloquearRequestScroll = false;
+            }
+        }, new SilceClient.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                progressLoadingMore.setVisibility(View.GONE);
+                bloquearRequestScroll = false;
+                ViewUtils.alert(FavoritasActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
+            }
+        });
+    }
     //
 
 

@@ -1,35 +1,34 @@
 package caixa.gov.br.loterias.view.adapter;
 
 import android.animation.Animator;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
+import android.app.Activity;
 import android.content.Context;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.TransitionDrawable;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.android.volley.VolleyError;
 
 import java.util.Collections;
 import java.util.List;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.bo.ApostaBO;
+import caixa.gov.br.loterias.bo.silce.SilceClient;
 import caixa.gov.br.loterias.bo.silce.dto.ApostaFavoritaDTO;
-import caixa.gov.br.loterias.utils.FavoritasHorizontalScrollView;
+import caixa.gov.br.loterias.bo.silce.dto.RetornoPadraoDTO;
+import caixa.gov.br.loterias.utils.MensagensNetwork;
 import caixa.gov.br.loterias.utils.ViewUtils;
-import caixa.gov.br.loterias.view.FavoritasActivity;
+import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
 
 /**
  * Created by cedesbr450 on 16/02/18.
@@ -40,12 +39,14 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
 
 
     private final Context context;
+    private final Activity activity;
     private final List<ApostaFavoritaDTO> listaApostaFavorita;
 
 
-    public FavoritasRecyclerViewAdapter(final Context context, final List<ApostaFavoritaDTO> listaApostaFavorita) {
+    public FavoritasRecyclerViewAdapter(final Activity activity, final Context context, final List<ApostaFavoritaDTO> listaApostaFavorita) {
         this.context = context;
         this.listaApostaFavorita = listaApostaFavorita;
+        this.activity = activity;
     }
 
     @Override
@@ -71,6 +72,12 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
 
         final EditText EditTextNomeDaAposta = (EditText) holder.itemView.findViewById(R.id.EditTextNomeDaAposta);
 
+        final TextView tituloApostaFavorita = (TextView) holder.itemView.findViewById(R.id.tituloApostaFavorita);
+        tituloApostaFavorita.setText(listaApostaFavorita.get(position).getModalidade().getDescricao());
+
+        final TextView tituloNomeApostaFavorita = (TextView) holder.itemView.findViewById(R.id.tituloNomeApostaFavorita);
+        tituloNomeApostaFavorita.setText(" | " + listaApostaFavorita.get(position).getNome());
+
         String numeroStr = "";
         for (Integer num : aposta.getNumerosSelecionados()) {
             if (num == (aposta.getNumerosSelecionados().get(aposta.getNumerosSelecionados().size() - 1))) {
@@ -85,25 +92,37 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
         relativeLayoutFavoritasAdapter.setLayoutParams(params);
 
         final Button editarButtonFavoritos = (Button) holder.itemView.findViewById(R.id.editarButtonFavoritos);
+        final Button exluirButtonFavoritos = (Button) holder.itemView.findViewById(R.id.exluirButtonFavoritos);
+        final Button buttonSalvarNomeAposta = (Button) holder.itemView.findViewById(R.id.buttonSalvarNomeAposta);
 
         editarButtonFavoritos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Do things Here
                 translatePosicaoVoltarCard(relativeLayoutContentFavoritas,
                         ViewUtils.setDisplayMetric(
                                 ViewUtils.getAppUsableScreenSize(context).x/2 -
                                         ViewUtils.setDisplayMetric(40,
                                                 context) , context));
                 EditTextNomeDaAposta.setEnabled(true);
+                buttonSalvarNomeAposta.setEnabled(true);
             }
         });
 
-        final Button exluirButtonFavoritos = (Button) holder.itemView.findViewById(R.id.exluirButtonFavoritos);
         exluirButtonFavoritos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Do things Here
+                deleteFavoritaCallWebservice(position);
+            }
+        });
+
+        buttonSalvarNomeAposta.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alterarFavoritaCallWebservice(listaApostaFavorita.get(position),
+                        relativeLayoutContentFavoritas,
+                        EditTextNomeDaAposta,
+                        buttonSalvarNomeAposta,
+                        tituloNomeApostaFavorita);
             }
         });
 
@@ -144,11 +163,13 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
                                                     ViewUtils.setDisplayMetric(40,
                                                             context) , context));
                             EditTextNomeDaAposta.setEnabled(true);
+                            buttonSalvarNomeAposta.setEnabled(true);
                         }else{
                             if (cancelarAnimacao != true){
                                 translatePosicaoVoltarCard(relativeLayoutContentFavoritas,
                                         ViewUtils.setDisplayMetric(0, context));
                                 EditTextNomeDaAposta.setEnabled(false);
+                                buttonSalvarNomeAposta.setEnabled(false);
                             }
                         }
                     case MotionEvent.ACTION_CANCEL:
@@ -212,6 +233,65 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
                 @Override
                 public void onAnimationRepeat(Animator animation) {}
             });
+    }
+
+
+    public void removeAt(int position) {
+        listaApostaFavorita.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, listaApostaFavorita.size());
+    }
+
+
+    private void deleteFavoritaCallWebservice(final int position) {
+        final View loadViewProgress = LoadingViewLoterias.init(activity);
+        final ApostaBO apostaBO = new ApostaBO(activity);
+
+        apostaBO.deleteApostasFavoritas(listaApostaFavorita.get(position).getId()+"", new SilceClient.Listener<RetornoPadraoDTO>() {
+            @Override
+            public void onResponse(RetornoPadraoDTO response) {
+                LoadingViewLoterias.stop(loadViewProgress);
+                    removeAt(position);
+            }
+        }, new SilceClient.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                LoadingViewLoterias.stop(loadViewProgress);
+                ViewUtils.alert(activity, MensagensNetwork.setMensagem(error, context));
+
+            }
+        });
+    }
+
+    private void alterarFavoritaCallWebservice(final ApostaFavoritaDTO apostaFavoritaDTO,
+                                               final RelativeLayout favoritasRelativeLayout,
+                                               final EditText editTextNomeDaAposta,
+                                               final Button buttonSalvarNomeAposta,
+                                               final TextView nomeApostaTextView) {
+        final View loadViewProgress = LoadingViewLoterias.init(activity);
+        final ApostaBO apostaBO = new ApostaBO(activity);
+        final ApostaFavoritaDTO apostaFavoritaDTOSalvar = apostaFavoritaDTO;
+        apostaFavoritaDTOSalvar.setNome(editTextNomeDaAposta.getText().toString());
+        apostaBO.postApostasFavoritas(apostaFavoritaDTOSalvar, new SilceClient.Listener<RetornoPadraoDTO>() {
+            @Override
+            public void onResponse(RetornoPadraoDTO response) {
+                apostaFavoritaDTOSalvar.setNome(editTextNomeDaAposta.getText().toString());
+                nomeApostaTextView.setText(" | "+ apostaFavoritaDTO.getNome());
+                translatePosicaoVoltarCard(favoritasRelativeLayout,
+                        ViewUtils.setDisplayMetric(0, context));
+                editTextNomeDaAposta.setText("");
+                editTextNomeDaAposta.setEnabled(false);
+                buttonSalvarNomeAposta.setEnabled(false);
+                LoadingViewLoterias.stop(loadViewProgress);
+            }
+        }, new SilceClient.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                LoadingViewLoterias.stop(loadViewProgress);
+                ViewUtils.alert(activity, MensagensNetwork.setMensagem(error, context));
+
+            }
+        });
     }
 
 }
