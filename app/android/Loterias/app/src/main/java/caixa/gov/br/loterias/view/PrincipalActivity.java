@@ -2,7 +2,11 @@ package caixa.gov.br.loterias.view;
 
 
 import android.Manifest;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.ArgbEvaluator;
+import android.animation.TypeEvaluator;
+import android.animation.ValueAnimator;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -35,7 +39,14 @@ import com.google.gson.Gson;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
 import com.yarolegovich.discretescrollview.transform.ScaleTransformer;
 
+import org.apache.commons.lang.time.DateUtils;
+
+import java.math.BigDecimal;
+import java.text.Format;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -50,6 +61,7 @@ import caixa.gov.br.loterias.bo.silce.dto.RepassometroDTO;
 import caixa.gov.br.loterias.bo.silce.dto.RepassometroDTOResponse;
 import caixa.gov.br.loterias.dao.DBLoteriasHelper;
 import caixa.gov.br.loterias.model.Modalidade;
+import caixa.gov.br.loterias.utils.AnimacaoCalculoRepassesSociais;
 import caixa.gov.br.loterias.utils.AnimacoesAcessoRapido;
 import caixa.gov.br.loterias.utils.EstiloModalidade;
 import caixa.gov.br.loterias.utils.ExpandableListDataSideMenu;
@@ -90,6 +102,8 @@ public class PrincipalActivity extends AppCompatActivity
 
     private static final int ZXING_CAMERA_PERMISSION = 1;
     private DBLoteriasHelper dbLoteriasHelper;
+
+    TextView valorRepassesSociais;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -230,12 +244,13 @@ public class PrincipalActivity extends AppCompatActivity
         String htmlTextViewRepassados = "_repassados_ para boas causas.";
         TextView TextViewBilhetesTexto = (TextView) findViewById(R.id.tituloLerBilhetes);
         TextView TextViewRepassados = (TextView) findViewById(R.id.textoRepassados);
-        TextView valorRepassesSociais = (TextView) findViewById(R.id.valorRepassesPrincipal);
-        valorRepassesSociais.setText(ViewUtils.getMoedaFormat(repassesSociais.getArrecadacaoAcumulada()));
+        valorRepassesSociais = (TextView) findViewById(R.id.valorRepassesPrincipal);
+//        valorRepassesSociais.setText(ViewUtils.getMoedaFormat(repassesSociais.getArrecadacaoAcumulada()));
+        valorRepassesSociais.setText("0");
 
         TextViewBilhetesTexto.setText(ViewUtils.textFuturaAndFuturaBold(this, htmlTextViewBilhetesTexto));
         TextViewRepassados.setText(ViewUtils.textFuturaAndFuturaBold(this, htmlTextViewRepassados));
-
+        AnimacaoCalculoRepassesSociais.start(valorRepassesSociais, 0, 0, repassesSociais);
     }
 
     private void toolbarListener() {
@@ -484,7 +499,10 @@ public class PrincipalActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 AnimacaoFecharMenuRapido(relativePrincipal);
-                startActivity(new Intent(PrincipalActivity.this, RepassesSociaisActivity.class));
+
+                Intent activity = new Intent(PrincipalActivity.this, RepassesSociaisActivity.class);
+//                activity.putExtra("repassesSociais", (new Gson()).toJson(repassesSociais));
+                startActivity(activity);
             }
         });
     }
@@ -581,6 +599,54 @@ public class PrincipalActivity extends AppCompatActivity
 
         }
     }
+
+//    private void animacaoValorRepassesSociais( double oldValue, double calculo ){
+//        Date dataBase = new Date(System.currentTimeMillis());
+//        SimpleDateFormat simpleDate = new SimpleDateFormat("dd/MM/yyyy");
+//        try {
+//            dataBase  = simpleDate.parse(repassesSociais.getDataBase());
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//        Date todayDate = new Date();
+//        double seconds = (todayDate.getTime() - dataBase.getTime()) / DateUtils.MILLIS_PER_SECOND;
+//        oldValue = calculo;
+//
+//        calculo = (repassesSociais.getArrecadacaoAcumulada().doubleValue()) + (repassesSociais.getArrecadacaoUltimaSemana().doubleValue() / 604800.0) * seconds;
+//        oldValue = oldValue == 0 ? repassesSociais.getArrecadacaoAcumulada().doubleValue() : oldValue;
+//
+//        final double calculoFinal = calculo;
+//        final double oldValueFinal = oldValue;
+//
+//        ValueAnimator animator = new  ValueAnimator();
+//        animator.setObjectValues(oldValue, calculo); //double value
+//        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+//            public void onAnimationUpdate(ValueAnimator animation) {
+//                String valorUpdate = String.format( "%.2f", animation.getAnimatedValue());
+//                valorUpdate = valorUpdate.replace(",", ".");
+//                valorRepassesSociais.setText(ViewUtils.getMoedaFormat(new BigDecimal(valorUpdate)));
+//            }
+//        });
+//        animator.setEvaluator(new TypeEvaluator<Double>() { // problem here
+//            @Override
+//            public Double evaluate(float fraction, Double startValue, Double endValue) {
+//                return  (startValue + (double)((endValue - startValue) * fraction));
+//            }
+//        });
+//        animator.addListener(new AnimatorListenerAdapter()
+//        {
+//            @Override
+//            public void onAnimationEnd(Animator animation)
+//            {
+//                // done
+//                animacaoValorRepassesSociais(oldValueFinal, calculoFinal);
+//            }
+//        });
+//        animator.setDuration(1000);
+//        animator.setStartDelay(400);
+//        animator.start();
+//
+//    }
 
     private void layoutSideMenu() {
 
