@@ -72,6 +72,7 @@ public class LoginFragment extends Fragment {
                 UsuarioLogadoSingleton user = UsuarioLogadoSingleton.getInstance();
                 user.token = null;
                  startActivity(new Intent(getActivity(), PrincipalActivity.class));
+                 getActivity().finish();
 
 //                startActivity(new Intent(getActivity(), ListaComprasActivity.class));
 //                getActivity().finish();
@@ -142,6 +143,8 @@ public class LoginFragment extends Fragment {
                             UsuarioLogadoSingleton user = UsuarioLogadoSingleton.getInstance();
                             user.token = o.toString();
                             startActivity(new Intent(getActivity(), PrincipalActivity.class));
+                            getActivity().finish();
+
 //                            loginSucess();
                         }
 
@@ -159,6 +162,7 @@ public class LoginFragment extends Fragment {
 
     private void loginSucess() {
         startActivity(new Intent(getActivity(), CadastrarActivity_.class));
+        getActivity().finish();
     }
 
 

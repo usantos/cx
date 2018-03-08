@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -84,9 +85,10 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
             getSupportActionBar().setElevation(0);
         }
 
-        findViewById(R.id.botaoNovaAposta).setOnClickListener(this);
-        findViewById(R.id.botaoVerCarrinhoAposta).setOnClickListener(this);
-        findViewById(R.id.confirmarInclusaoApostaLayoutCarrinhoApostas).setOnClickListener(this);
+//        findViewById(R.id.botaoNovaAposta).setOnClickListener(this);
+//        findViewById(R.id.botaoVerCarrinhoAposta).setOnClickListener(this);
+        findViewById(R.id.botaoLinearLayoutVoltarPrincipal).setOnClickListener(this);
+//        findViewById(R.id.confirmarInclusaoApostaLayoutCarrinhoApostas).setOnClickListener(this);
 
     }
 
@@ -105,21 +107,24 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
         gd.setColor(ContextCompat.getColor(this, estilo.getCorClara()));
         gd.setStroke(2, Color.WHITE);
 
-        Button botaoNovaAposta = (Button) findViewById(R.id.botaoNovaAposta);
+//        Button botaoNovaAposta = (Button) findViewById(R.id.botaoNovaAposta);
+//
+//        Button botaoVerCarrinhoAposta = (Button) findViewById(R.id.botaoVerCarrinhoAposta);
+//        Button botaoAdicionarCompletarCartela = (Button) findViewById(R.id.botaoAdicionarCompletarCartela);
 
-        Button botaoVerCarrinhoAposta = (Button) findViewById(R.id.botaoVerCarrinhoAposta);
-        Button botaoAdicionarCompletarCartela = (Button) findViewById(R.id.botaoAdicionarCompletarCartela);
-        if (isLotecaOrLotogol) {
-            botaoNovaAposta.setVisibility(View.INVISIBLE);
-            botaoVerCarrinhoAposta.setVisibility(View.INVISIBLE);
-            botaoAdicionarCompletarCartela.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.confirmacaoPagamentoBotaoVoltarInicio)));
-            botaoAdicionarCompletarCartela.setBackgroundColor(getResources().getColor(R.color.cinza));
-            botaoAdicionarCompletarCartela.setOnClickListener(this);
-        } else {
-            botaoNovaAposta.setBackground(gd);
-            botaoVerCarrinhoAposta.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.verCarrinho)));
-            botaoAdicionarCompletarCartela.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.adicionarAoCarrinho)));
-        }
+        LinearLayout botaoLinearLayoutVoltarPrincipal = (LinearLayout) findViewById(R.id.botaoLinearLayoutVoltarPrincipal);
+
+//        if (isLotecaOrLotogol) {
+//            botaoNovaAposta.setVisibility(View.INVISIBLE);
+//            botaoVerCarrinhoAposta.setVisibility(View.INVISIBLE);
+//            botaoAdicionarCompletarCartela.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.confirmacaoPagamentoBotaoVoltarInicio)));
+//            botaoAdicionarCompletarCartela.setBackgroundColor(getResources().getColor(R.color.cinza));
+//            botaoAdicionarCompletarCartela.setOnClickListener(this);
+//        } else {
+//            botaoNovaAposta.setBackground(gd);
+//            botaoVerCarrinhoAposta.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.verCarrinho)));
+//            botaoAdicionarCompletarCartela.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.adicionarAoCarrinho)));
+//        }
 
     }
 
@@ -172,27 +177,34 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.botaoNovaAposta: {
-                finish();
-            }
+//            case R.id.botaoNovaAposta: {
+//                finish();
+//            }
+//
+//            break;
+//
+//            case R.id.botaoVerCarrinhoAposta: {
+//                Intent activity = new Intent(this, CarrinhoActivity.class);
+//                startActivityForResult(activity, 0);
+//            }
+//            break;
 
-            break;
+            case R.id.botaoLinearLayoutVoltarPrincipal: {
+                Intent intent = new Intent(this, PrincipalActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
 
-            case R.id.botaoVerCarrinhoAposta: {
-                Intent activity = new Intent(this, CarrinhoActivity.class);
-                startActivityForResult(activity, 0);
             }
-            break;
-            case R.id.confirmarInclusaoApostaLayoutCarrinhoApostas: {
-                Intent activity = new Intent(this, CarrinhoActivity.class);
-                startActivityForResult(activity, 0);
-            }
-            case R.id.botaoAdicionarCompletarCartela: {
-                if (isLotecaOrLotogol) {
-                    setResult(RESULT_FINISH);
-                    finish();
-                }
-            }
+//            case R.id.confirmarInclusaoApostaLayoutCarrinhoApostas: {
+//                Intent activity = new Intent(this, CarrinhoActivity.class);
+//                startActivityForResult(activity, 0);
+//            }
+//            case R.id.botaoAdicionarCompletarCartela: {
+//                if (isLotecaOrLotogol) {
+//                    setResult(RESULT_FINISH);
+//                    finish();
+//                }
+//            }
             break;
         }
     }
