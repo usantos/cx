@@ -165,6 +165,21 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
         return true;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        if (id == R.id.action_termos) {
+            abrirTermos();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
     private void configuraMenuItem(int id) {
         View menuItem = findViewById(id);
 
@@ -172,6 +187,12 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
             ((TextView) menuItem).setTextSize(TypedValue.COMPLEX_UNIT_SP, 10);
             menuItem.setPadding(5, 5, 5, 5);
         }
+    }
+
+    private void abrirTermos() {
+        Intent activity = new Intent(ConfirmadoInclusaoCarrinhoActivity.this, TermosUsoActivity.class);
+        activity.putExtra("ajuda", true);
+        startActivity(activity);
     }
 
     @Override

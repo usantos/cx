@@ -20,7 +20,7 @@
 
     <item
         android:id="@+id/action_termos"
-        android:icon="@drawable/status_white"
+        android:icon="@drawable/icon_duvida2"
         android:orderInCategory="100"
         android:title=""
         app:showAsAction="always" />

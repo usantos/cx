@@ -47,6 +47,7 @@ public class TermosUsoActivity extends AppCompatActivity {
     private AppCompatCheckBox selcioneAceiteTermoUso;
     private ExpandableHeightRecyclerView recyclerViewDuvidas;
     private List<ListSecaoDTO> secaoDuvidas;
+    private Boolean openAjuda = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,8 +66,12 @@ public class TermosUsoActivity extends AppCompatActivity {
         layoutDuvidas = findViewById(R.id.layoutDuvidas);
         relativeLayouTermoAceite = findViewById(R.id.relativeLayouTermoAceite);
         recyclerViewDuvidas = findViewById(R.id.recyclerViewDuvidas);
-
         buttonTermoAceite = findViewById(R.id.buttonTermoAceite);
+
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null){
+            openAjuda = bundle.getBoolean("ajuda");
+        }
 
         buttonTermoAceite.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,6 +136,9 @@ public class TermosUsoActivity extends AppCompatActivity {
         listenerTermosUso();
         listenerDuvidas();
         listenerPolitica();
+        if (openAjuda == true){
+            duvidasButton.performClick();
+        }
     }
 
     @Override
