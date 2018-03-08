@@ -8,6 +8,8 @@ import android.widget.TextView;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.text.DecimalFormat;
 
 import caixa.gov.br.loterias.R;
@@ -64,10 +66,42 @@ public class RepassesSociaisActivity extends SettingToolbarActivity {
         TextView TextViewRepasseQuadro2 = (TextView) findViewById(R.id.textViewRepasseQuadro2);
         TextView valorRepasses = (TextView) findViewById(R.id.valorRepassesSociais);
 
-//        DecimalFormat formatter = ViewUtils.getMoedaFormatter();
-//        String format = formatter.format(repasseOBj.getArrecadacaoAcumulada());
-//
-//        valorRepasses.setText("R$" +(format));
+        TextView textViewEducacaoValorArrecadado = (TextView) findViewById(R.id.textViewEducacaoValorArrecadado);
+        String[] valoresEducacao = formatValorArrecados(repasseOBj.getPercentualEducacao());
+        textViewEducacaoValorArrecadado.setText(valoresEducacao[0]);
+        TextView textViewEducacaoUnidadeValor = (TextView) findViewById(R.id.textViewEducacaoUnidadeValor);
+        textViewEducacaoUnidadeValor.setText(valoresEducacao[1]);
+
+        String[] valoresCultura = formatValorArrecados(repasseOBj.getPercentualCultura());
+        TextView textViewCulturaValorArrecadado = (TextView) findViewById(R.id.textViewCulturaValorArrecadado);
+        textViewCulturaValorArrecadado.setText(valoresCultura[0]);
+        TextView textViewCulturaUnidadeValor = (TextView) findViewById(R.id.textViewCulturaUnidadeValor);
+        textViewCulturaUnidadeValor.setText(valoresCultura[1]);
+
+        String[] valoresEsporte = formatValorArrecados(repasseOBj.getPercentualEsporte());
+        TextView textViewEsporteValorArrecadado = (TextView) findViewById(R.id.textViewEsporteValorArrecadado);
+        textViewEsporteValorArrecadado.setText(valoresEsporte[0]);
+        TextView textViewEsporteUnidadeValor = (TextView) findViewById(R.id.textViewEsporteUnidadeValor);
+        textViewEsporteUnidadeValor.setText(valoresEsporte[1]);
+
+        String[] valoresSeguranca = formatValorArrecados(repasseOBj.getPercentualSeguranca());
+        TextView textViewSegurancaValorArrecadado = (TextView) findViewById(R.id.textViewSegurancaValorArrecadado);
+        textViewSegurancaValorArrecadado.setText(valoresSeguranca[0]);
+        TextView textViewSegurancaUnidadeValor = (TextView) findViewById(R.id.textViewSegurancaUnidadeValor);
+        textViewSegurancaUnidadeValor.setText(valoresSeguranca[1]);
+
+        String[] valoresSeguridade = formatValorArrecados(repasseOBj.getPercentualSeguridade());
+        TextView textViewSeguridadeValorArrecadado = (TextView) findViewById(R.id.textViewSeguridadeValorArrecadado);
+        textViewSeguridadeValorArrecadado.setText(valoresSeguridade[0]);
+        TextView textViewSeguridadeUnidadeValor = (TextView) findViewById(R.id.textViewSeguridadeUnidadeValor);
+        textViewSeguridadeUnidadeValor.setText(valoresSeguridade[1]);
+
+        String[] valoresOutros = formatValorArrecados(repasseOBj.getPercentualOutros());
+        TextView textViewOutrosValorArrecadado = (TextView) findViewById(R.id.textViewOutrosValorArrecadado);
+        textViewOutrosValorArrecadado.setText(valoresOutros[0]);
+        TextView textViewOutrosUnidadeValor = (TextView) findViewById(R.id.textViewOutrosUnidadeValor);
+        textViewOutrosUnidadeValor.setText(valoresOutros[1]);
+
         AnimacaoCalculoRepassesSociais.start(valorRepasses, 0, 0, repasseOBj);
 
         Button ButtonAposte = (Button) findViewById(R.id.ButtonAposteSociais);
@@ -81,6 +115,30 @@ public class RepassesSociaisActivity extends SettingToolbarActivity {
                 finish();
             }
         });
+    }
+
+    private String[] formatValorArrecados(BigDecimal valor){
+        valor = (repasseOBj.getArrecadacaoAcumulada().divide(BigDecimal.valueOf(100))).multiply(valor);
+        String[] valores = new String[2];
+
+        BigInteger valorArredondado = valor.toBigInteger();
+        String strValor = valorArredondado.toString();
+        String[] parts = strValor.split("");
+        int countParts = parts.length;
+        if (countParts == 5 || countParts == 6 || countParts == 7){
+            valores[0] = valorArredondado.divide(BigInteger.valueOf(1000)).toString() + "," + parts[1+valorArredondado.divide(BigInteger.valueOf(1000)).toString().length()];
+            valores[1] = "mil reais";
+        }else if (countParts == 8 || countParts == 9 || countParts == 10) {
+            valores[0] = valorArredondado.divide(BigInteger.valueOf(1000000)).toString() + "," + parts[1+valorArredondado.divide(BigInteger.valueOf(1000000)).toString().length()];
+            valores[1] = "milhões de reais";
+        }else if (countParts == 11 || countParts == 12 || countParts == 13) {
+            valores[0] = valorArredondado.divide(BigInteger.valueOf(1000000000)).toString() + "," + parts[1+valorArredondado.divide(BigInteger.valueOf(1000000000)).toString().length()];
+            valores[1] = "bilhões de reais";
+        }else{
+            valores[0] = strValor;
+            valores[1] = "reais";
+        }
+        return valores;
     }
 
 }

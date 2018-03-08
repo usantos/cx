@@ -28,8 +28,33 @@ public class RepassometroDTO {
     private BigDecimal arrecadacaoUltimaSemana = null;
     @SerializedName("dataBase")
     private String dataBase = null;
-    @SerializedName("percentual")
-    private BigDecimal percentual = null;
+
+    @SerializedName("percentualProgramasSociais")
+    private BigDecimal percentualProgramasSociais = null;
+
+
+
+    @SerializedName("percentualEducacao")
+    private BigDecimal percentualEducacao = null;
+
+    @SerializedName("percentualCultura")
+    private BigDecimal percentualCultura = null;
+
+    @SerializedName("percentualEsporte")
+    private BigDecimal percentualEsporte = null;
+
+    @SerializedName("percentualSeguranca")
+    private BigDecimal percentualSeguranca = null;
+
+    @SerializedName("percentualSeguridade")
+    private BigDecimal percentualSeguridade = null;
+
+    @SerializedName("percentualOutros")
+    private BigDecimal percentualOutros = null;
+
+    /*
+
+     */
 
     /**
      * Valor da arrecadação. Este valor deve ser utilizado como base para o incremento do arrecadado no reparrômetro
@@ -67,16 +92,61 @@ public class RepassometroDTO {
         this.dataBase = dataBase;
     }
 
-    /**
-     * Percentual que deve ser deduzido dos valores arrecadados
-     **/
-    @ApiModelProperty(value = "Percentual que deve ser deduzido dos valores arrecadados")
-    public BigDecimal getPercentual() {
-        return percentual;
+
+    public BigDecimal getPercentualProgramasSociais() {
+        return percentualProgramasSociais;
     }
 
-    public void setPercentual(BigDecimal percentual) {
-        this.percentual = percentual;
+    public void setPercentualProgramasSociais(BigDecimal percentualProgramasSociais) {
+        this.percentualProgramasSociais = percentualProgramasSociais;
+    }
+
+    public BigDecimal getPercentualEducacao() {
+        return percentualEducacao;
+    }
+
+    public void setPercentualEducacao(BigDecimal percentualEducacao) {
+        this.percentualEducacao = percentualEducacao;
+    }
+
+    public BigDecimal getPercentualCultura() {
+        return percentualCultura;
+    }
+
+    public void setPercentualCultura(BigDecimal percentualCultura) {
+        this.percentualCultura = percentualCultura;
+    }
+
+    public BigDecimal getPercentualEsporte() {
+        return percentualEsporte;
+    }
+
+    public void setPercentualEsporte(BigDecimal percentualEsporte) {
+        this.percentualEsporte = percentualEsporte;
+    }
+
+    public BigDecimal getPercentualSeguranca() {
+        return percentualSeguranca;
+    }
+
+    public void setPercentualSeguranca(BigDecimal percentualSeguranca) {
+        this.percentualSeguranca = percentualSeguranca;
+    }
+
+    public BigDecimal getPercentualSeguridade() {
+        return percentualSeguridade;
+    }
+
+    public void setPercentualSeguridade(BigDecimal percentualSeguridade) {
+        this.percentualSeguridade = percentualSeguridade;
+    }
+
+    public BigDecimal getPercentualOutros() {
+        return percentualOutros;
+    }
+
+    public void setPercentualOutros(BigDecimal percentualOutros) {
+        this.percentualOutros = percentualOutros;
     }
 
 
@@ -92,7 +162,13 @@ public class RepassometroDTO {
         return (this.arrecadacaoAcumulada == null ? repassometroDTO.arrecadacaoAcumulada == null : this.arrecadacaoAcumulada.equals(repassometroDTO.arrecadacaoAcumulada)) &&
                 (this.arrecadacaoUltimaSemana == null ? repassometroDTO.arrecadacaoUltimaSemana == null : this.arrecadacaoUltimaSemana.equals(repassometroDTO.arrecadacaoUltimaSemana)) &&
                 (this.dataBase == null ? repassometroDTO.dataBase == null : this.dataBase.equals(repassometroDTO.dataBase)) &&
-                (this.percentual == null ? repassometroDTO.percentual == null : this.percentual.equals(repassometroDTO.percentual));
+                (this.percentualProgramasSociais == null ? repassometroDTO.percentualProgramasSociais == null : this.percentualProgramasSociais.equals(repassometroDTO.percentualProgramasSociais)) &&
+                (this.percentualCultura == null ? repassometroDTO.percentualCultura == null : this.percentualCultura.equals(repassometroDTO.percentualCultura)) &&
+                (this.percentualEducacao == null ? repassometroDTO.percentualEducacao == null : this.percentualEducacao.equals(repassometroDTO.percentualEducacao)) &&
+                (this.percentualEsporte == null ? repassometroDTO.percentualEsporte == null : this.percentualEsporte.equals(repassometroDTO.percentualEsporte)) &&
+                (this.percentualOutros == null ? repassometroDTO.percentualOutros == null : this.percentualOutros.equals(repassometroDTO.percentualOutros)) &&
+                (this.percentualSeguranca == null ? repassometroDTO.percentualSeguranca == null : this.percentualSeguranca.equals(repassometroDTO.percentualSeguranca)) &&
+                (this.percentualSeguridade == null ? repassometroDTO.percentualSeguridade == null : this.percentualSeguridade.equals(repassometroDTO.percentualSeguridade));
     }
 
     @Override
@@ -101,7 +177,13 @@ public class RepassometroDTO {
         result = 31 * result + (this.arrecadacaoAcumulada == null ? 0 : this.arrecadacaoAcumulada.hashCode());
         result = 31 * result + (this.arrecadacaoUltimaSemana == null ? 0 : this.arrecadacaoUltimaSemana.hashCode());
         result = 31 * result + (this.dataBase == null ? 0 : this.dataBase.hashCode());
-        result = 31 * result + (this.percentual == null ? 0 : this.percentual.hashCode());
+        result = 31 * result + (this.percentualSeguridade == null ? 0 : this.percentualSeguridade.hashCode());
+        result = 31 * result + (this.percentualSeguranca == null ? 0 : this.percentualSeguranca.hashCode());
+        result = 31 * result + (this.percentualOutros == null ? 0 : this.percentualOutros.hashCode());
+        result = 31 * result + (this.percentualEsporte == null ? 0 : this.percentualEsporte.hashCode());
+        result = 31 * result + (this.percentualEducacao == null ? 0 : this.percentualEducacao.hashCode());
+        result = 31 * result + (this.percentualCultura == null ? 0 : this.percentualCultura.hashCode());
+        result = 31 * result + (this.percentualProgramasSociais == null ? 0 : this.percentualProgramasSociais.hashCode());
         return result;
     }
 
@@ -109,11 +191,16 @@ public class RepassometroDTO {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class RepassometroDTO {\n");
-
         sb.append("  arrecadacaoAcumulada: ").append(arrecadacaoAcumulada).append("\n");
         sb.append("  arrecadacaoUltimaSemana: ").append(arrecadacaoUltimaSemana).append("\n");
         sb.append("  dataBase: ").append(dataBase).append("\n");
-        sb.append("  percentual: ").append(percentual).append("\n");
+        sb.append("  dataBase: ").append(percentualCultura).append("\n");
+        sb.append("  dataBase: ").append(percentualEducacao).append("\n");
+        sb.append("  dataBase: ").append(percentualEsporte).append("\n");
+        sb.append("  dataBase: ").append(percentualOutros).append("\n");
+        sb.append("  dataBase: ").append(percentualProgramasSociais).append("\n");
+        sb.append("  dataBase: ").append(percentualSeguranca).append("\n");
+        sb.append("  dataBase: ").append(percentualSeguridade).append("\n");
         sb.append("}\n");
         return sb.toString();
     }

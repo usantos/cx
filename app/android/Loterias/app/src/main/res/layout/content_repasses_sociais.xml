@@ -175,19 +175,21 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="24dp"
                                     android:fontFamily="@font/futura_std_bold"
-                                    android:text="385"
+                                    android:text=""
                                     android:textAlignment="center"
                                     android:textColor="@color/azulfavoritas"
-                                    android:textSize="20sp" />
+                                    android:textSize="20sp"
+                                    android:id="@+id/textViewEducacaoValorArrecadado"/>
 
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/futura_std_book"
-                                    android:text="milhões de Reais"
+                                    android:text=""
                                     android:textAlignment="center"
                                     android:textColor="@color/cinza"
-                                    android:textSize="12sp" />
+                                    android:textSize="12sp"
+                                    android:id="@+id/textViewEducacaoUnidadeValor"/>
                             </LinearLayout>
 
                             <LinearLayout
@@ -201,19 +203,21 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="24dp"
                                     android:fontFamily="@font/futura_std_bold"
-                                    android:text="1,2"
+                                    android:text=""
                                     android:textAlignment="center"
                                     android:textColor="@color/vermelhoBilhetes"
-                                    android:textSize="20sp" />
+                                    android:textSize="20sp"
+                                    android:id="@+id/textViewCulturaValorArrecadado"/>
 
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/futura_std_book"
-                                    android:text="bilhões de Reais"
+                                    android:text=""
                                     android:textAlignment="center"
                                     android:textColor="@color/cinza"
-                                    android:textSize="12sp" />
+                                    android:textSize="12sp"
+                                    android:id="@+id/textViewCulturaUnidadeValor"/>
                             </LinearLayout>
                         </LinearLayout>
 
@@ -294,19 +298,21 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="24dp"
                                     android:fontFamily="@font/futura_std_bold"
-                                    android:text="8,9"
+                                    android:text=""
                                     android:textAlignment="center"
                                     android:textColor="@color/verdeazul"
-                                    android:textSize="20sp" />
+                                    android:textSize="20sp"
+                                    android:id="@+id/textViewEsporteValorArrecadado"/>
 
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/futura_std_book"
-                                    android:text="milhões de Reais"
+                                    android:text=""
                                     android:textAlignment="center"
                                     android:textColor="@color/cinza"
-                                    android:textSize="12sp" />
+                                    android:textSize="12sp"
+                                    android:id="@+id/textViewEsporteUnidadeValor"/>
                             </LinearLayout>
 
                             <LinearLayout
@@ -320,19 +326,21 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="24dp"
                                     android:fontFamily="@font/futura_std_bold"
-                                    android:text="980"
+                                    android:text=""
                                     android:textAlignment="center"
                                     android:textColor="@color/verdemusgo"
-                                    android:textSize="20sp" />
+                                    android:textSize="20sp"
+                                    android:id="@+id/textViewSegurancaValorArrecadado"/>
 
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/futura_std_book"
-                                    android:text="milhões de Reais"
+                                    android:text=""
                                     android:textAlignment="center"
                                     android:textColor="@color/cinza"
-                                    android:textSize="12sp" />
+                                    android:textSize="12sp"
+                                    android:id="@+id/textViewSegurancaUnidadeValor"/>
                             </LinearLayout>
                         </LinearLayout>
 
@@ -413,19 +421,21 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="24dp"
                                     android:fontFamily="@font/futura_std_bold"
-                                    android:text="8,9"
+                                    android:text=""
                                     android:textAlignment="center"
                                     android:textColor="@color/roxoclaro"
-                                    android:textSize="20sp" />
+                                    android:textSize="20sp"
+                                    android:id="@+id/textViewSeguridadeValorArrecadado"/>
 
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/futura_std_book"
-                                    android:text="milhões de Reais"
+                                    android:text=""
                                     android:textAlignment="center"
                                     android:textColor="@color/cinza"
-                                    android:textSize="12sp" />
+                                    android:textSize="12sp"
+                                    android:id="@+id/textViewSeguridadeUnidadeValor"/>
                             </LinearLayout>
 
                             <LinearLayout
@@ -439,19 +449,21 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="24dp"
                                     android:fontFamily="@font/futura_std_bold"
-                                    android:text="980"
+                                    android:text=""
                                     android:textAlignment="center"
                                     android:textColor="@color/amareloQueimado"
-                                    android:textSize="20sp" />
+                                    android:textSize="20sp"
+                                    android:id="@+id/textViewOutrosValorArrecadado"/>
 
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/futura_std_book"
-                                    android:text="milhões de Reais"
+                                    android:text=""
                                     android:textAlignment="center"
                                     android:textColor="@color/cinza"
-                                    android:textSize="12sp" />
+                                    android:textSize="12sp"
+                                    android:id="@+id/textViewOutrosUnidadeValor"/>
                             </LinearLayout>
                         </LinearLayout>
 
