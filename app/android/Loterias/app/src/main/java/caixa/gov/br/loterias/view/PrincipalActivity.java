@@ -220,9 +220,10 @@ public class PrincipalActivity extends AppCompatActivity
         List<Modalidade> listaModalidades = new ArrayList<Modalidade>();
 
         for (ParametroSimulacao parametro : modalidadesParaListar) {
-
-            listaModalidades.add(new Modalidade(parametro.getParametroJogo().getConcurso().getModalidadeDetalhada().getDescricao(),
-                    parametro.getParametroJogo().getConcurso().getValorApostaMinima(), "", "", parametro.getParametroJogo().getConcurso().getModalidade(), parametro.getParametroJogo().getConcurso()));
+            if (parametro.getParametroJogo().getConcurso().getModalidade() != null){
+                listaModalidades.add(new Modalidade(parametro.getParametroJogo().getConcurso().getModalidadeDetalhada().getDescricao(),
+                        parametro.getParametroJogo().getConcurso().getValorApostaMinima(), "", "", parametro.getParametroJogo().getConcurso().getModalidade(), parametro.getParametroJogo().getConcurso()));
+            }
         }
 
         return listaModalidades;
