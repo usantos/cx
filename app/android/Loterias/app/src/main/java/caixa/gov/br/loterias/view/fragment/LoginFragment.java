@@ -57,6 +57,10 @@ public class LoginFragment extends Fragment {
         if (getArguments() != null) {
 
         }
+
+        if (KeycloakBO.isConnected() == true){
+            connectKeycloak();
+        }
     }
 
     @Override
@@ -74,55 +78,17 @@ public class LoginFragment extends Fragment {
                  startActivity(new Intent(getActivity(), PrincipalActivity.class));
                  getActivity().finish();
 
-//                startActivity(new Intent(getActivity(), ListaComprasActivity.class));
-//                getActivity().finish();
-
-//                final View loadViewProgress = LoadingViewLoterias.init(getActivity());
-//
-//                DadosUsuarioBO dadosUsuarioBO = new DadosUsuarioBO(getActivity());
-//                dadosUsuarioBO.autenticar("vinicius.ferraz@gmail.com", "Vaibombar7", new SilceClient.Listener<UsuarioLogadoResponse>() {
-//
-////                dadosUsuarioBO.autenticar("symoneresio@yahoo.com.br", "Vaibombar11", new SilceClient.Listener<UsuarioLogadoResponse>() {
-//                    @Override
-//                    public void onResponse(UsuarioLogadoResponse response) {
-//                        LoadingViewLoterias.stop(loadViewProgress);
-//
-//                        setUser(response);
-//                        startActivity(new Intent(getActivity(), PrincipalActivity.class));
-//                    }
-//                }, new SilceClient.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        LoadingViewLoterias.stop(loadViewProgress);
-//                        ViewUtils.alert(getActivity(), MensagensNetwork.setMensagem(error, getActivity()));
-//                    }
-//                });
             }
         });
 
         Button buttonLogin = (Button) v.findViewById(R.id.buttonFacaLogin);
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-//                final View loadViewProgress = LoadingViewLoterias.init(getActivity());
 
-//                DadosUsuarioBO dadosUsuarioBO = new DadosUsuarioBO(getActivity());
-//                dadosUsuarioBO.autenticar("symoneresio@yahoo.com.br", "Vaibombar11", new SilceClient.Listener<UsuarioLogadoResponse>() {
-//                    @Override
-//                    public void onResponse(UsuarioLogadoResponse response) {
-//                        LoadingViewLoterias.stop(loadViewProgress);
-//                        setUser(response);
-//                        loginSucess();
-//                    }
-//                }, new SilceClient.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        LoadingViewLoterias.stop(loadViewProgress);
-//                        ViewUtils.alert(getActivity(), MensagensNetwork.setMensagem(error, getActivity()));
-//                    }
-//                });
                 connectKeycloak();
             }
         });
+
 
 
         return v;

@@ -82,7 +82,12 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder holder, int position) {
         estilo = new EstiloModalidade(data.get(position).getTipoModalidade());
 
-        holder.game.setText(ModalidadeEnum.fromString(data.get(position).getTipoModalidade()));
+        if (data.get(position).getConcurso().getTipoConcurso().toString().equals("ESPECIAL")){
+            holder.game.setText(data.get(position).getConcurso().getModalidadeDetalhada().getDescricaoEspecial().toLowerCase());
+        }else{
+            holder.game.setText(ModalidadeEnum.fromString(data.get(position).getTipoModalidade()));
+        }
+
         holder.resultados.setBackgroundColor(ContextCompat.getColor(context, estilo.getCorEscura()));
         holder.trevo.setBackground(ContextCompat.getDrawable(context, estilo.getTrevoBackground()));
         holder.trevoFundo.setBackground(ContextCompat.getDrawable(context, estilo.getTrevoBackground()));

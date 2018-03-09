@@ -78,7 +78,7 @@
                     android:layout_height="match_parent"
                     android:text="mega-sena"
                     android:layout_marginLeft="0dp"
-                    android:textSize="21.7sp"
+                    android:textSize="18.0sp"
                     android:textColor="@color/branco"
                     android:textStyle="bold"
                     android:gravity="center_vertical"
