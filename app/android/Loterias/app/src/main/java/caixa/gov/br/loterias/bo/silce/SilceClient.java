@@ -54,6 +54,8 @@ public class SilceClient {
     public static final String DUVIDAS_SECOES_PATH = "/duvidas/secoes";
     public static final String DUVIDAS_PATH = "/duvidas";
 
+    public static final String EQUIPES_ESPORTIVAS_POR_MODALIDADE_EQUIPE_PATH = "/equipes-esportivas/{idEquipe}/{idModalidade}/escudo";
+
     public interface Listener<T> {
         public void onResponse(T response);
     }

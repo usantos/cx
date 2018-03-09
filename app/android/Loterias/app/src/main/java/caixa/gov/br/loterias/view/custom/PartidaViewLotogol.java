@@ -12,6 +12,7 @@ import org.apache.commons.lang.StringUtils;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroPartida;
+import caixa.gov.br.loterias.utils.EscudoEquipeUtil;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.utils.interfaces.LotogolListener;
 import caixa.gov.br.loterias.view.custom.ItemEquipeViewLotogol;
@@ -59,10 +60,13 @@ public class PartidaViewLotogol extends LinearLayout implements LotogolListener 
         String paisTime1 = (parametroPartida.getEquipe1().getIndicadorSelecao() ? "" : " / " + parametroPartida.getEquipe1().getSiglaPais());
         String paisTime2 = (parametroPartida.getEquipe2().getIndicadorSelecao() ? "" : " / " + parametroPartida.getEquipe2().getSiglaPais());
 
-        lotogolTimeUm.getItemImage().setImageResource(R.drawable.time);
+//        lotogolTimeUm.getItemImage().setImageResource(R.drawable.time);
+        EscudoEquipeUtil.setEscudo(this.getContext(), parametroPartida.getEquipe1(), lotogolTimeUm.getItemImage());
+
         lotogolTimeUm.getItemTitle().setText(ViewUtils.fromHtml("<strong>" + parametroPartida.getEquipe1().getNome() + "</strong>" + paisTime1));
 
-        lotogolTimeDois.getItemImage().setImageResource(R.drawable.time);
+//        lotogolTimeDois.getItemImage().setImageResource(R.drawable.time);
+        EscudoEquipeUtil.setEscudo(this.getContext(), parametroPartida.getEquipe2(), lotogolTimeDois.getItemImage());
         lotogolTimeDois.getItemTitle().setText(ViewUtils.fromHtml("<strong>" + parametroPartida.getEquipe2().getNome() + "</strong>" + paisTime2));
 
     }

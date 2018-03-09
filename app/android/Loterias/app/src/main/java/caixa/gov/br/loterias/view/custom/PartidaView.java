@@ -13,6 +13,7 @@ import org.androidannotations.annotations.ViewById;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroPartida;
+import caixa.gov.br.loterias.utils.EscudoEquipeUtil;
 import caixa.gov.br.loterias.view.adapter.LotecaAdapter;
 
 /**
@@ -124,12 +125,15 @@ public class PartidaView extends LinearLayout {
         this.parametroPartida = parametroPartida;
 
         lotecaTimeUm.setSelected(parametroPartida.getEquipe1().isSelecionado());
-        lotecaTimeUm.getItemImage().setImageResource(R.drawable.time);
+//        lotecaTimeUm.getItemImage().setImageResource(R.drawable.time);
+        EscudoEquipeUtil.setEscudo(this.getContext(), parametroPartida.getEquipe1(), lotecaTimeUm.getItemImage());
+
         lotecaTimeUm.getItemTitle().setText(parametroPartida.getEquipe1().getNome());
         lotecaTimeUm.getItemDescription().setText(parametroPartida.getEquipe1().getIndicadorSelecao() ? "" : parametroPartida.getEquipe1().getSiglaPais());
 
         lotecaTimeDois.setSelected(parametroPartida.getEquipe2().isSelecionado());
-        lotecaTimeDois.getItemImage().setImageResource(R.drawable.time);
+//        lotecaTimeDois.getItemImage().setImageResource(R.drawable.time);
+        EscudoEquipeUtil.setEscudo(this.getContext(), parametroPartida.getEquipe2(), lotecaTimeDois.getItemImage());
         lotecaTimeDois.getItemTitle().setText(parametroPartida.getEquipe2().getNome());
         lotecaTimeDois.getItemDescription().setText(parametroPartida.getEquipe2().getIndicadorSelecao() ? "" : parametroPartida.getEquipe2().getSiglaPais());
 

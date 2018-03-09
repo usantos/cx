@@ -12,6 +12,7 @@ import java.util.List;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.bo.silce.dto.ParametroEquipe;
+import caixa.gov.br.loterias.utils.EscudoEquipeUtil;
 
 /**
  * Created by ramluz on 27/12/2017.
@@ -60,12 +61,14 @@ public class TimeCoracaoAdapter extends BaseAdapter {
         equipe.setBrasaoSelecionadoId(R.drawable.time_selecionado);
         equipe.setBrasaoId(R.drawable.time);
 
+        EscudoEquipeUtil.setEscudo(context, times.get(i), imageTime);
         if (equipe.isSelecionado()) {
-            imageTime.setImageResource(equipe.getBrasaoSelecionadoId());
+//            imageTime.setImageResource(equipe.getBrasaoSelecionadoId());
+
             nameTime.setTextColor(bordaTimeSelecionado);
             ufTime.setTextColor(bordaTimeSelecionado);
         } else {
-            imageTime.setImageResource(equipe.getBrasaoId());
+//            imageTime.setImageResource(equipe.getBrasaoId());
             nameTime.setTextColor(bordaTimeDesselecionado);
             ufTime.setTextColor(bordaTimeDesselecionado);
         }
