@@ -72,10 +72,12 @@ public class DadosUsuarioBO {
         LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
         LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
         headers.put("Authorization", "Bearer " + UsuarioLogadoSingleton.getInstance().token);
-
-        silceClient.getConnection().get(SilceClient.SAIR_PATH, queryParams, NetworkResponse.class,
-                silceClient.volleyListener(listener, NetworkResponse.class),
-                silceClient.volleyErrorListener(errorListener), headers);
+;
+        silceClient.getConnection().post(SilceClient.SAIR_PATH, queryParams,
+                "", NetworkResponse.class, silceClient.volleyListener(listener,
+                        NetworkResponse.class),
+                silceClient.volleyErrorListener(errorListener),
+                headers);
     }
 
     public void gravarUsuario(ApostadorDTO apostadorDTO, final SilceClient.Listener<UsuarioLogadoResponse> listener,
