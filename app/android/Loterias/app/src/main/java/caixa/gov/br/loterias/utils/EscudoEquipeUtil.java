@@ -8,19 +8,15 @@ import android.util.Log;
 import android.widget.ImageView;
 
 import com.android.volley.VolleyError;
-import com.squareup.picasso.Picasso;
 
 import org.apache.commons.lang.StringUtils;
 
-import java.io.File;
-
 import caixa.gov.br.loterias.R;
-import caixa.gov.br.loterias.bo.ApostaBO;
-import caixa.gov.br.loterias.bo.silce.SilceClient;
-import caixa.gov.br.loterias.bo.silce.dto.EscudoEquipeEsportivaDTO;
-import caixa.gov.br.loterias.bo.silce.dto.EscudoEquipeEsportivaDTOResponse;
-import caixa.gov.br.loterias.bo.silce.dto.ParametroEquipe;
-import caixa.gov.br.loterias.utils.interfaces.EscudoEquipeListener;
+import caixa.gov.br.loterias.model.bo.ApostaBO;
+import caixa.gov.br.loterias.model.bo.silce.SilceClient;
+import caixa.gov.br.loterias.model.bo.silce.dto.EscudoEquipeEsportivaDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.EscudoEquipeEsportivaDTOResponse;
+import caixa.gov.br.loterias.model.bo.silce.dto.ParametroEquipe;
 
 /**
  * Created by joafilho on 22/01/2018.

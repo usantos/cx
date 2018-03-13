@@ -13,7 +13,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -21,14 +20,13 @@ import com.google.gson.Gson;
 
 import java.math.BigDecimal;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import caixa.gov.br.loterias.R;
-import caixa.gov.br.loterias.bean.SessaoUsuario;
-import caixa.gov.br.loterias.bo.silce.dto.ModalidadeEnum;
-import caixa.gov.br.loterias.bo.silce.dto.ParametroJogoDTO;
+import caixa.gov.br.loterias.model.bean.SessaoUsuario;
+import caixa.gov.br.loterias.model.bo.silce.dto.ModalidadeEnum;
+import caixa.gov.br.loterias.model.bo.silce.dto.ParametroJogoDTO;
 import caixa.gov.br.loterias.utils.EstiloModalidade;
 import caixa.gov.br.loterias.utils.ViewUtils;
 

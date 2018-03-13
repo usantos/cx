@@ -11,7 +11,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import caixa.gov.br.loterias.R;
-import caixa.gov.br.loterias.bo.silce.dto.ParametroEquipe;
+import caixa.gov.br.loterias.model.bo.silce.dto.ParametroEquipe;
 import caixa.gov.br.loterias.utils.EscudoEquipeUtil;
 
 /**

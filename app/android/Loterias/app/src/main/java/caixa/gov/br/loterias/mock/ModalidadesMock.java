@@ -1,10 +1,9 @@
 package caixa.gov.br.loterias.mock;
 
-import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
-import caixa.gov.br.loterias.model.Modalidade;
+import caixa.gov.br.loterias.model.bean.Modalidade;
 
 /**
  * Created by brfernan on 27/10/2017.

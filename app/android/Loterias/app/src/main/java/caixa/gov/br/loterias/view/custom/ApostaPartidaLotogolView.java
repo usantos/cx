@@ -10,7 +10,7 @@ import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
 
 import caixa.gov.br.loterias.R;
-import caixa.gov.br.loterias.bo.silce.dto.PartidaLotogolDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.PartidaLotogolDTO;
 
 /**
  * Created by joafilho on 26/01/2018.

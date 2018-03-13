@@ -1,13 +1,8 @@
 package caixa.gov.br.loterias.view.adapter;
 
-import android.content.ClipData;
 import android.content.Context;
-import android.graphics.Color;
-import android.media.Image;
-import android.support.annotation.ColorInt;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,19 +14,15 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
-import org.w3c.dom.Text;
-
 import caixa.gov.br.loterias.R;
-import caixa.gov.br.loterias.bo.silce.dto.ModalidadeEnum;
-import caixa.gov.br.loterias.model.Modalidade;
+import caixa.gov.br.loterias.model.bo.silce.dto.ModalidadeEnum;
+import caixa.gov.br.loterias.model.bean.Modalidade;
 import caixa.gov.br.loterias.utils.EstiloModalidade;
 import caixa.gov.br.loterias.utils.ViewUtils;
 
 import java.text.DateFormat;
-import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -40,7 +31,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 /**

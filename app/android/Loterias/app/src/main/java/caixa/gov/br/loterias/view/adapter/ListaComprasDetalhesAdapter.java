@@ -1,7 +1,6 @@
 package caixa.gov.br.loterias.view.adapter;
 
 import android.content.Context;
-import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,16 +9,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.util.List;
 
 import caixa.gov.br.loterias.R;
-import caixa.gov.br.loterias.bo.silce.dto.ApostaDTO;
-import caixa.gov.br.loterias.bo.silce.dto.CompraDTO;
-import caixa.gov.br.loterias.bo.silce.dto.DetalhesPremioDTO;
-import caixa.gov.br.loterias.bo.silce.dto.ModalidadeEnum;
-import caixa.gov.br.loterias.utils.EstiloModalidade;
+import caixa.gov.br.loterias.model.bo.silce.dto.ApostaDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.CompraDTO;
 import caixa.gov.br.loterias.utils.EstiloModalidadeAposta;
 
 /**

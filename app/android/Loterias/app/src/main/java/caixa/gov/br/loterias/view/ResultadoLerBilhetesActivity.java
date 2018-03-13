@@ -1,6 +1,5 @@
 package caixa.gov.br.loterias.view;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -14,21 +13,15 @@ import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 
-import org.w3c.dom.Text;
-
 import caixa.gov.br.loterias.R;
-import caixa.gov.br.loterias.bean.SessaoUsuario;
-import caixa.gov.br.loterias.bo.ApostaBO;
-import caixa.gov.br.loterias.bo.silce.SilceClient;
-import caixa.gov.br.loterias.bo.silce.data.UsuarioLogadoSingleton;
-import caixa.gov.br.loterias.bo.silce.dto.ApostaDTO;
-import caixa.gov.br.loterias.bo.silce.dto.ModalidadeEnum;
-import caixa.gov.br.loterias.bo.silce.dto.ResultadoConsultaBilheteDTO;
-import caixa.gov.br.loterias.bo.silce.dto.ResultadoConsultaBilheteDTOResponse;
-import caixa.gov.br.loterias.model.Modalidade;
-import caixa.gov.br.loterias.utils.EstiloModalidade;
+import caixa.gov.br.loterias.model.bean.SessaoUsuario;
+import caixa.gov.br.loterias.model.bo.ApostaBO;
+import caixa.gov.br.loterias.model.bo.silce.SilceClient;
+import caixa.gov.br.loterias.model.bo.silce.dto.ApostaDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.ResultadoConsultaBilheteDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.ResultadoConsultaBilheteDTOResponse;
 import caixa.gov.br.loterias.utils.EstiloModalidadeAposta;
-import caixa.gov.br.loterias.utils.MensagensNetwork;
+import caixa.gov.br.loterias.model.bo.MensagensNetwork;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
 

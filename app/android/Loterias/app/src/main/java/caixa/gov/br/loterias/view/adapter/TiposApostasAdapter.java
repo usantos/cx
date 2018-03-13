@@ -7,7 +7,6 @@ package caixa.gov.br.loterias.view.adapter;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
-import android.text.Layout;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,13 +14,12 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import caixa.gov.br.loterias.R;
-import caixa.gov.br.loterias.model.TipoAposta;
+import caixa.gov.br.loterias.model.bean.TipoAposta;
 
 
 public class TiposApostasAdapter extends BaseAdapter {

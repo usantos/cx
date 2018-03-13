@@ -12,19 +12,12 @@ package caixa.gov.br.loterias.view.adapter;
         import android.view.ViewGroup;
         import android.widget.TextView;
 
-        import com.android.volley.VolleyError;
-
         import java.util.ArrayList;
         import caixa.gov.br.loterias.R;
-        import caixa.gov.br.loterias.bo.ApostaBO;
-        import caixa.gov.br.loterias.bo.silce.SilceClient;
-        import caixa.gov.br.loterias.bo.silce.dto.CarrinhoDTOResponse;
-        import caixa.gov.br.loterias.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
+        import caixa.gov.br.loterias.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 
-        import caixa.gov.br.loterias.bo.silce.dto.ModalidadeEnum;
+        import caixa.gov.br.loterias.model.bo.silce.dto.ModalidadeEnum;
         import caixa.gov.br.loterias.utils.EstiloModalidade;
-        import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
-        import caixa.gov.br.loterias.utils.MensagensNetwork;
         import caixa.gov.br.loterias.utils.ViewUtils;
         import caixa.gov.br.loterias.view.ListaRapidaoActivity;
 

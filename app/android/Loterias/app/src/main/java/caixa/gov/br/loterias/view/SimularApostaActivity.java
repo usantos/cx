@@ -1,7 +1,6 @@
 package caixa.gov.br.loterias.view;
 
 import android.app.Dialog;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.ColorDrawable;
@@ -45,18 +44,14 @@ import java.util.Date;
 import java.util.List;
 
 import caixa.gov.br.loterias.R;
-import caixa.gov.br.loterias.bo.silce.dto.CarrinhoDTO;
-import caixa.gov.br.loterias.bo.silce.dto.LotericaDTO;
-import caixa.gov.br.loterias.bo.silce.dto.ModalidadeEnum;
-import caixa.gov.br.loterias.bo.silce.dto.ParametroEquipe;
-import caixa.gov.br.loterias.bo.silce.dto.ParametroJogoDTO;
-import caixa.gov.br.loterias.bo.silce.dto.ParametroValorApostaDTO;
-import caixa.gov.br.loterias.dao.DBLoteriasHelper;
-import caixa.gov.br.loterias.dao.DBTabelasLoterias;
+import caixa.gov.br.loterias.model.bo.silce.dto.ModalidadeEnum;
+import caixa.gov.br.loterias.model.bo.silce.dto.ParametroEquipe;
+import caixa.gov.br.loterias.model.bo.silce.dto.ParametroJogoDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.ParametroValorApostaDTO;
 import caixa.gov.br.loterias.utils.Constantes;
 import caixa.gov.br.loterias.utils.TipoDialog;
 import caixa.gov.br.loterias.utils.ViewUtils;
-import caixa.gov.br.loterias.utils.interfaces.CartelaFragmentListener;
+import caixa.gov.br.loterias.view.listener.CartelaFragmentListener;
 import caixa.gov.br.loterias.view.fragment.CartelaFragment;
 import caixa.gov.br.loterias.view.fragment.SurpresinhaFragment;
 import caixa.gov.br.loterias.view.fragment.SurpresinhaFragment.SurpresinhaFragmentListener;

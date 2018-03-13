@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import caixa.gov.br.loterias.R;
-import caixa.gov.br.loterias.model.NumerosSelecionadosRapidao;
+import caixa.gov.br.loterias.model.bean.NumerosSelecionadosRapidao;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.NumerosRapidaoActivity;
 

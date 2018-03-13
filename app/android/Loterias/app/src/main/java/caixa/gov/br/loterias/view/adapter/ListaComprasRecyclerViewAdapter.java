@@ -11,17 +11,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
-
-import org.w3c.dom.Text;
 
 import java.util.Collections;
 import java.util.List;
 
 import caixa.gov.br.loterias.R;
-import caixa.gov.br.loterias.bo.silce.dto.CompraDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.CompraDTO;
 import caixa.gov.br.loterias.view.DetalhesComprasActivity;
 
 

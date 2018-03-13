@@ -16,22 +16,16 @@ import android.widget.TextView;
 import com.android.volley.VolleyError;
 
 import java.math.BigDecimal;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import caixa.gov.br.loterias.R;
-import caixa.gov.br.loterias.bo.ApostaBO;
-import caixa.gov.br.loterias.bo.silce.SilceClient;
-import caixa.gov.br.loterias.bo.silce.dto.CarrinhoDTO;
-import caixa.gov.br.loterias.bo.silce.dto.CarrinhoDTOResponse;
-import caixa.gov.br.loterias.bo.silce.dto.DTOEnumCharacter;
-import caixa.gov.br.loterias.bo.silce.dto.DTOEnumInteger;
-import caixa.gov.br.loterias.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
-import caixa.gov.br.loterias.bo.silce.dto.ModalidadeEnum;
-import caixa.gov.br.loterias.utils.MensagensNetwork;
+import caixa.gov.br.loterias.model.bo.ApostaBO;
+import caixa.gov.br.loterias.model.bo.silce.SilceClient;
+import caixa.gov.br.loterias.model.bo.silce.dto.CarrinhoDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.CarrinhoDTOResponse;
+import caixa.gov.br.loterias.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
+import caixa.gov.br.loterias.model.bo.MensagensNetwork;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.adapter.CarrinhoApostasListViewRapidaoAdapter;
 import caixa.gov.br.loterias.view.custom.ExpandableHeightRecyclerView;

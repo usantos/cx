@@ -16,11 +16,11 @@
 //import java.util.concurrent.TimeUnit;
 //
 //import caixa.gov.br.loterias.BuildConfig;
-//import caixa.gov.br.loterias.bo.ApostaBO;
-//import caixa.gov.br.loterias.bo.silce.data.CompletaJogoRsp;
-//import caixa.gov.br.loterias.bo.silce.dto.UsuarioLogadoResponse;
-//import caixa.gov.br.loterias.bo.silce.internals.SilceConnection;
-//import caixa.gov.br.loterias.bo.silce.internals.SilceSingleton;
+//import ApostaBO;
+//import CompletaJogoRsp;
+//import UsuarioLogadoResponse;
+//import SilceConnection;
+//import SilceSingleton;
 //
 //import static junit.framework.Assert.assertTrue;
 //import static org.hamcrest.MatcherAssert.assertThat;

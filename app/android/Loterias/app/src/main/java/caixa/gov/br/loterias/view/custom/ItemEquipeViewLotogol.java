@@ -18,12 +18,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import caixa.gov.br.loterias.R;
-import caixa.gov.br.loterias.bo.silce.dto.DezenaLotogol;
-import caixa.gov.br.loterias.bo.silce.dto.ParametroEquipe;
+import caixa.gov.br.loterias.model.bo.silce.dto.DezenaLotogol;
+import caixa.gov.br.loterias.model.bo.silce.dto.ParametroEquipe;
 import caixa.gov.br.loterias.utils.Constantes;
-import caixa.gov.br.loterias.utils.interfaces.LotogolListener;
+import caixa.gov.br.loterias.view.listener.LotogolListener;
 import caixa.gov.br.loterias.view.adapter.NumerosLotogolAdapter;
-import caixa.gov.br.loterias.view.custom.ExpandableHeightGridView;
 
 /**
  * Created by joafilho on 28/12/2017.

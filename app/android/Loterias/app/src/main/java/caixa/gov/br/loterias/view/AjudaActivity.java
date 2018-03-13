@@ -13,7 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import caixa.gov.br.loterias.R;
-import caixa.gov.br.loterias.bo.silce.dto.ModalidadeEnum;
+import caixa.gov.br.loterias.model.bo.silce.dto.ModalidadeEnum;
 
 public class AjudaActivity extends AppCompatActivity {
 

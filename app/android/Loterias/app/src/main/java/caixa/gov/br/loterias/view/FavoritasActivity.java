@@ -16,13 +16,13 @@ import com.android.volley.VolleyError;
 import java.util.ArrayList;
 import java.util.List;
 import caixa.gov.br.loterias.R;
-import caixa.gov.br.loterias.bo.ApostaBO;
-import caixa.gov.br.loterias.bo.silce.SilceClient;
-import caixa.gov.br.loterias.bo.silce.dto.ApostaFavoritaDTO;
-import caixa.gov.br.loterias.bo.silce.dto.ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse;
+import caixa.gov.br.loterias.model.bo.ApostaBO;
+import caixa.gov.br.loterias.model.bo.silce.SilceClient;
+import caixa.gov.br.loterias.model.bo.silce.dto.ApostaFavoritaDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse;
 import caixa.gov.br.loterias.view.adapter.FavoritasRecyclerViewAdapter;
 import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
-import caixa.gov.br.loterias.utils.MensagensNetwork;
+import caixa.gov.br.loterias.model.bo.MensagensNetwork;
 import caixa.gov.br.loterias.utils.ViewUtils;
 
 

@@ -23,7 +23,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.*;
 
 
 import caixa.gov.br.loterias.R;
-import caixa.gov.br.loterias.bo.keycloak.KeycloakBO;
+import caixa.gov.br.loterias.model.bo.keycloak.KeycloakBO;
 import caixa.gov.br.loterias.ui.LoginActivity_;
 
 import static java.lang.Thread.sleep;

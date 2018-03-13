@@ -7,17 +7,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
-
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
 
 import caixa.gov.br.loterias.R;
-import caixa.gov.br.loterias.bo.silce.dto.EquipeDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.EquipeDTO;
 import caixa.gov.br.loterias.utils.Constantes;
 import caixa.gov.br.loterias.utils.EscudoEquipeUtil;
-import caixa.gov.br.loterias.utils.interfaces.EscudoEquipeListener;
 
 /**
  * Created by joafilho on 26/01/2018.

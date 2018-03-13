@@ -7,7 +7,7 @@ import org.junit.runner.RunWith;
 
 import java.nio.charset.Charset;
 
-import caixa.gov.br.loterias.bo.silce.internals.Bin;
+import caixa.gov.br.loterias.model.bo.silce.internals.Bin;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;

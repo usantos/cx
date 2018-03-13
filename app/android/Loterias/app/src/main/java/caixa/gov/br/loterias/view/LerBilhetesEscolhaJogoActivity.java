@@ -2,8 +2,6 @@ package caixa.gov.br.loterias.view;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -14,23 +12,20 @@ import android.widget.Button;
 import android.widget.ScrollView;
 
 import com.android.volley.VolleyError;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import caixa.gov.br.loterias.R;
-import caixa.gov.br.loterias.bo.ApostaBO;
-import caixa.gov.br.loterias.bo.silce.SilceClient;
-import caixa.gov.br.loterias.bo.silce.dto.ModalidadeDTO;
-import caixa.gov.br.loterias.bo.silce.dto.ModalidadeDTOResponse;
-import caixa.gov.br.loterias.bo.silce.dto.ModalidadeEnumSelecaoModalidades;
-import caixa.gov.br.loterias.model.TipoAposta;
-import caixa.gov.br.loterias.utils.MensagensNetwork;
+import caixa.gov.br.loterias.model.bo.ApostaBO;
+import caixa.gov.br.loterias.model.bo.silce.SilceClient;
+import caixa.gov.br.loterias.model.bo.silce.dto.ModalidadeDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.ModalidadeDTOResponse;
+import caixa.gov.br.loterias.model.bo.silce.dto.ModalidadeEnumSelecaoModalidades;
+import caixa.gov.br.loterias.model.bean.TipoAposta;
+import caixa.gov.br.loterias.model.bo.MensagensNetwork;
 import caixa.gov.br.loterias.utils.ViewUtils;
-import caixa.gov.br.loterias.view.adapter.TiposApostasAdapter;
 import caixa.gov.br.loterias.view.adapter.TiposApostasConferirApostaAdapter;
-import caixa.gov.br.loterias.view.adapter.TiposApostasMultiplaSelecaoAdapter;
 import caixa.gov.br.loterias.view.custom.ExpandableHeightGridView;
 import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
 

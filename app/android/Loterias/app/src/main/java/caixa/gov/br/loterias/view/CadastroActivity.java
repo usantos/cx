@@ -22,16 +22,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import caixa.gov.br.loterias.R;
-import caixa.gov.br.loterias.bo.DadosCorporativosBO;
-import caixa.gov.br.loterias.bo.silce.SilceClient;
-import caixa.gov.br.loterias.bo.silce.dto.ApostadorDTO;
-import caixa.gov.br.loterias.bo.silce.dto.MunicipioDTO;
-import caixa.gov.br.loterias.bo.silce.dto.MunicipioDTOResponse;
-import caixa.gov.br.loterias.bo.silce.dto.MunicipioIdDTO;
-import caixa.gov.br.loterias.bo.silce.dto.UnidadeFederacaoDTO;
-import caixa.gov.br.loterias.bo.silce.dto.UnidadeFederacaoDTOResponse;
+import caixa.gov.br.loterias.model.bo.DadosCorporativosBO;
+import caixa.gov.br.loterias.model.bo.silce.SilceClient;
+import caixa.gov.br.loterias.model.bo.silce.dto.ApostadorDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.MunicipioDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.MunicipioDTOResponse;
+import caixa.gov.br.loterias.model.bo.silce.dto.MunicipioIdDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.UnidadeFederacaoDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.UnidadeFederacaoDTOResponse;
 import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
-import caixa.gov.br.loterias.utils.MensagensNetwork;
+import caixa.gov.br.loterias.model.bo.MensagensNetwork;
 import caixa.gov.br.loterias.utils.ViewUtils;
 
 /**

@@ -6,12 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import java.util.List;
 
 import caixa.gov.br.loterias.R;
-import caixa.gov.br.loterias.bo.silce.dto.DezenaLotogol;
+import caixa.gov.br.loterias.model.bo.silce.dto.DezenaLotogol;
 
 /**
  * Created by joafilho on 09/01/2018.

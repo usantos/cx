@@ -14,13 +14,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import caixa.gov.br.loterias.R;
-import caixa.gov.br.loterias.bo.DadosUsuarioBO;
-import caixa.gov.br.loterias.bo.silce.SilceClient;
-import caixa.gov.br.loterias.bo.silce.dto.ListCartaoDTOResponse;
-import caixa.gov.br.loterias.bo.silce.dto.RetornoCartao;
+import caixa.gov.br.loterias.model.bo.DadosUsuarioBO;
+import caixa.gov.br.loterias.model.bo.silce.SilceClient;
+import caixa.gov.br.loterias.model.bo.silce.dto.ListCartaoDTOResponse;
+import caixa.gov.br.loterias.model.bo.silce.dto.RetornoCartao;
 import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
-import caixa.gov.br.loterias.utils.MensagensNetwork;
-import caixa.gov.br.loterias.view.Inteface.FormaDePagamentoListener;
+import caixa.gov.br.loterias.model.bo.MensagensNetwork;
+import caixa.gov.br.loterias.view.listener.FormaDePagamentoListener;
 import caixa.gov.br.loterias.view.adapter.FormaPagamentoRecyclerViewAdapter;
 import caixa.gov.br.loterias.utils.ViewUtils;
 

@@ -4,18 +4,15 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
-import org.apache.commons.lang.StringUtils;
 
 import caixa.gov.br.loterias.R;
-import caixa.gov.br.loterias.bo.silce.dto.EquipeDTO;
-import caixa.gov.br.loterias.bo.silce.dto.PartidaLotecaDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.EquipeDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.PartidaLotecaDTO;
 import caixa.gov.br.loterias.utils.Constantes;
 import caixa.gov.br.loterias.utils.ViewUtils;
 

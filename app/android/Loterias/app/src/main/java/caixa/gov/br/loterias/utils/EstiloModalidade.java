@@ -1,16 +1,7 @@
 package caixa.gov.br.loterias.utils;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.Image;
-import android.widget.ImageView;
-import android.view.View;
-
-import com.bumptech.glide.Glide;
-
 import caixa.gov.br.loterias.R;
-import caixa.gov.br.loterias.bo.silce.dto.ModalidadeEnum;
-import caixa.gov.br.loterias.model.Modalidade;
+import caixa.gov.br.loterias.model.bo.silce.dto.ModalidadeEnum;
 
 /**
  * Created by brfernan on 27/10/2017.

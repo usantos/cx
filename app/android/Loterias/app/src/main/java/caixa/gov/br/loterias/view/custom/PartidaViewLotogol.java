@@ -11,11 +11,10 @@ import org.androidannotations.annotations.ViewById;
 import org.apache.commons.lang.StringUtils;
 
 import caixa.gov.br.loterias.R;
-import caixa.gov.br.loterias.bo.silce.dto.ParametroPartida;
+import caixa.gov.br.loterias.model.bo.silce.dto.ParametroPartida;
 import caixa.gov.br.loterias.utils.EscudoEquipeUtil;
 import caixa.gov.br.loterias.utils.ViewUtils;
-import caixa.gov.br.loterias.utils.interfaces.LotogolListener;
-import caixa.gov.br.loterias.view.custom.ItemEquipeViewLotogol;
+import caixa.gov.br.loterias.view.listener.LotogolListener;
 
 /**
  * Created by joafilho on 09/01/2018.

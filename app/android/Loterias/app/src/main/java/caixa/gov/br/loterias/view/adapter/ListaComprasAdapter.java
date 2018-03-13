@@ -1,27 +1,16 @@
 package caixa.gov.br.loterias.view.adapter;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import caixa.gov.br.loterias.R;
-import caixa.gov.br.loterias.bo.silce.dto.ApostaFavoritaDTO;
-import caixa.gov.br.loterias.bo.silce.dto.CompraDTO;
-import caixa.gov.br.loterias.bo.silce.dto.DetalhesPremioDTO;
-import caixa.gov.br.loterias.model.TipoAposta;
-import caixa.gov.br.loterias.utils.ViewUtils;
+import caixa.gov.br.loterias.model.bo.silce.dto.CompraDTO;
 
 /**
  * Created by cedesbr450 on 30/01/18.

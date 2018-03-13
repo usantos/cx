@@ -18,18 +18,16 @@ import android.widget.ScrollView;
 
 import com.android.volley.VolleyError;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import caixa.gov.br.loterias.R;
-import caixa.gov.br.loterias.bo.DadosCorporativosBO;
-import caixa.gov.br.loterias.bo.DadosUsuarioBO;
-import caixa.gov.br.loterias.bo.silce.SilceClient;
-import caixa.gov.br.loterias.bo.silce.dto.ListSecaoDTO;
-import caixa.gov.br.loterias.bo.silce.dto.ListSecaoDTOResponse;
-import caixa.gov.br.loterias.bo.silce.dto.ResourceResponse;
-import caixa.gov.br.loterias.bo.silce.dto.TermoDeUsoDTOResponse;
-import caixa.gov.br.loterias.utils.MensagensNetwork;
+import caixa.gov.br.loterias.model.bo.DadosCorporativosBO;
+import caixa.gov.br.loterias.model.bo.silce.SilceClient;
+import caixa.gov.br.loterias.model.bo.silce.dto.ListSecaoDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.ListSecaoDTOResponse;
+import caixa.gov.br.loterias.model.bo.silce.dto.ResourceResponse;
+import caixa.gov.br.loterias.model.bo.silce.dto.TermoDeUsoDTOResponse;
+import caixa.gov.br.loterias.model.bo.MensagensNetwork;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.adapter.ItemDuvidaAdapter;
 import caixa.gov.br.loterias.view.custom.ExpandableHeightRecyclerView;

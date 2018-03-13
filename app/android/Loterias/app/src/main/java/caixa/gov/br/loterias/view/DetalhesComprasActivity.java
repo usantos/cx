@@ -1,9 +1,6 @@
 package caixa.gov.br.loterias.view;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -16,14 +13,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import caixa.gov.br.loterias.R;
-import caixa.gov.br.loterias.bo.ApostaBO;
-import caixa.gov.br.loterias.bo.silce.SilceClient;
-import caixa.gov.br.loterias.bo.silce.dto.AgrupadorApostaCompraDTO;
-import caixa.gov.br.loterias.bo.silce.dto.AgrupadorApostaCompraDTOResponse;
-import caixa.gov.br.loterias.bo.silce.dto.ApostaDTO;
-import caixa.gov.br.loterias.bo.silce.dto.CompraDTO;
-import caixa.gov.br.loterias.bo.silce.dto.DetalhesPremioDTO;
-import caixa.gov.br.loterias.utils.MensagensNetwork;
+import caixa.gov.br.loterias.model.bo.ApostaBO;
+import caixa.gov.br.loterias.model.bo.silce.SilceClient;
+import caixa.gov.br.loterias.model.bo.silce.dto.AgrupadorApostaCompraDTOResponse;
+import caixa.gov.br.loterias.model.bo.silce.dto.ApostaDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.CompraDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.DetalhesPremioDTO;
+import caixa.gov.br.loterias.model.bo.MensagensNetwork;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.adapter.ListaComprasDetalhesAdapter;
 import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;

@@ -9,8 +9,8 @@ import java.nio.charset.Charset;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import caixa.gov.br.loterias.bo.silce.internals.Bin;
-import caixa.gov.br.loterias.bo.silce.internals.SilceCrypto;
+import caixa.gov.br.loterias.model.bo.silce.internals.Bin;
+import caixa.gov.br.loterias.model.bo.silce.internals.SilceCrypto;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;

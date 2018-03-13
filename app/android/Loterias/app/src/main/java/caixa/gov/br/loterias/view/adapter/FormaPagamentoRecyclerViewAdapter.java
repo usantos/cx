@@ -10,12 +10,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import caixa.gov.br.loterias.R;
-import caixa.gov.br.loterias.bo.silce.dto.RetornoCartao;
-import caixa.gov.br.loterias.view.Inteface.FormaDePagamentoListener;
+import caixa.gov.br.loterias.model.bo.silce.dto.RetornoCartao;
+import caixa.gov.br.loterias.view.listener.FormaDePagamentoListener;
 import caixa.gov.br.loterias.utils.ViewUtils;
 
 

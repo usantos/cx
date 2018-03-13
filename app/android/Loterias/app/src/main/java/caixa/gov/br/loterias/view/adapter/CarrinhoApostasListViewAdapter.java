@@ -1,47 +1,35 @@
 package caixa.gov.br.loterias.view.adapter;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.os.Handler;
-import android.provider.ContactsContract;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
-import com.daimajia.swipe.SimpleSwipeListener;
 import com.daimajia.swipe.SwipeLayout;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Locale;
 
 import caixa.gov.br.loterias.R;
-import caixa.gov.br.loterias.bo.ApostaBO;
-import caixa.gov.br.loterias.bo.silce.SilceClient;
-import caixa.gov.br.loterias.bo.silce.dto.CarrinhoDTOResponse;
-import caixa.gov.br.loterias.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
-import caixa.gov.br.loterias.bo.silce.dto.ModalidadeEnum;
-import caixa.gov.br.loterias.dao.DBLoteriasCrud;
-import caixa.gov.br.loterias.utils.AnimacaoSwipeList;
-import caixa.gov.br.loterias.utils.Constantes;
+import caixa.gov.br.loterias.model.bo.ApostaBO;
+import caixa.gov.br.loterias.model.bo.silce.SilceClient;
+import caixa.gov.br.loterias.model.bo.silce.dto.CarrinhoDTOResponse;
+import caixa.gov.br.loterias.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
+import caixa.gov.br.loterias.model.bo.silce.dto.ModalidadeEnum;
+import caixa.gov.br.loterias.model.dao.DBLoteriasCrud;
+import caixa.gov.br.loterias.view.animation.AnimacaoSwipeList;
 import caixa.gov.br.loterias.utils.EstiloModalidade;
 import caixa.gov.br.loterias.view.custom.ExpandableHeightRecyclerView;
 import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
-import caixa.gov.br.loterias.utils.MensagensNetwork;
+import caixa.gov.br.loterias.model.bo.MensagensNetwork;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.CarrinhoActivity;
 

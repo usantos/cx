@@ -6,21 +6,18 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
-import com.google.gson.Gson;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.text.DecimalFormat;
 
 import caixa.gov.br.loterias.R;
-import caixa.gov.br.loterias.bo.DadosCorporativosBO;
-import caixa.gov.br.loterias.bo.silce.SilceClient;
-import caixa.gov.br.loterias.bo.silce.dto.ParametroJogoDTO;
-import caixa.gov.br.loterias.bo.silce.dto.RepassometroDTO;
-import caixa.gov.br.loterias.bo.silce.dto.RepassometroDTOResponse;
-import caixa.gov.br.loterias.utils.AnimacaoCalculoRepassesSociais;
+import caixa.gov.br.loterias.model.bo.DadosCorporativosBO;
+import caixa.gov.br.loterias.model.bo.silce.SilceClient;
+import caixa.gov.br.loterias.model.bo.silce.dto.RepassometroDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.RepassometroDTOResponse;
+import caixa.gov.br.loterias.view.animation.AnimacaoCalculoRepassesSociais;
 import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
-import caixa.gov.br.loterias.utils.MensagensNetwork;
+import caixa.gov.br.loterias.model.bo.MensagensNetwork;
 import caixa.gov.br.loterias.utils.ViewUtils;
 
 public class RepassesSociaisActivity extends SettingToolbarActivity {

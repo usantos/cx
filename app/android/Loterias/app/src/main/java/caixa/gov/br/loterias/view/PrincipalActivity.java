@@ -2,11 +2,7 @@ package caixa.gov.br.loterias.view;
 
 
 import android.Manifest;
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.animation.ArgbEvaluator;
-import android.animation.TypeEvaluator;
-import android.animation.ValueAnimator;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -39,33 +35,26 @@ import com.google.gson.Gson;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
 import com.yarolegovich.discretescrollview.transform.ScaleTransformer;
 
-import org.apache.commons.lang.time.DateUtils;
-
-import java.math.BigDecimal;
-import java.text.Format;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
 import caixa.gov.br.loterias.R;
-import caixa.gov.br.loterias.bean.SessaoUsuario;
-import caixa.gov.br.loterias.bo.DadosCorporativosBO;
-import caixa.gov.br.loterias.bo.DadosUsuarioBO;
-import caixa.gov.br.loterias.bo.silce.SilceClient;
-import caixa.gov.br.loterias.bo.silce.dto.ParametroSimulacao;
-import caixa.gov.br.loterias.bo.silce.dto.ParametrosSimulacaoResponse;
-import caixa.gov.br.loterias.bo.silce.dto.RepassometroDTO;
-import caixa.gov.br.loterias.bo.silce.dto.RepassometroDTOResponse;
-import caixa.gov.br.loterias.dao.DBLoteriasHelper;
-import caixa.gov.br.loterias.model.Modalidade;
-import caixa.gov.br.loterias.utils.AnimacaoCalculoRepassesSociais;
-import caixa.gov.br.loterias.utils.AnimacoesAcessoRapido;
+import caixa.gov.br.loterias.model.bean.SessaoUsuario;
+import caixa.gov.br.loterias.model.bo.DadosCorporativosBO;
+import caixa.gov.br.loterias.model.bo.DadosUsuarioBO;
+import caixa.gov.br.loterias.model.bo.silce.SilceClient;
+import caixa.gov.br.loterias.model.bo.silce.dto.ParametroSimulacao;
+import caixa.gov.br.loterias.model.bo.silce.dto.ParametrosSimulacaoResponse;
+import caixa.gov.br.loterias.model.bo.silce.dto.RepassometroDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.RepassometroDTOResponse;
+import caixa.gov.br.loterias.model.dao.DBLoteriasHelper;
+import caixa.gov.br.loterias.model.bean.Modalidade;
+import caixa.gov.br.loterias.view.animation.AnimacaoCalculoRepassesSociais;
+import caixa.gov.br.loterias.view.animation.AnimacoesAcessoRapido;
 import caixa.gov.br.loterias.utils.EstiloModalidade;
 import caixa.gov.br.loterias.utils.ExpandableListDataSideMenu;
-import caixa.gov.br.loterias.utils.MensagensNetwork;
+import caixa.gov.br.loterias.model.bo.MensagensNetwork;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.adapter.HomeAdapter;
 import caixa.gov.br.loterias.view.adapter.SideMenuExpandleAdapter;

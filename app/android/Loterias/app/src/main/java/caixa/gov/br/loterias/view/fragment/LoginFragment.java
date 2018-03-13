@@ -9,23 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.android.volley.VolleyError;
-
 import caixa.gov.br.loterias.R;
-import caixa.gov.br.loterias.bo.DadosUsuarioBO;
-import caixa.gov.br.loterias.bo.keycloak.KeycloakBO;
-import caixa.gov.br.loterias.bo.silce.SilceClient;
-import caixa.gov.br.loterias.bo.silce.data.UsuarioLogadoSingleton;
-import caixa.gov.br.loterias.bo.silce.dto.UsuarioLogadoResponse;
-import caixa.gov.br.loterias.view.LerBilhetesActivity;
-import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
-import caixa.gov.br.loterias.utils.MensagensNetwork;
-import caixa.gov.br.loterias.utils.ViewUtils;
+import caixa.gov.br.loterias.model.bo.keycloak.KeycloakBO;
+import caixa.gov.br.loterias.model.bo.silce.data.UsuarioLogadoSingleton;
+import caixa.gov.br.loterias.model.bo.silce.dto.UsuarioLogadoResponse;
 import caixa.gov.br.loterias.view.CadastrarActivity_;
-import caixa.gov.br.loterias.view.FavoritasActivity;
-import caixa.gov.br.loterias.view.FormaPagamentoActivity;
-import caixa.gov.br.loterias.view.ListaComprasActivity;
-import caixa.gov.br.loterias.view.ListaRapidaoActivity;
 import caixa.gov.br.loterias.view.PrincipalActivity;
 
 /**

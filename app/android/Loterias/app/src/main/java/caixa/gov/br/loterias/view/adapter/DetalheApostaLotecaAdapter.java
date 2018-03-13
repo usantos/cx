@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
-import caixa.gov.br.loterias.bo.silce.dto.PartidaLotecaDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.PartidaLotecaDTO;
 import caixa.gov.br.loterias.view.custom.ApostaPartidaLotecaView;
 import caixa.gov.br.loterias.view.custom.ApostaPartidaLotecaView_;
 

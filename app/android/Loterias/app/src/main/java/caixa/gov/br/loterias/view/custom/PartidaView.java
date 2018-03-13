@@ -12,7 +12,7 @@ import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
 
 import caixa.gov.br.loterias.R;
-import caixa.gov.br.loterias.bo.silce.dto.ParametroPartida;
+import caixa.gov.br.loterias.model.bo.silce.dto.ParametroPartida;
 import caixa.gov.br.loterias.utils.EscudoEquipeUtil;
 import caixa.gov.br.loterias.view.adapter.LotecaAdapter;
 

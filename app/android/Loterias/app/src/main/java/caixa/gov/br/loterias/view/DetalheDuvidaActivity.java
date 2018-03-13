@@ -15,12 +15,12 @@ import org.androidannotations.annotations.ViewById;
 import java.util.List;
 
 import caixa.gov.br.loterias.R;
-import caixa.gov.br.loterias.bo.DadosCorporativosBO;
-import caixa.gov.br.loterias.bo.silce.SilceClient;
-import caixa.gov.br.loterias.bo.silce.dto.DuvidaDTO;
-import caixa.gov.br.loterias.bo.silce.dto.ListSecaoDTO;
-import caixa.gov.br.loterias.bo.silce.dto.ListSecaoDTOResponse;
-import caixa.gov.br.loterias.utils.MensagensNetwork;
+import caixa.gov.br.loterias.model.bo.DadosCorporativosBO;
+import caixa.gov.br.loterias.model.bo.silce.SilceClient;
+import caixa.gov.br.loterias.model.bo.silce.dto.DuvidaDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.ListSecaoDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.ListSecaoDTOResponse;
+import caixa.gov.br.loterias.model.bo.MensagensNetwork;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.adapter.DetalheDuvidaAdapter;
 import caixa.gov.br.loterias.view.custom.ExpandableHeightRecyclerView;

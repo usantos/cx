@@ -17,7 +17,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import caixa.gov.br.loterias.R;
-import caixa.gov.br.loterias.model.TipoAposta;
+import caixa.gov.br.loterias.model.bean.TipoAposta;
 import caixa.gov.br.loterias.view.LerBilhetesEscolhaJogoActivity;
 
 

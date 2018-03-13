@@ -13,7 +13,7 @@ import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
 
 import caixa.gov.br.loterias.R;
-import caixa.gov.br.loterias.bo.silce.dto.DuvidaDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.DuvidaDTO;
 import caixa.gov.br.loterias.utils.ViewUtils;
 
 /**

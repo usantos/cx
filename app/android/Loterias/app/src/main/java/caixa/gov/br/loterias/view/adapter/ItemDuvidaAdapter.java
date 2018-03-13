@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import caixa.gov.br.loterias.R;
-import caixa.gov.br.loterias.bo.silce.dto.ListSecaoDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.ListSecaoDTO;
 import caixa.gov.br.loterias.view.custom.ItemDuvidaView;
 import caixa.gov.br.loterias.view.custom.ItemDuvidaView_;
 

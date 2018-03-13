@@ -15,7 +15,7 @@ package caixa.gov.br.loterias.view.adapter;
         import java.util.List;
 
         import caixa.gov.br.loterias.R;
-        import caixa.gov.br.loterias.bo.silce.dto.ApostaFavoritaDTO;
+        import caixa.gov.br.loterias.model.bo.silce.dto.ApostaFavoritaDTO;
 
 
 public class ApostaFavoritaAdapter extends BaseAdapter {
