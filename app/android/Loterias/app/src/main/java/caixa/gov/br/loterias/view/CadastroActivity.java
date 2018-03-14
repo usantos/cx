@@ -122,13 +122,13 @@ public class CadastroActivity extends AppCompatActivity {
     }
 
     private void getUFS() {
-        final View loadViewProgress = LoadingViewLoterias.init(this);
+        final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
         DadosCorporativosBO dadosCorporativosBO = new DadosCorporativosBO(CadastroActivity.this);
 
         dadosCorporativosBO.ufs(new SilceClient.Listener<UnidadeFederacaoDTOResponse>() {
             @Override
             public void onResponse(UnidadeFederacaoDTOResponse response) {
-                LoadingViewLoterias.stop(loadViewProgress);
+                loadViewProgress.dismiss();
                 listUf = response.getPayload();
                 for (UnidadeFederacaoDTO uf : response.getPayload()) {
                     listUFString.add(uf.getSigla());
@@ -138,7 +138,7 @@ public class CadastroActivity extends AppCompatActivity {
         }, new SilceClient.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                LoadingViewLoterias.stop(loadViewProgress);
+                loadViewProgress.dismiss();
                 ViewUtils.alert(CadastroActivity.this, MensagensNetwork.setMensagem(error, CadastroActivity.this));
             }
         });
@@ -224,14 +224,14 @@ public class CadastroActivity extends AppCompatActivity {
                     idUf = uf.getId().toString();
                 }
             }
-            final View loadViewProgress = LoadingViewLoterias.init(this);
+            final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
             listMunicipios = new ArrayList<String>();
 
             DadosCorporativosBO dadosCorporativosBO = new DadosCorporativosBO(CadastroActivity.this);
             dadosCorporativosBO.municipios(idUf, new SilceClient.Listener<MunicipioDTOResponse>() {
                 @Override
                 public void onResponse(MunicipioDTOResponse response) {
-                    LoadingViewLoterias.stop(loadViewProgress);
+                    loadViewProgress.dismiss();
                     municipioDTOList = response.getPayload();
                     for (MunicipioDTO municipio : municipioDTOList) {
                         listMunicipios.add(municipio.getNome());
@@ -241,7 +241,7 @@ public class CadastroActivity extends AppCompatActivity {
             }, new SilceClient.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    LoadingViewLoterias.stop(loadViewProgress);
+                    loadViewProgress.dismiss();
                     ViewUtils.alert(CadastroActivity.this, MensagensNetwork.setMensagem(error, CadastroActivity.this));
                 }
             });

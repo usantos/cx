@@ -1,7 +1,9 @@
 package caixa.gov.br.loterias.view;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -17,12 +19,12 @@ import java.util.List;
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bean.SessaoUsuario;
 import caixa.gov.br.loterias.model.bo.ApostaBO;
+import caixa.gov.br.loterias.model.bo.MensagensNetwork;
 import caixa.gov.br.loterias.model.bo.silce.SilceClient;
 import caixa.gov.br.loterias.model.bo.silce.dto.CarrinhoDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.CarrinhoDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import caixa.gov.br.loterias.model.dao.DBLoteriasCrud;
-import caixa.gov.br.loterias.model.bo.MensagensNetwork;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.adapter.CarrinhoApostasListViewAdapter;
 import caixa.gov.br.loterias.view.custom.ExpandableHeightRecyclerView;
@@ -64,20 +66,20 @@ public class CarrinhoActivity extends SettingToolbarActivity {
 
     private void callWebservice() {
 
-        final View loadViewProgress = LoadingViewLoterias.init(this);
+        final Dialog loadViewProgress = LoadingViewLoterias.show(this);
         final ApostaBO apostaBO = new ApostaBO(CarrinhoActivity.this);
 
         apostaBO.buscaCarrinho(new SilceClient.Listener<CarrinhoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoDTOResponse response) {
-                LoadingViewLoterias.stop(loadViewProgress);
+                loadViewProgress.dismiss();
                 carrinho = response.getPayload();
                 atualizaLayout(Boolean.TRUE);
             }
         }, new SilceClient.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                LoadingViewLoterias.stop(loadViewProgress);
+                loadViewProgress.dismiss();
                 if (error.networkResponse == null || error.networkResponse.statusCode == 401) {
                     lerCarrinhoLocal(Boolean.TRUE);
                 }else{

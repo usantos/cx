@@ -1,5 +1,6 @@
 package caixa.gov.br.loterias.view;
 
+import android.support.v7.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -80,7 +81,6 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
         valorMinApostaCarrinho = (int) sessaoUser.getValorMinimimoAposta().floatValue();
         valorMaxApostaCarrinho = (int) sessaoUser.getValorMaximoAposta().floatValue();
 
-
         callWebservice();
 
         Button SalvarApostaRapidaoButton = (Button)findViewById(R.id.SalvarApostaRapidao);
@@ -90,9 +90,6 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
                postRapidoesWebservice();
             }
         });
-
-
-
     }
 
 
@@ -225,13 +222,13 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
 
     private void callWebservice() {
 
-        final View loadViewProgress = LoadingViewLoterias.init(this);
+        final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
         final ApostaBO apostaBO = new ApostaBO(RapidaoConfigActivity.this);
 
         apostaBO.getRapidoes(new SilceClient.Listener<RapidaoDTOResponse>() {
             @Override
             public void onResponse(RapidaoDTOResponse response) {
-                LoadingViewLoterias.stop(loadViewProgress);
+                loadViewProgress.dismiss();
 
                 rapidao = response.getPayload();
 
@@ -254,7 +251,7 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
         }, new SilceClient.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                LoadingViewLoterias.stop(loadViewProgress);
+                loadViewProgress.dismiss();
                 ViewUtils.alert(RapidaoConfigActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
             }
         });
@@ -484,7 +481,7 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
 
     private void postRapidoesWebservice() {
 
-        final View loadViewProgress = LoadingViewLoterias.init(this);
+        final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
         final ApostaBO apostaBO = new ApostaBO(RapidaoConfigActivity.this);
 
 
@@ -505,7 +502,7 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
         apostaBO.postRapidoes(rapidao, new SilceClient.Listener<RapidaoDTOResponse>() {
             @Override
             public void onResponse(RapidaoDTOResponse response) {
-                LoadingViewLoterias.stop(loadViewProgress);
+                loadViewProgress.dismiss();
                 Intent intent = new Intent();
                 setResult(RESULT_OK, intent);
                 finish();
@@ -513,7 +510,7 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
         }, new SilceClient.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                LoadingViewLoterias.stop(loadViewProgress);
+                loadViewProgress.dismiss();
                 ViewUtils.alert(RapidaoConfigActivity.this, MensagensNetwork.setMensagem(error, RapidaoConfigActivity.this));
             }
         });

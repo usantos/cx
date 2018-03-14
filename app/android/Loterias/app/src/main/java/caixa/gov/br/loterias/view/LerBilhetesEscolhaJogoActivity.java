@@ -2,6 +2,7 @@ package caixa.gov.br.loterias.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -128,13 +129,13 @@ public class LerBilhetesEscolhaJogoActivity extends AppCompatActivity {
 
     private void callWebservice() {
 
-        final View loadViewProgress = LoadingViewLoterias.init(this);
+        final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
         final ApostaBO apostaBO = new ApostaBO(this);
 
         apostaBO.getModalidades(new SilceClient.Listener<ModalidadeDTOResponse>() {
             @Override
             public void onResponse(ModalidadeDTOResponse response) {
-                LoadingViewLoterias.stop(loadViewProgress);
+                loadViewProgress.dismiss();
                 modalidades = response.getPayload();
                 Log.d("Response", response.getPayload().toString());
 
@@ -143,7 +144,7 @@ public class LerBilhetesEscolhaJogoActivity extends AppCompatActivity {
         }, new SilceClient.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                LoadingViewLoterias.stop(loadViewProgress);
+                loadViewProgress.dismiss();
                 ViewUtils.alert(LerBilhetesEscolhaJogoActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
             }
         });

@@ -1,5 +1,8 @@
 package caixa.gov.br.loterias.view;
 
+import android.app.Activity;
+import android.support.v7.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -43,8 +46,8 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
 //        ViewUtils.alert(this, codBarras);
         //01416145
 
-//        postLerBilhetes(new ApostaBO(this), LoadingViewLoterias.init(this), "60002952423640400130000000158355b");
-        postLerBilhetes(new ApostaBO(this), LoadingViewLoterias.init(this), codBarras);
+//        postLerBilhetes(new ApostaBO(this), LoadingViewLoterias.show(this), "60002952423640400130000000158355b");
+        postLerBilhetes(new ApostaBO(this), this, codBarras);
 
 
     }
@@ -93,11 +96,13 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
     }
 
 
-    private void postLerBilhetes(ApostaBO apostaBO, final View loadViewProgress, String CodBarra) {
+    private void postLerBilhetes(ApostaBO apostaBO, Activity activity, String CodBarra) {
+        final AlertDialog alert = LoadingViewLoterias.show(activity);
+
         apostaBO.postConferirBilhetes(CodBarra, new SilceClient.Listener<ResultadoConsultaBilheteDTOResponse>() {
             @Override
             public void onResponse(ResultadoConsultaBilheteDTOResponse response) {
-                LoadingViewLoterias.stop(loadViewProgress);
+                alert.dismiss();
                 resultadoConsultaBilheteDTO = response.getPayload();
                 if (resultadoConsultaBilheteDTO.getSituacao().getDescricao().equals("Premiada")){
                     AtualizarLayout();
@@ -106,13 +111,11 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
         }, new SilceClient.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                LoadingViewLoterias.stop(loadViewProgress);
+                alert.dismiss();
                 ViewUtils.alert(ResultadoLerBilhetesActivity.this, MensagensNetwork.setMensagem(error, ResultadoLerBilhetesActivity.this));
             }
         });
-
     }
-
 
     private void AtualizarLayout(){
         ApostaDTO.ModalidadeEnum modalidadeEnum = ApostaDTO.toStringModalidade(resultadoConsultaBilheteDTO.getModalidadeDTO().getDescricao());

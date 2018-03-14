@@ -273,12 +273,12 @@ public class CadastrarActivity extends CadastroActivity {
     }
 
     private void buscarBairroPorCep(String cep) {
-        final View loadViewProgress = LoadingViewLoterias.init(this);
+        final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
         final DadosCorporativosBO dadosCorporativosBO = new DadosCorporativosBO(CadastrarActivity.this);
         dadosCorporativosBO.bairros(null, null, null, cep, new SilceClient.Listener<BairroDTOResponse>() {
             @Override
             public void onResponse(BairroDTOResponse response) {
-                LoadingViewLoterias.stop(loadViewProgress);
+                loadViewProgress.dismiss();
                 if (response.getPayload() != null && !response.getPayload().isEmpty()) {
                     BairroDTO bairroDTO = response.getPayload().get(0);
                     editTextUFContent.setText(bairroDTO.getMunicipio().getUf().getSigla());
@@ -291,7 +291,7 @@ public class CadastrarActivity extends CadastroActivity {
         }, new SilceClient.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                LoadingViewLoterias.stop(loadViewProgress);
+                loadViewProgress.dismiss();
                 limparBuscaPorCep();
                 ViewUtils.alert(CadastrarActivity.this, MensagensNetwork.setMensagem(error, CadastrarActivity.this));
             }

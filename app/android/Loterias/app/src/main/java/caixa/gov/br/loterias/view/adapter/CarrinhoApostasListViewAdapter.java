@@ -1,5 +1,7 @@
 package caixa.gov.br.loterias.view.adapter;
 
+import android.app.Dialog;
+import android.support.v7.app.AlertDialog;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,18 +22,18 @@ import java.util.Locale;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.ApostaBO;
+import caixa.gov.br.loterias.model.bo.MensagensNetwork;
 import caixa.gov.br.loterias.model.bo.silce.SilceClient;
 import caixa.gov.br.loterias.model.bo.silce.dto.CarrinhoDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import caixa.gov.br.loterias.model.bo.silce.dto.ModalidadeEnum;
 import caixa.gov.br.loterias.model.dao.DBLoteriasCrud;
-import caixa.gov.br.loterias.view.animation.AnimacaoSwipeList;
 import caixa.gov.br.loterias.utils.EstiloModalidade;
-import caixa.gov.br.loterias.view.custom.ExpandableHeightRecyclerView;
-import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
-import caixa.gov.br.loterias.model.bo.MensagensNetwork;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.CarrinhoActivity;
+import caixa.gov.br.loterias.view.animation.AnimacaoSwipeList;
+import caixa.gov.br.loterias.view.custom.ExpandableHeightRecyclerView;
+import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
 
 public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<CarrinhoApostasListViewAdapter.ApostaHolder> {
     private Context context;
@@ -176,12 +178,12 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
 
     private void deletarAposta(final IdentificaoDeUmaApostaDas8Modalidades aposta) {
         final ApostaBO apostaBO = new ApostaBO(parentActivity);
-        final View loadViewProgress = LoadingViewLoterias.init(parentActivity);
+        final Dialog loadViewProgress = LoadingViewLoterias.show(parentActivity);
 
         apostaBO.deleteApostaCarrinho(aposta.getId().toString(), new SilceClient.Listener<CarrinhoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoDTOResponse response) {
-                LoadingViewLoterias.stop(loadViewProgress);
+                loadViewProgress.dismiss();
                 parentActivity.carrinho = response.getPayload();
                 deletarApostaBaseLocal(aposta, Boolean.FALSE);
                 parentActivity.atualizaLayout(Boolean.FALSE);
@@ -189,7 +191,7 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
         }, new SilceClient.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                LoadingViewLoterias.stop(loadViewProgress);
+                loadViewProgress.dismiss();
                 if (error.networkResponse != null && error.networkResponse.statusCode != 401) {
                     ViewUtils.alert(parentActivity, MensagensNetwork.setMensagem(error, context));
                 }else{

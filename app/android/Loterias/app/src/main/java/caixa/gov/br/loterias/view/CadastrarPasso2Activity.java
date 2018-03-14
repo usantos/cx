@@ -221,12 +221,12 @@ public class CadastrarPasso2Activity extends CadastroActivity {
     }
 
     private void buscarLotericasHabilitadas() {
-        final View loadViewProgress = LoadingViewLoterias.init(this);
+        final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
         DadosCorporativosBO dadosCorporativosBO = new DadosCorporativosBO(CadastrarPasso2Activity.this);
         dadosCorporativosBO.buscarLotericasHabilitadas(new SilceClient.Listener<ListDTOEnumIntegerResponse>() {
             @Override
             public void onResponse(ListDTOEnumIntegerResponse response) {
-                LoadingViewLoterias.stop(loadViewProgress);
+                loadViewProgress.dismiss();
                 listLoteriasHabilitadas = response.getPayload();
                 for (DTOEnumInteger dtoEnumInteger : listLoteriasHabilitadas) {
                     switch (LoteriasHabilitadaEnum.getTipoFromCodigo(dtoEnumInteger.getValor())) {
@@ -247,7 +247,7 @@ public class CadastrarPasso2Activity extends CadastroActivity {
         }, new SilceClient.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                LoadingViewLoterias.stop(loadViewProgress);
+                loadViewProgress.dismiss();
                 ViewUtils.alert(CadastrarPasso2Activity.this, MensagensNetwork.setMensagem(error, CadastrarPasso2Activity.this));
             }
         });
@@ -256,7 +256,7 @@ public class CadastrarPasso2Activity extends CadastroActivity {
     private void buscarLoteriasAutomatico() {
 
         final String cep = apostadorDTO.getCep().replace("-", "");
-        final View loadViewProgress = LoadingViewLoterias.init(this);
+        final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
         final DadosCorporativosBO dadosCorporativosBO = new DadosCorporativosBO(CadastrarPasso2Activity.this);
         dadosCorporativosBO.buscarLotericasCepOrBairroDTO(apostadorDTO.getCep().replace("-", ""), null, new SilceClient.Listener<LotericaDTOResponse>() {
             @Override
@@ -266,7 +266,7 @@ public class CadastrarPasso2Activity extends CadastroActivity {
                     dadosCorporativosBO.bairros(null, null, null, cep, new SilceClient.Listener<BairroDTOResponse>() {
                         @Override
                         public void onResponse(BairroDTOResponse response) {
-                            LoadingViewLoterias.stop(loadViewProgress);
+                            loadViewProgress.dismiss();
                             if (response.getPayload() != null && !response.getPayload().isEmpty()) {
                                 buscarLoteriasLocalizacaoCep(null, response.getPayload().get(0));
                             }
@@ -274,12 +274,12 @@ public class CadastrarPasso2Activity extends CadastroActivity {
                     }, new SilceClient.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            LoadingViewLoterias.stop(loadViewProgress);
+                            loadViewProgress.dismiss();
                             ViewUtils.alert(CadastrarPasso2Activity.this, MensagensNetwork.setMensagem(error, CadastrarPasso2Activity.this));
                         }
                     });
                 } else {
-                    LoadingViewLoterias.stop(loadViewProgress);
+                    loadViewProgress.dismiss();
                     popularRadio(response.getPayload().getLotericas());
                 }
 
@@ -288,7 +288,7 @@ public class CadastrarPasso2Activity extends CadastroActivity {
         }, new SilceClient.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                LoadingViewLoterias.stop(loadViewProgress);
+                loadViewProgress.dismiss();
                 ViewUtils.alert(CadastrarPasso2Activity.this, MensagensNetwork.setMensagem(error, CadastrarPasso2Activity.this));
             }
         });
@@ -296,12 +296,12 @@ public class CadastrarPasso2Activity extends CadastroActivity {
 
     private void buscarLoteriasLocalizacaoCep(String cep, BairroDTO bairroDTO) {
 
-        final View loadViewProgress = LoadingViewLoterias.init(this);
+        final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
         DadosCorporativosBO dadosCorporativosBO = new DadosCorporativosBO(CadastrarPasso2Activity.this);
         dadosCorporativosBO.buscarLotericasCepOrBairroDTO(cep, bairroDTO, new SilceClient.Listener<LotericaDTOResponse>() {
             @Override
             public void onResponse(LotericaDTOResponse response) {
-                LoadingViewLoterias.stop(loadViewProgress);
+                loadViewProgress.dismiss();
                 if (response.getPayload() != null && response.getPayload().getLotericas() != null) {
                     popularRadio(response.getPayload().getLotericas());
                 } else {
@@ -312,20 +312,20 @@ public class CadastrarPasso2Activity extends CadastroActivity {
         }, new SilceClient.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                LoadingViewLoterias.stop(loadViewProgress);
+                loadViewProgress.dismiss();
                 ViewUtils.alert(CadastrarPasso2Activity.this, MensagensNetwork.setMensagem(error, CadastrarPasso2Activity.this));
             }
         });
     }
 
     private void buscarLoteriasCodigoCompleto() {
-        final View loadViewProgress = LoadingViewLoterias.init(this);
+        final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
 
         DadosCorporativosBO dadosCorporativosBO = new DadosCorporativosBO(CadastrarPasso2Activity.this);
         dadosCorporativosBO.buscarLoteriasCodigoCompleto(editTextCodigoLotericaPasso2Content.getText().toString(), new SilceClient.Listener<LotericaCodigoWrapperResponse>() {
             @Override
             public void onResponse(LotericaCodigoWrapperResponse response) {
-                LoadingViewLoterias.stop(loadViewProgress);
+                loadViewProgress.dismiss();
                 List<LotericaDTO> lotericaDTOList = new ArrayList<LotericaDTO>();
                 lotericaDTOList.add(response.getPayload());
                 popularRadio(lotericaDTOList);
@@ -334,7 +334,7 @@ public class CadastrarPasso2Activity extends CadastroActivity {
         }, new SilceClient.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                LoadingViewLoterias.stop(loadViewProgress);
+                loadViewProgress.dismiss();
                 ViewUtils.alert(CadastrarPasso2Activity.this, MensagensNetwork.setMensagem(error, CadastrarPasso2Activity.this));
             }
         });
@@ -358,14 +358,14 @@ public class CadastrarPasso2Activity extends CadastroActivity {
             showDialogBairro();
         } else {
             listBairros = new ArrayList<String>();
-            final View loadViewProgress = LoadingViewLoterias.init(this);
+            final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
 
             DadosCorporativosBO dadosCorporativosBO = new DadosCorporativosBO(CadastrarPasso2Activity.this);
             dadosCorporativosBO.bairros(municipioIdDTOLoteria.getIdUF().toString(), municipioIdDTOLoteria.getNumero().toString(),
                     municipioIdDTOLoteria.getDigitoVerificador().toString(), null, new SilceClient.Listener<BairroDTOResponse>() {
                         @Override
                         public void onResponse(BairroDTOResponse response) {
-                            LoadingViewLoterias.stop(loadViewProgress);
+                            loadViewProgress.dismiss();
                             listBairroDTO = response.getPayload();
                             for (BairroDTO bairro : listBairroDTO) {
                                 listBairros.add(bairro.getNome());
@@ -375,7 +375,7 @@ public class CadastrarPasso2Activity extends CadastroActivity {
                     }, new SilceClient.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            LoadingViewLoterias.stop(loadViewProgress);
+                            loadViewProgress.dismiss();
                             ViewUtils.alert(CadastrarPasso2Activity.this, MensagensNetwork.setMensagem(error, CadastrarPasso2Activity.this));
                         }
                     });
@@ -494,19 +494,19 @@ public class CadastrarPasso2Activity extends CadastroActivity {
             public void onClick(View v) {
                 if (validarCampos()) {
 
-                    final View loadViewProgress = LoadingViewLoterias.init(CadastrarPasso2Activity.this);
+                    final AlertDialog loadViewProgress = LoadingViewLoterias.show(CadastrarPasso2Activity.this);
                     DadosUsuarioBO dadosUsuarioBO = new DadosUsuarioBO(CadastrarPasso2Activity.this);
                     dadosUsuarioBO.gravarUsuario(apostadorDTO, new SilceClient.Listener<UsuarioLogadoResponse>() {
                         @Override
                         public void onResponse(UsuarioLogadoResponse response) {
-                            LoadingViewLoterias.stop(loadViewProgress);
+                            loadViewProgress.dismiss();
                             Intent intent = new Intent(getBaseContext(), PrincipalActivity.class);
                             startActivity(intent);
                         }
                     }, new SilceClient.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            LoadingViewLoterias.stop(loadViewProgress);
+                            loadViewProgress.dismiss();
                             ViewUtils.alert(CadastrarPasso2Activity.this, MensagensNetwork.setMensagem(error, CadastrarPasso2Activity.this));
                         }
                     });

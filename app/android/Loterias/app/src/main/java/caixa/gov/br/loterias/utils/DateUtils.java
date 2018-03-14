@@ -3,6 +3,7 @@ package caixa.gov.br.loterias.utils;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
@@ -18,6 +19,10 @@ public class DateUtils {
     public static String PATTERN_DDMM_YYYY = "dd/MM/yyyy";
     public static String TAG = DateUtils.class.getSimpleName();
 
+    public static String[] getAllMonthsOfYear(){
+        DateFormatSymbols symbols = new DateFormatSymbols();
+        return symbols.getMonths();
+    }
 
     public static boolean isLegalDate(String date, String paternDate) {
         SimpleDateFormat sdf = getSimpleDateFormat(paternDate);

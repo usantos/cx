@@ -1,5 +1,6 @@
 package caixa.gov.br.loterias.view;
 
+import android.support.v7.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -119,13 +120,13 @@ public class ListaComprasActivity extends AppCompatActivity {
         offsetItem = 0;
         isMaisCompras = true;
         bloquearRequestScroll = false;
-        final View loadViewProgress = LoadingViewLoterias.init(this);
+        final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
         final ApostaBO apostaBO = new ApostaBO(ListaComprasActivity.this);
 
         apostaBO.getCompras(mes, ano, offsetItem ,new SilceClient.Listener<ResultadoPesquisaPaginadaDTOCompraDTOResponse>() {
             @Override
             public void onResponse(ResultadoPesquisaPaginadaDTOCompraDTOResponse response) {
-                LoadingViewLoterias.stop(loadViewProgress);
+                loadViewProgress.dismiss();
                 listaComprasDto = response.getPayload().getLista();
                 offsetItem = 5;
                 initRecyclerView();
@@ -135,7 +136,7 @@ public class ListaComprasActivity extends AppCompatActivity {
         }, new SilceClient.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                LoadingViewLoterias.stop(loadViewProgress);
+                loadViewProgress.dismiss();
                 ViewUtils.alert(ListaComprasActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
             }
         });
@@ -144,13 +145,13 @@ public class ListaComprasActivity extends AppCompatActivity {
 
     private void callWebServiceMesCompras(){
 
-        final View loadViewProgress = LoadingViewLoterias.init(this);
+        final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
         final ApostaBO apostaBO = new ApostaBO(ListaComprasActivity.this);
 
         apostaBO.getMesesCompras(new SilceClient.Listener<MesAnoDTOResponse>() {
             @Override
             public void onResponse(MesAnoDTOResponse response) {
-                LoadingViewLoterias.stop(loadViewProgress);
+                loadViewProgress.dismiss();
                 listaMesAnoDTO = response.getPayload();
 
                 addSpinner();
@@ -162,7 +163,7 @@ public class ListaComprasActivity extends AppCompatActivity {
         }, new SilceClient.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                LoadingViewLoterias.stop(loadViewProgress);
+                loadViewProgress.dismiss();
                 ViewUtils.alert(ListaComprasActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
             }
         });

@@ -1,5 +1,6 @@
 package caixa.gov.br.loterias.view;
 
+import android.support.v7.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.NestedScrollView;
@@ -115,13 +116,13 @@ public class FavoritasActivity extends AppCompatActivity {
         isMaisCompras = true;
         bloquearRequestScroll = false;
 
-        final View loadViewProgress = LoadingViewLoterias.init(this);
+        final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
         final ApostaBO apostaBO = new ApostaBO(this);
 
         apostaBO.getApostasFavoritas(offsetItem, new SilceClient.Listener<ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse>() {
             @Override
             public void onResponse(ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse response) {
-                LoadingViewLoterias.stop(loadViewProgress);
+                loadViewProgress.dismiss();
 
                 offsetItem = 8;
 
@@ -156,7 +157,7 @@ public class FavoritasActivity extends AppCompatActivity {
         }, new SilceClient.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                LoadingViewLoterias.stop(loadViewProgress);
+                loadViewProgress.dismiss();
                 ViewUtils.alert(FavoritasActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
 
             }

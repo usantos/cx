@@ -3,6 +3,7 @@ package caixa.gov.br.loterias.view.adapter;
 import android.animation.Animator;
 import android.app.Activity;
 import android.content.Context;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -244,19 +245,19 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
 
 
     private void deleteFavoritaCallWebservice(final int position) {
-        final View loadViewProgress = LoadingViewLoterias.init(activity);
+        final AlertDialog loadViewProgress = LoadingViewLoterias.show(activity);
         final ApostaBO apostaBO = new ApostaBO(activity);
 
         apostaBO.deleteApostasFavoritas(listaApostaFavorita.get(position).getId()+"", new SilceClient.Listener<RetornoPadraoDTO>() {
             @Override
             public void onResponse(RetornoPadraoDTO response) {
-                LoadingViewLoterias.stop(loadViewProgress);
+                loadViewProgress.dismiss();
                     removeAt(position);
             }
         }, new SilceClient.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                LoadingViewLoterias.stop(loadViewProgress);
+                loadViewProgress.dismiss();
                 ViewUtils.alert(activity, MensagensNetwork.setMensagem(error, context));
 
             }
@@ -268,7 +269,7 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
                                                final EditText editTextNomeDaAposta,
                                                final Button buttonSalvarNomeAposta,
                                                final TextView nomeApostaTextView) {
-        final View loadViewProgress = LoadingViewLoterias.init(activity);
+        final AlertDialog loadViewProgress = LoadingViewLoterias.show(activity);
         final ApostaBO apostaBO = new ApostaBO(activity);
         final ApostaFavoritaDTO apostaFavoritaDTOSalvar = apostaFavoritaDTO;
         apostaFavoritaDTOSalvar.setNome(editTextNomeDaAposta.getText().toString());
@@ -282,12 +283,12 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
                 editTextNomeDaAposta.setText("");
                 editTextNomeDaAposta.setEnabled(false);
                 buttonSalvarNomeAposta.setEnabled(false);
-                LoadingViewLoterias.stop(loadViewProgress);
+                loadViewProgress.dismiss();
             }
         }, new SilceClient.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                LoadingViewLoterias.stop(loadViewProgress);
+                loadViewProgress.dismiss();
                 ViewUtils.alert(activity, MensagensNetwork.setMensagem(error, context));
 
             }

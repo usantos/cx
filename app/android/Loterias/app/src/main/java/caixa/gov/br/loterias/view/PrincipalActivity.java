@@ -3,6 +3,7 @@ package caixa.gov.br.loterias.view;
 
 import android.Manifest;
 import android.animation.ArgbEvaluator;
+import android.support.v7.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -152,14 +153,14 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     private void callWebservice() {
-        final View loadViewProgress = LoadingViewLoterias.init(this);
+        final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
 
         final DadosCorporativosBO dadosCorporativosBO = new DadosCorporativosBO(PrincipalActivity.this);
 
         dadosCorporativosBO.parametrosSimulacao(new SilceClient.Listener<ParametrosSimulacaoResponse>() {
             @Override
             public void onResponse(ParametrosSimulacaoResponse response) {
-                LoadingViewLoterias.stop(loadViewProgress);
+                loadViewProgress.dismiss();
 
                 modalidadesParaListar = response.getPayload().getParametros();
                 SessaoUsuario sessaoUser = SessaoUsuario.getInstance();
@@ -183,7 +184,7 @@ public class PrincipalActivity extends AppCompatActivity
         }, new SilceClient.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                LoadingViewLoterias.stop(loadViewProgress);
+                loadViewProgress.dismiss();
                 ViewUtils.alert(PrincipalActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
             }
         });
@@ -399,20 +400,20 @@ public class PrincipalActivity extends AppCompatActivity
         ViewUtils.alertTitleButtonPositiveListener(this, R.string.label_atencao, getResources().getString(R.string.MA008), R.string.label_cotinuar, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                final View loadViewProgress = LoadingViewLoterias.init(PrincipalActivity.this);
+                final AlertDialog loadViewProgress = LoadingViewLoterias.show(PrincipalActivity.this);
 
                 DadosUsuarioBO dadosUsuarioBO = new DadosUsuarioBO(PrincipalActivity.this);
                 dadosUsuarioBO.sair(new SilceClient.Listener<NetworkResponse>() {
                     @Override
                     public void onResponse(NetworkResponse response) {
-                        LoadingViewLoterias.stop(loadViewProgress);
+                        loadViewProgress.dismiss();
                         startActivity(new Intent(PrincipalActivity.this, LoginActivity.class));
                         finish();
                     }
                 }, new SilceClient.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        LoadingViewLoterias.stop(loadViewProgress);
+                        loadViewProgress.dismiss();
                         ViewUtils.alert(PrincipalActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
                     }
                 });

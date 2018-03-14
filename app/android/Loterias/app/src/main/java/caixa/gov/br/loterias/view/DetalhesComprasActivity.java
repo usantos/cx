@@ -1,5 +1,6 @@
 package caixa.gov.br.loterias.view;
 
+import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -71,20 +72,20 @@ public class DetalhesComprasActivity extends AppCompatActivity {
 
     private void callWebService(){
 
-        final View loadViewProgress = LoadingViewLoterias.init(this);
+        final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
         final ApostaBO apostaBO = new ApostaBO(DetalhesComprasActivity.this);
 
         apostaBO.getDetalhesCompras(compraDTO.getId().toString() ,new SilceClient.Listener<AgrupadorApostaCompraDTOResponse>() {
             @Override
             public void onResponse(AgrupadorApostaCompraDTOResponse response) {
-                LoadingViewLoterias.stop(loadViewProgress);
+                loadViewProgress.dismiss();
                 listaAposta = response.getPayload().getApostas();
                 montarLayout();
             }
         }, new SilceClient.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                LoadingViewLoterias.stop(loadViewProgress);
+                loadViewProgress.dismiss();
                 ViewUtils.alert(DetalhesComprasActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
                 montarLayout();
             }

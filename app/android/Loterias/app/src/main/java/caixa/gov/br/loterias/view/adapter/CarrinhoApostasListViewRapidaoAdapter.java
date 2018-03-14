@@ -92,19 +92,19 @@ public class CarrinhoApostasListViewRapidaoAdapter extends RecyclerView.Adapter<
 
     private void deletarAposta (int position) {
 //        final ApostaBO apostaBO = new ApostaBO(parentActivity);
-//        final View loadViewProgress = LoadingViewLoterias.init(parentActivity);
+//        final AlertDialog loadViewProgress = LoadingViewLoterias.init(parentActivity);
 
 //        apostaBO.deleteApostaCarrinho(idAposta, new SilceClient.Listener<CarrinhoDTOResponse>() {
 //            @Override
 //            public void onResponse(CarrinhoDTOResponse response) {
-//                LoadingViewLoterias.stop(loadViewProgress);
+//                loadViewProgress.dismiss();
 //                parentActivity.carrinho = response.getPayload();
 //                parentActivity.atualizaLayout();
 //            }
 //        }, new SilceClient.ErrorListener() {
 //            @Override
 //            public void onErrorResponse(VolleyError error) {
-//                LoadingViewLoterias.stop(loadViewProgress);
+//                loadViewProgress.dismiss();
 //                ViewUtils.alert(parentActivity, MensagensNetwork.setMensagem(error, context));
 //            }
 //        });

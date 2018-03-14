@@ -1,5 +1,6 @@
 package caixa.gov.br.loterias.view;
 
+import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -35,20 +36,20 @@ public class RepassesSociaisActivity extends SettingToolbarActivity {
     }
 
     private void callWebservice () {
-        final View loadViewProgress = LoadingViewLoterias.init(this);
+        final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
 
         DadosCorporativosBO dadosCorporativosBO = new DadosCorporativosBO(RepassesSociaisActivity.this);
         dadosCorporativosBO.repasses(new SilceClient.Listener<RepassometroDTOResponse>() {
             @Override
             public void onResponse(RepassometroDTOResponse response) {
-                LoadingViewLoterias.stop(loadViewProgress);
+                loadViewProgress.dismiss();
                 repasseOBj = response.getPayload();
                 setLayout();
             }
         }, new SilceClient.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                LoadingViewLoterias.stop(loadViewProgress);
+                loadViewProgress.dismiss();
                 ViewUtils.alert(RepassesSociaisActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
             }
         });

@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     android:fillViewport="true">
 
@@ -46,7 +47,7 @@
             android:orientation="horizontal" >
 
             <RadioButton
-                android:id="@+id/btn1"
+                android:id="@+id/verResultadosBtn"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="match_parent"
@@ -60,7 +61,7 @@
                 android:gravity="center" />
 
             <RadioButton
-                android:id="@+id/btn2"
+                android:id="@+id/historicoApostasBtn"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:textSize="12sp"
@@ -74,6 +75,41 @@
 
         </RadioGroup>
 
+        <LinearLayout
+            android:id="@+id/dateSelectorBtn"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="?selectableItemBackground"
+            android:paddingRight="16dp"
+            android:paddingLeft="16dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_selecione_mes_ano"
+                android:textSize="12sp"
+                android:textColor="@color/azulFormNovoTipoPagamento"
+                />
+
+            <TextView
+                android:id="@+id/dateResultTxt"
+                tools:text="Janeiro de 2018"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:textSize="16sp"
+                android:textColor="@color/pretoLinhaFormNovoTipoPagamento"
+                android:gravity="center_vertical"
+                android:drawableEnd="@drawable/combo"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/azulClaroSelecaotime"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 

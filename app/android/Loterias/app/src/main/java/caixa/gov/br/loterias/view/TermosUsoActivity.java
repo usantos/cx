@@ -1,5 +1,6 @@
 package caixa.gov.br.loterias.view;
 
+import android.support.v7.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -77,18 +78,18 @@ public class TermosUsoActivity extends AppCompatActivity {
         buttonTermoAceite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final View loadViewProgress = LoadingViewLoterias.init(TermosUsoActivity.this);
+                final AlertDialog loadViewProgress = LoadingViewLoterias.show(TermosUsoActivity.this);
                 DadosCorporativosBO dadosCorporativosBO = new DadosCorporativosBO(TermosUsoActivity.this);
                 dadosCorporativosBO.aceiteTermo(new SilceClient.Listener<ResourceResponse>() {
                     @Override
                     public void onResponse(ResourceResponse response) {
-                        LoadingViewLoterias.stop(loadViewProgress);
+                        loadViewProgress.dismiss();
                         finish();
                     }
                 }, new SilceClient.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        LoadingViewLoterias.stop(loadViewProgress);
+                        loadViewProgress.dismiss();
                         ViewUtils.alert(TermosUsoActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
                     }
                 });
@@ -149,7 +150,7 @@ public class TermosUsoActivity extends AppCompatActivity {
     }
 
     private void getTermo() {
-        final View loadViewProgress = LoadingViewLoterias.init(this);
+        final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
         DadosCorporativosBO dadosCorporativosBO = new DadosCorporativosBO(TermosUsoActivity.this);
 
         dadosCorporativosBO.termo(new SilceClient.Listener<TermoDeUsoDTOResponse>() {
@@ -158,13 +159,13 @@ public class TermosUsoActivity extends AppCompatActivity {
                 termoHtml = response.getPayload().getConteudo();
 
                 webViewConteudo.loadData(termoHtml, "text/html; charset=UTF-8", "UTF-8");
-                LoadingViewLoterias.stop(loadViewProgress);
+                loadViewProgress.dismiss();
                 verificaTermoAceito();
             }
         }, new SilceClient.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                LoadingViewLoterias.stop(loadViewProgress);
+                loadViewProgress.dismiss();
                 ViewUtils.alert(TermosUsoActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
             }
         });
@@ -226,7 +227,7 @@ public class TermosUsoActivity extends AppCompatActivity {
     }
 
     private void verificaTermoAceito() {
-        final View loadViewProgress = LoadingViewLoterias.init(this);
+        final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
         DadosCorporativosBO dadosCorporativosBO = new DadosCorporativosBO(TermosUsoActivity.this);
 
         dadosCorporativosBO.validaTermoAceito(new SilceClient.Listener<ResourceResponse>() {
@@ -234,13 +235,13 @@ public class TermosUsoActivity extends AppCompatActivity {
             public void onResponse(ResourceResponse response) {
                 isTermoAceito = Boolean.TRUE;
                 exibeRodapeAceite();
-                LoadingViewLoterias.stop(loadViewProgress);
+                loadViewProgress.dismiss();
             }
         }, new SilceClient.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 isTermoAceito = Boolean.FALSE;
-                LoadingViewLoterias.stop(loadViewProgress);
+                loadViewProgress.dismiss();
                 ViewUtils.alert(TermosUsoActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
             }
         });
@@ -276,7 +277,7 @@ public class TermosUsoActivity extends AppCompatActivity {
 
     private void initReciclerViewDuvidas() {
         if (secaoDuvidas == null) {
-            final View loadViewProgress = LoadingViewLoterias.init(this);
+            final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
             DadosCorporativosBO dadosCorporativosBO = new DadosCorporativosBO(getApplicationContext());
 
             dadosCorporativosBO.secaoDuvidas(new SilceClient.Listener<ListSecaoDTOResponse>() {
@@ -284,12 +285,12 @@ public class TermosUsoActivity extends AppCompatActivity {
                 public void onResponse(ListSecaoDTOResponse response) {
                     secaoDuvidas = response.getPayload();
                     createRecyclerView();
-                    LoadingViewLoterias.stop(loadViewProgress);
+                    loadViewProgress.dismiss();
                 }
             }, new SilceClient.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    LoadingViewLoterias.stop(loadViewProgress);
+                    loadViewProgress.dismiss();
                     ViewUtils.alert(TermosUsoActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
                 }
             });

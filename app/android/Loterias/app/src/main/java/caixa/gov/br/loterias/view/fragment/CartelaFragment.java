@@ -1,5 +1,7 @@
 package caixa.gov.br.loterias.view.fragment;
 
+import android.app.Activity;
+import android.support.v7.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
@@ -327,7 +329,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
         orderAscDezenas();
         IdentificaoDeUmaApostaDas8Modalidades aposta = getApostaPreenchida();
-        adicionarApostaCarrinhoRequest(new ApostaBO(getActivity()), LoadingViewLoterias.init(getActivity()), aposta);
+        adicionarApostaCarrinhoRequest(new ApostaBO(getActivity()), getActivity(), aposta);
     }
 
     private IdentificaoDeUmaApostaDas8Modalidades getApostaPreenchida() {
@@ -382,11 +384,12 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         return aposta;
     }
 
-    private void adicionarApostaCarrinhoRequest(ApostaBO apostaBO, final View loadViewProgress, final IdentificaoDeUmaApostaDas8Modalidades aposta) {
+    private void adicionarApostaCarrinhoRequest(ApostaBO apostaBO, final Activity activity, final IdentificaoDeUmaApostaDas8Modalidades aposta) {
+        final AlertDialog alert = LoadingViewLoterias.show(activity);
         apostaBO.adicionarApostaNoCarrinho(aposta, new SilceClient.Listener<AgrupadorDTOApostaDTOResponse>() {
             @Override
             public void onResponse(AgrupadorDTOApostaDTOResponse response) {
-                LoadingViewLoterias.stop(loadViewProgress);
+                alert.dismiss();
                 TextView count = parentActivity.getTextViewCarrinhoCartelaCount();
 
                 qtdCartelasCarrinho++;
@@ -398,7 +401,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         }, new SilceClient.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                LoadingViewLoterias.stop(loadViewProgress);
+                alert.dismiss();
 
                 if (error.networkResponse == null || error.networkResponse.statusCode == 401) {
                     if (inserirApostaCarrinhoLocal(aposta)) {
@@ -448,11 +451,12 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         }
     }
 
-    private void adicionarApostasCarrinhoRequest(ApostaBO apostaBO, final View loadViewProgress, final List<IdentificaoDeUmaApostaDas8Modalidades> apostas) {
+    private void adicionarApostasCarrinhoRequest(ApostaBO apostaBO, Activity activity, final List<IdentificaoDeUmaApostaDas8Modalidades> apostas) {
+        final AlertDialog alert = LoadingViewLoterias.show(activity);
         apostaBO.adicionarApostasNoCarrinho(apostas, new SilceClient.Listener<AgrupadorDTOApostaDTOResponse>() {
             @Override
             public void onResponse(AgrupadorDTOApostaDTOResponse response) {
-                LoadingViewLoterias.stop(loadViewProgress);
+                alert.dismiss();
                 TextView count = parentActivity.getTextViewCarrinhoCartelaCount();
 
                 qtdCartelasCarrinho++;
@@ -463,7 +467,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         }, new SilceClient.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                LoadingViewLoterias.stop(loadViewProgress);
+                alert.dismiss();
                 if (error.networkResponse == null || error.networkResponse.statusCode == 401) {
                     boolean retorno = false;
                     for (IdentificaoDeUmaApostaDas8Modalidades aposta : apostas) {
@@ -649,7 +653,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                 apostas.add(aposta);
                 apostas.add(apostaEspelho);
 
-                adicionarApostasCarrinhoRequest(new ApostaBO(getActivity()), LoadingViewLoterias.init(getActivity()), apostas);
+                adicionarApostasCarrinhoRequest(new ApostaBO(getActivity()), getActivity(), apostas);
 
             } else {
                 adicionarApostaNoCarrinho();
@@ -691,7 +695,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
     private void salvarAposta(String nomeAposta) {
         final DadosCorporativosBO dadosCorporativosBO = new DadosCorporativosBO(getActivity());
-        final View loadViewProgress = LoadingViewLoterias.init(getActivity());
+        final AlertDialog loadViewProgress = LoadingViewLoterias.show(getActivity());
 
         final ApostaFavoritaDTO aposta = new ApostaFavoritaDTO();
 
@@ -715,7 +719,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                 dadosCorporativosBO.salvarApostaFavorita(aposta, new SilceClient.Listener<NetworkResponse>() {
                     @Override
                     public void onResponse(NetworkResponse response) {
-                        LoadingViewLoterias.stop(loadViewProgress);
+                        loadViewProgress.dismiss();
 
                         RelativeLayout salvarApostaLayout = parentActivity.getSalvarApostaLayout();
 
@@ -739,7 +743,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                 }, new SilceClient.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        LoadingViewLoterias.stop(loadViewProgress);
+                        loadViewProgress.dismiss();
                         ViewUtils.alert(getActivity(), MensagensNetwork.setMensagem(error, getActivity()));
                     }
                 });
@@ -747,7 +751,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         }, new SilceClient.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                LoadingViewLoterias.stop(loadViewProgress);
+                loadViewProgress.dismiss();
                 ViewUtils.alert(getActivity(), MensagensNetwork.setMensagem(error, getActivity()));
             }
         });

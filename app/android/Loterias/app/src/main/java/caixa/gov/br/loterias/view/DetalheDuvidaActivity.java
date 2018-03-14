@@ -1,5 +1,6 @@
 package caixa.gov.br.loterias.view;
 
+import android.support.v7.app.AlertDialog;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -38,7 +39,7 @@ public class DetalheDuvidaActivity extends AppCompatActivity {
     @AfterViews
     public void init() {
 
-        final View loadViewProgress = LoadingViewLoterias.init(this);
+        final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
         DadosCorporativosBO dadosCorporativosBO = new DadosCorporativosBO(getApplicationContext());
 
         dadosCorporativosBO.duvidasPerguntasRespostas(secaoDTO.getId(), new SilceClient.Listener<ListSecaoDTOResponse>() {
@@ -49,12 +50,12 @@ public class DetalheDuvidaActivity extends AppCompatActivity {
 
                     createRecyclerView(secaoDTOList.get(0).getDuvidas());
                 }
-                LoadingViewLoterias.stop(loadViewProgress);
+                loadViewProgress.dismiss();
             }
         }, new SilceClient.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                LoadingViewLoterias.stop(loadViewProgress);
+                loadViewProgress.dismiss();
                 ViewUtils.alert(DetalheDuvidaActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
             }
         });

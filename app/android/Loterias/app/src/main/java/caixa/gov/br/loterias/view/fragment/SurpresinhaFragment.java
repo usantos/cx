@@ -1,5 +1,6 @@
 package caixa.gov.br.loterias.view.fragment;
 
+import android.support.v7.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
@@ -287,7 +288,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
     public void adicionarSurpresinhaNoCarrinho() {
 
         final ApostaBO apostaBO = new ApostaBO(getActivity());
-        final View loadViewProgress = LoadingViewLoterias.init(getActivity());
+        final AlertDialog loadViewProgress = LoadingViewLoterias.show(getActivity());
 
         IncluirSurpresinhaDTO aposta = new IncluirSurpresinhaDTO();
         aposta.setModalidade(parametroJogo.getConcurso().getModalidade());
@@ -324,13 +325,13 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         apostaBO.adicionarSurpresinhaNoCarrinho(aposta, new SilceClient.Listener<AgrupadorDTOApostaDTOResponse>() {
             @Override
             public void onResponse(AgrupadorDTOApostaDTOResponse response) {
-                LoadingViewLoterias.stop(loadViewProgress);
+                loadViewProgress.dismiss();
                 surpresinhaFragmentListener.adicionarApostaCarrinho();
             }
         }, new SilceClient.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                LoadingViewLoterias.stop(loadViewProgress);
+                loadViewProgress.dismiss();
                 if (error.networkResponse == null || error.networkResponse.statusCode == 401) {
                     inserirSuspresinhaBaseLocal(apostaSurpresinha);
                 } else {

@@ -51,6 +51,11 @@ public class AppUtils {
         return null;
     }
 
+    public static String capitalizeFirstChar(String string) {
+        StringBuilder sb = new StringBuilder(string);
+        sb.setCharAt(0, Character.toUpperCase(sb.charAt(0)));
+        return sb.toString();
+    }
 
     public static String capitalizeString(String string) {
         char[] chars = string.toLowerCase().toCharArray();

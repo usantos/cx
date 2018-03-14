@@ -1,5 +1,6 @@
 package caixa.gov.br.loterias.view;
 
+import android.support.v7.app.AlertDialog;
 import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
 import android.os.Bundle;
@@ -66,13 +67,13 @@ public class FormaPagamentoActivity extends SettingToolbarActivity implements Fo
     }
 
     private void callWebservice() {
-        final View loadViewProgress = LoadingViewLoterias.init(this);
+        final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
 
         DadosUsuarioBO dadosUsuarioBO = new DadosUsuarioBO(FormaPagamentoActivity.this);
         dadosUsuarioBO.cartoes(new SilceClient.Listener<ListCartaoDTOResponse>() {
             @Override
             public void onResponse(ListCartaoDTOResponse response) {
-                LoadingViewLoterias.stop(loadViewProgress);
+                loadViewProgress.dismiss();
                 listaCartoes = response.getPayload();
                 if (listaCartoes != null && listaCartoes.size() > 0) {
                     configuraRecyclerViewCarrinhoAposta();
@@ -81,7 +82,7 @@ public class FormaPagamentoActivity extends SettingToolbarActivity implements Fo
         }, new SilceClient.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                LoadingViewLoterias.stop(loadViewProgress);
+                loadViewProgress.dismiss();
                 ViewUtils.alert(FormaPagamentoActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
             }
         });

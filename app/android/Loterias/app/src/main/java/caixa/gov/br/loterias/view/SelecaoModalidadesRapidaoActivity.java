@@ -1,5 +1,6 @@
 package caixa.gov.br.loterias.view;
 
+import android.support.v7.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -141,13 +142,13 @@ public class SelecaoModalidadesRapidaoActivity extends AppCompatActivity{
 
     private void callWebservice() {
 
-        final View loadViewProgress = LoadingViewLoterias.init(this);
+        final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
         final ApostaBO apostaBO = new ApostaBO(SelecaoModalidadesRapidaoActivity.this);
 
         apostaBO.getModalidades(new SilceClient.Listener<ModalidadeDTOResponse>() {
             @Override
             public void onResponse(ModalidadeDTOResponse response) {
-                LoadingViewLoterias.stop(loadViewProgress);
+                loadViewProgress.dismiss();
                 modalidades = response.getPayload();
 
 
@@ -156,7 +157,7 @@ public class SelecaoModalidadesRapidaoActivity extends AppCompatActivity{
         }, new SilceClient.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                LoadingViewLoterias.stop(loadViewProgress);
+                loadViewProgress.dismiss();
                 ViewUtils.alert(SelecaoModalidadesRapidaoActivity .this, MensagensNetwork.setMensagem(error, getApplicationContext()));
             }
         });

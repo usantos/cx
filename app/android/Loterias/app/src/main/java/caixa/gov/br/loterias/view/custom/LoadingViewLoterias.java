@@ -4,72 +4,37 @@ import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.Typeface;
-import android.util.TypedValue;
-import android.view.Gravity;
+import android.support.v7.app.AlertDialog;
+import android.util.DisplayMetrics;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import caixa.gov.br.loterias.R;
-import caixa.gov.br.loterias.utils.ViewUtils;
-
 
 /**
  * Created by cedesbr450 on 06/12/17.
  */
 
 public class LoadingViewLoterias {
-    public static LinearLayout init(Activity activity) {
-        Context context = activity.getApplicationContext();
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        LinearLayout layout = new LinearLayout(context);
-        layout.setOrientation(LinearLayout.VERTICAL);
-        layout.setBackgroundColor(context.getResources().getColor(R.color.transparenteAzul10));
-        layout.setGravity(Gravity.CENTER);
-        layout.setAlpha(0.0f);
-        layout.setClickable(true);
-        ImageView imageView = new ImageView(context);
-        int sizeImage = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 44, activity.getResources().getDisplayMetrics());
-        int margemImage = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 20, activity.getResources().getDisplayMetrics());
 
+    public static AlertDialog show(Context context) {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context, R.style.DialogFullScreenTheme);
 
-        RelativeLayout.LayoutParams lpImage = new RelativeLayout.LayoutParams(sizeImage, sizeImage);
-        imageView.setLayoutParams(lpImage);
-        imageView.setImageResource(R.drawable.icon_loteria);
-        layout.addView(imageView);
-
-        TextView textView = new TextView(context);
-        RelativeLayout.LayoutParams lptextView = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        lptextView.setMargins(0,margemImage,0,0);
-        textView.setLayoutParams(lptextView);
-        textView.setText("Carregando...");
-        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 17);
-        textView.setTypeface(null, Typeface.BOLD);
-        textView.setGravity(Gravity.CENTER);
-        textView.setTextColor(context.getResources().getColor(R.color.branco));
-        textView.setTypeface(ViewUtils.getFontFutura(activity));
-        layout.addView(textView);
-
-
+        View layout = LayoutInflater.from(context).inflate(R.layout.dialog_loading, null);
+        ImageView imageView = (ImageView) layout.findViewById(R.id.logoImg);
         ObjectAnimator animator = ObjectAnimator
                 .ofFloat(imageView, "rotation", imageView.getRotation() + 360).setDuration(1200);
         animator.setRepeatCount(ObjectAnimator.INFINITE);
         animator.start();
-        activity.getWindow().addContentView(layout,layoutParams);
 
-        layout.animate().alpha(1.0f).setDuration(200).setListener(new Animator.AnimatorListener() {
+        imageView.animate().alpha(1.0f).setDuration(200).setListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {}
 
             @Override
-            public void onAnimationEnd(Animator animation) {
-
-            }
+            public void onAnimationEnd(Animator animation) {}
 
             @Override
             public void onAnimationCancel(Animator animation) {}
@@ -78,11 +43,8 @@ public class LoadingViewLoterias {
             public void onAnimationRepeat(Animator animation) {}
         });
 
-        return layout;
-        }
-
-        public static void stop(View view){
-            ViewGroup viewParent = (ViewGroup) view.getParent();
-            viewParent.removeView(view);
-        }
+        AlertDialog dialog = dialogBuilder.setView(layout).create();
+        dialog.show();
+        return dialog;
+    }
 }
