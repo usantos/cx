@@ -42,6 +42,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.ApostaBO;
@@ -486,7 +487,18 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
             case R.id.botaoAdicionarCompletarCartela: {
                 if (isTipoTimemania) {
                     if (isEcolhaTimeBtnAtivado && dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) {
-                        mostrarCartelaEscolhaTimeCoracao();
+                            if (mGridTimeCoracao == null){
+                                mostrarCartelaEscolhaTimeCoracao();
+                            }else{
+                                if (equipeSelecionada !=null){
+                                    if (equipeSelecionada.isSelecionado() == true){
+                                        adicionarApostaNoCarrinho();
+                                    }else{
+                                        selecionarTimeAleatorio();
+                                    }
+                                }
+                                selecionarTimeAleatorio();
+                            }
                     } else {
                         adcionarApostaPreencherNumerosAleatorios();
                     }
@@ -545,6 +557,20 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
             }
 
         }
+    }
+
+    private void selecionarTimeAleatorio(){
+        int randomInt = 0;
+        Random randomGenerator = new Random();
+        randomInt = randomGenerator.nextInt(listaEquipefiltro.size()-1);
+        equipeSelecionada = listaEquipefiltro.get(randomInt);
+        equipeSelecionada.setSelecionado(true);
+        String nomeTime = String.format("%s-%s", equipeSelecionada.getNome(), equipeSelecionada.getUf());
+        informeNomeTime.setText(nomeTime);
+        timeCoracaoAdapter.notifyDataSetChanged();
+        verificaSeMostraBotaoLimparAposta();
+        verificaSeMostraSalvarApostaView();
+        atualizarAdicionarCarinhoCompletarCartela();
     }
 
     private void limparOpcaoOutrosNumerosLayout() {
@@ -767,7 +793,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         infoEscolha.setText(getString(R.string.label_escolha_time_seu_coracao));
         infoPaginacao.setText(ViewUtils.fromHtml(Constantes.PAGINACAO_DOIS_DOIS));
 
-        isEcolhaTimeBtnAtivado = false;
+        isEcolhaTimeBtnAtivado = true;
         isTelaSelecaoTimeAtivado = true;
         selecioneTimeCoracaoLayout = view.findViewById(R.id.selecioneTimeCoracao);
         mGridTimeCoracao = view.findViewById(R.id.gridTimes);
@@ -968,7 +994,13 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         } else if (isTipoTimemania) {
             if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado && isEcolhaTimeBtnAtivado) {
                 botaoFinalizar.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.timemaniaescuro));
-                botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(parentActivity, getString(R.string.label_escolha_time_coracao)));
+                if (mGridTimeCoracao != null){
+                    botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(parentActivity, getString(R.string.label_selecionar_time_aleatoriamente)));
+                    botaoFinalizar.setBackgroundColor(getContext().getResources().getColor(R.color.cinza));
+                }else{
+                    botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(parentActivity, getString(R.string.label_escolha_time_coracao)));
+                    botaoFinalizar.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.timemaniaescuro));
+                }
             } else {
                 atualizarAdicionarCarinhoCompletarCartela();
             }
