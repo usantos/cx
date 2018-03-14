@@ -31,7 +31,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".view.LoginActivity_"
+            android:name=".view.LoginActivity"
             android:configChanges="orientation"
             android:label="@string/title_activity_login"
             android:screenOrientation="portrait"
@@ -107,10 +107,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="caixa.gov.br.loterias.view.PrincipalActivity" />
         </activity>
-        <activity
-            android:name=".view.LoginActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".view.ListaRapidaoActivity"
             android:label="@string/title_activity_lista_rapidao"
@@ -188,6 +184,18 @@
         <activity
             android:name=".view.DetalheDuvidaActivity_"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.ApostasConfirmadasActivity_"
+            android:label="@string/title_activity_apostas_confirmadas"
+            android:parentActivityName=".view.PrincipalActivity"
+            android:theme="@style/AppTheme.DegradeActionBar"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="caixa.gov.br.loterias.view.PrincipalActivity" />
+        </activity>
+
+
     </application>
 
 </manifest>

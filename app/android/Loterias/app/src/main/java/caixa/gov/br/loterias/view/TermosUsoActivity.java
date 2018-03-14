@@ -13,6 +13,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 
@@ -35,7 +36,8 @@ import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
 
 public class TermosUsoActivity extends AppCompatActivity {
 
-    private Button termosUsoButton, politicaButton, duvidasButton, buttonTermoAceite;
+    private RadioButton termosUsoButton, politicaButton, duvidasButton;
+    private Button buttonTermoAceite;
     private WebView webViewConteudo;
     private String termoHtml;
     private boolean isTermoAceito;
@@ -57,6 +59,7 @@ public class TermosUsoActivity extends AppCompatActivity {
         termosUsoButton = findViewById(R.id.buttonTermos);
         duvidasButton = findViewById(R.id.buttonDuvidas);
         politicaButton = findViewById(R.id.buttonPolitica);
+
         webViewConteudo = findViewById(R.id.webViewConteudo);
         footerAceiteTermo = findViewById(R.id.footerAceiteTermo);
         scrollViewTermoAceite = findViewById(R.id.scrollViewTermoAceite);
@@ -130,7 +133,7 @@ public class TermosUsoActivity extends AppCompatActivity {
             public void onPageFinished(WebView view, String url) {
             }
         });
-        termosUsoButton.setSelected(Boolean.TRUE);
+        termosUsoButton.setChecked(Boolean.TRUE);
         listenerTermosUso();
         listenerDuvidas();
         listenerPolitica();
@@ -195,44 +198,30 @@ public class TermosUsoActivity extends AppCompatActivity {
     }
 
     private void selectTermoUso() {
-        termosUsoButton.setSelected(Boolean.TRUE);
-        termosUsoButton.setTextColor(getResources().getColor(R.color.branco));
+        termosUsoButton.setChecked(Boolean.TRUE);
         relativeLayouTermoAceite.setVisibility(View.VISIBLE);
         webViewConteudo.loadData(termoHtml, "text/html; charset=UTF-8", "UTF-8");
-        unSelectPoliticas();
         unSelectDuvidas();
     }
 
     private void unSelectTermoUso() {
-        termosUsoButton.setSelected(Boolean.FALSE);
-        termosUsoButton.setTextColor(getResources().getColor(R.color.verdeazul));
         relativeLayouTermoAceite.setVisibility(View.GONE);
     }
 
     private void selectPoliticas() {
-        politicaButton.setSelected(Boolean.TRUE);
-        politicaButton.setTextColor(getResources().getColor(R.color.branco));
+        politicaButton.setChecked(Boolean.TRUE);
         unSelectTermoUso();
         unSelectDuvidas();
     }
 
-    private void unSelectPoliticas() {
-        politicaButton.setSelected(Boolean.FALSE);
-        politicaButton.setTextColor(getResources().getColor(R.color.verdeazul));
-    }
-
     private void selectDuvidas() {
-        duvidasButton.setSelected(Boolean.TRUE);
-        duvidasButton.setTextColor(getResources().getColor(R.color.branco));
+        duvidasButton.setChecked(Boolean.TRUE);
         layoutDuvidas.setVisibility(View.VISIBLE);
         initReciclerViewDuvidas();
         unSelectTermoUso();
-        unSelectPoliticas();
     }
 
     private void unSelectDuvidas() {
-        duvidasButton.setSelected(Boolean.FALSE);
-        duvidasButton.setTextColor(getResources().getColor(R.color.verdeazul));
         layoutDuvidas.setVisibility(View.GONE);
     }
 
@@ -313,7 +302,9 @@ public class TermosUsoActivity extends AppCompatActivity {
         ItemDuvidaAdapter itemDuvidaAdapter = new ItemDuvidaAdapter(secaoDuvidas);
         recyclerViewDuvidas.setAdapter(itemDuvidaAdapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setAutoMeasureEnabled(true);
         recyclerViewDuvidas.setLayoutManager(layoutManager);
         recyclerViewDuvidas.setExpanded(Boolean.TRUE);
+        recyclerViewDuvidas.setNestedScrollingEnabled(false);
     }
 }

@@ -101,7 +101,6 @@ public class PrincipalActivity extends AppCompatActivity
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
         drawerSideMenu = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawerSideMenu, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -119,6 +118,7 @@ public class PrincipalActivity extends AppCompatActivity
         listenerRapidao();
         listenerFavoritas();
         listenerLerBilhetes();
+        listenerApostasConfirmadas();
 
         callWebservice();
         iniciarBancoLocal();
@@ -548,6 +548,15 @@ public class PrincipalActivity extends AppCompatActivity
                     AnimacaoFecharMenuRapido(relativePrincipal);
                     startActivity(new Intent(PrincipalActivity.this, LerBilhetesActivity.class));
                 }
+            }
+        });
+    }
+
+    private void listenerApostasConfirmadas(){
+        findViewById(R.id.apostasConfirmadasBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ApostasConfirmadasActivity_.intent(PrincipalActivity.this).start();
             }
         });
     }

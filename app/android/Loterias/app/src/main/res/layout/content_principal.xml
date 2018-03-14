@@ -288,18 +288,19 @@
             android:textSize="10sp" />
 
         <RelativeLayout
+            android:id="@+id/apostasConfirmadasBtn"
             android:layout_width="wrap_content"
             android:layout_height="75dp"
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="6dp"
             android:layout_marginTop="20dp">
 
-            <Button
+            <ImageView
                 android:id="@+id/textViewHomeButtonAllBets"
                 android:layout_width="34dp"
                 android:layout_height="40dp"
                 android:layout_marginStart="25dp"
-                android:background="@drawable/icon_apostas" />
+                android:src="@drawable/icon_apostas" />
 
             <TextView
                 android:id="@+id/textViewHomeCountConfirmedBets"

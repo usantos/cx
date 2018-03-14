@@ -10,6 +10,7 @@
     <string name="title_activity_carrinho">_Carrinho_ de apostas</string>
     <string name="title_activity_forma_pagamento">Forma de _pagamento_</string>
     <string name="title_activity_confirmacao_pagamento">_Confirmação_</string>
+    <string name="title_activity_apostas_confirmadas">Apostas _confirmadas_</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -175,4 +176,11 @@
     <string name="label_sorteios">sorteios</string>
     <string name="label_posicione_ler_bilhetes">Posicione a linha abaixo sobre o código de barras\ne aguarde a focalização da câmera.</string>
     <string name="label_digite_aposta_realizada">_Digitar_ sua aposta realizada</string>
+
+    <!-- Apostas Confirmadas -->
+    <string name="label_aqui_voce_pode_acompanhar">Aqui você pode acompanhar todas as apostas que já realizou no aplicativo. Boa sorte!</string>
+    <string name="label_ver_resultados">Ver resultados</string>
+    <string name="label_historico_de_apostas">Histórico de apostas</string>
+    <string name="label_para_a_sorte_todo_mundo">Para a sorte todo mundo é igual. O próximo ganhador pode ser você!</string>
+
 </resources>

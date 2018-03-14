@@ -1,0 +1,58 @@
+package caixa.gov.br.loterias.view;
+
+import android.content.Intent;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
+
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ItemClick;
+import org.androidannotations.annotations.OptionsItem;
+import org.androidannotations.annotations.OptionsMenu;
+import org.androidannotations.annotations.OptionsMenuItem;
+import org.androidannotations.annotations.ViewById;
+
+import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.utils.ViewUtils;
+
+/**
+ * Created by pmotta on 13/03/2018.
+ */
+
+@OptionsMenu(R.menu.menu_apostas_confirmadas)
+@EActivity(R.layout.activity_apostas_confirmadas)
+public class ApostasConfirmadasActivity extends AppCompatActivity {
+
+    @ViewById(R.id.toolbar)
+    protected Toolbar toolbar;
+
+    @AfterViews
+    protected void init(){
+        setupToolbar();
+    }
+
+    @OptionsItem(R.id.action_duvida)
+    protected void onMenuDuvida(){
+        Intent intent = new Intent(getBaseContext(), TermosUsoActivity.class);
+        startActivity(intent);
+    }
+
+    private void setupToolbar(){
+        setSupportActionBar(toolbar);
+        ActionBar supportActionBar = getSupportActionBar();
+        if(supportActionBar != null){
+            supportActionBar.setDisplayHomeAsUpEnabled(true);
+            supportActionBar.setElevation(0);
+        }
+        setTitle(ViewUtils.textFuturaAndFuturaBold(this, getTitle().toString()));
+    }
+
+    @Override
+    public boolean onSupportNavigateUp(){
+        finish();
+        return true;
+    }
+
+}
