@@ -56,14 +56,6 @@ public class DetalhesComprasActivity extends AppCompatActivity {
 
 
     private void montarLayout(){
-        List<DetalhesPremioDTO> listaPremio = new ArrayList<DetalhesPremioDTO>();
-        DetalhesPremioDTO det = new DetalhesPremioDTO();
-        listaPremio.add(det);
-        listaPremio.add(det);
-        listaPremio.add(det);
-        listaPremio.add(det);
-        listaPremio.add(det);
-
         ListView listView = (ListView)findViewById(R.id.gridviewDetalhesCompras);
         ListaComprasDetalhesAdapter listaAdapter = new ListaComprasDetalhesAdapter(this, listaAposta, compraDTO, ordemCompra);
         listView.setAdapter(listaAdapter);

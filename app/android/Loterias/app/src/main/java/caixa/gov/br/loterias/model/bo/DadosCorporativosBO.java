@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 import caixa.gov.br.loterias.BuildConfig;
+import caixa.gov.br.loterias.model.bean.SessaoUsuario;
 import caixa.gov.br.loterias.model.bo.silce.SilceClient;
 import caixa.gov.br.loterias.model.bo.silce.data.UsuarioLogadoSingleton;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostaFavoritaDTO;
@@ -118,9 +119,14 @@ public class DadosCorporativosBO {
 
     public void parametrosSimulacao(final SilceClient.Listener<ParametrosSimulacaoResponse> listener,
                                     final SilceClient.ErrorListener errorListener) {
-
+        LinkedHashMap<String, String> headers;
+        if (UsuarioLogadoSingleton.getInstance().token != null){
+            headers = new LinkedHashMap<String, String>();
+            headers.put("Authorization", "Bearer " + UsuarioLogadoSingleton.getInstance().token);
+        }else{
+            headers = new LinkedHashMap<String, String>();
+        }
         LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
-        LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
 
         silceClient.getConnection().get(SilceClient.PARAM_SIMULACAO_PATH, queryParams, ParametrosSimulacaoResponse.class,
                 silceClient.volleyListener(listener, ParametrosSimulacaoResponse.class),

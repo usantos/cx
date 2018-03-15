@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.model.bean.Modalidade;
 import caixa.gov.br.loterias.model.bean.SessaoUsuario;
 import caixa.gov.br.loterias.model.bo.ApostaBO;
 import caixa.gov.br.loterias.model.bo.MensagensNetwork;
@@ -24,6 +26,7 @@ import caixa.gov.br.loterias.model.bo.silce.SilceClient;
 import caixa.gov.br.loterias.model.bo.silce.dto.CarrinhoDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.CarrinhoDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
+import caixa.gov.br.loterias.model.bo.silce.dto.ParametroSimulacao;
 import caixa.gov.br.loterias.model.dao.DBLoteriasCrud;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.adapter.CarrinhoApostasListViewAdapter;
@@ -38,6 +41,8 @@ public class CarrinhoActivity extends SettingToolbarActivity {
     private TextView valorTotalCarrinho;
     TextView infoValorMinimoTextView;
     private RecyclerView.LayoutManager layoutManager;
+
+    List<IdentificaoDeUmaApostaDas8Modalidades> listIdentificaoDeUmaApostaDas8Modalidades;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,9 +134,15 @@ public class CarrinhoActivity extends SettingToolbarActivity {
     }
 
     private void configuraRecyclerViewCarrinhoAposta(boolean animacao) {
+        listIdentificaoDeUmaApostaDas8Modalidades = new ArrayList<IdentificaoDeUmaApostaDas8Modalidades>();
+        for (IdentificaoDeUmaApostaDas8Modalidades identificaoDeUmaApostaDas8Modalidades : carrinho.getApostas()) {
+            if (identificaoDeUmaApostaDas8Modalidades.getModalidade() != null){
+                listIdentificaoDeUmaApostaDas8Modalidades.add(identificaoDeUmaApostaDas8Modalidades);
+            }
+        }
 
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(new CarrinhoApostasListViewAdapter(this, (ArrayList<IdentificaoDeUmaApostaDas8Modalidades>) carrinho.getApostas(), this, animacao));
+        recyclerView.setAdapter(new CarrinhoApostasListViewAdapter(this, (ArrayList<IdentificaoDeUmaApostaDas8Modalidades>) listIdentificaoDeUmaApostaDas8Modalidades, this, animacao));
         recyclerView.setExpanded(Boolean.TRUE);
 
     }
