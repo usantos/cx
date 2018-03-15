@@ -43,8 +43,13 @@ public class LoadingViewLoterias {
             public void onAnimationRepeat(Animator animation) {}
         });
 
-        AlertDialog dialog = dialogBuilder.setView(layout).create();
+        AlertDialog dialog = dialogBuilder.setView(layout)
+                .setCancelable(false)
+                .create();
         dialog.show();
+
+
+
         return dialog;
     }
 }
