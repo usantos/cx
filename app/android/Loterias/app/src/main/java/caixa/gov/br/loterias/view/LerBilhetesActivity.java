@@ -1,14 +1,12 @@
 package caixa.gov.br.loterias.view;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
-
 
 import com.google.zxing.ResultPoint;
 import com.journeyapps.barcodescanner.BarcodeCallback;
@@ -20,19 +18,15 @@ import java.util.List;
 import caixa.gov.br.loterias.R;
 
 
-public class LerBilhetesActivity extends AppCompatActivity{
+public class LerBilhetesActivity extends AppCompatActivity {
 
     private DecoratedBarcodeView barcodeScannerView;
-
 
 
     private BarcodeCallback callback = new BarcodeCallback() {
         @Override
         public void barcodeResult(BarcodeResult result) {
-//            Toast.makeText(LerBilhetesActivity.this, result.getText(), Toast.LENGTH_LONG).show();
-                Intent activity = new Intent(LerBilhetesActivity.this, ResultadoLerBilhetesActivity.class);
-                activity.putExtra("codigoBarras", result.getText());
-                startActivity(activity);
+            ResultadoLerBilhetesActivity_.intent(LerBilhetesActivity.this).codBarras(result.getText()).start();
         }
 
         @Override
@@ -66,13 +60,12 @@ public class LerBilhetesActivity extends AppCompatActivity{
         });
 
 
-        barcodeScannerView = (DecoratedBarcodeView)findViewById(R.id.DecoratedBarcodeViewBilhetes);
+        barcodeScannerView = (DecoratedBarcodeView) findViewById(R.id.DecoratedBarcodeViewBilhetes);
         barcodeScannerView.getViewFinder().setVisibility(View.INVISIBLE);
         barcodeScannerView.getStatusView().setVisibility(View.INVISIBLE);
         barcodeScannerView.decodeContinuous(callback);
 
     }
-
 
 
     @Override
@@ -105,7 +98,6 @@ public class LerBilhetesActivity extends AppCompatActivity{
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         return barcodeScannerView.onKeyDown(keyCode, event) || super.onKeyDown(keyCode, event);
     }
-
 
 
 }

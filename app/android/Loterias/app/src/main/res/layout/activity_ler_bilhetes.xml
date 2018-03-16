@@ -15,13 +15,12 @@
         >
 
         <com.journeyapps.barcodescanner.DecoratedBarcodeView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:zxing_use_texture_view="false"
-        app:zxing_preview_scaling_strategy="centerCrop"
-        android:id="@+id/DecoratedBarcodeViewBilhetes"
-        android:layout_centerInParent="true"
-        />
+            android:id="@+id/DecoratedBarcodeViewBilhetes"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            app:zxing_preview_scaling_strategy="centerCrop"
+            app:zxing_use_texture_view="false" />
 
         <ImageView
             android:layout_width="match_parent"
@@ -30,63 +29,65 @@
             android:src="@drawable/mascara_loteria" />
 
         <ImageView
+            android:id="@+id/iconeTrevoLeitor"
             android:layout_width="22dp"
             android:layout_height="22dp"
-            android:padding="12dp"
-            android:src="@drawable/trevo"
             android:layout_marginLeft="68dp"
             android:layout_marginTop="42dp"
-            android:id="@+id/iconeTrevoLeitor"/>
+            android:elevation="3dp"
+            android:padding="12dp"
+            android:src="@drawable/logo_cinza" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Resultado"
-            android:textColor="@color/branco"
-            android:textSize="16sp"
-            android:fontFamily="@font/futura_std_bold"
             android:layout_marginLeft="102dp"
             android:layout_marginTop="44dp"
-            />
+            android:fontFamily="@font/futura_std_bold"
+            android:text="Resultado"
+            android:textColor="@color/branco"
+            android:textSize="16sp" />
+
         <Button
+            android:id="@+id/fecharLeitorCodBarras"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:background="@drawable/btn_fechar"
             android:layout_alignParentRight="true"
             android:layout_marginRight="16dp"
             android:layout_marginTop="42dp"
-            android:id="@+id/fecharLeitorCodBarras"/>
+            android:background="@drawable/btn_fechar" />
+
         <TextView
+            android:id="@+id/TextoLeitorCodBarras"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Posicione a linha abaixo sobre o código de barras e aguarde a focalização da câmera."
-            android:textSize="14.2sp"
-            android:fontFamily="@font/arialmt"
-            android:textColor="@color/branco"
             android:layout_marginLeft="68dp"
             android:layout_marginTop="84dp"
-            android:id="@+id/TextoLeitorCodBarras"/>
+            android:fontFamily="@font/arialmt"
+            android:text="Posicione a linha abaixo sobre o código de barras e aguarde a focalização da câmera."
+            android:textColor="@color/branco"
+            android:textSize="14.2sp" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:layout_marginHorizontal="23dp"
-            android:background="@color/vermelhoBilhetes"
             android:layout_centerInParent="true"
-            ></View>
-        
+            android:layout_marginHorizontal="23dp"
+            android:background="@color/vermelhoBilhetes"></View>
+
         <Button
+            android:id="@+id/buttonDigitarAposta"
             android:layout_width="match_parent"
             android:layout_height="55dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="26dp"
+            android:layout_marginHorizontal="68dp"
+            android:background="@drawable/button_border_amareloqueimado"
+            android:fontFamily="@font/futura_std_bold"
             android:text="Digitar sua aposta realizada"
-            android:id="@+id/buttonDigitarAposta"
+            android:textAllCaps="false"
             android:textColor="@color/amareloQueimado"
             android:textSize="14.2sp"
-            android:fontFamily="@font/futura_std_bold"
-            android:background="@drawable/button_border_amareloqueimado"
-            android:layout_alignParentBottom="true"
-            android:layout_marginHorizontal="68dp"
-            android:textAllCaps="false"
-            android:layout_marginBottom="26dp"
 
             />
 

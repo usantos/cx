@@ -25,7 +25,7 @@ public class InsercaoManualCodBarrasActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_insercao_manual_cod_barras);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -35,12 +35,10 @@ public class InsercaoManualCodBarrasActivity extends AppCompatActivity {
         buttonContinuarInsercaoManualBilhetes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (editTextNumeroBilhete.getText().toString().equals("")){
+                if (editTextNumeroBilhete.getText().toString().equals("")) {
                     Toast.makeText(InsercaoManualCodBarrasActivity.this, "Informe o código do bilhete!", Toast.LENGTH_SHORT).show();
-                }else{
-                    Intent activity = new Intent(InsercaoManualCodBarrasActivity.this, ResultadoLerBilhetesActivity.class);
-                    activity.putExtra("codigoBarras", editTextNumeroBilhete.getText().toString());
-                    startActivity(activity);
+                } else {
+                    ResultadoLerBilhetesActivity_.intent(InsercaoManualCodBarrasActivity.this).codBarras(editTextNumeroBilhete.getText().toString()).start();
                 }
             }
         });
@@ -86,7 +84,7 @@ public class InsercaoManualCodBarrasActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void abrirTermosUso(){
+    private void abrirTermosUso() {
         Intent activity = new Intent(this, TermosUsoActivity.class);
         startActivity(activity);
     }
@@ -105,11 +103,11 @@ public class InsercaoManualCodBarrasActivity extends AppCompatActivity {
 
         @Override
         public void afterTextChanged(Editable s) {
-            if (editTextNumeroBilhete.getText().toString().equals("")){
+            if (editTextNumeroBilhete.getText().toString().equals("")) {
                 buttonContinuarInsercaoManualBilhetes.setEnabled(false);
                 buttonContinuarInsercaoManualBilhetes.setTextColor(getResources().getColor(R.color.cinzaDisable));
                 buttonContinuarInsercaoManualBilhetes.setBackgroundColor(getResources().getColor(R.color.cinzaclaro));
-            }else{
+            } else {
                 buttonContinuarInsercaoManualBilhetes.setEnabled(true);
                 buttonContinuarInsercaoManualBilhetes.setTextColor(getResources().getColor(R.color.branco));
                 buttonContinuarInsercaoManualBilhetes.setBackgroundColor(getResources().getColor(R.color.verdeazul));

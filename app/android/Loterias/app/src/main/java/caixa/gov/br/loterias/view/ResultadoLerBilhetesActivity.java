@@ -1,11 +1,9 @@
 package caixa.gov.br.loterias.view;
 
 import android.app.Activity;
-import android.support.v7.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -16,41 +14,46 @@ import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
+import org.androidannotations.annotations.ViewById;
+
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bean.SessaoUsuario;
 import caixa.gov.br.loterias.model.bo.ApostaBO;
 import caixa.gov.br.loterias.model.bo.ApostaBO_;
+import caixa.gov.br.loterias.model.bo.MensagensNetwork;
 import caixa.gov.br.loterias.model.bo.silce.SilceClient;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ResultadoConsultaBilheteDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ResultadoConsultaBilheteDTOResponse;
 import caixa.gov.br.loterias.utils.EstiloModalidadeAposta;
-import caixa.gov.br.loterias.model.bo.MensagensNetwork;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
 
+@EActivity(R.layout.activity_resultado_ler_bilhetes)
 public class ResultadoLerBilhetesActivity extends AppCompatActivity {
 
+    @ViewById
+    Toolbar toolbar;
+
+    @ViewById
+    LinearLayout topoModalidadeResultadoLinearLayout, topo2ModalidadeResultadoLinearLayout, dadosModalidadeLinearLayout,
+            premioGanhoLinearLayout, mensagemNaoPremiadoLinearLayout, fundoBackgroundTrapezeResultadoLinearLayout;
+
+    @ViewById
+    TextView tituloModalidadeTextView, statusResultadoTextView, limiteDiarioResultadoTextView, premioResultadoTextView, mensagemNaoPremiadoTextView;
+
+    @Extra
+    String codBarras;
 
     private ResultadoConsultaBilheteDTO resultadoConsultaBilheteDTO;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_resultado_ler_bilhetes);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        String codBarras =  getIntent().getExtras().getString("codigoBarras");
-//        Toast.makeText(this, "Scanned: " + codBarras, Toast.LENGTH_LONG).show();
-//        ViewUtils.alert(this, codBarras);
-        //01416145
-
-//        postLerBilhetes(new ApostaBO(this), LoadingViewLoterias.show(this), "60002952423640400130000000158355b");
+    @AfterViews
+    public void init() {
+        crateToolBar();
         postLerBilhetes(ApostaBO_.getInstance_(this), this, codBarras);
-
-
     }
 
     @Override
@@ -62,9 +65,7 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.settings, menu);
-
         return true;
     }
 
@@ -91,7 +92,7 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void abrirTermosUso(){
+    private void abrirTermosUso() {
         Intent activity = new Intent(this, TermosUsoActivity.class);
         startActivity(activity);
     }
@@ -105,7 +106,7 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
             public void onResponse(ResultadoConsultaBilheteDTOResponse response) {
                 alert.dismiss();
                 resultadoConsultaBilheteDTO = response.getPayload();
-                if (resultadoConsultaBilheteDTO.getSituacao().getDescricao().equals("Premiada")){
+                if (resultadoConsultaBilheteDTO.getSituacao().getDescricao().equals("Premiada")) {
                     AtualizarLayout();
                 }
             }
@@ -118,40 +119,43 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
         });
     }
 
-    private void AtualizarLayout(){
+    private void AtualizarLayout() {
         ApostaDTO.ModalidadeEnum modalidadeEnum = ApostaDTO.toStringModalidade(resultadoConsultaBilheteDTO.getModalidadeDTO().getDescricao());
-        EstiloModalidadeAposta   estiloModalidade = new EstiloModalidadeAposta(modalidadeEnum);
+        EstiloModalidadeAposta estiloModalidade = new EstiloModalidadeAposta(modalidadeEnum);
         SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
 
-
-
-        LinearLayout topoModalidadeResultadoLinearLayout = (LinearLayout) findViewById(R.id.topoModalidadeResultadoLinearLayout);
         topoModalidadeResultadoLinearLayout.setBackgroundColor(ContextCompat.getColor(this, estiloModalidade.getCorClara()));
+        topoModalidadeResultadoLinearLayout.setVisibility(View.VISIBLE);
 
-        LinearLayout topo2ModalidadeResultadoLinearLayout = (LinearLayout) findViewById(R.id.topo2ModalidadeResultadoLinearLayout);
         topo2ModalidadeResultadoLinearLayout.setBackgroundColor(ContextCompat.getColor(this, estiloModalidade.getCorEscura()));
 
-        LinearLayout fundoBackgroundTrapezeResultadoLinearLayout = (LinearLayout) findViewById(R.id.fundoBackgroundTrapezeResultadoLinearLayout);
         fundoBackgroundTrapezeResultadoLinearLayout.setBackground(ContextCompat.getDrawable(this, estiloModalidade.getTrevoBackground()));
 
-        TextView tituloModalidadeTextView = (TextView) findViewById(R.id.tituloModalidadeTextView);
+        premioGanhoLinearLayout.setVisibility(View.VISIBLE);
+        dadosModalidadeLinearLayout.setVisibility(View.VISIBLE);
+        mensagemNaoPremiadoLinearLayout.setVisibility(View.GONE);
+
         tituloModalidadeTextView.setText(resultadoConsultaBilheteDTO.getModalidadeDTO().getDescricao());
 
-        TextView statusResultadoTextView = (TextView) findViewById(R.id.statusResultadoTextView);
         statusResultadoTextView.setText(resultadoConsultaBilheteDTO.getSituacao().getDescricao());
 
-        TextView limiteDiarioResultadoTextView = (TextView) findViewById(R.id.limiteDiarioResultadoTextView);
-        limiteDiarioResultadoTextView.setText(sessaoUsuario.getParametrosSimulacao().getValorLimiteDiario().toString());
+        limiteDiarioResultadoTextView.setText(ViewUtils.getMoedaFormat(sessaoUsuario.getParametrosSimulacao().getValorLimiteDiario()));
 
-        TextView proximoSorteioTextView = (TextView) findViewById(R.id.proximoSorteioTextView);
+//        TextView proximoSorteioTextView = findViewById(R.id.proximoSorteioTextView);
+//        TextView aberturaApostaResultadoTextView = findViewById(R.id.aberturaApostaResultadoTextView);
+//        TextView encerramentoResultadoTextView = findViewById(R.id.encerramentoResultadoTextView);
 
-        TextView aberturaApostaResultadoTextView = (TextView) findViewById(R.id.aberturaApostaResultadoTextView);
+        if (resultadoConsultaBilheteDTO.getValorPremio() != null) {
+            if (resultadoConsultaBilheteDTO.getValorPremio() != null) {
+                premioResultadoTextView.setText(ViewUtils.getMoedaFormat(resultadoConsultaBilheteDTO.getValorPremio()));
+            }
+        }
+    }
 
-        TextView encerramentoResultadoTextView = (TextView) findViewById(R.id.encerramentoResultadoTextView);
-
-        TextView premioResultadoTextView = (TextView) findViewById(R.id.premioResultadoTextView);
-        if (resultadoConsultaBilheteDTO.getValorPremio() != null){
-            premioResultadoTextView.setText(ViewUtils.getMoedaFormat(resultadoConsultaBilheteDTO.getValorPremio()));
+    private void crateToolBar() {
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
     }
 }
