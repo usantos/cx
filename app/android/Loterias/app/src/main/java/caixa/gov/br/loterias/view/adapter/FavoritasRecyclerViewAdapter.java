@@ -24,6 +24,7 @@ import java.util.List;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.ApostaBO;
+import caixa.gov.br.loterias.model.bo.ApostaBO_;
 import caixa.gov.br.loterias.model.bo.silce.SilceClient;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostaFavoritaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.RetornoPadraoDTO;
@@ -246,7 +247,7 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
 
     private void deleteFavoritaCallWebservice(final int position) {
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(activity);
-        final ApostaBO apostaBO = new ApostaBO(activity);
+        final ApostaBO apostaBO = ApostaBO_.getInstance_(activity);
 
         apostaBO.deleteApostasFavoritas(listaApostaFavorita.get(position).getId()+"", new SilceClient.Listener<RetornoPadraoDTO>() {
             @Override
@@ -270,7 +271,7 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
                                                final Button buttonSalvarNomeAposta,
                                                final TextView nomeApostaTextView) {
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(activity);
-        final ApostaBO apostaBO = new ApostaBO(activity);
+        final ApostaBO apostaBO = ApostaBO_.getInstance_(activity);
         final ApostaFavoritaDTO apostaFavoritaDTOSalvar = apostaFavoritaDTO;
         apostaFavoritaDTOSalvar.setNome(editTextNomeDaAposta.getText().toString());
         apostaBO.postApostasFavoritas(apostaFavoritaDTOSalvar, new SilceClient.Listener<RetornoPadraoDTO>() {

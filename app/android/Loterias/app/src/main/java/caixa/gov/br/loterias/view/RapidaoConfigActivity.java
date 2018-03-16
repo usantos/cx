@@ -29,6 +29,7 @@ import java.util.List;
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bean.SessaoUsuario;
 import caixa.gov.br.loterias.model.bo.ApostaBO;
+import caixa.gov.br.loterias.model.bo.ApostaBO_;
 import caixa.gov.br.loterias.model.bo.silce.SilceClient;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostaFavoritaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ModalidadeDTO;
@@ -223,7 +224,7 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
     private void callWebservice() {
 
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
-        final ApostaBO apostaBO = new ApostaBO(RapidaoConfigActivity.this);
+        final ApostaBO apostaBO = ApostaBO_.getInstance_(RapidaoConfigActivity.this);
 
         apostaBO.getRapidoes(new SilceClient.Listener<RapidaoDTOResponse>() {
             @Override
@@ -482,7 +483,7 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
     private void postRapidoesWebservice() {
 
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
-        final ApostaBO apostaBO = new ApostaBO(RapidaoConfigActivity.this);
+        final ApostaBO apostaBO = ApostaBO_.getInstance_(RapidaoConfigActivity.this);
 
 
         final List<ModalidadeDTO> tipoApostaArrayList = new ArrayList<ModalidadeDTO>();

@@ -2,6 +2,11 @@ package caixa.gov.br.loterias.model.bo;
 
 import android.content.Context;
 
+import org.androidannotations.annotations.AfterInject;
+import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.EBean;
+import org.androidannotations.annotations.RootContext;
+
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -33,20 +38,19 @@ import caixa.gov.br.loterias.model.bo.silce.dto.RetornoPadraoDTO;
 import caixa.gov.br.loterias.model.bo.silce.internals.SilceConnection;
 import caixa.gov.br.loterias.model.bo.silce.internals.SilceSingleton;
 
+import static org.androidannotations.annotations.EBean.Scope.Singleton;
+
+@EBean(scope = Singleton)
 public class ApostaBO {
 
     private SilceClient silceClient;
-    private Context context;
 
-    public ApostaBO(Context context) {
-        this.context = context;
+    @Bean
+    protected SilceSingleton silceSingleton;
 
-        setupSilceClient();
-    }
-
-    private void setupSilceClient() {
-        SilceSingleton queue = new SilceSingleton(context);
-        SilceConnection conn = SilceConnection.create(queue.getRequestQueue(), BuildConfig.CAIXA_BASE_URL_SILCE);
+    @RootContext
+    protected void setContext(Context context){
+        SilceConnection conn = SilceConnection.create(silceSingleton.getRequestQueue(), BuildConfig.CAIXA_BASE_URL_SILCE);
         silceClient = SilceClient.create(conn);
     }
 
@@ -314,12 +318,14 @@ public class ApostaBO {
         headers.put("Authorization", "Bearer " + UsuarioLogadoSingleton.getInstance().token);
 
         Map<String, String> queryParams = new HashMap<String, String>();
-//        queryParams.put("modalidade", modalidade);
+        queryParams.put("modalidade", "0");
         queryParams.put( "mes", String.valueOf(mes));
         queryParams.put("ano", String.valueOf(ano));
-//        queryParams.put("situacao", situacao);
-//        queryParams.put("offset", offset);
-//        queryParams.put("size", size);
+
+        //TODO: pegar situação dinamicamente
+        queryParams.put("situacao", "1");
+        queryParams.put("offset", "0");
+        queryParams.put("size", "10");
 //        queryParams.put("idsApostas", idsApostas);
 
         RequestListenerHelper<ResultadoPesquisaPaginadaDTOApostaDTOResponse> helper = new RequestListenerHelper<>(listener);

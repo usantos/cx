@@ -38,7 +38,9 @@ import java.util.List;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.DadosCorporativosBO;
+import caixa.gov.br.loterias.model.bo.DadosCorporativosBO_;
 import caixa.gov.br.loterias.model.bo.DadosUsuarioBO;
+import caixa.gov.br.loterias.model.bo.DadosUsuarioBO_;
 import caixa.gov.br.loterias.model.bo.silce.SilceClient;
 import caixa.gov.br.loterias.model.bo.silce.dto.BairroDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.BairroDTOResponse;
@@ -222,7 +224,7 @@ public class CadastrarPasso2Activity extends CadastroActivity {
 
     private void buscarLotericasHabilitadas() {
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
-        DadosCorporativosBO dadosCorporativosBO = new DadosCorporativosBO(CadastrarPasso2Activity.this);
+        DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(CadastrarPasso2Activity.this);
         dadosCorporativosBO.buscarLotericasHabilitadas(new SilceClient.Listener<ListDTOEnumIntegerResponse>() {
             @Override
             public void onResponse(ListDTOEnumIntegerResponse response) {
@@ -257,7 +259,7 @@ public class CadastrarPasso2Activity extends CadastroActivity {
 
         final String cep = apostadorDTO.getCep().replace("-", "");
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
-        final DadosCorporativosBO dadosCorporativosBO = new DadosCorporativosBO(CadastrarPasso2Activity.this);
+        final DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(CadastrarPasso2Activity.this);
         dadosCorporativosBO.buscarLotericasCepOrBairroDTO(apostadorDTO.getCep().replace("-", ""), null, new SilceClient.Listener<LotericaDTOResponse>() {
             @Override
             public void onResponse(LotericaDTOResponse response) {
@@ -297,7 +299,7 @@ public class CadastrarPasso2Activity extends CadastroActivity {
     private void buscarLoteriasLocalizacaoCep(String cep, BairroDTO bairroDTO) {
 
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
-        DadosCorporativosBO dadosCorporativosBO = new DadosCorporativosBO(CadastrarPasso2Activity.this);
+        DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(CadastrarPasso2Activity.this);
         dadosCorporativosBO.buscarLotericasCepOrBairroDTO(cep, bairroDTO, new SilceClient.Listener<LotericaDTOResponse>() {
             @Override
             public void onResponse(LotericaDTOResponse response) {
@@ -321,7 +323,7 @@ public class CadastrarPasso2Activity extends CadastroActivity {
     private void buscarLoteriasCodigoCompleto() {
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
 
-        DadosCorporativosBO dadosCorporativosBO = new DadosCorporativosBO(CadastrarPasso2Activity.this);
+        DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(CadastrarPasso2Activity.this);
         dadosCorporativosBO.buscarLoteriasCodigoCompleto(editTextCodigoLotericaPasso2Content.getText().toString(), new SilceClient.Listener<LotericaCodigoWrapperResponse>() {
             @Override
             public void onResponse(LotericaCodigoWrapperResponse response) {
@@ -360,7 +362,7 @@ public class CadastrarPasso2Activity extends CadastroActivity {
             listBairros = new ArrayList<String>();
             final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
 
-            DadosCorporativosBO dadosCorporativosBO = new DadosCorporativosBO(CadastrarPasso2Activity.this);
+            DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(CadastrarPasso2Activity.this);
             dadosCorporativosBO.bairros(municipioIdDTOLoteria.getIdUF().toString(), municipioIdDTOLoteria.getNumero().toString(),
                     municipioIdDTOLoteria.getDigitoVerificador().toString(), null, new SilceClient.Listener<BairroDTOResponse>() {
                         @Override
@@ -495,7 +497,7 @@ public class CadastrarPasso2Activity extends CadastroActivity {
                 if (validarCampos()) {
 
                     final AlertDialog loadViewProgress = LoadingViewLoterias.show(CadastrarPasso2Activity.this);
-                    DadosUsuarioBO dadosUsuarioBO = new DadosUsuarioBO(CadastrarPasso2Activity.this);
+                    DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_(CadastrarPasso2Activity.this);
                     dadosUsuarioBO.gravarUsuario(apostadorDTO, new SilceClient.Listener<UsuarioLogadoResponse>() {
                         @Override
                         public void onResponse(UsuarioLogadoResponse response) {

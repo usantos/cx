@@ -22,6 +22,7 @@ import java.util.Locale;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.ApostaBO;
+import caixa.gov.br.loterias.model.bo.ApostaBO_;
 import caixa.gov.br.loterias.model.bo.MensagensNetwork;
 import caixa.gov.br.loterias.model.bo.silce.SilceClient;
 import caixa.gov.br.loterias.model.bo.silce.dto.CarrinhoDTOResponse;
@@ -177,7 +178,7 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
     }
 
     private void deletarAposta(final IdentificaoDeUmaApostaDas8Modalidades aposta) {
-        final ApostaBO apostaBO = new ApostaBO(parentActivity);
+        final ApostaBO apostaBO = ApostaBO_.getInstance_(parentActivity);
         final Dialog loadViewProgress = LoadingViewLoterias.show(parentActivity);
 
         apostaBO.deleteApostaCarrinho(aposta.getId().toString(), new SilceClient.Listener<CarrinhoDTOResponse>() {

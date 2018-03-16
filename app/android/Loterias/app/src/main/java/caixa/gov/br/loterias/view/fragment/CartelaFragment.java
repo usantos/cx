@@ -48,7 +48,9 @@ import java.util.Random;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.ApostaBO;
+import caixa.gov.br.loterias.model.bo.ApostaBO_;
 import caixa.gov.br.loterias.model.bo.DadosCorporativosBO;
+import caixa.gov.br.loterias.model.bo.DadosCorporativosBO_;
 import caixa.gov.br.loterias.model.bo.silce.SilceClient;
 import caixa.gov.br.loterias.model.bo.silce.data.CompletaJogoRsp;
 import caixa.gov.br.loterias.model.bo.silce.dto.AgrupadorDTOApostaDTOResponse;
@@ -329,7 +331,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
         orderAscDezenas();
         IdentificaoDeUmaApostaDas8Modalidades aposta = getApostaPreenchida();
-        adicionarApostaCarrinhoRequest(new ApostaBO(getActivity()), getActivity(), aposta);
+        adicionarApostaCarrinhoRequest(ApostaBO_.getInstance_(getActivity()), getActivity(), aposta);
     }
 
     private IdentificaoDeUmaApostaDas8Modalidades getApostaPreenchida() {
@@ -653,7 +655,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                 apostas.add(aposta);
                 apostas.add(apostaEspelho);
 
-                adicionarApostasCarrinhoRequest(new ApostaBO(getActivity()), getActivity(), apostas);
+                adicionarApostasCarrinhoRequest(ApostaBO_.getInstance_(getActivity()), getActivity(), apostas);
 
             } else {
                 adicionarApostaNoCarrinho();
@@ -694,7 +696,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
     private Boolean flagApostaSalva = false;
 
     private void salvarAposta(String nomeAposta) {
-        final DadosCorporativosBO dadosCorporativosBO = new DadosCorporativosBO(getActivity());
+        final DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(getActivity());
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(getActivity());
 
         final ApostaFavoritaDTO aposta = new ApostaFavoritaDTO();
@@ -758,7 +760,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
     }
 
     private void preencheNumerosAleatorios() {
-        ApostaBO apostaBO = new ApostaBO(getActivity());
+        ApostaBO apostaBO = ApostaBO_.getInstance_(getActivity());
         orderAscDezenas();
         apostaBO.completaJogo(parentActivity.qtdDezenasPossiveisSelecionado, dezenasSelecionadas, 1,
                 parametroJogo.getPrognosticoMaximo(), new SilceClient.Listener<CompletaJogoRsp>() {

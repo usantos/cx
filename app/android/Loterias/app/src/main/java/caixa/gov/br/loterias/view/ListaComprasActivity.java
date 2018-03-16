@@ -25,6 +25,7 @@ import java.util.List;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.ApostaBO;
+import caixa.gov.br.loterias.model.bo.ApostaBO_;
 import caixa.gov.br.loterias.model.bo.silce.SilceClient;
 import caixa.gov.br.loterias.model.bo.silce.dto.CompraDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.MesAnoDTO;
@@ -121,7 +122,7 @@ public class ListaComprasActivity extends AppCompatActivity {
         isMaisCompras = true;
         bloquearRequestScroll = false;
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
-        final ApostaBO apostaBO = new ApostaBO(ListaComprasActivity.this);
+        final ApostaBO apostaBO = ApostaBO_.getInstance_(ListaComprasActivity.this);
 
         apostaBO.getCompras(mes, ano, offsetItem ,new SilceClient.Listener<ResultadoPesquisaPaginadaDTOCompraDTOResponse>() {
             @Override
@@ -146,7 +147,7 @@ public class ListaComprasActivity extends AppCompatActivity {
     private void callWebServiceMesCompras(){
 
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
-        final ApostaBO apostaBO = new ApostaBO(ListaComprasActivity.this);
+        final ApostaBO apostaBO = ApostaBO_.getInstance_(ListaComprasActivity.this);
 
         apostaBO.getMesesCompras(new SilceClient.Listener<MesAnoDTOResponse>() {
             @Override
@@ -292,7 +293,7 @@ public class ListaComprasActivity extends AppCompatActivity {
         if (isMaisCompras == false) {
             return;
         }
-        final ApostaBO apostaBO = new ApostaBO(ListaComprasActivity.this);
+        final ApostaBO apostaBO = ApostaBO_.getInstance_(ListaComprasActivity.this);
         progressLoadingMore.setVisibility(View.VISIBLE);
 
         apostaBO.getCompras(mes, ano, offsetItem ,new SilceClient.Listener<ResultadoPesquisaPaginadaDTOCompraDTOResponse>() {

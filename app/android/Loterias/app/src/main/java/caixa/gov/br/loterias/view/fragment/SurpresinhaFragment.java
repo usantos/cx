@@ -32,6 +32,7 @@ import java.util.Random;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.ApostaBO;
+import caixa.gov.br.loterias.model.bo.ApostaBO_;
 import caixa.gov.br.loterias.model.bo.silce.SilceClient;
 import caixa.gov.br.loterias.model.bo.silce.dto.AgrupadorDTOApostaDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.DTOEnumCharacter;
@@ -287,7 +288,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
 
     public void adicionarSurpresinhaNoCarrinho() {
 
-        final ApostaBO apostaBO = new ApostaBO(getActivity());
+        final ApostaBO apostaBO = ApostaBO_.getInstance_(getActivity());
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(getActivity());
 
         IncluirSurpresinhaDTO aposta = new IncluirSurpresinhaDTO();

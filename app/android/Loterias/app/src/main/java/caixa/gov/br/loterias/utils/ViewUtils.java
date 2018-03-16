@@ -63,7 +63,6 @@ import caixa.gov.br.loterias.R;
 public class ViewUtils {
 
     private static Toast toast;
-    private static ProgressDialog progress;
 
     private static Typeface fontFutura = null;
     private static Typeface fontFuturaBold = null;
@@ -261,20 +260,6 @@ public class ViewUtils {
         textTitleView.setTypeface(getFontFuturaBold(context));
         textMessageView.setTypeface(getFontFutura(context));
         return dialog;
-    }
-
-    public static void loading(Context context) {
-        ViewUtils.dismissLoading();
-        progress = ProgressDialog.show(
-                new ContextThemeWrapper(context, R.style.Theme_AppCompat_Light_Dialog),
-                "", "Carregando...", true);
-    }
-
-    public static void dismissLoading() {
-        if (progress != null) {
-            progress.dismiss();
-            progress = null;
-        }
     }
 
     public static void cancelAnimation(View view) {

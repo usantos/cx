@@ -10,21 +10,21 @@ package caixa.gov.br.loterias.model.bo.silce.internals;
         import com.google.gson.Gson;
         import com.google.gson.GsonBuilder;
 
+        import org.androidannotations.annotations.AfterInject;
+        import org.androidannotations.annotations.AfterViews;
         import org.androidannotations.annotations.EBean;
+        import org.androidannotations.annotations.RootContext;
 
         import static org.androidannotations.annotations.EBean.Scope.Singleton;
 
 @EBean(scope = Singleton)
 public class SilceSingleton {
-    Context context;
-    RequestQueue queue;
-    GsonBuilder gsonBuilder;
+    private RequestQueue queue;
+    private GsonBuilder gsonBuilder;
 
-    public SilceSingleton(Context context) {
-        this.context = context;
+    protected SilceSingleton() {
         this.queue = new RequestQueue(new NoCache(), new BasicNetwork(new HurlStack()));
         this.gsonBuilder = new GsonBuilder();
-
     }
 
     public RequestQueue getRequestQueue() {
@@ -32,7 +32,7 @@ public class SilceSingleton {
     }
 
     public <T> void add(Request<T> req) {
-        this.getRequestQueue().add(req);
+        queue.add(req);
     }
 
     public Gson gson() {

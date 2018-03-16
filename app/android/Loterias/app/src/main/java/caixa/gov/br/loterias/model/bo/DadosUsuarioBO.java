@@ -4,6 +4,11 @@ import android.content.Context;
 
 import com.android.volley.NetworkResponse;
 
+import org.androidannotations.annotations.AfterInject;
+import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.EBean;
+import org.androidannotations.annotations.RootContext;
+
 import java.util.LinkedHashMap;
 
 import caixa.gov.br.loterias.BuildConfig;
@@ -15,26 +20,24 @@ import caixa.gov.br.loterias.model.bo.silce.dto.ListCartaoDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.UsuarioLogadoResponse;
 import caixa.gov.br.loterias.model.bo.silce.internals.SilceConnection;
 import caixa.gov.br.loterias.model.bo.silce.internals.SilceSingleton;
+import caixa.gov.br.loterias.model.bo.silce.internals.SilceSingleton_;
+
+import static org.androidannotations.annotations.EBean.Scope.Singleton;
 
 /**
  * Created by cedesbr450 on 07/12/17.
  */
 
+@EBean(scope = Singleton)
 public class DadosUsuarioBO {
-
     private SilceClient silceClient;
-    private Context context;
 
+    @Bean
+    protected SilceSingleton silceSingleton;
 
-    public DadosUsuarioBO(Context context) {
-        this.context = context;
-
-        setupSilceClient();
-    }
-
-    private void setupSilceClient() {
-        SilceSingleton queue = new SilceSingleton(context);
-        SilceConnection conn = SilceConnection.create(queue.getRequestQueue(), BuildConfig.CAIXA_BASE_URL_SILCE);
+    @RootContext
+    protected void setContext(Context context){
+        SilceConnection conn = SilceConnection.create(silceSingleton.getRequestQueue(), BuildConfig.CAIXA_BASE_URL_SILCE);
         silceClient = SilceClient.create(conn);
     }
 

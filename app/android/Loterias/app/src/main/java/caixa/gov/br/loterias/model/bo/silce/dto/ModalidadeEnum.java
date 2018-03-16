@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModel;
 
 @ApiModel(description = "")
 public enum ModalidadeEnum {
+
     @SerializedName("DUPLA_SENA")DUPLA_SENA,
     @SerializedName("LOTECA")LOTECA,
     @SerializedName("LOTOFACIL")LOTOFACIL,

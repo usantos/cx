@@ -24,6 +24,7 @@ import java.util.List;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.DadosCorporativosBO;
+import caixa.gov.br.loterias.model.bo.DadosCorporativosBO_;
 import caixa.gov.br.loterias.model.bo.silce.SilceClient;
 import caixa.gov.br.loterias.model.bo.silce.dto.ListSecaoDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ListSecaoDTOResponse;
@@ -79,7 +80,7 @@ public class TermosUsoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 final AlertDialog loadViewProgress = LoadingViewLoterias.show(TermosUsoActivity.this);
-                DadosCorporativosBO dadosCorporativosBO = new DadosCorporativosBO(TermosUsoActivity.this);
+                DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(TermosUsoActivity.this);
                 dadosCorporativosBO.aceiteTermo(new SilceClient.Listener<ResourceResponse>() {
                     @Override
                     public void onResponse(ResourceResponse response) {
@@ -151,7 +152,7 @@ public class TermosUsoActivity extends AppCompatActivity {
 
     private void getTermo() {
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
-        DadosCorporativosBO dadosCorporativosBO = new DadosCorporativosBO(TermosUsoActivity.this);
+        DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(TermosUsoActivity.this);
 
         dadosCorporativosBO.termo(new SilceClient.Listener<TermoDeUsoDTOResponse>() {
             @Override
@@ -228,7 +229,7 @@ public class TermosUsoActivity extends AppCompatActivity {
 
     private void verificaTermoAceito() {
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
-        DadosCorporativosBO dadosCorporativosBO = new DadosCorporativosBO(TermosUsoActivity.this);
+        DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(TermosUsoActivity.this);
 
         dadosCorporativosBO.validaTermoAceito(new SilceClient.Listener<ResourceResponse>() {
             @Override
@@ -278,7 +279,7 @@ public class TermosUsoActivity extends AppCompatActivity {
     private void initReciclerViewDuvidas() {
         if (secaoDuvidas == null) {
             final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
-            DadosCorporativosBO dadosCorporativosBO = new DadosCorporativosBO(getApplicationContext());
+            DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(getApplicationContext());
 
             dadosCorporativosBO.secaoDuvidas(new SilceClient.Listener<ListSecaoDTOResponse>() {
                 @Override

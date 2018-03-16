@@ -9,6 +9,7 @@ import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by ramluz on 15/12/2017.
@@ -22,6 +23,17 @@ public class DateUtils {
     public static String[] getAllMonthsOfYear(){
         DateFormatSymbols symbols = new DateFormatSymbols();
         return symbols.getMonths();
+    }
+
+    public static int parseMonthName(String monthName){
+        try {
+            Date date = new SimpleDateFormat("MMMM", Locale.getDefault()).parse(monthName);
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(date);
+            return cal.get(Calendar.MONTH);
+        }catch (Exception e){
+            return -1;
+        }
     }
 
     public static boolean isLegalDate(String date, String paternDate) {

@@ -13,6 +13,7 @@ import org.apache.commons.lang.StringUtils;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.ApostaBO;
+import caixa.gov.br.loterias.model.bo.ApostaBO_;
 import caixa.gov.br.loterias.model.bo.silce.SilceClient;
 import caixa.gov.br.loterias.model.bo.silce.dto.EscudoEquipeEsportivaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.EscudoEquipeEsportivaDTOResponse;
@@ -25,7 +26,7 @@ import caixa.gov.br.loterias.model.bo.silce.dto.ParametroEquipe;
 public class EscudoEquipeUtil {
 
     public static void setEscudo(final Context context, final ParametroEquipe parametroEquipe, final ImageView imageView) {
-        ApostaBO apostaBO = new ApostaBO(context);
+        ApostaBO apostaBO = ApostaBO_.getInstance_(context);
         apostaBO.obterEscudoTime(parametroEquipe.getNumero().toString(), new SilceClient.Listener<EscudoEquipeEsportivaDTOResponse>() {
             @Override
             public void onResponse(EscudoEquipeEsportivaDTOResponse response) {

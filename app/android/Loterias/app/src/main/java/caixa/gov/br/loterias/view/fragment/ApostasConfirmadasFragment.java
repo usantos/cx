@@ -2,7 +2,10 @@ package caixa.gov.br.loterias.view.fragment;
 
 import android.app.DatePickerDialog;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.DatePicker;
 import android.widget.TextView;
@@ -10,7 +13,9 @@ import android.widget.TextView;
 import com.android.volley.VolleyError;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
@@ -21,13 +26,16 @@ import java.util.Locale;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.ApostaBO;
+import caixa.gov.br.loterias.model.bo.ApostaBO_;
 import caixa.gov.br.loterias.model.bo.MensagensNetwork;
 import caixa.gov.br.loterias.model.bo.silce.RequestListener;
+import caixa.gov.br.loterias.model.bo.silce.dto.ApostaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.MesAnoDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.MesAnoDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOApostaDTOResponse;
 import caixa.gov.br.loterias.utils.AppUtils;
 import caixa.gov.br.loterias.utils.ViewUtils;
+import caixa.gov.br.loterias.view.adapter.ApostasConfirmadasAdapter;
 import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
 import caixa.gov.br.loterias.view.custom.MonthYearPickerDialog;
 import caixa.gov.br.loterias.view.custom.MonthYearPickerDialog_;
@@ -40,13 +48,15 @@ import caixa.gov.br.loterias.view.custom.MonthYearPickerDialog_;
 public class ApostasConfirmadasFragment extends Fragment {
     private static final String MONTH_YEAR_DIALOG = "MonthYearPickerDialog";
 
+    @Bean
+    protected ApostaBO apostaBO;
+
     @ViewById
     protected TextView dateResultTxt;
 
     @ViewById
     protected RecyclerView apostasConfirmadasRecyclerView;
 
-    private ApostaBO apostaBO;
     private Calendar currentCalendar;
     private List<MesAnoDTO> mesesAnosDisponiveis;
 
@@ -54,7 +64,6 @@ public class ApostasConfirmadasFragment extends Fragment {
 
     @AfterViews
     protected void init(){
-        apostaBO = new ApostaBO(getActivity());
         requestMesesAnosDisponiveis();
     }
 
@@ -128,19 +137,30 @@ public class ApostasConfirmadasFragment extends Fragment {
     }
 
     private void requestApostasConfirmadas(int mes, int ano) {
-//        apostaBO.getApostasConfirmadas(mes, ano, new RequestListener<ResultadoPesquisaPaginadaDTOApostaDTOResponse>() {
-//            @Override
-//            public void onSucess(ResultadoPesquisaPaginadaDTOApostaDTOResponse result) {
-//                alertDialog.dismiss();
-//            }
-//
-//            @Override
-//            public void onError(VolleyError error) {
-//                alertDialog.dismiss();
-//                String msgError = MensagensNetwork.setMensagem(error, getActivity());
-//                ViewUtils.alert(getActivity(), msgError);
-//            }
-//        });
+        apostaBO.getApostasConfirmadas(mes, ano, new RequestListener<ResultadoPesquisaPaginadaDTOApostaDTOResponse>() {
+            @Override
+            public void onSucess(ResultadoPesquisaPaginadaDTOApostaDTOResponse result) {
+                alertDialog.dismiss();
+
+                List<ApostaDTO> apostasList = result.getPayload().getLista();
+                if(apostasList != null){
+                    apostasConfirmadasRecyclerView.setAdapter(new ApostasConfirmadasAdapter(getActivity(), apostasList));
+
+                    LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+                    apostasConfirmadasRecyclerView.setLayoutManager(layoutManager);
+                    DividerItemDecoration divider = new DividerItemDecoration(getActivity(), layoutManager.getOrientation());
+                    divider.setDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.drawer_linha_divisao_cinza_claro));
+                    apostasConfirmadasRecyclerView.addItemDecoration(divider);
+                }
+            }
+
+            @Override
+            public void onError(VolleyError error) {
+                alertDialog.dismiss();
+                String msgError = MensagensNetwork.setMensagem(error, getActivity());
+                ViewUtils.alert(getActivity(), msgError);
+            }
+        });
     }
 
 }

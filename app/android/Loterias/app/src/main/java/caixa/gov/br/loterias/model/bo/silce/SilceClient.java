@@ -59,14 +59,14 @@ public class SilceClient {
     public static final String EQUIPES_ESPORTIVAS_POR_MODALIDADE_EQUIPE_PATH = "/equipes-esportivas/{idEquipe}/{idModalidade}/escudo";
 
     public interface Listener<T> {
-        public void onResponse(T response);
+        void onResponse(T response);
     }
 
     public interface ErrorListener {
-        public void onErrorResponse(VolleyError error);
+        void onErrorResponse(VolleyError error);
     }
 
-    SilceConnection conn;
+    private SilceConnection conn;
 
     protected SilceClient(SilceConnection conn) {
         this.conn = conn;
@@ -85,7 +85,6 @@ public class SilceClient {
         return new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
                 errorListener.onErrorResponse(error);
             }
         };

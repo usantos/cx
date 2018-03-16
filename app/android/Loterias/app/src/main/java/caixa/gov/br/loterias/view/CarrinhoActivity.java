@@ -21,6 +21,7 @@ import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bean.Modalidade;
 import caixa.gov.br.loterias.model.bean.SessaoUsuario;
 import caixa.gov.br.loterias.model.bo.ApostaBO;
+import caixa.gov.br.loterias.model.bo.ApostaBO_;
 import caixa.gov.br.loterias.model.bo.MensagensNetwork;
 import caixa.gov.br.loterias.model.bo.silce.SilceClient;
 import caixa.gov.br.loterias.model.bo.silce.dto.CarrinhoDTO;
@@ -72,7 +73,7 @@ public class CarrinhoActivity extends SettingToolbarActivity {
     private void callWebservice() {
 
         final Dialog loadViewProgress = LoadingViewLoterias.show(this);
-        final ApostaBO apostaBO = new ApostaBO(CarrinhoActivity.this);
+        final ApostaBO apostaBO = ApostaBO_.getInstance_(CarrinhoActivity.this);
 
         apostaBO.buscaCarrinho(new SilceClient.Listener<CarrinhoDTOResponse>() {
             @Override

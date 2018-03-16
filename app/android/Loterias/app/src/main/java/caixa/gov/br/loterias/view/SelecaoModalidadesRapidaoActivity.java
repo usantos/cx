@@ -20,6 +20,7 @@ import java.util.List;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.ApostaBO;
+import caixa.gov.br.loterias.model.bo.ApostaBO_;
 import caixa.gov.br.loterias.model.bo.silce.SilceClient;
 import caixa.gov.br.loterias.model.bo.silce.dto.ModalidadeDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ModalidadeDTOResponse;
@@ -143,7 +144,7 @@ public class SelecaoModalidadesRapidaoActivity extends AppCompatActivity{
     private void callWebservice() {
 
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
-        final ApostaBO apostaBO = new ApostaBO(SelecaoModalidadesRapidaoActivity.this);
+        final ApostaBO apostaBO = ApostaBO_.getInstance_(SelecaoModalidadesRapidaoActivity.this);
 
         apostaBO.getModalidades(new SilceClient.Listener<ModalidadeDTOResponse>() {
             @Override

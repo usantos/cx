@@ -23,6 +23,7 @@ import java.util.List;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.DadosCorporativosBO;
+import caixa.gov.br.loterias.model.bo.DadosCorporativosBO_;
 import caixa.gov.br.loterias.model.bo.silce.SilceClient;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostadorDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.MunicipioDTO;
@@ -123,7 +124,7 @@ public class CadastroActivity extends AppCompatActivity {
 
     private void getUFS() {
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
-        DadosCorporativosBO dadosCorporativosBO = new DadosCorporativosBO(CadastroActivity.this);
+        DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(CadastroActivity.this);
 
         dadosCorporativosBO.ufs(new SilceClient.Listener<UnidadeFederacaoDTOResponse>() {
             @Override
@@ -227,7 +228,7 @@ public class CadastroActivity extends AppCompatActivity {
             final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
             listMunicipios = new ArrayList<String>();
 
-            DadosCorporativosBO dadosCorporativosBO = new DadosCorporativosBO(CadastroActivity.this);
+            DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(CadastroActivity.this);
             dadosCorporativosBO.municipios(idUf, new SilceClient.Listener<MunicipioDTOResponse>() {
                 @Override
                 public void onResponse(MunicipioDTOResponse response) {

@@ -4,8 +4,6 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_home">HomeActivity</string>
     <string name="title_activity_carrinho">_Carrinho_ de apostas</string>
     <string name="title_activity_forma_pagamento">Forma de _pagamento_</string>
@@ -185,6 +183,10 @@
     <string name="label_para_a_sorte_todo_mundo">Para a sorte todo mundo é igual. O próximo ganhador pode ser você!</string>
     <string name="label_selecione_mes_ano">Selecione o mês e ano</string>
     <string name="label_selecione_mes">Selecione o mês</string>
+    <string name="label_aposta_concurso">Conc. %d</string>
+    <string name="label_aposta_concursos">Conc. %d a %d</string>
+
+    <string name="formatar_valor">R$ %f</string>
     <string name="carregando">Carregando...</string>
 
     <string name="key_introducao">key_introducao</string>

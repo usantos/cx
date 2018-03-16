@@ -43,7 +43,9 @@ import java.util.List;
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bean.SessaoUsuario;
 import caixa.gov.br.loterias.model.bo.DadosCorporativosBO;
+import caixa.gov.br.loterias.model.bo.DadosCorporativosBO_;
 import caixa.gov.br.loterias.model.bo.DadosUsuarioBO;
+import caixa.gov.br.loterias.model.bo.DadosUsuarioBO_;
 import caixa.gov.br.loterias.model.bo.silce.SilceClient;
 import caixa.gov.br.loterias.model.bo.silce.dto.ParametroSimulacao;
 import caixa.gov.br.loterias.model.bo.silce.dto.ParametrosSimulacaoResponse;
@@ -155,7 +157,7 @@ public class PrincipalActivity extends AppCompatActivity
     private void callWebservice() {
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
 
-        final DadosCorporativosBO dadosCorporativosBO = new DadosCorporativosBO(PrincipalActivity.this);
+        final DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(PrincipalActivity.this);
 
         dadosCorporativosBO.parametrosSimulacao(new SilceClient.Listener<ParametrosSimulacaoResponse>() {
             @Override
@@ -191,7 +193,7 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     private void callRepassesSociais() {
-        final DadosCorporativosBO dadosCorporativosBO = new DadosCorporativosBO(PrincipalActivity.this);
+        final DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(PrincipalActivity.this);
         dadosCorporativosBO.repasses(new SilceClient.Listener<RepassometroDTOResponse>() {
             @Override
             public void onResponse(RepassometroDTOResponse response) {
@@ -402,7 +404,7 @@ public class PrincipalActivity extends AppCompatActivity
             public void onClick(DialogInterface dialog, int which) {
                 final AlertDialog loadViewProgress = LoadingViewLoterias.show(PrincipalActivity.this);
 
-                DadosUsuarioBO dadosUsuarioBO = new DadosUsuarioBO(PrincipalActivity.this);
+                DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_(PrincipalActivity.this);
                 dadosUsuarioBO.sair(new SilceClient.Listener<NetworkResponse>() {
                     @Override
                     public void onResponse(NetworkResponse response) {

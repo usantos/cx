@@ -17,6 +17,7 @@ import java.util.List;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.DadosCorporativosBO;
+import caixa.gov.br.loterias.model.bo.DadosCorporativosBO_;
 import caixa.gov.br.loterias.model.bo.silce.SilceClient;
 import caixa.gov.br.loterias.model.bo.silce.dto.DuvidaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ListSecaoDTO;
@@ -40,7 +41,7 @@ public class DetalheDuvidaActivity extends AppCompatActivity {
     public void init() {
 
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
-        DadosCorporativosBO dadosCorporativosBO = new DadosCorporativosBO(getApplicationContext());
+        DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(getApplicationContext());
 
         dadosCorporativosBO.duvidasPerguntasRespostas(secaoDTO.getId(), new SilceClient.Listener<ListSecaoDTOResponse>() {
             @Override

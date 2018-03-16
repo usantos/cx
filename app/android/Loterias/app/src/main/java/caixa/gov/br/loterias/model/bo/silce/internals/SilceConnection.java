@@ -15,15 +15,15 @@ import static com.android.volley.Request.Method.GET;
 import static com.android.volley.Request.Method.POST;
 
 public class SilceConnection {
-    public static final Bin KEY = Bin.fromBase64("QEm06ZAThg1E314zziahsg");
-    public static final Bin IV = Bin.fromBase64("8hQLtNV44Y1bIeONmlr+Dg==");
+    private static final Bin KEY = Bin.fromBase64("QEm06ZAThg1E314zziahsg");
+    private static final Bin IV = Bin.fromBase64("8hQLtNV44Y1bIeONmlr+Dg==");
     private static final String TAG = SilceConnection.class.getName();
 
-    RequestQueue requestQueue;
-    SilceCrypto silceCrypto = SilceCrypto.create(KEY, IV);
-    String baseUrl;
+    private RequestQueue requestQueue;
+    private SilceCrypto silceCrypto = SilceCrypto.create(KEY, IV);
+    private String baseUrl;
 
-    protected SilceConnection(RequestQueue requestQueue, String baseUrl) {
+    private SilceConnection(RequestQueue requestQueue, String baseUrl) {
         this.requestQueue = requestQueue;
         this.baseUrl = baseUrl;
 

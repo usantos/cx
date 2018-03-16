@@ -19,6 +19,7 @@ import com.android.volley.VolleyError;
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bean.SessaoUsuario;
 import caixa.gov.br.loterias.model.bo.ApostaBO;
+import caixa.gov.br.loterias.model.bo.ApostaBO_;
 import caixa.gov.br.loterias.model.bo.silce.SilceClient;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ResultadoConsultaBilheteDTO;
@@ -47,7 +48,7 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
         //01416145
 
 //        postLerBilhetes(new ApostaBO(this), LoadingViewLoterias.show(this), "60002952423640400130000000158355b");
-        postLerBilhetes(new ApostaBO(this), this, codBarras);
+        postLerBilhetes(ApostaBO_.getInstance_(this), this, codBarras);
 
 
     }

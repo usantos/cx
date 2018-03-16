@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.ApostaBO;
+import caixa.gov.br.loterias.model.bo.ApostaBO_;
 import caixa.gov.br.loterias.model.bo.silce.SilceClient;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostaFavoritaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse;
@@ -117,7 +118,7 @@ public class FavoritasActivity extends AppCompatActivity {
         bloquearRequestScroll = false;
 
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
-        final ApostaBO apostaBO = new ApostaBO(this);
+        final ApostaBO apostaBO = ApostaBO_.getInstance_(this);
 
         apostaBO.getApostasFavoritas(offsetItem, new SilceClient.Listener<ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse>() {
             @Override
@@ -171,7 +172,7 @@ public class FavoritasActivity extends AppCompatActivity {
         if (isMaisCompras == false) {
             return;
         }
-        final ApostaBO apostaBO = new ApostaBO(FavoritasActivity.this);
+        final ApostaBO apostaBO = ApostaBO_.getInstance_(FavoritasActivity.this);
         progressLoadingMore.setVisibility(View.VISIBLE);
 
         apostaBO.getApostasFavoritas(offsetItem ,new SilceClient.Listener<ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse>() {

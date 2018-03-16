@@ -16,6 +16,7 @@ import java.util.List;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.DadosUsuarioBO;
+import caixa.gov.br.loterias.model.bo.DadosUsuarioBO_;
 import caixa.gov.br.loterias.model.bo.silce.SilceClient;
 import caixa.gov.br.loterias.model.bo.silce.dto.ListCartaoDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.RetornoCartao;
@@ -69,7 +70,7 @@ public class FormaPagamentoActivity extends SettingToolbarActivity implements Fo
     private void callWebservice() {
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
 
-        DadosUsuarioBO dadosUsuarioBO = new DadosUsuarioBO(FormaPagamentoActivity.this);
+        DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_(FormaPagamentoActivity.this);
         dadosUsuarioBO.cartoes(new SilceClient.Listener<ListCartaoDTOResponse>() {
             @Override
             public void onResponse(ListCartaoDTOResponse response) {

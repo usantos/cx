@@ -158,7 +158,9 @@ public class MonthYearPickerDialog extends DialogFragment {
                         if(listener != null){
                             if(monthYearsMap != null){
                                 int year = Integer.parseInt(yearPicker.getDisplayedValues()[yearPicker.getValue()]);
-                                int month = Integer.parseInt(monthPicker.getDisplayedValues()[monthPicker.getValue()]);
+
+                                String monthName = monthPicker.getDisplayedValues()[monthPicker.getValue()];
+                                int month = DateUtils.parseMonthName(monthName);
                                 listener.onDateSet(null, year, month, 0);
                             }else{
                                 listener.onDateSet(null, yearPicker.getValue(), monthPicker.getValue() - 1, 0);
