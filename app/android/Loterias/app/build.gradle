@@ -13,6 +13,7 @@ android {
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         testOptions {
@@ -31,90 +32,117 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-        caixaprod {
-            initWith debug
-            //applicationIdSuffix ".caixadev"
-            buildConfigField "boolean", "CAIXA_NETWORK_STUB", "false"
-            buildConfigField "String", "CAIXA_BASE_URL_SILCE", "\"http://simlo.des.caixa/silce-servico-rest/rest/v1/\""
-        }
-        caixahmg {
-            initWith debug
-            //applicationIdSuffix ".caixadev"
-            buildConfigField "boolean", "CAIXA_NETWORK_STUB", "false"
-            buildConfigField "String", "CAIXA_BASE_URL_SILCE", "\"http://simlo.des.caixa/silce-servico-rest/rest/v1/\""
-        }
-        caixadev {
-            initWith debug
-            //applicationIdSuffix ".caixadev"
-            buildConfigField "boolean", "CAIXA_NETWORK_STUB", "false"
-            buildConfigField "String", "CAIXA_BASE_URL_SILCE", "\"http://simlo.des.caixa/silce-servico-rest/rest/v1/\""
-        }
-        caixalab {
-            initWith debug
-            //applicationIdSuffix ".caixadev"
-            buildConfigField "boolean", "CAIXA_NETWORK_STUB", "false"
-            buildConfigField "String", "CAIXA_BASE_URL_SILCE", "\"http://172.16.141.157:80/silce-servico-rest/rest/v1/\""
-        }
-        proxycap {
-            initWith debug
-            //applicationIdSuffix ".proxycap"
-            buildConfigField "boolean", "CAIXA_NETWORK_STUB", "false"
-            buildConfigField "String", "CAIXA_BASE_URL_SILCE", "\"http://10.130.9.22:81/silce-servico-rest/rest/v1/\""
-        }
-        stubnet {
-            initWith debug
-            //applicationIdSuffix ".stubnet"
-            buildConfigField "boolean", "CAIXA_NETWORK_STUB", "true"
-            buildConfigField "String", "CAIXA_BASE_URL_SILCE", "null"
+        flavorDimensions 'default'
+        productFlavors {
+            caixaprod {
+                dimension "default"
+				//applicationIdSuffix ".caixaprod"
+                buildConfigField "boolean", "CAIXA_NETWORK_STUB", "false"
+                buildConfigField "String", "CAIXA_BASE_URL_SILCE", "\"http://simlo.des.caixa/silce-servico-rest/rest/v1/\""
+            }
+            caixahmg {
+                dimension "default"
+				//applicationIdSuffix ".caixahmg"
+                buildConfigField "boolean", "CAIXA_NETWORK_STUB", "false"
+                buildConfigField "String", "CAIXA_BASE_URL_SILCE", "\"http://simlo.des.caixa/silce-servico-rest/rest/v1/\""
+            }
+            caixadev {
+                dimension "default"
+				//applicationIdSuffix ".caixadev"
+                buildConfigField "boolean", "CAIXA_NETWORK_STUB", "false"
+                buildConfigField "String", "CAIXA_BASE_URL_SILCE", "\"http://simlo.des.caixa/silce-servico-rest/rest/v1/\""
+            }
+            caixalab {
+                dimension "default"
+				//applicationIdSuffix ".caixalab"
+                buildConfigField "boolean", "CAIXA_NETWORK_STUB", "false"
+                buildConfigField "String", "CAIXA_BASE_URL_SILCE", "\"http://172.16.141.157:80/silce-servico-rest/rest/v1/\""
+            }
+            proxycap {
+                dimension "default"
+				//applicationIdSuffix ".proxycap"
+                buildConfigField "boolean", "CAIXA_NETWORK_STUB", "false"
+                buildConfigField "String", "CAIXA_BASE_URL_SILCE", "\"http://10.130.9.22:81/silce-servico-rest/rest/v1/\""
+            }
+            stubnet {
+                dimension "default"
+				//applicationIdSuffix ".stubnet"
+                buildConfigField "boolean", "CAIXA_NETWORK_STUB", "true"
+                buildConfigField "String", "CAIXA_BASE_URL_SILCE", "null"
+            }
         }
     }
 }
 
 dependencies {
+
     // versions
     def AAVersion = '4.3.1'
     def supportVersion = '27.0.0'
     def parcelerVersion = '1.1.6'
-    // annotationProcessor
-    implementation 'com.android.support:support-v4:27.0.2'
-    annotationProcessor "org.androidannotations:androidannotations:$AAVersion"
-    annotationProcessor "org.parceler:parceler:$parcelerVersion"
+
     // implementation deps
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation "org.androidannotations:androidannotations-api:$AAVersion"
-    implementation "org.parceler:parceler-api:$parcelerVersion"
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     implementation "com.android.support:design:$supportVersion"
     implementation "com.android.support:cardview-v7:$supportVersion"
+    implementation "com.android.support:support-v4:$supportVersion"
+
+    //Multidex (necessário quando há mais de 64k métodos)
+    compile 'com.android.support:multidex:1.0.3'
+
+    //Serialização em Parcelable
+    implementation "org.parceler:parceler-api:$parcelerVersion"
+    annotationProcessor "org.parceler:parceler:$parcelerVersion"
+
+    //Android Annotations
+    implementation "org.androidannotations:androidannotations-api:$AAVersion"
+    annotationProcessor "org.androidannotations:androidannotations:$AAVersion"
+
+    //Progressbar
     implementation 'me.relex:circleindicator:1.2.2@aar'
+
+    //EditText
+    compile 'com.github.pinball83:masked-edittext:1.0.3'
+    compile 'com.github.BlacKCaT27:CurrencyEditText:2.0.2'
+
+    //DiscreteScrollView - RecyclerView com animação
+    implementation 'com.yarolegovich:discrete-scrollview:1.3.1'
+
+    //Biblioteca para arrastar os itens do Recyclerview
+    compile "com.daimajia.swipelayout:library:1.2.0@aar"
+
+    //Biblioteca para exibição de Dialog
+    compile 'com.code-troopers.betterpickers:library:3.1.0'
+
+    //Serialização de JSON
     implementation 'com.google.code.gson:gson:2.8.0'
-    implementation 'org.jboss.aerogear:aerogear-android-authz:4.0.0'
-    implementation 'commons-codec:commons-codec:1.10'
+
+    //Find Bugs in Java Programs
     implementation 'com.google.code.findbugs:jsr305:2.0.1'
+
+    //Requisições com a API
     implementation 'com.android.volley:volley:1.0.0'
     implementation 'io.swagger:swagger-annotations:1.5.16'
-    implementation 'com.yarolegovich:discrete-scrollview:1.3.1'
+
+    //Android application with RESTful services secured with OAuth 2 using Pipe
+    implementation 'org.jboss.aerogear:aerogear-android-authz:4.0.0'
+    implementation 'commons-codec:commons-codec:1.10'
+
+    //Biblioteca de gerenciamento de imagens
     implementation 'com.github.bumptech.glide:glide:3.7.0'
-    compile 'com.github.pinball83:masked-edittext:1.0.3'
     compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.github.BlacKCaT27:CurrencyEditText:2.0.2'
-    //    compile 'me.dm7.barcodescanner:zxing:1.9'
 
-
+    //Biblioteca de scanner de código de barras
     compile 'com.journeyapps:zxing-android-embedded:3.5.0'
-
-
-
-
     compile 'commons-lang:commons-lang:2.6'
-
-    compile "com.daimajia.swipelayout:library:1.2.0@aar"
-    compile 'com.code-troopers.betterpickers:library:3.1.0'
+    //compile 'me.dm7.barcodescanner:zxing:1.9'
 
     // testImplementation deps
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:1.10.19'
     testImplementation 'com.google.code.findbugs:jsr305:2.0.1'
+
     // androidTestImplementation deps
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'

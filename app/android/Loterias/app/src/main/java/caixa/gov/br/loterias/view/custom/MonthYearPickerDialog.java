@@ -1,22 +1,32 @@
 package caixa.gov.br.loterias.view.custom;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.NumberPicker;
 
+import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.FragmentArg;
+
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.model.bo.silce.dto.MesAnoDTO;
 import caixa.gov.br.loterias.utils.AppUtils;
 import caixa.gov.br.loterias.utils.DateUtils;
 
+@EFragment
 public class MonthYearPickerDialog extends DialogFragment {
 
     private DatePickerDialog.OnDateSetListener listener;
@@ -26,84 +36,117 @@ public class MonthYearPickerDialog extends DialogFragment {
 
     private Calendar cal = Calendar.getInstance();
 
-    public static final String MONTH_KEY = "monthValue";
-    public static final String YEAR_KEY = "yearValue";
+    @FragmentArg
+    protected List<MesAnoDTO> mesesAnos;
 
-    public static final String YEAR_RANGE_KEY = "yearRangeValue";
-
-    private int monthVal = -1 , yearVal =-1 ;
-    private int [] yearRange = null;
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        Bundle extras = getArguments();
-        if(extras != null){
-            monthVal = extras.getInt(MONTH_KEY , -1);
-            yearVal = extras.getInt(YEAR_KEY , -1);
-            yearRange =  extras.getIntArray(YEAR_RANGE_KEY);
-        }
-    }
-
-    public static MonthYearPickerDialog newInstance(int monthIndex, int yearIndex, int yearRange[]) {
-        MonthYearPickerDialog f = new MonthYearPickerDialog();
-
-        // Supply num input as an argument.
-        Bundle args = new Bundle();
-        args.putInt(MONTH_KEY, monthIndex);
-        args.putInt(YEAR_KEY, yearIndex);
-        args.putIntArray(YEAR_RANGE_KEY, yearRange);
-
-        f.setArguments(args);
-
-        return f;
-    }
+    private HashMap<Integer, List<Integer>> monthYearsMap = new HashMap<>();
 
     public void setListener(DatePickerDialog.OnDateSetListener listener) {
         this.listener = listener;
     }
 
+    private void setMonthsAvailable(int year){
+        String[] months = DateUtils.getAllMonthsOfYear();
+        int minValue;
+        int maxValue;
+        int currentValue;
+
+        if(!monthYearsMap.isEmpty()){
+            List<Integer> list = monthYearsMap.get(year);
+            String arr[] = new String[list.size()];
+            for (int i = 0; i < list.size(); i++){
+                String month = months[list.get(i) - 1];
+                arr[i] = AppUtils.capitalizeFirstChar(month);
+            }
+            months = arr;
+            minValue = 0;
+            maxValue = arr.length - 1;
+            currentValue = 0;
+        }else{
+            for (int i =0; i < months.length; i++){
+                months[i] = AppUtils.capitalizeFirstChar(months[i]);
+            }
+            currentValue = cal.get(Calendar.MONTH) + 1;
+            minValue = 1;
+            maxValue = 12;
+        }
+
+        monthPicker.setMinValue(minValue);
+        monthPicker.setMaxValue(maxValue);
+        monthPicker.setDisplayedValues(months);
+        monthPicker.setValue(currentValue);
+    }
+
+    private String[] getYearsFromMap(){
+        String yearValues [] = null;
+
+        if(mesesAnos != null && !mesesAnos.isEmpty()){
+            MesAnoDTO mesAnoAtual = mesesAnos.get(0);
+
+            int currentYear = mesAnoAtual.getAno().intValue();
+            monthYearsMap.put(currentYear, new ArrayList<Integer>());
+
+            for (MesAnoDTO mesAno : mesesAnos) {
+                int year = mesAno.getAno().intValue();
+                int month = mesAno.getMes().getValor().intValue();
+
+                if(currentYear != year){
+                    currentYear = year;
+                    monthYearsMap.put(currentYear, new ArrayList<Integer>());
+                }else{
+                    List<Integer> monthList = monthYearsMap.get(year);
+                    monthList.add(month);
+                }
+            }
+
+            yearValues = new String[monthYearsMap.keySet().size()];
+            int i = 0;
+            for(Integer year : monthYearsMap.keySet()) {
+                yearValues[i++] = year.toString();
+            }
+        }
+
+        return yearValues;
+    }
+
+    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        String yearValues [] = getYearsFromMap();
+
+        Activity activity = getActivity();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         // Get the layout inflater
-        LayoutInflater inflater = getActivity().getLayoutInflater();
+        LayoutInflater inflater = activity.getLayoutInflater();
 
         View dialog = inflater.inflate(R.layout.dialog_month_year, null);
         monthPicker = (NumberPicker) dialog.findViewById(R.id.picker_month);
         yearPicker = (NumberPicker) dialog.findViewById(R.id.picker_year);
 
-        monthPicker.setMinValue(1);
-        monthPicker.setMaxValue(12);
+        yearPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker numberPicker, int oldVal, int newVal) {
+                if(monthYearsMap != null){
+                    setMonthsAvailable(Integer.parseInt(numberPicker.getDisplayedValues()[newVal]));
+                }
+            }
+        });
 
-        if(monthVal != -1) {// && (monthVal > 0 && monthVal < 13))
-            monthPicker.setValue(monthVal);
-        }else{
-            monthPicker.setValue(cal.get(Calendar.MONTH) + 1);
-        }
+        if(monthYearsMap.isEmpty()){
+            int minYear = cal.get(Calendar.YEAR) - 200;
+            int maxYear = cal.get(Calendar.YEAR);
 
-        String[] months = DateUtils.getAllMonthsOfYear();
-        for (int i =0; i < months.length; i++){
-            months[i] = AppUtils.capitalizeFirstChar(months[i]);
-        }
-        monthPicker.setDisplayedValues(months);
-
-        int minYear = cal.get(Calendar.YEAR);
-        int maxYear = cal.get(Calendar.YEAR) + 100;
-
-        if(yearRange != null){
-            maxYear = yearRange[yearRange.length - 1];
-            minYear = yearRange[0];
-        }
-
-        yearPicker.setMinValue(minYear);
-        yearPicker.setMaxValue(maxYear);
-
-        if(yearVal != -1) {
-            yearPicker.setValue(yearVal);
-        }else {
-            yearPicker.setValue(minYear);
+            yearPicker.setMinValue(minYear);
+            yearPicker.setMaxValue(maxYear);
+            yearPicker.setValue(maxYear);
+            setMonthsAvailable(maxYear);
+        }else if(yearValues != null && yearValues.length > 0){
+            yearPicker.setDisplayedValues(yearValues);
+            yearPicker.setValue(0);
+            yearPicker.setMinValue(0);
+            yearPicker.setMaxValue(yearValues.length - 1);
+            setMonthsAvailable(Integer.parseInt(yearValues[0]));
         }
 
         builder.setView(dialog)
@@ -112,7 +155,15 @@ public class MonthYearPickerDialog extends DialogFragment {
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        listener.onDateSet(null, yearPicker.getValue(), monthPicker.getValue() - 1, 0);
+                        if(listener != null){
+                            if(monthYearsMap != null){
+                                int year = Integer.parseInt(yearPicker.getDisplayedValues()[yearPicker.getValue()]);
+                                int month = Integer.parseInt(monthPicker.getDisplayedValues()[monthPicker.getValue()]);
+                                listener.onDateSet(null, year, month, 0);
+                            }else{
+                                listener.onDateSet(null, yearPicker.getValue(), monthPicker.getValue() - 1, 0);
+                            }
+                        }
                     }
                 })
                 .setNegativeButton(R.string.cancelar, new DialogInterface.OnClickListener() {

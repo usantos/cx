@@ -15,10 +15,13 @@ package caixa.gov.br.loterias.model.bo.silce.dto;
 import io.swagger.annotations.*;
 import com.google.gson.annotations.SerializedName;
 
+import org.parceler.Parcel;
+
 /**
  * Objeto que contêm valor de um mês gregoriano, de 1 a 12, e a descrição deste mês.
  **/
 @ApiModel(description = "Objeto que contêm valor de um mês gregoriano, de 1 a 12, e a descrição deste mês.")
+@Parcel
 public class MesDTO {
   
   @SerializedName("descricao")

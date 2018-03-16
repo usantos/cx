@@ -182,19 +182,19 @@ public class ViewUtils {
                 .setMessage(mensagem);
     }
 
-    public static void alert(Context context, String mensagem) {
-        alert(context, mensagem, null);
+    public static Dialog alert(Context context, String mensagem) {
+        return alert(context, mensagem, null);
     }
 
-    public static void alertTitulo(Context context, int titulo, String mensagem) {
-        alertTitulo(context, titulo, mensagem, null);
+    public static Dialog alertTitulo(Context context, int titulo, String mensagem) {
+        return alertTitulo(context, titulo, mensagem, null);
     }
 
-    public static void alertTitleButton(Context context, int title, String message, String buttonName) {
-        alertTitleButton(context, title, message, buttonName, null);
+    public static Dialog alertTitleButton(Context context, int title, String message, String buttonName) {
+        return alertTitleButton(context, title, message, buttonName, null);
     }
 
-    public static void alert(Context context, String mensagem, DialogInterface.OnDismissListener listener) {
+    public static Dialog alert(Context context, String mensagem, DialogInterface.OnDismissListener listener) {
         Dialog dialog = ViewUtils.dialogo(context, mensagem)
                 .setCancelable(false)
                 .setOnDismissListener(listener)
@@ -206,9 +206,10 @@ public class ViewUtils {
                 }).show();
         TextView textView = ((TextView) dialog.findViewById(android.R.id.message));
         textView.setTypeface(getFontFutura(context));
+        return dialog;
     }
 
-    public static void alertTitulo(Context context, int titulo, String mensagem, DialogInterface.OnDismissListener listener) {
+    public static Dialog alertTitulo(Context context, int titulo, String mensagem, DialogInterface.OnDismissListener listener) {
         Dialog dialog = ViewUtils.dialogo(context, titulo, mensagem)
                 .setCancelable(false)
                 .setOnDismissListener(listener)
@@ -223,9 +224,10 @@ public class ViewUtils {
         TextView textMessageView = ((TextView) dialog.findViewById(android.R.id.message));
         textTitleView.setTypeface(getFontFuturaBold(context));
         textMessageView.setTypeface(getFontFutura(context));
+        return dialog;
     }
 
-    public static void alertTitleButton(Context context, int title, String message, String buttonName, DialogInterface.OnDismissListener listener) {
+    public static Dialog alertTitleButton(Context context, int title, String message, String buttonName, DialogInterface.OnDismissListener listener) {
         Dialog dialog = ViewUtils.dialogo(context, title, message)
                 .setCancelable(false)
                 .setOnDismissListener(listener)
@@ -240,9 +242,10 @@ public class ViewUtils {
         TextView textMessageView = ((TextView) dialog.findViewById(android.R.id.message));
         textTitleView.setTypeface(getFontFuturaBold(context));
         textMessageView.setTypeface(getFontFutura(context));
+        return dialog;
     }
 
-    public static void alertTitleButtonPositiveListener(Context context, int title, String message, int buttonName, DialogInterface.OnClickListener listener) {
+    public static Dialog alertTitleButtonPositiveListener(Context context, int title, String message, int buttonName, DialogInterface.OnClickListener listener) {
         Dialog dialog = ViewUtils.dialogo(context, title, message)
                 .setCancelable(true)
                 .setNegativeButton(R.string.cancelar, new DialogInterface.OnClickListener() {
@@ -257,6 +260,7 @@ public class ViewUtils {
         TextView textMessageView = ((TextView) dialog.findViewById(android.R.id.message));
         textTitleView.setTypeface(getFontFuturaBold(context));
         textMessageView.setTypeface(getFontFutura(context));
+        return dialog;
     }
 
     public static void loading(Context context) {

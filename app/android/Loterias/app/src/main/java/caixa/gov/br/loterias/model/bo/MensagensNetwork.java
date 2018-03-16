@@ -17,6 +17,7 @@ import caixa.gov.br.loterias.R;
  */
 
 public class MensagensNetwork {
+    private MensagensNetwork(){}
 
     public static String setMensagem(VolleyError error, Context context){
         if (error.networkResponse == null){

@@ -1,12 +1,15 @@
 package caixa.gov.br.loterias.model.bo;
 
 import android.content.Context;
+
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import caixa.gov.br.loterias.BuildConfig;
+import caixa.gov.br.loterias.model.bo.silce.RequestListener;
+import caixa.gov.br.loterias.model.bo.silce.RequestListenerHelper;
 import caixa.gov.br.loterias.model.bo.silce.SilceClient;
 import caixa.gov.br.loterias.model.bo.silce.data.CompletaJogoRsp;
 import caixa.gov.br.loterias.model.bo.silce.data.UsuarioLogadoSingleton;
@@ -22,8 +25,10 @@ import caixa.gov.br.loterias.model.bo.silce.dto.ModalidadeDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.RapidaoDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.RapidaoDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.ResultadoConsultaBilheteDTOResponse;
+import caixa.gov.br.loterias.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOApostaDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOCompraDTOResponse;
+import caixa.gov.br.loterias.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOHistoricoApostaDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.RetornoPadraoDTO;
 import caixa.gov.br.loterias.model.bo.silce.internals.SilceConnection;
 import caixa.gov.br.loterias.model.bo.silce.internals.SilceSingleton;
@@ -32,7 +37,6 @@ public class ApostaBO {
 
     private SilceClient silceClient;
     private Context context;
-
 
     public ApostaBO(Context context) {
         this.context = context;
@@ -240,23 +244,20 @@ public class ApostaBO {
         LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
         headers.put("Authorization", "Bearer " + UsuarioLogadoSingleton.getInstance().token);
 
-
         String url = SilceClient.DETALHES_COMPRAS_PATH.replace("{id}", idSelecionado);
-
 
         silceClient.getConnection().get(url,  new LinkedHashMap<String, String>(), AgrupadorApostaCompraDTOResponse.class,
                 silceClient.volleyListener(listener, AgrupadorApostaCompraDTOResponse.class),
                 silceClient.volleyErrorListener(errorListerner), headers);
-
-
-
     }
 
     public void getMesesCompras(final SilceClient.Listener<MesAnoDTOResponse> listener, final SilceClient.ErrorListener errorListerner) {
         LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
         headers.put("Authorization", "Bearer " + UsuarioLogadoSingleton.getInstance().token);
 
-        silceClient.getConnection().get(SilceClient.COMPRAS_MESES_PATH, new LinkedHashMap<String, String>(), MesAnoDTOResponse.class,
+        silceClient.getConnection().get(SilceClient.COMPRAS_MESES_PATH,
+                new LinkedHashMap<String, String>(),
+                MesAnoDTOResponse.class,
                 silceClient.volleyListener(listener, MesAnoDTOResponse.class),
                 silceClient.volleyErrorListener(errorListerner), headers);
     }
@@ -277,6 +278,80 @@ public class ApostaBO {
                 apostaFavoritaDTO, RetornoPadraoDTO.class,
                 silceClient.volleyListener(listener, RetornoPadraoDTO.class),
                 silceClient.volleyErrorListener(errorListerner), headers);
+
+    }
+
+    public void getDatasApostasConfirmadas(final RequestListener<MesAnoDTOResponse> listener) {
+        LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
+        headers.put("Authorization", "Bearer " + UsuarioLogadoSingleton.getInstance().token);
+
+        RequestListenerHelper<MesAnoDTOResponse> helper = new RequestListenerHelper<>(listener);
+
+        silceClient.getConnection().get(SilceClient.APOSTAS_MES_ANO_PATH,
+                new LinkedHashMap<String, String>(),
+                MesAnoDTOResponse.class,
+                silceClient.volleyListener(helper.getSilceListener(), MesAnoDTOResponse.class),
+                silceClient.volleyErrorListener(helper.getErrorListener()), headers);
+
+    }
+
+    public void getDatasApostasHistorico(final RequestListener<MesAnoDTOResponse> listener) {
+        LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
+        headers.put("Authorization", "Bearer " + UsuarioLogadoSingleton.getInstance().token);
+
+        RequestListenerHelper<MesAnoDTOResponse> helper = new RequestListenerHelper<>(listener);
+
+        silceClient.getConnection().get(SilceClient.APOSTAS_HISTORICO_MES_ANO_PATH,
+                new LinkedHashMap<String, String>(),
+                MesAnoDTOResponse.class,
+                silceClient.volleyListener(helper.getSilceListener(), MesAnoDTOResponse.class),
+                silceClient.volleyErrorListener(helper.getErrorListener()), headers);
+
+    }
+
+    public void getApostasConfirmadas(int mes, int ano, final RequestListener<ResultadoPesquisaPaginadaDTOApostaDTOResponse> listener) {
+        LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
+        headers.put("Authorization", "Bearer " + UsuarioLogadoSingleton.getInstance().token);
+
+        Map<String, String> queryParams = new HashMap<String, String>();
+//        queryParams.put("modalidade", modalidade);
+        queryParams.put( "mes", String.valueOf(mes));
+        queryParams.put("ano", String.valueOf(ano));
+//        queryParams.put("situacao", situacao);
+//        queryParams.put("offset", offset);
+//        queryParams.put("size", size);
+//        queryParams.put("idsApostas", idsApostas);
+
+        RequestListenerHelper<ResultadoPesquisaPaginadaDTOApostaDTOResponse> helper = new RequestListenerHelper<>(listener);
+
+        silceClient.getConnection().get(SilceClient.APOSTAS_CONFIRMADAS_PATH,
+                queryParams,
+                ResultadoPesquisaPaginadaDTOApostaDTOResponse.class,
+                silceClient.volleyListener(helper.getSilceListener(), ResultadoPesquisaPaginadaDTOApostaDTOResponse.class),
+                silceClient.volleyErrorListener(helper.getErrorListener()), headers);
+
+    }
+
+    public void getApostasHistorico(int mes, int ano, final RequestListener<ResultadoPesquisaPaginadaDTOHistoricoApostaDTOResponse> listener) {
+        LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
+        headers.put("Authorization", "Bearer " + UsuarioLogadoSingleton.getInstance().token);
+
+        Map<String, String> queryParams = new HashMap<String, String>();
+//        queryParams.put("modalidade", modalidade);
+        queryParams.put( "mes", String.valueOf(mes));
+        queryParams.put("ano", String.valueOf(ano));
+//        queryParams.put("situacao", situacao);
+//        queryParams.put("offset", offset);
+//        queryParams.put("size", size);
+//        queryParams.put("idsApostas", idsApostas);
+
+        RequestListenerHelper<ResultadoPesquisaPaginadaDTOHistoricoApostaDTOResponse> helper = new RequestListenerHelper<>(listener);
+
+        silceClient.getConnection().get(SilceClient.APOSTAS_CONFIRMADAS_HISTORICO_PATH,
+                queryParams,
+                ResultadoPesquisaPaginadaDTOHistoricoApostaDTOResponse.class,
+                silceClient.volleyListener(helper.getSilceListener(), ResultadoPesquisaPaginadaDTOHistoricoApostaDTOResponse.class),
+                silceClient.volleyErrorListener(helper.getErrorListener()), headers);
 
     }
 }
