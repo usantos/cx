@@ -76,16 +76,20 @@ public class LoginFragment extends Fragment {
             KeycloakBO.connect(getActivity(), new org.jboss.aerogear.android.core.Callback() {
                     @Override
                     public void onSuccess(Object o) {
-                        UsuarioLogadoSingleton user = UsuarioLogadoSingleton.getInstance();
-                        user.token = o.toString();
-                        startActivity(new Intent(getActivity(), PrincipalActivity.class));
-                        getActivity().finish();
-    //                            loginSucess();
+                        if(getActivity() != null){
+                            UsuarioLogadoSingleton user = UsuarioLogadoSingleton.getInstance();
+                            user.token = o.toString();
+                            startActivity(new Intent(getActivity(), PrincipalActivity.class));
+                            getActivity().finish();
+                            //                            loginSucess();
+                        }
                     }
 
                     @Override
                     public void onFailure(Exception e) {
-                        ViewUtils.alert(getActivity(), getString(R.string.sistema_indisponivel));
+                        if(getActivity() != null){
+                            ViewUtils.alert(getActivity(), getString(R.string.sistema_indisponivel));
+                        }
                     }
                 }
             );

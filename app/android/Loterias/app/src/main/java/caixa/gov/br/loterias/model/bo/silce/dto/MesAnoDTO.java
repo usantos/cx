@@ -25,9 +25,9 @@ import org.parceler.Parcel;
 public class MesAnoDTO {
   
   @SerializedName("mes")
-  private MesDTO mes = null;
+  protected MesDTO mes = null;
   @SerializedName("ano")
-  private Long ano = null;
+  protected Long ano = null;
 
   /**
    **/

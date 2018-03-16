@@ -25,9 +25,9 @@ import org.parceler.Parcel;
 public class MesDTO {
   
   @SerializedName("descricao")
-  private String descricao = null;
+  protected String descricao = null;
   @SerializedName("valor")
-  private Long valor = null;
+  protected Long valor = null;
 
   /**
    * Descrição do mês

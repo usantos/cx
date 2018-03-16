@@ -11,7 +11,7 @@
         android:id="@+id/stripe"
         tools:background="#642475"
         android:layout_width="5dp"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent" />
 
     <LinearLayout
         android:layout_marginStart="10dp"

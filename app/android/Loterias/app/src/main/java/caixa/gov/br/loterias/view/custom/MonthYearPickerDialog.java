@@ -46,6 +46,8 @@ public class MonthYearPickerDialog extends DialogFragment {
     }
 
     private void setMonthsAvailable(int year){
+        yearPicker.setOnValueChangedListener(null);
+
         String[] months = DateUtils.getAllMonthsOfYear();
         int minValue;
         int maxValue;
@@ -71,10 +73,12 @@ public class MonthYearPickerDialog extends DialogFragment {
             maxValue = 12;
         }
 
+        monthPicker.setDisplayedValues(months);
         monthPicker.setMinValue(minValue);
         monthPicker.setMaxValue(maxValue);
-        monthPicker.setDisplayedValues(months);
         monthPicker.setValue(currentValue);
+
+        yearPicker.setOnValueChangedListener(changeValueListener);
     }
 
     private String[] getYearsFromMap(){
@@ -109,6 +113,15 @@ public class MonthYearPickerDialog extends DialogFragment {
         return yearValues;
     }
 
+    private final NumberPicker.OnValueChangeListener changeValueListener = new NumberPicker.OnValueChangeListener() {
+        @Override
+        public void onValueChange(NumberPicker numberPicker, int oldVal, int newVal) {
+            if(monthYearsMap != null){
+                setMonthsAvailable(Integer.parseInt(numberPicker.getDisplayedValues()[newVal]));
+            }
+        }
+    };
+
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -124,14 +137,7 @@ public class MonthYearPickerDialog extends DialogFragment {
         monthPicker = (NumberPicker) dialog.findViewById(R.id.picker_month);
         yearPicker = (NumberPicker) dialog.findViewById(R.id.picker_year);
 
-        yearPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-            @Override
-            public void onValueChange(NumberPicker numberPicker, int oldVal, int newVal) {
-                if(monthYearsMap != null){
-                    setMonthsAvailable(Integer.parseInt(numberPicker.getDisplayedValues()[newVal]));
-                }
-            }
-        });
+        yearPicker.setOnValueChangedListener(changeValueListener);
 
         if(monthYearsMap.isEmpty()){
             int minYear = cal.get(Calendar.YEAR) - 200;

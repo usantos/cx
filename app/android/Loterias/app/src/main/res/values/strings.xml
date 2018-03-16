@@ -186,7 +186,6 @@
     <string name="label_aposta_concurso">Conc. %d</string>
     <string name="label_aposta_concursos">Conc. %d a %d</string>
 
-    <string name="formatar_valor">R$ %f</string>
     <string name="carregando">Carregando...</string>
 
     <string name="key_introducao">key_introducao</string>

@@ -26,6 +26,4 @@ public class ApostasHistoricoFragment extends Fragment {
     private Calendar currentCalendar;
     private List<MesAnoDTO> mesesAnosDisponiveis;
 
-
-
 }

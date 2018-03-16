@@ -318,15 +318,16 @@ public class ApostaBO {
         headers.put("Authorization", "Bearer " + UsuarioLogadoSingleton.getInstance().token);
 
         Map<String, String> queryParams = new HashMap<String, String>();
-        queryParams.put("modalidade", "0");
         queryParams.put( "mes", String.valueOf(mes));
         queryParams.put("ano", String.valueOf(ano));
 
         //TODO: pegar situação dinamicamente
         queryParams.put("situacao", "1");
+        //TODO: utilizar paginação
         queryParams.put("offset", "0");
-        queryParams.put("size", "10");
+        queryParams.put("size", "100");
 //        queryParams.put("idsApostas", idsApostas);
+//        queryParams.put("modalidade", "0");
 
         RequestListenerHelper<ResultadoPesquisaPaginadaDTOApostaDTOResponse> helper = new RequestListenerHelper<>(listener);
 
@@ -346,9 +347,13 @@ public class ApostaBO {
 //        queryParams.put("modalidade", modalidade);
         queryParams.put( "mes", String.valueOf(mes));
         queryParams.put("ano", String.valueOf(ano));
-//        queryParams.put("situacao", situacao);
-//        queryParams.put("offset", offset);
-//        queryParams.put("size", size);
+
+        //TODO: pegar situação dinamicamente
+        queryParams.put("situacao", "1");
+
+        //TODO: utilizar paginação
+        queryParams.put("offset", "0");
+        queryParams.put("size", "100");
 //        queryParams.put("idsApostas", idsApostas);
 
         RequestListenerHelper<ResultadoPesquisaPaginadaDTOHistoricoApostaDTOResponse> helper = new RequestListenerHelper<>(listener);

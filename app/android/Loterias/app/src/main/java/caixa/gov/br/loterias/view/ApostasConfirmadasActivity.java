@@ -2,6 +2,7 @@ package caixa.gov.br.loterias.view;
 
 import android.content.Intent;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -26,6 +27,9 @@ import caixa.gov.br.loterias.view.fragment.ApostasHistoricoFragment_;
 @EActivity(R.layout.activity_apostas_confirmadas)
 public class ApostasConfirmadasActivity extends AppCompatActivity {
 
+    private static final String CONFIRMADAS_FRAGMENT = "ConfirmadasFragment";
+    private static final String HISTORICO_FRAGMENT = "HistoricoFragment";
+
     @ViewById(R.id.toolbar)
     protected Toolbar toolbar;
 
@@ -36,8 +40,17 @@ public class ApostasConfirmadasActivity extends AppCompatActivity {
     }
 
     private void initApostasFragment(){
-        Fragment frag = ApostasConfirmadasFragment_.builder().build();
-        getSupportFragmentManager().beginTransaction().replace(R.id.container, frag).commit();
+        Fragment frag = getSupportFragmentManager().findFragmentByTag(CONFIRMADAS_FRAGMENT);
+        if(frag == null){
+            frag = ApostasConfirmadasFragment_.builder().build();
+        }
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.container, frag)
+                .addToBackStack(CONFIRMADAS_FRAGMENT)
+                .commit();
+
+        getSupportFragmentManager().executePendingTransactions();
     }
 
     @Click
@@ -47,8 +60,15 @@ public class ApostasConfirmadasActivity extends AppCompatActivity {
 
     @Click
     protected void historicoApostasBtn(){
-        Fragment frag = ApostasHistoricoFragment_.builder().build();
-        getSupportFragmentManager().beginTransaction().replace(R.id.container, frag).commit();
+        Fragment frag = getSupportFragmentManager().findFragmentByTag(HISTORICO_FRAGMENT);
+        if(frag == null){
+            frag = ApostasHistoricoFragment_.builder().build();
+        }
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.container, frag)
+                .addToBackStack(HISTORICO_FRAGMENT)
+                .commit();
+        getSupportFragmentManager().executePendingTransactions();
     }
 
     @OptionsItem(R.id.action_duvida)

@@ -15,7 +15,6 @@ import com.android.volley.VolleyError;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
@@ -26,7 +25,6 @@ import java.util.Locale;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.ApostaBO;
-import caixa.gov.br.loterias.model.bo.ApostaBO_;
 import caixa.gov.br.loterias.model.bo.MensagensNetwork;
 import caixa.gov.br.loterias.model.bo.silce.RequestListener;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostaDTO;
@@ -46,6 +44,7 @@ import caixa.gov.br.loterias.view.custom.MonthYearPickerDialog_;
 
 @EFragment(R.layout.fragment_apostas_confirmadas)
 public class ApostasConfirmadasFragment extends Fragment {
+
     private static final String MONTH_YEAR_DIALOG = "MonthYearPickerDialog";
 
     @Bean
@@ -111,6 +110,9 @@ public class ApostasConfirmadasFragment extends Fragment {
                 public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                     currentCalendar.set(year, month, 1);
                     updateResultDate();
+
+                    alertDialog = LoadingViewLoterias.show(getActivity());
+                    requestApostasConfirmadas(month, year);
                 }
             });
         }
@@ -151,6 +153,7 @@ public class ApostasConfirmadasFragment extends Fragment {
                     DividerItemDecoration divider = new DividerItemDecoration(getActivity(), layoutManager.getOrientation());
                     divider.setDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.drawer_linha_divisao_cinza_claro));
                     apostasConfirmadasRecyclerView.addItemDecoration(divider);
+                    apostasConfirmadasRecyclerView.setNestedScrollingEnabled(false);
                 }
             }
 

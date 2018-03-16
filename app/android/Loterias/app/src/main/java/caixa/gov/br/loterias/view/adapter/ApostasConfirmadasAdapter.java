@@ -1,6 +1,7 @@
 package caixa.gov.br.loterias.view.adapter;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import java.util.List;
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostaDTO;
 import caixa.gov.br.loterias.utils.EstiloModalidadeAposta;
+import caixa.gov.br.loterias.utils.ViewUtils;
 
 /**
  * Created by pmotta on 15/03/2018.
@@ -82,7 +84,10 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostasConfi
         ApostaDTO aposta = list.get(position);
         EstiloModalidadeAposta estiloModalidade = new EstiloModalidadeAposta(aposta.getModalidade());
 
-        holder.stripe.setBackgroundColor(estiloModalidade.getCorEscura());
+        int color = ContextCompat.getColor(context, estiloModalidade.getCorEscura());
+
+        holder.stripe.setBackgroundColor(color);
+        holder.modalidadeTxt.setTextColor(color);
         holder.modalidadeTxt.setText(estiloModalidade.getStringId());
 
         int teimosinhas = aposta.getQuantidadeTeimosinhas() != null? aposta.getQuantidadeTeimosinhas() : 0;
@@ -95,7 +100,7 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostasConfi
             holder.concursoTxt.setText(context.getString(R.string.label_aposta_concurso, aposta.getConcursoInicial()));
         }
 
-        holder.valorTxt.setText(context.getString(R.string.formatar_valor, aposta.getValor()));
+        ViewUtils.setMoedaFormatHtml(aposta.getValor(), holder.valorTxt);
     }
 
     @Override
