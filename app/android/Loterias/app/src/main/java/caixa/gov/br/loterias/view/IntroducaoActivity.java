@@ -1,5 +1,6 @@
 package caixa.gov.br.loterias.view;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -7,7 +8,10 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import org.androidannotations.annotations.App;
+
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.utils.AppUtils;
 import caixa.gov.br.loterias.view.fragment.Introducao1Fragment;
 import caixa.gov.br.loterias.view.fragment.Introducao2Fragment;
 import caixa.gov.br.loterias.view.fragment.Introducao3Fragment;
@@ -23,6 +27,10 @@ public class IntroducaoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_introducao);
+        if (AppUtils.ChecarFecharIntroducao(this) == true){
+            startActivity(new Intent(IntroducaoActivity.this, LoginActivity.class));
+            finish();
+        }
 
 
         adapterViewPager = new MyPagerAdapter(getSupportFragmentManager());

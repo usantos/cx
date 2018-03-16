@@ -3,6 +3,7 @@ package caixa.gov.br.loterias.utils;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
@@ -12,6 +13,8 @@ import android.widget.EditText;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+
+import caixa.gov.br.loterias.R;
 
 /**
  * Created by lsimas on 10/04/2017.
@@ -99,5 +102,21 @@ public class AppUtils {
         }
         return null;
     }
+
+    public static void UpdateFecharIntroducao(Activity activity, Boolean status){
+        SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putBoolean(activity.getString(R.string.key_introducao), status);
+        editor.commit();
+
+    }
+
+    public static Boolean ChecarFecharIntroducao(Activity activity){
+        SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
+        Boolean status = sharedPref.getBoolean(activity.getString(R.string.key_introducao), false);
+        return status;
+    }
+
+
 
 }

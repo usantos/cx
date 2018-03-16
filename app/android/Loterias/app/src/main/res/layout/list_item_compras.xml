@@ -36,6 +36,7 @@
                         android:textSize="12.1sp"
                         android:textColor="@color/branco"
                         android:fontFamily="@font/arialmt"
+                        android:id="@+id/seusNumerosItemListaComprasTextView"
                         />
                 </LinearLayout>
                 <LinearLayout
@@ -65,16 +66,22 @@
                             android:fontFamily="@font/arialmt"
                             android:textSize="14.2sp"/>
                     </LinearLayout>
-
-                    <TextView
+                    <LinearLayout
                         android:layout_width="0dip"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.7"
-                        android:textColor="@color/branco"
-                        android:fontFamily="@font/arialmt"
-                        android:textSize="14.2sp"
-                        android:id="@+id/SeusNumerosListaComprasTextView"
-                        android:text="01 - 02 - 03 - 04 - 05 - 06"/>
+                        android:orientation="vertical"
+                        android:id="@+id/itemComprasContentModalideLinearLayout">
+                        <!--<TextView-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:textColor="@color/branco"-->
+                            <!--android:fontFamily="@font/arialmt"-->
+                            <!--android:textSize="14.2sp"-->
+                            <!--android:id="@+id/SeusNumerosListaComprasTextView"-->
+                            <!--android:text="01 - 02 - 03 - 04 - 05 - 06"/>-->
+
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
             <LinearLayout

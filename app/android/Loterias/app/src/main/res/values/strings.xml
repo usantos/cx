@@ -187,4 +187,6 @@
     <string name="label_selecione_mes">Selecione o mês</string>
     <string name="carregando">Carregando...</string>
 
+    <string name="key_introducao">key_introducao</string>
+
 </resources>

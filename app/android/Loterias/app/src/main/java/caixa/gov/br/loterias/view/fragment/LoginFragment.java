@@ -45,6 +45,7 @@ public class LoginFragment extends Fragment {
         buttonAposte.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //mock login
+                AppUtils.UpdateFecharIntroducao(getActivity(), true);
                 UsuarioLogadoSingleton user = UsuarioLogadoSingleton.getInstance();
                 user.token = null;
                 startActivity(new Intent(getActivity(), PrincipalActivity.class));
@@ -55,6 +56,7 @@ public class LoginFragment extends Fragment {
         Button buttonLogin = (Button) v.findViewById(R.id.buttonFacaLogin);
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                AppUtils.UpdateFecharIntroducao(getActivity(), true);
                 connectKeycloak();
             }
         });
