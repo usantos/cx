@@ -11,6 +11,7 @@ import android.os.Bundle;
 import org.androidannotations.annotations.App;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.model.bo.DadosUsuarioBO;
 import caixa.gov.br.loterias.utils.AppUtils;
 import caixa.gov.br.loterias.view.fragment.Introducao1Fragment;
 import caixa.gov.br.loterias.view.fragment.Introducao2Fragment;
@@ -27,7 +28,7 @@ public class IntroducaoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_introducao);
-        if (AppUtils.ChecarFecharIntroducao(this) == true){
+        if (DadosUsuarioBO.checarFecharIntroducao(this) == true){
             startActivity(new Intent(IntroducaoActivity.this, LoginActivity.class));
             finish();
         }

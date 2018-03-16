@@ -58,7 +58,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
 
     private void montarLayout(){
         ListView listView = (ListView)findViewById(R.id.gridviewDetalhesCompras);
-        ListaComprasDetalhesAdapter listaAdapter = new ListaComprasDetalhesAdapter(this, listaAposta, compraDTO, ordemCompra);
+        ListaComprasDetalhesAdapter listaAdapter = new ListaComprasDetalhesAdapter(this, this, listaAposta, compraDTO, ordemCompra);
         listView.setAdapter(listaAdapter);
 
     }

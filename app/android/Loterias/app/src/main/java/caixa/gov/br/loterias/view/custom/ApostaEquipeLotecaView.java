@@ -24,6 +24,14 @@ public class ApostaEquipeLotecaView extends LinearLayout {
     ImageView imageApostaPartidaLoteca;
     @ViewById
     TextView textApostaPartidaLoteca;
+    @ViewById
+    LinearLayout layout_row_aposta_partida_loteca;
+
+    public void setImageApostaPartidaLoteca(ImageView imageApostaPartidaLoteca) {
+        this.imageApostaPartidaLoteca = imageApostaPartidaLoteca;
+    }
+
+
 
     @AfterViews
     protected void init() {
@@ -56,5 +64,14 @@ public class ApostaEquipeLotecaView extends LinearLayout {
 
     public void setTextApostaPartidaLoteca(TextView textApostaPartidaLoteca) {
         this.textApostaPartidaLoteca = textApostaPartidaLoteca;
+    }
+
+
+    public LinearLayout getLayout_row_aposta_partida_loteca() {
+        return layout_row_aposta_partida_loteca;
+    }
+
+    public void setLayout_row_aposta_partida_loteca(LinearLayout layout_row_aposta_partida_loteca) {
+        this.layout_row_aposta_partida_loteca = layout_row_aposta_partida_loteca;
     }
 }

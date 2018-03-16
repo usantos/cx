@@ -1,6 +1,9 @@
 package caixa.gov.br.loterias.view.adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +18,7 @@ import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.CompraDTO;
 import caixa.gov.br.loterias.utils.EstiloModalidadeAposta;
+import caixa.gov.br.loterias.view.custom.ExpandableHeightRecyclerView;
 
 /**
  * Created by cedesbr450 on 30/01/18.
@@ -24,12 +28,14 @@ import caixa.gov.br.loterias.utils.EstiloModalidadeAposta;
 public class ListaComprasDetalhesAdapter extends BaseAdapter {
 
     private final Context mContext;
+    private final Activity activity;
     List<ApostaDTO> listaAposta;
     private final CompraDTO compraDTO;
     private final int ordemCompra;
     // 1
-    public ListaComprasDetalhesAdapter(Context context, List<ApostaDTO> listaAposta, CompraDTO compraDTO, int ordemCompra) {
+    public ListaComprasDetalhesAdapter(Activity activity, Context context, List<ApostaDTO> listaAposta, CompraDTO compraDTO, int ordemCompra) {
         this.mContext = context;
+        this.activity = activity;
         this.listaAposta = listaAposta;
         this.compraDTO = compraDTO;
         this.ordemCompra = ordemCompra;
@@ -99,8 +105,6 @@ public class ListaComprasDetalhesAdapter extends BaseAdapter {
                 }
             }
 
-            TextView seusNumerosListaComprasTextView = (TextView) convertView.findViewById(R.id.SeusNumerosListaComprasTextView);
-            seusNumerosListaComprasTextView.setText(numeroStr);
 
             TextView statusResultadoApostaListaComprasTextView = (TextView) convertView.findViewById(R.id.statusResultadoApostaListaComprasTextView);
             statusResultadoApostaListaComprasTextView.setText(listaAposta.get(idLista).getSituacao().getDescricao());
@@ -113,6 +117,36 @@ public class ListaComprasDetalhesAdapter extends BaseAdapter {
             LinearLayout bottomListItemComprasLinearLayout = (LinearLayout) convertView.findViewById(R.id.bottomListItemComprasLinearLayout);
             bottomListItemComprasLinearLayout.setBackgroundColor(mContext.getResources().getColor(estilo.getCorEscura()));
 
+            TextView seusNumerosItemListaComprasTextView = (TextView) convertView.findViewById(R.id.seusNumerosItemListaComprasTextView);
+
+            LinearLayout itemComprasContentModalideLinearLayout = (LinearLayout) convertView.findViewById(R.id.itemComprasContentModalideLinearLayout);
+            if (listaAposta.get(idLista).getModalidade() == ApostaDTO.ModalidadeEnum.TIMEMANIA){
+                View child = layoutInflater.inflate(R.layout.item_compras_timemania_layout, null);
+                itemComprasContentModalideLinearLayout.addView(child);
+                statusResultadoApostaListaComprasTextView.setTextColor(mContext.getResources().getColor(R.color.verdemediotransparente));
+                TipoPremioListaComprasTextView.setTextColor(mContext.getResources().getColor(R.color.megasenamedio));
+                dataConcursoListaComprasTextView.setTextColor(mContext.getResources().getColor(R.color.megasenamedio));
+                concursoListaComprasTextView.setTextColor(mContext.getResources().getColor(R.color.megasenamedio));
+                seusNumerosItemListaComprasTextView.setTextColor(mContext.getResources().getColor(R.color.megasenamedio));
+                TextView seusNumerosListaComprasTextView = (TextView) convertView.findViewById(R.id.SeusNumerosListaComprasTextView);
+                seusNumerosListaComprasTextView.setText(numeroStr);
+
+            }else if (listaAposta.get(idLista).getModalidade() == ApostaDTO.ModalidadeEnum.LOTECA){
+                View child = layoutInflater.inflate(R.layout.item_compras_loteca_layout, null);
+                seusNumerosItemListaComprasTextView.setText("Sua aposta");
+                ExpandableHeightRecyclerView lotecaRecyclerViewItemCompra = (ExpandableHeightRecyclerView) child.findViewById(R.id.lotecaRecyclerViewItemCompra);
+                itemComprasContentModalideLinearLayout.addView(child);
+                LotecaComprasAdapter lotecaAdapter = new LotecaComprasAdapter(listaAposta.get(idLista).getPartidasLoteca());
+                lotecaRecyclerViewItemCompra.setLayoutManager(new LinearLayoutManager(activity));
+                lotecaRecyclerViewItemCompra.setAdapter(lotecaAdapter);
+                lotecaRecyclerViewItemCompra.setExpanded(true);
+
+            }else{
+                View child = layoutInflater.inflate(R.layout.item_compras_generico_layout, null);
+                itemComprasContentModalideLinearLayout.addView(child);
+                TextView seusNumerosListaComprasTextView = (TextView) convertView.findViewById(R.id.SeusNumerosListaComprasTextView);
+                seusNumerosListaComprasTextView.setText(numeroStr);
+            }
 
         }else{
             convertView = layoutInflater.inflate(R.layout.list_group_compras, null);

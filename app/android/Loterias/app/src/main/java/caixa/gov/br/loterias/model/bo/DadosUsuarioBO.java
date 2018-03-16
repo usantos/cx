@@ -1,6 +1,8 @@
 package caixa.gov.br.loterias.model.bo;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 
 import com.android.volley.NetworkResponse;
 
@@ -12,6 +14,7 @@ import org.androidannotations.annotations.RootContext;
 import java.util.LinkedHashMap;
 
 import caixa.gov.br.loterias.BuildConfig;
+import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.silce.SilceClient;
 import caixa.gov.br.loterias.model.bo.silce.data.UsuarioLogadoSingleton;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostadorDTO;
@@ -91,5 +94,20 @@ public class DadosUsuarioBO {
                 silceClient.volleyErrorListener(errorListener), new LinkedHashMap<String, String>());
 
     }
+
+    public static void updateFecharIntroducao(Activity activity, Boolean status){
+        SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putBoolean(activity.getString(R.string.key_introducao), status);
+        editor.commit();
+
+    }
+
+    public static Boolean checarFecharIntroducao(Activity activity){
+        SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
+        Boolean status = sharedPref.getBoolean(activity.getString(R.string.key_introducao), false);
+        return status;
+    }
+
 
 }

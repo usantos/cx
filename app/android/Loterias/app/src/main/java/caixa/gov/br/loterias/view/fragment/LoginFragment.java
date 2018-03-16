@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.model.bo.DadosUsuarioBO;
 import caixa.gov.br.loterias.model.bo.keycloak.KeycloakBO;
 import caixa.gov.br.loterias.model.bo.silce.data.UsuarioLogadoSingleton;
 import caixa.gov.br.loterias.model.bo.silce.dto.UsuarioLogadoResponse;
@@ -45,7 +46,7 @@ public class LoginFragment extends Fragment {
         buttonAposte.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //mock login
-                AppUtils.UpdateFecharIntroducao(getActivity(), true);
+                DadosUsuarioBO.updateFecharIntroducao(getActivity(), true);
                 UsuarioLogadoSingleton user = UsuarioLogadoSingleton.getInstance();
                 user.token = null;
                 startActivity(new Intent(getActivity(), PrincipalActivity.class));
@@ -56,7 +57,7 @@ public class LoginFragment extends Fragment {
         Button buttonLogin = (Button) v.findViewById(R.id.buttonFacaLogin);
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                AppUtils.UpdateFecharIntroducao(getActivity(), true);
+                DadosUsuarioBO.updateFecharIntroducao(getActivity(), true);
                 connectKeycloak();
             }
         });
