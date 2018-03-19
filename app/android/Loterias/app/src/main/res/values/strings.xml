@@ -161,7 +161,7 @@
     <string name="title_activity_ler_bilhetes">LerBilhetesActivity</string>
     <string name="title_activity_ler_bilhetes_escolha_jogo">Resultado</string>
     <string name="label_x_minusculo">x</string>
-    <string name="title_activity_resultado_ler_bilhetes">Resultado</string>
+    <string name="title_activity_resultado_ler_bilhetes">_Resultado_</string>
     <string name="title_activity_detalhes_compras">Apostas da Compra</string>
     <string name="label_declaracao_termo_uso">Declaro ter lido e concordado com os\ntermos de uso</string>
     <string name="label_cotinuar">Continuar</string>
@@ -197,5 +197,12 @@
     <string name="label_faixa_premiacao">Faixa de\npremiação</string>
     <string name="label_sorteio_case">Sorteio</string>
     <string name="label_premiacao">Premiação</string>
+    <string name="label_nao_foi_dessa_vez">Não foi dessa vez :(</string>
+    <string name="label_pode_comemorar">Pode comemorar</string>
+    <string name="label_voce_foi_premiado">você foi premiado</string>
+    <string name="label_limite_diario">Limite diário</string>
+    <string name="label_abertura_aposta">Abertura da aposta</string>
+    <string name="label_premio">Prêmio</string>
+    <string name="label_veja_retirar_premio">Veja como retirar o seu prêmio:</string>
 
 </resources>

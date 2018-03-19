@@ -46,11 +46,11 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
     Toolbar toolbar;
 
     @ViewById
-    LinearLayout topoModalidadeResultadoLinearLayout, topo2ModalidadeResultadoLinearLayout, dadosModalidadeLinearLayout,
+    LinearLayout corpoBilhetePremiadoLinearLayout, corpoBilheteNaoPremiadoLinearLayout, topoModalidadeResultadoLinearLayout, topo2ModalidadeResultadoLinearLayout,
             premioGanhoLinearLayout, mensagemNaoPremiadoLinearLayout, fundoBackgroundTrapezeResultadoLinearLayout;
 
     @ViewById
-    TextView tituloModalidadeTextView, statusResultadoTextView, limiteDiarioResultadoTextView, premioResultadoTextView, mensagemNaoPremiadoTextView;
+    TextView tituloModalidadeTextView, limiteDiarioResultadoTextView, premioResultadoTextView, mensagemNaoPremiadoTextView, statusResultadoNaoPremiadTextView;
 
     @ViewById
     ExpandableHeightRecyclerView listaFaixaPremiacaoExpandableHeightRecyclerView;
@@ -117,7 +117,9 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
                 alert.dismiss();
                 resultadoConsultaBilheteDTO = response.getPayload();
                 if (resultadoConsultaBilheteDTO.getSituacao().getDescricao().equals("Premiada")) {
-                    AtualizarLayout();
+                    atualizarLayoutPremiado();
+                }else{
+                    atualizarLayoutNaoPremiado();
                 }
             }
         }, new SilceClient.ErrorListener() {
@@ -129,32 +131,21 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
         });
     }
 
-    private void AtualizarLayout() {
+    private void atualizarLayoutPremiado() {
+
+        corpoBilhetePremiadoLinearLayout.setVisibility(View.VISIBLE);
+        corpoBilheteNaoPremiadoLinearLayout.setVisibility(View.GONE);
+
         ApostaDTO.ModalidadeEnum modalidadeEnum = ApostaDTO.toStringModalidade(resultadoConsultaBilheteDTO.getModalidadeDTO().getDescricao());
         EstiloModalidadeAposta estiloModalidade = new EstiloModalidadeAposta(modalidadeEnum);
         SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
 
         topoModalidadeResultadoLinearLayout.setBackgroundColor(ContextCompat.getColor(this, estiloModalidade.getCorClara()));
-        topoModalidadeResultadoLinearLayout.setVisibility(View.VISIBLE);
-
         topo2ModalidadeResultadoLinearLayout.setBackgroundColor(ContextCompat.getColor(this, estiloModalidade.getCorEscura()));
-
         fundoBackgroundTrapezeResultadoLinearLayout.setBackground(ContextCompat.getDrawable(this, estiloModalidade.getTrevoBackground()));
-
-        premioGanhoLinearLayout.setVisibility(View.VISIBLE);
-        dadosModalidadeLinearLayout.setVisibility(View.VISIBLE);
-        mensagemNaoPremiadoLinearLayout.setVisibility(View.GONE);
-
         tituloModalidadeTextView.setText(resultadoConsultaBilheteDTO.getModalidadeDTO().getDescricao());
-
-        statusResultadoTextView.setText(resultadoConsultaBilheteDTO.getSituacao().getDescricao());
-
         limiteDiarioResultadoTextView.setText(ViewUtils.getMoedaFormat(sessaoUsuario.getParametrosSimulacao().getValorLimiteDiario()));
         createListe();
-
-//        TextView proximoSorteioTextView = findViewById(R.id.proximoSorteioTextView);
-//        TextView aberturaApostaResultadoTextView = findViewById(R.id.aberturaApostaResultadoTextView);
-//        TextView encerramentoResultadoTextView = findViewById(R.id.encerramentoResultadoTextView);
 
         if (resultadoConsultaBilheteDTO.getValorPremio() != null) {
             if (resultadoConsultaBilheteDTO.getValorPremio() != null) {
@@ -163,7 +154,15 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
         }
     }
 
+    private void atualizarLayoutNaoPremiado(){
+        corpoBilhetePremiadoLinearLayout.setVisibility(View.GONE);
+        corpoBilheteNaoPremiadoLinearLayout.setVisibility(View.VISIBLE);
+//        if(resultadoConsultaBilheteDTO.getSituacao().getDescricao())
+        statusResultadoNaoPremiadTextView.setText(R.string.label_nao_foi_dessa_vez);
+    }
+
     private void createToolBar() {
+        setTitle(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.title_activity_resultado_ler_bilhetes)));
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);

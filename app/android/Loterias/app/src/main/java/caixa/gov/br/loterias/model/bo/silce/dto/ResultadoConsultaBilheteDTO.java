@@ -29,6 +29,10 @@ public class ResultadoConsultaBilheteDTO {
     private BigDecimal valorPremio = null;
     @SerializedName("locaisParaRecebimento")
     private List<TipoPagamentoDTO> locaisParaRecebimento = null;
+    @SerializedName("premio")
+    private PremioDTO premioDTO = null;
+    @SerializedName("modalidade")
+    private ModalidadeDTO modalidadeDTO = null;
 
     public ModalidadeDTO getModalidadeDTO() {
         return modalidadeDTO;
@@ -38,8 +42,13 @@ public class ResultadoConsultaBilheteDTO {
         this.modalidadeDTO = modalidadeDTO;
     }
 
-    @SerializedName("modalidade")
-    private ModalidadeDTO modalidadeDTO = null;
+    public PremioDTO getPremioDTO() {
+        return premioDTO;
+    }
+
+    public void setPremioDTO(PremioDTO premioDTO) {
+        this.premioDTO = premioDTO;
+    }
 
     /**
      **/
