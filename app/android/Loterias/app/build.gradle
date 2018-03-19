@@ -36,37 +36,37 @@ android {
         productFlavors {
             caixaprod {
                 dimension "default"
-				//applicationIdSuffix ".caixaprod"
+                //applicationIdSuffix ".caixaprod"
                 buildConfigField "boolean", "CAIXA_NETWORK_STUB", "false"
                 buildConfigField "String", "CAIXA_BASE_URL_SILCE", "\"http://simlo.des.caixa/silce-servico-rest/rest/v1/\""
             }
             caixahmg {
                 dimension "default"
-				//applicationIdSuffix ".caixahmg"
+                //applicationIdSuffix ".caixahmg"
                 buildConfigField "boolean", "CAIXA_NETWORK_STUB", "false"
                 buildConfigField "String", "CAIXA_BASE_URL_SILCE", "\"http://simlo.des.caixa/silce-servico-rest/rest/v1/\""
             }
             caixadev {
                 dimension "default"
-				//applicationIdSuffix ".caixadev"
+                //applicationIdSuffix ".caixadev"
                 buildConfigField "boolean", "CAIXA_NETWORK_STUB", "false"
                 buildConfigField "String", "CAIXA_BASE_URL_SILCE", "\"http://simlo.des.caixa/silce-servico-rest/rest/v1/\""
             }
             caixalab {
                 dimension "default"
-				//applicationIdSuffix ".caixalab"
+                //applicationIdSuffix ".caixalab"
                 buildConfigField "boolean", "CAIXA_NETWORK_STUB", "false"
                 buildConfigField "String", "CAIXA_BASE_URL_SILCE", "\"http://172.16.141.157:80/silce-servico-rest/rest/v1/\""
             }
             proxycap {
                 dimension "default"
-				//applicationIdSuffix ".proxycap"
+                //applicationIdSuffix ".proxycap"
                 buildConfigField "boolean", "CAIXA_NETWORK_STUB", "false"
                 buildConfigField "String", "CAIXA_BASE_URL_SILCE", "\"http://10.130.9.22:81/silce-servico-rest/rest/v1/\""
             }
             stubnet {
                 dimension "default"
-				//applicationIdSuffix ".stubnet"
+                //applicationIdSuffix ".stubnet"
                 buildConfigField "boolean", "CAIXA_NETWORK_STUB", "true"
                 buildConfigField "String", "CAIXA_BASE_URL_SILCE", "null"
             }
@@ -137,6 +137,9 @@ dependencies {
     compile 'com.journeyapps:zxing-android-embedded:3.5.0'
     compile 'commons-lang:commons-lang:2.6'
     //compile 'me.dm7.barcodescanner:zxing:1.9'
+
+    //QRCode gerador
+    compile 'androidmads.library.qrgenearator:QRGenearator:1.0.3'
 
     // testImplementation deps
     testImplementation 'junit:junit:4.12'

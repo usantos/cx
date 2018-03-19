@@ -189,5 +189,9 @@
     <string name="carregando">Carregando...</string>
 
     <string name="key_introducao">key_introducao</string>
+    <string name="title_activity_jogos_confirmados_premio">JogosConfirmadosPremioActivity</string>
+    <string name="title_activity_jogos_confirmados_premio_mercado_pago">
+        JogosConfirmadosPremioMercadoPagoActivity
+    </string>
 
 </resources>
