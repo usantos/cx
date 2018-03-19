@@ -194,4 +194,8 @@
         JogosConfirmadosPremioMercadoPagoActivity
     </string>
 
+    <string name="label_faixa_premiacao">Faixa de\npremiação</string>
+    <string name="label_sorteio_case">Sorteio</string>
+    <string name="label_premiacao">Premiação</string>
+
 </resources>

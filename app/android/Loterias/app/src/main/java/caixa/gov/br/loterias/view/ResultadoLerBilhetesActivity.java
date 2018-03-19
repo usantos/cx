@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,7 +20,11 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.mock.ItemListaFaixaPremiacaoMock;
 import caixa.gov.br.loterias.model.bean.SessaoUsuario;
 import caixa.gov.br.loterias.model.bo.ApostaBO;
 import caixa.gov.br.loterias.model.bo.ApostaBO_;
@@ -30,6 +35,8 @@ import caixa.gov.br.loterias.model.bo.silce.dto.ResultadoConsultaBilheteDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ResultadoConsultaBilheteDTOResponse;
 import caixa.gov.br.loterias.utils.EstiloModalidadeAposta;
 import caixa.gov.br.loterias.utils.ViewUtils;
+import caixa.gov.br.loterias.view.adapter.FaixaPremiacaoAdapter;
+import caixa.gov.br.loterias.view.custom.ExpandableHeightRecyclerView;
 import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
 
 @EActivity(R.layout.activity_resultado_ler_bilhetes)
@@ -45,6 +52,9 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
     @ViewById
     TextView tituloModalidadeTextView, statusResultadoTextView, limiteDiarioResultadoTextView, premioResultadoTextView, mensagemNaoPremiadoTextView;
 
+    @ViewById
+    ExpandableHeightRecyclerView listaFaixaPremiacaoExpandableHeightRecyclerView;
+
     @Extra
     String codBarras;
 
@@ -52,7 +62,7 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
 
     @AfterViews
     public void init() {
-        crateToolBar();
+        createToolBar();
         postLerBilhetes(ApostaBO_.getInstance_(this), this, codBarras);
     }
 
@@ -140,6 +150,7 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
         statusResultadoTextView.setText(resultadoConsultaBilheteDTO.getSituacao().getDescricao());
 
         limiteDiarioResultadoTextView.setText(ViewUtils.getMoedaFormat(sessaoUsuario.getParametrosSimulacao().getValorLimiteDiario()));
+        createListe();
 
 //        TextView proximoSorteioTextView = findViewById(R.id.proximoSorteioTextView);
 //        TextView aberturaApostaResultadoTextView = findViewById(R.id.aberturaApostaResultadoTextView);
@@ -152,10 +163,34 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
         }
     }
 
-    private void crateToolBar() {
+    private void createToolBar() {
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+    }
+
+    private void createListe() {
+        listaFaixaPremiacaoExpandableHeightRecyclerView.setAdapter(new FaixaPremiacaoAdapter(mock()));
+        listaFaixaPremiacaoExpandableHeightRecyclerView.setExpanded(Boolean.TRUE);
+        listaFaixaPremiacaoExpandableHeightRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    //TODO mock
+    private List<ItemListaFaixaPremiacaoMock> mock() {
+        List<ItemListaFaixaPremiacaoMock> mockList = new ArrayList<>();
+
+        ItemListaFaixaPremiacaoMock item = new ItemListaFaixaPremiacaoMock();
+
+        item.setConcurso("2587");
+        item.setFaixaPremiacao("Quadra");
+        item.setSorteio("01");
+        item.setPremiacao("R$ 200,00");
+
+        for (int i = 0; i < 4; i++) {
+            mockList.add(item);
+        }
+
+        return mockList;
     }
 }
