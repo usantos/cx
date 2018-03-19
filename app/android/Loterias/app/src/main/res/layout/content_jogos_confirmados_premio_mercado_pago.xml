@@ -6,6 +6,106 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="caixa.gov.br.loterias.view.JogosConfirmadosPremioMercadoPagoActivity"
-    tools:showIn="@layout/activity_jogos_confirmados_premio_mercado_pago">
+    tools:showIn="@layout/activity_jogos_confirmados_premio_mercado_pago"
+    >
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <ImageView
+            android:layout_width="177dp"
+            android:layout_height="46dp"
+            android:src="@drawable/mercadopago"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="40dp"/>
+            <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:orientation="vertical"
+            android:background="@color/azulfavoritas"
+            android:layout_marginTop="40dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Prêmio"
+                android:textColor="@color/cinza"
+                android:textSize="14sp"
+                android:fontFamily="@font/arialmt"
+                android:textAlignment="center"
+                android:layout_marginTop="20dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="R$ 999.999.999,00"
+                android:textAlignment="center"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/branco"
+                android:fontFamily="@font/futura_std_bold"
+                android:textSize="21sp"
+                />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="252dp"
+                android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Para receber seu prêmio,\npor favor confirme seu email:"
+                        android:textSize="14.2dp"
+                        android:textColor="@color/cinza"
+                        android:fontFamily="@font/arialmt"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="40dp"/>
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/ayout_emailPremioMercadoPagoEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="40dp">
+
+                    <EditText
+                        android:id="@+id/emailPremioMercadoPagoEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="E-mail"
+                        android:textSize="16sp"
+                        android:textColorHint="@color/azulFormNovoTipoPagamento"
+                        android:textColor="@color/cinza"
+                        />
+
+                </android.support.design.widget.TextInputLayout>
+
+            </LinearLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="106dp">
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:background="@color/cinzamercadopago"
+                    android:layout_alignParentBottom="true">
+
+                </View>
+                <Button
+                    android:layout_width="184dp"
+                    android:layout_height="84dp"
+                    android:textAllCaps="false"
+                    android:text="Atualizar"
+                    android:background="@color/verdeazul"
+                    android:textColor="@color/branco"
+                    android:fontFamily="@font/futura_std_bold"
+                    android:textSize="17.7sp"
+                    android:layout_centerHorizontal="true"/>
+            </RelativeLayout>
+            
+        </LinearLayout>
+
+    </ScrollView>
 
 </android.support.constraint.ConstraintLayout>
