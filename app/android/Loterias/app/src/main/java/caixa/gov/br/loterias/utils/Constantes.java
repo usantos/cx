@@ -26,6 +26,4 @@ public class Constantes {
     public static final BigDecimal DOIS_BIG_DECIMAL = new BigDecimal(2);
 
     public static final int CINCO_INTEIRO = 5;
-
-    public static final String NAO_APURADO = "APURADO";
 }
