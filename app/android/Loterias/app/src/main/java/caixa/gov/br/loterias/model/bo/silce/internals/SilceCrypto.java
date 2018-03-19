@@ -6,7 +6,7 @@ import java.util.Map;
 public class SilceCrypto {
     private static final Bin DEFAULT_KEY = Bin.fromBase64("QEm06ZAThg1E314zziahsg");
     private static final Bin DEFAULT_IV = Bin.fromBase64("8hQLtNV44Y1bIeONmlr+Dg==");
-    Crypto crypto;
+    private Crypto crypto;
 
     private SilceCrypto(Bin keyBase64, Bin ivBase64) {
         crypto = new Crypto(keyBase64, ivBase64);

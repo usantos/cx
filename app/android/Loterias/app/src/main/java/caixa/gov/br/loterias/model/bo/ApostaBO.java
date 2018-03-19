@@ -2,7 +2,6 @@ package caixa.gov.br.loterias.model.bo;
 
 import android.content.Context;
 
-import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.RootContext;
@@ -13,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import caixa.gov.br.loterias.BuildConfig;
+import caixa.gov.br.loterias.model.bean.ApostaPageRequest;
 import caixa.gov.br.loterias.model.bo.silce.RequestListener;
 import caixa.gov.br.loterias.model.bo.silce.RequestListenerHelper;
 import caixa.gov.br.loterias.model.bo.silce.SilceClient;
@@ -313,19 +313,18 @@ public class ApostaBO {
 
     }
 
-    public void getApostasConfirmadas(int mes, int ano, final RequestListener<ResultadoPesquisaPaginadaDTOApostaDTOResponse> listener) {
+    public void getApostasConfirmadas(ApostaPageRequest page, final RequestListener<ResultadoPesquisaPaginadaDTOApostaDTOResponse> listener) {
         LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
         headers.put("Authorization", "Bearer " + UsuarioLogadoSingleton.getInstance().token);
 
         Map<String, String> queryParams = new HashMap<String, String>();
-        queryParams.put( "mes", String.valueOf(mes));
-        queryParams.put("ano", String.valueOf(ano));
+        queryParams.put( "mes", String.valueOf(page.getMes()));
+        queryParams.put("ano", String.valueOf(page.getAno()));
+        queryParams.put("offset", String.valueOf(page.getOffset()));
+        queryParams.put("size", String.valueOf(page.getSize()));
 
         //TODO: pegar situação dinamicamente
         queryParams.put("situacao", "1");
-        //TODO: utilizar paginação
-        queryParams.put("offset", "0");
-        queryParams.put("size", "100");
 //        queryParams.put("idsApostas", idsApostas);
 //        queryParams.put("modalidade", "0");
 
@@ -339,22 +338,22 @@ public class ApostaBO {
 
     }
 
-    public void getApostasHistorico(int mes, int ano, final RequestListener<ResultadoPesquisaPaginadaDTOHistoricoApostaDTOResponse> listener) {
+    public void getApostasHistorico(ApostaPageRequest page, final RequestListener<ResultadoPesquisaPaginadaDTOHistoricoApostaDTOResponse> listener) {
         LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
         headers.put("Authorization", "Bearer " + UsuarioLogadoSingleton.getInstance().token);
 
         Map<String, String> queryParams = new HashMap<String, String>();
-//        queryParams.put("modalidade", modalidade);
-        queryParams.put( "mes", String.valueOf(mes));
-        queryParams.put("ano", String.valueOf(ano));
+        queryParams.put( "mes", String.valueOf(page.getMes()));
+        queryParams.put("ano", String.valueOf(page.getAno()));
+        queryParams.put("offset", String.valueOf(page.getOffset()));
+        queryParams.put("size", String.valueOf(page.getSize()));
 
         //TODO: pegar situação dinamicamente
         queryParams.put("situacao", "1");
 
         //TODO: utilizar paginação
-        queryParams.put("offset", "0");
-        queryParams.put("size", "100");
 //        queryParams.put("idsApostas", idsApostas);
+//        queryParams.put("modalidade", modalidade);
 
         RequestListenerHelper<ResultadoPesquisaPaginadaDTOHistoricoApostaDTOResponse> helper = new RequestListenerHelper<>(listener);
 

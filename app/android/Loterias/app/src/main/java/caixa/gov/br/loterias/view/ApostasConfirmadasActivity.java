@@ -2,10 +2,14 @@ package caixa.gov.br.loterias.view;
 
 import android.content.Intent;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.View;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -13,6 +17,8 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.ViewById;
+
+import java.util.List;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.utils.ViewUtils;
@@ -33,10 +39,42 @@ public class ApostasConfirmadasActivity extends AppCompatActivity {
     @ViewById(R.id.toolbar)
     protected Toolbar toolbar;
 
+    @ViewById
+    protected NestedScrollView scrollView;
+
+    public interface OnScrollReachBottomListener{
+        void onScrollReachBottom();
+    }
+
     @AfterViews
     protected void init(){
         setupToolbar();
         initApostasFragment();
+        setupScrollView();
+    }
+
+    private void setupScrollView() {
+        scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                View view = (View) v.getChildAt(v.getChildCount() - 1);
+                int diff = (view.getBottom() - (v.getHeight() + v.getScrollY()));
+                // if diff is zero, then the bottom has been reached
+                if (diff == 0) {
+                    Fragment confirmadasFragment = getSupportFragmentManager().findFragmentByTag(CONFIRMADAS_FRAGMENT);
+                    Fragment historicoFragment = getSupportFragmentManager().findFragmentByTag(HISTORICO_FRAGMENT);
+                    if(confirmadasFragment != null && confirmadasFragment.isVisible()){
+                        if(confirmadasFragment instanceof OnScrollReachBottomListener){
+                            ((OnScrollReachBottomListener) confirmadasFragment).onScrollReachBottom();
+                        }
+                    }else if(historicoFragment != null && historicoFragment.isVisible()){
+                        if(historicoFragment instanceof OnScrollReachBottomListener){
+                            ((OnScrollReachBottomListener) historicoFragment).onScrollReachBottom();
+                        }
+                    }
+                }
+            }
+        });
     }
 
     private void initApostasFragment(){
@@ -46,8 +84,7 @@ public class ApostasConfirmadasActivity extends AppCompatActivity {
         }
 
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.container, frag)
-                .addToBackStack(CONFIRMADAS_FRAGMENT)
+                .replace(R.id.container, frag, CONFIRMADAS_FRAGMENT)
                 .commit();
 
         getSupportFragmentManager().executePendingTransactions();
@@ -65,8 +102,7 @@ public class ApostasConfirmadasActivity extends AppCompatActivity {
             frag = ApostasHistoricoFragment_.builder().build();
         }
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.container, frag)
-                .addToBackStack(HISTORICO_FRAGMENT)
+                .replace(R.id.container, frag, HISTORICO_FRAGMENT)
                 .commit();
         getSupportFragmentManager().executePendingTransactions();
     }

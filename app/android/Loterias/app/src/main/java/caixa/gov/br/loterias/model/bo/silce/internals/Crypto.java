@@ -8,10 +8,10 @@ import javax.crypto.spec.SecretKeySpec;
 import org.apache.commons.codec.binary.Base64;
 
 public class Crypto {
-    Base64 base64 = new Base64();
-    IvParameterSpec iv;
-    SecretKeySpec key;
-    KeyGenerator gen;
+    private Base64 base64 = new Base64();
+    private IvParameterSpec iv;
+    private SecretKeySpec key;
+    private KeyGenerator gen;
 
     protected Crypto(Bin key, Bin initializationVector) {
         try {

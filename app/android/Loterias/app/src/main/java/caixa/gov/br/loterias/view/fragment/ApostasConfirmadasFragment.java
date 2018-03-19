@@ -1,12 +1,14 @@
 package caixa.gov.br.loterias.view.fragment;
 
 import android.app.DatePickerDialog;
+import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
@@ -24,6 +26,7 @@ import java.util.List;
 import java.util.Locale;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.model.bean.ApostaPageRequest;
 import caixa.gov.br.loterias.model.bo.ApostaBO;
 import caixa.gov.br.loterias.model.bo.MensagensNetwork;
 import caixa.gov.br.loterias.model.bo.silce.RequestListener;
@@ -33,6 +36,7 @@ import caixa.gov.br.loterias.model.bo.silce.dto.MesAnoDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOApostaDTOResponse;
 import caixa.gov.br.loterias.utils.AppUtils;
 import caixa.gov.br.loterias.utils.ViewUtils;
+import caixa.gov.br.loterias.view.ApostasConfirmadasActivity;
 import caixa.gov.br.loterias.view.adapter.ApostasConfirmadasAdapter;
 import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
 import caixa.gov.br.loterias.view.custom.MonthYearPickerDialog;
@@ -43,9 +47,10 @@ import caixa.gov.br.loterias.view.custom.MonthYearPickerDialog_;
  */
 
 @EFragment(R.layout.fragment_apostas_confirmadas)
-public class ApostasConfirmadasFragment extends Fragment {
+public class ApostasConfirmadasFragment extends Fragment implements ApostasConfirmadasActivity.OnScrollReachBottomListener {
 
     private static final String MONTH_YEAR_DIALOG = "MonthYearPickerDialog";
+    private static final int PAGE_SIZE = 30;
 
     @Bean
     protected ApostaBO apostaBO;
@@ -56,14 +61,30 @@ public class ApostasConfirmadasFragment extends Fragment {
     @ViewById
     protected RecyclerView apostasConfirmadasRecyclerView;
 
-    private Calendar currentCalendar;
+    @ViewById
+    protected View apostasLoading;
+
     private List<MesAnoDTO> mesesAnosDisponiveis;
+    private boolean hasMoreItems;
+    private boolean isLoading;
+    private ApostaPageRequest page;
 
     private AlertDialog alertDialog;
 
     @AfterViews
     protected void init(){
-        requestMesesAnosDisponiveis();
+        if(getActivity() != null){
+            LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+            apostasConfirmadasRecyclerView.setLayoutManager(layoutManager);
+            DividerItemDecoration divider = new DividerItemDecoration(getActivity(), layoutManager.getOrientation());
+            Drawable dividerDrawable = ContextCompat.getDrawable(getActivity(), R.drawable.recyclerview_divider);
+            if(dividerDrawable != null){
+                divider.setDrawable(dividerDrawable);
+            }
+            apostasConfirmadasRecyclerView.addItemDecoration(divider);
+            apostasConfirmadasRecyclerView.setNestedScrollingEnabled(false);
+            requestMesesAnosDisponiveis();
+        }
     }
 
     private void requestMesesAnosDisponiveis() {
@@ -71,25 +92,35 @@ public class ApostasConfirmadasFragment extends Fragment {
         apostaBO.getDatasApostasConfirmadas(new RequestListener<MesAnoDTOResponse>() {
             @Override
             public void onSucess(MesAnoDTOResponse result) {
-                onMesesAnosDisponiveisResult(result);
+                if(getActivity() != null){
+                    alertDialog.dismiss();
+                    onMesesAnosDisponiveisResult(result);
+                }
             }
 
             @Override
             public void onError(VolleyError error) {
-                alertDialog.dismiss();
-                String msgError = MensagensNetwork.setMensagem(error, getActivity());
-                ViewUtils.alert(getActivity(), msgError);
-
-                currentCalendar = null;
-                updateResultDate();
+                if(getActivity() != null){
+                    alertDialog.dismiss();
+                    String msgError = MensagensNetwork.setMensagem(error, getActivity());
+                    ViewUtils.alert(getActivity(), msgError);
+                    page = null;
+                    hasMoreItems = false;
+                    updateResultDate();
+                }
             }
         });
     }
 
     private void updateResultDate(){
-        if(currentCalendar != null){
+        if(page != null){
+            Calendar cal = Calendar.getInstance();
+            cal.set(Calendar.MONTH, (page.getMes() - 1));
+            cal.set(Calendar.YEAR, page.getAno());
+            cal.set(Calendar.DAY_OF_MONTH, 1);
+
             String dateStr = new SimpleDateFormat("MMMM yyyy", Locale.getDefault())
-                    .format(currentCalendar.getTime().getTime());
+                    .format(cal.getTime().getTime());
             dateResultTxt.setText(AppUtils.capitalizeFirstChar(dateStr));
         }else{
             //TODO: validar mensagem de erro.
@@ -102,17 +133,24 @@ public class ApostasConfirmadasFragment extends Fragment {
         if(mesesAnosDisponiveis != null){
             MonthYearPickerDialog pd = MonthYearPickerDialog_.builder()
                     .mesesAnos(mesesAnosDisponiveis)
+                    .mesDefault(page != null? page.getMes() : null)
+                    .anoDefault(page != null? page.getAno() : null)
                     .build();
 
             pd.show(getActivity().getSupportFragmentManager(), MONTH_YEAR_DIALOG);
             pd.setListener(new DatePickerDialog.OnDateSetListener(){
                 @Override
                 public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                    currentCalendar.set(year, month, 1);
-                    updateResultDate();
+                    page = new ApostaPageRequest(PAGE_SIZE);
+                    page.setAno(year);
+                    page.setMes(month + 1);
+                    page.setOffset(0);
 
-                    alertDialog = LoadingViewLoterias.show(getActivity());
-                    requestApostasConfirmadas(month, year);
+                    hasMoreItems = true;
+                    apostasConfirmadasRecyclerView.setAdapter(null);
+
+                    updateResultDate();
+                    requestApostasConfirmadas();
                 }
             });
         }
@@ -126,44 +164,83 @@ public class ApostasConfirmadasFragment extends Fragment {
             int mes = mesAno.getMes().getValor().intValue();
             int ano = mesAno.getAno().intValue();
 
-            currentCalendar = Calendar.getInstance();
-            currentCalendar.set(Calendar.MONTH, mes - 1);
-            currentCalendar.set(Calendar.YEAR, ano);
+            page = new ApostaPageRequest(PAGE_SIZE);
+            page.setAno(ano);
+            page.setMes(mes);
+            page.setOffset(0);
 
-            requestApostasConfirmadas(mes, ano);
+            hasMoreItems = true;
+            requestApostasConfirmadas();
         }else{
-            currentCalendar = null;
+            page = null;
+            hasMoreItems = false;
         }
 
         updateResultDate();
     }
 
-    private void requestApostasConfirmadas(int mes, int ano) {
-        apostaBO.getApostasConfirmadas(mes, ano, new RequestListener<ResultadoPesquisaPaginadaDTOApostaDTOResponse>() {
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        alertDialog.dismiss();
+    }
+
+    private void onApostasConfirmadasResult(ResultadoPesquisaPaginadaDTOApostaDTOResponse result){
+        List<ApostaDTO> apostasList = result.getPayload().getLista();
+        if(apostasList != null){
+            if(PAGE_SIZE > apostasList.size()){
+                hasMoreItems = false;
+            }
+            page.setOffset(page.getOffset() + apostasList.size());
+
+            ApostasConfirmadasAdapter adapter = (ApostasConfirmadasAdapter)apostasConfirmadasRecyclerView.getAdapter();
+            if(adapter == null){
+                adapter = new ApostasConfirmadasAdapter(getActivity(), apostasList);
+                apostasConfirmadasRecyclerView.setAdapter(adapter);
+            }else{
+                adapter.addApostasList(apostasList);
+                adapter.notifyDataSetChanged();
+            }
+        }
+    }
+
+    private void requestApostasConfirmadas() {
+        if(page == null){
+            return;
+        }
+
+        isLoading = true;
+        apostasLoading.setVisibility(View.VISIBLE);
+        apostaBO.getApostasConfirmadas(page, new RequestListener<ResultadoPesquisaPaginadaDTOApostaDTOResponse>() {
             @Override
             public void onSucess(ResultadoPesquisaPaginadaDTOApostaDTOResponse result) {
-                alertDialog.dismiss();
+                isLoading = false;
+                if(getActivity() != null) {
+                    alertDialog.dismiss();
+                    apostasLoading.setVisibility(View.GONE);
 
-                List<ApostaDTO> apostasList = result.getPayload().getLista();
-                if(apostasList != null){
-                    apostasConfirmadasRecyclerView.setAdapter(new ApostasConfirmadasAdapter(getActivity(), apostasList));
-
-                    LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-                    apostasConfirmadasRecyclerView.setLayoutManager(layoutManager);
-                    DividerItemDecoration divider = new DividerItemDecoration(getActivity(), layoutManager.getOrientation());
-                    divider.setDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.drawer_linha_divisao_cinza_claro));
-                    apostasConfirmadasRecyclerView.addItemDecoration(divider);
-                    apostasConfirmadasRecyclerView.setNestedScrollingEnabled(false);
+                    onApostasConfirmadasResult(result);
                 }
             }
 
             @Override
             public void onError(VolleyError error) {
-                alertDialog.dismiss();
-                String msgError = MensagensNetwork.setMensagem(error, getActivity());
-                ViewUtils.alert(getActivity(), msgError);
+                isLoading = false;
+                if(getActivity() != null){
+                    alertDialog.dismiss();
+                    apostasLoading.setVisibility(View.GONE);
+
+                    String msgError = MensagensNetwork.setMensagem(error, getActivity());
+                    ViewUtils.alert(getActivity(), msgError);
+                }
             }
         });
     }
 
+    @Override
+    public void onScrollReachBottom() {
+        if(!isLoading && hasMoreItems){
+            requestApostasConfirmadas();
+        }
+    }
 }

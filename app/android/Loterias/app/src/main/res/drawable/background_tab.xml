@@ -5,8 +5,8 @@
             <solid android:color="@color/verdeazul" />
         </shape>
     </item>
-    <item android:drawable="@drawable/tab_seta"
-        android:width="20dp"
-        android:height="8dp"
-        android:gravity="center_horizontal|bottom"/>
+    <item>
+        <bitmap android:src="@drawable/tab_seta"
+            android:gravity="center_horizontal|bottom"/>
+    </item>
 </layer-list>

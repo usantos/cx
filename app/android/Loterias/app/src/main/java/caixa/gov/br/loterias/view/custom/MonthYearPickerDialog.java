@@ -39,6 +39,12 @@ public class MonthYearPickerDialog extends DialogFragment {
     @FragmentArg
     protected List<MesAnoDTO> mesesAnos;
 
+    @FragmentArg
+    protected Integer anoDefault;
+
+    @FragmentArg
+    protected Integer mesDefault;
+
     private HashMap<Integer, List<Integer>> monthYearsMap = new HashMap<>();
 
     public void setListener(DatePickerDialog.OnDateSetListener listener) {
@@ -46,12 +52,16 @@ public class MonthYearPickerDialog extends DialogFragment {
     }
 
     private void setMonthsAvailable(int year){
+        setMonthsAvailable(year, null);
+    }
+
+    private void setMonthsAvailable(int year, Integer selectedMonth){
         yearPicker.setOnValueChangedListener(null);
 
         String[] months = DateUtils.getAllMonthsOfYear();
         int minValue;
         int maxValue;
-        int currentValue;
+        int currentValue = 0;
 
         if(!monthYearsMap.isEmpty()){
             List<Integer> list = monthYearsMap.get(year);
@@ -59,11 +69,14 @@ public class MonthYearPickerDialog extends DialogFragment {
             for (int i = 0; i < list.size(); i++){
                 String month = months[list.get(i) - 1];
                 arr[i] = AppUtils.capitalizeFirstChar(month);
+
+                if(selectedMonth != null && (selectedMonth.intValue() == list.get(i))){
+                    currentValue = i;
+                }
             }
             months = arr;
             minValue = 0;
             maxValue = arr.length - 1;
-            currentValue = 0;
         }else{
             for (int i =0; i < months.length; i++){
                 months[i] = AppUtils.capitalizeFirstChar(months[i]);
@@ -73,10 +86,12 @@ public class MonthYearPickerDialog extends DialogFragment {
             maxValue = 12;
         }
 
-        monthPicker.setDisplayedValues(months);
+        monthPicker.setDisplayedValues(null);
         monthPicker.setMinValue(minValue);
         monthPicker.setMaxValue(maxValue);
         monthPicker.setValue(currentValue);
+
+        monthPicker.setDisplayedValues(months);
 
         yearPicker.setOnValueChangedListener(changeValueListener);
     }
@@ -142,17 +157,30 @@ public class MonthYearPickerDialog extends DialogFragment {
         if(monthYearsMap.isEmpty()){
             int minYear = cal.get(Calendar.YEAR) - 200;
             int maxYear = cal.get(Calendar.YEAR);
-
             yearPicker.setMinValue(minYear);
             yearPicker.setMaxValue(maxYear);
             yearPicker.setValue(maxYear);
             setMonthsAvailable(maxYear);
         }else if(yearValues != null && yearValues.length > 0){
             yearPicker.setDisplayedValues(yearValues);
-            yearPicker.setValue(0);
             yearPicker.setMinValue(0);
             yearPicker.setMaxValue(yearValues.length - 1);
-            setMonthsAvailable(Integer.parseInt(yearValues[0]));
+
+            int yearDefault = Integer.parseInt(yearValues[0]);
+            if(anoDefault != null){
+                int i = 0;
+                for(Integer year : monthYearsMap.keySet()) {
+                    if(year == anoDefault.intValue()){
+                        yearDefault = year;
+                        break;
+                    }
+                    i++;
+                }
+                yearPicker.setValue(i);
+            }else{
+                yearPicker.setValue(0);
+            }
+            setMonthsAvailable(yearDefault, mesDefault);
         }
 
         builder.setView(dialog)
@@ -164,7 +192,6 @@ public class MonthYearPickerDialog extends DialogFragment {
                         if(listener != null){
                             if(monthYearsMap != null){
                                 int year = Integer.parseInt(yearPicker.getDisplayedValues()[yearPicker.getValue()]);
-
                                 String monthName = monthPicker.getDisplayedValues()[monthPicker.getValue()];
                                 int month = DateUtils.parseMonthName(monthName);
                                 listener.onDateSet(null, year, month, 0);

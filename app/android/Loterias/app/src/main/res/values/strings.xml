@@ -140,6 +140,7 @@
     <string name="label_timemania">timemania</string>
     <string name="label_loteca">loteca</string>
     <string name="label_lotogol">lotogol</string>
+    <string name="label_federal">federal</string>
     <string name="label_ajuda">ajuda</string>
     <string name="time_surpresa">Time Surpresa</string>
     <string name="escolha_outro_time">Escolha outro time</string>
@@ -190,9 +191,7 @@
 
     <string name="key_introducao">key_introducao</string>
     <string name="title_activity_jogos_confirmados_premio">JogosConfirmadosPremioActivity</string>
-    <string name="title_activity_jogos_confirmados_premio_mercado_pago">
-        JogosConfirmadosPremioMercadoPagoActivity
-    </string>
+    <string name="title_activity_jogos_confirmados_premio_mercado_pago">JogosConfirmadosPremioMercadoPagoActivity</string>
 
     <string name="label_faixa_premiacao">Faixa de\npremiação</string>
     <string name="label_sorteio_case">Sorteio</string>

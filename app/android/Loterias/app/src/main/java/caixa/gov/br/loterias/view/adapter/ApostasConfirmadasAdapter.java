@@ -22,7 +22,7 @@ import caixa.gov.br.loterias.utils.ViewUtils;
 public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostasConfirmadasAdapter.ViewHolder> {
 
     private final Context context;
-    private List<ApostaDTO> list;
+    private final List<ApostaDTO> list;
 
     public ApostasConfirmadasAdapter(Context context, List<ApostaDTO> list){
         this.list = list;
@@ -30,6 +30,12 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostasConfi
     }
 
     private OnApostasConfirmadasClick onApostasConfirmadasClick;
+
+    public void addApostasList(List<ApostaDTO> apostasList) {
+        if(apostasList != null){
+            list.addAll(apostasList);
+        }
+    }
 
     public interface OnApostasConfirmadasClick{
         void onReload(int position);
