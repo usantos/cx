@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -141,6 +142,15 @@ public class ListaComprasDetalhesAdapter extends BaseAdapter {
                 lotecaRecyclerViewItemCompra.setAdapter(lotecaAdapter);
                 lotecaRecyclerViewItemCompra.setExpanded(true);
 
+            }else if (listaAposta.get(idLista).getModalidade() == ApostaDTO.ModalidadeEnum.LOTOGOL){
+                View child = layoutInflater.inflate(R.layout.item_compras_lotogol_layout, null);
+                seusNumerosItemListaComprasTextView.setText("Sua aposta");
+                ExpandableHeightRecyclerView lotecaRecyclerViewItemCompra = (ExpandableHeightRecyclerView) child.findViewById(R.id.lotecaRecyclerViewItemCompra);
+                itemComprasContentModalideLinearLayout.addView(child);
+                DetalhesApostaLotogolDetalhesComprasAdapter lotogolAdapter = new DetalhesApostaLotogolDetalhesComprasAdapter(listaAposta.get(idLista).getPartidasLotogol());
+                lotecaRecyclerViewItemCompra.setLayoutManager(new LinearLayoutManager(activity));
+                lotecaRecyclerViewItemCompra.setAdapter(lotogolAdapter);
+                lotecaRecyclerViewItemCompra.setExpanded(true);
             }else{
                 View child = layoutInflater.inflate(R.layout.item_compras_generico_layout, null);
                 itemComprasContentModalideLinearLayout.addView(child);
@@ -150,7 +160,7 @@ public class ListaComprasDetalhesAdapter extends BaseAdapter {
 
         }else{
             convertView = layoutInflater.inflate(R.layout.list_group_compras, null);
-            ImageView setaIndicador = (ImageView) convertView.findViewById(R.id.setaComprasGroup);
+            FrameLayout setaIndicador = (FrameLayout) convertView.findViewById(R.id.setaComprasGroup);
             setaIndicador.setVisibility(View.INVISIBLE);
 
             TextView dataCompra = (TextView) convertView.findViewById(R.id.dataCompra);

@@ -78,14 +78,25 @@
                 android:gravity="end"
                 />
 
-            <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:src="@drawable/seta_verde"
+            <!--<ImageView-->
+                <!--android:padding="7dp"-->
+                <!--android:layout_width="11dp"-->
+                <!--android:layout_height="11dp"-->
+                <!--android:src="@drawable/seta_direita_preta"-->
+                <!--android:layout_marginTop="20dp"-->
+                <!--android:layout_gravity="end"-->
+                <!--android:id="@+id/setaComprasGroup"-->
+                <!--/>-->
+            <FrameLayout
+                android:layout_width="11dp"
+                android:layout_height="11dp"
+                android:padding="7dp"
+                android:background="@drawable/seta_direita_preta"
                 android:layout_marginTop="20dp"
                 android:layout_gravity="end"
-                android:id="@+id/setaComprasGroup"
-                />
+                android:id="@+id/setaComprasGroup">
+
+            </FrameLayout>
         </LinearLayout>
 
 
