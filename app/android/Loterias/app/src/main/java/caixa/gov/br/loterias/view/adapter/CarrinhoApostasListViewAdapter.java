@@ -1,7 +1,6 @@
 package caixa.gov.br.loterias.view.adapter;
 
 import android.app.Dialog;
-import android.support.v7.app.AlertDialog;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -99,6 +98,8 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
         TextView quantidadeApostadas = holder.dadosApostaCarrinho.findViewById(R.id.quantidadeApostadas);
         TextView quantidadeSorteios = holder.dadosApostaCarrinho.findViewById(R.id.quantidadeSorteios);
         Button buttonApostaEspelho = holder.dadosApostaCarrinho.findViewById(R.id.buttonApostaEspelho);
+        LinearLayout layoutTimeCoracao = holder.dadosApostaCarrinho.findViewById(R.id.layoutTimeCoracao);
+        TextView textViewTimeCoracao = holder.dadosApostaCarrinho.findViewById(R.id.textViewTimeCoracao);
 
         String quantidadeApostadasString = "";
         String quantidadeSorteiosString = "";
@@ -137,8 +138,8 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
             holder.recycleViewDetalheAposta.setLayoutManager(new LinearLayoutManager(parentActivity));
             holder.recycleViewDetalheAposta.setAdapter(detalheApostaLotecaAdapter);
             holder.recycleViewDetalheAposta.setExpanded(true);
-            swipeLayout.setSwipeEnabled(Boolean.FALSE);
             animacao = Boolean.FALSE;
+            swipeLayout.setSwipeEnabled(animacao);
 
             holder.layoutCabecalhoLoteca.setVisibility(View.VISIBLE);
         } else if (apostas.get(position).getPartidasLotogol() != null && !apostas.get(position).getPartidasLotogol().isEmpty()) {
@@ -150,8 +151,13 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
             ViewGroup.MarginLayoutParams marginLayoutParams = (ViewGroup.MarginLayoutParams) holder.recycleViewDetalheAposta.getLayoutParams();
             marginLayoutParams.setMargins(0, 3, 0, 0);
             holder.recycleViewDetalheAposta.setLayoutParams(marginLayoutParams);
-            swipeLayout.setSwipeEnabled(Boolean.FALSE);
             animacao = Boolean.FALSE;
+            swipeLayout.setSwipeEnabled(animacao);
+        }
+
+        if (ModalidadeEnum.TIMEMANIA == aposta.getModalidade()) {
+            layoutTimeCoracao.setVisibility(View.VISIBLE);
+            textViewTimeCoracao.setText(aposta.getTimeDoCoracao().getNome());
         }
 
         String numeroStr = "";
@@ -176,7 +182,7 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
         holder.numerosAposta.setText(numeroStr);
         ViewUtils.setMoedaFormatHtml(aposta.getValor(), holder.valorAposta);
 
-        if(animacao){
+        if (animacao) {
             AnimacaoSwipeList.animacaoSwipeList(context, position, swipeLayout);
         }
     }
@@ -199,7 +205,7 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
                 loadViewProgress.dismiss();
                 if (error.networkResponse != null && error.networkResponse.statusCode != 401) {
                     ViewUtils.alert(parentActivity, MensagensNetwork.setMensagem(error, context));
-                }else{
+                } else {
                     deletarApostaBaseLocal(aposta, Boolean.TRUE);
                 }
             }
@@ -211,10 +217,10 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
         return apostas.size();
     }
 
-    private void deletarApostaBaseLocal(IdentificaoDeUmaApostaDas8Modalidades aposta, boolean local){
+    private void deletarApostaBaseLocal(IdentificaoDeUmaApostaDas8Modalidades aposta, boolean local) {
         DBLoteriasCrud crud = new DBLoteriasCrud(context);
         crud.deleteIdentificaoDeUmaApostaDas8Modalidades(aposta);
-        if(local){
+        if (local) {
             parentActivity.lerCarrinhoLocal(Boolean.FALSE);
         }
     }
