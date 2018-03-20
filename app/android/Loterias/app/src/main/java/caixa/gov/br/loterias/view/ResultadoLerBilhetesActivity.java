@@ -36,6 +36,7 @@ import caixa.gov.br.loterias.model.bo.silce.dto.ResultadoConsultaBilheteDTORespo
 import caixa.gov.br.loterias.utils.EstiloModalidadeAposta;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.adapter.FaixaPremiacaoAdapter;
+import caixa.gov.br.loterias.view.adapter.RetirarPremioDescricaoAdapter;
 import caixa.gov.br.loterias.view.custom.ExpandableHeightRecyclerView;
 import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
 
@@ -53,7 +54,7 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
     TextView tituloModalidadeTextView, limiteDiarioResultadoTextView, premioResultadoTextView, mensagemNaoPremiadoTextView, statusResultadoNaoPremiadTextView;
 
     @ViewById
-    ExpandableHeightRecyclerView listaFaixaPremiacaoExpandableHeightRecyclerView;
+    ExpandableHeightRecyclerView listaFaixaPremiacaoExpandableHeightRecyclerView, listaComoRetirarPremio;
 
     @Extra
     String codBarras;
@@ -118,7 +119,7 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
                 resultadoConsultaBilheteDTO = response.getPayload();
                 if (resultadoConsultaBilheteDTO.getSituacao().getDescricao().equals("Premiada")) {
                     atualizarLayoutPremiado();
-                }else{
+                } else {
                     atualizarLayoutNaoPremiado();
                 }
             }
@@ -146,6 +147,7 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
         tituloModalidadeTextView.setText(resultadoConsultaBilheteDTO.getModalidadeDTO().getDescricao());
         limiteDiarioResultadoTextView.setText(ViewUtils.getMoedaFormat(sessaoUsuario.getParametrosSimulacao().getValorLimiteDiario()));
         createListe();
+        listaMockDadosComoRetirarPremio();
 
         if (resultadoConsultaBilheteDTO.getValorPremio() != null) {
             if (resultadoConsultaBilheteDTO.getValorPremio() != null) {
@@ -154,11 +156,12 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
         }
     }
 
-    private void atualizarLayoutNaoPremiado(){
+    private void atualizarLayoutNaoPremiado() {
         corpoBilhetePremiadoLinearLayout.setVisibility(View.GONE);
         corpoBilheteNaoPremiadoLinearLayout.setVisibility(View.VISIBLE);
-//        if(resultadoConsultaBilheteDTO.getSituacao().getDescricao())
+//       TODO criar condicional de acordo código da situação
         statusResultadoNaoPremiadTextView.setText(R.string.label_nao_foi_dessa_vez);
+        mensagemNaoPremiadoTextView.setText(R.string.label_mock_texto_nao_premiado);
     }
 
     private void createToolBar() {
@@ -191,5 +194,18 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
         }
 
         return mockList;
+    }
+
+    //TODO mock de dados, ainda não determinado texto
+    private void listaMockDadosComoRetirarPremio(){
+        List<String> mockList = new ArrayList<>();
+
+        for (int i = 0; i < 3; i++) {
+            mockList.add("");
+        }
+
+        listaComoRetirarPremio.setAdapter(new RetirarPremioDescricaoAdapter(mockList));
+        listaComoRetirarPremio.setExpanded(Boolean.TRUE);
+        listaComoRetirarPremio.setLayoutManager(new LinearLayoutManager(this));
     }
 }

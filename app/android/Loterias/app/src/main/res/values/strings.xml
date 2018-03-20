@@ -204,4 +204,10 @@
     <string name="label_premio">Prêmio</string>
     <string name="label_veja_retirar_premio">Veja como retirar o seu prêmio:</string>
 
+    <!--Mock-->
+    <string name="label_mock_texto_nao_premiado">Lorem ipsum dolor sit amet,\nconsectetur adipiscing elit.\nAenean euismod bibendum laoreet.\nProin gravida dolor sit amet lacus\naccumsan et viverra justo commodo</string>
+    <string name="label_mock_titulo_como_retirar_premio">Lorem ipsum dolor sit amet.</string>
+    <string name="label_mock_sub_titulo_como_retirar_premio">Adipisicing elit, sed do eiusmod tempor.</string>
+    <string name="label_mock_lista_como_retirar_premio">Sed do eiudsmod;</string>
+
 </resources>
