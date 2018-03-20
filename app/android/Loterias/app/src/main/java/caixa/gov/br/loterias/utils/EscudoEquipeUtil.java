@@ -8,6 +8,7 @@ import android.util.Log;
 import android.widget.ImageView;
 
 import com.android.volley.VolleyError;
+import com.bumptech.glide.Glide;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -21,6 +22,7 @@ import caixa.gov.br.loterias.model.bo.silce.dto.ParametroEquipe;
 
 /**
  * Created by joafilho on 22/01/2018.
+ * Class EscudoEquipeUtil
  */
 
 public class EscudoEquipeUtil {
@@ -36,10 +38,7 @@ public class EscudoEquipeUtil {
                     if (StringUtils.isNotEmpty(imagemString) || imagemString != null) {
                         try{
                             byte[] bytes = Base64.decode(imagemString, Base64.DEFAULT);
-
-                            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-
-                            imageView.setImageBitmap(Bitmap.createBitmap(bitmap));
+                            Glide.with(context).load(bytes).into(imageView);
                         }catch (Exception exception){
                             Log.d("error", "Error: ", exception.getCause());
                         }

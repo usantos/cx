@@ -14,14 +14,16 @@
         android:layout_height="wrap_content" />
 
     <TextView
+        style="@style/ArialMT"
         android:id="@+id/aposta_versus_lotogol"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginStart="21dp"
         android:layout_marginTop="9dp"
         android:text="@string/label_x_minusculo"
-        android:textColor="@color/cinza" />
+        android:textColor="@color/cinza"
+        android:textSize="14sp"/>
 
     <caixa.gov.br.loterias.view.custom.ApostaEquipeLototgolView_
         android:id="@+id/aposta_equipe_lotogol_dois"

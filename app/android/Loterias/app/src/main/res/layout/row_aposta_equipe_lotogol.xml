@@ -9,7 +9,7 @@
 
     <ImageView
         android:id="@+id/imagem_escudo_aposta_partida_lotogol"
-        android:layout_width="30dp"
+        android:layout_width="wrap_content"
         android:layout_height="30dp"
         android:layout_marginStart="9dp"
         android:background="@drawable/time" />
@@ -22,11 +22,12 @@
         android:background="@drawable/lotogol_selecionado_0" />
 
     <TextView
+        style="@style/ArialMT"
         android:id="@+id/texto_aposta_partida_lotogol"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
-        android:textSize="14.2sp"
+        android:textSize="14sp"
         android:textColor="@color/cinza"/>
 
 </LinearLayout>

@@ -197,8 +197,8 @@
     <string name="label_sorteio_case">Sorteio</string>
     <string name="label_premiacao">Premiação</string>
     <string name="label_nao_foi_dessa_vez">Não foi dessa vez :(</string>
-    <string name="label_pode_comemorar">Pode comemorar</string>
-    <string name="label_voce_foi_premiado">você foi premiado</string>
+    <string name="label_pode_comemorar">Pode comemorar,</string>
+    <string name="label_voce_foi_premiado">você foi premiado!</string>
     <string name="label_limite_diario">Limite diário</string>
     <string name="label_abertura_aposta">Abertura da aposta</string>
     <string name="label_premio">Prêmio</string>

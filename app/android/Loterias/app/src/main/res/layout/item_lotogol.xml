@@ -38,14 +38,13 @@
         android:id="@+id/gridViewPlacarDuasColunas"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
         android:layout_marginLeft="22dp"
         android:layout_marginRight="22dp"
+        android:layout_marginTop="5dp"
         android:gravity="center_horizontal"
         android:isScrollContainer="false"
         android:numColumns="2"
-        android:verticalSpacing="5dp"
-        />
+        android:verticalSpacing="5dp" />
 
 
 </LinearLayout>
