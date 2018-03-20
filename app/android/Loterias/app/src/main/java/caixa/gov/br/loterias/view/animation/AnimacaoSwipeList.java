@@ -26,7 +26,7 @@ public class AnimacaoSwipeList {
                         swipeLayout.close();
                         swipeLayout.startAnimation(AnimationUtils.loadAnimation(context, R.anim.bounce_left));
                     }
-                }, (1000 + (position == 0 ? position + 2 : position * 8)));
+                }, (1500 + (position == 0 ? position + 2 : position * 8)));
             }
         });
     }

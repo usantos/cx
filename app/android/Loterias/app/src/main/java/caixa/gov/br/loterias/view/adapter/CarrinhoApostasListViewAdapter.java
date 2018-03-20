@@ -137,6 +137,8 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
             holder.recycleViewDetalheAposta.setLayoutManager(new LinearLayoutManager(parentActivity));
             holder.recycleViewDetalheAposta.setAdapter(detalheApostaLotecaAdapter);
             holder.recycleViewDetalheAposta.setExpanded(true);
+            swipeLayout.setSwipeEnabled(Boolean.FALSE);
+            animacao = Boolean.FALSE;
 
             holder.layoutCabecalhoLoteca.setVisibility(View.VISIBLE);
         } else if (apostas.get(position).getPartidasLotogol() != null && !apostas.get(position).getPartidasLotogol().isEmpty()) {
@@ -148,6 +150,8 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
             ViewGroup.MarginLayoutParams marginLayoutParams = (ViewGroup.MarginLayoutParams) holder.recycleViewDetalheAposta.getLayoutParams();
             marginLayoutParams.setMargins(0, 3, 0, 0);
             holder.recycleViewDetalheAposta.setLayoutParams(marginLayoutParams);
+            swipeLayout.setSwipeEnabled(Boolean.FALSE);
+            animacao = Boolean.FALSE;
         }
 
         String numeroStr = "";
