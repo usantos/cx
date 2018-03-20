@@ -61,20 +61,26 @@ public class PartidaViewLoteca extends LinearLayout {
         apostas_partida_loteca_view_um.getImageApostaPartidaLoteca().setSelected(parametroPartida.getEquipe1().getVitoria());
         apostas_partida_loteca_view_um.getLayout_row_aposta_partida_loteca().setBackground(getContext().getResources().getDrawable(R.color.transparente));
         apostas_partida_loteca_view_um.getImageApostaPartidaLoteca().setBackground(getContext().getResources().getDrawable(R.drawable.select_unselect_circle_generico));
-
+        if (parametroPartida.getEquipe1().getVitoria() == true){
+            apostas_partida_loteca_view_um.getTextApostaPartidaLoteca().setTypeface(Typeface.DEFAULT_BOLD);
+        }
         apostas_partida_loteca_view_empate.getTextApostaPartidaLoteca().setText("X");
         apostas_partida_loteca_view_empate.getTextApostaPartidaLoteca().setTextColor(getContext().getResources().getColor(R.color.branco));
         apostas_partida_loteca_view_empate.getImageApostaPartidaLoteca().setSelected(parametroPartida.getEmpate());
         apostas_partida_loteca_view_empate.getLayout_row_aposta_partida_loteca().setBackground(getContext().getResources().getDrawable(R.color.transparente));
         apostas_partida_loteca_view_empate.getImageApostaPartidaLoteca().setBackground(getContext().getResources().getDrawable(R.drawable.select_unselect_circle_generico));
-
+        if(parametroPartida.getEmpate() == true){
+            apostas_partida_loteca_view_empate.getTextApostaPartidaLoteca().setTypeface(Typeface.DEFAULT_BOLD);
+        }
         apostas_partida_loteca_view_dois.getTextApostaPartidaLoteca().setText(parametroPartida.getEquipe2().getNome());
         apostas_partida_loteca_view_dois.getTextApostaPartidaLoteca().setTextColor(getContext().getResources().getColor(R.color.branco));
         apostas_partida_loteca_view_dois.getImageApostaPartidaLoteca().setSelected(parametroPartida.getEquipe2().getVitoria());
         apostas_partida_loteca_view_dois.getImageApostaPartidaLoteca().setBackgroundColor(getContext().getResources().getColor(R.color.branco));
         apostas_partida_loteca_view_dois.getLayout_row_aposta_partida_loteca().setBackground(getContext().getResources().getDrawable(R.color.transparente));
         apostas_partida_loteca_view_dois.getImageApostaPartidaLoteca().setBackground(getContext().getResources().getDrawable(R.drawable.select_unselect_circle_generico));
-
+        if(parametroPartida.getEquipe2().getVitoria() == true){
+            apostas_partida_loteca_view_dois.getTextApostaPartidaLoteca().setTypeface(Typeface.DEFAULT_BOLD);
+        }
     }
 
     public PartidaViewLoteca(Context context) {
