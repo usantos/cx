@@ -1,6 +1,7 @@
 package caixa.gov.br.loterias.view.fragment;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -186,7 +187,7 @@ public class ApostasConfirmadasFragment extends Fragment implements ApostasConfi
     }
 
     private void onApostasConfirmadasResult(ResultadoPesquisaPaginadaDTOApostaDTOResponse result){
-        List<ApostaDTO> apostasList = result.getPayload().getLista();
+        final List<ApostaDTO> apostasList = result.getPayload().getLista();
         if(apostasList != null){
             if(PAGE_SIZE > apostasList.size()){
                 hasMoreItems = false;
@@ -196,6 +197,24 @@ public class ApostasConfirmadasFragment extends Fragment implements ApostasConfi
             ApostasConfirmadasAdapter adapter = (ApostasConfirmadasAdapter)apostasConfirmadasRecyclerView.getAdapter();
             if(adapter == null){
                 adapter = new ApostasConfirmadasAdapter(getActivity(), apostasList);
+                adapter.setOnApostasConfirmadasListener(new ApostasConfirmadasAdapter.OnApostasConfirmadasListener() {
+                    @Override
+                    public void onReload(int position) {
+                        //TODO:
+                    }
+
+                    @Override
+                    public void onFavorite(int position) {
+                        //TODO:
+                    }
+
+                    @Override
+                    public void onItemClick(int position) {
+                        ApostaDTO apostaDTO = apostasList.get(position);
+                        startActivity(new Intent());
+                    }
+                });
+
                 apostasConfirmadasRecyclerView.setAdapter(adapter);
             }else{
                 adapter.addApostasList(apostasList);

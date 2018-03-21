@@ -10,12 +10,38 @@
         <item name="buttonStyle">@style/ButtonNotShadow</item>
     </style>
 
+    <style name="AppTheme.BrancoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorPrimary">@color/branco</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:colorControlActivated">@color/verdeazul</item>
+        <item name="android:colorControlNormal">@color/cinzaseekbar</item>
+    </style>
+
+    <style name="AppTheme.DegradeActionBar">
+        <item name="android:windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorPrimary">@color/verdeagua</item>
+        <item name="colorPrimaryDark">@color/branco</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:colorControlActivated">@color/verdeazul</item>
+        <item name="android:colorControlNormal">@color/cinzaseekbar</item>
+    </style>
+
+    <style name="MainWhiteToolbar" parent="AppTheme">
+        <item name="android:textColorSecondary">@color/textColorToolbar</item>
+        <item name="android:background">@color/branco</item>
+    </style>
+
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:elevation">0dp</item>
         <item name="elevation">0dp</item>
     </style>
 
@@ -32,24 +58,32 @@
         <item name="android:background">@color/black_overlay</item>
     </style>
 
-    <style name="ToolbarColored" parent="AppTheme">
-        <item name="android:textColorSecondary">@color/textColorToolbar</item>
-    </style>
-
-    <style name="AppTheme.DegradeActionBar">
+    <style name="SplashTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="android:windowBackground">@drawable/background_splash_screen</item>
+        <item name="android:windowTranslucentStatus">true</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="colorPrimary">@drawable/background_dialogtitle_gradient_color</item>
-        <item name="colorPrimaryDark">@color/branco</item>
     </style>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme.BrancoActionBar">
+    <style name="AppFullScreenTheme" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="colorPrimary">@color/branco</item>
-        <item name="colorPrimaryDark">@color/colorAccent</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <style name="DialogFullScreenTheme" parent="@style/ThemeOverlay.AppCompat.Dialog.Alert">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowAnimationStyle">@null</item>
+        <item name="android:windowMinWidthMajor">100%</item>
+        <item name="android:windowMinWidthMinor">100%</item>
+        <item name="android:windowIsFloating">false</item>
     </style>
 
     <style name="ArialMT" parent="TextAppearance.AppCompat">
@@ -72,29 +106,8 @@
         <item name="android:textColor">@color/cinza</item>
     </style>
 
-    <style name="SplashTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
-        <item name="android:windowBackground">@drawable/background_splash_screen</item>
-    </style>
-
-    <style name="AppFullScreenTheme" parent="@style/Theme.AppCompat.Light.NoActionBar">
-        <item name="android:windowNoTitle">true</item>
-        <item name="windowActionBar">false</item>
-        <item name="android:windowFullscreen">true</item>
-        <item name="android:windowContentOverlay">@null</item>
-    </style>
-
-    <style name="DialogFullScreenTheme" parent="@style/ThemeOverlay.AppCompat.Dialog.Alert">
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:backgroundDimEnabled">false</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowFrame">@null</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:colorBackgroundCacheHint">@null</item>
-        <item name="android:windowAnimationStyle">@null</item>
-        <item name="android:windowMinWidthMajor">100%</item>
-        <item name="android:windowMinWidthMinor">100%</item>
-        <item name="android:windowIsFloating">false</item>
+    <style name="ButtonNotShadow" parent="Base.Widget.AppCompat.Button">
+        <item name="android:outlineProvider">none</item>
     </style>
 
 </resources>

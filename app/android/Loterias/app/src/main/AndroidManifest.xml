@@ -17,6 +17,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity
             android:name=".view.SplashScreenActivity"
             android:configChanges="orientation"
@@ -28,11 +29,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".view.IntroducaoActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".view.LoginActivity"
             android:configChanges="orientation"
@@ -47,6 +50,7 @@
             android:configChanges="orientation"
             android:parentActivityName=".view.IntroducaoActivity"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".view.CadastrarPasso2Activity_"
             android:configChanges="orientation"
@@ -57,6 +61,7 @@
                 android:screenOrientation="portrait"
                 android:value=".view.CadastrarActivity_" />
         </activity>
+
         <activity
             android:name=".view.SimularApostaActivity_"
             android:configChanges="orientation"
@@ -88,8 +93,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.PrincipalActivity"
-            android:label=""
             android:screenOrientation="portrait"
+            android:label=""
             android:theme="@style/AppTheme.BrancoActionBar" />
         <activity
             android:name=".view.TermosUsoActivity"
@@ -210,7 +215,7 @@
             android:name=".view.RestritoDezoitoAnosActivity"
             android:label="@string/title_activity_termos_uso"
             android:theme="@style/AppTheme.DegradeActionBar"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

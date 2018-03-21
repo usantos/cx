@@ -6,7 +6,6 @@ package caixa.gov.br.loterias.model.bo.keycloak;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.util.Log;
@@ -21,7 +20,6 @@ import org.jboss.aerogear.android.authorization.AuthorizationManager;
 import org.jboss.aerogear.android.authorization.AuthzModule;
 import org.jboss.aerogear.android.authorization.oauth2.OAuth2AuthorizationConfiguration;
 import org.jboss.aerogear.android.authorization.oauth2.OAuth2AuthorizationException;
-import org.jboss.aerogear.android.authorization.oauth2.webview.OAuth2WebViewAuthzModule;
 import org.jboss.aerogear.android.core.Callback;
 import org.jboss.aerogear.android.pipe.module.AuthorizationFields;
 
@@ -117,7 +115,14 @@ public class KeycloakBO {
                 @Override
                 public void onFailure(Exception e) {
                     Log.i(TAG, "KeycloakBO.login.onFailure: " + e);
-                    logout(activity);
+
+                    if(e instanceof OAuth2AuthorizationException){
+                        OAuth2AuthorizationException.Error error = ((OAuth2AuthorizationException)e).type;
+                        if(error.equals(OAuth2AuthorizationException.Error.INVALID_GRANT)){
+                            logout(activity);
+                        }
+                    }
+
                     if(callback != null){
                         callback.onFailure(e);
                     }

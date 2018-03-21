@@ -71,7 +71,7 @@ public class CadastroActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setCustomView(imageView);
             getSupportActionBar().setDisplayShowCustomEnabled(true);
-            getSupportActionBar().setBackgroundDrawable(getResources().getDrawable((R.drawable.background_dialogtitle_gradient_color)));
+            getSupportActionBar().setBackgroundDrawable(getResources().getDrawable((R.drawable.background_gradient_verde)));
         }
     }
 

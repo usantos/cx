@@ -16,23 +16,14 @@ import static org.androidannotations.annotations.EBean.Scope.Singleton;
 @EBean(scope = Singleton)
 public class SilceSingleton {
     private RequestQueue queue;
-    private GsonBuilder gsonBuilder;
 
     @AfterInject
     protected void init(){
         this.queue = new RequestQueue(new NoCache(), new BasicNetwork(new HurlStack()));
-        this.gsonBuilder = new GsonBuilder();
+        this.queue.start();
     }
 
     public RequestQueue getRequestQueue() {
         return queue;
-    }
-
-    public <T> void add(Request<T> req) {
-        queue.add(req);
-    }
-
-    public Gson gson() {
-        return gsonBuilder.create();
     }
 }

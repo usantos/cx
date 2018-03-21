@@ -12,17 +12,7 @@
         layout="@layout/app_bar_principal"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-    <!--<android.support.design.widget.NavigationView-->
-    <!--android:id="@+id/nav_view"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:layout_gravity="start"-->
-    <!--android:fitsSystemWindows="true"-->
-    <!--app:itemIconTint="@color/verdeazul"-->
-    <!--app:itemTextColor="@color/cinza"-->
-    <!--app:headerLayout="@layout/nav_header_principal"-->
-    <!--app:menu="@menu/activity_principal_drawer"-->
-    <!--app:itemBackground="@drawable/drawer_item_bg"/>-->
+
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"

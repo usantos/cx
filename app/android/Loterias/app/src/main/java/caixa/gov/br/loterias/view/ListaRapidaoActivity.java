@@ -50,19 +50,11 @@ public class ListaRapidaoActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
         recyclerView = findViewById(R.id.apostasListaRecycleViewRapidao);
         valorTotalCarrinhoRapidao = findViewById(R.id.valorTotalCarrinhoRapidao);
-
-
         callWebservice(0);
-
         ViewUtils.organizaTabLayout(this, R.id.carrinhoRapidaoMainLayout, R.id.apostasListaRecycleViewRapidao, R.id.carrinhoRapidaoScrollView);
     }
-
-
-
-
 
     public void atualizaLayout() {
         configuraActivityCarrinho();

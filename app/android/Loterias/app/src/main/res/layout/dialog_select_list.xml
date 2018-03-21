@@ -15,7 +15,7 @@
         android:paddingRight="16dp"
         android:paddingStart="16sp"
         android:paddingEnd="16sp"
-        android:background="@drawable/background_dialogtitle_gradient_color"
+        android:background="@drawable/background_gradient_verde"
         android:text="@string/titulo_dialog" />
     
     <ListView

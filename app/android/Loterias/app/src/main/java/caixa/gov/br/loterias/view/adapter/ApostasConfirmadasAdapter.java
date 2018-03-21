@@ -25,11 +25,24 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostasConfi
     private final List<ApostaDTO> list;
 
     public ApostasConfirmadasAdapter(Context context, List<ApostaDTO> list){
-        this.list = list;
-        this.context = context;
+        this(context, list, null);
     }
 
-    private OnApostasConfirmadasClick onApostasConfirmadasClick;
+    public ApostasConfirmadasAdapter(Context context, List<ApostaDTO> list, OnApostasConfirmadasListener listener){
+        this.list = list;
+        this.context = context;
+        this.onApostasConfirmadasListener = listener;
+    }
+
+    public void setOnApostasConfirmadasListener(OnApostasConfirmadasListener onApostasConfirmadasListener) {
+        this.onApostasConfirmadasListener = onApostasConfirmadasListener;
+    }
+
+    public OnApostasConfirmadasListener getOnApostasConfirmadasListener() {
+        return onApostasConfirmadasListener;
+    }
+
+    private OnApostasConfirmadasListener onApostasConfirmadasListener;
 
     public void addApostasList(List<ApostaDTO> apostasList) {
         if(apostasList != null){
@@ -37,7 +50,7 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostasConfi
         }
     }
 
-    public interface OnApostasConfirmadasClick{
+    public interface OnApostasConfirmadasListener {
         void onReload(int position);
         void onFavorite(int position);
         void onItemClick(int position);
@@ -67,18 +80,18 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostasConfi
 
         @Override
         public void onClick(View view) {
-            if (onApostasConfirmadasClick != null) {
+            if (onApostasConfirmadasListener != null) {
                 switch (view.getId()){
                     case R.id.favoriteBtn:{
-                        onApostasConfirmadasClick.onFavorite(getAdapterPosition());
+                        onApostasConfirmadasListener.onFavorite(getAdapterPosition());
                         break;
                     }
                     case R.id.reloadBtn:{
-                        onApostasConfirmadasClick.onReload(getAdapterPosition());
+                        onApostasConfirmadasListener.onReload(getAdapterPosition());
                         break;
                     }
                     default:
-                        onApostasConfirmadasClick.onItemClick(getAdapterPosition());
+                        onApostasConfirmadasListener.onItemClick(getAdapterPosition());
                         break;
                 }
             }

@@ -37,7 +37,6 @@ public class SilceConnection {
 
     public void request(GsonRequest req){
         requestQueue.add(req);
-        requestQueue.start();
     }
 
     private RetryPolicy createRetryPolicy(){
