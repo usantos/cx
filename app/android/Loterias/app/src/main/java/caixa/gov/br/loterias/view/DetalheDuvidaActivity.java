@@ -4,7 +4,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
-import android.view.View;
 
 import com.android.volley.VolleyError;
 
@@ -18,8 +17,7 @@ import java.util.List;
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.DadosCorporativosBO;
 import caixa.gov.br.loterias.model.bo.DadosCorporativosBO_;
-import caixa.gov.br.loterias.model.bo.silce.RequestListener;
-import caixa.gov.br.loterias.model.bo.silce.SilceClient;
+import caixa.gov.br.loterias.model.bo.RequestListener;
 import caixa.gov.br.loterias.model.bo.silce.dto.DuvidaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ListSecaoDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ListSecaoDTOResponse;

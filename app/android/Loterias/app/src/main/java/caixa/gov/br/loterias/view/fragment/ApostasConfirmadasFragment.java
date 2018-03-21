@@ -29,7 +29,7 @@ import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bean.ApostaPageRequest;
 import caixa.gov.br.loterias.model.bo.ApostaBO;
 import caixa.gov.br.loterias.model.bo.MensagensNetwork;
-import caixa.gov.br.loterias.model.bo.silce.RequestListener;
+import caixa.gov.br.loterias.model.bo.RequestListener;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.MesAnoDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.MesAnoDTOResponse;

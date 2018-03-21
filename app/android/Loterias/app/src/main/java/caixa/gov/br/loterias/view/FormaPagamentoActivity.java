@@ -17,7 +17,7 @@ import java.util.List;
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.DadosUsuarioBO;
 import caixa.gov.br.loterias.model.bo.DadosUsuarioBO_;
-import caixa.gov.br.loterias.model.bo.silce.SilceClient;
+import caixa.gov.br.loterias.model.bo.RequestListener;
 import caixa.gov.br.loterias.model.bo.silce.dto.ListCartaoDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.RetornoCartao;
 import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
@@ -71,7 +71,7 @@ public class FormaPagamentoActivity extends SettingToolbarActivity implements Fo
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
 
         DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_(FormaPagamentoActivity.this);
-        dadosUsuarioBO.cartoes(new SilceClient.Listener<ListCartaoDTOResponse>() {
+        dadosUsuarioBO.cartoes(new RequestListener<ListCartaoDTOResponse>() {
             @Override
             public void onResponse(ListCartaoDTOResponse response) {
                 loadViewProgress.dismiss();
@@ -80,7 +80,7 @@ public class FormaPagamentoActivity extends SettingToolbarActivity implements Fo
                     configuraRecyclerViewCarrinhoAposta();
                 }
             }
-        }, new SilceClient.ErrorListener() {
+
             @Override
             public void onErrorResponse(VolleyError error) {
                 loadViewProgress.dismiss();

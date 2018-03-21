@@ -1,5 +1,6 @@
 package caixa.gov.br.loterias.model.bo;
 
+import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
 import org.androidannotations.annotations.AfterInject;
@@ -10,8 +11,6 @@ import java.util.HashMap;
 
 import caixa.gov.br.loterias.BuildConfig;
 import caixa.gov.br.loterias.model.bo.keycloak.KeycloakBO;
-import caixa.gov.br.loterias.model.bo.silce.RequestListener;
-import caixa.gov.br.loterias.model.bo.silce.SilceClient;
 import caixa.gov.br.loterias.model.bo.silce.internals.GsonRequest;
 import caixa.gov.br.loterias.model.bo.silce.internals.SilceConnection;
 import caixa.gov.br.loterias.model.bo.silce.internals.SilceSingleton;
@@ -23,7 +22,7 @@ import caixa.gov.br.loterias.model.bo.silce.internals.SilceSingleton;
 @EBean
 public class BaseBO {
 
-    protected SilceClient silceClient;
+    protected SilceConnection silceConnection;
 
     @Bean
     protected SilceSingleton silceSingleton;
@@ -33,12 +32,11 @@ public class BaseBO {
 
     @AfterInject
     protected void init(){
-        SilceConnection conn = SilceConnection.create(silceSingleton.getRequestQueue(), BuildConfig.CAIXA_BASE_URL_SILCE);
-        silceClient = SilceClient.create(conn);
+        silceConnection = SilceConnection.create(silceSingleton.getRequestQueue(), BuildConfig.CAIXA_BASE_URL_SILCE);
     }
 
-    protected <T> SilceClient.ErrorListener interceptError(final GsonRequest request, final HashMap<String, String> headers, final RequestListener<T> listener){
-        return new SilceClient.ErrorListener() {
+    protected <T> Response.ErrorListener interceptError(final GsonRequest request, final HashMap<String, String> headers, final RequestListener<T> listener){
+        return new Response.ErrorListener() {
             @Override
             public void onErrorResponse(final VolleyError error) {
                 //Caso não esteja autorizado tenta atualizar o token de acesso
@@ -52,7 +50,7 @@ public class BaseBO {
                                 headers.put("Authorization", "Bearer " + token);
                                 request.setHeaders(headers);
                                 //Refaz a conexão
-                                silceClient.getConnection().request(request);
+                                silceConnection.request(request);
                             }else{
                                 listener.onErrorResponse(error);
                             }
