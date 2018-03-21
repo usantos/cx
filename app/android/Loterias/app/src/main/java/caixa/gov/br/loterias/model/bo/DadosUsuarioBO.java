@@ -91,4 +91,18 @@ public class DadosUsuarioBO extends BaseBO {
     }
 
 
+    public static void updateVerificarIdade(Activity activity, Boolean status){
+        SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putBoolean(activity.getString(R.string.key_idade), status);
+        editor.commit();
+
+    }
+
+    public static Boolean checarVerificarIdade(Activity activity){
+        SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
+        Boolean status = sharedPref.getBoolean(activity.getString(R.string.key_idade), true);
+        return status;
+    }
+
 }

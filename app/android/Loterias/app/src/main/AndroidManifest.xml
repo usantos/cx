@@ -178,7 +178,8 @@
         <activity
             android:name=".view.DetalhesComprasActivity"
             android:label="@string/title_activity_detalhes_compras"
-            android:theme="@style/AppTheme.DegradeActionBar" />
+            android:theme="@style/AppTheme.DegradeActionBar"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".view.InsercaoManualCodBarrasActivity"
             android:label=""
@@ -195,16 +196,24 @@
             android:theme="@style/AppTheme.DegradeActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="caixa.gov.br.loterias.view.PrincipalActivity" />
+                android:value="caixa.gov.br.loterias.view.PrincipalActivity"
+                android:screenOrientation="portrait"/>
         </activity>
         <activity
             android:name=".view.JogosConfirmadosPremioActivity"
             android:label="@string/title_activity_resultado_ler_bilhetes"
-            android:theme="@style/AppTheme.DegradeActionBar" />
+            android:theme="@style/AppTheme.DegradeActionBar"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".view.JogosConfirmadosPremioMercadoPagoActivity"
             android:label="@string/title_activity_resultado_ler_bilhetes"
-            android:theme="@style/AppTheme.DegradeActionBar"></activity>
+            android:theme="@style/AppTheme.DegradeActionBar"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".view.RestritoDezoitoAnosActivity"
+            android:label="@string/title_activity_termos_uso"
+            android:theme="@style/AppTheme.DegradeActionBar"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

@@ -34,6 +34,7 @@
     <string name="cancelar">Cancelar</string>
     <string name="ok">OK</string>
     <string name="label_sim">Sim</string>
+    <string name="label_nao">Não</string>
     <string name="label_atencao">Atenção</string>
     <string name="tituloSalvarAposta">Salve esta aposta :)</string>
     <string name="textoDeNome">Dê um nome</string>
@@ -190,6 +191,7 @@
     <string name="carregando">Carregando...</string>
 
     <string name="key_introducao">key_introducao</string>
+    <string name="key_idade">key_idade</string>
     <string name="title_activity_jogos_confirmados_premio">JogosConfirmadosPremioActivity</string>
     <string name="title_activity_jogos_confirmados_premio_mercado_pago">JogosConfirmadosPremioMercadoPagoActivity</string>
 
@@ -210,5 +212,6 @@
     <string name="label_mock_titulo_como_retirar_premio">Lorem ipsum dolor sit amet.</string>
     <string name="label_mock_sub_titulo_como_retirar_premio">Adipisicing elit, sed do eiusmod tempor.</string>
     <string name="label_mock_lista_como_retirar_premio">Sed do eiudsmod;</string>
+    <string name="title_activity_restrito_dezoito_anos">RestritoDezoitoAnosActivity</string>
 
 </resources>

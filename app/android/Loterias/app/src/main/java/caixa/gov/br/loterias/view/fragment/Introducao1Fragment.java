@@ -1,5 +1,7 @@
 package caixa.gov.br.loterias.view.fragment;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,10 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.model.bo.DadosUsuarioBO;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.IntroducaoActivity;
+import caixa.gov.br.loterias.view.RestritoDezoitoAnosActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -82,15 +85,18 @@ public class Introducao1Fragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Do something in response to button click
-//                startActivity(new Intent(getActivity(), CadastrarActivity_.class));
-//                getActivity().finish();
-//                viewPager.setCurrentItem(num, true);
-
                 ((IntroducaoActivity) getActivity()).pularIntroducao();
             }
         });
+        ViewUtils.alertVerificarIdadeListener(getActivity(), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                startActivity(new Intent(getActivity(), RestritoDezoitoAnosActivity.class));
+                getActivity().finish();
+            }
+        });
 
-        ViewUtils.alertTitleButton(getContext(), R.string.label_atencao, getString(R.string.MA003), getString(R.string.label_sim));
+
 
         return v;
     }
