@@ -97,9 +97,6 @@
             android:parentActivityName=".view.PrincipalActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="caixa.gov.br.loterias.view.PrincipalActivity" />
         </activity>
         <activity
             android:name=".view.RepassesSociaisActivity"
