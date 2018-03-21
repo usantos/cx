@@ -587,8 +587,11 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
     }
 
     private void abrirAjuda() {
-        Intent activity = new Intent(SimularApostaActivity.this, AjudaActivity.class);
-        activity.putExtra("tipoAposta", tipoJogo);
+//        Intent activity = new Intent(SimularApostaActivity.this, AjudaActivity.class);
+//        activity.putExtra("tipoAposta", tipoJogo);
+//        startActivity(activity);
+        Intent activity = new Intent(SimularApostaActivity.this, TermosUsoActivity.class);
+        activity.putExtra("ajuda", true);
         startActivity(activity);
     }
 
