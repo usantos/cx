@@ -502,8 +502,9 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                                     }else{
                                         selecionarTimeAleatorio();
                                     }
+                                }else{
+                                    selecionarTimeAleatorio();
                                 }
-                                selecionarTimeAleatorio();
                             }
                     } else {
                         adcionarApostaPreencherNumerosAleatorios();
