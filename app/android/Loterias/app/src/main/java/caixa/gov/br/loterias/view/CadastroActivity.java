@@ -24,6 +24,7 @@ import java.util.List;
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.DadosCorporativosBO;
 import caixa.gov.br.loterias.model.bo.DadosCorporativosBO_;
+import caixa.gov.br.loterias.model.bo.silce.RequestListener;
 import caixa.gov.br.loterias.model.bo.silce.SilceClient;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostadorDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.MunicipioDTO;
@@ -126,7 +127,7 @@ public class CadastroActivity extends AppCompatActivity {
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
         DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(CadastroActivity.this);
 
-        dadosCorporativosBO.ufs(new SilceClient.Listener<UnidadeFederacaoDTOResponse>() {
+        dadosCorporativosBO.ufs(new RequestListener<UnidadeFederacaoDTOResponse>() {
             @Override
             public void onResponse(UnidadeFederacaoDTOResponse response) {
                 loadViewProgress.dismiss();
@@ -136,7 +137,7 @@ public class CadastroActivity extends AppCompatActivity {
                 }
                 modalUfs();
             }
-        }, new SilceClient.ErrorListener() {
+
             @Override
             public void onErrorResponse(VolleyError error) {
                 loadViewProgress.dismiss();
@@ -229,7 +230,7 @@ public class CadastroActivity extends AppCompatActivity {
             listMunicipios = new ArrayList<String>();
 
             DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(CadastroActivity.this);
-            dadosCorporativosBO.municipios(idUf, new SilceClient.Listener<MunicipioDTOResponse>() {
+            dadosCorporativosBO.municipios(idUf, new RequestListener<MunicipioDTOResponse>() {
                 @Override
                 public void onResponse(MunicipioDTOResponse response) {
                     loadViewProgress.dismiss();
@@ -239,7 +240,7 @@ public class CadastroActivity extends AppCompatActivity {
                     }
                     modalMunicipios();
                 }
-            }, new SilceClient.ErrorListener() {
+
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     loadViewProgress.dismiss();

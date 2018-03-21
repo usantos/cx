@@ -30,6 +30,7 @@ import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bean.SessaoUsuario;
 import caixa.gov.br.loterias.model.bo.ApostaBO;
 import caixa.gov.br.loterias.model.bo.ApostaBO_;
+import caixa.gov.br.loterias.model.bo.silce.RequestListener;
 import caixa.gov.br.loterias.model.bo.silce.SilceClient;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostaFavoritaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ModalidadeDTO;
@@ -226,7 +227,7 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
         final ApostaBO apostaBO = ApostaBO_.getInstance_(RapidaoConfigActivity.this);
 
-        apostaBO.getRapidoes(new SilceClient.Listener<RapidaoDTOResponse>() {
+        apostaBO.getRapidoes(new RequestListener<RapidaoDTOResponse>() {
             @Override
             public void onResponse(RapidaoDTOResponse response) {
                 loadViewProgress.dismiss();
@@ -249,7 +250,7 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
 
                 atualizaLayout();
             }
-        }, new SilceClient.ErrorListener() {
+
             @Override
             public void onErrorResponse(VolleyError error) {
                 loadViewProgress.dismiss();
@@ -500,7 +501,7 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
         rapidao.setPrognosticosObrigatorios(listaNumerosObrigatorios);
         rapidao.setPrognosticosProibidos(listaNumerosProibidos);
 
-        apostaBO.postRapidoes(rapidao, new SilceClient.Listener<RapidaoDTOResponse>() {
+        apostaBO.postRapidoes(rapidao, new RequestListener<RapidaoDTOResponse>() {
             @Override
             public void onResponse(RapidaoDTOResponse response) {
                 loadViewProgress.dismiss();
@@ -508,7 +509,7 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
                 setResult(RESULT_OK, intent);
                 finish();
             }
-        }, new SilceClient.ErrorListener() {
+
             @Override
             public void onErrorResponse(VolleyError error) {
                 loadViewProgress.dismiss();

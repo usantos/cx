@@ -26,6 +26,7 @@ import java.util.List;
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.ApostaBO;
 import caixa.gov.br.loterias.model.bo.ApostaBO_;
+import caixa.gov.br.loterias.model.bo.silce.RequestListener;
 import caixa.gov.br.loterias.model.bo.silce.SilceClient;
 import caixa.gov.br.loterias.model.bo.silce.dto.CompraDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.MesAnoDTO;
@@ -124,17 +125,15 @@ public class ListaComprasActivity extends AppCompatActivity {
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
         final ApostaBO apostaBO = ApostaBO_.getInstance_(ListaComprasActivity.this);
 
-        apostaBO.getCompras(mes, ano, offsetItem ,new SilceClient.Listener<ResultadoPesquisaPaginadaDTOCompraDTOResponse>() {
+        apostaBO.getCompras(mes, ano, offsetItem ,new RequestListener<ResultadoPesquisaPaginadaDTOCompraDTOResponse>() {
             @Override
             public void onResponse(ResultadoPesquisaPaginadaDTOCompraDTOResponse response) {
                 loadViewProgress.dismiss();
                 listaComprasDto = response.getPayload().getLista();
                 offsetItem = 5;
                 initRecyclerView();
-
-
             }
-        }, new SilceClient.ErrorListener() {
+
             @Override
             public void onErrorResponse(VolleyError error) {
                 loadViewProgress.dismiss();
@@ -149,7 +148,7 @@ public class ListaComprasActivity extends AppCompatActivity {
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
         final ApostaBO apostaBO = ApostaBO_.getInstance_(ListaComprasActivity.this);
 
-        apostaBO.getMesesCompras(new SilceClient.Listener<MesAnoDTOResponse>() {
+        apostaBO.getMesesCompras(new RequestListener<MesAnoDTOResponse>() {
             @Override
             public void onResponse(MesAnoDTOResponse response) {
                 loadViewProgress.dismiss();
@@ -161,7 +160,7 @@ public class ListaComprasActivity extends AppCompatActivity {
 
                 callWebServiceCompras();
             }
-        }, new SilceClient.ErrorListener() {
+
             @Override
             public void onErrorResponse(VolleyError error) {
                 loadViewProgress.dismiss();
@@ -296,7 +295,7 @@ public class ListaComprasActivity extends AppCompatActivity {
         final ApostaBO apostaBO = ApostaBO_.getInstance_(ListaComprasActivity.this);
         progressLoadingMore.setVisibility(View.VISIBLE);
 
-        apostaBO.getCompras(mes, ano, offsetItem ,new SilceClient.Listener<ResultadoPesquisaPaginadaDTOCompraDTOResponse>() {
+        apostaBO.getCompras(mes, ano, offsetItem, new RequestListener<ResultadoPesquisaPaginadaDTOCompraDTOResponse>() {
             @Override
             public void onResponse(ResultadoPesquisaPaginadaDTOCompraDTOResponse response) {
                 progressLoadingMore.setVisibility(View.GONE);
@@ -309,7 +308,7 @@ public class ListaComprasActivity extends AppCompatActivity {
                 }
                 bloquearRequestScroll = false;
             }
-        }, new SilceClient.ErrorListener() {
+
             @Override
             public void onErrorResponse(VolleyError error) {
                 progressLoadingMore.setVisibility(View.GONE);

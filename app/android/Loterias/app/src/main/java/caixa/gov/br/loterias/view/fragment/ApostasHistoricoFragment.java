@@ -94,7 +94,7 @@ public class ApostasHistoricoFragment extends Fragment implements ApostasConfirm
         alertDialog = LoadingViewLoterias.show(getActivity());
         apostaBO.getDatasApostasHistorico(new RequestListener<MesAnoDTOResponse>() {
             @Override
-            public void onSucess(MesAnoDTOResponse result) {
+            public void onResponse(MesAnoDTOResponse result) {
                 if(getActivity() != null){
                     alertDialog.dismiss();
                     onMesesAnosDisponiveisResult(result);
@@ -102,7 +102,7 @@ public class ApostasHistoricoFragment extends Fragment implements ApostasConfirm
             }
 
             @Override
-            public void onError(VolleyError error) {
+            public void onErrorResponse(VolleyError error) {
                 if(getActivity() != null){
                     alertDialog.dismiss();
                     String msgError = MensagensNetwork.setMensagem(error, getActivity());
@@ -216,7 +216,7 @@ public class ApostasHistoricoFragment extends Fragment implements ApostasConfirm
         apostasLoading.setVisibility(View.VISIBLE);
         apostaBO.getApostasHistorico(page, new RequestListener<ResultadoPesquisaPaginadaDTOHistoricoApostaDTOResponse>() {
             @Override
-            public void onSucess(ResultadoPesquisaPaginadaDTOHistoricoApostaDTOResponse result) {
+            public void onResponse(ResultadoPesquisaPaginadaDTOHistoricoApostaDTOResponse result) {
                 isLoading = false;
                 if(getActivity() != null) {
                     alertDialog.dismiss();
@@ -227,7 +227,7 @@ public class ApostasHistoricoFragment extends Fragment implements ApostasConfirm
             }
 
             @Override
-            public void onError(VolleyError error) {
+            public void onErrorResponse(VolleyError error) {
                 isLoading = false;
                 if(getActivity() != null){
                     alertDialog.dismiss();

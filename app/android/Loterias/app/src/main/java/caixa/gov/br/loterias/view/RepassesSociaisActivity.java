@@ -14,6 +14,7 @@ import java.math.BigInteger;
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.DadosCorporativosBO;
 import caixa.gov.br.loterias.model.bo.DadosCorporativosBO_;
+import caixa.gov.br.loterias.model.bo.silce.RequestListener;
 import caixa.gov.br.loterias.model.bo.silce.SilceClient;
 import caixa.gov.br.loterias.model.bo.silce.dto.RepassometroDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.RepassometroDTOResponse;
@@ -40,14 +41,14 @@ public class RepassesSociaisActivity extends SettingToolbarActivity {
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
 
         DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(RepassesSociaisActivity.this);
-        dadosCorporativosBO.repasses(new SilceClient.Listener<RepassometroDTOResponse>() {
+        dadosCorporativosBO.repasses(new RequestListener<RepassometroDTOResponse>() {
             @Override
             public void onResponse(RepassometroDTOResponse response) {
                 loadViewProgress.dismiss();
                 repasseOBj = response.getPayload();
                 setLayout();
             }
-        }, new SilceClient.ErrorListener() {
+
             @Override
             public void onErrorResponse(VolleyError error) {
                 loadViewProgress.dismiss();

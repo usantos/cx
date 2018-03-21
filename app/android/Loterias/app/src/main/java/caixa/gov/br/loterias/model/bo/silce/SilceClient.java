@@ -76,7 +76,9 @@ public class SilceClient {
         return new Response.Listener<T>() {
             @Override
             public void onResponse(T response) {
-                listener.onResponse(response);
+                if(listener != null){
+                    listener.onResponse(response);
+                }
             }
         };
     }
@@ -85,7 +87,9 @@ public class SilceClient {
         return new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                errorListener.onErrorResponse(error);
+                if(errorListener != null){
+                    errorListener.onErrorResponse(error);
+                }
             }
         };
     }

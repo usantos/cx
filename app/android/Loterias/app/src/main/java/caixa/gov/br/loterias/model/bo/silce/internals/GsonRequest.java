@@ -16,8 +16,8 @@ import java.util.Map;
 public class GsonRequest<REQ, RSP> extends JsonRequest<RSP> {
     private final Gson gson = new Gson();
     private final Class<RSP> responseKlazz;
-    private final Map<String, String> headers;
-    private final Response.Listener<RSP> listener;
+    private Map<String, String> headers;
+    private Response.Listener<RSP> listener;
     private Response.ErrorListener mErrorListener;
 
     /**
@@ -52,6 +52,18 @@ public class GsonRequest<REQ, RSP> extends JsonRequest<RSP> {
         return (new Gson()).toJson(requestBody);
     }
 
+    public void setHeaders(Map<String, String> headers){
+        this.headers = headers;
+    }
+
+    public void setListener(Response.Listener<RSP> listener){
+        this.listener = listener;
+    }
+
+    public void setErrorListener(Response.ErrorListener listener){
+        this.mErrorListener = listener;
+    }
+
     @Override
     public Map<String, String> getHeaders() throws AuthFailureError {
         return headers != null ? headers : super.getHeaders();
@@ -59,12 +71,14 @@ public class GsonRequest<REQ, RSP> extends JsonRequest<RSP> {
 
     @Override
     protected void deliverResponse(RSP response) {
-        listener.onResponse(response);
+        if(listener != null){
+            listener.onResponse(response);
+        }
     }
 
     @Override
     public void deliverError(VolleyError error) {
-        if (error != null){
+        if (error != null && mErrorListener != null){
             mErrorListener.onErrorResponse(error);
         }
     }

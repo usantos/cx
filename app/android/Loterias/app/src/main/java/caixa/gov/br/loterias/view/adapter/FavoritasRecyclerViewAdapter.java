@@ -25,6 +25,7 @@ import java.util.List;
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.ApostaBO;
 import caixa.gov.br.loterias.model.bo.ApostaBO_;
+import caixa.gov.br.loterias.model.bo.silce.RequestListener;
 import caixa.gov.br.loterias.model.bo.silce.SilceClient;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostaFavoritaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.RetornoPadraoDTO;
@@ -249,13 +250,13 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(activity);
         final ApostaBO apostaBO = ApostaBO_.getInstance_(activity);
 
-        apostaBO.deleteApostasFavoritas(listaApostaFavorita.get(position).getId()+"", new SilceClient.Listener<RetornoPadraoDTO>() {
+        apostaBO.deleteApostasFavoritas(listaApostaFavorita.get(position).getId() + "", new RequestListener<RetornoPadraoDTO>() {
             @Override
             public void onResponse(RetornoPadraoDTO response) {
                 loadViewProgress.dismiss();
                     removeAt(position);
             }
-        }, new SilceClient.ErrorListener() {
+
             @Override
             public void onErrorResponse(VolleyError error) {
                 loadViewProgress.dismiss();
@@ -274,7 +275,7 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
         final ApostaBO apostaBO = ApostaBO_.getInstance_(activity);
         final ApostaFavoritaDTO apostaFavoritaDTOSalvar = apostaFavoritaDTO;
         apostaFavoritaDTOSalvar.setNome(editTextNomeDaAposta.getText().toString());
-        apostaBO.postApostasFavoritas(apostaFavoritaDTOSalvar, new SilceClient.Listener<RetornoPadraoDTO>() {
+        apostaBO.postApostasFavoritas(apostaFavoritaDTOSalvar, new RequestListener<RetornoPadraoDTO>() {
             @Override
             public void onResponse(RetornoPadraoDTO response) {
                 apostaFavoritaDTOSalvar.setNome(editTextNomeDaAposta.getText().toString());
@@ -286,7 +287,7 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
                 buttonSalvarNomeAposta.setEnabled(false);
                 loadViewProgress.dismiss();
             }
-        }, new SilceClient.ErrorListener() {
+
             @Override
             public void onErrorResponse(VolleyError error) {
                 loadViewProgress.dismiss();

@@ -5,12 +5,12 @@ import java.util.List;
 import caixa.gov.br.loterias.model.bo.silce.dto.UsuarioLogado;
 
 public final class UsuarioLogadoResponse {
-    String codigo;
-    String mensagem;
-    int tipo;
-    String redirect;
-    List<String> errosValidacao;
-    UsuarioLogado payload;
+    private String codigo;
+    private String mensagem;
+    private int tipo;
+    private String redirect;
+    private List<String> errosValidacao;
+    private UsuarioLogado payload;
 
     public String getCodigo() {
         return codigo;

@@ -7,6 +7,6 @@ import com.android.volley.VolleyError;
  */
 
 public interface RequestListener<T> {
-    void onSucess(T result);
-    void onError(VolleyError error);
+    void onResponse(T result);
+    void onErrorResponse(VolleyError error);
 }

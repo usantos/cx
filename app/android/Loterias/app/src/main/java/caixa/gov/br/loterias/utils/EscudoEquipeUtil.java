@@ -15,6 +15,7 @@ import org.apache.commons.lang.StringUtils;
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.ApostaBO;
 import caixa.gov.br.loterias.model.bo.ApostaBO_;
+import caixa.gov.br.loterias.model.bo.silce.RequestListener;
 import caixa.gov.br.loterias.model.bo.silce.SilceClient;
 import caixa.gov.br.loterias.model.bo.silce.dto.EscudoEquipeEsportivaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.EscudoEquipeEsportivaDTOResponse;
@@ -29,10 +30,9 @@ public class EscudoEquipeUtil {
 
     public static void setEscudo(final Context context, final ParametroEquipe parametroEquipe, final ImageView imageView) {
         ApostaBO apostaBO = ApostaBO_.getInstance_(context);
-        apostaBO.obterEscudoTime(parametroEquipe.getNumero().toString(), new SilceClient.Listener<EscudoEquipeEsportivaDTOResponse>() {
+        apostaBO.obterEscudoTime(parametroEquipe.getNumero().toString(), new RequestListener<EscudoEquipeEsportivaDTOResponse>() {
             @Override
             public void onResponse(EscudoEquipeEsportivaDTOResponse response) {
-
                 if (response != null && response.getPayload() != null) {
                     String  imagemString = ((EscudoEquipeEsportivaDTO) response.getPayload()).getImagem();
                     if (StringUtils.isNotEmpty(imagemString) || imagemString != null) {
@@ -46,17 +46,14 @@ public class EscudoEquipeUtil {
                         imageView.setImageResource(R.drawable.time);
                     }
                 }
-
             }
-        }, new SilceClient.ErrorListener() {
+
             @Override
             public void onErrorResponse(VolleyError error) {
                 imageView.setImageResource(R.drawable.time);
             }
         });
     }
-
-
 
     private static Bitmap drawableToBitmap(Context context, int id) {
         Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), id);

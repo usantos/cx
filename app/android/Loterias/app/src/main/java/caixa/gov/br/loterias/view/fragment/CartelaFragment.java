@@ -51,6 +51,7 @@ import caixa.gov.br.loterias.model.bo.ApostaBO;
 import caixa.gov.br.loterias.model.bo.ApostaBO_;
 import caixa.gov.br.loterias.model.bo.DadosCorporativosBO;
 import caixa.gov.br.loterias.model.bo.DadosCorporativosBO_;
+import caixa.gov.br.loterias.model.bo.silce.RequestListener;
 import caixa.gov.br.loterias.model.bo.silce.SilceClient;
 import caixa.gov.br.loterias.model.bo.silce.data.CompletaJogoRsp;
 import caixa.gov.br.loterias.model.bo.silce.dto.AgrupadorDTOApostaDTOResponse;
@@ -388,7 +389,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
     private void adicionarApostaCarrinhoRequest(ApostaBO apostaBO, final Activity activity, final IdentificaoDeUmaApostaDas8Modalidades aposta) {
         final AlertDialog alert = LoadingViewLoterias.show(activity);
-        apostaBO.adicionarApostaNoCarrinho(aposta, new SilceClient.Listener<AgrupadorDTOApostaDTOResponse>() {
+        apostaBO.adicionarApostaNoCarrinho(aposta, new RequestListener<AgrupadorDTOApostaDTOResponse>() {
             @Override
             public void onResponse(AgrupadorDTOApostaDTOResponse response) {
                 alert.dismiss();
@@ -400,7 +401,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                 cartelaFragmentListener.adicionarApostaCarrinho();
 
             }
-        }, new SilceClient.ErrorListener() {
+
             @Override
             public void onErrorResponse(VolleyError error) {
                 alert.dismiss();
@@ -455,7 +456,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
     private void adicionarApostasCarrinhoRequest(ApostaBO apostaBO, Activity activity, final List<IdentificaoDeUmaApostaDas8Modalidades> apostas) {
         final AlertDialog alert = LoadingViewLoterias.show(activity);
-        apostaBO.adicionarApostasNoCarrinho(apostas, new SilceClient.Listener<AgrupadorDTOApostaDTOResponse>() {
+        apostaBO.adicionarApostasNoCarrinho(apostas, new RequestListener<AgrupadorDTOApostaDTOResponse>() {
             @Override
             public void onResponse(AgrupadorDTOApostaDTOResponse response) {
                 alert.dismiss();
@@ -466,7 +467,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                 count.setText(String.format(Locale.getDefault(), "%d", qtdCartelasCarrinho));
                 cartelaFragmentListener.adicionarApostaCarrinho();
             }
-        }, new SilceClient.ErrorListener() {
+
             @Override
             public void onErrorResponse(VolleyError error) {
                 alert.dismiss();
@@ -714,11 +715,10 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
             aposta.setTimeDoCoracao(equipeSelecionada);
         }
 
-        dadosCorporativosBO.validarApostaFavorita(aposta, new SilceClient.Listener<NetworkResponse>() {
+        dadosCorporativosBO.validarApostaFavorita(aposta, new RequestListener<NetworkResponse>() {
             @Override
             public void onResponse(NetworkResponse response) {
-
-                dadosCorporativosBO.salvarApostaFavorita(aposta, new SilceClient.Listener<NetworkResponse>() {
+                dadosCorporativosBO.salvarApostaFavorita(aposta, new RequestListener<NetworkResponse>() {
                     @Override
                     public void onResponse(NetworkResponse response) {
                         loadViewProgress.dismiss();
@@ -742,7 +742,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
                         flagApostaSalva = true;
                     }
-                }, new SilceClient.ErrorListener() {
+
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         loadViewProgress.dismiss();
@@ -750,7 +750,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                     }
                 });
             }
-        }, new SilceClient.ErrorListener() {
+
             @Override
             public void onErrorResponse(VolleyError error) {
                 loadViewProgress.dismiss();
@@ -763,7 +763,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         ApostaBO apostaBO = ApostaBO_.getInstance_(getActivity());
         orderAscDezenas();
         apostaBO.completaJogo(parentActivity.qtdDezenasPossiveisSelecionado, dezenasSelecionadas, 1,
-                parametroJogo.getPrognosticoMaximo(), new SilceClient.Listener<CompletaJogoRsp>() {
+                parametroJogo.getPrognosticoMaximo(), new RequestListener<CompletaJogoRsp>() {
                     @Override
                     public void onResponse(CompletaJogoRsp response) {
                         isEcolhaTimeBtnAtivado = true;
@@ -775,8 +775,6 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                         verificaSeMostraSalvarApostaView();
                     }
 
-
-                }, new SilceClient.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
 

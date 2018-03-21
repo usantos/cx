@@ -29,6 +29,7 @@ import caixa.gov.br.loterias.model.bean.SessaoUsuario;
 import caixa.gov.br.loterias.model.bo.ApostaBO;
 import caixa.gov.br.loterias.model.bo.ApostaBO_;
 import caixa.gov.br.loterias.model.bo.MensagensNetwork;
+import caixa.gov.br.loterias.model.bo.silce.RequestListener;
 import caixa.gov.br.loterias.model.bo.silce.SilceClient;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ResultadoConsultaBilheteDTO;
@@ -112,7 +113,7 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
     private void postLerBilhetes(ApostaBO apostaBO, Activity activity, String CodBarra) {
         final AlertDialog alert = LoadingViewLoterias.show(activity);
 
-        apostaBO.postConferirBilhetes(CodBarra, new SilceClient.Listener<ResultadoConsultaBilheteDTOResponse>() {
+        apostaBO.postConferirBilhetes(CodBarra, new RequestListener<ResultadoConsultaBilheteDTOResponse>() {
             @Override
             public void onResponse(ResultadoConsultaBilheteDTOResponse response) {
                 alert.dismiss();
@@ -123,7 +124,7 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
                     atualizarLayoutNaoPremiado();
                 }
             }
-        }, new SilceClient.ErrorListener() {
+
             @Override
             public void onErrorResponse(VolleyError error) {
                 alert.dismiss();

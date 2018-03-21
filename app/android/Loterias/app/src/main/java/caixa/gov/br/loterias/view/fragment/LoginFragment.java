@@ -1,7 +1,6 @@
 package caixa.gov.br.loterias.view.fragment;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -12,7 +11,7 @@ import android.widget.Button;
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.DadosUsuarioBO;
 import caixa.gov.br.loterias.model.bo.keycloak.KeycloakBO;
-import caixa.gov.br.loterias.model.bo.silce.data.UsuarioLogadoSingleton;
+import caixa.gov.br.loterias.model.bo.keycloak.KeycloakBO_;
 import caixa.gov.br.loterias.model.bo.silce.dto.UsuarioLogadoResponse;
 import caixa.gov.br.loterias.utils.AppUtils;
 import caixa.gov.br.loterias.utils.ViewUtils;
@@ -29,15 +28,6 @@ public class LoginFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        if (KeycloakBO.isConnected()){
-            connectKeycloak();
-        }
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_login, container, false);
@@ -47,8 +37,6 @@ public class LoginFragment extends Fragment {
             public void onClick(View v) {
                 //mock login
                 DadosUsuarioBO.updateFecharIntroducao(getActivity(), true);
-                UsuarioLogadoSingleton user = UsuarioLogadoSingleton.getInstance();
-                user.token = null;
                 startActivity(new Intent(getActivity(), PrincipalActivity.class));
                 getActivity().finish();
             }
@@ -65,23 +53,15 @@ public class LoginFragment extends Fragment {
         return v;
     }
 
-    private void setUser(UsuarioLogadoResponse response) {
-        UsuarioLogadoSingleton user = UsuarioLogadoSingleton.getInstance();
-        user.token = response.getPayload().getToken();
-    }
-
     private void connectKeycloak() {
         if(AppUtils.isNetworkAvailable(getActivity())){
-//        if (!KeycloakBO.isConnected()) {
-            KeycloakBO.connect(getActivity(), new org.jboss.aerogear.android.core.Callback() {
+            KeycloakBO_.getInstance_(getActivity()).login(getActivity(), new KeycloakBO.OnLogin() {
                     @Override
-                    public void onSuccess(Object o) {
+                    public void onSuccess(String token) {
                         if(getActivity() != null){
-                            UsuarioLogadoSingleton user = UsuarioLogadoSingleton.getInstance();
-                            user.token = o.toString();
                             startActivity(new Intent(getActivity(), PrincipalActivity.class));
                             getActivity().finish();
-                            //                            loginSucess();
+                            //loginSucess();
                         }
                     }
 
@@ -93,9 +73,6 @@ public class LoginFragment extends Fragment {
                     }
                 }
             );
-//        } else {
-//            loginSucess();
-//        }
         }else{
             ViewUtils.alert(getActivity(), getString(R.string.seminternet));
         }

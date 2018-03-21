@@ -3,7 +3,6 @@ package caixa.gov.br.loterias.view;
 
 import android.Manifest;
 import android.animation.ArgbEvaluator;
-import android.support.v7.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -15,6 +14,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -41,26 +41,28 @@ import java.util.HashMap;
 import java.util.List;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.model.bean.Modalidade;
 import caixa.gov.br.loterias.model.bean.SessaoUsuario;
 import caixa.gov.br.loterias.model.bo.DadosCorporativosBO;
 import caixa.gov.br.loterias.model.bo.DadosCorporativosBO_;
 import caixa.gov.br.loterias.model.bo.DadosUsuarioBO;
 import caixa.gov.br.loterias.model.bo.DadosUsuarioBO_;
+import caixa.gov.br.loterias.model.bo.MensagensNetwork;
+import caixa.gov.br.loterias.model.bo.keycloak.KeycloakBO_;
+import caixa.gov.br.loterias.model.bo.silce.RequestListener;
 import caixa.gov.br.loterias.model.bo.silce.SilceClient;
 import caixa.gov.br.loterias.model.bo.silce.dto.ParametroSimulacao;
 import caixa.gov.br.loterias.model.bo.silce.dto.ParametrosSimulacaoResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.RepassometroDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.RepassometroDTOResponse;
 import caixa.gov.br.loterias.model.dao.DBLoteriasHelper;
-import caixa.gov.br.loterias.model.bean.Modalidade;
-import caixa.gov.br.loterias.view.animation.AnimacaoCalculoRepassesSociais;
-import caixa.gov.br.loterias.view.animation.AnimacoesAcessoRapido;
 import caixa.gov.br.loterias.utils.EstiloModalidade;
 import caixa.gov.br.loterias.utils.ExpandableListDataSideMenu;
-import caixa.gov.br.loterias.model.bo.MensagensNetwork;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.adapter.HomeAdapter;
 import caixa.gov.br.loterias.view.adapter.SideMenuExpandleAdapter;
+import caixa.gov.br.loterias.view.animation.AnimacaoCalculoRepassesSociais;
+import caixa.gov.br.loterias.view.animation.AnimacoesAcessoRapido;
 import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
 
 public class PrincipalActivity extends AppCompatActivity
@@ -159,7 +161,7 @@ public class PrincipalActivity extends AppCompatActivity
 
         final DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(PrincipalActivity.this);
 
-        dadosCorporativosBO.parametrosSimulacao(new SilceClient.Listener<ParametrosSimulacaoResponse>() {
+        dadosCorporativosBO.parametrosSimulacao(new RequestListener<ParametrosSimulacaoResponse>() {
             @Override
             public void onResponse(ParametrosSimulacaoResponse response) {
                 loadViewProgress.dismiss();
@@ -171,6 +173,7 @@ public class PrincipalActivity extends AppCompatActivity
                 sessaoUser.setParametrosSimulacao(response.getPayload());
 
                 if (modalidadesParaListar == null || modalidadesParaListar.size() == 0) {
+                    //TODO: apresentar mensagem de erro
                     startActivity(new Intent(PrincipalActivity.this, LoginActivity.class));
                     finish();
                     return;
@@ -183,7 +186,7 @@ public class PrincipalActivity extends AppCompatActivity
 
                 callRepassesSociais();
             }
-        }, new SilceClient.ErrorListener() {
+
             @Override
             public void onErrorResponse(VolleyError error) {
                 loadViewProgress.dismiss();
@@ -194,13 +197,13 @@ public class PrincipalActivity extends AppCompatActivity
 
     private void callRepassesSociais() {
         final DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(PrincipalActivity.this);
-        dadosCorporativosBO.repasses(new SilceClient.Listener<RepassometroDTOResponse>() {
+        dadosCorporativosBO.repasses(new RequestListener<RepassometroDTOResponse>() {
             @Override
             public void onResponse(RepassometroDTOResponse response) {
                 repassesSociais = response.getPayload();
                 layoutTrevoAcessoRapido();
             }
-        }, new SilceClient.ErrorListener() {
+
             @Override
             public void onErrorResponse(VolleyError error) {
                 ViewUtils.alert(PrincipalActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
@@ -405,14 +408,15 @@ public class PrincipalActivity extends AppCompatActivity
                 final AlertDialog loadViewProgress = LoadingViewLoterias.show(PrincipalActivity.this);
 
                 DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_(PrincipalActivity.this);
-                dadosUsuarioBO.sair(new SilceClient.Listener<NetworkResponse>() {
+                dadosUsuarioBO.sair(new RequestListener<NetworkResponse>() {
                     @Override
                     public void onResponse(NetworkResponse response) {
+                        KeycloakBO_.getInstance_(PrincipalActivity.this).logout(PrincipalActivity.this);
                         loadViewProgress.dismiss();
                         startActivity(new Intent(PrincipalActivity.this, LoginActivity.class));
                         finish();
                     }
-                }, new SilceClient.ErrorListener() {
+
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         loadViewProgress.dismiss();

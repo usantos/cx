@@ -19,6 +19,7 @@ import java.util.List;
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.ApostaBO;
 import caixa.gov.br.loterias.model.bo.ApostaBO_;
+import caixa.gov.br.loterias.model.bo.silce.RequestListener;
 import caixa.gov.br.loterias.model.bo.silce.SilceClient;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostaFavoritaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse;
@@ -120,7 +121,7 @@ public class FavoritasActivity extends AppCompatActivity {
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
         final ApostaBO apostaBO = ApostaBO_.getInstance_(this);
 
-        apostaBO.getApostasFavoritas(offsetItem, new SilceClient.Listener<ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse>() {
+        apostaBO.getApostasFavoritas(offsetItem, new RequestListener<ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse>() {
             @Override
             public void onResponse(ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse response) {
                 loadViewProgress.dismiss();
@@ -155,7 +156,7 @@ public class FavoritasActivity extends AppCompatActivity {
 
                 atualizaLayout();
             }
-        }, new SilceClient.ErrorListener() {
+
             @Override
             public void onErrorResponse(VolleyError error) {
                 loadViewProgress.dismiss();
@@ -175,7 +176,7 @@ public class FavoritasActivity extends AppCompatActivity {
         final ApostaBO apostaBO = ApostaBO_.getInstance_(FavoritasActivity.this);
         progressLoadingMore.setVisibility(View.VISIBLE);
 
-        apostaBO.getApostasFavoritas(offsetItem ,new SilceClient.Listener<ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse>() {
+        apostaBO.getApostasFavoritas(offsetItem ,new RequestListener<ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse>() {
             @Override
             public void onResponse(ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse response) {
                 progressLoadingMore.setVisibility(View.GONE);
@@ -188,7 +189,7 @@ public class FavoritasActivity extends AppCompatActivity {
                 }
                 bloquearRequestScroll = false;
             }
-        }, new SilceClient.ErrorListener() {
+
             @Override
             public void onErrorResponse(VolleyError error) {
                 progressLoadingMore.setVisibility(View.GONE);

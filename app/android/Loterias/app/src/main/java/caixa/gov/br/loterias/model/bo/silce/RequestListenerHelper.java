@@ -7,25 +7,27 @@ import com.android.volley.VolleyError;
  */
 
 public class RequestListenerHelper <T>{
+
     private SilceClient.Listener<T> silceListener;
     private SilceClient.ErrorListener errorListener;
 
     public RequestListenerHelper(final RequestListener<T> listener){
-        if(listener != null){
-            silceListener = new SilceClient.Listener<T>(){
-                @Override
-                public void onResponse(T result) {
-                    listener.onSucess(result);
+        silceListener = new SilceClient.Listener<T>(){
+            @Override
+            public void onResponse(T result) {
+                if(listener != null){
+                    listener.onResponse(result);
                 }
-            };
-
-            errorListener = new SilceClient.ErrorListener(){
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    listener.onError(error);
+            }
+        };
+        errorListener = new SilceClient.ErrorListener(){
+            @Override
+            public void onErrorResponse(final VolleyError error) {
+                if(listener != null) {
+                    listener.onErrorResponse(error);
                 }
-            };
-        }
+            }
+        };
     }
 
     public SilceClient.Listener<T> getSilceListener() {

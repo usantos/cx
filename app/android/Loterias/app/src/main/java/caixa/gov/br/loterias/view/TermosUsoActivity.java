@@ -25,6 +25,7 @@ import java.util.List;
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.DadosCorporativosBO;
 import caixa.gov.br.loterias.model.bo.DadosCorporativosBO_;
+import caixa.gov.br.loterias.model.bo.silce.RequestListener;
 import caixa.gov.br.loterias.model.bo.silce.SilceClient;
 import caixa.gov.br.loterias.model.bo.silce.dto.ListSecaoDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ListSecaoDTOResponse;
@@ -81,13 +82,13 @@ public class TermosUsoActivity extends AppCompatActivity {
             public void onClick(View view) {
                 final AlertDialog loadViewProgress = LoadingViewLoterias.show(TermosUsoActivity.this);
                 DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(TermosUsoActivity.this);
-                dadosCorporativosBO.aceiteTermo(new SilceClient.Listener<ResourceResponse>() {
+                dadosCorporativosBO.aceiteTermo(new RequestListener<ResourceResponse>() {
                     @Override
                     public void onResponse(ResourceResponse response) {
                         loadViewProgress.dismiss();
                         finish();
                     }
-                }, new SilceClient.ErrorListener() {
+
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         loadViewProgress.dismiss();
@@ -154,7 +155,7 @@ public class TermosUsoActivity extends AppCompatActivity {
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
         DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(TermosUsoActivity.this);
 
-        dadosCorporativosBO.termo(new SilceClient.Listener<TermoDeUsoDTOResponse>() {
+        dadosCorporativosBO.termo(new RequestListener<TermoDeUsoDTOResponse>() {
             @Override
             public void onResponse(TermoDeUsoDTOResponse response) {
                 termoHtml = response.getPayload().getConteudo();
@@ -163,7 +164,7 @@ public class TermosUsoActivity extends AppCompatActivity {
                 loadViewProgress.dismiss();
                 verificaTermoAceito();
             }
-        }, new SilceClient.ErrorListener() {
+
             @Override
             public void onErrorResponse(VolleyError error) {
                 loadViewProgress.dismiss();
@@ -231,14 +232,14 @@ public class TermosUsoActivity extends AppCompatActivity {
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
         DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(TermosUsoActivity.this);
 
-        dadosCorporativosBO.validaTermoAceito(new SilceClient.Listener<ResourceResponse>() {
+        dadosCorporativosBO.validaTermoAceito(new RequestListener<ResourceResponse>() {
             @Override
             public void onResponse(ResourceResponse response) {
                 isTermoAceito = Boolean.TRUE;
                 exibeRodapeAceite();
                 loadViewProgress.dismiss();
             }
-        }, new SilceClient.ErrorListener() {
+
             @Override
             public void onErrorResponse(VolleyError error) {
                 isTermoAceito = Boolean.FALSE;
@@ -281,14 +282,14 @@ public class TermosUsoActivity extends AppCompatActivity {
             final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
             DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(getApplicationContext());
 
-            dadosCorporativosBO.secaoDuvidas(new SilceClient.Listener<ListSecaoDTOResponse>() {
+            dadosCorporativosBO.secaoDuvidas(new RequestListener<ListSecaoDTOResponse>() {
                 @Override
                 public void onResponse(ListSecaoDTOResponse response) {
                     secaoDuvidas = response.getPayload();
                     createRecyclerView();
                     loadViewProgress.dismiss();
                 }
-            }, new SilceClient.ErrorListener() {
+
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     loadViewProgress.dismiss();
