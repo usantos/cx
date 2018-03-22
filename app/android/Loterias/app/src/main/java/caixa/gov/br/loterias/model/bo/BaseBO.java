@@ -64,6 +64,8 @@ public class BaseBO {
                                 }
                             }
                         });
+                    }else{
+                        listener.onErrorResponse(error);
                     }
                 }else{
                     listener.onErrorResponse(error);
