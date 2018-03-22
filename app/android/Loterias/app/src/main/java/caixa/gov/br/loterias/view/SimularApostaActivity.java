@@ -555,9 +555,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
 
     @Override
     public void abreCarrinhoApostas() {
-        Intent activity = new Intent(this, CarrinhoActivity.class);
-
-        startActivity(activity);
+        CarrinhoActivity_.intent(this).start();
     }
 
     @Override

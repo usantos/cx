@@ -522,7 +522,7 @@ public class PrincipalActivity extends AppCompatActivity
         relativecarrinho.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(PrincipalActivity.this, CarrinhoActivity.class));
+                CarrinhoActivity_.intent(PrincipalActivity.this).start();
             }
         });
     }

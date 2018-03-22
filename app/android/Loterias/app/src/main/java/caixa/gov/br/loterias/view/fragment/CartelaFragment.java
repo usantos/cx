@@ -405,7 +405,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
             public void onErrorResponse(VolleyError error) {
                 alert.dismiss();
 
-                if (error.networkResponse == null || error.networkResponse.statusCode == 401) {
+                if (MensagensNetwork.isUnauthorizedError(error)) {
                     if (inserirApostaCarrinhoLocal(aposta)) {
                         cartelaFragmentListener.adicionarApostaCarrinho();
                     }
@@ -470,7 +470,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
             @Override
             public void onErrorResponse(VolleyError error) {
                 alert.dismiss();
-                if (error.networkResponse == null || error.networkResponse.statusCode == 401) {
+                if (MensagensNetwork.isUnauthorizedError(error)) {
                     boolean retorno = false;
                     for (IdentificaoDeUmaApostaDas8Modalidades aposta : apostas) {
                         retorno = inserirApostaCarrinhoLocal(aposta);

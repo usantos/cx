@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/branco"
-    tools:context="caixa.gov.br.loterias.view.CadastrarActivity">
+    android:background="@color/branco">
 
     <ScrollView
         android:layout_width="match_parent"

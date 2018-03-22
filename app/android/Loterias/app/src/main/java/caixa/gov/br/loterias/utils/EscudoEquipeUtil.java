@@ -1,8 +1,6 @@
 package caixa.gov.br.loterias.utils;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.util.Base64;
 import android.util.Log;
 import android.widget.ImageView;
@@ -16,7 +14,6 @@ import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.ApostaBO;
 import caixa.gov.br.loterias.model.bo.ApostaBO_;
 import caixa.gov.br.loterias.model.bo.RequestListener;
-import caixa.gov.br.loterias.model.bo.silce.dto.EscudoEquipeEsportivaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.EscudoEquipeEsportivaDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.ParametroEquipe;
 
@@ -33,15 +30,15 @@ public class EscudoEquipeUtil {
             @Override
             public void onResponse(EscudoEquipeEsportivaDTOResponse response) {
                 if (response != null && response.getPayload() != null) {
-                    String  imagemString = ((EscudoEquipeEsportivaDTO) response.getPayload()).getImagem();
+                    String imagemString = (response.getPayload()).getImagem();
                     if (StringUtils.isNotEmpty(imagemString) || imagemString != null) {
-                        try{
+                        try {
                             byte[] bytes = Base64.decode(imagemString, Base64.DEFAULT);
                             Glide.with(context).load(bytes).into(imageView);
-                        }catch (Exception exception){
+                        } catch (Exception exception) {
                             Log.d("error", "Error: ", exception.getCause());
                         }
-                    }else{
+                    } else {
                         imageView.setImageResource(R.drawable.time);
                     }
                 }
@@ -53,15 +50,4 @@ public class EscudoEquipeUtil {
             }
         });
     }
-
-    private static Bitmap drawableToBitmap(Context context, int id) {
-        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), id);
-        return bitmap;
-    }
-
-    private static Bitmap stringToBitmap(String imagem) {
-        byte[] bytes = Base64.decode(imagem, Base64.DEFAULT);
-        return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-    }
-
 }

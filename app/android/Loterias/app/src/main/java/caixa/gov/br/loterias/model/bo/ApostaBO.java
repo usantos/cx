@@ -31,7 +31,7 @@ import caixa.gov.br.loterias.model.bo.silce.internals.GsonRequest;
 import static org.androidannotations.annotations.EBean.Scope.Singleton;
 
 @EBean(scope = Singleton)
-public class ApostaBO extends BaseBO{
+public class ApostaBO extends BaseBO {
 
     public void completaJogo(final int quantidadeTotalNumeros,
                              final List<Integer> numerosMarcados,
@@ -154,12 +154,12 @@ public class ApostaBO extends BaseBO{
         headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
 
         LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
-        if (quantidade > 0){
+        if (quantidade > 0) {
             queryParams.put("quantidade", String.valueOf(quantidade));
         }
 
         final GsonRequest request = silceConnection.buildPostRequest(ServerMethods.GERAR_APOSTAS_RAPIDAO_PATH, queryParams,
-                "", CarrinhoDTOResponse.class, 
+                "", CarrinhoDTOResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(), headers);
 
@@ -190,7 +190,6 @@ public class ApostaBO extends BaseBO{
         request.setErrorListener(interceptError(request, headers, listener));
         silceConnection.request(request);
     }
-
 
     public void postRapidoes(final RapidaoDTO rapidao,
                              final RequestListener<RapidaoDTOResponse> listener) {
@@ -229,7 +228,7 @@ public class ApostaBO extends BaseBO{
         LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
         headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
 
-        Map<String,String> params = new HashMap<String, String>();
+        Map<String, String> params = new HashMap<String, String>();
         params.put("codigo", codigoBilhete);
         params.put("grecaptchaResponse", " ");
 
@@ -267,7 +266,7 @@ public class ApostaBO extends BaseBO{
 
         String url = ServerMethods.DETALHES_COMPRAS_PATH.replace("{id}", idSelecionado);
 
-        final GsonRequest request = silceConnection.buildGetRequest(url,  new LinkedHashMap<String, String>(), AgrupadorApostaCompraDTOResponse.class,
+        final GsonRequest request = silceConnection.buildGetRequest(url, new LinkedHashMap<String, String>(), AgrupadorApostaCompraDTOResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(), headers);
 
@@ -347,7 +346,7 @@ public class ApostaBO extends BaseBO{
         final Map<String, String> queryParams = new HashMap<String, String>();
 
         headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
-        queryParams.put( "mes", String.valueOf(page.getMes()));
+        queryParams.put("mes", String.valueOf(page.getMes()));
         queryParams.put("ano", String.valueOf(page.getAno()));
         queryParams.put("offset", String.valueOf(page.getOffset()));
         queryParams.put("size", String.valueOf(page.getSize()));
@@ -372,7 +371,7 @@ public class ApostaBO extends BaseBO{
         headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
 
         Map<String, String> queryParams = new HashMap<String, String>();
-        queryParams.put( "mes", String.valueOf(page.getMes()));
+        queryParams.put("mes", String.valueOf(page.getMes()));
         queryParams.put("ano", String.valueOf(page.getAno()));
         queryParams.put("offset", String.valueOf(page.getOffset()));
         queryParams.put("size", String.valueOf(page.getSize()));
@@ -387,6 +386,19 @@ public class ApostaBO extends BaseBO{
         final GsonRequest request = silceConnection.buildGetRequest(ServerMethods.APOSTAS_CONFIRMADAS_HISTORICO_PATH,
                 queryParams,
                 ResultadoPesquisaPaginadaDTOHistoricoApostaDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(), headers);
+
+        request.setErrorListener(interceptError(request, headers, listener));
+        silceConnection.request(request);
+    }
+
+    public void limparCarrinho(RequestListener<CarrinhoDTOResponse> listener) {
+        LinkedHashMap<String, String> headers = new LinkedHashMap<>();
+        headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
+
+        final GsonRequest request = silceConnection.buildPostRequest(ServerMethods.LIMPAR_CARRINHO_PATH, new LinkedHashMap<String, String>(),
+                null, CarrinhoDTOResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(), headers);
 

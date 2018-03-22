@@ -379,8 +379,9 @@ public class DBLoteriasCrud {
 
     /**
      * Método responsável por pesquisar IdentificaoDeUmaApostaDas8Modalidades de acordo com dados solicitados
+     *
      * @param aposta IdentificaoDeUmaApostaDas8Modalidades
-     * @return  boolean retorno
+     * @return boolean retorno
      */
     public boolean existIdentificaoDeUmaApostaDas8Modalidades(IdentificaoDeUmaApostaDas8Modalidades aposta) {
 
@@ -1011,6 +1012,23 @@ public class DBLoteriasCrud {
             db.delete(table, selection, null);
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
+        }
+    }
+
+    public void deleteAll() {
+        this.initDBLoteriasHelper();
+        try {
+            this.db = dbLoteriasHelper.getWritableDatabase();
+            db.delete(DBTabelasLoterias.DBLoterica.NOME_TABELA, null, null);
+            db.delete(DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.NOME_TABELA, null, null);
+            db.delete(DBTabelasLoterias.DBEquipe.NOME_TABELA, null, null);
+            db.delete(DBTabelasLoterias.DBParametroEquipe.NOME_TABELA, null, null);
+            db.delete(DBTabelasLoterias.DBPartidaLotogol.NOME_TABELA, null, null);
+            db.delete(DBTabelasLoterias.DBPartidaLoteca.NOME_TABELA, null, null);
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        } finally {
+            this.closeDBLoteriasHelper();
         }
     }
 }

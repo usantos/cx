@@ -28,7 +28,7 @@ public class IntroducaoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_introducao);
-        if (DadosUsuarioBO.checarFecharIntroducao(this) == true){
+        if (DadosUsuarioBO.checarFecharIntroducao(this)){
             startActivity(new Intent(IntroducaoActivity.this, LoginActivity.class));
             finish();
         }

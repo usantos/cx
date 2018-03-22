@@ -8,8 +8,8 @@ import java.util.List;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.silce.dto.DuvidaDTO;
-import caixa.gov.br.loterias.view.custom.ItemDividaDetalheView;
-import caixa.gov.br.loterias.view.custom.ItemDividaDetalheView_;
+import caixa.gov.br.loterias.view.custom.ItemDuvidaDetalheView;
+import caixa.gov.br.loterias.view.custom.ItemDuvidaDetalheView_;
 
 
 /**
@@ -28,7 +28,7 @@ public class DetalheDuvidaAdapter extends RecyclerView.Adapter<DetalheDuvidaAdap
     @Override
     public DetalheDuvidaHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        ItemDividaDetalheView view = ItemDividaDetalheView_.build(parent.getContext());
+        ItemDuvidaDetalheView view = ItemDuvidaDetalheView_.build(parent.getContext());
         RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         view.setLayoutParams(lp);
 
@@ -37,9 +37,9 @@ public class DetalheDuvidaAdapter extends RecyclerView.Adapter<DetalheDuvidaAdap
 
     @Override
     public void onBindViewHolder(DetalheDuvidaHolder holder, int position) {
-        holder.itemDividaDetalheView.setLayout(duvidasDetalhe.get(position));
+        holder.itemDuvidaDetalheView.setLayout(duvidasDetalhe.get(position));
         if (position != 0) {
-            holder.itemDividaDetalheView.getLayoutItemDetalheDuvida().setBackgroundResource(R.drawable.drawer_linha_divisao_cinza_2_top);
+            holder.itemDuvidaDetalheView.getLayoutItemDetalheDuvida().setBackgroundResource(R.drawable.drawer_linha_divisao_cinza_2_top);
         }
 
     }
@@ -51,11 +51,11 @@ public class DetalheDuvidaAdapter extends RecyclerView.Adapter<DetalheDuvidaAdap
 
     class DetalheDuvidaHolder extends HomeAdapter.ViewHolder {
 
-        private ItemDividaDetalheView itemDividaDetalheView;
+        private ItemDuvidaDetalheView itemDuvidaDetalheView;
 
         public DetalheDuvidaHolder(View itemView) {
             super(itemView);
-            this.itemDividaDetalheView = (ItemDividaDetalheView) itemView;
+            this.itemDuvidaDetalheView = (ItemDuvidaDetalheView) itemView;
         }
     }
 }

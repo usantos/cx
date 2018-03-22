@@ -43,6 +43,8 @@ public class PartidaView extends LinearLayout {
         parametroPartida.setQtdItensSelecionadosAnterior(parametroPartida.getQtdItensSelecionados());
         if (lotecaTimeUm.isSelected()) {
             lotecaTimeUm.setSelected(Boolean.FALSE);
+            lotecaTimeUm.getItemTitle().setTextColor(getResources().getColor(R.color.cinza));
+            lotecaTimeUm.getItemDescription().setTextColor(getResources().getColor(R.color.cinza));
             parametroPartida.getEquipe1().setSelecionado(Boolean.FALSE);
             parametroPartida.setQtdItensSelecionados(parametroPartida.getQtdItensSelecionados() -1);
 
@@ -54,6 +56,8 @@ public class PartidaView extends LinearLayout {
             }
         } else {
             lotecaTimeUm.setSelected(Boolean.TRUE);
+            lotecaTimeUm.getItemTitle().setTextColor(getResources().getColor(R.color.lotecaEscuroToolbar));
+            lotecaTimeUm.getItemDescription().setTextColor(getResources().getColor(R.color.lotecaEscuroToolbar));
             parametroPartida.setSelecionado(Boolean.TRUE);
             parametroPartida.getEquipe1().setSelecionado(Boolean.TRUE);
             parametroPartida.setQtdItensSelecionados(parametroPartida.getQtdItensSelecionados() +1);
@@ -69,6 +73,8 @@ public class PartidaView extends LinearLayout {
         parametroPartida.setQtdItensSelecionadosAnterior(parametroPartida.getQtdItensSelecionados());
         if (lotecaTimeDois.isSelected()) {
             lotecaTimeDois.setSelected(Boolean.FALSE);
+            lotecaTimeDois.getItemTitle().setTextColor(getResources().getColor(R.color.cinza));
+            lotecaTimeDois.getItemDescription().setTextColor(getResources().getColor(R.color.cinza));
             parametroPartida.getEquipe2().setSelecionado(Boolean.FALSE);
             parametroPartida.setQtdItensSelecionados(parametroPartida.getQtdItensSelecionados() -1);
 
@@ -80,6 +86,8 @@ public class PartidaView extends LinearLayout {
             }
         } else {
             lotecaTimeDois.setSelected(Boolean.TRUE);
+            lotecaTimeDois.getItemTitle().setTextColor(getResources().getColor(R.color.lotecaEscuroToolbar));
+            lotecaTimeDois.getItemDescription().setTextColor(getResources().getColor(R.color.lotecaEscuroToolbar));
             parametroPartida.setSelecionado(Boolean.TRUE);
             parametroPartida.getEquipe2().setSelecionado(Boolean.TRUE);
             parametroPartida.setQtdItensSelecionados(parametroPartida.getQtdItensSelecionados() +1);
@@ -95,6 +103,7 @@ public class PartidaView extends LinearLayout {
         parametroPartida.setQtdItensSelecionadosAnterior(parametroPartida.getQtdItensSelecionados());
         if (lotecaEmpate.isSelected()) {
             lotecaEmpate.setSelected(Boolean.FALSE);
+            lotecaEmpate.getItemTitle().setTextColor(getResources().getColor(R.color.cinza));
             parametroPartida.setEmpate(Boolean.FALSE);
             parametroPartida.setQtdItensSelecionados(parametroPartida.getQtdItensSelecionados() -1);
 
@@ -106,6 +115,7 @@ public class PartidaView extends LinearLayout {
             }
         } else {
             lotecaEmpate.setSelected(Boolean.TRUE);
+            lotecaEmpate.getItemTitle().setTextColor(getResources().getColor(R.color.lotecaEscuroToolbar));
             parametroPartida.setEmpate(Boolean.TRUE);
             parametroPartida.setSelecionado(Boolean.TRUE);
             parametroPartida.setQtdItensSelecionados(parametroPartida.getQtdItensSelecionados() +1);
@@ -138,7 +148,7 @@ public class PartidaView extends LinearLayout {
         lotecaTimeDois.getItemDescription().setText(parametroPartida.getEquipe2().getIndicadorSelecao() ? "" : parametroPartida.getEquipe2().getSiglaPais());
 
         lotecaEmpate.setSelected(parametroPartida.isEmpate());
-        lotecaEmpate.getItemImage().setPadding(14,18,14,18);
+//        lotecaEmpate.getItemImage().setPadding(14,18,14,18);
     }
 
     public PartidaView(Context context) {

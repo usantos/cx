@@ -262,7 +262,7 @@ public class ViewUtils {
         return dialog;
     }
 
-    public static Dialog alertVerificarIdadeListener(Context context, DialogInterface.OnClickListener listener) {
+        public static Dialog alertVerificarIdadeListener(Context context, DialogInterface.OnClickListener listener) {
         Dialog dialog = ViewUtils.dialogo(context, R.string.label_atencao, context.getResources().getString(R.string.MA003))
                 .setCancelable(false)
                 .setNegativeButton(R.string.label_nao, listener)

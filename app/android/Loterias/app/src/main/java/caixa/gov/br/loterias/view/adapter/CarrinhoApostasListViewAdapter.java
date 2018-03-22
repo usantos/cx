@@ -2,6 +2,7 @@ package caixa.gov.br.loterias.view.adapter;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -188,26 +189,31 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
     }
 
     private void deletarAposta(final IdentificaoDeUmaApostaDas8Modalidades aposta) {
-        final ApostaBO apostaBO = ApostaBO_.getInstance_(parentActivity);
-        final Dialog loadViewProgress = LoadingViewLoterias.show(parentActivity);
 
-        apostaBO.deleteApostaCarrinho(aposta.getId().toString(), new RequestListener<CarrinhoDTOResponse>() {
+        ViewUtils.alertTitleButtonPositiveListener(context, R.string.label_empty, context.getString(R.string.MA010), R.string.ok, new DialogInterface.OnClickListener() {
             @Override
-            public void onResponse(CarrinhoDTOResponse response) {
-                loadViewProgress.dismiss();
-                parentActivity.carrinho = response.getPayload();
-                deletarApostaBaseLocal(aposta, Boolean.FALSE);
-                parentActivity.atualizaLayout(Boolean.FALSE);
-            }
+            public void onClick(DialogInterface dialogInterface, int i) {
+                ApostaBO apostaBO = ApostaBO_.getInstance_(parentActivity);
+                final Dialog loadViewProgress = LoadingViewLoterias.show(parentActivity);
+                apostaBO.deleteApostaCarrinho(aposta.getId().toString(), new RequestListener<CarrinhoDTOResponse>() {
+                    @Override
+                    public void onResponse(CarrinhoDTOResponse response) {
+                        loadViewProgress.dismiss();
+                        parentActivity.setCarrinho(response.getPayload());
+                        deletarApostaBaseLocal(aposta, Boolean.FALSE);
+                        parentActivity.atualizaLayout(Boolean.FALSE);
+                    }
 
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                loadViewProgress.dismiss();
-                if (error.networkResponse != null && error.networkResponse.statusCode != 401) {
-                    ViewUtils.alert(parentActivity, MensagensNetwork.setMensagem(error, context));
-                } else {
-                    deletarApostaBaseLocal(aposta, Boolean.TRUE);
-                }
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        loadViewProgress.dismiss();
+                        if (error.networkResponse != null && error.networkResponse.statusCode != 401) {
+                            ViewUtils.alert(parentActivity, MensagensNetwork.setMensagem(error, context));
+                        } else {
+                            deletarApostaBaseLocal(aposta, Boolean.TRUE);
+                        }
+                    }
+                });
             }
         });
     }

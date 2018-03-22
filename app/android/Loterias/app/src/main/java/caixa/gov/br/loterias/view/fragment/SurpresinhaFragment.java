@@ -333,7 +333,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
             @Override
             public void onErrorResponse(VolleyError error) {
                 loadViewProgress.dismiss();
-                if (error.networkResponse == null || error.networkResponse.statusCode == 401) {
+                if (MensagensNetwork.isUnauthorizedError(error)) {
                     inserirSuspresinhaBaseLocal(apostaSurpresinha);
                 } else {
                     ViewUtils.alert(getActivity(), MensagensNetwork.setMensagem(error, getActivity()));

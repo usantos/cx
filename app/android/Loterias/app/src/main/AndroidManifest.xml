@@ -72,7 +72,7 @@
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.CarrinhoActivity"
+            android:name=".view.CarrinhoActivity_"
             android:configChanges="orientation"
             android:label="@string/title_activity_carrinho"
             android:screenOrientation="portrait" />

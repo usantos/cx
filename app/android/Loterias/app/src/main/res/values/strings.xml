@@ -85,8 +85,10 @@
     <!-- Messages-->
 
     <string name="MA002">Por favor, verifique o preenchimento dos campos:</string>
-    <string name="MN002"> Idade informada menor que 18 anos.</string>
-    <string name="MA003"> Você tem mais de 18 anos?</string>
+    <string name="MN002">Idade informada menor que 18 anos.</string>
+    <string name="MA003">Você tem mais de 18 anos?</string>
+    <string name="MA010">Deseja remover a aposta do carrinho?</string>
+    <string name="MA011">Deseja remover todas as apostas do carrinho?</string>
     <string name="MA013">Atingida a quantidade máxima de apostas no carrinho</string>
     <string name="MA014">Atingiu o valor máximo diário de apostas</string>
     <string name="MA015">Já existe aposta igual no carrinho</string>
@@ -188,7 +190,7 @@
     <string name="label_aposta_concurso">Conc. %d</string>
     <string name="label_aposta_concursos">Conc. %d a %d</string>
 
-    <string name="carregando">Carregando...</string>
+    <string name="carregando">Carregando…</string>
 
     <string name="key_introducao">key_introducao</string>
     <string name="key_idade">key_idade</string>
@@ -206,6 +208,7 @@
     <string name="label_premio">Prêmio</string>
     <string name="label_veja_retirar_premio">Veja como retirar o seu prêmio:</string>
     <string name="label_time_coracao">Time do coração&#160;</string>
+    <string name="label_empty"> </string>
 
     <!--Mock-->
     <string name="label_mock_texto_nao_premiado">Lorem ipsum dolor sit amet,\nconsectetur adipiscing elit.\nAenean euismod bibendum laoreet.\nProin gravida dolor sit amet lacus\naccumsan et viverra justo commodo</string>
