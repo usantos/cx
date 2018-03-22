@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/fragmentContainer"/>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <View
+                android:layout_gravity="bottom"
+                android:layout_width="match_parent"
+                android:layout_height="94dp"
+                android:background="@color/cinzaApostaConfirmada" />
+
+            <LinearLayout
+                android:padding="@dimen/activity_vertical_margin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:id="@+id/editarApostaBtn"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:layout_gravity="bottom">
+
+                    <ImageView
+                        android:id="@+id/editarImg"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:layout_centerHorizontal="true"
+                        android:adjustViewBounds="true"
+                        android:src="@drawable/icon_editar_aposta" />
+
+                    <TextView
+                        android:layout_marginTop="5dp"
+                        android:id="@+id/editarTxt"
+                        android:gravity="center"
+                        android:layout_below="@id/editarImg"
+                        android:layout_centerHorizontal="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/textColorToolbar"
+                        android:textSize="12sp"
+                        android:text="@string/label_editar_aposta"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content">
+
+                    <RelativeLayout
+                        android:id="@+id/favoriteBtn"
+                        android:padding="15dp"
+                        android:layout_width="match_parent"
+                        android:minHeight="56dp"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/icon_favoritar"
+                        android:drawablePadding="10dp"
+                        android:background="@color/cinza"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:id="@+id/favoritarImg"
+                            android:layout_width="21dp"
+                            android:layout_height="21dp"
+                            android:layout_centerVertical="true"
+                            android:layout_marginEnd="10dp"
+                            android:src="@drawable/icon_favoritar"/>
+
+                        <TextView
+                            android:layout_centerVertical="true"
+                            android:gravity="center"
+                            android:layout_toEndOf="@id/favoritarImg"
+                            android:textColor="@color/branco"
+                            android:textSize="14sp"
+                            android:text="@string/label_salve_aposta"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/adicionarCarrinhoBtn"
+                        android:layout_marginTop="14dp"
+                        android:layout_marginBottom="40dp"
+                        android:padding="15dp"
+                        android:layout_below="@id/favoriteBtn"
+                        android:layout_width="match_parent"
+                        android:minHeight="84dp"
+                        android:layout_height="wrap_content"
+                        android:background="@color/cinza"
+                        android:gravity="center">
+
+                        <TextView
+                            android:id="@+id/adicionarTxt"
+                            android:textColor="@color/branco"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:layout_centerHorizontal="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/label_adicionar"/>
+
+                        <TextView
+                            android:layout_below="@id/adicionarTxt"
+                            android:textSize="14sp"
+                            android:gravity="center"
+                            android:layout_centerHorizontal="true"
+                            android:textColor="@color/branco"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/label_adicionar_carrinho_apostas"/>
+
+                    </RelativeLayout>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/carrinhoApostasBtn"
+                    android:layout_gravity="bottom"
+                    android:layout_width="60dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/carrinhoImg"
+                        android:layout_centerHorizontal="true"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:src="@drawable/icon_carrinho" />
+
+                    <TextView
+                        android:layout_marginTop="5dp"
+                        android:gravity="center"
+                        android:id="@+id/carrinhoTxt"
+                        android:layout_centerHorizontal="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/textColorToolbar"
+                        android:textSize="12sp"
+                        android:layout_below="@id/carrinhoImg"
+                        android:text="@string/label_carrinho_apostas"/>
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>

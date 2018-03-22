@@ -15,19 +15,22 @@ package caixa.gov.br.loterias.model.bo.silce.dto;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.parceler.Parcel;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel(description = "")
+@Parcel
 public class PartidaLotecaDTO {
     @SerializedName("equipe1")
-    private EquipeDTO equipe1 = null;
+    protected EquipeDTO equipe1 = null;
     @SerializedName("equipe2")
-    private EquipeDTO equipe2 = null;
+    protected EquipeDTO equipe2 = null;
     @SerializedName("empate")
-    private Boolean empate = null;
+    protected Boolean empate = null;
     @Expose(serialize = false, deserialize = false)
-    private transient Long idDB;
+    protected transient Long idDB;
 
     /**
      **/

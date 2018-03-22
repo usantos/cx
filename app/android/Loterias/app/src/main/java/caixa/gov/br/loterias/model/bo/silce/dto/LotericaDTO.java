@@ -15,44 +15,47 @@ package caixa.gov.br.loterias.model.bo.silce.dto;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.parceler.Parcel;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel(description = "")
+@Parcel
 public class LotericaDTO {
 
     @SerializedName("nomeFantasia")
-    private String nomeFantasia = null;
+    protected String nomeFantasia = null;
     @SerializedName("nome")
-    private String nome = null;
+    protected String nome = null;
     @SerializedName("logradouro")
-    private String logradouro = null;
+    protected String logradouro = null;
     @SerializedName("bairro")
-    private String bairro = null;
+    protected String bairro = null;
     @SerializedName("nomeMunicipio")
-    private String nomeMunicipio = null;
+    protected String nomeMunicipio = null;
     @SerializedName("nomeUF")
-    private String nomeUF = null;
+    protected String nomeUF = null;
     @SerializedName("id")
-    private Long id = null;
+    protected Long id = null;
     @SerializedName("codigo")
-    private String codigo = null;
+    protected String codigo = null;
     @SerializedName("idUF")
-    private Long idUF = null;
+    protected Long idUF = null;
     @SerializedName("idMunicipio")
-    private Long idMunicipio = null;
+    protected Long idMunicipio = null;
     @SerializedName("dvMunicipio")
-    private Long dvMunicipio = null;
+    protected Long dvMunicipio = null;
     @SerializedName("situacao")
-    private DTOEnumLong situacao = null;
+    protected DTOEnumLong situacao = null;
     @SerializedName("polo")
-    private Long polo = null;
+    protected Long polo = null;
     @SerializedName("dv")
-    private Long dv = null;
+    protected Long dv = null;
     @SerializedName("numeroFormatado")
-    private String numeroFormatado = null;
+    protected String numeroFormatado = null;
     @Expose(deserialize = false, serialize = false)
-    private transient Long idDB;
+    protected transient Long idDB;
 
     /**
      * Nome Fantasia da Unidade Lotérica

@@ -14,6 +14,8 @@ package caixa.gov.br.loterias.model.bo.silce.dto;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.parceler.Parcel;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -21,11 +23,12 @@ import io.swagger.annotations.ApiModelProperty;
  * Esta entidade é utilizada para representar domínios, que tem apenas os atributos chave/valor
  **/
 @ApiModel(description = "Esta entidade é utilizada para representar domínios, que tem apenas os atributos chave/valor")
+@Parcel
 public class DTOEnumCharacter {
     @SerializedName("valor")
-    private String valor = null;
+    protected String valor = null;
     @SerializedName("descricao")
-    private String descricao = null;
+    protected String descricao = null;
 
     /**
      * Identificador do domínio

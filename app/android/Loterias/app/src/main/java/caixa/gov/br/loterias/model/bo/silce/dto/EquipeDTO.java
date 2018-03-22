@@ -15,39 +15,42 @@ package caixa.gov.br.loterias.model.bo.silce.dto;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.parceler.Parcel;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel(description = "")
+@Parcel
 public class EquipeDTO {
     @SerializedName("placar")
-    private String placar = null;
+    protected String placar = null;
     @SerializedName("vitoria")
-    private Boolean vitoria = null;
+    protected Boolean vitoria = null;
     @SerializedName("parametroEquipe")
-    private ParametroEquipe parametroEquipe = null;
+    protected ParametroEquipe parametroEquipe = null;
     @SerializedName("nome")
-    private String nome = null;
+    protected String nome = null;
     @SerializedName("numero")
-    private Integer numero = null;
+    protected Integer numero = null;
     @SerializedName("numeroPais")
-    private Integer numeroPais = null;
+    protected Integer numeroPais = null;
     @SerializedName("pais")
-    private String pais = null;
+    protected String pais = null;
     @SerializedName("siglaPais")
-    private String siglaPais = null;
+    protected String siglaPais = null;
     @SerializedName("uf")
-    private String uf = null;
+    protected String uf = null;
     @SerializedName("nomeClass")
-    private String nomeClass = null;
+    protected String nomeClass = null;
     @SerializedName("indicadorSelecao")
-    private Boolean indicadorSelecao = null;
+    protected Boolean indicadorSelecao = null;
     @SerializedName("descricaoCurta")
-    private String descricaoCurta = null;
+    protected String descricaoCurta = null;
     @SerializedName("descricaoLonga")
-    private String descricaoLonga = null;
+    protected String descricaoLonga = null;
     @Expose(deserialize = false, serialize = false)
-    private Long idDB;
+    protected Long idDB;
 
     /**
      * Identificação do Placar de cada jogo da Lotogol

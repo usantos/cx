@@ -37,6 +37,8 @@ import caixa.gov.br.loterias.model.bo.silce.dto.MesAnoDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOApostaDTOResponse;
 import caixa.gov.br.loterias.utils.AppUtils;
 import caixa.gov.br.loterias.utils.ViewUtils;
+import caixa.gov.br.loterias.view.ApostaConfirmadaDetalhesActivity;
+import caixa.gov.br.loterias.view.ApostaConfirmadaDetalhesActivity_;
 import caixa.gov.br.loterias.view.ApostasConfirmadasActivity;
 import caixa.gov.br.loterias.view.adapter.ApostasConfirmadasAdapter;
 import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
@@ -211,7 +213,7 @@ public class ApostasConfirmadasFragment extends Fragment implements ApostasConfi
                     @Override
                     public void onItemClick(int position) {
                         ApostaDTO apostaDTO = apostasList.get(position);
-                        startActivity(new Intent());
+                        ApostaConfirmadaDetalhesActivity_.intent(getActivity()).apostaDTO(apostaDTO).start();
                     }
                 });
 

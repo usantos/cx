@@ -85,8 +85,8 @@
     <!-- Messages-->
 
     <string name="MA002">Por favor, verifique o preenchimento dos campos:</string>
-    <string name="MN002">Idade informada menor que 18 anos.</string>
-    <string name="MA003">Você tem mais de 18 anos?</string>
+    <string name="MN002"> Idade informada menor que 18 anos.</string>
+    <string name="MA003"> Você tem mais de 18 anos?</string>
     <string name="MA010">Deseja remover a aposta do carrinho?</string>
     <string name="MA011">Deseja remover todas as apostas do carrinho?</string>
     <string name="MA013">Atingida a quantidade máxima de apostas no carrinho</string>
@@ -189,8 +189,13 @@
     <string name="label_selecione_mes">Selecione o mês</string>
     <string name="label_aposta_concurso">Conc. %d</string>
     <string name="label_aposta_concursos">Conc. %d a %d</string>
+    <string name="label_adicionar">Adicionar</string>
+    <string name="label_adicionar_carrinho_apostas">ao carrinho de apostas</string>
+    <string name="label_editar_aposta">Editar\naposta</string>
+    <string name="label_carrinho_apostas">Carrinho\nde apostas</string>
+	<string name="label_salve_aposta">Salve esta aposta :)</string>
 
-    <string name="carregando">Carregando…</string>
+	<string name="carregando">Carregando…</string>
 
     <string name="key_introducao">key_introducao</string>
     <string name="key_idade">key_idade</string>

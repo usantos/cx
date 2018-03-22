@@ -24,12 +24,16 @@ import caixa.gov.br.loterias.view.adapter.LotecaAdapter;
 @EViewGroup(R.layout.row_apostas_partidas_loteca)
 public class PartidaViewLoteca extends LinearLayout {
 
-    @ViewById
-    ApostaEquipeLotecaView apostas_partida_loteca_view_um, apostas_partida_loteca_view_empate, apostas_partida_loteca_view_dois;
+    private static final float DOIS = 2;
+    private static final float ZERO = 0;
+
+    private PartidaLotecaDTO parametroPartida;
+    private LotecaAdapter.LocateAdapterListener listener;
+
+    protected ApostaEquipeLotecaView apostas_partida_loteca_view_um, apostas_partida_loteca_view_empate, apostas_partida_loteca_view_dois;
 
     @ViewById
-    LinearLayout layout_row_apostas_partidas_loteca_list_view;
-
+    protected LinearLayout layout_row_apostas_partidas_loteca_list_view;
 
     public LinearLayout getLayout_row_apostas_partidas_loteca_list_view() {
         return layout_row_apostas_partidas_loteca_list_view;
@@ -39,16 +43,9 @@ public class PartidaViewLoteca extends LinearLayout {
         this.layout_row_apostas_partidas_loteca_list_view = layout_row_apostas_partidas_loteca_list_view;
     }
 
-    private PartidaLotecaDTO parametroPartida;
-
-    private LotecaAdapter.LocateAdapterListener listener;
-
-    private static final float DOIS = 2;
-
-    private static final float ZERO= 0;
-
     @AfterViews
     protected void init() {
+
     }
 
     public void setLayout(PartidaLotecaDTO parametroPartida) {
@@ -61,7 +58,7 @@ public class PartidaViewLoteca extends LinearLayout {
         apostas_partida_loteca_view_um.getImageApostaPartidaLoteca().setSelected(parametroPartida.getEquipe1().getVitoria());
         apostas_partida_loteca_view_um.getLayout_row_aposta_partida_loteca().setBackground(getContext().getResources().getDrawable(R.color.transparente));
         apostas_partida_loteca_view_um.getImageApostaPartidaLoteca().setBackground(getContext().getResources().getDrawable(R.drawable.select_unselect_circle_generico));
-        if (parametroPartida.getEquipe1().getVitoria() == true){
+        if (parametroPartida.getEquipe1().getVitoria()){
             apostas_partida_loteca_view_um.getTextApostaPartidaLoteca().setTypeface(Typeface.DEFAULT_BOLD);
         }
         apostas_partida_loteca_view_empate.getTextApostaPartidaLoteca().setText("X");
@@ -69,7 +66,7 @@ public class PartidaViewLoteca extends LinearLayout {
         apostas_partida_loteca_view_empate.getImageApostaPartidaLoteca().setSelected(parametroPartida.getEmpate());
         apostas_partida_loteca_view_empate.getLayout_row_aposta_partida_loteca().setBackground(getContext().getResources().getDrawable(R.color.transparente));
         apostas_partida_loteca_view_empate.getImageApostaPartidaLoteca().setBackground(getContext().getResources().getDrawable(R.drawable.select_unselect_circle_generico));
-        if(parametroPartida.getEmpate() == true){
+        if(parametroPartida.getEmpate()){
             apostas_partida_loteca_view_empate.getTextApostaPartidaLoteca().setTypeface(Typeface.DEFAULT_BOLD);
         }
         apostas_partida_loteca_view_dois.getTextApostaPartidaLoteca().setText(parametroPartida.getEquipe2().getNome());
@@ -78,7 +75,7 @@ public class PartidaViewLoteca extends LinearLayout {
         apostas_partida_loteca_view_dois.getImageApostaPartidaLoteca().setBackgroundColor(getContext().getResources().getColor(R.color.branco));
         apostas_partida_loteca_view_dois.getLayout_row_aposta_partida_loteca().setBackground(getContext().getResources().getDrawable(R.color.transparente));
         apostas_partida_loteca_view_dois.getImageApostaPartidaLoteca().setBackground(getContext().getResources().getDrawable(R.drawable.select_unselect_circle_generico));
-        if(parametroPartida.getEquipe2().getVitoria() == true){
+        if(parametroPartida.getEquipe2().getVitoria()){
             apostas_partida_loteca_view_dois.getTextApostaPartidaLoteca().setTypeface(Typeface.DEFAULT_BOLD);
         }
     }

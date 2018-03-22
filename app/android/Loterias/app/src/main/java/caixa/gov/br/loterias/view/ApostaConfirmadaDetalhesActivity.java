@@ -1,0 +1,101 @@
+package caixa.gov.br.loterias.view;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.MenuRes;
+import android.support.annotation.Nullable;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.widget.FrameLayout;
+
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
+import org.androidannotations.annotations.ItemClick;
+import org.androidannotations.annotations.OptionsItem;
+import org.androidannotations.annotations.OptionsMenu;
+import org.androidannotations.annotations.ViewById;
+
+import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.model.bo.silce.dto.ApostaDTO;
+import caixa.gov.br.loterias.utils.AppUtils;
+import caixa.gov.br.loterias.utils.EstiloModalidade;
+import caixa.gov.br.loterias.utils.EstiloModalidadeAposta;
+import caixa.gov.br.loterias.utils.ViewUtils;
+
+/**
+ * Created by pmotta on 22/03/2018.
+ */
+
+@EActivity(R.layout.activity_aposta_confirmada_detalhes)
+@OptionsMenu(R.menu.menu_apostas_confirmadas)
+public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
+
+    @Extra
+    protected ApostaDTO apostaDTO;
+
+    @ViewById
+    protected FrameLayout fragmentContainer;
+
+    @ViewById
+    protected Toolbar toolbar;
+
+    @Click
+    protected void carrinhoApostasBtn(){
+        //TODO:
+    }
+
+    @Click
+    protected void favoriteBtn(){
+        //TODO:
+    }
+
+    @Click
+    protected void editarApostaBtn(){
+        //TODO:
+    }
+
+    @Click
+    protected void adicionarCarrinhoBtn(){
+        //TODO:
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        EstiloModalidadeAposta estilo = new EstiloModalidadeAposta(apostaDTO.getModalidade());
+        setTheme(estilo.getThemeId());
+        setTitle(AppUtils.capitalizeFirstChar(getString(estilo.getStringId())));
+    }
+
+    @OptionsItem(R.id.action_duvida)
+    protected void onMenuDuvida(){
+        Intent intent = new Intent(getBaseContext(), TermosUsoActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp(){
+        finish();
+        return true;
+    }
+
+    @AfterViews
+    protected void init(){
+        setupToolbar();
+    }
+
+    private void setupToolbar(){
+        setSupportActionBar(toolbar);
+        ActionBar supportActionBar = getSupportActionBar();
+        if(supportActionBar != null){
+            supportActionBar.setDisplayHomeAsUpEnabled(true);
+            supportActionBar.setElevation(0);
+        }
+    }
+
+
+}

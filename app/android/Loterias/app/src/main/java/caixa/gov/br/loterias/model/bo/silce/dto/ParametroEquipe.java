@@ -17,54 +17,57 @@ import android.graphics.Bitmap;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.parceler.Parcel;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel(description = "")
+@Parcel
 public class ParametroEquipe {
 
     @SerializedName("indicadorSelecao")
     @Expose(serialize = true, deserialize = true)
-    private Boolean indicadorSelecao = null;
+    protected Boolean indicadorSelecao = null;
     @SerializedName("nome")
     @Expose(serialize = true, deserialize = true)
-    private String nome = null;
+    protected String nome = null;
     @SerializedName("numero")
     @Expose(serialize = true, deserialize = true)
-    private Integer numero = null;
+    protected Integer numero = null;
     @SerializedName("numeroPais")
     @Expose(serialize = true, deserialize = true)
-    private Integer numeroPais = null;
+    protected Integer numeroPais = null;
     @SerializedName("descricaoCurta")
     @Expose(serialize = true, deserialize = true)
-    private String descricaoCurta = null;
+    protected String descricaoCurta = null;
     @SerializedName("descricaoLonga")
     @Expose(serialize = true, deserialize = true)
-    private String descricaoLonga = null;
+    protected String descricaoLonga = null;
     @SerializedName("pais")
     @Expose(serialize = true, deserialize = true)
-    private String pais = null;
+    protected String pais = null;
     @SerializedName("siglaPais")
     @Expose(serialize = true, deserialize = true)
-    private String siglaPais = null;
+    protected String siglaPais = null;
     @SerializedName("uf")
     @Expose(serialize = true, deserialize = true)
-    private String uf = null;
+    protected String uf = null;
     @SerializedName("nomeClass")
     @Expose(serialize = true, deserialize = true)
-    private String nomeClass = null;
+    protected String nomeClass = null;
     @Expose(serialize = false, deserialize = false)
-    private transient boolean selecionado;
+    protected transient boolean selecionado;
     @Expose(serialize = false, deserialize = false)
-    private transient int brasaoId;
+    protected transient int brasaoId;
     @Expose(serialize = false, deserialize = false)
-    private transient int brasaoSelecionadoId;
+    protected transient int brasaoSelecionadoId;
     @Expose(serialize = false, deserialize = false)
-    private transient String placar;
+    protected transient String placar;
     @Expose(serialize = false, deserialize = false)
-    private transient Bitmap escudo;
+    protected transient Bitmap escudo;
     @Expose(serialize = false, deserialize = false)
-    private transient Long idDB;
+    protected transient Long idDB;
 
 
     /**

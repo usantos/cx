@@ -206,16 +206,23 @@
             android:label="@string/title_activity_resultado_ler_bilhetes"
             android:theme="@style/AppTheme.DegradeActionBar"
             android:screenOrientation="portrait"/>
+
         <activity
             android:name=".view.JogosConfirmadosPremioMercadoPagoActivity"
             android:label="@string/title_activity_resultado_ler_bilhetes"
             android:theme="@style/AppTheme.DegradeActionBar"
             android:screenOrientation="portrait"/>
+
         <activity
             android:name=".view.RestritoDezoitoAnosActivity"
             android:label="@string/title_activity_termos_uso"
             android:theme="@style/AppTheme.DegradeActionBar"
             android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".view.ApostaConfirmadaDetalhesActivity_"
+            android:screenOrientation="portrait"/>
+
     </application>
 
 </manifest>

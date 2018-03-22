@@ -21,21 +21,14 @@ import caixa.gov.br.loterias.R;
 public class ApostaEquipeLotecaView extends LinearLayout {
 
     @ViewById
-    ImageView imageApostaPartidaLoteca;
+    protected ImageView imageApostaPartidaLoteca;
     @ViewById
-    TextView textApostaPartidaLoteca;
+    protected TextView textApostaPartidaLoteca;
     @ViewById
-    LinearLayout layout_row_aposta_partida_loteca;
+    protected LinearLayout layout_row_aposta_partida_loteca;
 
     public void setImageApostaPartidaLoteca(ImageView imageApostaPartidaLoteca) {
         this.imageApostaPartidaLoteca = imageApostaPartidaLoteca;
-    }
-
-
-
-    @AfterViews
-    protected void init() {
-
     }
 
     public ApostaEquipeLotecaView(Context context) {
@@ -65,7 +58,6 @@ public class ApostaEquipeLotecaView extends LinearLayout {
     public void setTextApostaPartidaLoteca(TextView textApostaPartidaLoteca) {
         this.textApostaPartidaLoteca = textApostaPartidaLoteca;
     }
-
 
     public LinearLayout getLayout_row_aposta_partida_loteca() {
         return layout_row_aposta_partida_loteca;

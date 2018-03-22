@@ -15,15 +15,18 @@ package caixa.gov.br.loterias.model.bo.silce.dto;
 import io.swagger.annotations.*;
 import com.google.gson.annotations.SerializedName;
 
+import org.parceler.Parcel;
+
 @ApiModel(description = "")
+@Parcel
 public class ParametroMesDeSorte {
   
   @SerializedName("numero")
-  private Integer numero = null;
+  protected Integer numero = null;
   @SerializedName("nome")
-  private String nome = null;
+  protected String nome = null;
   @SerializedName("abreviacao")
-  private String abreviacao = null;
+  protected String abreviacao = null;
 
   /**
    **/

@@ -166,17 +166,22 @@ public class PrincipalActivity extends AppCompatActivity
                 loadViewProgress.dismiss();
 
                 modalidadesParaListar = response.getPayload().getParametros();
+                if (modalidadesParaListar == null || modalidadesParaListar.isEmpty()) {
+                    ViewUtils.alert(PrincipalActivity.this, getString(R.string.sistema_indisponivel), new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialogInterface) {
+                            startActivity(new Intent(PrincipalActivity.this, LoginActivity.class));
+                            finish();
+                        }
+                    });
+                    return;
+                }
+
                 SessaoUsuario sessaoUser = SessaoUsuario.getInstance();
                 sessaoUser.setValorMinimimoAposta(response.getPayload().getValorMinimoCarrinho());
                 sessaoUser.setValorMaximoAposta(response.getPayload().getValorLimiteDiario());
                 sessaoUser.setParametrosSimulacao(response.getPayload());
 
-                if (modalidadesParaListar == null || modalidadesParaListar.size() == 0) {
-                    //TODO: apresentar mensagem de erro
-                    startActivity(new Intent(PrincipalActivity.this, LoginActivity.class));
-                    finish();
-                    return;
-                }
                 TextView valorMinimoCompra = findViewById(R.id.textViewHomeMinimumPurchaseValue);
                 valorMinimoCompra.setText("valor mínimo da compra: " + ViewUtils.getMoedaFormat(response.getPayload().getValorMinimoCarrinho()));
 
@@ -189,7 +194,13 @@ public class PrincipalActivity extends AppCompatActivity
             @Override
             public void onErrorResponse(VolleyError error) {
                 loadViewProgress.dismiss();
-                ViewUtils.alert(PrincipalActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
+                ViewUtils.alert(PrincipalActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()), new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialogInterface) {
+                        startActivity(new Intent(PrincipalActivity.this, LoginActivity.class));
+                        finish();
+                    }
+                });
             }
         });
     }

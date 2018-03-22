@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -49,7 +50,7 @@ public class SilceConnection {
     public <T> GsonRequest buildGetRequest(String path, Map<String, String> queryParams,
                                Class<T> responseDataClass,
                                Response.Listener<T> listener,
-                               Response.ErrorListener errorListener, LinkedHashMap<String, String> headers) {
+                               Response.ErrorListener errorListener, Map<String, String> headers) {
         String url = fillUrlWithQueryParams(path, queryParams);
         GsonRequest request = new GsonRequest<String, T>(GET, url, responseDataClass,
                 headers, listener, errorListener);
@@ -60,7 +61,7 @@ public class SilceConnection {
     public <REQ, RSP> GsonRequest buildPostRequest(String path, Map<String, String> queryParams,
                                             REQ body, Class<RSP> responseDataClass,
                                             Response.Listener<RSP> listener,
-                                            Response.ErrorListener errorListener, LinkedHashMap<String, String> headers) {
+                                            Response.ErrorListener errorListener, Map<String, String> headers) {
         String url = fillUrlWithQueryParams(path, queryParams);
         GsonRequest request = new GsonRequest<>(POST, url,
                 prepareBody(body), responseDataClass,
@@ -72,7 +73,7 @@ public class SilceConnection {
     public <T> GsonRequest buildDeleteRequest(String path, String param,
                                   Class<T> responseDataClass,
                                   Response.Listener<T> listener,
-                                  Response.ErrorListener errorListener, LinkedHashMap<String, String> headers) {
+                                  Response.ErrorListener errorListener, Map<String, String> headers) {
         String url = (path + param);
         url = fillUrl(url);
         GsonRequest request = new GsonRequest<String, T>(DELETE, url, responseDataClass,
@@ -84,7 +85,7 @@ public class SilceConnection {
     public <T> void get(String path, Map<String, String> queryParams,
                                     Class<T> responseDataClass,
                                     Response.Listener<T> listener,
-                                    Response.ErrorListener errorListener, LinkedHashMap<String, String> headers) {
+                                    Response.ErrorListener errorListener, Map<String, String> headers) {
         request(buildGetRequest(path, queryParams, responseDataClass, listener, errorListener, headers));
     }
 
