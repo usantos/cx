@@ -93,19 +93,22 @@ public class DadosCorporativosBO extends BaseBO{
     }
 
     public void parametrosSimulacao(final RequestListener<ParametrosSimulacaoResponse> listener) {
-        LinkedHashMap<String, String> headers;
+        LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
         LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
 
         if (keycloakBO.getAccessToken() != null){
-            headers = new LinkedHashMap<String, String>();
             headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
-        }else{
-            headers = new LinkedHashMap<String, String>();
-        }
+            GsonRequest request = silceConnection.buildGetRequest(ServerMethods.PARAM_SIMULACAO_PATH, queryParams, ParametrosSimulacaoResponse.class,
+                    listener.getSilceListener(),
+                    listener.getErrorListener(), headers);
 
-        silceConnection.get(ServerMethods.PARAM_SIMULACAO_PATH, queryParams, ParametrosSimulacaoResponse.class,
-                listener.getSilceListener(),
-                listener.getErrorListener(), headers);
+            request.setErrorListener(interceptError(request, headers, listener));
+            silceConnection.request(request);
+        }else{
+            silceConnection.get(ServerMethods.PARAM_SIMULACAO_PATH, queryParams, ParametrosSimulacaoResponse.class,
+                    listener.getSilceListener(),
+                    listener.getErrorListener(), headers);
+        }
     }
 
     public void validarApostaFavorita(final ApostaFavoritaDTO aposta,

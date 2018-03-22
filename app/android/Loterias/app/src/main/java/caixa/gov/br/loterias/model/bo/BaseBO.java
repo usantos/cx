@@ -48,7 +48,7 @@ public class BaseBO {
             public void onErrorResponse(final VolleyError error) {
                 if(AppUtils.isNetworkAvailable(context)){
                     //Caso não esteja autorizado tenta atualizar o token de acesso
-                    if(MensagensNetwork.isUnauthorizedError(error)) {
+                    if(MensagensNetwork.isUnauthorizedError(error) && keycloakBO.getAccessToken() != null) {
                         keycloakBO.refreshAccess(new KeycloakBO.OnRefreshAccess() {
                             @Override
                             public void onRefreshAccess(String token) {
