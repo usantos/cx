@@ -3,6 +3,7 @@ package caixa.gov.br.loterias.view.adapter;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import caixa.gov.br.loterias.model.bo.silce.dto.ModalidadeEnum;
 import caixa.gov.br.loterias.model.bean.Modalidade;
 import caixa.gov.br.loterias.utils.EstiloModalidade;
 import caixa.gov.br.loterias.utils.ViewUtils;
+import caixa.gov.br.loterias.view.animation.AnimacoesResultados;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -78,7 +80,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             holder.game.setText(ModalidadeEnum.fromString(data.get(position).getTipoModalidade()));
         }
 
-        holder.resultados.setBackgroundColor(ContextCompat.getColor(context, estilo.getCorEscura()));
+        holder.linearLayoutTopResultados.setBackgroundColor(ContextCompat.getColor(context, estilo.getCorEscura()));
         holder.trevo.setBackground(ContextCompat.getDrawable(context, estilo.getTrevoBackground()));
         holder.trevoFundo.setBackground(ContextCompat.getDrawable(context, estilo.getTrevoBackground()));
         holder.titulo.setBackgroundColor(ContextCompat.getColor(context, estilo.getCorClara()));
@@ -119,6 +121,19 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         Glide.with(holder.itemView.getContext())
                 .load(estilo.getImagemRelogio())
                 .into(holder.relogio);
+
+        final LinearLayout linearLayoutContentCardModalide = holder.linearLayoutContentCardModalide;
+        final LinearLayout linearLayoutTopResultados = holder.linearLayoutTopResultados;
+        holder.buttonActionResultadosModalidade.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (linearLayoutContentCardModalide.isEnabled()) {
+                    AnimacaoAbrirResultados(context, linearLayoutContentCardModalide, linearLayoutTopResultados);
+                } else {
+                    AnimacaoFecharResultados(context, linearLayoutContentCardModalide, linearLayoutTopResultados);
+                }
+            }
+        });
     }
 
     public static String retornaStringDias (Long dia) {
@@ -169,32 +184,55 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         private TextView game;
         private ImageView relogio;
         private ImageView calendario;
-        private LinearLayout resultados;
         private TextView valorAcumulado;
         private ImageView trevo;
         private RelativeLayout trevoFundo;
         private TextView premioEstimadoConcurso;
         private TextView dataSorteio;
         private TextView tempoRestanteParaAposta;
+        private Button buttonActionResultadosModalidade;
+        private LinearLayout linearLayoutContentCardModalide;
+        private LinearLayout linearLayoutTopResultados;
 
 
         public ViewHolder (View itemView) {
             super(itemView);
             game = (TextView) itemView.findViewById(R.id.textViewCardTitle);
-            resultados = (LinearLayout) itemView.findViewById(R.id.relativeLayoutTopResultados);
             trevo = (ImageView) itemView.findViewById(R.id.trevoImagem);
             trevoFundo = (RelativeLayout) itemView.findViewById(R.id.RelativeLayoutTrevo) ;
             calendario = (ImageView)  itemView.findViewById(R.id.imageCalendar);
             relogio = (ImageView)  itemView.findViewById(R.id.imageWatch);
-            titulo = itemView.findViewById(R.id.relativeLayoutTopModalidades);
+            titulo = itemView.findViewById(R.id.linearLayoutTopModalidades);
             valorAcumulado = itemView.findViewById(R.id.textVieCardAcumulatedValue);
             premioEstimadoConcurso = (TextView) itemView.findViewById(R.id.textPremioEstimadoConcurso);
             dataSorteio = (TextView) itemView.findViewById(R.id.textVieCardDrawDate);
             tempoRestanteParaAposta = (TextView) itemView.findViewById(R.id.textVieCardClosingOfBets);
+            tempoRestanteParaAposta = (TextView) itemView.findViewById(R.id.textVieCardClosingOfBets);
+            buttonActionResultadosModalidade = (Button) itemView.findViewById(R.id.buttonActionResultadosModalidade);
+            linearLayoutContentCardModalide = (LinearLayout) itemView.findViewById(R.id.linearLayoutContentCardModalide);
+            linearLayoutTopResultados = (LinearLayout) itemView.findViewById(R.id.linearLayoutTopResultados);
         }
 
         public void setOverlayColor(Context context, EstiloModalidade estilo) {
             aposta.setBackgroundColor(ContextCompat.getColor(context, estilo.getCorClara()));
         }
     }
+
+    private void AnimacaoAbrirResultados(Context context, LinearLayout linearLayoutTopModalidades, LinearLayout linearLayoutTopResultados) {
+        linearLayoutTopModalidades.setEnabled(false);
+        AnimacoesResultados animacoesResultados = new AnimacoesResultados(
+                linearLayoutTopModalidades, linearLayoutTopResultados, context, ViewUtils.setDisplayMetric(240, context), ViewUtils.setDisplayMetric(280, context)
+        );
+        animacoesResultados.AnimacaoDescerContent(ViewUtils.getRealScreenSize(context).y - ViewUtils.setDisplayMetric(250, context));
+    }
+
+    private void AnimacaoFecharResultados(Context context, LinearLayout linearLayoutTopModalidades, LinearLayout linearLayoutTopResultados) {
+        linearLayoutTopModalidades.setEnabled(true);
+        AnimacoesResultados animacoesResultados = new AnimacoesResultados(
+                linearLayoutTopModalidades, linearLayoutTopResultados, context, ViewUtils.setDisplayMetric(240, context), ViewUtils.setDisplayMetric(280, context)
+        );
+
+        animacoesResultados.AnimacaoSubirContent(0);
+    }
+
 }
