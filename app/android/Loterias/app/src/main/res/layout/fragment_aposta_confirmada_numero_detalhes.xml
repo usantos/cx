@@ -1,8 +1,157 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/concursoLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:text="@string/concurso" />
+
+        <TextView
+            android:id="@+id/concursoTxt"
+            android:layout_below="@id/concursoLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            tools:text="1234" />
+
+        <TextView
+            android:layout_toEndOf="@id/concursoLabel"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:id="@+id/quantidadeApostadasTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            tools:text="4 apostas" />
+
+        <TextView
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_below="@id/quantidadeApostadasTxt"
+            android:id="@+id/dataAposta"
+            android:layout_alignStart="@id/quantidadeApostadasTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textColor="?android:attr/textColorSecondary"
+            android:text="@string/data_da_aposta" />
+
+        <TextView
+            android:id="@+id/dataApostaTxt"
+            android:layout_alignStart="@id/dataAposta"
+            android:layout_below="@id/dataAposta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:textColor="?android:attr/textColorSecondary"
+            tools:text="25/08/2016 - 21h20" />
+
+        <TextView
+            android:layout_alignTop="@+id/dataAposta"
+            android:layout_toEndOf="@id/divider"
+            android:id="@+id/statusTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="?android:attr/textColorSecondary"
+            tools:text="Aguardando" />
+
+        <TextView
+            android:id="@+id/resultTxt"
+            android:layout_alignStart="@id/statusTxt"
+            android:layout_below="@id/statusTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="?android:attr/textColorSecondary"
+            tools:text="resultado" />
+
+        <View
+            android:layout_alignBottom="@id/resultTxt"
+            android:layout_alignTop="@id/dataAposta"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_toEndOf="@id/dataApostaTxt"
+            android:id="@+id/divider"
+            android:layout_width="1dp"
+            android:background="?android:textColor"
+            android:layout_height="wrap_content"/>
+
+        <View
+            android:layout_below="@id/resultTxt"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_alignStart="@id/quantidadeApostadasTxt"
+            android:id="@+id/dividerHorizontal"
+            android:layout_width="wrap_content"
+            android:background="?android:textColor"
+            android:layout_height="1dp" />
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin">
+
+        <TextView
+            android:id="@+id/modalidadeTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            tools:text="Teimosinha" />
+
+        <TextView
+            android:id="@+id/seusNumerosTxt"
+            android:layout_toEndOf="@id/modalidadeTxt"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:text="@string/seus_numeros"
+            />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/jogosRecyclerView"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_below="@id/seusNumerosTxt"
+            android:layout_alignStart="@id/seusNumerosTxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        
+        <Button
+            android:layout_alignStart="@id/seusNumerosTxt"
+            android:layout_below="@id/jogosRecyclerView"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            style="@style/ButtonNotShadowColored"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_border_color"
+            android:text="@string/conferir_resultados"
+            />
+
+    </RelativeLayout>
 
 
 

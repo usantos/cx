@@ -144,6 +144,7 @@
     <string name="label_loteca">loteca</string>
     <string name="label_lotogol">lotogol</string>
     <string name="label_federal">federal</string>
+    <string name="label_dia_de_sorte">dia-de-sorte</string>
     <string name="label_ajuda">ajuda</string>
     <string name="time_surpresa">Time Surpresa</string>
     <string name="escolha_outro_time">Escolha outro time</string>
@@ -194,6 +195,10 @@
     <string name="label_editar_aposta">Editar\naposta</string>
     <string name="label_carrinho_apostas">Carrinho\nde apostas</string>
     <string name="label_salve_aposta">Salve esta aposta :)</string>
+    <string name="concurso">Concurso</string>
+    <string name="data_da_aposta">Data da aposta:</string>
+    <string name="seus_numeros">Seus números</string>
+    <string name="conferir_resultados">Conferir resultados</string>
 
     <string name="carregando">Carregando…</string>
 
@@ -222,7 +227,6 @@
     <string name="label_favoritas">Favoritas</string>
     <string name="label_suas_apostas_sorte_apenas_clique">Suas apostas da sorte\n em apenas um clique. :)</string>
     <string name="label_conceda_permissao_camera">Por favor conceda a permissão da câmera para usar o leitor de bilhetes.</string>
-
 
     <!--Mock-->
     <string name="label_mock_texto_nao_premiado">Lorem ipsum dolor sit amet,\nconsectetur adipiscing elit.\nAenean euismod bibendum laoreet.\nProin gravida dolor sit amet lacus\naccumsan et viverra justo commodo</string>

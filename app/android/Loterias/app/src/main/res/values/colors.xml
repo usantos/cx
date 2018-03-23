@@ -8,6 +8,7 @@
     <color name="azulclaro">#d4dfe2</color>
     <color name="black_overlay">#66000000</color>
     <color name="branco">#ffffff</color>
+    <color name="branco_transparente">#99ffffff</color>
     <color name="cinza">#48586c</color>
     <color name="linhaDivisa">#d0e0e3</color>
     <color name="cinza2">#d4dfe2</color>
@@ -19,6 +20,7 @@
     <color name="megasenaclaro">#00ab67</color>
     <color name="megasenamedio">#009b63</color>
     <color name="megasenaescuro">#008f5b</color>
+    <color name="megasenamedio_transparente">#99009b63</color>
     //verdesenaescuro
     <color name="lotofacilclaro">#bd3e96</color>
     <color name="lotofacilmedio">#a53384</color>

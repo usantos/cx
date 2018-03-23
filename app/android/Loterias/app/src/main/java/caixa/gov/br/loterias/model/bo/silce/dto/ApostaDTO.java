@@ -25,10 +25,6 @@ public class ApostaDTO {
 
   @SerializedName("id")
   protected Long id = null;
-  public enum ModalidadeEnum {
-    DIA_DE_SORTE,  DUPLA_SENA,  LOTECA,  LOTOFACIL,  LOTOGOL,  LOTOMANIA,  MEGA_SENA,  QUINA,  TIMEMANIA
-  };
-
   @SerializedName("modalidade")
   protected ModalidadeEnum modalidade = null;
   @SerializedName("tipoConcurso")

@@ -31,9 +31,10 @@ import caixa.gov.br.loterias.model.bo.ApostaBO_;
 import caixa.gov.br.loterias.model.bo.MensagensNetwork;
 import caixa.gov.br.loterias.model.bo.RequestListener;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostaDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.ModalidadeEnum;
 import caixa.gov.br.loterias.model.bo.silce.dto.ResultadoConsultaBilheteDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ResultadoConsultaBilheteDTOResponse;
-import caixa.gov.br.loterias.utils.EstiloModalidadeAposta;
+import caixa.gov.br.loterias.utils.EstiloModalidade;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.adapter.FaixaPremiacaoAdapter;
 import caixa.gov.br.loterias.view.adapter.RetirarPremioDescricaoAdapter;
@@ -137,8 +138,8 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
         corpoBilhetePremiadoLinearLayout.setVisibility(View.VISIBLE);
         corpoBilheteNaoPremiadoLinearLayout.setVisibility(View.GONE);
 
-        ApostaDTO.ModalidadeEnum modalidadeEnum = ApostaDTO.toStringModalidade(resultadoConsultaBilheteDTO.getModalidadeDTO().getDescricao());
-        EstiloModalidadeAposta estiloModalidade = new EstiloModalidadeAposta(modalidadeEnum);
+        ModalidadeEnum modalidadeEnum = ApostaDTO.toStringModalidade(resultadoConsultaBilheteDTO.getModalidadeDTO().getDescricao());
+        EstiloModalidade estiloModalidade = new EstiloModalidade(modalidadeEnum);
         SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
 
         topoModalidadeResultadoLinearLayout.setBackgroundColor(ContextCompat.getColor(this, estiloModalidade.getCorClara()));

@@ -32,7 +32,7 @@ public class ConfirmacaoPagamentoActivity extends SettingToolbarActivity {
         findViewById(R.id.botaoVoltarInicio).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PrincipalActivity_.intent(getBaseContext()).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP |  Intent.FLAG_ACTIVITY_SINGLE_TOP).start();
+                PrincipalActivity_.intent(ConfirmacaoPagamentoActivity.this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP |  Intent.FLAG_ACTIVITY_SINGLE_TOP).start();
             }
         });
     }

@@ -1,7 +1,6 @@
 package caixa.gov.br.loterias.view;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -26,7 +25,7 @@ import org.androidannotations.annotations.ViewById;
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostaDTO;
 import caixa.gov.br.loterias.utils.AppUtils;
-import caixa.gov.br.loterias.utils.EstiloModalidadeAposta;
+import caixa.gov.br.loterias.utils.EstiloModalidade;
 import caixa.gov.br.loterias.view.fragment.ApostaConfirmadaNumeroDetalhes_;
 
 /**
@@ -45,7 +44,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
 
     @ViewById
     protected Toolbar toolbar;
-    private EstiloModalidadeAposta estilo;
+    private EstiloModalidade estilo;
 
     @Click
     protected void carrinhoApostasBtn(){
@@ -71,7 +70,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        estilo = new EstiloModalidadeAposta(apostaDTO.getModalidade());
+        estilo = new EstiloModalidade(apostaDTO.getModalidade());
         setTheme(estilo.getThemeId());
         setTitle(AppUtils.capitalizeFirstChar(getString(estilo.getStringId())));
     }

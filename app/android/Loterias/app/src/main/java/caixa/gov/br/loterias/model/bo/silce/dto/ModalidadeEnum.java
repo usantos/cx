@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiModel;
 @ApiModel(description = "")
 public enum ModalidadeEnum {
 
+    @SerializedName("DIA_DE_SORTE")DIA_DE_SORTE,
     @SerializedName("DUPLA_SENA")DUPLA_SENA,
     @SerializedName("LOTECA")LOTECA,
     @SerializedName("LOTOFACIL")LOTOFACIL,
@@ -14,7 +15,6 @@ public enum ModalidadeEnum {
     @SerializedName("LOTOMANIA")LOTOMANIA,
     @SerializedName("MEGA_SENA")MEGA_SENA,
     @SerializedName("QUINA")QUINA,
-    @SerializedName("FEDERAL")FEDERAL,
     @SerializedName("TIMEMANIA")TIMEMANIA;
 
     public static String fromString(ModalidadeEnum modalidade) {
@@ -35,8 +35,8 @@ public enum ModalidadeEnum {
                 return "timemania";
             case DUPLA_SENA:
                 return "dupla-sena";
-            case FEDERAL:
-                return "federal";
+            case DIA_DE_SORTE:
+                return "dia de sorte";
 
         }
         return "";
@@ -61,8 +61,8 @@ public enum ModalidadeEnum {
                 return ModalidadeEnum.TIMEMANIA;
             case "dupla-sena":
                 return ModalidadeEnum.DUPLA_SENA;
-            case "federal":
-                return ModalidadeEnum.FEDERAL;
+            case "dia de sorte":
+                return ModalidadeEnum.DIA_DE_SORTE;
             default:
                 return null;
         }

@@ -8,6 +8,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:fontFamily">@font/font_family_futura</item>
         <item name="buttonStyle">@style/ButtonNotShadow</item>
+        <item name="android:windowBackground">@color/branco</item>
     </style>
 
     <style name="AppTheme.BrancoActionBar">
@@ -112,60 +113,66 @@
 
     <style name="ButtonNotShadowColored" parent="Widget.AppCompat.Button.Colored">
         <item name="android:outlineProvider">none</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:background">@color/transparente</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
     <style name="AppTheme.Modalidade">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:textColor">@color/branco</item>
+        <item name="android:textColorSecondary">@color/branco_transparente</item>
     </style>
 
     <style name="AppTheme.Modalidade.Quina">
         <item name="colorPrimaryDark">@color/quinaescuro</item>
         <item name="colorPrimary">@color/quinaclaro</item>
-        <item name="android:windowBackground">@color/quinaclaro</item>
+        <item name="android:windowBackground">@color/quinaescuro</item>
     </style>
     <style name="AppTheme.Modalidade.Loteca">
         <item name="colorPrimaryDark">@color/lotecaescuro</item>
         <item name="colorPrimary">@color/lotecaclaro</item>
-        <item name="android:windowBackground">@color/lotecaclaro</item>
+        <item name="android:windowBackground">@color/lotecaescuro</item>
     </style>
     <style name="AppTheme.Modalidade.MegaSena">
         <item name="colorPrimaryDark">@color/megasenaescuro</item>
         <item name="colorPrimary">@color/megasenaclaro</item>
-        <item name="android:windowBackground">@color/megasenaclaro</item>
+        <item name="android:windowBackground">@color/megasenaescuro</item>
     </style>
     <style name="AppTheme.Modalidade.DuplaSena">
         <item name="colorPrimaryDark">@color/duplasenaescuro</item>
         <item name="colorPrimary">@color/duplasenaclaro</item>
-        <item name="android:windowBackground">@color/duplasenaclaro</item>
+        <item name="android:windowBackground">@color/duplasenaescuro</item>
     </style>
     <style name="AppTheme.Modalidade.Lotofacil">
         <item name="colorPrimaryDark">@color/lotofacilescuro</item>
         <item name="colorPrimary">@color/lotofacilclaro</item>
-        <item name="android:windowBackground">@color/lotofacilclaro</item>
+        <item name="android:windowBackground">@color/lotofacilescuro</item>
     </style>
     <style name="AppTheme.Modalidade.Lotomania">
         <item name="colorPrimaryDark">@color/lotomaniaescuro</item>
         <item name="colorPrimary">@color/lotomaniaclaro</item>
-        <item name="android:windowBackground">@color/lotomaniaclaro</item>
+        <item name="android:windowBackground">@color/lotomaniaescuro</item>
     </style>
     <style name="AppTheme.Modalidade.Timemania">
         <item name="colorPrimaryDark">@color/timemaniaescuro</item>
         <item name="colorPrimary">@color/timemaniaclaro</item>
-        <item name="android:windowBackground">@color/timemaniaclaro</item>
+        <item name="android:windowBackground">@color/timemaniaescuro</item>
         <item name="android:textColor">@color/megasenamedio</item>
+        <item name="android:textColorSecondary">@color/megasenamedio_transparente</item>
         <item name="android:theme">@style/TimeManiaToolbar</item>
     </style>
     <style name="AppTheme.Modalidade.LotoGol">
         <item name="colorPrimaryDark">@color/lotogolescuro</item>
         <item name="colorPrimary">@color/lotogolclaro</item>
-        <item name="android:windowBackground">@color/lotogolclaro</item>
+        <item name="android:windowBackground">@color/lotogolescuro</item>
     </style>
     <style name="AppTheme.Modalidade.Federal">
         <item name="colorPrimaryDark">@color/federalescuro</item>
         <item name="colorPrimary">@color/federalclaro</item>
-        <item name="android:windowBackground">@color/federalclaro</item>
+        <item name="android:windowBackground">@color/federalescuro</item>
     </style>
 
     <style name="TimeManiaToolbar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">

@@ -18,7 +18,6 @@ import org.androidannotations.annotations.ViewById;
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.fragment.ApostasConfirmadasFragment_;
-import caixa.gov.br.loterias.view.fragment.ApostasHistoricoFragment_;
 
 /**
  * Created by pmotta on 13/03/2018.
@@ -94,7 +93,7 @@ public class ApostasConfirmadasActivity extends AppCompatActivity {
     protected void historicoApostasBtn(){
         Fragment frag = getSupportFragmentManager().findFragmentByTag(HISTORICO_FRAGMENT);
         if(frag == null){
-            frag = ApostasHistoricoFragment_.builder().build();
+            frag = ApostasConfirmadasFragment_.builder().isHistorico(true).build();
         }
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.container, frag, HISTORICO_FRAGMENT)

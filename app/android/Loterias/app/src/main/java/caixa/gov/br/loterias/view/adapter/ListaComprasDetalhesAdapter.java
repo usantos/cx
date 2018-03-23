@@ -3,13 +3,11 @@ package caixa.gov.br.loterias.view.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -18,7 +16,8 @@ import java.util.List;
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.CompraDTO;
-import caixa.gov.br.loterias.utils.EstiloModalidadeAposta;
+import caixa.gov.br.loterias.model.bo.silce.dto.ModalidadeEnum;
+import caixa.gov.br.loterias.utils.EstiloModalidade;
 import caixa.gov.br.loterias.view.custom.ExpandableHeightRecyclerView;
 
 /**
@@ -110,7 +109,7 @@ public class ListaComprasDetalhesAdapter extends BaseAdapter {
             TextView statusResultadoApostaListaComprasTextView = (TextView) convertView.findViewById(R.id.statusResultadoApostaListaComprasTextView);
             statusResultadoApostaListaComprasTextView.setText(listaAposta.get(idLista).getSituacao().getDescricao());
 
-            EstiloModalidadeAposta estilo = new EstiloModalidadeAposta(listaAposta.get(idLista).getModalidade());
+            EstiloModalidade estilo = new EstiloModalidade(listaAposta.get(idLista).getModalidade());
 
             LinearLayout topListItemComprasLinearLayout = (LinearLayout) convertView.findViewById(R.id.topListItemComprasLinearLayout);
             topListItemComprasLinearLayout.setBackgroundColor(mContext.getResources().getColor(estilo.getCorClara()));
@@ -121,7 +120,7 @@ public class ListaComprasDetalhesAdapter extends BaseAdapter {
             TextView seusNumerosItemListaComprasTextView = (TextView) convertView.findViewById(R.id.seusNumerosItemListaComprasTextView);
 
             LinearLayout itemComprasContentModalideLinearLayout = (LinearLayout) convertView.findViewById(R.id.itemComprasContentModalideLinearLayout);
-            if (listaAposta.get(idLista).getModalidade() == ApostaDTO.ModalidadeEnum.TIMEMANIA){
+            if (listaAposta.get(idLista).getModalidade() == ModalidadeEnum.TIMEMANIA){
                 View child = layoutInflater.inflate(R.layout.item_compras_timemania_layout, null);
                 itemComprasContentModalideLinearLayout.addView(child);
                 statusResultadoApostaListaComprasTextView.setTextColor(mContext.getResources().getColor(R.color.verdemediotransparente));
@@ -132,7 +131,7 @@ public class ListaComprasDetalhesAdapter extends BaseAdapter {
                 TextView seusNumerosListaComprasTextView = (TextView) convertView.findViewById(R.id.SeusNumerosListaComprasTextView);
                 seusNumerosListaComprasTextView.setText(numeroStr);
 
-            }else if (listaAposta.get(idLista).getModalidade() == ApostaDTO.ModalidadeEnum.LOTECA){
+            }else if (listaAposta.get(idLista).getModalidade() == ModalidadeEnum.LOTECA){
                 View child = layoutInflater.inflate(R.layout.item_compras_loteca_layout, null);
                 seusNumerosItemListaComprasTextView.setText("Sua aposta");
                 ExpandableHeightRecyclerView lotecaRecyclerViewItemCompra = (ExpandableHeightRecyclerView) child.findViewById(R.id.lotecaRecyclerViewItemCompra);
@@ -142,7 +141,7 @@ public class ListaComprasDetalhesAdapter extends BaseAdapter {
                 lotecaRecyclerViewItemCompra.setAdapter(lotecaAdapter);
                 lotecaRecyclerViewItemCompra.setExpanded(true);
 
-            }else if (listaAposta.get(idLista).getModalidade() == ApostaDTO.ModalidadeEnum.LOTOGOL){
+            }else if (listaAposta.get(idLista).getModalidade() == ModalidadeEnum.LOTOGOL){
                 View child = layoutInflater.inflate(R.layout.item_compras_lotogol_layout, null);
                 seusNumerosItemListaComprasTextView.setText("Sua aposta");
                 ExpandableHeightRecyclerView lotecaRecyclerViewItemCompra = (ExpandableHeightRecyclerView) child.findViewById(R.id.lotecaRecyclerViewItemCompra);

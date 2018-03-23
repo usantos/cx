@@ -12,7 +12,7 @@ import java.util.List;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostaDTO;
-import caixa.gov.br.loterias.utils.EstiloModalidadeAposta;
+import caixa.gov.br.loterias.utils.EstiloModalidade;
 import caixa.gov.br.loterias.utils.ViewUtils;
 
 /**
@@ -51,9 +51,9 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostasConfi
     }
 
     public interface OnApostasConfirmadasListener {
-        void onReload(int position);
-        void onFavorite(int position);
-        void onItemClick(int position);
+        void onReload(ApostaDTO apostaDTO);
+        void onFavorite(ApostaDTO apostaDTO);
+        void onItemClick(ApostaDTO apostaDTO);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -81,17 +81,19 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostasConfi
         @Override
         public void onClick(View view) {
             if (onApostasConfirmadasListener != null) {
+                ApostaDTO apostaDTO = list.get(getAdapterPosition());
+
                 switch (view.getId()){
                     case R.id.favoriteBtn:{
-                        onApostasConfirmadasListener.onFavorite(getAdapterPosition());
+                        onApostasConfirmadasListener.onFavorite(apostaDTO);
                         break;
                     }
                     case R.id.reloadBtn:{
-                        onApostasConfirmadasListener.onReload(getAdapterPosition());
+                        onApostasConfirmadasListener.onReload(apostaDTO);
                         break;
                     }
                     default:
-                        onApostasConfirmadasListener.onItemClick(getAdapterPosition());
+                        onApostasConfirmadasListener.onItemClick(apostaDTO);
                         break;
                 }
             }
@@ -101,7 +103,7 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostasConfi
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         ApostaDTO aposta = list.get(position);
-        EstiloModalidadeAposta estiloModalidade = new EstiloModalidadeAposta(aposta.getModalidade());
+        EstiloModalidade estiloModalidade = new EstiloModalidade(aposta.getModalidade());
 
         int color = ContextCompat.getColor(context, estiloModalidade.getCorEscura());
 

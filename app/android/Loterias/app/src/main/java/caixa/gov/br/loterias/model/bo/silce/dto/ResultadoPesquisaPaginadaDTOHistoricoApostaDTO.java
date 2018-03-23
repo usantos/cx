@@ -22,7 +22,7 @@ public class ResultadoPesquisaPaginadaDTOHistoricoApostaDTO {
   @SerializedName("rowCount")
   private Long rowCount = null;
   @SerializedName("lista")
-  private List<HistoricoApostaDTO> lista = null;
+  private List<ApostaDTO> lista = null;
   @SerializedName("listaSize")
   private Integer listaSize = null;
 
@@ -41,10 +41,10 @@ public class ResultadoPesquisaPaginadaDTOHistoricoApostaDTO {
    * Registros retornados na pesquisa
    **/
   @ApiModelProperty(value = "Registros retornados na pesquisa")
-  public List<HistoricoApostaDTO> getLista() {
+  public List<ApostaDTO> getLista() {
     return lista;
   }
-  public void setLista(List<HistoricoApostaDTO> lista) {
+  public void setLista(List<ApostaDTO> lista) {
     this.lista = lista;
   }
 
