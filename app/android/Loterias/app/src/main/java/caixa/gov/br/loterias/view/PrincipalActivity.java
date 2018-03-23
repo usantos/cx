@@ -2,13 +2,12 @@ package caixa.gov.br.loterias.view;
 
 
 import android.Manifest;
-import android.animation.ArgbEvaluator;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
@@ -36,6 +35,11 @@ import com.google.gson.Gson;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
 import com.yarolegovich.discretescrollview.transform.ScaleTransformer;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ViewById;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -48,8 +52,8 @@ import caixa.gov.br.loterias.model.bo.DadosCorporativosBO_;
 import caixa.gov.br.loterias.model.bo.DadosUsuarioBO;
 import caixa.gov.br.loterias.model.bo.DadosUsuarioBO_;
 import caixa.gov.br.loterias.model.bo.MensagensNetwork;
-import caixa.gov.br.loterias.model.bo.keycloak.KeycloakBO_;
 import caixa.gov.br.loterias.model.bo.RequestListener;
+import caixa.gov.br.loterias.model.bo.keycloak.KeycloakBO_;
 import caixa.gov.br.loterias.model.bo.silce.dto.ParametroSimulacao;
 import caixa.gov.br.loterias.model.bo.silce.dto.ParametrosSimulacaoResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.RepassometroDTO;
@@ -64,66 +68,54 @@ import caixa.gov.br.loterias.view.animation.AnimacaoCalculoRepassesSociais;
 import caixa.gov.br.loterias.view.animation.AnimacoesAcessoRapido;
 import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
 
+@EActivity(R.layout.activity_principal)
 public class PrincipalActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, DiscreteScrollView.ScrollListener<HomeAdapter.ViewHolder>,
-        DiscreteScrollView.OnItemChangedListener<HomeAdapter.ViewHolder>,
-        View.OnClickListener {
+        implements DiscreteScrollView.ScrollListener<HomeAdapter.ViewHolder>,
+        DiscreteScrollView.OnItemChangedListener<HomeAdapter.ViewHolder> {
 
-    private ArgbEvaluator evaluator;
-    private int currentOverlayColor;
-    private int overlayColor;
-    private Toolbar toolbar;
-    private RelativeLayout relativePrincipal;
-    private RelativeLayout relativeBlankView;
-    private Button buttonHomeBet;
 
-    private View itemToolbarTrevo;
-    private View itemToolbarSettings;
-
-    private LinearLayout linearAtalhoRapidoLoterias;
-    private RelativeLayout relativeLayoutContentRapidao;
-    private RelativeLayout relativeLayoutContentLerBilhetes;
-    private RelativeLayout relativeLayoutContentFavoritas;
-    private RelativeLayout relativeLayoutContentRepassados;
     private List<Modalidade> data;
-    private DiscreteScrollView itemCarousel;
-
     private List<ParametroSimulacao> modalidadesParaListar;
     private RepassometroDTO repassesSociais;
-
-    private DrawerLayout drawerSideMenu;
-
     private static final int ZXING_CAMERA_PERMISSION = 1;
     private DBLoteriasHelper dbLoteriasHelper;
+    private View actionApresentarTrevo, actionSettings;
 
-    TextView valorRepassesSociais;
+    @ViewById
+    protected Toolbar toolbar;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_principal);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+    @ViewById
+    protected DrawerLayout drawerLayout;
+
+    @ViewById
+    protected Button buttonHomeBet;
+
+    @ViewById
+    protected TextView textViewHomeMinimumPurchaseValue, tituloLerBilhetes, textoRepassados, valorRepassesPrincipal;
+
+    @ViewById
+    protected RelativeLayout relativeContentPrincipal, relativeBlankView, relativeLayoutContentRapidao, relativeLayoutContentLerBilhetes, relativeLayoutContentFavoritas, relativeLayoutContentRepassados,
+            relativeLayoutCarrinho;
+
+    @ViewById
+    protected LinearLayout atalhoRapidoLoterias;
+
+    @ViewById
+    protected DiscreteScrollView homeCarousel;
+
+    @ViewById
+    protected ExpandableListView sideMenuExpandableListView;
+
+    @AfterViews
+    public void init() {
         setSupportActionBar(toolbar);
 
-        drawerSideMenu = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawerSideMenu, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawerSideMenu.addDrawerListener(toggle);
+                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
         layoutSideMenu();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        toolbarListener();
-        listenerRepassados();
-        listenerCarrinho();
-        listenerRapidao();
-        listenerFavoritas();
-        listenerLerBilhetes();
-        listenerApostasConfirmadas();
-
         callWebservice();
         iniciarBancoLocal();
     }
@@ -133,26 +125,15 @@ public class PrincipalActivity extends AppCompatActivity
         dbLoteriasHelper.getReadableDatabase();
     }
 
-
     private void montarCarrossel() {
-        evaluator = new ArgbEvaluator();
-        currentOverlayColor = ContextCompat.getColor(this, R.color.verdesenaclaro);
-        overlayColor = ContextCompat.getColor(this, R.color.cinza);
-
-//        ModalidadesMock modalidade = ModalidadesMock.get();
-//        data = modalidade.getData();
         data = montaListaModalidades();
-        itemCarousel = (DiscreteScrollView) findViewById(R.id.home_carousel);
-        buttonHomeBet = (Button) findViewById(R.id.buttonHomeBet);
-        itemCarousel.setAdapter(new HomeAdapter(this, data, findViewById(R.id.buttonHomeBet)));
-        itemCarousel.addScrollListener(this);
-        itemCarousel.addOnItemChangedListener(this);
-        itemCarousel.scrollToPosition(0);
-        itemCarousel.setItemTransformer(new ScaleTransformer.Builder()
+        homeCarousel.setAdapter(new HomeAdapter(this, data, buttonHomeBet));
+        homeCarousel.addScrollListener(this);
+        homeCarousel.addOnItemChangedListener(this);
+        homeCarousel.scrollToPosition(0);
+        homeCarousel.setItemTransformer(new ScaleTransformer.Builder()
                 .setMinScale(0.8f)
                 .build());
-
-        LayoutGeral();
     }
 
     private void callWebservice() {
@@ -182,8 +163,7 @@ public class PrincipalActivity extends AppCompatActivity
                 sessaoUser.setValorMaximoAposta(response.getPayload().getValorLimiteDiario());
                 sessaoUser.setParametrosSimulacao(response.getPayload());
 
-                TextView valorMinimoCompra = findViewById(R.id.textViewHomeMinimumPurchaseValue);
-                valorMinimoCompra.setText("valor mínimo da compra: " + ViewUtils.getMoedaFormat(response.getPayload().getValorMinimoCarrinho()));
+                textViewHomeMinimumPurchaseValue.setText(String.format("valor mínimo da compra: %s", ViewUtils.getMoedaFormat(response.getPayload().getValorMinimoCarrinho())));
 
                 montaListaModalidades();
                 montarCarrossel();
@@ -222,10 +202,10 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     private List<Modalidade> montaListaModalidades() {
-        List<Modalidade> listaModalidades = new ArrayList<Modalidade>();
+        List<Modalidade> listaModalidades = new ArrayList<>();
 
         for (ParametroSimulacao parametro : modalidadesParaListar) {
-            if (parametro.getParametroJogo().getConcurso().getModalidade() != null){
+            if (parametro.getParametroJogo().getConcurso().getModalidade() != null) {
                 listaModalidades.add(new Modalidade(parametro.getParametroJogo().getConcurso().getModalidadeDetalhada().getDescricao(),
                         parametro.getParametroJogo().getConcurso().getValorApostaMinima(), "", "", parametro.getParametroJogo().getConcurso().getModalidade(), parametro.getParametroJogo().getConcurso()));
             }
@@ -234,29 +214,12 @@ public class PrincipalActivity extends AppCompatActivity
         return listaModalidades;
     }
 
-    private void LayoutGeral() {
-        relativePrincipal = (RelativeLayout) findViewById(R.id.RelativeContentPrincipal);
-        relativeBlankView = (RelativeLayout) findViewById(R.id.RelativeBlankView);
-        linearAtalhoRapidoLoterias = (LinearLayout) findViewById(R.id.atalhoRapidoLoterias);
-        relativeLayoutContentRapidao = (RelativeLayout) findViewById(R.id.RelativeLayoutContentRapidao);
-        relativeLayoutContentLerBilhetes = (RelativeLayout) findViewById(R.id.RelativeLayoutContentLerBilhetes);
-        relativeLayoutContentFavoritas = (RelativeLayout) findViewById(R.id.RelativeLayoutContentFavoritas);
-        relativeLayoutContentRepassados = (RelativeLayout) findViewById(R.id.RelativeLayoutContentRepassados);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-    }
-
     private void layoutTrevoAcessoRapido() {
-        String htmlTextViewBilhetesTexto = "Ler _bilhetes_";
-        String htmlTextViewRepassados = "_repassados_ para boas causas.";
-        TextView TextViewBilhetesTexto = (TextView) findViewById(R.id.tituloLerBilhetes);
-        TextView TextViewRepassados = (TextView) findViewById(R.id.textoRepassados);
-        valorRepassesSociais = (TextView) findViewById(R.id.valorRepassesPrincipal);
-//        valorRepassesSociais.setText(ViewUtils.getMoedaFormat(repassesSociais.getArrecadacaoAcumulada()));
-        valorRepassesSociais.setText("0");
+        valorRepassesPrincipal.setText("0");
 
-        TextViewBilhetesTexto.setText(ViewUtils.textFuturaAndFuturaBold(this, htmlTextViewBilhetesTexto));
-        TextViewRepassados.setText(ViewUtils.textFuturaAndFuturaBold(this, htmlTextViewRepassados));
-        AnimacaoCalculoRepassesSociais.start(valorRepassesSociais, 0, 0, repassesSociais);
+        tituloLerBilhetes.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.label_ler_bilhestes_bold)));
+        textoRepassados.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.label_repassados_boas_causas_bold)));
+        AnimacaoCalculoRepassesSociais.start(valorRepassesPrincipal, 0, 0, repassesSociais);
     }
 
     private void toolbarListener() {
@@ -264,28 +227,29 @@ public class PrincipalActivity extends AppCompatActivity
             @Override
             public void onLayoutChange(View v, int left, int top, int right, int bottom,
                                        int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                itemToolbarTrevo = toolbar.findViewById(R.id.action_apresentar_trevo);
-                if (itemToolbarTrevo != null) {
+
+                actionApresentarTrevo = toolbar.findViewById(R.id.action_apresentar_trevo);
+                if (actionApresentarTrevo != null) {
                     toolbar.removeOnLayoutChangeListener(this);
-                    itemToolbarTrevo.setOnClickListener(new View.OnClickListener() {
+                    actionApresentarTrevo.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onClick(View v) {
+                        public void onClick(View view) {
                             if (modalidadesParaListar != null && modalidadesParaListar.size() > 0) {
-                                if (relativePrincipal.isEnabled()) {
-                                    AnimacaoAbrirMenuRapido(v);
+                                if (relativeContentPrincipal.isEnabled()) {
+                                    AnimacaoAbrirMenuRapido(actionApresentarTrevo);
                                 } else {
-                                    AnimacaoFecharMenuRapido(v);
+                                    AnimacaoFecharMenuRapido(actionApresentarTrevo);
                                 }
                             }
                         }
                     });
                 }
-                itemToolbarSettings = toolbar.findViewById(R.id.action_settings);
-                if (itemToolbarSettings != null) {
+                actionSettings = toolbar.findViewById(R.id.action_settings);
+                if (actionSettings != null) {
                     toolbar.removeOnLayoutChangeListener(this);
-                    itemToolbarSettings.setOnClickListener(new View.OnClickListener() {
+                    actionSettings.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onClick(View v) {
+                        public void onClick(View view) {
                             Intent activity = new Intent(PrincipalActivity.this, TermosUsoActivity.class);
                             startActivity(activity);
                         }
@@ -296,21 +260,21 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     private void AnimacaoAbrirMenuRapido(View v) {
-        relativePrincipal.setEnabled(false);
-        itemToolbarTrevo.setEnabled(false);
-        linearAtalhoRapidoLoterias.setVisibility(View.VISIBLE);
-        EstiloModalidade estilo = new EstiloModalidade(data.get(itemCarousel.getCurrentItem()).getTipoModalidade());
+        relativeContentPrincipal.setEnabled(false);
+        actionApresentarTrevo.setEnabled(false);
+        atalhoRapidoLoterias.setVisibility(View.VISIBLE);
+        EstiloModalidade estilo = new EstiloModalidade(data.get(homeCarousel.getCurrentItem()).getTipoModalidade());
         AnimacoesAcessoRapido animacoesAcessoRapido = new AnimacoesAcessoRapido(
                 v,
-                relativePrincipal,
+                relativeContentPrincipal,
                 relativeLayoutContentRapidao,
                 relativeLayoutContentLerBilhetes,
                 relativeLayoutContentFavoritas,
                 relativeLayoutContentRepassados,
                 relativeBlankView,
-                linearAtalhoRapidoLoterias,
+                atalhoRapidoLoterias,
                 buttonHomeBet,
-                itemToolbarTrevo,
+                actionApresentarTrevo,
                 PrincipalActivity.this,
                 estilo
         );
@@ -322,20 +286,20 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     private void AnimacaoFecharMenuRapido(View v) {
-        relativePrincipal.setEnabled(true);
-        itemToolbarTrevo.setEnabled(false);
-        EstiloModalidade estilo = new EstiloModalidade(data.get(itemCarousel.getCurrentItem()).getTipoModalidade());
+        relativeContentPrincipal.setEnabled(true);
+        actionApresentarTrevo.setEnabled(false);
+        EstiloModalidade estilo = new EstiloModalidade(data.get(homeCarousel.getCurrentItem()).getTipoModalidade());
         AnimacoesAcessoRapido animacoesAcessoRapido = new AnimacoesAcessoRapido(
                 v,
-                relativePrincipal,
+                relativeContentPrincipal,
                 relativeLayoutContentRapidao,
                 relativeLayoutContentLerBilhetes,
                 relativeLayoutContentFavoritas,
                 relativeLayoutContentRepassados,
                 relativeBlankView,
-                linearAtalhoRapidoLoterias,
+                atalhoRapidoLoterias,
                 buttonHomeBet,
-                itemToolbarTrevo,
+                actionApresentarTrevo,
                 PrincipalActivity.this,
                 estilo
         );
@@ -345,9 +309,8 @@ public class PrincipalActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
@@ -357,56 +320,7 @@ public class PrincipalActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.principal, menu);
-
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_apresentar_trevo) {
-            return true;
-        }
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_apostar) {
-
-        } else if (id == R.id.nav_bilhetes) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_minhaarea) {
-
-        } else if (id == R.id.nav_rapidao) {
-
-            startActivity(new Intent(PrincipalActivity.this, ListaRapidaoActivity.class));
-        } else if (id == R.id.nav_bilhetes) {
-
-        } else if (id == R.id.nav_sociais) {
-
-            startActivity(new Intent(PrincipalActivity.this, RepassesSociaisActivity.class));
-        } else if (id == R.id.nav_sair) {
-            sairLogin();
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+        toolbarListener();
         return true;
     }
 
@@ -438,18 +352,6 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     @Override
-    public void onClick(View v) {
-//        switch (v.getId()) {
-//            case R.id.home:
-//                finish();
-//                break;
-//            case R.id.fab_share:
-//                share(v);
-//                break;
-//        }
-    }
-
-    @Override
     public void onScroll(
             float currentPosition,
             int currentIndex, int newIndex,
@@ -461,10 +363,6 @@ public class PrincipalActivity extends AppCompatActivity
             Log.d("position", "position: " + position);
             Log.d("currentIndex", "currentIndex: " + currentIndex);
             Log.d("newIndex", "newIndex: " + newIndex);
-
-//            currentHolder.setOverlayColor(interpolate(position, currentOverlayColor, overlayColor));
-//            newCurrent.setOverlayColor(interpolate(position, overlayColor, currentOverlayColor));
-
         }
 
     }
@@ -478,113 +376,61 @@ public class PrincipalActivity extends AppCompatActivity
 
             buttonHomeBet.setTag(adapterPosition);
             buttonHomeBet.setText(ViewUtils.textFuturaAndFuturaBold(this, "_Aposte_\npor R$" + modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima()));
-
-            findViewById(R.id.buttonHomeBet).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent activity = new Intent(PrincipalActivity.this, SimularApostaActivity_.class);
-                    activity.putExtra("tipoAposta", modalidadesParaListar.get(Integer.parseInt(view.getTag().toString())).getParametroJogo().getConcurso().getModalidade());
-                    activity.putExtra("modalidade", (new Gson()).toJson(modalidadesParaListar.get(Integer.parseInt(view.getTag().toString())).getParametroJogo()));
-                    startActivity(activity);
-                }
-            });
         }
     }
 
-    private void share(View view) {
-//        Snackbar.make(view, R.string.msg_unsupported_op, Snackbar.LENGTH_SHORT).show();
+    @Click(R.id.buttonHomeBet)
+    protected void clickButtonHomeBet() {
+        Intent activity = new Intent(PrincipalActivity.this, SimularApostaActivity_.class);
+        activity.putExtra("tipoAposta", modalidadesParaListar.get(Integer.parseInt(buttonHomeBet.getTag().toString())).getParametroJogo().getConcurso().getModalidade());
+        activity.putExtra("modalidade", (new Gson()).toJson(modalidadesParaListar.get(Integer.parseInt(buttonHomeBet.getTag().toString())).getParametroJogo()));
+        startActivity(activity);
     }
 
-    private int interpolate(float fraction, int c1, int c2) {
-        return (int) evaluator.evaluate(fraction, c1, c2);
+    @Click(R.id.relativeLayoutContentRepassados)
+    protected void clickRelativeLayoutContentRepassados() {
+        AnimacaoFecharMenuRapido(relativeContentPrincipal);
+        Intent activity = new Intent(PrincipalActivity.this, RepassesSociaisActivity.class);
+        startActivity(activity);
     }
 
-    private void listenerRepassados() {
-
-        RelativeLayout relativerepassados = (RelativeLayout) findViewById(R.id.RelativeLayoutContentRepassados);
-        relativerepassados.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AnimacaoFecharMenuRapido(relativePrincipal);
-
-                Intent activity = new Intent(PrincipalActivity.this, RepassesSociaisActivity.class);
-//                activity.putExtra("repassesSociais", (new Gson()).toJson(repassesSociais));
-                startActivity(activity);
-            }
-        });
+    @Click(R.id.relativeLayoutContentRapidao)
+    protected void clickRelativeLayoutContentRapidao() {
+        AnimacaoFecharMenuRapido(relativeContentPrincipal);
+        startActivity(new Intent(PrincipalActivity.this, ListaRapidaoActivity.class));
     }
 
-
-    private void listenerRapidao() {
-
-        RelativeLayout relativerapidao = (RelativeLayout) findViewById(R.id.RelativeLayoutContentRapidao);
-        relativerapidao.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AnimacaoFecharMenuRapido(relativePrincipal);
-                startActivity(new Intent(PrincipalActivity.this, ListaRapidaoActivity.class));
-            }
-        });
+    @Click(R.id.relativeLayoutCarrinho)
+    protected void clickRelativeLayoutCarrinho() {
+        CarrinhoActivity_.intent(PrincipalActivity.this).start();
     }
 
-    private void listenerCarrinho() {
-
-        RelativeLayout relativecarrinho = (RelativeLayout) findViewById(R.id.RelativeLayoutCarrinho);
-        relativecarrinho.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CarrinhoActivity_.intent(PrincipalActivity.this).start();
-            }
-        });
+    @Click(R.id.relativeLayoutContentFavoritas)
+    protected void clickRelativeLayoutContentFavoritas() {
+        AnimacaoFecharMenuRapido(relativeContentPrincipal);
+        startActivity(new Intent(PrincipalActivity.this, FavoritasActivity.class));
     }
 
-
-    private void listenerFavoritas() {
-
-        RelativeLayout relativefavoritas = (RelativeLayout) findViewById(R.id.RelativeLayoutContentFavoritas);
-        relativefavoritas.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AnimacaoFecharMenuRapido(relativePrincipal);
-                startActivity(new Intent(PrincipalActivity.this, FavoritasActivity.class));
-            }
-        });
+    @Click(R.id.relativeLayoutContentLerBilhetes)
+    protected void clickRelativeLayoutContentLerBilhetes() {
+        if (ContextCompat.checkSelfPermission(PrincipalActivity.this, Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(PrincipalActivity.this,
+                    new String[]{Manifest.permission.CAMERA}, ZXING_CAMERA_PERMISSION);
+        } else {
+            AnimacaoFecharMenuRapido(relativeContentPrincipal);
+            startActivity(new Intent(PrincipalActivity.this, LerBilhetesActivity.class));
+        }
     }
 
-    private void listenerLerBilhetes() {
-
-        RelativeLayout lerBilhetes = (RelativeLayout) findViewById(R.id.RelativeLayoutContentLerBilhetes);
-        lerBilhetes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (ContextCompat.checkSelfPermission(PrincipalActivity.this, Manifest.permission.CAMERA)
-                        != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(PrincipalActivity.this,
-                            new String[]{Manifest.permission.CAMERA}, ZXING_CAMERA_PERMISSION);
-                } else {
-                    AnimacaoFecharMenuRapido(relativePrincipal);
-                    startActivity(new Intent(PrincipalActivity.this, LerBilhetesActivity.class));
-                }
-            }
-        });
-    }
-
-    private void listenerApostasConfirmadas(){
-        findViewById(R.id.apostasConfirmadasBtn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ApostasConfirmadasActivity_.intent(PrincipalActivity.this).start();
-            }
-        });
+    @Click(R.id.apostasConfirmadasBtn)
+    protected void clickApostasConfirmadasBtn() {
+        ApostasConfirmadasActivity_.intent(PrincipalActivity.this).start();
     }
 
     private void AbrirMenusGroup(int groupPosition) {
-        if (groupPosition == 0) {
-
-        } else if (groupPosition == 1) {
-            drawerSideMenu.closeDrawers();
-        } else if (groupPosition == 2) {
-
+        if (groupPosition == 1) {
+            drawerLayout.closeDrawers();
         } else if (groupPosition == 3) {
             startActivity(new Intent(PrincipalActivity.this, ListaRapidaoActivity.class));
         } else if (groupPosition == 4) {
@@ -603,134 +449,53 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     private void AbrirMenusItens(int itemPosition) {
-        if (itemPosition == 0) {
-
-        } else if (itemPosition == 1) {
-
-        } else if (itemPosition == 2) {
+        if (itemPosition == 2) {
             startActivity(new Intent(PrincipalActivity.this, ListaComprasActivity.class));
         } else if (itemPosition == 3) {
             startActivity(new Intent(PrincipalActivity.this, FavoritasActivity.class));
-        } else if (itemPosition == 4) {
-
         }
     }
 
-//    private void animacaoValorRepassesSociais( double oldValue, double calculo ){
-//        Date dataBase = new Date(System.currentTimeMillis());
-//        SimpleDateFormat simpleDate = new SimpleDateFormat("dd/MM/yyyy");
-//        try {
-//            dataBase  = simpleDate.parse(repassesSociais.getDataBase());
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-//        Date todayDate = new Date();
-//        double seconds = (todayDate.getTime() - dataBase.getTime()) / DateUtils.MILLIS_PER_SECOND;
-//        oldValue = calculo;
-//
-//        calculo = (repassesSociais.getArrecadacaoAcumulada().doubleValue()) + (repassesSociais.getArrecadacaoUltimaSemana().doubleValue() / 604800.0) * seconds;
-//        oldValue = oldValue == 0 ? repassesSociais.getArrecadacaoAcumulada().doubleValue() : oldValue;
-//
-//        final double calculoFinal = calculo;
-//        final double oldValueFinal = oldValue;
-//
-//        ValueAnimator animator = new  ValueAnimator();
-//        animator.setObjectValues(oldValue, calculo); //double value
-//        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-//            public void onAnimationUpdate(ValueAnimator animation) {
-//                String valorUpdate = String.format( "%.2f", animation.getAnimatedValue());
-//                valorUpdate = valorUpdate.replace(",", ".");
-//                valorRepassesSociais.setText(ViewUtils.getMoedaFormat(new BigDecimal(valorUpdate)));
-//            }
-//        });
-//        animator.setEvaluator(new TypeEvaluator<Double>() { // problem here
-//            @Override
-//            public Double evaluate(float fraction, Double startValue, Double endValue) {
-//                return  (startValue + (double)((endValue - startValue) * fraction));
-//            }
-//        });
-//        animator.addListener(new AnimatorListenerAdapter()
-//        {
-//            @Override
-//            public void onAnimationEnd(Animator animation)
-//            {
-//                // done
-//                animacaoValorRepassesSociais(oldValueFinal, calculoFinal);
-//            }
-//        });
-//        animator.setDuration(1000);
-//        animator.setStartDelay(400);
-//        animator.start();
-//
-//    }
-
     private void layoutSideMenu() {
 
-        final ExpandableListView expandableListView;
         final ExpandableListAdapter expandableListAdapter;
         final List<String> expandableListTitle;
         final HashMap<String, List<String>> expandableListDetail;
 
-        expandableListView = (ExpandableListView) findViewById(R.id.sideMenuExpandableListView);
-        expandableListView.setGroupIndicator(null);
+        sideMenuExpandableListView.setGroupIndicator(null);
         expandableListDetail = ExpandableListDataSideMenu.getData();
-        expandableListTitle = new ArrayList<String>(expandableListDetail.keySet());
+        expandableListTitle = new ArrayList<>(expandableListDetail.keySet());
         expandableListAdapter = new SideMenuExpandleAdapter(this, expandableListTitle, expandableListDetail);
-        expandableListView.setAdapter(expandableListAdapter);
-        expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+        sideMenuExpandableListView.setAdapter(expandableListAdapter);
+        sideMenuExpandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
 
             @Override
             public void onGroupExpand(int groupPosition) {
-//                Toast.makeText(getApplicationContext(),
-//                        expandableListTitle.get(groupPosition) + " List Expanded.",
-//                        Toast.LENGTH_SHORT).show();
                 AbrirMenusGroup(groupPosition);
             }
         });
 
-        expandableListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
-
-            @Override
-            public void onGroupCollapse(int groupPosition) {
-//                Toast.makeText(getApplicationContext(),
-//                        expandableListTitle.get(groupPosition) + " List Collapsed.",
-//                        Toast.LENGTH_SHORT).show();
-                AbrirMenusGroup(groupPosition);
-            }
-
-        });
-        expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+        sideMenuExpandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v,
                                         int groupPosition, int childPosition, long id) {
-//                Toast.makeText(
-//                        getApplicationContext(),
-//                        expandableListTitle.get(groupPosition)
-//                                + " -> "
-//                                + expandableListDetail.get(
-//                                expandableListTitle.get(groupPosition)).get(
-//                                childPosition), Toast.LENGTH_SHORT
-//
-//                ).show();
-//
                 AbrirMenusItens(childPosition);
                 return false;
             }
         });
     }
 
-
     @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
         switch (requestCode) {
             case ZXING_CAMERA_PERMISSION:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    AnimacaoFecharMenuRapido(relativePrincipal);
+                    AnimacaoFecharMenuRapido(relativeContentPrincipal);
                     startActivity(new Intent(PrincipalActivity.this, LerBilhetesActivity.class));
                 } else {
-                    Toast.makeText(this, "Por favor conceda a permissão da câmera para usar o leitor de bilhetes.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.label_conceda_permissao_camera, Toast.LENGTH_SHORT).show();
                 }
-                return;
+                break;
         }
     }
 

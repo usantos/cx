@@ -92,7 +92,7 @@
             android:label="@string/title_activity_forma_pagamento"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.PrincipalActivity"
+            android:name=".view.PrincipalActivity_"
             android:screenOrientation="portrait"
             android:label=""
             android:theme="@style/AppTheme.BrancoActionBar" />

@@ -209,9 +209,7 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
 //            break;
 
             case R.id.botaoLinearLayoutVoltarPrincipal: {
-                Intent intent = new Intent(this, PrincipalActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+                PrincipalActivity_.intent(getBaseContext()).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP).start();
 
             }
 //            case R.id.confirmarInclusaoApostaLayoutCarrinhoApostas: {

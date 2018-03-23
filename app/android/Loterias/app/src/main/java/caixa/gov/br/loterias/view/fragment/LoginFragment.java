@@ -12,11 +12,10 @@ import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.DadosUsuarioBO;
 import caixa.gov.br.loterias.model.bo.keycloak.KeycloakBO;
 import caixa.gov.br.loterias.model.bo.keycloak.KeycloakBO_;
-import caixa.gov.br.loterias.model.bo.silce.dto.UsuarioLogadoResponse;
 import caixa.gov.br.loterias.utils.AppUtils;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.CadastrarActivity_;
-import caixa.gov.br.loterias.view.PrincipalActivity;
+import caixa.gov.br.loterias.view.PrincipalActivity_;
 
 public class LoginFragment extends Fragment {
 
@@ -37,7 +36,7 @@ public class LoginFragment extends Fragment {
             public void onClick(View v) {
                 //mock login
                 DadosUsuarioBO.updateFecharIntroducao(getActivity(), true);
-                startActivity(new Intent(getActivity(), PrincipalActivity.class));
+                startActivity(new Intent(getActivity(), PrincipalActivity_.class));
                 getActivity().finish();
             }
         });
@@ -59,8 +58,7 @@ public class LoginFragment extends Fragment {
                     @Override
                     public void onSuccess(String token) {
                         if(getActivity() != null){
-                            startActivity(new Intent(getActivity(), PrincipalActivity.class));
-                            getActivity().finish();
+                            PrincipalActivity_.intent(getActivity()).start();
                             //loginSucess();
                         }
                     }

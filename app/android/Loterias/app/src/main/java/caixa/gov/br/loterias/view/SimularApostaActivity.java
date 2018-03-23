@@ -63,7 +63,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
 
     public static final String ESCOLHA_TIME_CORACAO_SURPRESINHA = "escolhaTimeCoracaoSurpresinha";
     @ViewById
-    DrawerLayout drawer_layout;
+    DrawerLayout drawerLayout;
 
     @ViewById
     ConstraintLayout toolBarLoteca, viewTabBar;

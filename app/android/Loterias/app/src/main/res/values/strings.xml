@@ -193,9 +193,9 @@
     <string name="label_adicionar_carrinho_apostas">ao carrinho de apostas</string>
     <string name="label_editar_aposta">Editar\naposta</string>
     <string name="label_carrinho_apostas">Carrinho\nde apostas</string>
-	<string name="label_salve_aposta">Salve esta aposta :)</string>
+    <string name="label_salve_aposta">Salve esta aposta :)</string>
 
-	<string name="carregando">Carregando…</string>
+    <string name="carregando">Carregando…</string>
 
     <string name="key_introducao">key_introducao</string>
     <string name="key_idade">key_idade</string>
@@ -214,6 +214,15 @@
     <string name="label_veja_retirar_premio">Veja como retirar o seu prêmio:</string>
     <string name="label_time_coracao">Time do coração&#160;</string>
     <string name="label_empty"> </string>
+    <string name="label_rapidao">Rapidão</string>
+    <string name="label_faca_apostas_apenas_um_clique">Faça várias apostas\n em apenas um clique.</string>
+    <string name="label_ler_bilhestes_bold">Ler _bilhetes_</string>
+    <string name="label_repassados_boas_causas_bold">_repassados_ para boas causas.</string>
+    <string name="label_apostou_loterica_confira_resultados">Apostou em uma lotérica?\n Confira aqui os seus resultados.</string>
+    <string name="label_favoritas">Favoritas</string>
+    <string name="label_suas_apostas_sorte_apenas_clique">Suas apostas da sorte\n em apenas um clique. :)</string>
+    <string name="label_conceda_permissao_camera">Por favor conceda a permissão da câmera para usar o leitor de bilhetes.</string>
+
 
     <!--Mock-->
     <string name="label_mock_texto_nao_premiado">Lorem ipsum dolor sit amet,\nconsectetur adipiscing elit.\nAenean euismod bibendum laoreet.\nProin gravida dolor sit amet lacus\naccumsan et viverra justo commodo</string>

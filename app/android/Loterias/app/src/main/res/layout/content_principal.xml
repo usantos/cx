@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="@drawable/background_gradient_cinza"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="caixa.gov.br.loterias.view.PrincipalActivity"
     tools:showIn="@layout/app_bar_principal">
 
     <LinearLayout
@@ -15,11 +14,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:orientation="vertical"
-        android:paddingRight="20dp"
         android:visibility="gone">
 
         <RelativeLayout
-            android:id="@+id/RelativeLayoutContentRapidao"
+            android:id="@+id/relativeLayoutContentRapidao"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:alpha="0.0">
@@ -28,7 +26,6 @@
                 android:layout_width="294dp"
                 android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true">
 
                 <LinearLayout
@@ -44,9 +41,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
-                            android:layout_alignParentRight="true"
                             android:layout_alignParentTop="true"
-                            android:text="Rapidão"
+                            android:text="@string/label_rapidao"
                             android:textColor="@color/laranjacaixa"
                             android:textSize="14sp"
                             android:textStyle="bold" />
@@ -55,10 +51,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
-                            android:layout_alignParentRight="true"
                             android:layout_below="@+id/tituloRapidao"
                             android:gravity="end"
-                            android:text="Faça várias apostas\n em apenas um clique."
+                            android:text="@string/label_faca_apostas_apenas_um_clique"
                             android:textColor="@color/cinza"
                             android:textSize="13sp" />
                     </RelativeLayout>
@@ -70,7 +65,7 @@
                         <ImageView
                             android:layout_width="40dp"
                             android:layout_height="40dp"
-                            android:layout_marginLeft="20dp"
+                            android:layout_marginStart="20dp"
                             android:src="@drawable/icon_rapidao" />
                     </RelativeLayout>
                 </LinearLayout>
@@ -79,7 +74,7 @@
 
 
         <RelativeLayout
-            android:id="@+id/RelativeLayoutContentLerBilhetes"
+            android:id="@+id/relativeLayoutContentLerBilhetes"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:alpha="0.0">
@@ -88,7 +83,6 @@
                 android:layout_width="294dp"
                 android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true">
 
                 <LinearLayout
@@ -104,9 +98,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
-                            android:layout_alignParentRight="true"
                             android:layout_alignParentTop="true"
-                            android:text="Ler bilhetes"
                             android:textColor="@color/vermelhoBilhetes"
                             android:textSize="14sp" />
 
@@ -114,10 +106,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
-                            android:layout_alignParentRight="true"
                             android:layout_below="@+id/tituloLerBilhetes"
                             android:gravity="end"
-                            android:text="Apostou em uma lotérica?\n Confira aqui os seus resultados."
+                            android:text="@string/label_apostou_loterica_confira_resultados"
                             android:textColor="@color/cinza"
                             android:textSize="13sp" />
                     </RelativeLayout>
@@ -129,7 +120,7 @@
                         <ImageView
                             android:layout_width="40dp"
                             android:layout_height="40dp"
-                            android:layout_marginLeft="20dp"
+                            android:layout_marginStart="20dp"
                             android:src="@drawable/icon_bilhetes" />
                     </RelativeLayout>
                 </LinearLayout>
@@ -138,7 +129,7 @@
 
 
         <RelativeLayout
-            android:id="@+id/RelativeLayoutContentFavoritas"
+            android:id="@+id/relativeLayoutContentFavoritas"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:alpha="0.0">
@@ -147,7 +138,6 @@
                 android:layout_width="294dp"
                 android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true">
 
                 <LinearLayout
@@ -163,9 +153,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
-                            android:layout_alignParentRight="true"
                             android:layout_alignParentTop="true"
-                            android:text="Favoritas"
+                            android:text="@string/label_favoritas"
                             android:textColor="@color/azulfavoritas"
                             android:textSize="14sp"
                             android:textStyle="bold" />
@@ -174,10 +163,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
-                            android:layout_alignParentRight="true"
                             android:layout_below="@+id/tituloFavoritas"
                             android:gravity="right"
-                            android:text="Suas apostas da sorte\n em apenas um clique. :)"
+                            android:text="@string/label_suas_apostas_sorte_apenas_clique"
                             android:textColor="@color/cinza"
                             android:textSize="13sp" />
                     </RelativeLayout>
@@ -189,7 +177,7 @@
                         <ImageView
                             android:layout_width="40dp"
                             android:layout_height="40dp"
-                            android:layout_marginLeft="20dp"
+                            android:layout_marginStart="20dp"
                             android:src="@drawable/icon_favoritas" />
                     </RelativeLayout>
                 </LinearLayout>
@@ -198,17 +186,15 @@
 
 
         <RelativeLayout
-            android:id="@+id/RelativeLayoutContentRepassados"
+            android:id="@+id/relativeLayoutContentRepassados"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:alpha="0.0"
-            android:clickable="true">
+            android:alpha="0.0">
 
             <RelativeLayout
                 android:layout_width="294dp"
                 android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true">
 
                 <LinearLayout
@@ -224,9 +210,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
-                            android:layout_alignParentRight="true"
                             android:layout_alignParentTop="true"
-                            android:text="R$ 100.000,90"
                             android:textColor="@color/verdeazul"
                             android:textSize="14sp"
                             android:textStyle="bold" />
@@ -236,9 +220,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
-                            android:layout_alignParentRight="true"
                             android:layout_below="@+id/valorRepassesPrincipal"
-                            android:text="repassados para boas causas."
                             android:textColor="@color/cinza"
                             android:textSize="14sp" />
                     </RelativeLayout>
@@ -250,7 +232,7 @@
                         <ImageView
                             android:layout_width="40dp"
                             android:layout_height="40dp"
-                            android:layout_marginLeft="20dp"
+                            android:layout_marginStart="20dp"
                             android:src="@drawable/icon_repassados" />
                     </RelativeLayout>
                 </LinearLayout>
@@ -260,9 +242,10 @@
     </LinearLayout>
 
     <RelativeLayout
-        android:id="@+id/RelativeContentPrincipal"
+        android:id="@+id/relativeContentPrincipal"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <com.yarolegovich.discretescrollview.DiscreteScrollView
             android:id="@+id/home_carousel"
             android:layout_width="match_parent"
@@ -291,7 +274,7 @@
             android:id="@+id/apostasConfirmadasBtn"
             android:layout_width="wrap_content"
             android:layout_height="75dp"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_marginLeft="6dp"
             android:layout_marginTop="20dp">
 
@@ -311,26 +294,26 @@
                 android:layout_marginTop="-25dp"
                 android:background="@drawable/rounded_textview"
                 android:gravity="center"
-                android:translationZ="2dp"
                 android:outlineProvider="none"
                 android:text="3"
                 android:textColor="@color/branco"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:translationZ="2dp" />
 
             <TextView
                 style="@style/editTextArialMTTheme"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
+                android:layout_marginStart="12dp"
                 android:text="Apostas\nconfirmadas"
                 android:textAlignment="center"
-                android:layout_marginStart="12dp"
                 android:textColor="@color/azulescuro"
                 android:textSize="12sp" />
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/RelativeLayoutCarrinho"
+            android:id="@+id/relativeLayoutCarrinho"
             android:layout_width="75dp"
             android:layout_height="70dp"
             android:layout_alignParentRight="true"
@@ -354,11 +337,11 @@
                 android:layout_marginTop="-25dp"
                 android:background="@drawable/rounded_textview"
                 android:gravity="center"
-                android:text="3"
-                android:translationZ="2dp"
                 android:outlineProvider="none"
+                android:text="3"
                 android:textColor="@color/branco"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:translationZ="2dp" />
 
             <TextView
                 style="@style/editTextArialMTTheme"
@@ -372,7 +355,7 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/RelativeBlankView"
+            android:id="@+id/relativeBlankView"
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_alignParentLeft="true"
@@ -380,7 +363,7 @@
             android:layout_alignParentTop="true"
             android:alpha="0.0"
             android:background="@color/branco"
-            android:visibility="visible"/>
+            android:visibility="visible" />
 
     </RelativeLayout>
 

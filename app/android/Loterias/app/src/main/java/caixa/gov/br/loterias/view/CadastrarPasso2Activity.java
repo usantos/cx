@@ -132,14 +132,14 @@ public class CadastrarPasso2Activity extends CadastroActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-                if ( isChanged ) {
+                if (isChanged) {
                     return;
                 }
 
                 isChanged = true;
 
                 String texto = textField.getText().toString();
-                if (!TextUtils.isEmpty( texto )
+                if (!TextUtils.isEmpty(texto)
                         && texto.trim().length() == 9) {
                     textField.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
                 } else {
@@ -469,7 +469,7 @@ public class CadastrarPasso2Activity extends CadastroActivity {
                 radioButton.setButtonDrawable(R.drawable.check_radio_selected);
                 radioButton.setPadding(20, 20, 0, 10);
 
-                String htmlTextBreakLine = "<font color=\"#48586c\" size = \"16\"> " + lotericaDTO.getNomeFantasia() + "</font> <br/> <font color=\"#40a797\" size = \"14\"> Código. "+ lotericaDTO.getCodigo() + "</font>";
+                String htmlTextBreakLine = "<font color=\"#48586c\" size = \"16\"> " + lotericaDTO.getNomeFantasia() + "</font> <br/> <font color=\"#40a797\" size = \"14\"> Código. " + lotericaDTO.getCodigo() + "</font>";
                 Spanned stringText = ViewUtils.fromHtml(htmlTextBreakLine);
                 radioButton.setText(stringText);
                 radioButton.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
@@ -499,8 +499,7 @@ public class CadastrarPasso2Activity extends CadastroActivity {
                         @Override
                         public void onResponse(UsuarioLogadoResponse response) {
                             loadViewProgress.dismiss();
-                            Intent intent = new Intent(getBaseContext(), PrincipalActivity.class);
-                            startActivity(intent);
+                            PrincipalActivity_.intent(getBaseContext()).start();
                         }
 
                         @Override
