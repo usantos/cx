@@ -2,13 +2,10 @@ package caixa.gov.br.loterias.view;
 
 import android.content.Intent;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 
 import org.androidannotations.annotations.AfterViews;
@@ -17,8 +14,6 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.ViewById;
-
-import java.util.List;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.utils.ViewUtils;

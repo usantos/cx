@@ -5,7 +5,6 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -19,7 +18,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ExpandableListAdapter;
@@ -38,6 +36,7 @@ import com.yarolegovich.discretescrollview.transform.ScaleTransformer;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
@@ -68,6 +67,7 @@ import caixa.gov.br.loterias.view.animation.AnimacaoCalculoRepassesSociais;
 import caixa.gov.br.loterias.view.animation.AnimacoesAcessoRapido;
 import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
 
+@OptionsMenu(R.menu.principal)
 @EActivity(R.layout.activity_principal)
 public class PrincipalActivity extends AppCompatActivity
         implements DiscreteScrollView.ScrollListener<HomeAdapter.ViewHolder>,
@@ -114,7 +114,7 @@ public class PrincipalActivity extends AppCompatActivity
                 this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
-
+        toolbarListener();
         layoutSideMenu();
         callWebservice();
         iniciarBancoLocal();
@@ -314,14 +314,6 @@ public class PrincipalActivity extends AppCompatActivity
         } else {
             super.onBackPressed();
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.principal, menu);
-        toolbarListener();
-        return true;
     }
 
     private void sairLogin() {
