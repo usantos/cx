@@ -117,6 +117,7 @@
     <style name="AppTheme.Modalidade">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:textColor">@color/branco</item>
     </style>
 
     <style name="AppTheme.Modalidade.Quina">
@@ -154,6 +155,7 @@
         <item name="colorPrimary">@color/timemaniaclaro</item>
         <item name="android:windowBackground">@color/timemaniaclaro</item>
         <item name="android:textColor">@color/megasenamedio</item>
+        <item name="android:theme">@style/TimeManiaToolbar</item>
     </style>
     <style name="AppTheme.Modalidade.LotoGol">
         <item name="colorPrimaryDark">@color/lotogolescuro</item>
@@ -164,6 +166,13 @@
         <item name="colorPrimaryDark">@color/federalescuro</item>
         <item name="colorPrimary">@color/federalclaro</item>
         <item name="android:windowBackground">@color/federalclaro</item>
+    </style>
+
+    <style name="TimeManiaToolbar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:textColorPrimary">@color/megasenamedio</item>
+        <item name="colorControlNormal">@color/megasenamedio</item>
+        <item name="android:textColorSecondary">@color/megasenamedio</item>
+        <item name="actionMenuTextColor">@color/megasenamedio</item>
     </style>
 
 </resources>

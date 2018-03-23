@@ -17,6 +17,7 @@ public class EstiloModalidadeAposta {
     private final int trevoBackground;
     private final int stringId;
     private final int themeId;
+    private final int menuItemColor;
 
     public EstiloModalidadeAposta(ApostaDTO.ModalidadeEnum tipoModalidade) {
         this.tipoModalidade = tipoModalidade;
@@ -31,6 +32,7 @@ public class EstiloModalidadeAposta {
                 trevoBackground = R.drawable.background_trapeze_quina;
                 themeId = R.style.AppTheme_Modalidade_Quina;
                 stringId = R.string.label_quina;
+                menuItemColor = R.color.branco;
                 break;
             case LOTECA:
                 this.corClara = R.color.lotecaclaro;
@@ -41,6 +43,7 @@ public class EstiloModalidadeAposta {
                 trevoBackground = R.drawable.background_trapeze_loteca;
                 themeId = R.style.AppTheme_Modalidade_Loteca;
                 stringId = R.string.label_loteca;
+                menuItemColor = R.color.branco;
                 break;
 //            case FEDERAL:
 //                this.corClara = R.color.federalclaro;
@@ -59,6 +62,7 @@ public class EstiloModalidadeAposta {
                 trevoBackground = R.drawable.background_trapeze_lotogol;
                 themeId = R.style.AppTheme_Modalidade_LotoGol;
                 stringId = R.string.label_lotogol;
+                menuItemColor = R.color.branco;
                 break;
             case MEGA_SENA:
                 this.corClara = R.color.megasenaclaro;
@@ -69,6 +73,7 @@ public class EstiloModalidadeAposta {
                 trevoBackground = R.drawable.background_trapeze_megasena;
                 themeId = R.style.AppTheme_Modalidade_MegaSena;
                 stringId = R.string.label_mega_sena;
+                menuItemColor = R.color.branco;
                 break;
             case DUPLA_SENA:
                 this.corClara = R.color.duplasenaclaro;
@@ -79,6 +84,7 @@ public class EstiloModalidadeAposta {
                 trevoBackground = R.drawable.background_trapeze_duplasena;
                 themeId = R.style.AppTheme_Modalidade_DuplaSena;
                 stringId = R.string.label_dupla_sena;
+                menuItemColor = R.color.branco;
                 break;
             case LOTOFACIL:
                 this.corClara = R.color.lotofacilclaro;
@@ -89,6 +95,7 @@ public class EstiloModalidadeAposta {
                 trevoBackground = R.drawable.background_trapeze_lotofacil;
                 themeId = R.style.AppTheme_Modalidade_Lotofacil;
                 stringId = R.string.label_lotofacil;
+                menuItemColor = R.color.branco;
                 break;
             case LOTOMANIA:
                 this.corClara = R.color.lotomaniaclaro;
@@ -99,6 +106,7 @@ public class EstiloModalidadeAposta {
                 trevoBackground = R.drawable.background_trapeze_lotomania;
                 themeId = R.style.AppTheme_Modalidade_Lotomania;
                 stringId = R.string.label_lotomania;
+                menuItemColor = R.color.branco;
                 break;
             case TIMEMANIA:
                 this.corClara = R.color.timemaniaclaro;
@@ -109,6 +117,7 @@ public class EstiloModalidadeAposta {
                 trevoBackground = R.drawable.background_trapeze_timemania;
                 themeId = R.style.AppTheme_Modalidade_Timemania;
                 stringId = R.string.label_timemania;
+                menuItemColor = R.color.megasenamedio;
                 break;
             default:
                 this.corClara = R.color.megasenaclaro;
@@ -119,6 +128,7 @@ public class EstiloModalidadeAposta {
                 trevoBackground = R.drawable.background_trapeze_megasena;
                 themeId = R.style.AppTheme_Modalidade_MegaSena;
                 stringId = R.string.label_mega_sena;
+                menuItemColor = R.color.branco;
                 break;
         }
     }
@@ -155,5 +165,9 @@ public class EstiloModalidadeAposta {
 
     public int getThemeId() {
         return themeId;
+    }
+
+    public int getMenuItemColor() {
+        return menuItemColor;
     }
 }
