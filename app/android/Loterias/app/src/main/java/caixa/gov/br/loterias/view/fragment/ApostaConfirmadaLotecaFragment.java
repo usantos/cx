@@ -54,6 +54,7 @@ public class ApostaConfirmadaLotecaFragment extends Fragment {
         listaPartidasApostadasExpandebleRecyclerView.setAdapter(new DetalheApostaConfirmadaLotecaAdapter(apostaDTO.getPartidasLoteca()));
         listaPartidasApostadasExpandebleRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         listaPartidasApostadasExpandebleRecyclerView.setExpanded(Boolean.TRUE);
+        listaPartidasApostadasExpandebleRecyclerView.setFocusable(Boolean.FALSE);
     }
 
 }
