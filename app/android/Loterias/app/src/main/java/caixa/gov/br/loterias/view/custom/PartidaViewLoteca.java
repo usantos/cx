@@ -24,12 +24,6 @@ import caixa.gov.br.loterias.view.adapter.LotecaAdapter;
 @EViewGroup(R.layout.row_apostas_partidas_loteca)
 public class PartidaViewLoteca extends LinearLayout {
 
-    private static final float DOIS = 2;
-    private static final float ZERO = 0;
-
-    private PartidaLotecaDTO parametroPartida;
-    private LotecaAdapter.LocateAdapterListener listener;
-
     protected ApostaEquipeLotecaView apostas_partida_loteca_view_um, apostas_partida_loteca_view_empate, apostas_partida_loteca_view_dois;
 
     @ViewById
@@ -49,8 +43,6 @@ public class PartidaViewLoteca extends LinearLayout {
     }
 
     public void setLayout(PartidaLotecaDTO parametroPartida) {
-
-        this.parametroPartida = parametroPartida;
 
         layout_row_apostas_partidas_loteca_list_view.setBackground(getContext().getResources().getDrawable(R.color.transparente));
         apostas_partida_loteca_view_um.getTextApostaPartidaLoteca().setText(parametroPartida.getEquipe1().getNome());

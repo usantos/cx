@@ -44,6 +44,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.apache.commons.lang.StringUtils;
 import org.w3c.dom.Text;
 
 import java.lang.reflect.InvocationTargetException;
@@ -262,7 +263,7 @@ public class ViewUtils {
         return dialog;
     }
 
-        public static Dialog alertVerificarIdadeListener(Context context, DialogInterface.OnClickListener listener) {
+    public static Dialog alertVerificarIdadeListener(Context context, DialogInterface.OnClickListener listener) {
         Dialog dialog = ViewUtils.dialogo(context, R.string.label_atencao, context.getResources().getString(R.string.MA003))
                 .setCancelable(false)
                 .setNegativeButton(R.string.label_nao, listener)
@@ -479,18 +480,18 @@ public class ViewUtils {
         return nf.format(valor).replace("R$", "R$ ");
     }
 
-     public static void setMoedaFormatHtml(BigDecimal valor, TextView valorTextView) {
-         String valoFormatoMoeda = getMoedaFormat(valor);
-         String[] valorFormatoMoedaArray = valoFormatoMoeda.split("\\s");
+    public static void setMoedaFormatHtml(BigDecimal valor, TextView valorTextView) {
+        String valoFormatoMoeda = getMoedaFormat(valor);
+        String[] valorFormatoMoedaArray = valoFormatoMoeda.split("\\s");
 
-         valorTextView.setText(fromHtml(valorFormatoMoedaArray[0] + "<strong> " + valorFormatoMoedaArray[1] + "</strong>"));
+        valorTextView.setText(fromHtml(valorFormatoMoedaArray[0] + "<strong> " + valorFormatoMoedaArray[1] + "</strong>"));
     }
 
     public static void setMoedaFormatHtml(BigDecimal valor, TextView valorTextView, String complemento) {
-         String valoFormatoMoeda = getMoedaFormat(valor);
-         String[] valorFormatoMoedaArray = valoFormatoMoeda.split("\\s");
+        String valoFormatoMoeda = getMoedaFormat(valor);
+        String[] valorFormatoMoedaArray = valoFormatoMoeda.split("\\s");
 
-         valorTextView.setText(fromHtml(complemento + valorFormatoMoedaArray[0] + "<strong> " + valorFormatoMoedaArray[1] + "</strong>"));
+        valorTextView.setText(fromHtml(complemento + valorFormatoMoedaArray[0] + "<strong> " + valorFormatoMoedaArray[1] + "</strong>"));
     }
 
     public static int monthDiff(Calendar startCalendar, Calendar endCalendar) {
@@ -633,6 +634,7 @@ public class ViewUtils {
 
     /**
      * O texto que estiver dentro de _ receberá fonte FuturaBold, ex: Texto Normal _Texto Bold_
+     *
      * @param context
      * @param texto
      * @return
@@ -647,7 +649,7 @@ public class ViewUtils {
         return spannableStringBuilder;
     }
 
-    private static PositionStringBold positionString(String texto){
+    private static PositionStringBold positionString(String texto) {
         String[] listaString = texto.split("_");
         int start = listaString[0].length();
         int end = listaString[1].length() + start;
@@ -659,6 +661,17 @@ public class ViewUtils {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, valor, context.getResources().getDisplayMetrics());
     }
 
+    /**
+     * Método que retorna data e hora no formato dd/MM/yyyy - HHhMM
+     * @param date
+     * @param hour
+     * @return
+     */
+    public static String getDateAndHour(String date, String hour) {
 
+        String[] hHMMSS = hour.split(":");
+
+        return String.format("%s - %sh%s", date, hHMMSS[0], hHMMSS[1]);
+    }
 
 }

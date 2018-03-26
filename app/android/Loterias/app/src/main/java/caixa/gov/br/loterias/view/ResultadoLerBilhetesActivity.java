@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -49,6 +50,9 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
     Toolbar toolbar;
 
     @ViewById
+    ScrollView resultadoApostaScrollView;
+
+    @ViewById
     LinearLayout corpoBilhetePremiadoLinearLayout, corpoBilheteNaoPremiadoLinearLayout, topoModalidadeResultadoLinearLayout, topo2ModalidadeResultadoLinearLayout,
             premioGanhoLinearLayout, mensagemNaoPremiadoLinearLayout, fundoBackgroundTrapezeResultadoLinearLayout;
 
@@ -65,6 +69,7 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
 
     @AfterViews
     public void init() {
+        resultadoApostaScrollView.fullScroll(View.FOCUS_UP);
         createToolBar();
         postLerBilhetes(ApostaBO_.getInstance_(this), this, codBarras);
     }

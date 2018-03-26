@@ -26,6 +26,7 @@ import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostaDTO;
 import caixa.gov.br.loterias.utils.AppUtils;
 import caixa.gov.br.loterias.utils.EstiloModalidade;
+import caixa.gov.br.loterias.view.fragment.ApostaConfirmadaLotecaFragment_;
 import caixa.gov.br.loterias.view.fragment.ApostaConfirmadaNumeroDetalhes_;
 
 /**
@@ -109,8 +110,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
                 fragment = new Fragment();
                 break;
             case LOTECA:
-                //TODO:
-                fragment = new Fragment();
+                fragment = ApostaConfirmadaLotecaFragment_.builder().apostaDTO(apostaDTO).build();
                 break;
             default:
                 fragment = ApostaConfirmadaNumeroDetalhes_

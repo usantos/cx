@@ -55,7 +55,6 @@ public class ApostaPartidaLotecaView extends LinearLayout {
         equipeDTOEmpate.setVitoria(partidaLotecaDTO.getEmpate());
         equipeDTOEmpate.setNome(Constantes.X_STRING);
         this.setValueApostaEquipeLotecaView(apostasPartidaLotecaViewEmpate, equipeDTOEmpate);
-
     }
 
     private void setValueApostaEquipeLotecaView(ApostaEquipeLotecaView apostaEquipeLotecaView, EquipeDTO equipeDTO) {

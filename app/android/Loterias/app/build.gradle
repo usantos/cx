@@ -89,6 +89,7 @@ dependencies {
     implementation "com.android.support:support-v4:$supportVersion"
 
     //Multidex (necessário quando há mais de 64k métodos)
+    implementation 'com.android.support:support-v4:27.0.0'
     compile 'com.android.support:multidex:1.0.3'
 
     //Serialização em Parcelable
