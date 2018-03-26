@@ -25,6 +25,7 @@ import java.util.List;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.mock.ItemListaFaixaPremiacaoMock;
+import caixa.gov.br.loterias.model.bean.Modalidade;
 import caixa.gov.br.loterias.model.bean.SessaoUsuario;
 import caixa.gov.br.loterias.model.bo.ApostaBO;
 import caixa.gov.br.loterias.model.bo.ApostaBO_;
@@ -138,7 +139,7 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
         corpoBilhetePremiadoLinearLayout.setVisibility(View.VISIBLE);
         corpoBilheteNaoPremiadoLinearLayout.setVisibility(View.GONE);
 
-        ModalidadeEnum modalidadeEnum = ApostaDTO.toStringModalidade(resultadoConsultaBilheteDTO.getModalidadeDTO().getDescricao());
+        ModalidadeEnum modalidadeEnum = ModalidadeEnum.toString (resultadoConsultaBilheteDTO.getModalidadeDTO().getDescricao());
         EstiloModalidade estiloModalidade = new EstiloModalidade(modalidadeEnum);
         SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
 
