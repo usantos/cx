@@ -480,15 +480,15 @@ public class ApostaDTO {
       case LOTOGOL:
         return "lotogol";
       case LOTOFACIL:
-        return "lotofácil";
+        return "lotofacil";
       case LOTOMANIA:
         return "lotomania";
       case MEGA_SENA:
-        return "mega-sena";
+        return "megasena";
       case TIMEMANIA:
         return "timemania";
       case DUPLA_SENA:
-        return "dupla-sena";
+        return "duplasena";
 //      case FEDERAL:
 //        return "federal";
 
