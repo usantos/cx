@@ -25,6 +25,10 @@ public class ApostaDTO {
 
   @SerializedName("id")
   protected Long id = null;
+  public enum ModalidadeEnum {
+    DIA_DE_SORTE,  DUPLA_SENA,  LOTECA,  LOTOFACIL,  LOTOGOL,  LOTOMANIA,  MEGA_SENA,  QUINA,  TIMEMANIA, FEDERAL
+  };
+
   @SerializedName("modalidade")
   protected ModalidadeEnum modalidade = null;
   @SerializedName("tipoConcurso")
@@ -434,8 +438,8 @@ public class ApostaDTO {
         return "Timemania";
       case DUPLA_SENA:
         return "Dupla-Sena";
-//      case FEDERAL:
-//        return "Federal";
+      case FEDERAL:
+        return "Federal";
 
     }
     return "";
@@ -460,10 +464,37 @@ public class ApostaDTO {
         return ModalidadeEnum.TIMEMANIA;
       case "Dupla-Sena":
         return ModalidadeEnum.DUPLA_SENA;
-//      case "Federal":
-//        return ModalidadeEnum.FEDERAL;
+      case "Federal":
+        return ModalidadeEnum.FEDERAL;
       default:
         return null;
     }
   }
+
+  public static String lowerCaseFromString(ModalidadeEnum modalidade) {
+    switch (modalidade) {
+      case QUINA:
+        return "quina";
+      case LOTECA:
+        return "loteca";
+      case LOTOGOL:
+        return "lotogol";
+      case LOTOFACIL:
+        return "lotofácil";
+      case LOTOMANIA:
+        return "lotomania";
+      case MEGA_SENA:
+        return "mega-sena";
+      case TIMEMANIA:
+        return "timemania";
+      case DUPLA_SENA:
+        return "dupla-sena";
+      case FEDERAL:
+        return "federal";
+
+    }
+    return "";
+  }
+
+
 }

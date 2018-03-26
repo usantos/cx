@@ -24,7 +24,7 @@ import caixa.gov.br.loterias.utils.ViewUtils;
 
 public class AnimacoesResultados {
     private LinearLayout linearLayoutTopModalidades;
-    private LinearLayout linearLayoutTopResultados;
+    private RelativeLayout relativeLayoutTopResultados;
     private Context context;
     private int valorSizeEncolhido;
     private int valorSizeExpandido;
@@ -41,9 +41,9 @@ public class AnimacoesResultados {
 
     //init
 
-    public AnimacoesResultados(LinearLayout linearLayoutTopModalidades, LinearLayout linearLayoutTopResultados, Context context, int valorSizeEncolhido, int valorSizeExpandido) {
+    public AnimacoesResultados(LinearLayout linearLayoutTopModalidades, RelativeLayout relativeLayoutTopResultados, Context context, int valorSizeEncolhido, int valorSizeExpandido) {
         this.linearLayoutTopModalidades = linearLayoutTopModalidades;
-        this.linearLayoutTopResultados = linearLayoutTopResultados;
+        this.relativeLayoutTopResultados = relativeLayoutTopResultados;
         this.context = context;
         this.valorSizeEncolhido = valorSizeEncolhido;
         this.valorSizeExpandido = valorSizeExpandido;
@@ -96,9 +96,9 @@ public class AnimacoesResultados {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
                 int val = (Integer) valueAnimator.getAnimatedValue();
-                ViewGroup.LayoutParams layoutParams = linearLayoutTopResultados.getLayoutParams();
+                ViewGroup.LayoutParams layoutParams = relativeLayoutTopResultados.getLayoutParams();
                 layoutParams.width = val;
-                linearLayoutTopResultados.setLayoutParams(layoutParams);
+                relativeLayoutTopResultados.setLayoutParams(layoutParams);
             }
         });
         animator.setDuration(500);
@@ -111,9 +111,9 @@ public class AnimacoesResultados {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
                 int val = (Integer) valueAnimator.getAnimatedValue();
-                ViewGroup.LayoutParams layoutParams = linearLayoutTopResultados.getLayoutParams();
+                ViewGroup.LayoutParams layoutParams = relativeLayoutTopResultados.getLayoutParams();
                 layoutParams.width = val;
-                linearLayoutTopResultados.setLayoutParams(layoutParams);
+                relativeLayoutTopResultados.setLayoutParams(layoutParams);
             }
         });
         animator.setDuration(500);

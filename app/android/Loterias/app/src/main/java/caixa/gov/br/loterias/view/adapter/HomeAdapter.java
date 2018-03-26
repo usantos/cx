@@ -1,7 +1,9 @@
 package caixa.gov.br.loterias.view.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -13,14 +15,23 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.model.bo.ApostaBO;
+import caixa.gov.br.loterias.model.bo.ApostaBO_;
+import caixa.gov.br.loterias.model.bo.MensagensNetwork;
+import caixa.gov.br.loterias.model.bo.RequestListener;
+import caixa.gov.br.loterias.model.bo.silce.dto.ApostaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ModalidadeEnum;
 import caixa.gov.br.loterias.model.bean.Modalidade;
+import caixa.gov.br.loterias.model.bo.silce.dto.ResultadoConcursoDTOResponse;
 import caixa.gov.br.loterias.utils.EstiloModalidade;
 import caixa.gov.br.loterias.utils.ViewUtils;
+import caixa.gov.br.loterias.view.PrincipalActivity;
 import caixa.gov.br.loterias.view.animation.AnimacoesResultados;
+import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -45,11 +56,13 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     private List<Modalidade> data;
     private EstiloModalidade estilo;
     private Context context;
+    private Activity activity;
     private static Button aposta;
 
-    public HomeAdapter(Context context, List<Modalidade> data, View aposta) {
+    public HomeAdapter(Activity activity, Context context, List<Modalidade> data, View aposta) {
         this.data = data;
         this.context = context;
+        this.activity = activity;
         this.aposta = (Button) aposta;
     }
 
@@ -71,7 +84,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
         estilo = new EstiloModalidade(data.get(position).getTipoModalidade());
 
         if (data.get(position).getConcurso().getTipoConcurso().toString().equals("ESPECIAL")){
@@ -80,7 +93,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             holder.game.setText(ModalidadeEnum.fromString(data.get(position).getTipoModalidade()));
         }
 
-        holder.linearLayoutTopResultados.setBackgroundColor(ContextCompat.getColor(context, estilo.getCorEscura()));
+        holder.relativeLayoutTopResultados.setBackgroundColor(ContextCompat.getColor(context, estilo.getCorEscura()));
         holder.trevo.setBackground(ContextCompat.getDrawable(context, estilo.getTrevoBackground()));
         holder.trevoFundo.setBackground(ContextCompat.getDrawable(context, estilo.getTrevoBackground()));
         holder.titulo.setBackgroundColor(ContextCompat.getColor(context, estilo.getCorClara()));
@@ -123,14 +136,14 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                 .into(holder.relogio);
 
         final LinearLayout linearLayoutContentCardModalide = holder.linearLayoutContentCardModalide;
-        final LinearLayout linearLayoutTopResultados = holder.linearLayoutTopResultados;
+        final RelativeLayout relativeLayoutTopResultados = holder.relativeLayoutTopResultados;
         holder.buttonActionResultadosModalidade.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (linearLayoutContentCardModalide.isEnabled()) {
-                    AnimacaoAbrirResultados(context, linearLayoutContentCardModalide, linearLayoutTopResultados);
+                    callWebserviceResultadoConcurso(linearLayoutContentCardModalide, relativeLayoutTopResultados, ApostaDTO.lowerCaseFromString(ApostaDTO.toStringModalidade(data.get(position).getNome())), data.get(position).getConcurso().getNumero());
                 } else {
-                    AnimacaoFecharResultados(context, linearLayoutContentCardModalide, linearLayoutTopResultados);
+                    AnimacaoFecharResultados(context, linearLayoutContentCardModalide, relativeLayoutTopResultados);
                 }
             }
         });
@@ -192,7 +205,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         private TextView tempoRestanteParaAposta;
         private Button buttonActionResultadosModalidade;
         private LinearLayout linearLayoutContentCardModalide;
-        private LinearLayout linearLayoutTopResultados;
+        private RelativeLayout relativeLayoutTopResultados;
 
 
         public ViewHolder (View itemView) {
@@ -210,7 +223,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             tempoRestanteParaAposta = (TextView) itemView.findViewById(R.id.textVieCardClosingOfBets);
             buttonActionResultadosModalidade = (Button) itemView.findViewById(R.id.buttonActionResultadosModalidade);
             linearLayoutContentCardModalide = (LinearLayout) itemView.findViewById(R.id.linearLayoutContentCardModalide);
-            linearLayoutTopResultados = (LinearLayout) itemView.findViewById(R.id.linearLayoutTopResultados);
+            relativeLayoutTopResultados = (RelativeLayout) itemView.findViewById(R.id.relativeLayoutTopResultados);
         }
 
         public void setOverlayColor(Context context, EstiloModalidade estilo) {
@@ -218,7 +231,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         }
     }
 
-    private void AnimacaoAbrirResultados(Context context, LinearLayout linearLayoutTopModalidades, LinearLayout linearLayoutTopResultados) {
+    private void AnimacaoAbrirResultados(Context context, LinearLayout linearLayoutTopModalidades, RelativeLayout linearLayoutTopResultados) {
         linearLayoutTopModalidades.setEnabled(false);
         AnimacoesResultados animacoesResultados = new AnimacoesResultados(
                 linearLayoutTopModalidades, linearLayoutTopResultados, context, ViewUtils.setDisplayMetric(240, context), ViewUtils.setDisplayMetric(280, context)
@@ -226,13 +239,37 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         animacoesResultados.AnimacaoDescerContent(ViewUtils.getRealScreenSize(context).y - ViewUtils.setDisplayMetric(250, context));
     }
 
-    private void AnimacaoFecharResultados(Context context, LinearLayout linearLayoutTopModalidades, LinearLayout linearLayoutTopResultados) {
+    private void AnimacaoFecharResultados(Context context, LinearLayout linearLayoutTopModalidades, RelativeLayout linearLayoutTopResultados) {
         linearLayoutTopModalidades.setEnabled(true);
         AnimacoesResultados animacoesResultados = new AnimacoesResultados(
                 linearLayoutTopModalidades, linearLayoutTopResultados, context, ViewUtils.setDisplayMetric(240, context), ViewUtils.setDisplayMetric(280, context)
         );
 
         animacoesResultados.AnimacaoSubirContent(0);
+    }
+
+
+    private void callWebserviceResultadoConcurso(final LinearLayout linearLayoutContentCardModalide, final RelativeLayout relativeLayoutTopResultados, final String modalidade, final int concurso) {
+
+        final AlertDialog loadViewProgress = LoadingViewLoterias.show(context);
+        final ApostaBO apostaBO = ApostaBO_.getInstance_(context);
+
+        apostaBO.getResultadoModalidadeConcurso(modalidade, concurso, new RequestListener<ResultadoConcursoDTOResponse>() {
+            @Override
+            public void onResponse(ResultadoConcursoDTOResponse response) {
+                loadViewProgress.dismiss();
+
+                AnimacaoAbrirResultados(context, linearLayoutContentCardModalide, relativeLayoutTopResultados);
+
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                loadViewProgress.dismiss();
+                ViewUtils.alert(activity, MensagensNetwork.setMensagem(error, context));
+
+            }
+        });
     }
 
 }

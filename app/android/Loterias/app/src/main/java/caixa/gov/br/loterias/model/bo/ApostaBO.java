@@ -20,6 +20,7 @@ import caixa.gov.br.loterias.model.bo.silce.dto.MesAnoDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.ModalidadeDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.RapidaoDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.RapidaoDTOResponse;
+import caixa.gov.br.loterias.model.bo.silce.dto.ResultadoConcursoDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.ResultadoConsultaBilheteDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOApostaDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse;
@@ -399,6 +400,25 @@ public class ApostaBO extends BaseBO {
 
         final GsonRequest request = silceConnection.buildPostRequest(ServerMethods.LIMPAR_CARRINHO_PATH, new LinkedHashMap<String, String>(),
                 null, CarrinhoDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(), headers);
+
+        request.setErrorListener(interceptError(request, headers, listener));
+        silceConnection.request(request);
+    }
+
+    public void getResultadoModalidadeConcurso(final String modalidade, final int concurso, final RequestListener<ResultadoConcursoDTOResponse> listener) {
+        LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
+        headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
+
+        Map<String, String> queryParams = new HashMap<String, String>();
+
+        String url = ServerMethods.RESULTADOS_MODALIDADE_CONCURSO_PATH.replace("{modalidade}", modalidade);
+        url = url.replace("{concurso}", String.valueOf(concurso));
+
+        final GsonRequest request = silceConnection.buildGetRequest(url,
+                queryParams,
+                ResultadoConcursoDTOResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(), headers);
 

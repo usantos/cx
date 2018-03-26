@@ -13,38 +13,48 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/linearLayoutTopResultados"
+        <RelativeLayout
+            android:id="@+id/relativeLayoutTopResultados"
             android:layout_width="240dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:background="@color/megasenaescuro"
-            android:gravity="center"
-            android:orientation="horizontal">
+            >
 
             <ImageView
                 android:layout_width="8dp"
                 android:layout_height="12dp"
-                android:src="@drawable/seta_esquerda" />
+                android:src="@drawable/seta_esquerda"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="17dp"
+                />
 
             <Button
                 android:id="@+id/buttonActionResultadosModalidade"
                 style="@style/editTextArialMTTheme"
                 android:layout_width="100dp"
                 android:layout_height="32dp"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp"
                 android:background="@null"
                 android:gravity="center"
                 android:text="Resultados"
+                android:layout_centerInParent="true"
                 android:textAllCaps="false"
-                android:textColor="@color/branco" />
+                android:textColor="@color/branco"
+                android:layout_centerVertical="true"
+
+                />
 
             <ImageView
                 android:layout_width="8dp"
                 android:layout_height="12dp"
-                android:src="@drawable/seta_direita" />
-        </LinearLayout>
+                android:src="@drawable/seta_direita"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="17dp"
+
+                />
+        </RelativeLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"

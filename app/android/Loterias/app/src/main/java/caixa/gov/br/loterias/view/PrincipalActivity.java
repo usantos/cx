@@ -127,7 +127,7 @@ public class PrincipalActivity extends AppCompatActivity
 
     private void montarCarrossel() {
         data = montaListaModalidades();
-        homeCarousel.setAdapter(new HomeAdapter(this, data, buttonHomeBet));
+        homeCarousel.setAdapter(new HomeAdapter(this, this, data, buttonHomeBet));
         homeCarousel.addScrollListener(this);
         homeCarousel.addOnItemChangedListener(this);
         homeCarousel.scrollToPosition(0);
