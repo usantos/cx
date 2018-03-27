@@ -668,9 +668,9 @@ public class ViewUtils {
     /**
      * Método que retorna data e hora no formato dd/MM/yyyy - HHhMM
      *
-     * @param date
-     * @param hour
-     * @return
+     * @param date String
+     * @param hour String
+     * @return String
      */
     public static String getDateAndHour(String date, String hour) {
 
@@ -681,6 +681,8 @@ public class ViewUtils {
 
     /**
      * Método que retorna data e hora no formato dd/MM | HHhMM
+     * @param dateHour String
+     * @return String
      */
     public static String getDateAndHour(String dateHour) {
 
