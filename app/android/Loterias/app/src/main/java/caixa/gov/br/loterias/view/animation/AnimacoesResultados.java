@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.utils.EstiloModalidade;
@@ -23,72 +24,31 @@ import caixa.gov.br.loterias.utils.ViewUtils;
  */
 
 public class AnimacoesResultados {
-    private LinearLayout linearLayoutTopModalidades;
     private RelativeLayout relativeLayoutTopResultados;
+    private LinearLayout linearLayoutResultadosApostas;
     private Context context;
-    private int valorSizeEncolhido;
     private int valorSizeExpandido;
+    private int valorSizeEncolhido;
 
-    public void AnimacaoDescerContent(int positionBottom){
-        translatePosicaoConteudoAbaixar(positionBottom);
+    public void AnimacaoDescerContent(int alturaConteudo){
+        aumentarAlturaConteudo(alturaConteudo);
         aumentarLarguraConteudo();
     }
 
-    public void AnimacaoSubirContent(int positionBottom){
-        translatePosicaoConteudoSubir(positionBottom);
+    public void AnimacaoSubirContent(){
+        diminuirAlturaConteudo();
         dimininuirLarguraConteudo();
     }
 
     //init
 
-    public AnimacoesResultados(LinearLayout linearLayoutTopModalidades, RelativeLayout relativeLayoutTopResultados, Context context, int valorSizeEncolhido, int valorSizeExpandido) {
-        this.linearLayoutTopModalidades = linearLayoutTopModalidades;
+    public AnimacoesResultados(RelativeLayout relativeLayoutTopResultados, LinearLayout  linearLayoutResultadosApostas,Context context, int valorSizeEncolhido, int valorSizeExpandido) {
         this.relativeLayoutTopResultados = relativeLayoutTopResultados;
+        this.linearLayoutResultadosApostas = linearLayoutResultadosApostas;
         this.context = context;
-        this.valorSizeEncolhido = valorSizeEncolhido;
         this.valorSizeExpandido = valorSizeExpandido;
+        this.valorSizeEncolhido = valorSizeEncolhido;
     }
-
-    //public
-    private void translatePosicaoConteudoAbaixar(int positionBottom){
-
-        linearLayoutTopModalidades.animate().translationX(0).translationY(positionBottom).setDuration(500).setListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {}
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {}
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {}
-        });
-    }
-
-    //public
-    private void translatePosicaoConteudoSubir(int positionBottom){
-
-        linearLayoutTopModalidades.animate().translationX(0).translationY(positionBottom).setDuration(500).setListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {}
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {}
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {}
-        });
-    }
-
 
     private void aumentarLarguraConteudo(){
         ValueAnimator animator = ValueAnimator.ofInt(valorSizeEncolhido, valorSizeExpandido);
@@ -99,6 +59,10 @@ public class AnimacoesResultados {
                 ViewGroup.LayoutParams layoutParams = relativeLayoutTopResultados.getLayoutParams();
                 layoutParams.width = val;
                 relativeLayoutTopResultados.setLayoutParams(layoutParams);
+
+                ViewGroup.LayoutParams layoutParamsScroll = linearLayoutResultadosApostas.getLayoutParams();
+                layoutParamsScroll.width = val;
+                linearLayoutResultadosApostas.setLayoutParams(layoutParamsScroll);
             }
         });
         animator.setDuration(500);
@@ -114,6 +78,41 @@ public class AnimacoesResultados {
                 ViewGroup.LayoutParams layoutParams = relativeLayoutTopResultados.getLayoutParams();
                 layoutParams.width = val;
                 relativeLayoutTopResultados.setLayoutParams(layoutParams);
+
+                ViewGroup.LayoutParams layoutParamsScroll = linearLayoutResultadosApostas.getLayoutParams();
+                layoutParamsScroll.width = val;
+                linearLayoutResultadosApostas.setLayoutParams(layoutParamsScroll);
+            }
+        });
+        animator.setDuration(500);
+        animator.start();
+    }
+
+
+    private void aumentarAlturaConteudo(int alturaConteudo){
+        ValueAnimator animator = ValueAnimator.ofInt(linearLayoutResultadosApostas.getHeight(), alturaConteudo);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                int val = (Integer) valueAnimator.getAnimatedValue();
+                ViewGroup.LayoutParams layoutParams = linearLayoutResultadosApostas.getLayoutParams();
+                layoutParams.height = val;
+                linearLayoutResultadosApostas.setLayoutParams(layoutParams);
+            }
+        });
+        animator.setDuration(500);
+        animator.start();
+    }
+
+    private void diminuirAlturaConteudo(){
+        ValueAnimator animator = ValueAnimator.ofInt(linearLayoutResultadosApostas.getHeight(), 0);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                int val = (Integer) valueAnimator.getAnimatedValue();
+                ViewGroup.LayoutParams layoutParams = linearLayoutResultadosApostas.getLayoutParams();
+                layoutParams.height = val;
+                linearLayoutResultadosApostas.setLayoutParams(layoutParams);
             }
         });
         animator.setDuration(500);

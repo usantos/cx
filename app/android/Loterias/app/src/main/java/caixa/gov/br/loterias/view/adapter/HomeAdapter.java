@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -26,12 +27,15 @@ import caixa.gov.br.loterias.model.bo.RequestListener;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ModalidadeEnum;
 import caixa.gov.br.loterias.model.bean.Modalidade;
+import caixa.gov.br.loterias.model.bo.silce.dto.ResultadoConcursoDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ResultadoConcursoDTOResponse;
 import caixa.gov.br.loterias.utils.EstiloModalidade;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.PrincipalActivity;
 import caixa.gov.br.loterias.view.animation.AnimacoesResultados;
 import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
+import caixa.gov.br.loterias.view.custom.MegaSenaResultadoView;
+import caixa.gov.br.loterias.view.custom.MegaSenaResultadoView_;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -58,6 +62,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     private Context context;
     private Activity activity;
     private static Button aposta;
+    private MegaSenaResultadoView megaSenaResultadoView;
 
     public HomeAdapter(Activity activity, Context context, List<Modalidade> data, View aposta) {
         this.data = data;
@@ -66,14 +71,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         this.aposta = (Button) aposta;
     }
 
-//    @Override
-//    public void onAttachedToRecyclerView (RecyclerView recyclerView) {
-//        super.onAttachedToRecyclerView(recyclerView);
-//        Activity context = (Activity) recyclerView.getContext();
-//        Point windowDimensions = new Point();
-//        context.getWindowManager().getDefaultDisplay().getSize(windowDimensions);
-//        itemHeight = Math.round(windowDimensions.y * 0.4f);
-//    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -84,7 +81,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         estilo = new EstiloModalidade(data.get(position).getTipoModalidade());
 
         if (data.get(position).getConcurso().getTipoConcurso().toString().equals("ESPECIAL")){
@@ -94,6 +91,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         }
 
         holder.relativeLayoutTopResultados.setBackgroundColor(ContextCompat.getColor(context, estilo.getCorEscura()));
+        holder.linearLayoutResultadosApostas.setBackgroundColor(ContextCompat.getColor(context, estilo.getCorEscura()));
         holder.trevo.setBackground(ContextCompat.getDrawable(context, estilo.getTrevoBackground()));
         holder.trevoFundo.setBackground(ContextCompat.getDrawable(context, estilo.getTrevoBackground()));
         holder.titulo.setBackgroundColor(ContextCompat.getColor(context, estilo.getCorClara()));
@@ -135,18 +133,40 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                 .load(estilo.getImagemRelogio())
                 .into(holder.relogio);
 
-        final LinearLayout linearLayoutContentCardModalide = holder.linearLayoutContentCardModalide;
-        final RelativeLayout relativeLayoutTopResultados = holder.relativeLayoutTopResultados;
         holder.buttonActionResultadosModalidade.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (linearLayoutContentCardModalide.isEnabled()) {
-                    callWebserviceResultadoConcurso(linearLayoutContentCardModalide, relativeLayoutTopResultados, ApostaDTO.lowerCaseFromString(ApostaDTO.toStringModalidade(data.get(position).getNome())), data.get(position).getConcurso().getNumero());
+                if (holder.linearLayoutResultadosApostas.getHeight() == 00) {
+                    if (data.get(position).getResultadoConcursoDTO() == null){
+                        callWebserviceResultadoConcurso(holder.relativeLayoutTopResultados,
+                                holder.linearLayoutResultadosApostas,
+                                ApostaDTO.lowerCaseFromString(ApostaDTO.toStringModalidade(data.get(position).getNome())),
+                                data.get(position).getConcurso().getNumero(), position);
+                    }else{
+                        AnimacaoAbrirResultados(context, holder.relativeLayoutTopResultados, holder.linearLayoutResultadosApostas, position);
+                    }
                 } else {
-                    AnimacaoFecharResultados(context, linearLayoutContentCardModalide, relativeLayoutTopResultados);
+                    data.get(position).setResultadosAberto(false);
+                    AnimacaoFecharResultados(context, holder.relativeLayoutTopResultados, holder.linearLayoutResultadosApostas);
                 }
             }
         });
+
+        if(data.get(position).getResultadosAberto() == true){
+            ViewGroup.LayoutParams layoutParams = holder.linearLayoutResultadosApostas.getLayoutParams();
+            layoutParams.height = ViewUtils.getRealScreenSize(context).y - ViewUtils.setDisplayMetric(250, context);
+            holder.linearLayoutResultadosApostas.setLayoutParams(layoutParams);
+        }else{
+            ViewGroup.LayoutParams layoutParams = holder.linearLayoutResultadosApostas.getLayoutParams();
+            layoutParams.height = 0;
+            holder.linearLayoutResultadosApostas.setLayoutParams(layoutParams);
+        }
+        if (data.get(position).getResultadoConcursoDTO() != null){
+            setLayoutResultado(holder.linearLayoutResultadosApostas, position);
+        }else {
+            holder.linearLayoutResultadosApostas.removeAllViews();
+        }
+
     }
 
     public static String retornaStringDias (Long dia) {
@@ -204,8 +224,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         private TextView dataSorteio;
         private TextView tempoRestanteParaAposta;
         private Button buttonActionResultadosModalidade;
-        private LinearLayout linearLayoutContentCardModalide;
         private RelativeLayout relativeLayoutTopResultados;
+        private LinearLayout linearLayoutResultadosApostas;
 
 
         public ViewHolder (View itemView) {
@@ -222,8 +242,9 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             tempoRestanteParaAposta = (TextView) itemView.findViewById(R.id.textVieCardClosingOfBets);
             tempoRestanteParaAposta = (TextView) itemView.findViewById(R.id.textVieCardClosingOfBets);
             buttonActionResultadosModalidade = (Button) itemView.findViewById(R.id.buttonActionResultadosModalidade);
-            linearLayoutContentCardModalide = (LinearLayout) itemView.findViewById(R.id.linearLayoutContentCardModalide);
             relativeLayoutTopResultados = (RelativeLayout) itemView.findViewById(R.id.relativeLayoutTopResultados);
+            linearLayoutResultadosApostas = (LinearLayout) itemView.findViewById(R.id.linearLayoutResultadosApostas);
+
         }
 
         public void setOverlayColor(Context context, EstiloModalidade estilo) {
@@ -231,25 +252,28 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         }
     }
 
-    private void AnimacaoAbrirResultados(Context context, LinearLayout linearLayoutTopModalidades, RelativeLayout linearLayoutTopResultados) {
-        linearLayoutTopModalidades.setEnabled(false);
+    private void AnimacaoAbrirResultados(Context context, RelativeLayout linearLayoutTopResultados, LinearLayout linearLayoutResultadosApostas, int position) {
         AnimacoesResultados animacoesResultados = new AnimacoesResultados(
-                linearLayoutTopModalidades, linearLayoutTopResultados, context, ViewUtils.setDisplayMetric(240, context), ViewUtils.setDisplayMetric(280, context)
+                linearLayoutTopResultados, linearLayoutResultadosApostas, context, ViewUtils.setDisplayMetric(240, context), ViewUtils.setDisplayMetric(280, context)
         );
+        data.get(position).setResultadosAberto(true);
         animacoesResultados.AnimacaoDescerContent(ViewUtils.getRealScreenSize(context).y - ViewUtils.setDisplayMetric(250, context));
     }
 
-    private void AnimacaoFecharResultados(Context context, LinearLayout linearLayoutTopModalidades, RelativeLayout linearLayoutTopResultados) {
-        linearLayoutTopModalidades.setEnabled(true);
+    private void AnimacaoFecharResultados(Context context, RelativeLayout linearLayoutTopResultados, LinearLayout linearLayoutResultadosApostas) {
         AnimacoesResultados animacoesResultados = new AnimacoesResultados(
-                linearLayoutTopModalidades, linearLayoutTopResultados, context, ViewUtils.setDisplayMetric(240, context), ViewUtils.setDisplayMetric(280, context)
+                linearLayoutTopResultados, linearLayoutResultadosApostas, context, ViewUtils.setDisplayMetric(240, context), ViewUtils.setDisplayMetric(280, context)
         );
 
-        animacoesResultados.AnimacaoSubirContent(0);
+        animacoesResultados.AnimacaoSubirContent();
     }
 
 
-    private void callWebserviceResultadoConcurso(final LinearLayout linearLayoutContentCardModalide, final RelativeLayout relativeLayoutTopResultados, final String modalidade, final int concurso) {
+    private void callWebserviceResultadoConcurso(final RelativeLayout relativeLayoutTopResultados,
+                                                 final LinearLayout linearLayoutResultadosApostas,
+                                                 final String modalidade,
+                                                 final int concurso,
+                                                 final int position) {
 
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(context);
         final ApostaBO apostaBO = ApostaBO_.getInstance_(context);
@@ -258,8 +282,9 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             @Override
             public void onResponse(ResultadoConcursoDTOResponse response) {
                 loadViewProgress.dismiss();
-
-                AnimacaoAbrirResultados(context, linearLayoutContentCardModalide, relativeLayoutTopResultados);
+                data.get(position).setResultadoConcursoDTO(response.getPayload());
+                AnimacaoAbrirResultados(context, relativeLayoutTopResultados, linearLayoutResultadosApostas, position);
+                setLayoutResultado(linearLayoutResultadosApostas, position);
 
             }
 
@@ -270,6 +295,20 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
             }
         });
+    }
+
+    private void setLayoutResultado(LinearLayout linearLayoutResultadosApostas, int position){
+        linearLayoutResultadosApostas.removeAllViews();
+        switch (data.get(position).getResultadoConcursoDTO().getConcurso().getModalidade()){
+            case MEGA_SENA:
+                MegaSenaResultadoView view = MegaSenaResultadoView_.build(context);
+                view.setLayout(data.get(position));
+                linearLayoutResultadosApostas.addView(view);
+                break;
+            default:
+
+                break;
+        }
     }
 
 }

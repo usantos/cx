@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 import caixa.gov.br.loterias.model.bo.silce.dto.ConcursoDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ModalidadeEnum;
+import caixa.gov.br.loterias.model.bo.silce.dto.ResultadoConcursoDTO;
 
 /**
  * Created by brfernan on 27/10/2017.
@@ -16,14 +17,19 @@ public class Modalidade {
     private String descricaoEspecial;
     private ModalidadeEnum tipoModalidade;
     private ConcursoDTO concurso;
+    private Boolean resultadosAberto;
+    private ResultadoConcursoDTO resultadoConcursoDTO;
 
-    public Modalidade (String nome, BigDecimal valor, String descricao, String descricaoEspecial, ModalidadeEnum tipoModalidade, ConcursoDTO concurso) {
+    public Modalidade (String nome, BigDecimal valor, String descricao, String descricaoEspecial, ModalidadeEnum tipoModalidade, ConcursoDTO concurso, Boolean resultadosAberto, ResultadoConcursoDTO resultadoConcursoDTO) {
         this.nome = nome;
         this.valor = valor;
         this.descricao = descricao;
         this.descricaoEspecial = descricaoEspecial;
         this.tipoModalidade = tipoModalidade;
         this.concurso = concurso;
+        this.resultadosAberto = resultadosAberto;
+        this.resultadoConcursoDTO = resultadoConcursoDTO;
+
     }
 
     public void setNome(String nome) {
@@ -73,4 +79,21 @@ public class Modalidade {
     public void setConcurso(ConcursoDTO concurso) {
         this.concurso = concurso;
     }
+
+    public ResultadoConcursoDTO getResultadoConcursoDTO() {
+        return resultadoConcursoDTO;
+    }
+
+    public void setResultadoConcursoDTO(ResultadoConcursoDTO resultadoConcursoDTO) {
+        this.resultadoConcursoDTO = resultadoConcursoDTO;
+    }
+
+    public Boolean getResultadosAberto() {
+        return resultadosAberto;
+    }
+
+    public void setResultadosAberto(Boolean resultadosAberto) {
+        this.resultadosAberto = resultadosAberto;
+    }
+
 }

@@ -207,7 +207,7 @@ public class PrincipalActivity extends AppCompatActivity
         for (ParametroSimulacao parametro : modalidadesParaListar) {
             if (parametro.getParametroJogo().getConcurso().getModalidade() != null) {
                 listaModalidades.add(new Modalidade(parametro.getParametroJogo().getConcurso().getModalidadeDetalhada().getDescricao(),
-                        parametro.getParametroJogo().getConcurso().getValorApostaMinima(), "", "", parametro.getParametroJogo().getConcurso().getModalidade(), parametro.getParametroJogo().getConcurso()));
+                        parametro.getParametroJogo().getConcurso().getValorApostaMinima(), "", "", parametro.getParametroJogo().getConcurso().getModalidade(), parametro.getParametroJogo().getConcurso(), false, null));
             }
         }
 
