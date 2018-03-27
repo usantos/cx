@@ -10,8 +10,12 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
 
+import java.util.Locale;
+
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.mock.ItemListaFaixaPremiacaoMock;
+import caixa.gov.br.loterias.model.bo.silce.dto.FaixaPremiadaDTO;
+import caixa.gov.br.loterias.utils.ViewUtils;
 
 /**
  * Created by joafilho on 16/03/2018.
@@ -29,11 +33,11 @@ public class ItemListaFaixaPremiacao extends LinearLayout {
 
     }
 
-    public void setLayout(ItemListaFaixaPremiacaoMock itemListaFaixaPremiacaoMock) {
-        concursoTextView.setText(itemListaFaixaPremiacaoMock.getConcurso());
-        faixaPremiacaoTextView.setText(itemListaFaixaPremiacaoMock.getFaixaPremiacao());
-        sorteioTextView.setText(itemListaFaixaPremiacaoMock.getSorteio());
-        premiacaoTextView.setText(itemListaFaixaPremiacaoMock.getPremiacao());
+    public void setLayout(FaixaPremiadaDTO faixaPremiadaDTO) {
+        concursoTextView.setText(String.format(Locale.getDefault(), "%d", faixaPremiadaDTO.getId()));
+        faixaPremiacaoTextView.setText(faixaPremiadaDTO.getNome());
+        sorteioTextView.setText(String.format(Locale.getDefault(), "%d", faixaPremiadaDTO.getSorteio()));
+        premiacaoTextView.setText(ViewUtils.getMoedaFormat(faixaPremiadaDTO.getValorLiquido()));
     }
 
     public ItemListaFaixaPremiacao(Context context) {

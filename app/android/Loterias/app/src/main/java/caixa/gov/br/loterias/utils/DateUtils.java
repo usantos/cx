@@ -18,6 +18,7 @@ import java.util.Locale;
 public class DateUtils {
 
     public static String PATTERN_DDMM_YYYY = "dd/MM/yyyy";
+    public static String PATTERN_DD_MM = "dd/MM";
     public static String TAG = DateUtils.class.getSimpleName();
 
     public static String[] getAllMonthsOfYear(){
@@ -78,6 +79,11 @@ public class DateUtils {
             return currentYear - bornYear -1;
         }
         return currentYear - bornYear;
+    }
+
+    public static String getDateToString(Date date, String pattern){
+        SimpleDateFormat dt = getSimpleDateFormat(pattern);
+        return dt.format(date);
     }
 
 

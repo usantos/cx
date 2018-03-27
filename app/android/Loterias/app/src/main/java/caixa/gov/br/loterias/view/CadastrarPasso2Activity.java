@@ -499,7 +499,7 @@ public class CadastrarPasso2Activity extends CadastroActivity {
                         @Override
                         public void onResponse(UsuarioLogadoResponse response) {
                             loadViewProgress.dismiss();
-                            PrincipalActivity_.intent(getBaseContext()).start();
+                            PrincipalActivity_.intent(CadastrarPasso2Activity.this).start();
                         }
 
                         @Override

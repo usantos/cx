@@ -3,7 +3,7 @@
     android:id="@+id/layout_row_apostas_partidas_loteca_list_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/drawer_linha_divisao_branco_top"
+    android:background="@drawable/drawer_linha_divisao_branco_vermelho_top"
     android:orientation="vertical"
     android:paddingBottom="12dp"
     android:paddingTop="13dp">

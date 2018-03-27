@@ -26,7 +26,6 @@ public class ParametroJogoDTO {
     @SerializedName("concurso")
     private ConcursoDTO concurso = null;
 
-    ;
     @SerializedName("situacaoConcursoCanal")
     private SituacaoConcursoCanalEnum situacaoConcursoCanal = null;
     @SerializedName("probabilidadeDeGanhar")

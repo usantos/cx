@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <LinearLayout
                 android:id="@+id/topoModalidadeResultadoLinearLayout"
@@ -107,14 +107,14 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
                             android:layout_marginTop="40dp"
-                            android:text="@string/label_limite_diario"
+                            android:text="@string/label_abertura_aposta"
                             android:textAlignment="textStart"
                             android:textColor="@color/branco"
                             android:textSize="14.2sp"
                             android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/limiteDiarioResultadoTextView"
+                            android:id="@+id/aberturaApostaResultadoTextView"
                             style="@style/ArialMT"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -138,14 +138,14 @@
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="16dp"
                             android:layout_marginTop="40dp"
-                            android:text="@string/label_proximo_sorteio"
+                            android:text="@string/label_encerramento"
                             android:textAlignment="textEnd"
                             android:textColor="@color/branco"
                             android:textSize="14.2sp"
                             android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/proximoSorteioTextView"
+                            android:id="@+id/encerramentoResultadoTextView"
                             style="@style/ArialMT"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -176,14 +176,14 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
                             android:layout_marginTop="10dp"
-                            android:text="@string/label_abertura_aposta"
+                            android:text="@string/label_proximo_sorteio"
                             android:textAlignment="textStart"
                             android:textColor="@color/branco"
                             android:textSize="14.2sp"
                             android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/aberturaApostaResultadoTextView"
+                            android:id="@+id/proximoSorteioTextView"
                             style="@style/ArialMT"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -207,14 +207,14 @@
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="16dp"
                             android:layout_marginTop="10dp"
-                            android:text="@string/label_encerramento"
+                            android:text="@string/label_limite_diario"
                             android:textAlignment="textEnd"
                             android:textColor="@color/branco"
                             android:textSize="14.2sp"
                             android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/encerramentoResultadoTextView"
+                            android:id="@+id/limiteDiarioResultadoTextView"
                             style="@style/ArialMT"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"

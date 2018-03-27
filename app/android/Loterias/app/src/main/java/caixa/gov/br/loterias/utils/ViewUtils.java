@@ -53,6 +53,7 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import caixa.gov.br.loterias.R;
@@ -475,6 +476,9 @@ public class ViewUtils {
     }
 
     public static String getMoedaFormat(BigDecimal valor) {
+        if (valor == null) {
+            valor = BigDecimal.ZERO;
+        }
         Locale ptBrLocale = new Locale("pt", "BR");
         NumberFormat nf = NumberFormat.getCurrencyInstance(ptBrLocale);
         return nf.format(valor).replace("R$", "R$ ");
@@ -663,6 +667,7 @@ public class ViewUtils {
 
     /**
      * Método que retorna data e hora no formato dd/MM/yyyy - HHhMM
+     *
      * @param date
      * @param hour
      * @return
@@ -672,6 +677,19 @@ public class ViewUtils {
         String[] hHMMSS = hour.split(":");
 
         return String.format("%s - %sh%s", date, hHMMSS[0], hHMMSS[1]);
+    }
+
+    /**
+     * Método que retorna data e hora no formato dd/MM | HHhMM
+     */
+    public static String getDateAndHour(String dateHour) {
+
+        String[] dateHours = dateHour.split(" ");
+        String[] hHMMSS = dateHours[1].split(":");
+
+        Date date = DateUtils.stringToDate(dateHours[0], DateUtils.PATTERN_DDMM_YYYY);
+
+        return String.format("%s | %sh%s", DateUtils.getDateToString(date, DateUtils.PATTERN_DD_MM), hHMMSS[0], hHMMSS[1]);
     }
 
 }

@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import caixa.gov.br.loterias.mock.ItemListaFaixaPremiacaoMock;
+import caixa.gov.br.loterias.model.bo.silce.dto.ConcursoPremiadoDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.FaixaPremiadaDTO;
 import caixa.gov.br.loterias.view.custom.ItemListaFaixaPremiacao;
 import caixa.gov.br.loterias.view.custom.ItemListaFaixaPremiacao_;
 
@@ -17,9 +19,9 @@ import caixa.gov.br.loterias.view.custom.ItemListaFaixaPremiacao_;
 
 public class FaixaPremiacaoAdapter extends RecyclerView.Adapter<FaixaPremiacaoAdapter.FaixaPremiacaoHolder> {
 
-    private List<ItemListaFaixaPremiacaoMock> itemListaFaixaPremiacaoList;
+    private List<FaixaPremiadaDTO> itemListaFaixaPremiacaoList;
 
-    public FaixaPremiacaoAdapter(List<ItemListaFaixaPremiacaoMock> itemListaFaixaPremiacaoList) {
+    public FaixaPremiacaoAdapter(List<FaixaPremiadaDTO> itemListaFaixaPremiacaoList) {
         this.itemListaFaixaPremiacaoList = itemListaFaixaPremiacaoList;
     }
 

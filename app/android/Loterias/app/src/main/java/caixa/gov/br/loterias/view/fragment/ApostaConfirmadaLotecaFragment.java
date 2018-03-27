@@ -41,7 +41,7 @@ public class ApostaConfirmadaLotecaFragment extends Fragment {
         dataHoraTextView.setText(ViewUtils.getDateAndHour(apostaDTO.getDataEfetivacao(), apostaDTO.getHoraEfetivacao()));
         statusApostaTextView.setText(apostaDTO.getSituacao().getDescricao());
 
-        initLista();
+        initList();
     }
 
     @Click(R.id.conferirResultadoButton)
@@ -49,7 +49,7 @@ public class ApostaConfirmadaLotecaFragment extends Fragment {
         //TODO implementar método
     }
 
-    private void initLista() {
+    private void initList() {
 
         listaPartidasApostadasExpandebleRecyclerView.setAdapter(new DetalheApostaConfirmadaLotecaAdapter(apostaDTO.getPartidasLoteca()));
         listaPartidasApostadasExpandebleRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
