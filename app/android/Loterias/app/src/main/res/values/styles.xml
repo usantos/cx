@@ -182,4 +182,29 @@
         <item name="actionMenuTextColor">@color/megasenamedio</item>
     </style>
 
+
+
+    <style name="fontForTitle1Premiados">
+        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">@font/arialmt</item>
+        <item name="android:textColor">@color/branco</item>
+        <item name="android:textSize">14.2sp</item>
+
+    </style>
+
+    <style name="fontForTitle2Premiados">
+        <item name="android:textStyle">normal</item>
+        <item name="android:fontFamily">@font/arialmt</item>
+        <item name="android:textColor">@color/branco</item>
+        <item name="android:textSize">14.2sp</item>
+    </style>
+
+
+    <style name="fontForTitleTopoPremiados">
+        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">@font/futura_std_bold</item>
+        <item name="android:textColor">@color/branco</item>
+        <item name="android:textSize">15.8sp</item>
+    </style>
+
 </resources>

@@ -34,8 +34,8 @@ import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.PrincipalActivity;
 import caixa.gov.br.loterias.view.animation.AnimacoesResultados;
 import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
-import caixa.gov.br.loterias.view.custom.MegaSenaResultadoView;
-import caixa.gov.br.loterias.view.custom.MegaSenaResultadoView_;
+import caixa.gov.br.loterias.view.custom.ModalidadeSorteioResultadoView;
+import caixa.gov.br.loterias.view.custom.ModalidadeSorteioResultadoView_;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -62,7 +62,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     private Context context;
     private Activity activity;
     private static Button aposta;
-    private MegaSenaResultadoView megaSenaResultadoView;
 
     public HomeAdapter(Activity activity, Context context, List<Modalidade> data, View aposta) {
         this.data = data;
@@ -140,7 +139,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                     if (data.get(position).getResultadoConcursoDTO() == null){
                         callWebserviceResultadoConcurso(holder.relativeLayoutTopResultados,
                                 holder.linearLayoutResultadosApostas,
-                                ApostaDTO.lowerCaseFromString(ApostaDTO.toStringModalidade(data.get(position).getNome())),
+                                ApostaDTO.lowerCaseFromString(data.get(position).getTipoModalidade()),
                                 data.get(position).getConcurso().getNumero(), position);
                     }else{
                         AnimacaoAbrirResultados(context, holder.relativeLayoutTopResultados, holder.linearLayoutResultadosApostas, position);
@@ -299,16 +298,9 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
     private void setLayoutResultado(LinearLayout linearLayoutResultadosApostas, int position){
         linearLayoutResultadosApostas.removeAllViews();
-        switch (data.get(position).getResultadoConcursoDTO().getConcurso().getModalidade()){
-            case MEGA_SENA:
-                MegaSenaResultadoView view = MegaSenaResultadoView_.build(context);
-                view.setLayout(data.get(position));
-                linearLayoutResultadosApostas.addView(view);
-                break;
-            default:
-
-                break;
-        }
+        ModalidadeSorteioResultadoView view = ModalidadeSorteioResultadoView_.build(context);
+        view.setLayout(data.get(position));
+        linearLayoutResultadosApostas.addView(view);
     }
 
 }
