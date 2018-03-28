@@ -233,6 +233,9 @@
     <string name="label_conferir_resultado">Conferir resultado</string>
     <string name="label_nao_apurado">Não apurado</string>
     <string name="label_concurso_prescrito">Concurso prescrito</string>
+    <string name="label_efetivada">Efetivada</string>
+    <string name="label_teimosinha">Teimosinha</string>
+    <string name="label_aposta_troca">Aposta\nde troca</string>
 
     <!--Mock-->
     <string name="label_mock_texto_nao_premiado">Lorem ipsum dolor sit amet,consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo</string>

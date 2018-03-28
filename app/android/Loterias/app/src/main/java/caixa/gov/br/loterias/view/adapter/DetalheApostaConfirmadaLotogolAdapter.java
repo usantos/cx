@@ -38,9 +38,9 @@ public class DetalheApostaConfirmadaLotogolAdapter extends RecyclerView.Adapter<
     @Override
     public void onBindViewHolder(ApostaLotogolHolder holder, int position) {
         holder.partidasLotogolApostasConfirmadasView.setLayout(partidasLotogol.get(position));
-//        if(position != 0){
-//            holder.partidasLotogolApostasConfirmadasView.setBackgroundResource(R.drawable.drawer_linha_divisao_branco_azul_top);
-//        }
+        if(position != 0){
+            holder.partidasLotogolApostasConfirmadasView.setBackgroundResource(R.drawable.drawer_linha_divisao_branco_azul_top);
+        }
     }
 
     @Override

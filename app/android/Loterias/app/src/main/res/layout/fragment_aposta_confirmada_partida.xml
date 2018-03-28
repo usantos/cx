@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="caixa.gov.br.loterias.view.fragment.ApostaConfirmadaLotecaFragment">
+    tools:context="caixa.gov.br.loterias.view.fragment.ApostaConfirmadaPartidaFragment">
 
     <LinearLayout
         android:id="@+id/apostaConfirmadaLotecaLinearLayout"
@@ -27,7 +27,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/label_concurso"
-                android:textColor="@color/branco"
+                android:textColor="?android:attr/textColor"
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
@@ -37,7 +37,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/label_concurso"
-                android:textColor="@color/branco"
+                android:textColor="?android:attr/textColor"
                 android:textSize="14sp" />
         </LinearLayout>
 
@@ -53,7 +53,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/label_sua_aposta"
-                android:textColor="@color/branco"
+                android:textColor="?android:attr/textColor"
                 android:textSize="12sp"
                 android:textStyle="bold" />
 
@@ -62,14 +62,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="23dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <TextView
                     style="@style/ArialMT"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/label_coluna"
-                    android:textColor="@color/branco"
+                    android:textColor="?android:attr/textColor"
                     android:textSize="12sp"
                     android:textStyle="bold" />
 
@@ -79,10 +80,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="21dp"
                     android:text="@string/label_time"
-                    android:textColor="@color/branco"
+                    android:textColor="?android:attr/textColor"
                     android:textSize="12sp"
                     android:textStyle="bold" />
-
 
             </LinearLayout>
 
@@ -95,11 +95,16 @@
                 android:clickable="false"
                 android:nestedScrollingEnabled="false" />
 
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:background="@color/branco"/>
+
             <LinearLayout
                 android:id="@+id/concursoRodapeLinearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="23dp"
+                android:layout_marginTop="20dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -107,7 +112,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/label_concurso_abreviado_espaco"
-                    android:textColor="@color/branco"
+                    android:textColor="?android:attr/textColor"
                     android:textSize="12sp" />
 
                 <TextView
@@ -116,7 +121,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/label_concurso_abreviado_espaco"
-                    android:textColor="@color/branco"
+                    android:textColor="?android:attr/textColor"
                     android:textSize="12sp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -132,6 +137,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
+                    android:layout_marginBottom="30dp"
                     android:orientation="vertical">
 
                     <TextView
@@ -139,7 +145,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/label_data_aposta"
-                        android:textColor="@color/white60"
+                        android:textColor="?android:attr/textColorSecondary"
                         android:textSize="12sp" />
 
                     <TextView
@@ -148,7 +154,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/label_data_aposta"
-                        android:textColor="@color/white60"
+                        android:textColor="?android:attr/textColorSecondary"
                         android:textSize="12sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -164,7 +170,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/label_coluna"
-                        android:textColor="@color/white60"
+                        android:textColor="?android:attr/textColorSecondary"
                         android:textSize="12sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -175,12 +181,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:layout_marginBottom="25dp"
-                android:layout_marginTop="30dp"
                 android:background="@drawable/button_border"
                 android:text="@string/label_conferir_resultado"
                 android:textAllCaps="false"
-                android:textColor="@color/branco"
-                android:textSize="14sp" />
+                android:textColor="?android:attr/textColor"
+                android:textSize="14sp"
+                android:visibility="gone"/>
 
         </LinearLayout>
 

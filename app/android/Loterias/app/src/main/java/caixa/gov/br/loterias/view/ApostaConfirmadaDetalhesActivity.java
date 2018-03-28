@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -27,8 +26,7 @@ import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostaDTO;
 import caixa.gov.br.loterias.utils.AppUtils;
 import caixa.gov.br.loterias.utils.EstiloModalidade;
-import caixa.gov.br.loterias.view.fragment.ApostaConfirmadaLotecaFragment_;
-import caixa.gov.br.loterias.view.fragment.ApostaConfirmadaLotogolFragment_;
+import caixa.gov.br.loterias.view.fragment.ApostaConfirmadaPartidaFragment_;
 import caixa.gov.br.loterias.view.fragment.ApostaConfirmadaNumeroDetalhes_;
 
 /**
@@ -109,11 +107,10 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
 
         switch (apostaDTO.getModalidade()){
             case LOTOGOL:
-                //TODO:
-                fragment = ApostaConfirmadaLotogolFragment_.builder().apostaDTO(apostaDTO).build();
+                fragment = ApostaConfirmadaPartidaFragment_.builder().apostaDTO(apostaDTO).loteca(Boolean.FALSE).build();
                 break;
             case LOTECA:
-                fragment = ApostaConfirmadaLotecaFragment_.builder().apostaDTO(apostaDTO).build();
+                fragment = ApostaConfirmadaPartidaFragment_.builder().apostaDTO(apostaDTO).loteca(Boolean.TRUE).build();
                 break;
             default:
                 fragment = ApostaConfirmadaNumeroDetalhes_
