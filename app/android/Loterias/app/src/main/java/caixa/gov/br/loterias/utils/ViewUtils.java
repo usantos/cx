@@ -694,4 +694,13 @@ public class ViewUtils {
         return String.format("%s | %sh%s", DateUtils.getDateToString(date, DateUtils.PATTERN_DD_MM), hHMMSS[0], hHMMSS[1]);
     }
 
+    public static String getNumberIntegerToString(Integer number){
+
+        if(number < 10){
+            return String.format(Locale.getDefault(), "0%d", number);
+        }else{
+            return String.format(Locale.getDefault(), "%d", number);
+        }
+    }
+
 }

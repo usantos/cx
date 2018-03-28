@@ -110,11 +110,11 @@
                 android:id="@+id/timeCoracaoTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/arialmt"
-                tools:text="@string/label_time_coracao"
                 android:layout_toEndOf="@+id/labelTimeCoracaoTxt"
+                android:fontFamily="@font/arialmt"
                 android:textSize="12sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                tools:text="@string/label_time_coracao" />
         </RelativeLayout>
 
         <View
@@ -169,12 +169,15 @@
             android:textSize="12sp" />
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/jogosRecyclerView"
+            android:id="@+id/dezenasRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignStart="@id/seusNumerosTxt"
             android:layout_below="@id/seusNumerosTxt"
-            android:layout_marginTop="@dimen/activity_vertical_margin" />
+            android:paddingStart="39dp"
+            android:paddingEnd="39dp"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:nestedScrollingEnabled="false" />
 
         <Button
             android:id="@+id/conferirResultadoButton"
@@ -182,7 +185,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignStart="@id/seusNumerosTxt"
-            android:layout_below="@id/jogosRecyclerView"
+            android:layout_below="@id/dezenasRecyclerView"
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:background="@drawable/background_border_color"
             android:text="@string/conferir_resultados"

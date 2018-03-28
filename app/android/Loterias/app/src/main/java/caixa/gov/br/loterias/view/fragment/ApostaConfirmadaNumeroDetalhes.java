@@ -1,6 +1,9 @@
 package caixa.gov.br.loterias.view.fragment;
 
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
@@ -17,9 +20,12 @@ import java.util.Locale;
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostaDTO;
 import caixa.gov.br.loterias.utils.ViewUtils;
+import caixa.gov.br.loterias.view.adapter.DezenasAdapter;
+import caixa.gov.br.loterias.view.custom.ExpandableHeightGridView;
 
 /**
  * Created by pmotta on 23/03/2018.
+ * Class ApostaConfirmadaNumeroDetalhes
  */
 
 @EFragment(R.layout.fragment_aposta_confirmada_numero_detalhes)
@@ -33,6 +39,9 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 
     @ViewById
     protected RelativeLayout timeCoracaoLayout;
+
+    @ViewById
+    protected RecyclerView dezenasRecyclerView;
 
     @FragmentArg
     protected ApostaDTO apostaDTO;
@@ -56,6 +65,13 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
         if (getActivity().getString(R.string.label_efetivada).equalsIgnoreCase(apostaDTO.getSituacao().getDescricao())) {
             conferirResultadoButton.setVisibility(View.VISIBLE);
         }
+        initDezenasGridView();
+    }
+
+    private void initDezenasGridView() {
+
+        dezenasRecyclerView.setAdapter(new DezenasAdapter(apostaDTO.getNumerosSelecionados()));
+        dezenasRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 5));
     }
 
 }
