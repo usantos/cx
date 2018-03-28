@@ -101,6 +101,18 @@ import caixa.gov.br.loterias.utils.ViewUtils;
                     view.setLayout(modalidade);
                     this.contentResultadoItem.addView(view);
                     break;
+                case TIMEMANIA:
+                    this.contentResultadoItem.removeAllViews();
+                    ModalideSorteioItemTimeManiaResultadoView view3 = ModalideSorteioItemTimeManiaResultadoView_.build(getContext());
+                    view3.setLayout(modalidade);
+                    this.contentResultadoItem.addView(view3);
+                    break;
+                case LOTECA:
+                    this.contentResultadoItem.removeAllViews();
+                    ModalidadeSorteioLotecaResultadoView view4 = ModalidadeSorteioLotecaResultadoView_.build(getContext());
+                    view4.setLayout(modalidade);
+                    this.contentResultadoItem.addView(view4);
+                    break;
                     default:
                         this.contentResultadoItem.removeAllViews();
                         ModalidadeSorteioItemUmConcursoResultadoView view2 = ModalidadeSorteioItemUmConcursoResultadoView_.build(getContext());
