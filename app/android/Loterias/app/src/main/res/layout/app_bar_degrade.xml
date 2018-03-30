@@ -5,18 +5,9 @@
     android:layout_height="wrap_content"
     android:theme="@style/AppTheme.AppBarOverlay"
     android:background="@drawable/background_gradient_verde">
-
-    <FrameLayout
-        android:fitsSystemWindows="true"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
-
-    </FrameLayout>
-
 </android.support.design.widget.AppBarLayout>

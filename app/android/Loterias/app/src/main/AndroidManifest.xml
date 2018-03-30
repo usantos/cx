@@ -17,7 +17,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity
             android:name=".view.SplashScreenActivity"
             android:configChanges="orientation"
@@ -29,13 +28,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".view.IntroducaoActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".view.LoginActivity"
             android:configChanges="orientation"
@@ -50,7 +47,6 @@
             android:configChanges="orientation"
             android:parentActivityName=".view.IntroducaoActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".view.CadastrarPasso2Activity_"
             android:configChanges="orientation"
@@ -61,7 +57,6 @@
                 android:screenOrientation="portrait"
                 android:value=".view.CadastrarActivity_" />
         </activity>
-
         <activity
             android:name=".view.SimularApostaActivity_"
             android:configChanges="orientation"
@@ -93,16 +88,15 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.PrincipalActivity_"
-            android:screenOrientation="portrait"
             android:label=""
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.BrancoActionBar" />
         <activity
             android:name=".view.TermosUsoActivity"
             android:label="@string/title_activity_termos_uso"
             android:parentActivityName=".view.PrincipalActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.DegradeActionBar">
-        </activity>
+            android:theme="@style/AppTheme.DegradeActionBar"></activity>
         <activity
             android:name=".view.RepassesSociaisActivity"
             android:label="@string/title_activity_repasses_sociais"
@@ -180,8 +174,8 @@
         <activity
             android:name=".view.DetalhesComprasActivity"
             android:label="@string/title_activity_detalhes_compras"
-            android:theme="@style/AppTheme.DegradeActionBar"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.DegradeActionBar" />
         <activity
             android:name=".view.InsercaoManualCodBarrasActivity"
             android:label=""
@@ -198,31 +192,27 @@
             android:theme="@style/AppTheme.DegradeActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="caixa.gov.br.loterias.view.PrincipalActivity"
-                android:screenOrientation="portrait"/>
+                android:screenOrientation="portrait"
+                android:value="caixa.gov.br.loterias.view.PrincipalActivity" />
         </activity>
         <activity
             android:name=".view.JogosConfirmadosPremioActivity"
             android:label="@string/title_activity_resultado_ler_bilhetes"
-            android:theme="@style/AppTheme.DegradeActionBar"
-            android:screenOrientation="portrait"/>
-
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.DegradeActionBar" />
         <activity
             android:name=".view.JogosConfirmadosPremioMercadoPagoActivity"
             android:label="@string/title_activity_resultado_ler_bilhetes"
-            android:theme="@style/AppTheme.DegradeActionBar"
-            android:screenOrientation="portrait"/>
-
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.DegradeActionBar" />
         <activity
             android:name=".view.RestritoDezoitoAnosActivity"
             android:label="@string/title_activity_termos_uso"
-            android:theme="@style/AppTheme.DegradeActionBar"
-            android:screenOrientation="portrait"/>
-
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.DegradeActionBar" />
         <activity
             android:name=".view.ApostaConfirmadaDetalhesActivity_"
-            android:screenOrientation="portrait"/>
-
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="caixa.gov.br.loterias.view.LerBilhetesEscolhaJogoActivity">
+    tools:context="caixa.gov.br.loterias.view.LerBilhetesEscolhaJogoActivity"
+    android:fitsSystemWindows="true"
+    >
 
     <include layout="@layout/app_bar_degrade"/>
     <include layout="@layout/content_ler_bilhetes_escolha_jogo" />

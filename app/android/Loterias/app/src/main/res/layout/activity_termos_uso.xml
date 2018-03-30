@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_gradient_verde"
-    tools:context="caixa.gov.br.loterias.view.TermosUsoActivity">
+    tools:context="caixa.gov.br.loterias.view.TermosUsoActivity"
+    android:fitsSystemWindows="true"
+    >
 
     <include layout="@layout/app_bar_degrade"/>
     <include layout="@layout/content_termos_uso" />

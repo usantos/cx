@@ -131,31 +131,37 @@
         <item name="colorPrimary">@color/quinaclaro</item>
         <item name="android:windowBackground">@color/quinaescuro</item>
     </style>
+
     <style name="AppTheme.Modalidade.Loteca">
         <item name="colorPrimaryDark">@color/lotecaescuro</item>
         <item name="colorPrimary">@color/lotecaclaro</item>
         <item name="android:windowBackground">@color/lotecaescuro</item>
     </style>
+
     <style name="AppTheme.Modalidade.MegaSena">
         <item name="colorPrimaryDark">@color/megasenaescuro</item>
         <item name="colorPrimary">@color/megasenaclaro</item>
         <item name="android:windowBackground">@color/megasenaescuro</item>
     </style>
+
     <style name="AppTheme.Modalidade.DuplaSena">
         <item name="colorPrimaryDark">@color/duplasenaescuro</item>
         <item name="colorPrimary">@color/duplasenaclaro</item>
         <item name="android:windowBackground">@color/duplasenaescuro</item>
     </style>
+
     <style name="AppTheme.Modalidade.Lotofacil">
         <item name="colorPrimaryDark">@color/lotofacilescuro</item>
         <item name="colorPrimary">@color/lotofacilclaro</item>
         <item name="android:windowBackground">@color/lotofacilescuro</item>
     </style>
+
     <style name="AppTheme.Modalidade.Lotomania">
         <item name="colorPrimaryDark">@color/lotomaniaescuro</item>
         <item name="colorPrimary">@color/lotomaniaclaro</item>
         <item name="android:windowBackground">@color/lotomaniaescuro</item>
     </style>
+
     <style name="AppTheme.Modalidade.Timemania">
         <item name="colorPrimaryDark">@color/timemaniaescuro</item>
         <item name="colorPrimary">@color/timemaniaclaro</item>
@@ -164,11 +170,13 @@
         <item name="android:textColorSecondary">@color/megasenamedio_transparente</item>
         <item name="android:theme">@style/TimeManiaToolbar</item>
     </style>
+
     <style name="AppTheme.Modalidade.LotoGol">
         <item name="colorPrimaryDark">@color/lotogolescuro</item>
         <item name="colorPrimary">@color/lotogolclaro</item>
         <item name="android:windowBackground">@color/lotogolescuro</item>
     </style>
+
     <style name="AppTheme.Modalidade.Federal">
         <item name="colorPrimaryDark">@color/federalescuro</item>
         <item name="colorPrimary">@color/federalclaro</item>
@@ -181,7 +189,6 @@
         <item name="android:textColorSecondary">@color/megasenamedio</item>
         <item name="actionMenuTextColor">@color/megasenamedio</item>
     </style>
-
 
 
     <style name="fontForTitle1Premiados">
