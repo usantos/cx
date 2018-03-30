@@ -15,6 +15,7 @@ import java.util.List;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bean.Modalidade;
+import caixa.gov.br.loterias.model.bo.silce.dto.ModalidadeEnum;
 import caixa.gov.br.loterias.utils.EstiloModalidade;
 import caixa.gov.br.loterias.utils.ViewUtils;
 
@@ -27,9 +28,9 @@ public final class NumerosResultadosAdapter extends RecyclerView.Adapter<Numeros
 
     private final Context context;
     private final List<Integer> numeroslista;
-    private final Modalidade modalidade;
+    private final ModalidadeEnum modalidade;
 
-    public NumerosResultadosAdapter(final Context context, final List<Integer> numeroslista, final Modalidade modalidade) {
+    public NumerosResultadosAdapter(final Context context, final List<Integer> numeroslista, final ModalidadeEnum modalidade) {
         this.context = context;
         this.numeroslista = numeroslista;
         this.modalidade = modalidade;
@@ -45,7 +46,7 @@ public final class NumerosResultadosAdapter extends RecyclerView.Adapter<Numeros
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        EstiloModalidade estilo = new EstiloModalidade(modalidade.getTipoModalidade());
+        EstiloModalidade estilo = new EstiloModalidade(modalidade);
         final int numeroResultado = numeroslista.get(position);
         holder.textViewTituloNumerosResultados.setText(numeroResultado < 10 ? "0" + numeroResultado : "" + numeroResultado);
         GradientDrawable drawable = new GradientDrawable();

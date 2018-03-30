@@ -134,6 +134,7 @@ public class PrincipalActivity extends AppCompatActivity
         homeCarousel.setItemTransformer(new ScaleTransformer.Builder()
                 .setMinScale(0.8f)
                 .build());
+        homeCarousel.requestDisallowInterceptTouchEvent(true);
     }
 
     private void callWebservice() {

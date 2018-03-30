@@ -10,6 +10,9 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.yarolegovich.discretescrollview.DiscreteScrollView;
+import com.yarolegovich.discretescrollview.transform.ScaleTransformer;
+
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
@@ -20,6 +23,8 @@ import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bean.Modalidade;
 import caixa.gov.br.loterias.model.bo.silce.dto.PremiacaoConcursoDTO;
 import caixa.gov.br.loterias.utils.EstiloModalidade;
+import caixa.gov.br.loterias.view.adapter.HomeAdapter;
+import caixa.gov.br.loterias.view.adapter.LotecaResultadoTimesAdapter;
 import caixa.gov.br.loterias.view.adapter.NumerosResultadosAdapter;
 
 /**
@@ -29,15 +34,16 @@ import caixa.gov.br.loterias.view.adapter.NumerosResultadosAdapter;
 
 
 @EViewGroup(R.layout.item_resultado_loteca)
-public class ModalidadeSorteioLotecaResultadoView extends LinearLayout {
+public class ModalidadeSorteioLotecaResultadoView extends LinearLayout implements DiscreteScrollView.ScrollListener<LotecaResultadoTimesAdapter.ViewHolder>,
+        DiscreteScrollView.OnItemChangedListener<LotecaResultadoTimesAdapter.ViewHolder> {
 
 
     private Modalidade modalidade;
 
 
 
-//    @ViewById
-//    protected RecyclerView recyclerPlacarTimes;
+    @ViewById
+    protected DiscreteScrollView recyclerPartidasLotecas;
 
 
     @ViewById
@@ -56,17 +62,18 @@ public class ModalidadeSorteioLotecaResultadoView extends LinearLayout {
         this.modalidade = modalidade;
         EstiloModalidade estilo = new EstiloModalidade(modalidade.getTipoModalidade());
         tracoViewDivisoriaResultado.setBackground(getContext().getResources().getDrawable(estilo.getCorClara()));
-
         adicionarPremiados(modalidade.getResultadoConcursoDTO().getPremiacoesPrimeiroSorteio());
-//        NumerosResultadosAdapter numerosResultadosAdapter;
-//        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-//        int numberOfColumns = 3;
-//        if (modalidade.getResultadoConcursoDTO().getNumerosSorteadosPrimeiroSorteio().size()>6){
-//            numberOfColumns = 4;
-//        }
-//        this.recyclerNumerosResultado.setLayoutManager(new GridLayoutManager(getContext(), numberOfColumns));
-//        numerosResultadosAdapter = new NumerosResultadosAdapter(getContext(), modalidade.getResultadoConcursoDTO().getNumerosSorteadosPrimeiroSorteio(), modalidade);
-//        this.recyclerNumerosResultado.setAdapter(numerosResultadosAdapter);
+
+        LotecaResultadoTimesAdapter lotecaResultadoTimesAdapter;
+        lotecaResultadoTimesAdapter = new LotecaResultadoTimesAdapter(getContext(), modalidade.getResultadoConcursoDTO().getPartidasLoteca(), modalidade.getTipoModalidade());
+
+        this.recyclerPartidasLotecas.setAdapter(lotecaResultadoTimesAdapter);
+        this.recyclerPartidasLotecas.addScrollListener(this);
+        this.recyclerPartidasLotecas.addOnItemChangedListener(this);
+        this.recyclerPartidasLotecas.scrollToPosition(0);
+        this.recyclerPartidasLotecas.setItemTransformer(new ScaleTransformer.Builder()
+                .setMinScale(0.8f)
+                .build());
 
     }
 
@@ -81,14 +88,6 @@ public class ModalidadeSorteioLotecaResultadoView extends LinearLayout {
     public ModalidadeSorteioLotecaResultadoView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
-
-//    public RecyclerView getRecyclerNumerosResultado() {
-//        return recyclerNumerosResultado;
-//    }
-//
-//    public void setRecyclerNumerosResultado(RecyclerView recyclerNumerosResultado) {
-//        this.recyclerNumerosResultado = recyclerNumerosResultado;
-//    }
 
     public LinearLayout getLinearlayoutPremiadosListaText() {
         return linearlayoutPremiadosListaText;
@@ -127,4 +126,14 @@ public class ModalidadeSorteioLotecaResultadoView extends LinearLayout {
         }
     }
 
+
+    @Override
+    public void onCurrentItemChanged(@Nullable LotecaResultadoTimesAdapter.ViewHolder viewHolder, int adapterPosition) {
+
+    }
+
+    @Override
+    public void onScroll(float scrollPosition, int currentPosition, int newPosition, @Nullable LotecaResultadoTimesAdapter.ViewHolder currentHolder, @Nullable LotecaResultadoTimesAdapter.ViewHolder newCurrent) {
+
+    }
 }

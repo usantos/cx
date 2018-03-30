@@ -64,7 +64,7 @@ public class ModalidadeSorteioItemDoisConcursosResultadoView extends LinearLayou
             numberOfColumns = 4;
         }
         this.recyclerNumerosResultado.setLayoutManager(new GridLayoutManager(getContext(), numberOfColumns));
-        numerosResultadosAdapter = new NumerosResultadosAdapter(getContext(), modalidade.getResultadoConcursoDTO().getNumerosSorteadosPrimeiroSorteio(), modalidade);
+        numerosResultadosAdapter = new NumerosResultadosAdapter(getContext(), modalidade.getResultadoConcursoDTO().getNumerosSorteadosPrimeiroSorteio(), modalidade.getTipoModalidade());
         this.recyclerNumerosResultado.setAdapter(numerosResultadosAdapter);
 
         int numberOfColumnsConcursodois = 3;
@@ -72,7 +72,7 @@ public class ModalidadeSorteioItemDoisConcursosResultadoView extends LinearLayou
             numberOfColumnsConcursodois = 4;
         }
         this.recyclerNumerosResultadoSegundoSorteio.setLayoutManager(new GridLayoutManager(getContext(), numberOfColumns));
-        numerosResultadosAdapter = new NumerosResultadosAdapter(getContext(), modalidade.getResultadoConcursoDTO().getNumerosSorteadosSegundoSorteio(), modalidade);
+        numerosResultadosAdapter = new NumerosResultadosAdapter(getContext(), modalidade.getResultadoConcursoDTO().getNumerosSorteadosSegundoSorteio(), modalidade.getTipoModalidade());
         this.recyclerNumerosResultadoSegundoSorteio.setAdapter(numerosResultadosAdapter);
 
         adicionarPremiados(modalidade.getResultadoConcursoDTO().getPremiacoesPrimeiroSorteio(), modalidade.getResultadoConcursoDTO().getPremiacoesSegundoSorteio());
