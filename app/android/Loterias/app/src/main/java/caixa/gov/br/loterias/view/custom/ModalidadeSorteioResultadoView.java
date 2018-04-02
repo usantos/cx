@@ -113,6 +113,12 @@ import caixa.gov.br.loterias.utils.ViewUtils;
                     view4.setLayout(modalidade);
                     this.contentResultadoItem.addView(view4);
                     break;
+                case LOTOGOL:
+                    this.contentResultadoItem.removeAllViews();
+                    ModalidadeSorteioLotogolResultadoView view5 = ModalidadeSorteioLotogolResultadoView_.build(getContext());
+                    view5.setLayout(modalidade);
+                    this.contentResultadoItem.addView(view5);
+                    break;
                     default:
                         this.contentResultadoItem.removeAllViews();
                         ModalidadeSorteioItemUmConcursoResultadoView view2 = ModalidadeSorteioItemUmConcursoResultadoView_.build(getContext());

@@ -15,10 +15,10 @@
         android:textAlignment="center"
         />
     
-    <caixa.gov.br.loterias.view.custom.PartidaView
+    <caixa.gov.br.loterias.view.custom.PartidaViewLotecaResultado
         android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="110dp"
         android:id="@+id/resultadoLotecaPartidaView"/>
     
     <TextView
@@ -30,6 +30,7 @@
         android:textSize="14sp"
         android:text="1 de 14"
         android:layout_marginTop="20dp"
+        android:id="@+id/paginaResultadoLotecaText"
         />
 
 </LinearLayout>

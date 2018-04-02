@@ -82,6 +82,7 @@
 
     <color name="cinzaApostaConfirmada">#d9e3e6</color>
     <color name="white60">#99ffffff</color>
+    <color name="selecaoLotecaResultado">#f9765e</color>
     <color name="black">#000000</color>
 
 </resources>
