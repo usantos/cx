@@ -2,9 +2,12 @@ package caixa.gov.br.loterias.model.bo.silce.dto;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.parceler.Parcel;
+
 import io.swagger.annotations.ApiModel;
 
 @ApiModel(description = "")
+@Parcel
 public enum ModalidadeEnum {
 
     @SerializedName("DIA_DE_SORTE")DIA_DE_SORTE,

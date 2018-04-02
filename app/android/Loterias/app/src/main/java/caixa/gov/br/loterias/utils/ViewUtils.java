@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -18,6 +19,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.ColorUtils;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DialogTitle;
@@ -701,6 +703,12 @@ public class ViewUtils {
         }else{
             return String.format(Locale.getDefault(), "%d", number);
         }
+    }
+
+    public static void setColorDrawable(Context context, Drawable drawable, int color) {
+        drawable.mutate();
+        drawable.setColorFilter(ContextCompat.getColor(context, color),
+                PorterDuff.Mode.SRC_ATOP);
     }
 
 }

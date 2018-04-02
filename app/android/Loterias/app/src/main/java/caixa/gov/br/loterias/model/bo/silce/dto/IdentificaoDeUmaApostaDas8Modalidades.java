@@ -15,6 +15,8 @@ package caixa.gov.br.loterias.model.bo.silce.dto;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.parceler.Parcel;
+
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -22,56 +24,57 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel(description = "")
+@Parcel
 public class IdentificaoDeUmaApostaDas8Modalidades {
 
     @SerializedName("id")
-    private Long id = null;
+    protected Long id = null;
     @SerializedName("modalidade")
-    private ModalidadeEnum modalidade = null;
+    protected ModalidadeEnum modalidade = null;
     @SerializedName("tipoConcurso")
-    private DTOEnumCharacter tipoConcurso = null;
+    protected DTOEnumCharacter tipoConcurso = null;
     @SerializedName("partidasLotogol")
-    private List<PartidaLotogolDTO> partidasLotogol = null;
+    protected List<PartidaLotogolDTO> partidasLotogol = null;
     @SerializedName("partidasLoteca")
-    private List<PartidaLotecaDTO> partidasLoteca = null;
+    protected List<PartidaLotecaDTO> partidasLoteca = null;
     @SerializedName("numerosSelecionados")
-    private List<Integer> numerosSelecionados = null;
+    protected List<Integer> numerosSelecionados = null;
     @SerializedName("indicadorSurpresinha")
-    private DTOEnumInteger indicadorSurpresinha = null;
+    protected DTOEnumInteger indicadorSurpresinha = null;
     @SerializedName("valor")
-    private BigDecimal valor = null;
+    protected BigDecimal valor = null;
     @SerializedName("concursoAlvo")
-    private Integer concursoAlvo = null;
+    protected Integer concursoAlvo = null;
     @SerializedName("quantidadeTeimosinhas")
-    private Integer quantidadeTeimosinhas = null;
+    protected Integer quantidadeTeimosinhas = null;
     @SerializedName("quantidadeApostas")
-    private Integer quantidadeApostas = null;
+    protected Integer quantidadeApostas = null;
     @SerializedName("espelho")
-    private Boolean espelho = null;
+    protected Boolean espelho = null;
     @SerializedName("timeDoCoracao")
-    private ParametroEquipe timeDoCoracao = null;
+    protected ParametroEquipe timeDoCoracao = null;
     @SerializedName("concursoInicial")
-    private Integer concursoInicial = null;
+    protected Integer concursoInicial = null;
     @SerializedName("situacao")
-    private DTOEnumLong situacao = null;
+    protected DTOEnumLong situacao = null;
     @SerializedName("troca")
-    private Boolean troca = null;
+    protected Boolean troca = null;
     @SerializedName("dataEfetivacao")
-    private String dataEfetivacao = null;
+    protected String dataEfetivacao = null;
     @SerializedName("horaEfetivacao")
-    private String horaEfetivacao = null;
+    protected String horaEfetivacao = null;
     @SerializedName("loterica")
-    private LotericaDTO loterica = null;
+    protected LotericaDTO loterica = null;
     @SerializedName("vinculoEspelho")
-    private Long vinculoEspelho = null;
+    protected Long vinculoEspelho = null;
     @SerializedName("quantidadeNumeros")
-    private Integer quantidadeNumeros = null;
+    protected Integer quantidadeNumeros = null;
     @SerializedName("surpresinha")
-    private Boolean surpresinha = null;
+    protected Boolean surpresinha = null;
     @Expose(serialize = false, deserialize = false)
-    private transient Long idDB;
+    protected transient Long idDB;
     @Expose(serialize = false, deserialize = false)
-    private transient Integer quantidadeSurpresinhas = null;
+    protected transient Integer quantidadeSurpresinhas = null;
 
     /**
      * Identificador da Aposta

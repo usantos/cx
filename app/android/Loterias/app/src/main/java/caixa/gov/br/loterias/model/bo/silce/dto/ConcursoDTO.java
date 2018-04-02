@@ -14,45 +14,48 @@ package caixa.gov.br.loterias.model.bo.silce.dto;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.parceler.Parcel;
+
 import java.math.BigDecimal;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel(description = "")
+@Parcel
 public class ConcursoDTO {
     @SerializedName("modalidade")
-    private ModalidadeEnum modalidade = null;
+    protected ModalidadeEnum modalidade = null;
     @SerializedName("modalidadeDetalhada")
-    private ModalidadeDTO modalidadeDetalhada = null;
+    protected ModalidadeDTO modalidadeDetalhada = null;
     @SerializedName("tipoConcurso")
-    private TipoConcursoEnum tipoConcurso = null;
+    protected TipoConcursoEnum tipoConcurso = null;
     @SerializedName("numero")
-    private Integer numero = null;
+    protected Integer numero = null;
     @SerializedName("dataFechamento")
-    private String dataFechamento = null;
+    protected String dataFechamento = null;
     @SerializedName("dataAbertura")
-    private String dataAbertura = null;
+    protected String dataAbertura = null;
     @SerializedName("dataHoraSorteio")
-    private String dataHoraSorteio = null;
+    protected String dataHoraSorteio = null;
     @SerializedName("dataSorteio")
-    private String dataSorteio = null;
+    protected String dataSorteio = null;
     @SerializedName("valorApostaMinima")
-    private BigDecimal valorApostaMinima = null;
+    protected BigDecimal valorApostaMinima = null;
     @SerializedName("situacao")
-    private SituacaoEnum situacao = null;
+    protected SituacaoEnum situacao = null;
     @SerializedName("bloqueado")
-    private Boolean bloqueado = null;
+    protected Boolean bloqueado = null;
     @SerializedName("dataFinalBloqueio")
-    private String dataFinalBloqueio = null;
+    protected String dataFinalBloqueio = null;
     @SerializedName("estimativa")
-    private BigDecimal estimativa = null;
+    protected BigDecimal estimativa = null;
     @SerializedName("acumulado")
-    private BigDecimal acumulado = null;
+    protected BigDecimal acumulado = null;
     @SerializedName("naoInicializado")
-    private Boolean naoInicializado = null;
+    protected Boolean naoInicializado = null;
     @SerializedName("aberto")
-    private Boolean aberto = null;
+    protected Boolean aberto = null;
 
     /**
      * Modalidade relacionada com o concurso

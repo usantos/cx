@@ -44,6 +44,8 @@ import caixa.gov.br.loterias.model.bo.silce.internals.SilceConnection;
 
      static final String APOSTAS_MES_ANO_PATH = "/apostas/meses";
      static final String APOSTAS_CONFIRMADAS_PATH = "/apostas";
+     static final String APOSTAS_CONFIRMADAS_DETALHES_PATH = "/apostas/{id}/detalhes-premio";
+     static final String APOSTAS_CONFIRMADAS_COMPROVANTE_PATH = "/apostas/{id}/comprovante";
      static final String APOSTAS_HISTORICO_MES_ANO_PATH = "/historico-apostas/meses";
      static final String APOSTAS_CONFIRMADAS_HISTORICO_PATH = "/historico-apostas";
 

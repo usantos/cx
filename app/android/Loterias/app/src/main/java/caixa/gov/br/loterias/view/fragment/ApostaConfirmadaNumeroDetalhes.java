@@ -1,8 +1,7 @@
 package caixa.gov.br.loterias.view.fragment;
 
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
@@ -13,15 +12,15 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.FragmentArg;
 import org.androidannotations.annotations.ViewById;
-import org.w3c.dom.Text;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import caixa.gov.br.loterias.R;
-import caixa.gov.br.loterias.model.bo.silce.dto.ApostaDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.ComprovanteApostaDTO;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.adapter.DezenasAdapter;
-import caixa.gov.br.loterias.view.custom.ExpandableHeightGridView;
 
 /**
  * Created by pmotta on 23/03/2018.
@@ -44,25 +43,25 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
     protected RecyclerView dezenasRecyclerView;
 
     @FragmentArg
-    protected ApostaDTO apostaDTO;
+    protected ComprovanteApostaDTO comprovanteApostaDTO;
 
     @AfterViews
     protected void init() {
-        concursoTxt.setText(String.format(Locale.getDefault(), "%d", apostaDTO.getConcursoAlvo()));
-        dataApostaTxt.setText(ViewUtils.getDateAndHour(apostaDTO.getDataEfetivacao(), apostaDTO.getHoraEfetivacao()));
-        resultTxt.setText(apostaDTO.getSituacao().getDescricao());
+        concursoTxt.setText(String.format(Locale.getDefault(), "%d", comprovanteApostaDTO.getAposta().getConcursoAlvo()));
+        dataApostaTxt.setText(ViewUtils.getDateAndHour(comprovanteApostaDTO.getAposta().getDataEfetivacao(), comprovanteApostaDTO.getAposta().getHoraEfetivacao()));
+        resultTxt.setText(comprovanteApostaDTO.getAposta().getSituacao().getDescricao());
 
-        if (apostaDTO.getTroca()) {
+        if (comprovanteApostaDTO.getAposta().getTroca()) {
             apostaTrocaTxt.setVisibility(View.VISIBLE);
         }
-        if (apostaDTO.getQuantidadeTeimosinhas() > 0) {
+        if (comprovanteApostaDTO.getAposta().getQuantidadeTeimosinhas() > 0) {
             modalidadeTxt.setVisibility(View.VISIBLE);
         }
-        if (apostaDTO.getTimeDoCoracao() != null) {
+        if (comprovanteApostaDTO.getAposta().getTimeDoCoracao() != null) {
             timeCoracaoLayout.setVisibility(View.VISIBLE);
-            timeCoracaoTxt.setText(apostaDTO.getTimeDoCoracao().getNome());
+            timeCoracaoTxt.setText(comprovanteApostaDTO.getAposta().getTimeDoCoracao().getNome());
         }
-        if (getActivity().getString(R.string.label_efetivada).equalsIgnoreCase(apostaDTO.getSituacao().getDescricao())) {
+        if (getActivity().getString(R.string.label_efetivada).equalsIgnoreCase(comprovanteApostaDTO.getAposta().getSituacao().getDescricao())) {
             conferirResultadoButton.setVisibility(View.VISIBLE);
         }
         initDezenasGridView();
@@ -70,8 +69,29 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 
     private void initDezenasGridView() {
 
-        dezenasRecyclerView.setAdapter(new DezenasAdapter(apostaDTO.getNumerosSelecionados()));
-        dezenasRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 5));
+        if (!comprovanteApostaDTO.getAposta().getNumerosSelecionados().isEmpty()) {
+            dezenasRecyclerView.setAdapter(new DezenasAdapter(listIntegerToListString()));
+            dezenasRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        }
     }
 
+    private List<String> listIntegerToListString() {
+
+        List<String> lines = new ArrayList<>();
+        StringBuilder lineSB = new StringBuilder();
+
+        for (int i = 0; i < comprovanteApostaDTO.getAposta().getNumerosSelecionados().size(); i++) {
+            if (i == 0) {
+                lineSB.append(ViewUtils.getNumberIntegerToString(comprovanteApostaDTO.getAposta().getNumerosSelecionados().get(i)));
+            } else if (i % 5 == 0) {
+                lines.add(lineSB.toString());
+                lineSB = new StringBuilder();
+                lineSB.append(ViewUtils.getNumberIntegerToString(comprovanteApostaDTO.getAposta().getNumerosSelecionados().get(i)));
+            } else {
+                lineSB.append(String.format("  -  %s", ViewUtils.getNumberIntegerToString(comprovanteApostaDTO.getAposta().getNumerosSelecionados().get(i))));
+            }
+        }
+        lines.add(lineSB.toString());
+        return lines;
+    }
 }

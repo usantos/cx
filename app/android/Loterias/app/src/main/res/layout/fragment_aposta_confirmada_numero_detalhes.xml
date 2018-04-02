@@ -174,8 +174,6 @@
             android:layout_height="wrap_content"
             android:layout_alignStart="@id/seusNumerosTxt"
             android:layout_below="@id/seusNumerosTxt"
-            android:paddingStart="39dp"
-            android:paddingEnd="39dp"
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:nestedScrollingEnabled="false" />
 

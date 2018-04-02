@@ -14,6 +14,8 @@ package caixa.gov.br.loterias.model.bo.silce.dto;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.parceler.Parcel;
+
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -21,20 +23,21 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel(description = "")
+@Parcel
 public class ConcursoPremiadoDTO {
 
     @SerializedName("id")
-    private Long id = null;
+    protected Long id = null;
     @SerializedName("concurso")
-    private ConcursoDTO concurso = null;
+    protected ConcursoDTO concurso = null;
     @SerializedName("valorBruto")
-    private BigDecimal valorBruto = null;
+    protected BigDecimal valorBruto = null;
     @SerializedName("valorLiquido")
-    private BigDecimal valorLiquido = null;
+    protected BigDecimal valorLiquido = null;
     @SerializedName("valorIRRF")
-    private BigDecimal valorIRRF = null;
+    protected BigDecimal valorIRRF = null;
     @SerializedName("faixas")
-    private List<FaixaPremiadaDTO> faixas = null;
+    protected List<FaixaPremiadaDTO> faixas = null;
 
     /**
      * Identificação do concurso premiado

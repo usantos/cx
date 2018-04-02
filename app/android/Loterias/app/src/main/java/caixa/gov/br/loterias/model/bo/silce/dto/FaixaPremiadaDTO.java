@@ -14,24 +14,27 @@ package caixa.gov.br.loterias.model.bo.silce.dto;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.parceler.Parcel;
+
 import java.math.BigDecimal;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel(description = "")
+@Parcel
 public class FaixaPremiadaDTO {
 
     @SerializedName("id")
-    private Long id = null;
+    protected Long id = null;
     @SerializedName("numero")
-    private Integer numero = null;
+    protected Integer numero = null;
     @SerializedName("sorteio")
-    private Integer sorteio = null;
+    protected Integer sorteio = null;
     @SerializedName("nome")
-    private String nome = null;
+    protected String nome = null;
     @SerializedName("valorLiquido")
-    private BigDecimal valorLiquido = null;
+    protected BigDecimal valorLiquido = null;
 
     /**
      * Identificação do faixa de premiação da modalidade/concurso

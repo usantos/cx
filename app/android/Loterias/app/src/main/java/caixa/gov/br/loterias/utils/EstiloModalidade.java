@@ -18,9 +18,11 @@ public class EstiloModalidade {
     private final int stringId;
     private final int themeId;
     private final int menuItemColor;
+    private final int iconValidadeComprovanteColor;
+    private final int iconImpressoraColor;
 
     public EstiloModalidade(ModalidadeEnum modalidade) {
-        switch (modalidade){
+        switch (modalidade) {
             case QUINA:
                 corClara = R.color.quinaclaro;
                 corMedia = R.color.quinamedio;
@@ -31,6 +33,8 @@ public class EstiloModalidade {
                 themeId = R.style.AppTheme_Modalidade_Quina;
                 stringId = R.string.label_quina;
                 menuItemColor = R.color.branco;
+                iconValidadeComprovanteColor = R.color.black;
+                iconImpressoraColor = R.color.branco;
                 break;
             case LOTECA:
                 corClara = R.color.lotecaclaro;
@@ -42,6 +46,8 @@ public class EstiloModalidade {
                 themeId = R.style.AppTheme_Modalidade_Loteca;
                 stringId = R.string.label_loteca;
                 menuItemColor = R.color.branco;
+                iconValidadeComprovanteColor = R.color.black;
+                iconImpressoraColor = R.color.branco;
                 break;
 //            case FEDERAL:
 //                corClara = R.color.federalclaro;
@@ -64,6 +70,8 @@ public class EstiloModalidade {
                 themeId = R.style.AppTheme_Modalidade_LotoGol;
                 stringId = R.string.label_lotogol;
                 menuItemColor = R.color.branco;
+                iconValidadeComprovanteColor = R.color.black;
+                iconImpressoraColor = R.color.branco;
                 break;
             case DUPLA_SENA:
                 corClara = R.color.duplasenaclaro;
@@ -75,6 +83,8 @@ public class EstiloModalidade {
                 themeId = R.style.AppTheme_Modalidade_DuplaSena;
                 stringId = R.string.label_dupla_sena;
                 menuItemColor = R.color.branco;
+                iconValidadeComprovanteColor = R.color.black;
+                iconImpressoraColor = R.color.branco;
                 break;
             case LOTOFACIL:
                 corClara = R.color.lotofacilclaro;
@@ -86,6 +96,8 @@ public class EstiloModalidade {
                 themeId = R.style.AppTheme_Modalidade_Lotofacil;
                 stringId = R.string.label_lotofacil;
                 menuItemColor = R.color.branco;
+                iconValidadeComprovanteColor = R.color.black;
+                iconImpressoraColor = R.color.branco;
                 break;
             case LOTOMANIA:
                 corClara = R.color.lotomaniaclaro;
@@ -97,6 +109,8 @@ public class EstiloModalidade {
                 themeId = R.style.AppTheme_Modalidade_Lotomania;
                 stringId = R.string.label_lotomania;
                 menuItemColor = R.color.branco;
+                iconValidadeComprovanteColor = R.color.black;
+                iconImpressoraColor = R.color.branco;
                 break;
             case TIMEMANIA:
                 corClara = R.color.timemaniaclaro;
@@ -108,6 +122,8 @@ public class EstiloModalidade {
                 themeId = R.style.AppTheme_Modalidade_Timemania;
                 stringId = R.string.label_timemania;
                 menuItemColor = R.color.megasenamedio;
+                iconValidadeComprovanteColor = R.color.megasenamedio;
+                iconImpressoraColor = R.color.megasenamedio;
                 break;
             case DIA_DE_SORTE:
                 corClara = R.color.megasenaclaro;
@@ -119,8 +135,10 @@ public class EstiloModalidade {
                 themeId = R.style.AppTheme_Modalidade_MegaSena;
                 stringId = R.string.label_dia_de_sorte;
                 menuItemColor = R.color.branco;
+                iconValidadeComprovanteColor = R.color.black;
+                iconImpressoraColor = R.color.branco;
                 break;
-            default:{
+            default: {
                 //MEGASENA
                 corClara = R.color.megasenaclaro;
                 corMedia = R.color.megasenamedio;
@@ -131,6 +149,8 @@ public class EstiloModalidade {
                 themeId = R.style.AppTheme_Modalidade_MegaSena;
                 stringId = R.string.label_mega_sena;
                 menuItemColor = R.color.branco;
+                iconValidadeComprovanteColor = R.color.black;
+                iconImpressoraColor = R.color.branco;
             }
         }
 
@@ -170,5 +190,13 @@ public class EstiloModalidade {
 
     public int getThemeId() {
         return themeId;
+    }
+
+    public int getIconValidadeComprovanteColor() {
+        return iconValidadeComprovanteColor;
+    }
+
+    public int getIconImpressoraColor() {
+        return iconImpressoraColor;
     }
 }

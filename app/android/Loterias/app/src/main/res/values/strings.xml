@@ -93,6 +93,7 @@
     <string name="MA014">Atingiu o valor máximo diário de apostas</string>
     <string name="MA015">Já existe aposta igual no carrinho</string>
     <string name="MA016">Um número não pode ser marcado como obrigatório e proibido.</string>
+    <string name="MA020">A situação da aposta foi atualizada, por favor verifique o comprovante gerado.</string>
     <string name="msg_favor_inserir_nome_aposta">Favor inserir um nome para sua aposta favorita</string>
     <string name="msg_erro_data_invalida"> Data Inválida</string>
 
@@ -236,6 +237,8 @@
     <string name="label_efetivada">Efetivada</string>
     <string name="label_teimosinha">Teimosinha</string>
     <string name="label_aposta_troca">Aposta\nde troca</string>
+    <string name="label_validade_premio">Validade do prêmio:</string>
+    <string name="label_noventa_dias">90 dias</string>
 
     <!--Mock-->
     <string name="label_mock_texto_nao_premiado">Lorem ipsum dolor sit amet,consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo</string>

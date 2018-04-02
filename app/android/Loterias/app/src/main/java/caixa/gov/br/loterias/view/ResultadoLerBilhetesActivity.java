@@ -6,6 +6,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -43,6 +44,7 @@ import caixa.gov.br.loterias.utils.EstiloModalidade;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.adapter.FaixaPremiacaoAdapter;
 import caixa.gov.br.loterias.view.adapter.RetirarPremioDescricaoAdapter;
+import caixa.gov.br.loterias.view.custom.ContenteResultadoPremiado;
 import caixa.gov.br.loterias.view.custom.ExpandableHeightRecyclerView;
 import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
 
@@ -50,21 +52,22 @@ import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
 public class ResultadoLerBilhetesActivity extends AppCompatActivity {
 
     @ViewById
-    Toolbar toolbar;
+    protected Toolbar toolbar;
 
     @ViewById
-    ScrollView resultadoApostaScrollView;
+    protected ScrollView resultadoApostaScrollView;
 
     @ViewById
-    LinearLayout corpoBilhetePremiadoLinearLayout, corpoBilheteNaoPremiadoLinearLayout, topoModalidadeResultadoLinearLayout, topo2ModalidadeResultadoLinearLayout,
-            premioGanhoLinearLayout, mensagemNaoPremiadoLinearLayout, fundoBackgroundTrapezeResultadoLinearLayout;
+    protected LinearLayout corpoBilhetePremiadoLinearLayout, corpoBilheteNaoPremiadoLinearLayout, premioGanhoLinearLayout, mensagemNaoPremiadoLinearLayout;
 
     @ViewById
-    TextView tituloModalidadeTextView, limiteDiarioResultadoTextView, premioResultadoTextView, mensagemNaoPremiadoTextView, statusResultadoNaoPremiadTextView, proximoSorteioTextView,
-            aberturaApostaResultadoTextView, encerramentoResultadoTextView;
+    protected TextView mensagemNaoPremiadoTextView, statusResultadoNaoPremiadTextView;
 
     @ViewById
-    ExpandableHeightRecyclerView listaFaixaPremiacaoExpandableHeightRecyclerView, listaComoRetirarPremio;
+    protected ExpandableHeightRecyclerView listaComoRetirarPremio;
+
+    @ViewById
+    protected ContenteResultadoPremiado contenteResultadoPremiado;
 
     @Extra
     String codBarras;
@@ -150,19 +153,19 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
         SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
         ParametroSimulacao parametroSimulacao = getParametroJogo(sessaoUsuario, modalidadeEnum);
 
-        topoModalidadeResultadoLinearLayout.setBackgroundColor(ContextCompat.getColor(this, estiloModalidade.getCorClara()));
-        topo2ModalidadeResultadoLinearLayout.setBackgroundColor(ContextCompat.getColor(this, estiloModalidade.getCorEscura()));
-        fundoBackgroundTrapezeResultadoLinearLayout.setBackground(ContextCompat.getDrawable(this, estiloModalidade.getTrevoBackground()));
-        tituloModalidadeTextView.setText(resultadoConsultaBilheteDTO.getModalidadeDTO().getDescricao());
-        limiteDiarioResultadoTextView.setText(ViewUtils.getMoedaFormat(sessaoUsuario.getParametrosSimulacao().getValorLimiteDiario()));
-        premioResultadoTextView.setText(ViewUtils.getMoedaFormat(resultadoConsultaBilheteDTO.getValorPremio()));
+        contenteResultadoPremiado.getTopoModalidadeResultadoLinearLayout().setBackgroundColor(ContextCompat.getColor(this, estiloModalidade.getCorClara()));
+        contenteResultadoPremiado.getTopo2ModalidadeResultadoLinearLayout().setBackgroundColor(ContextCompat.getColor(this, estiloModalidade.getCorEscura()));
+        contenteResultadoPremiado.getFundoBackgroundTrapezeResultadoLinearLayout().setBackground(ContextCompat.getDrawable(this, estiloModalidade.getTrevoBackground()));
+        contenteResultadoPremiado.getTituloModalidadeTextView().setText(resultadoConsultaBilheteDTO.getModalidadeDTO().getDescricao());
+        contenteResultadoPremiado.getLimiteDiarioResultadoTextView().setText(ViewUtils.getMoedaFormat(sessaoUsuario.getParametrosSimulacao().getValorLimiteDiario()));
+        contenteResultadoPremiado.getPremioResultadoTextView().setText(ViewUtils.getMoedaFormat(resultadoConsultaBilheteDTO.getValorPremio()));
 
         if (parametroSimulacao != null) {
             if (parametroSimulacao.getProximoConcurso() != null) {
-                proximoSorteioTextView.setText(parametroSimulacao.getProximoConcurso().getConcurso().getDataAbertura());
+                contenteResultadoPremiado.getProximoSorteioTextView().setText(parametroSimulacao.getProximoConcurso().getConcurso().getDataAbertura());
+                contenteResultadoPremiado.getAberturaApostaResultadoTextView().setText(ViewUtils.getDateAndHour(parametroSimulacao.getParametroJogo().getConcurso().getDataAbertura()));
+                contenteResultadoPremiado.getEncerramentoResultadoTextView().setText(ViewUtils.getDateAndHour(parametroSimulacao.getParametroJogo().getConcurso().getDataFechamento()));
             }
-            aberturaApostaResultadoTextView.setText(ViewUtils.getDateAndHour(parametroSimulacao.getParametroJogo().getConcurso().getDataAbertura()));
-            encerramentoResultadoTextView.setText(ViewUtils.getDateAndHour(parametroSimulacao.getParametroJogo().getConcurso().getDataFechamento()));
         }
         createListPremiacao();
         listaMockDadosComoRetirarPremio();
@@ -191,6 +194,8 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
     }
 
     private void createListPremiacao() {
+        ExpandableHeightRecyclerView listaFaixaPremiacaoExpandableHeightRecyclerView = contenteResultadoPremiado.getListaFaixaPremiacaoExpandableHeightRecyclerView();
+
         listaFaixaPremiacaoExpandableHeightRecyclerView.setAdapter(new FaixaPremiacaoAdapter(getFaixaPremiacaoDTO()));
         listaFaixaPremiacaoExpandableHeightRecyclerView.setExpanded(Boolean.TRUE);
         listaFaixaPremiacaoExpandableHeightRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -227,7 +232,7 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
     }
 
     private ParametroSimulacao getParametroJogo(SessaoUsuario sessaoUsuario, ModalidadeEnum modalidadeEnum) {
-        if (sessaoUsuario.getParametrosSimulacao().getParametros() != null) {
+        if (sessaoUsuario.getParametrosSimulacao() != null && sessaoUsuario.getParametrosSimulacao().getParametros() != null) {
             for (ParametroSimulacao parametroSimulacao : sessaoUsuario.getParametrosSimulacao().getParametros()) {
                 if (parametroSimulacao.getParametroJogo().getConcurso().getModalidade() == modalidadeEnum) {
                     return parametroSimulacao;

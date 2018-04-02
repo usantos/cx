@@ -14,20 +14,23 @@ package caixa.gov.br.loterias.model.bo.silce.dto;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.parceler.Parcel;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel(description = "")
+@Parcel
 public class ComprovanteApostaDTO {
 
     @SerializedName("nsbi")
-    private String nsbi = null;
+    protected String nsbi = null;
     @SerializedName("aposta")
-    private IdentificaoDeUmaApostaDas8Modalidades aposta = null;
+    protected IdentificaoDeUmaApostaDas8Modalidades aposta = null;
     @SerializedName("loterica")
-    private LotericaDTO loterica = null;
+    protected LotericaDTO loterica = null;
     @SerializedName("dataSorteio")
-    private String dataSorteio = null;
+    protected String dataSorteio = null;
 
     /**
      * NSBi da aposta

@@ -13,6 +13,8 @@ import caixa.gov.br.loterias.model.bo.silce.dto.AgrupadorApostaCompraDTOResponse
 import caixa.gov.br.loterias.model.bo.silce.dto.AgrupadorDTOApostaDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostaFavoritaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.CarrinhoDTOResponse;
+import caixa.gov.br.loterias.model.bo.silce.dto.ComprovanteApostaDTOResponse;
+import caixa.gov.br.loterias.model.bo.silce.dto.DetalhesPremioDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.EscudoEquipeEsportivaDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import caixa.gov.br.loterias.model.bo.silce.dto.IncluirSurpresinhaDTO;
@@ -425,4 +427,41 @@ public class ApostaBO extends BaseBO {
         request.setErrorListener(interceptError(request, headers, listener));
         silceConnection.request(request);
     }
+
+    public void getApostaDetalhePremio(Long id, final RequestListener<DetalhesPremioDTOResponse> listener) {
+
+        String url = ServerMethods.APOSTAS_CONFIRMADAS_DETALHES_PATH.replace("{id}", id.toString());
+        final LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
+        final Map<String, String> queryParams = new HashMap<String, String>();
+
+        headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
+
+        final GsonRequest request = silceConnection.buildGetRequest(url,
+                queryParams,
+                DetalhesPremioDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(), headers);
+
+        request.setErrorListener(interceptError(request, headers, listener));
+        silceConnection.request(request);
+    }
+
+    public void getApostaDetalheComprovante(Long id, final RequestListener<ComprovanteApostaDTOResponse> listener) {
+
+        String url = ServerMethods.APOSTAS_CONFIRMADAS_COMPROVANTE_PATH.replace("{id}", id.toString());
+        final LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
+        final Map<String, String> queryParams = new HashMap<String, String>();
+
+        headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
+
+        final GsonRequest request = silceConnection.buildGetRequest(url,
+                queryParams,
+                ComprovanteApostaDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(), headers);
+
+        request.setErrorListener(interceptError(request, headers, listener));
+        silceConnection.request(request);
+    }
+
 }

@@ -15,21 +15,24 @@ package caixa.gov.br.loterias.model.bo.silce.dto;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.parceler.Parcel;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel(description = "")
+@Parcel
 public class ModalidadeDTO {
 
     @SerializedName("valor")
     @Expose(serialize = true, deserialize = true)
-    private Integer valor = null;
+    protected Integer valor = null;
     @SerializedName("descricao")
     @Expose(serialize = true, deserialize = true)
-    private String descricao = null;
+    protected String descricao = null;
     @SerializedName("descricaoEspecial")
     @Expose(serialize = true, deserialize = true)
-    private String descricaoEspecial = null;
+    protected String descricaoEspecial = null;
 
     /**
      * Identificação da modalidade

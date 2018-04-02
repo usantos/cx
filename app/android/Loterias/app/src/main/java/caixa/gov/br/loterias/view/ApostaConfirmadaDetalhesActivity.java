@@ -1,17 +1,17 @@
 package caixa.gov.br.loterias.view;
 
 import android.content.Intent;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -23,9 +23,10 @@ import org.androidannotations.annotations.OptionsMenuItem;
 import org.androidannotations.annotations.ViewById;
 
 import caixa.gov.br.loterias.R;
-import caixa.gov.br.loterias.model.bo.silce.dto.ApostaDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.ComprovanteApostaDTO;
 import caixa.gov.br.loterias.utils.AppUtils;
 import caixa.gov.br.loterias.utils.EstiloModalidade;
+import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.fragment.ApostaConfirmadaPartidaFragment_;
 import caixa.gov.br.loterias.view.fragment.ApostaConfirmadaNumeroDetalhes_;
 
@@ -38,7 +39,7 @@ import caixa.gov.br.loterias.view.fragment.ApostaConfirmadaNumeroDetalhes_;
 public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
 
     @Extra
-    protected ApostaDTO apostaDTO;
+    protected ComprovanteApostaDTO comprovanteApostaDTO;
 
     @ViewById
     protected FrameLayout fragmentContainer;
@@ -46,25 +47,31 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
     @ViewById
     protected Toolbar toolbar;
 
+    @ViewById
+    protected TextView validadePremioText, comprovanteText;
+
+    @ViewById
+    protected ImageView validadePremioImage, comprovanteImage, comprovanteImpressaoImage;
+
     private EstiloModalidade estilo;
 
     @Click
-    protected void carrinhoApostasBtn(){
+    protected void carrinhoApostasBtn() {
         //TODO:
     }
 
     @Click
-    protected void favoriteBtn(){
+    protected void favoriteBtn() {
         //TODO:
     }
 
     @Click
-    protected void editarApostaBtn(){
+    protected void editarApostaBtn() {
         //TODO:
     }
 
     @Click
-    protected void adicionarCarrinhoBtn(){
+    protected void adicionarCarrinhoBtn() {
         //TODO:
     }
 
@@ -72,50 +79,54 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        estilo = new EstiloModalidade(apostaDTO.getModalidade());
+        estilo = new EstiloModalidade(comprovanteApostaDTO.getAposta().getModalidade());
         setTheme(estilo.getThemeId());
         setTitle(AppUtils.capitalizeFirstChar(getString(estilo.getStringId())));
     }
 
     @OptionsMenuItem(R.id.action_duvida)
-    protected void menuDuvida(MenuItem menuDuvida){
+    protected void menuDuvida(MenuItem menuDuvida) {
         Drawable drawable = menuDuvida.getIcon();
         if (drawable != null && estilo != null) {
-            drawable.mutate();
-            drawable.setColorFilter(ContextCompat.getColor(this, estilo.getMenuItemColor()),
-                    PorterDuff.Mode.SRC_ATOP);
+            ViewUtils.setColorDrawable(this, drawable, estilo.getMenuItemColor());
         }
     }
 
     @OptionsItem(R.id.action_duvida)
-    protected void onMenuDuvida(){
+    protected void onMenuDuvida() {
         Intent intent = new Intent(getBaseContext(), TermosUsoActivity.class);
         startActivity(intent);
     }
 
     @Override
-    public boolean onSupportNavigateUp(){
+    public boolean onSupportNavigateUp() {
         finish();
         return true;
     }
 
     @AfterViews
-    protected void init(){
+    protected void init() {
         setupToolbar();
+
+        if (estilo != null) {
+            ViewUtils.setColorDrawable(this, validadePremioImage.getDrawable(), estilo.getIconValidadeComprovanteColor());
+            ViewUtils.setColorDrawable(this, comprovanteImage.getDrawable(), estilo.getIconValidadeComprovanteColor());
+            ViewUtils.setColorDrawable(this, comprovanteImpressaoImage.getDrawable(), estilo.getIconImpressoraColor());
+        }
 
         Fragment fragment;
 
-        switch (apostaDTO.getModalidade()){
+        switch (comprovanteApostaDTO.getAposta().getModalidade()) {
             case LOTOGOL:
-                fragment = ApostaConfirmadaPartidaFragment_.builder().apostaDTO(apostaDTO).loteca(Boolean.FALSE).build();
+                fragment = ApostaConfirmadaPartidaFragment_.builder().comprovanteApostaDTO(comprovanteApostaDTO).loteca(Boolean.FALSE).build();
                 break;
             case LOTECA:
-                fragment = ApostaConfirmadaPartidaFragment_.builder().apostaDTO(apostaDTO).loteca(Boolean.TRUE).build();
+                fragment = ApostaConfirmadaPartidaFragment_.builder().comprovanteApostaDTO(comprovanteApostaDTO).loteca(Boolean.TRUE).build();
                 break;
             default:
                 fragment = ApostaConfirmadaNumeroDetalhes_
                         .builder()
-                        .apostaDTO(apostaDTO)
+                        .comprovanteApostaDTO(comprovanteApostaDTO)
                         .build();
                 break;
         }
@@ -125,10 +136,10 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
                 .commit();
     }
 
-    private void setupToolbar(){
+    private void setupToolbar() {
         setSupportActionBar(toolbar);
         ActionBar supportActionBar = getSupportActionBar();
-        if(supportActionBar != null){
+        if (supportActionBar != null) {
             supportActionBar.setDisplayHomeAsUpEnabled(true);
             supportActionBar.setElevation(0);
         }
