@@ -96,7 +96,7 @@
             android:label="@string/title_activity_termos_uso"
             android:parentActivityName=".view.PrincipalActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.DegradeActionBar"></activity>
+            android:theme="@style/AppTheme.DegradeActionBar" />
         <activity
             android:name=".view.RepassesSociaisActivity"
             android:label="@string/title_activity_repasses_sociais"
@@ -213,6 +213,7 @@
         <activity
             android:name=".view.ApostaConfirmadaDetalhesActivity_"
             android:screenOrientation="portrait" />
+        <activity android:name=".view.ResultadoApostaConfirmadaActivity_"></activity>
     </application>
 
 </manifest>

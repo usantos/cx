@@ -14,6 +14,7 @@ import caixa.gov.br.loterias.model.bo.silce.dto.AgrupadorDTOApostaDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostaFavoritaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.CarrinhoDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.ComprovanteApostaDTOResponse;
+import caixa.gov.br.loterias.model.bo.silce.dto.DTOEnumIntegerResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.DetalhesPremioDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.EscudoEquipeEsportivaDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
@@ -464,4 +465,21 @@ public class ApostaBO extends BaseBO {
         silceConnection.request(request);
     }
 
+    public void getApostaConferir(Long id, final RequestListener<DTOEnumIntegerResponse> listener) {
+
+        String url = ServerMethods.APOSTAS_CONFERIR_PATH.replace("{id}", id.toString());
+        final LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
+        final Map<String, String> queryParams = new HashMap<String, String>();
+
+        headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
+
+        final GsonRequest request = silceConnection.buildGetRequest(url,
+                queryParams,
+                DTOEnumIntegerResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(), headers);
+
+        request.setErrorListener(interceptError(request, headers, listener));
+        silceConnection.request(request);
+    }
 }
