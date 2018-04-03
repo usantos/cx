@@ -6,11 +6,14 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
+import com.yarolegovich.discretescrollview.Orientation;
 import com.yarolegovich.discretescrollview.transform.ScaleTransformer;
 
 import org.androidannotations.annotations.AfterViews;
@@ -23,6 +26,7 @@ import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bean.Modalidade;
 import caixa.gov.br.loterias.model.bo.silce.dto.PremiacaoConcursoDTO;
 import caixa.gov.br.loterias.utils.EstiloModalidade;
+import caixa.gov.br.loterias.view.PrincipalActivity;
 import caixa.gov.br.loterias.view.adapter.HomeAdapter;
 import caixa.gov.br.loterias.view.adapter.LotecaResultadoTimesAdapter;
 import caixa.gov.br.loterias.view.adapter.NumerosResultadosAdapter;
@@ -74,6 +78,8 @@ public class ModalidadeSorteioLotecaResultadoView extends LinearLayout implement
         this.recyclerPartidasLotecas.setItemTransformer(new ScaleTransformer.Builder()
                 .setMinScale(0.8f)
                 .build());
+        this.recyclerPartidasLotecas.addOnItemTouchListener(mScrollTouchListener);
+
 
     }
 
@@ -135,6 +141,31 @@ public class ModalidadeSorteioLotecaResultadoView extends LinearLayout implement
     public void onScroll(float scrollPosition, int currentPosition, int newPosition, @Nullable LotecaResultadoTimesAdapter.LotecaHolder currentHolder, @Nullable LotecaResultadoTimesAdapter.LotecaHolder newCurrent) {
 
     }
+
+    RecyclerView.OnItemTouchListener mScrollTouchListener = new RecyclerView.OnItemTouchListener() {
+        @Override
+        public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+            int action = e.getAction();
+            switch (action) {
+                case MotionEvent.ACTION_MOVE:
+                    rv.getParent().requestDisallowInterceptTouchEvent(true);
+                    break;
+            }
+            return false;
+        }
+
+        @Override
+        public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+
+        }
+
+        @Override
+        public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
+        }
+    };
+
+
 
 
 }

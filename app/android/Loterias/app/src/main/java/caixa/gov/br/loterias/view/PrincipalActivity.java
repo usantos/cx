@@ -17,7 +17,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ExpandableListAdapter;
@@ -101,7 +100,7 @@ public class PrincipalActivity extends AppCompatActivity
     protected LinearLayout atalhoRapidoLoterias;
 
     @ViewById
-    protected DiscreteScrollView homeCarousel;
+    public DiscreteScrollView homeCarousel;
 
     @ViewById
     protected ExpandableListView sideMenuExpandableListView;
@@ -134,7 +133,6 @@ public class PrincipalActivity extends AppCompatActivity
         homeCarousel.setItemTransformer(new ScaleTransformer.Builder()
                 .setMinScale(0.8f)
                 .build());
-        homeCarousel.requestDisallowInterceptTouchEvent(true);
     }
 
     private void callWebservice() {

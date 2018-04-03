@@ -2,7 +2,9 @@ package caixa.gov.br.loterias.view.custom;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -69,6 +71,7 @@ public class ModalidadeSorteioLotogolResultadoView extends LinearLayout implemen
         this.recyclerPartidasLotogol.setItemTransformer(new ScaleTransformer.Builder()
                 .setMinScale(0.8f)
                 .build());
+        this.recyclerPartidasLotogol.addOnItemTouchListener(mScrollTouchListener);
 
     }
 
@@ -131,4 +134,27 @@ public class ModalidadeSorteioLotogolResultadoView extends LinearLayout implemen
     public void onScroll(float scrollPosition, int currentPosition, int newPosition, @Nullable LotogolResultadoTimesAdapter.LotogolHolder currentHolder, @Nullable LotogolResultadoTimesAdapter.LotogolHolder newCurrent) {
 
     }
+
+    RecyclerView.OnItemTouchListener mScrollTouchListener = new RecyclerView.OnItemTouchListener() {
+        @Override
+        public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+            int action = e.getAction();
+            switch (action) {
+                case MotionEvent.ACTION_MOVE:
+                    rv.getParent().requestDisallowInterceptTouchEvent(true);
+                    break;
+            }
+            return false;
+        }
+
+        @Override
+        public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+
+        }
+
+        @Override
+        public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
+        }
+    };
 }
