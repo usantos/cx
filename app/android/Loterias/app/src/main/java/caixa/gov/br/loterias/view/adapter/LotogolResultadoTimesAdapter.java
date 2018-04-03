@@ -1,75 +1,73 @@
 package caixa.gov.br.loterias.view.adapter;
 
+
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.List;
 
-import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.silce.dto.ModalidadeEnum;
 import caixa.gov.br.loterias.model.bo.silce.dto.PartidaLotecaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.PartidaLotogolDTO;
-import caixa.gov.br.loterias.utils.EstiloModalidade;
-import caixa.gov.br.loterias.view.custom.ApostaPartidaLotogolView;
-import caixa.gov.br.loterias.view.custom.PartidaViewLoteca;
+import caixa.gov.br.loterias.view.custom.PartidaViewLotecaResultado;
+import caixa.gov.br.loterias.view.custom.PartidaViewLotecaResultado_;
+import caixa.gov.br.loterias.view.custom.PartidaViewLotogolResultado;
+import caixa.gov.br.loterias.view.custom.PartidaViewLotogolResultado_;
 
 /**
  * Created by cedesbr450 on 30/03/18.
  */
 
-public final class LotogolResultadoTimesAdapter extends RecyclerView.Adapter<LotogolResultadoTimesAdapter.ViewHolder> {
 
+public class LotogolResultadoTimesAdapter extends RecyclerView.Adapter<LotogolResultadoTimesAdapter.LotogolHolder> {
 
-    private final Context context;
-    private final List<PartidaLotogolDTO> partidaLotogolLista;
-    private final ModalidadeEnum modalidade;
+    private List<PartidaLotogolDTO> partidalotogolLista;
+    private Context context;
+    private ModalidadeEnum modalidade;
 
-    public LotogolResultadoTimesAdapter(final Context context, final List<PartidaLotogolDTO> partidaLotogolLista, final ModalidadeEnum modalidade) {
+    public LotogolResultadoTimesAdapter(Context context, List<PartidaLotogolDTO> partidalotogolLista, ModalidadeEnum modalidade) {
+        this.partidalotogolLista = partidalotogolLista;
         this.context = context;
-        this.partidaLotogolLista = partidaLotogolLista;
         this.modalidade = modalidade;
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
-        final Context context = parent.getContext();
-        final View view = LayoutInflater.from(context).inflate(R.layout.linearlayout_resultado_time_lotogol, parent, false);
-        final ViewHolder viewHolder = new ViewHolder(view);
-        return viewHolder;
+    public LotogolHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        PartidaViewLotogolResultado view = PartidaViewLotogolResultado_.build(parent.getContext());
+        return new LotogolHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, final int position) {
-        EstiloModalidade estilo = new EstiloModalidade(modalidade);
-//        final int numeroResultado = numeroslista.get(position);
-//        holder.textViewTituloNumerosResultados.setText(numeroResultado < 10 ? "0" + numeroResultado : "" + numeroResultado);
-//        GradientDrawable drawable = new GradientDrawable();
-//        drawable.setColor(context.getResources().getColor(estilo.getCorClara()));
-//        drawable.setShape(GradientDrawable.OVAL);
-//        drawable.setSize(ViewUtils.setDisplayMetric(40, context), ViewUtils.setDisplayMetric(40, context));
-//        holder.linearLayoutContentNumerosResultados.setBackground(drawable);
+    public void onBindViewHolder(LotogolHolder holder, int position) {
+        holder.partidaRow.setLayout(partidalotogolLista.get(position));
+        holder.partidaRow.getPaginaResultadoLotogolText().setText(position+1 + " de " + partidalotogolLista.size());
 
-        PartidaLotogolDTO partidaLotogolDTO = new PartidaLotogolDTO();
-        partidaLotogolDTO.setEquipe1(partidaLotogolLista.get(position).getEquipe1());
-        partidaLotogolDTO.setEquipe2(partidaLotogolLista.get(position).getEquipe2());
-        holder.apostaPartidaLotogolView.setLayout(partidaLotogolDTO);
+//        holder.partidaRow.getPaginaResultadoLotecaText().setText(position+1 + " de " + partidalotecaLista.size());
+    }
+
+    @Override
+    public long getItemId(int i) {
+        return 0;
     }
 
     @Override
     public int getItemCount() {
-        return partidaLotogolLista.size();
+        return partidalotogolLista.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        protected ApostaPartidaLotogolView apostaPartidaLotogolView;
+    public class LotogolHolder extends RecyclerView.ViewHolder {
 
-        public ViewHolder(final View itemView) {
+        private PartidaViewLotogolResultado partidaRow;
+
+        LotogolHolder(View itemView) {
             super(itemView);
-            apostaPartidaLotogolView = (ApostaPartidaLotogolView) itemView.findViewById(R.id.resultadoLotogolPartidaView);
+            partidaRow = (PartidaViewLotogolResultado) itemView;
         }
     }
 
+
+
 }
+

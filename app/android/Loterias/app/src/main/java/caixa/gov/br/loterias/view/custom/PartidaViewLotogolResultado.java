@@ -1,0 +1,86 @@
+package caixa.gov.br.loterias.view.custom;
+
+import android.content.Context;
+import android.support.annotation.Nullable;
+import android.util.AttributeSet;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.EViewGroup;
+import org.androidannotations.annotations.ViewById;
+
+import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.model.bo.silce.dto.PartidaLotogolDTO;
+import caixa.gov.br.loterias.utils.EscudoEquipeUtil;
+import caixa.gov.br.loterias.utils.ViewUtils;
+import caixa.gov.br.loterias.view.listener.LotogolListener;
+
+/**
+ * Created by cedesbr450 on 02/04/18.
+ */
+
+@EViewGroup(R.layout.row_partida_lotogol_resultado)
+public class PartidaViewLotogolResultado extends LinearLayout {
+
+    @ViewById
+    LinearLayout rowPartidaLotogol;
+
+    @ViewById
+    ItemEquipeViewLotogolResultado lotogolTimeUm, lotogolTimeDois;
+
+    @ViewById
+    TextView paginaResultadoLotogolText;
+
+    private PartidaLotogolDTO parametroPartida;
+
+    @AfterViews
+    protected void init() {
+
+    }
+
+    public PartidaViewLotogolResultado(Context context) {
+        super(context);
+    }
+
+    public PartidaViewLotogolResultado(Context context, @Nullable AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    public PartidaViewLotogolResultado(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+    }
+
+    public void setLayout(PartidaLotogolDTO parametroPartida) {
+
+        this.parametroPartida = parametroPartida;
+        lotogolTimeUm.setParametroEquipe(parametroPartida.getEquipe1().getParametroEquipe());
+        lotogolTimeDois.setParametroEquipe(parametroPartida.getEquipe2().getParametroEquipe());
+
+        String paisTime1 = (parametroPartida.getEquipe1().getIndicadorSelecao() ? "" : " / " + parametroPartida.getEquipe1().getSiglaPais());
+        String paisTime2 = (parametroPartida.getEquipe2().getIndicadorSelecao() ? "" : " / " + parametroPartida.getEquipe2().getSiglaPais());
+        lotogolTimeUm.getItemImage().setImageResource(R.drawable.time);
+        EscudoEquipeUtil.setEscudo(this.getContext(), parametroPartida.getEquipe1().getParametroEquipe(), lotogolTimeUm.getItemImage());
+
+        lotogolTimeUm.getItemTitle().setText(ViewUtils.fromHtml("<strong>" + parametroPartida.getEquipe1().getNome() + "</strong>" + paisTime1));
+        lotogolTimeUm.getPlacarResultadoIremLotogolText().setText(parametroPartida.getEquipe1().getPlacar());
+
+        lotogolTimeDois.getItemImage().setImageResource(R.drawable.time);
+        EscudoEquipeUtil.setEscudo(this.getContext(), parametroPartida.getEquipe2().getParametroEquipe(), lotogolTimeDois.getItemImage());
+        lotogolTimeDois.getItemTitle().setText(ViewUtils.fromHtml("<strong>" + parametroPartida.getEquipe2().getNome() + "</strong>" + paisTime2));
+        lotogolTimeDois.getPlacarResultadoIremLotogolText().setText(parametroPartida.getEquipe2().getPlacar());
+
+    }
+
+    public LinearLayout getRowPartidaLotogol() {
+        return rowPartidaLotogol;
+    }
+
+    public TextView getPaginaResultadoLotogolText() {
+        return paginaResultadoLotogolText;
+    }
+
+    public void setPaginaResultadoLotogolText(TextView paginaResultadoLotogolText) {
+        this.paginaResultadoLotogolText = paginaResultadoLotogolText;
+    }
+}

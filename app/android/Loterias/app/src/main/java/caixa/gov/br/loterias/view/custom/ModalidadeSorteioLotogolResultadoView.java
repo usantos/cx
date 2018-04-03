@@ -29,8 +29,8 @@ import caixa.gov.br.loterias.view.adapter.LotogolResultadoTimesAdapter;
 
 
 @EViewGroup(R.layout.item_resultado_lotogol)
-public class ModalidadeSorteioLotogolResultadoView extends LinearLayout implements DiscreteScrollView.ScrollListener<LotogolResultadoTimesAdapter.ViewHolder>,
-        DiscreteScrollView.OnItemChangedListener<LotogolResultadoTimesAdapter.ViewHolder> {
+public class ModalidadeSorteioLotogolResultadoView extends LinearLayout implements DiscreteScrollView.ScrollListener<LotogolResultadoTimesAdapter.LotogolHolder>,
+        DiscreteScrollView.OnItemChangedListener<LotogolResultadoTimesAdapter.LotogolHolder> {
 
 
     private Modalidade modalidade;
@@ -122,14 +122,13 @@ public class ModalidadeSorteioLotogolResultadoView extends LinearLayout implemen
         }
     }
 
-
     @Override
-    public void onCurrentItemChanged(@Nullable LotogolResultadoTimesAdapter.ViewHolder viewHolder, int adapterPosition) {
+    public void onCurrentItemChanged(@Nullable LotogolResultadoTimesAdapter.LotogolHolder viewHolder, int adapterPosition) {
 
     }
 
     @Override
-    public void onScroll(float scrollPosition, int currentPosition, int newPosition, @Nullable LotogolResultadoTimesAdapter.ViewHolder currentHolder, @Nullable LotogolResultadoTimesAdapter.ViewHolder newCurrent) {
+    public void onScroll(float scrollPosition, int currentPosition, int newPosition, @Nullable LotogolResultadoTimesAdapter.LotogolHolder currentHolder, @Nullable LotogolResultadoTimesAdapter.LotogolHolder newCurrent) {
 
     }
 }

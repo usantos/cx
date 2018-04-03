@@ -39,11 +39,6 @@ public class PartidaViewLotecaResultado extends LinearLayout {
 
     private PartidaLotecaDTO parametroPartida;
 
-    private LotecaAdapter.LocateAdapterListener listener;
-
-    private static final float DOIS = 2;
-
-    private static final float ZERO= 0;
 
     @AfterViews
     protected void init() {
