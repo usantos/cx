@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -20,6 +21,7 @@ import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bean.Modalidade;
 import caixa.gov.br.loterias.model.bo.silce.dto.PremiacaoConcursoDTO;
 import caixa.gov.br.loterias.utils.EstiloModalidade;
+import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.adapter.NumerosResultadosAdapter;
 
 
@@ -49,6 +51,9 @@ public class ModalideSorteioItemTimeManiaResultadoView extends LinearLayout {
     @ViewById
     protected TextView textTimeCoracao;
 
+    @ViewById
+    protected Button vejaDetalhesButton;
+
     @AfterViews
     protected void init() {
 
@@ -70,6 +75,9 @@ public class ModalideSorteioItemTimeManiaResultadoView extends LinearLayout {
         this.recyclerNumerosResultado.setLayoutManager(new GridLayoutManager(getContext(), numberOfColumns));
         numerosResultadosAdapter = new NumerosResultadosAdapter(getContext(), modalidade.getResultadoConcursoDTO().getNumerosSorteadosPrimeiroSorteio(), modalidade.getTipoModalidade());
         this.recyclerNumerosResultado.setAdapter(numerosResultadosAdapter);
+
+        this.vejaDetalhesButton.setText(ViewUtils.textFuturaAndFuturaBold(getContext(), "Veja mais _detalhes_"));
+
 
     }
 

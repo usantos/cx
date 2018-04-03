@@ -305,7 +305,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                 ViewUtils.setDisplayMetric(280, context)
         );
         data.get(position).setResultadosAberto(true);
-        animacoesResultados.AnimacaoDescerContent(ViewUtils.getRealScreenSize(context).y - ViewUtils.setDisplayMetric(250, context));
+        animacoesResultados.AnimacaoDescerContent(ViewUtils.getRealScreenSize(context).y - ViewUtils.setDisplayMetric(315, context));
         setaDireitaAcaoRelativeLayout.setVisibility(View.VISIBLE);
         setaEsquerdaAcaoRelativeLayout.setVisibility(View.VISIBLE);
     }

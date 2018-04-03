@@ -2,18 +2,15 @@ package caixa.gov.br.loterias.view.custom;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
-import com.yarolegovich.discretescrollview.Orientation;
 import com.yarolegovich.discretescrollview.transform.ScaleTransformer;
 
 import org.androidannotations.annotations.AfterViews;
@@ -26,10 +23,8 @@ import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bean.Modalidade;
 import caixa.gov.br.loterias.model.bo.silce.dto.PremiacaoConcursoDTO;
 import caixa.gov.br.loterias.utils.EstiloModalidade;
-import caixa.gov.br.loterias.view.PrincipalActivity;
-import caixa.gov.br.loterias.view.adapter.HomeAdapter;
+import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.adapter.LotecaResultadoTimesAdapter;
-import caixa.gov.br.loterias.view.adapter.NumerosResultadosAdapter;
 
 /**
  * Created by cedesbr450 on 28/03/18.
@@ -56,6 +51,10 @@ public class ModalidadeSorteioLotecaResultadoView extends LinearLayout implement
     @ViewById
     protected View tracoViewDivisoriaResultado;
 
+    @ViewById
+    protected Button vejaDetalhesButton;
+
+
     @AfterViews
     protected void init() {
 
@@ -80,6 +79,7 @@ public class ModalidadeSorteioLotecaResultadoView extends LinearLayout implement
                 .build());
         this.recyclerPartidasLotecas.addOnItemTouchListener(mScrollTouchListener);
 
+        this.vejaDetalhesButton.setText(ViewUtils.textFuturaAndFuturaBold(getContext(), "Veja mais _detalhes_"));
 
     }
 

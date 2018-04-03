@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -22,7 +23,7 @@ import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bean.Modalidade;
 import caixa.gov.br.loterias.model.bo.silce.dto.PremiacaoConcursoDTO;
 import caixa.gov.br.loterias.utils.EstiloModalidade;
-import caixa.gov.br.loterias.view.adapter.LotecaResultadoTimesAdapter;
+import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.adapter.LotogolResultadoTimesAdapter;
 
 /**
@@ -49,6 +50,10 @@ public class ModalidadeSorteioLotogolResultadoView extends LinearLayout implemen
     @ViewById
     protected View tracoViewDivisoriaResultado;
 
+    @ViewById
+    protected Button vejaDetalhesButton;
+
+
     @AfterViews
     protected void init() {
 
@@ -72,6 +77,8 @@ public class ModalidadeSorteioLotogolResultadoView extends LinearLayout implemen
                 .setMinScale(0.8f)
                 .build());
         this.recyclerPartidasLotogol.addOnItemTouchListener(mScrollTouchListener);
+
+        this.vejaDetalhesButton.setText(ViewUtils.textFuturaAndFuturaBold(getContext(), "Veja mais _detalhes_"));
 
     }
 

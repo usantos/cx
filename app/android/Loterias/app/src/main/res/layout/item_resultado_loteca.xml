@@ -17,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/megasenamedio"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:id="@+id/tracoViewDivisoriaResultado"
         ></View>
     <TextView
@@ -45,6 +45,8 @@
         android:background="@drawable/button_border"
         android:layout_gravity="center_horizontal"
         android:textColor="@color/branco"
-        android:layout_marginVertical="20dp"/>
+        android:layout_marginVertical="20dp"
+        android:id="@+id/vejaDetalhesButton"
+        android:textAllCaps="false"/>
 
 </LinearLayout>
