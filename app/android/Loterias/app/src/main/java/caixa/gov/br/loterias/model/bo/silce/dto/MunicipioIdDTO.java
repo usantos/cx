@@ -14,6 +14,8 @@ package caixa.gov.br.loterias.model.bo.silce.dto;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.parceler.Parcel;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -21,14 +23,15 @@ import io.swagger.annotations.ApiModelProperty;
  * Município
  **/
 @ApiModel(description = "Município")
+@Parcel
 public class MunicipioIdDTO {
 
     @SerializedName("idUF")
-    private Long idUF = null;
+    protected Long idUF = null;
     @SerializedName("numero")
-    private Long numero = null;
+    protected Long numero = null;
     @SerializedName("digitoVerificador")
-    private Long digitoVerificador = null;
+    protected Long digitoVerificador = null;
 
     /**
      * Identificação da UF relacionada ao Municipio

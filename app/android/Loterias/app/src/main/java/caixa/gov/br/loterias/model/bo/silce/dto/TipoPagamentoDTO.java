@@ -23,11 +23,11 @@ import io.swagger.annotations.ApiModelProperty;
 @Parcel
 public class TipoPagamentoDTO {
     @SerializedName("id")
-    private Long id = null;
+    protected Long id = null;
     @SerializedName("descricao")
-    private String descricao = null;
+    protected String descricao = null;
     @SerializedName("canal")
-    private CanalEnum canal = null;
+    protected CanalEnum canal = null;
 
     /**
      * Identificador do local de pagamento

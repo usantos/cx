@@ -239,6 +239,9 @@
     <string name="label_aposta_troca">Aposta\nde troca</string>
     <string name="label_validade_premio">Validade do prêmio:</string>
     <string name="label_noventa_dias">90 dias</string>
+    <string name="label_aposta">aposta</string>
+    <string name="label_apostas">apostas</string>
+    <string name="label_resultado">Resultado</string>
 
     <!--Mock-->
     <string name="label_mock_texto_nao_premiado">Lorem ipsum dolor sit amet,consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo</string>

@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Locale;
 
 import caixa.gov.br.loterias.R;
-import caixa.gov.br.loterias.model.bo.silce.dto.ComprovanteApostaDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.adapter.DezenasAdapter;
 
@@ -43,33 +43,44 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
     protected RecyclerView dezenasRecyclerView;
 
     @FragmentArg
-    protected ComprovanteApostaDTO comprovanteApostaDTO;
+    protected IdentificaoDeUmaApostaDas8Modalidades aposta;
 
     @AfterViews
     protected void init() {
-        concursoTxt.setText(String.format(Locale.getDefault(), "%d", comprovanteApostaDTO.getAposta().getConcursoAlvo()));
-        dataApostaTxt.setText(ViewUtils.getDateAndHour(comprovanteApostaDTO.getAposta().getDataEfetivacao(), comprovanteApostaDTO.getAposta().getHoraEfetivacao()));
-        resultTxt.setText(comprovanteApostaDTO.getAposta().getSituacao().getDescricao());
 
-        if (comprovanteApostaDTO.getAposta().getTroca()) {
+        concursoTxt.setText(String.format(Locale.getDefault(), "%d", aposta.getConcursoAlvo()));
+        dataApostaTxt.setText(ViewUtils.getDateAndHour(aposta.getDataEfetivacao(), aposta.getHoraEfetivacao()));
+        resultTxt.setText(aposta.getSituacao().getDescricao());
+
+        if (aposta.getTroca()) {
             apostaTrocaTxt.setVisibility(View.VISIBLE);
         }
-        if (comprovanteApostaDTO.getAposta().getQuantidadeTeimosinhas() > 0) {
+        if (aposta.getQuantidadeTeimosinhas() > 0) {
             modalidadeTxt.setVisibility(View.VISIBLE);
+            quantidadeApostadasTxt.setVisibility(View.VISIBLE);
+
+            Integer quantidade = aposta.getQuantidadeTeimosinhas();
+            String textoTeimosinha = "";
+            if (quantidade == 1) {
+                textoTeimosinha = String.format(Locale.getDefault(), "%d %s", quantidade, getActivity().getString(R.string.label_aposta));
+            } else {
+                textoTeimosinha = String.format(Locale.getDefault(), "%d %s", quantidade, getActivity().getString(R.string.label_apostas));
+            }
+            quantidadeApostadasTxt.setText(textoTeimosinha);
         }
-        if (comprovanteApostaDTO.getAposta().getTimeDoCoracao() != null) {
+        if (aposta.getTimeDoCoracao() != null) {
             timeCoracaoLayout.setVisibility(View.VISIBLE);
-            timeCoracaoTxt.setText(comprovanteApostaDTO.getAposta().getTimeDoCoracao().getNome());
+            timeCoracaoTxt.setText(aposta.getTimeDoCoracao().getNome());
         }
-        if (getActivity().getString(R.string.label_efetivada).equalsIgnoreCase(comprovanteApostaDTO.getAposta().getSituacao().getDescricao())) {
+        if (getActivity().getString(R.string.label_efetivada).equalsIgnoreCase(aposta.getSituacao().getDescricao())) {
             conferirResultadoButton.setVisibility(View.VISIBLE);
         }
-        initDezenasGridView();
+        initdezenasRecyclerView();
     }
 
-    private void initDezenasGridView() {
+    private void initdezenasRecyclerView() {
 
-        if (!comprovanteApostaDTO.getAposta().getNumerosSelecionados().isEmpty()) {
+        if (!aposta.getNumerosSelecionados().isEmpty()) {
             dezenasRecyclerView.setAdapter(new DezenasAdapter(listIntegerToListString()));
             dezenasRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         }
@@ -80,15 +91,15 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
         List<String> lines = new ArrayList<>();
         StringBuilder lineSB = new StringBuilder();
 
-        for (int i = 0; i < comprovanteApostaDTO.getAposta().getNumerosSelecionados().size(); i++) {
+        for (int i = 0; i < aposta.getNumerosSelecionados().size(); i++) {
             if (i == 0) {
-                lineSB.append(ViewUtils.getNumberIntegerToString(comprovanteApostaDTO.getAposta().getNumerosSelecionados().get(i)));
+                lineSB.append(ViewUtils.getNumberIntegerToString(aposta.getNumerosSelecionados().get(i)));
             } else if (i % 5 == 0) {
                 lines.add(lineSB.toString());
                 lineSB = new StringBuilder();
-                lineSB.append(ViewUtils.getNumberIntegerToString(comprovanteApostaDTO.getAposta().getNumerosSelecionados().get(i)));
+                lineSB.append(ViewUtils.getNumberIntegerToString(aposta.getNumerosSelecionados().get(i)));
             } else {
-                lineSB.append(String.format("  -  %s", ViewUtils.getNumberIntegerToString(comprovanteApostaDTO.getAposta().getNumerosSelecionados().get(i))));
+                lineSB.append(String.format(" - %s", ViewUtils.getNumberIntegerToString(aposta.getNumerosSelecionados().get(i))));
             }
         }
         lines.add(lineSB.toString());

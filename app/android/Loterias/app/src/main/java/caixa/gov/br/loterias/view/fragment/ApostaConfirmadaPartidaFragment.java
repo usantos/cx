@@ -16,7 +16,9 @@ import org.androidannotations.annotations.ViewById;
 import java.util.Locale;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.model.bo.silce.dto.ApostaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ComprovanteApostaDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.adapter.DetalheApostaConfirmadaLotecaAdapter;
 import caixa.gov.br.loterias.view.adapter.DetalheApostaConfirmadaLotogolAdapter;
@@ -38,7 +40,7 @@ public class ApostaConfirmadaPartidaFragment extends Fragment {
     protected Button conferirResultadoButton;
 
     @FragmentArg
-    protected ComprovanteApostaDTO comprovanteApostaDTO;
+    protected IdentificaoDeUmaApostaDas8Modalidades aposta;
 
 
     @FragmentArg
@@ -46,11 +48,12 @@ public class ApostaConfirmadaPartidaFragment extends Fragment {
 
     @AfterViews
     public void init() {
-        concursoCabecalhoTextView.setText(String.format(Locale.getDefault(), "%d", comprovanteApostaDTO.getAposta().getConcursoAlvo()));
-        concursoRodaPeTextView.setText(String.format(Locale.getDefault(), "%d", comprovanteApostaDTO.getAposta().getConcursoAlvo()));
-        dataHoraTextView.setText(ViewUtils.getDateAndHour(comprovanteApostaDTO.getAposta().getDataEfetivacao(), comprovanteApostaDTO.getAposta().getHoraEfetivacao()));
-        statusApostaTextView.setText(comprovanteApostaDTO.getAposta().getSituacao().getDescricao());
-        if (getActivity().getString(R.string.label_efetivada).equalsIgnoreCase(comprovanteApostaDTO.getAposta().getSituacao().getDescricao())) {
+
+        concursoCabecalhoTextView.setText(String.format(Locale.getDefault(), "%d", aposta.getConcursoAlvo()));
+        concursoRodaPeTextView.setText(String.format(Locale.getDefault(), "%d", aposta.getConcursoAlvo()));
+        dataHoraTextView.setText(ViewUtils.getDateAndHour(aposta.getDataEfetivacao(), aposta.getHoraEfetivacao()));
+        statusApostaTextView.setText(aposta.getSituacao().getDescricao());
+        if (getActivity().getString(R.string.label_efetivada).equalsIgnoreCase(aposta.getSituacao().getDescricao())) {
             conferirResultadoButton.setVisibility(View.VISIBLE);
         }
 
@@ -66,9 +69,9 @@ public class ApostaConfirmadaPartidaFragment extends Fragment {
 
         if (loteca) {
             cabecalhoLotecaLinearLayout.setVisibility(View.VISIBLE);
-            listaPartidasApostadasExpandebleRecyclerView.setAdapter(new DetalheApostaConfirmadaLotecaAdapter(comprovanteApostaDTO.getAposta().getPartidasLoteca()));
+            listaPartidasApostadasExpandebleRecyclerView.setAdapter(new DetalheApostaConfirmadaLotecaAdapter(aposta.getPartidasLoteca()));
         } else {
-            listaPartidasApostadasExpandebleRecyclerView.setAdapter(new DetalheApostaConfirmadaLotogolAdapter(comprovanteApostaDTO.getAposta().getPartidasLotogol()));
+            listaPartidasApostadasExpandebleRecyclerView.setAdapter(new DetalheApostaConfirmadaLotogolAdapter(aposta.getPartidasLotogol()));
         }
 
         listaPartidasApostadasExpandebleRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

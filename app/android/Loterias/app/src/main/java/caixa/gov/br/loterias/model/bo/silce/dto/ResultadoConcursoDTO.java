@@ -14,6 +14,8 @@ package caixa.gov.br.loterias.model.bo.silce.dto;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.parceler.Parcel;
+
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -21,48 +23,49 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel(description = "")
+@Parcel
 public class ResultadoConcursoDTO {
 
     @SerializedName("municipioSorteio")
-    private MunicipioDTO municipioSorteio = null;
+    protected MunicipioDTO municipioSorteio = null;
     @SerializedName("ufSorteio")
-    private UnidadeFederacaoDTO ufSorteio = null;
+    protected UnidadeFederacaoDTO ufSorteio = null;
     @SerializedName("aviso")
-    private String aviso = null;
+    protected String aviso = null;
     @SerializedName("arrecadacaoTotal")
-    private BigDecimal arrecadacaoTotal = null;
+    protected BigDecimal arrecadacaoTotal = null;
     @SerializedName("acumuladoParaProximoConcurso")
-    private BigDecimal acumuladoParaProximoConcurso = null;
+    protected BigDecimal acumuladoParaProximoConcurso = null;
     @SerializedName("acumulou")
-    private Boolean acumulou = null;
+    protected Boolean acumulou = null;
     @SerializedName("numerosSorteadosPrimeiroSorteio")
-    private List<Integer> numerosSorteadosPrimeiroSorteio = null;
+    protected List<Integer> numerosSorteadosPrimeiroSorteio = null;
     @SerializedName("numerosSorteadosSegundoSorteio")
-    private List<Integer> numerosSorteadosSegundoSorteio = null;
+    protected List<Integer> numerosSorteadosSegundoSorteio = null;
     @SerializedName("partidasLotogol")
-    private List<PartidaLotogolDTO> partidasLotogol = null;
+    protected List<PartidaLotogolDTO> partidasLotogol = null;
     @SerializedName("partidasLoteca")
-    private List<PartidaLotecaDTO> partidasLoteca = null;
+    protected List<PartidaLotecaDTO> partidasLoteca = null;
     @SerializedName("concurso")
-    private ConcursoDTO concurso = null;
+    protected ConcursoDTO concurso = null;
     @SerializedName("proximoConcurso")
-    private ConcursoDTO proximoConcurso = null;
+    protected ConcursoDTO proximoConcurso = null;
     @SerializedName("proximoConcursoFinalZero")
-    private ConcursoDTO proximoConcursoFinalZero = null;
+    protected ConcursoDTO proximoConcursoFinalZero = null;
     @SerializedName("proximoConcursoFinalCinco")
-    private ConcursoDTO proximoConcursoFinalCinco = null;
+    protected ConcursoDTO proximoConcursoFinalCinco = null;
     @SerializedName("proximoConcursoEspecial")
-    private ConcursoDTO proximoConcursoEspecial = null;
+    protected ConcursoDTO proximoConcursoEspecial = null;
     @SerializedName("premiacoesPrimeiroSorteio")
-    private List<PremiacaoConcursoDTO> premiacoesPrimeiroSorteio = null;
+    protected List<PremiacaoConcursoDTO> premiacoesPrimeiroSorteio = null;
     @SerializedName("premiacoesSegundoSorteio")
-    private List<PremiacaoConcursoDTO> premiacoesSegundoSorteio = null;
+    protected List<PremiacaoConcursoDTO> premiacoesSegundoSorteio = null;
     @SerializedName("premiacaoTimeDoCoracao")
-    private PremiacaoTimeDoCoracaoDTO premiacaoTimeDoCoracao = null;
+    protected PremiacaoTimeDoCoracaoDTO premiacaoTimeDoCoracao = null;
     @SerializedName("ganhadoresPrimeiroSorteio")
-    private List<GanhadoresPorRegiaoDTO> ganhadoresPrimeiroSorteio = null;
+    protected List<GanhadoresPorRegiaoDTO> ganhadoresPrimeiroSorteio = null;
     @SerializedName("ganhadoresSegundoSorteio")
-    private List<GanhadoresPorRegiaoDTO> ganhadoresSegundoSorteio = null;
+    protected List<GanhadoresPorRegiaoDTO> ganhadoresSegundoSorteio = null;
 
     /**
      **/

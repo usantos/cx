@@ -24,9 +24,13 @@ import org.androidannotations.annotations.ViewById;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.silce.dto.ComprovanteApostaDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.DetalhesPremioDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
+import caixa.gov.br.loterias.model.bo.silce.dto.ResultadoConcursoDTO;
 import caixa.gov.br.loterias.utils.AppUtils;
 import caixa.gov.br.loterias.utils.EstiloModalidade;
 import caixa.gov.br.loterias.utils.ViewUtils;
+import caixa.gov.br.loterias.view.fragment.ApostaConfirmadaNumeroDetalhesPremioPago_;
 import caixa.gov.br.loterias.view.fragment.ApostaConfirmadaPartidaFragment_;
 import caixa.gov.br.loterias.view.fragment.ApostaConfirmadaNumeroDetalhes_;
 
@@ -41,6 +45,12 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
     @Extra
     protected ComprovanteApostaDTO comprovanteApostaDTO;
 
+    @Extra
+    protected DetalhesPremioDTO detalhesPremioDTO;
+
+    @Extra
+    protected ResultadoConcursoDTO resultadoConcursoDTO;
+
     @ViewById
     protected FrameLayout fragmentContainer;
 
@@ -54,6 +64,10 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
     protected ImageView validadePremioImage, comprovanteImage, comprovanteImpressaoImage;
 
     private EstiloModalidade estilo;
+
+    private IdentificaoDeUmaApostaDas8Modalidades aposta;
+
+    private boolean premioPago;
 
     @Click
     protected void carrinhoApostasBtn() {
@@ -79,7 +93,15 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        estilo = new EstiloModalidade(comprovanteApostaDTO.getAposta().getModalidade());
+        if (comprovanteApostaDTO != null) {
+            premioPago = Boolean.FALSE;
+            aposta = comprovanteApostaDTO.getAposta();
+        } else {
+            premioPago = Boolean.TRUE;
+            aposta = detalhesPremioDTO.getAposta();
+        }
+
+        estilo = new EstiloModalidade(aposta.getModalidade());
         setTheme(estilo.getThemeId());
         setTitle(AppUtils.capitalizeFirstChar(getString(estilo.getStringId())));
     }
@@ -113,21 +135,27 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
             ViewUtils.setColorDrawable(this, comprovanteImage.getDrawable(), estilo.getIconValidadeComprovanteColor());
             ViewUtils.setColorDrawable(this, comprovanteImpressaoImage.getDrawable(), estilo.getIconImpressoraColor());
         }
+        if (premioPago) {
+            comprovanteText.setText(detalhesPremioDTO.getNsbi());
+        } else {
+            comprovanteText.setText(comprovanteApostaDTO.getNsbi());
+        }
 
         Fragment fragment;
 
-        switch (comprovanteApostaDTO.getAposta().getModalidade()) {
+        switch (aposta.getModalidade()) {
             case LOTOGOL:
-                fragment = ApostaConfirmadaPartidaFragment_.builder().comprovanteApostaDTO(comprovanteApostaDTO).loteca(Boolean.FALSE).build();
+                fragment = ApostaConfirmadaPartidaFragment_.builder().aposta(aposta).loteca(Boolean.FALSE).build();
                 break;
             case LOTECA:
-                fragment = ApostaConfirmadaPartidaFragment_.builder().comprovanteApostaDTO(comprovanteApostaDTO).loteca(Boolean.TRUE).build();
+                fragment = ApostaConfirmadaPartidaFragment_.builder().aposta(aposta).loteca(Boolean.TRUE).build();
                 break;
             default:
-                fragment = ApostaConfirmadaNumeroDetalhes_
-                        .builder()
-                        .comprovanteApostaDTO(comprovanteApostaDTO)
-                        .build();
+                if (premioPago) {
+                    fragment = ApostaConfirmadaNumeroDetalhesPremioPago_.builder().aposta(aposta).resultadoConcursoDTO(resultadoConcursoDTO).build();
+                } else {
+                    fragment = ApostaConfirmadaNumeroDetalhes_.builder().aposta(aposta).build();
+                }
                 break;
         }
 

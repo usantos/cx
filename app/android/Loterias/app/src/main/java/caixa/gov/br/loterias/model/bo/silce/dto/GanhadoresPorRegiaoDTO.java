@@ -14,18 +14,21 @@ package caixa.gov.br.loterias.model.bo.silce.dto;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.parceler.Parcel;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel(description = "")
+@Parcel
 public class GanhadoresPorRegiaoDTO {
 
     @SerializedName("municipioSorteio")
-    private MunicipioDTO municipioSorteio = null;
+    protected MunicipioDTO municipioSorteio = null;
     @SerializedName("ufSorteio")
-    private UnidadeFederacaoDTO ufSorteio = null;
+    protected UnidadeFederacaoDTO ufSorteio = null;
     @SerializedName("descricao")
-    private String descricao = null;
+    protected String descricao = null;
 
     /**
      **/

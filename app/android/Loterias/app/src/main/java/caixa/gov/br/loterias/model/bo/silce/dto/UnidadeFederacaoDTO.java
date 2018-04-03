@@ -14,18 +14,21 @@ package caixa.gov.br.loterias.model.bo.silce.dto;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.parceler.Parcel;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel(description = "")
+@Parcel
 public class UnidadeFederacaoDTO {
 
     @SerializedName("id")
-    private Long id = null;
+    protected Long id = null;
     @SerializedName("sigla")
-    private String sigla = null;
+    protected String sigla = null;
     @SerializedName("nome")
-    private String nome = null;
+    protected String nome = null;
 
     /**
      * Identificação da UF
