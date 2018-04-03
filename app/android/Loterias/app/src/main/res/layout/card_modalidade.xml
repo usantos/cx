@@ -20,16 +20,22 @@
             android:layout_gravity="center_horizontal"
             android:background="@color/megasenaescuro"
             >
-
-            <ImageView
-                android:layout_width="8dp"
-                android:layout_height="12dp"
-                android:src="@drawable/seta_esquerda"
+            <RelativeLayout
+                android:layout_width="32dp"
+                android:layout_height="32dp"
                 android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="17dp"
-                />
+                android:id="@+id/setaEsquerdaAcaoRelativeLayout"
+                android:visibility="invisible"
+                >
+                <ImageView
+                    android:layout_width="8dp"
+                    android:layout_height="12dp"
+                    android:layout_marginLeft="17dp"
+                    android:src="@drawable/seta_esquerda"
+                    android:layout_centerInParent="true"
+                    />
 
+            </RelativeLayout>
             <Button
                 android:id="@+id/buttonActionResultadosModalidade"
                 style="@style/editTextArialMTTheme"
@@ -44,14 +50,22 @@
                 android:layout_centerVertical="true"
 
                 />
-
-            <ImageView
-                android:layout_width="8dp"
-                android:layout_height="12dp"
-                android:src="@drawable/seta_direita"
+            <RelativeLayout
+                android:layout_width="32dp"
+                android:layout_height="32dp"
                 android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="17dp"
+                android:id="@+id/setaDireitaAcaoRelativeLayout"
+                android:visibility="invisible"
+                >
+                <ImageView
+                    android:layout_width="8dp"
+                    android:layout_height="12dp"
+                    android:src="@drawable/seta_direita"
+                    android:layout_centerInParent="true"
+                    android:layout_marginRight="17dp"/>
+
+            </RelativeLayout>
+
 
                 />
         </RelativeLayout>
