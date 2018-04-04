@@ -24,6 +24,7 @@ import caixa.gov.br.loterias.model.bean.Modalidade;
 import caixa.gov.br.loterias.model.bo.silce.dto.PremiacaoConcursoDTO;
 import caixa.gov.br.loterias.utils.EstiloModalidade;
 import caixa.gov.br.loterias.utils.ViewUtils;
+import caixa.gov.br.loterias.view.PrincipalActivity;
 import caixa.gov.br.loterias.view.adapter.LotogolResultadoTimesAdapter;
 
 /**
@@ -95,7 +96,7 @@ public class ModalidadeSorteioLotogolResultadoView extends LinearLayout implemen
                 partidaViewDetalhesResultadoView.mostrarDetalhes(false, item_resultado_content_view, partidaViewDetalhesResultadoView);
             }
         });
-        
+
     }
 
     public ModalidadeSorteioLotogolResultadoView(Context context) {
@@ -164,7 +165,8 @@ public class ModalidadeSorteioLotogolResultadoView extends LinearLayout implemen
             int action = e.getAction();
             switch (action) {
                 case MotionEvent.ACTION_MOVE:
-                    rv.getParent().requestDisallowInterceptTouchEvent(true);
+                    ((PrincipalActivity) getContext()).homeCarousel.requestDisallowInterceptTouchEvent(true);
+//                    rv.getParent().requestDisallowInterceptTouchEvent(true);
                     break;
             }
             return false;
