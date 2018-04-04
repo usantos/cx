@@ -204,6 +204,7 @@
         <item name="android:fontFamily">@font/arialmt</item>
         <item name="android:textColor">@color/branco</item>
         <item name="android:textSize">14.2sp</item>
+        <item name="android:lines">2</item>
     </style>
 
 

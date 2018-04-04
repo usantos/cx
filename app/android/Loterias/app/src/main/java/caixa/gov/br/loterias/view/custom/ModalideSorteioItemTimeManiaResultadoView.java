@@ -43,7 +43,7 @@ public class ModalideSorteioItemTimeManiaResultadoView extends LinearLayout {
 
 
     @ViewById
-    protected LinearLayout linearlayoutPremiadosListaText;
+    protected LinearLayout linearlayoutPremiadosListaText, item_resultado_content_view;
 
     @ViewById
     protected View tracoViewDivisoriaResultado;
@@ -53,6 +53,9 @@ public class ModalideSorteioItemTimeManiaResultadoView extends LinearLayout {
 
     @ViewById
     protected Button vejaDetalhesButton;
+
+    @ViewById
+    protected PartidaViewDetalhesResultado partidaViewDetalhesResultadoView;
 
     @AfterViews
     protected void init() {
@@ -78,7 +81,19 @@ public class ModalideSorteioItemTimeManiaResultadoView extends LinearLayout {
 
         this.vejaDetalhesButton.setText(ViewUtils.textFuturaAndFuturaBold(getContext(), "Veja mais _detalhes_"));
 
-
+        this.partidaViewDetalhesResultadoView.setLayout(modalidade);
+        this.vejaDetalhesButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                partidaViewDetalhesResultadoView.mostrarDetalhes(true, item_resultado_content_view, partidaViewDetalhesResultadoView);
+            }
+        });
+        this.partidaViewDetalhesResultadoView.getVoltarButton().setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                partidaViewDetalhesResultadoView.mostrarDetalhes(false, item_resultado_content_view, partidaViewDetalhesResultadoView);
+            }
+        });
     }
 
     public ModalideSorteioItemTimeManiaResultadoView(Context context) {

@@ -78,7 +78,7 @@ public class ModalidadeSorteioItemUmConcursoResultadoView extends LinearLayout {
 
         this.vejaDetalhesButton.setText(ViewUtils.textFuturaAndFuturaBold(getContext(), "Veja mais _detalhes_"));
 
-        this.partidaViewDetalhesResultadoView.setLayout();
+        this.partidaViewDetalhesResultadoView.setLayout(modalidade);
         this.vejaDetalhesButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {

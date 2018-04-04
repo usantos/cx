@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     >
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/item_resultado_content_view">
     <com.yarolegovich.discretescrollview.DiscreteScrollView
         android:id="@+id/recyclerPartidasLotogol"
         android:layout_width="match_parent"
@@ -49,5 +52,11 @@
         android:layout_marginVertical="20dp"
         android:id="@+id/vejaDetalhesButton"
         android:textAllCaps="false"/>
-
-</LinearLayout>
+    </LinearLayout>
+    <caixa.gov.br.loterias.view.custom.PartidaViewDetalhesResultado_
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:id="@+id/partidaViewDetalhesResultadoView"
+        />
+</RelativeLayout>
