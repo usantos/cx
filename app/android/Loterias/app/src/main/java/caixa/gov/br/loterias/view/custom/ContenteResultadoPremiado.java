@@ -6,7 +6,6 @@ import android.util.AttributeSet;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
 
@@ -21,7 +20,7 @@ import caixa.gov.br.loterias.R;
 public class ContenteResultadoPremiado extends LinearLayout {
 
     @ViewById
-    protected LinearLayout topoModalidadeResultadoLinearLayout, fundoBackgroundTrapezeResultadoLinearLayout, topo2ModalidadeResultadoLinearLayout;
+    protected LinearLayout topoModalidadeResultadoLinearLayout, fundoBackgroundTrapezeResultadoLinearLayout, topo2ModalidadeResultadoLinearLayout, premioGanhoLinearLayout;
 
     @ViewById
     protected TextView tituloModalidadeTextView, aberturaApostaResultadoTextView, encerramentoResultadoTextView, proximoSorteioTextView, limiteDiarioResultadoTextView, premioResultadoTextView;
@@ -79,5 +78,9 @@ public class ContenteResultadoPremiado extends LinearLayout {
 
     public ExpandableHeightRecyclerView getListaFaixaPremiacaoExpandableHeightRecyclerView() {
         return listaFaixaPremiacaoExpandableHeightRecyclerView;
+    }
+
+    public LinearLayout getPremioGanhoLinearLayout() {
+        return premioGanhoLinearLayout;
     }
 }

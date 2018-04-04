@@ -245,12 +245,18 @@
     <string name="label_loterica">Lotérica</string>
     <string name="label_agencia_caixa">Agência\nCaixa</string>
     <string name="label_mercado_pago">Mercado\nPago</string>
+    <string name="label_premio_pago">Prêmio Pago</string>
+    <string name="label_diriga_agencia_preferencia">Dirija-se à agência de sua preferência</string>
+    <string name="label_diriga_loterica_preferencia">Dirija-se à lotérica de sua preferência</string>
+    <string name="label_apresente_recibo_documento_identificacao_originais">Apresente seu recibo de aposta e seu documento de identificação originais</string>
+    <string name="label_apresente_recibo_aposta">Apresente seu recibo de aposta</string>
+    <string name="label_premio_sub_titulo_resultado_valor">Você pode receber o seu prêmio em qualquer unidade lotérica (caso não possua incidência de Imposto de Renda) ou em qualquer agência da CAIXA.</string>
+    <string name="label_receber_agencia">Para receber em uma Agência</string>
+    <string name="label_receber_unidade_loterica">Para receber em uma Unidade Lotérica</string>
+    <string name="label_numerico_um">1</string>
+    <string name="label_numerico_dois">2</string>
 
     <!--Mock-->
-    <string name="label_mock_texto_nao_premiado">Lorem ipsum dolor sit amet,consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo</string>
-    <string name="label_mock_titulo_como_retirar_premio">Lorem ipsum dolor sit amet.</string>
-    <string name="label_mock_sub_titulo_como_retirar_premio">Adipisicing elit, sed do eiusmod tempor.</string>
-    <string name="label_mock_lista_como_retirar_premio">Sed do eiudsmod;</string>
     <string name="title_activity_restrito_dezoito_anos">RestritoDezoitoAnosActivity</string>
 
     <!-- TODO: Remove or change this placeholder text -->

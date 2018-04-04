@@ -6,7 +6,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,12 +17,12 @@ import android.widget.TextView;
 import com.android.volley.VolleyError;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.math.BigDecimal;
 import java.util.Objects;
 
 import caixa.gov.br.loterias.R;
@@ -32,24 +31,23 @@ import caixa.gov.br.loterias.model.bo.ApostaBO;
 import caixa.gov.br.loterias.model.bo.ApostaBO_;
 import caixa.gov.br.loterias.model.bo.MensagensNetwork;
 import caixa.gov.br.loterias.model.bo.RequestListener;
-import caixa.gov.br.loterias.model.bo.silce.dto.ConcursoPremiadoDTO;
-import caixa.gov.br.loterias.model.bo.silce.dto.FaixaPremiadaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ModalidadeEnum;
 import caixa.gov.br.loterias.model.bo.silce.dto.ParametroSimulacao;
 import caixa.gov.br.loterias.model.bo.silce.dto.ResultadoConsultaBilheteDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ResultadoConsultaBilheteDTOResponse;
-import caixa.gov.br.loterias.model.bo.silce.dto.SituacaoEnum;
 import caixa.gov.br.loterias.model.bo.silce.dto.SituacaoResultadoBilheteEnum;
 import caixa.gov.br.loterias.utils.EstiloModalidade;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.adapter.FaixaPremiacaoAdapter;
-import caixa.gov.br.loterias.view.adapter.RetirarPremioDescricaoAdapter;
 import caixa.gov.br.loterias.view.custom.ContenteResultadoPremiado;
 import caixa.gov.br.loterias.view.custom.ExpandableHeightRecyclerView;
 import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
 
 @EActivity(R.layout.activity_resultado_ler_bilhetes)
 public class ResultadoLerBilhetesActivity extends AppCompatActivity {
+
+    @Bean
+    protected ApostaBO apostaBO;
 
     @ViewById
     protected Toolbar toolbar;
@@ -58,13 +56,11 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
     protected ScrollView resultadoApostaScrollView;
 
     @ViewById
-    protected LinearLayout corpoBilhetePremiadoLinearLayout, corpoBilheteNaoPremiadoLinearLayout, premioGanhoLinearLayout, mensagemNaoPremiadoLinearLayout;
+    protected LinearLayout corpoBilhetePremiadoLinearLayout, corpoBilheteNaoPremiadoLinearLayout, premioGanhoLinearLayout, mensagemNaoPremiadoLinearLayout,
+            informacoesPremioZeradoLayout, informacoesPremioLayout;
 
     @ViewById
     protected TextView mensagemNaoPremiadoTextView, statusResultadoNaoPremiadTextView;
-
-    @ViewById
-    protected ExpandableHeightRecyclerView listaComoRetirarPremio;
 
     @ViewById
     protected ContenteResultadoPremiado contenteResultadoPremiado;
@@ -77,8 +73,9 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
     @AfterViews
     public void init() {
         resultadoApostaScrollView.fullScroll(View.FOCUS_UP);
+        contenteResultadoPremiado.getPremioGanhoLinearLayout().setVisibility(View.GONE);
         createToolBar();
-        postLerBilhetes(ApostaBO_.getInstance_(this), this, codBarras);
+        postLerBilhetes();
     }
 
     @Override
@@ -120,10 +117,10 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
     }
 
 
-    private void postLerBilhetes(ApostaBO apostaBO, Activity activity, String CodBarra) {
-        final AlertDialog alert = LoadingViewLoterias.show(activity);
+    private void postLerBilhetes() {
+        final AlertDialog alert = LoadingViewLoterias.show(this);
 
-        apostaBO.postConferirBilhetes(CodBarra, new RequestListener<ResultadoConsultaBilheteDTOResponse>() {
+        apostaBO.postConferirBilhetes(codBarras, new RequestListener<ResultadoConsultaBilheteDTOResponse>() {
             @Override
             public void onResponse(ResultadoConsultaBilheteDTOResponse response) {
                 alert.dismiss();
@@ -158,7 +155,14 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
         contenteResultadoPremiado.getFundoBackgroundTrapezeResultadoLinearLayout().setBackground(ContextCompat.getDrawable(this, estiloModalidade.getTrevoBackground()));
         contenteResultadoPremiado.getTituloModalidadeTextView().setText(resultadoConsultaBilheteDTO.getModalidadeDTO().getDescricao());
         contenteResultadoPremiado.getLimiteDiarioResultadoTextView().setText(ViewUtils.getMoedaFormat(sessaoUsuario.getParametrosSimulacao().getValorLimiteDiario()));
-        contenteResultadoPremiado.getPremioResultadoTextView().setText(ViewUtils.getMoedaFormat(resultadoConsultaBilheteDTO.getValorPremio()));
+
+        if (resultadoConsultaBilheteDTO.getValorPremio() != null && !(BigDecimal.ZERO.compareTo(resultadoConsultaBilheteDTO.getValorPremio()) == 0)) {
+            informacoesPremioZeradoLayout.setVisibility(View.GONE);
+            informacoesPremioLayout.setVisibility(View.VISIBLE);
+            contenteResultadoPremiado.getPremioResultadoTextView().setText(ViewUtils.getMoedaFormat(resultadoConsultaBilheteDTO.getValorPremio()));
+            contenteResultadoPremiado.getPremioGanhoLinearLayout().setVisibility(View.VISIBLE);
+            createListPremiacao();
+        }
 
         if (parametroSimulacao != null) {
             if (parametroSimulacao.getProximoConcurso() != null) {
@@ -167,22 +171,18 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
                 contenteResultadoPremiado.getEncerramentoResultadoTextView().setText(ViewUtils.getDateAndHour(parametroSimulacao.getParametroJogo().getConcurso().getDataFechamento()));
             }
         }
-        createListPremiacao();
-        listaMockDadosComoRetirarPremio();
     }
 
     private void atualizarLayoutNaoPremiado() {
         corpoBilhetePremiadoLinearLayout.setVisibility(View.GONE);
         corpoBilheteNaoPremiadoLinearLayout.setVisibility(View.VISIBLE);
 
-        if (Objects.equals(resultadoConsultaBilheteDTO.getSituacao().getValor(), SituacaoResultadoBilheteEnum.NAO_APURADO.getValor())) {
-            statusResultadoNaoPremiadTextView.setText(R.string.label_nao_apurado);
-        } else if (Objects.equals(resultadoConsultaBilheteDTO.getSituacao().getValor(), SituacaoResultadoBilheteEnum.PRESCRITA.getValor())) {
-            statusResultadoNaoPremiadTextView.setText(R.string.label_concurso_prescrito);
+        if (Objects.equals(resultadoConsultaBilheteDTO.getSituacao().getValor(), SituacaoResultadoBilheteEnum.PAGA.getValor())) {
+            statusResultadoNaoPremiadTextView.setText(R.string.label_premio_pago);
         } else {
             statusResultadoNaoPremiadTextView.setText(R.string.label_nao_foi_dessa_vez);
         }
-        mensagemNaoPremiadoTextView.setText(R.string.label_mock_texto_nao_premiado);
+        mensagemNaoPremiadoTextView.setText(resultadoConsultaBilheteDTO.getSituacao().getDescricao());
     }
 
     private void createToolBar() {
@@ -199,18 +199,5 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
         listaFaixaPremiacaoExpandableHeightRecyclerView.setAdapter(new FaixaPremiacaoAdapter(ViewUtils.getFaixaPremiacaoDTO(resultadoConsultaBilheteDTO.getPremioDTO())));
         listaFaixaPremiacaoExpandableHeightRecyclerView.setExpanded(Boolean.TRUE);
         listaFaixaPremiacaoExpandableHeightRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-    }
-
-    //TODO mock de dados, ainda não determinado texto
-    private void listaMockDadosComoRetirarPremio() {
-        List<String> mockList = new ArrayList<>();
-
-        for (int i = 0; i < 3; i++) {
-            mockList.add("");
-        }
-
-        listaComoRetirarPremio.setAdapter(new RetirarPremioDescricaoAdapter(mockList));
-        listaComoRetirarPremio.setExpanded(Boolean.TRUE);
-        listaComoRetirarPremio.setLayoutManager(new LinearLayoutManager(this));
     }
 }
