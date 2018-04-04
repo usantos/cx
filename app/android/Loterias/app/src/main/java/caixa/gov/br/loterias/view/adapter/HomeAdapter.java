@@ -163,7 +163,11 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         if(data.get(position).getResultadosAberto() == true){
             ViewGroup.LayoutParams layoutParams = holder.linearLayoutResultadosApostas.getLayoutParams();
             layoutParams.height = ViewUtils.getRealScreenSize(context).y - ViewUtils.setDisplayMetric(250, context);
+            layoutParams.width = ViewUtils.setDisplayMetric(280, context);
             holder.linearLayoutResultadosApostas.setLayoutParams(layoutParams);
+
+            holder.setaDireitaAcaoRelativeLayout.setVisibility(View.VISIBLE);
+            holder.setaEsquerdaAcaoRelativeLayout.setVisibility(View.VISIBLE);
         }else{
             ViewGroup.LayoutParams layoutParams = holder.linearLayoutResultadosApostas.getLayoutParams();
             layoutParams.height = 0;
