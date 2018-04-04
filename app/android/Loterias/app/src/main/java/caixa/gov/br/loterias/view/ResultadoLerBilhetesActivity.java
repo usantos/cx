@@ -151,7 +151,7 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
         ModalidadeEnum modalidadeEnum = ModalidadeEnum.toString(resultadoConsultaBilheteDTO.getModalidadeDTO().getDescricao().toLowerCase());
         EstiloModalidade estiloModalidade = new EstiloModalidade(modalidadeEnum);
         SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
-        ParametroSimulacao parametroSimulacao = getParametroJogo(sessaoUsuario, modalidadeEnum);
+        ParametroSimulacao parametroSimulacao = ViewUtils.getParametroJogo(sessaoUsuario, modalidadeEnum);
 
         contenteResultadoPremiado.getTopoModalidadeResultadoLinearLayout().setBackgroundColor(ContextCompat.getColor(this, estiloModalidade.getCorClara()));
         contenteResultadoPremiado.getTopo2ModalidadeResultadoLinearLayout().setBackgroundColor(ContextCompat.getColor(this, estiloModalidade.getCorEscura()));
@@ -196,26 +196,9 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
     private void createListPremiacao() {
         ExpandableHeightRecyclerView listaFaixaPremiacaoExpandableHeightRecyclerView = contenteResultadoPremiado.getListaFaixaPremiacaoExpandableHeightRecyclerView();
 
-        listaFaixaPremiacaoExpandableHeightRecyclerView.setAdapter(new FaixaPremiacaoAdapter(getFaixaPremiacaoDTO()));
+        listaFaixaPremiacaoExpandableHeightRecyclerView.setAdapter(new FaixaPremiacaoAdapter(ViewUtils.getFaixaPremiacaoDTO(resultadoConsultaBilheteDTO.getPremioDTO())));
         listaFaixaPremiacaoExpandableHeightRecyclerView.setExpanded(Boolean.TRUE);
         listaFaixaPremiacaoExpandableHeightRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-    }
-
-    private List<FaixaPremiadaDTO> getFaixaPremiacaoDTO() {
-        List<FaixaPremiadaDTO> faixaPremiadaDTOList = new ArrayList<>();
-
-        if (resultadoConsultaBilheteDTO.getPremioDTO() != null && resultadoConsultaBilheteDTO.getPremioDTO().getConcursos() != null) {
-            for (ConcursoPremiadoDTO concurso : resultadoConsultaBilheteDTO.getPremioDTO().getConcursos()) {
-
-                if (concurso.getConcurso() != null && concurso.getFaixas() != null) {
-                    for (FaixaPremiadaDTO faixa : concurso.getFaixas()) {
-                        faixa.setId(Long.parseLong(concurso.getConcurso().getNumero().toString()));
-                        faixaPremiadaDTOList.add(faixa);
-                    }
-                }
-            }
-        }
-        return faixaPremiadaDTOList;
     }
 
     //TODO mock de dados, ainda não determinado texto
@@ -229,16 +212,5 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
         listaComoRetirarPremio.setAdapter(new RetirarPremioDescricaoAdapter(mockList));
         listaComoRetirarPremio.setExpanded(Boolean.TRUE);
         listaComoRetirarPremio.setLayoutManager(new LinearLayoutManager(this));
-    }
-
-    private ParametroSimulacao getParametroJogo(SessaoUsuario sessaoUsuario, ModalidadeEnum modalidadeEnum) {
-        if (sessaoUsuario.getParametrosSimulacao() != null && sessaoUsuario.getParametrosSimulacao().getParametros() != null) {
-            for (ParametroSimulacao parametroSimulacao : sessaoUsuario.getParametrosSimulacao().getParametros()) {
-                if (parametroSimulacao.getParametroJogo().getConcurso().getModalidade() == modalidadeEnum) {
-                    return parametroSimulacao;
-                }
-            }
-        }
-        return null;
     }
 }

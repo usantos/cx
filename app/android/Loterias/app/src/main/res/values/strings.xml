@@ -242,6 +242,9 @@
     <string name="label_aposta">aposta</string>
     <string name="label_apostas">apostas</string>
     <string name="label_resultado">Resultado</string>
+    <string name="label_loterica">Lotérica</string>
+    <string name="label_agencia_caixa">Agência\nCaixa</string>
+    <string name="label_mercado_pago">Mercado\nPago</string>
 
     <!--Mock-->
     <string name="label_mock_texto_nao_premiado">Lorem ipsum dolor sit amet,consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo</string>

@@ -54,11 +54,19 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.model.bean.SessaoUsuario;
+import caixa.gov.br.loterias.model.bo.silce.dto.ConcursoPremiadoDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.FaixaPremiadaDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.ModalidadeEnum;
+import caixa.gov.br.loterias.model.bo.silce.dto.ParametroSimulacao;
+import caixa.gov.br.loterias.model.bo.silce.dto.PremioDTO;
 
 /**
  * Created by lsimas on 05/04/2017.
@@ -683,6 +691,7 @@ public class ViewUtils {
 
     /**
      * Método que retorna data e hora no formato dd/MM | HHhMM
+     *
      * @param dateHour String
      * @return String
      */
@@ -696,11 +705,11 @@ public class ViewUtils {
         return String.format("%s | %sh%s", DateUtils.getDateToString(date, DateUtils.PATTERN_DD_MM), hHMMSS[0], hHMMSS[1]);
     }
 
-    public static String getNumberIntegerToString(Integer number){
+    public static String getNumberIntegerToString(Integer number) {
 
-        if(number < 10){
+        if (number < 10) {
             return String.format(Locale.getDefault(), "0%d", number);
-        }else{
+        } else {
             return String.format(Locale.getDefault(), "%d", number);
         }
     }
@@ -709,6 +718,45 @@ public class ViewUtils {
         drawable.mutate();
         drawable.setColorFilter(ContextCompat.getColor(context, color),
                 PorterDuff.Mode.SRC_ATOP);
+    }
+
+    /**
+     * Método que retorna uma lista de Faixa de Premiação por concurso
+     * @param premioDTO PremioDTO
+     * @return List<FaixaPremiadaDTO>
+     */
+    public static List<FaixaPremiadaDTO> getFaixaPremiacaoDTO(PremioDTO premioDTO) {
+        List<FaixaPremiadaDTO> faixaPremiadaDTOList = new ArrayList<>();
+
+        if (premioDTO != null && premioDTO.getConcursos() != null) {
+            for (ConcursoPremiadoDTO concurso : premioDTO.getConcursos()) {
+
+                if (concurso.getConcurso() != null && concurso.getFaixas() != null) {
+                    for (FaixaPremiadaDTO faixa : concurso.getFaixas()) {
+                        faixa.setId(Long.parseLong(concurso.getConcurso().getNumero().toString()));
+                        faixaPremiadaDTOList.add(faixa);
+                    }
+                }
+            }
+        }
+        return faixaPremiadaDTOList;
+    }
+
+    /**
+     * Método reponsável por retornar ParametroSimulacao da SessaoUsuario de uma modalidade
+     * @param sessaoUsuario SessaoUsuario
+     * @param modalidadeEnum ModalidadeEnum
+     * @return ParametroSimulacao
+     */
+    public static ParametroSimulacao getParametroJogo(SessaoUsuario sessaoUsuario, ModalidadeEnum modalidadeEnum) {
+        if (sessaoUsuario.getParametrosSimulacao() != null && sessaoUsuario.getParametrosSimulacao().getParametros() != null) {
+            for (ParametroSimulacao parametroSimulacao : sessaoUsuario.getParametrosSimulacao().getParametros()) {
+                if (parametroSimulacao.getParametroJogo().getConcurso().getModalidade() == modalidadeEnum) {
+                    return parametroSimulacao;
+                }
+            }
+        }
+        return null;
     }
 
 }
