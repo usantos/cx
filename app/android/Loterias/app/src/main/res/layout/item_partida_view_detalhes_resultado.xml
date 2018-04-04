@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/amarelo"
+    android:orientation="vertical">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Teste xxx"
+        android:textColor="@color/branco"/>
+
+    <Button
+        android:layout_width="246dp"
+        android:layout_height="56dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/button_border"
+        android:text="Voltar"
+        android:textAllCaps="false"
+        android:textColor="@color/branco"
+        android:fontFamily="@font/futura_std_bold"
+        android:textSize="14.2sp"
+        android:id="@+id/voltarButton"/>
+
+</LinearLayout>

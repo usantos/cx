@@ -42,13 +42,16 @@ public class ModalidadeSorteioItemUmConcursoResultadoView extends LinearLayout {
 
 
     @ViewById
-    protected LinearLayout linearlayoutPremiadosListaText;
+    protected LinearLayout linearlayoutPremiadosListaText, item_resultado_content_view;
 
     @ViewById
     protected View tracoViewDivisoriaResultado;
 
     @ViewById
     protected Button vejaDetalhesButton;
+
+    @ViewById
+    protected PartidaViewDetalhesResultado partidaViewDetalhesResultadoView;
 
 
     @AfterViews
@@ -74,6 +77,20 @@ public class ModalidadeSorteioItemUmConcursoResultadoView extends LinearLayout {
         this.recyclerNumerosResultado.setAdapter(numerosResultadosAdapter);
 
         this.vejaDetalhesButton.setText(ViewUtils.textFuturaAndFuturaBold(getContext(), "Veja mais _detalhes_"));
+
+        this.partidaViewDetalhesResultadoView.setLayout();
+        this.vejaDetalhesButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                partidaViewDetalhesResultadoView.mostrarDetalhes(true, item_resultado_content_view, partidaViewDetalhesResultadoView);
+            }
+        });
+        this.partidaViewDetalhesResultadoView.getVoltarButton().setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                partidaViewDetalhesResultadoView.mostrarDetalhes(false, item_resultado_content_view, partidaViewDetalhesResultadoView);
+            }
+        });
 
     }
 

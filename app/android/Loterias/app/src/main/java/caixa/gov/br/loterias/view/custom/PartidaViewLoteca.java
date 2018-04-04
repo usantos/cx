@@ -1,11 +1,9 @@
 package caixa.gov.br.loterias.view.custom;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.view.View;
 import android.widget.LinearLayout;
 
 import org.androidannotations.annotations.AfterViews;
@@ -14,8 +12,6 @@ import org.androidannotations.annotations.ViewById;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.silce.dto.PartidaLotecaDTO;
-import caixa.gov.br.loterias.utils.ViewUtils;
-import caixa.gov.br.loterias.view.adapter.LotecaAdapter;
 
 /**
  * Created by cedesbr450 on 15/03/18.

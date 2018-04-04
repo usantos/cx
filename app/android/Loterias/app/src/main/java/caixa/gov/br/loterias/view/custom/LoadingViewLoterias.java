@@ -28,8 +28,8 @@ public class LoadingViewLoterias {
                 .ofFloat(imageView, "rotation", imageView.getRotation() + 360).setDuration(1200);
         animator.setRepeatCount(ObjectAnimator.INFINITE);
         animator.start();
-
-        imageView.animate().alpha(1.0f).setDuration(200).setListener(new Animator.AnimatorListener() {
+        layout.setAlpha(0.0f);
+        layout.animate().alpha(1.0f).setDuration(200).setStartDelay(200).setListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {}
 
