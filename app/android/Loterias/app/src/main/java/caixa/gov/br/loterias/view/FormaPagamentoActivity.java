@@ -10,9 +10,19 @@ import android.view.View;
 import android.widget.Button;
 
 import com.android.volley.VolleyError;
+import com.mercadopago.callbacks.Callback;
+import com.mercadopago.constants.Sites;
+import com.mercadopago.core.CustomServer;
+import com.mercadopago.core.MercadoPagoCheckout;
+import com.mercadopago.model.ApiException;
+import com.mercadopago.model.PaymentData;
+import com.mercadopago.preferences.CheckoutPreference;
+import com.mercadopago.util.JsonUtil;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.DadosUsuarioBO;
@@ -89,28 +99,6 @@ public class FormaPagamentoActivity extends SettingToolbarActivity implements Fo
         });
     }
 
-    private void configuraClickBotoes() {
-        ((Button) findViewById(R.id.botaoAvancarPagamento)).setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.apostarAutorizarCobranca)));
-        ((Button) findViewById(R.id.botaoAdicionarFormaPagamento)).setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.adicionarFormaPagamento)));
-
-        findViewById(R.id.botaoAvancarPagamento).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent activity = new Intent(FormaPagamentoActivity.this, ConfirmacaoPagamentoActivity.class);
-                startActivity(activity);
-            }
-        });
-
-        final Button buttonAdicionarFormaPagamento = (findViewById(R.id.botaoAdicionarFormaPagamento));
-        buttonAdicionarFormaPagamento.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent activity = new Intent(FormaPagamentoActivity.this, NovaFormaPagamentoActivity.class);
-                startActivity(activity);
-            }
-        });
-    }
-
     private void configuraRecyclerViewCarrinhoAposta() {
         RecyclerView recyclerView = findViewById(R.id.formasPagamentoRecyclerView);
         RecyclerView.LayoutManager layout = new LinearLayoutManager(this,
@@ -134,4 +122,32 @@ public class FormaPagamentoActivity extends SettingToolbarActivity implements Fo
     public void itemRemoved() {
         ViewUtils.organizaTabLayout(this, R.id.formaPagamentoMainLayout, R.id.formasPagamentoRecyclerView, R.id.formaPagamentoScrollView);
     }
+
+
+    private void configuraClickBotoes() {
+        ((Button) findViewById(R.id.botaoAvancarPagamento)).setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.apostarAutorizarCobranca)));
+        ((Button) findViewById(R.id.botaoAdicionarFormaPagamento)).setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.adicionarFormaPagamento)));
+
+        findViewById(R.id.botaoAvancarPagamento).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                Intent activity = new Intent(FormaPagamentoActivity.this, ConfirmacaoPagamentoActivity.class);
+//                startActivity(activity);
+
+
+            }
+        });
+
+        final Button buttonAdicionarFormaPagamento = (findViewById(R.id.botaoAdicionarFormaPagamento));
+        buttonAdicionarFormaPagamento.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent activity = new Intent(FormaPagamentoActivity.this, NovaFormaPagamentoActivity.class);
+                startActivity(activity);
+            }
+        });
+    }
+
+
+
 }

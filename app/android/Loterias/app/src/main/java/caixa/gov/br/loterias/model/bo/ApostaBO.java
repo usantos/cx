@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import caixa.gov.br.loterias.model.bean.ApostaPageRequest;
+import caixa.gov.br.loterias.model.bean.MeioPagamento;
 import caixa.gov.br.loterias.model.bo.silce.data.CompletaJogoRsp;
 import caixa.gov.br.loterias.model.bo.silce.dto.AgrupadorApostaCompraDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.AgrupadorDTOApostaDTOResponse;
@@ -476,6 +477,20 @@ public class ApostaBO extends BaseBO {
         final GsonRequest request = silceConnection.buildGetRequest(url,
                 queryParams,
                 DTOEnumIntegerResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(), headers);
+
+        request.setErrorListener(interceptError(request, headers, listener));
+        silceConnection.request(request);
+    }
+
+
+    public void postRegistrarApostaCarrinho(final MeioPagamento meioPagamento, final RequestListener<RetornoPadraoDTO> listener) {
+        LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
+        headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
+
+        final GsonRequest request = silceConnection.buildPostRequest(ServerMethods.CARRINHOS_REGISTRAR_APOSTAS, new LinkedHashMap<String, String>(),
+                meioPagamento, RetornoPadraoDTO.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(), headers);
 
