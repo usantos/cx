@@ -7,20 +7,33 @@ import android.support.constraint.ConstraintLayout;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.mercadopago.callbacks.Callback;
 import com.mercadopago.core.MercadoPago;
 import com.mercadopago.model.ApiException;
 import com.mercadopago.model.SavedCardToken;
 import com.mercadopago.model.Token;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import caixa.gov.br.loterias.BuildConfig;
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bean.MeioPagamento;
 import caixa.gov.br.loterias.model.bean.ParametrosPagamento;
@@ -182,12 +195,12 @@ public class FormaPagamentoActivity extends SettingToolbarActivity implements Fo
         loadViewProgress.show();
         MercadoPago mMercadoPago = new MercadoPago.Builder()
                 .setContext(this)
-                .setPublicKey("TEST-946a3077-5cf1-446c-bab3-e3a266357e9f")
+                .setPublicKey( BuildConfig.PUBLIC_KEY_MP )
                 .build();
         mMercadoPago.createToken(savedCardToken, new Callback<Token>() {
             @Override
             public void success(Token token) {
-                callWebserviceRegistraAposta(token.getId());
+                callWebServicePayment_method(token.getId());
             }
 
             @Override
@@ -200,8 +213,8 @@ public class FormaPagamentoActivity extends SettingToolbarActivity implements Fo
     }
 
 
-    private void callWebserviceRegistraAposta(String tokenPagamento) {
-        ParametrosPagamento parametroPagamento = new ParametrosPagamento( tokenPagamento, "true", "visa", "false" );
+    private void callWebserviceRegistraAposta(String tokenPagamento, String payment_method_id) {
+        ParametrosPagamento parametroPagamento = new ParametrosPagamento( tokenPagamento, "true", payment_method_id, "false" );
         MeioPagamento meioPagamento = new MeioPagamento(1, parametroPagamento);
 
         ApostaBO apostaBO = ApostaBO_.getInstance_(FormaPagamentoActivity.this);
@@ -219,6 +232,38 @@ public class FormaPagamentoActivity extends SettingToolbarActivity implements Fo
                 ViewUtils.alert(FormaPagamentoActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
             }
         });
+    }
+
+    private void callWebServicePayment_method(final String token){
+        String bin = formaPagamentoRecyclerViewAdapter.valoresList.get( formaPagamentoRecyclerViewAdapter.selected_position ).getPrimeirosDigitos();
+        String url = BuildConfig.MP_PAYMENT_URL+"bin="+ bin +"&public_key="+ BuildConfig.PUBLIC_KEY_MP;
+        StringRequest request = new StringRequest( Request.Method.GET, url, new Response.Listener<String>(){
+            @Override
+            public void onResponse(String response) {
+                Log.d("Response: ", response.toString());
+                try {
+                    //Do it with this it will work
+                    JSONArray jsonArray = new JSONArray(response);
+                    JSONObject responseObj = new JSONObject();
+                    responseObj = jsonArray.getJSONObject(0);
+                    String payment_method_id = responseObj.getString("payment_method_id");
+                    String thumbnail = (responseObj.getJSONObject("issuer")).getString( "thumbnail" );
+                    callWebserviceRegistraAposta(token, payment_method_id);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            }
+        },new Response.ErrorListener(){
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                Log.d("volleyError", "volleyError: "+ volleyError.toString());
+            }
+        });
+
+        RequestQueue rQueue = Volley.newRequestQueue(FormaPagamentoActivity.this);
+        rQueue.add(request);
     }
 
 

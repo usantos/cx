@@ -20,6 +20,7 @@ import org.jboss.aerogear.android.authorization.AuthorizationManager;
 import org.jboss.aerogear.android.authorization.AuthzModule;
 import org.jboss.aerogear.android.authorization.oauth2.OAuth2AuthorizationConfiguration;
 import org.jboss.aerogear.android.authorization.oauth2.OAuth2AuthorizationException;
+import org.jboss.aerogear.android.core.BuildConfig;
 import org.jboss.aerogear.android.core.Callback;
 import org.jboss.aerogear.android.pipe.module.AuthorizationFields;
 
@@ -30,7 +31,7 @@ import java.util.List;
 public class KeycloakBO {
     private static final String TAG = KeycloakBO.class.getName();
 
-    private static final String SERVER_URL = "https://logindes.caixa.gov.br";
+    private static final String SERVER_URL = caixa.gov.br.loterias.BuildConfig.CAIXA_BASE_URL_SSO;
     //private static final String SERVER_URL = "http://10.130.9.22:81";
     private static final String AUTH_URL = SERVER_URL +"/auth";
     private static final String AUTH_ENDPOINT = "/realms/internet/protocol/openid-connect/auth";
