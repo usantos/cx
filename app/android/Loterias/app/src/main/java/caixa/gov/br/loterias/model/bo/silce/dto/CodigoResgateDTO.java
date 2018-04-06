@@ -14,16 +14,19 @@ package caixa.gov.br.loterias.model.bo.silce.dto;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.parceler.Parcel;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel(description = "")
+@Parcel
 public class CodigoResgateDTO {
 
     @SerializedName("nsb")
-    private String nsb = null;
+    protected String nsb = null;
     @SerializedName("codigo")
-    private String codigo = null;
+    protected String codigo = null;
 
     /**
      * NSBi da aposta para geração do QR Code

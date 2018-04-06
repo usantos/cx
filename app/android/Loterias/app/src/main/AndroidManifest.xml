@@ -217,6 +217,7 @@
             android:name=".view.ResultadoApostaConfirmadaActivity_"
             android:label="@string/title_activity_resultado_ler_bilhetes"
             android:screenOrientation="portrait" />
+        <activity android:name=".view.ResgatePremioLotericaAgenciaActivity_"></activity>
     </application>
 
 </manifest>

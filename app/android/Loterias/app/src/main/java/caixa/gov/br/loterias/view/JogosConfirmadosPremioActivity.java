@@ -84,7 +84,7 @@ public class JogosConfirmadosPremioActivity extends AppCompatActivity {
             Bitmap bitmap;
             ImageView qrCodeImage = (ImageView) findViewById(R.id.imagemQrCode);
             // Initializing the QR Encoder with your value to be encoded, type you required and Dimension
-            QRGEncoder qrgEncoder = new QRGEncoder("Teste xxx", null, QRGContents.Type.TEXT, 150);
+            QRGEncoder qrgEncoder = new QRGEncoder("Teste xxx", null, QRGContents.Type.TEXT, 105);
             try {
                 // Getting QR-Code as Bitmap
                 bitmap = qrgEncoder.encodeAsBitmap();

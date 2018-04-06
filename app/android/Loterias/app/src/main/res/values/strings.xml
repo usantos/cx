@@ -221,7 +221,7 @@
     <string name="label_time_coracao">Time do coração&#160;</string>
     <string name="label_empty"> </string>
     <string name="label_rapidao">Rapidão</string>
-    <string name="label_faca_apostas_apenas_um_clique">Faça várias apostas\n em apenas um clique.</string>
+    <string name="label_faca_apostas_apenas_um_clique">Faça várias apostas\nem apenas um clique.</string>
     <string name="label_ler_bilhestes_bold">Ler _bilhetes_</string>
     <string name="label_repassados_boas_causas_bold">_repassados_ para boas causas.</string>
     <string name="label_apostou_loterica_confira_resultados">Apostou em uma lotérica?\n Confira aqui os seus resultados.</string>
@@ -243,8 +243,8 @@
     <string name="label_apostas">apostas</string>
     <string name="label_resultado">Resultado</string>
     <string name="label_loterica">Lotérica</string>
-    <string name="label_agencia_caixa">Agência\nCaixa</string>
-    <string name="label_mercado_pago">Mercado\nPago</string>
+    <string name="label_agencia_caixa">Agência Caixa</string>
+    <string name="label_mercado_pago">Mercado Pago</string>
     <string name="label_premio_pago">Prêmio Pago</string>
     <string name="label_diriga_agencia_preferencia">Dirija-se à agência de sua preferência</string>
     <string name="label_diriga_loterica_preferencia">Dirija-se à lotérica de sua preferência</string>
@@ -255,6 +255,18 @@
     <string name="label_receber_unidade_loterica">Para receber em uma Unidade Lotérica</string>
     <string name="label_numerico_um">1</string>
     <string name="label_numerico_dois">2</string>
+    <string name="label_numerico_tres">3</string>
+
+    <!-- Loterica Resgate Prêmio -->
+    <string name="label_loterica_minusculo">lotérica</string>
+    <string name="label_diriga_unidade_loterica_preferencia">Dirija-se à unidade lotérica de sua preferência</string>
+    <string name="label_apresente_qr_code_acima">Apresente o QR Code acima</string>
+    <string name="label_digite_cpf">Digite seu CPF</string>
+
+    <!-- Agência Resgate Prêmio -->
+    <string name="label_agencia_minusculo">agência</string>
+    <string name="label_informe_codigo_aposta">Informe o código da aposta</string>
+    <string name="label_apresente_documento_identificacao_original">Apresente seu documento de identificação original</string>
 
     <!--Mock-->
     <string name="title_activity_restrito_dezoito_anos">RestritoDezoitoAnosActivity</string>

@@ -759,4 +759,15 @@ public class ViewUtils {
         return null;
     }
 
+
+    public static int getSmallSizeQeCode(Context context){
+
+        Point point = getAppUsableScreenSize(context);
+        int width = point.x;
+        int height = point.y;
+        int smallerDimension = width < height ? width : height;
+        smallerDimension = smallerDimension * 3 / 4;
+
+        return smallerDimension;
+    }
 }

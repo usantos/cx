@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.utils.ViewUtils;
 
 /**
  * Created by joafilho on 19/12/2017.

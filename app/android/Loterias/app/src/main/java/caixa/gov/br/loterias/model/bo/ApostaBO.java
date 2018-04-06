@@ -14,6 +14,7 @@ import caixa.gov.br.loterias.model.bo.silce.dto.AgrupadorApostaCompraDTOResponse
 import caixa.gov.br.loterias.model.bo.silce.dto.AgrupadorDTOApostaDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostaFavoritaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.CarrinhoDTOResponse;
+import caixa.gov.br.loterias.model.bo.silce.dto.CodigoResgateDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.ComprovanteApostaDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.DTOEnumIntegerResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.DetalhesPremioDTOResponse;
@@ -491,6 +492,24 @@ public class ApostaBO extends BaseBO {
 
         final GsonRequest request = silceConnection.buildPostRequest(ServerMethods.CARRINHOS_REGISTRAR_APOSTAS, new LinkedHashMap<String, String>(),
                 meioPagamento, RetornoPadraoDTO.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(), headers);
+
+        request.setErrorListener(interceptError(request, headers, listener));
+        silceConnection.request(request);
+    }
+
+    public void getApostaGerarCodigoResgate(Long id, final RequestListener<CodigoResgateDTOResponse> listener) {
+
+        String url = ServerMethods.APOSTAS_GERAR_CODIGO_RESGATE_PATH.replace("{id}", id.toString());
+        final LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
+        final Map<String, String> queryParams = new HashMap<String, String>();
+
+        headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
+
+        final GsonRequest request = silceConnection.buildGetRequest(url,
+                queryParams,
+                CodigoResgateDTOResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(), headers);
 

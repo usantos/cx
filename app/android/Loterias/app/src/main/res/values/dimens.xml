@@ -8,4 +8,6 @@
     <dimen name="text_margin">16dp</dimen>
     <dimen name="text_margin_small">8dp</dimen>
     <dimen name="image_margin_small">4dp</dimen>
+    <dimen name="text_margin_20">20dp</dimen>
+    <dimen name="image_qr_code">105dp</dimen>
 </resources>

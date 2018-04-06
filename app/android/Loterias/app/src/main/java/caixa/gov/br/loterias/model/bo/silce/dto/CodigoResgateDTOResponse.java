@@ -14,26 +14,29 @@ package caixa.gov.br.loterias.model.bo.silce.dto;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.parceler.Parcel;
+
 import java.util.List;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel(description = "")
+@Parcel
 public class CodigoResgateDTOResponse {
 
     @SerializedName("codigo")
-    private String codigo = null;
+    protected String codigo = null;
     @SerializedName("mensagem")
-    private String mensagem = null;
+    protected String mensagem = null;
     @SerializedName("tipo")
-    private TipoEnum tipo = null;
+    protected TipoEnum tipo = null;
     @SerializedName("redirect")
-    private RedirectEnum redirect = null;
+    protected RedirectEnum redirect = null;
     @SerializedName("errosValidacao")
-    private List<ErroValidacao> errosValidacao = null;
+    protected List<ErroValidacao> errosValidacao = null;
     @SerializedName("payload")
-    private CodigoResgateDTO payload = null;
+    protected CodigoResgateDTO payload = null;
 
     /**
      * Código do erro

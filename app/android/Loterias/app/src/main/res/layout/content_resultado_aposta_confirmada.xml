@@ -61,33 +61,35 @@
                         android:textColor="@color/cinza"
                         android:textSize="14.2sp" />
 
-                    <View
-                        android:layout_width="1dp"
-                        android:layout_height="match_parent"
-                        android:layout_alignParentEnd="true"
-                        android:background="@color/cinza" />
                 </RelativeLayout>
 
                 <RelativeLayout
                     android:id="@+id/agenciaCaixaLayout"
                     android:layout_width="0dp"
                     android:layout_height="56dp"
+                    android:layout_margin="0dp"
                     android:layout_weight="1">
+
+                    <View
+                        android:id="@+id/linhaSeparadoraUm"
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/cinza" />
 
                     <TextView
                         android:id="@+id/agenciaCaixaText"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/linhaSeparadoraUm"
+                        android:layout_alignTop="@+id/linhaSeparadoraUm"
                         android:gravity="center"
+                        android:paddingEnd="@dimen/text_margin_small"
+                        android:paddingStart="@dimen/text_margin_small"
                         android:text="@string/label_agencia_caixa"
                         android:textColor="@color/cinza"
                         android:textSize="14.2sp" />
 
-                    <View
-                        android:layout_width="1dp"
-                        android:layout_height="match_parent"
-                        android:layout_alignParentEnd="true"
-                        android:background="@color/cinza" />
+
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -96,18 +98,27 @@
                     android:layout_height="56dp"
                     android:layout_weight="1">
 
+                    <View
+                        android:id="@+id/linhaSeparadoraDois"
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/cinza" />
+
                     <TextView
                         android:id="@+id/mercadoPagoText"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/linhaSeparadoraDois"
+                        android:layout_alignTop="@+id/linhaSeparadoraDois"
                         android:gravity="center"
+                        android:paddingEnd="@dimen/text_margin_small"
+                        android:paddingStart="@dimen/text_margin_small"
                         android:text="@string/label_mercado_pago"
                         android:textColor="@color/cinza"
                         android:textSize="14.2sp" />
                 </RelativeLayout>
             </LinearLayout>
         </RelativeLayout>
-
 
     </LinearLayout>
 
