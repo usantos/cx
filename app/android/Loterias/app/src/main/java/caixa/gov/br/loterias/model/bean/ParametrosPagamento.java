@@ -10,8 +10,8 @@ public class ParametrosPagamento {
 
     private String TOKEN;
     private String SAVE_CARD;
-
-
+    private String SAVED_CARD;
+    private String EMAIL;
     private String PAYMENT_METHOD_ID;
 
 
@@ -20,6 +20,13 @@ public class ParametrosPagamento {
         this.TOKEN = TOKEN;
         this.SAVE_CARD = SAVE_CARD;
         this.PAYMENT_METHOD_ID = PAYMENT_METHOD_ID;
+    }
+
+    public ParametrosPagamento(String TOKEN, String SAVED_CARD, String PAYMENT_METHOD_ID, String EMAIL){
+        this.TOKEN = TOKEN;
+        this.SAVED_CARD = SAVED_CARD;
+        this.PAYMENT_METHOD_ID = PAYMENT_METHOD_ID;
+        this.EMAIL = EMAIL;
     }
 
     public String getToken() {
@@ -48,5 +55,20 @@ public class ParametrosPagamento {
         this.PAYMENT_METHOD_ID = PAYMENT_METHOD_ID;
     }
 
+    public String getSAVED_CARD() {
+        return SAVED_CARD;
+    }
+
+    public void setSAVED_CARD(String SAVED_CARD) {
+        this.SAVED_CARD = SAVED_CARD;
+    }
+
+    public String getEMAIL() {
+        return EMAIL;
+    }
+
+    public void setEMAIL(String EMAIL) {
+        this.EMAIL = EMAIL;
+    }
 
 }

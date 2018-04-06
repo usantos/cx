@@ -19,12 +19,12 @@ import caixa.gov.br.loterias.utils.ViewUtils;
 
 
 public class FormaPagamentoRecyclerViewAdapter  extends RecyclerView.Adapter<FormaPagamentoRecyclerViewAdapter.ApostaHolder> {
-    private int selected_position = -1;
+    public int selected_position = -1;
 
 
     public FormaDePagamentoListener formaDePagamentoListener;
     private Context context;
-    private List<RetornoCartao> valoresList;
+    public List<RetornoCartao> valoresList;
 
     public FormaPagamentoRecyclerViewAdapter(List<RetornoCartao> cartoes, Context context){
         this.context = context;

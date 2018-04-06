@@ -1,35 +1,37 @@
 package caixa.gov.br.loterias.view;
 
+import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.android.volley.VolleyError;
 import com.mercadopago.callbacks.Callback;
-import com.mercadopago.constants.Sites;
-import com.mercadopago.core.CustomServer;
-import com.mercadopago.core.MercadoPagoCheckout;
+import com.mercadopago.core.MercadoPago;
 import com.mercadopago.model.ApiException;
-import com.mercadopago.model.PaymentData;
-import com.mercadopago.preferences.CheckoutPreference;
-import com.mercadopago.util.JsonUtil;
-
+import com.mercadopago.model.SavedCardToken;
+import com.mercadopago.model.Token;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.model.bean.MeioPagamento;
+import caixa.gov.br.loterias.model.bean.ParametrosPagamento;
+import caixa.gov.br.loterias.model.bo.ApostaBO;
+import caixa.gov.br.loterias.model.bo.ApostaBO_;
 import caixa.gov.br.loterias.model.bo.DadosUsuarioBO;
 import caixa.gov.br.loterias.model.bo.DadosUsuarioBO_;
 import caixa.gov.br.loterias.model.bo.RequestListener;
 import caixa.gov.br.loterias.model.bo.silce.dto.ListCartaoDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.RetornoCartao;
+import caixa.gov.br.loterias.model.bo.silce.dto.RetornoPadraoDTO;
 import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
 import caixa.gov.br.loterias.model.bo.MensagensNetwork;
 import caixa.gov.br.loterias.view.listener.FormaDePagamentoListener;
@@ -39,6 +41,8 @@ import caixa.gov.br.loterias.utils.ViewUtils;
 public class FormaPagamentoActivity extends SettingToolbarActivity implements FormaDePagamentoListener {
     private List<RetornoCartao> listaCartoes = null;
     private View itemToolbarSettings;
+    private AlertDialog loadViewProgress;
+    private FormaPagamentoRecyclerViewAdapter formaPagamentoRecyclerViewAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +82,7 @@ public class FormaPagamentoActivity extends SettingToolbarActivity implements Fo
     }
 
     private void callWebservice() {
-        final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
+        loadViewProgress = LoadingViewLoterias.show(this);
 
         DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_(FormaPagamentoActivity.this);
         dadosUsuarioBO.cartoes(new RequestListener<ListCartaoDTOResponse>() {
@@ -110,7 +114,7 @@ public class FormaPagamentoActivity extends SettingToolbarActivity implements Fo
         layoutFormasPagamento.setMargins(0, ViewUtils.setDisplayMetric(40, this), 0, 0);
         recyclerView.setLayoutParams(layoutFormasPagamento);
 
-        FormaPagamentoRecyclerViewAdapter formaPagamentoRecyclerViewAdapter = new FormaPagamentoRecyclerViewAdapter(listaCartoes, this);
+        formaPagamentoRecyclerViewAdapter = new FormaPagamentoRecyclerViewAdapter(listaCartoes, this);
         formaPagamentoRecyclerViewAdapter.formaDePagamentoListener = this;
 
         recyclerView.setAdapter(formaPagamentoRecyclerViewAdapter);
@@ -127,14 +131,38 @@ public class FormaPagamentoActivity extends SettingToolbarActivity implements Fo
     private void configuraClickBotoes() {
         ((Button) findViewById(R.id.botaoAvancarPagamento)).setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.apostarAutorizarCobranca)));
         ((Button) findViewById(R.id.botaoAdicionarFormaPagamento)).setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.adicionarFormaPagamento)));
-
         findViewById(R.id.botaoAvancarPagamento).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent activity = new Intent(FormaPagamentoActivity.this, ConfirmacaoPagamentoActivity.class);
-//                startActivity(activity);
+                if (formaPagamentoRecyclerViewAdapter.selected_position < 0){
+                    ViewUtils.alert(FormaPagamentoActivity.this, "Selecione um cartão");
+                    return;
+                }
+                LayoutInflater li = LayoutInflater.from(FormaPagamentoActivity.this);
+                View promptsView = li.inflate(R.layout.dialog_security_code, null);
 
-
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder( FormaPagamentoActivity.this);
+                alertDialogBuilder.setView(promptsView);
+                final EditText userInput = (EditText) promptsView
+                        .findViewById(R.id.cvvCardNumberEditText);
+                alertDialogBuilder
+                        .setCancelable(false)
+                        .setPositiveButton("Confirmar",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,int id) {
+//                                        Log.d("cvv", userInput.getText().toString());
+                                        String cardId = formaPagamentoRecyclerViewAdapter.valoresList.get(formaPagamentoRecyclerViewAdapter.selected_position).getIdCartao().toString();
+                                        createToken( cardId,  userInput.getText().toString());
+                                    }
+                                })
+                        .setNegativeButton("Cancelar",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
             }
         });
 
@@ -147,6 +175,52 @@ public class FormaPagamentoActivity extends SettingToolbarActivity implements Fo
             }
         });
     }
+
+    private void createToken(String cardId, String securityCode) {
+        SavedCardToken savedCardToken = new SavedCardToken(cardId, securityCode);
+
+        loadViewProgress.show();
+        MercadoPago mMercadoPago = new MercadoPago.Builder()
+                .setContext(this)
+                .setPublicKey("TEST-946a3077-5cf1-446c-bab3-e3a266357e9f")
+                .build();
+        mMercadoPago.createToken(savedCardToken, new Callback<Token>() {
+            @Override
+            public void success(Token token) {
+                callWebserviceRegistraAposta(token.getId());
+            }
+
+            @Override
+            public void failure(ApiException apiException) {
+                //TODO: Manage API Failure
+                loadViewProgress.dismiss();
+                ViewUtils.alert(FormaPagamentoActivity.this, apiException.getMessage());
+            }
+        });
+    }
+
+
+    private void callWebserviceRegistraAposta(String tokenPagamento) {
+        ParametrosPagamento parametroPagamento = new ParametrosPagamento( tokenPagamento, "true", "visa", "false" );
+        MeioPagamento meioPagamento = new MeioPagamento(1, parametroPagamento);
+
+        ApostaBO apostaBO = ApostaBO_.getInstance_(FormaPagamentoActivity.this);
+        apostaBO.postRegistrarApostaCarrinho(meioPagamento, new RequestListener<RetornoPadraoDTO>() {
+            @Override
+            public void onResponse(RetornoPadraoDTO response) {
+                loadViewProgress.dismiss();
+                Intent activity = new Intent(FormaPagamentoActivity.this, ConfirmacaoPagamentoActivity.class);
+                startActivity(activity);
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                loadViewProgress.dismiss();
+                ViewUtils.alert(FormaPagamentoActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
+            }
+        });
+    }
+
 
 
 
