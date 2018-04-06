@@ -309,6 +309,7 @@
             android:visibility="gone">
 
             <LinearLayout
+                android:id="@+id/backgroundTopoNaoPremiadoLayout"
                 android:layout_width="match_parent"
                 android:layout_height="111dp"
                 android:background="@color/megasenaescuro">

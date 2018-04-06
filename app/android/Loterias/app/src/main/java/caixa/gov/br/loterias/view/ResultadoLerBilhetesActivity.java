@@ -1,6 +1,5 @@
 package caixa.gov.br.loterias.view;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -28,7 +27,6 @@ import java.util.Objects;
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bean.SessaoUsuario;
 import caixa.gov.br.loterias.model.bo.ApostaBO;
-import caixa.gov.br.loterias.model.bo.ApostaBO_;
 import caixa.gov.br.loterias.model.bo.MensagensNetwork;
 import caixa.gov.br.loterias.model.bo.RequestListener;
 import caixa.gov.br.loterias.model.bo.silce.dto.ModalidadeEnum;
@@ -57,7 +55,7 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
 
     @ViewById
     protected LinearLayout corpoBilhetePremiadoLinearLayout, corpoBilheteNaoPremiadoLinearLayout, premioGanhoLinearLayout, mensagemNaoPremiadoLinearLayout,
-            informacoesPremioZeradoLayout, informacoesPremioLayout;
+            informacoesPremioZeradoLayout, informacoesPremioLayout, backgroundTopoNaoPremiadoLayout;
 
     @ViewById
     protected TextView mensagemNaoPremiadoTextView, statusResultadoNaoPremiadTextView;
@@ -179,6 +177,11 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
 
         if (Objects.equals(resultadoConsultaBilheteDTO.getSituacao().getValor(), SituacaoResultadoBilheteEnum.PAGA.getValor())) {
             statusResultadoNaoPremiadTextView.setText(R.string.label_premio_pago);
+            if (resultadoConsultaBilheteDTO != null && resultadoConsultaBilheteDTO.getModalidadeDTO() != null) {
+                ModalidadeEnum modalidadeEnum = ModalidadeEnum.toString(resultadoConsultaBilheteDTO.getModalidadeDTO().getDescricao().toLowerCase());
+                EstiloModalidade estiloModalidade = new EstiloModalidade(modalidadeEnum);
+                backgroundTopoNaoPremiadoLayout.setBackgroundColor(ContextCompat.getColor(this, estiloModalidade.getCorEscura()));
+            }
         } else {
             statusResultadoNaoPremiadTextView.setText(R.string.label_nao_foi_dessa_vez);
         }
