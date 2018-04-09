@@ -440,10 +440,21 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     private void AbrirMenusItens(int itemPosition) {
-        if (itemPosition == 2) {
-            startActivity(new Intent(PrincipalActivity.this, ListaComprasActivity.class));
-        } else if (itemPosition == 3) {
-            startActivity(new Intent(PrincipalActivity.this, FavoritasActivity.class));
+        switch (itemPosition){
+            case 0:
+                startActivity(new Intent(PrincipalActivity.this, DadosPessoaisActivity.class));
+                break;
+            case 1:
+                startActivity(new Intent(PrincipalActivity.this, ApostasConfirmadasActivity_.class));
+                break;
+            case 2:
+                startActivity(new Intent(PrincipalActivity.this, ListaComprasActivity.class));
+                break;
+            case 3:
+                startActivity(new Intent(PrincipalActivity.this, FavoritasActivity.class));
+                break;
+            default:
+                break;
         }
     }
 

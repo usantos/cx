@@ -9,6 +9,7 @@
     <string name="title_activity_forma_pagamento">Forma de _pagamento_</string>
     <string name="title_activity_confirmacao_pagamento">_Confirmação_</string>
     <string name="title_activity_apostas_confirmadas">Apostas _confirmadas_</string>
+    <string name="title_activity_dados_pessoais">_Dados Pessoais_</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
