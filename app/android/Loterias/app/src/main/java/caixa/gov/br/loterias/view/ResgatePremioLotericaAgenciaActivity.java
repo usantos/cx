@@ -31,17 +31,21 @@ public class ResgatePremioLotericaAgenciaActivity extends SettingToolbarActivity
     @Extra
     protected CodigoResgateDTO codigoResgateDTO;
 
+    @Extra
+    protected String nsbi;
+
+
     @AfterViews
-    protected void init(){
+    protected void init() {
         setTitle(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.title_activity_resultado_ler_bilhetes)));
 
-        if(codigoResgateDTO != null){
+        if (codigoResgateDTO != null) {
             categoriaText.setText(R.string.label_loterica_minusculo);
             informacaoTopicoUmText.setText(R.string.label_diriga_unidade_loterica_preferencia);
             informacaoTopicoDoisText.setText(R.string.label_apresente_qr_code_acima);
             informacaoTopicoTresText.setText(R.string.label_digite_cpf);
 
-            if(StringUtils.isNotEmpty(codigoResgateDTO.getCodigo())){
+            if (StringUtils.isNotEmpty(codigoResgateDTO.getQrCode())) {
                 try {
                     generateQrCode();
                 } catch (WriterException e) {
@@ -49,12 +53,16 @@ public class ResgatePremioLotericaAgenciaActivity extends SettingToolbarActivity
                     e.printStackTrace();
                 }
             }
+        } else {
+            categoriaText.setText(R.string.label_agencia_minusculo);
+            informacaoTopicoUmText.setText(R.string.label_diriga_agencia_preferencia);
+            informacaoTopicoDoisText.setText(String.format("%s %s", getString(R.string.label_informe_codigo_aposta), nsbi));
+            informacaoTopicoTresText.setText(R.string.label_apresente_documento_identificacao_original);
         }
     }
 
     private void generateQrCode() throws WriterException {
-        codigoResgateDTO.getCodigo();
-        QRGEncoder qrgEncoder = new QRGEncoder(codigoResgateDTO.getCodigo(), null, QRGContents.Type.TEXT, ViewUtils.getSmallSizeQeCode(this));
+        QRGEncoder qrgEncoder = new QRGEncoder(codigoResgateDTO.getQrCode(), null, QRGContents.Type.TEXT, ViewUtils.getSmallSizeQeCode(this));
         qrCodeApostaImage.setImageBitmap(qrgEncoder.encodeAsBitmap());
         qrCodeApostaImage.setVisibility(View.VISIBLE);
     }

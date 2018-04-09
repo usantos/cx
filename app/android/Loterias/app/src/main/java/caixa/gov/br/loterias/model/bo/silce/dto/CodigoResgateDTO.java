@@ -27,6 +27,10 @@ public class CodigoResgateDTO {
     protected String nsb = null;
     @SerializedName("codigo")
     protected String codigo = null;
+    @SerializedName("validade")
+    protected Integer validade;
+    @SerializedName("qrCode")
+    protected String qrCode;
 
     /**
      * NSBi da aposta para geração do QR Code
@@ -52,6 +56,21 @@ public class CodigoResgateDTO {
         this.codigo = codigo;
     }
 
+    public Integer getValidade() {
+        return validade;
+    }
+
+    public void setValidade(Integer validade) {
+        this.validade = validade;
+    }
+
+    public String getQrCode() {
+        return qrCode;
+    }
+
+    public void setQrCode(String qrCode) {
+        this.qrCode = qrCode;
+    }
 
     @Override
     public boolean equals(Object o) {

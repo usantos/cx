@@ -102,7 +102,7 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
 
     @Click(R.id.agenciaCaixaLayout)
     protected void clickAgenciaCaixaLayout() {
-        ResgatePremioLotericaAgenciaActivity_.intent(this).start();
+        ResgatePremioLotericaAgenciaActivity_.intent(this).nsbi(detalhesPremioDTO.getNsbi()).start();
     }
 
     @Click(R.id.mercadoPagoLayout)

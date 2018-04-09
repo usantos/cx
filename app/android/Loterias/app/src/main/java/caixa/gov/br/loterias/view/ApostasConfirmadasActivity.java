@@ -21,6 +21,7 @@ import caixa.gov.br.loterias.view.fragment.ApostasConfirmadasFragment_;
 
 /**
  * Created by pmotta on 13/03/2018.
+ * Class ApostasConfirmadasActivity
  */
 
 @OptionsMenu(R.menu.menu_apostas_confirmadas)

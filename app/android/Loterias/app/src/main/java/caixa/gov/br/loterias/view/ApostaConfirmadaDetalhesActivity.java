@@ -36,6 +36,7 @@ import caixa.gov.br.loterias.view.fragment.ApostaConfirmadaNumeroDetalhes_;
 
 /**
  * Created by pmotta on 22/03/2018.
+ * Calss ApostaConfirmadaDetalhesActivity
  */
 
 @EActivity(R.layout.activity_aposta_confirmada_detalhes)

@@ -257,6 +257,7 @@
     <string name="label_numerico_um">1</string>
     <string name="label_numerico_dois">2</string>
     <string name="label_numerico_tres">3</string>
+    <string name="label_situacao_list_apostas_confirmadas">Situação -&#160;</string>
 
     <!-- Loterica Resgate Prêmio -->
     <string name="label_loterica_minusculo">lotérica</string>

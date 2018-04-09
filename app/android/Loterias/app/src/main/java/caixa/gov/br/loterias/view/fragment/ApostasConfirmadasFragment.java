@@ -25,6 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bean.ApostaPageRequest;
@@ -278,7 +279,7 @@ public class ApostasConfirmadasFragment extends Fragment implements ApostasConfi
                     @Override
                     public void onItemClick(final ApostaDTO apostaDTO) {
                         alertDialog = LoadingViewLoterias.show(getActivity());
-                        if (apostaDTO.getSituacao().getValor() == SituacaoResultadoBilheteEnum.PAGA.getValor()) {
+                        if (Objects.equals(apostaDTO.getSituacao().getValor(), SituacaoResultadoBilheteEnum.PAGA.getValor())) {
                             apostaBO.getApostaDetalhePremio(apostaDTO.getId(), new RequestListener<DetalhesPremioDTOResponse>() {
                                 @Override
                                 public void onResponse(DetalhesPremioDTOResponse result) {
@@ -302,7 +303,7 @@ public class ApostasConfirmadasFragment extends Fragment implements ApostasConfi
 
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
-
+                                    onApostasConfirmadasError(error);
                                 }
                             });
                         } else {
