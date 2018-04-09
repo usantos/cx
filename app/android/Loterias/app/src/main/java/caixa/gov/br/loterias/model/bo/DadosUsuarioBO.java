@@ -12,6 +12,7 @@ import java.util.LinkedHashMap;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostadorDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.ApostadorDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.AutenticacaoDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ListCartaoDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.UsuarioLogadoResponse;
@@ -103,6 +104,21 @@ public class DadosUsuarioBO extends BaseBO {
         SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
         Boolean status = sharedPref.getBoolean(activity.getString(R.string.key_idade), true);
         return status;
+    }
+
+
+    public void getDadosUsuario(final RequestListener<ApostadorDTOResponse> listener) {
+        LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
+
+        LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
+        headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
+
+        GsonRequest request = silceConnection.buildGetRequest(ServerMethods.USUARIOS_RECUPERAR_DADOS_PATH, queryParams, ApostadorDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(), headers);
+
+        request.setErrorListener(interceptError(request, headers, listener));
+        silceConnection.request(request);
     }
 
 }

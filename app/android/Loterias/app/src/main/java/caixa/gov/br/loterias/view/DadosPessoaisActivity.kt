@@ -5,12 +5,13 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.View
 import caixa.gov.br.loterias.R
+import caixa.gov.br.loterias.model.bo.DadosUsuarioBO_
 import caixa.gov.br.loterias.utils.ViewUtils
-
-import kotlinx.android.synthetic.main.activity_dados_pessoais.*
+import caixa.gov.br.loterias.view.custom.LoadingViewLoterias
 import kotlinx.android.synthetic.main.app_bar_degrade_extend.*
 
 class DadosPessoaisActivity : AppCompatActivity() {
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,6 +21,8 @@ class DadosPessoaisActivity : AppCompatActivity() {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         title = ViewUtils.textFuturaAndFuturaBold(this, title.toString())
         subtitleToolbar.setText("Estes são seus dados pessoais.\nPor favor, mantenha-os sempre atualizados.")
+        callWebservice()
+
 
     }
 
@@ -28,5 +31,31 @@ class DadosPessoaisActivity : AppCompatActivity() {
         return true
     }
 
+    private fun callWebservice() {
+
+        val loadViewProgress = LoadingViewLoterias.show(this)
+
+        val dadosUsuarioBO = DadosUsuarioBO_.getInstance_(this@DadosPessoaisActivity)
+
+
+//        dadosUsuarioBO.getDadosUsuario(object : RequestListener<ApostadorDTOResponse>() {
+//            override fun onResponse(response: ApostadorDTOResponse) {
+//                loadViewProgress.dismiss()
+//
+//
+//                atualizaLayout()
+//            }
+//
+//            override fun onErrorResponse(error: VolleyError) {
+//                loadViewProgress.dismiss()
+//                ViewUtils.alert(this@DadosPessoaisActivity, MensagensNetwork.setMensagem(error, applicationContext))
+//
+//            }
+//        })
+    }
+
+    private fun atualizaLayout(){
+
+    }
 
 }
