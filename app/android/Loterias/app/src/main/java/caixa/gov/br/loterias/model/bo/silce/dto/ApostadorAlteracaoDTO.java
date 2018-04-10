@@ -27,7 +27,7 @@ public class ApostadorAlteracaoDTO {
     @SerializedName("lotericaId")
     private Long lotericaId = null;
     @SerializedName("sexo")
-    private SexoAbrvEnum sexo = null;
+    private SexoEnum sexo = null;
 
     /**
      * CEP relacionado com o endereço do apostador
@@ -68,11 +68,11 @@ public class ApostadorAlteracaoDTO {
      * Sexo do apostador
      **/
     @ApiModelProperty(required = true, value = "Sexo do apostador")
-    public SexoAbrvEnum getSexo() {
+    public SexoEnum getSexo() {
         return sexo;
     }
 
-    public void setSexo(SexoAbrvEnum sexo) {
+    public void setSexo(SexoEnum sexo) {
         this.sexo = sexo;
     }
 

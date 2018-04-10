@@ -40,8 +40,11 @@ public class ApostadorDTO {
     private MunicipioIdDTO municipioId = null;
     @SerializedName("lotericaId")
     private Long lotericaId = null;
+    public enum SexoEnum {
+        M,  F,
+    };
     @SerializedName("sexo")
-    private SexoAbrvEnum sexo = null;
+    private SexoEnum sexo = null;
     @SerializedName("mercadoPagoCustomerId")
     private String mercadoPagoCustomerId = null;
 
@@ -167,12 +170,13 @@ public class ApostadorDTO {
     /**
      * Sexo do Apostador
      **/
+
+
     @ApiModelProperty(required = true, value = "Sexo do Apostador")
-    public SexoAbrvEnum getSexo() {
+    public SexoEnum getSexo() {
         return sexo;
     }
-
-    public void setSexo(SexoAbrvEnum sexo) {
+    public void setSexo(SexoEnum sexo) {
         this.sexo = sexo;
     }
 

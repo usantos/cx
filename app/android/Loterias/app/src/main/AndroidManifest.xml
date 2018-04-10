@@ -219,11 +219,18 @@
             android:screenOrientation="portrait" />
         <activity android:name=".view.ResgatePremioLotericaAgenciaActivity_" />
         <activity
+            android:name=".view.DadosPessoaisActivityKotlin"
+            android:label="@string/title_activity_dados_pessoais"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.DegradeActionBar"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
             android:name=".view.DadosPessoaisActivity"
             android:label="@string/title_activity_dados_pessoais"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar"
-            android:windowSoftInputMode="stateHidden"></activity>
+            android:windowSoftInputMode="stateHidden"
+            ></activity>
     </application>
 
 </manifest>

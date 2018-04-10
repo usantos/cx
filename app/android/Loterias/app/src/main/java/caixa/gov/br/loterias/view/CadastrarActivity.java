@@ -29,11 +29,11 @@ import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.DadosCorporativosBO;
 import caixa.gov.br.loterias.model.bo.DadosCorporativosBO_;
 import caixa.gov.br.loterias.model.bo.RequestListener;
+import caixa.gov.br.loterias.model.bo.silce.dto.ApostaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostadorDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.BairroDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.BairroDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.MunicipioIdDTO;
-import caixa.gov.br.loterias.model.bo.silce.dto.SexoAbrvEnum;
 import caixa.gov.br.loterias.utils.AppUtils;
 import caixa.gov.br.loterias.utils.DateUtils;
 import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
@@ -46,7 +46,7 @@ import caixa.gov.br.loterias.utils.segmentedbutton.SegmentedButtonGroup;
 
 public class CadastrarActivity extends CadastroActivity {
 
-    private SexoAbrvEnum sexo;
+    private ApostadorDTO.SexoEnum sexo;
     private static final String FORMATO_YYYYMMDD = "yyyyMMdd";
 
     @ViewById
@@ -88,7 +88,7 @@ public class CadastrarActivity extends CadastroActivity {
         listMunicipios = new ArrayList<String>();
 
         if (sexo == null) {
-            sexo = SexoAbrvEnum.M;
+            sexo = ApostadorDTO.SexoEnum.M;
         }
         initOnclick();
         addListenerUF(editTextUFContent, listUFString);
@@ -155,9 +155,9 @@ public class CadastrarActivity extends CadastroActivity {
             @Override
             public void onClickedButton(int position) {
                 if (position == 0) {
-                    sexo = SexoAbrvEnum.M;
+                    sexo = ApostadorDTO.SexoEnum.M;
                 } else {
-                    sexo = SexoAbrvEnum.F;
+                    sexo = ApostadorDTO.SexoEnum.F;
                 }
             }
         });
@@ -269,7 +269,7 @@ public class CadastrarActivity extends CadastroActivity {
         apostadorDTO.setDataNascimento(editTextNascimentoContent.getText().toString());
         apostadorDTO.setCep(AppUtils.removeMasckCPF(editTextCepContent.getText().toString()));
         apostadorDTO.setAceitaReceberNoticias(Boolean.TRUE);
-        apostadorDTO.setSexo(sexo);
+        apostadorDTO.setSexo( sexo );
         apostadorDTO.setMercadoPagoCustomerId("0");
     }
 

@@ -58,7 +58,8 @@ adquiridas em um toque"
                     style="@style/editTextRegisterTheme"
                     android:inputType="number"
                     app:mask="***.***.***-**"
-                    app:notMaskedSymbol="*"/>
+                    app:notMaskedSymbol="*"
+                    android:enabled="false"/>
 
             </android.support.design.widget.TextInputLayout>
 
@@ -76,7 +77,8 @@ adquiridas em um toque"
                     android:ems="10"
                     android:hint="@string/label_nome"
                     style="@style/editTextRegisterTheme"
-                    android:inputType="textPersonName" />
+                    android:inputType="textPersonName"
+                    android:enabled="false"/>
             </android.support.design.widget.TextInputLayout>
 
 
@@ -127,7 +129,7 @@ adquiridas em um toque"
                 android:id="@+id/editTextCEP"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/editTextNomeMae"
+                android:layout_below="@id/segmentedButtonSexo"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="20dp">
@@ -186,7 +188,7 @@ adquiridas em um toque"
                 android:id="@+id/editTextEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/editTextNascimento"
+                android:layout_below="@id/editTextMunicipio"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="20dp"
@@ -197,7 +199,8 @@ adquiridas em um toque"
                     style="@style/editTextRegisterTheme"
                     android:ems="10"
                     android:hint="@string/label_email"
-                    android:inputType="textEmailAddress" />
+                    android:inputType="textEmailAddress"
+                    android:enabled="false"/>
             </android.support.design.widget.TextInputLayout>
 
         </LinearLayout>
@@ -227,7 +230,8 @@ adquiridas em um toque"
             android:text="Atualizar"
             android:textAllCaps="false"
             android:textColor="@color/branco"
-            android:textSize="17.7sp" />
+            android:textSize="17.7sp"
+            android:id="@+id/updateDadosPesoaisButton"/>
     </RelativeLayout>
 
 
