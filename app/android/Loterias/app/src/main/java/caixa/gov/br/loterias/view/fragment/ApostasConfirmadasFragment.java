@@ -4,7 +4,6 @@ import android.app.DatePickerDialog;
 import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -43,11 +42,12 @@ import caixa.gov.br.loterias.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOApos
 import caixa.gov.br.loterias.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOHistoricoApostaDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.SituacaoResultadoBilheteEnum;
 import caixa.gov.br.loterias.utils.AppUtils;
+import caixa.gov.br.loterias.utils.DialogUtils;
 import caixa.gov.br.loterias.utils.ViewUtils;
+import caixa.gov.br.loterias.utils.helper.ConferirResultadoHelper;
 import caixa.gov.br.loterias.view.ApostaConfirmadaDetalhesActivity_;
 import caixa.gov.br.loterias.view.ApostasConfirmadasActivity;
 import caixa.gov.br.loterias.view.adapter.ApostasConfirmadasAdapter;
-import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
 import caixa.gov.br.loterias.view.custom.MonthYearPickerDialog;
 import caixa.gov.br.loterias.view.custom.MonthYearPickerDialog_;
 
@@ -81,8 +81,6 @@ public class ApostasConfirmadasFragment extends Fragment implements ApostasConfi
     private boolean isLoading;
     private ApostaPageRequest page;
 
-    private AlertDialog alertDialog;
-
     @AfterViews
     protected void init() {
         if (getActivity() != null) {
@@ -100,7 +98,7 @@ public class ApostasConfirmadasFragment extends Fragment implements ApostasConfi
     }
 
     private void requestMesesAnosDisponiveis() {
-        alertDialog = LoadingViewLoterias.show(getActivity());
+        DialogUtils.show(getActivity());
 
         RequestListener listener = new RequestListener<MesAnoDTOResponse>() {
             @Override
@@ -126,8 +124,7 @@ public class ApostasConfirmadasFragment extends Fragment implements ApostasConfi
             return;
         }
 
-        alertDialog.dismiss();
-
+        DialogUtils.dismiss();
         mesesAnosDisponiveis = result.getPayload();
 
         if (mesesAnosDisponiveis != null && !mesesAnosDisponiveis.isEmpty()) {
@@ -152,7 +149,7 @@ public class ApostasConfirmadasFragment extends Fragment implements ApostasConfi
 
     private void onMesesAnosDisponiveisError(VolleyError error) {
         if (getActivity() != null) {
-            alertDialog.dismiss();
+            DialogUtils.dismiss();
             String msgError = MensagensNetwork.setMensagem(error, getActivity());
             ViewUtils.alert(getActivity(), msgError);
             page = null;
@@ -208,7 +205,7 @@ public class ApostasConfirmadasFragment extends Fragment implements ApostasConfi
     @Override
     public void onDestroy() {
         super.onDestroy();
-        alertDialog.dismiss();
+        DialogUtils.dismiss();
     }
 
     private void requestApostasConfirmadas() {
@@ -253,7 +250,7 @@ public class ApostasConfirmadasFragment extends Fragment implements ApostasConfi
             return;
         }
 
-        alertDialog.dismiss();
+        DialogUtils.dismiss();
         apostasLoading.setVisibility(View.GONE);
 
         if (apostasList != null) {
@@ -272,13 +269,13 @@ public class ApostasConfirmadasFragment extends Fragment implements ApostasConfi
                     }
 
                     @Override
-                    public void onFavorite(ApostaDTO apostaDTO) {
-                        //TODO:
+                    public void onResult(ApostaDTO apostaDTO) {
+                        ConferirResultadoHelper.conferirResultado(apostaDTO.getId(), getActivity());
                     }
 
                     @Override
                     public void onItemClick(final ApostaDTO apostaDTO) {
-                        alertDialog = LoadingViewLoterias.show(getActivity());
+                        DialogUtils.show(getActivity());
                         if (Objects.equals(apostaDTO.getSituacao().getValor(), SituacaoResultadoBilheteEnum.PAGA.getValor())) {
                             apostaBO.getApostaDetalhePremio(apostaDTO.getId(), new RequestListener<DetalhesPremioDTOResponse>() {
                                 @Override
@@ -289,7 +286,7 @@ public class ApostasConfirmadasFragment extends Fragment implements ApostasConfi
                                             new RequestListener<ResultadoConcursoDTOResponse>() {
                                                 @Override
                                                 public void onResponse(ResultadoConcursoDTOResponse result) {
-                                                    alertDialog.dismiss();
+                                                    DialogUtils.dismiss();
                                                     ApostaConfirmadaDetalhesActivity_.intent(getActivity()).detalhesPremioDTO(detalhesPremioDTO)
                                                             .resultadoConcursoDTO(result.getPayload()).start();
                                                 }
@@ -310,7 +307,7 @@ public class ApostasConfirmadasFragment extends Fragment implements ApostasConfi
                             apostaBO.getApostaDetalheComprovante(apostaDTO.getId(), new RequestListener<ComprovanteApostaDTOResponse>() {
                                 @Override
                                 public void onResponse(ComprovanteApostaDTOResponse result) {
-                                    alertDialog.dismiss();
+                                    DialogUtils.dismiss();
                                     ApostaConfirmadaDetalhesActivity_.intent(getActivity()).comprovanteApostaDTO(result.getPayload()).start();
                                 }
 
@@ -333,7 +330,7 @@ public class ApostasConfirmadasFragment extends Fragment implements ApostasConfi
     private void onApostasConfirmadasError(VolleyError error) {
         isLoading = false;
         if (getActivity() != null) {
-            alertDialog.dismiss();
+            DialogUtils.dismiss();
             apostasLoading.setVisibility(View.GONE);
 
             String msgError = MensagensNetwork.setMensagem(error, getActivity());

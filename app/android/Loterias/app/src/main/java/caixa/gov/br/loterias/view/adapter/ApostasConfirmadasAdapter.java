@@ -55,7 +55,7 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostasConfi
     public interface OnApostasConfirmadasListener {
         void onReload(ApostaDTO apostaDTO);
 
-        void onFavorite(ApostaDTO apostaDTO);
+        void onResult(ApostaDTO apostaDTO);
 
         void onItemClick(ApostaDTO apostaDTO);
     }
@@ -64,7 +64,7 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostasConfi
         private View stripe;
         private TextView modalidadeTxt;
         private TextView concursoTxt;
-        private View favoriteBtn;
+        private View resultBtn;
         private View reloadBtn;
         private ImageView setaImg;
         private LinearLayout setaLayout;
@@ -76,14 +76,13 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostasConfi
             stripe = view.findViewById(R.id.stripe);
             modalidadeTxt = view.findViewById(R.id.modalidadeTxt);
             concursoTxt = view.findViewById(R.id.concursoTxt);
-            favoriteBtn = view.findViewById(R.id.favoriteBtn);
+            resultBtn = view.findViewById(R.id.resultBtn);
             reloadBtn = view.findViewById(R.id.reloadBtn);
             setaImg = view.findViewById(R.id.setaImg);
             setaLayout = view.findViewById(R.id.setaLayout);
             situacaoLabel = view.findViewById(R.id.situacaoLabel);
             situacaoTxt = view.findViewById(R.id.situacaoTxt);
 
-            favoriteBtn.setOnClickListener(this);
             reloadBtn.setOnClickListener(this);
             setaLayout.setOnClickListener(this);
             setaImg.setOnClickListener(this);
@@ -96,8 +95,8 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostasConfi
                 ApostaDTO apostaDTO = list.get(getAdapterPosition());
 
                 switch (view.getId()) {
-                    case R.id.favoriteBtn: {
-                        onApostasConfirmadasListener.onFavorite(apostaDTO);
+                    case R.id.resultBtn: {
+                        onApostasConfirmadasListener.onResult(apostaDTO);
                         break;
                     }
                     case R.id.reloadBtn: {
@@ -133,6 +132,14 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostasConfi
         holder.situacaoTxt.setTextColor(color);
         holder.situacaoTxt.setText(aposta.getSituacao().getDescricao());
         ViewUtils.setColorDrawable(context, holder.setaImg.getDrawable(), R.color.colorAccent);
+
+        if (context.getString(R.string.label_efetivada).equalsIgnoreCase(aposta.getSituacao().getDescricao())) {
+            holder.resultBtn.setVisibility(View.VISIBLE);
+            holder.resultBtn.setOnClickListener(holder);
+        }else{
+            holder.resultBtn.setVisibility(View.INVISIBLE);
+            holder.resultBtn.setClickable(Boolean.FALSE);
+        }
 
         int teimosinhas = aposta.getQuantidadeTeimosinhas() != null ? aposta.getQuantidadeTeimosinhas() : 0;
         if (teimosinhas > 0) {

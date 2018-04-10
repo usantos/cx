@@ -1,15 +1,12 @@
 package caixa.gov.br.loterias.view.fragment;
 
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.android.volley.VolleyError;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -21,20 +18,13 @@ import org.androidannotations.annotations.ViewById;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.ApostaBO;
-import caixa.gov.br.loterias.model.bo.MensagensNetwork;
-import caixa.gov.br.loterias.model.bo.RequestListener;
-import caixa.gov.br.loterias.model.bo.silce.dto.DTOEnumIntegerResponse;
-import caixa.gov.br.loterias.model.bo.silce.dto.DetalhesPremioDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
-import caixa.gov.br.loterias.model.bo.silce.dto.SituacaoResultadoBilheteEnum;
 import caixa.gov.br.loterias.utils.ViewUtils;
-import caixa.gov.br.loterias.view.ResultadoApostaConfirmadaActivity_;
+import caixa.gov.br.loterias.utils.helper.ConferirResultadoHelper;
 import caixa.gov.br.loterias.view.adapter.DezenasAdapter;
-import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
 
 /**
  * Created by pmotta on 23/03/2018.
@@ -61,8 +51,6 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 
     @FragmentArg
     protected IdentificaoDeUmaApostaDas8Modalidades aposta;
-
-    private AlertDialog alertDialog;
 
     @AfterViews
     protected void init() {
@@ -127,44 +115,6 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 
     @Click(R.id.conferirResultadoButton)
     protected void conferirResultadoClick() {
-        alertDialog = LoadingViewLoterias.show(getActivity());
-        apostaBO.getApostaConferir(aposta.getId(), new RequestListener<DTOEnumIntegerResponse>() {
-            @Override
-            public void onResponse(DTOEnumIntegerResponse result) {
-
-                if (Objects.equals(SituacaoResultadoBilheteEnum.PREMIADA.getValor().toString(), result.getPayload().getValor().toString())) {
-                    getApostaDetalhePremio();
-                } else {
-                    alertDialog.dismiss();
-                    ViewUtils.alert(getActivity(), getString(R.string.MA020));
-                }
-            }
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                errroVolley(error);
-            }
-        });
-    }
-
-    private void getApostaDetalhePremio() {
-        apostaBO.getApostaDetalhePremio(aposta.getId(), new RequestListener<DetalhesPremioDTOResponse>() {
-            @Override
-            public void onResponse(DetalhesPremioDTOResponse result) {
-                alertDialog.dismiss();
-                ResultadoApostaConfirmadaActivity_.intent(getActivity()).detalhesPremioDTO(result.getPayload()).start();
-            }
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                errroVolley(error);
-            }
-        });
-    }
-
-    private void errroVolley(VolleyError error) {
-        alertDialog.dismiss();
-        String msgError = MensagensNetwork.setMensagem(error, getActivity());
-        ViewUtils.alert(getActivity(), msgError);
+        ConferirResultadoHelper.conferirResultado(aposta.getId(), getActivity());
     }
 }

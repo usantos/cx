@@ -93,11 +93,12 @@
         android:gravity="center">
 
         <ImageView
-            android:id="@+id/favoriteBtn"
+            android:id="@+id/resultBtn"
             android:layout_width="21dp"
             android:layout_height="21dp"
-            android:layout_marginEnd="10dp"
-            android:src="@drawable/menu3_resultados" />
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:src="@drawable/menu3_resultados"
+            android:visibility="invisible"/>
 
         <ImageView
             android:id="@+id/reloadBtn"
@@ -108,8 +109,8 @@
 
         <LinearLayout
             android:id="@+id/setaLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:gravity="center">
 
             <ImageView
@@ -117,7 +118,6 @@
                 android:layout_width="6dp"
                 android:layout_height="10dp"
                 android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                android:layout_marginStart="10dp"
                 android:src="@drawable/ic_botao_seta_copiar_4" />
         </LinearLayout>
     </LinearLayout>
