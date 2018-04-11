@@ -10,4 +10,5 @@
     <dimen name="image_margin_small">4dp</dimen>
     <dimen name="text_margin_20">20dp</dimen>
     <dimen name="bottom_padding_120">120dp</dimen>
+    <dimen name="image_size_small">20dp</dimen>
 </resources>

@@ -9,11 +9,16 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
@@ -21,27 +26,34 @@ import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.OptionsMenuItem;
 import org.androidannotations.annotations.ViewById;
+import org.apache.commons.lang.StringUtils;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.model.bo.ApostaBO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ComprovanteApostaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.DetalhesPremioDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import caixa.gov.br.loterias.model.bo.silce.dto.ResultadoConcursoDTO;
 import caixa.gov.br.loterias.utils.AppUtils;
+import caixa.gov.br.loterias.utils.Constantes;
 import caixa.gov.br.loterias.utils.EstiloModalidade;
 import caixa.gov.br.loterias.utils.ViewUtils;
+import caixa.gov.br.loterias.utils.helper.AdicionarApostaCarrinhoHelper;
 import caixa.gov.br.loterias.view.fragment.ApostaConfirmadaNumeroDetalhesPremioPago_;
 import caixa.gov.br.loterias.view.fragment.ApostaConfirmadaPartidaFragment_;
 import caixa.gov.br.loterias.view.fragment.ApostaConfirmadaNumeroDetalhes_;
 
 /**
  * Created by pmotta on 22/03/2018.
- * Calss ApostaConfirmadaDetalhesActivity
+ * Class ApostaConfirmadaDetalhesActivity
  */
 
 @EActivity(R.layout.activity_aposta_confirmada_detalhes)
 @OptionsMenu(R.menu.menu_apostas_confirmadas)
 public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
+
+    @Bean
+    protected ApostaBO apostaBO;
 
     @Extra
     protected ComprovanteApostaDTO comprovanteApostaDTO;
@@ -64,6 +76,12 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
     @ViewById
     protected ImageView validadePremioImage, comprovanteImage, comprovanteImpressaoImage;
 
+    @ViewById
+    protected RelativeLayout layoutnomeApostaLayout, favoritadoLayout, favoriteBtn;
+
+    @ViewById
+    protected EditText nomeApostaEditTxt;
+
     private EstiloModalidade estilo;
 
     private IdentificaoDeUmaApostaDas8Modalidades aposta;
@@ -72,12 +90,12 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
 
     @Click
     protected void carrinhoApostasBtn() {
-        //TODO:
+        CarrinhoActivity_.intent(this).start();
     }
 
     @Click
     protected void favoriteBtn() {
-        //TODO:
+        layoutnomeApostaLayout.setVisibility(View.VISIBLE);
     }
 
     @Click
@@ -87,7 +105,19 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
 
     @Click
     protected void adicionarCarrinhoBtn() {
-        //TODO:
+        AdicionarApostaCarrinhoHelper.incluirApostaCarrinho(this, aposta);
+    }
+
+    @Click
+    protected void salvarApostaImg() {
+
+        if (StringUtils.isNotEmpty(nomeApostaEditTxt.getText().toString())) {
+            favoritadoLayout.setVisibility(View.VISIBLE);
+            layoutnomeApostaLayout.setVisibility(View.GONE);
+            favoriteBtn.setVisibility(View.INVISIBLE);
+        } else {
+            ViewUtils.alert(this, getString(R.string.msg_favor_inserir_nome_aposta));
+        }
     }
 
     @Override
@@ -173,6 +203,4 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
             supportActionBar.setElevation(0);
         }
     }
-
-
 }

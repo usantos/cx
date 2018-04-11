@@ -164,6 +164,34 @@
                         android:layout_weight="1">
 
                         <RelativeLayout
+                            android:id="@+id/favoritadoLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/verdeazul"
+                            android:gravity="center"
+                            android:paddingBottom="@dimen/activity_vertical_margin"
+                            android:paddingTop="@dimen/activity_vertical_margin"
+                            android:visibility="gone">
+
+                            <ImageView
+                                android:id="@+id/favoritadoImg"
+                                android:layout_width="21dp"
+                                android:layout_height="21dp"
+                                android:layout_marginEnd="10dp"
+                                android:src="@drawable/icon_favoritado" />
+
+                            <TextView
+                                android:id="@+id/labelApostaSalvaTxt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignBottom="@+id/favoritadoImg"
+                                android:layout_toEndOf="@id/favoritadoImg"
+                                android:text="@string/label_aposta_salva_carinha"
+                                android:textColor="@color/branco"
+                                android:textSize="14sp" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
                             android:id="@+id/favoriteBtn"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -178,19 +206,57 @@
                                 android:id="@+id/favoritarImg"
                                 android:layout_width="21dp"
                                 android:layout_height="21dp"
-                                android:layout_centerVertical="true"
                                 android:layout_marginEnd="10dp"
                                 android:src="@drawable/icon_favoritar" />
 
                             <TextView
+                                android:id="@+id/labelSalveApostaTxt"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
                                 android:layout_toEndOf="@id/favoritarImg"
-                                android:gravity="center"
                                 android:text="@string/label_salve_aposta"
                                 android:textColor="@color/branco"
                                 android:textSize="14sp" />
+
+                            <RelativeLayout
+                                android:id="@+id/layoutnomeApostaLayout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/labelSalveApostaTxt"
+                                android:layout_marginTop="@dimen/activity_vertical_margin"
+                                android:visibility="gone">
+
+                                <TextView
+                                    android:id="@+id/labelDeNomeTxt"
+                                    style="@style/ArialMT"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/label_de_nome"
+                                    android:textColor="@color/verdeazul"
+                                    android:textSize="12sp" />
+
+                                <EditText
+                                    android:id="@+id/nomeApostaEditTxt"
+                                    style="@style/ArialMT"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_alignStart="@+id/labelDeNomeTxt"
+                                    android:layout_below="@+id/labelDeNomeTxt"
+                                    android:layout_marginEnd="@dimen/activity_vertical_margin"
+                                    android:backgroundTint="@color/branco"
+                                    android:textColor="@color/branco"
+                                    android:textSize="16sp" />
+
+                                <ImageView
+                                    android:id="@+id/salvarApostaImg"
+                                    android:layout_width="@dimen/image_size_small"
+                                    android:layout_height="@dimen/image_size_small"
+                                    android:layout_alignBottom="@+id/nomeApostaEditTxt"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_alignTop="@+id/nomeApostaEditTxt"
+                                    android:src="@drawable/seta_verde" />
+                            </RelativeLayout>
 
                         </RelativeLayout>
 

@@ -207,6 +207,10 @@ public class AdicionarApostaCarrinhoHelper {
             apostaDas8Modalidades.setTipoConcurso(tipoConcurso);
 
             apostaDas8Modalidades.setConcursoAlvo(parametroJogo.getConcurso().getNumero());
+            apostaDas8Modalidades.setQuantidadeApostas(1);
+            apostaDas8Modalidades.setSurpresinha(false);
+            apostaDas8Modalidades.setSituacao(null);
+            apostaDas8Modalidades.setTroca(false);
 
             DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
             Date date = new Date();

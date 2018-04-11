@@ -300,7 +300,7 @@
                 android:layout_alignStart="@+id/iconStarSalvar"
                 android:layout_below="@+id/textoSalveEstaAposta"
                 android:layout_marginTop="29dp"
-                android:text="@string/textoDeNome"
+                android:text="@string/label_de_nome"
                 android:textColor="@color/verdeazul"
                 android:textSize="12sp" />
 
