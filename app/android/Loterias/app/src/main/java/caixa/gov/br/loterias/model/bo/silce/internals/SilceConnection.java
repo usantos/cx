@@ -16,6 +16,7 @@ import java.util.Map;
 import static com.android.volley.Request.Method.DELETE;
 import static com.android.volley.Request.Method.GET;
 import static com.android.volley.Request.Method.POST;
+import static com.android.volley.Request.Method.PUT;
 
 public class SilceConnection {
     private static final Bin KEY = Bin.fromBase64("QEm06ZAThg1E314zziahsg");
@@ -64,6 +65,18 @@ public class SilceConnection {
                                             Response.ErrorListener errorListener, Map<String, String> headers) {
         String url = fillUrlWithQueryParams(path, queryParams);
         GsonRequest request = new GsonRequest<>(POST, url,
+                prepareBody(body), responseDataClass,
+                headers, listener, errorListener);
+        request.setRetryPolicy(createRetryPolicy());
+        return request;
+    }
+
+    public <REQ, RSP> GsonRequest buildPutRequest(String path, Map<String, String> queryParams,
+                                                   REQ body, Class<RSP> responseDataClass,
+                                                   Response.Listener<RSP> listener,
+                                                   Response.ErrorListener errorListener, Map<String, String> headers) {
+        String url = fillUrlWithQueryParams(path, queryParams);
+        GsonRequest request = new GsonRequest<>(PUT, url,
                 prepareBody(body), responseDataClass,
                 headers, listener, errorListener);
         request.setRetryPolicy(createRetryPolicy());

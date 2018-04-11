@@ -70,5 +70,8 @@ import caixa.gov.br.loterias.model.bo.silce.internals.SilceConnection;
 
      static final String USUARIOS_RECUPERAR_DADOS_PATH = "/usuarios/recuperar-dados";
 
+
+     static final String USUARIOS_PATH = "/usuarios";
+
      private ServerMethods(){}
 }

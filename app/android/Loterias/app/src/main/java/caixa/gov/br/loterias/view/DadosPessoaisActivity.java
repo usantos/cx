@@ -26,12 +26,16 @@ import caixa.gov.br.loterias.model.bo.DadosUsuarioBO;
 import caixa.gov.br.loterias.model.bo.DadosUsuarioBO_;
 import caixa.gov.br.loterias.model.bo.MensagensNetwork;
 import caixa.gov.br.loterias.model.bo.RequestListener;
+import caixa.gov.br.loterias.model.bo.silce.dto.ApostadorAlteracaoDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostadorDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostadorDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.BairroDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.BairroDTOResponse;
+import caixa.gov.br.loterias.model.bo.silce.dto.CadastrarApostadorDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.MunicipioDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.MunicipioDTOResponse;
+import caixa.gov.br.loterias.model.bo.silce.dto.MunicipioIdDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.SexoEnum;
 import caixa.gov.br.loterias.model.bo.silce.dto.UnidadeFederacaoDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.UnidadeFederacaoDTOResponse;
 import caixa.gov.br.loterias.utils.ViewUtils;
@@ -49,6 +53,8 @@ public class DadosPessoaisActivity extends AppCompatActivity {
     protected List<UnidadeFederacaoDTO> listUf;
     protected String ufSelect = "";
     protected String municipioSelect = "";
+
+    protected MunicipioIdDTO municipioIdDTOSelect;
 
     ApostadorDTO apostadorDTO;
     AlertDialog loadViewProgress;
@@ -108,6 +114,31 @@ public class DadosPessoaisActivity extends AppCompatActivity {
             }
         });
 
+        updateDadosPesoaisButton.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!editTextUFContent.getText().toString().equals( "" ) &&
+                        !editTextMunicipioContent.getText().toString().equals( "" ) ||
+                        !editTextCepContent.getText().toString().equals( "" )
+                        ){
+                    ApostadorAlteracaoDTO apostadorAlteracaoDTO = new ApostadorAlteracaoDTO();
+                    apostadorAlteracaoDTO.setCep( editTextCepContent.getUnmaskedText() );
+                    SexoEnum sexoEnum;
+                    if (segmentedButtonSexo.getPosition() == 0){
+                        sexoEnum = SexoEnum.MASCULINO;
+                    }else {
+                        sexoEnum = SexoEnum.FEMININO;
+                    }
+                    apostadorAlteracaoDTO.setSexo( sexoEnum);
+                    apostadorAlteracaoDTO.setMunicipioId( municipioIdDTOSelect );
+                    updateDadosCadastrais( apostadorAlteracaoDTO );
+                }else{
+                    ViewUtils.alertTitulo( DadosPessoaisActivity.this, R.string.label_atencao, "Por favor, preencha todos os campos." );
+                }
+
+            }
+        } );
+
 
     }
 
@@ -120,9 +151,6 @@ public class DadosPessoaisActivity extends AppCompatActivity {
         editTextNomeContent.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
         editTextCepContent.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
         editTextEmailContent.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
-
-//        editTextUFContent.setText( apostadorDTO.getMunicipioId().getIdUF() );
-//        editTextMunicipioContent.setText( apostadorDTO.getMunicipioId().getNumero() );
         if (apostadorDTO.getSexo().equals( ApostadorDTO.SexoEnum.F )){
             segmentedButtonSexo.setPosition( 1 );
         }else{
@@ -321,7 +349,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
 
                 // ListView Clicked item value
                 String itemValue = (String) listViewItens.getItemAtPosition(position);
-                municipioSelect = itemValue;
+                municipioIdDTOSelect = municipioDTOList.get( position ).getId();
             }
 
         });
@@ -387,6 +415,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
                     BairroDTO bairroDTO = response.getPayload().get(0);
                     editTextUFContent.setText(bairroDTO.getMunicipio().getUf().getSigla());
                     editTextMunicipioContent.setText(bairroDTO.getMunicipio().getNome());
+                    municipioIdDTOSelect = bairroDTO.getMunicipio().getId();
                 }
                 atualizaLayout();
             }
@@ -399,4 +428,23 @@ public class DadosPessoaisActivity extends AppCompatActivity {
         });
     }
 
+
+    private void updateDadosCadastrais(ApostadorAlteracaoDTO apostadorAlteracaoDTO){
+        final DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_( this );
+        loadViewProgress.show();
+        dadosUsuarioBO.putDadosUsuario(apostadorAlteracaoDTO, new RequestListener<CadastrarApostadorDTOResponse>() {
+            @Override
+            public void onResponse(CadastrarApostadorDTOResponse response) {
+
+                loadViewProgress.dismiss();
+
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                loadViewProgress.dismiss();
+                ViewUtils.alert(DadosPessoaisActivity.this, MensagensNetwork.setMensagem(error, DadosPessoaisActivity.this));
+            }
+        });
+    }
 }

@@ -11,10 +11,13 @@ import org.androidannotations.annotations.EBean;
 import java.util.LinkedHashMap;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.model.bo.silce.dto.ApostadorAlteracaoDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostadorDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostadorDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.AutenticacaoDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.CadastrarApostadorDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.ListCartaoDTOResponse;
+import caixa.gov.br.loterias.model.bo.silce.dto.RetornoPadraoDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.UsuarioLogadoResponse;
 import caixa.gov.br.loterias.model.bo.silce.internals.GsonRequest;
 
@@ -114,6 +117,19 @@ public class DadosUsuarioBO extends BaseBO {
         headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
 
         GsonRequest request = silceConnection.buildGetRequest(ServerMethods.USUARIOS_RECUPERAR_DADOS_PATH, queryParams, ApostadorDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(), headers);
+
+        request.setErrorListener(interceptError(request, headers, listener));
+        silceConnection.request(request);
+    }
+
+    public void putDadosUsuario(ApostadorAlteracaoDTO apostadorAlteracaoDTO, final RequestListener<CadastrarApostadorDTOResponse> listener){
+        LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
+        headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
+
+        final GsonRequest request = silceConnection.buildPutRequest(ServerMethods.USUARIOS_PATH, new LinkedHashMap<String, String>(),
+                apostadorAlteracaoDTO, CadastrarApostadorDTOResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(), headers);
 
