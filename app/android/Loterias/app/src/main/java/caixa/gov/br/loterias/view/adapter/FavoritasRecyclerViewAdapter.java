@@ -27,6 +27,8 @@ import caixa.gov.br.loterias.model.bo.ApostaBO;
 import caixa.gov.br.loterias.model.bo.ApostaBO_;
 import caixa.gov.br.loterias.model.bo.RequestListener;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostaFavoritaDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.CarrinhoDTOResponse;
+import caixa.gov.br.loterias.model.bo.silce.dto.IncluirApostaFavoritaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.RetornoPadraoDTO;
 import caixa.gov.br.loterias.model.bo.MensagensNetwork;
 import caixa.gov.br.loterias.utils.ViewUtils;
@@ -96,6 +98,7 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
         final Button editarButtonFavoritos = (Button) holder.itemView.findViewById(R.id.editarButtonFavoritos);
         final Button exluirButtonFavoritos = (Button) holder.itemView.findViewById(R.id.exluirButtonFavoritos);
         final Button buttonSalvarNomeAposta = (Button) holder.itemView.findViewById(R.id.buttonSalvarNomeAposta);
+        final Button editarButtonAddCarrinho = (Button) holder.itemView.findViewById(R.id.editarButtonAddCarrinho);
 
         editarButtonFavoritos.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,6 +119,13 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
                 deleteFavoritaCallWebservice(position);
             }
         });
+
+        editarButtonAddCarrinho.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                adicionarCarrinhoCallWebservice(position);
+            }
+        } );
 
         buttonSalvarNomeAposta.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -254,6 +264,27 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
             public void onResponse(RetornoPadraoDTO response) {
                 loadViewProgress.dismiss();
                     removeAt(position);
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                loadViewProgress.dismiss();
+                ViewUtils.alert(activity, MensagensNetwork.setMensagem(error, context));
+
+            }
+        });
+    }
+
+
+    private void adicionarCarrinhoCallWebservice(final int position) {
+        final AlertDialog loadViewProgress = LoadingViewLoterias.show(activity);
+        final ApostaBO apostaBO = ApostaBO_.getInstance_(activity);
+
+        apostaBO.postIncluirApostaFavoritaCarrinho(listaApostaFavorita.get(position).getId(), new RequestListener<CarrinhoDTOResponse>() {
+            @Override
+            public void onResponse(CarrinhoDTOResponse response) {
+                loadViewProgress.dismiss();
+                ViewUtils.alert( context, context.getResources().getString( R.string.label_aposta_salva_carinha ) );
             }
 
             @Override

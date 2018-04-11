@@ -73,5 +73,7 @@ import caixa.gov.br.loterias.model.bo.silce.internals.SilceConnection;
 
      static final String USUARIOS_PATH = "/usuarios";
 
+     static final String CARRINHOS_INCLUIR_APOSTA_FAVORITA_PATH = "/carrinhos/incluir-aposta-favorita/{idApostaFavorita}/{valorTipoConcurso}/{qtdTeimosinhas}";
+
      private ServerMethods(){}
 }

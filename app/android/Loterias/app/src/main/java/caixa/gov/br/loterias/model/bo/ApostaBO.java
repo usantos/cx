@@ -20,6 +20,7 @@ import caixa.gov.br.loterias.model.bo.silce.dto.DTOEnumIntegerResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.DetalhesPremioDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.EscudoEquipeEsportivaDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
+import caixa.gov.br.loterias.model.bo.silce.dto.IncluirApostaFavoritaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.IncluirSurpresinhaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.MesAnoDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.ModalidadeDTOResponse;
@@ -510,6 +511,23 @@ public class ApostaBO extends BaseBO {
         final GsonRequest request = silceConnection.buildGetRequest(url,
                 queryParams,
                 CodigoResgateDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(), headers);
+
+        request.setErrorListener(interceptError(request, headers, listener));
+        silceConnection.request(request);
+    }
+
+    public void postIncluirApostaFavoritaCarrinho(final Long idApostaFavorita, final RequestListener<CarrinhoDTOResponse> listener) {
+        LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
+        headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
+
+        String url = ServerMethods.CARRINHOS_INCLUIR_APOSTA_FAVORITA_PATH.replace("{idApostaFavorita}", String.valueOf( idApostaFavorita ));
+        url = url.replace("{valorTipoConcurso}", String.valueOf(1));
+        url = url.replace("{qtdTeimosinhas}", String.valueOf(0));
+
+        final GsonRequest request = silceConnection.buildPostRequest(url, new LinkedHashMap<String, String>(),
+                "", CarrinhoDTOResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(), headers);
 

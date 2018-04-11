@@ -142,8 +142,9 @@ android:layout_height="wrap_content"
                             <Button
                                 android:layout_width="21dp"
                                 android:layout_height="21dp"
-                                android:background="@drawable/icon_reload"
+                                android:background="@drawable/icon_add_carrinho"
                                 android:layout_marginHorizontal="10dp"
+                                android:id="@+id/editarButtonAddCarrinho"
                                 />
 
                             <Button
