@@ -6,13 +6,17 @@ import android.content.Intent;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 
+import org.apache.commons.collections4.CollectionUtils;
+
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bean.SessaoUsuario;
 import caixa.gov.br.loterias.model.bo.ApostaBO;
 import caixa.gov.br.loterias.model.bo.ApostaBO_;
@@ -24,10 +28,12 @@ import caixa.gov.br.loterias.model.bo.silce.dto.DTOEnumCharacter;
 import caixa.gov.br.loterias.model.bo.silce.dto.DTOEnumInteger;
 import caixa.gov.br.loterias.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import caixa.gov.br.loterias.model.bo.silce.dto.ModalidadeEnum;
+import caixa.gov.br.loterias.model.bo.silce.dto.ParametroJogoDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ParametroSimulacao;
 import caixa.gov.br.loterias.model.bo.silce.dto.PartidaLotecaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.PartidaLotogolDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.TipoConcursoEnum;
+import caixa.gov.br.loterias.model.dao.DBLoteriasCrud;
 import caixa.gov.br.loterias.utils.Constantes;
 import caixa.gov.br.loterias.utils.DialogUtils;
 import caixa.gov.br.loterias.utils.ViewUtils;
@@ -40,8 +46,7 @@ import caixa.gov.br.loterias.view.ConfirmadoInclusaoCarrinhoActivity;
 
 public class AdicionarApostaCarrinhoHelper {
     private static Context context;
-    private static ModalidadeEnum modalidadeEnum;
-    private static BigDecimal valorTotalAposta;
+    private static IdentificaoDeUmaApostaDas8Modalidades aposta;
 
     /**
      * Conferir resultado de acordo 9.1 CSU07
@@ -52,20 +57,18 @@ public class AdicionarApostaCarrinhoHelper {
     public static void incluirApostaCarrinho(Context contextParam, Object objectAposta) {
         context = contextParam;
         ApostaBO apostaBO = ApostaBO_.getInstance_(context);
-        IdentificaoDeUmaApostaDas8Modalidades aposta = getApostaPreenchida(objectAposta);
+        aposta = getApostaPreenchida(objectAposta);
         DialogUtils.show(context);
         if (aposta != null) {
-            modalidadeEnum = aposta.getModalidade();
-            valorTotalAposta = aposta.getValor();
             apostaBO.adicionarApostaNoCarrinho(aposta, new RequestListener<AgrupadorDTOApostaDTOResponse>() {
                 @Override
                 public void onResponse(AgrupadorDTOApostaDTOResponse result) {
                     DialogUtils.dismiss();
 
                     Intent activity = new Intent(context, ConfirmadoInclusaoCarrinhoActivity.class);
-                    activity.putExtra("tipoAposta", modalidadeEnum);
-                    activity.putExtra("valorAposta", valorTotalAposta);
-                    activity.putExtra("modalidade", (new Gson()).toJson(ViewUtils.getParametroJogo(SessaoUsuario.getInstance(), modalidadeEnum).getParametroJogo()));
+                    activity.putExtra("tipoAposta", aposta.getModalidade());
+                    activity.putExtra("valorAposta", aposta.getValor());
+                    activity.putExtra("modalidade", (new Gson()).toJson(ViewUtils.getParametroJogo(SessaoUsuario.getInstance(), aposta.getModalidade()).getParametroJogo()));
                     context.startActivity(activity);
                 }
 
@@ -77,9 +80,50 @@ public class AdicionarApostaCarrinhoHelper {
         }
     }
 
+    public static boolean inserirApostaCarrinhoLocal(Context contextParam, IdentificaoDeUmaApostaDas8Modalidades aposta) {
+        DBLoteriasCrud crud = new DBLoteriasCrud(contextParam);
+        int quantidadeApostaCarrinho = crud.qtdIdentificaoDeUmaApostaDas8Modalidades();
+        BigDecimal valorTotalCarrinho = crud.sumValorIdentificaoDeUmaApostaDas8Modalidades();
+        valorTotalCarrinho = valorTotalCarrinho.add(aposta.getValor());
+
+        boolean isTipoLotogol = CollectionUtils.isNotEmpty(aposta.getPartidasLotogol());
+        boolean isTipoLoteca = CollectionUtils.isNotEmpty(aposta.getPartidasLoteca());
+
+        //TODO Verificar os parametros que indicam aposta igual
+        if (crud.existIdentificaoDeUmaApostaDas8Modalidades(aposta) && (!isTipoLotogol && !isTipoLoteca)) {
+            ViewUtils.alert(contextParam, contextParam.getString(R.string.MA015));
+            return Boolean.FALSE;
+        }
+        //TODO subistituir por quantidade máxima
+        else if (quantidadeApostaCarrinho > (4 - 1)) {
+            ViewUtils.alert(contextParam, contextParam.getString(R.string.MA013));
+            return Boolean.FALSE;
+        }
+        //TODO subistituir por valor máxima
+        else if (valorTotalCarrinho.compareTo(BigDecimal.TEN) == 1) {
+            ViewUtils.alert(contextParam, contextParam.getString(R.string.MA014));
+            return Boolean.FALSE;
+        } else {
+            Long id = crud.insertIdentificaoDeUmaApostaDas8Modalidades(aposta);
+
+            if (isTipoLotogol) {
+                for (PartidaLotogolDTO partidaLotogolDTO : aposta.getPartidasLotogol()) {
+                    crud.inserirPartidaLotogol(partidaLotogolDTO, id);
+                }
+            } else if (isTipoLoteca) {
+                for (PartidaLotecaDTO partidaLotecaDTO : aposta.getPartidasLoteca()) {
+                    crud.inserirPartidaLoteca(partidaLotecaDTO, id);
+                }
+            }
+            return Boolean.TRUE;
+        }
+    }
+
     private static IdentificaoDeUmaApostaDas8Modalidades getApostaPreenchida(Object objectAposta) {
         if (objectAposta instanceof ApostaDTO) {
             return getApostaPreenchidaFromApostaDTO((ApostaDTO) objectAposta);
+        } else if (objectAposta instanceof IdentificaoDeUmaApostaDas8Modalidades) {
+            return getApostaPreenchidaFromIdentificaoDeUmaApostaDas8Modalidades((IdentificaoDeUmaApostaDas8Modalidades) objectAposta);
         } else {
             return null;
         }
@@ -141,6 +185,40 @@ public class AdicionarApostaCarrinhoHelper {
         }
 
         return aposta;
+    }
+
+    private static IdentificaoDeUmaApostaDas8Modalidades getApostaPreenchidaFromIdentificaoDeUmaApostaDas8Modalidades(IdentificaoDeUmaApostaDas8Modalidades apostaDas8Modalidades) {
+
+        ModalidadeEnum modalidadeEnum = apostaDas8Modalidades.getModalidade();
+        SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
+        ParametroSimulacao parametroSimulacao = ViewUtils.getParametroJogo(sessaoUsuario, modalidadeEnum);
+
+        if (parametroSimulacao != null && parametroSimulacao.getParametroJogo() != null) {
+
+            ParametroJogoDTO parametroJogo = parametroSimulacao.getParametroJogo();
+
+            apostaDas8Modalidades.setId(Constantes.ZERO_LONG);
+
+            DTOEnumCharacter tipoConcurso = new DTOEnumCharacter();
+
+            String valorTipoConcurso = parametroJogo.getConcurso().getTipoConcurso() == TipoConcursoEnum.NORMAL ? "1" : "2";
+            tipoConcurso.setValor(valorTipoConcurso);
+            tipoConcurso.setDescricao(parametroJogo.getConcurso().getTipoConcurso().toString());
+            apostaDas8Modalidades.setTipoConcurso(tipoConcurso);
+
+            apostaDas8Modalidades.setConcursoAlvo(parametroJogo.getConcurso().getNumero());
+
+            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+            Date date = new Date();
+
+            DateFormat hourFormat = new SimpleDateFormat("HH:mm:ss", Locale.US);
+            Date hour = new Date();
+
+            apostaDas8Modalidades.setDataEfetivacao(dateFormat.format(date));
+            apostaDas8Modalidades.setHoraEfetivacao(hourFormat.format(hour));
+        }
+
+        return apostaDas8Modalidades;
     }
 
     private static void setApostaLoteca(IdentificaoDeUmaApostaDas8Modalidades apostaDas8Modalidades, Object object) {

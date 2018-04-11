@@ -14,11 +14,9 @@ import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
 public class DialogUtils {
 
     private static AlertDialog alertDialog;
-    private static Context context;
 
     public static void show(Context contextParam) {
-        context = contextParam;
-        alertDialog = LoadingViewLoterias.show(context);
+        alertDialog = LoadingViewLoterias.show(contextParam);
     }
 
     public static void dismiss() {

@@ -70,6 +70,8 @@ import caixa.gov.br.loterias.model.bo.silce.dto.PartidaLotogolDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.TipoConcursoEnum;
 import caixa.gov.br.loterias.model.dao.DBLoteriasCrud;
 import caixa.gov.br.loterias.utils.Constantes;
+import caixa.gov.br.loterias.utils.DialogUtils;
+import caixa.gov.br.loterias.utils.helper.AdicionarApostaCarrinhoHelper;
 import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
 import caixa.gov.br.loterias.model.bo.MensagensNetwork;
 import caixa.gov.br.loterias.utils.ViewUtils;
@@ -387,11 +389,11 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
     }
 
     private void adicionarApostaCarrinhoRequest(ApostaBO apostaBO, final Activity activity, final IdentificaoDeUmaApostaDas8Modalidades aposta) {
-        final AlertDialog alert = LoadingViewLoterias.show(activity);
+        DialogUtils.show(getActivity());
         apostaBO.adicionarApostaNoCarrinho(aposta, new RequestListener<AgrupadorDTOApostaDTOResponse>() {
             @Override
             public void onResponse(AgrupadorDTOApostaDTOResponse response) {
-                alert.dismiss();
+                DialogUtils.dismiss();
                 TextView count = parentActivity.getTextViewCarrinhoCartelaCount();
 
                 qtdCartelasCarrinho++;
@@ -403,10 +405,10 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                alert.dismiss();
+                DialogUtils.dismiss();
 
                 if (MensagensNetwork.isUnauthorizedError(error)) {
-                    if (inserirApostaCarrinhoLocal(aposta)) {
+                    if (AdicionarApostaCarrinhoHelper.inserirApostaCarrinhoLocal(getActivity(), aposta)) {
                         cartelaFragmentListener.adicionarApostaCarrinho();
                     }
                 } else {
@@ -417,48 +419,12 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
     }
 
-    private boolean inserirApostaCarrinhoLocal(IdentificaoDeUmaApostaDas8Modalidades aposta) {
-        DBLoteriasCrud crud = new DBLoteriasCrud(getContext());
-        int quantidadeApostaCarrinho = crud.qtdIdentificaoDeUmaApostaDas8Modalidades();
-        BigDecimal valorTotalCarrinho = crud.sumValorIdentificaoDeUmaApostaDas8Modalidades();
-        valorTotalCarrinho = valorTotalCarrinho.add(aposta.getValor());
-
-        //TODO Verificar os parametros que indicam aposta igual
-        if (crud.existIdentificaoDeUmaApostaDas8Modalidades(aposta) && (!isTipoLoteca && !isTipoLotogol)) {
-            ViewUtils.alert(getActivity(), getString(R.string.MA015));
-            return Boolean.FALSE;
-        }
-        //TODO subistituir por quantidade máxima
-        else if (quantidadeApostaCarrinho > (4 - 1)) {
-            ViewUtils.alert(getActivity(), getString(R.string.MA013));
-            return Boolean.FALSE;
-        }
-        //TODO subistituir por valor máxima
-        else if (valorTotalCarrinho.compareTo(BigDecimal.TEN) == 1) {
-            ViewUtils.alert(getActivity(), getString(R.string.MA014));
-            return Boolean.FALSE;
-        } else {
-            Long id = crud.insertIdentificaoDeUmaApostaDas8Modalidades(aposta);
-
-            if (isTipoLotogol) {
-                for (PartidaLotogolDTO partidaLotogolDTO : aposta.getPartidasLotogol()) {
-                    crud.inserirPartidaLotogol(partidaLotogolDTO, id);
-                }
-            } else if (isTipoLoteca) {
-                for (PartidaLotecaDTO partidaLotecaDTO : aposta.getPartidasLoteca()) {
-                    crud.inserirPartidaLoteca(partidaLotecaDTO, id);
-                }
-            }
-            return Boolean.TRUE;
-        }
-    }
-
     private void adicionarApostasCarrinhoRequest(ApostaBO apostaBO, Activity activity, final List<IdentificaoDeUmaApostaDas8Modalidades> apostas) {
-        final AlertDialog alert = LoadingViewLoterias.show(activity);
+        DialogUtils.show(getActivity());
         apostaBO.adicionarApostasNoCarrinho(apostas, new RequestListener<AgrupadorDTOApostaDTOResponse>() {
             @Override
             public void onResponse(AgrupadorDTOApostaDTOResponse response) {
-                alert.dismiss();
+                DialogUtils.dismiss();
                 TextView count = parentActivity.getTextViewCarrinhoCartelaCount();
 
                 qtdCartelasCarrinho++;
@@ -469,11 +435,11 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                alert.dismiss();
+                DialogUtils.dismiss();
                 if (MensagensNetwork.isUnauthorizedError(error)) {
                     boolean retorno = false;
                     for (IdentificaoDeUmaApostaDas8Modalidades aposta : apostas) {
-                        retorno = inserirApostaCarrinhoLocal(aposta);
+                        retorno = AdicionarApostaCarrinhoHelper.inserirApostaCarrinhoLocal(getActivity(), aposta);
                     }
                     if (retorno) {
                         cartelaFragmentListener.adicionarApostaCarrinho();
@@ -493,19 +459,19 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
             case R.id.botaoAdicionarCompletarCartela: {
                 if (isTipoTimemania) {
                     if (isEcolhaTimeBtnAtivado && dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) {
-                            if (mGridTimeCoracao == null){
-                                mostrarCartelaEscolhaTimeCoracao();
-                            }else{
-                                if (equipeSelecionada !=null){
-                                    if (equipeSelecionada.isSelecionado() == true){
-                                        adicionarApostaNoCarrinho();
-                                    }else{
-                                        selecionarTimeAleatorio();
-                                    }
-                                }else{
+                        if (mGridTimeCoracao == null) {
+                            mostrarCartelaEscolhaTimeCoracao();
+                        } else {
+                            if (equipeSelecionada != null) {
+                                if (equipeSelecionada.isSelecionado() == true) {
+                                    adicionarApostaNoCarrinho();
+                                } else {
                                     selecionarTimeAleatorio();
                                 }
+                            } else {
+                                selecionarTimeAleatorio();
                             }
+                        }
                     } else {
                         adcionarApostaPreencherNumerosAleatorios();
                     }
@@ -566,10 +532,10 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         }
     }
 
-    private void selecionarTimeAleatorio(){
+    private void selecionarTimeAleatorio() {
         int randomInt = 0;
         Random randomGenerator = new Random();
-        randomInt = randomGenerator.nextInt(listaEquipefiltro.size()-1);
+        randomInt = randomGenerator.nextInt(listaEquipefiltro.size() - 1);
         equipeSelecionada = listaEquipefiltro.get(randomInt);
         equipeSelecionada.setSelecionado(true);
         String nomeTime = String.format("%s-%s", equipeSelecionada.getNome(), equipeSelecionada.getUf());
@@ -698,7 +664,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
     private void salvarAposta(String nomeAposta) {
         final DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(getActivity());
-        final AlertDialog loadViewProgress = LoadingViewLoterias.show(getActivity());
+        DialogUtils.show(getActivity());
 
         final ApostaFavoritaDTO aposta = new ApostaFavoritaDTO();
 
@@ -721,7 +687,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                 dadosCorporativosBO.salvarApostaFavorita(aposta, new RequestListener<NetworkResponse>() {
                     @Override
                     public void onResponse(NetworkResponse response) {
-                        loadViewProgress.dismiss();
+                        DialogUtils.dismiss();
 
                         RelativeLayout salvarApostaLayout = parentActivity.getSalvarApostaLayout();
 
@@ -745,7 +711,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        loadViewProgress.dismiss();
+                        DialogUtils.dismiss();
                         ViewUtils.alert(getActivity(), MensagensNetwork.setMensagem(error, getActivity()));
                     }
                 });
@@ -753,7 +719,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                loadViewProgress.dismiss();
+                DialogUtils.dismiss();
                 ViewUtils.alert(getActivity(), MensagensNetwork.setMensagem(error, getActivity()));
             }
         });
@@ -998,10 +964,10 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         } else if (isTipoTimemania) {
             if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado && isEcolhaTimeBtnAtivado) {
                 botaoFinalizar.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.timemaniaescuro));
-                if (mGridTimeCoracao != null){
+                if (mGridTimeCoracao != null) {
                     botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(parentActivity, getString(R.string.label_selecionar_time_aleatoriamente)));
                     botaoFinalizar.setBackgroundColor(getContext().getResources().getColor(R.color.cinza));
-                }else{
+                } else {
                     botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(parentActivity, getString(R.string.label_escolha_time_coracao)));
                     botaoFinalizar.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.timemaniaescuro));
                 }

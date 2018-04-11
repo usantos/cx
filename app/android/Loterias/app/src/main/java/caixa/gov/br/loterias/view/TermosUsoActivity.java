@@ -31,6 +31,7 @@ import caixa.gov.br.loterias.model.bo.silce.dto.ListSecaoDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.ResourceResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.TermoDeUsoDTOResponse;
 import caixa.gov.br.loterias.model.bo.MensagensNetwork;
+import caixa.gov.br.loterias.utils.DialogUtils;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.adapter.ItemDuvidaAdapter;
 import caixa.gov.br.loterias.view.custom.ExpandableHeightRecyclerView;
@@ -72,25 +73,25 @@ public class TermosUsoActivity extends AppCompatActivity {
         buttonTermoAceite = findViewById(R.id.buttonTermoAceite);
 
         Bundle bundle = getIntent().getExtras();
-        if (bundle != null){
+        if (bundle != null) {
             openAjuda = bundle.getBoolean("ajuda");
         }
 
         buttonTermoAceite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final AlertDialog loadViewProgress = LoadingViewLoterias.show(TermosUsoActivity.this);
+                DialogUtils.show(TermosUsoActivity.this);
                 DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(TermosUsoActivity.this);
                 dadosCorporativosBO.aceiteTermo(new RequestListener<ResourceResponse>() {
                     @Override
                     public void onResponse(ResourceResponse response) {
-                        loadViewProgress.dismiss();
+                        DialogUtils.dismiss();
                         finish();
                     }
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        loadViewProgress.dismiss();
+                        DialogUtils.dismiss();
                         ViewUtils.alert(TermosUsoActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
                     }
                 });
@@ -139,7 +140,7 @@ public class TermosUsoActivity extends AppCompatActivity {
         listenerTermosUso();
         listenerDuvidas();
         listenerPolitica();
-        if (openAjuda == true){
+        if (openAjuda == true) {
             duvidasButton.performClick();
         }
     }
@@ -151,22 +152,21 @@ public class TermosUsoActivity extends AppCompatActivity {
     }
 
     private void getTermo() {
-        final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
+        DialogUtils.show(this);
         DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(TermosUsoActivity.this);
 
         dadosCorporativosBO.termo(new RequestListener<TermoDeUsoDTOResponse>() {
             @Override
             public void onResponse(TermoDeUsoDTOResponse response) {
                 termoHtml = response.getPayload().getConteudo();
-
                 webViewConteudo.loadData(termoHtml, "text/html; charset=UTF-8", "UTF-8");
-                loadViewProgress.dismiss();
+                DialogUtils.dismiss();
                 verificaTermoAceito();
             }
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                loadViewProgress.dismiss();
+                DialogUtils.dismiss();
                 ViewUtils.alert(TermosUsoActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
             }
         });
@@ -228,35 +228,31 @@ public class TermosUsoActivity extends AppCompatActivity {
     }
 
     private void verificaTermoAceito() {
-        final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
+        DialogUtils.show(this);
         DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(TermosUsoActivity.this);
 
         dadosCorporativosBO.validaTermoAceito(new RequestListener<ResourceResponse>() {
             @Override
             public void onResponse(ResourceResponse response) {
                 isTermoAceito = Boolean.TRUE;
-                exibeRodapeAceite();
-                loadViewProgress.dismiss();
+                scrollViewTermoAceite.setPadding(0, 0, 0, 0);
+                getSupportActionBar().setDisplayHomeAsUpEnabled(isTermoAceito);
+                footerAceiteTermo.setVisibility(View.GONE);
+                DialogUtils.dismiss();
             }
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                isTermoAceito = Boolean.FALSE;
-                loadViewProgress.dismiss();
+                DialogUtils.dismiss();
+                exibeRodapeAceite();
                 ViewUtils.alert(TermosUsoActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
             }
         });
     }
 
     private void exibeRodapeAceite() {
-        if (isTermoAceito) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            footerAceiteTermo.setVisibility(View.GONE);
-        } else {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-            footerAceiteTermo.setVisibility(View.VISIBLE);
-            scrollViewTermoAceite.setPadding(0, 0, 0, 230);
-        }
+        isTermoAceito = Boolean.FALSE;
+        getSupportActionBar().setDisplayHomeAsUpEnabled(isTermoAceito);
     }
 
     @Override
@@ -278,7 +274,7 @@ public class TermosUsoActivity extends AppCompatActivity {
 
     private void initReciclerViewDuvidas() {
         if (secaoDuvidas == null) {
-            final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
+            DialogUtils.show(this);
             DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(getApplicationContext());
 
             dadosCorporativosBO.secaoDuvidas(new RequestListener<ListSecaoDTOResponse>() {
@@ -286,12 +282,12 @@ public class TermosUsoActivity extends AppCompatActivity {
                 public void onResponse(ListSecaoDTOResponse response) {
                     secaoDuvidas = response.getPayload();
                     createRecyclerView();
-                    loadViewProgress.dismiss();
+                    DialogUtils.dismiss();
                 }
 
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    loadViewProgress.dismiss();
+                    DialogUtils.dismiss();
                     ViewUtils.alert(TermosUsoActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
                 }
             });
