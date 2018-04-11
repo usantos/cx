@@ -44,6 +44,7 @@ import caixa.gov.br.loterias.model.bo.silce.dto.SituacaoResultadoBilheteEnum;
 import caixa.gov.br.loterias.utils.AppUtils;
 import caixa.gov.br.loterias.utils.DialogUtils;
 import caixa.gov.br.loterias.utils.ViewUtils;
+import caixa.gov.br.loterias.utils.helper.AdicionarApostaCarrinhoHelper;
 import caixa.gov.br.loterias.utils.helper.ConferirResultadoHelper;
 import caixa.gov.br.loterias.view.ApostaConfirmadaDetalhesActivity_;
 import caixa.gov.br.loterias.view.ApostasConfirmadasActivity;
@@ -265,7 +266,7 @@ public class ApostasConfirmadasFragment extends Fragment implements ApostasConfi
                 adapter.setOnApostasConfirmadasListener(new ApostasConfirmadasAdapter.OnApostasConfirmadasListener() {
                     @Override
                     public void onReload(ApostaDTO apostaDTO) {
-                        //TODO:
+                        AdicionarApostaCarrinhoHelper.incluirApostaCarrinho(getActivity(), apostaDTO);
                     }
 
                     @Override

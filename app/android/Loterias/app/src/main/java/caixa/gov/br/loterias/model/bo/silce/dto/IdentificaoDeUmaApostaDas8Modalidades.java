@@ -25,7 +25,8 @@ import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel(description = "")
 @Parcel
-public class IdentificaoDeUmaApostaDas8Modalidades {
+public class
+IdentificaoDeUmaApostaDas8Modalidades {
 
     @SerializedName("id")
     protected Long id = null;
