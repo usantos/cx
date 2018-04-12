@@ -2,6 +2,7 @@ package caixa.gov.br.loterias.view;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.model.bean.SessaoUsuario;
 import caixa.gov.br.loterias.model.bo.DadosCorporativosBO;
 import caixa.gov.br.loterias.model.bo.DadosCorporativosBO_;
 import caixa.gov.br.loterias.model.bo.DadosUsuarioBO;
@@ -45,6 +47,7 @@ import caixa.gov.br.loterias.model.bo.silce.dto.MunicipioIdDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.SexoEnum;
 import caixa.gov.br.loterias.model.bo.silce.dto.UnidadeFederacaoDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.UnidadeFederacaoDTOResponse;
+import caixa.gov.br.loterias.model.bo.silce.dto.UsuarioLogado;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.utils.segmentedbutton.SegmentedButtonGroup;
 import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
@@ -130,14 +133,17 @@ public class DadosPessoaisActivity extends AppCompatActivity {
                         ){
                     ApostadorAlteracaoDTO apostadorAlteracaoDTO = new ApostadorAlteracaoDTO();
                     apostadorAlteracaoDTO.setCep( editTextCepContent.getUnmaskedText() );
-                    SexoEnum sexoEnum;
+                    ApostadorAlteracaoDTO.SexoEnum sexoEnum;
                     if (segmentedButtonSexo.getPosition() == 0){
-                        sexoEnum = SexoEnum.MASCULINO;
+                        sexoEnum = ApostadorAlteracaoDTO.SexoEnum.M;
                     }else {
-                        sexoEnum = SexoEnum.FEMININO;
+                        sexoEnum = ApostadorAlteracaoDTO.SexoEnum.F;
                     }
                     apostadorAlteracaoDTO.setSexo( sexoEnum);
+                    apostadorAlteracaoDTO.setAlterandoLoterica( false );
                     apostadorAlteracaoDTO.setMunicipioId( municipioIdDTOSelect );
+                    SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
+                    apostadorAlteracaoDTO.setLimiteDiario( sessaoUsuario.getValorMaximoAposta() );
                     updateDadosCadastrais( apostadorAlteracaoDTO );
                 }else{
                     ViewUtils.alertTitulo( DadosPessoaisActivity.this, R.string.label_atencao, "Por favor, preencha todos os campos." );
@@ -458,6 +464,9 @@ public class DadosPessoaisActivity extends AppCompatActivity {
                 loadViewProgress.dismiss();
                 if (response.getRedirect() != null){
                     RedirectNetwork.checkRedirectSucesso( response.getRedirect(), DadosPessoaisActivity.this);
+                }else {
+                    startActivity(new Intent(DadosPessoaisActivity.this, DadosPessoaisConfirmacaoActivity.class));
+                    finish();
                 }
             }
 

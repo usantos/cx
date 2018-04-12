@@ -223,7 +223,12 @@
             android:label="@string/title_activity_dados_pessoais"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar"
-            android:windowSoftInputMode="stateHidden"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".view.DadosPessoaisConfirmacaoActivity"
+            android:label="@string/title_activity_dados_pessoais"
+            android:theme="@style/AppTheme.DegradeActionBar"
+            android:screenOrientation="portrait"
             ></activity>
     </application>
 

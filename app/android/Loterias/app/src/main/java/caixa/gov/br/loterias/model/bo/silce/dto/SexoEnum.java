@@ -6,6 +6,6 @@ import io.swagger.annotations.ApiModel;
 
 @ApiModel(description = "")
 public enum SexoEnum {
-    @SerializedName("MASCULINO") MASCULINO,
-    @SerializedName("FEMININO") FEMININO;
+    @SerializedName("M") M,
+    @SerializedName("F") F;
 }

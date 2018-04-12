@@ -14,6 +14,8 @@ package caixa.gov.br.loterias.model.bo.silce.dto;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.math.BigDecimal;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -26,8 +28,15 @@ public class ApostadorAlteracaoDTO {
     private MunicipioIdDTO municipioId = null;
     @SerializedName("lotericaId")
     private Long lotericaId = null;
+    public enum SexoEnum {
+        F,  M,
+    };
     @SerializedName("sexo")
     private SexoEnum sexo = null;
+    @SerializedName("alterandoLoterica")
+    private Boolean alterandoLoterica = null;
+    @SerializedName("limiteDiario")
+    private BigDecimal limiteDiario = null;
 
     /**
      * CEP relacionado com o endereço do apostador
@@ -36,7 +45,6 @@ public class ApostadorAlteracaoDTO {
     public String getCep() {
         return cep;
     }
-
     public void setCep(String cep) {
         this.cep = cep;
     }
@@ -47,7 +55,6 @@ public class ApostadorAlteracaoDTO {
     public MunicipioIdDTO getMunicipioId() {
         return municipioId;
     }
-
     public void setMunicipioId(MunicipioIdDTO municipioId) {
         this.municipioId = municipioId;
     }
@@ -59,7 +66,6 @@ public class ApostadorAlteracaoDTO {
     public Long getLotericaId() {
         return lotericaId;
     }
-
     public void setLotericaId(Long lotericaId) {
         this.lotericaId = lotericaId;
     }
@@ -71,9 +77,30 @@ public class ApostadorAlteracaoDTO {
     public SexoEnum getSexo() {
         return sexo;
     }
-
     public void setSexo(SexoEnum sexo) {
         this.sexo = sexo;
+    }
+
+    /**
+     * Se a lotérica do apostador está sendo alterada
+     **/
+    @ApiModelProperty(value = "Se a lotérica do apostador está sendo alterada")
+    public Boolean getAlterandoLoterica() {
+        return alterandoLoterica;
+    }
+    public void setAlterandoLoterica(Boolean alterandoLoterica) {
+        this.alterandoLoterica = alterandoLoterica;
+    }
+
+    /**
+     * Limite Diário de apostas
+     **/
+    @ApiModelProperty(value = "Limite Diário de apostas")
+    public BigDecimal getLimiteDiario() {
+        return limiteDiario;
+    }
+    public void setLimiteDiario(BigDecimal limiteDiario) {
+        this.limiteDiario = limiteDiario;
     }
 
 
@@ -89,21 +116,25 @@ public class ApostadorAlteracaoDTO {
         return (this.cep == null ? apostadorAlteracaoDTO.cep == null : this.cep.equals(apostadorAlteracaoDTO.cep)) &&
                 (this.municipioId == null ? apostadorAlteracaoDTO.municipioId == null : this.municipioId.equals(apostadorAlteracaoDTO.municipioId)) &&
                 (this.lotericaId == null ? apostadorAlteracaoDTO.lotericaId == null : this.lotericaId.equals(apostadorAlteracaoDTO.lotericaId)) &&
-                (this.sexo == null ? apostadorAlteracaoDTO.sexo == null : this.sexo.equals(apostadorAlteracaoDTO.sexo));
+                (this.sexo == null ? apostadorAlteracaoDTO.sexo == null : this.sexo.equals(apostadorAlteracaoDTO.sexo)) &&
+                (this.alterandoLoterica == null ? apostadorAlteracaoDTO.alterandoLoterica == null : this.alterandoLoterica.equals(apostadorAlteracaoDTO.alterandoLoterica)) &&
+                (this.limiteDiario == null ? apostadorAlteracaoDTO.limiteDiario == null : this.limiteDiario.equals(apostadorAlteracaoDTO.limiteDiario));
     }
 
     @Override
     public int hashCode() {
         int result = 17;
-        result = 31 * result + (this.cep == null ? 0 : this.cep.hashCode());
-        result = 31 * result + (this.municipioId == null ? 0 : this.municipioId.hashCode());
-        result = 31 * result + (this.lotericaId == null ? 0 : this.lotericaId.hashCode());
-        result = 31 * result + (this.sexo == null ? 0 : this.sexo.hashCode());
+        result = 31 * result + (this.cep == null ? 0: this.cep.hashCode());
+        result = 31 * result + (this.municipioId == null ? 0: this.municipioId.hashCode());
+        result = 31 * result + (this.lotericaId == null ? 0: this.lotericaId.hashCode());
+        result = 31 * result + (this.sexo == null ? 0: this.sexo.hashCode());
+        result = 31 * result + (this.alterandoLoterica == null ? 0: this.alterandoLoterica.hashCode());
+        result = 31 * result + (this.limiteDiario == null ? 0: this.limiteDiario.hashCode());
         return result;
     }
 
     @Override
-    public String toString() {
+    public String toString()  {
         StringBuilder sb = new StringBuilder();
         sb.append("class ApostadorAlteracaoDTO {\n");
 
@@ -111,6 +142,8 @@ public class ApostadorAlteracaoDTO {
         sb.append("  municipioId: ").append(municipioId).append("\n");
         sb.append("  lotericaId: ").append(lotericaId).append("\n");
         sb.append("  sexo: ").append(sexo).append("\n");
+        sb.append("  alterandoLoterica: ").append(alterandoLoterica).append("\n");
+        sb.append("  limiteDiario: ").append(limiteDiario).append("\n");
         sb.append("}\n");
         return sb.toString();
     }
