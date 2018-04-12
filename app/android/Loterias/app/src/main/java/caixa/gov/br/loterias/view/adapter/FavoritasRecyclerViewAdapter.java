@@ -267,7 +267,7 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
                 loadViewProgress.dismiss();
                     removeAt(position);
                 if (response.getRedirect() != null){
-                    RedirectNetwork.checkRedirectSucesso( response.getRedirect().toString(), activity);
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), activity);
                 }
             }
 
@@ -291,7 +291,7 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
                 loadViewProgress.dismiss();
                 ViewUtils.alert( context, context.getResources().getString( R.string.label_aposta_salva_carinha ) );
                 if (response.getRedirect() != null){
-                    RedirectNetwork.checkRedirectSucesso( response.getRedirect().toString(), activity);
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), activity);
                 }
             }
 
@@ -325,7 +325,7 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
                 buttonSalvarNomeAposta.setEnabled(false);
                 loadViewProgress.dismiss();
                 if (response.getRedirect() != null){
-                    RedirectNetwork.checkRedirectSucesso( response.getRedirect().toString(), activity);
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), activity);
                 }
             }
 

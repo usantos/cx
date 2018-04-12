@@ -48,7 +48,7 @@ public class RepassesSociaisActivity extends SettingToolbarActivity {
                 repasseOBj = response.getPayload();
                 setLayout();
                 if (response.getRedirect() != null){
-                    RedirectNetwork.checkRedirectSucesso( response.getRedirect().toString(), RepassesSociaisActivity.this);
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), RepassesSociaisActivity.this);
                 }
             }
 

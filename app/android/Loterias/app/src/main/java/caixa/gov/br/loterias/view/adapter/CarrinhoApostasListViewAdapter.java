@@ -205,7 +205,7 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
                         deletarApostaBaseLocal(aposta, Boolean.FALSE);
                         parentActivity.atualizaLayout(Boolean.FALSE);
                         if (response.getRedirect() != null){
-                            RedirectNetwork.checkRedirectSucesso( response.getRedirect().toString(), parentActivity);
+                            RedirectNetwork.checkRedirectSucesso( response.getRedirect(), parentActivity);
                         }
                     }
 

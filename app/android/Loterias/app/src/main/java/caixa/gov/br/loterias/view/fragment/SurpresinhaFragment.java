@@ -330,7 +330,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
                 loadViewProgress.dismiss();
                 surpresinhaFragmentListener.adicionarApostaCarrinho();
                 if (response.getRedirect() != null){
-                    RedirectNetwork.checkRedirectSucesso( response.getRedirect().toString(), getActivity());
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), getActivity());
                 }
             }
 

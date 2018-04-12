@@ -156,7 +156,7 @@ public class FavoritasActivity extends AppCompatActivity {
 
                 atualizaLayout();
                 if (response.getRedirect() != null){
-                    RedirectNetwork.checkRedirectSucesso( response.getRedirect().toString(), FavoritasActivity.this);
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), FavoritasActivity.this);
                 }
             }
 
@@ -192,7 +192,7 @@ public class FavoritasActivity extends AppCompatActivity {
                 }
                 bloquearRequestScroll = false;
                 if (response.getRedirect() != null){
-                    RedirectNetwork.checkRedirectSucesso( response.getRedirect().toString(), FavoritasActivity.this);
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), FavoritasActivity.this);
                 }
             }
 

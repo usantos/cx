@@ -143,7 +143,7 @@ public class LerBilhetesEscolhaJogoActivity extends AppCompatActivity {
 
                 atualizarLayout();
                 if (response.getRedirect() != null){
-                    RedirectNetwork.checkRedirectSucesso( response.getRedirect().toString(), LerBilhetesEscolhaJogoActivity.this);
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), LerBilhetesEscolhaJogoActivity.this);
                 }
             }
             @Override

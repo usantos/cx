@@ -224,7 +224,7 @@ public class FormaPagamentoActivity extends SettingToolbarActivity implements Fo
             public void onResponse(RetornoPadraoDTO response) {
                 loadViewProgress.dismiss();
                 if (response.getRedirect() != null){
-                    RedirectNetwork.checkRedirectSucesso( response.getRedirect().toString(), FormaPagamentoActivity.this);
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), FormaPagamentoActivity.this);
                 }else{
                     Intent activity = new Intent(FormaPagamentoActivity.this, ConfirmacaoPagamentoActivity.class);
                     startActivity(activity);

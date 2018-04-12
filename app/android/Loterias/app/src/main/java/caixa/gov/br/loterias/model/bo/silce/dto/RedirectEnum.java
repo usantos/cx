@@ -35,4 +35,21 @@ public enum RedirectEnum {
     public String toString() {
         return name();
     }
+
+//    public static RedirectEnum fromString(String modalidade) {
+//        switch (modalidade) {
+//            case "home":
+//                return RedirectEnum.HOME;
+//            case "ativar-cadastro":
+//                return RedirectEnum.ATIVAR_CADASTRO;
+//            case "mega-sena":
+//                return RedirectEnum.MEGA_SENA;
+//            case "surpresinhaMegaSena":
+//                return RedirectEnum.SURPRESINHAMEGASENA;
+//            case "  "
+//            default:
+//                return null;
+//        }
+//    }
+
 }

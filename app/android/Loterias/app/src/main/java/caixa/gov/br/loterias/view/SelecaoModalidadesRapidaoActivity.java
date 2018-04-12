@@ -156,7 +156,7 @@ public class SelecaoModalidadesRapidaoActivity extends AppCompatActivity{
 
                 atualizarLayout();
                 if (response.getRedirect() != null){
-                    RedirectNetwork.checkRedirectSucesso( response.getRedirect().toString(), SelecaoModalidadesRapidaoActivity.this);
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), SelecaoModalidadesRapidaoActivity.this);
                 }
             }
 

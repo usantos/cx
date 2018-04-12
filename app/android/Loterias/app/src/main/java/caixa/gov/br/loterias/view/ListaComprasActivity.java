@@ -133,7 +133,7 @@ public class ListaComprasActivity extends AppCompatActivity {
                 offsetItem = 5;
                 initRecyclerView();
                 if (response.getRedirect() != null){
-                    RedirectNetwork.checkRedirectSucesso( response.getRedirect().toString(), ListaComprasActivity.this);
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), ListaComprasActivity.this);
                 }
             }
 
@@ -313,7 +313,7 @@ public class ListaComprasActivity extends AppCompatActivity {
                 }
                 bloquearRequestScroll = false;
                 if (response.getRedirect() != null){
-                    RedirectNetwork.checkRedirectSucesso( response.getRedirect().toString(), ListaComprasActivity.this);
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), ListaComprasActivity.this);
                 }
             }
 

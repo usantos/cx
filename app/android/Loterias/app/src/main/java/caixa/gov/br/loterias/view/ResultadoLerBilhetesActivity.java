@@ -130,7 +130,7 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
                     atualizarLayoutNaoPremiado();
                 }
                 if (response.getRedirect() != null){
-                    RedirectNetwork.checkRedirectSucesso( response.getRedirect().toString(), ResultadoLerBilhetesActivity.this);
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), ResultadoLerBilhetesActivity.this);
                 }
             }
 

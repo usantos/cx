@@ -107,7 +107,7 @@ public class CarrinhoActivity extends SettingToolbarActivity {
                         alertDialog.dismiss();
                         limparCarrinhoAtualizarTela();
                         if (result.getRedirect() != null){
-                            RedirectNetwork.checkRedirectSucesso( result.getRedirect().toString(), CarrinhoActivity.this);
+                            RedirectNetwork.checkRedirectSucesso( result.getRedirect(), CarrinhoActivity.this);
                         }
                     }
 
@@ -155,7 +155,7 @@ public class CarrinhoActivity extends SettingToolbarActivity {
                 carrinho = response.getPayload();
                 atualizaLayout(Boolean.TRUE);
                 if (response.getRedirect() != null){
-                    RedirectNetwork.checkRedirectSucesso( response.getRedirect().toString(), CarrinhoActivity.this);
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), CarrinhoActivity.this);
                 }
             }
 

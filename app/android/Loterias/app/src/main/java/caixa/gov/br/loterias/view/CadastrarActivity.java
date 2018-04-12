@@ -290,7 +290,7 @@ public class CadastrarActivity extends CadastroActivity {
                     limparBuscaPorCep();
                 }
                 if (response.getRedirect() != null){
-                    RedirectNetwork.checkRedirectSucesso( response.getRedirect().toString(), CadastrarActivity.this);
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), CadastrarActivity.this);
                 }
             }
 

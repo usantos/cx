@@ -23,7 +23,7 @@ public class RetornoPadraoDTO {
     @SerializedName("tipo")
     private Integer tipo = null;
     @SerializedName("redirect")
-    private String redirect = null;
+    private RedirectEnum redirect = null;
     @SerializedName("errosValidacao")
     private List<ErroValidacao> errosValidacao = null;
     @SerializedName("versao")
@@ -63,11 +63,11 @@ public class RetornoPadraoDTO {
         this.tipo = tipo;
     }
 
-    public String getRedirect() {
+    public RedirectEnum getRedirect() {
         return redirect;
     }
 
-    public void setRedirect(String redirect) {
+    public void setRedirect(RedirectEnum redirect) {
         this.redirect = redirect;
     }
 

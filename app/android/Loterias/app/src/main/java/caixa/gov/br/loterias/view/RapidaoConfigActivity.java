@@ -250,7 +250,7 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
 
                 atualizaLayout();
                 if (response.getRedirect() != null){
-                    RedirectNetwork.checkRedirectSucesso( response.getRedirect().toString(), RapidaoConfigActivity.this);
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), RapidaoConfigActivity.this);
                 }
             }
 

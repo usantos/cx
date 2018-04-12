@@ -53,7 +53,7 @@ public class DetalheDuvidaActivity extends AppCompatActivity {
                 }
                 loadViewProgress.dismiss();
                 if (response.getRedirect() != null){
-                    RedirectNetwork.checkRedirectSucesso( response.getRedirect().toString(), DetalheDuvidaActivity.this);
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), DetalheDuvidaActivity.this);
                 }
             }
 

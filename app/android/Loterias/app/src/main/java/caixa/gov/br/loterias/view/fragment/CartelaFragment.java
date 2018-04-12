@@ -402,7 +402,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                 count.setText(String.format(Locale.getDefault(), "%d", qtdCartelasCarrinho));
                 cartelaFragmentListener.adicionarApostaCarrinho();
                 if (response.getRedirect() != null){
-                    RedirectNetwork.checkRedirectSucesso( response.getRedirect().toString(), getActivity());
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), getActivity());
                 }
             }
 
@@ -435,7 +435,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                 count.setText(String.format(Locale.getDefault(), "%d", qtdCartelasCarrinho));
                 cartelaFragmentListener.adicionarApostaCarrinho();
                 if (response.getRedirect() != null){
-                    RedirectNetwork.checkRedirectSucesso( response.getRedirect().toString(), getActivity());
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), getActivity());
                 }
             }
 

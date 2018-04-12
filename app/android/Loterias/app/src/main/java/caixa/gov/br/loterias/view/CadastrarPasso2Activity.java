@@ -247,7 +247,7 @@ public class CadastrarPasso2Activity extends CadastroActivity {
                     buscarLoteriasAutomatico();
                 }
                 if (response.getRedirect() != null){
-                    RedirectNetwork.checkRedirectSucesso( response.getRedirect().toString(), CadastrarPasso2Activity.this);
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), CadastrarPasso2Activity.this);
                 }
             }
 
@@ -276,7 +276,7 @@ public class CadastrarPasso2Activity extends CadastroActivity {
                                 buscarLoteriasLocalizacaoCep(null, response.getPayload().get(0));
                             }
                             if (response.getRedirect() != null){
-                                RedirectNetwork.checkRedirectSucesso( response.getRedirect().toString(), CadastrarPasso2Activity.this);
+                                RedirectNetwork.checkRedirectSucesso( response.getRedirect(), CadastrarPasso2Activity.this);
                             }
                         }
 
@@ -314,7 +314,7 @@ public class CadastrarPasso2Activity extends CadastroActivity {
                     ViewUtils.alert(CadastrarPasso2Activity.this, response.getMensagem());
                 }
                 if (response.getRedirect() != null){
-                    RedirectNetwork.checkRedirectSucesso( response.getRedirect().toString(), CadastrarPasso2Activity.this);
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), CadastrarPasso2Activity.this);
                 }
 
             }
@@ -381,7 +381,7 @@ public class CadastrarPasso2Activity extends CadastroActivity {
                             }
                             modalBairros();
                             if (response.getRedirect() != null){
-                                RedirectNetwork.checkRedirectSucesso( response.getRedirect().toString(), CadastrarPasso2Activity.this);
+                                RedirectNetwork.checkRedirectSucesso( response.getRedirect(), CadastrarPasso2Activity.this);
                             }
                         }
 

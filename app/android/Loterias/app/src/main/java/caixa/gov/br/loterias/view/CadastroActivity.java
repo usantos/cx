@@ -137,7 +137,7 @@ public class CadastroActivity extends AppCompatActivity {
                 }
                 modalUfs();
                 if (response.getRedirect() != null){
-                    RedirectNetwork.checkRedirectSucesso( response.getRedirect().toString(), CadastroActivity.this);
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), CadastroActivity.this);
                 }
             }
 
@@ -243,7 +243,7 @@ public class CadastroActivity extends AppCompatActivity {
                     }
                     modalMunicipios();
                     if (response.getRedirect() != null){
-                        RedirectNetwork.checkRedirectSucesso( response.getRedirect().toString(), CadastroActivity.this);
+                        RedirectNetwork.checkRedirectSucesso( response.getRedirect(), CadastroActivity.this);
                     }
                 }
 

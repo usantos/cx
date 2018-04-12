@@ -190,7 +190,7 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
             public void onResponse(RetornoPadraoDTO response) {
                 alertDialog.dismiss();
                 if (response.getRedirect() != null){
-                    RedirectNetwork.checkRedirectSucesso( response.getRedirect().toString(), NovaFormaPagamentoActivity.this);
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), NovaFormaPagamentoActivity.this);
                 }else {
                     Intent activity = new Intent(NovaFormaPagamentoActivity.this, ConfirmacaoPagamentoActivity.class);
                     startActivity(activity);

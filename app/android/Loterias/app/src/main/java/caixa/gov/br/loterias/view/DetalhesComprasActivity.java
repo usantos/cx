@@ -74,7 +74,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
                 listaAposta = response.getPayload().getApostas();
                 montarLayout();
                 if (response.getRedirect() != null){
-                    RedirectNetwork.checkRedirectSucesso( response.getRedirect().toString(), DetalhesComprasActivity.this);
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), DetalhesComprasActivity.this);
                 }
             }
             @Override

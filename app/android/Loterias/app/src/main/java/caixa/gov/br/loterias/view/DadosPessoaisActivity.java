@@ -184,7 +184,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
                 apostadorDTO = response.getPayload();
                 buscarBairroPorCep( response.getPayload().getCep() );
                 if (response.getRedirect() != null){
-                    RedirectNetwork.checkRedirectSucesso( response.getRedirect().toString(), DadosPessoaisActivity.this);
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), DadosPessoaisActivity.this);
                 }
             }
 
@@ -211,7 +211,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
                 }
                 modalUfs();
                 if (response.getRedirect() != null){
-                    RedirectNetwork.checkRedirectSucesso( response.getRedirect().toString(), DadosPessoaisActivity.this);
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), DadosPessoaisActivity.this);
                 }
             }
 
@@ -249,7 +249,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
                     }
                     modalMunicipios();
                     if (response.getRedirect() != null){
-                        RedirectNetwork.checkRedirectSucesso( response.getRedirect().toString(), DadosPessoaisActivity.this);
+                        RedirectNetwork.checkRedirectSucesso( response.getRedirect(), DadosPessoaisActivity.this);
                     }
                 }
 
@@ -435,7 +435,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
                 }
                 atualizaLayout();
                 if (response.getRedirect() != null){
-                    RedirectNetwork.checkRedirectSucesso( response.getRedirect().toString(), DadosPessoaisActivity.this);
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), DadosPessoaisActivity.this);
                 }
             }
 
@@ -457,7 +457,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
 
                 loadViewProgress.dismiss();
                 if (response.getRedirect() != null){
-                    RedirectNetwork.checkRedirectSucesso( response.getRedirect().toString(), DadosPessoaisActivity.this);
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), DadosPessoaisActivity.this);
                 }
             }
 

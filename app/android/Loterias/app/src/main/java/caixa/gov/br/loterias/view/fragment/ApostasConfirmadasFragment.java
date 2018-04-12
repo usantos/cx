@@ -147,7 +147,7 @@ public class ApostasConfirmadasFragment extends Fragment implements ApostasConfi
 
         updateResultDate();
         if (result.getRedirect() != null){
-            RedirectNetwork.checkRedirectSucesso( result.getRedirect().toString(), getActivity());
+            RedirectNetwork.checkRedirectSucesso( result.getRedirect(), getActivity());
         }
     }
 

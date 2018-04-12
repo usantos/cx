@@ -193,7 +193,7 @@ public class ListaRapidaoActivity extends AppCompatActivity {
                 apostas = carrinho.getApostas();
                 atualizaLayout();
                 if (response.getRedirect() != null){
-                    RedirectNetwork.checkRedirectSucesso( response.getRedirect().toString(), ListaRapidaoActivity.this);
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), ListaRapidaoActivity.this);
                 }
             }
 
