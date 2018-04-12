@@ -48,26 +48,28 @@ public class RedirectNetwork {
         } catch (UnsupportedEncodingException | JSONException e) {
             msgErroResponse = activity.getString( R.string.sistema_indisponivel);
         }
-
-        RedirectEnum redirectEnum = RedirectEnum.valueOf(redirect);
-        switch (redirectEnum){
-            case ACEITAR_TERMO_DE_USO:
-                activity.startActivity(new Intent(activity, TermosUsoActivity.class));
-                break;
-            case LOGIN:
-                connectKeycloak(activity);
-                break;
-            case CADASTRAR_APOSTADOR:
-                activity.startActivity(new Intent(activity, CadastrarActivity.class));
-                break;
-            default:
-               if (response.statusCode == 401){
-                   connectKeycloak(activity);
-               }else{
-                   ViewUtils.alert( activity, MensagensNetwork.setMensagem( error, activity ) );
-               }
-                break;
+        if (redirect != ""){
+            RedirectEnum redirectEnum = RedirectEnum.fromString( redirect );
+            switch (redirectEnum){
+                case ACEITAR_TERMO_DE_USO:
+                    activity.startActivity(new Intent(activity, TermosUsoActivity.class));
+                    return;
+                case LOGIN:
+                    connectKeycloak(activity);
+                    return;
+                case CADASTRAR_APOSTADOR:
+                    activity.startActivity(new Intent(activity, CadastrarActivity.class));
+                    return;
+                default:
+                    break;
+            }
         }
+        if (response.statusCode == 401){
+            connectKeycloak(activity);
+        }else{
+            ViewUtils.alert( activity, MensagensNetwork.setMensagem( error, activity ) );
+        }
+
     }
     public static void checkRedirectSucesso(RedirectEnum redirect, Activity activity){
         switch (redirect){

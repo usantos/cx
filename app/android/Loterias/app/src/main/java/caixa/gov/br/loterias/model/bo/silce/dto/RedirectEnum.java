@@ -36,20 +36,57 @@ public enum RedirectEnum {
         return name();
     }
 
-//    public static RedirectEnum fromString(String modalidade) {
-//        switch (modalidade) {
-//            case "home":
-//                return RedirectEnum.HOME;
-//            case "ativar-cadastro":
-//                return RedirectEnum.ATIVAR_CADASTRO;
-//            case "mega-sena":
-//                return RedirectEnum.MEGA_SENA;
-//            case "surpresinhaMegaSena":
-//                return RedirectEnum.SURPRESINHAMEGASENA;
-//            case "  "
-//            default:
-//                return null;
-//        }
-//    }
+    public static RedirectEnum fromString(String modalidade) {
+        switch (modalidade) {
+            case "home":
+                return RedirectEnum.HOME;
+            case "ativar-cadastro":
+                return RedirectEnum.ATIVAR_CADASTRO;
+            case "mega-sena":
+                return RedirectEnum.MEGA_SENA;
+            case "surpresinhaMegaSena":
+                return RedirectEnum.SURPRESINHAMEGASENA;
+            case "quina":
+                return RedirectEnum.QUINA;
+            case "surpresinhaQuina":
+                return RedirectEnum.SURPRESINHAQUINA;
+            case "dupla-sena":
+                return RedirectEnum.DUPLA_SENA;
+            case "surpresinhaDuplaSena":
+                return RedirectEnum.SURPRESINHADUPLASENA;
+            case "lotomania":
+                return RedirectEnum.LOTOMANIA;
+            case "surpresinhaLotomania":
+                return RedirectEnum.SURPRESINHALOTOMANIA;
+            case "lotofacil":
+                return RedirectEnum.LOTOFACIL;
+            case "surpresinhaLotofacil":
+                return RedirectEnum.SURPRESINHALOTOFACIL;
+            case "timemania":
+                return RedirectEnum.TIMEMANIA;
+            case "surpresinhaTimemania":
+                return RedirectEnum.SURPRESINHATIMEMANIA;
+            case "lotogol":
+                return RedirectEnum.LOTOGOL;
+            case "loteca":
+                return RedirectEnum.LOTECA;
+            case "aposta":
+                return RedirectEnum.APOSTA;
+            case "carrinho":
+                return RedirectEnum.CARRINHO;
+            case "validar-cpf":
+                return RedirectEnum.VALIDAR_CPF;
+            case "cadastrar-apostador":
+                return RedirectEnum.CADASTRAR_APOSTADOR;
+            case "selecionar-loterica":
+                return RedirectEnum.SELECIONAR_LOTERICA;
+            case "aceitar-termo-de-uso":
+                return RedirectEnum.ACEITAR_TERMO_DE_USO;
+            case "login":
+                return RedirectEnum.LOGIN;
+            default:
+                return null;
+        }
+    }
 
 }
