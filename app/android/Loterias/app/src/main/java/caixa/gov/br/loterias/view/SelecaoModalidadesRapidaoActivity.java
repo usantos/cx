@@ -21,6 +21,7 @@ import java.util.List;
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.ApostaBO;
 import caixa.gov.br.loterias.model.bo.ApostaBO_;
+import caixa.gov.br.loterias.model.bo.RedirectNetwork;
 import caixa.gov.br.loterias.model.bo.RequestListener;
 import caixa.gov.br.loterias.model.bo.silce.dto.ModalidadeDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ModalidadeDTOResponse;
@@ -154,12 +155,15 @@ public class SelecaoModalidadesRapidaoActivity extends AppCompatActivity{
 
 
                 atualizarLayout();
+                if (response.getRedirect() != null){
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect().toString(), SelecaoModalidadesRapidaoActivity.this);
+                }
             }
 
             @Override
             public void onErrorResponse(VolleyError error) {
                 loadViewProgress.dismiss();
-                ViewUtils.alert(SelecaoModalidadesRapidaoActivity .this, MensagensNetwork.setMensagem(error, getApplicationContext()));
+                RedirectNetwork.checkRedirect( error, SelecaoModalidadesRapidaoActivity.this );
             }
         });
     }

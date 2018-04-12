@@ -41,6 +41,7 @@ import caixa.gov.br.loterias.model.bo.ApostaBO;
 import caixa.gov.br.loterias.model.bo.ApostaBO_;
 import caixa.gov.br.loterias.model.bo.DadosUsuarioBO;
 import caixa.gov.br.loterias.model.bo.DadosUsuarioBO_;
+import caixa.gov.br.loterias.model.bo.RedirectNetwork;
 import caixa.gov.br.loterias.model.bo.RequestListener;
 import caixa.gov.br.loterias.model.bo.silce.dto.ListCartaoDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.RetornoCartao;
@@ -222,14 +223,18 @@ public class FormaPagamentoActivity extends SettingToolbarActivity implements Fo
             @Override
             public void onResponse(RetornoPadraoDTO response) {
                 loadViewProgress.dismiss();
-                Intent activity = new Intent(FormaPagamentoActivity.this, ConfirmacaoPagamentoActivity.class);
-                startActivity(activity);
+                if (response.getRedirect() != null){
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect().toString(), FormaPagamentoActivity.this);
+                }else{
+                    Intent activity = new Intent(FormaPagamentoActivity.this, ConfirmacaoPagamentoActivity.class);
+                    startActivity(activity);
+                }
             }
 
             @Override
             public void onErrorResponse(VolleyError error) {
                 loadViewProgress.dismiss();
-                ViewUtils.alert(FormaPagamentoActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
+                RedirectNetwork.checkRedirect( error, FormaPagamentoActivity.this );
             }
         });
     }

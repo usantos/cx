@@ -17,6 +17,7 @@ import java.util.List;
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.DadosCorporativosBO;
 import caixa.gov.br.loterias.model.bo.DadosCorporativosBO_;
+import caixa.gov.br.loterias.model.bo.RedirectNetwork;
 import caixa.gov.br.loterias.model.bo.RequestListener;
 import caixa.gov.br.loterias.model.bo.silce.dto.DuvidaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ListSecaoDTO;
@@ -51,12 +52,15 @@ public class DetalheDuvidaActivity extends AppCompatActivity {
                     createRecyclerView(secaoDTOList.get(0).getDuvidas());
                 }
                 loadViewProgress.dismiss();
+                if (response.getRedirect() != null){
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect().toString(), DetalheDuvidaActivity.this);
+                }
             }
 
             @Override
             public void onErrorResponse(VolleyError error) {
                 loadViewProgress.dismiss();
-                ViewUtils.alert(DetalheDuvidaActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
+                RedirectNetwork.checkRedirect( error, DetalheDuvidaActivity.this );
             }
         });
         createToolBar();

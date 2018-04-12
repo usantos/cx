@@ -30,6 +30,7 @@ import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bean.SessaoUsuario;
 import caixa.gov.br.loterias.model.bo.ApostaBO;
 import caixa.gov.br.loterias.model.bo.ApostaBO_;
+import caixa.gov.br.loterias.model.bo.RedirectNetwork;
 import caixa.gov.br.loterias.model.bo.RequestListener;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostaFavoritaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ModalidadeDTO;
@@ -248,12 +249,15 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
 
 
                 atualizaLayout();
+                if (response.getRedirect() != null){
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect().toString(), RapidaoConfigActivity.this);
+                }
             }
 
             @Override
             public void onErrorResponse(VolleyError error) {
                 loadViewProgress.dismiss();
-                ViewUtils.alert(RapidaoConfigActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
+                RedirectNetwork.checkRedirect( error, RapidaoConfigActivity.this );
             }
         });
     }
@@ -512,7 +516,7 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
             @Override
             public void onErrorResponse(VolleyError error) {
                 loadViewProgress.dismiss();
-                ViewUtils.alert(RapidaoConfigActivity.this, MensagensNetwork.setMensagem(error, RapidaoConfigActivity.this));
+                RedirectNetwork.checkRedirect( error, RapidaoConfigActivity.this );
             }
         });
     }

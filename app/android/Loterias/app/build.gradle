@@ -166,6 +166,9 @@ dependencies {
     //Mercado Pago
     compile 'com.mercadopago:sdk:3.8.1'
 
+    //Apache commons
+    compile 'org.apache.commons:commons-collections4:4.1'
+
     // testImplementation deps
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:1.10.19'

@@ -30,6 +30,7 @@ import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bean.ApostaPageRequest;
 import caixa.gov.br.loterias.model.bo.ApostaBO;
 import caixa.gov.br.loterias.model.bo.MensagensNetwork;
+import caixa.gov.br.loterias.model.bo.RedirectNetwork;
 import caixa.gov.br.loterias.model.bo.RequestListener;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ComprovanteApostaDTOResponse;
@@ -43,7 +44,6 @@ import caixa.gov.br.loterias.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOHist
 import caixa.gov.br.loterias.model.bo.silce.dto.SituacaoResultadoBilheteEnum;
 import caixa.gov.br.loterias.utils.AppUtils;
 import caixa.gov.br.loterias.utils.DialogUtils;
-import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.utils.helper.AdicionarApostaCarrinhoHelper;
 import caixa.gov.br.loterias.utils.helper.ConferirResultadoHelper;
 import caixa.gov.br.loterias.view.ApostaConfirmadaDetalhesActivity_;
@@ -146,17 +146,21 @@ public class ApostasConfirmadasFragment extends Fragment implements ApostasConfi
         }
 
         updateResultDate();
+        if (result.getRedirect() != null){
+            RedirectNetwork.checkRedirectSucesso( result.getRedirect().toString(), getActivity());
+        }
     }
 
     private void onMesesAnosDisponiveisError(VolleyError error) {
         if (getActivity() != null) {
             DialogUtils.dismiss();
             String msgError = MensagensNetwork.setMensagem(error, getActivity());
-            ViewUtils.alert(getActivity(), msgError);
             page = null;
             hasMoreItems = false;
             updateResultDate();
         }
+        RedirectNetwork.checkRedirect( error, getActivity() );
+
     }
 
     private void updateResultDate() {
@@ -335,7 +339,7 @@ public class ApostasConfirmadasFragment extends Fragment implements ApostasConfi
             apostasLoading.setVisibility(View.GONE);
 
             String msgError = MensagensNetwork.setMensagem(error, getActivity());
-            ViewUtils.alert(getActivity(), msgError);
+            RedirectNetwork.checkRedirect( error, getActivity() );
         }
     }
 

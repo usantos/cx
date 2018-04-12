@@ -28,6 +28,7 @@ import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bean.SessaoUsuario;
 import caixa.gov.br.loterias.model.bo.ApostaBO;
 import caixa.gov.br.loterias.model.bo.MensagensNetwork;
+import caixa.gov.br.loterias.model.bo.RedirectNetwork;
 import caixa.gov.br.loterias.model.bo.RequestListener;
 import caixa.gov.br.loterias.model.bo.silce.dto.ModalidadeEnum;
 import caixa.gov.br.loterias.model.bo.silce.dto.ParametroSimulacao;
@@ -128,12 +129,15 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
                 } else {
                     atualizarLayoutNaoPremiado();
                 }
+                if (response.getRedirect() != null){
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect().toString(), ResultadoLerBilhetesActivity.this);
+                }
             }
 
             @Override
             public void onErrorResponse(VolleyError error) {
                 alert.dismiss();
-                ViewUtils.alert(ResultadoLerBilhetesActivity.this, MensagensNetwork.setMensagem(error, ResultadoLerBilhetesActivity.this));
+                RedirectNetwork.checkRedirect( error, ResultadoLerBilhetesActivity.this );
             }
         });
     }

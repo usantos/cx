@@ -13,9 +13,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
 import com.github.pinball83.maskededittext.MaskedEditText;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +31,7 @@ import caixa.gov.br.loterias.model.bo.DadosCorporativosBO_;
 import caixa.gov.br.loterias.model.bo.DadosUsuarioBO;
 import caixa.gov.br.loterias.model.bo.DadosUsuarioBO_;
 import caixa.gov.br.loterias.model.bo.MensagensNetwork;
+import caixa.gov.br.loterias.model.bo.RedirectNetwork;
 import caixa.gov.br.loterias.model.bo.RequestListener;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostadorAlteracaoDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostadorDTO;
@@ -176,13 +183,15 @@ public class DadosPessoaisActivity extends AppCompatActivity {
             public void onResponse(ApostadorDTOResponse response) {
                 apostadorDTO = response.getPayload();
                 buscarBairroPorCep( response.getPayload().getCep() );
+                if (response.getRedirect() != null){
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect().toString(), DadosPessoaisActivity.this);
+                }
             }
 
             @Override
             public void onErrorResponse(VolleyError error) {
                 loadViewProgress.dismiss();
-                ViewUtils.alert( DadosPessoaisActivity.this, MensagensNetwork.setMensagem( error, getApplicationContext() ) );
-
+                RedirectNetwork.checkRedirect( error, DadosPessoaisActivity.this );
             }
         } );
     }
@@ -193,6 +202,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
         dadosCorporativosBO.ufs(new RequestListener<UnidadeFederacaoDTOResponse>() {
             @Override
             public void onResponse(UnidadeFederacaoDTOResponse response) {
+                response.getRedirect().toString();
                 loadViewProgress.dismiss();
                 listUFString = new ArrayList<String>();
                 listUf = response.getPayload();
@@ -200,12 +210,15 @@ public class DadosPessoaisActivity extends AppCompatActivity {
                     listUFString.add(uf.getSigla());
                 }
                 modalUfs();
+                if (response.getRedirect() != null){
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect().toString(), DadosPessoaisActivity.this);
+                }
             }
 
             @Override
             public void onErrorResponse(VolleyError error) {
                 loadViewProgress.dismiss();
-                ViewUtils.alert(DadosPessoaisActivity.this, MensagensNetwork.setMensagem(error, DadosPessoaisActivity.this));
+                RedirectNetwork.checkRedirect( error, DadosPessoaisActivity.this );
             }
         });
     }
@@ -235,12 +248,15 @@ public class DadosPessoaisActivity extends AppCompatActivity {
                         listMunicipios.add(municipio.getNome());
                     }
                     modalMunicipios();
+                    if (response.getRedirect() != null){
+                        RedirectNetwork.checkRedirectSucesso( response.getRedirect().toString(), DadosPessoaisActivity.this);
+                    }
                 }
 
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     loadViewProgress.dismiss();
-                    ViewUtils.alert(DadosPessoaisActivity.this, MensagensNetwork.setMensagem(error, DadosPessoaisActivity.this));
+                    RedirectNetwork.checkRedirect( error, DadosPessoaisActivity.this );
                 }
             });
         }
@@ -418,6 +434,9 @@ public class DadosPessoaisActivity extends AppCompatActivity {
                     municipioIdDTOSelect = bairroDTO.getMunicipio().getId();
                 }
                 atualizaLayout();
+                if (response.getRedirect() != null){
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect().toString(), DadosPessoaisActivity.this);
+                }
             }
 
             @Override
@@ -437,13 +456,15 @@ public class DadosPessoaisActivity extends AppCompatActivity {
             public void onResponse(CadastrarApostadorDTOResponse response) {
 
                 loadViewProgress.dismiss();
-
+                if (response.getRedirect() != null){
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect().toString(), DadosPessoaisActivity.this);
+                }
             }
 
             @Override
             public void onErrorResponse(VolleyError error) {
                 loadViewProgress.dismiss();
-                ViewUtils.alert(DadosPessoaisActivity.this, MensagensNetwork.setMensagem(error, DadosPessoaisActivity.this));
+                RedirectNetwork.checkRedirect( error, DadosPessoaisActivity.this );
             }
         });
     }

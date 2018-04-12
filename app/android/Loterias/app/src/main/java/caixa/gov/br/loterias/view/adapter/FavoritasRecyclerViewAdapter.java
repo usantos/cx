@@ -25,6 +25,7 @@ import java.util.List;
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.ApostaBO;
 import caixa.gov.br.loterias.model.bo.ApostaBO_;
+import caixa.gov.br.loterias.model.bo.RedirectNetwork;
 import caixa.gov.br.loterias.model.bo.RequestListener;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostaFavoritaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.CarrinhoDTOResponse;
@@ -32,6 +33,7 @@ import caixa.gov.br.loterias.model.bo.silce.dto.IncluirApostaFavoritaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.RetornoPadraoDTO;
 import caixa.gov.br.loterias.model.bo.MensagensNetwork;
 import caixa.gov.br.loterias.utils.ViewUtils;
+import caixa.gov.br.loterias.view.DadosPessoaisActivity;
 import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
 
 /**
@@ -264,12 +266,15 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
             public void onResponse(RetornoPadraoDTO response) {
                 loadViewProgress.dismiss();
                     removeAt(position);
+                if (response.getRedirect() != null){
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect().toString(), activity);
+                }
             }
 
             @Override
             public void onErrorResponse(VolleyError error) {
                 loadViewProgress.dismiss();
-                ViewUtils.alert(activity, MensagensNetwork.setMensagem(error, context));
+                RedirectNetwork.checkRedirect( error, activity );
 
             }
         });
@@ -285,12 +290,15 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
             public void onResponse(CarrinhoDTOResponse response) {
                 loadViewProgress.dismiss();
                 ViewUtils.alert( context, context.getResources().getString( R.string.label_aposta_salva_carinha ) );
+                if (response.getRedirect() != null){
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect().toString(), activity);
+                }
             }
 
             @Override
             public void onErrorResponse(VolleyError error) {
                 loadViewProgress.dismiss();
-                ViewUtils.alert(activity, MensagensNetwork.setMensagem(error, context));
+                RedirectNetwork.checkRedirect( error, activity );
 
             }
         });
@@ -316,12 +324,15 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
                 editTextNomeDaAposta.setEnabled(false);
                 buttonSalvarNomeAposta.setEnabled(false);
                 loadViewProgress.dismiss();
+                if (response.getRedirect() != null){
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect().toString(), activity);
+                }
             }
 
             @Override
             public void onErrorResponse(VolleyError error) {
                 loadViewProgress.dismiss();
-                ViewUtils.alert(activity, MensagensNetwork.setMensagem(error, context));
+                RedirectNetwork.checkRedirect( error, activity );
 
             }
         });

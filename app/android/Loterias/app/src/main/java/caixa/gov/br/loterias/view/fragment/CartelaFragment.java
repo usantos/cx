@@ -51,6 +51,7 @@ import caixa.gov.br.loterias.model.bo.ApostaBO;
 import caixa.gov.br.loterias.model.bo.ApostaBO_;
 import caixa.gov.br.loterias.model.bo.DadosCorporativosBO;
 import caixa.gov.br.loterias.model.bo.DadosCorporativosBO_;
+import caixa.gov.br.loterias.model.bo.RedirectNetwork;
 import caixa.gov.br.loterias.model.bo.RequestListener;
 import caixa.gov.br.loterias.model.bo.silce.data.CompletaJogoRsp;
 import caixa.gov.br.loterias.model.bo.silce.dto.AgrupadorDTOApostaDTOResponse;
@@ -400,7 +401,9 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
                 count.setText(String.format(Locale.getDefault(), "%d", qtdCartelasCarrinho));
                 cartelaFragmentListener.adicionarApostaCarrinho();
-
+                if (response.getRedirect() != null){
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect().toString(), getActivity());
+                }
             }
 
             @Override
@@ -412,7 +415,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                         cartelaFragmentListener.adicionarApostaCarrinho();
                     }
                 } else {
-                    ViewUtils.alert(getActivity(), MensagensNetwork.setMensagem(error, getActivity()));
+                    RedirectNetwork.checkRedirect( error, getActivity() );
                 }
             }
         });
@@ -431,6 +434,9 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
                 count.setText(String.format(Locale.getDefault(), "%d", qtdCartelasCarrinho));
                 cartelaFragmentListener.adicionarApostaCarrinho();
+                if (response.getRedirect() != null){
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect().toString(), getActivity());
+                }
             }
 
             @Override
@@ -445,7 +451,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                         cartelaFragmentListener.adicionarApostaCarrinho();
                     }
                 } else {
-                    ViewUtils.alert(getActivity(), MensagensNetwork.setMensagem(error, getActivity()));
+                    RedirectNetwork.checkRedirect( error, getActivity() );
                 }
             }
         });
@@ -707,12 +713,13 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                         starSalvarApostaImageView.setBackgroundResource(R.drawable.icon_favoritado);
 
                         flagApostaSalva = true;
+
                     }
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         DialogUtils.dismiss();
-                        ViewUtils.alert(getActivity(), MensagensNetwork.setMensagem(error, getActivity()));
+                        RedirectNetwork.checkRedirect( error, getActivity() );
                     }
                 });
             }
@@ -720,7 +727,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
             @Override
             public void onErrorResponse(VolleyError error) {
                 DialogUtils.dismiss();
-                ViewUtils.alert(getActivity(), MensagensNetwork.setMensagem(error, getActivity()));
+                RedirectNetwork.checkRedirect( error, getActivity() );
             }
         });
     }
@@ -744,7 +751,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                     @Override
                     public void onErrorResponse(VolleyError error) {
 
-                        ViewUtils.alert(getActivity(), MensagensNetwork.setMensagem(error, getActivity()));
+                        RedirectNetwork.checkRedirect( error, getActivity() );
                     }
                 });
     }

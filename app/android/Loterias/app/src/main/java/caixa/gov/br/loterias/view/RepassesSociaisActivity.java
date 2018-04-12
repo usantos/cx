@@ -14,6 +14,7 @@ import java.math.BigInteger;
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.DadosCorporativosBO;
 import caixa.gov.br.loterias.model.bo.DadosCorporativosBO_;
+import caixa.gov.br.loterias.model.bo.RedirectNetwork;
 import caixa.gov.br.loterias.model.bo.RequestListener;
 import caixa.gov.br.loterias.model.bo.silce.dto.RepassometroDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.RepassometroDTOResponse;
@@ -46,12 +47,15 @@ public class RepassesSociaisActivity extends SettingToolbarActivity {
                 loadViewProgress.dismiss();
                 repasseOBj = response.getPayload();
                 setLayout();
+                if (response.getRedirect() != null){
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect().toString(), RepassesSociaisActivity.this);
+                }
             }
 
             @Override
             public void onErrorResponse(VolleyError error) {
                 loadViewProgress.dismiss();
-                ViewUtils.alert(RepassesSociaisActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
+                RedirectNetwork.checkRedirect( error, RepassesSociaisActivity.this );
             }
         });
     }

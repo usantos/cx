@@ -15,6 +15,7 @@ import java.util.List;
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.ApostaBO;
 import caixa.gov.br.loterias.model.bo.ApostaBO_;
+import caixa.gov.br.loterias.model.bo.RedirectNetwork;
 import caixa.gov.br.loterias.model.bo.RequestListener;
 import caixa.gov.br.loterias.model.bo.silce.dto.AgrupadorApostaCompraDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostaDTO;
@@ -72,12 +73,15 @@ public class DetalhesComprasActivity extends AppCompatActivity {
                 loadViewProgress.dismiss();
                 listaAposta = response.getPayload().getApostas();
                 montarLayout();
+                if (response.getRedirect() != null){
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect().toString(), DetalhesComprasActivity.this);
+                }
             }
             @Override
             public void onErrorResponse(VolleyError error) {
                 loadViewProgress.dismiss();
-                ViewUtils.alert(DetalhesComprasActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
                 montarLayout();
+                RedirectNetwork.checkRedirect( error, DetalhesComprasActivity.this );
             }
         });
     }

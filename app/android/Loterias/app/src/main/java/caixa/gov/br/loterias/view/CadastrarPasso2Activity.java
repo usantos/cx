@@ -41,6 +41,7 @@ import caixa.gov.br.loterias.model.bo.DadosCorporativosBO;
 import caixa.gov.br.loterias.model.bo.DadosCorporativosBO_;
 import caixa.gov.br.loterias.model.bo.DadosUsuarioBO;
 import caixa.gov.br.loterias.model.bo.DadosUsuarioBO_;
+import caixa.gov.br.loterias.model.bo.RedirectNetwork;
 import caixa.gov.br.loterias.model.bo.RequestListener;
 import caixa.gov.br.loterias.model.bo.silce.dto.BairroDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.BairroDTOResponse;
@@ -245,12 +246,15 @@ public class CadastrarPasso2Activity extends CadastroActivity {
                 if (segmentedButtonCEP.getVisibility() == View.VISIBLE) {
                     buscarLoteriasAutomatico();
                 }
+                if (response.getRedirect() != null){
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect().toString(), CadastrarPasso2Activity.this);
+                }
             }
 
             @Override
             public void onErrorResponse(VolleyError error) {
                 loadViewProgress.dismiss();
-                ViewUtils.alert(CadastrarPasso2Activity.this, MensagensNetwork.setMensagem(error, CadastrarPasso2Activity.this));
+                RedirectNetwork.checkRedirect( error, CadastrarPasso2Activity.this );
             }
         });
     }
@@ -271,6 +275,9 @@ public class CadastrarPasso2Activity extends CadastroActivity {
                             if (response.getPayload() != null && !response.getPayload().isEmpty()) {
                                 buscarLoteriasLocalizacaoCep(null, response.getPayload().get(0));
                             }
+                            if (response.getRedirect() != null){
+                                RedirectNetwork.checkRedirectSucesso( response.getRedirect().toString(), CadastrarPasso2Activity.this);
+                            }
                         }
 
                         @Override
@@ -288,7 +295,7 @@ public class CadastrarPasso2Activity extends CadastroActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 loadViewProgress.dismiss();
-                ViewUtils.alert(CadastrarPasso2Activity.this, MensagensNetwork.setMensagem(error, CadastrarPasso2Activity.this));
+                RedirectNetwork.checkRedirect( error, CadastrarPasso2Activity.this );
             }
         });
     }
@@ -306,13 +313,16 @@ public class CadastrarPasso2Activity extends CadastroActivity {
                 } else {
                     ViewUtils.alert(CadastrarPasso2Activity.this, response.getMensagem());
                 }
+                if (response.getRedirect() != null){
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect().toString(), CadastrarPasso2Activity.this);
+                }
 
             }
 
             @Override
             public void onErrorResponse(VolleyError error) {
                 loadViewProgress.dismiss();
-                ViewUtils.alert(CadastrarPasso2Activity.this, MensagensNetwork.setMensagem(error, CadastrarPasso2Activity.this));
+                RedirectNetwork.checkRedirect( error, CadastrarPasso2Activity.this );
             }
         });
     }
@@ -334,7 +344,7 @@ public class CadastrarPasso2Activity extends CadastroActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 loadViewProgress.dismiss();
-                ViewUtils.alert(CadastrarPasso2Activity.this, MensagensNetwork.setMensagem(error, CadastrarPasso2Activity.this));
+                RedirectNetwork.checkRedirect( error, CadastrarPasso2Activity.this );
             }
         });
     }
@@ -370,12 +380,15 @@ public class CadastrarPasso2Activity extends CadastroActivity {
                                 listBairros.add(bairro.getNome());
                             }
                             modalBairros();
+                            if (response.getRedirect() != null){
+                                RedirectNetwork.checkRedirectSucesso( response.getRedirect().toString(), CadastrarPasso2Activity.this);
+                            }
                         }
 
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             loadViewProgress.dismiss();
-                            ViewUtils.alert(CadastrarPasso2Activity.this, MensagensNetwork.setMensagem(error, CadastrarPasso2Activity.this));
+                            RedirectNetwork.checkRedirect( error, CadastrarPasso2Activity.this );
                         }
                     });
         }

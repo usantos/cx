@@ -50,6 +50,7 @@ import caixa.gov.br.loterias.model.bo.DadosCorporativosBO_;
 import caixa.gov.br.loterias.model.bo.DadosUsuarioBO;
 import caixa.gov.br.loterias.model.bo.DadosUsuarioBO_;
 import caixa.gov.br.loterias.model.bo.MensagensNetwork;
+import caixa.gov.br.loterias.model.bo.RedirectNetwork;
 import caixa.gov.br.loterias.model.bo.RequestListener;
 import caixa.gov.br.loterias.model.bo.keycloak.KeycloakBO_;
 import caixa.gov.br.loterias.model.bo.silce.dto.ParametroSimulacao;
@@ -330,12 +331,13 @@ public class PrincipalActivity extends AppCompatActivity
                         loadViewProgress.dismiss();
                         startActivity(new Intent(PrincipalActivity.this, LoginActivity.class));
                         finish();
+
                     }
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         loadViewProgress.dismiss();
-                        ViewUtils.alert(PrincipalActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
+                        RedirectNetwork.checkRedirect( error, PrincipalActivity.this );
                     }
                 });
             }

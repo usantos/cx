@@ -25,6 +25,7 @@ import caixa.gov.br.loterias.model.bean.SessaoUsuario;
 import caixa.gov.br.loterias.model.bo.ApostaBO;
 import caixa.gov.br.loterias.model.bo.ApostaBO_;
 import caixa.gov.br.loterias.model.bo.MensagensNetwork;
+import caixa.gov.br.loterias.model.bo.RedirectNetwork;
 import caixa.gov.br.loterias.model.bo.RequestListener;
 import caixa.gov.br.loterias.model.bo.silce.dto.CarrinhoDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.CarrinhoDTOResponse;
@@ -105,6 +106,9 @@ public class CarrinhoActivity extends SettingToolbarActivity {
                     public void onResponse(CarrinhoDTOResponse result) {
                         alertDialog.dismiss();
                         limparCarrinhoAtualizarTela();
+                        if (result.getRedirect() != null){
+                            RedirectNetwork.checkRedirectSucesso( result.getRedirect().toString(), CarrinhoActivity.this);
+                        }
                     }
 
                     @Override
@@ -113,8 +117,7 @@ public class CarrinhoActivity extends SettingToolbarActivity {
                         if (MensagensNetwork.isUnauthorizedError(error)) {
                             deleteCarrinhoLocal();
                         } else {
-                            String msgError = MensagensNetwork.setMensagem(error, CarrinhoActivity.this);
-                            ViewUtils.alert(CarrinhoActivity.this, msgError);
+                            RedirectNetwork.checkRedirect( error, CarrinhoActivity.this );
                         }
                     }
                 });
@@ -151,6 +154,9 @@ public class CarrinhoActivity extends SettingToolbarActivity {
                 alertDialog.dismiss();
                 carrinho = response.getPayload();
                 atualizaLayout(Boolean.TRUE);
+                if (response.getRedirect() != null){
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect().toString(), CarrinhoActivity.this);
+                }
             }
 
             @Override
@@ -159,7 +165,7 @@ public class CarrinhoActivity extends SettingToolbarActivity {
                 if (MensagensNetwork.isUnauthorizedError(error)) {
                     lerCarrinhoLocal(Boolean.TRUE);
                 } else {
-                    ViewUtils.alert(CarrinhoActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
+                    RedirectNetwork.checkRedirect( error, CarrinhoActivity.this );
                 }
             }
         });

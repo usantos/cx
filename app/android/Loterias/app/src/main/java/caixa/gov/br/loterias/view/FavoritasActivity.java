@@ -19,6 +19,7 @@ import java.util.List;
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.ApostaBO;
 import caixa.gov.br.loterias.model.bo.ApostaBO_;
+import caixa.gov.br.loterias.model.bo.RedirectNetwork;
 import caixa.gov.br.loterias.model.bo.RequestListener;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostaFavoritaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse;
@@ -154,12 +155,15 @@ public class FavoritasActivity extends AppCompatActivity {
 
 
                 atualizaLayout();
+                if (response.getRedirect() != null){
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect().toString(), FavoritasActivity.this);
+                }
             }
 
             @Override
             public void onErrorResponse(VolleyError error) {
                 loadViewProgress.dismiss();
-                ViewUtils.alert(FavoritasActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
+                RedirectNetwork.checkRedirect( error, FavoritasActivity.this );
 
             }
         });
@@ -187,13 +191,16 @@ public class FavoritasActivity extends AppCompatActivity {
                     offsetItem = offsetItem +5;
                 }
                 bloquearRequestScroll = false;
+                if (response.getRedirect() != null){
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect().toString(), FavoritasActivity.this);
+                }
             }
 
             @Override
             public void onErrorResponse(VolleyError error) {
                 progressLoadingMore.setVisibility(View.GONE);
                 bloquearRequestScroll = false;
-                ViewUtils.alert(FavoritasActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
+                RedirectNetwork.checkRedirect( error, FavoritasActivity.this );
             }
         });
     }

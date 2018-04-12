@@ -26,6 +26,7 @@ import java.util.List;
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.ApostaBO;
 import caixa.gov.br.loterias.model.bo.ApostaBO_;
+import caixa.gov.br.loterias.model.bo.RedirectNetwork;
 import caixa.gov.br.loterias.model.bo.RequestListener;
 import caixa.gov.br.loterias.model.bo.silce.dto.CompraDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.MesAnoDTO;
@@ -131,12 +132,15 @@ public class ListaComprasActivity extends AppCompatActivity {
                 listaComprasDto = response.getPayload().getLista();
                 offsetItem = 5;
                 initRecyclerView();
+                if (response.getRedirect() != null){
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect().toString(), ListaComprasActivity.this);
+                }
             }
 
             @Override
             public void onErrorResponse(VolleyError error) {
                 loadViewProgress.dismiss();
-                ViewUtils.alert(ListaComprasActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
+                RedirectNetwork.checkRedirect( error, ListaComprasActivity.this );
             }
         });
     }
@@ -164,6 +168,8 @@ public class ListaComprasActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 loadViewProgress.dismiss();
                 ViewUtils.alert(ListaComprasActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
+                RedirectNetwork.checkRedirect( error, ListaComprasActivity.this );
+
             }
         });
     }
@@ -306,13 +312,16 @@ public class ListaComprasActivity extends AppCompatActivity {
                     offsetItem = offsetItem +5;
                 }
                 bloquearRequestScroll = false;
+                if (response.getRedirect() != null){
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect().toString(), ListaComprasActivity.this);
+                }
             }
 
             @Override
             public void onErrorResponse(VolleyError error) {
                 progressLoadingMore.setVisibility(View.GONE);
                 bloquearRequestScroll = false;
-                ViewUtils.alert(ListaComprasActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
+                RedirectNetwork.checkRedirect( error, ListaComprasActivity.this );
             }
         });
     }

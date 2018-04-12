@@ -24,6 +24,7 @@ import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.ApostaBO;
 import caixa.gov.br.loterias.model.bo.ApostaBO_;
 import caixa.gov.br.loterias.model.bo.MensagensNetwork;
+import caixa.gov.br.loterias.model.bo.RedirectNetwork;
 import caixa.gov.br.loterias.model.bo.RequestListener;
 import caixa.gov.br.loterias.model.bo.silce.dto.CarrinhoDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
@@ -32,6 +33,7 @@ import caixa.gov.br.loterias.model.dao.DBLoteriasCrud;
 import caixa.gov.br.loterias.utils.EstiloModalidade;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.CarrinhoActivity;
+import caixa.gov.br.loterias.view.DadosPessoaisActivity;
 import caixa.gov.br.loterias.view.animation.AnimacaoSwipeList;
 import caixa.gov.br.loterias.view.custom.ExpandableHeightRecyclerView;
 import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
@@ -202,13 +204,17 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
                         parentActivity.setCarrinho(response.getPayload());
                         deletarApostaBaseLocal(aposta, Boolean.FALSE);
                         parentActivity.atualizaLayout(Boolean.FALSE);
+                        if (response.getRedirect() != null){
+                            RedirectNetwork.checkRedirectSucesso( response.getRedirect().toString(), parentActivity);
+                        }
                     }
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         loadViewProgress.dismiss();
                         if (error.networkResponse != null && error.networkResponse.statusCode != 401) {
-                            ViewUtils.alert(parentActivity, MensagensNetwork.setMensagem(error, context));
+                            RedirectNetwork.checkRedirect( error, parentActivity );
+
                         } else {
                             deletarApostaBaseLocal(aposta, Boolean.TRUE);
                         }

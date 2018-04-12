@@ -33,6 +33,7 @@ import java.util.Random;
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.ApostaBO;
 import caixa.gov.br.loterias.model.bo.ApostaBO_;
+import caixa.gov.br.loterias.model.bo.RedirectNetwork;
 import caixa.gov.br.loterias.model.bo.RequestListener;
 import caixa.gov.br.loterias.model.bo.silce.dto.AgrupadorDTOApostaDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.DTOEnumCharacter;
@@ -328,6 +329,9 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
             public void onResponse(AgrupadorDTOApostaDTOResponse response) {
                 loadViewProgress.dismiss();
                 surpresinhaFragmentListener.adicionarApostaCarrinho();
+                if (response.getRedirect() != null){
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect().toString(), getActivity());
+                }
             }
 
             @Override
@@ -336,7 +340,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
                 if (MensagensNetwork.isUnauthorizedError(error)) {
                     inserirSuspresinhaBaseLocal(apostaSurpresinha);
                 } else {
-                    ViewUtils.alert(getActivity(), MensagensNetwork.setMensagem(error, getActivity()));
+                    RedirectNetwork.checkRedirect( error, getActivity() );
                 }
             }
         });

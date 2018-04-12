@@ -24,6 +24,7 @@ import java.util.List;
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.DadosCorporativosBO;
 import caixa.gov.br.loterias.model.bo.DadosCorporativosBO_;
+import caixa.gov.br.loterias.model.bo.RedirectNetwork;
 import caixa.gov.br.loterias.model.bo.RequestListener;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostadorDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.MunicipioDTO;
@@ -135,12 +136,15 @@ public class CadastroActivity extends AppCompatActivity {
                     listUFString.add(uf.getSigla());
                 }
                 modalUfs();
+                if (response.getRedirect() != null){
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect().toString(), CadastroActivity.this);
+                }
             }
 
             @Override
             public void onErrorResponse(VolleyError error) {
                 loadViewProgress.dismiss();
-                ViewUtils.alert(CadastroActivity.this, MensagensNetwork.setMensagem(error, CadastroActivity.this));
+                RedirectNetwork.checkRedirect( error, CadastroActivity.this );
             }
         });
     }
@@ -238,12 +242,15 @@ public class CadastroActivity extends AppCompatActivity {
                         listMunicipios.add(municipio.getNome());
                     }
                     modalMunicipios();
+                    if (response.getRedirect() != null){
+                        RedirectNetwork.checkRedirectSucesso( response.getRedirect().toString(), CadastroActivity.this);
+                    }
                 }
 
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     loadViewProgress.dismiss();
-                    ViewUtils.alert(CadastroActivity.this, MensagensNetwork.setMensagem(error, CadastroActivity.this));
+                    RedirectNetwork.checkRedirect( error, CadastroActivity.this );
                 }
             });
         }
