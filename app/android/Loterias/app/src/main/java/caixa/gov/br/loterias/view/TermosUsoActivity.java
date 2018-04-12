@@ -251,6 +251,7 @@ public class TermosUsoActivity extends AppCompatActivity {
     }
 
     private void exibeRodapeAceite() {
+        footerAceiteTermo.setVisibility( View.VISIBLE );
         isTermoAceito = Boolean.FALSE;
         getSupportActionBar().setDisplayHomeAsUpEnabled(isTermoAceito);
     }

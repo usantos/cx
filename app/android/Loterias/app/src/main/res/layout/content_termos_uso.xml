@@ -91,7 +91,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:background="@drawable/drawer_linha_divisao_cinza_claro">
+                android:background="@drawable/drawer_linha_divisao_cinza_claro"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:id="@+id/layoutClickAceiteTermo"
