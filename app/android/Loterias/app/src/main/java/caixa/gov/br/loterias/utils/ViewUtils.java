@@ -748,7 +748,7 @@ public class ViewUtils {
      * @param modalidadeEnum ModalidadeEnum
      * @return ParametroSimulacao
      */
-    public static ParametroSimulacao getParametroJogo(SessaoUsuario sessaoUsuario, ModalidadeEnum modalidadeEnum) {
+    public static ParametroSimulacao getParametroSimulacao(SessaoUsuario sessaoUsuario, ModalidadeEnum modalidadeEnum) {
         if (sessaoUsuario.getParametrosSimulacao() != null && sessaoUsuario.getParametrosSimulacao().getParametros() != null) {
             for (ParametroSimulacao parametroSimulacao : sessaoUsuario.getParametrosSimulacao().getParametros()) {
                 if (parametroSimulacao.getParametroJogo().getConcurso().getModalidade() == modalidadeEnum) {

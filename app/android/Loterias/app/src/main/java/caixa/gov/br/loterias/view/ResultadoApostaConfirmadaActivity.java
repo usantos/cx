@@ -1,7 +1,6 @@
 package caixa.gov.br.loterias.view;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -61,7 +60,7 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
         ModalidadeEnum modalidadeEnum = detalhesPremioDTO.getAposta().getModalidade();
         EstiloModalidade estiloModalidade = new EstiloModalidade(modalidadeEnum);
         SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
-        ParametroSimulacao parametroSimulacao = ViewUtils.getParametroJogo(sessaoUsuario, modalidadeEnum);
+        ParametroSimulacao parametroSimulacao = ViewUtils.getParametroSimulacao(sessaoUsuario, modalidadeEnum);
 
         contenteResultadoPremiado.getTopoModalidadeResultadoLinearLayout().setBackgroundColor(ContextCompat.getColor(this, estiloModalidade.getCorClara()));
         contenteResultadoPremiado.getTopo2ModalidadeResultadoLinearLayout().setBackgroundColor(ContextCompat.getColor(this, estiloModalidade.getCorEscura()));

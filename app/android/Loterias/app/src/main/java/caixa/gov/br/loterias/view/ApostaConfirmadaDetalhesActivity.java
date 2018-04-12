@@ -13,9 +13,11 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.android.volley.NetworkResponse;
+import com.android.volley.VolleyError;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -26,16 +28,27 @@ import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.OptionsMenuItem;
 import org.androidannotations.annotations.ViewById;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 
+import java.util.Collections;
+
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.model.bean.SessaoUsuario;
 import caixa.gov.br.loterias.model.bo.ApostaBO;
+import caixa.gov.br.loterias.model.bo.DadosCorporativosBO;
+import caixa.gov.br.loterias.model.bo.MensagensNetwork;
+import caixa.gov.br.loterias.model.bo.RequestListener;
+import caixa.gov.br.loterias.model.bo.silce.dto.ApostaFavoritaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ComprovanteApostaDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.DTOEnumInteger;
 import caixa.gov.br.loterias.model.bo.silce.dto.DetalhesPremioDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
+import caixa.gov.br.loterias.model.bo.silce.dto.ParametroJogoDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.ParametroSimulacao;
 import caixa.gov.br.loterias.model.bo.silce.dto.ResultadoConcursoDTO;
 import caixa.gov.br.loterias.utils.AppUtils;
-import caixa.gov.br.loterias.utils.Constantes;
+import caixa.gov.br.loterias.utils.DialogUtils;
 import caixa.gov.br.loterias.utils.EstiloModalidade;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.utils.helper.AdicionarApostaCarrinhoHelper;
@@ -53,7 +66,7 @@ import caixa.gov.br.loterias.view.fragment.ApostaConfirmadaNumeroDetalhes_;
 public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
 
     @Bean
-    protected ApostaBO apostaBO;
+    protected DadosCorporativosBO dadosCorporativosBO;
 
     @Extra
     protected ComprovanteApostaDTO comprovanteApostaDTO;
@@ -83,10 +96,9 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
     protected EditText nomeApostaEditTxt;
 
     private EstiloModalidade estilo;
-
     private IdentificaoDeUmaApostaDas8Modalidades aposta;
-
     private boolean premioPago;
+    private ApostaFavoritaDTO apostaFavoritaDTO;
 
     @Click
     protected void carrinhoApostasBtn() {
@@ -110,11 +122,49 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
 
     @Click
     protected void salvarApostaImg() {
-
         if (StringUtils.isNotEmpty(nomeApostaEditTxt.getText().toString())) {
-            favoritadoLayout.setVisibility(View.VISIBLE);
-            layoutnomeApostaLayout.setVisibility(View.GONE);
-            favoriteBtn.setVisibility(View.INVISIBLE);
+            DialogUtils.show(this);
+            SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
+            ParametroSimulacao parametroSimulacao = ViewUtils.getParametroSimulacao(sessaoUsuario, aposta.getModalidade());
+
+            ParametroJogoDTO parametroJogo;
+            apostaFavoritaDTO = new ApostaFavoritaDTO();
+            if (parametroSimulacao != null && parametroSimulacao.getParametroJogo() != null) {
+
+                parametroJogo = parametroSimulacao.getParametroJogo();
+                DTOEnumInteger modalidade = new DTOEnumInteger();
+                modalidade.setDescricao(parametroJogo.getConcurso().getModalidadeDetalhada().getDescricao());
+                modalidade.setValor(parametroJogo.getConcurso().getModalidadeDetalhada().getValor());
+                apostaFavoritaDTO.setModalidade(modalidade);
+            }
+
+            apostaFavoritaDTO.setNome(nomeApostaEditTxt.getText().toString());
+            apostaFavoritaDTO.setNumerosSelecionados(aposta.getNumerosSelecionados());
+            apostaFavoritaDTO.setTimeDoCoracao(aposta.getTimeDoCoracao());
+
+            dadosCorporativosBO.validarApostaFavorita(apostaFavoritaDTO, new RequestListener<NetworkResponse>() {
+                @Override
+                public void onResponse(NetworkResponse result) {
+                    dadosCorporativosBO.salvarApostaFavorita(apostaFavoritaDTO, new RequestListener<NetworkResponse>() {
+                        @Override
+                        public void onResponse(NetworkResponse result) {
+                            favoritadoLayout.setVisibility(View.VISIBLE);
+                            layoutnomeApostaLayout.setVisibility(View.GONE);
+                            favoriteBtn.setVisibility(View.INVISIBLE);
+                        }
+
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            onError(error);
+                        }
+                    });
+                }
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    onError(error);
+                }
+            });
         } else {
             ViewUtils.alert(this, getString(R.string.msg_favor_inserir_nome_aposta));
         }
@@ -172,6 +222,10 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
             comprovanteText.setText(comprovanteApostaDTO.getNsbi());
         }
 
+        if(CollectionUtils.isNotEmpty(aposta.getNumerosSelecionados())){
+            favoriteBtn.setVisibility(View.VISIBLE);
+        }
+
         Fragment fragment;
 
         switch (aposta.getModalidade()) {
@@ -202,5 +256,11 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
             supportActionBar.setDisplayHomeAsUpEnabled(true);
             supportActionBar.setElevation(0);
         }
+    }
+
+    private void onError(VolleyError error) {
+        DialogUtils.dismiss();
+        String msgError = MensagensNetwork.setMensagem(error, this);
+        ViewUtils.alert(this, msgError);
     }
 }

@@ -146,7 +146,7 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
         ModalidadeEnum modalidadeEnum = ModalidadeEnum.toString(resultadoConsultaBilheteDTO.getModalidadeDTO().getDescricao().toLowerCase());
         EstiloModalidade estiloModalidade = new EstiloModalidade(modalidadeEnum);
         SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
-        ParametroSimulacao parametroSimulacao = ViewUtils.getParametroJogo(sessaoUsuario, modalidadeEnum);
+        ParametroSimulacao parametroSimulacao = ViewUtils.getParametroSimulacao(sessaoUsuario, modalidadeEnum);
 
         contenteResultadoPremiado.getTopoModalidadeResultadoLinearLayout().setBackgroundColor(ContextCompat.getColor(this, estiloModalidade.getCorClara()));
         contenteResultadoPremiado.getTopo2ModalidadeResultadoLinearLayout().setBackgroundColor(ContextCompat.getColor(this, estiloModalidade.getCorEscura()));

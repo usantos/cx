@@ -11,7 +11,6 @@ import org.apache.commons.collections4.CollectionUtils;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -68,7 +67,7 @@ public class AdicionarApostaCarrinhoHelper {
                     Intent activity = new Intent(context, ConfirmadoInclusaoCarrinhoActivity.class);
                     activity.putExtra("tipoAposta", aposta.getModalidade());
                     activity.putExtra("valorAposta", aposta.getValor());
-                    activity.putExtra("modalidade", (new Gson()).toJson(ViewUtils.getParametroJogo(SessaoUsuario.getInstance(), aposta.getModalidade()).getParametroJogo()));
+                    activity.putExtra("modalidade", (new Gson()).toJson(ViewUtils.getParametroSimulacao(SessaoUsuario.getInstance(), aposta.getModalidade()).getParametroJogo()));
                     context.startActivity(activity);
                 }
 
@@ -133,7 +132,7 @@ public class AdicionarApostaCarrinhoHelper {
 
         ModalidadeEnum modalidadeEnum = apostaDTO.getModalidade();
         SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
-        ParametroSimulacao parametroSimulacao = ViewUtils.getParametroJogo(sessaoUsuario, modalidadeEnum);
+        ParametroSimulacao parametroSimulacao = ViewUtils.getParametroSimulacao(sessaoUsuario, modalidadeEnum);
         IdentificaoDeUmaApostaDas8Modalidades aposta = null;
 
         if (parametroSimulacao != null && parametroSimulacao.getParametroJogo() != null) {
@@ -191,7 +190,7 @@ public class AdicionarApostaCarrinhoHelper {
 
         ModalidadeEnum modalidadeEnum = apostaDas8Modalidades.getModalidade();
         SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
-        ParametroSimulacao parametroSimulacao = ViewUtils.getParametroJogo(sessaoUsuario, modalidadeEnum);
+        ParametroSimulacao parametroSimulacao = ViewUtils.getParametroSimulacao(sessaoUsuario, modalidadeEnum);
 
         if (parametroSimulacao != null && parametroSimulacao.getParametroJogo() != null) {
 
