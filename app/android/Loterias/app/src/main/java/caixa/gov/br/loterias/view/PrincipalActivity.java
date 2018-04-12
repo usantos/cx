@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
@@ -17,6 +18,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ExpandableListAdapter;
@@ -94,7 +96,8 @@ public class PrincipalActivity extends AppCompatActivity
     protected TextView textViewHomeMinimumPurchaseValue, tituloLerBilhetes, textoRepassados, valorRepassesPrincipal;
 
     @ViewById
-    protected RelativeLayout relativeContentPrincipal, relativeBlankView, relativeLayoutContentRapidao, relativeLayoutContentLerBilhetes, relativeLayoutContentFavoritas, relativeLayoutContentRepassados,
+    protected RelativeLayout relativeContentPrincipal,
+            relativeBlankView, relativeLayoutContentRapidao, relativeLayoutContentLerBilhetes, relativeLayoutContentFavoritas, relativeLayoutContentRepassados,
             relativeLayoutCarrinho;
 
     @ViewById
@@ -105,6 +108,9 @@ public class PrincipalActivity extends AppCompatActivity
 
     @ViewById
     protected ExpandableListView sideMenuExpandableListView;
+
+    @ViewById
+    protected NavigationView nav_view;
 
     @AfterViews
     public void init() {
@@ -439,6 +445,9 @@ public class PrincipalActivity extends AppCompatActivity
         } else if (groupPosition == 6) {
             sairLogin();
         }
+        if (groupPosition != 0){
+            drawerLayout.closeDrawer( Gravity.START, false);
+        }
     }
 
     private void AbrirMenusItens(int itemPosition) {
@@ -458,6 +467,7 @@ public class PrincipalActivity extends AppCompatActivity
             default:
                 break;
         }
+        drawerLayout.closeDrawer( Gravity.START, false);
     }
 
     private void layoutSideMenu() {
