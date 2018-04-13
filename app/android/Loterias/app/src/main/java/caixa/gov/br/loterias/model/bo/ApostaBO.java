@@ -307,12 +307,12 @@ public class ApostaBO extends BaseBO {
         silceConnection.request(request);
     }
 
-    public void postApostasFavoritas(final ApostaFavoritaDTO apostaFavoritaDTO, final RequestListener<RetornoPadraoDTO> listener) {
+    public void postApostasFavoritas(final ApostaFavoritaDTO apostaFavoritaDTO, final RequestListener<Boolean> listener) {
         LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
         headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
 
         final GsonRequest request = silceConnection.buildPostRequest(ServerMethods.APOSTAS_FAVORITAS_PATH, new LinkedHashMap<String, String>(),
-                apostaFavoritaDTO, RetornoPadraoDTO.class,
+                apostaFavoritaDTO, Boolean.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(), headers);
 

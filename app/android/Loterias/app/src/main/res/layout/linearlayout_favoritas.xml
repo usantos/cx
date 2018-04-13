@@ -26,45 +26,89 @@ android:layout_height="wrap_content"
             android:background="@color/cinza"
             android:id="@+id/RelativeLayoutContentAlterarFavoritas"
             android:layout_alignParentLeft="true"
+            android:visibility="visible"
             >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Dê um novo nome para sua aposta"
-                android:textColor="@color/verdeazul"
-                android:fontFamily="@font/arialmt"
-                android:textSize="12sp"
-                android:layout_alignParentLeft="true"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="17dp"
-                />
-
-            <EditText
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginRight="122dp"
-                android:layout_alignParentLeft="true"
-                android:layout_marginTop="37dp"
-                android:layout_marginLeft="16dp"
-                android:textColor="@color/branco"
-                android:backgroundTint="@color/edittextlinecinza"
-                android:id="@+id/EditTextNomeDaAposta"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:enabled="false"
-                />
+                android:layout_height="match_parent"
+                android:id="@+id/relativeLayoutContentAlterarFavoritasEditar"
+                android:visibility="visible">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Dê um novo nome para sua aposta"
+                    android:textColor="@color/verdeazul"
+                    android:fontFamily="@font/arialmt"
+                    android:textSize="12sp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="17dp"
+                    />
 
-            <Button
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:background="@drawable/seta_verde"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="86dp"
-                android:layout_marginTop="50dp"
-                android:id="@+id/buttonSalvarNomeAposta"
-                android:enabled="false"
-                />
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginRight="122dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginTop="37dp"
+                    android:layout_marginLeft="16dp"
+                    android:textColor="@color/branco"
+                    android:backgroundTint="@color/edittextlinecinza"
+                    android:id="@+id/editTextNomeDaAposta"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:enabled="false"
+                    />
+
+                <Button
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/seta_verde"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="86dp"
+                    android:layout_marginTop="50dp"
+                    android:id="@+id/buttonSalvarNomeAposta"
+                    android:enabled="false"
+                    />
+
+            </RelativeLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/linearLayoutLayoutContentAlterarFavoritasSalvo"
+                android:background="@color/verdeazul"
+                android:visibility="invisible"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginLeft="30dp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Ótimo! o novo nome da sua aposta é"
+                        android:textSize="14sp"
+                        android:textColor="@color/branco"
+                        android:fontFamily="@font/arialmt"
+                        android:layout_marginTop="20dp"
+                        android:textAlignment="center"
+                        />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="&quot;o prêmio é meu!&quot;"
+                        android:id="@+id/nomeApostaSalvoTextView"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/arialmt"
+                        android:textStyle="bold"
+                        android:textColor="@color/branco"
+                        android:layout_marginTop="6dp"
+                        android:textAlignment="center"
+                        />
+                </LinearLayout>
+            </LinearLayout>
+
 
         </RelativeLayout>
 
@@ -75,6 +119,7 @@ android:layout_height="wrap_content"
                 android:background="@color/branco"
                 android:id="@+id/RelativeLayoutContentFavoritas"
                 android:layout_alignParentLeft="true"
+                android:visibility="visible"
 
                 >
                 <LinearLayout

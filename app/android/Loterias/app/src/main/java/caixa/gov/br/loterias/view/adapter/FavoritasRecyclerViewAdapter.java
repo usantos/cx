@@ -30,6 +30,7 @@ import caixa.gov.br.loterias.model.bo.RequestListener;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostaFavoritaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.CarrinhoDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.IncluirApostaFavoritaDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.ParametroMesDeSorte;
 import caixa.gov.br.loterias.model.bo.silce.dto.RetornoPadraoDTO;
 import caixa.gov.br.loterias.model.bo.MensagensNetwork;
 import caixa.gov.br.loterias.utils.ViewUtils;
@@ -74,9 +75,13 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
 
         final RelativeLayout relativeLayoutContentAlterarFavoritas = (RelativeLayout) holder.itemView.findViewById(R.id.RelativeLayoutContentAlterarFavoritas);
 
+        final RelativeLayout relativeLayoutContentAlterarFavoritasEditar = (RelativeLayout) holder.itemView.findViewById( R.id.relativeLayoutContentAlterarFavoritasEditar );
+
+        final LinearLayout linearLayoutLayoutContentAlterarFavoritasSalvo = (LinearLayout) holder.itemView.findViewById( R.id.linearLayoutLayoutContentAlterarFavoritasSalvo );
+
         final HorizontalScrollView horizontalScrollViewFavoritasItem = (HorizontalScrollView) holder.itemView.findViewById(R.id.HorizontalScrollViewFavoritasItem);
 
-        final EditText EditTextNomeDaAposta = (EditText) holder.itemView.findViewById(R.id.EditTextNomeDaAposta);
+        final EditText editTextNomeDaAposta = (EditText) holder.itemView.findViewById(R.id.editTextNomeDaAposta);
 
         final TextView tituloApostaFavorita = (TextView) holder.itemView.findViewById(R.id.tituloApostaFavorita);
         tituloApostaFavorita.setText(listaApostaFavorita.get(position).getModalidade().getDescricao());
@@ -102,6 +107,9 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
         final Button buttonSalvarNomeAposta = (Button) holder.itemView.findViewById(R.id.buttonSalvarNomeAposta);
         final Button editarButtonAddCarrinho = (Button) holder.itemView.findViewById(R.id.editarButtonAddCarrinho);
 
+
+        final TextView nomeApostaSalvoTextView = (TextView) holder.itemView.findViewById(R.id.nomeApostaSalvoTextView);
+
         editarButtonFavoritos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,7 +118,7 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
                                 ViewUtils.getAppUsableScreenSize(context).x/2 -
                                         ViewUtils.setDisplayMetric(40,
                                                 context) , context));
-                EditTextNomeDaAposta.setEnabled(true);
+                editTextNomeDaAposta.setEnabled(true);
                 buttonSalvarNomeAposta.setEnabled(true);
             }
         });
@@ -132,11 +140,18 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
         buttonSalvarNomeAposta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                alterarFavoritaCallWebservice(listaApostaFavorita.get(position),
-                        relativeLayoutContentFavoritas,
-                        EditTextNomeDaAposta,
-                        buttonSalvarNomeAposta,
-                        tituloNomeApostaFavorita);
+                if (editTextNomeDaAposta.getText().toString().equals( "" )){
+                    ViewUtils.alert( context, context.getResources().getString( R.string.MA002 ) + " nome da aposta" );
+                }else {
+                    alterarFavoritaCallWebservice(listaApostaFavorita.get(position),
+                            relativeLayoutContentFavoritas,
+                            relativeLayoutContentAlterarFavoritasEditar,
+                            linearLayoutLayoutContentAlterarFavoritasSalvo,
+                            editTextNomeDaAposta,
+                            buttonSalvarNomeAposta,
+                            tituloNomeApostaFavorita,
+                            nomeApostaSalvoTextView);
+                }
             }
         });
 
@@ -157,6 +172,9 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
                                 cancelarAnimacao = true;
                             }else {
                                 cancelarAnimacao = false;
+                                linearLayoutLayoutContentAlterarFavoritasSalvo.setVisibility( View.INVISIBLE );
+                                relativeLayoutContentAlterarFavoritasEditar.setVisibility( View.VISIBLE );
+                                nomeApostaSalvoTextView.setText( "" );
                             }
                             initialX = -10;
                         }else{
@@ -176,13 +194,13 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
                                             ViewUtils.getAppUsableScreenSize(context).x/2 -
                                                     ViewUtils.setDisplayMetric(40,
                                                             context) , context));
-                            EditTextNomeDaAposta.setEnabled(true);
+                            editTextNomeDaAposta.setEnabled(true);
                             buttonSalvarNomeAposta.setEnabled(true);
                         }else{
                             if (cancelarAnimacao != true){
                                 translatePosicaoVoltarCard(relativeLayoutContentFavoritas,
                                         ViewUtils.setDisplayMetric(0, context));
-                                EditTextNomeDaAposta.setEnabled(false);
+                                editTextNomeDaAposta.setEnabled(false);
                                 buttonSalvarNomeAposta.setEnabled(false);
                             }
                         }
@@ -217,15 +235,21 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
     public class ViewHolder extends RecyclerView.ViewHolder {
         protected RelativeLayout relativeLayoutContentFavoritas;
         protected RelativeLayout relativeLayoutContentAlterarFavoritas;
+        protected RelativeLayout relativeLayoutContentAlterarFavoritasEditar;
+        protected LinearLayout linearLayoutLayoutContentAlterarFavoritasSalvo;
         protected TextView tituloApostaFavorira;
         protected TextView numerosApostaFavorita;
+        protected TextView nomeApostaSalvoTextView;
 
         public ViewHolder(final View itemView) {
             super(itemView);
             relativeLayoutContentFavoritas = (RelativeLayout) itemView.findViewById(R.id.RelativeLayoutContentFavoritas);
             relativeLayoutContentAlterarFavoritas = (RelativeLayout) itemView.findViewById(R.id.RelativeLayoutContentAlterarFavoritas);
+            relativeLayoutContentAlterarFavoritasEditar = (RelativeLayout) itemView.findViewById(R.id.relativeLayoutContentAlterarFavoritasEditar);
+            linearLayoutLayoutContentAlterarFavoritasSalvo = (LinearLayout) itemView.findViewById(R.id.linearLayoutLayoutContentAlterarFavoritasSalvo);
             tituloApostaFavorira = (TextView) itemView.findViewById(R.id.tituloApostaFavorira);
             numerosApostaFavorita = (TextView) itemView.findViewById(R.id.numerosApostaFavorita);
+            nomeApostaSalvoTextView = (TextView) itemView.findViewById(R.id.nomeApostaSalvoTextView);
         }
     }
 
@@ -306,27 +330,35 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
 
     private void alterarFavoritaCallWebservice(final ApostaFavoritaDTO apostaFavoritaDTO,
                                                final RelativeLayout favoritasRelativeLayout,
+                                               final RelativeLayout relativeLayoutContentAlterarFavoritasEditar,
+                                               final LinearLayout linearLayoutLayoutContentAlterarFavoritasSalvo,
                                                final EditText editTextNomeDaAposta,
                                                final Button buttonSalvarNomeAposta,
-                                               final TextView nomeApostaTextView) {
+                                               final TextView nomeApostaTextView,
+                                                final TextView nomeApostaSalvoTextView) {
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(activity);
         final ApostaBO apostaBO = ApostaBO_.getInstance_(activity);
         final ApostaFavoritaDTO apostaFavoritaDTOSalvar = apostaFavoritaDTO;
         apostaFavoritaDTOSalvar.setNome(editTextNomeDaAposta.getText().toString());
-        apostaBO.postApostasFavoritas(apostaFavoritaDTOSalvar, new RequestListener<RetornoPadraoDTO>() {
+        ParametroMesDeSorte parametroMesDeSorte = new ParametroMesDeSorte();
+        parametroMesDeSorte.setAbreviacao( "" );
+        parametroMesDeSorte.setNome( "" );
+        parametroMesDeSorte.setNumero( 0 );
+        apostaFavoritaDTO.setMesDeSorte( parametroMesDeSorte );
+        apostaBO.postApostasFavoritas(apostaFavoritaDTOSalvar, new RequestListener<Boolean>() {
             @Override
-            public void onResponse(RetornoPadraoDTO response) {
+            public void onResponse(Boolean response) {
                 apostaFavoritaDTOSalvar.setNome(editTextNomeDaAposta.getText().toString());
                 nomeApostaTextView.setText(" | "+ apostaFavoritaDTO.getNome());
-                translatePosicaoVoltarCard(favoritasRelativeLayout,
-                        ViewUtils.setDisplayMetric(0, context));
+//                translatePosicaoVoltarCard(favoritasRelativeLayout,
+//                        ViewUtils.setDisplayMetric(0, context));
+                nomeApostaSalvoTextView.setText( "\""+ editTextNomeDaAposta.getText() +"\"");
                 editTextNomeDaAposta.setText("");
                 editTextNomeDaAposta.setEnabled(false);
                 buttonSalvarNomeAposta.setEnabled(false);
                 loadViewProgress.dismiss();
-                if (response.getRedirect() != null){
-                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), activity);
-                }
+                linearLayoutLayoutContentAlterarFavoritasSalvo.setVisibility( View.VISIBLE );
+                relativeLayoutContentAlterarFavoritasEditar.setVisibility( View.GONE );
             }
 
             @Override
