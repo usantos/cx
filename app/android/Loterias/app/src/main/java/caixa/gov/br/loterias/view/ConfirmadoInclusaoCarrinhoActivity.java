@@ -84,7 +84,7 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
         }
 
 //        findViewById(R.id.botaoNovaAposta).setOnClickListener(this);
-//        findViewById(R.id.botaoVerCarrinhoAposta).setOnClickListener(this);
+        findViewById(R.id.botaoCarrinho).setOnClickListener(this);
         findViewById(R.id.botaoLinearLayoutVoltarPrincipal).setOnClickListener(this);
 //        findViewById(R.id.confirmarInclusaoApostaLayoutCarrinhoApostas).setOnClickListener(this);
 
@@ -202,11 +202,11 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
 //
 //            break;
 //
-//            case R.id.botaoVerCarrinhoAposta: {
-//                Intent activity = new Intent(this, CarrinhoActivity.class);
-//                startActivityForResult(activity, 0);
-//            }
-//            break;
+            case R.id.botaoCarrinho: {
+                Intent activity = new Intent(this, CarrinhoActivity_.class);
+                startActivityForResult(activity, 0);
+            }
+            break;
 
             case R.id.botaoLinearLayoutVoltarPrincipal: {
                 PrincipalActivity_.intent(this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP).start();
