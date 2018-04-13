@@ -464,6 +464,8 @@ public class PrincipalActivity extends AppCompatActivity
             case 3:
                 startActivity(new Intent(PrincipalActivity.this, FavoritasActivity.class));
                 break;
+            case 4:
+                startActivity( new Intent( PrincipalActivity.this, FormaPagamentoActivity.class ) );
             default:
                 break;
         }
