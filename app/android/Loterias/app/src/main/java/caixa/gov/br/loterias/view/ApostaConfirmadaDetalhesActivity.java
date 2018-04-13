@@ -1,8 +1,10 @@
 package caixa.gov.br.loterias.view;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
@@ -18,6 +20,7 @@ import android.widget.TextView;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
+import com.google.gson.Gson;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -31,11 +34,8 @@ import org.androidannotations.annotations.ViewById;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 
-import java.util.Collections;
-
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bean.SessaoUsuario;
-import caixa.gov.br.loterias.model.bo.ApostaBO;
 import caixa.gov.br.loterias.model.bo.DadosCorporativosBO;
 import caixa.gov.br.loterias.model.bo.MensagensNetwork;
 import caixa.gov.br.loterias.model.bo.RequestListener;
@@ -53,8 +53,8 @@ import caixa.gov.br.loterias.utils.EstiloModalidade;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.utils.helper.AdicionarApostaCarrinhoHelper;
 import caixa.gov.br.loterias.view.fragment.ApostaConfirmadaNumeroDetalhesPremioPago_;
-import caixa.gov.br.loterias.view.fragment.ApostaConfirmadaPartidaFragment_;
 import caixa.gov.br.loterias.view.fragment.ApostaConfirmadaNumeroDetalhes_;
+import caixa.gov.br.loterias.view.fragment.ApostaConfirmadaPartidaFragment_;
 
 /**
  * Created by pmotta on 22/03/2018.
@@ -84,7 +84,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
     protected Toolbar toolbar;
 
     @ViewById
-    protected TextView validadePremioText, comprovanteText;
+    protected TextView validadePremioText, comprovanteText, editarTxt;
 
     @ViewById
     protected ImageView validadePremioImage, comprovanteImage, comprovanteImpressaoImage;
@@ -99,6 +99,8 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
     private IdentificaoDeUmaApostaDas8Modalidades aposta;
     private boolean premioPago;
     private ApostaFavoritaDTO apostaFavoritaDTO;
+    private SessaoUsuario sessaoUsuario;
+    private ParametroSimulacao parametroSimulacao;
 
     @Click
     protected void carrinhoApostasBtn() {
@@ -112,7 +114,12 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
 
     @Click
     protected void editarApostaBtn() {
-        //TODO:
+        if(CollectionUtils.isNotEmpty(aposta.getNumerosSelecionados())){
+            SimularApostaActivity_.intent(this).aposta(aposta)
+                    .extra("tipoAposta", aposta.getModalidade())
+                    .extra("modalidade", (new Gson()).toJson(parametroSimulacao.getParametroJogo()))
+                    .start();
+        }
     }
 
     @Click
@@ -124,8 +131,6 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
     protected void salvarApostaImg() {
         if (StringUtils.isNotEmpty(nomeApostaEditTxt.getText().toString())) {
             DialogUtils.show(this);
-            SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
-            ParametroSimulacao parametroSimulacao = ViewUtils.getParametroSimulacao(sessaoUsuario, aposta.getModalidade());
 
             ParametroJogoDTO parametroJogo;
             apostaFavoritaDTO = new ApostaFavoritaDTO();
@@ -211,6 +216,8 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
     protected void init() {
         setupToolbar();
 
+        sessaoUsuario = SessaoUsuario.getInstance();
+        parametroSimulacao = ViewUtils.getParametroSimulacao(sessaoUsuario, aposta.getModalidade());
         if (estilo != null) {
             ViewUtils.setColorDrawable(this, validadePremioImage.getDrawable(), estilo.getIconValidadeComprovanteColor());
             ViewUtils.setColorDrawable(this, comprovanteImage.getDrawable(), estilo.getIconValidadeComprovanteColor());
@@ -222,7 +229,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
             comprovanteText.setText(comprovanteApostaDTO.getNsbi());
         }
 
-        if(CollectionUtils.isNotEmpty(aposta.getNumerosSelecionados())){
+        if (CollectionUtils.isNotEmpty(aposta.getNumerosSelecionados())) {
             favoriteBtn.setVisibility(View.VISIBLE);
         }
 
@@ -230,9 +237,11 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
 
         switch (aposta.getModalidade()) {
             case LOTOGOL:
+                disableButtonEditar();
                 fragment = ApostaConfirmadaPartidaFragment_.builder().aposta(aposta).loteca(Boolean.FALSE).build();
                 break;
             case LOTECA:
+                disableButtonEditar();
                 fragment = ApostaConfirmadaPartidaFragment_.builder().aposta(aposta).loteca(Boolean.TRUE).build();
                 break;
             default:
@@ -247,6 +256,10 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragmentContainer, fragment)
                 .commit();
+    }
+
+    private void disableButtonEditar() {
+        editarTxt.setTextColor(getResources().getColor(R.color.cinza_button));
     }
 
     private void setupToolbar() {

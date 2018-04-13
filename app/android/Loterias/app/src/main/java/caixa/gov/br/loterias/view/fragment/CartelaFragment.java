@@ -1,7 +1,6 @@
 package caixa.gov.br.loterias.view.fragment;
 
 import android.app.Activity;
-import android.support.v7.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
@@ -34,6 +33,7 @@ import android.widget.TextView;
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 
 import java.math.BigDecimal;
@@ -51,7 +51,7 @@ import caixa.gov.br.loterias.model.bo.ApostaBO;
 import caixa.gov.br.loterias.model.bo.ApostaBO_;
 import caixa.gov.br.loterias.model.bo.DadosCorporativosBO;
 import caixa.gov.br.loterias.model.bo.DadosCorporativosBO_;
-import caixa.gov.br.loterias.model.bo.RedirectNetwork;
+import caixa.gov.br.loterias.model.bo.MensagensNetwork;
 import caixa.gov.br.loterias.model.bo.RequestListener;
 import caixa.gov.br.loterias.model.bo.silce.data.CompletaJogoRsp;
 import caixa.gov.br.loterias.model.bo.silce.dto.AgrupadorDTOApostaDTOResponse;
@@ -69,21 +69,18 @@ import caixa.gov.br.loterias.model.bo.silce.dto.ParametroValorApostaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.PartidaLotecaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.PartidaLotogolDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.TipoConcursoEnum;
-import caixa.gov.br.loterias.model.dao.DBLoteriasCrud;
 import caixa.gov.br.loterias.utils.Constantes;
 import caixa.gov.br.loterias.utils.DialogUtils;
-import caixa.gov.br.loterias.utils.helper.AdicionarApostaCarrinhoHelper;
-import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
-import caixa.gov.br.loterias.model.bo.MensagensNetwork;
 import caixa.gov.br.loterias.utils.ViewUtils;
-import caixa.gov.br.loterias.view.listener.CartelaFragmentListener;
-import caixa.gov.br.loterias.view.listener.LotogolListener;
+import caixa.gov.br.loterias.utils.helper.AdicionarApostaCarrinhoHelper;
 import caixa.gov.br.loterias.view.SimularApostaActivity;
 import caixa.gov.br.loterias.view.adapter.LotecaAdapter;
 import caixa.gov.br.loterias.view.adapter.LotogolAdapter;
 import caixa.gov.br.loterias.view.adapter.TimeCoracaoAdapter;
 import caixa.gov.br.loterias.view.custom.ExpandableHeightGridView;
 import caixa.gov.br.loterias.view.custom.ExpandableHeightRecyclerView;
+import caixa.gov.br.loterias.view.listener.CartelaFragmentListener;
+import caixa.gov.br.loterias.view.listener.LotogolListener;
 
 public class CartelaFragment extends Fragment implements OnClickListener, LotecaAdapter.LocateAdapterListener, LotogolListener {
 
@@ -103,8 +100,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
     private SimularApostaActivity parentActivity;
     private AppCompatCheckBox selcioneOutrosNumeros;
     private View view;
-    private TextView infoEscolha;
-    private TextView infoPaginacao;
+    private TextView infoEscolha, infoPaginacao;
     private EditText informeNomeTime;
     private RelativeLayout opcaoOutrosNumerosLayout;
     private LinearLayout selecioneTimeCoracaoLayout;
@@ -198,13 +194,9 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
         configuraBotoes(view);
         // Chama a tela de escolha de time
-        if (isEscolhaTimeCoracaoSurpresinha)
-
-        {
+        if (isEscolhaTimeCoracaoSurpresinha) {
             mostrarCartelaEscolhaTimeCoracao();
-        } else
-
-        {
+        } else {
             isTelaSelecaoTimeAtivado = false;
             limparTimeSelecionado();
         }
@@ -216,7 +208,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
             infoEscolha.setText(ViewUtils.fromHtml(Constantes.ESCOLHA_NUMEROS_HTML));
             infoPaginacao.setText(ViewUtils.fromHtml(Constantes.PAGINACAO_UM_DOIS));
         }
-
+        editeAposta();
         if (!isEscolhaTimeCoracaoSurpresinha)
 
         {
@@ -401,9 +393,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
                 count.setText(String.format(Locale.getDefault(), "%d", qtdCartelasCarrinho));
                 cartelaFragmentListener.adicionarApostaCarrinho();
-                if (response.getRedirect() != null){
-                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), getActivity());
-                }
+
             }
 
             @Override
@@ -415,7 +405,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                         cartelaFragmentListener.adicionarApostaCarrinho();
                     }
                 } else {
-                    RedirectNetwork.checkRedirect( error, getActivity() );
+                    ViewUtils.alert(getActivity(), MensagensNetwork.setMensagem(error, getActivity()));
                 }
             }
         });
@@ -434,9 +424,6 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
                 count.setText(String.format(Locale.getDefault(), "%d", qtdCartelasCarrinho));
                 cartelaFragmentListener.adicionarApostaCarrinho();
-                if (response.getRedirect() != null){
-                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), getActivity());
-                }
             }
 
             @Override
@@ -451,7 +438,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                         cartelaFragmentListener.adicionarApostaCarrinho();
                     }
                 } else {
-                    RedirectNetwork.checkRedirect( error, getActivity() );
+                    ViewUtils.alert(getActivity(), MensagensNetwork.setMensagem(error, getActivity()));
                 }
             }
         });
@@ -469,7 +456,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                             mostrarCartelaEscolhaTimeCoracao();
                         } else {
                             if (equipeSelecionada != null) {
-                                if (equipeSelecionada.isSelecionado() == true) {
+                                if (equipeSelecionada.isSelecionado()) {
                                     adicionarApostaNoCarrinho();
                                 } else {
                                     selecionarTimeAleatorio();
@@ -713,13 +700,12 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                         starSalvarApostaImageView.setBackgroundResource(R.drawable.icon_favoritado);
 
                         flagApostaSalva = true;
-
                     }
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         DialogUtils.dismiss();
-                        RedirectNetwork.checkRedirect( error, getActivity() );
+                        ViewUtils.alert(getActivity(), MensagensNetwork.setMensagem(error, getActivity()));
                     }
                 });
             }
@@ -727,7 +713,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
             @Override
             public void onErrorResponse(VolleyError error) {
                 DialogUtils.dismiss();
-                RedirectNetwork.checkRedirect( error, getActivity() );
+                ViewUtils.alert(getActivity(), MensagensNetwork.setMensagem(error, getActivity()));
             }
         });
     }
@@ -751,7 +737,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                     @Override
                     public void onErrorResponse(VolleyError error) {
 
-                        RedirectNetwork.checkRedirect( error, getActivity() );
+                        ViewUtils.alert(getActivity(), MensagensNetwork.setMensagem(error, getActivity()));
                     }
                 });
     }
@@ -777,7 +763,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         preencherVisibilidaeGridView(View.VISIBLE, View.VISIBLE, View.GONE, View.GONE);
         informeNomeTime = selecioneTimeCoracaoLayout.findViewById(R.id.informe_nome_time);
         onChangeInformeNomeTime();
-        configurarSelecaoTimeCoracao(mGridTimeCoracao);
+        configurarSelecaoTimeCoracao();
         atualizaStatusBotaoFinalizar();
         verificaSeMostraBotaoLimparAposta();
         verificaSeMostraSalvarApostaView();
@@ -1121,12 +1107,12 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
     /**
      * Metodo configura a cartela de times do coracao
      */
-    private void configurarSelecaoTimeCoracao(final ExpandableHeightGridView gridTimes) {
+    private void configurarSelecaoTimeCoracao() {
         listaEquipefiltro = new ArrayList<>(parametroJogo.getEquipes());
         timeCoracaoAdapter = new TimeCoracaoAdapter(getActivity(), listaEquipefiltro);
-        gridTimes.setAdapter(timeCoracaoAdapter);
-        gridTimes.setExpanded(true);
-        gridTimes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mGridTimeCoracao.setAdapter(timeCoracaoAdapter);
+        mGridTimeCoracao.setExpanded(true);
+        mGridTimeCoracao.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View viewItem, int i, long l) {
                 if (equipeSelecionada != null && equipeSelecionada.isSelecionado()) {
@@ -1329,6 +1315,25 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
         ViewUtils.setMoedaFormatHtml(valorEmReais, valorAposta);
         valorTotalAposta = valorEmReais;
+    }
+
+    private void editeAposta() {
+        if (parentActivity.getAposta() != null) {
+            IdentificaoDeUmaApostaDas8Modalidades aposta = parentActivity.getAposta();
+            if (CollectionUtils.isNotEmpty(aposta.getNumerosSelecionados())) {
+                dezenasSelecionadas = aposta.getNumerosSelecionados();
+                parentActivity.qtdDezenasPossiveisSelecionado = aposta.getQuantidadeNumeros();
+                parentActivity.qtdConcursoSelecionado = aposta.getQuantidadeTeimosinhas();
+                parentActivity.atualizaTextoBotoesQtdSelecionadas();
+                equipeSelecionada = aposta.getTimeDoCoracao();
+                if(equipeSelecionada != null){
+                    equipeSelecionada.setSelecionado(Boolean.TRUE);
+                    isEcolhaTimeBtnAtivado = Boolean.TRUE;
+                }
+                atualizaStatusBotaoFinalizar();
+            }
+            ViewUtils.setMoedaFormatHtml(aposta.getValor(), valorAposta);
+        }
     }
 
     // Adapter do gridview das dezenas

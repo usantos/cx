@@ -2,7 +2,6 @@ package caixa.gov.br.loterias.view;
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -11,7 +10,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.TypedValue;
 import android.view.Menu;
@@ -34,6 +32,7 @@ import com.google.gson.Gson;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 
 import java.text.DateFormat;
@@ -44,109 +43,86 @@ import java.util.Date;
 import java.util.List;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import caixa.gov.br.loterias.model.bo.silce.dto.ModalidadeEnum;
 import caixa.gov.br.loterias.model.bo.silce.dto.ParametroEquipe;
 import caixa.gov.br.loterias.model.bo.silce.dto.ParametroJogoDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ParametroValorApostaDTO;
 import caixa.gov.br.loterias.utils.Constantes;
-import caixa.gov.br.loterias.utils.TipoDialog;
 import caixa.gov.br.loterias.utils.ViewUtils;
-import caixa.gov.br.loterias.view.listener.CartelaFragmentListener;
 import caixa.gov.br.loterias.view.fragment.CartelaFragment;
 import caixa.gov.br.loterias.view.fragment.SurpresinhaFragment;
 import caixa.gov.br.loterias.view.fragment.SurpresinhaFragment.SurpresinhaFragmentListener;
+import caixa.gov.br.loterias.view.listener.CartelaFragmentListener;
 
 import static java.lang.String.format;
 
 @EActivity(R.layout.activity_simular_aposta)
 public class SimularApostaActivity extends AppCompatActivity implements OnClickListener, CartelaFragmentListener, SurpresinhaFragmentListener {
 
-    public static final String ESCOLHA_TIME_CORACAO_SURPRESINHA = "escolhaTimeCoracaoSurpresinha";
-    @ViewById
-    DrawerLayout drawerLayout;
+    private static int RESULT_FINISH = 3;
 
     @ViewById
-    ConstraintLayout toolBarLoteca, viewTabBar;
+    protected DrawerLayout drawerLayout;
 
     @ViewById
-    Button simularTelaAposta, surpresinhaTela, qtdNumerosButton, qtdConcursosButton, botaoLimparAposta, botaoAdicionarCompletarCartela, botaoCarrinho;
+    protected ConstraintLayout toolBarLoteca, viewTabBar;
 
     @ViewById
-    FrameLayout fragmentSimularApostas;
+    protected Button simularTelaAposta, surpresinhaTela, qtdNumerosButton, qtdConcursosButton, botaoLimparAposta, botaoAdicionarCompletarCartela, botaoCarrinho;
 
     @ViewById
-    TextView labelValueSimplesLoteca, labelValueDuplasLoteca, labelValueTriplasLoteca, textoDeNomeInfo, textoSalveEstaAposta, valorApostaCartela, textInfoValorAposta, textViewCarrinhoCartelaCount,
+    protected FrameLayout fragmentSimularApostas;
+
+    @ViewById
+    protected TextView labelValueSimplesLoteca, labelValueDuplasLoteca, labelValueTriplasLoteca, textoDeNomeInfo, textoSalveEstaAposta, valorApostaCartela, textInfoValorAposta, textViewCarrinhoCartelaCount,
             textInfoCarrinho;
 
     @ViewById
-    LinearLayout toolBarSimularAposta;
+    protected LinearLayout toolBarSimularAposta;
 
     @ViewById
-    RelativeLayout salvarApostaLayout, carrinhoApostas, simularApostaLayoutCarrinhoApostas;
+    protected RelativeLayout salvarApostaLayout, carrinhoApostas, simularApostaLayoutCarrinhoApostas;
 
     @ViewById
-    ImageButton btnSalvarAposta;
+    protected ImageButton btnSalvarAposta;
 
     @ViewById
-    EditText editNomeAposta;
+    protected EditText editNomeAposta;
 
     @ViewById
-    ImageView imageViewPaginacao, iconStarSalvar;
+    protected ImageView imageViewPaginacao, iconStarSalvar;
 
-    private static int RESULT_FINISH = 3;
+    @Extra
+    protected IdentificaoDeUmaApostaDas8Modalidades aposta;
 
     // Fragments
-    FragmentManager fragmentManager;
-    CartelaFragment cartelaFragment;
-    SurpresinhaFragment surpresinhaFragment;
+    private FragmentManager fragmentManager;
+    private CartelaFragment cartelaFragment;
+    private SurpresinhaFragment surpresinhaFragment;
 
-    AlertDialog dialog;
+    private String dataSorteioAtual;
+    private int typeGameColorLight;
+    private int typeGameColorDark;
+    private List<String> qtdNumerosList;
+    private List<String> qtdConcursosList;
+    private ModalidadeEnum tipoJogo;
+    private String textoBotaoPrognosticosSelecionado;
+    private String textoBotaoSurpresinhasSelecionado;
+    private ParametroJogoDTO parametroSimulacao;
+    private int toolBarMenu;
+    private Bundle bundle;
 
     //mocks
     public int qtdDezenasPossiveisSelecionado;
     public int qtdConcursoSelecionado;
-    int numeroConcursoAtual;
-    String dataSorteioAtual;
-    int typeGameColorLight;
-    int typeGameColorDark;
-
-
-    List<String> qtdNumerosList;
-    List<String> qtdConcursosList;
-    ModalidadeEnum tipoJogo;
-
-    String textoBotaoPrognosticosSelecionado;
-    String textoBotaoSurpresinhasSelecionado;
-
-    int alertDialogPosicaoSelecionada;
-    TipoDialog tipoDialogMostrando;
-    public ParametroJogoDTO parametroSimulacao;
-
-    private int toolBarMenu;
-
-    private Bundle bundle;
-
-
-
-    private SQLiteDatabase lerBanco;
-
-
-    public ParametroJogoDTO getParametroSimulacao() {
-        return parametroSimulacao;
-    }
-
-    public void setParametroSimulacao(ParametroJogoDTO parametroSimulacao) {
-        this.parametroSimulacao = parametroSimulacao;
-    }
+    private int numeroConcursoAtual;
 
     @AfterViews
     protected void init() {
         invalidateOptionsMenu();
-        qtdNumerosList = new ArrayList<String>();
-        qtdConcursosList= new ArrayList<String>();
-
-        String textoBotaoPrognosticosSelecionado = "";
-        String textoBotaoSurpresinhasSelecionado = "";
+        qtdNumerosList = new ArrayList<>();
+        qtdConcursosList = new ArrayList<>();
 
         parametroSimulacao = new Gson().fromJson(getIntent().getStringExtra("modalidade"), ParametroJogoDTO.class);
         configuraParametrosJogo();
@@ -159,6 +135,238 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         this.setLabelValueSimplesLoteca(Constantes.ZERO_STRING);
         this.setLabelValueDuplasLoteca(Constantes.ZERO_STRING);
         this.setLabelValueTriplasLoteca(Constantes.ZERO_STRING);
+    }
+
+    public void atualizaTextoBotoesQtdSelecionadas() {
+        qtdNumerosButton.setText(format("%d números", qtdDezenasPossiveisSelecionado));
+        if ((qtdConcursosList != null && !qtdConcursosList.isEmpty()) && (qtdConcursosList.size() == 1 || qtdConcursoSelecionado == 0)) {
+            qtdConcursosButton.setText(qtdConcursosList.get(0));
+        } else {
+            qtdConcursosButton.setText(format("%d concurso", qtdConcursoSelecionado));
+        }
+    }
+
+
+    // Pegar o handle dos botoes que mostrarao o seu respectivo fragment na activity
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.simularTelaAposta: {
+                cartelaFragment.setEscolhaTimeCoracaoSurpresinha(false);
+                abrirTelaCartela();
+                break;
+            }
+
+            case R.id.surpresinhaTela: {
+                surpresinhaFragment.setArguments(new Bundle());
+                abrirTelaSurprezinha();
+                break;
+            }
+
+            case R.id.qtdNumerosButton: {
+                modalNumeros();
+                break;
+            }
+
+            case R.id.qtdConcursosButton: {
+                modalTeimosinhas();
+                break;
+            }
+        }
+    }
+
+    public ParametroJogoDTO getParametroSimulacao() {
+        return parametroSimulacao;
+    }
+
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+
+        return true;
+    }
+
+    // Mudando o texto dos MenuItem de acordo com os dados
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        configuraMenuItem(R.id.concursoAtual);
+        configuraMenuItem(R.id.sorteioAtual);
+
+        return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(toolBarMenu, menu);
+
+        MenuItem concursoAtual = menu.findItem(R.id.concursoAtual);
+        ((TextView) concursoAtual.getActionView().findViewById(R.id.item_titulo)).setText("Concurso");
+        ((TextView) concursoAtual.getActionView().findViewById(R.id.item_descricao)).setText(parametroSimulacao.getConcurso().getNumero().toString());
+
+        SimpleDateFormat formatterDateFinal = new SimpleDateFormat("dd/MM");
+        DateFormat formatterDate = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        MenuItem dataSorteio = menu.findItem(R.id.sorteioAtual);
+
+        try {
+            Date dataFormatada = formatterDate.parse(parametroSimulacao.getConcurso().getDataHoraSorteio());
+            ((TextView) dataSorteio.getActionView().findViewById(R.id.item_titulo)).setText("Sorteio");
+            ((TextView) dataSorteio.getActionView().findViewById(R.id.item_descricao)).setText(formatterDateFinal.format(dataFormatada));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        if (id == R.id.action_termos) {
+            abrirTermos();
+            return true;
+        } else if (id == R.id.action_duvida) {
+            abrirAjuda();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    // MÉTODOS DO FRAGMENT CARTELAFRAGMENTLISTENER
+    @Override
+    public int verificaNovoQtdDezenasMax(int qtdDezenasAtual) {
+        if (qtdDezenasAtual <= parametroSimulacao.getQuantidadeMaxima()) {
+            atualizaTextoBotoesQtdSelecionadas();
+        }
+
+        return qtdDezenasPossiveisSelecionado;
+    }
+
+    @Override
+    public void adicionarApostaCarrinho() {
+        Intent activity = new Intent(this, ConfirmadoInclusaoCarrinhoActivity.class);
+        activity.putExtra("tipoAposta", tipoJogo);
+
+        if (fragmentManager.findFragmentById(R.id.fragmentSimularApostas) instanceof CartelaFragment) {
+
+            activity.putExtra("valorAposta", cartelaFragment.valorTotalAposta);
+        } else {
+
+            activity.putExtra("valorAposta", surpresinhaFragment.valorTotalAposta);
+        }
+        activity.putExtra("modalidade", (new Gson()).toJson(parametroSimulacao));
+        this.init();
+        startActivityForResult(activity, 0);
+    }
+
+    @Override
+    public void abreCarrinhoApostas() {
+        CarrinhoActivity_.intent(this).start();
+    }
+
+    @Override
+    public void adicionarTimeSurpresa(ParametroEquipe equipeSelecionada) {
+        Bundle bundle = new Bundle();
+        bundle.putString("equipeSelecionada", (new Gson()).toJson(equipeSelecionada));
+        surpresinhaFragment.setArguments(bundle);
+        abrirTelaSurprezinha();
+    }
+
+
+    @Override
+    public void escolherOutroTimeSurpresinha() {
+        cartelaFragment.setEscolhaTimeCoracaoSurpresinha(true);
+        abrirTelaCartela();
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_FINISH) {
+            finish();
+        }
+    }
+
+    public void setLabelValueSimplesLoteca(String labelValueSimplesLoteca) {
+        this.labelValueSimplesLoteca.setText(labelValueSimplesLoteca);
+    }
+
+    public void setLabelValueDuplasLoteca(String labelValueDuplasLoteca) {
+        this.labelValueDuplasLoteca.setText(labelValueDuplasLoteca);
+    }
+
+    public void setLabelValueTriplasLoteca(String labelValueTriplasLoteca) {
+        this.labelValueTriplasLoteca.setText(labelValueTriplasLoteca);
+    }
+
+    public TextView getLabelValueSimplesLoteca() {
+        return labelValueSimplesLoteca;
+    }
+
+    public TextView getLabelValueDuplasLoteca() {
+        return labelValueDuplasLoteca;
+    }
+
+    public TextView getLabelValueTriplasLoteca() {
+        return labelValueTriplasLoteca;
+    }
+
+    public Button getBotaoLimparAposta() {
+        return botaoLimparAposta;
+    }
+
+    public Button getBotaoAdicionarCompletarCartela() {
+        return botaoAdicionarCompletarCartela;
+    }
+
+    public TextView getTextoSalveEstaAposta() {
+        return textoSalveEstaAposta;
+    }
+
+    public TextView getValorApostaCartela() {
+        return valorApostaCartela;
+    }
+
+
+    public TextView getTextViewCarrinhoCartelaCount() {
+        return textViewCarrinhoCartelaCount;
+    }
+
+    public RelativeLayout getSalvarApostaLayout() {
+        return salvarApostaLayout;
+    }
+
+    public EditText getEditNomeAposta() {
+        return editNomeAposta;
+    }
+
+
+    public ImageView getIconStarSalvar() {
+        return iconStarSalvar;
+    }
+
+    public RelativeLayout getSimularApostaLayoutCarrinhoApostas() {
+        return simularApostaLayoutCarrinhoApostas;
+    }
+
+    public IdentificaoDeUmaApostaDas8Modalidades getAposta() {
+        return aposta;
+    }
+
+    private void abrirTelaSurprezinha() {
+        fragmentManager.beginTransaction().replace(R.id.fragmentSimularApostas, surpresinhaFragment).commit();
+
+        simularTelaAposta.setBackgroundResource(R.drawable.icon_seleciona2);
+        surpresinhaTela.setBackgroundResource(R.drawable.icon_surpresinha2);
     }
 
     private void configuraParametrosJogo() {
@@ -255,15 +463,6 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         configuraBotoesListeners();
     }
 
-    public void atualizaTextoBotoesQtdSelecionadas() {
-        qtdNumerosButton.setText(format("%d números", qtdDezenasPossiveisSelecionado));
-        if ((qtdConcursosList != null && !qtdConcursosList.isEmpty()) && (qtdConcursosList.size() == 1 || qtdConcursoSelecionado == 0)) {
-            qtdConcursosButton.setText(qtdConcursosList.get(0));
-        } else {
-            qtdConcursosButton.setText(format("%d concurso", qtdConcursoSelecionado));
-        }
-    }
-
     private void configuraBotoesListeners() {
         simularTelaAposta.setOnClickListener(this);
         surpresinhaTela.setOnClickListener(this);
@@ -275,11 +474,8 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
     }
 
     private void modalNumeros() {
-        // custom dialog
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.custom_dialog_list_view);
-
-        // set the custom dialog components - listview and button
 
         final ListView listViewItens = (ListView) dialog.findViewById(R.id.listaItensDialog);
         TextView tituloDialog = (TextView) dialog.findViewById(R.id.tituloDialogCustom);
@@ -288,18 +484,12 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(SimularApostaActivity.this,
                 R.layout.item_text_popup, R.id.textList, qtdNumerosList);
 
-        // Assign adapter to ListView
         listViewItens.setAdapter(adapter);
-        // ListView Item Click Listener
         listViewItens.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                // ListView Clicked item index
-                int itemPosition = position;
-
-                // ListView Clicked item value
                 String itemValue = (String) listViewItens.getItemAtPosition(position);
                 textoBotaoPrognosticosSelecionado = parametroSimulacao.getValoresAposta().get(position).getNumeroPrognosticos() + " números";
                 qtdDezenasPossiveisSelecionado = parametroSimulacao.getValoresAposta().get(position).getNumeroPrognosticos();
@@ -307,10 +497,9 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
 
         });
 
-        Button dialogButtonOk = (Button) dialog.findViewById(R.id.dialogButtonOK);
-        Button dialogButtonCancelar = (Button) dialog.findViewById(R.id.dialogButtonCancelar);
+        Button dialogButtonOk = dialog.findViewById(R.id.dialogButtonOK);
+        Button dialogButtonCancelar = dialog.findViewById(R.id.dialogButtonCancelar);
 
-        // if button is clicked, close the custom dialog
         dialogButtonOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -339,41 +528,31 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
     }
 
     private void modalTeimosinhas() {
-        // custom dialog
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.custom_dialog_list_view);
 
-        // set the custom dialog components - listview and button
-
-        final ListView listViewItens = (ListView) dialog.findViewById(R.id.listaItensDialog);
-        TextView tituloDialog = (TextView) dialog.findViewById(R.id.tituloDialogCustom);
+        final ListView listViewItens = dialog.findViewById(R.id.listaItensDialog);
+        TextView tituloDialog = dialog.findViewById(R.id.tituloDialogCustom);
         tituloDialog.setText("Teimosinhas");
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(SimularApostaActivity.this,
                 R.layout.item_text_popup, R.id.textList, qtdConcursosList);
 
-        // Assign adapter to ListView
         listViewItens.setAdapter(adapter);
-        // ListView Item Click Listener
         listViewItens.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                // ListView Clicked item index
-                int itemPosition = position;
-
-                // ListView Clicked item value
-                String itemValue = (String) listViewItens.getItemAtPosition(position);
-                textoBotaoSurpresinhasSelecionado = itemValue;
+                textoBotaoSurpresinhasSelecionado = (String) listViewItens.getItemAtPosition(position);
+                ;
                 qtdConcursoSelecionado = parametroSimulacao.getTeimosinhas().get(position);
             }
 
         });
 
-        Button dialogButtonOk = (Button) dialog.findViewById(R.id.dialogButtonOK);
-        Button dialogButtonCancelar = (Button) dialog.findViewById(R.id.dialogButtonCancelar);
+        Button dialogButtonOk = dialog.findViewById(R.id.dialogButtonOK);
+        Button dialogButtonCancelar = dialog.findViewById(R.id.dialogButtonCancelar);
 
-        // if button is clicked, close the custom dialog
         dialogButtonOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -403,33 +582,6 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         dialog.show();
     }
 
-    // Pegar o handle dos botoes que mostrarao o seu respectivo fragment na activity
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.simularTelaAposta: {
-                cartelaFragment.setEscolhaTimeCoracaoSurpresinha(false);
-                abrirTelaCartela();
-                break;
-            }
-
-            case R.id.surpresinhaTela: {
-                surpresinhaFragment.setArguments(new Bundle());
-                abrirTelaSurprezinha();
-                break;
-            }
-
-            case R.id.qtdNumerosButton: {
-                modalNumeros();
-                break;
-            }
-
-            case R.id.qtdConcursosButton: {
-                modalTeimosinhas();
-                break;
-            }
-        }
-    }
-
     private void abrirTelaCartela() {
         fragmentManager.beginTransaction().replace(R.id.fragmentSimularApostas, cartelaFragment).commit();
 
@@ -457,66 +609,6 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         typeGameColorDark = darkColor;
     }
 
-    @Override
-    public boolean onSupportNavigateUp() {
-        finish();
-
-        return true;
-    }
-
-    // Mudando o texto dos MenuItem de acordo com os dados
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-        configuraMenuItem(R.id.concursoAtual);
-        configuraMenuItem(R.id.sorteioAtual);
-
-        return true;
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(toolBarMenu, menu);
-
-        MenuItem concursoAtual = menu.findItem(R.id.concursoAtual);
-        ((TextView) concursoAtual.getActionView().findViewById(R.id.item_titulo)).setText("Concurso");
-        ((TextView) concursoAtual.getActionView().findViewById(R.id.item_descricao)).setText(parametroSimulacao.getConcurso().getNumero().toString());
-
-        SimpleDateFormat formatterDateFinal = new SimpleDateFormat("dd/MM");
-        DateFormat formatterDate = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-        MenuItem dataSorteio = menu.findItem(R.id.sorteioAtual);
-
-        try {
-            Date dataFormatada = formatterDate.parse(parametroSimulacao.getConcurso().getDataHoraSorteio());
-            ((TextView) dataSorteio.getActionView().findViewById(R.id.item_titulo)).setText("Sorteio");
-            ((TextView) dataSorteio.getActionView().findViewById(R.id.item_descricao)).setText(formatterDateFinal.format(dataFormatada));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        if (id == R.id.action_termos) {
-            abrirTermos();
-            return true;
-        } else if (id == R.id.action_duvida) {
-            abrirAjuda();
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     private void configuraMenuItem(int id) {
         View menuItem = findViewById(id);
 
@@ -526,140 +618,14 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         }
     }
 
-    // MÉTODOS DO FRAGMENT CARTELAFRAGMENTLISTENER
-    @Override
-    public int verificaNovoQtdDezenasMax(int qtdDezenasAtual) {
-        if (qtdDezenasAtual <= parametroSimulacao.getQuantidadeMaxima()) {
-            atualizaTextoBotoesQtdSelecionadas();
-        }
-
-        return qtdDezenasPossiveisSelecionado;
-    }
-
-    @Override
-    public void adicionarApostaCarrinho() {
-        Intent activity = new Intent(this, ConfirmadoInclusaoCarrinhoActivity.class);
-        activity.putExtra("tipoAposta", tipoJogo);
-
-        if(fragmentManager.findFragmentById(R.id.fragmentSimularApostas) instanceof CartelaFragment){
-
-            activity.putExtra("valorAposta", cartelaFragment.valorTotalAposta);
-        }else{
-
-            activity.putExtra("valorAposta", surpresinhaFragment.valorTotalAposta);
-        }
-        activity.putExtra("modalidade", (new Gson()).toJson(parametroSimulacao));
-        this.init();
-        startActivityForResult(activity, 0);
-    }
-
-    @Override
-    public void abreCarrinhoApostas() {
-        CarrinhoActivity_.intent(this).start();
-    }
-
-    @Override
-    public void adicionarTimeSurpresa(ParametroEquipe equipeSelecionada) {
-        Bundle bundle = new Bundle();
-        bundle.putString("equipeSelecionada", (new Gson()).toJson(equipeSelecionada));
-        surpresinhaFragment.setArguments(bundle);
-        abrirTelaSurprezinha();
-    }
-
-    private void abrirTelaSurprezinha() {
-        fragmentManager.beginTransaction().replace(R.id.fragmentSimularApostas, surpresinhaFragment).commit();
-
-        simularTelaAposta.setBackgroundResource(R.drawable.icon_seleciona2);
-        surpresinhaTela.setBackgroundResource(R.drawable.icon_surpresinha2);
-    }
-
-    @Override
-    public void escolherOutroTimeSurpresinha() {
-        cartelaFragment.setEscolhaTimeCoracaoSurpresinha(true);
-        abrirTelaCartela();
-    }
-
     private void abrirTermos() {
         Intent activity = new Intent(SimularApostaActivity.this, TermosUsoActivity.class);
         startActivity(activity);
     }
 
     private void abrirAjuda() {
-//        Intent activity = new Intent(SimularApostaActivity.this, AjudaActivity.class);
-//        activity.putExtra("tipoAposta", tipoJogo);
-//        startActivity(activity);
         Intent activity = new Intent(SimularApostaActivity.this, TermosUsoActivity.class);
         activity.putExtra("ajuda", true);
         startActivity(activity);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_FINISH) {
-            finish();
-        }
-    }
-
-    public void setLabelValueSimplesLoteca(String labelValueSimplesLoteca) {
-        this.labelValueSimplesLoteca.setText(labelValueSimplesLoteca);
-    }
-
-    public void setLabelValueDuplasLoteca(String labelValueDuplasLoteca) {
-        this.labelValueDuplasLoteca.setText(labelValueDuplasLoteca);
-    }
-
-    public void setLabelValueTriplasLoteca(String labelValueTriplasLoteca) {
-        this.labelValueTriplasLoteca.setText(labelValueTriplasLoteca);
-    }
-
-    public TextView getLabelValueSimplesLoteca() {
-        return labelValueSimplesLoteca;
-    }
-
-    public TextView getLabelValueDuplasLoteca() {
-        return labelValueDuplasLoteca;
-    }
-
-    public TextView getLabelValueTriplasLoteca() {
-        return labelValueTriplasLoteca;
-    }
-
-    public Button getBotaoLimparAposta() {
-        return botaoLimparAposta;
-    }
-
-    public Button getBotaoAdicionarCompletarCartela() {
-        return botaoAdicionarCompletarCartela;
-    }
-
-    public TextView getTextoSalveEstaAposta() {
-        return textoSalveEstaAposta;
-    }
-
-    public TextView getValorApostaCartela() {
-        return valorApostaCartela;
-    }
-
-
-    public TextView getTextViewCarrinhoCartelaCount() {
-        return textViewCarrinhoCartelaCount;
-    }
-
-    public RelativeLayout getSalvarApostaLayout() {
-        return salvarApostaLayout;
-    }
-
-    public EditText getEditNomeAposta() {
-        return editNomeAposta;
-    }
-
-
-    public ImageView getIconStarSalvar() {
-        return iconStarSalvar;
-    }
-
-    public RelativeLayout getSimularApostaLayoutCarrinhoApostas() {
-        return simularApostaLayoutCarrinhoApostas;
     }
 }
