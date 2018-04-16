@@ -118,6 +118,7 @@
                     android:layout_height="200dp"
                     android:layout_marginHorizontal="10dp"
                     android:gravity="center"
+                    android:nestedScrollingEnabled="false"
                     android:numColumns="3"
                     android:paddingBottom="119dp"
                     android:stretchMode="columnWidth"

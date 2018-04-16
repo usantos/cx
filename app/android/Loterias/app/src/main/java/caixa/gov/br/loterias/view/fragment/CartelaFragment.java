@@ -454,6 +454,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                     if (isEcolhaTimeBtnAtivado && dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) {
                         if (mGridTimeCoracao == null) {
                             mostrarCartelaEscolhaTimeCoracao();
+                            timemaniaTimeSelecionadoEdicao();
                         } else {
                             if (equipeSelecionada != null) {
                                 if (equipeSelecionada.isSelecionado()) {
@@ -1326,13 +1327,32 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                 parentActivity.qtdConcursoSelecionado = aposta.getQuantidadeTeimosinhas();
                 parentActivity.atualizaTextoBotoesQtdSelecionadas();
                 equipeSelecionada = aposta.getTimeDoCoracao();
-                if(equipeSelecionada != null){
-                    equipeSelecionada.setSelecionado(Boolean.TRUE);
+                if (equipeSelecionada != null) {
                     isEcolhaTimeBtnAtivado = Boolean.TRUE;
                 }
                 atualizaStatusBotaoFinalizar();
             }
             ViewUtils.setMoedaFormatHtml(aposta.getValor(), valorAposta);
+        }
+    }
+
+    private void timemaniaTimeSelecionadoEdicao() {
+        if (equipeSelecionada != null) {
+            equipeSelecionada.setSelecionado(Boolean.TRUE);
+            String nomeTime = String.format("%s-%s", equipeSelecionada.getNome(), equipeSelecionada.getUf());
+            informeNomeTime.setText(nomeTime);
+
+            for (ParametroEquipe equipe : listaEquipefiltro) {
+                if (equipe.getNumero().equals(equipeSelecionada.getNumero())) {
+                    equipe.setSelecionado(equipeSelecionada.isSelecionado());
+                    equipeSelecionada = equipe;
+                    break;
+                }
+            }
+            timeCoracaoAdapter.notifyDataSetChanged();
+            verificaSeMostraBotaoLimparAposta();
+            verificaSeMostraSalvarApostaView();
+            atualizarAdicionarCarinhoCompletarCartela();
         }
     }
 
