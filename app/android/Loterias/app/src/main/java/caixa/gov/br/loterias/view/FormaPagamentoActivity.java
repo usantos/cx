@@ -107,12 +107,16 @@ public class FormaPagamentoActivity extends SettingToolbarActivity implements Fo
                 if (listaCartoes != null && listaCartoes.size() > 0) {
                     configuraRecyclerViewCarrinhoAposta();
                 }
+                if (response.getRedirect() != null){
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), FormaPagamentoActivity.this);
+                }
             }
 
             @Override
             public void onErrorResponse(VolleyError error) {
                 loadViewProgress.dismiss();
-                ViewUtils.alert(FormaPagamentoActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
+                RedirectNetwork.checkRedirect( error, FormaPagamentoActivity.this );
+
             }
         });
     }

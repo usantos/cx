@@ -18,6 +18,7 @@ import caixa.gov.br.loterias.model.bo.silce.dto.RedirectEnum;
 import caixa.gov.br.loterias.utils.AppUtils;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.CadastrarActivity;
+import caixa.gov.br.loterias.view.CadastrarActivity_;
 import caixa.gov.br.loterias.view.CadastroActivity;
 import caixa.gov.br.loterias.view.DadosPessoaisActivity;
 import caixa.gov.br.loterias.view.TermosUsoActivity;
@@ -58,7 +59,7 @@ public class RedirectNetwork {
                     connectKeycloak(activity);
                     return;
                 case CADASTRAR_APOSTADOR:
-                    activity.startActivity(new Intent(activity, CadastrarActivity.class));
+                    activity.startActivity(new Intent(activity, CadastrarActivity_.class));
                     return;
                 default:
                     break;
@@ -80,7 +81,7 @@ public class RedirectNetwork {
                 connectKeycloak(activity);
                 break;
             case CADASTRAR_APOSTADOR:
-                activity.startActivity(new Intent(activity, CadastrarActivity.class));
+                activity.startActivity(new Intent(activity, CadastrarActivity_.class));
                 break;
             default:
                 break;

@@ -136,7 +136,16 @@ public class SilceConnection {
         try {
             String teste  = (new Gson()).toJson(body);
 
-            Bin encryptedBody = silceCrypto.encryptBody((new Gson()).toJson(body));
+            //{"apostas":[]}
+
+            String bodyString = "";
+            if (body == null){
+                bodyString = "{}";
+            }else {
+                bodyString = (new Gson()).toJson(body);
+            }
+
+            Bin encryptedBody = silceCrypto.encryptBody(bodyString);
             String bodyStr = encryptedBody.toIso8859_1()
                     + "!#!#!" + KEY.toIso8859_1()
                     + "!#!#!" +  IV.toIso8859_1();

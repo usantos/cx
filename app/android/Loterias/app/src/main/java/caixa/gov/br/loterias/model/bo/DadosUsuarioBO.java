@@ -9,13 +9,18 @@ import com.android.volley.NetworkResponse;
 import org.androidannotations.annotations.EBean;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.model.bean.RetornoListaCarrinho;
+import caixa.gov.br.loterias.model.bo.silce.dto.ApostaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostadorAlteracaoDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostadorDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostadorDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.AutenticacaoDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.CadastrarApostadorDTOResponse;
+import caixa.gov.br.loterias.model.bo.silce.dto.CarrinhoDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.CarrinhoDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.ListCartaoDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.RetornoPadraoDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.UsuarioLogadoResponse;
@@ -130,6 +135,19 @@ public class DadosUsuarioBO extends BaseBO {
 
         final GsonRequest request = silceConnection.buildPutRequest(ServerMethods.USUARIOS_PATH, new LinkedHashMap<String, String>(),
                 apostadorAlteracaoDTO, CadastrarApostadorDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(), headers);
+
+        request.setErrorListener(interceptError(request, headers, listener));
+        silceConnection.request(request);
+    }
+
+    public void postVerificarCadastro(final RetornoListaCarrinho listaApostas, final RequestListener<UsuarioLogadoResponse> listener) {
+        LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
+        headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
+
+        final GsonRequest request = silceConnection.buildPostRequest(ServerMethods.USUARIOS_VERIFICAR_CADASTRO_PATH, new LinkedHashMap<String, String>(),
+                listaApostas, UsuarioLogadoResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(), headers);
 
