@@ -30,6 +30,7 @@ import android.text.Spanned;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.StyleSpan;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
 import android.view.Display;
@@ -722,6 +723,7 @@ public class ViewUtils {
 
     /**
      * Método que retorna uma lista de Faixa de Premiação por concurso
+     *
      * @param premioDTO PremioDTO
      * @return List<FaixaPremiadaDTO>
      */
@@ -744,7 +746,8 @@ public class ViewUtils {
 
     /**
      * Método reponsável por retornar ParametroSimulacao da SessaoUsuario de uma modalidade
-     * @param sessaoUsuario SessaoUsuario
+     *
+     * @param sessaoUsuario  SessaoUsuario
      * @param modalidadeEnum ModalidadeEnum
      * @return ParametroSimulacao
      */
@@ -760,7 +763,7 @@ public class ViewUtils {
     }
 
 
-    public static int getSmallSizeQeCode(Context context){
+    public static int getSmallSizeQeCode(Context context) {
 
         Point point = getAppUsableScreenSize(context);
         int width = point.x;
@@ -769,5 +772,22 @@ public class ViewUtils {
         smallerDimension = smallerDimension * 3 / 4;
 
         return smallerDimension;
+    }
+
+    public static String replaceNullable(String source, String target, String replacement) {
+        if (source != null) {
+            if (target == null) {
+                Log.e("replaceNullable", "target is null");
+                target = "";
+            }
+            if (replacement == null) {
+                Log.e("replaceNullable", "replacement is null");
+                replacement = "";
+            }
+            return source.replace(target, replacement);
+        } else {
+            Log.e("replaceNullable", "source is null");
+            return "";
+        }
     }
 }

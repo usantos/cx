@@ -1,10 +1,8 @@
 package caixa.gov.br.loterias.view;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
@@ -50,6 +48,7 @@ import caixa.gov.br.loterias.model.bo.silce.dto.ResultadoConcursoDTO;
 import caixa.gov.br.loterias.utils.AppUtils;
 import caixa.gov.br.loterias.utils.DialogUtils;
 import caixa.gov.br.loterias.utils.EstiloModalidade;
+import caixa.gov.br.loterias.utils.PdfUtils;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.utils.helper.AdicionarApostaCarrinhoHelper;
 import caixa.gov.br.loterias.view.fragment.ApostaConfirmadaNumeroDetalhesPremioPago_;
@@ -67,6 +66,9 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
 
     @Bean
     protected DadosCorporativosBO dadosCorporativosBO;
+
+    @Bean
+    protected PdfUtils pdfUtils;
 
     @Extra
     protected ComprovanteApostaDTO comprovanteApostaDTO;
@@ -114,7 +116,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
 
     @Click
     protected void editarApostaBtn() {
-        if(CollectionUtils.isNotEmpty(aposta.getNumerosSelecionados())){
+        if (CollectionUtils.isNotEmpty(aposta.getNumerosSelecionados())) {
             SimularApostaActivity_.intent(this).aposta(aposta)
                     .extra("tipoAposta", aposta.getModalidade())
                     .extra("modalidade", (new Gson()).toJson(parametroSimulacao.getParametroJogo()))
@@ -173,6 +175,11 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
         } else {
             ViewUtils.alert(this, getString(R.string.msg_favor_inserir_nome_aposta));
         }
+    }
+
+    @Click
+    protected void comprovanteLayout() {
+        pdfUtils.createComprovantePdf(this);
     }
 
     @Override
