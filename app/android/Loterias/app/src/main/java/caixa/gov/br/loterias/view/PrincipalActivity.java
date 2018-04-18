@@ -456,16 +456,17 @@ public class PrincipalActivity extends AppCompatActivity
                 startActivity(new Intent(PrincipalActivity.this, DadosPessoaisActivity.class));
                 break;
             case 1:
-                startActivity(new Intent(PrincipalActivity.this, ApostasConfirmadasActivity_.class));
+                startActivity(new Intent(PrincipalActivity.this, AlterarDadosLoginCaixaActivity.class));
                 break;
             case 2:
-                startActivity(new Intent(PrincipalActivity.this, ListaComprasActivity.class));
+                startActivity(new Intent(PrincipalActivity.this, ApostasConfirmadasActivity_.class));
                 break;
             case 3:
-                startActivity(new Intent(PrincipalActivity.this, FavoritasActivity.class));
+                startActivity(new Intent(PrincipalActivity.this, ListaComprasActivity.class));
                 break;
             case 4:
-                startActivity( new Intent( PrincipalActivity.this, FormaPagamentoActivity.class ) );
+                startActivity(new Intent(PrincipalActivity.this, FavoritasActivity.class));
+                break;
             default:
                 break;
         }

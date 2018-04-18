@@ -282,4 +282,5 @@
     <string name="label_data_sorteio">Data de sorteio</string>
     <string name="label_valor_aposta">Valor da aposta</string>
     <string name="title_activity_cadastrar_confirmacao">CadastrarConfirmacao</string>
+    <string name="title_activity_alterar_dados_login_caixa">Alterar dados</string>
 </resources>

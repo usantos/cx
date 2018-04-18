@@ -32,6 +32,10 @@ import static caixa.gov.br.loterias.model.bo.silce.dto.RedirectEnum.*;
 
 public class RedirectNetwork {
     public static void checkRedirect(VolleyError error, Activity activity){
+        if (error.networkResponse == null){
+            ViewUtils.alert( activity, activity.getResources().getString( R.string.seminternet ) );
+            return;
+        }
         NetworkResponse response = error.networkResponse;
 
         final byte[] textBytes = response.data;

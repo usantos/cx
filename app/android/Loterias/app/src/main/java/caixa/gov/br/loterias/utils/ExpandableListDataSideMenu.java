@@ -15,10 +15,10 @@ public class ExpandableListDataSideMenu {
 
         List<String> minhaArea = new ArrayList<String>();
         minhaArea.add("Dados Pessoais");
+        minhaArea.add("Alterar dados do login Caixa");
         minhaArea.add("Apostas confirmadas");
         minhaArea.add("Compras");
         minhaArea.add("Favoritas");
-        minhaArea.add("Formas de pagamento");
 
         List<String> Apostar = new ArrayList<String>();
         List<String> Resultados = new ArrayList<String>();

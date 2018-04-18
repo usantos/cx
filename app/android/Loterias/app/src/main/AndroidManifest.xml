@@ -243,9 +243,12 @@
         <activity
             android:name=".view.CadastrarConfirmacao"
             android:label="@string/title_activity_toolbar"
-            android:theme="@style/AppTheme.DegradeActionBar"
             android:screenOrientation="portrait"
-            ></activity>
+            android:theme="@style/AppTheme.DegradeActionBar" />
+        <activity
+            android:name=".view.AlterarDadosLoginCaixaActivity"
+            android:label="@string/title_activity_alterar_dados_login_caixa"
+            android:theme="@style/AppTheme.DegradeActionBar"></activity>
     </application>
 
 </manifest>
