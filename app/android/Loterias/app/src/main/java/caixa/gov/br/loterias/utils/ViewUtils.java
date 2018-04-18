@@ -9,11 +9,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -50,6 +52,7 @@ import android.widget.Toast;
 import org.apache.commons.lang.StringUtils;
 import org.w3c.dom.Text;
 
+import java.io.ByteArrayOutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -789,5 +792,15 @@ public class ViewUtils {
             Log.e("replaceNullable", "source is null");
             return "";
         }
+    }
+
+    public static byte[] drawableInByte(Context context, int drawable) {
+        Drawable d = context.getResources().getDrawable(drawable);
+        Bitmap bitmap = ((BitmapDrawable) d).getBitmap();
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] bitmapdata = stream.toByteArray();
+
+        return bitmapdata;
     }
 }

@@ -17,8 +17,9 @@ import java.util.Locale;
 
 public class DateUtils {
 
-    public static String PATTERN_DDMM_YYYY = "dd/MM/yyyy";
-    public static String PATTERN_DD_MM = "dd/MM";
+    public static final String PATTERN_DDMM_YYYY = "dd/MM/yyyy";
+    public static final String PATTERN_DD_MM = "dd/MM";
+    public static final String PATTERN_DD_MMM_YYYY = "dd MMM yyyy";
     public static String TAG = DateUtils.class.getSimpleName();
 
     public static String[] getAllMonthsOfYear(){

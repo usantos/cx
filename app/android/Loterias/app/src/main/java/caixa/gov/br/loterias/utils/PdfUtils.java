@@ -13,6 +13,8 @@ import org.androidannotations.annotations.EBean;
 
 import java.io.File;
 
+import caixa.gov.br.loterias.model.bo.silce.dto.ComprovanteApostaDTO;
+
 /**
  * Created by joafilho on 16/04/2018.
  * Class PdfUtils
@@ -28,10 +30,10 @@ public class PdfUtils {
     @Bean
     protected HtmlUtils htmlUtils;
 
-    public void createComprovantePdf(AppCompatActivity activity) {
+    public void createComprovantePdf(ComprovanteApostaDTO comprovanteApostaDTO,  AppCompatActivity activity) {
         if (checkForPermission(activity)) {
             try {
-                String html = htmlUtils.getComprovanteCabecalhoRodapeAposta(activity);
+                String html = htmlUtils.getComprovanteCabecalhoRodapeAposta(comprovanteApostaDTO, activity);
 
                 // cria a estrutura de diretório
                 File dir = new File(FileUtils.getDownloadsDir(), DIRETORIO_COMPROVANTE);

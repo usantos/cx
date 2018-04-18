@@ -1,6 +1,7 @@
 package caixa.gov.br.loterias.utils;
 
 import android.content.Context;
+import android.util.Base64;
 import android.view.View;
 
 import org.androidannotations.annotations.EBean;
@@ -11,6 +12,8 @@ import java.io.InputStreamReader;
 import java.math.BigDecimal;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.model.bo.silce.dto.ComprovanteApostaDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.ModalidadeEnum;
 
 /**
  * Created by joafilho on 16/04/2018.
@@ -24,6 +27,7 @@ public class HtmlUtils {
 
     private static final String HEADER_TITLE_APP_TXT = "{header_title_app_txt}";
     private static final String HEADER_TIPO_COMPROVANTE_TXT = "{header_tipo_comprovante_txt}";
+    private static final String BASE_64_LOGO = "{base_64_logo}";
     private static final String HEADER_COLUNA1_LINHA1_VALOR = "{header_coluna1_linha1_valor}";
     private static final String HEADER_COLUNA2_LINHA1_VALOR = "{header_coluna2_linha1_valor}";
     private static final String HEADER_COLUNA1_LINHA2_VALOR = "{header_coluna1_linha2_valor}";
@@ -34,19 +38,27 @@ public class HtmlUtils {
     private static final String HEADER_COLUNA2_LINHA3_VALOR = "{header_coluna2_linha3_valor}";
     private static final String BODY_TITULO = "{body_titulo}";
 
-    public String getComprovanteCabecalhoRodapeAposta(Context context) {
+    public String getComprovanteCabecalhoRodapeAposta(ComprovanteApostaDTO comprovanteApostaDTO, Context context) {
+
+        String modadlidade = ModalidadeEnum.fromStringComprovante(comprovanteApostaDTO.getAposta().getModalidade());
+        String dataSorteio = DateUtils.getDateToString(
+                DateUtils.stringToDate(comprovanteApostaDTO.getDataSorteio(), DateUtils.PATTERN_DD_MMM_YYYY)
+                , DateUtils.PATTERN_DDMM_YYYY);
+
+
         String html = getContentOfFile(FILE_PATH_COMPROVANTE_CABECALHO_RODAPE, context);
         html = ViewUtils.replaceNullable(html, HEADER_TITLE_APP_TXT, context.getString(R.string.app_name));
-        html = ViewUtils.replaceNullable(html, HEADER_TIPO_COMPROVANTE_TXT, context.getString(R.string.label_comprovante_aposta, "Mega da Virada"));
-        html = ViewUtils.replaceNullable(html, HEADER_COLUNA1_LINHA1_VALOR, "20/02/2018");
-        html = ViewUtils.replaceNullable(html, HEADER_COLUNA2_LINHA1_VALOR, "1234");
-        html = ViewUtils.replaceNullable(html, HEADER_COLUNA1_LINHA2_VALOR, "13:00");
+        html = ViewUtils.replaceNullable(html, HEADER_TIPO_COMPROVANTE_TXT, context.getString(R.string.label_comprovante_aposta, modadlidade));
+        html = ViewUtils.replaceNullable(html, BASE_64_LOGO, getBase64Logo(context));
+        html = ViewUtils.replaceNullable(html, HEADER_COLUNA1_LINHA1_VALOR, comprovanteApostaDTO.getAposta().getDataEfetivacao());
+        html = ViewUtils.replaceNullable(html, HEADER_COLUNA2_LINHA1_VALOR, String.valueOf(comprovanteApostaDTO.getAposta().getConcursoAlvo()));
+        html = ViewUtils.replaceNullable(html, HEADER_COLUNA1_LINHA2_VALOR, comprovanteApostaDTO.getAposta().getHoraEfetivacao());
         html = ViewUtils.replaceNullable(html, HEADER_COLUNA2_LINHA2_TEXTO, context.getString(R.string.label_data_sorteio));
-        html = ViewUtils.replaceNullable(html, HEADER_COLUNA2_LINHA2_VALOR, "20/03/2018");
-        html = ViewUtils.replaceNullable(html, HEADER_COLUNA1_LINHA3_VALOR, "Mega da Virada");
+        html = ViewUtils.replaceNullable(html, HEADER_COLUNA2_LINHA2_VALOR, dataSorteio);
+        html = ViewUtils.replaceNullable(html, HEADER_COLUNA1_LINHA3_VALOR, modadlidade);
         html = ViewUtils.replaceNullable(html, HEADER_COLUNA2_LINHA3_TEXTO, context.getString(R.string.label_valor_aposta));
-        html = ViewUtils.replaceNullable(html, HEADER_COLUNA2_LINHA3_VALOR, ViewUtils.getMoedaFormat(BigDecimal.TEN));
-        html = ViewUtils.replaceNullable(html, BODY_TITULO, "Mega da Virada");
+        html = ViewUtils.replaceNullable(html, HEADER_COLUNA2_LINHA3_VALOR, ViewUtils.getMoedaFormat(comprovanteApostaDTO.getAposta().getValor()));
+        html = ViewUtils.replaceNullable(html, BODY_TITULO, modadlidade);
 
         return html;
     }
@@ -69,5 +81,9 @@ public class HtmlUtils {
             e.printStackTrace();
             return "";
         }
+    }
+
+    private static String getBase64Logo(Context context) {
+        return Base64.encodeToString(ViewUtils.drawableInByte(context, R.drawable.logo_caixa_pdf_copy), Base64.DEFAULT);
     }
 }

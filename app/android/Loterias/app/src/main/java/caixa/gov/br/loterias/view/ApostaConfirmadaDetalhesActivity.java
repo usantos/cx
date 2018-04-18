@@ -34,11 +34,13 @@ import org.apache.commons.lang.StringUtils;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bean.SessaoUsuario;
+import caixa.gov.br.loterias.model.bo.ApostaBO;
 import caixa.gov.br.loterias.model.bo.DadosCorporativosBO;
 import caixa.gov.br.loterias.model.bo.MensagensNetwork;
 import caixa.gov.br.loterias.model.bo.RequestListener;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostaFavoritaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ComprovanteApostaDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.ComprovanteApostaDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.DTOEnumInteger;
 import caixa.gov.br.loterias.model.bo.silce.dto.DetalhesPremioDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
@@ -51,6 +53,7 @@ import caixa.gov.br.loterias.utils.EstiloModalidade;
 import caixa.gov.br.loterias.utils.PdfUtils;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.utils.helper.AdicionarApostaCarrinhoHelper;
+import caixa.gov.br.loterias.view.fragment.ApostaConfirmadaNumeroDetalhes;
 import caixa.gov.br.loterias.view.fragment.ApostaConfirmadaNumeroDetalhesPremioPago_;
 import caixa.gov.br.loterias.view.fragment.ApostaConfirmadaNumeroDetalhes_;
 import caixa.gov.br.loterias.view.fragment.ApostaConfirmadaPartidaFragment_;
@@ -69,6 +72,9 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
 
     @Bean
     protected PdfUtils pdfUtils;
+
+    @Bean
+    protected ApostaBO apostaBO;
 
     @Extra
     protected ComprovanteApostaDTO comprovanteApostaDTO;
@@ -179,7 +185,20 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
 
     @Click
     protected void comprovanteLayout() {
-        pdfUtils.createComprovantePdf(this);
+        DialogUtils.show(this);
+        apostaBO.getApostaDetalheComprovante(aposta.getId(), new RequestListener<ComprovanteApostaDTOResponse>() {
+            @Override
+            public void onResponse(ComprovanteApostaDTOResponse result) {
+                DialogUtils.dismiss();
+                pdfUtils.createComprovantePdf(result.getPayload(), ApostaConfirmadaDetalhesActivity.this);
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                onError(error);
+            }
+        });
+
     }
 
     @Override
