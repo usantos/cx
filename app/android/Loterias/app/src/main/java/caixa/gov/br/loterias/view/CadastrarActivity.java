@@ -24,8 +24,6 @@ import org.androidannotations.annotations.ViewById;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import caixa.gov.br.loterias.R;
@@ -39,17 +37,12 @@ import caixa.gov.br.loterias.model.bo.RequestListener;
 import caixa.gov.br.loterias.model.bo.keycloak.KeycloakBO;
 import caixa.gov.br.loterias.model.bo.keycloak.KeycloakBO_;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostaDTO;
-import caixa.gov.br.loterias.model.bo.silce.dto.ApostadorDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostadorDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.BairroDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.BairroDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.CadastrarApostadorDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.MunicipioIdDTO;
-import caixa.gov.br.loterias.model.bo.silce.dto.SexoEnum;
-import caixa.gov.br.loterias.model.bo.silce.dto.UsuarioLogado;
-import caixa.gov.br.loterias.model.bo.silce.dto.UsuarioLogadoResponse;
 import caixa.gov.br.loterias.utils.AppUtils;
-import caixa.gov.br.loterias.utils.DateUtils;
 import caixa.gov.br.loterias.utils.Utils;
 import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
 import caixa.gov.br.loterias.model.bo.MensagensNetwork;
@@ -159,7 +152,8 @@ public class CadastrarActivity extends CadastroActivity {
                         @Override
                         public void onResponse(ApostadorDTOResponse response) {
                             loadViewProgress.dismiss();
-                            PrincipalActivity_.intent(CadastrarActivity.this).start();
+                             startActivity( new Intent(CadastrarActivity.this, CadastrarConfirmacao.class ));
+                             CadastrarActivity.this.finish();
                         }
 
                         @Override

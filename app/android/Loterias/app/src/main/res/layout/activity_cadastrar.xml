@@ -74,7 +74,6 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="63dp"
-                android:background="@color/cinzaclaro"
                 >
 
                 <com.github.pinball83.maskededittext.MaskedEditText
@@ -85,7 +84,8 @@
                     android:inputType="number"
                     app:mask="***.***.***-**"
                     app:notMaskedSymbol="*"
-                    android:enabled="false"/>
+                    android:enabled="false"
+                    android:alpha="0.3"/>
 
             </android.support.design.widget.TextInputLayout>
 
@@ -97,7 +97,6 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="20dp"
-                android:background="@color/cinzaclaro"
                 >
 
                 <EditText
@@ -106,7 +105,8 @@
                     android:hint="@string/label_nome"
                     style="@style/editTextRegisterTheme"
                     android:inputType="textPersonName"
-                    android:enabled="false"/>
+                    android:enabled="false"
+                    android:alpha="0.3"/>
             </android.support.design.widget.TextInputLayout>
 
 
@@ -259,7 +259,6 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="20dp"
-                android:background="@color/cinzaclaro"
                 >
 
                 <EditText
@@ -268,7 +267,8 @@
                     android:ems="10"
                     android:hint="@string/label_email"
                     android:inputType="textEmailAddress"
-                    android:enabled="false"/>
+                    android:enabled="false"
+                    android:alpha="0.3"/>
             </android.support.design.widget.TextInputLayout>
 
             <!--<Button-->

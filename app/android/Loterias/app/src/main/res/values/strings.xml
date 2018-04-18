@@ -281,4 +281,5 @@
     <string name="label_comprovante_premio">Comprovante do prêmio - %s</string>
     <string name="label_data_sorteio">Data de sorteio</string>
     <string name="label_valor_aposta">Valor da aposta</string>
+    <string name="title_activity_cadastrar_confirmacao">CadastrarConfirmacao</string>
 </resources>

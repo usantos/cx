@@ -31,6 +31,9 @@ import caixa.gov.br.loterias.model.dao.DBLoteriasCrud;
 import caixa.gov.br.loterias.utils.AppUtils;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.CadastrarActivity_;
+import caixa.gov.br.loterias.view.CadastrarConfirmacao;
+import caixa.gov.br.loterias.view.DadosPessoaisActivity;
+import caixa.gov.br.loterias.view.DadosPessoaisConfirmacaoActivity;
 import caixa.gov.br.loterias.view.PrincipalActivity;
 import caixa.gov.br.loterias.view.PrincipalActivity_;
 import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
@@ -65,6 +68,7 @@ public class LoginFragment extends Fragment {
             public void onClick(View v) {
                 DadosUsuarioBO.updateFecharIntroducao(getActivity(), true);
                 connectKeycloak();
+
             }
         });
 
