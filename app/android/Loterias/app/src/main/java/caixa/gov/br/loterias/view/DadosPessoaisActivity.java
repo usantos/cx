@@ -217,7 +217,6 @@ public class DadosPessoaisActivity extends AppCompatActivity {
         dadosCorporativosBO.ufs(new RequestListener<UnidadeFederacaoDTOResponse>() {
             @Override
             public void onResponse(UnidadeFederacaoDTOResponse response) {
-                response.getRedirect().toString();
                 loadViewProgress.dismiss();
                 listUFString = new ArrayList<String>();
                 listUf = response.getPayload();
@@ -241,13 +240,17 @@ public class DadosPessoaisActivity extends AppCompatActivity {
     private void getMunicipios() {
         String idUf = "";
 
-        if (ufSelect.isEmpty()) {
+        if (editTextUFContent.getText().toString().equals( "" )) {
             showDialog();
         } else {
-            for (UnidadeFederacaoDTO uf : listUf) {
-                if (uf.getSigla().equalsIgnoreCase(ufSelect)) {
-                    idUf = uf.getId().toString();
+            if (municipioIdDTOSelect == null){
+                for (UnidadeFederacaoDTO uf : listUf) {
+                    if (uf.getSigla().equalsIgnoreCase(ufSelect)) {
+                        idUf = uf.getId().toString();
+                    }
                 }
+            }else{
+                idUf = municipioIdDTOSelect.getIdUF().toString();
             }
             loadViewProgress.show();
             listMunicipios = new ArrayList<String>();
@@ -318,6 +321,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (!ufSelect.equals( editTextUFContent.getText().toString() )){
                     editTextMunicipioContent.setText( "" );
+                    municipioIdDTOSelect = null;
                 }
                 editTextUFContent.setText(ufSelect);
                 dialog.dismiss();
@@ -327,7 +331,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
         dialogButtonCancelar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ufSelect = "";
+                ufSelect = editTextUFContent.getText().toString();
                 dialog.dismiss();
             }
         });
@@ -354,6 +358,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
     }
 
     private void modalMunicipios() {
+        municipioSelect = "";
         // custom dialog
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.custom_dialog_list_view);
@@ -376,11 +381,10 @@ public class DadosPessoaisActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 // ListView Clicked item index
-                int itemPosition = position;
-
                 // ListView Clicked item value
                 String itemValue = (String) listViewItens.getItemAtPosition(position);
                 municipioIdDTOSelect = municipioDTOList.get( position ).getId();
+                municipioSelect = itemValue;
             }
 
         });
@@ -445,6 +449,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
                 if (response.getPayload() != null && !response.getPayload().isEmpty()) {
                     BairroDTO bairroDTO = response.getPayload().get(0);
                     editTextUFContent.setText(bairroDTO.getMunicipio().getUf().getSigla());
+                    ufSelect = bairroDTO.getMunicipio().getUf().getSigla();
                     editTextMunicipioContent.setText(bairroDTO.getMunicipio().getNome());
                     municipioIdDTOSelect = bairroDTO.getMunicipio().getId();
                 }

@@ -59,7 +59,8 @@ adquiridas em um toque"
                     android:inputType="number"
                     app:mask="***.***.***-**"
                     app:notMaskedSymbol="*"
-                    android:enabled="false"/>
+                    android:enabled="false"
+                    android:alpha="0.3"/>
 
             </android.support.design.widget.TextInputLayout>
 
@@ -78,7 +79,8 @@ adquiridas em um toque"
                     android:hint="@string/label_nome"
                     style="@style/editTextRegisterTheme"
                     android:inputType="textPersonName"
-                    android:enabled="false"/>
+                    android:enabled="false"
+                    android:alpha="0.3"/>
             </android.support.design.widget.TextInputLayout>
 
 
@@ -200,7 +202,8 @@ adquiridas em um toque"
                     android:ems="10"
                     android:hint="@string/label_email"
                     android:inputType="textEmailAddress"
-                    android:enabled="false"/>
+                    android:enabled="false"
+                    android:alpha="0.3"/>
             </android.support.design.widget.TextInputLayout>
 
         </LinearLayout>
