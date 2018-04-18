@@ -54,7 +54,8 @@
             android:name=".view.CadastrarActivity_"
             android:configChanges="orientation"
             android:parentActivityName=".view.IntroducaoActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden"/>
         <activity
             android:name=".view.CadastrarPasso2Activity_"
             android:configChanges="orientation"

@@ -27,6 +27,7 @@ import caixa.gov.br.loterias.model.bo.DadosCorporativosBO_;
 import caixa.gov.br.loterias.model.bo.RedirectNetwork;
 import caixa.gov.br.loterias.model.bo.RequestListener;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostadorDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.CadastrarApostadorDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.MunicipioDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.MunicipioDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.MunicipioIdDTO;
@@ -49,7 +50,7 @@ public class CadastroActivity extends AppCompatActivity {
     protected String ufSelect = "";
     protected String municipioSelect = "";
     protected String bairroSelected = "";
-    protected static ApostadorDTO apostadorDTO;
+    protected static CadastrarApostadorDTO cadastrarApostadorDTO;
     private boolean isMunicipioUsuario;
     protected MunicipioIdDTO municipioIdDTOLoteria;
 
@@ -317,7 +318,7 @@ public class CadastroActivity extends AppCompatActivity {
                 if (isMunicipioUsuario) {
                     for (MunicipioDTO municipio : municipioDTOList) {
                         if (municipio.getNome().equals(municipioSelect)) {
-                            apostadorDTO.setMunicipioId(municipio.getId());
+                            cadastrarApostadorDTO.setMunicipioId(municipio.getId());
                             break;
                         }
                     }

@@ -29,8 +29,6 @@ public class CadastrarApostadorDTO {
   private Boolean aceitaReceberNoticias = null;
   @SerializedName("municipioId")
   private MunicipioIdDTO municipioId = null;
-  @SerializedName("lotericaId")
-  private Long lotericaId = null;
   public enum SexoEnum {
      M,  F, 
   };
@@ -83,17 +81,6 @@ public class CadastrarApostadorDTO {
   }
 
   /**
-   * Código da Lotérica de Vinculação do Apostador, selecionada no seu cadastro
-   **/
-  @ApiModelProperty(value = "Código da Lotérica de Vinculação do Apostador, selecionada no seu cadastro")
-  public Long getLotericaId() {
-    return lotericaId;
-  }
-  public void setLotericaId(Long lotericaId) {
-    this.lotericaId = lotericaId;
-  }
-
-  /**
    * Sexo do Apostador
    **/
   @ApiModelProperty(required = true, value = "Sexo do Apostador")
@@ -129,7 +116,6 @@ public class CadastrarApostadorDTO {
         (this.aceitaTermosUso == null ? cadastrarApostadorDTO.aceitaTermosUso == null : this.aceitaTermosUso.equals(cadastrarApostadorDTO.aceitaTermosUso)) &&
         (this.aceitaReceberNoticias == null ? cadastrarApostadorDTO.aceitaReceberNoticias == null : this.aceitaReceberNoticias.equals(cadastrarApostadorDTO.aceitaReceberNoticias)) &&
         (this.municipioId == null ? cadastrarApostadorDTO.municipioId == null : this.municipioId.equals(cadastrarApostadorDTO.municipioId)) &&
-        (this.lotericaId == null ? cadastrarApostadorDTO.lotericaId == null : this.lotericaId.equals(cadastrarApostadorDTO.lotericaId)) &&
         (this.sexo == null ? cadastrarApostadorDTO.sexo == null : this.sexo.equals(cadastrarApostadorDTO.sexo)) &&
         (this.apostas == null ? cadastrarApostadorDTO.apostas == null : this.apostas.equals(cadastrarApostadorDTO.apostas));
   }
@@ -141,7 +127,6 @@ public class CadastrarApostadorDTO {
     result = 31 * result + (this.aceitaTermosUso == null ? 0: this.aceitaTermosUso.hashCode());
     result = 31 * result + (this.aceitaReceberNoticias == null ? 0: this.aceitaReceberNoticias.hashCode());
     result = 31 * result + (this.municipioId == null ? 0: this.municipioId.hashCode());
-    result = 31 * result + (this.lotericaId == null ? 0: this.lotericaId.hashCode());
     result = 31 * result + (this.sexo == null ? 0: this.sexo.hashCode());
     result = 31 * result + (this.apostas == null ? 0: this.apostas.hashCode());
     return result;
@@ -156,7 +141,6 @@ public class CadastrarApostadorDTO {
     sb.append("  aceitaTermosUso: ").append(aceitaTermosUso).append("\n");
     sb.append("  aceitaReceberNoticias: ").append(aceitaReceberNoticias).append("\n");
     sb.append("  municipioId: ").append(municipioId).append("\n");
-    sb.append("  lotericaId: ").append(lotericaId).append("\n");
     sb.append("  sexo: ").append(sexo).append("\n");
     sb.append("  apostas: ").append(apostas).append("\n");
     sb.append("}\n");

@@ -25,15 +25,21 @@
                 android:textColor="@color/cinza"
                 android:textSize="16sp"
                 android:textStyle="bold" />
-
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/linhaDivisa"
+                android:id="@+id/linhaDivisaTopo"
+                android:layout_below="@+id/textViewTituloCadastrar"
+                android:layout_marginTop="19dp"></View>
 
             <ImageView
                 android:id="@+id/imageViewIcoPasso1"
                 android:layout_width="53dp"
                 android:layout_height="21dp"
-                android:layout_below="@id/textViewTituloCadastrar"
+                android:layout_below="@id/linhaDivisaTopo"
                 android:layout_marginLeft="16dp"
-                android:layout_marginTop="71dp"
+                android:layout_marginTop="42dp"
                 app:srcCompat="@drawable/passo1" />
 
             <TextView
@@ -67,7 +73,9 @@
                 android:layout_below="@id/textViewTituloCadastrar3"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_marginTop="63dp">
+                android:layout_marginTop="63dp"
+                android:background="@color/cinzaclaro"
+                >
 
                 <com.github.pinball83.maskededittext.MaskedEditText
                     android:id="@+id/editTextCpfContent"
@@ -76,7 +84,8 @@
                     style="@style/editTextRegisterTheme"
                     android:inputType="number"
                     app:mask="***.***.***-**"
-                    app:notMaskedSymbol="*"/>
+                    app:notMaskedSymbol="*"
+                    android:enabled="false"/>
 
             </android.support.design.widget.TextInputLayout>
 
@@ -87,14 +96,17 @@
                 android:layout_below="@id/editTextCpf"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_marginTop="20dp">
+                android:layout_marginTop="20dp"
+                android:background="@color/cinzaclaro"
+                >
 
                 <EditText
                     android:id="@+id/editTextNomeContent"
                     android:ems="10"
                     android:hint="@string/label_nome"
                     style="@style/editTextRegisterTheme"
-                    android:inputType="textPersonName" />
+                    android:inputType="textPersonName"
+                    android:enabled="false"/>
             </android.support.design.widget.TextInputLayout>
 
 
@@ -141,29 +153,29 @@
             </caixa.gov.br.loterias.utils.segmentedbutton.SegmentedButtonGroup>
 
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/editTextNomeMae"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/segmentedButtonSexo"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginTop="20dp">
+            <!--<android.support.design.widget.TextInputLayout-->
+                <!--android:id="@+id/editTextNomeMae"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_below="@id/segmentedButtonSexo"-->
+                <!--android:layout_marginLeft="16dp"-->
+                <!--android:layout_marginRight="16dp"-->
+                <!--android:layout_marginTop="20dp">-->
 
-                <EditText
-                    android:id="@+id/editTextNomeMaeContent"
-                    android:ems="10"
-                    android:hint="@string/label_nome_mae"
-                    style="@style/editTextRegisterTheme"
-                    android:inputType="textPersonName"/>
+                <!--<EditText-->
+                    <!--android:id="@+id/editTextNomeMaeContent"-->
+                    <!--android:ems="10"-->
+                    <!--android:hint="@string/label_nome_mae"-->
+                    <!--style="@style/editTextRegisterTheme"-->
+                    <!--android:inputType="textPersonName"/>-->
 
-            </android.support.design.widget.TextInputLayout>
+            <!--</android.support.design.widget.TextInputLayout>-->
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/editTextCEP"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/editTextNomeMae"
+                android:layout_below="@id/segmentedButtonSexo"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="20dp">
@@ -218,58 +230,128 @@
                     android:inputType="textPersonName" />
             </android.support.design.widget.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/editTextNascimento"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/editTextMunicipio"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginTop="20dp">
+            <!--<android.support.design.widget.TextInputLayout-->
+                <!--android:id="@+id/editTextNascimento"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_below="@id/editTextMunicipio"-->
+                <!--android:layout_marginLeft="16dp"-->
+                <!--android:layout_marginRight="16dp"-->
+                <!--android:layout_marginTop="20dp">-->
 
-                <com.github.pinball83.maskededittext.MaskedEditText
-                    android:id="@+id/editTextNascimentoContent"
-                    style="@style/editTextRegisterTheme"
-                    android:ems="10"
-                    android:hint="@string/label_nascimento"
-                    android:inputType="number"
-                    app:mask="**/**/****"
-                    app:notMaskedSymbol="*" />
-            </android.support.design.widget.TextInputLayout>
+                <!--<com.github.pinball83.maskededittext.MaskedEditText-->
+                    <!--android:id="@+id/editTextNascimentoContent"-->
+                    <!--style="@style/editTextRegisterTheme"-->
+                    <!--android:ems="10"-->
+                    <!--android:hint="@string/label_nascimento"-->
+                    <!--android:inputType="number"-->
+                    <!--app:mask="**/**/****"-->
+                    <!--app:notMaskedSymbol="*"-->
+                    <!--android:enabled="false"/>-->
+            <!--</android.support.design.widget.TextInputLayout>-->
 
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/editTextEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/editTextNascimento"
+                android:layout_below="@id/editTextMunicipio"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_marginTop="20dp">
+                android:layout_marginTop="20dp"
+                android:background="@color/cinzaclaro"
+                >
 
                 <EditText
                     android:id="@+id/editTextEmailContent"
                     style="@style/editTextRegisterTheme"
                     android:ems="10"
                     android:hint="@string/label_email"
-                    android:inputType="textEmailAddress" />
+                    android:inputType="textEmailAddress"
+                    android:enabled="false"/>
             </android.support.design.widget.TextInputLayout>
 
-            <Button
-                android:id="@+id/buttonContinuarIntroducao"
+            <!--<Button-->
+                <!--android:id="@+id/buttonContinuarIntroducao"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_below="@id/editTextEmail"-->
+                <!--android:layout_marginBottom="20dp"-->
+                <!--android:layout_marginLeft="16dp"-->
+                <!--android:layout_marginRight="16dp"-->
+                <!--android:layout_marginTop="20dp"-->
+                <!--android:background="@color/amarelo"-->
+                <!--android:text="Continuar"-->
+                <!--android:textAllCaps="false"-->
+                <!--android:textColor="@color/branco"-->
+                <!--android:textSize="16sp"-->
+                <!--android:textStyle="bold"/>-->
+
+
+            <LinearLayout
+                android:id="@+id/LinearLayoutLayoutHoriontalDeclararAceite"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="92dp"
                 android:layout_below="@id/editTextEmail"
-                android:layout_marginBottom="20dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
                 android:layout_marginTop="20dp"
-                android:background="@color/amarelo"
-                android:text="Continuar"
-                android:textAllCaps="false"
-                android:textColor="@color/branco"
-                android:textSize="16sp"
-                android:textStyle="bold"/>
+                android:background="@color/cinzaclaro"
+                android:orientation="horizontal">
+
+                <android.support.v7.widget.AppCompatCheckBox
+                    android:id="@+id/aceiteTermo"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/check_box_selected"
+                    android:button="@color/transparente50" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="30dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/editTextArialMTTheme"
+                        android:textColor="@color/cinza"
+                        android:text="@string/declaracao_termo_uso_politica_privacidade" />
+
+                    <TextView
+                        android:id="@+id/termoPolitica"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/cinza"
+                        android:text="@string/termo_de_uso_underline"
+                        style="@style/editTextArialMTTheme"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/LinearLayoutLayoutHoriontalBotao"
+                android:layout_width="match_parent"
+                android:layout_height="92dp"
+                android:layout_below="@id/LinearLayoutLayoutHoriontalDeclararAceite"
+                android:background="@color/cinzaclaro"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/buttonFinalizarCadastro"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:background="@color/amarelo"
+                    android:text="@string/btn_finalizar"
+                    android:textAllCaps="false"
+                    android:textColor="@color/branco"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
 
         </RelativeLayout>
     </ScrollView>

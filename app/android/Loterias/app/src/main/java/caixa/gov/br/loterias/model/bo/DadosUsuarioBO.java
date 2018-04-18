@@ -18,6 +18,7 @@ import caixa.gov.br.loterias.model.bo.silce.dto.ApostadorAlteracaoDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostadorDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostadorDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.AutenticacaoDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.CadastrarApostadorDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.CadastrarApostadorDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.CarrinhoDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.CarrinhoDTOResponse;
@@ -79,10 +80,19 @@ public class DadosUsuarioBO extends BaseBO {
         silceConnection.request(request);
     }
 
-    public void gravarUsuario(ApostadorDTO apostadorDTO, final RequestListener<UsuarioLogadoResponse> listener) {
-        silceConnection.post(ServerMethods.GRAVAR_USUARIO_PATH, new LinkedHashMap<String, String>(), apostadorDTO, UsuarioLogadoResponse.class,
+    public void gravarUsuario(CadastrarApostadorDTO apostadorDTO, final RequestListener<ApostadorDTOResponse> listener) {
+        LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
+        headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
+
+        final GsonRequest request = silceConnection.buildPostRequest(ServerMethods.GRAVAR_USUARIO_PATH, new LinkedHashMap<String, String>(),
+                apostadorDTO,
+                ApostadorDTOResponse.class,
                 listener.getSilceListener(),
-                listener.getErrorListener(), new LinkedHashMap<String, String>());
+                listener.getErrorListener(),
+                headers);
+
+        request.setErrorListener(interceptError(request, headers, listener));
+        silceConnection.request(request);
     }
 
     public static void updateFecharIntroducao(Activity activity, Boolean status){
