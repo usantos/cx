@@ -283,4 +283,5 @@
     <string name="label_valor_aposta">Valor da aposta</string>
     <string name="title_activity_cadastrar_confirmacao">CadastrarConfirmacao</string>
     <string name="title_activity_alterar_dados_login_caixa">Alterar dados</string>
+    <string name="label_corpo_equipe">(%s) %s</string>
 </resources>

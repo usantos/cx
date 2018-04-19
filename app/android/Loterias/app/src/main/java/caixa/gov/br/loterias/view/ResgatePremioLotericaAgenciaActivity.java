@@ -62,7 +62,7 @@ public class ResgatePremioLotericaAgenciaActivity extends SettingToolbarActivity
     }
 
     private void generateQrCode() throws WriterException {
-        QRGEncoder qrgEncoder = new QRGEncoder(codigoResgateDTO.getQrCode(), null, QRGContents.Type.TEXT, ViewUtils.getSmallSizeQeCode(this));
+        QRGEncoder qrgEncoder = new QRGEncoder(codigoResgateDTO.getQrCode(), null, QRGContents.Type.TEXT, ViewUtils.getSmallSizeQrCode(this));
         qrCodeApostaImage.setImageBitmap(qrgEncoder.encodeAsBitmap());
         qrCodeApostaImage.setVisibility(View.VISIBLE);
     }

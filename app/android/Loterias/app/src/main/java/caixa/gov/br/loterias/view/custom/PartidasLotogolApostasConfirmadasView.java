@@ -48,7 +48,7 @@ public class PartidasLotogolApostasConfirmadasView extends LinearLayout {
 
     public void setLayout(PartidaLotogolDTO partidaLotogolDTO) {
         this.setEquipe(partidaLotogolDTO.getEquipe1(), imagemEscudoApostaEquipeLotogolUm, imagemPlacarApostaEquipeLotogolUm, textoApostaEquipeLotogolUm);
-        this.setEquipe(partidaLotogolDTO.getEquipe1(), imagemEscudoApostaEquipeLotogolDois, imagemPlacarApostaEquipeLotogolDois, textoApostaEquipeLotogolDois);
+        this.setEquipe(partidaLotogolDTO.getEquipe2(), imagemEscudoApostaEquipeLotogolDois, imagemPlacarApostaEquipeLotogolDois, textoApostaEquipeLotogolDois);
     }
 
     private void setEquipe(EquipeDTO equipeDTO, ImageView escudo, ImageView placar, TextView descricao) {

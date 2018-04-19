@@ -766,7 +766,7 @@ public class ViewUtils {
     }
 
 
-    public static int getSmallSizeQeCode(Context context) {
+    public static int getSmallSizeQrCode(Context context) {
 
         Point point = getAppUsableScreenSize(context);
         int width = point.x;
