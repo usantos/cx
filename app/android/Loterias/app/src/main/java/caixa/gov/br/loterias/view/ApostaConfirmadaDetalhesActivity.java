@@ -42,6 +42,7 @@ import caixa.gov.br.loterias.model.bo.silce.dto.ApostaFavoritaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ComprovanteApostaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ComprovanteApostaDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.DTOEnumInteger;
+import caixa.gov.br.loterias.model.bo.silce.dto.DetalhesHistoricoPremioDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.DetalhesPremioDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import caixa.gov.br.loterias.model.bo.silce.dto.ParametroJogoDTO;
@@ -53,7 +54,6 @@ import caixa.gov.br.loterias.utils.EstiloModalidade;
 import caixa.gov.br.loterias.utils.PdfUtils;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.utils.helper.AdicionarApostaCarrinhoHelper;
-import caixa.gov.br.loterias.view.fragment.ApostaConfirmadaNumeroDetalhes;
 import caixa.gov.br.loterias.view.fragment.ApostaConfirmadaNumeroDetalhesPremioPago_;
 import caixa.gov.br.loterias.view.fragment.ApostaConfirmadaNumeroDetalhes_;
 import caixa.gov.br.loterias.view.fragment.ApostaConfirmadaPartidaFragment_;
@@ -186,19 +186,34 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
     @Click
     protected void comprovanteLayout() {
         DialogUtils.show(this);
-        apostaBO.getApostaDetalheComprovante(aposta.getId(), new RequestListener<ComprovanteApostaDTOResponse>() {
-            @Override
-            public void onResponse(ComprovanteApostaDTOResponse result) {
-                DialogUtils.dismiss();
-                pdfUtils.createComprovantePdf(result.getPayload(), ApostaConfirmadaDetalhesActivity.this);
-            }
 
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                onError(error);
-            }
-        });
+        if (premioPago) {
+            apostaBO.getApostaHistoricoComprovante(aposta.getId(), new RequestListener<DetalhesHistoricoPremioDTOResponse>() {
+                @Override
+                public void onResponse(DetalhesHistoricoPremioDTOResponse result) {
+                    DialogUtils.dismiss();
+                    pdfUtils.createComprovantePremioPdf(result.getPayload(), ApostaConfirmadaDetalhesActivity.this);
+                }
 
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    onError(error);
+                }
+            });
+        } else {
+            apostaBO.getApostaDetalheComprovante(aposta.getId(), new RequestListener<ComprovanteApostaDTOResponse>() {
+                @Override
+                public void onResponse(ComprovanteApostaDTOResponse result) {
+                    DialogUtils.dismiss();
+                    pdfUtils.createComprovanteApostaPdf(result.getPayload(), ApostaConfirmadaDetalhesActivity.this);
+                }
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    onError(error);
+                }
+            });
+        }
     }
 
     @Override

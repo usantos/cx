@@ -14,6 +14,8 @@ import org.androidannotations.annotations.EBean;
 import java.io.File;
 
 import caixa.gov.br.loterias.model.bo.silce.dto.ComprovanteApostaDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.DetalhesHistoricoPremioDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.DetalhesPremioDTO;
 
 /**
  * Created by joafilho on 16/04/2018.
@@ -24,13 +26,14 @@ import caixa.gov.br.loterias.model.bo.silce.dto.ComprovanteApostaDTO;
 public class PdfUtils {
 
     public static final String DIRETORIO_COMPROVANTE = "Comprovantes";
-    public static final String ARQUIVO_COMPROV_PAGAMENTO = "Pagamento";
+    public static final String ARQUIVO_COMPROV_PREMIO = "Premio";
+    public static final String ARQUIVO_COMPROV_APOSTA = "Aposta";
     public static final int MY_WRITE_EXTERNAL_STORAGE = 10;
 
     @Bean
     protected HtmlUtils htmlUtils;
 
-    public void createComprovantePdf(ComprovanteApostaDTO comprovanteApostaDTO,  AppCompatActivity activity) {
+    public void createComprovanteApostaPdf(ComprovanteApostaDTO comprovanteApostaDTO, AppCompatActivity activity) {
         if (checkForPermission(activity)) {
             try {
                 String html = htmlUtils.getComprovanteCabecalhoRodapeAposta(comprovanteApostaDTO, activity);
@@ -39,7 +42,25 @@ public class PdfUtils {
                 File dir = new File(FileUtils.getDownloadsDir(), DIRETORIO_COMPROVANTE);
                 dir.mkdirs();
 
-                String pathArquivo = dir + "/" + ARQUIVO_COMPROV_PAGAMENTO + ".pdf";
+                String pathArquivo = dir + "/" + ARQUIVO_COMPROV_APOSTA + ".pdf";
+                createAndOpenPDF(activity, html, pathArquivo);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                Toast.makeText(activity, "Ocorreu um erro inesperado, por favor tente novamente.", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    public void createComprovantePremioPdf(DetalhesHistoricoPremioDTO detalhesHistoricoPremioDTO, AppCompatActivity activity) {
+        if (checkForPermission(activity)) {
+            try {
+                String html = htmlUtils.getComprovanteCabecalhoRodapePremio(detalhesHistoricoPremioDTO, activity);
+
+                // cria a estrutura de diretório
+                File dir = new File(FileUtils.getDownloadsDir(), DIRETORIO_COMPROVANTE);
+                dir.mkdirs();
+
+                String pathArquivo = dir + "/" + ARQUIVO_COMPROV_PREMIO + ".pdf";
                 createAndOpenPDF(activity, html, pathArquivo);
             } catch (Exception ex) {
                 ex.printStackTrace();

@@ -284,4 +284,6 @@
     <string name="title_activity_cadastrar_confirmacao">CadastrarConfirmacao</string>
     <string name="title_activity_alterar_dados_login_caixa">Alterar dados</string>
     <string name="label_corpo_equipe">(%s) %s</string>
+    <string name="label_local_pagamento">Local do pagamento</string>
+    <string name="label_nsu_pagamento">NSU do pagamento</string>
 </resources>

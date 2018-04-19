@@ -50,6 +50,7 @@ import caixa.gov.br.loterias.model.bo.silce.internals.SilceConnection;
      static final String APOSTAS_GERAR_CODIGO_RESGATE_PATH = "/apostas/{id}/app/gerar-codigo-resgate-loterica";
      static final String APOSTAS_HISTORICO_MES_ANO_PATH = "/historico-apostas/meses";
      static final String APOSTAS_CONFIRMADAS_HISTORICO_PATH = "/historico-apostas";
+     static final String APOSTAS_CONFIRMADAS_HISTORICO_COMPROVANTE_PREMIO_PATH = "/historico-apostas/{id}/comprovante-premio";
 
      static final String EQUIPES_ESPORTIVAS_ESCUDO_PATH = "/equipes-esportivas/{id}/escudo";
      static final String BILHETES_CONFERIR_BILHETE_PATH = "/bilhetes/conferir-bilhete";

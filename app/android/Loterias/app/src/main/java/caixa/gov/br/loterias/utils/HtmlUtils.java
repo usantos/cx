@@ -4,6 +4,13 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Base64;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatReader;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
+
 import org.androidannotations.annotations.EBean;
 
 import java.io.BufferedReader;
@@ -14,6 +21,8 @@ import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.silce.dto.ComprovanteApostaDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.DetalhesHistoricoPremioDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.DetalhesPremioDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.EquipeDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import caixa.gov.br.loterias.model.bo.silce.dto.ModalidadeEnum;
@@ -33,6 +42,7 @@ public class HtmlUtils {
     private static final String FILE_PATH_COMPROVANTE_LISTA_CORPO_LOTECA = "htmls/comprovante_lista_corpo_loteca.html";
     private static final String FILE_PATH_COMPROVANTE_LISTA_CORPO_LOTOGOL = "htmls/comprovante_lista_corpo_lotogol.html";
     private static final String FILE_PATH_COMPROVANTE_CORPO_APOSTA = "htmls/comprovante_corpo_aposta.html";
+    private static final String FILE_PATH_COMPROVANTE_CORPO_PREMIO = "htmls/comprovante_corpo_premio.html";
 
     private static final String HEADER_TITLE_APP_TXT = "{header_title_app_txt}";
     private static final String HEADER_TIPO_COMPROVANTE_TXT = "{header_tipo_comprovante_txt}";
@@ -54,6 +64,10 @@ public class HtmlUtils {
     private static final String BODY_CONTEUDO = "{body_conteudo}";
     private static final String BASE_64_CODIGO_BARRAS_APOSTA = "{base_64_codigo_barras}";
     private static final String BODY_CODIGO_NSBI_APOSTA = "{body_codigo_nsbi}";
+    private static final String BODY_COLUNA1_LINHA1_VALOR_PREMIO = "{body_coluna1_linha1_valor}";
+    private static final String BODY_COLUNA2_LINHA1_VALOR_PREMIO = "{body_coluna2_linha1_valor}";
+    private static final String BODY_COLUNA3_LINHA1_VALOR_PREMIO = "{body_coluna3_linha1_valor}";
+    private static final String BODY_CODIGO_NBU_APOSTA = "{body_nbu_valor}";
 
     private static final String PONTO_MARCADOR = "•";
 
@@ -79,6 +93,29 @@ public class HtmlUtils {
         html = ViewUtils.replaceNullable(html, BODY_TITULO, modadlidade);
         html = ViewUtils.replaceNullable(html, BODY_LISTA_ITENS_APOSTA, getBodyList(comprovanteApostaDTO.getAposta(), context));
         html = ViewUtils.replaceNullable(html, BODY_CONTEUDO, getBodyAposta(comprovanteApostaDTO, context));
+
+        return html;
+    }
+
+    public String getComprovanteCabecalhoRodapePremio(DetalhesHistoricoPremioDTO detalhesHistoricoPremioDTO, Context context) {
+
+        String modadlidade = ModalidadeEnum.fromStringComprovante(detalhesHistoricoPremioDTO.getAposta().getModalidade());
+
+        String html = getContentOfFile(FILE_PATH_COMPROVANTE_CABECALHO_RODAPE, context);
+        html = ViewUtils.replaceNullable(html, HEADER_TITLE_APP_TXT, context.getString(R.string.app_name));
+        html = ViewUtils.replaceNullable(html, HEADER_TIPO_COMPROVANTE_TXT, context.getString(R.string.label_comprovante_aposta, modadlidade));
+        html = ViewUtils.replaceNullable(html, BASE_64_LOGO, getBase64Logo(context));
+        html = ViewUtils.replaceNullable(html, HEADER_COLUNA1_LINHA1_VALOR, detalhesHistoricoPremioDTO.getAposta().getDataEfetivacao());
+        html = ViewUtils.replaceNullable(html, HEADER_COLUNA2_LINHA1_VALOR, String.valueOf(detalhesHistoricoPremioDTO.getAposta().getConcursoAlvo()));
+        html = ViewUtils.replaceNullable(html, HEADER_COLUNA1_LINHA2_VALOR, detalhesHistoricoPremioDTO.getAposta().getHoraEfetivacao());
+        html = ViewUtils.replaceNullable(html, HEADER_COLUNA2_LINHA2_TEXTO, context.getString(R.string.label_local_pagamento));
+        html = ViewUtils.replaceNullable(html, HEADER_COLUNA2_LINHA2_VALOR, detalhesHistoricoPremioDTO.getPremioDTO().getLocalPagamento());
+        html = ViewUtils.replaceNullable(html, HEADER_COLUNA1_LINHA3_VALOR, modadlidade);
+        html = ViewUtils.replaceNullable(html, HEADER_COLUNA2_LINHA3_TEXTO, context.getString(R.string.label_nsu_pagamento));
+        html = ViewUtils.replaceNullable(html, HEADER_COLUNA2_LINHA3_VALOR, String.valueOf(detalhesHistoricoPremioDTO.getPremioDTO().getNsuPagamento()));
+        html = ViewUtils.replaceNullable(html, BODY_TITULO, modadlidade);
+        html = ViewUtils.replaceNullable(html, BODY_LISTA_ITENS_APOSTA, getBodyList(detalhesHistoricoPremioDTO.getAposta(), context));
+        html = ViewUtils.replaceNullable(html, BODY_CONTEUDO, getBodyPremio(detalhesHistoricoPremioDTO, context));
 
         return html;
     }
@@ -144,8 +181,18 @@ public class HtmlUtils {
     private static String getBodyAposta(ComprovanteApostaDTO comprovanteApostaDTO, Context context) {
         String htmlBody = getContentOfFile(FILE_PATH_COMPROVANTE_CORPO_APOSTA, context);
         htmlBody = ViewUtils.replaceNullable(htmlBody, BASE_64_CODIGO_BARRAS_APOSTA, getBase64Logo(context));
+//        htmlBody = ViewUtils.replaceNullable(htmlBody, BASE_64_CODIGO_BARRAS_APOSTA, getBarcode(context, comprovanteApostaDTO.getNsbi()));
         htmlBody = ViewUtils.replaceNullable(htmlBody, BODY_CODIGO_NSBI_APOSTA, comprovanteApostaDTO.getNsbi());
 
+        return htmlBody;
+    }
+
+    private static String getBodyPremio(DetalhesHistoricoPremioDTO detalhesHistoricoPremioDTO, Context context) {
+        String htmlBody = getContentOfFile(FILE_PATH_COMPROVANTE_CORPO_PREMIO, context);
+        htmlBody = ViewUtils.replaceNullable(htmlBody, BODY_COLUNA1_LINHA1_VALOR_PREMIO, String.valueOf(detalhesHistoricoPremioDTO.getPremioDTO().getConcursos().size()));
+        htmlBody = ViewUtils.replaceNullable(htmlBody, BODY_COLUNA2_LINHA1_VALOR_PREMIO, ViewUtils.getMoedaFormat(detalhesHistoricoPremioDTO.getAposta().getValor()));
+        htmlBody = ViewUtils.replaceNullable(htmlBody, BODY_COLUNA3_LINHA1_VALOR_PREMIO, ViewUtils.getMoedaFormat(detalhesHistoricoPremioDTO.getPremioDTO().getValorLiquido()));
+        htmlBody = ViewUtils.replaceNullable(htmlBody, BODY_CODIGO_NSBI_APOSTA, String.valueOf(detalhesHistoricoPremioDTO.getPremioDTO().getNsuPagamento()));
         return htmlBody;
     }
 
@@ -173,7 +220,22 @@ public class HtmlUtils {
         return Base64.encodeToString(ViewUtils.drawableInByte(context, R.drawable.logo_caixa_pdf_copy), Base64.DEFAULT);
     }
 
-//    private static Bitmap getBarcode(String valor){
-//        QRGEncoder qrgEncoder = new QRGEncoder(valor, null, QRGContents.Type.TEXT, ViewUtils.getSmallSizeQrCode(this));
-//    }
+    private static String getBarcode(Context context, String valor){
+
+        MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+        Bitmap bitmap = null;
+        try {
+            BitMatrix bitMatrix = multiFormatWriter.encode(valor, BarcodeFormat.EAN_13,200,200);
+            BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+            bitmap = barcodeEncoder.createBitmap(bitMatrix);
+        } catch (WriterException e) {
+            e.printStackTrace();
+        }
+
+        if(bitmap!= null){
+            return Base64.encodeToString(bitmap.getNinePatchChunk(), Base64.DEFAULT);
+        }
+
+        return "";
+    }
 }
