@@ -180,8 +180,7 @@ public class HtmlUtils {
 
     private static String getBodyAposta(ComprovanteApostaDTO comprovanteApostaDTO, Context context) {
         String htmlBody = getContentOfFile(FILE_PATH_COMPROVANTE_CORPO_APOSTA, context);
-        htmlBody = ViewUtils.replaceNullable(htmlBody, BASE_64_CODIGO_BARRAS_APOSTA, getBase64Logo(context));
-//        htmlBody = ViewUtils.replaceNullable(htmlBody, BASE_64_CODIGO_BARRAS_APOSTA, getBarcode(context, comprovanteApostaDTO.getNsbi()));
+        htmlBody = ViewUtils.replaceNullable(htmlBody, BASE_64_CODIGO_BARRAS_APOSTA, getBarcode(context, comprovanteApostaDTO.getNsbi()));
         htmlBody = ViewUtils.replaceNullable(htmlBody, BODY_CODIGO_NSBI_APOSTA, comprovanteApostaDTO.getNsbi());
 
         return htmlBody;
@@ -225,7 +224,7 @@ public class HtmlUtils {
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         Bitmap bitmap = null;
         try {
-            BitMatrix bitMatrix = multiFormatWriter.encode(valor, BarcodeFormat.EAN_13,200,200);
+            BitMatrix bitMatrix = multiFormatWriter.encode(valor, BarcodeFormat.CODE_128,200,200);
             BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
             bitmap = barcodeEncoder.createBitmap(bitMatrix);
         } catch (WriterException e) {
@@ -233,9 +232,8 @@ public class HtmlUtils {
         }
 
         if(bitmap!= null){
-            return Base64.encodeToString(bitmap.getNinePatchChunk(), Base64.DEFAULT);
+            return Base64.encodeToString(ViewUtils.bitmapToByte(bitmap), Base64.DEFAULT);
         }
-
         return "";
     }
 }
