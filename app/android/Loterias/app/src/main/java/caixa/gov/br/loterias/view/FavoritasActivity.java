@@ -1,5 +1,6 @@
 package caixa.gov.br.loterias.view;
 
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ import caixa.gov.br.loterias.model.bo.RequestListener;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostaFavoritaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse;
 import caixa.gov.br.loterias.view.adapter.FavoritasRecyclerViewAdapter;
+import caixa.gov.br.loterias.view.custom.AdicionarCarrinhoFavoritasView;
 import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
 import caixa.gov.br.loterias.model.bo.MensagensNetwork;
 import caixa.gov.br.loterias.utils.ViewUtils;
@@ -205,6 +207,4 @@ public class FavoritasActivity extends AppCompatActivity {
         });
     }
     //
-
-
 }

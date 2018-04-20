@@ -519,13 +519,13 @@ public class ApostaBO extends BaseBO {
         silceConnection.request(request);
     }
 
-    public void postIncluirApostaFavoritaCarrinho(final Long idApostaFavorita, final RequestListener<CarrinhoDTOResponse> listener) {
+    public void postIncluirApostaFavoritaCarrinho(final Long idApostaFavorita, final Integer valorTipoConcurso, final Integer qtdTeimosinhas, final RequestListener<CarrinhoDTOResponse> listener) {
         LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
         headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
 
         String url = ServerMethods.CARRINHOS_INCLUIR_APOSTA_FAVORITA_PATH.replace("{idApostaFavorita}", String.valueOf( idApostaFavorita ));
-        url = url.replace("{valorTipoConcurso}", String.valueOf(1));
-        url = url.replace("{qtdTeimosinhas}", String.valueOf(0));
+        url = url.replace("{valorTipoConcurso}", String.valueOf(valorTipoConcurso));
+        url = url.replace("{qtdTeimosinhas}", String.valueOf(qtdTeimosinhas));
 
         final GsonRequest request = silceConnection.buildPostRequest(url, new LinkedHashMap<String, String>(),
                 "", CarrinhoDTOResponse.class,

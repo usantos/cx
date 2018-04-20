@@ -2,6 +2,7 @@ package caixa.gov.br.loterias.view.adapter;
 
 import android.animation.Animator;
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
@@ -19,22 +20,29 @@ import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.model.bean.SessaoUsuario;
 import caixa.gov.br.loterias.model.bo.ApostaBO;
 import caixa.gov.br.loterias.model.bo.ApostaBO_;
 import caixa.gov.br.loterias.model.bo.RedirectNetwork;
 import caixa.gov.br.loterias.model.bo.RequestListener;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostaFavoritaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.CarrinhoDTOResponse;
+import caixa.gov.br.loterias.model.bo.silce.dto.DTOEnumInteger;
 import caixa.gov.br.loterias.model.bo.silce.dto.IncluirApostaFavoritaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ParametroMesDeSorte;
+import caixa.gov.br.loterias.model.bo.silce.dto.ParametroSimulacao;
 import caixa.gov.br.loterias.model.bo.silce.dto.RetornoPadraoDTO;
 import caixa.gov.br.loterias.model.bo.MensagensNetwork;
+import caixa.gov.br.loterias.model.bo.silce.dto.TipoConcursoEnum;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.DadosPessoaisActivity;
+import caixa.gov.br.loterias.view.FavoritasActivity;
+import caixa.gov.br.loterias.view.custom.AdicionarCarrinhoFavoritasView;
 import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
 
 /**
@@ -133,7 +141,7 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
         editarButtonAddCarrinho.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                adicionarCarrinhoCallWebservice(position);
+                adicionarCarrinho(listaApostaFavorita.get(position).getId(), listaApostaFavorita.get( position ).getModalidade());
             }
         } );
 
@@ -305,11 +313,11 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
     }
 
 
-    private void adicionarCarrinhoCallWebservice(final int position) {
+    public void adicionarCarrinhoCallWebservice(final Long idApostaFavorita, final int valorTipoConcurso, final int qtdTeimosinhas) {
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(activity);
         final ApostaBO apostaBO = ApostaBO_.getInstance_(activity);
 
-        apostaBO.postIncluirApostaFavoritaCarrinho(listaApostaFavorita.get(position).getId(), new RequestListener<CarrinhoDTOResponse>() {
+        apostaBO.postIncluirApostaFavoritaCarrinho(idApostaFavorita, valorTipoConcurso, qtdTeimosinhas, new RequestListener<CarrinhoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoDTOResponse response) {
                 loadViewProgress.dismiss();
@@ -368,6 +376,58 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
 
             }
         });
+    }
+
+
+    private void adicionarCarrinho(Long idApostaFavorita, DTOEnumInteger modalidadeEnum){
+        SessaoUsuario sessaoUsuario =  SessaoUsuario.getInstance();
+
+        List<ParametroSimulacao> arrayConcursos;
+
+
+        arrayConcursos = new ArrayList<ParametroSimulacao>();
+
+        List<ParametroSimulacao> parametroSimulacaoList  = sessaoUsuario.getParametrosSimulacao().getParametros();
+        for (ParametroSimulacao concurso : parametroSimulacaoList){
+            if (concurso.getParametroJogo().getConcurso().getModalidadeDetalhada().getDescricao().equals( modalidadeEnum.getDescricao() )){
+                arrayConcursos.add( concurso );
+            }
+        }
+
+        if (arrayConcursos.size() > 1){
+            Boolean temEspecialENormal = false;
+            for (ParametroSimulacao modalidade : arrayConcursos){
+                if(modalidade.getParametroJogo().getConcurso().getTipoConcurso() == TipoConcursoEnum.NORMAL) {
+                    temEspecialENormal = true;
+                    if (modalidade.getParametroJogo().getTeimosinhas().size() > 0) {
+                        popupAdicionarCarrinhoFavoritas( arrayConcursos, idApostaFavorita );
+                        return;
+                    }
+                } else {
+                    if (temEspecialENormal) {
+                        popupAdicionarCarrinhoFavoritas( arrayConcursos, idApostaFavorita );
+                        return;
+                    }
+                }
+            }
+        }else{
+            if(arrayConcursos.get( 0 ).getParametroJogo().getConcurso().getTipoConcurso() == TipoConcursoEnum.ESPECIAL) {
+                adicionarCarrinhoCallWebservice( idApostaFavorita,2, 0 );
+            } else {
+                if (arrayConcursos.get( 0 ).getParametroJogo().getTeimosinhas().size() > 0) {
+                    popupAdicionarCarrinhoFavoritas( arrayConcursos, idApostaFavorita );
+                    return;
+                }
+            }
+        }
+    }
+
+    private void popupAdicionarCarrinhoFavoritas(List<ParametroSimulacao> arrayConcursos, Long idApostaFavorita){
+        android.support.v4.app.FragmentManager fm = ((FavoritasActivity)context).getSupportFragmentManager();
+        AdicionarCarrinhoFavoritasView adicionarCarrinhoFavoritasView = AdicionarCarrinhoFavoritasView.newInstance();
+        adicionarCarrinhoFavoritasView.arrayConcursos = arrayConcursos;
+        adicionarCarrinhoFavoritasView.idApostaFavorita = idApostaFavorita;
+        adicionarCarrinhoFavoritasView.show( fm, "adicionarCarrinhoFavoritasView" );
     }
 
 }
