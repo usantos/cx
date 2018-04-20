@@ -7,6 +7,7 @@ package caixa.gov.br.loterias.model.bo.silce.dto;
 
 public enum SituacaoResultadoBilheteEnum {
 
+    PAGA_HISTORICO(3L),
     NAO_PREMIADO(9L),
     PRESCRITA(10L),
     PAGA(11L),

@@ -10,6 +10,7 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.FragmentArg;
 import org.androidannotations.annotations.ViewById;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +41,11 @@ public class ApostaConfirmadaNumeroDetalhesPremioPago extends Fragment {
     @AfterViews
     protected void init() {
         concursoTxt.setText(String.format(Locale.getDefault(), "%d",resultadoConcursoDTO.getConcurso().getNumero()));
-        dataApostaTxt.setText(ViewUtils.getDateAndHour(aposta.getDataEfetivacao(), aposta.getHoraEfetivacao()));
+        if(StringUtils.isEmpty(aposta.getHoraEfetivacao())){
+            dataApostaTxt.setText(aposta.getDataEfetivacao());
+        }else{
+            dataApostaTxt.setText(ViewUtils.getDateAndHour(aposta.getDataEfetivacao(), aposta.getHoraEfetivacao()));
+        }
         initResultadoRecyclerView();
         initDezenasRecyclerView();
     }

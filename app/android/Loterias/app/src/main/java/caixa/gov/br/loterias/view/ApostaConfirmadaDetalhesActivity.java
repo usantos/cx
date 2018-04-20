@@ -42,6 +42,7 @@ import caixa.gov.br.loterias.model.bo.silce.dto.ApostaFavoritaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ComprovanteApostaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ComprovanteApostaDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.DTOEnumInteger;
+import caixa.gov.br.loterias.model.bo.silce.dto.DetalhesHistoricoPremioDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.DetalhesHistoricoPremioDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.DetalhesPremioDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
@@ -85,6 +86,9 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
     @Extra
     protected ResultadoConcursoDTO resultadoConcursoDTO;
 
+    @Extra
+    protected DetalhesHistoricoPremioDTO detalhesHistoricoPremioDTO;
+
     @ViewById
     protected FrameLayout fragmentContainer;
 
@@ -98,7 +102,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
     protected ImageView validadePremioImage, comprovanteImage, comprovanteImpressaoImage;
 
     @ViewById
-    protected RelativeLayout layoutnomeApostaLayout, favoritadoLayout, favoriteBtn;
+    protected RelativeLayout layoutnomeApostaLayout, favoritadoLayout, favoriteBtn, comprovanteLayout;
 
     @ViewById
     protected EditText nomeApostaEditTxt;
@@ -107,7 +111,6 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
     private IdentificaoDeUmaApostaDas8Modalidades aposta;
     private boolean premioPago;
     private ApostaFavoritaDTO apostaFavoritaDTO;
-    private SessaoUsuario sessaoUsuario;
     private ParametroSimulacao parametroSimulacao;
 
     @Click
@@ -225,7 +228,11 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
             aposta = comprovanteApostaDTO.getAposta();
         } else {
             premioPago = Boolean.TRUE;
-            aposta = detalhesPremioDTO.getAposta();
+            if (detalhesPremioDTO != null) {
+                aposta = detalhesPremioDTO.getAposta();
+            } else {
+                aposta = detalhesHistoricoPremioDTO.getAposta();
+            }
         }
 
         estilo = new EstiloModalidade(aposta.getModalidade());
@@ -257,7 +264,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
     protected void init() {
         setupToolbar();
 
-        sessaoUsuario = SessaoUsuario.getInstance();
+        SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
         parametroSimulacao = ViewUtils.getParametroSimulacao(sessaoUsuario, aposta.getModalidade());
         if (estilo != null) {
             ViewUtils.setColorDrawable(this, validadePremioImage.getDrawable(), estilo.getIconValidadeComprovanteColor());
@@ -265,13 +272,19 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
             ViewUtils.setColorDrawable(this, comprovanteImpressaoImage.getDrawable(), estilo.getIconImpressoraColor());
         }
         if (premioPago) {
-            comprovanteText.setText(detalhesPremioDTO.getNsbi());
-        } else {
+            if (detalhesPremioDTO != null) {
+                comprovanteText.setText(detalhesPremioDTO.getNsbi());
+            } else {
+                comprovanteText.setText(String.valueOf(detalhesHistoricoPremioDTO.getPremioDTO().getNsuPagamento()));
+            }
+        } else if (StringUtils.isNotEmpty(comprovanteApostaDTO.getNsbi())) {
             comprovanteText.setText(comprovanteApostaDTO.getNsbi());
+        } else {
+            comprovanteLayout.setVisibility(View.INVISIBLE);
         }
 
         if (CollectionUtils.isNotEmpty(aposta.getNumerosSelecionados())) {
-            favoriteBtn.setVisibility(View.VISIBLE);
+            favoriteBtn.setVisibility(View.GONE);
         }
 
         Fragment fragment;

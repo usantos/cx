@@ -5,24 +5,22 @@ import android.graphics.Bitmap;
 import android.util.Base64;
 
 import com.google.zxing.BarcodeFormat;
-import com.google.zxing.MultiFormatReader;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 import org.androidannotations.annotations.EBean;
+import org.apache.commons.collections4.CollectionUtils;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import androidmads.library.qrgenearator.QRGContents;
-import androidmads.library.qrgenearator.QRGEncoder;
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.silce.dto.ComprovanteApostaDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.ConcursoPremiadoDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.DetalhesHistoricoPremioDTO;
-import caixa.gov.br.loterias.model.bo.silce.dto.DetalhesPremioDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.EquipeDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import caixa.gov.br.loterias.model.bo.silce.dto.ModalidadeEnum;
@@ -67,7 +65,6 @@ public class HtmlUtils {
     private static final String BODY_COLUNA1_LINHA1_VALOR_PREMIO = "{body_coluna1_linha1_valor}";
     private static final String BODY_COLUNA2_LINHA1_VALOR_PREMIO = "{body_coluna2_linha1_valor}";
     private static final String BODY_COLUNA3_LINHA1_VALOR_PREMIO = "{body_coluna3_linha1_valor}";
-    private static final String BODY_CODIGO_NBU_APOSTA = "{body_nbu_valor}";
 
     private static final String PONTO_MARCADOR = "•";
 
@@ -103,7 +100,7 @@ public class HtmlUtils {
 
         String html = getContentOfFile(FILE_PATH_COMPROVANTE_CABECALHO_RODAPE, context);
         html = ViewUtils.replaceNullable(html, HEADER_TITLE_APP_TXT, context.getString(R.string.app_name));
-        html = ViewUtils.replaceNullable(html, HEADER_TIPO_COMPROVANTE_TXT, context.getString(R.string.label_comprovante_aposta, modadlidade));
+        html = ViewUtils.replaceNullable(html, HEADER_TIPO_COMPROVANTE_TXT, context.getString(R.string.label_comprovante_premio, modadlidade));
         html = ViewUtils.replaceNullable(html, BASE_64_LOGO, getBase64Logo(context));
         html = ViewUtils.replaceNullable(html, HEADER_COLUNA1_LINHA1_VALOR, detalhesHistoricoPremioDTO.getAposta().getDataEfetivacao());
         html = ViewUtils.replaceNullable(html, HEADER_COLUNA2_LINHA1_VALOR, String.valueOf(detalhesHistoricoPremioDTO.getAposta().getConcursoAlvo()));
@@ -187,11 +184,19 @@ public class HtmlUtils {
     }
 
     private static String getBodyPremio(DetalhesHistoricoPremioDTO detalhesHistoricoPremioDTO, Context context) {
+        int numeroFaixas = 0;
         String htmlBody = getContentOfFile(FILE_PATH_COMPROVANTE_CORPO_PREMIO, context);
-        htmlBody = ViewUtils.replaceNullable(htmlBody, BODY_COLUNA1_LINHA1_VALOR_PREMIO, String.valueOf(detalhesHistoricoPremioDTO.getPremioDTO().getConcursos().size()));
+
+        if (detalhesHistoricoPremioDTO.getPremioDTO() != null && CollectionUtils.isNotEmpty(detalhesHistoricoPremioDTO.getPremioDTO().getConcursos())) {
+            for (ConcursoPremiadoDTO concursoPremiadoDTO : detalhesHistoricoPremioDTO.getPremioDTO().getConcursos()) {
+                if (CollectionUtils.isNotEmpty(concursoPremiadoDTO.getFaixas())) {
+                    numeroFaixas = numeroFaixas + concursoPremiadoDTO.getFaixas().size();
+                }
+            }
+        }
+        htmlBody = ViewUtils.replaceNullable(htmlBody, BODY_COLUNA1_LINHA1_VALOR_PREMIO, String.valueOf(numeroFaixas));
         htmlBody = ViewUtils.replaceNullable(htmlBody, BODY_COLUNA2_LINHA1_VALOR_PREMIO, ViewUtils.getMoedaFormat(detalhesHistoricoPremioDTO.getAposta().getValor()));
         htmlBody = ViewUtils.replaceNullable(htmlBody, BODY_COLUNA3_LINHA1_VALOR_PREMIO, ViewUtils.getMoedaFormat(detalhesHistoricoPremioDTO.getPremioDTO().getValorLiquido()));
-        htmlBody = ViewUtils.replaceNullable(htmlBody, BODY_CODIGO_NSBI_APOSTA, String.valueOf(detalhesHistoricoPremioDTO.getPremioDTO().getNsuPagamento()));
         return htmlBody;
     }
 
@@ -219,19 +224,19 @@ public class HtmlUtils {
         return Base64.encodeToString(ViewUtils.drawableInByte(context, R.drawable.logo_caixa_pdf_copy), Base64.DEFAULT);
     }
 
-    private static String getBarcode(Context context, String valor){
+    private static String getBarcode(Context context, String valor) {
 
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         Bitmap bitmap = null;
         try {
-            BitMatrix bitMatrix = multiFormatWriter.encode(valor, BarcodeFormat.CODE_128,200,200);
+            BitMatrix bitMatrix = multiFormatWriter.encode(valor, BarcodeFormat.CODE_128, 200, 200);
             BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
             bitmap = barcodeEncoder.createBitmap(bitMatrix);
         } catch (WriterException e) {
             e.printStackTrace();
         }
 
-        if(bitmap!= null){
+        if (bitmap != null) {
             return Base64.encodeToString(ViewUtils.bitmapToByte(bitmap), Base64.DEFAULT);
         }
         return "";

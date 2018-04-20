@@ -14,6 +14,7 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.FragmentArg;
 import org.androidannotations.annotations.ViewById;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +57,11 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
     protected void init() {
 
         concursoTxt.setText(String.format(Locale.getDefault(), "%d", aposta.getConcursoAlvo()));
-        dataApostaTxt.setText(ViewUtils.getDateAndHour(aposta.getDataEfetivacao(), aposta.getHoraEfetivacao()));
+        if(StringUtils.isEmpty(aposta.getHoraEfetivacao())){
+            dataApostaTxt.setText(aposta.getDataEfetivacao());
+        }else{
+            dataApostaTxt.setText(ViewUtils.getDateAndHour(aposta.getDataEfetivacao(), aposta.getHoraEfetivacao()));
+        }
         resultTxt.setText(aposta.getSituacao().getDescricao());
 
         if (aposta.getTroca()) {
