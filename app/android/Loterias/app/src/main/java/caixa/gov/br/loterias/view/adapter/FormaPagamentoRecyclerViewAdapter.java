@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 import caixa.gov.br.loterias.R;
@@ -84,7 +86,7 @@ public class FormaPagamentoRecyclerViewAdapter  extends RecyclerView.Adapter<For
 
         holder.numeroCartao.setText("**** **** **** " + cartao.getUltimosDigitos());
         holder.textBandeiraCartao.setText(ViewUtils.capitalized(cartao.getNomeMetodoPagamento()));
-
+        Glide.with(context).load(cartao.getSecureThumbnail()).into( holder.imageViewBandeiraCartao);
         if (selected_position == position){
             holder.itemView.setBackgroundResource(R.color.cinzaclaro);
             holder.imageViewSelecionado.setVisibility(View.VISIBLE);

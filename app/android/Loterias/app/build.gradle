@@ -154,7 +154,6 @@ dependencies {
 
     //Biblioteca de gerenciamento de imagens
     implementation 'com.github.bumptech.glide:glide:3.7.0'
-    compile 'com.squareup.picasso:picasso:2.5.2'
 
     //Biblioteca de scanner de código de barras
     compile 'com.journeyapps:zxing-android-embedded:3.5.0'
