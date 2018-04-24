@@ -69,7 +69,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/quantidadeAcertosTxt"
             android:fontFamily="@font/arialmt"
-            android:text="@string/label_teimosinha"
             android:textSize="14sp"
             tools:text="acertos" />
 
@@ -80,7 +79,6 @@
             android:layout_below="@+id/acertosTxt"
             android:layout_marginTop="21dp"
             android:fontFamily="@font/arialmt"
-            android:text="@string/label_teimosinha"
             android:textSize="18sp"
             android:textStyle="bold"
             tools:text="147" />
@@ -91,7 +89,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/quantidadeGanhadoresTxt"
             android:fontFamily="@font/arialmt"
-            android:text="@string/label_teimosinha"
             android:textSize="14sp"
             tools:text="ganhadores" />
 
@@ -120,6 +117,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_below="@+id/dezenasRecyclerView"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_marginTop="38dp"
             android:layout_toEndOf="@+id/concursoLabel"
             android:background="?android:attr/textColorSecondary" />
@@ -129,6 +127,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/linhaSeparadoraView"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_marginTop="24dp"
             android:layout_toEndOf="@id/concursoLabel"
             android:fontFamily="@font/arialmt"

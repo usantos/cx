@@ -258,6 +258,10 @@
     <string name="label_numerico_dois">2</string>
     <string name="label_numerico_tres">3</string>
     <string name="label_situacao_list_apostas_confirmadas">Situação -&#160;</string>
+    <string name="label_ganhador">ganhador</string>
+    <string name="label_ganhadores">ganhadores</string>
+    <string name="label_acerto">acerto</string>
+    <string name="label_acertos">acertos</string>
 
     <!-- Loterica Resgate Prêmio -->
     <string name="label_loterica_minusculo">lotérica</string>

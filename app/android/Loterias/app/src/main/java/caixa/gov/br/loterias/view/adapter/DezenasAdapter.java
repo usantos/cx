@@ -1,5 +1,6 @@
 package caixa.gov.br.loterias.view.adapter;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.utils.ViewUtils;
 
 /**
  * Created by joafilho on 28/03/2018.
@@ -25,7 +27,6 @@ public class DezenasAdapter extends RecyclerView.Adapter<DezenasAdapter.ViewHold
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.line_dezenas, null);
         RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         view.setLayoutParams(lp);
@@ -39,7 +40,7 @@ public class DezenasAdapter extends RecyclerView.Adapter<DezenasAdapter.ViewHold
         if (position == 0) {
             holder.dezenaView.findViewById(R.id.lineDivisiveView).setVisibility(View.GONE);
         }
-        ((TextView) holder.dezenaView.findViewById(R.id.lineDezenasTextView)).setText(dezenas.get(position));
+        ((TextView) holder.dezenaView.findViewById(R.id.lineDezenasTextView)).setText(ViewUtils.fromHtml(dezenas.get(position)));
     }
 
     @Override
