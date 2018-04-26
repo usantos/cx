@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Locale;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.model.bo.silce.dto.ApostaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ConcursoPremiadoDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import caixa.gov.br.loterias.model.bo.silce.dto.ResultadoConcursoDTO;
@@ -35,7 +36,7 @@ public class ApostaConfirmadaNumeroDetalhesPremioPago extends Fragment {
     protected RecyclerView dezenasResultadoRecyclerView, dezenasRecyclerView;
 
     @FragmentArg
-    protected IdentificaoDeUmaApostaDas8Modalidades aposta;
+    protected ApostaDTO aposta;
 
     @FragmentArg
     protected ResultadoConcursoDTO resultadoConcursoDTO;

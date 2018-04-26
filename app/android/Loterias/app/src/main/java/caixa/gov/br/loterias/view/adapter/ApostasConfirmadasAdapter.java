@@ -25,15 +25,18 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostasConfi
 
     private final Context context;
     private final List<ApostaDTO> list;
+    private boolean isHistorico;
 
-    public ApostasConfirmadasAdapter(Context context, List<ApostaDTO> list) {
-        this(context, list, null);
+
+    public ApostasConfirmadasAdapter(Context context, List<ApostaDTO> list, boolean isHistorico) {
+        this(context, list, null, isHistorico);
     }
 
-    public ApostasConfirmadasAdapter(Context context, List<ApostaDTO> list, OnApostasConfirmadasListener listener) {
+    public ApostasConfirmadasAdapter(Context context, List<ApostaDTO> list, OnApostasConfirmadasListener listener, boolean isHistorico) {
         this.list = list;
         this.context = context;
         this.onApostasConfirmadasListener = listener;
+        this.isHistorico = isHistorico;
     }
 
     public void setOnApostasConfirmadasListener(OnApostasConfirmadasListener onApostasConfirmadasListener) {
@@ -131,9 +134,11 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostasConfi
         holder.situacaoLabel.setTextColor(color);
         holder.situacaoTxt.setTextColor(color);
         holder.situacaoTxt.setText(aposta.getSituacao().getDescricao());
-        ViewUtils.setColorDrawable(context, holder.setaImg.getDrawable(), R.color.colorAccent);
+//        ViewUtils.setColorDrawable(context, holder.setaImg.getDrawable(), R.color.colorAccent);
 
-        if (context.getString(R.string.label_efetivada).equalsIgnoreCase(aposta.getSituacao().getDescricao())) {
+//        if (context.getString(R.string.label_efetivada).equalsIgnoreCase(aposta.getSituacao().getDescricao())) {
+
+        if (isHistorico == false) {
             holder.resultBtn.setVisibility(View.VISIBLE);
             holder.resultBtn.setOnClickListener(holder);
         }else{

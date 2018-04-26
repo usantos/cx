@@ -19,6 +19,7 @@ import java.util.Locale;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.ApostaBO;
+import caixa.gov.br.loterias.model.bo.silce.dto.ApostaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.utils.helper.ConferirResultadoHelper;
@@ -45,7 +46,7 @@ public class ApostaConfirmadaPartidaFragment extends Fragment {
     protected Button conferirResultadoButton;
 
     @FragmentArg
-    protected IdentificaoDeUmaApostaDas8Modalidades aposta;
+    protected ApostaDTO aposta;
 
     @FragmentArg
     protected boolean loteca;

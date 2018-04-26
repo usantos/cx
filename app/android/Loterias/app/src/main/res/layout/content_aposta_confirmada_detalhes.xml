@@ -89,7 +89,8 @@
                         android:id="@+id/comprovanteLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/linhaSeparadora">
+                        android:layout_below="@+id/linhaSeparadora"
+                        android:visibility="visible">
 
                         <ImageView
                             android:id="@+id/comprovanteImage"

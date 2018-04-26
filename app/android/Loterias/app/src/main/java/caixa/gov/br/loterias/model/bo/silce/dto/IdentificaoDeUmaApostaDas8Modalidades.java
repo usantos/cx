@@ -441,4 +441,33 @@ IdentificaoDeUmaApostaDas8Modalidades {
         sb.append("}\n");
         return sb.toString();
     }
+
+
+    public static IdentificaoDeUmaApostaDas8Modalidades apostaDtoToIdentificaoDeUmaApostaDas8Modalidades(ApostaDTO apostaDTO){
+        IdentificaoDeUmaApostaDas8Modalidades identificaoDeUmaApostaDas8Modalidades = new IdentificaoDeUmaApostaDas8Modalidades();
+        identificaoDeUmaApostaDas8Modalidades.setModalidade( apostaDTO.getModalidade() );
+        identificaoDeUmaApostaDas8Modalidades.setConcursoAlvo( apostaDTO.getConcursoAlvo() );
+        identificaoDeUmaApostaDas8Modalidades.setConcursoInicial( apostaDTO.getConcursoInicial() );
+        identificaoDeUmaApostaDas8Modalidades.setDataEfetivacao( apostaDTO.getDataEfetivacao() );
+        identificaoDeUmaApostaDas8Modalidades.setEspelho( apostaDTO.getEspelho() );
+        identificaoDeUmaApostaDas8Modalidades.setHoraEfetivacao( apostaDTO.getHoraEfetivacao() );
+        identificaoDeUmaApostaDas8Modalidades.setId( apostaDTO.getId() );
+        identificaoDeUmaApostaDas8Modalidades.setLoterica( apostaDTO.getLoterica() );
+        identificaoDeUmaApostaDas8Modalidades.setTipoConcurso( apostaDTO.getTipoConcurso() );
+        identificaoDeUmaApostaDas8Modalidades.setPartidasLotogol( apostaDTO.getPartidasLotogol() );
+        identificaoDeUmaApostaDas8Modalidades.setPartidasLoteca( apostaDTO.getPartidasLoteca() );
+        identificaoDeUmaApostaDas8Modalidades.setNumerosSelecionados( apostaDTO.getNumerosSelecionados() );
+        identificaoDeUmaApostaDas8Modalidades.setIndicadorSurpresinha( apostaDTO.getIndicadorSurpresinha() );
+        identificaoDeUmaApostaDas8Modalidades.setValor( apostaDTO.getValor() );
+        identificaoDeUmaApostaDas8Modalidades.setQuantidadeTeimosinhas( apostaDTO.getQuantidadeTeimosinhas() );
+        identificaoDeUmaApostaDas8Modalidades.setQuantidadeApostas( apostaDTO.getQuantidadeApostas() );
+        identificaoDeUmaApostaDas8Modalidades.setTimeDoCoracao( apostaDTO.getTimeDoCoracao() );
+        identificaoDeUmaApostaDas8Modalidades.setSituacao( apostaDTO.getSituacao() );
+        identificaoDeUmaApostaDas8Modalidades.setTroca( apostaDTO.getTroca() );
+        identificaoDeUmaApostaDas8Modalidades.setQuantidadeNumeros( apostaDTO.getQuantidadeNumeros() );
+        return identificaoDeUmaApostaDas8Modalidades;
+    }
 }
+
+
+

@@ -469,6 +469,25 @@ public class ApostaBO extends BaseBO {
         silceConnection.request(request);
     }
 
+
+    public void getApostaComprovantePremio(Long id, final RequestListener<DetalhesPremioDTOResponse> listener) {
+
+        String url = ServerMethods.APOSTAS_COMPROVANTE_PREMIO_PATH.replace("{id}", id.toString());
+        final LinkedHashMap<String, String> headers = new LinkedHashMap<>();
+        final Map<String, String> queryParams = new HashMap<>();
+
+        headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
+
+        final GsonRequest request = silceConnection.buildGetRequest(url,
+                queryParams,
+                DetalhesPremioDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(), headers);
+
+        request.setErrorListener(interceptError(request, headers, listener));
+        silceConnection.request(request);
+    }
+
     public void getApostaConferir(Long id, final RequestListener<DTOEnumIntegerResponse> listener) {
 
         String url = ServerMethods.APOSTAS_CONFERIR_PATH.replace("{id}", id.toString());
