@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.LinearLayout;
 
 import org.androidannotations.annotations.AfterViews;
@@ -20,6 +21,7 @@ import caixa.gov.br.loterias.model.bo.silce.dto.PartidaLotecaDTO;
 @EViewGroup(R.layout.row_apostas_partidas_loteca)
 public class PartidaViewLoteca extends LinearLayout {
 
+    @ViewById
     protected ApostaEquipeLotecaView apostas_partida_loteca_view_um, apostas_partida_loteca_view_empate, apostas_partida_loteca_view_dois;
 
     @ViewById
@@ -35,7 +37,7 @@ public class PartidaViewLoteca extends LinearLayout {
 
     @AfterViews
     protected void init() {
-
+        Log.d("dd", "dd");
     }
 
     public void setLayout(PartidaLotecaDTO parametroPartida) {

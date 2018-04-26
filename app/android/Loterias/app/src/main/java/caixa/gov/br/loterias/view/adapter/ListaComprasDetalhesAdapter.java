@@ -144,12 +144,12 @@ public class ListaComprasDetalhesAdapter extends BaseAdapter {
             }else if (listaAposta.get(idLista).getModalidade() == ModalidadeEnum.LOTOGOL){
                 View child = layoutInflater.inflate(R.layout.item_compras_lotogol_layout, null);
                 seusNumerosItemListaComprasTextView.setText("Sua aposta");
-                ExpandableHeightRecyclerView lotecaRecyclerViewItemCompra = (ExpandableHeightRecyclerView) child.findViewById(R.id.lotecaRecyclerViewItemCompra);
+                ExpandableHeightRecyclerView lotogolRecyclerViewItemCompra = (ExpandableHeightRecyclerView) child.findViewById(R.id.lotecaRecyclerViewItemCompra);
                 itemComprasContentModalideLinearLayout.addView(child);
                 DetalhesApostaLotogolDetalhesComprasAdapter lotogolAdapter = new DetalhesApostaLotogolDetalhesComprasAdapter(listaAposta.get(idLista).getPartidasLotogol());
-                lotecaRecyclerViewItemCompra.setLayoutManager(new LinearLayoutManager(activity));
-                lotecaRecyclerViewItemCompra.setAdapter(lotogolAdapter);
-                lotecaRecyclerViewItemCompra.setExpanded(true);
+                lotogolRecyclerViewItemCompra.setLayoutManager(new LinearLayoutManager(activity));
+                lotogolRecyclerViewItemCompra.setAdapter(lotogolAdapter);
+                lotogolRecyclerViewItemCompra.setExpanded(true);
             }else{
                 View child = layoutInflater.inflate(R.layout.item_compras_generico_layout, null);
                 itemComprasContentModalideLinearLayout.addView(child);
