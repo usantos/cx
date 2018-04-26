@@ -297,10 +297,10 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
             @Override
             public void onResponse(RetornoPadraoDTO response) {
                 loadViewProgress.dismiss();
-                    removeAt(position);
-                if (response.getRedirect() != null){
-                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), activity);
-                }
+                removeAt(position);
+//                if (response.getRedirect() != null){
+//                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), activity);
+//                }
             }
 
             @Override
