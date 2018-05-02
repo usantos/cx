@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bean.SessaoUsuario;
@@ -15,6 +16,7 @@ import caixa.gov.br.loterias.utils.ViewUtils;
 public class JogosConfirmadosPremioMercadoPagoActivity extends AppCompatActivity {
 
     EditText emailPremioMercadoPagoEditText;
+    TextView valorPremioTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +29,15 @@ public class JogosConfirmadosPremioMercadoPagoActivity extends AppCompatActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         emailPremioMercadoPagoEditText = (EditText) findViewById( R.id.emailPremioMercadoPagoEditText );
+        valorPremioTextView = (TextView) findViewById( R.id.valorPremioTextView );
+
+        Bundle b = getIntent().getExtras();
+        String valorPremio = ""; // or other values
+        if(b != null) {
+            valorPremio = b.getString( "valorPremio" );
+            valorPremioTextView.setText( valorPremio );
+        }
+
 
         emailPremioMercadoPagoEditText.setText( SessaoUsuario.getInstance().getEmail() );
 

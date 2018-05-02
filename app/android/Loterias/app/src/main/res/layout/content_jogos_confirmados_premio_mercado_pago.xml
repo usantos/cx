@@ -42,6 +42,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="R$ 999.999.999,00"
+                android:id="@+id/valorPremioTextView"
                 android:textAlignment="center"
                 android:layout_marginTop="5dp"
                 android:textColor="@color/branco"

@@ -107,8 +107,9 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
 
     @Click(R.id.mercadoPagoLayout)
     protected void clickMercadoPagoLayout() {
-        ResgatePremioLotericaAgenciaActivity_.intent(this).nsbi(detalhesPremioDTO.getNsbi()).start();
-        startActivity( new Intent( ResultadoApostaConfirmadaActivity.this, JogosConfirmadosPremioMercadoPagoActivity.class) );
+        Intent intent = new Intent( ResultadoApostaConfirmadaActivity.this, JogosConfirmadosPremioMercadoPagoActivity.class);
+        intent.putExtra( "valorPremio", ViewUtils.getMoedaFormat(detalhesPremioDTO.getPremio().getValorLiquido()) );
+        startActivity( intent );
     }
 
     private void createListPremiacao() {
