@@ -20,7 +20,6 @@ import org.jboss.aerogear.android.authorization.AuthorizationManager;
 import org.jboss.aerogear.android.authorization.AuthzModule;
 import org.jboss.aerogear.android.authorization.oauth2.OAuth2AuthorizationConfiguration;
 import org.jboss.aerogear.android.authorization.oauth2.OAuth2AuthorizationException;
-import org.jboss.aerogear.android.core.BuildConfig;
 import org.jboss.aerogear.android.core.Callback;
 import org.jboss.aerogear.android.pipe.module.AuthorizationFields;
 
@@ -135,8 +134,50 @@ public class KeycloakBO {
         }
     }
 
-    public boolean isConnected() {
+
+    public void checkAcess(final Activity activity, final OnLogin callback) {
+        try {
+            final AuthzModule authzModule = AuthorizationManager.getModule(MODULE_NAME);
+            Log.i(TAG, "authzModule = " + authzModule.getClass().getName());
+            authzModule.requestAccess(activity, new Callback<String>() {
+                @SuppressWarnings("unchecked")
+                @Override
+                public void onSuccess(String token) {
+                    Log.i(TAG, "KeycloakBO.login.onResponse: " + token);
+                    accessToken = token;
+                    if(callback != null){
+                        callback.onSuccess(token);
+                    }
+                }
+
+                @Override
+                public void onFailure(Exception e) {
+                    Log.i(TAG, "KeycloakBO.login.onFailure: " + e);
+
+                    if(e instanceof OAuth2AuthorizationException){
+                        OAuth2AuthorizationException.Error error = ((OAuth2AuthorizationException)e).type;
+                        if(error.equals(OAuth2AuthorizationException.Error.INVALID_GRANT)){
+                            logout(activity);
+                        }
+                    }
+
+                    if(callback != null){
+                        callback.onFailure(e);
+                    }
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+    public boolean temAutorizacao() {
         return AuthorizationManager.getModule(MODULE_NAME).isAuthorized();
+    }
+
+    public boolean temLogin() {
+        return AuthorizationManager.getModule(MODULE_NAME).hasCredentials();
     }
 
     @SuppressWarnings("deprecation")
@@ -188,5 +229,8 @@ public class KeycloakBO {
             }
         }
     }
+
+
+
 }
 

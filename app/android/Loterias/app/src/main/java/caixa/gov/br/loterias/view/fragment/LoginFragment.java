@@ -12,6 +12,8 @@ import android.widget.Button;
 
 import com.android.volley.VolleyError;
 
+import org.jboss.aerogear.android.authorization.oauth2.OAuth2AuthorizationException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,6 +73,12 @@ public class LoginFragment extends Fragment {
 
             }
         });
+        KeycloakBO keycloakBO =  KeycloakBO_.getInstance_( getActivity() );
+
+        if (DadosUsuarioBO.checarFecharIntroducao(getActivity()) && KeycloakBO_.getInstance_( getActivity() ).temLogin()){
+            connectKeycloak();
+        }
+
 
         return v;
     }
@@ -89,7 +97,10 @@ public class LoginFragment extends Fragment {
                     @Override
                     public void onFailure(Exception e) {
                         if(getActivity() != null){
-                            ViewUtils.alert(getActivity(), getString(R.string.sistema_indisponivel));
+//                            OAuth2AuthorizationException.Error error = ((OAuth2AuthorizationException)e).type;
+                            if(!((OAuth2AuthorizationException) e).error.equals( "dialog_dismissed" )){
+                                ViewUtils.alert(getActivity(), getString(R.string.sistema_indisponivel));
+                            }
                         }
                     }
                 }
