@@ -1,6 +1,7 @@
 package caixa.gov.br.loterias.view;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -106,7 +107,8 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
 
     @Click(R.id.mercadoPagoLayout)
     protected void clickMercadoPagoLayout() {
-        Toast.makeText(this, "Mercado Pago", Toast.LENGTH_LONG).show();
+        ResgatePremioLotericaAgenciaActivity_.intent(this).nsbi(detalhesPremioDTO.getNsbi()).start();
+        startActivity( new Intent( ResultadoApostaConfirmadaActivity.this, JogosConfirmadosPremioMercadoPagoActivity.class) );
     }
 
     private void createListPremiacao() {

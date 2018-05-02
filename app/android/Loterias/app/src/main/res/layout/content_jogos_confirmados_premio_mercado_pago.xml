@@ -96,7 +96,7 @@
                     android:layout_width="184dp"
                     android:layout_height="84dp"
                     android:textAllCaps="false"
-                    android:text="Atualizar"
+                    android:text="Resgatar"
                     android:background="@color/verdeazul"
                     android:textColor="@color/branco"
                     android:fontFamily="@font/futura_std_bold"

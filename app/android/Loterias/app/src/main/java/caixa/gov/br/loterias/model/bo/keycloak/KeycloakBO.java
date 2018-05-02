@@ -26,6 +26,8 @@ import org.jboss.aerogear.android.pipe.module.AuthorizationFields;
 import java.net.URL;
 import java.util.List;
 
+import caixa.gov.br.loterias.model.bean.SessaoUsuario;
+
 @EBean(scope = EBean.Scope.Singleton)
 public class KeycloakBO {
     private static final String TAG = KeycloakBO.class.getName();
@@ -107,6 +109,7 @@ public class KeycloakBO {
                 public void onSuccess(String token) {
                     Log.i(TAG, "KeycloakBO.login.onResponse: " + token);
                     accessToken = token;
+                    SessaoUsuario.getInstance().setToken( token );
                     if(callback != null){
                         callback.onSuccess(token);
                     }

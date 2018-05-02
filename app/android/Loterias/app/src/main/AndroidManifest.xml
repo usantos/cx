@@ -215,6 +215,7 @@
             android:name=".view.JogosConfirmadosPremioMercadoPagoActivity"
             android:label="@string/title_activity_resultado_ler_bilhetes"
             android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden"
             android:theme="@style/AppTheme.DegradeActionBar" />
         <activity
             android:name=".view.RestritoDezoitoAnosActivity"

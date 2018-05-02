@@ -45,6 +45,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.model.bean.DadosUsuarioToken;
 import caixa.gov.br.loterias.model.bean.Modalidade;
 import caixa.gov.br.loterias.model.bean.SessaoUsuario;
 import caixa.gov.br.loterias.model.bo.DadosCorporativosBO;
@@ -62,6 +63,7 @@ import caixa.gov.br.loterias.model.bo.silce.dto.RepassometroDTOResponse;
 import caixa.gov.br.loterias.model.dao.DBLoteriasHelper;
 import caixa.gov.br.loterias.utils.EstiloModalidade;
 import caixa.gov.br.loterias.utils.ExpandableListDataSideMenu;
+import caixa.gov.br.loterias.utils.Utils;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.adapter.HomeAdapter;
 import caixa.gov.br.loterias.view.adapter.SideMenuExpandleAdapter;
@@ -165,6 +167,13 @@ public class PrincipalActivity extends AppCompatActivity
                 }
 
                 SessaoUsuario sessaoUser = SessaoUsuario.getInstance();
+                try {
+                    DadosUsuarioToken dadosUsuarioToken = Utils.decodedToken( sessaoUser.getToken() );
+                    sessaoUser.setEmail( dadosUsuarioToken.getEmail() );
+                    sessaoUser.setNome( dadosUsuarioToken.getName() );
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 sessaoUser.setValorMinimimoAposta(response.getPayload().getValorMinimoCarrinho());
                 sessaoUser.setValorMaximoAposta(response.getPayload().getValorLimiteDiario());
                 sessaoUser.setParametrosSimulacao(response.getPayload());

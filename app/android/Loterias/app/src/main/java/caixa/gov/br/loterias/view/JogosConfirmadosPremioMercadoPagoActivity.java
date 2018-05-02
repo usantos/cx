@@ -2,26 +2,33 @@ package caixa.gov.br.loterias.view;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
+import android.widget.EditText;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.model.bean.SessaoUsuario;
+import caixa.gov.br.loterias.utils.ViewUtils;
 
 public class JogosConfirmadosPremioMercadoPagoActivity extends AppCompatActivity {
+
+    EditText emailPremioMercadoPagoEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_jogos_confirmados_premio_mercado_pago);
+        setTitle( ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.title_activity_resultado_ler_bilhetes)));
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        emailPremioMercadoPagoEditText = (EditText) findViewById( R.id.emailPremioMercadoPagoEditText );
+
+        emailPremioMercadoPagoEditText.setText( SessaoUsuario.getInstance().getEmail() );
 
     }
 
