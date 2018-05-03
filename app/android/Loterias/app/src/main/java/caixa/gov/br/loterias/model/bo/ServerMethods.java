@@ -81,5 +81,7 @@ import caixa.gov.br.loterias.model.bo.silce.internals.SilceConnection;
 
      static final String CARRINHOS_INCLUIR_APOSTA_FAVORITA_PATH = "/carrinhos/incluir-aposta-favorita/{idApostaFavorita}/{valorTipoConcurso}/{qtdTeimosinhas}";
 
+     static final String APOSTAS_RESGATAR_PATH = "apostas/{idAposta}/resgatar-premio";
+
      private ServerMethods(){}
 }

@@ -1,7 +1,11 @@
 package caixa.gov.br.loterias.model.bo;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
+import android.support.v7.app.AlertDialog;
+import android.widget.PopupMenu;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
@@ -31,7 +35,7 @@ import static caixa.gov.br.loterias.model.bo.silce.dto.RedirectEnum.*;
  */
 
 public class RedirectNetwork {
-    public static void checkRedirect(VolleyError error, Activity activity){
+    public static void checkRedirect(VolleyError error, final Activity activity){
         if (error.networkResponse == null){
             ViewUtils.alert( activity, activity.getResources().getString( R.string.seminternet ) );
             return;
@@ -40,18 +44,20 @@ public class RedirectNetwork {
 
         final byte[] textBytes = response.data;
         String msgErro;
-        String msgErroResponse;
+        String msgErroResponse = "";
         String redirect = "";
+        String codigo = "";
         try {
             String json = new String(textBytes, "UTF-8");
             JSONObject jsonObj = new JSONObject(json);
             msgErroResponse = jsonObj.getString("mensagem");
+            codigo = jsonObj.getString( "codigo" );
             if (jsonObj.getString( "redirect" ) != null){
                 redirect = jsonObj.getString( "redirect");
             }
 
         } catch (UnsupportedEncodingException | JSONException e) {
-            msgErroResponse = activity.getString( R.string.sistema_indisponivel);
+
         }
         if (redirect != ""){
             RedirectEnum redirectEnum = RedirectEnum.fromString( redirect );
@@ -71,10 +77,25 @@ public class RedirectNetwork {
         }
         if (response.statusCode == 401){
             connectKeycloak(activity);
-        }else{
-            ViewUtils.alert( activity, MensagensNetwork.setMensagem( error, activity ) );
+        }else {
+            if (codigo.equals( "018003" )){
+                ViewUtils.alertTitleButtonPositiveListener(activity, R.string.label_atencao,
+                        msgErroResponse,
+                        R.string.label_cotinuar, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.stackoverflow.com"));
+                                Uri webpage = Uri.parse("https://www.mercadopago.com.br/registration-mp?mode=mp");
+                                Intent intentAc = new Intent(Intent.ACTION_VIEW, webpage);
+                                if (intent.resolveActivity(activity.getPackageManager()) != null) {
+                                    activity.startActivity(intentAc);
+                                }
+                            }
+                        });
+            }else{
+                ViewUtils.alert( activity, MensagensNetwork.setMensagem( error, activity ) );
+            }
         }
-
     }
     public static void checkRedirectSucesso(RedirectEnum redirect, Activity activity){
         switch (redirect){

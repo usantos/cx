@@ -109,6 +109,7 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
     protected void clickMercadoPagoLayout() {
         Intent intent = new Intent( ResultadoApostaConfirmadaActivity.this, JogosConfirmadosPremioMercadoPagoActivity.class);
         intent.putExtra( "valorPremio", ViewUtils.getMoedaFormat(detalhesPremioDTO.getPremio().getValorLiquido()) );
+        intent.putExtra( "idAposta", detalhesPremioDTO.getAposta().getId() );
         startActivity( intent );
     }
 

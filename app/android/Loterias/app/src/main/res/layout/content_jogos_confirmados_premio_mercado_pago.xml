@@ -28,7 +28,10 @@
             android:layout_height="80dp"
             android:orientation="vertical"
             android:background="@color/azulfavoritas"
-            android:layout_marginTop="40dp">
+            android:layout_marginTop="40dp"
+                android:id="@+id/contentTopoConfirmarLinearLayout"
+                android:visibility="visible"
+                >
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -41,7 +44,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="R$ 999.999.999,00"
+                android:text="R$ 00,00"
                 android:id="@+id/valorPremioTextView"
                 android:textAlignment="center"
                 android:layout_marginTop="5dp"
@@ -52,8 +55,30 @@
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:orientation="vertical"
+                android:background="@color/verdemusgo"
+                android:layout_marginTop="40dp"
+                android:id="@+id/contentTopoConfirmadoLinearLayout"
+                android:visibility="gone"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Excelente"
+                    android:textColor="@color/branco"
+                    android:textSize="20sp"
+                    android:fontFamily="@font/futura_std_bold"
+                    android:textAlignment="center"
+                    android:layout_marginTop="29dp"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="252dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:id="@+id/contentConfirmarLinearLayout"
+                android:visibility="visible">
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -83,6 +108,41 @@
                 </android.support.design.widget.TextInputLayout>
 
             </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="252dp"
+                android:orientation="vertical"
+                android:id="@+id/contentConfirmadoLinearLayout"
+                android:visibility="gone">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Em breve seu prêmio estará disponível em sua conta no mercado pago"
+                    android:textAlignment="center"
+                    android:textSize="14dp"
+                    android:textColor="@color/cinza"
+                    android:fontFamily="@font/arialmt"
+                    android:layout_marginLeft="16dp"
+                    android:id="@+id/textoTituloPremioConfirmado"
+                    android:layout_marginTop="40dp"
+                    android:textStyle="bold"
+                    android:layout_marginHorizontal="10dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:textSize="14dp"
+                    android:textColor="@color/cinza"
+                    android:fontFamily="@font/arialmt"
+                    android:layout_marginHorizontal="10dp"
+                    android:text="Um email foi enviado para dmalva@monumenta.com.br com todas as informações e passo-a-passo para o recebimento de seu prêmio"
+                    android:layout_marginTop="19dp"
+                    android:id="@+id/textoPremioConfirmado"
+                    />
+
+
+
+            </LinearLayout>
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="106dp">
@@ -102,7 +162,21 @@
                     android:textColor="@color/branco"
                     android:fontFamily="@font/futura_std_bold"
                     android:textSize="17.7sp"
-                    android:layout_centerHorizontal="true"/>
+                    android:layout_centerHorizontal="true"
+                    android:id="@+id/resgatarPremioButton"
+                    android:visibility="visible"/>
+                <Button
+                    android:layout_width="184dp"
+                    android:layout_height="84dp"
+                    android:textAllCaps="false"
+                    android:text="Voltar"
+                    android:background="@color/verdeazul"
+                    android:textColor="@color/branco"
+                    android:fontFamily="@font/futura_std_bold"
+                    android:textSize="17.7sp"
+                    android:layout_centerHorizontal="true"
+                    android:id="@+id/voltarPremioButton"
+                    android:visibility="gone"/>
             </RelativeLayout>
             
         </LinearLayout>
