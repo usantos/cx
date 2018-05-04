@@ -155,6 +155,7 @@
     <string name="label_complete_placar_aleatoriamente">_Complete_\no placar aleatoriamente</string>
     <string name="label_quantidade_gols_cada_time">a quantidade de gols de cada time.</string>
     <string name="title_activity_favoritas">Favoritas</string>
+    <string name="title_activity_favoritas_bold">_Favoritas_</string>
     <string name="title_activity_lista_compras">Compras</string>
 
     <string name="label_nao_possivel_selecionar_quantidade_numeros_superior_limite_modalidade_loterica">Não é possível selecionar quantidade de números superior ao limite para modalidade Lotérica.</string>
