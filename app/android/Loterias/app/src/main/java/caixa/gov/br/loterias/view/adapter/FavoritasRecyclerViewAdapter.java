@@ -110,15 +110,15 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewUtils.getAppUsableScreenSize(context).x, ViewUtils.setDisplayMetric(100, context));
         relativeLayoutFavoritasAdapter.setLayoutParams(params);
 
-        final Button editarButtonFavoritos = (Button) holder.itemView.findViewById(R.id.editarButtonFavoritos);
-        final Button exluirButtonFavoritos = (Button) holder.itemView.findViewById(R.id.exluirButtonFavoritos);
+        final RelativeLayout editarRelativeLayoutFavoritos = (RelativeLayout) holder.itemView.findViewById(R.id.editarRelativeLayoutFavoritos);
+        final RelativeLayout exluirRelativeLayoutFavoritos = (RelativeLayout) holder.itemView.findViewById(R.id.exluirRelativeLayoutFavoritos);
         final Button buttonSalvarNomeAposta = (Button) holder.itemView.findViewById(R.id.buttonSalvarNomeAposta);
-        final Button editarButtonAddCarrinho = (Button) holder.itemView.findViewById(R.id.editarButtonAddCarrinho);
+        final RelativeLayout editarRelativeLayoutAddCarrinho = (RelativeLayout) holder.itemView.findViewById(R.id.editarRelativeLayoutAddCarrinho);
 
 
         final TextView nomeApostaSalvoTextView = (TextView) holder.itemView.findViewById(R.id.nomeApostaSalvoTextView);
 
-        editarButtonFavoritos.setOnClickListener(new View.OnClickListener() {
+        editarRelativeLayoutFavoritos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 translatePosicaoVoltarCard(relativeLayoutContentFavoritas,
@@ -131,14 +131,14 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
             }
         });
 
-        exluirButtonFavoritos.setOnClickListener(new View.OnClickListener() {
+        exluirRelativeLayoutFavoritos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 deleteFavoritaCallWebservice(position);
             }
         });
 
-        editarButtonAddCarrinho.setOnClickListener( new View.OnClickListener() {
+        editarRelativeLayoutAddCarrinho.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 adicionarCarrinho(listaApostaFavorita.get(position).getId(), listaApostaFavorita.get( position ).getModalidade());

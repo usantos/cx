@@ -174,30 +174,47 @@ android:layout_height="wrap_content"
                             />
                         <LinearLayout
                             android:layout_width="123dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:orientation="horizontal"
                             android:layout_alignParentRight="true">
 
-                            <Button
-                                android:id="@+id/editarButtonFavoritos"
-                                android:layout_width="21dp"
-                                android:layout_height="21dp"
-                                android:layout_marginHorizontal="10dp"
-                                android:background="@drawable/iconfavedit" />
-                            <Button
-                                android:layout_width="21dp"
-                                android:layout_height="21dp"
-                                android:background="@drawable/icon_add_carrinho"
-                                android:layout_marginHorizontal="10dp"
-                                android:id="@+id/editarButtonAddCarrinho"
-                                />
+                            <RelativeLayout
+                                android:layout_width="41dp"
+                                android:layout_height="30dp"
+                                android:id="@+id/editarRelativeLayoutFavoritos"
+                                android:clickable="true">
+                                <Button
+                                    android:id="@+id/editarButtonFavoritos"
+                                    android:layout_width="21dp"
+                                    android:layout_height="21dp"
+                                    android:layout_centerInParent="true"
+                                    android:background="@drawable/iconfavedit" />
+                            </RelativeLayout>
+                            <RelativeLayout
+                                android:layout_width="41dp"
+                                android:layout_height="30dp"
+                                android:id="@+id/editarRelativeLayoutAddCarrinho"
+                                android:clickable="true">
+                                <Button
+                                    android:id="@+id/editarButtonAddCarrinho"
+                                    android:layout_width="21dp"
+                                    android:layout_height="21dp"
+                                    android:layout_centerInParent="true"
+                                    android:background="@drawable/icon_add_carrinho" />
+                            </RelativeLayout>
+                            <RelativeLayout
+                                android:layout_width="41dp"
+                                android:layout_height="30dp"
+                                android:id="@+id/exluirRelativeLayoutFavoritos"
+                                android:clickable="true">
+                                <Button
+                                    android:id="@+id/exluirButtonFavoritos"
+                                    android:layout_width="21dp"
+                                    android:layout_height="21dp"
+                                    android:layout_centerInParent="true"
+                                    android:background="@drawable/close" />
+                            </RelativeLayout>
 
-                            <Button
-                                android:id="@+id/exluirButtonFavoritos"
-                                android:layout_width="21dp"
-                                android:layout_height="21dp"
-                                android:layout_marginHorizontal="10dp"
-                                android:background="@drawable/close" />
                         </LinearLayout>
                     </RelativeLayout>
 
