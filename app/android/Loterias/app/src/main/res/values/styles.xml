@@ -9,6 +9,8 @@
         <item name="android:fontFamily">@font/font_family_futura</item>
         <item name="buttonStyle">@style/ButtonNotShadow</item>
         <item name="android:windowBackground">@color/branco</item>
+        <item name="android:actionButtonStyle">@style/ActionButtonStyleLoterias</item>
+        <item name="actionButtonStyle">@style/ActionButtonStyleLoterias</item>
     </style>
 
     <style name="AppTheme.BrancoActionBar">
@@ -213,6 +215,12 @@
         <item name="android:fontFamily">@font/futura_std_bold</item>
         <item name="android:textColor">@color/branco</item>
         <item name="android:textSize">15.8sp</item>
+    </style>
+
+    <style name="ActionButtonStyleLoterias" parent="Widget.AppCompat.ActionButton">
+        <item name="android:minWidth">33dp</item>
+        <item name="android:maxWidth">33dp</item>
+        <item name="android:width">33dp</item>
     </style>
 
 </resources>
