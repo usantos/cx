@@ -476,7 +476,7 @@ IdentificaoDeUmaApostaDas8Modalidades {
             List<Integer> numerosItem = item.getNumerosSelecionados();
             Collections.sort( numerosItem );
             if (item.getModalidade() == identificaoDeUmaApostaDas8Modalidades.getModalidade()
-                    || numerosSelecionados == numerosItem){
+                    && numerosSelecionados.equals( numerosItem )){
                 return true;
             }
         }
@@ -491,7 +491,7 @@ IdentificaoDeUmaApostaDas8Modalidades {
                 List<Integer> numerosItem = item.getNumerosSelecionados();
                 Collections.sort( numerosItem );
                 if (item.getModalidade() == identificaoDeUmaApostaDas8Modalidades.getModalidade()
-                        || numerosSelecionados == numerosItem){
+                        && numerosSelecionados.equals( numerosItem ) ){
                     return true;
                 }
             }
