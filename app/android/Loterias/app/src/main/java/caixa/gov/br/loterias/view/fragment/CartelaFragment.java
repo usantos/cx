@@ -52,6 +52,7 @@ import caixa.gov.br.loterias.model.bo.ApostaBO_;
 import caixa.gov.br.loterias.model.bo.DadosCorporativosBO;
 import caixa.gov.br.loterias.model.bo.DadosCorporativosBO_;
 import caixa.gov.br.loterias.model.bo.MensagensNetwork;
+import caixa.gov.br.loterias.model.bo.RedirectNetwork;
 import caixa.gov.br.loterias.model.bo.RequestListener;
 import caixa.gov.br.loterias.model.bo.silce.data.CompletaJogoRsp;
 import caixa.gov.br.loterias.model.bo.silce.dto.AgrupadorDTOApostaDTOResponse;
@@ -706,7 +707,8 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         DialogUtils.dismiss();
-                        ViewUtils.alert(getActivity(), MensagensNetwork.setMensagem(error, getActivity()));
+                        RedirectNetwork.checkRedirect( error, getActivity() );
+
                     }
                 });
             }
@@ -714,7 +716,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
             @Override
             public void onErrorResponse(VolleyError error) {
                 DialogUtils.dismiss();
-                ViewUtils.alert(getActivity(), MensagensNetwork.setMensagem(error, getActivity()));
+                RedirectNetwork.checkRedirect( error, getActivity() );
             }
         });
     }
