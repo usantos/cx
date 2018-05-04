@@ -92,7 +92,7 @@
     <string name="MA011">Deseja remover todas as apostas do carrinho?</string>
     <string name="MA013">Atingida a quantidade máxima de apostas no carrinho</string>
     <string name="MA014">Atingiu o valor máximo diário de apostas</string>
-    <string name="MA015">Já existe aposta igual no carrinho</string>
+    <string name="MA015">Existe uma aposta idêntica a que está sendo incluída no seu carrinho. Deseja prosseguir com a inclusão da aposta?</string>
     <string name="MA016">Um número não pode ser marcado como obrigatório e proibido.</string>
     <string name="MA020">A situação da aposta foi atualizada, por favor verifique o comprovante gerado.</string>
     <string name="msg_favor_inserir_nome_aposta">Favor inserir um nome para sua aposta favorita</string>

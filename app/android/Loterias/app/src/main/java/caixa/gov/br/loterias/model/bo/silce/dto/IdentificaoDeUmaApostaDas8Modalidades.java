@@ -18,6 +18,7 @@ import com.google.gson.annotations.SerializedName;
 import org.parceler.Parcel;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.List;
 
 import io.swagger.annotations.ApiModel;
@@ -466,6 +467,37 @@ IdentificaoDeUmaApostaDas8Modalidades {
         identificaoDeUmaApostaDas8Modalidades.setTroca( apostaDTO.getTroca() );
         identificaoDeUmaApostaDas8Modalidades.setQuantidadeNumeros( apostaDTO.getQuantidadeNumeros() );
         return identificaoDeUmaApostaDas8Modalidades;
+    }
+
+    public static Boolean checkExisteUmaApostaIgualCarrinho(final IdentificaoDeUmaApostaDas8Modalidades identificaoDeUmaApostaDas8Modalidades, final CarrinhoDTO carrinhoDTO){
+        List<Integer> numerosSelecionados = identificaoDeUmaApostaDas8Modalidades.getNumerosSelecionados();
+        Collections.sort( numerosSelecionados );
+        for (IdentificaoDeUmaApostaDas8Modalidades item : carrinhoDTO.getApostas()){
+            List<Integer> numerosItem = item.getNumerosSelecionados();
+            Collections.sort( numerosItem );
+            if (item.getModalidade() == identificaoDeUmaApostaDas8Modalidades.getModalidade()
+                    || numerosSelecionados == numerosItem){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static Boolean checkExisteUmaApostaIgualCarrinhoEmListaApostas(final List<IdentificaoDeUmaApostaDas8Modalidades> listIdentificaoDeUmaApostaDas8Modalidades, final CarrinhoDTO carrinhoDTO){
+        for (IdentificaoDeUmaApostaDas8Modalidades identificaoDeUmaApostaDas8Modalidades : listIdentificaoDeUmaApostaDas8Modalidades){
+            List<Integer> numerosSelecionados = identificaoDeUmaApostaDas8Modalidades.getNumerosSelecionados();
+            Collections.sort( numerosSelecionados );
+            for (IdentificaoDeUmaApostaDas8Modalidades item : carrinhoDTO.getApostas()){
+                List<Integer> numerosItem = item.getNumerosSelecionados();
+                Collections.sort( numerosItem );
+                if (item.getModalidade() == identificaoDeUmaApostaDas8Modalidades.getModalidade()
+                        || numerosSelecionados == numerosItem){
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }
 

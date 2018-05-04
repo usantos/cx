@@ -2,6 +2,7 @@ package caixa.gov.br.loterias.view.fragment;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
@@ -57,6 +58,8 @@ import caixa.gov.br.loterias.model.bo.RequestListener;
 import caixa.gov.br.loterias.model.bo.silce.data.CompletaJogoRsp;
 import caixa.gov.br.loterias.model.bo.silce.dto.AgrupadorDTOApostaDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostaFavoritaDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.CarrinhoDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.CarrinhoDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.DTOEnumCharacter;
 import caixa.gov.br.loterias.model.bo.silce.dto.DTOEnumInteger;
 import caixa.gov.br.loterias.model.bo.silce.dto.Dezena;
@@ -382,8 +385,38 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         return aposta;
     }
 
-    private void adicionarApostaCarrinhoRequest(ApostaBO apostaBO, final Activity activity, final IdentificaoDeUmaApostaDas8Modalidades aposta) {
+    private void adicionarApostaCarrinhoRequest(final ApostaBO apostaBO, final Activity activity, final IdentificaoDeUmaApostaDas8Modalidades aposta) {
         DialogUtils.show(getActivity());
+
+        apostaBO.buscaCarrinho(new RequestListener<CarrinhoDTOResponse>() {
+            @Override
+            public void onResponse(CarrinhoDTOResponse response) {
+                CarrinhoDTO carrinhoDTO = new CarrinhoDTO();
+                carrinhoDTO = response.getPayload();
+                if (IdentificaoDeUmaApostaDas8Modalidades.checkExisteUmaApostaIgualCarrinho( aposta, carrinhoDTO )){
+                    DialogUtils.dismiss();
+                    ViewUtils.alertTitleButtonYesOrNotListener(getContext(), getResources().getString(R.string.MA015), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            DialogUtils.show(getActivity());
+                            postAdicionarApostaCarrinho( apostaBO, aposta );
+                        }
+                    });
+                }else {
+                    postAdicionarApostaCarrinho( apostaBO, aposta );
+                }
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                DialogUtils.dismiss();
+                RedirectNetwork.checkRedirect( error, getActivity() );
+            }
+        });
+
+    }
+
+    private void postAdicionarApostaCarrinho(ApostaBO apostaBO, final IdentificaoDeUmaApostaDas8Modalidades aposta){
         apostaBO.adicionarApostaNoCarrinho(aposta, new RequestListener<AgrupadorDTOApostaDTOResponse>() {
             @Override
             public void onResponse(AgrupadorDTOApostaDTOResponse response) {
@@ -410,11 +443,40 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                 }
             }
         });
+    }
+
+    private void adicionarApostasCarrinhoRequest(final ApostaBO apostaBO, Activity activity, final List<IdentificaoDeUmaApostaDas8Modalidades> apostas) {
+        DialogUtils.show(getActivity());
+
+        apostaBO.buscaCarrinho(new RequestListener<CarrinhoDTOResponse>() {
+            @Override
+            public void onResponse(CarrinhoDTOResponse response) {
+                CarrinhoDTO carrinhoDTO = new CarrinhoDTO();
+                carrinhoDTO = response.getPayload();
+                if (IdentificaoDeUmaApostaDas8Modalidades.checkExisteUmaApostaIgualCarrinhoEmListaApostas( apostas, carrinhoDTO )){
+                    DialogUtils.dismiss();
+                    ViewUtils.alertTitleButtonYesOrNotListener(getContext(), getResources().getString(R.string.MA015), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            DialogUtils.show(getActivity());
+                            postAdicionarApostasCarrinhoRequest( apostaBO, apostas );
+                        }
+                    });
+                }else {
+                    postAdicionarApostasCarrinhoRequest( apostaBO, apostas );
+                }
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                DialogUtils.dismiss();
+                RedirectNetwork.checkRedirect( error, getActivity() );
+            }
+        });
 
     }
 
-    private void adicionarApostasCarrinhoRequest(ApostaBO apostaBO, Activity activity, final List<IdentificaoDeUmaApostaDas8Modalidades> apostas) {
-        DialogUtils.show(getActivity());
+    private void postAdicionarApostasCarrinhoRequest(ApostaBO apostaBO, final List<IdentificaoDeUmaApostaDas8Modalidades> apostas){
         apostaBO.adicionarApostasNoCarrinho(apostas, new RequestListener<AgrupadorDTOApostaDTOResponse>() {
             @Override
             public void onResponse(AgrupadorDTOApostaDTOResponse response) {
