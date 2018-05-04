@@ -333,7 +333,7 @@ public class PrincipalActivity extends AppCompatActivity
 
     private void sairLogin() {
 
-        ViewUtils.alertTitleButtonPositiveListener(this, R.string.label_atencao, getResources().getString(R.string.MA008), R.string.label_cotinuar, new DialogInterface.OnClickListener() {
+        ViewUtils.alertTitleButtonYesOrNotListener(this, getResources().getString(R.string.MA008), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 final AlertDialog loadViewProgress = LoadingViewLoterias.show(PrincipalActivity.this);

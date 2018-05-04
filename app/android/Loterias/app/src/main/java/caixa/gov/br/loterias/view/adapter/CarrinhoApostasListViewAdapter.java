@@ -192,7 +192,7 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
 
     private void deletarAposta(final IdentificaoDeUmaApostaDas8Modalidades aposta) {
 
-        ViewUtils.alertTitleButtonPositiveListener(context, R.string.label_empty, context.getString(R.string.MA010), R.string.ok, new DialogInterface.OnClickListener() {
+        ViewUtils.alertTitleButtonYesOrNotListener(context, context.getResources().getString(R.string.MA010), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 ApostaBO apostaBO = ApostaBO_.getInstance_(parentActivity);

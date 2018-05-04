@@ -96,7 +96,7 @@ public class CarrinhoActivity extends SettingToolbarActivity {
 
     @Click(R.id.limparCarrinhoLinearLayout)
     protected void clickLimparCarrinhoLinearLayout() {
-        ViewUtils.alertTitleButtonPositiveListener(this, R.string.label_empty, getString(R.string.MA011), R.string.ok, new DialogInterface.OnClickListener() {
+        ViewUtils.alertTitleButtonYesOrNotListener(this, getString(R.string.MA011), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 alertDialog = LoadingViewLoterias.show(CarrinhoActivity.this);

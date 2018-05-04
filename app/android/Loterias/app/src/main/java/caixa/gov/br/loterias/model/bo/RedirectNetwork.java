@@ -79,15 +79,12 @@ public class RedirectNetwork {
             connectKeycloak(activity);
         }else {
             if (codigo.equals( "018003" )){
-                ViewUtils.alertTitleButtonPositiveListener(activity, R.string.label_atencao,
-                        msgErroResponse,
-                        R.string.label_cotinuar, new DialogInterface.OnClickListener() {
+                ViewUtils.alertTitleButtonYesOrNotListener(activity, msgErroResponse, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.stackoverflow.com"));
                                 Uri webpage = Uri.parse("https://www.mercadopago.com.br/registration-mp?mode=mp");
                                 Intent intentAc = new Intent(Intent.ACTION_VIEW, webpage);
-                                if (intent.resolveActivity(activity.getPackageManager()) != null) {
+                                if (intentAc.resolveActivity(activity.getPackageManager()) != null) {
                                     activity.startActivity(intentAc);
                                 }
                             }
