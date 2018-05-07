@@ -29,7 +29,7 @@ public class LoadingViewLoterias {
         animator.setRepeatCount(ObjectAnimator.INFINITE);
         animator.start();
         layout.setAlpha(0.0f);
-        layout.animate().alpha(1.0f).setDuration(200).setStartDelay(200).setListener(new Animator.AnimatorListener() {
+        layout.animate().alpha(1.0f).setDuration(200).setStartDelay(500).setListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {}
 

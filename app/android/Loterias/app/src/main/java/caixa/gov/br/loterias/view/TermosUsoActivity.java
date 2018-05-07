@@ -113,7 +113,6 @@ public class TermosUsoActivity extends AppCompatActivity {
             }
         });
 
-        getTermo();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             WebView.setWebContentsDebuggingEnabled(true);
@@ -142,6 +141,8 @@ public class TermosUsoActivity extends AppCompatActivity {
         listenerPolitica();
         if (openAjuda == true) {
             duvidasButton.performClick();
+        }else{
+            termosUsoButton.performClick();
         }
     }
 
@@ -161,7 +162,7 @@ public class TermosUsoActivity extends AppCompatActivity {
                 termoHtml = response.getPayload().getConteudo();
                 webViewConteudo.loadData(termoHtml, "text/html; charset=UTF-8", "UTF-8");
                 DialogUtils.dismiss();
-                verificaTermoAceito();
+                selectTermoUso();
             }
 
             @Override
@@ -175,7 +176,7 @@ public class TermosUsoActivity extends AppCompatActivity {
     private void listenerTermosUso() {
         termosUsoButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                selectTermoUso();
+                getTermo();
 
             }
         });
@@ -204,6 +205,7 @@ public class TermosUsoActivity extends AppCompatActivity {
         relativeLayouTermoAceite.setVisibility(View.VISIBLE);
         webViewConteudo.loadData(termoHtml, "text/html; charset=UTF-8", "UTF-8");
         unSelectDuvidas();
+        verificaTermoAceito();
     }
 
     private void unSelectTermoUso() {
@@ -281,9 +283,9 @@ public class TermosUsoActivity extends AppCompatActivity {
             dadosCorporativosBO.secaoDuvidas(new RequestListener<ListSecaoDTOResponse>() {
                 @Override
                 public void onResponse(ListSecaoDTOResponse response) {
+                    DialogUtils.dismiss();
                     secaoDuvidas = response.getPayload();
                     createRecyclerView();
-                    DialogUtils.dismiss();
                 }
 
                 @Override
