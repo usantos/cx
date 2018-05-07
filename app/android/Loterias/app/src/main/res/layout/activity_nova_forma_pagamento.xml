@@ -87,7 +87,7 @@
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:inputType="number"
-                    android:hint="Numero cartão"
+                    android:hint="Número do cartão"
                     android:textSize="16sp"
                     android:textColor="@color/cinza"
                     android:textColorHint="@color/azulFormNovoTipoPagamento"
@@ -163,7 +163,7 @@
                     android:inputType="number"
                     android:textColor="@color/pretoLinhaFormNovoTipoPagamento"
                     android:textSize="16sp"
-                    android:maxLength="3"
+                    android:maxLength="4"
                     android:textColorHint="@color/azulFormNovoTipoPagamento"
                     style="@style/editTextRegisterTheme"
                     />
@@ -211,9 +211,7 @@
                     android:id="@+id/editTextMesValidadeCartao"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_toLeftOf="@+id/imageMesValidadeCartaoOpenCombo"
-                    android:layout_toStartOf="@+id/imageMesValidadeCartaoOpenCombo">
+                    android:layout_alignParentTop="true">
 
                     <EditText
                         android:id="@+id/editTextMesValidadeCartaooContent"
@@ -229,14 +227,7 @@
                         />
                 </android.support.design.widget.TextInputLayout>
 
-                <ImageView
-                    android:id="@+id/imageMesValidadeCartaoOpenCombo"
-                    android:layout_width="12dp"
-                    android:layout_height="10dp"
-                    android:background="@drawable/combo"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true" />
+
             </RelativeLayout>
 
             <RelativeLayout
@@ -255,9 +246,7 @@
                     android:id="@+id/editTextAnoValidadeCartao"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_toLeftOf="@+id/imageNome2ClienteCartaoCorrect"
-                    android:layout_toStartOf="@+id/imageNome2ClienteCartaoCorrect">
+                    android:layout_alignParentTop="true">
 
                     <EditText
                         android:id="@+id/editTextAnoValidadeCartaooContent"
@@ -272,15 +261,6 @@
                         style="@style/editTextRegisterTheme"
                         />
                 </android.support.design.widget.TextInputLayout>
-
-                <ImageView
-                    android:id="@+id/imageNome2ClienteCartaoCorrect"
-                    android:layout_width="12dp"
-                    android:layout_height="10dp"
-                    android:background="@drawable/combo"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true" />
             </RelativeLayout>
         </LinearLayout>
 
