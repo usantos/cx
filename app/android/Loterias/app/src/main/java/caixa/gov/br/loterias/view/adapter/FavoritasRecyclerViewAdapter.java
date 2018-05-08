@@ -121,11 +121,10 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
         editarRelativeLayoutFavoritos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int larguraTela = ViewUtils.getAppUsableScreenSize(context).x;
+                Double posicaoMudar = (double) larguraTela - (larguraTela * 0.2);
                 translatePosicaoVoltarCard(relativeLayoutContentFavoritas,
-                        ViewUtils.setDisplayMetric(
-                                ViewUtils.getAppUsableScreenSize(context).x/2 -
-                                        ViewUtils.setDisplayMetric(40,
-                                                context) , context));
+                        posicaoMudar.intValue());
                 editTextNomeDaAposta.setEnabled(true);
                 buttonSalvarNomeAposta.setEnabled(true);
             }
@@ -172,12 +171,16 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
             boolean cancelarAnimacao = false;
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                int larguraTela = ViewUtils.getAppUsableScreenSize(context).x;
+                Double posicaoMudar = (double) larguraTela - (larguraTela * 0.2);
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        if (relativeLayoutContentFavoritas.getX() == ViewUtils.setDisplayMetric(
-                                ViewUtils.getAppUsableScreenSize(context).x/2 -
-                                        ViewUtils.setDisplayMetric(40,
-                                                context) , context)){
+
+                        if (relativeLayoutContentFavoritas.getX() ==
+                                posicaoMudar.intValue()
+                                )
+                        
+                        {
                             if (event.getX()<relativeLayoutContentFavoritas.getX()){
                                 cancelarAnimacao = true;
                             }else {
@@ -200,10 +203,8 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
                     case MotionEvent.ACTION_UP:
                         if (relativeLayoutContentFavoritas.getX() > relativeLayoutContentFavoritas.getWidth()/2 && initialX != -10){
                             translatePosicaoVoltarCard(relativeLayoutContentFavoritas,
-                                    ViewUtils.setDisplayMetric(
-                                            ViewUtils.getAppUsableScreenSize(context).x/2 -
-                                                    ViewUtils.setDisplayMetric(40,
-                                                            context) , context));
+                                    posicaoMudar.intValue()
+                                    );
                             editTextNomeDaAposta.setEnabled(true);
                             buttonSalvarNomeAposta.setEnabled(true);
                         }else{

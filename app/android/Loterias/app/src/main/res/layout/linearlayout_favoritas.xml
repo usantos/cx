@@ -16,7 +16,7 @@ android:layout_height="wrap_content"
             android:orientation="horizontal">
 
         <RelativeLayout
-            android:layout_width="350dp"
+            android:layout_width="320dp"
             android:layout_height="match_parent"
             android:id="@+id/RelativeLayoutFavoritasAdapter"
             >
