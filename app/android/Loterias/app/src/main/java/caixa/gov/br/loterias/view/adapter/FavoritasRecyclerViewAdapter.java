@@ -149,7 +149,9 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
             @Override
             public void onClick(View v) {
                 if (editTextNomeDaAposta.getText().toString().equals( "" )){
-                    ViewUtils.alert( context, context.getResources().getString( R.string.MA002 ) + " nome da aposta" );
+                    ViewUtils.alertTitleButton( context, R.string.label_atencao,
+                            context.getResources().getString( R.string.MA002 ) + " nome da aposta",
+                            context.getResources().getString( R.string.ok ) );
                 }else {
                     alterarFavoritaCallWebservice(listaApostaFavorita.get(position),
                             relativeLayoutContentFavoritas,
