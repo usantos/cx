@@ -188,7 +188,8 @@ android:layout_height="wrap_content"
                                     android:layout_width="21dp"
                                     android:layout_height="21dp"
                                     android:layout_centerInParent="true"
-                                    android:background="@drawable/iconfavedit" />
+                                    android:background="@drawable/iconfavedit"
+                                    android:clickable="false"/>
                             </RelativeLayout>
                             <RelativeLayout
                                 android:layout_width="41dp"
@@ -200,7 +201,8 @@ android:layout_height="wrap_content"
                                     android:layout_width="21dp"
                                     android:layout_height="21dp"
                                     android:layout_centerInParent="true"
-                                    android:background="@drawable/icon_add_carrinho" />
+                                    android:background="@drawable/icon_add_carrinho"
+                                    android:clickable="false"/>
                             </RelativeLayout>
                             <RelativeLayout
                                 android:layout_width="41dp"
@@ -212,7 +214,8 @@ android:layout_height="wrap_content"
                                     android:layout_width="21dp"
                                     android:layout_height="21dp"
                                     android:layout_centerInParent="true"
-                                    android:background="@drawable/close" />
+                                    android:background="@drawable/close"
+                                    android:clickable="false"/>
                             </RelativeLayout>
 
                         </LinearLayout>
