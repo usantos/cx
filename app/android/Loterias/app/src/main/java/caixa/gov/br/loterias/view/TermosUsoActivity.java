@@ -139,11 +139,7 @@ public class TermosUsoActivity extends AppCompatActivity {
         listenerTermosUso();
         listenerDuvidas();
         listenerPolitica();
-        if (openAjuda == true) {
-            duvidasButton.performClick();
-        }else{
-            termosUsoButton.performClick();
-        }
+        verificaTermoAceito();
     }
 
     @Override
@@ -153,7 +149,6 @@ public class TermosUsoActivity extends AppCompatActivity {
     }
 
     private void getTermo() {
-        DialogUtils.show(this);
         DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(TermosUsoActivity.this);
 
         dadosCorporativosBO.termo(new RequestListener<TermoDeUsoDTOResponse>() {
@@ -205,7 +200,6 @@ public class TermosUsoActivity extends AppCompatActivity {
         relativeLayouTermoAceite.setVisibility(View.VISIBLE);
         webViewConteudo.loadData(termoHtml, "text/html; charset=UTF-8", "UTF-8");
         unSelectDuvidas();
-        verificaTermoAceito();
     }
 
     private void unSelectTermoUso() {
@@ -240,7 +234,11 @@ public class TermosUsoActivity extends AppCompatActivity {
                 scrollViewTermoAceite.setPadding(0, 0, 0, 0);
                 getSupportActionBar().setDisplayHomeAsUpEnabled(isTermoAceito);
                 footerAceiteTermo.setVisibility(View.GONE);
-                DialogUtils.dismiss();
+                if (openAjuda == true) {
+                    duvidasButton.performClick();
+                }else{
+                    termosUsoButton.performClick();
+                }
             }
 
             @Override
@@ -277,7 +275,6 @@ public class TermosUsoActivity extends AppCompatActivity {
 
     private void initReciclerViewDuvidas() {
         if (secaoDuvidas == null) {
-            DialogUtils.show(this);
             DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(getApplicationContext());
 
             dadosCorporativosBO.secaoDuvidas(new RequestListener<ListSecaoDTOResponse>() {
