@@ -4,13 +4,13 @@
     <item
         android:id="@+id/action_config_rapidao"
         android:orderInCategory="100"
-        android:icon="@drawable/icon_configuracao"
+        android:icon="@drawable/configuracao_toolbat_icon"
         android:title=""
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_duvida"
         android:orderInCategory="100"
-        android:icon="@drawable/icon_duvida2"
+        android:icon="@drawable/duvidas_toolbar_icon"
         android:title=""
         app:showAsAction="ifRoom" />
 </menu>

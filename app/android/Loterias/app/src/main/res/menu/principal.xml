@@ -5,12 +5,12 @@
     <!-- "Icone trevo"-->
     <item
         android:id="@+id/action_apresentar_trevo"
-        android:icon="@drawable/icon_trevo"
+        android:icon="@drawable/icon_trevo_toolbar"
         android:title="Apresentar trevo"
         app:showAsAction="ifRoom"/>
     <item
         android:id="@+id/action_settings"
-        android:icon="@drawable/status"
+        android:icon="@drawable/status_toolbar_icon"
         android:orderInCategory="100"
         android:title="@string/action_settings"
         app:showAsAction="always" />

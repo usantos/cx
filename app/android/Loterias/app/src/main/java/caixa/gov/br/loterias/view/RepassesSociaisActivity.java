@@ -2,6 +2,7 @@ package caixa.gov.br.loterias.view;
 
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -31,11 +32,22 @@ public class RepassesSociaisActivity extends SettingToolbarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_repasses_sociais);
-        setTitle(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.title_activity_repasses_sociais)));
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-//        repassesSociais = new Gson().fromJson(getIntent().getStringExtra("repassesSociais"), RepassometroDTO.class);
+        setTitle(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.title_activity_repasses_sociais)));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
         callWebservice();
     }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
+    }
+
 
     private void callWebservice () {
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);

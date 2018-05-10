@@ -219,9 +219,9 @@
     </style>
 
     <style name="ActionButtonStyleLoterias" parent="Widget.AppCompat.ActionButton">
-        <item name="android:minWidth">33dp</item>
-        <item name="android:maxWidth">33dp</item>
-        <item name="android:width">33dp</item>
+        <item name="android:minWidth">50dp</item>
+        <item name="android:maxWidth">50dp</item>
+        <item name="android:width">50dp</item>
     </style>
 
 </resources>

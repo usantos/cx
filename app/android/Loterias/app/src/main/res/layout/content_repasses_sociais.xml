@@ -8,10 +8,30 @@
     tools:context="caixa.gov.br.loterias.view.RepassesSociaisActivity"
     tools:showIn="@layout/activity_repasses_sociais">
 
+    <android.support.constraint.Guideline
+        android:id="@+id/guidelineTopo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.64" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/verdeazul"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guidelineTopo"
+        android:id="@+id/linhaTopo"/>
+
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linhaTopo"
+        android:layout_marginTop="1dp"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -116,7 +136,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:background="@color/branco">
 
                     <ImageView
                         android:layout_width="50dp"

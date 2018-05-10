@@ -112,10 +112,8 @@
             android:name=".view.RepassesSociaisActivity"
             android:label="@string/title_activity_repasses_sociais"
             android:parentActivityName=".view.PrincipalActivity"
-            android:screenOrientation="portrait">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="caixa.gov.br.loterias.view.PrincipalActivity" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.DegradeActionBar">
         </activity>
         <activity
             android:name=".view.ListaRapidaoActivity"
