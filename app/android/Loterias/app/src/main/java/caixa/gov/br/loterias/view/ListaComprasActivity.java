@@ -174,66 +174,7 @@ public class ListaComprasActivity extends AppCompatActivity {
         });
     }
 
-    private void montarLayout(){
-//        ListView listView = (ListView)findViewById(R.id.gridviewCompras);
-//        ListaComprasAdapter listaAdapter = new ListaComprasAdapter(this, resultadoPesquisaPaginadaCompraDTO.getLista());
-//        listView.setAdapter(listaAdapter);
-//
-//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Intent activity = new Intent(ListaComprasActivity.this, DetalhesComprasActivity.class);
-//                String arrayAsString = new Gson().toJson(resultadoPesquisaPaginadaCompraDTO.getLista().get(position));
-//                activity.putExtra("CompraDTO", arrayAsString);
-//                startActivity(activity);
-//            }
-//        });
-    }
 
-
-//    private void layoutListView(){
-//        expandableListView = (ExpandableListView) findViewById(R.id.comprasExpandableListView);
-//        expandableListDetail = ExpandableListDataPump.getData();
-//        expandableListTitle = new ArrayList<String>(expandableListDetail.keySet());
-//        expandableListAdapter = new ListaComprasExpandleAdapter(this, expandableListTitle, expandableListDetail);
-//        expandableListView.setAdapter(expandableListAdapter);
-//        expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
-//
-//            @Override
-//            public void onGroupExpand(int groupPosition) {
-//                Toast.makeText(getApplicationContext(),
-//                        expandableListTitle.get(groupPosition) + " List Expanded.",
-//                        Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//
-//        expandableListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
-//
-//            @Override
-//            public void onGroupCollapse(int groupPosition) {
-//                Toast.makeText(getApplicationContext(),
-//                        expandableListTitle.get(groupPosition) + " List Collapsed.",
-//                        Toast.LENGTH_SHORT).show();
-//
-//            }
-//        });
-//
-//        expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-//            @Override
-//            public boolean onChildClick(ExpandableListView parent, View v,
-//                                        int groupPosition, int childPosition, long id) {
-//                Toast.makeText(
-//                        getApplicationContext(),
-//                        expandableListTitle.get(groupPosition)
-//                                + " -> "
-//                                + expandableListDetail.get(
-//                                expandableListTitle.get(groupPosition)).get(
-//                                childPosition), Toast.LENGTH_SHORT
-//                ).show();
-//                return false;
-//            }
-//        });
-//    }
 
 
     private void addSpinner(){
@@ -241,7 +182,7 @@ public class ListaComprasActivity extends AppCompatActivity {
         SelecaoMesSpinner = (Spinner) findViewById(R.id.SelecaoMesSpinner);
         List<String> list = new ArrayList<String>();
         for(MesAnoDTO item : listaMesAnoDTO){
-            list.add(item.getMes().getDescricao() + " - " + item.getAno());
+            list.add(item.getMes().getDescricao() + " de " + item.getAno());
         }
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, R.layout.spinner_item,list);
 
