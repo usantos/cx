@@ -10,7 +10,8 @@
         android:layout_marginHorizontal="13dp"
         android:orientation="horizontal"
         android:layout_marginBottom="12dp"
-        android:layout_marginTop="12dp">
+        android:layout_marginTop="12dp"
+        android:id="@+id/content_item_favoritas">
 
 
 
@@ -78,20 +79,12 @@
                 android:gravity="end"
                 />
 
-            <!--<ImageView-->
-                <!--android:padding="7dp"-->
-                <!--android:layout_width="11dp"-->
-                <!--android:layout_height="11dp"-->
-                <!--android:src="@drawable/seta_direita_preta"-->
-                <!--android:layout_marginTop="20dp"-->
-                <!--android:layout_gravity="end"-->
-                <!--android:id="@+id/setaComprasGroup"-->
-                <!--/>-->
+
             <FrameLayout
                 android:layout_width="11dp"
-                android:layout_height="11dp"
+                android:layout_height="20dp"
                 android:padding="7dp"
-                android:background="@drawable/seta_direita_preta"
+                android:background="@drawable/seta_direita_cinza"
                 android:layout_marginTop="20dp"
                 android:layout_gravity="end"
                 android:id="@+id/setaComprasGroup">
@@ -101,5 +94,11 @@
 
 
     </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/cinzaclaro"
+        android:layout_below="@+id/content_item_favoritas"
+        ></View>
 </RelativeLayout>
 
