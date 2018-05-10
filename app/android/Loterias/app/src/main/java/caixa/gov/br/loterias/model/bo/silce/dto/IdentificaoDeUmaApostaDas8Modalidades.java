@@ -21,6 +21,7 @@ import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 
+import caixa.gov.br.loterias.model.bean.SessaoUsuario;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -470,6 +471,10 @@ IdentificaoDeUmaApostaDas8Modalidades {
     }
 
     public static Boolean checkExisteUmaApostaIgualCarrinho(final IdentificaoDeUmaApostaDas8Modalidades identificaoDeUmaApostaDas8Modalidades, final CarrinhoDTO carrinhoDTO){
+        if (identificaoDeUmaApostaDas8Modalidades.getModalidade() == ModalidadeEnum.LOTECA ||
+                identificaoDeUmaApostaDas8Modalidades.getModalidade() == ModalidadeEnum.LOTOGOL){
+            return false;
+        }
         List<Integer> numerosSelecionados = identificaoDeUmaApostaDas8Modalidades.getNumerosSelecionados();
         Collections.sort( numerosSelecionados );
         for (IdentificaoDeUmaApostaDas8Modalidades item : carrinhoDTO.getApostas()){
@@ -487,17 +492,81 @@ IdentificaoDeUmaApostaDas8Modalidades {
         for (IdentificaoDeUmaApostaDas8Modalidades identificaoDeUmaApostaDas8Modalidades : listIdentificaoDeUmaApostaDas8Modalidades){
             List<Integer> numerosSelecionados = identificaoDeUmaApostaDas8Modalidades.getNumerosSelecionados();
             Collections.sort( numerosSelecionados );
-            for (IdentificaoDeUmaApostaDas8Modalidades item : carrinhoDTO.getApostas()){
-                List<Integer> numerosItem = item.getNumerosSelecionados();
-                Collections.sort( numerosItem );
-                if (item.getModalidade() == identificaoDeUmaApostaDas8Modalidades.getModalidade()
-                        && numerosSelecionados.equals( numerosItem ) ){
-                    return true;
+            if (identificaoDeUmaApostaDas8Modalidades.getModalidade() != ModalidadeEnum.LOTECA && identificaoDeUmaApostaDas8Modalidades.getModalidade() == ModalidadeEnum.LOTOGOL) {
+                for (IdentificaoDeUmaApostaDas8Modalidades item : carrinhoDTO.getApostas()){
+                    List<Integer> numerosItem = item.getNumerosSelecionados();
+                    Collections.sort( numerosItem );
+                    if (item.getModalidade() == identificaoDeUmaApostaDas8Modalidades.getModalidade()
+                            && numerosSelecionados.equals( numerosItem ) ){
+                        return true;
+                    }
                 }
             }
         }
 
         return false;
+    }
+
+
+    public static Boolean checkExisteUmaApostaIgualCarrinho(final ApostaFavoritaDTO apostaFavoritaDTO, final CarrinhoDTO carrinhoDTO){
+        if (ModalidadeEnum.fromInteger(  apostaFavoritaDTO.getModalidade().getValor() ) ==  ModalidadeEnum.LOTECA||
+                ModalidadeEnum.fromInteger(  apostaFavoritaDTO.getModalidade().getValor() ) == ModalidadeEnum.LOTOGOL){
+            return false;
+        }
+        List<Integer> numerosSelecionados = apostaFavoritaDTO.getNumerosSelecionados();
+        Collections.sort( numerosSelecionados );
+        for (IdentificaoDeUmaApostaDas8Modalidades item : carrinhoDTO.getApostas()){
+            List<Integer> numerosItem = item.getNumerosSelecionados();
+            Collections.sort( numerosItem );
+            if (item.getModalidade() == ModalidadeEnum.fromInteger(  apostaFavoritaDTO.getModalidade().getValor() )
+                    && numerosSelecionados.equals( numerosItem )){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static BigDecimal getValorApostaFavoritaPorProagnostico(ApostaFavoritaDTO apostaFavoritaDTO){
+            ModalidadeEnum modalidadeEnum = ModalidadeEnum.fromInteger( apostaFavoritaDTO.getModalidade().getValor() );
+            List<ParametroSimulacao> parametroSimulacaoList = SessaoUsuario.getInstance().getParametrosSimulacao().getParametros();
+            for (ParametroSimulacao  parametroSimulacao : parametroSimulacaoList){
+                if (parametroSimulacao.getParametroJogo().getConcurso().getModalidade() == modalidadeEnum){
+                    if (modalidadeEnum == ModalidadeEnum.LOTECA){
+                        return parametroSimulacao.getParametroJogo().getValorApostaMinima();
+                    }else if (modalidadeEnum == ModalidadeEnum.LOTOGOL){
+                        return parametroSimulacao.getParametroJogo().getValorApostaMinima();
+                    }else{
+                        List<ParametroValorApostaDTO> parametroValorApostaDTOList = parametroSimulacao.getParametroJogo().getValoresAposta();
+                        for (ParametroValorApostaDTO parametroValorApostaDTO : parametroValorApostaDTOList){
+                            if (parametroValorApostaDTO.getNumeroPrognosticos() == apostaFavoritaDTO.getNumerosSelecionados().size()){
+                                return parametroValorApostaDTO.getValor();
+                            }
+                        }
+                    }
+                }
+            }
+        return new BigDecimal( "0" );
+    }
+
+    public static BigDecimal getValorApostaPorProagnostico(IdentificaoDeUmaApostaDas8Modalidades identificaoDeUmaApostaDas8Modalidades){
+        List<ParametroSimulacao> parametroSimulacaoList = SessaoUsuario.getInstance().getParametrosSimulacao().getParametros();
+        for (ParametroSimulacao  parametroSimulacao : parametroSimulacaoList){
+            if (parametroSimulacao.getParametroJogo().getConcurso().getModalidade() == identificaoDeUmaApostaDas8Modalidades.getModalidade()){
+                if (identificaoDeUmaApostaDas8Modalidades.getModalidade() == ModalidadeEnum.LOTECA){
+                    return parametroSimulacao.getParametroJogo().getValorApostaMinima();
+                }else if (identificaoDeUmaApostaDas8Modalidades.getModalidade() == ModalidadeEnum.LOTOGOL){
+                    return parametroSimulacao.getParametroJogo().getValorApostaMinima();
+                }else{
+                    List<ParametroValorApostaDTO> parametroValorApostaDTOList = parametroSimulacao.getParametroJogo().getValoresAposta();
+                    for (ParametroValorApostaDTO parametroValorApostaDTO : parametroValorApostaDTOList){
+                        if (parametroValorApostaDTO.getNumeroPrognosticos() == identificaoDeUmaApostaDas8Modalidades.getNumerosSelecionados().size()){
+                            return parametroValorApostaDTO.getValor();
+                        }
+                    }
+                }
+            }
+        }
+        return new BigDecimal( "0" );
     }
 }
 

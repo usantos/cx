@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -31,14 +33,17 @@ import caixa.gov.br.loterias.model.bo.ApostaBO_;
 import caixa.gov.br.loterias.model.bo.RedirectNetwork;
 import caixa.gov.br.loterias.model.bo.RequestListener;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostaFavoritaDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.CarrinhoDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.CarrinhoDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.DTOEnumInteger;
+import caixa.gov.br.loterias.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import caixa.gov.br.loterias.model.bo.silce.dto.IncluirApostaFavoritaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ParametroMesDeSorte;
 import caixa.gov.br.loterias.model.bo.silce.dto.ParametroSimulacao;
 import caixa.gov.br.loterias.model.bo.silce.dto.RetornoPadraoDTO;
 import caixa.gov.br.loterias.model.bo.MensagensNetwork;
 import caixa.gov.br.loterias.model.bo.silce.dto.TipoConcursoEnum;
+import caixa.gov.br.loterias.utils.DialogUtils;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.DadosPessoaisActivity;
 import caixa.gov.br.loterias.view.FavoritasActivity;
@@ -140,7 +145,9 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
         editarRelativeLayoutAddCarrinho.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                adicionarCarrinho(listaApostaFavorita.get(position).getId(), listaApostaFavorita.get( position ).getModalidade());
+                SessaoUsuario.getInstance().getParametrosSimulacao().setQuantidadeMaximaApostasCarrinho( 3 );
+                SessaoUsuario.getInstance().getParametrosSimulacao().setValorLimiteDiario( new BigDecimal("8" ));
+                adicionarApostaCarrinhoRequest( ApostaBO_.getInstance_(activity), listaApostaFavorita.get( position ));
             }
         } );
 
@@ -316,14 +323,12 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
     }
 
 
-    public void adicionarCarrinhoCallWebservice(final Long idApostaFavorita, final int valorTipoConcurso, final int qtdTeimosinhas) {
-        final AlertDialog loadViewProgress = LoadingViewLoterias.show(activity);
-        final ApostaBO apostaBO = ApostaBO_.getInstance_(activity);
+    public void adicionarCarrinhoCallWebservice(final ApostaBO apostaBO, final Long idApostaFavorita, final int valorTipoConcurso, final int qtdTeimosinhas) {
 
         apostaBO.postIncluirApostaFavoritaCarrinho(idApostaFavorita, valorTipoConcurso, qtdTeimosinhas, new RequestListener<CarrinhoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoDTOResponse response) {
-                loadViewProgress.dismiss();
+                DialogUtils.dismiss();
                 ViewUtils.alert( context, context.getResources().getString( R.string.label_aposta_salva_carinha ) );
                 if (response.getRedirect() != null){
                     RedirectNetwork.checkRedirectSucesso( response.getRedirect(), activity);
@@ -332,7 +337,7 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                loadViewProgress.dismiss();
+                DialogUtils.dismiss();
                 RedirectNetwork.checkRedirect( error, activity );
 
             }
@@ -382,7 +387,7 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
     }
 
 
-    private void adicionarCarrinho(Long idApostaFavorita, DTOEnumInteger modalidadeEnum){
+    private void adicionarCarrinho(ApostaBO apostaBO, Long idApostaFavorita, DTOEnumInteger modalidadeEnum){
         SessaoUsuario sessaoUsuario =  SessaoUsuario.getInstance();
 
         List<ParametroSimulacao> arrayConcursos;
@@ -398,6 +403,7 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
         }
 
         if (arrayConcursos.size() > 1){
+            DialogUtils.dismiss();
             Boolean temEspecialENormal = false;
             for (ParametroSimulacao modalidade : arrayConcursos){
                 if(modalidade.getParametroJogo().getConcurso().getTipoConcurso() == TipoConcursoEnum.NORMAL) {
@@ -415,8 +421,9 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
             }
         }else{
             if(arrayConcursos.get( 0 ).getParametroJogo().getConcurso().getTipoConcurso() == TipoConcursoEnum.ESPECIAL) {
-                adicionarCarrinhoCallWebservice( idApostaFavorita,2, 0 );
+                adicionarCarrinhoCallWebservice( apostaBO, idApostaFavorita,2, 0 );
             } else {
+                DialogUtils.dismiss();
                 if (arrayConcursos.get( 0 ).getParametroJogo().getTeimosinhas().size() > 0) {
                     popupAdicionarCarrinhoFavoritas( arrayConcursos, idApostaFavorita );
                     return;
@@ -431,6 +438,68 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
         adicionarCarrinhoFavoritasView.arrayConcursos = arrayConcursos;
         adicionarCarrinhoFavoritasView.idApostaFavorita = idApostaFavorita;
         adicionarCarrinhoFavoritasView.show( fm, "adicionarCarrinhoFavoritasView" );
+    }
+
+
+
+
+    private void adicionarApostaCarrinhoRequest(final ApostaBO apostaBO, final ApostaFavoritaDTO apostaFavoritaDTO) {
+        DialogUtils.show(activity);
+        apostaBO.buscaCarrinho(new RequestListener<CarrinhoDTOResponse>() {
+            @Override
+            public void onResponse(CarrinhoDTOResponse response) {
+                final CarrinhoDTO carrinhoDTO = response.getPayload();
+                //checar valor máximo aposta excedido
+                if (carrinhoDTO.getApostas().size()>= SessaoUsuario.getInstance().getParametrosSimulacao().getQuantidadeMaximaApostasCarrinho()){
+                    DialogUtils.dismiss();
+                    ViewUtils.alertTitleButton(context, R.string.label_atencao, context.getResources().getString( R.string.MA013 ), context.getResources().getString( R.string.ok ));
+
+                }else {
+                    checarLimiteDiario(apostaBO, apostaFavoritaDTO, carrinhoDTO);
+                }
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                DialogUtils.dismiss();
+                RedirectNetwork.checkRedirect( error, activity );
+            }
+        });
+
+    }
+
+    private void checarLimiteDiario(final ApostaBO apostaBO, final ApostaFavoritaDTO apostaFavoritaDTO, final CarrinhoDTO carrinhoDTO){
+        if (SessaoUsuario.getInstance().getParametrosSimulacao().getValorLimiteDiario()
+                .compareTo(carrinhoDTO.getValorTotal()
+                        .add( IdentificaoDeUmaApostaDas8Modalidades.getValorApostaFavoritaPorProagnostico( apostaFavoritaDTO ) ))
+                <= 0){
+
+            DialogUtils.dismiss();
+            ViewUtils.alertTitleButtonYesOrNotListener(context, context.getResources().getString( R.string.MA014 ), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    DialogUtils.show( context );
+                    checarApostasRepetidas(apostaBO, apostaFavoritaDTO, carrinhoDTO);
+                }
+            });
+        }else {
+            checarApostasRepetidas(apostaBO, apostaFavoritaDTO, carrinhoDTO);
+        }
+    }
+
+    private void checarApostasRepetidas(final ApostaBO apostaBO, final ApostaFavoritaDTO apostaFavoritaDTO, final CarrinhoDTO carrinhoDTO){
+        if (IdentificaoDeUmaApostaDas8Modalidades.checkExisteUmaApostaIgualCarrinho( apostaFavoritaDTO, carrinhoDTO )){
+            DialogUtils.dismiss();
+            ViewUtils.alertTitleButtonYesOrNotListener(context, context.getResources().getString(R.string.MA015), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    DialogUtils.show(activity);
+                    adicionarCarrinho( apostaBO, apostaFavoritaDTO.getId(), apostaFavoritaDTO.getModalidade() );
+                }
+            });
+        }else {
+            adicionarCarrinho( apostaBO, apostaFavoritaDTO.getId(), apostaFavoritaDTO.getModalidade() );
+        }
     }
 
 }

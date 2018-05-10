@@ -90,8 +90,8 @@
     <string name="MA003"> Você tem mais de 18 anos?</string>
     <string name="MA010">Deseja remover a aposta do carrinho?</string>
     <string name="MA011">Deseja remover todas as apostas do carrinho?</string>
-    <string name="MA013">Atingida a quantidade máxima de apostas no carrinho</string>
-    <string name="MA014">Atingiu o valor máximo diário de apostas</string>
+    <string name="MA013">Não é permitido incluir uma nova aposta no carrinho, pois a quantidade máxima de aposta já foi atingida.</string>
+    <string name="MA014"> O valor máximo de apostas permitida diariamente será excedido com a inclusão dessa aposta. Deseja prosseguir com a inclusão da aposta?</string>
     <string name="MA015">Existe uma aposta idêntica a que está sendo incluída no seu carrinho. Deseja prosseguir com a inclusão da aposta?</string>
     <string name="MA016">Um número não pode ser marcado como obrigatório e proibido.</string>
     <string name="MA020">A situação da aposta foi atualizada, por favor verifique o comprovante gerado.</string>

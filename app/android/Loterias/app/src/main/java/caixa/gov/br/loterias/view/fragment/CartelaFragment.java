@@ -48,6 +48,7 @@ import java.util.Locale;
 import java.util.Random;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.model.bean.SessaoUsuario;
 import caixa.gov.br.loterias.model.bo.ApostaBO;
 import caixa.gov.br.loterias.model.bo.ApostaBO_;
 import caixa.gov.br.loterias.model.bo.DadosCorporativosBO;
@@ -75,6 +76,7 @@ import caixa.gov.br.loterias.model.bo.silce.dto.PartidaLotogolDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.TipoConcursoEnum;
 import caixa.gov.br.loterias.utils.Constantes;
 import caixa.gov.br.loterias.utils.DialogUtils;
+import caixa.gov.br.loterias.utils.Utils;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.utils.helper.AdicionarApostaCarrinhoHelper;
 import caixa.gov.br.loterias.view.SimularApostaActivity;
@@ -330,7 +332,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
         orderAscDezenas();
         IdentificaoDeUmaApostaDas8Modalidades aposta = getApostaPreenchida();
-        adicionarApostaCarrinhoRequest(ApostaBO_.getInstance_(getActivity()), getActivity(), aposta);
+        adicionarApostaCarrinhoRequest(ApostaBO_.getInstance_(getActivity()), aposta);
     }
 
     private IdentificaoDeUmaApostaDas8Modalidades getApostaPreenchida() {
@@ -385,25 +387,19 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         return aposta;
     }
 
-    private void adicionarApostaCarrinhoRequest(final ApostaBO apostaBO, final Activity activity, final IdentificaoDeUmaApostaDas8Modalidades aposta) {
+    private void adicionarApostaCarrinhoRequest(final ApostaBO apostaBO, final IdentificaoDeUmaApostaDas8Modalidades aposta) {
         DialogUtils.show(getActivity());
-
         apostaBO.buscaCarrinho(new RequestListener<CarrinhoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoDTOResponse response) {
-                CarrinhoDTO carrinhoDTO = new CarrinhoDTO();
-                carrinhoDTO = response.getPayload();
-                if (IdentificaoDeUmaApostaDas8Modalidades.checkExisteUmaApostaIgualCarrinho( aposta, carrinhoDTO )){
+                final CarrinhoDTO carrinhoDTO = response.getPayload();
+               //checar valor máximo aposta excedido
+                if (carrinhoDTO.getApostas().size()>= SessaoUsuario.getInstance().getParametrosSimulacao().getQuantidadeMaximaApostasCarrinho()){
                     DialogUtils.dismiss();
-                    ViewUtils.alertTitleButtonYesOrNotListener(getContext(), getResources().getString(R.string.MA015), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            DialogUtils.show(getActivity());
-                            postAdicionarApostaCarrinho( apostaBO, aposta );
-                        }
-                    });
+                    ViewUtils.alertTitleButton(getContext(), R.string.label_atencao, getContext().getResources().getString( R.string.MA013 ), getContext().getResources().getString( R.string.ok ));
+
                 }else {
-                    postAdicionarApostaCarrinho( apostaBO, aposta );
+                    checarLimiteDiario(apostaBO, aposta, carrinhoDTO);
                 }
             }
 
@@ -414,6 +410,39 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
             }
         });
 
+    }
+
+    private void checarLimiteDiario(final ApostaBO apostaBO, final IdentificaoDeUmaApostaDas8Modalidades aposta, final CarrinhoDTO carrinhoDTO){
+        if (SessaoUsuario.getInstance().getParametrosSimulacao().getValorLimiteDiario()
+                .compareTo(carrinhoDTO.getValorTotal()
+                        .add( IdentificaoDeUmaApostaDas8Modalidades.getValorApostaPorProagnostico( aposta ) ))
+                <= 0)
+        {
+            DialogUtils.dismiss();
+            ViewUtils.alertTitleButtonYesOrNotListener(getContext(), getContext().getResources().getString( R.string.MA014 ), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    checarApostasRepetidas(apostaBO, aposta, carrinhoDTO);
+                }
+            });
+        }else {
+            checarApostasRepetidas(apostaBO, aposta, carrinhoDTO);
+        }
+    }
+
+    private void checarApostasRepetidas(final ApostaBO apostaBO, final IdentificaoDeUmaApostaDas8Modalidades aposta, final CarrinhoDTO carrinhoDTO){
+        if (IdentificaoDeUmaApostaDas8Modalidades.checkExisteUmaApostaIgualCarrinho( aposta, carrinhoDTO )){
+            DialogUtils.dismiss();
+            ViewUtils.alertTitleButtonYesOrNotListener(getContext(), getResources().getString(R.string.MA015), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    DialogUtils.show(getActivity());
+                    postAdicionarApostaCarrinho( apostaBO, aposta );
+                }
+            });
+        }else {
+            postAdicionarApostaCarrinho( apostaBO, aposta );
+        }
     }
 
     private void postAdicionarApostaCarrinho(ApostaBO apostaBO, final IdentificaoDeUmaApostaDas8Modalidades aposta){
