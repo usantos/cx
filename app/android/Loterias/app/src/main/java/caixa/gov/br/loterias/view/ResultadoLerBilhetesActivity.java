@@ -158,10 +158,10 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
         contenteResultadoPremiado.getTituloModalidadeTextView().setText(resultadoConsultaBilheteDTO.getModalidadeDTO().getDescricao());
         contenteResultadoPremiado.getLimiteDiarioResultadoTextView().setText(ViewUtils.getMoedaFormat(sessaoUsuario.getParametrosSimulacao().getValorLimiteDiario()));
 
-        if (resultadoConsultaBilheteDTO.getValorPremio() != null && !(BigDecimal.ZERO.compareTo(resultadoConsultaBilheteDTO.getValorPremio()) == 0)) {
+        if (resultadoConsultaBilheteDTO.getPremioDTO().getValorLiquido() != null && !(BigDecimal.ZERO.compareTo(resultadoConsultaBilheteDTO.getPremioDTO().getValorLiquido()) == 0)) {
             informacoesPremioZeradoLayout.setVisibility(View.GONE);
             informacoesPremioLayout.setVisibility(View.VISIBLE);
-            contenteResultadoPremiado.getPremioResultadoTextView().setText(ViewUtils.getMoedaFormat(resultadoConsultaBilheteDTO.getValorPremio()));
+            contenteResultadoPremiado.getPremioResultadoTextView().setText(ViewUtils.getMoedaFormat(resultadoConsultaBilheteDTO.getPremioDTO().getValorLiquido()));
             contenteResultadoPremiado.getPremioGanhoLinearLayout().setVisibility(View.VISIBLE);
             createListPremiacao();
         }

@@ -23,8 +23,6 @@ import caixa.gov.br.loterias.model.bo.RequestListener;
 import caixa.gov.br.loterias.model.bo.silce.dto.AgrupadorApostaCompraDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.CompraDTO;
-import caixa.gov.br.loterias.model.bo.MensagensNetwork;
-import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.adapter.ListaComprasDetalhesAdapter;
 import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
 

@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.utils.ViewUtils;
 
 public class InsercaoManualCodBarrasActivity extends AppCompatActivity {
 
@@ -28,6 +29,8 @@ public class InsercaoManualCodBarrasActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setTitle( ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.label_ler_bilhestes_bold)));
+
 
         buttonContinuarInsercaoManualBilhetes = (Button) findViewById(R.id.buttonContinuarInsercaoManualBilhetes);
         editTextNumeroBilhete = (EditText) findViewById(R.id.editTextNumeroBilhete);
