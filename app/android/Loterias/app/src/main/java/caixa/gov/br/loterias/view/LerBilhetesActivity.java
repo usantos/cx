@@ -16,6 +16,7 @@ import com.journeyapps.barcodescanner.DecoratedBarcodeView;
 import java.util.List;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.utils.ViewUtils;
 
 
 public class LerBilhetesActivity extends AppCompatActivity {
@@ -64,6 +65,9 @@ public class LerBilhetesActivity extends AppCompatActivity {
         barcodeScannerView.getViewFinder().setVisibility(View.INVISIBLE);
         barcodeScannerView.getStatusView().setVisibility(View.INVISIBLE);
         barcodeScannerView.decodeContinuous(callback);
+
+        buttonDigitarAposta.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.label_digite_aposta_realizada)));
+
 
     }
 

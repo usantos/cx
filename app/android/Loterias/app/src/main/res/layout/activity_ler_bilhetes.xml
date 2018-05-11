@@ -27,22 +27,25 @@
             android:layout_height="match_parent"
             android:scaleType="fitXY"
             android:src="@drawable/mascara_loteria" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></RelativeLayout>
 
         <ImageView
             android:id="@+id/iconeTrevoLeitor"
             android:layout_width="22dp"
             android:layout_height="22dp"
             android:layout_marginLeft="68dp"
-            android:layout_marginTop="42dp"
+            android:layout_marginTop="32dp"
             android:elevation="3dp"
-            android:padding="12dp"
-            android:src="@drawable/logo_cinza" />
+            android:src="@drawable/logo_cinza"
+            />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="102dp"
-            android:layout_marginTop="44dp"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="34dp"
             android:fontFamily="@font/futura_std_bold"
             android:text="Resultado"
             android:textColor="@color/branco"
@@ -50,19 +53,20 @@
 
         <Button
             android:id="@+id/fecharLeitorCodBarras"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="42dp"
-            android:background="@drawable/btn_fechar" />
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/close_circle_outline" />
 
         <TextView
             android:id="@+id/TextoLeitorCodBarras"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="68dp"
-            android:layout_marginTop="84dp"
+            android:layout_marginRight="68dp"
+            android:layout_marginTop="64dp"
             android:fontFamily="@font/arialmt"
             android:text="Posicione a linha abaixo sobre o código de barras e aguarde a focalização da câmera."
             android:textColor="@color/branco"
@@ -83,7 +87,6 @@
             android:layout_marginBottom="26dp"
             android:layout_marginHorizontal="68dp"
             android:background="@drawable/button_border_amareloqueimado"
-            android:fontFamily="@font/futura_std_bold"
             android:text="Digitar sua aposta realizada"
             android:textAllCaps="false"
             android:textColor="@color/amareloQueimado"

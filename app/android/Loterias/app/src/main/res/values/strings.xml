@@ -294,4 +294,5 @@
     <string name="label_digite_cod_seguranca">Digite o código de segurança do seu cartão</string>
     <string name="label_selecione_cartao">Selecione um cartão</string>
     <string name="label_informa_cvv">Favor informar o CVV</string>
+    <string name="botao_digitar_aposta">_Digitar_ sua aposta realizada</string>
 </resources>
