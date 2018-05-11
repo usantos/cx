@@ -38,14 +38,14 @@ public class InsercaoManualCodBarrasActivity extends AppCompatActivity {
         buttonContinuarInsercaoManualBilhetes = (Button) findViewById(R.id.buttonContinuarInsercaoManualBilhetes);
         editTextNumeroBilhete = (MaskedEditText) findViewById(R.id.editTextNumeroBilhete);
         editTextNumeroBilhete.addTextChangedListener(textWatcher);
-        editTextNumeroBilhete.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
+//        editTextNumeroBilhete.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
         buttonContinuarInsercaoManualBilhetes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (editTextNumeroBilhete.getText().toString().equals("")) {
+                if (editTextNumeroBilhete.getUnmaskedText().toString().equals("")) {
                     Toast.makeText(InsercaoManualCodBarrasActivity.this, "Informe o código do bilhete!", Toast.LENGTH_SHORT).show();
                 } else {
-                    ResultadoLerBilhetesActivity_.intent(InsercaoManualCodBarrasActivity.this).codBarras(editTextNumeroBilhete.getText().toString()).start();
+                    ResultadoLerBilhetesActivity_.intent(InsercaoManualCodBarrasActivity.this).codBarras(editTextNumeroBilhete.getUnmaskedText().toString().toUpperCase()).start();
                 }
             }
         });

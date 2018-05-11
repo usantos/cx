@@ -34,11 +34,10 @@
             android:textSize="14sp"
             android:fontFamily="@font/arialmt"
             android:textColorHint="@color/verdeazul"
-            android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-"
-
-            android:ems="10"
-            app:mask="****-****************-**"
+            app:mask="****-*****************-**"
             app:notMaskedSymbol="*"
+            android:text="7673-2a9091bc04b8dc815-e0"
+            android:ems="25"
             />
 
     </android.support.design.widget.TextInputLayout>
@@ -55,6 +54,7 @@
         android:enabled="false"
         android:textColor="@color/cinzaDisable"
         android:background="@color/cinzaclaro"
+
         />
 
 </LinearLayout>
