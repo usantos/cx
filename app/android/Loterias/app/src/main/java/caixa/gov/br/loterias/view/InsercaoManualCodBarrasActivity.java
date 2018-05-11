@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,12 +15,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.github.pinball83.maskededittext.MaskedEditText;
+
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.utils.ViewUtils;
 
 public class InsercaoManualCodBarrasActivity extends AppCompatActivity {
 
-    EditText editTextNumeroBilhete;
+    MaskedEditText editTextNumeroBilhete;
     Button buttonContinuarInsercaoManualBilhetes;
 
     @Override
@@ -33,8 +36,9 @@ public class InsercaoManualCodBarrasActivity extends AppCompatActivity {
 
 
         buttonContinuarInsercaoManualBilhetes = (Button) findViewById(R.id.buttonContinuarInsercaoManualBilhetes);
-        editTextNumeroBilhete = (EditText) findViewById(R.id.editTextNumeroBilhete);
+        editTextNumeroBilhete = (MaskedEditText) findViewById(R.id.editTextNumeroBilhete);
         editTextNumeroBilhete.addTextChangedListener(textWatcher);
+        editTextNumeroBilhete.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
         buttonContinuarInsercaoManualBilhetes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,13 +114,15 @@ public class InsercaoManualCodBarrasActivity extends AppCompatActivity {
                 buttonContinuarInsercaoManualBilhetes.setEnabled(false);
                 buttonContinuarInsercaoManualBilhetes.setTextColor(getResources().getColor(R.color.cinzaDisable));
                 buttonContinuarInsercaoManualBilhetes.setBackgroundColor(getResources().getColor(R.color.cinzaclaro));
+                editTextNumeroBilhete.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
             } else {
                 buttonContinuarInsercaoManualBilhetes.setEnabled(true);
                 buttonContinuarInsercaoManualBilhetes.setTextColor(getResources().getColor(R.color.branco));
                 buttonContinuarInsercaoManualBilhetes.setBackgroundColor(getResources().getColor(R.color.verdeazul));
+                editTextNumeroBilhete.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
             }
-
         }
     };
+
 
 }

@@ -26,14 +26,20 @@
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="40dp"
         android:textColorHint="@color/verdeazul">
-        <EditText
+        <com.github.pinball83.maskededittext.MaskedEditText
             android:id="@+id/editTextNumeroBilhete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Número do bilhete"
             android:textSize="14sp"
             android:fontFamily="@font/arialmt"
-            android:textColorHint="@color/verdeazul"/>
+            android:textColorHint="@color/verdeazul"
+            android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-"
+
+            android:ems="10"
+            app:mask="****-****************-**"
+            app:notMaskedSymbol="*"
+            />
 
     </android.support.design.widget.TextInputLayout>
     <Button

@@ -153,7 +153,10 @@ public class FormaPagamentoActivity extends SettingToolbarActivity implements Fo
             @Override
             public void onClick(View view) {
                 if (formaPagamentoRecyclerViewAdapter.selected_position < 0){
-                    ViewUtils.alert(FormaPagamentoActivity.this, "Selecione um cartão");
+                    ViewUtils.alertTitleButton(
+                            FormaPagamentoActivity.this,
+                            R.string.label_atencao, getResources().getString( R.string.label_selecione_cartao ),
+                            getResources().getString( R.string.ok ));
                     return;
                 }
                 LayoutInflater li = LayoutInflater.from(FormaPagamentoActivity.this);
@@ -168,9 +171,22 @@ public class FormaPagamentoActivity extends SettingToolbarActivity implements Fo
                         .setPositiveButton("Confirmar",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog,int id) {
-//                                        Log.d("cvv", userInput.getText().toString());
-                                        String cardId = formaPagamentoRecyclerViewAdapter.valoresList.get(formaPagamentoRecyclerViewAdapter.selected_position).getIdCartao().toString();
-                                        createToken( cardId,  userInput.getText().toString());
+                                        if (userInput.getText().toString().length() == 3){
+                                            String cardId = formaPagamentoRecyclerViewAdapter.valoresList.get(formaPagamentoRecyclerViewAdapter.selected_position).getIdCartao().toString();
+                                            createToken( cardId,  userInput.getText().toString());
+                                        }else{
+                                            ViewUtils.alertTitleButtonPositiveListener(
+                                                    FormaPagamentoActivity.this,
+                                                    R.string.label_atencao, getResources().getString( R.string.label_informa_cvv ),
+                                                    R.string.ok, new DialogInterface.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(DialogInterface dialog, int which) {
+                                                            ((Button) findViewById(R.id.botaoAvancarPagamento)).performClick();
+                                                        }
+                                                    }
+                                            );
+                                        }
+
                                     }
                                 })
                         .setNegativeButton("Cancelar",
