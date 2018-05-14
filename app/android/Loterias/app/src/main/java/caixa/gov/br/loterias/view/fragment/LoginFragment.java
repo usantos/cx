@@ -42,6 +42,9 @@ import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
 
 public class LoginFragment extends Fragment {
 
+
+    Button buttonLogin;
+
     public LoginFragment() {}
 
     public static LoginFragment newInstance() {
@@ -65,9 +68,10 @@ public class LoginFragment extends Fragment {
             }
         });
 
-        Button buttonLogin = (Button) v.findViewById(R.id.buttonFacaLogin);
+        buttonLogin  = (Button) v.findViewById(R.id.buttonFacaLogin);
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                buttonLogin.setEnabled( false );
                 DadosUsuarioBO.updateFecharIntroducao(getActivity(), true);
                 connectKeycloak();
 
@@ -96,6 +100,7 @@ public class LoginFragment extends Fragment {
 
                     @Override
                     public void onFailure(Exception e) {
+                        buttonLogin.setEnabled( true );
                         if(getActivity() != null){
 //                            OAuth2AuthorizationException.Error error = ((OAuth2AuthorizationException)e).type;
                             if(!((OAuth2AuthorizationException) e).error.equals( "dialog_dismissed" )){
@@ -106,6 +111,7 @@ public class LoginFragment extends Fragment {
                 }
             );
         }else{
+            buttonLogin.setEnabled( true );
             ViewUtils.alert(getActivity(), getString(R.string.seminternet));
         }
     }
@@ -125,6 +131,7 @@ public class LoginFragment extends Fragment {
         dadosUsuarioBO.postVerificarCadastro(retornoListaCarrinho, new RequestListener<UsuarioLogadoResponse>() {
             @Override
             public void onResponse(UsuarioLogadoResponse response) {
+                buttonLogin.setEnabled( true );
                 loadViewProgress.dismiss();
                 if (response.getRedirect() == null){
                     PrincipalActivity_.intent(getActivity()).start();
@@ -136,6 +143,7 @@ public class LoginFragment extends Fragment {
 
             @Override
             public void onErrorResponse(VolleyError error) {
+                buttonLogin.setEnabled( true );
                 loadViewProgress.dismiss();
                 RedirectNetwork.checkRedirect( error, getActivity() );
 

@@ -224,4 +224,14 @@
         <item name="android:width">50dp</item>
     </style>
 
+    <style name="MyAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <!-- Used for the buttons -->
+        <item name="colorAccent">@color/verdeagua</item>
+        <!-- Used for the title and text -->
+        <item name="android:textColorPrimary">@color/black</item>
+        <!-- Used for the background -->
+        <item name="android:background">@color/branco</item>
+        <item name="android:textColor">@color/verdeagua</item>
+    </style>
+
 </resources>

@@ -187,12 +187,12 @@ public class ViewUtils {
     }
 
     public static AlertDialog.Builder dialogo(Context context, String mensagem) {
-        return new AlertDialog.Builder(context, R.style.Theme_AppCompat_Light_Dialog_Alert)
+        return new AlertDialog.Builder(context, R.style.MyAlertDialogStyle)
                 .setMessage(mensagem);
     }
 
     public static AlertDialog.Builder dialogo(Context context, int titulo, String mensagem) {
-        return new AlertDialog.Builder(context, R.style.Theme_AppCompat_Light_Dialog_Alert)
+        return new AlertDialog.Builder(context, R.style.MyAlertDialogStyle)
                 .setTitle(titulo)
                 .setMessage(mensagem);
     }
