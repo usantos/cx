@@ -148,7 +148,13 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostasConfi
         holder.modalidadeTxt.setText(estiloModalidade.getStringId());
         holder.situacaoLabel.setTextColor(color);
         holder.situacaoTxt.setTextColor(color);
-        holder.situacaoTxt.setText(aposta.getSituacao().getDescricao());
+        String descricaoStatus = "";
+        if (aposta.getSituacao().getValor() == 4){
+            descricaoStatus = "Não Conferida";
+        }else {
+            descricaoStatus = aposta.getSituacao().getDescricao();
+        }
+        holder.situacaoTxt.setText(descricaoStatus);
 //        ViewUtils.setColorDrawable(context, holder.setaImg.getDrawable(), R.color.colorAccent);
 
 //        if (context.getString(R.string.label_efetivada).equalsIgnoreCase(aposta.getSituacao().getDescricao())) {
