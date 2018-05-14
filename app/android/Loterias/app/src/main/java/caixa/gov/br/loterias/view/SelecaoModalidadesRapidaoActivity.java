@@ -153,11 +153,11 @@ public class SelecaoModalidadesRapidaoActivity extends AppCompatActivity{
                 loadViewProgress.dismiss();
                 modalidades = response.getPayload();
 
-
-                atualizarLayout();
                 if (response.getRedirect() != null){
                     RedirectNetwork.checkRedirectSucesso( response.getRedirect(), SelecaoModalidadesRapidaoActivity.this);
                 }
+                atualizarLayout();
+
             }
 
             @Override
@@ -176,37 +176,39 @@ public class SelecaoModalidadesRapidaoActivity extends AppCompatActivity{
     private void montarArrayTipoApostas(){
         for (ModalidadeDTO item : modalidades){
             TipoAposta tipoAposta = null;
-            switch (ModalidadeEnumSelecaoModalidades.toString(item.getDescricao())) {
-                case QUINA:
-                    tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo, R.color.quinaclaro, false, item.getValor(), item.getDescricaoEspecial());
-                    break;
-                case LOTECA:
-                    tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo, R.color.lotecaclaro, false, item.getValor(), item.getDescricaoEspecial());
-                    break;
-                case LOTOGOL:
-                    tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo, R.color.lotogolclaro, false, item.getValor(), item.getDescricaoEspecial());
-                    break;
-                case LOTOFACIL:
-                    tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo, R.color.lotofacilclaro, false, item.getValor(), item.getDescricaoEspecial());
-                    break;
-                case LOTOMANIA:
-                    tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo, R.color.lotomaniaclaro, false, item.getValor(), item.getDescricaoEspecial());
-                    break;
-                case MEGA_SENA:
-                    tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo, R.color.megasenaclaro, false, item.getValor(), item.getDescricaoEspecial());
-                    break;
-                case TIMEMANIA:
-                    tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo, R.color.timemaniaclaro, false, item.getValor(), item.getDescricaoEspecial());
-                    break;
-                case DUPLA_SENA:
-                    tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo, R.color.duplasenaclaro, false, item.getValor(), item.getDescricaoEspecial());
-                    break;
-                case FEDERAL:
-                    tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo, R.color.federalclaro, false, item.getValor(), item.getDescricaoEspecial());
-                    break;
-            }
-            if (tipoAposta != null){
-                tiposAposta.add(tipoAposta);
+            if (!item.getDescricao().equals( "Dia de Sorte" )){
+                switch (ModalidadeEnumSelecaoModalidades.toString(item.getDescricao())) {
+                    case QUINA:
+                        tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo, R.color.quinaclaro, false, item.getValor(), item.getDescricaoEspecial());
+                        break;
+                    case LOTECA:
+                        tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo, R.color.lotecaclaro, false, item.getValor(), item.getDescricaoEspecial());
+                        break;
+                    case LOTOGOL:
+                        tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo, R.color.lotogolclaro, false, item.getValor(), item.getDescricaoEspecial());
+                        break;
+                    case LOTOFACIL:
+                        tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo, R.color.lotofacilclaro, false, item.getValor(), item.getDescricaoEspecial());
+                        break;
+                    case LOTOMANIA:
+                        tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo, R.color.lotomaniaclaro, false, item.getValor(), item.getDescricaoEspecial());
+                        break;
+                    case MEGA_SENA:
+                        tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo, R.color.megasenaclaro, false, item.getValor(), item.getDescricaoEspecial());
+                        break;
+                    case TIMEMANIA:
+                        tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo, R.color.timemaniaclaro, false, item.getValor(), item.getDescricaoEspecial());
+                        break;
+                    case DUPLA_SENA:
+                        tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo, R.color.duplasenaclaro, false, item.getValor(), item.getDescricaoEspecial());
+                        break;
+                    case FEDERAL:
+                        tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo, R.color.federalclaro, false, item.getValor(), item.getDescricaoEspecial());
+                        break;
+                }
+                if (tipoAposta != null){
+                    tiposAposta.add(tipoAposta);
+                }
             }
         }
         if (tiposAposta != null || tiposAposta.size()>0){
