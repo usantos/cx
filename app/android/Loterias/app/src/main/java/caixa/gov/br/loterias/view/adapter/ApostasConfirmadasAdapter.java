@@ -70,6 +70,8 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostasConfi
         private View resultBtn;
         private View reloadBtn;
         private ImageView setaImg;
+        private LinearLayout resultBtnLayout;
+        private LinearLayout reloadBtnLayout;
         private LinearLayout setaLayout;
         private TextView situacaoLabel;
         private TextView situacaoTxt;
@@ -83,12 +85,16 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostasConfi
             reloadBtn = view.findViewById(R.id.reloadBtn);
             setaImg = view.findViewById(R.id.setaImg);
             setaLayout = view.findViewById(R.id.setaLayout);
+            resultBtnLayout = view.findViewById(R.id.resultBtnLayout);
+            reloadBtnLayout = view.findViewById(R.id.reloadBtnLayout);
             situacaoLabel = view.findViewById(R.id.situacaoLabel);
             situacaoTxt = view.findViewById(R.id.situacaoTxt);
 
-            reloadBtn.setOnClickListener(this);
             setaLayout.setOnClickListener(this);
             setaImg.setOnClickListener(this);
+            reloadBtnLayout.setOnClickListener(this);
+            reloadBtn.setOnClickListener(this);
+
             view.setOnClickListener(this);
         }
 
@@ -102,7 +108,15 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostasConfi
                         onApostasConfirmadasListener.onResult(apostaDTO);
                         break;
                     }
+                    case R.id.resultBtnLayout: {
+                        onApostasConfirmadasListener.onResult(apostaDTO);
+                        break;
+                    }
                     case R.id.reloadBtn: {
+                        onApostasConfirmadasListener.onReload(apostaDTO);
+                        break;
+                    }
+                    case R.id.reloadBtnLayout: {
                         onApostasConfirmadasListener.onReload(apostaDTO);
                         break;
                     }
@@ -140,10 +154,12 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostasConfi
 //        if (context.getString(R.string.label_efetivada).equalsIgnoreCase(aposta.getSituacao().getDescricao())) {
 
         if (isHistorico == false) {
-            holder.resultBtn.setVisibility(View.VISIBLE);
+            holder.resultBtnLayout.setVisibility(View.VISIBLE);
+            holder.resultBtnLayout.setOnClickListener(holder);
             holder.resultBtn.setOnClickListener(holder);
         }else{
-            holder.resultBtn.setVisibility(View.INVISIBLE);
+            holder.resultBtnLayout.setVisibility(View.GONE);
+            holder.resultBtnLayout.setClickable(Boolean.FALSE);
             holder.resultBtn.setClickable(Boolean.FALSE);
         }
 

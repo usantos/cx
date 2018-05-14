@@ -92,27 +92,57 @@
         android:clickable="false"
         android:gravity="center_vertical|right">
 
-        <ImageView
+        <!--<ImageView-->
+            <!--android:id="@+id/resultBtn"-->
+            <!--android:layout_width="21dp"-->
+            <!--android:layout_height="21dp"-->
+            <!--android:layout_marginEnd="@dimen/activity_horizontal_margin"-->
+            <!--android:src="@drawable/menu3_resultados"-->
+            <!--android:visibility="invisible"/>-->
+
+        <!--<ImageView-->
+            <!--android:id="@+id/reloadBtn"-->
+            <!--android:layout_width="25dp"-->
+            <!--android:layout_height="25dp"-->
+            <!--android:layout_marginEnd="10dp"-->
+            <!--android:src="@drawable/icon_add_carrinho" />-->
+
+        <LinearLayout
+            android:layout_width="45dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:visibility="gone"
+            android:id="@+id/resultBtnLayout"
+            android:clickable="true">
+            <ImageView
             android:id="@+id/resultBtn"
             android:layout_width="21dp"
             android:layout_height="21dp"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin"
             android:src="@drawable/menu3_resultados"
-            android:visibility="invisible"/>
+           />
 
-        <ImageView
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="45dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:id="@+id/reloadBtnLayout"
+            android:clickable="true">
+            <ImageView
             android:id="@+id/reloadBtn"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:layout_marginEnd="10dp"
             android:src="@drawable/icon_add_carrinho" />
+
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/setaLayout"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
             android:gravity="center"
-            android:layout_marginRight="5dp">
+            android:clickable="true"
+            >
             <ImageView
                 android:id="@+id/setaImg"
                 android:layout_width="10dp"
