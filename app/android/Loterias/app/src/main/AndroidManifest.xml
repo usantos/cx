@@ -132,7 +132,7 @@
             android:parentActivityName=".view.ListaRapidaoActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar"
-            android:windowSoftInputMode="stateHidden">
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize|adjustPan">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="caixa.gov.br.loterias.view.ListaRapidaoActivity" />

@@ -11,6 +11,7 @@ import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ScrollView;
@@ -92,6 +93,11 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
                postRapidoesWebservice();
             }
         });
+
+
+        final ScrollView scrollConfigRapidao = (ScrollView)findViewById(R.id.scrollViewRapidaoConfig);
+        scrollConfigRapidao.setFocusableInTouchMode(true);
+        scrollConfigRapidao.setDescendantFocusability( ViewGroup.FOCUS_BEFORE_DESCENDANTS);
     }
 
 
@@ -362,13 +368,7 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
         gridViewApostaFavorita();
 
 
-        final ScrollView scrollConfigRapidao = (ScrollView)findViewById(R.id.scrollViewRapidaoConfig);
-        scrollConfigRapidao.post(new Runnable()
-        {
-            public void run() {
-                scrollConfigRapidao.fullScroll(ScrollView.FOCUS_UP);
-            }
-        });
+
     }
 
 

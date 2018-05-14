@@ -278,6 +278,7 @@
                     android:stretchMode="spacingWidthUniform"
                     android:layout_marginTop="19dp"
                     android:isScrollContainer="false"
+                    android:focusable="false"
                     />
 
             </LinearLayout>
@@ -317,6 +318,8 @@
                     android:layout_marginTop="19dp"
                     android:isScrollContainer="false"
                     android:layout_marginHorizontal="10dp"
+                    android:focusable="false"
+
                     />
 
             </LinearLayout>
@@ -356,6 +359,8 @@
                     android:layout_marginTop="19dp"
                     android:isScrollContainer="false"
                     android:layout_marginHorizontal="10dp"
+                    android:focusable="false"
+
                     />
 
             </LinearLayout>
@@ -389,6 +394,8 @@
                     android:numColumns="1"
                     android:layout_marginTop="19dp"
                     android:layout_marginBottom="50dp"
+                    android:focusable="false"
+
                     />
 
             </LinearLayout>
