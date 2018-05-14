@@ -115,6 +115,7 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostasConfi
                         break;
                     }
                     default:
+                        onApostasConfirmadasListener.onItemClick(apostaDTO);
                         break;
                 }
             }

@@ -90,7 +90,7 @@
         android:layout_height="match_parent"
         android:layout_weight="0.6"
         android:clickable="false"
-        android:gravity="center">
+        android:gravity="center_vertical|right">
 
         <ImageView
             android:id="@+id/resultBtn"
@@ -109,9 +109,10 @@
 
         <LinearLayout
             android:id="@+id/setaLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center">
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:gravity="center"
+            android:layout_marginRight="5dp">
             <ImageView
                 android:id="@+id/setaImg"
                 android:layout_width="10dp"
