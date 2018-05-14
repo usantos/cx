@@ -97,6 +97,7 @@ public class ListaRapidaoActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_duvida) {
+            abrirTermosUso();
             return true;
         }
         if (id == R.id.action_config_rapidao) {
@@ -105,6 +106,11 @@ public class ListaRapidaoActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void abrirTermosUso(){
+        Intent activity = new Intent(ListaRapidaoActivity.this, TermosUsoActivity.class);
+        startActivity(activity);
     }
 
     private void abrirConfigRapidao() {
