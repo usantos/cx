@@ -33,20 +33,12 @@
                 android:layout_below="@+id/textViewTituloCadastrar"
                 android:layout_marginTop="19dp"></View>
 
-            <ImageView
-                android:id="@+id/imageViewIcoPasso1"
-                android:layout_width="53dp"
-                android:layout_height="21dp"
-                android:layout_below="@id/linhaDivisaTopo"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="42dp"
-                app:srcCompat="@drawable/passo1" />
 
             <TextView
                 android:id="@+id/textViewTituloCadastrar2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/imageViewIcoPasso1"
+                android:layout_below="@id/linhaDivisaTopo"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="20dp"
                 android:text=""
@@ -294,7 +286,6 @@
                 android:layout_height="92dp"
                 android:layout_below="@id/editTextEmail"
                 android:layout_marginTop="20dp"
-                android:background="@color/cinzaclaro"
                 android:orientation="horizontal">
 
                 <android.support.v7.widget.AppCompatCheckBox
@@ -335,7 +326,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="92dp"
                 android:layout_below="@id/LinearLayoutLayoutHoriontalDeclararAceite"
-                android:background="@color/cinzaclaro"
                 android:orientation="horizontal">
 
                 <Button

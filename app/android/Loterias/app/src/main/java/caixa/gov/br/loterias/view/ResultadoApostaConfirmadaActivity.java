@@ -94,7 +94,7 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
             public void onErrorResponse(VolleyError error) {
                 alertDialog.dismiss();
                 String msgError = MensagensNetwork.setMensagem(error, ResultadoApostaConfirmadaActivity.this);
-                ViewUtils.alert(getContext(), msgError);
+                ViewUtils.alertTitleButton(getContext(), R.string.label_atencao, msgError, getContext().getResources().getString( R.string.ok ));
             }
         });
 

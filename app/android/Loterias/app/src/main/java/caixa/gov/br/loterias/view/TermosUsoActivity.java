@@ -95,11 +95,11 @@ public class TermosUsoActivity extends AppCompatActivity {
                        @Override
                        public void onErrorResponse(VolleyError error) {
                            DialogUtils.dismiss();
-                           ViewUtils.alert(TermosUsoActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
+                           ViewUtils.alertTitleButton(TermosUsoActivity.this, R.string.label_atencao, MensagensNetwork.setMensagem(error, getApplicationContext()), getApplicationContext().getResources().getString( R.string.ok ));
                        }
                    });
                }else {
-                   ViewUtils.alertTitleButton( TermosUsoActivity.this, R.string.label_atencao, TermosUsoActivity.this.getResources().getString( R.string.MN003 ), "ok" );
+                   ViewUtils.alertTitleButton( TermosUsoActivity.this, R.string.label_atencao, TermosUsoActivity.this.getResources().getString( R.string.MN003 ), getApplicationContext().getResources().getString( R.string.ok ) );
                }
 
             }
@@ -170,7 +170,10 @@ public class TermosUsoActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 DialogUtils.dismiss();
-                ViewUtils.alert(TermosUsoActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
+                ViewUtils.alertTitleButton(TermosUsoActivity.this,
+                        R.string.label_atencao,
+                        MensagensNetwork.setMensagem(error, getApplicationContext()),
+                        getApplicationContext().getResources().getString( R.string.ok ));
             }
         });
     }
@@ -253,7 +256,10 @@ public class TermosUsoActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 DialogUtils.dismiss();
                 exibeRodapeAceite();
-                ViewUtils.alert(TermosUsoActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
+                ViewUtils.alertTitleButton(TermosUsoActivity.this,
+                        R.string.label_atencao,
+                        MensagensNetwork.setMensagem(error, getApplicationContext()),
+                        TermosUsoActivity.this.getResources().getString( R.string.ok ));
                 termosUsoButton.performClick();
 
             }
@@ -302,7 +308,10 @@ public class TermosUsoActivity extends AppCompatActivity {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     DialogUtils.dismiss();
-                    ViewUtils.alert(TermosUsoActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
+                    ViewUtils.alertTitleButton(TermosUsoActivity.this,
+                            R.string.label_atencao,
+                            MensagensNetwork.setMensagem(error, getApplicationContext()),
+                            TermosUsoActivity.this.getResources().getString( R.string.ok ));
                 }
             });
         } else {

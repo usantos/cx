@@ -58,15 +58,12 @@ public class CadastrarActivity extends CadastroActivity {
 
     @ViewById
     EditText editTextNomeContent, editTextEmailContent, editTextMunicipioContent, editTextUFContent;
-    //editTextNomeMaeContent;
 
     @ViewById
     MaskedEditText editTextCpfContent, editTextCepContent;
-//            editTextNascimentoContent;
 
     @ViewById
     Button buttonFinalizarCadastro;
-    //buttonContinuarIntroducao;
 
     @ViewById
     SegmentedButtonGroup segmentedButtonSexo;
@@ -79,8 +76,6 @@ public class CadastrarActivity extends CadastroActivity {
 
     @ViewById
     AppCompatCheckBox aceiteTermo;
-
-    CadastrarApostadorDTO cadastrarApostadorDTO;
 
     @AfterViews
     protected void init() {
@@ -96,7 +91,6 @@ public class CadastrarActivity extends CadastroActivity {
             List<ApostaDTO> apostas = new ArrayList<ApostaDTO>();
             cadastrarApostadorDTO.setApostas(apostas);
         }
-//        callWebserviceDadosUsuario();
 
         KeycloakBO keycloakBO = KeycloakBO_.getInstance_( CadastrarActivity.this );
         String acessToken = keycloakBO.getAccessToken();
@@ -108,7 +102,6 @@ public class CadastrarActivity extends CadastroActivity {
     }
 
     private void loadFields() {
-//        editTextNascimentoContent = (MaskedEditText) findViewById(R.id.editTextNascimentoContent);
         textViewTituloCadastrar2.setText(ViewUtils.textFuturaAndFuturaBold(this,"Que bom ver _você por aqui_ :)"));
     }
 
@@ -126,9 +119,7 @@ public class CadastrarActivity extends CadastroActivity {
         addRightImg((EditText) findViewById(R.id.editTextCpfContent));
         addRightImg((EditText) findViewById(R.id.editTextEmailContent));
         addListenerFinalizar();
-//        addRightImg((EditText) findViewById(R.id.editTextNomeMaeContent));
-//        addRightImg((EditText) findViewById(R.id.editTextNascimentoContent));
-//        addListenerContinuar();
+
     }
 
 
@@ -168,41 +159,6 @@ public class CadastrarActivity extends CadastroActivity {
         });
     }
 
-//    private void addListenerContinuar() {
-//
-//        buttonContinuarIntroducao.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View v) {
-//
-//                if (validarCamposObrigatorios()) {
-////                    if (validate()) {
-//                        carregaApostadorDTO();
-//                        Intent intent = new Intent(getBaseContext(), CadastrarPasso2Activity_.class);
-//                        startActivity(intent);
-////                    }
-//                }
-//            }
-//        });
-//    }
-
-//    private boolean validate() {
-//        String textNascimento = AppUtils.getEditTextValue(editTextNascimentoContent);
-//        if (textNascimento != null) {
-//
-//            if (DateUtils.isLegalDate(textNascimento, DateUtils.PATTERN_DDMM_YYYY)) {
-//                Calendar calendar = Calendar.getInstance();
-//                Date dateBorn = DateUtils.stringToDate(textNascimento, DateUtils.PATTERN_DDMM_YYYY);
-//                int age = DateUtils.getBetweenAges(calendar, DateUtils.DateToCalendar(dateBorn));
-//                if (age < 18) {
-//                    ViewUtils.alertTitulo(this, R.string.label_atencao, getString(R.string.MN002));
-//                    return false;
-//                }
-//                return true;
-//            }
-//            ViewUtils.alertTitulo(this,R.string.label_atencao, getString(R.string.msg_erro_data_invalida));
-//            return false;
-//        }
-//        return true;
-//    }
 
     private void initOnclick() {
 
@@ -239,18 +195,6 @@ public class CadastrarActivity extends CadastroActivity {
             }
         });
 
-//        this.editTextCepContent.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-//            @Override
-//            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-//
-//                String cep = textView.getText().toString().replace("-", "").trim();
-//
-//                if (StringUtils.isNotEmpty(cep) && (keyEvent != null && (keyEvent.getKeyCode() == KeyEvent.KEYCODE_NAVIGATE_NEXT)) || (i == EditorInfo.IME_ACTION_NEXT)) {
-//                    buscarBairroPorCep(cep);
-//                }
-//                return false;
-//            }
-//        });
     }
 
     public Dialog onCreateDialogSingleChoice(List<String> listString, String TituloAlert) {
@@ -282,6 +226,12 @@ public class CadastrarActivity extends CadastroActivity {
     }
 
     private boolean validarCamposObrigatorios() {
+        if (aceiteTermo.isChecked()) {
+            cadastrarApostadorDTO.setAceitaTermosUso(Boolean.TRUE);
+        } else {
+            ViewUtils.alertTitulo(CadastrarActivity.this, R.string.label_atencao, this.getResources().getString( R.string.termos_nao_aceitos ));
+            return false;
+        }
         String campos = "";
 
         if (StringUtils.isEmpty(AppUtils.removeMasckCPF(editTextCpfContent.getText().toString()))) {
@@ -290,9 +240,7 @@ public class CadastrarActivity extends CadastroActivity {
         if (StringUtils.isEmpty(editTextNomeContent.getText().toString())) {
             campos += "\nNome";
         }
-//        if (StringUtils.isEmpty(editTextNomeMaeContent.getText().toString())) {
-//            campos += "\nNome da Mãe";
-//        }
+
         if (StringUtils.isEmpty(editTextCepContent.getText().toString().replace("-", "").trim())) {
             campos += "\n" + getResources().getString(R.string.CEP);
         }
@@ -302,19 +250,10 @@ public class CadastrarActivity extends CadastroActivity {
         if (StringUtils.isEmpty(editTextMunicipioContent.getText().toString())) {
             campos += "\nMunicípio";
         }
-//        if (StringUtils.isEmpty(editTextNascimentoContent.getText().toString().replace("/", "").trim())) {
-//            campos += "\nNascimento";
-//        }
         if (StringUtils.isEmpty(editTextEmailContent.getText().toString())) {
             campos += "\nE-mail";
         }
-        if (aceiteTermo.isChecked()) {
-            cadastrarApostadorDTO.setAceitaTermosUso(Boolean.TRUE);
-        } else {
-            campos += "\nTermo de Uso";
-        }
-//        cadastrarApostadorDTO.setCpf( editTextCpfContent.getUnmaskedText() );
-//        cadastrarApostadorDTO.setNome( editTextNomeContent.getText().toString() );
+
         CadastrarApostadorDTO.SexoEnum sexoEnum;
         if (segmentedButtonSexo.getPosition() == 0){
             sexoEnum = CadastrarApostadorDTO.SexoEnum.M;
@@ -323,28 +262,16 @@ public class CadastrarActivity extends CadastroActivity {
         }
         cadastrarApostadorDTO.setSexo( sexoEnum );
         cadastrarApostadorDTO.setCep( editTextCepContent.getText().toString() );
-//        cadastrarApostadorDTO.setEmail( editTextEmailContent.getText().toString() );
 
         if (StringUtils.isEmpty(campos)) {
             return true;
         } else {
 
-            ViewUtils.alertTitulo(CadastrarActivity.this, R.string.MA002, campos);
+            ViewUtils.alertTitulo(CadastrarActivity.this, R.string.label_atencao, this.getResources().getString( R.string.MA002 ) + " " + campos);
             return false;
         }
     }
 
-    private void carregaApostadorDTO() {
-//        cadastrarApostadorDTO.setCpf(AppUtils.removeMasckCPF(editTextCpfContent.getText().toString()));
-//        cadastrarApostadorDTO.setEmail(editTextEmailContent.getText().toString());
-//        cadastrarApostadorDTO.setNome(editTextNomeContent.getText().toString());
-//        cadastrarApostadorDTO.setNomeMae(editTextNomeMaeContent.getText().toString());
-//        cadastrarApostadorDTO.setDataNascimento(editTextNascimentoContent.getText().toString());
-//        cadastrarApostadorDTO.setCep(AppUtils.removeMasckCPF(editTextCepContent.getText().toString()));
-//        cadastrarApostadorDTO.setAceitaReceberNoticias(Boolean.TRUE);
-//        cadastrarApostadorDTO.setSexo( sexo );
-//        cadastrarApostadorDTO.setMercadoPagoCustomerId("0");
-    }
 
     private void buscarBairroPorCep(String cep) {
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
@@ -380,53 +307,15 @@ public class CadastrarActivity extends CadastroActivity {
     }
 
 
-//    private void callWebserviceDadosUsuario() {
-//
-//        final AlertDialog loadViewProgress = LoadingViewLoterias.show(CadastrarActivity.this);
-//        final DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_( this );
-//
-//        dadosUsuarioBO.getDadosUsuario( new RequestListener<ApostadorDTOResponse>() {
-//            @Override
-//            public void onResponse(ApostadorDTOResponse response) {
-//                apostadorDTO = response.getPayload();
-//                buscarBairroPorCep( response.getPayload().getCep() );
-//            }
-//
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                loadViewProgress.dismiss();
-//                NetworkResponse response = error.networkResponse;
-////
-////                if (response.statusCode == 404){
-////
-////                }else{
-////
-////                }
-//                //enquanto não especifica erro 404 para não existe dados do usuário no silce
-////                ViewUtils.alertTitulo( CadastrarActivity.this, R.string.label_atencao, MensagensNetwork.setMensagem( error, CadastrarActivity.this ) );
-//
-//
-//            }
-//        } );
-//    }
 
 
     private void atualizaLayout(DadosUsuarioToken dadosUsuarioToken) {
         editTextCpfContent.setMaskedText( dadosUsuarioToken.getCpf() );
         editTextNomeContent.setText( dadosUsuarioToken.getName() );
         editTextEmailContent.setText( dadosUsuarioToken.getEmail() );
-//        editTextNascimentoContent.setText( dadosUsuarioToken.getDataNascimento() );
-
-
         editTextCpfContent.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
         editTextNomeContent.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
-//        editTextCepContent.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
         editTextEmailContent.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
-//        editTextCepContent.setMaskedText( apostadorDTO.getCep() );
-//        if (apostadorDTO.getSexo().equals( ApostadorDTO.SexoEnum.F )){
-//            segmentedButtonSexo.setPosition( 1 );
-//        }else{
-//            segmentedButtonSexo.setPosition( 0 );
-//        }
+
     }
 }

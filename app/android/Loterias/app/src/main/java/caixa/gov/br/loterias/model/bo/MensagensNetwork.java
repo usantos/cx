@@ -7,6 +7,7 @@ import com.android.volley.NetworkResponse;
 import com.android.volley.NoConnectionError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
+import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,6 +15,7 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.model.bean.ErrorResponse;
 
 /**
  * Created by cedesbr450 on 08/12/17.
@@ -41,34 +43,39 @@ public class MensagensNetwork {
             return context.getString(R.string.sistema_indisponivel);
         }
 
-        final byte[] textBytes = response.data;
-        String msgErro;
-        String msgErroResponse;
+        Gson gsonResponse = new Gson();
 
-        try {
-            String json = new String(textBytes, "UTF-8");
-            JSONObject jsonObj = new JSONObject(json);
-            msgErroResponse = jsonObj.getString("mensagem");
-        } catch (UnsupportedEncodingException | JSONException e) {
-            msgErroResponse = context.getString(R.string.sistema_indisponivel);
+        ErrorResponse errorResponse = new ErrorResponse();
+
+        String body;
+        //get response body and parse with appropriate encoding
+        if(error.networkResponse.data!=null) {
+            try {
+                body = new String(error.networkResponse.data,"UTF-8");
+                errorResponse = gsonResponse.fromJson(body, ErrorResponse.class);
+
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (errorResponse.getMensagem() == null){
+            errorResponse.setMensagem( context.getString( R.string.sistema_indisponivel ) );
         }
 
         switch (response.statusCode){
             case UNAUTHORIZED:
-                msgErro = context.getString(R.string.erro_401);
+                errorResponse.setMensagem(  context.getString(R.string.erro_401) );
                 break;
             case TIMEOUT:
-                msgErro = context.getString(R.string.erro_408);
+                errorResponse.setMensagem(  context.getString(R.string.erro_408) );
                 break;
             case INTERNAL_SERVER_ERROR:
-                msgErro = context.getString(R.string.erro_500);
-                break;
-            default:
-                msgErro = msgErroResponse;
+                errorResponse.setMensagem(  context.getString(R.string.erro_500) );
                 break;
         }
 
-        return msgErro;
+        return errorResponse.getMensagem();
     }
 
     public static boolean isUnauthorizedError(VolleyError error){

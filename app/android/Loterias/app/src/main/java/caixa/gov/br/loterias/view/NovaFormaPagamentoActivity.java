@@ -138,7 +138,10 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
                                         editTextNumeroCartaoContent.getText().toString().equals("")||
                                         editTextCodigoSegurancaContent.getText().toString().equals("") ||
                                         editTextNomeClienteCartaoContent.getText().toString().equals("")){
-                                ViewUtils.alert(NovaFormaPagamentoActivity.this, "Informe os dados do cartão.");
+                                ViewUtils.alertTitleButton(NovaFormaPagamentoActivity.this,
+                                        R.string.label_atencao,
+                                        "Informe os dados do cartão.",
+                                        NovaFormaPagamentoActivity.this.getResources().getString( R.string.ok ));
                                 return;
                 }
                 CardToken cardToken = new CardToken(editTextNumeroCartaoContent.getText().toString(),

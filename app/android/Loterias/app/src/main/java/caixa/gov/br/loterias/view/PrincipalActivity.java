@@ -189,7 +189,10 @@ public class PrincipalActivity extends AppCompatActivity
             @Override
             public void onErrorResponse(VolleyError error) {
                 loadViewProgress.dismiss();
-                ViewUtils.alert(PrincipalActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()), new DialogInterface.OnDismissListener() {
+                ViewUtils.alertTitleButton(PrincipalActivity.this, R.string.label_atencao, MensagensNetwork.setMensagem(error,
+                        getApplicationContext()),
+                        PrincipalActivity.this.getResources().getString( R.string.ok ),
+                        new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialogInterface) {
                         startActivity(new Intent(PrincipalActivity.this, LoginActivity.class));

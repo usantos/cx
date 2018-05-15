@@ -470,7 +470,10 @@ public class DadosPessoaisActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 loadViewProgress.dismiss();
-                ViewUtils.alert(DadosPessoaisActivity.this, MensagensNetwork.setMensagem(error, DadosPessoaisActivity.this));
+                ViewUtils.alertTitleButton(DadosPessoaisActivity.this,
+                        R.string.label_atencao,
+                        MensagensNetwork.setMensagem(error, DadosPessoaisActivity.this),
+                        getApplicationContext().getResources().getString( R.string.ok ));
             }
         });
     }
