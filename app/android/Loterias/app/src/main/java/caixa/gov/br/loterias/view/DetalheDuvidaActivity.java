@@ -1,5 +1,6 @@
 package caixa.gov.br.loterias.view;
 
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -39,6 +40,11 @@ public class DetalheDuvidaActivity extends AppCompatActivity {
 
     @AfterViews
     public void init() {
+        callWebservice();
+        createToolBar();
+    }
+
+    private void callWebservice(){
 
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
         DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(getApplicationContext());
@@ -63,7 +69,14 @@ public class DetalheDuvidaActivity extends AppCompatActivity {
                 RedirectNetwork.checkRedirect( error, DetalheDuvidaActivity.this );
             }
         });
-        createToolBar();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == 1) {
+            callWebservice();
+        }
     }
 
     private void createRecyclerView(List<DuvidaDTO> duvidas) {

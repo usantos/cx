@@ -76,6 +76,14 @@ public class ListaComprasActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == 1) {
+            callWebServiceMesCompras();
+        }
+    }
+
+    @Override
     public boolean onSupportNavigateUp(){
         finish();
         return true;
@@ -167,7 +175,6 @@ public class ListaComprasActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 loadViewProgress.dismiss();
-                ViewUtils.alert(ListaComprasActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
                 RedirectNetwork.checkRedirect( error, ListaComprasActivity.this );
 
             }

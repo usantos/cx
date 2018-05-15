@@ -330,9 +330,6 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
             public void onResponse(CarrinhoDTOResponse response) {
                 DialogUtils.dismiss();
                 ViewUtils.alert( context, context.getResources().getString( R.string.label_aposta_salva_carinha ) );
-                if (response.getRedirect() != null){
-                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), activity);
-                }
             }
 
             @Override

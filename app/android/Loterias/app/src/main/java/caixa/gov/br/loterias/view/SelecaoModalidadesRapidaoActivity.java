@@ -71,6 +71,13 @@ public class SelecaoModalidadesRapidaoActivity extends AppCompatActivity{
         callWebservice();
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == 1) {
+            callWebservice();
+        }
+    }
 
 
     @Override

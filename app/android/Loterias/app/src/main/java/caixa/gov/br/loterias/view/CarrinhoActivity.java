@@ -61,6 +61,14 @@ public class CarrinhoActivity extends SettingToolbarActivity {
         callWebservice();
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == 1) {
+            callWebservice();
+        }
+    }
+
     public void lerCarrinhoLocal(Boolean animacao) {
         DBLoteriasCrud crud = new DBLoteriasCrud(getApplicationContext());
         carrinho = new CarrinhoDTO();

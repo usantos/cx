@@ -65,6 +65,15 @@ public class FavoritasActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == 1) {
+            callWebservice();
+        }
+    }
+
+
+    @Override
     public boolean onSupportNavigateUp(){
         finish();
         return true;

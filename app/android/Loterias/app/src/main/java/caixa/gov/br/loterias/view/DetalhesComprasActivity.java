@@ -50,6 +50,14 @@ public class DetalhesComprasActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == 1) {
+            callWebService();
+        }
+    }
+
+    @Override
     public boolean onSupportNavigateUp(){
         finish();
         return true;

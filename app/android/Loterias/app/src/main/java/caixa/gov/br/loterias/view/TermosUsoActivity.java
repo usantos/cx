@@ -80,21 +80,27 @@ public class TermosUsoActivity extends AppCompatActivity {
         buttonTermoAceite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DialogUtils.show(TermosUsoActivity.this);
-                DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(TermosUsoActivity.this);
-                dadosCorporativosBO.aceiteTermo(new RequestListener<ResourceResponse>() {
-                    @Override
-                    public void onResponse(ResourceResponse response) {
-                        DialogUtils.dismiss();
-                        finish();
-                    }
+               if (selcioneAceiteTermoUso.isChecked()){
+                   DialogUtils.show(TermosUsoActivity.this);
+                   DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(TermosUsoActivity.this);
+                   dadosCorporativosBO.aceiteTermo(new RequestListener<ResourceResponse>() {
+                       @Override
+                       public void onResponse(ResourceResponse response) {
+                           DialogUtils.dismiss();
+                           Intent intent = new Intent();
+                           setResult(RESULT_OK, intent);
+                           finish();
+                       }
 
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        DialogUtils.dismiss();
-                        ViewUtils.alert(TermosUsoActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
-                    }
-                });
+                       @Override
+                       public void onErrorResponse(VolleyError error) {
+                           DialogUtils.dismiss();
+                           ViewUtils.alert(TermosUsoActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
+                       }
+                   });
+               }else {
+                   ViewUtils.alertTitleButton( TermosUsoActivity.this, R.string.label_atencao, TermosUsoActivity.this.getResources().getString( R.string.MN003 ), "ok" );
+               }
 
             }
         });
@@ -105,10 +111,10 @@ public class TermosUsoActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (selcioneAceiteTermoUso.isChecked()) {
                     selcioneAceiteTermoUso.setChecked(Boolean.FALSE);
-                    disableButton();
+//                    disableButton();
                 } else {
                     selcioneAceiteTermoUso.setChecked(Boolean.TRUE);
-                    enableButton();
+//                    enableButton();
                 }
             }
         });
@@ -248,11 +254,16 @@ public class TermosUsoActivity extends AppCompatActivity {
                 DialogUtils.dismiss();
                 exibeRodapeAceite();
                 ViewUtils.alert(TermosUsoActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
+                termosUsoButton.performClick();
+
             }
         });
     }
 
     private void exibeRodapeAceite() {
+        termosUsoButton.setEnabled( false );
+        politicaButton.setEnabled( false );
+        duvidasButton.setEnabled( false );
         footerAceiteTermo.setVisibility( View.VISIBLE );
         isTermoAceito = Boolean.FALSE;
         getSupportActionBar().setDisplayHomeAsUpEnabled(isTermoAceito);

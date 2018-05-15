@@ -1,5 +1,6 @@
 package caixa.gov.br.loterias.view;
 
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -48,6 +49,14 @@ public class RepassesSociaisActivity extends SettingToolbarActivity {
         return true;
     }
 
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == 1) {
+            callWebservice();
+        }
+    }
 
     private void callWebservice () {
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);

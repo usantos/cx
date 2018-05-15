@@ -128,6 +128,16 @@ public class JogosConfirmadosPremioMercadoPagoActivity extends AppCompatActivity
 
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == 1) {
+            callWebserviceResgatarPremio();
+        }
+    }
+
+
     private void abrirTermosUso(){
         Intent activity = new Intent(JogosConfirmadosPremioMercadoPagoActivity.this, TermosUsoActivity.class);
         startActivity(activity);

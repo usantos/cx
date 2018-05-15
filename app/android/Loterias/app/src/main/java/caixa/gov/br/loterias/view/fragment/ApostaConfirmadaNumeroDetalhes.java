@@ -121,6 +121,6 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 
     @Click(R.id.conferirResultadoButton)
     protected void conferirResultadoClick() {
-        ConferirResultadoHelper.conferirResultado(aposta.getId(), getActivity());
+            ConferirResultadoHelper.conferirResultado(aposta.getId(), getActivity());
     }
 }

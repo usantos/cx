@@ -97,6 +97,8 @@
     <string name="MA020">A situação da aposta foi atualizada, por favor verifique o comprovante gerado.</string>
     <string name="msg_favor_inserir_nome_aposta">Favor inserir um nome para sua aposta favorita</string>
     <string name="msg_erro_data_invalida"> Data Inválida</string>
+    
+    <string name="MN003">Para continuar navegando é necessário aceitar a nova versão do Termo de Uso.</string>
 
 
     <string name="title_activity_lista_rapidao">_Rapidão_</string>

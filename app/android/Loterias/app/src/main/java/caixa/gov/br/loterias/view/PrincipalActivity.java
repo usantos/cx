@@ -331,6 +331,14 @@ public class PrincipalActivity extends AppCompatActivity
         }
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == 1) {
+            callWebservice();
+        }
+    }
+
     private void sairLogin() {
 
         ViewUtils.alertTitleButtonYesOrNotListener(this, getResources().getString(R.string.MA008), new DialogInterface.OnClickListener() {
