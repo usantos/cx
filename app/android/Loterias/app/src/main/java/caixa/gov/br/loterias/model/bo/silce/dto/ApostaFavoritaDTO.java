@@ -49,6 +49,18 @@ public class ApostaFavoritaDTO {
     @SerializedName("id")
     private Long id = null;
 
+    private Boolean isOpenSwipeLayout;
+
+
+    public Boolean getOpenSwipeLayout() {
+        return isOpenSwipeLayout;
+    }
+
+    public void setOpenSwipeLayout(Boolean openSwipeLayout) {
+        isOpenSwipeLayout = openSwipeLayout;
+    }
+
+
     /**
      **/
     @ApiModelProperty(value = "")

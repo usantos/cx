@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
@@ -20,6 +21,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
+import com.daimajia.swipe.SimpleSwipeListener;
+import com.daimajia.swipe.SwipeLayout;
+
+import org.bouncycastle.asn1.x509.Holder;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -61,7 +66,7 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
     private final Context context;
     private final Activity activity;
     private final List<ApostaFavoritaDTO> listaApostaFavorita;
-
+    private ViewTreeObserver.OnGlobalLayoutListener swipeGlobalLayoutListener;
 
     public FavoritasRecyclerViewAdapter(final Activity activity, final Context context, final List<ApostaFavoritaDTO> listaApostaFavorita) {
         this.context = context;
@@ -80,69 +85,76 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
 
-        final ApostaFavoritaDTO aposta = listaApostaFavorita.get(position);
 
-        final RelativeLayout relativeLayoutFavoritasAdapter = (RelativeLayout) holder.itemView.findViewById(R.id.RelativeLayoutFavoritasAdapter);
 
-        final RelativeLayout relativeLayoutContentFavoritas = (RelativeLayout) holder.itemView.findViewById(R.id.RelativeLayoutContentFavoritas);
+        final SwipeLayout swipeLayout = (SwipeLayout) holder.itemView;
+        swipeLayout.setClickToClose(true);
+        swipeLayout.getDragEdgeMap().clear();
+        swipeLayout.addDrag(SwipeLayout.DragEdge.Left, swipeLayout.findViewById(R.id.dadosApostaCarrinho));
+        swipeLayout.setDragEdge(SwipeLayout.DragEdge.Left);
 
-        final RelativeLayout relativeLayoutContentAlterarFavoritas = (RelativeLayout) holder.itemView.findViewById(R.id.RelativeLayoutContentAlterarFavoritas);
 
-        final RelativeLayout relativeLayoutContentAlterarFavoritasEditar = (RelativeLayout) holder.itemView.findViewById( R.id.relativeLayoutContentAlterarFavoritasEditar );
+        swipeLayout.addSwipeListener(new SimpleSwipeListener() {
+            @Override
+            public void onStartOpen(SwipeLayout layout) {
+                listaApostaFavorita.get(position).setOpenSwipeLayout( true );
+            }
 
-        final LinearLayout linearLayoutLayoutContentAlterarFavoritasSalvo = (LinearLayout) holder.itemView.findViewById( R.id.linearLayoutLayoutContentAlterarFavoritasSalvo );
+            @Override
+            public void onStartClose(SwipeLayout layout) {
+                holder.relativeLayoutContentAlterarFavoritasEditar.setVisibility( View.VISIBLE );
+                holder.linearLayoutLayoutContentAlterarFavoritasSalvo.setVisibility( View.GONE );
+                listaApostaFavorita.get(position).setOpenSwipeLayout( false );
+            }
+        });
 
-        final HorizontalScrollView horizontalScrollViewFavoritasItem = (HorizontalScrollView) holder.itemView.findViewById(R.id.HorizontalScrollViewFavoritasItem);
+        swipeGlobalLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                if (listaApostaFavorita.get(position).getOpenSwipeLayout() == null){
+                    listaApostaFavorita.get( position ).setOpenSwipeLayout( false );
+                }else{
+                    if (listaApostaFavorita.get(position).getOpenSwipeLayout()) {
+                        // Opens the layout without animation
+                        swipeLayout.open(false);
+                    }
+                }
 
-        final EditText editTextNomeDaAposta = (EditText) holder.itemView.findViewById(R.id.editTextNomeDaAposta);
+            }
+        };
 
-        final TextView tituloApostaFavorita = (TextView) holder.itemView.findViewById(R.id.tituloApostaFavorita);
-        tituloApostaFavorita.setText(listaApostaFavorita.get(position).getModalidade().getDescricao());
+        swipeLayout.getViewTreeObserver().addOnGlobalLayoutListener(swipeGlobalLayoutListener);
 
-        final TextView tituloNomeApostaFavorita = (TextView) holder.itemView.findViewById(R.id.tituloNomeApostaFavorita);
-        tituloNomeApostaFavorita.setText(" | " + listaApostaFavorita.get(position).getNome());
 
+
+
+        holder.tituloApostaFavorita.setText(listaApostaFavorita.get(position).getModalidade().getDescricao());
+        holder.tituloNomeApostaFavorita.setText(" | " + listaApostaFavorita.get(position).getNome());
+//
         String numeroStr = "";
-        for (Integer num : aposta.getNumerosSelecionados()) {
-            if (num == (aposta.getNumerosSelecionados().get(aposta.getNumerosSelecionados().size() - 1))) {
+        for (Integer num : listaApostaFavorita.get( position ).getNumerosSelecionados()) {
+            if (num == (listaApostaFavorita.get( position ).getNumerosSelecionados().get(listaApostaFavorita.get( position ).getNumerosSelecionados().size() - 1))) {
                 numeroStr += String.format("%02d", num);
             } else {
                 numeroStr += String.format("%02d - ", num);
             }
         }
         holder.numerosApostaFavorita.setText(numeroStr);
-
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewUtils.getAppUsableScreenSize(context).x, ViewUtils.setDisplayMetric(100, context));
-        relativeLayoutFavoritasAdapter.setLayoutParams(params);
-
-        final RelativeLayout editarRelativeLayoutFavoritos = (RelativeLayout) holder.itemView.findViewById(R.id.editarRelativeLayoutFavoritos);
-        final RelativeLayout exluirRelativeLayoutFavoritos = (RelativeLayout) holder.itemView.findViewById(R.id.exluirRelativeLayoutFavoritos);
-        final Button buttonSalvarNomeAposta = (Button) holder.itemView.findViewById(R.id.buttonSalvarNomeAposta);
-        final RelativeLayout editarRelativeLayoutAddCarrinho = (RelativeLayout) holder.itemView.findViewById(R.id.editarRelativeLayoutAddCarrinho);
-
-
-        final TextView nomeApostaSalvoTextView = (TextView) holder.itemView.findViewById(R.id.nomeApostaSalvoTextView);
-
-        editarRelativeLayoutFavoritos.setOnClickListener(new View.OnClickListener() {
+        holder.editarRelativeLayoutFavoritos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int larguraTela = ViewUtils.getAppUsableScreenSize(context).x;
-                Double posicaoMudar = (double) larguraTela - (larguraTela * 0.2);
-                translatePosicaoVoltarCard(relativeLayoutContentFavoritas,
-                        posicaoMudar.intValue());
-                editTextNomeDaAposta.setEnabled(true);
-                buttonSalvarNomeAposta.setEnabled(true);
+                swipeLayout.open(true);
             }
         });
 
-        exluirRelativeLayoutFavoritos.setOnClickListener(new View.OnClickListener() {
+        holder.exluirRelativeLayoutFavoritos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 deleteFavoritaCallWebservice(position);
             }
         });
 
-        editarRelativeLayoutAddCarrinho.setOnClickListener( new View.OnClickListener() {
+        holder.editarRelativeLayoutAddCarrinho.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 SessaoUsuario.getInstance().getParametrosSimulacao().setQuantidadeMaximaApostasCarrinho( 3 );
@@ -151,88 +163,21 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
             }
         } );
 
-        buttonSalvarNomeAposta.setOnClickListener(new View.OnClickListener() {
+        holder.layoutSalvarNomeAposta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (editTextNomeDaAposta.getText().toString().equals( "" )){
+                if (holder.editTextNomeDaAposta.getText().toString().equals( "" )){
                     ViewUtils.alertTitleButton( context, R.string.label_atencao,
                             context.getResources().getString( R.string.MA002 ) + " nome da aposta",
                             context.getResources().getString( R.string.ok ) );
                 }else {
-                    alterarFavoritaCallWebservice(listaApostaFavorita.get(position),
-                            relativeLayoutContentFavoritas,
-                            relativeLayoutContentAlterarFavoritasEditar,
-                            linearLayoutLayoutContentAlterarFavoritasSalvo,
-                            editTextNomeDaAposta,
-                            buttonSalvarNomeAposta,
-                            tituloNomeApostaFavorita,
-                            nomeApostaSalvoTextView);
+                    alterarFavoritaCallWebservice( listaApostaFavorita.get( position ), holder );
                 }
             }
         });
 
 
 
-        horizontalScrollViewFavoritasItem.setOnTouchListener(new View.OnTouchListener() {
-            float initialX = 0;
-            boolean cancelarAnimacao = false;
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                int larguraTela = ViewUtils.getAppUsableScreenSize(context).x;
-                Double posicaoMudar = (double) larguraTela - (larguraTela * 0.2);
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-
-                        if (relativeLayoutContentFavoritas.getX() ==
-                                posicaoMudar.intValue()
-                                )
-                        
-                        {
-                            if (event.getX()<relativeLayoutContentFavoritas.getX()){
-                                cancelarAnimacao = true;
-                            }else {
-                                cancelarAnimacao = false;
-                                linearLayoutLayoutContentAlterarFavoritasSalvo.setVisibility( View.INVISIBLE );
-                                relativeLayoutContentAlterarFavoritasEditar.setVisibility( View.VISIBLE );
-                                nomeApostaSalvoTextView.setText( "" );
-                            }
-                            initialX = -10;
-                        }else{
-                            initialX = event.getX();
-                        }
-                    case MotionEvent.ACTION_MOVE:
-                        Log.d("ACTION_MOVE", "ACTION_MOVE: "+ event.getX());
-                        Log.d("initialX", "initialX: "+ initialX);
-                        if (event.getX()>= initialX && initialX != -10){
-                            relativeLayoutContentFavoritas.setX(event.getX()-initialX);
-                        }
-                    break;
-                    case MotionEvent.ACTION_UP:
-                        if (relativeLayoutContentFavoritas.getX() > relativeLayoutContentFavoritas.getWidth()/2 && initialX != -10){
-                            translatePosicaoVoltarCard(relativeLayoutContentFavoritas,
-                                    posicaoMudar.intValue()
-                                    );
-                            editTextNomeDaAposta.setEnabled(true);
-                            buttonSalvarNomeAposta.setEnabled(true);
-                        }else{
-                            if (cancelarAnimacao != true){
-                                translatePosicaoVoltarCard(relativeLayoutContentFavoritas,
-                                        ViewUtils.setDisplayMetric(0, context));
-                                editTextNomeDaAposta.setEnabled(false);
-                                buttonSalvarNomeAposta.setEnabled(false);
-                            }
-                        }
-                    case MotionEvent.ACTION_CANCEL:
-
-
-                        break;
-                    case MotionEvent.ACTION_OUTSIDE:
-
-                        break;
-                }
-                return horizontalScrollViewFavoritasItem.onTouchEvent(event);
-            }
-        });
 
 
         }
@@ -251,45 +196,35 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        protected RelativeLayout relativeLayoutContentFavoritas;
-        protected RelativeLayout relativeLayoutContentAlterarFavoritas;
-        protected RelativeLayout relativeLayoutContentAlterarFavoritasEditar;
-        protected LinearLayout linearLayoutLayoutContentAlterarFavoritasSalvo;
-        protected TextView tituloApostaFavorira;
+        protected TextView tituloApostaFavorita;
+        protected TextView tituloNomeApostaFavorita;
         protected TextView numerosApostaFavorita;
         protected TextView nomeApostaSalvoTextView;
+        protected RelativeLayout editarRelativeLayoutAddCarrinho;
+        protected RelativeLayout editarRelativeLayoutFavoritos;
+        protected RelativeLayout exluirRelativeLayoutFavoritos;
+        protected LinearLayout linearLayoutLayoutContentAlterarFavoritasSalvo;
+        protected RelativeLayout relativeLayoutContentAlterarFavoritasEditar;
+        protected EditText editTextNomeDaAposta;
+        protected RelativeLayout layoutSalvarNomeAposta;
 
         public ViewHolder(final View itemView) {
             super(itemView);
-            relativeLayoutContentFavoritas = (RelativeLayout) itemView.findViewById(R.id.RelativeLayoutContentFavoritas);
-            relativeLayoutContentAlterarFavoritas = (RelativeLayout) itemView.findViewById(R.id.RelativeLayoutContentAlterarFavoritas);
-            relativeLayoutContentAlterarFavoritasEditar = (RelativeLayout) itemView.findViewById(R.id.relativeLayoutContentAlterarFavoritasEditar);
-            linearLayoutLayoutContentAlterarFavoritasSalvo = (LinearLayout) itemView.findViewById(R.id.linearLayoutLayoutContentAlterarFavoritasSalvo);
-            tituloApostaFavorira = (TextView) itemView.findViewById(R.id.tituloApostaFavorira);
+            tituloApostaFavorita = (TextView) itemView.findViewById(R.id.tituloApostaFavorita);
+            tituloNomeApostaFavorita = (TextView) itemView.findViewById(R.id.tituloNomeApostaFavorita);
             numerosApostaFavorita = (TextView) itemView.findViewById(R.id.numerosApostaFavorita);
             nomeApostaSalvoTextView = (TextView) itemView.findViewById(R.id.nomeApostaSalvoTextView);
+            editarRelativeLayoutAddCarrinho = (RelativeLayout) itemView.findViewById(R.id.editarRelativeLayoutAddCarrinho);
+            editarRelativeLayoutFavoritos = (RelativeLayout) itemView.findViewById(R.id.editarRelativeLayoutFavoritos);
+            exluirRelativeLayoutFavoritos = (RelativeLayout) itemView.findViewById(R.id.exluirRelativeLayoutFavoritos);
+            linearLayoutLayoutContentAlterarFavoritasSalvo = (LinearLayout) itemView.findViewById(R.id.linearLayoutLayoutContentAlterarFavoritasSalvo);
+            relativeLayoutContentAlterarFavoritasEditar = (RelativeLayout) itemView.findViewById(R.id.relativeLayoutContentAlterarFavoritasEditar);
+            editTextNomeDaAposta = (EditText) itemView.findViewById(R.id.editTextNomeDaAposta);
+            layoutSalvarNomeAposta = (RelativeLayout) itemView.findViewById(R.id.layoutSalvarNomeAposta);
         }
     }
 
 
-    private void translatePosicaoVoltarCard(final RelativeLayout favoritasRelativeLayout, int eixoX){
-
-        favoritasRelativeLayout.animate().translationX(eixoX).translationY(0).setDuration(500).setListener(new Animator.AnimatorListener() {
-                @Override
-                public void onAnimationStart(Animator animation) {}
-
-                @Override
-                public void onAnimationEnd(Animator animation) {
-
-                }
-
-                @Override
-                public void onAnimationCancel(Animator animation) {}
-
-                @Override
-                public void onAnimationRepeat(Animator animation) {}
-            });
-    }
 
 
     public void removeAt(int position) {
@@ -308,9 +243,7 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
             public void onResponse(RetornoPadraoDTO response) {
                 loadViewProgress.dismiss();
                 removeAt(position);
-//                if (response.getRedirect() != null){
-//                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), activity);
-//                }
+
             }
 
             @Override
@@ -341,41 +274,32 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
         });
     }
 
-    private void alterarFavoritaCallWebservice(final ApostaFavoritaDTO apostaFavoritaDTO,
-                                               final RelativeLayout favoritasRelativeLayout,
-                                               final RelativeLayout relativeLayoutContentAlterarFavoritasEditar,
-                                               final LinearLayout linearLayoutLayoutContentAlterarFavoritasSalvo,
-                                               final EditText editTextNomeDaAposta,
-                                               final Button buttonSalvarNomeAposta,
-                                               final TextView nomeApostaTextView,
-                                                final TextView nomeApostaSalvoTextView) {
+    private void alterarFavoritaCallWebservice(final ApostaFavoritaDTO apostaFavoritaDTO, final ViewHolder holder) {
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(activity);
         final ApostaBO apostaBO = ApostaBO_.getInstance_(activity);
-        final ApostaFavoritaDTO apostaFavoritaDTOSalvar = apostaFavoritaDTO;
-        apostaFavoritaDTOSalvar.setNome(editTextNomeDaAposta.getText().toString());
+        apostaFavoritaDTO.setNome(holder.editTextNomeDaAposta.getText().toString());
         ParametroMesDeSorte parametroMesDeSorte = new ParametroMesDeSorte();
         parametroMesDeSorte.setAbreviacao( "" );
         parametroMesDeSorte.setNome( "" );
         parametroMesDeSorte.setNumero( 0 );
         apostaFavoritaDTO.setMesDeSorte( parametroMesDeSorte );
-        apostaBO.postApostasFavoritas(apostaFavoritaDTOSalvar, new RequestListener<Boolean>() {
+        apostaFavoritaDTO.setOpenSwipeLayout( null );
+        apostaBO.postApostasFavoritas(apostaFavoritaDTO, new RequestListener<Boolean>() {
             @Override
             public void onResponse(Boolean response) {
-                apostaFavoritaDTOSalvar.setNome(editTextNomeDaAposta.getText().toString());
-                nomeApostaTextView.setText(" | "+ apostaFavoritaDTO.getNome());
-//                translatePosicaoVoltarCard(favoritasRelativeLayout,
-//                        ViewUtils.setDisplayMetric(0, context));
-                nomeApostaSalvoTextView.setText( "\""+ editTextNomeDaAposta.getText() +"\"");
-                editTextNomeDaAposta.setText("");
-                editTextNomeDaAposta.setEnabled(false);
-                buttonSalvarNomeAposta.setEnabled(false);
+                apostaFavoritaDTO.setOpenSwipeLayout( true );
+                apostaFavoritaDTO.setNome(holder.editTextNomeDaAposta.getText().toString());
+                holder.tituloNomeApostaFavorita.setText(" | "+ holder.editTextNomeDaAposta.getText().toString());
+                holder.nomeApostaSalvoTextView.setText( "\""+ holder.editTextNomeDaAposta.getText().toString() +"\"");
+                holder.editTextNomeDaAposta.setText("");
                 loadViewProgress.dismiss();
-                linearLayoutLayoutContentAlterarFavoritasSalvo.setVisibility( View.VISIBLE );
-                relativeLayoutContentAlterarFavoritasEditar.setVisibility( View.GONE );
+                holder.linearLayoutLayoutContentAlterarFavoritasSalvo.setVisibility( View.VISIBLE );
+                holder.relativeLayoutContentAlterarFavoritasEditar.setVisibility( View.GONE );
             }
 
             @Override
             public void onErrorResponse(VolleyError error) {
+                apostaFavoritaDTO.setOpenSwipeLayout( true );
                 loadViewProgress.dismiss();
                 RedirectNetwork.checkRedirect( error, activity );
 
