@@ -30,6 +30,7 @@ import caixa.gov.br.loterias.model.bo.silce.dto.CarrinhoDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import caixa.gov.br.loterias.model.bo.MensagensNetwork;
 import caixa.gov.br.loterias.utils.ViewUtils;
+import caixa.gov.br.loterias.view.adapter.ApostasConfirmadasAdapter;
 import caixa.gov.br.loterias.view.adapter.CarrinhoApostasListViewRapidaoAdapter;
 import caixa.gov.br.loterias.view.custom.ExpandableHeightRecyclerView;
 import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
@@ -50,15 +51,16 @@ public class ListaRapidaoActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        configuraActivityCarrinho();
 
         recyclerView = findViewById(R.id.apostasListaRecycleViewRapidao);
         valorTotalCarrinhoRapidao = findViewById(R.id.valorTotalCarrinhoRapidao);
+
         callWebservice(0);
         ViewUtils.organizaTabLayout(this, R.id.carrinhoRapidaoMainLayout, R.id.apostasListaRecycleViewRapidao, R.id.carrinhoRapidaoScrollView);
     }
 
     public void atualizaLayout() {
-        configuraActivityCarrinho();
         if (apostas != null) {
             configuraRecyclerViewCarrinhoAposta();
         }
@@ -145,19 +147,6 @@ public class ListaRapidaoActivity extends AppCompatActivity {
             }
         });
 
-//        findViewById(R.id.imagemLixeiraCarrinhoRapidao).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                limpaCarrinho();
-//            }
-//        });
-//
-//        findViewById(R.id.textoLimparCarrinhoRapidao).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                limpaCarrinho();
-//            }
-//        });
 
         findViewById(R.id.botaoAvancarPagamentoRapidao).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -173,17 +162,46 @@ public class ListaRapidaoActivity extends AppCompatActivity {
     private void configuraRecyclerViewCarrinhoAposta() {
         RecyclerView.LayoutManager layout = new LinearLayoutManager(this,
                 LinearLayoutManager.VERTICAL, false);
-
-        recyclerView.setAdapter(new CarrinhoApostasListViewRapidaoAdapter(this, (ArrayList<IdentificaoDeUmaApostaDas8Modalidades>) apostas, this));
+        CarrinhoApostasListViewRapidaoAdapter carrinhoApostasListViewRapidaoAdapter =
+                new CarrinhoApostasListViewRapidaoAdapter(this, (ArrayList<IdentificaoDeUmaApostaDas8Modalidades>) apostas, this);
+        recyclerView.setAdapter(carrinhoApostasListViewRapidaoAdapter);
+        carrinhoApostasListViewRapidaoAdapter.setOnCarrinhoApostasRapidaoListener(new CarrinhoApostasListViewRapidaoAdapter.OnCarrinhoApostasRapidaoListener() {
+            @Override
+            public void onRemove(IdentificaoDeUmaApostaDas8Modalidades apostaDas8Modalidades) {
+                callWebserviceRemoveItem(apostaDas8Modalidades);
+            }
+        });
         recyclerView.setLayoutManager(layout);
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setExpanded(true);
         valorTotal();
     }
 
-//    private void limpaCarrinho(){
-//        ViewUtils.alert(this, "LIMPAR CARRINHO");
-//    }
+
+    private void callWebserviceRemoveItem(IdentificaoDeUmaApostaDas8Modalidades identificaoDeUmaApostaDas8Modalidades){
+        final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
+        final ApostaBO apostaBO = ApostaBO_.getInstance_(ListaRapidaoActivity.this);
+
+        apostaBO.deleteApostaCarrinho(identificaoDeUmaApostaDas8Modalidades.getId().toString(), new RequestListener<CarrinhoDTOResponse>() {
+            @Override
+            public void onResponse(CarrinhoDTOResponse response) {
+                loadViewProgress.dismiss();
+                carrinho = response.getPayload();
+                apostas = carrinho.getApostas();
+                atualizaLayout();
+                if (response.getRedirect() != null){
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), ListaRapidaoActivity.this);
+                }
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                loadViewProgress.dismiss();
+                RedirectNetwork.checkRedirect( error, ListaRapidaoActivity.this );
+            }
+        });
+
+    }
 
 
     private void callWebservice(int quantidade) {
@@ -196,6 +214,7 @@ public class ListaRapidaoActivity extends AppCompatActivity {
             public void onResponse(CarrinhoDTOResponse response) {
                 loadViewProgress.dismiss();
                 carrinho = response.getPayload();
+                apostas = null;
                 apostas = carrinho.getApostas();
                 atualizaLayout();
                 if (response.getRedirect() != null){

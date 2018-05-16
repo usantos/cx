@@ -143,12 +143,25 @@
             <TextView
                 android:id="@+id/tipoAposta"
                 style="@style/editTextArialMTTheme"
-                android:layout_width="70dp"
+                android:layout_width="75dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="13dp"
+                android:lines="1"
                 android:paddingEnd="0dp"
                 android:text="Mega-sena"
                 android:textSize="14.2sp" />
+            <TextView
+                android:id="@+id/numeroConcurso"
+                style="@style/editTextArialMTTheme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxWidth="100dp"
+                android:lines="1"
+                android:layout_marginBottom="13dp"
+                android:paddingEnd="0dp"
+                android:text="Conc. 666"
+                android:textSize="14.2sp"
+                android:layout_below="@id/tipoAposta"
+                />
 
             <RelativeLayout
                 android:id="@+id/layoutCabecalhoLoteca"
@@ -198,19 +211,25 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="14dp"
                 android:layout_marginEnd="11dp"
-                android:layout_toStartOf="@+id/excluirApostaCarrinho"
+                android:layout_toStartOf="@+id/excluirApostaCarrinhoLayout"
                 android:text="R$ 0,00"
                 android:textAlignment="textEnd"
                 android:textSize="14.2sp" />
-
-            <Button
-                android:id="@+id/excluirApostaCarrinho"
-                android:layout_width="14dp"
-                android:layout_height="14dp"
+            <RelativeLayout
+                android:layout_width="24dp"
+                android:layout_height="44dp"
                 android:layout_alignParentEnd="true"
-                android:layout_gravity="center_vertical|end"
-                android:layout_marginEnd="16dp"
-                android:background="@drawable/close" />
+                android:id="@+id/excluirApostaCarrinhoLayout"
+                android:clickable="true">
+                <ImageView
+                    android:id="@+id/excluirApostaCarrinho"
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:layout_marginTop="2dp"
+                    android:src="@drawable/close" />
+
+            </RelativeLayout>
+
         </RelativeLayout>
 
         <caixa.gov.br.loterias.view.custom.ExpandableHeightRecyclerView

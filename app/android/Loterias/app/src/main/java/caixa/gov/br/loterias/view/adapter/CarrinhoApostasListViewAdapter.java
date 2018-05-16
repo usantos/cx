@@ -61,6 +61,7 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
         final RelativeLayout layoutCabecalhoLoteca;
         final LinearLayout dadosApostaCarrinho;
         final RelativeLayout dadosCarrinho;
+        final TextView textViewNumeroConcurso;
 
         ApostaHolder(View view) {
             super(view);
@@ -72,6 +73,8 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
             layoutCabecalhoLoteca = view.findViewById(R.id.layoutCabecalhoLoteca);
             dadosApostaCarrinho = view.findViewById(R.id.dadosApostaCarrinho);
             dadosCarrinho = view.findViewById(R.id.dadosCarrinho);
+            textViewNumeroConcurso = view.findViewById(R.id.numeroConcurso);
+
         }
     }
 
@@ -94,8 +97,10 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
         swipeLayout.setDragEdge(SwipeLayout.DragEdge.Left);
 
         holder.textViewTipoAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorClara()));
+        holder.textViewNumeroConcurso.setTextColor(ContextCompat.getColor(context, estilo.getCorClara()));
         holder.valorAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorEscura()));
         holder.textViewTipoAposta.setText(ViewUtils.capitalized(ModalidadeEnum.fromString(aposta.getModalidade())));
+        holder.textViewNumeroConcurso.setText( context.getString(R.string.label_aposta_concurso, aposta.getConcursoAlvo()));
         holder.dadosApostaCarrinho.setBackgroundResource(estilo.getCorEscura());
 
         TextView quantidadeApostadas = holder.dadosApostaCarrinho.findViewById(R.id.quantidadeApostadas);
