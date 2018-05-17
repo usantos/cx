@@ -112,10 +112,10 @@ public class MonthYearPickerDialog extends DialogFragment {
                 if(currentYear != year){
                     currentYear = year;
                     monthYearsMap.put(currentYear, new ArrayList<Integer>());
-                }else{
-                    List<Integer> monthList = monthYearsMap.get(year);
-                    monthList.add(month);
                 }
+                List<Integer> monthList = monthYearsMap.get(year);
+                monthList.add(month);
+
             }
 
             yearValues = new String[monthYearsMap.keySet().size()];
