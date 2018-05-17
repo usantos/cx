@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
@@ -20,6 +22,7 @@ import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
 import com.github.pinball83.maskededittext.MaskedEditText;
 
+import org.apache.commons.lang.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -49,6 +52,7 @@ import caixa.gov.br.loterias.model.bo.silce.dto.SexoEnum;
 import caixa.gov.br.loterias.model.bo.silce.dto.UnidadeFederacaoDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.UnidadeFederacaoDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.UsuarioLogado;
+import caixa.gov.br.loterias.utils.AppUtils;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.utils.segmentedbutton.SegmentedButtonGroup;
 import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
@@ -69,6 +73,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
 
     ApostadorDTO apostadorDTO;
     AlertDialog loadViewProgress;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
@@ -101,11 +106,6 @@ public class DadosPessoaisActivity extends AppCompatActivity {
         segmentedButtonSexo = (SegmentedButtonGroup) findViewById( R.id.segmentedButtonSexo );
         updateDadosPesoaisButton = (Button) findViewById( R.id.updateDadosPesoaisButton );
 
-        addRightImg((EditText) findViewById(R.id.editTextNomeContent));
-        addRightImg((MaskedEditText) findViewById(R.id.editTextCepContent));
-        addRightImg((MaskedEditText) findViewById(R.id.editTextCpfContent));
-        addRightImg((EditText) findViewById(R.id.editTextEmailContent));
-
         editTextMunicipioContent.setClickable(true);
         editTextMunicipioContent.setOnClickListener(new View.OnClickListener() {
 
@@ -124,22 +124,12 @@ public class DadosPessoaisActivity extends AppCompatActivity {
             }
         });
 
-        editTextCepContent.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    buscarBairroPorCep( editTextCepContent.getUnmaskedText() );
-                }
-            }
-        });
+
 
         updateDadosPesoaisButton.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!editTextUFContent.getText().toString().equals( "" ) &&
-                        !editTextMunicipioContent.getText().toString().equals( "" ) ||
-                        !editTextCepContent.getText().toString().equals( "" )
-                        ){
+                if (validarCamposObrigatorios()){
                     ApostadorAlteracaoDTO apostadorAlteracaoDTO = new ApostadorAlteracaoDTO();
                     apostadorAlteracaoDTO.setCep( editTextCepContent.getUnmaskedText() );
                     ApostadorAlteracaoDTO.SexoEnum sexoEnum;
@@ -154,10 +144,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
                     SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
                     apostadorAlteracaoDTO.setLimiteDiario( sessaoUsuario.getValorMaximoAposta() );
                     updateDadosCadastrais( apostadorAlteracaoDTO );
-                }else{
-                    ViewUtils.alertTitulo( DadosPessoaisActivity.this, R.string.label_atencao, "Por favor, preencha todos os campos." );
                 }
-
             }
         } );
 
@@ -178,6 +165,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
         }else{
             segmentedButtonSexo.setPosition( 0 );
         }
+        editTextCepContent.addTextChangedListener(getTextWatcher(editTextCepContent));
     }
 
 
@@ -187,14 +175,6 @@ public class DadosPessoaisActivity extends AppCompatActivity {
         return true;
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.dados_pessoais, menu);
-
-        return true;
-    }
 
     private void callWebservice() {
 
@@ -205,7 +185,8 @@ public class DadosPessoaisActivity extends AppCompatActivity {
             @Override
             public void onResponse(ApostadorDTOResponse response) {
                 apostadorDTO = response.getPayload();
-                buscarBairroPorCep( response.getPayload().getCep() );
+                municipioIdDTOSelect = apostadorDTO.getMunicipioId();
+                getUfeMunicipio();
                 if (response.getRedirect() != null){
                     RedirectNetwork.checkRedirectSucesso( response.getRedirect(), DadosPessoaisActivity.this);
                 }
@@ -420,35 +401,39 @@ public class DadosPessoaisActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    protected void addRightImg(EditText textField) {
-        textField.setOnFocusChangeListener(new EditText.OnFocusChangeListener() {
 
+    private TextWatcher getTextWatcher(final EditText editText) {
+        return new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
 
             @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-            /* When focus is lost check that the text field
-            * has valid values.
-            */
-                if (!hasFocus) {
-                    if (v.getClass() == MaskedEditText.class) {
-                        if (((MaskedEditText) v).getUnmaskedText().toString().equals("")) {
-                            ((MaskedEditText) v).setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-                        } else {
-                            ((MaskedEditText) v).setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
-                        }
-                    } else {
-                        if (((EditText) v).getText().toString().equals("")) {
-                            ((EditText) v).setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-                        } else {
-                            ((EditText) v).setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
-                        }
-                    }
-                }
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                // do what you want with your EditText
+
             }
-        });
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (editText == editTextCepContent){
+                        String cep = editable.toString().replace( "-", "" ).trim();
+                        if (cep.length() == 8) {
+                            editText.setCompoundDrawablesWithIntrinsicBounds( 0, 0, R.drawable.icon_input_ok, 0 );
+                            buscarBairroPorCep( cep );
+                        } else {
+                            editText.setCompoundDrawablesWithIntrinsicBounds( 0, 0, 0, 0 );
+                        }
+
+                }
+
+            }
+        };
     }
 
     private void buscarBairroPorCep(String cep) {
+        loadViewProgress.show();
         final DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(DadosPessoaisActivity.this);
         dadosCorporativosBO.bairros(null, null, null, cep, new RequestListener<BairroDTOResponse>() {
             @Override
@@ -461,7 +446,6 @@ public class DadosPessoaisActivity extends AppCompatActivity {
                     editTextMunicipioContent.setText(bairroDTO.getMunicipio().getNome());
                     municipioIdDTOSelect = bairroDTO.getMunicipio().getId();
                 }
-                atualizaLayout();
                 if (response.getRedirect() != null){
                     RedirectNetwork.checkRedirectSucesso( response.getRedirect(), DadosPessoaisActivity.this);
                 }
@@ -501,5 +485,78 @@ public class DadosPessoaisActivity extends AppCompatActivity {
                 RedirectNetwork.checkRedirect( error, DadosPessoaisActivity.this );
             }
         });
+    }
+
+    private boolean validarCamposObrigatorios() {
+        String campos = "";
+
+        if (editTextCepContent.getText().toString().replace("-", "").trim().length() < 8) {
+            campos += "\n" + getResources().getString(R.string.CEP);
+        }
+        if (StringUtils.isEmpty(editTextUFContent.getText().toString())) {
+            campos += "\nUF";
+        }
+        if (StringUtils.isEmpty(editTextMunicipioContent.getText().toString())) {
+            campos += "\nMunicípio";
+        }
+        if (StringUtils.isEmpty(campos)) {
+            return true;
+        } else {
+
+            ViewUtils.alertTitulo(DadosPessoaisActivity.this, R.string.label_atencao, this.getResources().getString( R.string.MA002 ) + " " + campos);
+            return false;
+        }
+    }
+
+
+    private void getUfeMunicipio(){
+
+        DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(DadosPessoaisActivity.this);
+        dadosCorporativosBO.ufs(new RequestListener<UnidadeFederacaoDTOResponse>() {
+            @Override
+            public void onResponse(UnidadeFederacaoDTOResponse response) {
+                listUf = response.getPayload();
+                for (UnidadeFederacaoDTO item : listUf){
+                    if (item.getId() == apostadorDTO.getMunicipioId().getIdUF()){
+                        editTextUFContent.setText( item.getNome() );
+                    }
+                }
+                DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(DadosPessoaisActivity.this);
+                dadosCorporativosBO.municipios(apostadorDTO.getMunicipioId().getIdUF().toString(), new RequestListener<MunicipioDTOResponse>() {
+                    @Override
+                    public void onResponse(MunicipioDTOResponse response) {
+                        loadViewProgress.dismiss();
+                        municipioDTOList = response.getPayload();
+
+                        for (MunicipioDTO item : municipioDTOList){
+                            if (item.getId().getNumero() == apostadorDTO.getMunicipioId().getNumero()){
+                                editTextMunicipioContent.setText( item.getNome() );
+                            }
+                        }
+                        atualizaLayout();
+
+                        if (response.getRedirect() != null){
+                            RedirectNetwork.checkRedirectSucesso( response.getRedirect(), DadosPessoaisActivity.this);
+                        }
+                    }
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        loadViewProgress.dismiss();
+                        RedirectNetwork.checkRedirect( error, DadosPessoaisActivity.this );
+                    }
+                });
+
+
+
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                loadViewProgress.dismiss();
+                RedirectNetwork.checkRedirect( error, DadosPessoaisActivity.this );
+            }
+        });
+
     }
 }
