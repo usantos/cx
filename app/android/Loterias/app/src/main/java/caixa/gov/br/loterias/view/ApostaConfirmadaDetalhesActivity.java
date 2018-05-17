@@ -49,6 +49,7 @@ import caixa.gov.br.loterias.model.bo.silce.dto.DetalhesHistoricoPremioDTORespon
 import caixa.gov.br.loterias.model.bo.silce.dto.DetalhesPremioDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.DetalhesPremioDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
+import caixa.gov.br.loterias.model.bo.silce.dto.ModalidadeEnum;
 import caixa.gov.br.loterias.model.bo.silce.dto.ParametroJogoDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ParametroSimulacao;
 import caixa.gov.br.loterias.model.bo.silce.dto.ResultadoConcursoDTO;
@@ -173,6 +174,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
                     dadosCorporativosBO.salvarApostaFavorita(apostaFavoritaDTO, new RequestListener<NetworkResponse>() {
                         @Override
                         public void onResponse(NetworkResponse result) {
+                            DialogUtils.dismiss();
                             favoritadoLayout.setVisibility(View.VISIBLE);
                             layoutnomeApostaLayout.setVisibility(View.GONE);
                             favoriteBtn.setVisibility(View.INVISIBLE);
@@ -267,9 +269,13 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
             ViewUtils.setColorDrawable(this, comprovanteImpressaoImage.getDrawable(), estilo.getIconImpressoraColor());
         }
 
-        if (CollectionUtils.isNotEmpty(apostaDTO.getNumerosSelecionados())) {
+        if (parametroSimulacao.getParametroJogo().getConcurso().getModalidade() == ModalidadeEnum.LOTOGOL ||
+                parametroSimulacao.getParametroJogo().getConcurso().getModalidade() == ModalidadeEnum.LOTECA){
             favoriteBtn.setVisibility(View.GONE);
         }
+//        if (CollectionUtils.isNotEmpty(apostaDTO.getNumerosSelecionados())) {
+//        favoriteBtn.setVisibility(View.GONE);
+//        }
 
         updateDetalhesAposta();
     }
