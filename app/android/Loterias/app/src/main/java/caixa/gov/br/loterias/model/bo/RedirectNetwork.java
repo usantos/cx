@@ -88,7 +88,7 @@ public class RedirectNetwork {
                             }
                         });
             }else{
-                ViewUtils.alert( activity, MensagensNetwork.setMensagem( error, activity ) );
+                ViewUtils.alertTitleButton(activity, R.string.label_atencao, MensagensNetwork.setMensagem( error, activity ), activity.getResources().getString( R.string.ok ) );
             }
         }
     }

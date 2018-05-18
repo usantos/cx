@@ -26,6 +26,7 @@ import caixa.gov.br.loterias.model.bo.RedirectNetwork;
 import caixa.gov.br.loterias.model.bo.RequestListener;
 import caixa.gov.br.loterias.model.bo.silce.dto.InformacaoPagamentoDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.RetornoPadraoDTO;
+import caixa.gov.br.loterias.utils.ValidacaoUtils;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
 
@@ -79,6 +80,13 @@ public class JogosConfirmadosPremioMercadoPagoActivity extends AppCompatActivity
         resgatarPremioButton.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (!ValidacaoUtils.validarEmail( emailPremioMercadoPagoEditText.getText().toString() )) {
+                    ViewUtils.alertTitleButton( JogosConfirmadosPremioMercadoPagoActivity.this,
+                            R.string.label_atencao,
+                            getResources().getString( R.string.MA021 ),
+                            getResources().getString( R.string.ok ) );
+                    return;
+                }
                 callWebserviceResgatarPremio();
             }
         } );
@@ -164,6 +172,7 @@ public class JogosConfirmadosPremioMercadoPagoActivity extends AppCompatActivity
                 contentConfirmadoLinearLayout.setVisibility( View.VISIBLE );
                 resgatarPremioButton.setVisibility( View.GONE );
                 voltarPremioButton.setVisibility( View.VISIBLE );
+                textoPremioConfirmado.setText( "Um email foi enviado para\n"+ emailPremioMercadoPagoEditText.getText().toString() + "\n\n\ncom todas as informações e passo-a-passo para o recebimento de seu prêmio" );
             }
 
             @Override

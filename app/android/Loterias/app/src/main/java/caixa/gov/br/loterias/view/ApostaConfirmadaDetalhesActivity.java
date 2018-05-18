@@ -105,7 +105,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
     protected ImageView validadePremioImage, comprovanteImage, comprovanteImpressaoImage;
 
     @ViewById
-    protected RelativeLayout layoutnomeApostaLayout, favoritadoLayout, favoriteBtn, comprovanteLayout;
+    protected RelativeLayout layoutnomeApostaLayout, favoritadoLayout, favoriteBtn, comprovanteLayout, layoutTextoSalveAposta;
 
     @ViewById
     protected EditText nomeApostaEditTxt;
@@ -131,6 +131,12 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
     @Click
     protected void favoriteBtn() {
         layoutnomeApostaLayout.setVisibility(View.VISIBLE);
+    }
+
+    @Click
+    protected void layoutTextoSalveAposta() {
+        layoutnomeApostaLayout.setVisibility( View.VISIBLE );
+        layoutTextoSalveAposta.setClickable( false );
     }
 
     @Click

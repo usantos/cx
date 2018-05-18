@@ -54,7 +54,7 @@ public class ResgatePremioLotericaAgenciaActivity extends SettingToolbarActivity
                 }
             }
         } else {
-            categoriaText.setText(R.string.label_agencia_minusculo);
+            categoriaText.setText(R.string.label_agencia_maiuscula);
             informacaoTopicoUmText.setText(R.string.label_diriga_agencia_preferencia);
             informacaoTopicoDoisText.setText(String.format("%s %s", getString(R.string.label_informe_codigo_aposta), nsbi));
             informacaoTopicoTresText.setText(R.string.label_apresente_documento_identificacao_original);

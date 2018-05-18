@@ -787,13 +787,13 @@ public class ViewUtils {
 
     public static int getSmallSizeQrCode(Context context) {
 
-        Point point = getAppUsableScreenSize(context);
-        int width = point.x;
-        int height = point.y;
-        int smallerDimension = width < height ? width : height;
-        smallerDimension = smallerDimension * 3 / 4;
+//        Point point = getAppUsableScreenSize(context);
+//        int width = point.x;
+//        int height = point.y;
+//        int smallerDimension = width < height ? width : height;
+//        smallerDimension = smallerDimension * 3 / 4;
 
-        return smallerDimension;
+        return ViewUtils.setDisplayMetric( 105, context );
     }
 
     public static String replaceNullable(String source, String target, String replacement) {
