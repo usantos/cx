@@ -123,7 +123,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         invalidateOptionsMenu();
         qtdNumerosList = new ArrayList<>();
         qtdConcursosList = new ArrayList<>();
-
+        textoBotaoSurpresinhasSelecionado = "nenhum";
         parametroSimulacao = new Gson().fromJson(getIntent().getStringExtra("modalidade"), ParametroJogoDTO.class);
         configuraParametrosJogo();
         configuraFragments();
@@ -139,6 +139,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
 
     public void atualizaTextoBotoesQtdSelecionadas() {
         qtdNumerosButton.setText(format("%d números", qtdDezenasPossiveisSelecionado));
+        textoBotaoPrognosticosSelecionado = qtdNumerosButton.getText().toString();
         if ((qtdConcursosList != null && !qtdConcursosList.isEmpty()) && (qtdConcursosList.size() == 1 || qtdConcursoSelecionado == 0)) {
             qtdConcursosButton.setText(qtdConcursosList.get(0));
         } else {
