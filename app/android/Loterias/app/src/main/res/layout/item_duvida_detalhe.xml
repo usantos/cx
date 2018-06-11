@@ -42,8 +42,8 @@
 
                 <ImageView
                     android:id="@+id/imageDuvidaDetalhe"
-                    android:layout_width="5dp"
-                    android:layout_height="8dp"
+                    android:layout_width="10dp"
+                    android:layout_height="16dp"
                     android:src="@drawable/open_close_image_shape_23" />
             </LinearLayout>
         </LinearLayout>

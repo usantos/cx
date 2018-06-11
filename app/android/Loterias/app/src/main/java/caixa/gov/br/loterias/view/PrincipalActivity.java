@@ -114,6 +114,9 @@ public class PrincipalActivity extends AppCompatActivity
     @ViewById
     protected NavigationView nav_view;
 
+    @ViewById
+    protected TextView nav_user, nav_ultima_aposta;
+
     @AfterViews
     public void init() {
         setSupportActionBar(toolbar);
@@ -123,6 +126,8 @@ public class PrincipalActivity extends AppCompatActivity
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         toolbarListener();
+        nav_user.setText(ViewUtils.textFuturaAndFuturaBold( this,  "Olá, _Renato Silva!_"));
+        nav_ultima_aposta.setText( ViewUtils.textFuturaAndFuturaBold( this,  "Sua última aposta foi em _24/08/2017_") );
         layoutSideMenu();
         callWebservice();
         iniciarBancoLocal();
@@ -494,6 +499,8 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     private void layoutSideMenu() {
+
+
 
         final ExpandableListAdapter expandableListAdapter;
         final List<String> expandableListTitle;

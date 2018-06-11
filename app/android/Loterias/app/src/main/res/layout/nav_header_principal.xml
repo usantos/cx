@@ -45,11 +45,11 @@
             <TextView
                 android:id="@+id/nav_ultima_aposta"
                 android:layout_width="120dp"
-                android:layout_height="wrap_content"
+                android:layout_height="55dp"
                 android:paddingTop="7dp"
                 android:text="Sua última aposta foi em 24/08/2017"
                 android:textColor="@color/cinza"
-                android:textSize="14sp"
+                android:textSize="12sp"
                 style="@style/editTextArialMTTheme"
                 android:gravity="start"/>
 
