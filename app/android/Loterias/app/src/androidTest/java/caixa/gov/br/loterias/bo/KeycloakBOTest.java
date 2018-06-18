@@ -88,7 +88,7 @@ public class KeycloakBOTest {
         Log.e(TAG, loginActivityRule.getActivity().toString());
         Log.e(TAG, loginActivityRule.getActivity().getApplicationContext().toString());
 
-        KeycloakBO_.getInstance_(loginActivityRule.getActivity().getApplicationContext()).login(loginActivityRule.getActivity(), callback);
+        //KeycloakBO_.getInstance_(loginActivityRule.getActivity().getApplicationContext()).login(loginActivityRule.getActivity(), callback);
 
         //sleep(60000);
 

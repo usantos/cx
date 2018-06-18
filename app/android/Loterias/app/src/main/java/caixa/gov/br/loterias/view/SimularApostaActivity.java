@@ -438,6 +438,10 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
                 configuraTipoApostaTela("_lotogol_", R.color.lotogolclaro, R.color.lotogolescuro, View.GONE, View.GONE);
                 this.toolBarMenu = R.menu.itens_simular_actionbar_duvida;
                 break;
+            case DIA_DE_SORTE: //TODO: FEITO RAPHAEL
+                configuraTipoApostaTela( "_dia-sorte_", R.color.megasenaclaro, R.color.megasenaescuro, View.GONE, View.GONE );
+                this.toolBarMenu = R.menu.itens_simular_actionbar_duvida;
+                break;
         }
 
         qtdDezenasPossiveisSelecionado = parametroSimulacao.getQuantidadeMinima() != null ? parametroSimulacao.getQuantidadeMinima() : 0;

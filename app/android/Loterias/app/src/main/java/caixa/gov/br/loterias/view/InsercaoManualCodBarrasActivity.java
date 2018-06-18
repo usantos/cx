@@ -7,7 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.InputFilter;
+import android.text.Spanned;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,7 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.github.pinball83.maskededittext.MaskedEditText;
+import br.com.sapereaude.maskedEditText.MaskedEditText;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.utils.ViewUtils;
@@ -35,17 +37,31 @@ public class InsercaoManualCodBarrasActivity extends AppCompatActivity {
         setTitle( ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.label_ler_bilhestes_bold)));
 
 
+        InputFilter inputFilter = new InputFilter() {
+            @Override
+            public CharSequence filter(CharSequence charSequence, int start, int end, Spanned spanned, int dstart, int dend) {
+                StringBuilder stringBuilder = new StringBuilder();
+                for(int i = start; i < end; i++){
+                    Character character = charSequence.charAt(i);
+                    character = Character.toUpperCase(character);
+                    stringBuilder.append(character);
+                }
+                return stringBuilder.toString();
+            }
+        };
+
+
         buttonContinuarInsercaoManualBilhetes = (Button) findViewById(R.id.buttonContinuarInsercaoManualBilhetes);
-        editTextNumeroBilhete = (MaskedEditText) findViewById(R.id.editTextNumeroBilhete);
+        editTextNumeroBilhete = findViewById(R.id.editTextNumeroBilhete);
         editTextNumeroBilhete.addTextChangedListener(textWatcher);
-//        editTextNumeroBilhete.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
+        editTextNumeroBilhete.setFilters(new InputFilter[]{inputFilter});
         buttonContinuarInsercaoManualBilhetes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (editTextNumeroBilhete.getUnmaskedText().toString().equals("")) {
+                if("".equals(editTextNumeroBilhete.getRawText())){
                     Toast.makeText(InsercaoManualCodBarrasActivity.this, "Informe o código do bilhete!", Toast.LENGTH_SHORT).show();
-                } else {
-                    ResultadoLerBilhetesActivity_.intent(InsercaoManualCodBarrasActivity.this).codBarras(editTextNumeroBilhete.getUnmaskedText().toString().toUpperCase()).start();
+                }else{
+                    ResultadoLerBilhetesActivity_.intent(InsercaoManualCodBarrasActivity.this).codBarras(editTextNumeroBilhete.getRawText()).start();
                 }
             }
         });
@@ -96,11 +112,18 @@ public class InsercaoManualCodBarrasActivity extends AppCompatActivity {
         startActivity(activity);
     }
 
+    private String removerMascara(MaskedEditText maskedEditText){
+
+        String caracter = String.valueOf(maskedEditText.getCharRepresentation());
+
+        return "";
+
+    }
+
     private TextWatcher textWatcher = new TextWatcher() {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            //after text changed
         }
 
         @Override

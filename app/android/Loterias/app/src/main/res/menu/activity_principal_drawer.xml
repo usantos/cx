@@ -25,7 +25,7 @@
         <item
             android:id="@+id/nav_bilhetes"
             android:icon="@drawable/menu5_bilhetes"
-            android:title="Ler Bilhetes" />
+            android:title="Ler Bilhete" />
 
         <item
             android:id="@+id/nav_sociais"

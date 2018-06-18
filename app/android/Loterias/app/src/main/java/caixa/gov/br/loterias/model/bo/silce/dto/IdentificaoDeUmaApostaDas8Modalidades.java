@@ -54,6 +54,8 @@ IdentificaoDeUmaApostaDas8Modalidades {
     protected Integer quantidadeApostas = null;
     @SerializedName("espelho")
     protected Boolean espelho = null;
+    @SerializedName("gerarApostaEspelho")
+    protected Boolean gerarApostaEspelho = null;
     @SerializedName("timeDoCoracao")
     protected ParametroEquipe timeDoCoracao = null;
     @SerializedName("concursoInicial")
@@ -78,6 +80,14 @@ IdentificaoDeUmaApostaDas8Modalidades {
     protected transient Long idDB;
     @Expose(serialize = false, deserialize = false)
     protected transient Integer quantidadeSurpresinhas = null;
+
+    @ApiModelProperty(value = "Gerar aposta espelho")
+    public Boolean getGerarApostaEspelho(){
+        return true;
+    }
+    public void setGerarApostaEspelho(Boolean gerarApostaEspelho){
+        this.gerarApostaEspelho = gerarApostaEspelho;
+    }
 
     /**
      * Identificador da Aposta

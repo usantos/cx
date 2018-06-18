@@ -131,7 +131,7 @@ public class PrincipalActivity extends AppCompatActivity
         layoutSideMenu();
         callWebservice();
         iniciarBancoLocal();
-    }
+     }
 
     private void iniciarBancoLocal() {
         dbLoteriasHelper = new DBLoteriasHelper(getApplicationContext());
