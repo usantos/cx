@@ -54,8 +54,8 @@ IdentificaoDeUmaApostaDas8Modalidades {
     protected Integer quantidadeApostas = null;
     @SerializedName("espelho")
     protected Boolean espelho = null;
-    @SerializedName("gerarApostaEspelho")
-    protected Boolean gerarApostaEspelho = null;
+    @SerializedName("geraEspelho")
+    protected Boolean geraEspelho = null;
     @SerializedName("timeDoCoracao")
     protected ParametroEquipe timeDoCoracao = null;
     @SerializedName("concursoInicial")
@@ -85,8 +85,8 @@ IdentificaoDeUmaApostaDas8Modalidades {
     public Boolean getGerarApostaEspelho(){
         return true;
     }
-    public void setGerarApostaEspelho(Boolean gerarApostaEspelho){
-        this.gerarApostaEspelho = gerarApostaEspelho;
+    public void setGeraEspelho(Boolean geraEspelho){
+        this.geraEspelho = geraEspelho;
     }
 
     /**
