@@ -1,6 +1,5 @@
 package caixa.gov.br.loterias.view.fragment;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
@@ -76,7 +75,6 @@ import caixa.gov.br.loterias.model.bo.silce.dto.PartidaLotogolDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.TipoConcursoEnum;
 import caixa.gov.br.loterias.utils.Constantes;
 import caixa.gov.br.loterias.utils.DialogUtils;
-import caixa.gov.br.loterias.utils.Utils;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.utils.helper.AdicionarApostaCarrinhoHelper;
 import caixa.gov.br.loterias.view.SimularApostaActivity;
@@ -415,7 +413,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
     private void checarLimiteDiario(final ApostaBO apostaBO, final IdentificaoDeUmaApostaDas8Modalidades aposta, final CarrinhoDTO carrinhoDTO){
         if (SessaoUsuario.getInstance().getParametrosSimulacao().getValorLimiteDiario()
                 .compareTo(carrinhoDTO.getValorTotal()
-                        .add( IdentificaoDeUmaApostaDas8Modalidades.getValorApostaPorProagnostico( aposta ) ))
+                        .add( IdentificaoDeUmaApostaDas8Modalidades.getValorApostaPorPrognostico( aposta ) ))
                 <= 0)
         {
             DialogUtils.dismiss();
@@ -915,6 +913,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
 
         if (isTipoLoteca || isTipoLotogol) {
+            botaoFinalizar.setVisibility( View.GONE );
             String textoBotao;
             if (isTipoLoteca) {
                 textoBotao = getString(R.string.label_selecionar_times_aleatoriamente);
@@ -1027,16 +1026,20 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
             int triplo = Integer.parseInt(parentActivity.getLabelValueTriplasLoteca().getText().toString());
 
             if (partidasSelecionadas.size() == parametroJogo.getPartidas().size() && (duplo > 0 || triplo > 0)) {
+                botaoFinalizar.setVisibility( View.VISIBLE );
                 atualizarBotaoFinalizarAdicionarCarrinho();
             } else {
+                botaoFinalizar.setVisibility( View.GONE );
                 botaoFinalizar.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.cinza));
                 botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(parentActivity, getString(R.string.label_selecionar_times_aleatoriamente)));
             }
         } else if (isTipoLotogol) {
             if (partidasSelecionadas.size() < parametroJogo.getPartidas().size()) {
+                botaoFinalizar.setVisibility( View.GONE );
                 botaoFinalizar.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.cinza));
                 botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(parentActivity, getString(R.string.label_complete_placar_aleatoriamente)));
             } else {
+                botaoFinalizar.setVisibility( View.VISIBLE );
                 atualizarBotaoFinalizarAdicionarCarrinho();
             }
         } else if (isTipoTimemania) {

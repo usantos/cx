@@ -558,14 +558,14 @@ IdentificaoDeUmaApostaDas8Modalidades {
         return new BigDecimal( "0" );
     }
 
-    public static BigDecimal getValorApostaPorProagnostico(IdentificaoDeUmaApostaDas8Modalidades identificaoDeUmaApostaDas8Modalidades){
+    public static BigDecimal getValorApostaPorPrognostico(IdentificaoDeUmaApostaDas8Modalidades identificaoDeUmaApostaDas8Modalidades){
         List<ParametroSimulacao> parametroSimulacaoList = SessaoUsuario.getInstance().getParametrosSimulacao().getParametros();
         for (ParametroSimulacao  parametroSimulacao : parametroSimulacaoList){
             if (parametroSimulacao.getParametroJogo().getConcurso().getModalidade() == identificaoDeUmaApostaDas8Modalidades.getModalidade()){
                 if (identificaoDeUmaApostaDas8Modalidades.getModalidade() == ModalidadeEnum.LOTECA){
                     return parametroSimulacao.getParametroJogo().getValorApostaMinima();
                 }else if (identificaoDeUmaApostaDas8Modalidades.getModalidade() == ModalidadeEnum.LOTOGOL){
-                    return parametroSimulacao.getParametroJogo().getValorApostaMinima();
+                    return parametroSimulacao.getParametroJogo().getValoresAposta().get( 0 ).getValor();
                 }else{
                     List<ParametroValorApostaDTO> parametroValorApostaDTOList = parametroSimulacao.getParametroJogo().getValoresAposta();
                     for (ParametroValorApostaDTO parametroValorApostaDTO : parametroValorApostaDTOList){
