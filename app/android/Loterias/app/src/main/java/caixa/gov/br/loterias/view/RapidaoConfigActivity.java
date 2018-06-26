@@ -22,7 +22,6 @@ import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -244,6 +243,22 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
                 Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                 String json = gson.toJson(rapidao);
                 rapidao = gson.fromJson(json, RapidaoDTO.class);
+                if (rapidao.getValorMaximo() == null){
+                    rapidao.setValorMaximo( SessaoUsuario.getInstance().parametrosSimulacao.getValorLimiteDiario() );
+                }
+                if (rapidao.getValorMinimo() == null){
+                    rapidao.setValorMinimo( SessaoUsuario.getInstance().parametrosSimulacao.getValorMinimoCarrinho() );
+                }
+                if (rapidao.getValorMinimoPremioPrincipal() == null){
+                    rapidao.setValorMinimoPremioPrincipal( new BigDecimal("0.0") );
+                }
+                if (rapidao.getApostasFavoritas()==null){
+                    rapidao.setApostasFavoritas( new ArrayList<ApostaFavoritaDTO>(  ) );
+                }
+
+                if (rapidao.getModalidades()==null){
+                    rapidao.setModalidades( new ArrayList<ModalidadeDTO>(  ) );
+                }
 
 
                 if (rapidao.getPrognosticosObrigatorios() != null){
@@ -252,9 +267,7 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
                 if(rapidao.getPrognosticosProibidos() != null){
                     listaNumerosProibidos = rapidao.getPrognosticosProibidos();
                 }
-                if (rapidao.getApostasFavoritas() != null){
-                    apostaFavoritaLista = rapidao.getApostasFavoritas();
-                }
+                apostaFavoritaLista = rapidao.getApostasFavoritas();
 
 
                 atualizaLayout();
@@ -284,23 +297,16 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
 
         // Valor Minimo Aposta
 
-        Float valueMaxApostaFloat = SessaoUsuario.getInstance().getValorMaximoAposta().floatValue();
-        if (rapidao.getValorMaximo() != null){
-            valueMaxApostaFloat = rapidao.getValorMaximo().floatValue();
-        }
-        int valueMaxApostaInt = Math.round(valueMaxApostaFloat);
+
+        int valueMaxApostaInt = Math.round(rapidao.getValorMaximo().floatValue());
 
         TextView tituloValorMinimoApostaValorMinimo = (TextView) findViewById(R.id.tituloValorMinimoApostaValorMinimo);
         tituloValorMinimoApostaValorMaximo = (TextView) findViewById(R.id.tituloValorMinimoApostaValorMaximo);
 
         seekBarValorMinimoAposta = (SeekBar) findViewById(R.id.seekBarValorMinimoAposta);
 
-        Float valueMinApostaFloat = SessaoUsuario.getInstance().getValorMinimimoAposta().floatValue();
-        if (rapidao.getValorMinimo() != null){
-            valueMinApostaFloat = rapidao.getValorMinimo().floatValue();
-        }
 
-        valueMinApostaInt = Math.round(valueMinApostaFloat);
+        valueMinApostaInt = Math.round(rapidao.getValorMinimo().floatValue());
 
 
         seekBarValorMinimoAposta.setProgress((int)Math.round(valueMinApostaInt));
@@ -338,6 +344,7 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
         tituloValorMaximoApostaValorMaximo.setText(ViewUtils.getMoedaFormat(new BigDecimal(Float.toString((float)valorMaxApostaCarrinho))));
         seekBarValorMaximoAposta.setOnSeekBarChangeListener(this);
         seekBarValorMaximoAposta.setMax(valorMaxApostaCarrinho);
+        seekBarValorMaximoAposta.setProgress((int)Math.round(valueMaxApostaInt));
 
 
         Button limparValorMaximoAposta = (Button) findViewById(R.id.limparValorMaximoAposta);
@@ -352,11 +359,7 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
 
         seekBarValorPremiumMinimun = (SeekBar) findViewById(R.id.seekBarPremiumMimimun);
 
-        Float valuePremMinFloat = 0.0f;
-        if (rapidao.getValorMinimoPremioPrincipal() != null){
-            valuePremMinFloat = rapidao.getValorMinimoPremioPrincipal().floatValue();
-        }
-        int valuePremMinInt = Math.round(valuePremMinFloat);
+        int valuePremMinInt = Math.round(rapidao.getValorMinimoPremioPrincipal().floatValue());
         seekBarValorPremiumMinimun.setProgress((int)Math.round(valuePremMinInt));
         BigDecimal valorProgressPremMin = new BigDecimal(Float.toString((float)valuePremMinInt));;
         tituloValorPremiumMinimum.setText(ViewUtils.getMoedaFormat(new BigDecimal(valorProgressPremMin.floatValue()*1000000.0)));
@@ -431,11 +434,8 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
 
 
     private void montarListaEstilo(){
-        List<ModalidadeDTO> modalidades = new ArrayList<>( );
-        if (rapidao.getModalidades() != null){
-            rapidao.getModalidades();
-        }
-        for (ModalidadeDTO item : modalidades) {
+        List<ModalidadeDTO> modalides = rapidao.getModalidades();
+        for (ModalidadeDTO item : modalides) {
             TipoAposta tipoAposta = null;
             switch (ModalidadeEnumSelecaoModalidades.toString(item.getDescricao())) {
                 case QUINA:
