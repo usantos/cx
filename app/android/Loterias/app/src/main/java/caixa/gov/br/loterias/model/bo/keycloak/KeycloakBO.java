@@ -92,7 +92,9 @@ public class KeycloakBO {
 
     public void logout(Activity activity){
         final AuthzModule authzModule = AuthorizationManager.getModule(MODULE_NAME);
-        authzModule.deleteAccount();
+        if (authzModule.isAuthorized()){
+            authzModule.deleteAccount();
+        }
         accessToken = null;
         clearCookies(activity);
         WebView webView = new WebView(activity);

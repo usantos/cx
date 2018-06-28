@@ -106,6 +106,12 @@ public class FormaPagamentoActivity extends SettingToolbarActivity implements Fo
                 listaCartoes = response.getPayload();
                 if (listaCartoes != null && listaCartoes.size() > 0) {
                     configuraRecyclerViewCarrinhoAposta();
+                    ((Button) findViewById(R.id.botaoAvancarPagamento)).setClickable( true );
+                    ((Button) findViewById(R.id.botaoAvancarPagamento)).setBackgroundColor( getResources().getColor(R.color.verdeazul ));
+                }else {
+                    ((Button) findViewById(R.id.botaoAvancarPagamento)).setClickable( false );
+                    ((Button) findViewById(R.id.botaoAvancarPagamento)).setBackgroundColor( getResources().getColor(R.color.cinzaescuro ));
+
                 }
                 if (response.getRedirect() != null){
                     RedirectNetwork.checkRedirectSucesso( response.getRedirect(), FormaPagamentoActivity.this);

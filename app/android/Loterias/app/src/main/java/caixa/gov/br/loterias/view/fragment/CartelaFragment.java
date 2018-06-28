@@ -55,6 +55,8 @@ import caixa.gov.br.loterias.model.bo.DadosCorporativosBO_;
 import caixa.gov.br.loterias.model.bo.MensagensNetwork;
 import caixa.gov.br.loterias.model.bo.RedirectNetwork;
 import caixa.gov.br.loterias.model.bo.RequestListener;
+import caixa.gov.br.loterias.model.bo.keycloak.KeycloakBO;
+import caixa.gov.br.loterias.model.bo.keycloak.KeycloakBO_;
 import caixa.gov.br.loterias.model.bo.silce.data.CompletaJogoRsp;
 import caixa.gov.br.loterias.model.bo.silce.dto.AgrupadorDTOApostaDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostaFavoritaDTO;
@@ -330,7 +332,11 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
         orderAscDezenas();
         IdentificaoDeUmaApostaDas8Modalidades aposta = getApostaPreenchida();
-        adicionarApostaCarrinhoRequest(ApostaBO_.getInstance_(getActivity()), aposta);
+        if (KeycloakBO_.getInstance_( getContext() ).getAccessToken() == "" || KeycloakBO_.getInstance_( getContext() ).getAccessToken() == null){
+            postAdicionarApostaCarrinho( ApostaBO_.getInstance_(getActivity()), aposta );
+        }else{
+            adicionarApostaCarrinhoRequest(ApostaBO_.getInstance_(getActivity()), aposta);
+        }
     }
 
     private IdentificaoDeUmaApostaDas8Modalidades getApostaPreenchida() {
