@@ -27,6 +27,7 @@ import java.net.URL;
 import java.util.List;
 
 import caixa.gov.br.loterias.model.bean.SessaoUsuario;
+import caixa.gov.br.loterias.model.bo.DadosUsuarioBO;
 
 @EBean(scope = EBean.Scope.Singleton)
 public class KeycloakBO {
@@ -91,10 +92,17 @@ public class KeycloakBO {
     }
 
     public void logout(Activity activity){
+        DadosUsuarioBO.updateUsuarioLogado( activity, false );
         final AuthzModule authzModule = AuthorizationManager.getModule(MODULE_NAME);
-        if (authzModule.isAuthorized()){
-            authzModule.deleteAccount();
-        }
+        authzModule.deleteAccount();
+        accessToken = null;
+        clearCookies(activity);
+        WebView webView = new WebView(activity);
+        webView.clearCache(true);
+    }
+
+    public void limparSessao(Activity activity){
+        DadosUsuarioBO.updateUsuarioLogado( activity, false );
         accessToken = null;
         clearCookies(activity);
         WebView webView = new WebView(activity);

@@ -26,17 +26,12 @@ import caixa.gov.br.loterias.model.bo.RequestListener;
 import caixa.gov.br.loterias.model.bo.keycloak.KeycloakBO;
 import caixa.gov.br.loterias.model.bo.keycloak.KeycloakBO_;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostaDTO;
-import caixa.gov.br.loterias.model.bo.silce.dto.CarrinhoDTO;
-import caixa.gov.br.loterias.model.bo.silce.dto.CarrinhoDTOResponse;
+
 import caixa.gov.br.loterias.model.bo.silce.dto.UsuarioLogadoResponse;
 import caixa.gov.br.loterias.model.dao.DBLoteriasCrud;
 import caixa.gov.br.loterias.utils.AppUtils;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.CadastrarActivity_;
-import caixa.gov.br.loterias.view.CadastrarConfirmacao;
-import caixa.gov.br.loterias.view.DadosPessoaisActivity;
-import caixa.gov.br.loterias.view.DadosPessoaisConfirmacaoActivity;
-import caixa.gov.br.loterias.view.PrincipalActivity;
 import caixa.gov.br.loterias.view.PrincipalActivity_;
 import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
 
@@ -60,7 +55,7 @@ public class LoginFragment extends Fragment {
         Button buttonAposte = (Button) v.findViewById(R.id.buttonAposteAgora);
         buttonAposte.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                KeycloakBO_.getInstance_(getActivity()).logout(getActivity());
+                KeycloakBO_.getInstance_(getActivity()).limparSessao(getActivity());
 
                 DadosUsuarioBO.updateFecharIntroducao(getActivity(), true);
                 startActivity(new Intent(getActivity(), PrincipalActivity_.class));
@@ -79,7 +74,7 @@ public class LoginFragment extends Fragment {
         });
         KeycloakBO keycloakBO =  KeycloakBO_.getInstance_( getActivity() );
 
-        if (DadosUsuarioBO.checarFecharIntroducao(getActivity()) && KeycloakBO_.getInstance_( getActivity() ).temLogin()){
+        if (DadosUsuarioBO.checarFecharIntroducao(getActivity()) && DadosUsuarioBO.checarUsuarioLogado( getActivity() )){
             connectKeycloak();
         }
 
@@ -93,6 +88,7 @@ public class LoginFragment extends Fragment {
                     @Override
                     public void onSuccess(String token) {
                         if(getActivity() != null){
+                            DadosUsuarioBO.updateUsuarioLogado( getActivity(), true );
                             verificarCadastroWebservice();
                             //loginSucess();
                         }

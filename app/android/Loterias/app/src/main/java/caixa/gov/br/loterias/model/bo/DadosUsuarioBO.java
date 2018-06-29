@@ -110,6 +110,21 @@ public class DadosUsuarioBO extends BaseBO {
     }
 
 
+    public static void updateUsuarioLogado(Activity activity, Boolean status){
+        SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putBoolean(activity.getString(R.string.key_usuario_logado), status);
+        editor.commit();
+
+    }
+
+    public static Boolean checarUsuarioLogado(Activity activity){
+        SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
+        Boolean status = sharedPref.getBoolean(activity.getString(R.string.key_usuario_logado), false);
+        return status;
+    }
+
+
     public static void updateVerificarIdade(Activity activity, Boolean status){
         SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
