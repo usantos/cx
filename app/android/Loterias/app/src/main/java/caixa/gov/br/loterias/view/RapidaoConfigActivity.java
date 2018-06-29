@@ -35,6 +35,7 @@ import caixa.gov.br.loterias.model.bo.RedirectNetwork;
 import caixa.gov.br.loterias.model.bo.RequestListener;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostaFavoritaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ModalidadeDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.ModalidadeEnum;
 import caixa.gov.br.loterias.model.bo.silce.dto.ModalidadeEnumSelecaoModalidades;
 import caixa.gov.br.loterias.model.bo.silce.dto.RapidaoDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.RapidaoDTOResponse;
@@ -240,9 +241,9 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
 
                 rapidao = response.getPayload();
 
-                Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-                String json = gson.toJson(rapidao);
-                rapidao = gson.fromJson(json, RapidaoDTO.class);
+//                Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+//                String json = gson.toJson(rapidao);
+//                rapidao = gson.fromJson(json, RapidaoDTO.class);
                 if (rapidao.getValorMaximo() == null){
                     rapidao.setValorMaximo( SessaoUsuario.getInstance().parametrosSimulacao.getValorLimiteDiario() );
                 }
@@ -437,7 +438,7 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
         List<ModalidadeDTO> modalides = rapidao.getModalidades();
         for (ModalidadeDTO item : modalides) {
             TipoAposta tipoAposta = null;
-            switch (ModalidadeEnumSelecaoModalidades.toString(item.getDescricao())) {
+            switch (ModalidadeEnum.fromInteger( item.getValor() )) {
                 case QUINA:
                     tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo, R.color.quinaclaro, true, item.getValor(), item.getDescricaoEspecial());
                     break;
@@ -462,9 +463,9 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
                 case DUPLA_SENA:
                     tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo, R.color.duplasenaclaro, true, item.getValor(), item.getDescricaoEspecial());
                     break;
-                case FEDERAL:
-                    tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo, R.color.federalclaro, true, item.getValor(), item.getDescricaoEspecial());
-                    break;
+//                case FEDERAL:
+//                    tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo, R.color.federalclaro, true, item.getValor(), item.getDescricaoEspecial());
+//                    break;
             }
             if (tipoAposta != null){
                 tipoApostaLista.add(tipoAposta);

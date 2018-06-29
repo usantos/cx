@@ -450,6 +450,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
     }
 
     private void postAdicionarApostaCarrinho(ApostaBO apostaBO, final IdentificaoDeUmaApostaDas8Modalidades aposta){
+        DialogUtils.show( getContext());
         apostaBO.adicionarApostaNoCarrinho(aposta, new RequestListener<AgrupadorDTOApostaDTOResponse>() {
             @Override
             public void onResponse(AgrupadorDTOApostaDTOResponse response) {
