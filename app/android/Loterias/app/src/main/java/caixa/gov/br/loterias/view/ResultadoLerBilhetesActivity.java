@@ -147,7 +147,7 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
         corpoBilhetePremiadoLinearLayout.setVisibility(View.VISIBLE);
         corpoBilheteNaoPremiadoLinearLayout.setVisibility(View.GONE);
 
-        ModalidadeEnum modalidadeEnum = ModalidadeEnum.toString(resultadoConsultaBilheteDTO.getModalidadeDTO().getDescricao().toLowerCase());
+        ModalidadeEnum modalidadeEnum = ModalidadeEnum.fromInteger( resultadoConsultaBilheteDTO.getModalidadeDTO().getValor());
         EstiloModalidade estiloModalidade = new EstiloModalidade(modalidadeEnum);
         SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
         ParametroSimulacao parametroSimulacao = ViewUtils.getParametroSimulacao(sessaoUsuario, modalidadeEnum);

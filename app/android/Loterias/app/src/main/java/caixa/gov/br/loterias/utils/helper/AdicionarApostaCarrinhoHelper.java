@@ -1,6 +1,7 @@
 package caixa.gov.br.loterias.utils.helper;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 
 import com.android.volley.VolleyError;
@@ -101,7 +102,15 @@ public class AdicionarApostaCarrinhoHelper {
         //TODO subistituir por valor máxima
         else if (valorTotalCarrinho.compareTo(BigDecimal.TEN) == 1) {
             ViewUtils.alert(contextParam, contextParam.getString(R.string.MA014));
+
+//            ViewUtils.alertTitleButtonYesOrNotListener(contextParam, contextParam.getString(R.string.MA014), new DialogInterface.OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialog, int which) {
+//                    return Boolean.TRUE;
+//                }
+//            });
             return Boolean.FALSE;
+
         } else {
             Long id = crud.insertIdentificaoDeUmaApostaDas8Modalidades(aposta);
 

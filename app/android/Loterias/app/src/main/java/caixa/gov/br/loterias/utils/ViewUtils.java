@@ -84,6 +84,8 @@ public class ViewUtils {
     private static Typeface fontFuturaBold = null;
     private static Typeface fontAriallMT = null;
 
+
+
     public static Typeface getFontFutura(Context context) {
         if (fontFutura == null) {
             fontFutura = Typeface.createFromAsset(context.getAssets(), "fonts/futura_std_book.otf");
@@ -324,10 +326,6 @@ public class ViewUtils {
         view.clearAnimation();
     }
 
-    public interface AnimationEndListener {
-        void onAnimationEnd();
-    }
-
     public static void flipTop(final View view, final AnimationEndListener listenerAdapter) {
         view.animate().rotationX(90).setDuration(200).setListener(new AnimatorListenerAdapter() {
             @Override
@@ -390,12 +388,6 @@ public class ViewUtils {
             }
         });
         view.startAnimation(animation);
-    }
-
-    public interface KeyboardListener {
-        void abriu();
-
-        void fechou();
     }
 
     public static void removeKeyboardListener(final Activity activity, final ViewTreeObserver.OnGlobalLayoutListener listener) {
@@ -582,9 +574,6 @@ public class ViewUtils {
         }
     }
 
-
-    // Metodos relacionados a caso o conteudo da tela seja inferior o ao height do dispositivo, mantenha a tab no bottom da tela
-
     public static void organizaTabLayout(final Activity activity, int idMainLayout, final int idViewToExpand, final int idScrollView) {
         final ConstraintLayout constraintLayout = activity.findViewById(idMainLayout);
         ViewTreeObserver viewTreeObserver = constraintLayout.getViewTreeObserver();
@@ -621,7 +610,6 @@ public class ViewUtils {
         }
     }
 
-
     public static Point getNavigationBarSize(Context context) {
         Point appUsableSize = getAppUsableScreenSize(context);
         Point realScreenSize = getRealScreenSize(context);
@@ -639,6 +627,9 @@ public class ViewUtils {
         // navigation bar is not present
         return new Point();
     }
+
+
+    // Metodos relacionados a caso o conteudo da tela seja inferior o ao height do dispositivo, mantenha a tab no bottom da tela
 
     public static Point getAppUsableScreenSize(Context context) {
         WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
@@ -667,7 +658,6 @@ public class ViewUtils {
 
         return size;
     }
-
 
     /**
      * O texto que estiver dentro de _ receberá fonte FuturaBold, ex: Texto Normal _Texto Bold_
@@ -784,7 +774,6 @@ public class ViewUtils {
         return null;
     }
 
-
     public static int getSmallSizeQrCode(Context context) {
 
 //        Point point = getAppUsableScreenSize(context);
@@ -829,5 +818,15 @@ public class ViewUtils {
         byte[] byteArray = stream.toByteArray();
 
         return byteArray;
+    }
+
+    public interface AnimationEndListener {
+        void onAnimationEnd();
+    }
+
+    public interface KeyboardListener {
+        void abriu();
+
+        void fechou();
     }
 }

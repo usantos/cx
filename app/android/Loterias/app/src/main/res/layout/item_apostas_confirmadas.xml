@@ -24,8 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:orientation="horizontal"
-            android:paddingTop="10dp">
+            android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -58,31 +57,31 @@
             </LinearLayout>
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal"
-            android:paddingBottom="5dp">
+        <!--<LinearLayout-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginStart="10dp"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:orientation="horizontal"-->
+            <!--android:paddingBottom="5dp">-->
 
-            <TextView
-                android:id="@+id/situacaoLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/label_situacao_list_apostas_confirmadas"
-                android:textSize="12sp"
-                tools:textColor="#642475" />
+            <!--<TextView-->
+                <!--android:id="@+id/situacaoLabel"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="@string/label_situacao_list_apostas_confirmadas"-->
+                <!--android:textSize="12sp"-->
+                <!--tools:textColor="#642475" />-->
 
-            <TextView
-                android:id="@+id/situacaoTxt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                tools:text="Efetivado"
-                tools:textColor="#642475" />
-        </LinearLayout>
+            <!--<TextView-->
+                <!--android:id="@+id/situacaoTxt"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:textSize="12sp"-->
+                <!--android:textStyle="bold"-->
+                <!--tools:text="Efetivado"-->
+                <!--tools:textColor="#642475" />-->
+        <!--</LinearLayout>-->
     </LinearLayout>
 
     <LinearLayout
@@ -108,12 +107,12 @@
             <!--android:src="@drawable/icon_add_carrinho" />-->
 
         <LinearLayout
+            android:id="@+id/resultBtnLayout"
             android:layout_width="45dp"
             android:layout_height="match_parent"
+            android:clickable="true"
             android:gravity="center"
-            android:visibility="gone"
-            android:id="@+id/resultBtnLayout"
-            android:clickable="true">
+            android:visibility="gone">
             <ImageView
             android:id="@+id/resultBtn"
             android:layout_width="21dp"
@@ -123,11 +122,11 @@
 
         </LinearLayout>
         <LinearLayout
+            android:id="@+id/reloadBtnLayout"
             android:layout_width="45dp"
             android:layout_height="match_parent"
-            android:gravity="center"
-            android:id="@+id/reloadBtnLayout"
-            android:clickable="true">
+            android:clickable="true"
+            android:gravity="center">
             <ImageView
             android:id="@+id/reloadBtn"
             android:layout_width="25dp"
@@ -140,8 +139,8 @@
             android:id="@+id/setaLayout"
             android:layout_width="30dp"
             android:layout_height="match_parent"
-            android:gravity="center"
             android:clickable="true"
+            android:gravity="center"
             >
             <ImageView
                 android:id="@+id/setaImg"

@@ -78,44 +78,34 @@ public class PrincipalActivity extends AppCompatActivity
         DiscreteScrollView.OnItemChangedListener<HomeAdapter.ViewHolder> {
 
 
-    private List<Modalidade> data;
-    private List<ParametroSimulacao> modalidadesParaListar;
-    private RepassometroDTO repassesSociais;
     private static final int ZXING_CAMERA_PERMISSION = 1;
-    private DBLoteriasHelper dbLoteriasHelper;
-    private View actionApresentarTrevo, actionSettings;
-
+    @ViewById
+    public DiscreteScrollView homeCarousel;
     @ViewById
     protected Toolbar toolbar;
-
     @ViewById
     protected DrawerLayout drawerLayout;
-
     @ViewById
     protected Button buttonHomeBet;
-
     @ViewById
     protected TextView textViewHomeMinimumPurchaseValue, tituloLerBilhetes, textoRepassados, valorRepassesPrincipal;
-
     @ViewById
     protected RelativeLayout relativeContentPrincipal,
             relativeBlankView, relativeLayoutContentRapidao, relativeLayoutContentLerBilhetes, relativeLayoutContentFavoritas, relativeLayoutContentRepassados,
             relativeLayoutCarrinho;
-
     @ViewById
     protected LinearLayout atalhoRapidoLoterias;
-
-    @ViewById
-    public DiscreteScrollView homeCarousel;
-
     @ViewById
     protected ExpandableListView sideMenuExpandableListView;
-
     @ViewById
     protected NavigationView nav_view;
-
     @ViewById
     protected TextView nav_user, nav_ultima_aposta;
+    private List<Modalidade> data;
+    private List<ParametroSimulacao> modalidadesParaListar;
+    private RepassometroDTO repassesSociais;
+    private DBLoteriasHelper dbLoteriasHelper;
+    private View actionApresentarTrevo, actionSettings;
 
     @AfterViews
     public void init() {
@@ -352,25 +342,30 @@ public class PrincipalActivity extends AppCompatActivity
         ViewUtils.alertTitleButtonYesOrNotListener(this, getResources().getString(R.string.MA008), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                final AlertDialog loadViewProgress = LoadingViewLoterias.show(PrincipalActivity.this);
+                if (DadosUsuarioBO.checarUsuarioLogado( PrincipalActivity.this )){
+                    final AlertDialog loadViewProgress = LoadingViewLoterias.show(PrincipalActivity.this);
 
-                DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_(PrincipalActivity.this);
-                dadosUsuarioBO.sair(new RequestListener<NetworkResponse>() {
-                    @Override
-                    public void onResponse(NetworkResponse response) {
-                        KeycloakBO_.getInstance_(PrincipalActivity.this).logout(PrincipalActivity.this);
-                        loadViewProgress.dismiss();
-                        startActivity(new Intent(PrincipalActivity.this, LoginActivity.class));
-                        finish();
+                    DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_(PrincipalActivity.this);
+                    dadosUsuarioBO.sair(new RequestListener<NetworkResponse>() {
+                        @Override
+                        public void onResponse(NetworkResponse response) {
+                            KeycloakBO_.getInstance_(PrincipalActivity.this).logout(PrincipalActivity.this);
+                            loadViewProgress.dismiss();
+                            startActivity(new Intent(PrincipalActivity.this, LoginActivity.class));
+                            finish();
 
-                    }
+                        }
 
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        loadViewProgress.dismiss();
-                        RedirectNetwork.checkRedirect( error, PrincipalActivity.this );
-                    }
-                });
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            loadViewProgress.dismiss();
+                            RedirectNetwork.checkRedirect( error, PrincipalActivity.this );
+                        }
+                    });
+                }else{
+                    startActivity(new Intent(PrincipalActivity.this, LoginActivity.class));
+                    finish();
+                }
             }
         });
     }

@@ -78,7 +78,6 @@ public class LoginFragment extends Fragment {
             connectKeycloak();
         }
 
-
         return v;
     }
 

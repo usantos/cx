@@ -26,7 +26,7 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostasConfi
     private final Context context;
     private final List<ApostaDTO> list;
     private boolean isHistorico;
-
+    private OnApostasConfirmadasListener onApostasConfirmadasListener;
 
     public ApostasConfirmadasAdapter(Context context, List<ApostaDTO> list, boolean isHistorico) {
         this(context, list, null, isHistorico);
@@ -39,20 +39,77 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostasConfi
         this.isHistorico = isHistorico;
     }
 
-    public void setOnApostasConfirmadasListener(OnApostasConfirmadasListener onApostasConfirmadasListener) {
-        this.onApostasConfirmadasListener = onApostasConfirmadasListener;
-    }
-
     public OnApostasConfirmadasListener getOnApostasConfirmadasListener() {
         return onApostasConfirmadasListener;
     }
 
-    private OnApostasConfirmadasListener onApostasConfirmadasListener;
+    public void setOnApostasConfirmadasListener(OnApostasConfirmadasListener onApostasConfirmadasListener) {
+        this.onApostasConfirmadasListener = onApostasConfirmadasListener;
+    }
 
     public void addApostasList(List<ApostaDTO> apostasList) {
         if (apostasList != null) {
             list.addAll(apostasList);
         }
+    }
+
+    @Override
+    public void onBindViewHolder(ViewHolder holder, int position) {
+        ApostaDTO aposta = list.get(position);
+        EstiloModalidade estiloModalidade = new EstiloModalidade(aposta.getModalidade());
+
+        int color = ContextCompat.getColor(context, estiloModalidade.getCorEscura());
+
+        holder.stripe.setBackgroundColor(color);
+        holder.modalidadeTxt.setTextColor(color);
+        holder.modalidadeTxt.setText(estiloModalidade.getStringId());
+//        holder.situacaoLabel.setTextColor(color);
+//        holder.situacaoTxt.setTextColor(color);
+//        String descricaoStatus = "";
+//        if (aposta.getSituacao().getValor() == 4){
+//            descricaoStatus = "Não Conferida";
+//        }else {
+//            descricaoStatus = aposta.getSituacao().getDescricao();
+//        }
+//        holder.situacaoTxt.setText(descricaoStatus);
+//        ViewUtils.setColorDrawable(context, holder.setaImg.getDrawable(), R.color.colorAccent);
+
+//        if (context.getString(R.string.label_efetivada).equalsIgnoreCase(aposta.getSituacao().getDescricao())) {
+
+        if (isHistorico == false) {
+            holder.resultBtnLayout.setVisibility(View.VISIBLE);
+            holder.resultBtnLayout.setOnClickListener(holder);
+            holder.resultBtn.setOnClickListener(holder);
+        }else{
+            holder.resultBtnLayout.setVisibility(View.GONE);
+            holder.resultBtnLayout.setClickable(Boolean.FALSE);
+            holder.resultBtn.setClickable(Boolean.FALSE);
+        }
+
+        int teimosinhas = aposta.getQuantidadeTeimosinhas() != null ? aposta.getQuantidadeTeimosinhas() : 0;
+        if (teimosinhas > 0) {
+            holder.concursoTxt.setText(context.getString(R.string.label_aposta_concursos,
+                    aposta.getConcursoInicial(),
+                    aposta.getConcursoAlvo()));
+
+        } else {
+            holder.concursoTxt.setText(context.getString(R.string.label_aposta_concurso, aposta.getConcursoInicial()));
+        }
+    }
+
+    @Override
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        final Context context = parent.getContext();
+        final View view = LayoutInflater.from(context).inflate(R.layout.item_apostas_confirmadas,
+                parent,
+                false);
+
+        return new ViewHolder(view);
+    }
+
+    @Override
+    public int getItemCount() {
+        return list.size();
     }
 
     public interface OnApostasConfirmadasListener {
@@ -87,8 +144,8 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostasConfi
             setaLayout = view.findViewById(R.id.setaLayout);
             resultBtnLayout = view.findViewById(R.id.resultBtnLayout);
             reloadBtnLayout = view.findViewById(R.id.reloadBtnLayout);
-            situacaoLabel = view.findViewById(R.id.situacaoLabel);
-            situacaoTxt = view.findViewById(R.id.situacaoTxt);
+//            situacaoLabel = view.findViewById(R.id.situacaoLabel);
+//            situacaoTxt = view.findViewById(R.id.situacaoTxt);
 
             setaLayout.setOnClickListener(this);
             setaImg.setOnClickListener(this);
@@ -134,64 +191,5 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostasConfi
                 }
             }
         }
-    }
-
-    @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        ApostaDTO aposta = list.get(position);
-        EstiloModalidade estiloModalidade = new EstiloModalidade(aposta.getModalidade());
-
-        int color = ContextCompat.getColor(context, estiloModalidade.getCorEscura());
-
-        holder.stripe.setBackgroundColor(color);
-        holder.modalidadeTxt.setTextColor(color);
-        holder.modalidadeTxt.setText(estiloModalidade.getStringId());
-        holder.situacaoLabel.setTextColor(color);
-        holder.situacaoTxt.setTextColor(color);
-        String descricaoStatus = "";
-        if (aposta.getSituacao().getValor() == 4){
-            descricaoStatus = "Não Conferida";
-        }else {
-            descricaoStatus = aposta.getSituacao().getDescricao();
-        }
-        holder.situacaoTxt.setText(descricaoStatus);
-//        ViewUtils.setColorDrawable(context, holder.setaImg.getDrawable(), R.color.colorAccent);
-
-//        if (context.getString(R.string.label_efetivada).equalsIgnoreCase(aposta.getSituacao().getDescricao())) {
-
-        if (isHistorico == false) {
-            holder.resultBtnLayout.setVisibility(View.VISIBLE);
-            holder.resultBtnLayout.setOnClickListener(holder);
-            holder.resultBtn.setOnClickListener(holder);
-        }else{
-            holder.resultBtnLayout.setVisibility(View.GONE);
-            holder.resultBtnLayout.setClickable(Boolean.FALSE);
-            holder.resultBtn.setClickable(Boolean.FALSE);
-        }
-
-        int teimosinhas = aposta.getQuantidadeTeimosinhas() != null ? aposta.getQuantidadeTeimosinhas() : 0;
-        if (teimosinhas > 0) {
-            holder.concursoTxt.setText(context.getString(R.string.label_aposta_concursos,
-                    aposta.getConcursoInicial(),
-                    aposta.getConcursoAlvo()));
-
-        } else {
-            holder.concursoTxt.setText(context.getString(R.string.label_aposta_concurso, aposta.getConcursoInicial()));
-        }
-    }
-
-    @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        final Context context = parent.getContext();
-        final View view = LayoutInflater.from(context).inflate(R.layout.item_apostas_confirmadas,
-                parent,
-                false);
-
-        return new ViewHolder(view);
-    }
-
-    @Override
-    public int getItemCount() {
-        return list.size();
     }
 }

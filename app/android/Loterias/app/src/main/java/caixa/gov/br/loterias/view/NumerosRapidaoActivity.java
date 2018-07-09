@@ -13,7 +13,10 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.android.volley.VolleyError;
 import com.google.gson.Gson;
+
+import org.jboss.aerogear.android.authorization.oauth2.OAuth2AuthorizationException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,9 +25,18 @@ import java.util.List;
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bean.NumerosSelecionadosRapidao;
 
+import caixa.gov.br.loterias.model.bo.DadosUsuarioBO;
+import caixa.gov.br.loterias.model.bo.DadosUsuarioBO_;
+import caixa.gov.br.loterias.model.bo.RedirectNetwork;
+import caixa.gov.br.loterias.model.bo.RequestListener;
+import caixa.gov.br.loterias.model.bo.keycloak.KeycloakBO;
+import caixa.gov.br.loterias.model.bo.keycloak.KeycloakBO_;
+import caixa.gov.br.loterias.model.bo.silce.dto.ListCartaoDTOResponse;
+import caixa.gov.br.loterias.utils.AppUtils;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.adapter.NumeroSelecionadoRapidaoAdapter;
 import caixa.gov.br.loterias.view.custom.ExpandableHeightGridView;
+import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
 
 public class NumerosRapidaoActivity extends AppCompatActivity {
     NumerosSelecionadosRapidao[] listaNumerosSelecionadosRapidao;
@@ -106,6 +118,35 @@ public class NumerosRapidaoActivity extends AppCompatActivity {
         });
 
         gridViewNumeros();
+
+        connectKeycloak();
+    }
+
+    private void connectKeycloak() {
+        if(AppUtils.isNetworkAvailable(NumerosRapidaoActivity.this)){
+            KeycloakBO_.getInstance_(NumerosRapidaoActivity.this).login(NumerosRapidaoActivity.this, new KeycloakBO.OnLogin() {
+                        @Override
+                        public void onSuccess(String token) {
+                            if(NumerosRapidaoActivity.this != null){
+                                DadosUsuarioBO.updateUsuarioLogado( NumerosRapidaoActivity.this, true );
+                                //loginSucess();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Exception e) {
+                            if(NumerosRapidaoActivity.this != null){
+//                            OAuth2AuthorizationException.Error error = ((OAuth2AuthorizationException)e).type;
+                                if(!((OAuth2AuthorizationException) e).error.equals( "dialog_dismissed" )){
+                                    ViewUtils.alert(NumerosRapidaoActivity.this, getString(R.string.sistema_indisponivel));
+                                }
+                            }
+                        }
+                    }
+            );
+        }else{
+            ViewUtils.alert(NumerosRapidaoActivity.this, getString(R.string.seminternet));
+        }
     }
 
     private void reloadGridView(){
