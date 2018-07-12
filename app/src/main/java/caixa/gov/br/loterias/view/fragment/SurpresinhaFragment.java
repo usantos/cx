@@ -1,5 +1,6 @@
 package caixa.gov.br.loterias.view.fragment;
 
+import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Color;
@@ -338,7 +339,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
             public void onErrorResponse(VolleyError error) {
                 loadViewProgress.dismiss();
                 if (MensagensNetwork.isUnauthorizedError(error)) {
-                    inserirSuspresinhaBaseLocal(apostaSurpresinha);
+                    validaSuspresinhaBaseLocal(apostaSurpresinha);
                 } else {
                     RedirectNetwork.checkRedirect( error, getActivity() );
                 }
@@ -404,8 +405,8 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
     }
 
-    private void inserirSuspresinhaBaseLocal(IncluirSurpresinhaDTO aposta) {
-        DBLoteriasCrud crud = new DBLoteriasCrud(getContext());
+    private void validaSuspresinhaBaseLocal(final IncluirSurpresinhaDTO aposta) {
+        final DBLoteriasCrud crud = new DBLoteriasCrud(getContext());
         int quantidadeApostaCarrinho = crud.qtdIdentificaoDeUmaApostaDas8Modalidades();
         BigDecimal valorTotalCarrinho = crud.sumValorIdentificaoDeUmaApostaDas8Modalidades();
         valorTotalCarrinho = valorTotalCarrinho.add(valorTotalAposta);
@@ -416,32 +417,49 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         }
         //TODO subistituir por valor máxima
         else if (valorTotalCarrinho.compareTo(BigDecimal.TEN) == 1) {
-            ViewUtils.alert(getActivity(), getString(R.string.MA014));
+//            ViewUtils.alert(getActivity(), getString(R.string.MA014));
+            ViewUtils.alertTitleButtonYesOrNotListener( getActivity(), getResources().getString( R.string.MA014 ), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                   incluirSurpresinhaBaseLocal(aposta, crud);
+                }
+            } );
         } else {
-            IdentificaoDeUmaApostaDas8Modalidades apostaDas8Modalidades = new IdentificaoDeUmaApostaDas8Modalidades();
-            apostaDas8Modalidades.setModalidade(aposta.getModalidade());
-            apostaDas8Modalidades.setQuantidadeNumeros(aposta.getQuantidadeNumeros());
-            apostaDas8Modalidades.setQuantidadeSurpresinhas(aposta.getQuantidadeSurpresinhas());
-            apostaDas8Modalidades.setTipoConcurso(aposta.getTipoConcurso());
-            apostaDas8Modalidades.setIndicadorSurpresinha(aposta.getIndicadorSurpresinha());
-            apostaDas8Modalidades.setConcursoAlvo(aposta.getConcursoAlvo());
-            apostaDas8Modalidades.setQuantidadeTeimosinhas(aposta.getQuantidadeTeimosinhas());
-            apostaDas8Modalidades.setQuantidadeApostas(aposta.getQuantidadeApostas());
-            apostaDas8Modalidades.setEspelho(aposta.getGerarEspelho());
-            apostaDas8Modalidades.setTimeDoCoracao(aposta.getTimeDoCoracao());
-
-            if (aposta.getGerarEspelho() != null && aposta.getGerarEspelho()) {
-                apostaDas8Modalidades.setValor(valorTotalAposta.divide(Constantes.DOIS_BIG_DECIMAL));
-                crud.insertIdentificaoDeUmaApostaDas8Modalidades(apostaDas8Modalidades);
-                apostaDas8Modalidades.setEspelho(Boolean.FALSE);
-                crud.insertIdentificaoDeUmaApostaDas8Modalidades(apostaDas8Modalidades);
-            } else {
-                apostaDas8Modalidades.setValor(valorTotalAposta);
-                crud.insertIdentificaoDeUmaApostaDas8Modalidades(apostaDas8Modalidades);
-            }
-
-            surpresinhaFragmentListener.adicionarApostaCarrinho();
+            incluirSurpresinhaBaseLocal(aposta, crud);
         }
+    }
+
+    private void incluirSurpresinhaBaseLocal(IncluirSurpresinhaDTO aposta, DBLoteriasCrud crud) {
+        IdentificaoDeUmaApostaDas8Modalidades apostaDas8Modalidades = new IdentificaoDeUmaApostaDas8Modalidades();
+        apostaDas8Modalidades.setModalidade(aposta.getModalidade());
+        apostaDas8Modalidades.setQuantidadeNumeros(aposta.getQuantidadeNumeros());
+        apostaDas8Modalidades.setQuantidadeSurpresinhas(aposta.getQuantidadeSurpresinhas());
+        apostaDas8Modalidades.setTipoConcurso(aposta.getTipoConcurso());
+        apostaDas8Modalidades.setIndicadorSurpresinha(aposta.getIndicadorSurpresinha());
+        apostaDas8Modalidades.setConcursoAlvo(aposta.getConcursoAlvo());
+        apostaDas8Modalidades.setQuantidadeTeimosinhas(aposta.getQuantidadeTeimosinhas());
+        apostaDas8Modalidades.setQuantidadeApostas(aposta.getQuantidadeApostas());
+        apostaDas8Modalidades.setEspelho(aposta.getGerarEspelho());
+        apostaDas8Modalidades.setTimeDoCoracao(aposta.getTimeDoCoracao());
+
+        if (aposta.getGerarEspelho() != null && aposta.getGerarEspelho()) {
+            apostaDas8Modalidades.setValor(valorTotalAposta.divide(Constantes.DOIS_BIG_DECIMAL));
+            crud.insertIdentificaoDeUmaApostaDas8Modalidades(apostaDas8Modalidades);
+            apostaDas8Modalidades.setEspelho(Boolean.FALSE);
+            crud.insertIdentificaoDeUmaApostaDas8Modalidades(apostaDas8Modalidades);
+        } else if(aposta.getQuantidadeSurpresinhas() > 0){
+            //TODO: alteracao feita pelo RAPHAEL MARACAIPE
+            BigDecimal valorIndividual = valorTotalAposta.divide(new BigDecimal(aposta.getQuantidadeSurpresinhas()));
+            for(int contador = 0; contador < aposta.getQuantidadeSurpresinhas(); contador++) {
+                apostaDas8Modalidades.setValor(valorIndividual);
+                crud.insertIdentificaoDeUmaApostaDas8Modalidades( apostaDas8Modalidades );
+            }
+        } else {
+            apostaDas8Modalidades.setValor(valorTotalAposta);
+            crud.insertIdentificaoDeUmaApostaDas8Modalidades(apostaDas8Modalidades);
+        }
+
+        surpresinhaFragmentListener.adicionarApostaCarrinho();
     }
 
     // Adapter do gridview das dezenas

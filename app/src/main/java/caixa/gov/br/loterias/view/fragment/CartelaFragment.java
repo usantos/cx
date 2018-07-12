@@ -75,6 +75,7 @@ import caixa.gov.br.loterias.model.bo.silce.dto.ParametroValorApostaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.PartidaLotecaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.PartidaLotogolDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.TipoConcursoEnum;
+import caixa.gov.br.loterias.model.dao.DBLoteriasCrud;
 import caixa.gov.br.loterias.utils.Constantes;
 import caixa.gov.br.loterias.utils.DialogUtils;
 import caixa.gov.br.loterias.utils.ViewUtils;
@@ -450,7 +451,9 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
     }
 
     private void postAdicionarApostaCarrinho(ApostaBO apostaBO, final IdentificaoDeUmaApostaDas8Modalidades aposta){
-        DialogUtils.show( getContext());
+        if(!DialogUtils.isShow()) {
+            DialogUtils.show( getContext() );
+        }
         apostaBO.adicionarApostaNoCarrinho(aposta, new RequestListener<AgrupadorDTOApostaDTOResponse>() {
             @Override
             public void onResponse(AgrupadorDTOApostaDTOResponse response) {
@@ -469,7 +472,18 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                 DialogUtils.dismiss();
 
                 if (MensagensNetwork.isUnauthorizedError(error)) {
-                    if (AdicionarApostaCarrinhoHelper.inserirApostaCarrinhoLocal(getActivity(), aposta)) {
+                    DBLoteriasCrud crud = new DBLoteriasCrud(getActivity());
+                    BigDecimal valorTotalCarrinho = crud.sumValorIdentificaoDeUmaApostaDas8Modalidades();
+                    valorTotalCarrinho = valorTotalCarrinho.add(aposta.getValor());
+                    if(valorTotalCarrinho.compareTo(BigDecimal.TEN) == 1){
+                        ViewUtils.alertTitleButtonYesOrNotListener( getActivity(), getResources().getString(R.string.MA014), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                AdicionarApostaCarrinhoHelper.inserirApostaCarrinhoLocal(getActivity(), aposta);
+                                cartelaFragmentListener.adicionarApostaCarrinho();
+                            }
+                        });
+                    }else if (AdicionarApostaCarrinhoHelper.inserirApostaCarrinhoLocal(getActivity(), aposta)) {
                         cartelaFragmentListener.adicionarApostaCarrinho();
                     }
                 } else {

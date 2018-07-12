@@ -53,8 +53,9 @@ public class MensagensNetwork {
             try {
                 body = new String(error.networkResponse.data,"UTF-8");
                 errorResponse = gsonResponse.fromJson(body, ErrorResponse.class);
-
             } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            } catch (Exception e){
                 e.printStackTrace();
             }
         }

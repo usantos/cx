@@ -36,6 +36,8 @@ import static org.androidannotations.annotations.EBean.Scope.Singleton;
 @EBean(scope = Singleton)
 public class DadosUsuarioBO extends BaseBO {
 
+    private static final String USUARIO_KEY = "USUARIO_KEY";
+
     public void cartoes(final RequestListener<ListCartaoDTOResponse> listener) {
         LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
         queryParams.put("meioPagamento", "1");
@@ -111,7 +113,7 @@ public class DadosUsuarioBO extends BaseBO {
 
 
     public static void updateUsuarioLogado(Activity activity, Boolean status){
-        SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = activity.getSharedPreferences(USUARIO_KEY, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putBoolean(activity.getString(R.string.key_usuario_logado), status);
         editor.commit();
@@ -119,7 +121,7 @@ public class DadosUsuarioBO extends BaseBO {
     }
 
     public static Boolean checarUsuarioLogado(Activity activity){
-        SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = activity.getSharedPreferences(USUARIO_KEY, Context.MODE_PRIVATE);
         Boolean status = sharedPref.getBoolean(activity.getString(R.string.key_usuario_logado), false);
         return status;
     }

@@ -74,7 +74,8 @@
     <string name="erro_408">Tempo de resposta esgotou</string>
     <string name="erro_500">Não foi possível concluir essa operação. Por favor, tente novamente.</string>
     <string name="seminternet">Sem conexão com a internet.</string>
-    <string name="sistema_indisponivel">Não foi possível concluir esta operação. Por favor, tente novamente.</string>
+    <!--<string name="sistema_indisponivel">Não foi possível concluir esta operação. Por favor, tente novamente.</string>-->
+    <string name="sistema_indisponivel">O Tempo de conexão expirou.</string>
     <string name="btn_finalizar">Finalizar</string>
     <string name="declaracao_termo_uso_politica_privacidade">Declaro ter lido e concordado com o</string>
     <string name="termo_de_uso_underline"><u>termos de uso</u>.</string>
@@ -94,6 +95,7 @@
     <string name="MA014"> O valor máximo de apostas permitida diariamente será excedido com a inclusão dessa aposta. Deseja prosseguir com a inclusão da aposta?</string>
     <string name="MA015">Existe uma aposta idêntica a que está sendo incluída no seu carrinho. Deseja prosseguir com a inclusão da aposta?</string>
     <string name="MA016">Um número não pode ser marcado como obrigatório e proibido.</string>
+    <string name="MA019">Aposta favorita excluída com sucesso!</string>
     <string name="MA020">A situação da aposta foi atualizada, por favor verifique o comprovante gerado.</string>
     <string name="msg_favor_inserir_nome_aposta">Favor inserir um nome para sua aposta favorita</string>
     <string name="msg_erro_data_invalida"> Data Inválida</string>
@@ -265,6 +267,7 @@
     <string name="label_ganhadores">ganhadores</string>
     <string name="label_acerto">acerto</string>
     <string name="label_acertos">acertos</string>
+    <string name="label_sucesso">Sucesso</string>
 
     <!-- Loterica Resgate Prêmio -->
     <string name="label_loterica_minusculo">lotérica</string>

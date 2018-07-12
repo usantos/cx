@@ -50,6 +50,8 @@ public class RedirectNetwork {
 
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
+            } catch (Exception e){
+                e.printStackTrace();
             }
         }
 

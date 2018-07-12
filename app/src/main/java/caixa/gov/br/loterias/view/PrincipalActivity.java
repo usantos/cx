@@ -353,7 +353,6 @@ public class PrincipalActivity extends AppCompatActivity
                             loadViewProgress.dismiss();
                             startActivity(new Intent(PrincipalActivity.this, LoginActivity.class));
                             finish();
-
                         }
 
                         @Override
@@ -362,7 +361,7 @@ public class PrincipalActivity extends AppCompatActivity
                             RedirectNetwork.checkRedirect( error, PrincipalActivity.this );
                         }
                     });
-                }else{
+                } else{
                     startActivity(new Intent(PrincipalActivity.this, LoginActivity.class));
                     finish();
                 }

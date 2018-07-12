@@ -45,7 +45,7 @@ public class ResultadoPesquisaPaginadaApostaFavoritaDTO {
      * Criação da lista vazia
      **/
     @ApiModelProperty(value = "Criação da lista vazia")
-    public List<ApostaFavoritaDTO> getLista() {
+    public List<ApostaFavoritaDTO>  getLista() {
         return lista;
     }
 

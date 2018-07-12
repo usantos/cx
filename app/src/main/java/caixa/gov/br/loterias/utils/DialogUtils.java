@@ -1,6 +1,5 @@
 package caixa.gov.br.loterias.utils;
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.v7.app.AlertDialog;
 
@@ -17,6 +16,13 @@ public class DialogUtils {
 
     public static void show(Context contextParam) {
         alertDialog = LoadingViewLoterias.show(contextParam);
+    }
+
+    public static boolean isShow(){
+        if(alertDialog != null){
+            return alertDialog.isShowing();
+        }
+        return false;
     }
 
     public static void dismiss() {

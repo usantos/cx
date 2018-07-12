@@ -67,11 +67,16 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
     private final Activity activity;
     private final List<ApostaFavoritaDTO> listaApostaFavorita;
     private ViewTreeObserver.OnGlobalLayoutListener swipeGlobalLayoutListener;
+    private ExcluiuTudo excluiuTudo;
 
     public FavoritasRecyclerViewAdapter(final Activity activity, final Context context, final List<ApostaFavoritaDTO> listaApostaFavorita) {
         this.context = context;
         this.listaApostaFavorita = listaApostaFavorita;
         this.activity = activity;
+    }
+
+    public void setOnExcluiuTudo(ExcluiuTudo excluiuTudo){
+        this.excluiuTudo = excluiuTudo;
     }
 
     @Override
@@ -84,8 +89,6 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-
-
 
         final SwipeLayout swipeLayout = (SwipeLayout) holder.itemView;
         swipeLayout.setClickToClose(true);
@@ -111,15 +114,16 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
         swipeGlobalLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                if (listaApostaFavorita.get(position).getOpenSwipeLayout() == null){
-                    listaApostaFavorita.get( position ).setOpenSwipeLayout( false );
-                }else{
-                    if (listaApostaFavorita.get(position).getOpenSwipeLayout()) {
-                        // Opens the layout without animation
-                        swipeLayout.open(false);
+                if(listaApostaFavorita.size() > 0) {
+                    if (listaApostaFavorita.get( position ).getOpenSwipeLayout() == null) {
+                        listaApostaFavorita.get( position ).setOpenSwipeLayout( false );
+                    } else {
+                        if (listaApostaFavorita.get( position ).getOpenSwipeLayout()) {
+                            // Opens the layout without animation
+                            swipeLayout.open( false );
+                        }
                     }
                 }
-
             }
         };
 
@@ -224,11 +228,11 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
         }
     }
 
-
-
-
     public void removeAt(int position) {
         listaApostaFavorita.remove(position);
+        if(listaApostaFavorita.size() == 0){
+            excluiuTudo.onVazio();
+        }
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, listaApostaFavorita.size());
     }
@@ -421,6 +425,12 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
         }else {
             adicionarCarrinho( apostaBO, apostaFavoritaDTO.getId(), apostaFavoritaDTO.getModalidade() );
         }
+    }
+
+    public interface ExcluiuTudo{
+
+        void onVazio();
+
     }
 
 }

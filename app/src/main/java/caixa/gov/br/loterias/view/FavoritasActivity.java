@@ -149,6 +149,12 @@ public class FavoritasActivity extends AppCompatActivity {
                 recyclerViewFavoritas.setHasFixedSize(true);
                 recyclerViewFavoritas.setAdapter(favoritasAdapter);
                 recyclerViewFavoritas.setLayoutManager(layoutManager);
+                favoritasAdapter.setOnExcluiuTudo( new FavoritasRecyclerViewAdapter.ExcluiuTudo() {
+                    @Override
+                    public void onVazio() {
+                        callWebservice();
+                    }
+                });
 
                 scrollViewContentViewFavoritas.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
                     @Override
