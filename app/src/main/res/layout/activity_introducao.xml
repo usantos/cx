@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="caixa.gov.br.loterias.view.IntroducaoActivity"
+    android:fitsSystemWindows="true"
+    android:background="@drawable/splashscreen_triangulo">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/vpPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <me.relex.circleindicator.CircleIndicator
+            android:visibility="visible"
+            android:id="@+id/indicator_custom"
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"/>
+
+    </RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>

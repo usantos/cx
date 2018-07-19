@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="caixa.gov.br.loterias.view.ConfirmadoInclusaoCarrinhoActivity">
+
+    <!--<Button-->
+        <!--android:id="@+id/botaoVerCarrinhoAposta"-->
+        <!--android:layout_width="174dp"-->
+        <!--android:layout_height="56dp"-->
+        <!--android:layout_marginBottom="14dp"-->
+        <!--android:background="@color/cinza"-->
+        <!--android:paddingLeft="14dp"-->
+        <!--android:paddingRight="14dp"-->
+        <!--android:text="@string/verCarrinho"-->
+        <!--android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"-->
+        <!--android:textColor="@color/branco"-->
+        <!--app:layout_constraintBottom_toTopOf="@+id/botaoNovaAposta"-->
+        <!--app:layout_constraintLeft_toRightOf="@+id/viewTabBar"-->
+        <!--app:layout_constraintRight_toLeftOf="@+id/viewTabBar" />-->
+
+    <TextView
+        android:id="@+id/textObservacaoConfirmacao"
+        style="@style/editTextArialMTTheme"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="46dp"
+        android:layout_marginLeft="46dp"
+        android:layout_marginRight="46dp"
+        android:layout_marginStart="46dp"
+        android:layout_marginTop="11dp"
+        android:text="@string/infoValorMinimoCarrinho"
+        android:textAlignment="center"
+        android:textColor="@color/branco"
+        app:layout_constraintLeft_toLeftOf="@+id/imageSetaApontandoCarrinho"
+        app:layout_constraintRight_toRightOf="@+id/imageSetaApontandoCarrinho"
+        app:layout_constraintTop_toTopOf="@+id/imageSetaApontandoCarrinho" />
+
+    <TextView
+        android:id="@+id/textTituloTela"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="9dp"
+        android:layout_marginEnd="105dp"
+        android:layout_marginLeft="105dp"
+        android:layout_marginRight="105dp"
+        android:layout_marginStart="105dp"
+        android:text="@string/tituloApostaFeita"
+        android:textAlignment="center"
+        android:textColor="@color/branco"
+        android:textSize="14.2sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/imageSetaApontandoCarrinho"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <!--<Button-->
+        <!--android:id="@+id/botaoNovaAposta"-->
+        <!--android:layout_width="174dp"-->
+        <!--android:layout_height="56dp"-->
+        <!--android:layout_marginBottom="10dp"-->
+        <!--android:background="@color/megasenaclaro"-->
+        <!--android:paddingLeft="14dp"-->
+        <!--android:paddingRight="14dp"-->
+        <!--android:text="@string/novaAposta"-->
+        <!--android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"-->
+        <!--android:textColor="@color/branco"-->
+        <!--android:textStyle="bold"-->
+        <!--app:layout_constraintBottom_toTopOf="@+id/botaoAdicionarCompletarCartela"-->
+        <!--app:layout_constraintLeft_toRightOf="@+id/viewTabBar"-->
+        <!--app:layout_constraintRight_toLeftOf="@+id/viewTabBar" />-->
+
+
+
+    <ImageView
+        android:id="@+id/imageSetaApontandoCarrinho"
+        android:layout_width="0dp"
+        android:layout_height="309dp"
+        android:layout_marginBottom="7dp"
+        android:layout_marginEnd="42dp"
+        android:layout_marginLeft="53dp"
+        android:layout_marginRight="42dp"
+        android:layout_marginStart="53dp"
+        app:layout_constraintBottom_toTopOf="@+id/viewTabBar"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:srcCompat="@drawable/rectangle_5_copy" />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/viewTabBar"
+        android:layout_width="0dp"
+        android:layout_height="94dp"
+        android:background="@color/azulclaro"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+        <RelativeLayout
+            android:layout_width="89dp"
+            android:layout_height="0dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="13dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="15dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/imageViewPaginacao"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0">
+
+            <TextView
+                android:id="@+id/valorApostaConfirmacao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:text="R$ 4,50"
+                android:textAlignment="center"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"
+                android:lines="1"/>
+
+            <TextView
+                android:id="@+id/textInfoValorAposta"
+                style="@style/editTextArialMTTheme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:text="@string/valorDessaAposta"
+                android:textAlignment="center"
+                android:textColor="@color/azulescuro"
+                android:textSize="12sp" />
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/imageViewPaginacao"
+            android:layout_width="174dp"
+            android:layout_height="12dp"
+            android:layout_marginBottom="20dp"
+            android:contentDescription="@string/imagemCarrinho"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:srcCompat="@drawable/paginacao1" />
+
+        <RelativeLayout
+            android:id="@+id/confirmarInclusaoApostaLayoutCarrinhoApostas"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="13dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:clickable="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/imageViewPaginacao"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <Button
+                android:id="@+id/botaoCarrinho"
+                android:layout_width="34dp"
+                android:layout_height="40dp"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/icon_carrinho"
+                android:clickable="false"/>
+
+            <TextView
+                android:id="@+id/textViewCarrinhoCartelaCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="14dp"
+                android:background="@drawable/rounded_textview"
+                android:gravity="center"
+                android:text="0"
+                android:textColor="@color/branco"
+                android:textSize="12sp"
+                android:translationZ="2dp"
+                android:outlineProvider="none"
+                android:clickable="false"/>
+
+            <TextView
+                android:id="@+id/textInfoCarrinho"
+                style="@style/editTextArialMTTheme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:text="@string/carrinhoDeApostas"
+                android:textAlignment="center"
+                android:textColor="@color/azulescuro"
+                android:textSize="12sp"
+                android:clickable="false"/>
+        </RelativeLayout>
+    </android.support.constraint.ConstraintLayout>
+    <LinearLayout
+        android:id="@+id/botaoLinearLayoutVoltarPrincipal"
+        android:layout_width="174dp"
+        android:layout_height="84dp"
+        android:layout_marginBottom="51dp"
+        android:background="@color/cinza"
+        android:paddingLeft="14dp"
+        android:paddingRight="14dp"
+        android:text=""
+        android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
+        android:textColor="@color/branco"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/viewTabBar"
+        app:layout_constraintRight_toLeftOf="@+id/viewTabBar"
+        android:orientation="vertical"
+        android:clickable="true">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Voltar"
+            android:textColor="@color/branco"
+            android:textSize="17.7sp"
+            android:fontFamily="@font/futura_std_bold"
+            android:textAlignment="center"
+            android:layout_marginTop="25dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ao início"
+            android:textColor="@color/branco"
+            android:textSize="14.2sp"
+            android:fontFamily="@font/futura_std_book"
+            android:textAlignment="center"/>
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

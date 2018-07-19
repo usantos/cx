@@ -1,0 +1,603 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="caixa.gov.br.loterias.view.RepassesSociaisActivity"
+    tools:showIn="@layout/activity_repasses_sociais">
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guidelineTopo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.64" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/verdeazul"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guidelineTopo"
+        android:id="@+id/linhaTopo"/>
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linhaTopo"
+        android:layout_marginTop="1dp"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/background_gradient_verde">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="40dp"
+                        android:text="Em 2017, as Loterias já destinaram"
+                        android:textAlignment="center"
+                        android:textColor="@color/branco"
+                        android:textSize="14.2sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="15dp"
+                        android:text=""
+                        android:textAlignment="center"
+                        android:textColor="@color/amareloQueimado"
+                        android:textSize="19.8sp"
+                        android:textStyle="bold"
+                        android:id="@+id/valorRepassesSociais"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="18dp"
+                        android:text="para melhorar o país."
+                        android:textAlignment="center"
+                        android:textColor="@color/branco"
+                        android:textSize="14.2sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="40dp"/>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/repassequadro1"
+                                android:layout_weight="0.5">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Para cada \nR$1,00\napostados nas\nloterias federais"
+                                    android:textAlignment="center"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_centerVertical="true"
+                                    android:textColor="@color/branco"
+                                    android:id="@+id/textViewRepasseQuadro1"
+                                    android:textSize="16sp"
+                                    />
+                            </RelativeLayout>
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/repassequadro2"
+                                android:layout_weight="0.5">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="R$0,48*\nsão destinados\na programas sociais"
+                                    android:textAlignment="center"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_centerVertical="true"
+                                    android:textColor="@color/branco"
+                                    android:id="@+id/textViewRepasseQuadro2"
+                                    android:textSize="16sp"
+                                    />
+
+                            </RelativeLayout>
+                        </LinearLayout>
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:background="@color/branco">
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="40dp"
+                        android:src="@drawable/ilustra_repasses" />
+
+                    <View
+                        android:layout_width="142dp"
+                        android:layout_height="1dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="23dp"
+                        android:background="@color/azulClaroSelecaotime"></View>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="17dp"
+                        android:fontFamily="@font/futura_std_bold"
+                        android:text="Entenda como"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/futura_std_book"
+                        android:text="esse dinheiro é distribuído:"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="18sp" />
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp"
+                        android:layout_marginTop="23dp"
+                        android:background="@color/cinzaclaro"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="76dp"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="24dp"
+                                    android:fontFamily="@font/futura_std_bold"
+                                    android:text=""
+                                    android:textAlignment="center"
+                                    android:textColor="@color/azulfavoritas"
+                                    android:textSize="20sp"
+                                    android:id="@+id/textViewEducacaoValorArrecadado"/>
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/futura_std_book"
+                                    android:text=""
+                                    android:textAlignment="center"
+                                    android:textColor="@color/cinza"
+                                    android:textSize="12sp"
+                                    android:id="@+id/textViewEducacaoUnidadeValor"/>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="24dp"
+                                    android:fontFamily="@font/futura_std_bold"
+                                    android:text=""
+                                    android:textAlignment="center"
+                                    android:textColor="@color/vermelhoBilhetes"
+                                    android:textSize="20sp"
+                                    android:id="@+id/textViewCulturaValorArrecadado"/>
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/futura_std_book"
+                                    android:text=""
+                                    android:textAlignment="center"
+                                    android:textColor="@color/cinza"
+                                    android:textSize="12sp"
+                                    android:id="@+id/textViewCulturaUnidadeValor"/>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="44dp"
+                            android:background="@drawable/icgrouprepasses"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="18dp"
+                                    android:fontFamily="@font/futura_std_bold"
+                                    android:text="Educação"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/cinza"
+                                    android:textSize="12sp" />
+
+                                <View
+                                    android:layout_width="match_parent"
+                                    android:layout_height="5dp"
+                                    android:layout_marginTop="7dp"
+                                    android:background="@color/azulfavoritas"></View>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="18dp"
+                                    android:fontFamily="@font/futura_std_bold"
+                                    android:text="Cultura"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/cinza"
+                                    android:textSize="12sp" />
+
+                                <View
+                                    android:layout_width="match_parent"
+                                    android:layout_height="5dp"
+                                    android:layout_marginTop="7dp"
+                                    android:background="@color/vermelhoBilhetes"></View>
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp"
+                        android:background="@color/cinzaclaro"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="76dp"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="24dp"
+                                    android:fontFamily="@font/futura_std_bold"
+                                    android:text=""
+                                    android:textAlignment="center"
+                                    android:textColor="@color/verdeazul"
+                                    android:textSize="20sp"
+                                    android:id="@+id/textViewEsporteValorArrecadado"/>
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/futura_std_book"
+                                    android:text=""
+                                    android:textAlignment="center"
+                                    android:textColor="@color/cinza"
+                                    android:textSize="12sp"
+                                    android:id="@+id/textViewEsporteUnidadeValor"/>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="24dp"
+                                    android:fontFamily="@font/futura_std_bold"
+                                    android:text=""
+                                    android:textAlignment="center"
+                                    android:textColor="@color/verdemusgo"
+                                    android:textSize="20sp"
+                                    android:id="@+id/textViewSegurancaValorArrecadado"/>
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/futura_std_book"
+                                    android:text=""
+                                    android:textAlignment="center"
+                                    android:textColor="@color/cinza"
+                                    android:textSize="12sp"
+                                    android:id="@+id/textViewSegurancaUnidadeValor"/>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="44dp"
+                            android:background="@drawable/icgrouprepasses"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="18dp"
+                                    android:fontFamily="@font/futura_std_bold"
+                                    android:text="Esporte"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/cinza"
+                                    android:textSize="12sp" />
+
+                                <View
+                                    android:layout_width="match_parent"
+                                    android:layout_height="5dp"
+                                    android:layout_marginTop="7dp"
+                                    android:background="@color/verdeazul"></View>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="18dp"
+                                    android:fontFamily="@font/futura_std_bold"
+                                    android:text="Segurança"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/cinza"
+                                    android:textSize="12sp" />
+
+                                <View
+                                    android:layout_width="match_parent"
+                                    android:layout_height="5dp"
+                                    android:layout_marginTop="7dp"
+                                    android:background="@color/verdemusgo"></View>
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp"
+                        android:background="@color/cinzaclaro"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="76dp"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="24dp"
+                                    android:fontFamily="@font/futura_std_bold"
+                                    android:text=""
+                                    android:textAlignment="center"
+                                    android:textColor="@color/roxoclaro"
+                                    android:textSize="20sp"
+                                    android:id="@+id/textViewSeguridadeValorArrecadado"/>
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/futura_std_book"
+                                    android:text=""
+                                    android:textAlignment="center"
+                                    android:textColor="@color/cinza"
+                                    android:textSize="12sp"
+                                    android:id="@+id/textViewSeguridadeUnidadeValor"/>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="24dp"
+                                    android:fontFamily="@font/futura_std_bold"
+                                    android:text=""
+                                    android:textAlignment="center"
+                                    android:textColor="@color/amareloQueimado"
+                                    android:textSize="20sp"
+                                    android:id="@+id/textViewOutrosValorArrecadado"/>
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/futura_std_book"
+                                    android:text=""
+                                    android:textAlignment="center"
+                                    android:textColor="@color/cinza"
+                                    android:textSize="12sp"
+                                    android:id="@+id/textViewOutrosUnidadeValor"/>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="44dp"
+                            android:background="@drawable/icgrouprepasses"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="18dp"
+                                    android:fontFamily="@font/futura_std_bold"
+                                    android:text="Seguridade"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/cinza"
+                                    android:textSize="12sp" />
+
+                                <View
+                                    android:layout_width="match_parent"
+                                    android:layout_height="5dp"
+                                    android:layout_marginTop="7dp"
+                                    android:background="@color/roxoclaro"></View>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="18dp"
+                                    android:fontFamily="@font/futura_std_bold"
+                                    android:text="Outros"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/cinza"
+                                    android:textSize="12sp" />
+
+                                <View
+                                    android:layout_width="match_parent"
+                                    android:layout_height="5dp"
+                                    android:layout_marginTop="7dp"
+                                    android:background="@color/amareloQueimado"></View>
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
+
+                </LinearLayout>
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/branco">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:background="@color/linhaDivisa"
+                        android:layout_marginTop="80dp">
+
+                        <TextView
+                            android:layout_width="230dp"
+                            android:layout_height="wrap_content"
+                            android:text="*o valor inclui a parcela correspondente
+ao imposto de renda sobre os prêmios."
+                            android:textAlignment="center"
+                            android:textColor="@color/textColorToolbar"
+                            android:gravity="center"
+                            android:layout_alignParentBottom="true"
+                            android:textSize="12.4sp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginBottom="14dp"
+                            android:textStyle="bold"
+                            style="@style/editTextArialMTTheme"
+                            />
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="-143dp">
+                        <Button
+                            android:layout_width="184dp"
+                            android:layout_height="84dp"
+                            android:text="Aposte\ne ajude ainda mais"
+                            android:layout_centerHorizontal="true"
+                            android:background="@color/cinza"
+                            android:textColor="@color/branco"
+                            android:id="@+id/ButtonAposteSociais"
+                            android:textAllCaps="false"/>
+                    </RelativeLayout>
+
+
+                </LinearLayout>
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+</android.support.constraint.ConstraintLayout>

@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_gradient_cinza"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:showIn="@layout/app_bar_principal">
+
+    <LinearLayout
+        android:id="@+id/atalhoRapidoLoterias"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutContentRapidao"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:alpha="0.0">
+
+            <RelativeLayout
+                android:layout_width="294dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <RelativeLayout
+                        android:layout_width="199dp"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/tituloRapidao"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentTop="true"
+                            android:text="@string/label_rapidao"
+                            android:textColor="@color/laranjacaixa"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_below="@+id/tituloRapidao"
+                            android:gravity="end"
+                            android:text="@string/label_faca_apostas_apenas_um_clique"
+                            android:textColor="@color/cinza"
+                            android:textSize="13sp" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="95dp"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginStart="20dp"
+                            android:src="@drawable/icon_rapidao" />
+                    </RelativeLayout>
+                </LinearLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutContentLerBilhetes"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:alpha="0.0">
+
+            <RelativeLayout
+                android:layout_width="294dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <RelativeLayout
+                        android:layout_width="199dp"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/tituloLerBilhetes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentTop="true"
+                            android:textColor="@color/vermelhoBilhetes"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_below="@+id/tituloLerBilhetes"
+                            android:gravity="end"
+                            android:text="@string/label_apostou_loterica_confira_resultados"
+                            android:textColor="@color/cinza"
+                            android:textSize="13sp" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="95dp"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginStart="20dp"
+                            android:src="@drawable/icon_bilhetes" />
+                    </RelativeLayout>
+                </LinearLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutContentFavoritas"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:alpha="0.0">
+
+            <RelativeLayout
+                android:layout_width="294dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <RelativeLayout
+                        android:layout_width="199dp"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/tituloFavoritas"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentTop="true"
+                            android:text="@string/label_favoritas"
+                            android:textColor="@color/azulfavoritas"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_below="@+id/tituloFavoritas"
+                            android:gravity="right"
+                            android:text="@string/label_suas_apostas_sorte_apenas_clique"
+                            android:textColor="@color/cinza"
+                            android:textSize="13sp" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="95dp"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginStart="20dp"
+                            android:src="@drawable/icon_favoritas" />
+                    </RelativeLayout>
+                </LinearLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutContentRepassados"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:alpha="0.0">
+
+            <RelativeLayout
+                android:layout_width="294dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <RelativeLayout
+                        android:layout_width="199dp"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/valorRepassesPrincipal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentTop="true"
+                            android:textColor="@color/verdeazul"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/textoRepassados"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_below="@+id/valorRepassesPrincipal"
+                            android:textColor="@color/cinza"
+                            android:textSize="14sp" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="95dp"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginStart="20dp"
+                            android:src="@drawable/icon_repassados" />
+                    </RelativeLayout>
+                </LinearLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/relativeContentPrincipal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.yarolegovich.discretescrollview.DiscreteScrollView
+            android:id="@+id/home_carousel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="100dp"
+            app:dsv_orientation="horizontal"
+            />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_alignParentBottom="true">
+
+        <TextView
+            android:id="@+id/textViewHomeMinimumPurchaseValue"
+            style="@style/editTextArialMTTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="65dp"
+            android:text="valor mínimo da compra: R$0,00"
+            android:textColor="@color/azulescuro"
+            android:textSize="10sp" />
+
+        <RelativeLayout
+            android:id="@+id/apostasConfirmadasBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="75dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="6dp"
+            android:layout_marginTop="20dp">
+
+            <ImageView
+                android:id="@+id/textViewHomeButtonAllBets"
+                android:layout_width="34dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="25dp"
+                android:src="@drawable/icon_apostas" />
+
+            <TextView
+                android:id="@+id/textViewHomeCountConfirmedBets"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textViewHomeButtonAllBets"
+                android:layout_marginStart="52dp"
+                android:layout_marginTop="-25dp"
+                android:background="@drawable/rounded_textview"
+                android:gravity="center"
+                android:outlineProvider="none"
+                android:text="3"
+                android:textColor="@color/branco"
+                android:textSize="12sp"
+                android:translationZ="2dp" />
+
+            <TextView
+                style="@style/editTextArialMTTheme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="12dp"
+                android:text="Apostas\nconfirmadas"
+                android:textAlignment="center"
+                android:textColor="@color/azulescuro"
+                android:textSize="12sp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutCarrinho"
+            android:layout_width="75dp"
+            android:layout_height="70dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="0dp"
+            android:layout_marginTop="20dp"
+            android:clickable="true">
+
+            <ImageView
+                android:id="@+id/homeButtonCart"
+                android:layout_width="34dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="13dp"
+                android:src="@drawable/icon_carrinho" />
+
+            <TextView
+                android:id="@+id/textViewHomeCountBetsCart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/homeButtonCart"
+                android:layout_marginLeft="0dp"
+                android:layout_marginTop="-25dp"
+                android:background="@drawable/rounded_textview"
+                android:gravity="center"
+                android:outlineProvider="none"
+                android:text="3"
+                android:textColor="@color/branco"
+                android:textSize="12sp"
+                android:translationZ="2dp" />
+
+            <TextView
+                style="@style/editTextArialMTTheme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:text="Carrinho\nde apostas"
+                android:textAlignment="center"
+                android:textColor="@color/azulescuro"
+                android:textSize="12sp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativeBlankView"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:alpha="0.0"
+            android:background="@color/branco"
+            android:visibility="visible" />
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/buttonHomeBet"
+        android:layout_width="154dp"
+        android:layout_height="84dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="40dp"
+        android:background="@color/verdesenaclaro"
+        android:text=""
+        android:textAllCaps="false"
+        android:textColor="@color/branco"
+        android:textSize="16sp" />
+
+</RelativeLayout>

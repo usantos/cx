@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="caixa.gov.br.loterias">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-feature android:name="android.hardware.camera" />
+
+    <application
+        android:name="android.support.multidex.MultiDexApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="caixa.gov.br.loterias.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/images_path" />
+        </provider>
+
+        <activity
+            android:name=".view.SplashScreenActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/SplashTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".view.IntroducaoActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".view.LoginActivity"
+            android:configChanges="orientation"
+            android:label="@string/title_activity_login"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <service android:name="org.jboss.aerogear.android.authorization.oauth2.OAuth2AuthzService" />
+
+        <activity
+            android:name=".view.CadastrarActivity_"
+            android:configChanges="orientation"
+            android:parentActivityName=".view.IntroducaoActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".view.CadastrarPasso2Activity_"
+            android:configChanges="orientation"
+            android:parentActivityName=".view.CadastrarActivity_"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:screenOrientation="portrait"
+                android:value=".view.CadastrarActivity_" />
+        </activity>
+        <activity
+            android:name=".view.SimularApostaActivity_"
+            android:configChanges="orientation"
+            android:label="@string/title_activity_home"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan"/>
+        <activity
+            android:name=".view.ConfirmadoInclusaoCarrinhoActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.CarrinhoActivity_"
+            android:configChanges="orientation"
+            android:label="@string/title_activity_carrinho"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.FormaPagamentoActivity"
+            android:configChanges="orientation"
+            android:label="@string/title_activity_forma_pagamento"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.ConfirmacaoPagamentoActivity"
+            android:configChanges="orientation"
+            android:label="@string/title_activity_confirmacao_pagamento"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.NovaFormaPagamentoActivity"
+            android:configChanges="orientation"
+            android:label="@string/title_activity_forma_pagamento"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.PrincipalActivity_"
+            android:label=""
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.BrancoActionBar" />
+        <activity
+            android:name=".view.TermosUsoActivity"
+            android:label="@string/title_activity_termos_uso"
+            android:parentActivityName=".view.PrincipalActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.DegradeActionBar" />
+        <activity
+            android:name=".view.RepassesSociaisActivity"
+            android:label="@string/title_activity_repasses_sociais"
+            android:parentActivityName=".view.PrincipalActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.DegradeActionBar">
+        </activity>
+        <activity
+            android:name=".view.ListaRapidaoActivity"
+            android:label="@string/title_activity_lista_rapidao"
+            android:parentActivityName=".view.PrincipalActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.DegradeActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="caixa.gov.br.loterias.view.PrincipalActivity" />
+        </activity>
+        <activity
+            android:name=".view.RapidaoConfigActivity"
+            android:label="@string/title_activity_lista_rapidao"
+            android:parentActivityName=".view.ListaRapidaoActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.DegradeActionBar"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize|adjustPan">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="caixa.gov.br.loterias.view.ListaRapidaoActivity" />
+        </activity>
+        <activity
+            android:name=".view.SelecaoModalidadesRapidaoActivity"
+            android:label="@string/title_activity_lista_rapidao"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.DegradeActionBar" />
+        <activity
+            android:name=".view.NumerosRapidaoActivity"
+            android:label="@string/title_activity_lista_rapidao"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.DegradeActionBar" />
+        <activity
+            android:name=".view.AjudaActivity"
+            android:parentActivityName=".view.SimularApostaActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.DegradeActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="caixa.gov.br.loterias.view.SimularApostaActivity" />
+        </activity>
+        <activity
+            android:name=".view.FavoritasActivity"
+            android:label="@string/title_activity_favoritas"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.DegradeActionBar"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".view.ListaComprasActivity"
+            android:label="@string/title_activity_lista_compras"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.DegradeActionBar" />
+        <activity
+            android:name=".view.LerBilhetesActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppFullScreenTheme" />
+        <activity
+            android:name=".view.LerBilhetesEscolhaJogoActivity"
+            android:label="@string/title_activity_ler_bilhetes_escolha_jogo"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.DegradeActionBar" />
+        <activity
+            android:name=".view.ResultadoLerBilhetesActivity_"
+            android:label="@string/title_activity_resultado_ler_bilhetes"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.DegradeActionBar" />
+        <activity
+            android:name=".view.DetalhesComprasActivity"
+            android:label="@string/title_activity_detalhes_compras"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.DegradeActionBar" />
+        <activity
+            android:name=".view.InsercaoManualCodBarrasActivity"
+            android:label=""
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.DegradeActionBar" />
+        <activity
+            android:name=".view.DetalheDuvidaActivity_"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.ApostasConfirmadasActivity_"
+            android:label="@string/title_activity_apostas_confirmadas"
+            android:parentActivityName=".view.PrincipalActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.DegradeActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:screenOrientation="portrait"
+                android:value="caixa.gov.br.loterias.view.PrincipalActivity" />
+        </activity>
+        <activity
+            android:name=".view.JogosConfirmadosPremioActivity"
+            android:label="@string/title_activity_resultado_ler_bilhetes"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.DegradeActionBar" />
+        <activity
+            android:name=".view.JogosConfirmadosPremioMercadoPagoActivity"
+            android:label="@string/title_activity_resultado_ler_bilhetes"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden"
+            android:theme="@style/AppTheme.DegradeActionBar" />
+        <activity
+            android:name=".view.RestritoDezoitoAnosActivity"
+            android:label="@string/title_activity_termos_uso"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.DegradeActionBar" />
+        <activity
+            android:name=".view.ApostaConfirmadaDetalhesActivity_"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.ResultadoApostaConfirmadaActivity_"
+            android:label="@string/title_activity_resultado_ler_bilhetes"
+            android:screenOrientation="portrait" />
+        <activity android:name=".view.ResgatePremioLotericaAgenciaActivity_" />
+        <activity
+            android:name=".view.DadosPessoaisActivity"
+            android:label="@string/title_activity_dados_pessoais"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.DegradeActionBar"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".view.DadosPessoaisConfirmacaoActivity"
+            android:label="@string/title_activity_dados_pessoais"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.DegradeActionBar" />
+        <activity
+            android:name=".view.CadastrarConfirmacao"
+            android:label="@string/title_activity_toolbar"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.DegradeActionBar" />
+        <activity
+            android:name=".view.AlterarDadosLoginCaixaActivity"
+            android:label="@string/title_activity_alterar_dados_login_caixa"
+            android:theme="@style/AppTheme.DegradeActionBar"></activity>
+    </application>
+
+</manifest>

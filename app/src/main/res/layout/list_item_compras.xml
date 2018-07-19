@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingVertical="15dp"
+                android:paddingHorizontal="13dp"
+                android:background="@color/verdesenaclaro"
+                android:id="@+id/topListItemComprasLinearLayout">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+                    <TextView
+                        android:layout_width="0dip"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.3"
+                        android:text="Mega-sena"
+                        android:textColor="@color/branco"
+                        android:fontFamily="@font/arialmt"
+                        android:textStyle="bold"
+                        android:textSize="14.2sp"
+                        android:id="@+id/TipoPremioListaComprasTextView"/>
+
+                    <TextView
+                        android:layout_width="0dip"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.7"
+                        android:text="Seus números"
+                        android:textSize="12.1sp"
+                        android:textColor="@color/branco"
+                        android:fontFamily="@font/arialmt"
+                        android:id="@+id/seusNumerosItemListaComprasTextView"
+                        />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="17dp">
+                    <LinearLayout
+                        android:layout_width="0dip"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.3"
+                        android:orientation="vertical">
+                        <TextView
+                            android:text="25/08/2016"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/dataConcursoListaComprasTextView"
+                            android:textColor="@color/branco"
+                            android:fontFamily="@font/arialmt"
+                            android:textSize="14.2sp"/>
+                        <TextView
+                            android:text="Conc. 2587"
+                            android:id="@+id/concursoListaComprasTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/branco"
+                            android:fontFamily="@font/arialmt"
+                            android:textSize="14.2sp"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="0dip"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.7"
+                        android:orientation="vertical"
+                        android:id="@+id/itemComprasContentModalideLinearLayout">
+                        <!--<TextView-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:textColor="@color/branco"-->
+                            <!--android:fontFamily="@font/arialmt"-->
+                            <!--android:textSize="14.2sp"-->
+                            <!--android:id="@+id/SeusNumerosListaComprasTextView"-->
+                            <!--android:text="01 - 02 - 03 - 04 - 05 - 06"/>-->
+
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:orientation="horizontal"
+                android:background="@color/verdesenatrevo"
+                android:paddingHorizontal="13dp"
+                android:id="@+id/bottomListItemComprasLinearLayout"
+                >
+                <TextView
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Confirmada"
+                    android:textColor="@color/branco"
+                    android:fontFamily="@font/arialmt"
+                    android:textSize="14.2sp"
+                    android:layout_marginTop="7dp"
+                    android:id="@+id/statusResultadoApostaListaComprasTextView"
+
+                    />
+
+                <Button
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:textColor="@color/branco"
+                    android:fontFamily="@font/arialmt"
+                    android:textSize="14.2sp"
+                    android:textStyle="bold"
+                    android:text="Veja os resultados"
+                    android:layout_marginTop="7dp"
+                    android:id="@+id/VejaOsResultadosListaComprasButton"
+                    />
+            </LinearLayout>
+</LinearLayout>

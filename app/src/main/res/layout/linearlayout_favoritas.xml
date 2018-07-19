@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.daimajia.swipe.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/swipeLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="100dp"
+        android:background="@color/cinza"
+        android:visibility="visible"
+        android:layout_alignBottom="@+id/relativeLayoutContentFavoritas"
+        android:orientation="horizontal"
+        android:layout_alignParentTop="true"
+        >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/relativeLayoutContentAlterarFavoritasEditar"
+            android:visibility="visible">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Dê um novo nome para sua aposta"
+                android:textColor="@color/verdeazul"
+                android:fontFamily="@font/arialmt"
+                android:textSize="12sp"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="17dp"
+                />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginRight="122dp"
+                android:layout_alignParentLeft="true"
+                android:layout_marginTop="37dp"
+                android:layout_marginLeft="16dp"
+                android:textColor="@color/branco"
+                android:backgroundTint="@color/edittextlinecinza"
+                android:id="@+id/editTextNomeDaAposta"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:enabled="true"
+                />
+            <RelativeLayout
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="86dp"
+                android:layout_marginTop="50dp"
+                android:id="@+id/layoutSalvarNomeAposta"
+                android:clickable="true">
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/seta_verde"
+                    android:id="@+id/imagemSalvarNomeAposta"
+                    android:layout_centerInParent="true"
+                    />
+            </RelativeLayout>
+
+
+        </RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/linearLayoutLayoutContentAlterarFavoritasSalvo"
+            android:background="@color/verdeazul"
+            android:visibility="gone"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginLeft="30dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Ótimo! o novo nome da sua aposta é"
+                    android:textSize="14sp"
+                    android:textColor="@color/branco"
+                    android:fontFamily="@font/arialmt"
+                    android:layout_marginTop="20dp"
+                    android:textAlignment="center"
+                    />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="&quot;o prêmio é meu!&quot;"
+                    android:id="@+id/nomeApostaSalvoTextView"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/arialmt"
+                    android:textStyle="bold"
+                    android:textColor="@color/branco"
+                    android:layout_marginTop="6dp"
+                    android:textAlignment="center"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+
+        <RelativeLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="@color/branco"
+            android:id="@+id/relativeLayoutContentFavoritas"
+            android:layout_alignParentLeft="true"
+            android:visibility="visible"
+
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/LinearLayoutContentApostaFavorita"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="12dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textSize="14.2sp"
+                        android:textColor="@color/verdeazul"
+                        android:id="@+id/tituloApostaFavorita"
+                        android:layout_marginLeft="16dp"
+                        android:fontFamily="@font/arialmt"
+                        android:textStyle="bold"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" | agora vai"
+                        android:textSize="14.2sp"
+                        android:textColor="@color/cinza"
+                        android:id="@+id/tituloNomeApostaFavorita"
+                        android:fontFamily="@font/arialmt"
+                        android:textStyle="bold"
+                        />
+                </LinearLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/numerosApostaFavorita"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="123dp"
+                        android:text="01 - 02 - 03 - 04 - 05 - 06 - 10 - 11 - 12 - 20 - 33 - 100"
+                        android:textColor="@color/azulescuroapostafavorita"
+                        android:textSize="14.2sp"
+                        android:textStyle="bold"
+
+                        />
+                    <LinearLayout
+                        android:layout_width="123dp"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_alignParentRight="true">
+
+                        <RelativeLayout
+                            android:layout_width="41dp"
+                            android:layout_height="30dp"
+                            android:id="@+id/editarRelativeLayoutFavoritos"
+                            android:clickable="true">
+                            <Button
+                                android:id="@+id/editarButtonFavoritos"
+                                android:layout_width="21dp"
+                                android:layout_height="21dp"
+                                android:layout_centerInParent="true"
+                                android:background="@drawable/iconfavedit"
+                                android:clickable="false"/>
+                        </RelativeLayout>
+                        <RelativeLayout
+                            android:layout_width="41dp"
+                            android:layout_height="30dp"
+                            android:id="@+id/editarRelativeLayoutAddCarrinho"
+                            android:clickable="true">
+                            <Button
+                                android:id="@+id/editarButtonAddCarrinho"
+                                android:layout_width="21dp"
+                                android:layout_height="21dp"
+                                android:layout_centerInParent="true"
+                                android:background="@drawable/icon_add_carrinho"
+                                android:clickable="false"/>
+                        </RelativeLayout>
+                        <RelativeLayout
+                            android:layout_width="41dp"
+                            android:layout_height="30dp"
+                            android:id="@+id/exluirRelativeLayoutFavoritos"
+                            android:clickable="true">
+                            <Button
+                                android:id="@+id/exluirButtonFavoritos"
+                                android:layout_width="21dp"
+                                android:layout_height="21dp"
+                                android:layout_centerInParent="true"
+                                android:background="@drawable/close"
+                                android:clickable="false"/>
+                        </RelativeLayout>
+
+                    </LinearLayout>
+                </RelativeLayout>
+
+
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+</com.daimajia.swipe.SwipeLayout>
+
+
+

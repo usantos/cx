@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="caixa.gov.br.loterias.view.ListaComprasActivity"
+    tools:showIn="@layout/activity_lista_compras"
+    >
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/scrollViewContentViewCompras"
+            android:layout_marginBottom="73dp"
+            >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Acompanhe todas as compras que você já realizou em nosso aplicativo."
+            android:textColor="@color/colorAccent"
+            android:textSize="14.2sp"
+            android:fontFamily="@font/futura_std_bold"
+            android:layout_marginHorizontal="17dp"
+            android:layout_marginTop="40dp"/>
+                
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginHorizontal="17dp"
+                    android:layout_marginTop="24dp"
+                    android:id="@+id/areaSelecaoMesLinearLayout"
+                    android:orientation="vertical"
+                    >
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Selecione o mês"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/arialmt"
+                            android:textColor="@color/azulFormNovoTipoPagamento"
+                            />
+                        <Spinner
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:id="@+id/SelecaoMesSpinner"
+                            android:backgroundTint="@color/colorAccent"/>
+
+
+
+                </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                        android:background="@color/cinzaclaro"
+                    android:layout_marginHorizontal="17dp"
+                    ></View>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerCompras"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    />
+
+
+                <ProgressBar
+                    android:id="@+id/compras_loading_more"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:padding="5dp"
+                    android:visibility="gone"
+                    />
+        </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="73dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/branco"
+            android:orientation="vertical"
+
+            >
+                <TextView
+                    android:id="@+id/textBottomInformacaoTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/arialmt"
+                    android:paddingTop="10dp"
+                    android:text="Compras mais antigas podem ser consultadas no site"
+                    android:textAlignment="center"
+                    android:textColor="@color/cinza"
+                    android:textSize="14.2sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/futura_std_bold"
+                    android:text="www.loteriasonline.caixa.gov.br"
+                    android:textAlignment="center"
+                    android:textColor="@color/amareloQueimado"
+                    android:textSize="14.2sp" />
+        </LinearLayout>
+</RelativeLayout>

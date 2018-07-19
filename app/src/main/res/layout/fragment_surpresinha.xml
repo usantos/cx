@@ -1,0 +1,212 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="50dp"
+    android:fillViewport="false"
+    android:orientation="vertical">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/branco">
+
+        <TextView
+            android:id="@+id/surpresinhaInfo"
+            style="@style/editTextArialMTTheme"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/surpresinhaInfo"
+            android:textAlignment="center"
+            android:textColor="@color/cinza"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/surpresinhaTitulo" />
+
+        <TextView
+            android:id="@+id/surpresinhaTitulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="125dp"
+            android:layout_marginLeft="125dp"
+            android:layout_marginRight="125dp"
+            android:layout_marginStart="125dp"
+            android:layout_marginTop="41dp"
+            android:text="@string/surpresinhaTitulo"
+            android:textAlignment="center"
+            android:textColor="@color/verdeagua"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <caixa.gov.br.loterias.view.custom.ExpandableHeightGridView
+            android:id="@+id/listaDezenasSurpresinha"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="17dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="40dp"
+            android:paddingStart="29dp"
+            android:paddingEnd="29dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:background="@drawable/drawer_linha_divisao_cinza_claro_top_bottom"
+            android:columnWidth="40dp"
+            android:gravity="center"
+            android:horizontalSpacing="15dp"
+            android:numColumns="auto_fit"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="9dp"
+            app:layout_constraintTop_toBottomOf="@+id/surpresinhaInfo" />
+
+        <ImageView
+            android:id="@+id/brasaoTimeSurpresa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="106dp"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/time_surpresa"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/listaDezenasSurpresinha" />
+
+        <TextView
+            android:id="@+id/infoTimeSurpresa"
+            style="@style/FuturaStdBold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="31dp"
+            android:text="@string/time_surpresa"
+            android:textAlignment="center"
+            android:textColor="@color/megasenamedio"
+            android:textSize="14.1sp"
+            app:layout_constraintLeft_toRightOf="@+id/brasaoTimeSurpresa"
+            app:layout_constraintTop_toBottomOf="@+id/listaDezenasSurpresinha" />
+
+
+        <Button
+            android:id="@+id/escolherOutroTimeBtn"
+            android:layout_width="183dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="33dp"
+            android:background="@drawable/button_white_with_border"
+            android:text="@string/escolha_outro_time"
+            android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/infoTimeSurpresa" />
+
+        <View
+            android:id="@+id/divisaoLinhaDois"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="21dp"
+            android:layout_marginStart="17dp"
+            android:layout_marginEnd="16dp"
+            android:background="@color/cinzaclaro"
+            app:layout_constraintTop_toBottomOf="@+id/escolherOutroTimeBtn" />
+
+
+        <TextView
+            android:id="@+id/surpresinhaQtdInfo"
+            style="@style/editTextArialMTTheme"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="45dp"
+            android:layout_marginLeft="45dp"
+            android:layout_marginRight="45dp"
+            android:layout_marginStart="45dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/surpresinhaQtdInfo"
+            android:textAlignment="center"
+            android:textColor="@color/cinza"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divisaoLinhaDois" />
+
+        <TextView
+            android:id="@+id/qtdSurpresinhasSelecionadas"
+            android:layout_width="88dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:text="1"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/surpresinhaQtdInfo" />
+
+        <Button
+            android:id="@+id/btnMenosSurpresinha"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/verdesenaclaro"
+            android:text="-"
+            android:textColor="@color/branco"
+            android:textSize="24sp"
+            app:layout_constraintRight_toLeftOf="@+id/qtdSurpresinhasSelecionadas"
+            app:layout_constraintTop_toBottomOf="@+id/surpresinhaQtdInfo" />
+
+        <Button
+            android:id="@+id/btnMaisSurpresinha"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/verdesenaclaro"
+            android:text="+"
+            android:textColor="@color/branco"
+            android:textSize="24sp"
+            app:layout_constraintLeft_toRightOf="@+id/qtdSurpresinhasSelecionadas"
+            app:layout_constraintTop_toBottomOf="@+id/surpresinhaQtdInfo" />
+
+        <LinearLayout
+            android:id="@+id/layoutEspelhoSurpresinha"
+            android:layout_width="183dp"
+            android:layout_height="56dp"
+            android:layout_marginTop="30dp"
+            android:background="@color/cinza"
+            android:visibility="gone"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnMaisSurpresinha">
+
+            <android.support.v7.widget.AppCompatCheckBox
+                android:id="@+id/selcioneEspelhoSurpresinha"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginLeft="17dp"
+                android:layout_marginStart="17dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/check_box_selected"
+                android:button="@color/transparente50"
+                android:clickable="false" />
+
+            <TextView
+                android:id="@+id/textoEspelhoSurpresinha"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="17dp"
+                android:layout_marginStart="17dp"
+                android:layout_marginTop="20dp"
+                android:clickable="false"
+                android:text="@string/label_aposta_espelho"
+                android:textColor="@color/branco"
+                android:textSize="14.2sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+    </android.support.constraint.ConstraintLayout>
+</ScrollView>

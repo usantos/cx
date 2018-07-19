@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/row_partida_lotogol"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:gravity="center"
+    android:layout_marginTop="28dp"
+    android:orientation="vertical"
+    >
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Domingo"
+        android:fontFamily="@font/arialmt"
+        android:textSize="14sp"
+        android:textColor="@color/branco"
+        android:textAlignment="center"
+        android:id="@+id/diaSemanaDataPartidaText"
+        />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal">
+        <caixa.gov.br.loterias.view.custom.ItemEquipeViewLotogolResultado_
+            android:id="@+id/lotogol_time_um"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:id="@+id/lotogol_versus"
+            android:layout_width="18dp"
+            android:layout_height="17dp"
+            android:layout_marginTop="60dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="21dp"
+            android:layout_gravity="top"
+            android:src="@drawable/time_versus_white"/>
+
+        <caixa.gov.br.loterias.view.custom.ItemEquipeViewLotogolResultado_
+            android:id="@+id/lotogol_time_dois"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:textAlignment="center"
+        android:textColor="@color/branco"
+        android:fontFamily="@font/arialmt"
+        android:textSize="14sp"
+        android:text="1 de 14"
+        android:layout_marginTop="20dp"
+        android:id="@+id/paginaResultadoLotogolText"
+        />
+
+</LinearLayout>

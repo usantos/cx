@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="caixa.gov.br.loterias.view.DadosPessoaisActivity"
+    tools:showIn="@layout/activity_dados_pessoais"
+    android:orientation="vertical"
+    >
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="106dp"
+        android:layout_marginHorizontal="16dp"
+        android:id="@+id/scrollViewDadosPessoais"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="O jeito mais fácil para apostar"
+                android:textColor="@color/colorAccent"
+                android:fontFamily="@font/futura_std_bold"
+                android:textSize="14sp"
+                android:layout_marginTop="40dp"
+                />
+            
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="19dp"
+                android:lines="2"
+                android:text="O seu pacote de apostas prontas para serem
+adquiridas em um toque"
+                android:textColor="@color/cinza"
+                android:textSize="14sp"
+                android:fontFamily="@font/arialmt"/>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/editTextCpf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textViewTituloCadastrar3"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="40dp">
+
+                <com.github.pinball83.maskededittext.MaskedEditText
+                    android:id="@+id/editTextCpfContent"
+                    android:ems="10"
+                    android:hint="@string/label_cpf"
+                    style="@style/editTextRegisterTheme"
+                    android:inputType="number"
+                    app:mask="***.***.***-**"
+                    app:notMaskedSymbol="*"
+                    android:enabled="false"
+                    android:alpha="0.3"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/editTextNome"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/editTextCpf"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="20dp">
+
+                <EditText
+                    android:id="@+id/editTextNomeContent"
+                    android:ems="10"
+                    android:hint="@string/label_nome"
+                    style="@style/editTextRegisterTheme"
+                    android:inputType="textPersonName"
+                    android:enabled="false"
+                    android:alpha="0.3"/>
+            </android.support.design.widget.TextInputLayout>
+
+
+            <caixa.gov.br.loterias.utils.segmentedbutton.SegmentedButtonGroup
+                android:id="@+id/segmentedButtonSexo"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_below="@id/editTextNome"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="20dp"
+                android:elevation="2dp"
+                app:sb_textStyle="bold"
+                app:sbg_animateSelector="fastOutSlowIn"
+                app:sbg_animateSelectorDuration="1000"
+                app:sbg_backgroundColor="@color/cinzaclaro"
+                app:sbg_position="0"
+                app:sbg_ripple="true"
+                app:sbg_selectorColor="@color/verdeazul">
+
+                <caixa.gov.br.loterias.utils.segmentedbutton.SegmentedButton
+                    android:layout_width="0dp"
+                    android:layout_height="56dp"
+                    android:layout_weight="1"
+                    android:textSize="16sp"
+                    app:sb_text="Masculino"
+                    app:sb_textColor="@color/verdeazul"
+                    android:textAlignment="center"
+                    app:sb_textColor_onSelection="@color/branco"
+                    app:sb_textStyle="bold"
+                    app:sb_textGravity="center"
+                    android:layout_gravity="center_vertical"/>
+
+                <caixa.gov.br.loterias.utils.segmentedbutton.SegmentedButton
+                    android:layout_width="0dp"
+                    android:layout_height="56dp"
+                    android:layout_weight="1"
+                    android:textSize="16sp"
+                    app:sb_text="Feminino"
+                    app:sb_textColor="@color/verdeazul"
+                    app:sb_textColor_onSelection="@color/branco"
+                    app:sb_textStyle="bold" />
+
+            </caixa.gov.br.loterias.utils.segmentedbutton.SegmentedButtonGroup>
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/editTextCEP"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/segmentedButtonSexo"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="20dp">
+
+                <com.github.pinball83.maskededittext.MaskedEditText
+                    android:id="@+id/editTextCepContent"
+                    style="@style/editTextRegisterTheme"
+                    android:ems="10"
+                    android:hint="@string/label_cep"
+                    android:inputType="number"
+                    app:mask="*****-***"
+                    app:notMaskedSymbol="*" />
+            </android.support.design.widget.TextInputLayout>
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/editTextUF"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/editTextCEP"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="20dp">
+
+                <EditText
+                    android:id="@+id/editTextUFContent"
+                    android:drawableRight="@drawable/combo"
+                    style="@style/editTextRegisterTheme"
+                    android:ems="10"
+                    android:focusableInTouchMode="false"
+                    android:hint="@string/label_uf"
+                    android:inputType="textPersonName"/>
+            </android.support.design.widget.TextInputLayout>
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/editTextMunicipio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/editTextUF"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="20dp">
+
+                <EditText
+                    android:id="@+id/editTextMunicipioContent"
+                    android:drawableRight="@drawable/combo"
+                    style="@style/editTextRegisterTheme"
+                    android:ems="10"
+                    android:focusableInTouchMode="false"
+                    android:hint="@string/label_municipio"
+                    android:inputType="textPersonName" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/editTextEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/editTextMunicipio"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="30dp">
+
+                <EditText
+                    android:id="@+id/editTextEmailContent"
+                    style="@style/editTextRegisterTheme"
+                    android:ems="10"
+                    android:hint="@string/label_email"
+                    android:inputType="textEmailAddress"
+                    android:enabled="false"
+                    android:alpha="0.3"/>
+            </android.support.design.widget.TextInputLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="106dp"
+        android:id="@+id/atualizarRelativeLayout"
+        app:layout_constraintTop_toBottomOf="@+id/scrollViewDadosPessoais"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/cinzamercadopago">
+
+        </View>
+
+        <Button
+            android:layout_width="184dp"
+            android:layout_height="84dp"
+            android:layout_centerHorizontal="true"
+            android:background="@color/verdeazul"
+            android:fontFamily="@font/futura_std_bold"
+            android:text="Atualizar"
+            android:textAllCaps="false"
+            android:textColor="@color/branco"
+            android:textSize="17.7sp"
+            android:id="@+id/updateDadosPesoaisButton"/>
+    </RelativeLayout>
+
+
+</android.support.constraint.ConstraintLayout>

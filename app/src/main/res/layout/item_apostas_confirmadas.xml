@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="false"
+    android:gravity="center"
+    android:minHeight="54dp"
+    android:orientation="horizontal">
+
+    <View
+        android:id="@+id/stripe"
+        android:layout_width="5dp"
+        android:layout_height="match_parent"
+        tools:background="#642475" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_weight="0.8"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/modalidadeTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    tools:text="lotofácil"
+                    tools:textColor="#642475" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/concursoTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/azulescuroapostafavorita"
+                    android:textSize="12sp"
+                    tools:text="Conc. 0000 a 0000" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!--<LinearLayout-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginStart="10dp"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:orientation="horizontal"-->
+            <!--android:paddingBottom="5dp">-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/situacaoLabel"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="@string/label_situacao_list_apostas_confirmadas"-->
+                <!--android:textSize="12sp"-->
+                <!--tools:textColor="#642475" />-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/situacaoTxt"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:textSize="12sp"-->
+                <!--android:textStyle="bold"-->
+                <!--tools:text="Efetivado"-->
+                <!--tools:textColor="#642475" />-->
+        <!--</LinearLayout>-->
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.6"
+        android:clickable="false"
+        android:gravity="center_vertical|right">
+
+        <!--<ImageView-->
+            <!--android:id="@+id/resultBtn"-->
+            <!--android:layout_width="21dp"-->
+            <!--android:layout_height="21dp"-->
+            <!--android:layout_marginEnd="@dimen/activity_horizontal_margin"-->
+            <!--android:src="@drawable/menu3_resultados"-->
+            <!--android:visibility="invisible"/>-->
+
+        <!--<ImageView-->
+            <!--android:id="@+id/reloadBtn"-->
+            <!--android:layout_width="25dp"-->
+            <!--android:layout_height="25dp"-->
+            <!--android:layout_marginEnd="10dp"-->
+            <!--android:src="@drawable/icon_add_carrinho" />-->
+
+        <LinearLayout
+            android:id="@+id/resultBtnLayout"
+            android:layout_width="45dp"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:gravity="center"
+            android:visibility="gone">
+            <ImageView
+            android:id="@+id/resultBtn"
+            android:layout_width="21dp"
+            android:layout_height="21dp"
+            android:src="@drawable/menu3_resultados"
+           />
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/reloadBtnLayout"
+            android:layout_width="45dp"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:gravity="center">
+            <ImageView
+            android:id="@+id/reloadBtn"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/icon_add_carrinho" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/setaLayout"
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:gravity="center"
+            >
+            <ImageView
+                android:id="@+id/setaImg"
+                android:layout_width="10dp"
+                android:layout_height="16dp"
+                android:rotation="90"
+                android:src="@drawable/shape_23_copy_3" />
+
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
