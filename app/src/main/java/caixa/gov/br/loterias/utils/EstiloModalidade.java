@@ -126,9 +126,9 @@ public class EstiloModalidade {
                 iconImpressoraColor = R.color.megasenamedio;
                 break;
             case DIA_DE_SORTE:
-                corClara = R.color.megasenaclaro;
-                corMedia = R.color.megasenamedio;
-                corEscura = R.color.megasenaescuro;
+                corClara = R.color.diasorteclaro;
+                corMedia = R.color.diasortemedio;
+                corEscura = R.color.diasorteescuro;
                 imagemCalendario = R.drawable.icon_data_megasena;
                 imagemRelogio = R.drawable.icon_horario_megasena;
                 trevoBackground = R.drawable.background_trapeze_megasena;

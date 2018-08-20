@@ -494,8 +494,6 @@ public class PrincipalActivity extends AppCompatActivity
 
     private void layoutSideMenu() {
 
-
-
         final ExpandableListAdapter expandableListAdapter;
         final List<String> expandableListTitle;
         final HashMap<String, List<String>> expandableListDetail;
