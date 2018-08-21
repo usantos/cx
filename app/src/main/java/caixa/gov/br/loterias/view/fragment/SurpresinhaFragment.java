@@ -448,7 +448,6 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
             apostaDas8Modalidades.setEspelho(Boolean.FALSE);
             crud.insertIdentificaoDeUmaApostaDas8Modalidades(apostaDas8Modalidades);
         } else if(aposta.getQuantidadeSurpresinhas() > 0){
-            //TODO: alteracao feita pelo RAPHAEL MARACAIPE
             BigDecimal valorIndividual = valorTotalAposta.divide(new BigDecimal(aposta.getQuantidadeSurpresinhas()));
             for(int contador = 0; contador < aposta.getQuantidadeSurpresinhas(); contador++) {
                 apostaDas8Modalidades.setValor(valorIndividual);

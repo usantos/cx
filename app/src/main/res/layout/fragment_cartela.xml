@@ -19,10 +19,34 @@
             android:layout_height="wrap_content"
             android:background="@color/branco">
 
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/ttvEscolha"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/dia_sorte_escolha_dia"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/ttvPagina"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginTop="0dp"
+                android:text="1 | 2"
+                app:layout_constraintBottom_toBottomOf="@+id/ttvEscolha"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/ttvEscolha" />
 
             <android.support.constraint.ConstraintLayout
+                android:id="@+id/cltGeral"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_marginTop="16dp"
+                app:layout_constraintTop_toBottomOf="@+id/ttvEscolha">
 
                 <LinearLayout
                     android:id="@+id/layotLabelTimimania"
@@ -131,7 +155,9 @@
                 android:id="@+id/layoutRecyclerViewPartida"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_marginTop="16dp"
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@+id/ttvEscolha">
 
                 <LinearLayout
                     android:layout_width="wrap_content"

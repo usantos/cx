@@ -125,13 +125,13 @@ public class EstiloModalidade {
                 iconValidadeComprovanteColor = R.color.megasenamedio;
                 iconImpressoraColor = R.color.megasenamedio;
                 break;
-            case DIA_DE_SORTE:
+            case DIA_DE_SORTE: //TODO:diasorte - Solicitar icones
                 corClara = R.color.diasorteclaro;
                 corMedia = R.color.diasortemedio;
                 corEscura = R.color.diasorteescuro;
                 imagemCalendario = R.drawable.icon_data_megasena;
                 imagemRelogio = R.drawable.icon_horario_megasena;
-                trevoBackground = R.drawable.background_trapeze_megasena;
+                trevoBackground = R.drawable.background_trapeze_dia_sorte;
                 themeId = R.style.AppTheme_Modalidade_MegaSena;
                 stringId = R.string.label_dia_de_sorte;
                 menuItemColor = R.color.branco;

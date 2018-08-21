@@ -23,10 +23,10 @@
     <color name="megasenaescuro">#008f5b</color>
     <color name="megasenamedio_transparente">#99009b63</color>
 
-    <color name="diasorteclaro">#00ab67</color>
-    <color name="diasortemedio">#009b63</color>
-    <color name="diasorteescuro">#008f5b</color>
-    <color name="diasortemedio_transparente">#99009b63</color>
+    <color name="diasorteclaro">#D9B838</color>
+    <color name="diasortemedio">#C1A432</color>
+    <color name="diasorteescuro">#A88D2A</color>
+    <color name="diasortemedio_transparente">#99A0522D</color>
     //verdesenaescuro
     <color name="lotofacilclaro">#bd3e96</color>
     <color name="lotofacilmedio">#a53384</color>

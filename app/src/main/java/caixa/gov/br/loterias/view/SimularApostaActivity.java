@@ -309,6 +309,10 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         this.labelValueTriplasLoteca.setText(labelValueTriplasLoteca);
     }
 
+    public FrameLayout getFragmentSimularApostas(){
+        return fragmentSimularApostas;
+    }
+
     public TextView getLabelValueSimplesLoteca() {
         return labelValueSimplesLoteca;
     }
@@ -438,8 +442,8 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
                 configuraTipoApostaTela("_lotogol_", R.color.lotogolclaro, R.color.lotogolescuro, View.GONE, View.GONE);
                 this.toolBarMenu = R.menu.itens_simular_actionbar_duvida;
                 break;
-            case DIA_DE_SORTE: //TODO: FEITO RAPHAEL
-                configuraTipoApostaTela( "_dia-sorte_", R.color.megasenaclaro, R.color.megasenaescuro, View.GONE, View.GONE );
+            case DIA_DE_SORTE:
+                configuraTipoApostaTela( "_dia-sorte_", R.color.diasorteclaro, R.color.diasorteescuro, View.VISIBLE, View.GONE);
                 this.toolBarMenu = R.menu.itens_simular_actionbar_duvida;
                 break;
         }

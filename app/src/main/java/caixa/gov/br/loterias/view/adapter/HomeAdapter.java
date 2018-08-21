@@ -87,6 +87,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
         holder.relativeLayoutTopResultados.setBackgroundColor(ContextCompat.getColor(context, estilo.getCorEscura()));
         holder.linearLayoutResultadosApostas.setBackgroundColor(ContextCompat.getColor(context, estilo.getCorEscura()));
+        //TODO: Altera a cor do título do carrosel
         holder.trevo.setBackground(ContextCompat.getDrawable(context, estilo.getTrevoBackground()));
         holder.trevoFundo.setBackground(ContextCompat.getDrawable(context, estilo.getTrevoBackground()));
         holder.titulo.setBackgroundColor(ContextCompat.getColor(context, estilo.getCorClara()));
@@ -120,7 +121,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         holder.tempoRestanteParaAposta.setText(retornaStringDias((Long) mapComDiferencaDeDatas.get(TimeUnit.DAYS))
                 +retornaStringHoras((Long) mapComDiferencaDeDatas.get(TimeUnit.DAYS), (Long) mapComDiferencaDeDatas.get(TimeUnit.HOURS)));
 
-        //TODO: Feito pelo Raphael
 //        aposta.setText(ViewUtils.fromHtml("<b>Aposte</b><br>por R$" + data.get(position).getValor()));
         Glide.with(holder.itemView.getContext())
                 .load(estilo.getImagemCalendario())

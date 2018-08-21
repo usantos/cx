@@ -7,6 +7,8 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,6 +25,7 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -107,6 +110,8 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
     private SimularApostaActivity parentActivity;
     private AppCompatCheckBox selcioneOutrosNumeros;
     private View view;
+    private TextView ttvPagina;
+    private TextView ttvEscolha;
     private TextView infoEscolha, infoPaginacao;
     private EditText informeNomeTime;
     private RelativeLayout opcaoOutrosNumerosLayout;
@@ -114,7 +119,14 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
     private ExpandableHeightGridView mGridTimeCoracao, listaDezenas;
     private ExpandableHeightRecyclerView recyclerViewPartida;
 
-    private boolean isTipoLoteca, isTipoTimemania, isEcolhaTimeBtnAtivado, isTelaSelecaoTimeAtivado, isTipoLotogol, isTipoLotomania, isEscolhaTimeCoracaoSurpresinha;
+    private boolean isTipoLoteca;
+    private boolean isTipoTimemania;
+    private boolean isEcolhaTimeBtnAtivado;
+    private boolean isTelaSelecaoTimeAtivado;
+    private boolean isTipoLotogol;
+    private boolean isTipoLotomania;
+    private boolean isEscolhaTimeCoracaoSurpresinha;
+    private boolean isDiaSorte;
 
     public BigDecimal valorTotalAposta;
     public int typeGameColorLight, typeGameColorDark, numeroConcursoAtual, qtdCartelasCarrinho = 0;
@@ -245,6 +257,11 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_cartela, container, false);
         identificarTipoJogo();
+        if(isDiaSorte){
+            ttvEscolha = view.findViewById(R.id.ttvEscolha);
+            ttvPagina = view.findViewById(R.id.ttvPagina);
+            ttvEscolha.setVisibility(View.VISIBLE);
+        }
         return view;
     }
 
@@ -279,6 +296,9 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         }
 
         switch (tipoJogo) {
+            case DIA_DE_SORTE:
+                isDiaSorte = true;
+                break;
             case MEGA_SENA:
                 break;
             case QUINA:
@@ -586,7 +606,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
             }
             break;
 
-            case R.id.botaoLimparAposta: {
+            case R.id.botaoLimparAposta: { // LIMPAR APOSTA
                 if (isTipoLoteca && partidasSelecionadas != null) {
                     limparPartidadasSelecionasLoteca(Boolean.FALSE);
                 } else if (isTipoTimemania && isTelaSelecaoTimeAtivado) {
@@ -678,7 +698,6 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
     }
 
     private void adcionarApostaPreencherNumerosAleatorios() {
-
         if (isTipoTimemania) {
             adicionarApostaPreencherNumerosTimemania();
         } else if (isTipoLotomania) {
@@ -698,9 +717,15 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
             } else {
                 //TODO implementar regra de completar placar
             }
-        } else if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) {
-            adicionarApostaNoCarrinho();
-
+        } else if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) { //Adiciona aposta no carrinho
+            if(isDiaSorte) {
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragmentSimularApostas, new MesesFragment());
+                fragmentTransaction.commit();
+            } else {
+                adicionarApostaNoCarrinho();
+            }
         } else {
             preencheNumerosAleatorios();
         }
@@ -1083,15 +1108,21 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
     private void atualizarAdicionarCarinhoCompletarCartela() {
         if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado || isEscolhaTimeCoracaoSurpresinha) {
-            atualizarBotaoFinalizarAdicionarCarrinho();
-            if (isTipoTimemania) {
-                if (equipeSelecionada != null && equipeSelecionada.isSelecionado()) {
-                    botaoFinalizar.setClickable(true);
-                    botaoFinalizar.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.timemaniaescuro));
-                } else {
-                    botaoFinalizar.setClickable(false);
-                    botaoFinalizar.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.azulclaro));
-                    parentActivity.getSalvarApostaLayout().setVisibility(View.GONE);
+            if(isDiaSorte){
+                botaoFinalizar.setBackgroundColor(ContextCompat.getColor(parentActivity, typeGameColorLight));
+                botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(parentActivity, getString(R.string.escolhaOmes)));
+                parentActivity.getSalvarApostaLayout().setVisibility(View.GONE);
+            }else {
+                atualizarBotaoFinalizarAdicionarCarrinho();
+                if (isTipoTimemania) {
+                    if (equipeSelecionada != null && equipeSelecionada.isSelecionado()) {
+                        botaoFinalizar.setClickable(true);
+                        botaoFinalizar.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.timemaniaescuro));
+                    } else {
+                        botaoFinalizar.setClickable(false);
+                        botaoFinalizar.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.azulclaro));
+                        parentActivity.getSalvarApostaLayout().setVisibility(View.GONE);
+                    }
                 }
             }
 
@@ -1115,7 +1146,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
     private void atualizarBotaoFinalizarAdicionarCarrinho() {
         botaoFinalizar.setBackgroundColor(ContextCompat.getColor(parentActivity, typeGameColorLight));
         botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(parentActivity, getString(R.string.adicionarAoCarrinho)));
-        if (!isTipoLoteca && !isTipoLotogol) {
+        if ((!isTipoLoteca && !isTipoLotogol) && !isDiaSorte) {
             parentActivity.getSalvarApostaLayout().setVisibility(View.VISIBLE);
         }
     }
