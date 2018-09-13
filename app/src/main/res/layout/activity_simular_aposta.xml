@@ -248,12 +248,14 @@
         android:clickable="true"
         app:layout_constraintBottom_toTopOf="@+id/botaoLimparAposta"
         app:layout_constraintLeft_toRightOf="@+id/viewTabBar"
-        app:layout_constraintRight_toLeftOf="@+id/viewTabBar">
+        app:layout_constraintRight_toLeftOf="@+id/viewTabBar"
+        tools:visibility="gone">
 
         <RelativeLayout
             android:id="@+id/salvarApostaLayout"
             android:layout_width="184dp"
-            android:layout_height="140dp">
+            android:layout_height="140dp"
+            tools:visibility="gone">
 
             <RelativeLayout
                 android:layout_width="152dp"

@@ -157,6 +157,7 @@
     <string name="escolha_outro_time">Escolha outro time</string>
     <string name="paginacao_um_de_dois">_1_ | 2</string>
     <string name="paginacao_dois_de_dois">_2_ | 2</string>
+    <string name="paginacao_quantidade"> | %s</string>
     <string name="label_complete_placar_aleatoriamente">_Complete_\no placar aleatoriamente</string>
     <string name="label_quantidade_gols_cada_time">a quantidade de gols de cada time.</string>
     <string name="title_activity_favoritas">Favoritas</string>
@@ -288,8 +289,8 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!-- DIA SORTE -->
-    <string name="dia_sorte_escolha_dia">Escolha os <b>números</b></string>
-    <string name="dia_sorte_escolha_mes">Escolha o <b>mês</b> de preferência</string>
+    <string name="dia_sorte_escolha_dia">Escolha os _números_</string>
+    <string name="dia_sorte_escolha_mes">Escolha o _mês_ de preferência</string>
     <string-array name="dia_sorte_meses">
         <item>Janeiro</item>
         <item>Fevereiro</item>

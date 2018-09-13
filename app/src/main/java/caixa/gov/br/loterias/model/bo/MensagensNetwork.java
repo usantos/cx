@@ -31,7 +31,7 @@ public class MensagensNetwork {
     public static String setMensagem(VolleyError error, final Context context){
         NetworkResponse response = error.networkResponse;
 
-        if (response == null){
+         if (response == null){
             if (error instanceof TimeoutError) {
                 return context.getString(R.string.erro_408);
             }else if(error instanceof NoConnectionError){

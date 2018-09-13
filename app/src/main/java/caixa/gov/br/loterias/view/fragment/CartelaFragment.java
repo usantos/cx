@@ -110,11 +110,10 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
     private SimularApostaActivity parentActivity;
     private AppCompatCheckBox selcioneOutrosNumeros;
     private View view;
-    private TextView ttvPagina;
-    private TextView ttvEscolha;
+    private TextView ttvPagina, ttvEscolha, ttvPaginaQuantidade;
     private TextView infoEscolha, infoPaginacao;
     private EditText informeNomeTime;
-    private RelativeLayout opcaoOutrosNumerosLayout;
+    private RelativeLayout opcaoOutrosNumerosLayout, ttvLayout;
     private LinearLayout selecioneTimeCoracaoLayout;
     private ExpandableHeightGridView mGridTimeCoracao, listaDezenas;
     private ExpandableHeightRecyclerView recyclerViewPartida;
@@ -258,9 +257,17 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         view = inflater.inflate(R.layout.fragment_cartela, container, false);
         identificarTipoJogo();
         if(isDiaSorte){
+            ttvLayout = view.findViewById(R.id.ttvLayout);
             ttvEscolha = view.findViewById(R.id.ttvEscolha);
             ttvPagina = view.findViewById(R.id.ttvPagina);
-            ttvEscolha.setVisibility(View.VISIBLE);
+            ttvPaginaQuantidade = view.findViewById(R.id.ttvPaginaQuantidade);
+
+            ttvEscolha.setText(ViewUtils.textFuturaAndFuturaBold(getContext(), getString(R.string.dia_sorte_escolha_dia)));
+            ttvEscolha.setTextColor(getResources().getColor(R.color.diasortemedio));
+            ttvPagina.setTextColor(getResources().getColor(R.color.diasortemedio));
+            ttvPaginaQuantidade.setTextColor(getResources().getColor(R.color.diasorteclaro));
+            ttvPaginaQuantidade.setText(getString(R.string.paginacao_quantidade, getString(R.string.label_numerico_dois)));
+            ttvLayout.setVisibility(View.VISIBLE);
         }
         return view;
     }
@@ -721,7 +728,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
             if(isDiaSorte) {
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.fragmentSimularApostas, new MesesFragment());
+                fragmentTransaction.replace(R.id.fragmentSimularApostas, MesesFragment_.builder().modalidadeEnum(tipoJogo).build());
                 fragmentTransaction.commit();
             } else {
                 adicionarApostaNoCarrinho();

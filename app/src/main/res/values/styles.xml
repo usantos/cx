@@ -180,6 +180,12 @@
         <item name="android:windowBackground">@color/lotogolescuro</item>
     </style>
 
+    <style name="AppTheme.Modalidade.DiaSorte">
+        <item name="colorPrimaryDark">@color/diasorteescuro</item>
+        <item name="colorPrimary">@color/diasorteclaro</item>
+        <item name="android:windowBackground">@color/diasorteescuro</item>
+    </style>
+
     <style name="AppTheme.Modalidade.Federal">
         <item name="colorPrimaryDark">@color/federalescuro</item>
         <item name="colorPrimary">@color/federalclaro</item>
