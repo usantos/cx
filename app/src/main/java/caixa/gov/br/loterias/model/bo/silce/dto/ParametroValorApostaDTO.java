@@ -14,24 +14,27 @@ package caixa.gov.br.loterias.model.bo.silce.dto;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.parceler.Parcel;
+
 import java.math.BigDecimal;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel(description = "")
+@Parcel
 public class ParametroValorApostaDTO {
 
     @SerializedName("valor")
-    private BigDecimal valor = null;
+    protected BigDecimal valor = null;
     @SerializedName("numeroPrognosticos")
-    private Integer numeroPrognosticos = null;
+    protected Integer numeroPrognosticos = null;
     @SerializedName("quantidadeDuplos")
-    private Integer quantidadeDuplos = null;
+    protected Integer quantidadeDuplos = null;
     @SerializedName("quantidadeTriplos")
-    private Integer quantidadeTriplos = null;
+    protected Integer quantidadeTriplos = null;
     @SerializedName("numeroApostas")
-    private Integer numeroApostas = null;
+    protected Integer numeroApostas = null;
 
     /**
      **/

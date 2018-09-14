@@ -1,18 +1,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layoutCartelaFragmentScrollView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:fillViewport="false"
     android:orientation="vertical">
 
     <ScrollView
         android:id="@+id/mesesFragmentScrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fillViewport="false"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
+
         <RelativeLayout
             android:id="@+id/mesesTituloLayout"
             android:layout_width="match_parent"
@@ -34,7 +31,6 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignTop="@+id/escolhaNumerosText"
                 android:layout_marginEnd="50dp"
-                android:layout_marginTop="0dp"
                 android:text="@string/label_numerico_dois" />
 
             <TextView
@@ -45,10 +41,24 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignTop="@+id/escolhaNumerosText"
                 android:layout_marginEnd="24dp"
-                android:layout_marginTop="0dp"
                 tools:text="| 2" />
-        </RelativeLayout>
 
+            <caixa.gov.br.loterias.view.custom.ExpandableHeightGridView
+                android:id="@+id/mesesGridView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/escolhaNumerosText"
+                android:layout_marginEnd="40dp"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="21dp"
+                android:columnWidth="50dp"
+                android:gravity="center"
+                android:horizontalSpacing="10dp"
+                android:verticalSpacing="10dp"
+                android:nestedScrollingEnabled="false"
+                android:numColumns="2"
+                android:paddingBottom="170dp" />
+        </RelativeLayout>
 
     </ScrollView>
 </RelativeLayout>

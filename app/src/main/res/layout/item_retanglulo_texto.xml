@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/item_retangulo_selected_diadesorte">
+
+    <TextView
+        android:id="@+id/descricaoText"
+        style="@style/ArialMT"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/text_margin_12"
+        android:layout_marginTop="@dimen/text_margin_12"
+        android:textSize="14sp"
+        tools:text="Janeiro"
+        android:textColor="@drawable/item_texto_selected_diadesorte"
+        android:layout_centerInParent="true"/>
+</RelativeLayout>

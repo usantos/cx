@@ -655,7 +655,11 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                 EditText nomeAposta = parentActivity.getEditNomeAposta();
 
                 if (!TextUtils.isEmpty(nomeAposta.getText().toString())) {
-                    salvarAposta(nomeAposta.getText().toString());
+                    ApostaFavoritaDTO aposta = new ApostaFavoritaDTO();
+                    if (isTipoTimemania && equipeSelecionada != null) {
+                        aposta.setTimeDoCoracao(equipeSelecionada);
+                    }
+                    parentActivity.salvarAposta(aposta, nomeAposta.getText().toString(), dezenasSelecionadas);
                 } else {
                     ViewUtils.alert(getActivity(), getString(R.string.msg_favor_inserir_nome_aposta));
                 }
@@ -728,7 +732,8 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
             if(isDiaSorte) {
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.fragmentSimularApostas, MesesFragment_.builder().modalidadeEnum(tipoJogo).build());
+                fragmentTransaction.replace(R.id.fragmentSimularApostas, MesesFragment_.builder().modalidadeEnum(tipoJogo).
+                        parametroJogoDTO(parametroJogo).dezenasSelecionadas(dezenasSelecionadas).build());
                 fragmentTransaction.commit();
             } else {
                 adicionarApostaNoCarrinho();
@@ -786,72 +791,6 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         } else {
             preencheNumerosAleatorios();
         }
-    }
-
-    private Boolean flagApostaSalva = false;
-
-    private void salvarAposta(String nomeAposta) {
-        final DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(getActivity());
-        DialogUtils.show(getActivity());
-
-        final ApostaFavoritaDTO aposta = new ApostaFavoritaDTO();
-
-        DTOEnumInteger modalidade = new DTOEnumInteger();
-        modalidade.setDescricao(parametroJogo.getConcurso().getModalidadeDetalhada().getDescricao());
-        modalidade.setValor(parametroJogo.getConcurso().getModalidadeDetalhada().getValor());
-        aposta.setModalidade(modalidade);
-
-        aposta.setNome(nomeAposta);
-        aposta.setNumerosSelecionados(dezenasSelecionadas);
-        aposta.setId(Constantes.ZERO_LONG);
-
-        if (isTipoTimemania && equipeSelecionada != null) {
-            aposta.setTimeDoCoracao(equipeSelecionada);
-        }
-
-        dadosCorporativosBO.validarApostaFavorita(aposta, new RequestListener<NetworkResponse>() {
-            @Override
-            public void onResponse(NetworkResponse response) {
-                dadosCorporativosBO.salvarApostaFavorita(aposta, new RequestListener<NetworkResponse>() {
-                    @Override
-                    public void onResponse(NetworkResponse response) {
-                        DialogUtils.dismiss();
-
-                        RelativeLayout salvarApostaLayout = parentActivity.getSalvarApostaLayout();
-
-                        salvarApostaLayout.setBackgroundResource(R.color.verdeazul);
-                        ViewGroup.LayoutParams relativelayoutParams = salvarApostaLayout.getLayoutParams();
-
-                        final float scale = parentActivity.getResources().getDisplayMetrics().density;
-                        relativelayoutParams.height = (int) (64 * scale + 0.5f);
-
-                        salvarApostaLayout.setLayoutParams(relativelayoutParams);
-
-                        TextView tituloSalvarAposta = parentActivity.getTextoSalveEstaAposta();
-                        tituloSalvarAposta.setText(R.string.label_aposta_salva_carinha);
-                        tituloSalvarAposta.setGravity(Gravity.CENTER);
-
-                        ImageView starSalvarApostaImageView = parentActivity.getIconStarSalvar();
-                        starSalvarApostaImageView.setBackgroundResource(R.drawable.icon_favoritado);
-
-                        flagApostaSalva = true;
-                    }
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        DialogUtils.dismiss();
-                        RedirectNetwork.checkRedirect( error, getActivity() );
-
-                    }
-                });
-            }
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                DialogUtils.dismiss();
-                RedirectNetwork.checkRedirect( error, getActivity() );
-            }
-        });
     }
 
     private void preencheNumerosAleatorios() {
@@ -1042,7 +981,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
     private void verificaSeMostraSalvarApostaView() {
 
-        if (isTipoLoteca || isTipoLotogol) {
+        if (isTipoLoteca || isTipoLotogol || isDiaSorte) {
             ocutarSalvarAposta();
         } else if (isTipoTimemania) {
             if (isTelaSelecaoTimeAtivado && (equipeSelecionada != null && equipeSelecionada.isSelecionado())) {
@@ -1188,7 +1127,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                                 parentActivity.qtdDezenasPossiveisSelecionado += 1;
                                 parentActivity.verificaNovoQtdDezenasMax(parentActivity.qtdDezenasPossiveisSelecionado);
                                 atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
-                                if (flagApostaSalva) {
+                                if (parentActivity.getFlagApostaSalva()) {
                                     voltaSalvarApostaParaLayoutInicial();
                                 }
                                 dezenasSelecionadas.add(valorSelecionado);

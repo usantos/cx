@@ -14,6 +14,8 @@ package caixa.gov.br.loterias.model.bo.silce.dto;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.parceler.Parcel;
+
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -21,39 +23,42 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel(description = "")
+@Parcel
 public class ParametroJogoDTO {
 
     @SerializedName("concurso")
-    private ConcursoDTO concurso = null;
+    protected ConcursoDTO concurso = null;
 
     @SerializedName("situacaoConcursoCanal")
-    private SituacaoConcursoCanalEnum situacaoConcursoCanal = null;
+    protected SituacaoConcursoCanalEnum situacaoConcursoCanal = null;
     @SerializedName("probabilidadeDeGanhar")
-    private ProbabilidadeDeGanharEnum probabilidadeDeGanhar = null;
+    protected ProbabilidadeDeGanharEnum probabilidadeDeGanhar = null;
     @SerializedName("aceitaEspelho")
-    private Boolean aceitaEspelho = null;
+    protected Boolean aceitaEspelho = null;
     @SerializedName("prognosticoMaximo")
-    private Integer prognosticoMaximo = null;
+    protected Integer prognosticoMaximo = null;
     @SerializedName("quantidadeMinima")
-    private Integer quantidadeMinima = null;
+    protected Integer quantidadeMinima = null;
     @SerializedName("quantidadeMaxima")
-    private Integer quantidadeMaxima = null;
+    protected Integer quantidadeMaxima = null;
     @SerializedName("quantidadeSurpresinhas")
-    private Integer quantidadeSurpresinhas = null;
+    protected Integer quantidadeSurpresinhas = null;
     @SerializedName("teimosinhas")
-    private List<Integer> teimosinhas = null;
+    protected List<Integer> teimosinhas = null;
     @SerializedName("valoresAposta")
-    private List<ParametroValorApostaDTO> valoresAposta = null;
+    protected List<ParametroValorApostaDTO> valoresAposta = null;
     @SerializedName("equipes")
-    private List<ParametroEquipe> equipes = null;
+    protected List<ParametroEquipe> equipes = null;
     @SerializedName("partidas")
-    private List<ParametroPartida> partidas = null;
+    protected List<ParametroPartida> partidas = null;
     @SerializedName("valorApostaMinima")
-    private BigDecimal valorApostaMinima = null;
+    protected BigDecimal valorApostaMinima = null;
     @SerializedName("concursoDisponivelSimulacao")
-    private Boolean concursoDisponivelSimulacao = null;
+    protected Boolean concursoDisponivelSimulacao = null;
     @SerializedName("concursoCanalAberto")
-    private Boolean concursoCanalAberto = null;
+    protected Boolean concursoCanalAberto = null;
+    @SerializedName("meses")
+    protected List<MesDTOResponse> meses = null;
 
     /**
      **/
@@ -230,6 +235,13 @@ public class ParametroJogoDTO {
         this.concursoCanalAberto = concursoCanalAberto;
     }
 
+    public List<MesDTOResponse> getMeses() {
+        return meses;
+    }
+
+    public void setMeses(List<MesDTOResponse> meses) {
+        this.meses = meses;
+    }
 
     @Override
     public boolean equals(Object o) {

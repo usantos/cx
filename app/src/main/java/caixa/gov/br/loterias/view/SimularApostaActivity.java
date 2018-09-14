@@ -12,10 +12,12 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -28,6 +30,8 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.android.volley.NetworkResponse;
+import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 
 import org.androidannotations.annotations.AfterViews;
@@ -43,12 +47,19 @@ import java.util.Date;
 import java.util.List;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.model.bo.DadosCorporativosBO;
+import caixa.gov.br.loterias.model.bo.DadosCorporativosBO_;
+import caixa.gov.br.loterias.model.bo.RedirectNetwork;
+import caixa.gov.br.loterias.model.bo.RequestListener;
+import caixa.gov.br.loterias.model.bo.silce.dto.ApostaFavoritaDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.DTOEnumInteger;
 import caixa.gov.br.loterias.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import caixa.gov.br.loterias.model.bo.silce.dto.ModalidadeEnum;
 import caixa.gov.br.loterias.model.bo.silce.dto.ParametroEquipe;
 import caixa.gov.br.loterias.model.bo.silce.dto.ParametroJogoDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ParametroValorApostaDTO;
 import caixa.gov.br.loterias.utils.Constantes;
+import caixa.gov.br.loterias.utils.DialogUtils;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.fragment.CartelaFragment;
 import caixa.gov.br.loterias.view.fragment.SurpresinhaFragment;
@@ -116,6 +127,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
     //mocks
     public int qtdDezenasPossiveisSelecionado;
     public int qtdConcursoSelecionado;
+    private Boolean flagApostaSalva = false;
     private int numeroConcursoAtual;
 
     @AfterViews
@@ -365,6 +377,68 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
 
     public IdentificaoDeUmaApostaDas8Modalidades getAposta() {
         return aposta;
+    }
+
+    public Boolean getFlagApostaSalva() {
+        return flagApostaSalva;
+    }
+
+    public void salvarAposta(final ApostaFavoritaDTO aposta, String nomeAposta, List<Integer> dezenasSelecionadas) {
+        final DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(this);
+        DialogUtils.show(this);
+
+        DTOEnumInteger modalidade = new DTOEnumInteger();
+        modalidade.setDescricao(parametroSimulacao.getConcurso().getModalidadeDetalhada().getDescricao());
+        modalidade.setValor(parametroSimulacao.getConcurso().getModalidadeDetalhada().getValor());
+        aposta.setModalidade(modalidade);
+
+        aposta.setNome(nomeAposta);
+        aposta.setNumerosSelecionados(dezenasSelecionadas);
+        aposta.setId(Constantes.ZERO_LONG);
+
+        dadosCorporativosBO.validarApostaFavorita(aposta, new RequestListener<NetworkResponse>() {
+            @Override
+            public void onResponse(NetworkResponse response) {
+                dadosCorporativosBO.salvarApostaFavorita(aposta, new RequestListener<NetworkResponse>() {
+                    @Override
+                    public void onResponse(NetworkResponse response) {
+                        DialogUtils.dismiss();
+
+                        RelativeLayout salvarApostaLayout = getSalvarApostaLayout();
+
+                        salvarApostaLayout.setBackgroundResource(R.color.verdeazul);
+                        ViewGroup.LayoutParams relativelayoutParams = salvarApostaLayout.getLayoutParams();
+
+                        final float scale = getResources().getDisplayMetrics().density;
+                        relativelayoutParams.height = (int) (64 * scale + 0.5f);
+
+                        salvarApostaLayout.setLayoutParams(relativelayoutParams);
+
+                        TextView tituloSalvarAposta = getTextoSalveEstaAposta();
+                        tituloSalvarAposta.setText(R.string.label_aposta_salva_carinha);
+                        tituloSalvarAposta.setGravity(Gravity.CENTER);
+
+                        ImageView starSalvarApostaImageView = getIconStarSalvar();
+                        starSalvarApostaImageView.setBackgroundResource(R.drawable.icon_favoritado);
+
+                        flagApostaSalva = true;
+                    }
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        DialogUtils.dismiss();
+                        RedirectNetwork.checkRedirect( error, SimularApostaActivity.this);
+
+                    }
+                });
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                DialogUtils.dismiss();
+                RedirectNetwork.checkRedirect( error, SimularApostaActivity.this );
+            }
+        });
     }
 
     private void abrirTelaSurprezinha() {

@@ -15,26 +15,29 @@ package caixa.gov.br.loterias.model.bo.silce.dto;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.parceler.Parcel;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel(description = "")
+@Parcel
 public class ParametroPartida {
 
     @SerializedName("numero")
-    private Integer numero = null;
+    protected Integer numero = null;
     @SerializedName("equipe1")
-    private ParametroEquipe equipe1 = null;
+    protected ParametroEquipe equipe1 = null;
     @SerializedName("equipe2")
-    private ParametroEquipe equipe2 = null;
+    protected ParametroEquipe equipe2 = null;
     @Expose(serialize = false, deserialize = false)
-    private transient boolean selecionado;
+    protected transient boolean selecionado;
     @Expose(serialize = false, deserialize = false)
-    private transient boolean empate;
+    protected transient boolean empate;
     @Expose(serialize = false, deserialize = false)
-    private transient int qtdItensSelecionados;
+    protected transient int qtdItensSelecionados;
     @Expose(serialize = false, deserialize = false)
-    private transient int qtdItensSelecionadosAnterior;
+    protected transient int qtdItensSelecionadosAnterior;
 
     /**
      **/
