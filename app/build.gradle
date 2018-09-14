@@ -42,7 +42,7 @@ android {
                 buildConfigField "boolean", "CAIXA_NETWORK_STUB", "false"
                 buildConfigField "String", "CAIXA_BASE_URL_SILCE", "\"https://www.loteriasonline.caixa.gov.br/silce-servico-rest/rest/v1/\""
                 buildConfigField "String", "PUBLIC_KEY_MP", "\"TEST-946a3077-5cf1-446c-bab3-e3a266357e9f\""
-                buildConfigField "String", "CAIXA_BASE_URL_SSO", "\"https://logindes.caixa.gov.br\""
+                buildConfigField "String", "CAIXA_BASE_URL_SSO", "\"https://login.caixa.gov.br\""
                 buildConfigField "String", "MP_PAYMENT_URL", "\"https://api.mercadopago.com/v1/payment_methods/installments?\""
             }
             caixahmg {
