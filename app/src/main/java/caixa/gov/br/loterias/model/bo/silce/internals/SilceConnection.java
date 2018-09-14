@@ -88,6 +88,7 @@ public class SilceConnection {
                 prepareBody(body), responseDataClass,
                 headers, listener, errorListener);
         request.setRetryPolicy(createRetryPolicy());
+
         return request;
     }
 
