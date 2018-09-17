@@ -6,14 +6,12 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -22,13 +20,20 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.ViewById;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Random;
 
 import caixa.gov.br.loterias.R;
@@ -56,110 +61,87 @@ import caixa.gov.br.loterias.utils.ViewUtils;
 
 import static java.lang.String.format;
 
+@EFragment(R.layout.fragment_surpresinha)
 public class SurpresinhaFragment extends Fragment implements OnClickListener {
 
-    int typeGameColorLight, typeGameColorDark, numeroConcursoAtual;
-    int qtdSurpresinhas = 1;
-
-    SurpresinhaGridViewAdapter simularDezenasAdapter;
-
-    Button botaoMenosSurpresinha, botaoEscolhaOutrotime, botaoMaisSurpresinha, botaoAdicionarSurpresinhaAoCarrinho;
-
-    private View divisaoLinhaDois;
-
-    private TextView infoTimeSurpresa;
-
-    private ImageView brasaoTimeSurpresa;
-    TextView qtdSurpresinhasTextView, valorAposta;
-
-    public ParametroJogoDTO parametroJogo;
+    private TextView valorAposta;
     private SimularApostaActivity parentActivity;
-
     private SurpresinhaFragmentListener surpresinhaFragmentListener;
     private ParametroEquipe equipeSelecionada = null;
-    private ModalidadeEnum tipoJogo;
-    private boolean isTipoTimeMania, isTipoLotomania;
-    private AppCompatCheckBox selcioneEspelhoSurpresinha;
+    private boolean isTipoTimeMania, isTipoLotomania, isDiaDeSorte;
+    private ParametroJogoDTO parametroJogo;
+    private int typeGameColorLight, qtdSurpresinhas = 1;
+    private SurpresinhaGridViewAdapter simularDezenasAdapter;
+    private BigDecimal valorTotalAposta;
 
-    String dataSorteioAtual;
-    public BigDecimal valorTotalAposta;
+    @ViewById
+    protected ImageView escolhaItemImageView;
+
+    @ViewById
+    protected TextView infoItemSurpresaTextView, qtdSurpresinhasSelecionadas;
+
+    @ViewById
+    protected Button escolherOutroItemBtn, btnMenosSurpresinha, btnMaisSurpresinha;
+
+    @ViewById
+    protected RelativeLayout escolhaItemLayout;
+
+    @ViewById
+    protected ExpandableHeightGridView listaDezenasSurpresinha;
+
+    @ViewById
+    protected LinearLayout layoutEspelhoSurpresinha;
+
+    @ViewById
+    protected AppCompatCheckBox selcioneEspelhoSurpresinha;
 
     public SurpresinhaFragment() {
         // Required empty public constructor
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        View fragmentView = getView();
-
-        if (isTipoLotomania) {
-            LinearLayout layoutEspelhoSurpresinha = fragmentView.findViewById(R.id.layoutEspelhoSurpresinha);
-            layoutEspelhoSurpresinha.setVisibility(View.VISIBLE);
-            layoutEspelhoSurpresinha.setOnClickListener(this);
-
-            selcioneEspelhoSurpresinha = layoutEspelhoSurpresinha.findViewById(R.id.selcioneEspelhoSurpresinha);
-        }
-        configuraBotoes(fragmentView);
-        configuraListaDezenas(fragmentView);
-        configurarComponentesTimeMania();
-
-        if (equipeSelecionada != null) {
-            adicionarSurpresinhaNoCarrinho();
-        }
-
-        if (!isTipoTimeMania) {
-            divisaoLinhaDois.setVisibility(View.GONE);
-            brasaoTimeSurpresa.setVisibility(View.GONE);
-            infoTimeSurpresa.setVisibility(View.GONE);
-            botaoEscolhaOutrotime.setVisibility(View.GONE);
-        }
-
-    }
-
-    private void configurarComponentesTimeMania() {
-        divisaoLinhaDois = getView().findViewById(R.id.divisaoLinhaDois);
-        brasaoTimeSurpresa = getView().findViewById(R.id.brasaoTimeSurpresa);
-        infoTimeSurpresa = getView().findViewById(R.id.infoTimeSurpresa);
-    }
-
-    public void surpresinhaFragmentBuilder(Bundle dataBundle) {
-        if (dataBundle != null) {
-            //mocks
-            numeroConcursoAtual = dataBundle.getInt("numeroConcursoAtual");
-            dataSorteioAtual = dataBundle.getString("dataSorteioAtual");
-
-            typeGameColorLight = (int) dataBundle.get("typeGameColorLight");
-            typeGameColorDark = (int) dataBundle.get("typeGameColorDark");
-        }
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
+    @AfterViews
+    protected void init() {
         parentActivity = ((SimularApostaActivity) getActivity());
-        parametroJogo = parentActivity.getParametroSimulacao();
-    }
+        if (parentActivity != null) {
+            parametroJogo = parentActivity.getParametroSimulacao();
+        }
 
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-//        View view = inflater.inflate(R.layout.fragment_surpresinha, container, false);
-//        configuraListaDezenas(view);
-//        verificaSeMostraBotaoLimparAposta(view);
         Bundle bundle = getArguments();
         if (bundle != null) {
             equipeSelecionada = new Gson().fromJson(bundle.getString("equipeSelecionada"), ParametroEquipe.class);
         }
 
         identificarTipoJogo();
+        configuraListaDezenas();
+        atualizaDezenaAdapter();
+        configuraBotoes();
 
-        return inflater.inflate(R.layout.fragment_surpresinha, container, false);
+        if (isTipoLotomania) {
+            layoutEspelhoSurpresinha.setVisibility(View.VISIBLE);
+            selcioneEspelhoSurpresinha = layoutEspelhoSurpresinha.findViewById(R.id.selcioneEspelhoSurpresinha);
+        }
+
+        if (equipeSelecionada != null) {
+            adicionarSurpresinhaNoCarrinho();
+        }
+
+        if (isTipoTimeMania) {
+            escolhaItemLayout.setVisibility(View.VISIBLE);
+        }
+
+        if(isDiaDeSorte){
+            initDiaDeSorte();
+        }
+    }
+
+    public void surpresinhaFragmentBuilder(Bundle dataBundle) {
+        if (dataBundle != null) {
+            typeGameColorLight = (int) dataBundle.get("typeGameColorLight");
+        }
     }
 
     private void identificarTipoJogo() {
-        tipoJogo = (ModalidadeEnum) getActivity().getIntent().getSerializableExtra("tipoAposta");
+        ModalidadeEnum tipoJogo = (ModalidadeEnum) getActivity().getIntent().getSerializableExtra("tipoAposta");
 
         switch (tipoJogo) {
             case TIMEMANIA:
@@ -168,14 +150,10 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
             case LOTOMANIA:
                 isTipoLotomania = true;
                 break;
+            case DIA_DE_SORTE:
+                isDiaDeSorte = true;
+                break;
         }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        atualizaDezenaAdapter();
     }
 
     @Override
@@ -202,46 +180,34 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         simularDezenasAdapter.notifyDataSetChanged();
     }
 
-    private void configuraBotoes(View fragmentView) {
+    private void configuraBotoes() {
         valorAposta = parentActivity.getValorApostaCartela();
         if (parametroJogo != null) {
             atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
         }
 
-        parentActivity.getSimularApostaLayoutCarrinhoApostas().setOnClickListener(this);
+//        parentActivity.getSimularApostaLayoutCarrinhoApostas().setOnClickListener(this);
 
-        botaoEscolhaOutrotime = fragmentView.findViewById(R.id.escolherOutroTimeBtn);
-        botaoEscolhaOutrotime.setOnClickListener(this);
+        btnMenosSurpresinha.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.cinzaescuro));
+        btnMaisSurpresinha.setBackgroundColor(ContextCompat.getColor(parentActivity, typeGameColorLight));
 
-        botaoMenosSurpresinha = fragmentView.findViewById(R.id.btnMenosSurpresinha);
-        botaoMenosSurpresinha.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.cinzaescuro));
-        botaoMenosSurpresinha.setOnClickListener(this);
+        qtdSurpresinhasSelecionadas.setTextColor(ContextCompat.getColor(parentActivity, typeGameColorLight));
+        qtdSurpresinhasSelecionadas.setText(String.format(Locale.getDefault(), "%d", qtdSurpresinhas));
 
-        botaoMaisSurpresinha = fragmentView.findViewById(R.id.btnMaisSurpresinha);
-        botaoMaisSurpresinha.setBackgroundColor(ContextCompat.getColor(getActivity(), typeGameColorLight));
-        botaoMaisSurpresinha.setOnClickListener(this);
-
-        qtdSurpresinhasTextView = fragmentView.findViewById(R.id.qtdSurpresinhasSelecionadas);
-        qtdSurpresinhasTextView.setTextColor(ContextCompat.getColor(getActivity(), typeGameColorLight));
-        qtdSurpresinhasTextView.setText(String.format("%d", qtdSurpresinhas));
-
-        botaoAdicionarSurpresinhaAoCarrinho = parentActivity.getBotaoAdicionarCompletarCartela();
-        botaoAdicionarSurpresinhaAoCarrinho.setBackgroundColor(ContextCompat.getColor(getActivity(), typeGameColorLight));
+        Button botaoAdicionarSurpresinhaAoCarrinho = parentActivity.getBotaoAdicionarCompletarCartela();
+        botaoAdicionarSurpresinhaAoCarrinho.setBackgroundColor(ContextCompat.getColor(parentActivity, typeGameColorLight));
         botaoAdicionarSurpresinhaAoCarrinho.setTextColor(Color.WHITE);
         botaoAdicionarSurpresinhaAoCarrinho.setOnClickListener(this);
-        botaoAdicionarSurpresinhaAoCarrinho.setText(ViewUtils.textFuturaAndFuturaBold(getActivity(), getString(R.string.adicionarAoCarrinho)));
+        botaoAdicionarSurpresinhaAoCarrinho.setText(ViewUtils.textFuturaAndFuturaBold(parentActivity, getString(R.string.adicionarAoCarrinho)));
 
         parentActivity.getBotaoLimparAposta().setVisibility(View.GONE);
         parentActivity.getSalvarApostaLayout().setVisibility(View.GONE);
     }
 
-    private void configuraListaDezenas(View fragmentView) {
-        ExpandableHeightGridView listaDezenas = fragmentView.findViewById(R.id.listaDezenasSurpresinha);
-
-        listaDezenas.setExpanded(true);
-
+    private void configuraListaDezenas() {
+        listaDezenasSurpresinha.setExpanded(true);
         simularDezenasAdapter = new SurpresinhaGridViewAdapter(getActivity(), montaListaDezenasSurpresinha());
-        listaDezenas.setAdapter(simularDezenasAdapter);
+        listaDezenasSurpresinha.setAdapter(simularDezenasAdapter);
     }
 
     private ArrayList<String> montaListaDezenasSurpresinha() {
@@ -254,7 +220,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
     }
 
     public void atualizaValorTotalAposta(int numPrognostico, int qtdTeimosinhas) {
-        configuraListaDezenas(getView());
+        configuraListaDezenas();
 
         BigDecimal valorEmReais = BigDecimal.ZERO;
 
@@ -330,8 +296,8 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
             public void onResponse(AgrupadorDTOApostaDTOResponse response) {
                 loadViewProgress.dismiss();
                 surpresinhaFragmentListener.adicionarApostaCarrinho();
-                if (response.getRedirect() != null){
-                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), getActivity());
+                if (response.getRedirect() != null) {
+                    RedirectNetwork.checkRedirectSucesso(response.getRedirect(), getActivity());
                 }
             }
 
@@ -341,7 +307,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
                 if (MensagensNetwork.isUnauthorizedError(error)) {
                     validaSuspresinhaBaseLocal(apostaSurpresinha);
                 } else {
-                    RedirectNetwork.checkRedirect( error, getActivity() );
+                    RedirectNetwork.checkRedirect(error, getActivity());
                 }
             }
         });
@@ -350,50 +316,62 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.escolherOutroTimeBtn:
-                parentActivity.escolherOutroTimeSurpresinha();
-                break;
-            case R.id.btnMenosSurpresinha: {
-                if (qtdSurpresinhas > 1) {
-                    qtdSurpresinhas--;
-                    if (qtdSurpresinhas == 1) {
-                        botaoMenosSurpresinha.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.cinzaescuro));
-                    }
-                    atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
-                }
-            }
-            break;
-
-            case R.id.btnMaisSurpresinha: {
-                if (qtdSurpresinhas == 1) {
-                    botaoMenosSurpresinha.setBackgroundColor(ContextCompat.getColor(getActivity(), typeGameColorLight));
-                }
-                if (qtdSurpresinhas < parametroJogo.getQuantidadeSurpresinhas()) {
-                    qtdSurpresinhas++;
-                }
-                atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
-            }
-            break;
-
             case R.id.botaoAdicionarCompletarCartela: {
                 adicionarSurpresinhaNoCarrinho();
             }
             break;
-
-            case R.id.simularApostaLayoutCarrinhoApostas:
-                surpresinhaFragmentListener.abreCarrinhoApostas();
-                break;
-
-            case R.id.layoutEspelhoSurpresinha:
-                selecionarEspelho();
-                break;
         }
-
-        qtdSurpresinhasTextView.setText(String.format("%d", qtdSurpresinhas));
     }
 
     public void setEquipeSelecionada(ParametroEquipe equipeSelecionada) {
         this.equipeSelecionada = equipeSelecionada;
+    }
+
+    public BigDecimal getValorTotalAposta() {
+        return valorTotalAposta;
+    }
+
+    public ParametroJogoDTO getParametroJogo() {
+        return parametroJogo;
+    }
+
+    @Click
+    protected void escolherOutroItemBtn() {
+        if(isTipoTimeMania){
+            parentActivity.escolherOutroTimeSurpresinha();
+        }else if (isDiaDeSorte){
+            parentActivity.mesDeSorteFragment(null, true);
+        }
+
+    }
+
+    @Click
+    protected void btnMenosSurpresinha() {
+        if (qtdSurpresinhas > 1) {
+            qtdSurpresinhas--;
+            if (qtdSurpresinhas == 1) {
+                btnMenosSurpresinha.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.cinzaescuro));
+            }
+            atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
+            qtdSurpresinhasSelecionadas.setText(String.format(Locale.getDefault(), "%d", qtdSurpresinhas));
+        }
+    }
+
+    @Click
+    protected void btnMaisSurpresinha() {
+        if (qtdSurpresinhas == 1) {
+            btnMenosSurpresinha.setBackgroundColor(ContextCompat.getColor(parentActivity, typeGameColorLight));
+        }
+        if (qtdSurpresinhas < parametroJogo.getQuantidadeSurpresinhas()) {
+            qtdSurpresinhas++;
+        }
+        atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
+        qtdSurpresinhasSelecionadas.setText(String.format(Locale.getDefault(), "%d", qtdSurpresinhas));
+    }
+
+    @Click
+    protected void layoutEspelhoSurpresinha() {
+        selecionarEspelho();
     }
 
     private void selecionarEspelho() {
@@ -418,12 +396,12 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         //TODO subistituir por valor máxima
         else if (valorTotalCarrinho.compareTo(BigDecimal.TEN) == 1) {
 //            ViewUtils.alert(getActivity(), getString(R.string.MA014));
-            ViewUtils.alertTitleButtonYesOrNotListener( getActivity(), getResources().getString( R.string.MA014 ), new DialogInterface.OnClickListener() {
+            ViewUtils.alertTitleButtonYesOrNotListener(getActivity(), getResources().getString(R.string.MA014), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                   incluirSurpresinhaBaseLocal(aposta, crud);
+                    incluirSurpresinhaBaseLocal(aposta, crud);
                 }
-            } );
+            });
         } else {
             incluirSurpresinhaBaseLocal(aposta, crud);
         }
@@ -447,11 +425,11 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
             crud.insertIdentificaoDeUmaApostaDas8Modalidades(apostaDas8Modalidades);
             apostaDas8Modalidades.setEspelho(Boolean.FALSE);
             crud.insertIdentificaoDeUmaApostaDas8Modalidades(apostaDas8Modalidades);
-        } else if(aposta.getQuantidadeSurpresinhas() > 0){
+        } else if (aposta.getQuantidadeSurpresinhas() > 0) {
             BigDecimal valorIndividual = valorTotalAposta.divide(new BigDecimal(aposta.getQuantidadeSurpresinhas()));
-            for(int contador = 0; contador < aposta.getQuantidadeSurpresinhas(); contador++) {
+            for (int contador = 0; contador < aposta.getQuantidadeSurpresinhas(); contador++) {
                 apostaDas8Modalidades.setValor(valorIndividual);
-                crud.insertIdentificaoDeUmaApostaDas8Modalidades( apostaDas8Modalidades );
+                crud.insertIdentificaoDeUmaApostaDas8Modalidades(apostaDas8Modalidades);
             }
         } else {
             apostaDas8Modalidades.setValor(valorTotalAposta);
@@ -459,6 +437,13 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         }
 
         surpresinhaFragmentListener.adicionarApostaCarrinho();
+    }
+
+    private void initDiaDeSorte(){
+        escolhaItemImageView.setImageDrawable(getResources().getDrawable(R.drawable.agrupar_1));
+        infoItemSurpresaTextView.setText(R.string.label_mes_surpresa);
+        escolherOutroItemBtn.setText(R.string.label_escolher_outro_mes);
+        escolhaItemLayout.setVisibility(View.VISIBLE);
     }
 
     // Adapter do gridview das dezenas

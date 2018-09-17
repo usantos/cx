@@ -28,9 +28,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_alignBottom="@+id/escolhaNumerosText"
-                android:layout_alignParentEnd="true"
                 android:layout_alignTop="@+id/escolhaNumerosText"
-                android:layout_marginEnd="50dp"
+                android:layout_toStartOf="@+id/paginaQuantidadeText"
                 android:text="@string/label_numerico_dois" />
 
             <TextView
@@ -41,7 +40,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignTop="@+id/escolhaNumerosText"
                 android:layout_marginEnd="24dp"
-                tools:text="| 2" />
+                tools:text=" | 2" />
 
             <caixa.gov.br.loterias.view.custom.ExpandableHeightGridView
                 android:id="@+id/mesesGridView"
@@ -54,10 +53,10 @@
                 android:columnWidth="50dp"
                 android:gravity="center"
                 android:horizontalSpacing="10dp"
-                android:verticalSpacing="10dp"
                 android:nestedScrollingEnabled="false"
                 android:numColumns="2"
-                android:paddingBottom="170dp" />
+                android:paddingBottom="170dp"
+                android:verticalSpacing="10dp" />
         </RelativeLayout>
 
     </ScrollView>

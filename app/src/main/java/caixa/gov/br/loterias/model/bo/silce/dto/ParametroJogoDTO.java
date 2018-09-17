@@ -58,7 +58,7 @@ public class ParametroJogoDTO {
     @SerializedName("concursoCanalAberto")
     protected Boolean concursoCanalAberto = null;
     @SerializedName("meses")
-    protected List<MesDTOResponse> meses = null;
+    protected List<ParametroMesDeSorte> meses = null;
 
     /**
      **/
@@ -235,11 +235,11 @@ public class ParametroJogoDTO {
         this.concursoCanalAberto = concursoCanalAberto;
     }
 
-    public List<MesDTOResponse> getMeses() {
+    public List<ParametroMesDeSorte> getMeses() {
         return meses;
     }
 
-    public void setMeses(List<MesDTOResponse> meses) {
+    public void setMeses(List<ParametroMesDeSorte> meses) {
         this.meses = meses;
     }
 

@@ -35,6 +35,7 @@ import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
@@ -62,8 +63,10 @@ import caixa.gov.br.loterias.utils.Constantes;
 import caixa.gov.br.loterias.utils.DialogUtils;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.fragment.CartelaFragment;
+import caixa.gov.br.loterias.view.fragment.MesesFragment_;
 import caixa.gov.br.loterias.view.fragment.SurpresinhaFragment;
 import caixa.gov.br.loterias.view.fragment.SurpresinhaFragment.SurpresinhaFragmentListener;
+import caixa.gov.br.loterias.view.fragment.SurpresinhaFragment_;
 import caixa.gov.br.loterias.view.listener.CartelaFragmentListener;
 
 import static java.lang.String.format;
@@ -273,7 +276,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
             activity.putExtra("valorAposta", cartelaFragment.valorTotalAposta);
         } else {
 
-            activity.putExtra("valorAposta", surpresinhaFragment.valorTotalAposta);
+            activity.putExtra("valorAposta", surpresinhaFragment.getValorTotalAposta());
         }
         activity.putExtra("modalidade", (new Gson()).toJson(parametroSimulacao));
         this.init();
@@ -441,6 +444,21 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         });
     }
 
+    public void mesDeSorteFragment(List<Integer> dezenasSelecionadas, boolean surpresinha)
+    {
+        fragmentManager.beginTransaction().replace(R.id.fragmentSimularApostas, MesesFragment_.builder().modalidadeEnum(tipoJogo).
+                parametroJogoDTO(parametroSimulacao).dezenasSelecionadas(dezenasSelecionadas).build()).commit();
+
+        if(surpresinha){
+            simularTelaAposta.setBackgroundResource(R.drawable.icon_seleciona2);
+            surpresinhaTela.setBackgroundResource(R.drawable.icon_surpresinha2);
+        }
+    }
+    @Click
+    protected void simularApostaLayoutCarrinhoApostas(){
+        abreCarrinhoApostas();
+    }
+
     private void abrirTelaSurprezinha() {
         fragmentManager.beginTransaction().replace(R.id.fragmentSimularApostas, surpresinhaFragment).commit();
 
@@ -471,7 +489,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         fragmentManager = getSupportFragmentManager();
 
         cartelaFragment = new CartelaFragment();
-        surpresinhaFragment = new SurpresinhaFragment();
+        surpresinhaFragment = SurpresinhaFragment_.builder().build();
 
 
         FragmentManager fm = getSupportFragmentManager();
@@ -592,7 +610,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
                     cartelaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
                     cartelaFragment.atualizaStatusBotaoFinalizar();
                 } else {
-                    if (surpresinhaFragment.parametroJogo != null) {
+                    if (surpresinhaFragment.getParametroJogo() != null) {
                         surpresinhaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
                     }
                 }
@@ -646,7 +664,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
                     cartelaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
                 } else {
 
-                    if (surpresinhaFragment.parametroJogo != null) {
+                    if (surpresinhaFragment.getParametroJogo() != null) {
                         surpresinhaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
                     }
                 }

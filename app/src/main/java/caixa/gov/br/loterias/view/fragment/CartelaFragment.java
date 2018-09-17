@@ -281,7 +281,6 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-
         try {
             cartelaFragmentListener = (CartelaFragmentListener) context;
         } catch (ClassCastException e) {
@@ -632,10 +631,6 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
             }
             break;
 
-            case R.id.simularApostaLayoutCarrinhoApostas:
-                cartelaFragmentListener.abreCarrinhoApostas();
-                break;
-
             case R.id.salvarApostaLayout: {
                 RelativeLayout salvarApostaLayout = parentActivity.getSalvarApostaLayout();
 
@@ -730,11 +725,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
             }
         } else if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) { //Adiciona aposta no carrinho
             if(isDiaSorte) {
-                FragmentManager fragmentManager = getFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.fragmentSimularApostas, MesesFragment_.builder().modalidadeEnum(tipoJogo).
-                        parametroJogoDTO(parametroJogo).dezenasSelecionadas(dezenasSelecionadas).build());
-                fragmentTransaction.commit();
+                parentActivity.mesDeSorteFragment(dezenasSelecionadas, false);
             } else {
                 adicionarApostaNoCarrinho();
             }
@@ -898,7 +889,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         botaoFinalizar.setOnClickListener(this);
         botaoFinalizar.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.cinza));
 
-        parentActivity.getSimularApostaLayoutCarrinhoApostas().setOnClickListener(this);
+//        parentActivity.getSimularApostaLayoutCarrinhoApostas().setOnClickListener(this);
 
         botaoLimparAposta = parentActivity.getBotaoLimparAposta();
         botaoLimparAposta.setOnClickListener(this);

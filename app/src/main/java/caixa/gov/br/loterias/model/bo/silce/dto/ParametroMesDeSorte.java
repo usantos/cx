@@ -13,6 +13,8 @@
 package caixa.gov.br.loterias.model.bo.silce.dto;
 
 import io.swagger.annotations.*;
+
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import org.parceler.Parcel;
@@ -27,6 +29,8 @@ public class ParametroMesDeSorte {
   protected String nome = null;
   @SerializedName("abreviacao")
   protected String abreviacao = null;
+  @Expose(serialize = false, deserialize = false)
+  protected boolean isSelecionado;
 
   /**
    **/
@@ -92,5 +96,13 @@ public class ParametroMesDeSorte {
     sb.append("  abreviacao: ").append(abreviacao).append("\n");
     sb.append("}\n");
     return sb.toString();
+  }
+
+  public boolean isSelecionado() {
+    return isSelecionado;
+  }
+
+  public void setSelecionado(boolean selecionado) {
+    isSelecionado = selecionado;
   }
 }

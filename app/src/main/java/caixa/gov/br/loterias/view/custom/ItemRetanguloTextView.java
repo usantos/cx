@@ -9,7 +9,7 @@ import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
 
 import caixa.gov.br.loterias.R;
-import caixa.gov.br.loterias.model.bo.silce.dto.MesDTOResponse;
+import caixa.gov.br.loterias.model.bo.silce.dto.ParametroMesDeSorte;
 
 @EViewGroup(R.layout.item_retanglulo_texto)
 public class ItemRetanguloTextView extends RelativeLayout {
@@ -17,7 +17,7 @@ public class ItemRetanguloTextView extends RelativeLayout {
     @ViewById
     protected TextView descricaoText;
 
-    private MesDTOResponse mesDTOResponse;
+    private ParametroMesDeSorte mesDeSorte;
 
     public ItemRetanguloTextView(Context context) {
         super(context);
@@ -31,18 +31,14 @@ public class ItemRetanguloTextView extends RelativeLayout {
         super(context, attrs, defStyleAttr);
     }
 
-    public void setLayout(MesDTOResponse mes) {
+    public void setLayout(ParametroMesDeSorte mes) {
+        mesDeSorte = mes;
         descricaoText.setText(mes.getNome());
-        mesDTOResponse = mes;
+//        descricaoText.setSelected(mes.isSelecionado());
+        descricaoText.setActivated(mes.isSelecionado());
     }
 
-    @Override
-    public void setSelected(boolean selected) {
-        super.setSelected(selected);
-        descricaoText.setActivated(selected);
-    }
-
-    public MesDTOResponse getMesDTOResponse() {
-        return mesDTOResponse;
+    public ParametroMesDeSorte getMesDeSorte() {
+        return mesDeSorte;
     }
 }

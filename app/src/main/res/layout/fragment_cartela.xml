@@ -88,10 +88,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="0dp"
                             android:layout_alignBottom="@+id/ttvEscolha"
-                            android:layout_alignParentEnd="true"
                             android:layout_alignTop="@+id/ttvEscolha"
-                            android:layout_marginEnd="50dp"
-                            android:layout_marginTop="0dp"
+                            android:layout_toStartOf="@+id/ttvPaginaQuantidade"
                             android:text="@string/label_numerico_um" />
 
                         <TextView
@@ -103,7 +101,7 @@
                             android:layout_alignTop="@+id/ttvEscolha"
                             android:layout_marginEnd="24dp"
                             android:layout_marginTop="0dp"
-                            tools:text="| 2" />
+                            tools:text=" | 2" />
                     </RelativeLayout>
                 </LinearLayout>
 
