@@ -49,8 +49,8 @@ public class MesesFragment extends Fragment {
     @FragmentArg
     protected List<Integer> dezenasSelecionadas;
 
+    private ParametroMesDeSorte mesDeSorte;
     private SimularApostaActivity parentActivity;
-    private CartelaFragmentListener cartelaFragmentListener;
     private MesesAdapter mesesAdapter;
 
     @AfterViews
@@ -66,23 +66,11 @@ public class MesesFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        try {
-            cartelaFragmentListener = (CartelaFragmentListener) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() + " must implement CartelaFragmentListener");
-        }
-    }
-
-    @Override
     public void onDetach() {
         super.onDetach();
-
-        cartelaFragmentListener = null;
         limparTodosMeses();
         mesesAdapter.notifyDataSetChanged();
+        gerenciarStatusBotoes(true);
     }
 
     private void setTelaDiaSorte() {
@@ -96,21 +84,25 @@ public class MesesFragment extends Fragment {
         paginaQuantidadeText.setTextColor(getResources().getColor(R.color.diasortemedio));
 
         parentActivity.getBotaoAdicionarCompletarCartela().setText(ViewUtils.textFuturaAndFuturaBold(getContext(), getString(R.string.adicionarAoCarrinho)));
-        if(dezenasSelecionadas == null){
+        if (dezenasSelecionadas == null) {
             parentActivity.getBotaoLimparAposta().setVisibility(View.VISIBLE);
         }
         initRecyclerView();
+        setMesDeSorte();
 
-        alterarStatusBotaoAdicionar(false);
-        alterarStatusBotaoLimpar(false);
+        gerenciarStatusBotoes(mesDeSorte != null);
+        acaoBotaoLimpar();
+    }
+
+    private void acaoBotaoLimpar() {
         parentActivity.getBotaoLimparAposta().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 limparTodosMeses();
                 mesesAdapter.notifyDataSetChanged();
-                alterarStatusBotaoAdicionar(false);
-                alterarStatusBotaoLimpar(false);
+                gerenciarStatusBotoes(false);
                 parentActivity.getSalvarApostaLayout().setVisibility(View.GONE);
+                limparMesDeSorte();
             }
         });
     }
@@ -126,16 +118,21 @@ public class MesesFragment extends Fragment {
                 ItemRetanguloTextView viewClickada = (ItemRetanguloTextView) view;
                 limparTodosMeses();
                 viewClickada.getMesDeSorte().setSelecionado(true);
+                setMesDeSorte(viewClickada.getMesDeSorte());
                 mesesAdapter.notifyDataSetChanged();
-                mostrarSalvarAposta();
-                alterarStatusBotaoAdicionar(true);
-                alterarStatusBotaoLimpar(true);
+                gerenciarStatusBotoes(true);
             }
         });
     }
 
+    private void gerenciarStatusBotoes(boolean habilitar) {
+        alterarStatusBotaoAdicionar(habilitar);
+        alterarStatusBotaoLimpar(habilitar);
+        mostrarSalvarAposta();
+    }
+
     private void mostrarSalvarAposta() {
-        if(dezenasSelecionadas != null){
+        if (dezenasSelecionadas != null && getItemSelecionado() != null) {
             parentActivity.getSalvarApostaLayout().setVisibility(View.VISIBLE);
             tamanhoBotaoSalvarAposta(parentActivity.getSalvarApostaLayout().getLayoutParams(), 64);
             parentActivity.getSalvarApostaLayout().setOnClickListener(new View.OnClickListener() {
@@ -172,7 +169,6 @@ public class MesesFragment extends Fragment {
     }
 
     private void statusBotao(Button button, int background, int border, int textColor, boolean habilitado) {
-
         if (background > 0) {
             button.setBackgroundColor(ContextCompat.getColor(parentActivity, background));
         }
@@ -222,10 +218,45 @@ public class MesesFragment extends Fragment {
     private ParametroMesDeSorte getItemSelecionado() {
         if (parametroJogoDTO.getMeses() != null) {
             for (ParametroMesDeSorte mesDeSorte : parametroJogoDTO.getMeses()) {
-                if (mesDeSorte.isSelecionado())
+                if (mesDeSorte.isSelecionado()) {
                     return mesDeSorte;
+                }
             }
         }
         return null;
+    }
+
+    private void setMesDeSorte() {
+        if(dezenasSelecionadas == null){
+            this.mesDeSorte = parentActivity.getMesDeSorteSurpresinha();
+        }else{
+            this.mesDeSorte = parentActivity.getMesDeSorteCartela();
+        }
+
+        if (parametroJogoDTO.getMeses() != null && this.mesDeSorte != null) {
+            for (ParametroMesDeSorte mesDeSorte : parametroJogoDTO.getMeses()) {
+                if (mesDeSorte.getNumero().equals(this.mesDeSorte.getNumero())) {
+                    mesDeSorte.setSelecionado(true);
+                    break;
+                }
+            }
+        }
+        mesesAdapter.notifyDataSetChanged();
+    }
+
+    private void setMesDeSorte(ParametroMesDeSorte mesDeSorte) {
+        if (dezenasSelecionadas != null) {
+            parentActivity.setMesDeSorteCartela(mesDeSorte);
+        } else {
+            parentActivity.setMesDeSorteSurpresinha(mesDeSorte);
+        }
+    }
+
+    private void limparMesDeSorte() {
+        if (dezenasSelecionadas != null) {
+            parentActivity.setMesDeSorteCartela(getItemSelecionado());
+        }else{
+            parentActivity.setMesDeSorteSurpresinha(getItemSelecionado());
+        }
     }
 }

@@ -29,6 +29,7 @@ import com.google.gson.Gson;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.FragmentArg;
 import org.androidannotations.annotations.ViewById;
 
 import java.math.BigDecimal;
@@ -49,6 +50,7 @@ import caixa.gov.br.loterias.model.bo.silce.dto.IncluirSurpresinhaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ModalidadeEnum;
 import caixa.gov.br.loterias.model.bo.silce.dto.ParametroEquipe;
 import caixa.gov.br.loterias.model.bo.silce.dto.ParametroJogoDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.ParametroMesDeSorte;
 import caixa.gov.br.loterias.model.bo.silce.dto.ParametroValorApostaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.TipoConcursoEnum;
 import caixa.gov.br.loterias.model.dao.DBLoteriasCrud;
@@ -289,6 +291,9 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         if (isTipoLotomania) {
             aposta.setGerarEspelho(selcioneEspelhoSurpresinha.isChecked());
         }
+        if(isDiaDeSorte){
+//            aposta.setM
+        }
 
         final IncluirSurpresinhaDTO apostaSurpresinha = aposta;
         apostaBO.adicionarSurpresinhaNoCarrinho(aposta, new RequestListener<AgrupadorDTOApostaDTOResponse>() {
@@ -442,6 +447,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
     private void initDiaDeSorte(){
         escolhaItemImageView.setImageDrawable(getResources().getDrawable(R.drawable.agrupar_1));
         infoItemSurpresaTextView.setText(R.string.label_mes_surpresa);
+        infoItemSurpresaTextView.setTextColor(getResources().getColor(R.color.diasortemedio));
         escolherOutroItemBtn.setText(R.string.label_escolher_outro_mes);
         escolhaItemLayout.setVisibility(View.VISIBLE);
     }

@@ -107,6 +107,7 @@
                 android:layout_marginTop="33dp"
                 android:background="@drawable/button_white_with_border"
                 android:text="@string/escolha_outro_time"
+                android:textColor="@color/cinza"
                 android:layout_centerHorizontal="true"
                 android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large" />
 

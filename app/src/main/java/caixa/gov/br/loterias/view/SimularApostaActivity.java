@@ -58,6 +58,7 @@ import caixa.gov.br.loterias.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modali
 import caixa.gov.br.loterias.model.bo.silce.dto.ModalidadeEnum;
 import caixa.gov.br.loterias.model.bo.silce.dto.ParametroEquipe;
 import caixa.gov.br.loterias.model.bo.silce.dto.ParametroJogoDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.ParametroMesDeSorte;
 import caixa.gov.br.loterias.model.bo.silce.dto.ParametroValorApostaDTO;
 import caixa.gov.br.loterias.utils.Constantes;
 import caixa.gov.br.loterias.utils.DialogUtils;
@@ -126,6 +127,8 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
     private ParametroJogoDTO parametroSimulacao;
     private int toolBarMenu;
     private Bundle bundle;
+    private ParametroMesDeSorte mesDeSorteCartela;
+    private ParametroMesDeSorte mesDeSorteSurpresinha;
 
     //mocks
     public int qtdDezenasPossiveisSelecionado;
@@ -168,7 +171,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         switch (v.getId()) {
             case R.id.simularTelaAposta: {
                 cartelaFragment.setEscolhaTimeCoracaoSurpresinha(false);
-                abrirTelaCartela();
+                abrirTelaCartela(false);
                 break;
             }
 
@@ -300,16 +303,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
     @Override
     public void escolherOutroTimeSurpresinha() {
         cartelaFragment.setEscolhaTimeCoracaoSurpresinha(true);
-        abrirTelaCartela();
-    }
-
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_FINISH) {
-            finish();
-        }
+        abrirTelaCartela(true);
     }
 
     public void setLabelValueSimplesLoteca(String labelValueSimplesLoteca) {
@@ -324,7 +318,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         this.labelValueTriplasLoteca.setText(labelValueTriplasLoteca);
     }
 
-    public FrameLayout getFragmentSimularApostas(){
+    public FrameLayout getFragmentSimularApostas() {
         return fragmentSimularApostas;
     }
 
@@ -430,7 +424,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         DialogUtils.dismiss();
-                        RedirectNetwork.checkRedirect( error, SimularApostaActivity.this);
+                        RedirectNetwork.checkRedirect(error, SimularApostaActivity.this);
 
                     }
                 });
@@ -439,24 +433,48 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
             @Override
             public void onErrorResponse(VolleyError error) {
                 DialogUtils.dismiss();
-                RedirectNetwork.checkRedirect( error, SimularApostaActivity.this );
+                RedirectNetwork.checkRedirect(error, SimularApostaActivity.this);
             }
         });
     }
 
-    public void mesDeSorteFragment(List<Integer> dezenasSelecionadas, boolean surpresinha)
-    {
+    public void mesDeSorteFragment(List<Integer> dezenasSelecionadas, boolean surpresinha) {
         fragmentManager.beginTransaction().replace(R.id.fragmentSimularApostas, MesesFragment_.builder().modalidadeEnum(tipoJogo).
                 parametroJogoDTO(parametroSimulacao).dezenasSelecionadas(dezenasSelecionadas).build()).commit();
 
-        if(surpresinha){
+        if (surpresinha) {
             simularTelaAposta.setBackgroundResource(R.drawable.icon_seleciona2);
             surpresinhaTela.setBackgroundResource(R.drawable.icon_surpresinha2);
         }
     }
+
+    public ParametroMesDeSorte getMesDeSorteCartela() {
+        return mesDeSorteCartela;
+    }
+
+    public void setMesDeSorteCartela(ParametroMesDeSorte mesDeSorteCartela) {
+        this.mesDeSorteCartela = mesDeSorteCartela;
+    }
+
+    public ParametroMesDeSorte getMesDeSorteSurpresinha() {
+        return mesDeSorteSurpresinha;
+    }
+
+    public void setMesDeSorteSurpresinha(ParametroMesDeSorte mesDeSorteSurpresinha) {
+        this.mesDeSorteSurpresinha = mesDeSorteSurpresinha;
+    }
+
     @Click
-    protected void simularApostaLayoutCarrinhoApostas(){
+    protected void simularApostaLayoutCarrinhoApostas() {
         abreCarrinhoApostas();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_FINISH) {
+            finish();
+        }
     }
 
     private void abrirTelaSurprezinha() {
@@ -487,10 +505,8 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
 
     private void configuraFragments() {
         fragmentManager = getSupportFragmentManager();
-
         cartelaFragment = new CartelaFragment();
         surpresinhaFragment = SurpresinhaFragment_.builder().build();
-
 
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
@@ -535,7 +551,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
                 this.toolBarMenu = R.menu.itens_simular_actionbar_duvida;
                 break;
             case DIA_DE_SORTE:
-                configuraTipoApostaTela( "_dia-sorte_", R.color.diasorteclaro, R.color.diasorteescuro, View.VISIBLE, View.GONE);
+                configuraTipoApostaTela("_dia-sorte_", R.color.diasorteclaro, R.color.diasorteescuro, View.VISIBLE, View.GONE);
                 this.toolBarMenu = R.menu.itens_simular_actionbar_duvida;
                 break;
         }
@@ -606,7 +622,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
             public void onClick(View v) {
                 qtdNumerosButton.setText(textoBotaoPrognosticosSelecionado);
 
-                if (fragmentManager.findFragmentById(R.id.fragmentSimularApostas) instanceof CartelaFragment) {
+                if (isFragmentCartela()) {
                     cartelaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
                     cartelaFragment.atualizaStatusBotaoFinalizar();
                 } else {
@@ -626,6 +642,10 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         });
 
         dialog.show();
+    }
+
+    public boolean isFragmentCartela(){
+        return fragmentManager.findFragmentById(R.id.fragmentSimularApostas) instanceof CartelaFragment;
     }
 
     private void modalTeimosinhas() {
@@ -683,11 +703,16 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         dialog.show();
     }
 
-    private void abrirTelaCartela() {
+    private void abrirTelaCartela(boolean surpresinha) {
         fragmentManager.beginTransaction().replace(R.id.fragmentSimularApostas, cartelaFragment).commit();
 
-        simularTelaAposta.setBackgroundResource(R.drawable.icon_seleciona);
-        surpresinhaTela.setBackgroundResource(R.drawable.icon_surpresinha);
+        if(surpresinha){
+            simularTelaAposta.setBackgroundResource(R.drawable.icon_seleciona2);
+            surpresinhaTela.setBackgroundResource(R.drawable.icon_surpresinha2);
+        }else{
+            simularTelaAposta.setBackgroundResource(R.drawable.icon_seleciona);
+            surpresinhaTela.setBackgroundResource(R.drawable.icon_surpresinha);
+        }
     }
 
     private void configuraTipoApostaTela(String titleActivity, int lightColor, int darkColor, int visibilityToolBarSimularAposta, int visibilityToolBarLoteca) {

@@ -76,6 +76,8 @@ IdentificaoDeUmaApostaDas8Modalidades {
     protected Integer quantidadeNumeros = null;
     @SerializedName("surpresinha")
     protected Boolean surpresinha = null;
+    @SerializedName("mesDeSorte")
+    protected ParametroMesDeSorte mesDeSorte = null;
     @Expose(serialize = false, deserialize = false)
     protected transient Long idDB;
     @Expose(serialize = false, deserialize = false)
@@ -360,6 +362,14 @@ IdentificaoDeUmaApostaDas8Modalidades {
 
     public void setIdDB(Long idDB) {
         this.idDB = idDB;
+    }
+
+    public ParametroMesDeSorte getMesDeSorte() {
+        return mesDeSorte;
+    }
+
+    public void setMesDeSorte(ParametroMesDeSorte mesDeSorte) {
+        this.mesDeSorte = mesDeSorte;
     }
 
     @Override

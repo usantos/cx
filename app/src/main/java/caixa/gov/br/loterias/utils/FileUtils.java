@@ -8,6 +8,7 @@ import android.util.Base64;
 import android.util.Log;
 
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -26,6 +27,7 @@ import android.provider.OpenableColumns;
 import java.io.BufferedInputStream;
 
 import java.io.InputStream;
+import java.io.InputStreamReader;
 
 public class FileUtils {
 
@@ -320,6 +322,27 @@ public class FileUtils {
         shareIntent.putExtra(Intent.EXTRA_STREAM, fileUri);
         shareIntent.setType(mimeType);
         appC.startActivity(Intent.createChooser(shareIntent, "Enviar para"));
+    }
+
+
+    public static String getContentOfFile(String filePath, Context context) {
+        try {
+            StringBuilder buf = new StringBuilder();
+            InputStream json = context.getAssets().open(filePath);
+            BufferedReader in = new BufferedReader(new InputStreamReader(json, "UTF-8"));
+            String str;
+
+            while ((str = in.readLine()) != null) {
+                buf.append(str);
+            }
+
+            in.close();
+
+            return buf.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        }
     }
 
 }
