@@ -41,7 +41,8 @@ public class KeycloakBO {
     private static final String REFRESH_TOKEN_ENDPOINT = "/realms/internet/protocol/openid-connect/token";
     private static final String AUTHZ_ACCOOUNT_ID = "keycloak-token";
     private static final String AUTH_CLIENT_ID = "cli-mob-lce";
-    private static final String AUTH_REDIRECT_URL = "http://localhost";
+//    private static final String AUTH_REDIRECT_URL = "http://localhost";
+    private static final String AUTH_REDIRECT_URL = "br.gov.caixa.caixaloterias:/oauth2Callback";
     private static final String MODULE_NAME = "";
     private static final String CLIENT_SECRET = "b54d171d-03de-41f3-b1b1-64e98672cbb8";
 

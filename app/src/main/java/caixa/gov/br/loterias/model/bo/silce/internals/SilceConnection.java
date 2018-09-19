@@ -38,6 +38,14 @@ public class SilceConnection {
     }
 
     public void request(GsonRequest req){
+        try {
+            if (req.getHeaders() == null) {
+                req.setHeaders(new HashMap<String, String>());
+            }
+            req.getHeaders().put("cookie", "security=true");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         requestQueue.add(req);
     }
 
@@ -80,6 +88,7 @@ public class SilceConnection {
                 prepareBody(body), responseDataClass,
                 headers, listener, errorListener);
         request.setRetryPolicy(createRetryPolicy());
+
         return request;
     }
 
