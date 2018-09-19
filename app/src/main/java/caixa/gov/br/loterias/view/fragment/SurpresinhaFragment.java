@@ -258,8 +258,8 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
 
     public void adicionarSurpresinhaNoCarrinho() {
 
-        final ApostaBO apostaBO = ApostaBO_.getInstance_(getActivity());
-        final AlertDialog loadViewProgress = LoadingViewLoterias.show(getActivity());
+        final ApostaBO apostaBO = ApostaBO_.getInstance_(parentActivity);
+        final AlertDialog loadViewProgress = LoadingViewLoterias.show(parentActivity);
 
         IncluirSurpresinhaDTO aposta = new IncluirSurpresinhaDTO();
         aposta.setModalidade(parametroJogo.getConcurso().getModalidade());
@@ -302,7 +302,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
                 loadViewProgress.dismiss();
                 surpresinhaFragmentListener.adicionarApostaCarrinho();
                 if (response.getRedirect() != null) {
-                    RedirectNetwork.checkRedirectSucesso(response.getRedirect(), getActivity());
+                    RedirectNetwork.checkRedirectSucesso(response.getRedirect(), parentActivity);
                 }
             }
 
@@ -312,7 +312,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
                 if (MensagensNetwork.isUnauthorizedError(error)) {
                     validaSuspresinhaBaseLocal(apostaSurpresinha);
                 } else {
-                    RedirectNetwork.checkRedirect(error, getActivity());
+                    RedirectNetwork.checkRedirect(error, parentActivity);
                 }
             }
         });

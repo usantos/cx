@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.model.bean.Modalidade;
 import caixa.gov.br.loterias.model.bo.ApostaBO;
 import caixa.gov.br.loterias.model.bo.ApostaBO_;
 import caixa.gov.br.loterias.model.bo.MensagensNetwork;
@@ -107,6 +108,7 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
         TextView quantidadeSorteios = holder.dadosApostaCarrinho.findViewById(R.id.quantidadeSorteios);
         Button buttonApostaEspelho = holder.dadosApostaCarrinho.findViewById(R.id.buttonApostaEspelho);
         LinearLayout layoutTimeCoracao = holder.dadosApostaCarrinho.findViewById(R.id.layoutTimeCoracao);
+        TextView labelTimeCoracao = holder.dadosApostaCarrinho.findViewById(R.id.labelTimeCoracaoTxt);
         TextView textViewTimeCoracao = holder.dadosApostaCarrinho.findViewById(R.id.textViewTimeCoracao);
 
         String quantidadeApostadasString = "";
@@ -166,6 +168,10 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
         if (ModalidadeEnum.TIMEMANIA == aposta.getModalidade()) {
             layoutTimeCoracao.setVisibility(View.VISIBLE);
             textViewTimeCoracao.setText(aposta.getTimeDoCoracao().getNome());
+        }else if(ModalidadeEnum.DIA_DE_SORTE == aposta.getModalidade()){
+            layoutTimeCoracao.setVisibility(View.VISIBLE);
+            labelTimeCoracao.setText(R.string.label_mes_sorte);
+            textViewTimeCoracao.setText(aposta.getMesDeSorte().getNome());
         }
 
         String numeroStr = "";

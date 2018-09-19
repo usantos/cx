@@ -274,7 +274,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         Intent activity = new Intent(this, ConfirmadoInclusaoCarrinhoActivity.class);
         activity.putExtra("tipoAposta", tipoJogo);
 
-        if (fragmentManager.findFragmentById(R.id.fragmentSimularApostas) instanceof CartelaFragment) {
+        if (isFragmentCartela()) {
 
             activity.putExtra("valorAposta", cartelaFragment.valorTotalAposta);
         } else {
@@ -299,6 +299,9 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         abrirTelaSurprezinha();
     }
 
+    public void adicionarDiaDeSorteCarrinho() {
+        abrirTelaCartela(false);
+    }
 
     @Override
     public void escolherOutroTimeSurpresinha() {

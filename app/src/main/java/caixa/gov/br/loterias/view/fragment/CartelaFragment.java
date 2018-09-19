@@ -255,13 +255,13 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_cartela, container, false);
         identificarTipoJogo();
-        if (isDiaSorte) {
+        if (isDiaSorte && parentActivity.getMesDeSorteCartela() == null) {
             RelativeLayout ttvLayout = view.findViewById(R.id.ttvLayout);
             TextView ttvEscolha = view.findViewById(R.id.ttvEscolha);
             TextView ttvPagina = view.findViewById(R.id.ttvPagina);
             TextView ttvPaginaQuantidade = view.findViewById(R.id.ttvPaginaQuantidade);
 
-            ttvEscolha.setText(ViewUtils.textFuturaAndFuturaBold(getContext(), getString(R.string.dia_sorte_escolha_dia)));
+            ttvEscolha.setText(ViewUtils.textFuturaAndFuturaBold(parentActivity, getString(R.string.dia_sorte_escolha_dia)));
             ttvEscolha.setTextColor(getResources().getColor(R.color.diasortemedio));
             ttvPagina.setTextColor(getResources().getColor(R.color.diasortemedio));
             ttvPaginaQuantidade.setTextColor(getResources().getColor(R.color.diasorteclaro));
@@ -348,7 +348,6 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
     }
 
-
     private void adicionarApostaNoCarrinho() {
 
         if (isEscolhaTimeCoracaoSurpresinha) {
@@ -358,11 +357,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
         orderAscDezenas();
         IdentificaoDeUmaApostaDas8Modalidades aposta = getApostaPreenchida();
-        if (KeycloakBO_.getInstance_(getContext()).getAccessToken() == "" || KeycloakBO_.getInstance_(getContext()).getAccessToken() == null) {
-            postAdicionarApostaCarrinho(ApostaBO_.getInstance_(getActivity()), aposta);
-        } else {
-            adicionarApostaCarrinhoRequest(ApostaBO_.getInstance_(getActivity()), aposta);
-        }
+        AdicionarApostaCarrinhoHelper.incluirApostaCarrinhoCartela(parentActivity, aposta);
     }
 
     private IdentificaoDeUmaApostaDas8Modalidades getApostaPreenchida() {
@@ -411,7 +406,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         aposta.setQuantidadeNumeros(dezenasSelecionadas.size());
         aposta.setSurpresinha(false);
 
-        if(isDiaSorte){
+        if (isDiaSorte) {
             aposta.setMesDeSorte(parentActivity.getMesDeSorteCartela());
         }
 
@@ -419,106 +414,6 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         this.setApostaLotogol(aposta);
 
         return aposta;
-    }
-
-    private void adicionarApostaCarrinhoRequest(final ApostaBO apostaBO, final IdentificaoDeUmaApostaDas8Modalidades aposta) {
-        DialogUtils.show(getActivity());
-        apostaBO.buscaCarrinho(new RequestListener<CarrinhoDTOResponse>() {
-            @Override
-            public void onResponse(CarrinhoDTOResponse response) {
-                final CarrinhoDTO carrinhoDTO = response.getPayload();
-                //checar valor máximo aposta excedido
-                if (carrinhoDTO.getApostas().size() >= SessaoUsuario.getInstance().getParametrosSimulacao().getQuantidadeMaximaApostasCarrinho()) {
-                    DialogUtils.dismiss();
-                    ViewUtils.alertTitleButton(getContext(), R.string.label_atencao, getContext().getResources().getString(R.string.MA013), getContext().getResources().getString(R.string.ok));
-
-                } else {
-                    checarLimiteDiario(apostaBO, aposta, carrinhoDTO);
-                }
-            }
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                DialogUtils.dismiss();
-                RedirectNetwork.checkRedirect(error, getActivity());
-            }
-        });
-
-    }
-
-    private void checarLimiteDiario(final ApostaBO apostaBO, final IdentificaoDeUmaApostaDas8Modalidades aposta, final CarrinhoDTO carrinhoDTO) {
-        if (SessaoUsuario.getInstance().getParametrosSimulacao().getValorLimiteDiario()
-                .compareTo(carrinhoDTO.getValorTotal()
-                        .add(IdentificaoDeUmaApostaDas8Modalidades.getValorApostaPorPrognostico(aposta)))
-                <= 0) {
-            DialogUtils.dismiss();
-            ViewUtils.alertTitleButtonYesOrNotListener(getContext(), getContext().getResources().getString(R.string.MA014), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    checarApostasRepetidas(apostaBO, aposta, carrinhoDTO);
-                }
-            });
-        } else {
-            checarApostasRepetidas(apostaBO, aposta, carrinhoDTO);
-        }
-    }
-
-    private void checarApostasRepetidas(final ApostaBO apostaBO, final IdentificaoDeUmaApostaDas8Modalidades aposta, final CarrinhoDTO carrinhoDTO) {
-        if (IdentificaoDeUmaApostaDas8Modalidades.checkExisteUmaApostaIgualCarrinho(aposta, carrinhoDTO)) {
-            DialogUtils.dismiss();
-            ViewUtils.alertTitleButtonYesOrNotListener(getContext(), getResources().getString(R.string.MA015), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    DialogUtils.show(getActivity());
-                    postAdicionarApostaCarrinho(apostaBO, aposta);
-                }
-            });
-        } else {
-            postAdicionarApostaCarrinho(apostaBO, aposta);
-        }
-    }
-
-    private void postAdicionarApostaCarrinho(ApostaBO apostaBO, final IdentificaoDeUmaApostaDas8Modalidades aposta) {
-        if (!DialogUtils.isShow()) {
-            DialogUtils.show(getContext());
-        }
-        apostaBO.adicionarApostaNoCarrinho(aposta, new RequestListener<AgrupadorDTOApostaDTOResponse>() {
-            @Override
-            public void onResponse(AgrupadorDTOApostaDTOResponse response) {
-                DialogUtils.dismiss();
-                TextView count = parentActivity.getTextViewCarrinhoCartelaCount();
-
-                qtdCartelasCarrinho++;
-
-                count.setText(String.format(Locale.getDefault(), "%d", qtdCartelasCarrinho));
-                cartelaFragmentListener.adicionarApostaCarrinho();
-
-            }
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                DialogUtils.dismiss();
-
-                if (MensagensNetwork.isUnauthorizedError(error)) {
-                    DBLoteriasCrud crud = new DBLoteriasCrud(getActivity());
-                    BigDecimal valorTotalCarrinho = crud.sumValorIdentificaoDeUmaApostaDas8Modalidades();
-                    valorTotalCarrinho = valorTotalCarrinho.add(aposta.getValor());
-                    if (valorTotalCarrinho.compareTo(BigDecimal.TEN) == 1) {
-                        ViewUtils.alertTitleButtonYesOrNotListener(getActivity(), getResources().getString(R.string.MA014), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                AdicionarApostaCarrinhoHelper.inserirApostaCarrinhoLocal(getActivity(), aposta);
-                                cartelaFragmentListener.adicionarApostaCarrinho();
-                            }
-                        });
-                    } else if (AdicionarApostaCarrinhoHelper.inserirApostaCarrinhoLocal(getActivity(), aposta)) {
-                        cartelaFragmentListener.adicionarApostaCarrinho();
-                    }
-                } else {
-                    ViewUtils.alert(getActivity(), MensagensNetwork.setMensagem(error, getActivity()));
-                }
-            }
-        });
     }
 
     // METODO DO PROTOCOLO ONCLICK
@@ -684,7 +579,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
                 aposta.setGeraEspelho(true);
                 aposta.setValor(aposta.getValor().divide(Constantes.DOIS_BIG_DECIMAL));
-                adicionarApostaCarrinhoRequest(ApostaBO_.getInstance_(getActivity()), aposta);
+                AdicionarApostaCarrinhoHelper.adicionarApostaCarrinhoRequest(getContext(), ApostaBO_.getInstance_(getActivity()), aposta);
 
 
             } else {

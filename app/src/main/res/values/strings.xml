@@ -293,6 +293,7 @@
     <string name="dia_sorte_escolha_mes">Escolha o _mês_ de preferência</string>
     <string name="label_mes_surpresa">Mês surpresa</string>
     <string name="label_escolher_outro_mes">Escolher outro mês</string>
+    <string name="label_mes_sorte">Mês de sorte&#160;</string>
     <string-array name="dia_sorte_meses">
         <item>Janeiro</item>
         <item>Fevereiro</item>
