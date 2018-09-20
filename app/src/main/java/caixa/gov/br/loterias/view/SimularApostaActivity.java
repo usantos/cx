@@ -139,14 +139,21 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
     @AfterViews
     protected void init() {
         invalidateOptionsMenu();
+        zerarApostas();
+    }
+
+    public void zerarApostas() {
         qtdNumerosList = new ArrayList<>();
         qtdConcursosList = new ArrayList<>();
         textoBotaoSurpresinhasSelecionado = "nenhum";
+        mesDeSorteCartela = null;
+        mesDeSorteSurpresinha = null;
         parametroSimulacao = new Gson().fromJson(getIntent().getStringExtra("modalidade"), ParametroJogoDTO.class);
         configuraParametrosJogo();
         configuraFragments();
         configuraActivity();
         zerarApostasLoteca();
+
     }
 
     public void zerarApostasLoteca() {

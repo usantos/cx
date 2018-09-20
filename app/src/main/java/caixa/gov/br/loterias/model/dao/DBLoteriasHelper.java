@@ -32,6 +32,7 @@ public class DBLoteriasHelper extends SQLiteOpenHelper {
         criarTabela(sqLiteDatabase, DBTabelasLoterias.criarTabelaParametroEquipe());
         criarTabela(sqLiteDatabase, DBTabelasLoterias.criarTabelaLotogol());
         criarTabela(sqLiteDatabase, DBTabelasLoterias.criarTabelaLoteca());
+        criarTabela(sqLiteDatabase, DBTabelasLoterias.criarTabelaMesDeSorte());
     }
 
     @Override
@@ -47,6 +48,7 @@ public class DBLoteriasHelper extends SQLiteOpenHelper {
         deletaTabela(sqLiteDatabase, DBTabelasLoterias.deleteTabela(DBTabelasLoterias.DBParametroEquipe.NOME_TABELA));
         deletaTabela(sqLiteDatabase, DBTabelasLoterias.deleteTabela(DBTabelasLoterias.DBPartidaLotogol.NOME_TABELA));
         deletaTabela(sqLiteDatabase, DBTabelasLoterias.deleteTabela(DBTabelasLoterias.DBPartidaLoteca.NOME_TABELA));
+        deletaTabela(sqLiteDatabase, DBTabelasLoterias.deleteTabela(DBTabelasLoterias.DBMesDeSorte.NOME_TABELA));
     }
 
     private void criarTabela(SQLiteDatabase sqLiteDatabase, String tabela) {

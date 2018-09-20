@@ -20,6 +20,7 @@ import caixa.gov.br.loterias.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modali
 import caixa.gov.br.loterias.model.bo.silce.dto.LotericaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ModalidadeEnum;
 import caixa.gov.br.loterias.model.bo.silce.dto.ParametroEquipe;
+import caixa.gov.br.loterias.model.bo.silce.dto.ParametroMesDeSorte;
 import caixa.gov.br.loterias.model.bo.silce.dto.PartidaLotecaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.PartidaLotogolDTO;
 
@@ -228,6 +229,7 @@ public class DBLoteriasCrud {
                 values.put(DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_SURPRESINHA, aposta.getSurpresinha());
                 values.put(DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_QUANTIDADE_SURPRESINHA, aposta.getQuantidadeSurpresinhas());
                 values.put(DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_ID_TIME_CORACAO, this.insertParametroEquipe(aposta.getTimeDoCoracao()));
+                values.put(DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_ID_MES_SORTE, this.insertParametroMesDeSorte(aposta.getMesDeSorte()));
 
                 if (aposta.getTipoConcurso() != null) {
 
@@ -295,7 +297,8 @@ public class DBLoteriasCrud {
                     DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_QUANTIDADE_NUMEROS,
                     DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_SURPRESINHA,
                     DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_QUANTIDADE_SURPRESINHA,
-                    DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_ID_TIME_CORACAO
+                    DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_ID_TIME_CORACAO,
+                    DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_ID_MES_SORTE
             };
 
             cursor = db.query(
@@ -360,6 +363,7 @@ public class DBLoteriasCrud {
                 aposta.setSurpresinha(cursor.getInt(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_SURPRESINHA)) == 1 ? Boolean.TRUE : Boolean.FALSE);
                 aposta.setQuantidadeSurpresinhas(cursor.getInt(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_QUANTIDADE_SURPRESINHA)));
                 aposta.setTimeDoCoracao(this.readParametroEquipe(cursor.getLong(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_ID_TIME_CORACAO))));
+                aposta.setMesDeSorte(this.readParametroMesDeSorte(cursor.getInt(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_ID_MES_SORTE))));
                 aposta.setPartidasLotogol(this.readPartidaLotogolDTO(aposta.getIdDB()));
                 aposta.setPartidasLoteca(this.readPartidaLotecaDTO(aposta.getIdDB()));
 
@@ -943,6 +947,97 @@ public class DBLoteriasCrud {
             return null;
         }
     }
+
+    /**
+     * Método que insere uma nova LotericaDTO na base
+     *
+     * @param mesDeSorte ParametroMesDeSorte
+     * @return id
+     */
+    private Integer insertParametroMesDeSorte(ParametroMesDeSorte mesDeSorte) {
+
+        if (mesDeSorte != null) {
+            ParametroMesDeSorte mesDB = readParametroMesDeSorte(mesDeSorte.getNumero());
+            if (mesDB != null && mesDB.getNumero() != null) {
+                return mesDeSorte.getNumero();
+            } else {
+                this.initDBLoteriasHelper();
+                try {
+
+                    this.db = dbLoteriasHelper.getWritableDatabase();
+                    ContentValues values = new ContentValues();
+
+                    values.put(DBTabelasLoterias.DBMesDeSorte.COLUNA_NUMERO, mesDeSorte.getNumero());
+                    values.put(DBTabelasLoterias.DBMesDeSorte.COLUNA_NOME, mesDeSorte.getNome());
+                    values.put(DBTabelasLoterias.DBMesDeSorte.COLUNA_ABREVIACAO, mesDeSorte.getAbreviacao());
+                    db.insert(DBTabelasLoterias.DBMesDeSorte.NOME_TABELA, null, values);
+
+                    return mesDeSorte.getNumero();
+                } catch (Exception e) {
+                    Log.e(TAG, e.getMessage());
+                    return null;
+                }
+
+            }
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Método responsável por ler ParametroMesDeSorte da base local  por ID
+     *
+     * @param id Long
+     * @return ParametroMesDeSorte
+     */
+    private ParametroMesDeSorte readParametroMesDeSorte(Integer id) {
+
+        if (id != null) {
+            this.initDBLoteriasHelper();
+            Cursor cursor = null;
+
+            try {
+                this.db = dbLoteriasHelper.getReadableDatabase();
+
+                String[] projection = {
+                        DBTabelasLoterias.DBMesDeSorte.COLUNA_NUMERO,
+                        DBTabelasLoterias.DBMesDeSorte.COLUNA_NOME,
+                        DBTabelasLoterias.DBMesDeSorte.COLUNA_ABREVIACAO
+                };
+
+                String selection = DBTabelasLoterias.DBParametroEquipe.COLUNA_NUMERO + " = " + id;
+
+                cursor = db.query(
+                        DBTabelasLoterias.DBMesDeSorte.NOME_TABELA,
+                        projection,
+                        selection,
+                        null,
+                        null,
+                        null,
+                        null
+                );
+
+                ParametroMesDeSorte parametroMesDeSorte = new ParametroMesDeSorte();
+                while (cursor.moveToNext()) {
+                    parametroMesDeSorte.setNumero(cursor.getInt(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBMesDeSorte.COLUNA_NUMERO)));
+                    parametroMesDeSorte.setNome(cursor.getString(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBMesDeSorte.COLUNA_NOME)));
+                    parametroMesDeSorte.setAbreviacao(cursor.getString(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBMesDeSorte.COLUNA_ABREVIACAO)));
+                }
+
+                return parametroMesDeSorte;
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+                return null;
+            } finally {
+                if (cursor != null) {
+                    cursor.close();
+                }
+            }
+        } else {
+            return null;
+        }
+    }
+
 
     private void deleteLoterica(LotericaDTO lotericaDTO) {
         if (lotericaDTO != null) {

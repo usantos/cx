@@ -12,7 +12,11 @@
 
 package caixa.gov.br.loterias.model.bo.silce.dto;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.math.BigDecimal;
+import java.util.List;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -39,6 +43,9 @@ public class IncluirSurpresinhaDTO {
     private Integer quantidadeApostas = null;
     @SerializedName("timeDoCoracao")
     private ParametroEquipe timeDoCoracao = null;
+    @Expose(serialize = false, deserialize = false)
+    protected transient BigDecimal valor = null;
+
 
     /**
      **/
@@ -150,6 +157,13 @@ public class IncluirSurpresinhaDTO {
         this.timeDoCoracao = timeDoCoracao;
     }
 
+    public BigDecimal getValor() {
+        return valor;
+    }
+
+    public void setValor(BigDecimal valor) {
+        this.valor = valor;
+    }
 
     @Override
     public boolean equals(Object o) {

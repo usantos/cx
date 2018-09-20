@@ -101,7 +101,7 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
         holder.textViewNumeroConcurso.setTextColor(ContextCompat.getColor(context, estilo.getCorClara()));
         holder.valorAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorEscura()));
         holder.textViewTipoAposta.setText(ViewUtils.capitalized(ModalidadeEnum.fromString(aposta.getModalidade())));
-        holder.textViewNumeroConcurso.setText( context.getString(R.string.label_aposta_concurso, aposta.getConcursoAlvo()));
+        holder.textViewNumeroConcurso.setText(context.getString(R.string.label_aposta_concurso, aposta.getConcursoAlvo()));
         holder.dadosApostaCarrinho.setBackgroundResource(estilo.getCorEscura());
 
         TextView quantidadeApostadas = holder.dadosApostaCarrinho.findViewById(R.id.quantidadeApostadas);
@@ -168,10 +168,10 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
         if (ModalidadeEnum.TIMEMANIA == aposta.getModalidade()) {
             layoutTimeCoracao.setVisibility(View.VISIBLE);
             textViewTimeCoracao.setText(aposta.getTimeDoCoracao().getNome());
-        }else if(ModalidadeEnum.DIA_DE_SORTE == aposta.getModalidade()){
+        } else if (ModalidadeEnum.DIA_DE_SORTE == aposta.getModalidade()) {
             layoutTimeCoracao.setVisibility(View.VISIBLE);
             labelTimeCoracao.setText(R.string.label_mes_sorte);
-            textViewTimeCoracao.setText(aposta.getMesDeSorte().getNome());
+            textViewTimeCoracao.setText(aposta.getMesDeSorte() != null ? aposta.getMesDeSorte().getNome() : "");
         }
 
         String numeroStr = "";
@@ -215,8 +215,8 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
                         parentActivity.setCarrinho(response.getPayload());
                         deletarApostaBaseLocal(aposta, Boolean.FALSE);
                         parentActivity.atualizaLayout(Boolean.FALSE);
-                        if (response.getRedirect() != null){
-                            RedirectNetwork.checkRedirectSucesso( response.getRedirect(), parentActivity);
+                        if (response.getRedirect() != null) {
+                            RedirectNetwork.checkRedirectSucesso(response.getRedirect(), parentActivity);
                         }
                     }
 
@@ -224,7 +224,7 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
                     public void onErrorResponse(VolleyError error) {
                         loadViewProgress.dismiss();
                         if (error.networkResponse != null && error.networkResponse.statusCode != 401) {
-                            RedirectNetwork.checkRedirect( error, parentActivity );
+                            RedirectNetwork.checkRedirect(error, parentActivity);
 
                         } else {
                             deletarApostaBaseLocal(aposta, Boolean.TRUE);

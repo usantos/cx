@@ -80,7 +80,8 @@ public final class DBTabelasLoterias {
         sb.append(DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_QUANTIDADE_NUMEROS + " INTEGER, ");
         sb.append(DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_SURPRESINHA + " INTEGER, ");
         sb.append(DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_QUANTIDADE_SURPRESINHA + " INTEGER, ");
-        sb.append(DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_ID_TIME_CORACAO + " NUMERIC ");
+        sb.append(DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_ID_TIME_CORACAO + " NUMERIC, ");
+        sb.append(DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_ID_MES_SORTE + " NUMERIC ");
         sb.append(" ) ");
 
         return sb.toString();
@@ -187,6 +188,26 @@ public final class DBTabelasLoterias {
     }
 
     /**
+     * Método para criar tabela de ParametroMesDeSorte
+     *
+     * @return sb
+     */
+    public static String criarTabelaMesDeSorte(){
+
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(" CREATE TABLE " + DBMesDeSorte.NOME_TABELA);
+        sb.append(" ( ");
+        sb.append(DBMesDeSorte._ID + " INTEGER PRIMARY KEY, ");
+        sb.append(DBMesDeSorte.COLUNA_NUMERO + " NUMERIC, ");
+        sb.append(DBMesDeSorte.COLUNA_NOME + " TEXT, ");
+        sb.append(DBMesDeSorte.COLUNA_ABREVIACAO + " TEXT ");
+        sb.append(" ) ");
+
+        return sb.toString();
+    }
+
+    /**
      * Método para excluir tabela de acordo com nome
      *
      * @param tabela nome
@@ -253,6 +274,7 @@ public final class DBTabelasLoterias {
         static final String COLUNA_SURPRESINHA = "surpresinha";
         static final String COLUNA_QUANTIDADE_SURPRESINHA = "quantidade_surpresinha";
         static final String COLUNA_ID_TIME_CORACAO = "id_time_coracao";
+        static final String COLUNA_ID_MES_SORTE = "id_mes_sorte";
     }
 
     /**
@@ -313,6 +335,16 @@ public final class DBTabelasLoterias {
         static final String COLUNA_ID_EQUIPE_UM = "id_equipe_um";
         static final String COLUNA_ID_EQUIPE_DOIS = "id_equipe_dois";
         static final String COLUNA_EMPATE = "empate";
+    }
+
+    /**
+     * Mapea colunas da tabela DBMesDeSorte
+     */
+    static class DBMesDeSorte implements BaseColumns {
+        static final String NOME_TABELA = "tb_mes_sorte";
+        static final String COLUNA_NUMERO = "numero";
+        static final String COLUNA_NOME = "nome";
+        static final String COLUNA_ABREVIACAO = "abreviacao";
     }
 
 }
