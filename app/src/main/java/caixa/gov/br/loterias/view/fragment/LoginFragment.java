@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +14,10 @@ import android.widget.Button;
 import com.android.volley.VolleyError;
 
 import org.jboss.aerogear.android.authorization.oauth2.OAuth2AuthorizationException;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +33,7 @@ import caixa.gov.br.loterias.model.bo.silce.dto.ApostaDTO;
 
 import caixa.gov.br.loterias.model.bo.silce.dto.UsuarioLogadoResponse;
 import caixa.gov.br.loterias.model.dao.DBLoteriasCrud;
+import caixa.gov.br.loterias.model.sp.InformacoesUsuarioSP;
 import caixa.gov.br.loterias.utils.AppUtils;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.CadastrarActivity_;
@@ -87,9 +92,21 @@ public class LoginFragment extends Fragment {
                     @Override
                     public void onSuccess(String token) {
                         if(getActivity() != null){
+                            String separar[] = token.split("\\.");
+                            if(separar.length > 0){
+                                String tokenCorpo = separar[1];
+                                byte bytes[] = Base64.decode(tokenCorpo, Base64.URL_SAFE);
+                                tokenCorpo = new String(bytes, Charset.forName("UTF-8"));
+                                try {
+                                    JSONObject jsonObject = new JSONObject(tokenCorpo);
+                                    InformacoesUsuarioSP.salvarNomeUsuairo(jsonObject.getString("name"));
+                                }catch (JSONException e){
+                                    e.printStackTrace();
+                                }
+                            }
+
                             DadosUsuarioBO.updateUsuarioLogado( getActivity(), true );
                             verificarCadastroWebservice();
-                            //loginSucess();
                         }
                     }
 
@@ -97,7 +114,6 @@ public class LoginFragment extends Fragment {
                     public void onFailure(Exception e) {
                         buttonLogin.setEnabled( true );
                         if(getActivity() != null){
-//                            OAuth2AuthorizationException.Error error = ((OAuth2AuthorizationException)e).type;
                             if(!((OAuth2AuthorizationException) e).error.equals( "dialog_dismissed" )){
                                 ViewUtils.alert(getActivity(), getString(R.string.sistema_indisponivel));
                             }

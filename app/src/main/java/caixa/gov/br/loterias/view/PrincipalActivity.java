@@ -61,8 +61,10 @@ import caixa.gov.br.loterias.model.bo.silce.dto.ParametrosSimulacaoResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.RepassometroDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.RepassometroDTOResponse;
 import caixa.gov.br.loterias.model.dao.DBLoteriasHelper;
+import caixa.gov.br.loterias.model.sp.InformacoesUsuarioSP;
 import caixa.gov.br.loterias.utils.EstiloModalidade;
 import caixa.gov.br.loterias.utils.ExpandableListDataSideMenu;
+import caixa.gov.br.loterias.utils.StringUtils;
 import caixa.gov.br.loterias.utils.Utils;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.adapter.HomeAdapter;
@@ -111,12 +113,18 @@ public class PrincipalActivity extends AppCompatActivity
     public void init() {
         setSupportActionBar(toolbar);
 
+        String separarNome[] = InformacoesUsuarioSP.obterNome().toLowerCase().split(" ");
+        String nomeUsuario = StringUtils.capitalizer(separarNome[0]+" "+separarNome[separarNome.length - 1]);
+
+        String texto = "Olá, _%_!";
+        texto = texto.replace("%", nomeUsuario);
+        nav_user.setText(ViewUtils.textFuturaAndFuturaBold( this,  texto));
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         toolbarListener();
-        nav_user.setText(ViewUtils.textFuturaAndFuturaBold( this,  "Olá, _Renato Silva!_"));
         nav_ultima_aposta.setText( ViewUtils.textFuturaAndFuturaBold( this,  "Sua última aposta foi em _24/08/2017_") );
         layoutSideMenu();
         callWebservice();
