@@ -29,6 +29,7 @@ import org.androidannotations.annotations.ViewById;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
@@ -115,7 +116,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
             escolhaItemLayout.setVisibility(View.VISIBLE);
         }
 
-        if(isDiaDeSorte){
+        if (isDiaDeSorte) {
             initDiaDeSorte();
         }
     }
@@ -269,22 +270,16 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         if (isTipoTimeMania && aposta.getTimeDoCoracao() == null) {
             Random randomGenerator = new Random();
             aposta.setTimeDoCoracao(parametroJogo.getEquipes().get(randomGenerator.nextInt(parametroJogo.getEquipes().size())));
+            //TODO lógica para sortear time de acordo quantidade de surpresinhas
+//            List<ParametroEquipe> parametroEquipeList = new ArrayList<>();
+//            for (int i = 0; i < qtdSurpresinhas; i++) {
+//                parametroEquipeList.add(parametroJogo.getEquipes().get(randomGenerator.nextInt(parametroJogo.getEquipes().size())));
+//            }
+//            aposta.setListaTimeDoCoracao(parametroEquipeList);
         }
         if (isTipoLotomania) {
             aposta.setGerarEspelho(selcioneEspelhoSurpresinha.isChecked());
         }
-//        if(isDiaDeSorte){
-//            if(parentActivity.getMesDeSorteSurpresinha() == null){
-//                Random randomGenerator = new Random();
-//                List<ParametroMesDeSorte> mesesSorte = new ArrayList<>();
-//               for (int contador = 0; contador < aposta.getQuantidadeSurpresinhas(); contador++){
-//                   mesesSorte.add(parametroJogo.getMeses().get(randomGenerator.nextInt(parametroJogo.getMeses().size())));
-//               }
-//                aposta.setMesesDeSorte(mesesSorte);
-//            }else{
-//                aposta.setMesDeSorte(parentActivity.getMesDeSorteSurpresinha());
-//            }
-//        }
 
         AdicionarApostaCarrinhoHelper.incluirApostaCarrinhoSurpresinha(parentActivity, aposta);
         parentActivity.zerarApostas();
@@ -314,9 +309,9 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
 
     @Click
     protected void escolherOutroItemBtn() {
-        if(isTipoTimeMania){
+        if (isTipoTimeMania) {
             parentActivity.escolherOutroTimeSurpresinha();
-        }else if (isDiaDeSorte){
+        } else if (isDiaDeSorte) {
             parentActivity.mesDeSorteFragment(null, true);
         }
 
@@ -360,7 +355,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
     }
 
-    private void initDiaDeSorte(){
+    private void initDiaDeSorte() {
         escolhaItemImageView.setImageDrawable(getResources().getDrawable(R.drawable.agrupar_1));
         infoItemSurpresaTextView.setText(R.string.label_mes_surpresa);
         infoItemSurpresaTextView.setTextColor(getResources().getColor(R.color.diasortemedio));

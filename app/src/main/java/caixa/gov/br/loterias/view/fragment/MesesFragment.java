@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -133,6 +134,11 @@ public class MesesFragment extends Fragment {
 
     private void mostrarSalvarAposta() {
         if (dezenasSelecionadas != null && getItemSelecionado() != null) {
+            if(parentActivity.getFlagApostaSalva()){
+                parentActivity.getSalvarApostaLayout().setBackgroundResource(R.color.cinza);
+                parentActivity.getTextoSalveEstaAposta().setText(R.string.tituloSalvarAposta);
+                parentActivity.getIconStarSalvar().setBackgroundResource(R.drawable.icon_favoritar);
+            }
             parentActivity.getSalvarApostaLayout().setVisibility(View.VISIBLE);
             tamanhoBotaoSalvarAposta(parentActivity.getSalvarApostaLayout().getLayoutParams(), 64);
             parentActivity.getSalvarApostaLayout().setOnClickListener(new View.OnClickListener() {

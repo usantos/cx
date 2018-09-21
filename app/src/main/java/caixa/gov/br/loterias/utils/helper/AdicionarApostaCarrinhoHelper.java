@@ -35,6 +35,7 @@ import caixa.gov.br.loterias.model.bo.silce.dto.DTOEnumInteger;
 import caixa.gov.br.loterias.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import caixa.gov.br.loterias.model.bo.silce.dto.IncluirSurpresinhaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ModalidadeEnum;
+import caixa.gov.br.loterias.model.bo.silce.dto.ParametroEquipe;
 import caixa.gov.br.loterias.model.bo.silce.dto.ParametroJogoDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ParametroSimulacao;
 import caixa.gov.br.loterias.model.bo.silce.dto.PartidaLotecaDTO;
@@ -350,29 +351,29 @@ public class AdicionarApostaCarrinhoHelper {
         apostaDas8Modalidades.setConcursoAlvo(aposta.getConcursoAlvo());
         apostaDas8Modalidades.setQuantidadeTeimosinhas(aposta.getQuantidadeTeimosinhas());
         apostaDas8Modalidades.setQuantidadeApostas(aposta.getQuantidadeApostas());
-        apostaDas8Modalidades.setEspelho(aposta.getGerarEspelho());
         apostaDas8Modalidades.setTimeDoCoracao(aposta.getTimeDoCoracao());
         apostaDas8Modalidades.setSurpresinha(true);
 
-        if (aposta.getGerarEspelho() != null && aposta.getGerarEspelho()) {
-            apostaDas8Modalidades.setValor(aposta.getValor().divide(Constantes.DOIS_BIG_DECIMAL));
-            AdicionarApostaCarrinhoHelper.inserirApostaCarrinhoLocal(context, apostaDas8Modalidades);
-            apostaDas8Modalidades.setEspelho(Boolean.FALSE);
-            AdicionarApostaCarrinhoHelper.inserirApostaCarrinhoLocal(context, apostaDas8Modalidades);
-        } else if (aposta.getQuantidadeSurpresinhas() > 0) {
-            BigDecimal valorIndividual = aposta.getValor().divide(new BigDecimal(aposta.getQuantidadeSurpresinhas()));
-            for (int contador = 0; contador < aposta.getQuantidadeSurpresinhas(); contador++) {
-                apostaDas8Modalidades.setValor(valorIndividual);
+        BigDecimal valorIndividual = aposta.getValor().divide(new BigDecimal(aposta.getQuantidadeSurpresinhas()));
+        for (int contador = 0; contador < aposta.getQuantidadeSurpresinhas(); contador++) {
+            apostaDas8Modalidades.setValor(valorIndividual);
+            if (aposta.getGerarEspelho() != null && aposta.getGerarEspelho()) {
+                apostaDas8Modalidades.setValor(valorIndividual.divide(Constantes.DOIS_BIG_DECIMAL));
+                apostaDas8Modalidades.setEspelho(aposta.getGerarEspelho());
+                AdicionarApostaCarrinhoHelper.inserirApostaCarrinhoLocal(context, apostaDas8Modalidades);
+                apostaDas8Modalidades.setEspelho(Boolean.FALSE);
+                AdicionarApostaCarrinhoHelper.inserirApostaCarrinhoLocal(context, apostaDas8Modalidades);
+            } else if (CollectionUtils.isNotEmpty(aposta.getListaTimeDoCoracao())) {
+                apostaDas8Modalidades.setTimeDoCoracao(aposta.getListaTimeDoCoracao().get(contador));
+                AdicionarApostaCarrinhoHelper.inserirApostaCarrinhoLocal(context, apostaDas8Modalidades);
+            } else {
                 AdicionarApostaCarrinhoHelper.inserirApostaCarrinhoLocal(context, apostaDas8Modalidades);
             }
-        } else {
-            apostaDas8Modalidades.setValor(aposta.getValor());
-            AdicionarApostaCarrinhoHelper.inserirApostaCarrinhoLocal(context, apostaDas8Modalidades);
         }
-
     }
 
-    private static void setApostaLoteca(IdentificaoDeUmaApostaDas8Modalidades apostaDas8Modalidades, Object object) {
+    private static void setApostaLoteca(IdentificaoDeUmaApostaDas8Modalidades
+                                                apostaDas8Modalidades, Object object) {
 
         List<PartidaLotecaDTO> partidaLotecaList = null;
         if (object instanceof ApostaDTO) {
@@ -386,7 +387,8 @@ public class AdicionarApostaCarrinhoHelper {
 
     }
 
-    private static void setApostaLotogol(IdentificaoDeUmaApostaDas8Modalidades apostaDas8Modalidades, Object object) {
+    private static void setApostaLotogol(IdentificaoDeUmaApostaDas8Modalidades
+                                                 apostaDas8Modalidades, Object object) {
 
         List<PartidaLotogolDTO> partidaLotogolList = null;
         if (object instanceof ApostaDTO) {

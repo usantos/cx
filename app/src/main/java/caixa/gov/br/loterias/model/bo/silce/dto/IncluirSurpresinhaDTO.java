@@ -45,6 +45,8 @@ public class IncluirSurpresinhaDTO {
     private ParametroEquipe timeDoCoracao = null;
     @Expose(serialize = false, deserialize = false)
     protected transient BigDecimal valor = null;
+    @Expose(serialize = false, deserialize = false)
+    protected transient List<ParametroEquipe> listaTimeDoCoracao = null;
 
 
     /**
@@ -163,6 +165,14 @@ public class IncluirSurpresinhaDTO {
 
     public void setValor(BigDecimal valor) {
         this.valor = valor;
+    }
+
+    public List<ParametroEquipe> getListaTimeDoCoracao() {
+        return listaTimeDoCoracao;
+    }
+
+    public void setListaTimeDoCoracao(List<ParametroEquipe> listaTimeDoCoracao) {
+        this.listaTimeDoCoracao = listaTimeDoCoracao;
     }
 
     @Override

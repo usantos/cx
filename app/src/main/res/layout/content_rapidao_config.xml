@@ -7,12 +7,13 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="caixa.gov.br.loterias.view.RapidaoConfigActivity"
     tools:showIn="@layout/activity_rapidao_config">
+
     <ScrollView
+        android:id="@+id/scrollViewRapidaoConfig"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:id="@+id/scrollViewRapidaoConfig"
-        >
+        android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -21,36 +22,39 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="91dp"
-                android:paddingHorizontal="20dp"
-                android:paddingVertical="12dp"
                 android:background="@color/cinza"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="12dp">
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+
                     <TextView
+                        android:id="@+id/tituloPrecoMinimo"
+                        style="@style/editTextArialMTTheme"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Prêmio mínimo"
-                        android:textSize="14.2sp"
-                        android:id="@+id/tituloPrecoMinimo"
                         android:textColor="@color/branco"
-                        android:textStyle="bold"
-                        style="@style/editTextArialMTTheme"
-                        />
+                        android:textSize="14.2sp"
+                        android:textStyle="bold" />
+
                     <com.blackcat.currencyedittext.CurrencyEditText
                         android:id="@+id/tituloValorPremiumMinimum"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
                         android:layout_gravity="end"
+                        android:layout_marginRight="5dp"
                         android:layout_toLeftOf="@+id/limparPremioMinimoAposta"
                         android:layout_toStartOf="@+id/limparPremioMinimoAposta"
+                        android:background="@null"
                         android:text="R$ 00,00"
                         android:textColor="@color/verdeazul"
-                        android:layout_marginRight="5dp"
-                        android:textSize="15.8sp"
-                        android:background="@null"/>
+                        android:textSize="15.8sp" />
+
                     <Button
                         android:id="@+id/limparPremioMinimoAposta"
                         android:layout_width="20dp"
@@ -60,152 +64,160 @@
                         android:layout_alignParentTop="true"
                         android:background="@drawable/close" />
                 </RelativeLayout>
+
                 <SeekBar
                     android:id="@+id/seekBarPremiumMimimun"
                     android:layout_width="match_parent"
                     android:layout_height="26dp"
                     android:backgroundTint="@color/verdeazul"
-                    android:thumb="@drawable/custom_thumb"
-                    />
+                    android:thumb="@drawable/custom_thumb" />
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+
                     <TextView
+                        android:id="@+id/tituloValorMinimoPremiumMiminum"
+                        style="@style/editTextArialMTTheme"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:text="1 milhão"
-                        android:textSize="14.2sp"
-                        android:id="@+id/tituloValorMinimoPremiumMiminum"
                         android:textColor="@color/branco"
-                        style="@style/editTextArialMTTheme"
-                        />
+                        android:textSize="14.2sp" />
+
                     <TextView
                         android:id="@+id/tituloValorMaximoPremiumMiminum"
+                        style="@style/editTextArialMTTheme"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
                         android:layout_alignParentTop="true"
+                        android:layout_marginRight="5dp"
                         android:text="100 milhões"
                         android:textColor="@color/branco"
-                        android:layout_marginRight="5dp"
-                        android:textSize="14.2sp"
-                        style="@style/editTextArialMTTheme"/>
+                        android:textSize="14.2sp" />
                 </RelativeLayout>
             </LinearLayout>
 
             <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="111dp"
-            android:paddingHorizontal="20dp"
-            android:paddingVertical="12dp"
-            android:background="@color/linhaDivisa"
-            android:orientation="vertical">
-            <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+                android:layout_width="match_parent"
+                android:layout_height="111dp"
+                android:background="@color/linhaDivisa"
+                android:orientation="vertical"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="12dp">
 
-                <TextView
-                    android:layout_width="155dp"
-                    android:layout_height="wrap_content"
-                    android:text="Valor mínimo da aposta"
-                    android:textColor="@color/cinza"
-                    android:textSize="14.2sp"
-                    android:textStyle="bold"
-                    style="@style/editTextArialMTTheme"
-                    />
-            <com.blackcat.currencyedittext.CurrencyEditText
-            android:id="@+id/tituloValorValorMinimoAposta"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_gravity="end"
-            android:layout_toLeftOf="@+id/limparValorMinimoAposta"
-            android:layout_toStartOf="@+id/limparValorMinimoAposta"
-            android:text="R$ 00,00"
-            android:textColor="@color/verdeazul"
-            android:layout_marginRight="5dp"
-            android:textSize="15.8sp"
-                android:inputType="number"
-                android:background="@null"/>
-            <Button
-            android:id="@+id/limparValorMinimoAposta"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:background="@drawable/close" />
-            </RelativeLayout>
-            <SeekBar
-            android:id="@+id/seekBarValorMinimoAposta"
-            android:layout_width="match_parent"
-            android:layout_height="26dp"
-            android:backgroundTint="@color/verdeazul"
-            android:thumb="@drawable/custom_thumb"
-            />
-            <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/tituloValorMinimoApostaValorMinimo"
-                    style="@style/editTextArialMTTheme"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:text="1 real"
-                    android:textColor="@color/azulFormNovoTipoPagamento"
-                    android:textSize="14.2sp" />
-            <TextView
-            android:id="@+id/tituloValorMinimoApostaValorMaximo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:text="100 reais"
-            android:textColor="@color/azulFormNovoTipoPagamento"
-            android:layout_marginRight="5dp"
-            android:textSize="14.2sp"
-                style="@style/editTextArialMTTheme"/>
-            </RelativeLayout>
+                    <TextView
+                        style="@style/editTextArialMTTheme"
+                        android:layout_width="155dp"
+                        android:layout_height="wrap_content"
+                        android:text="Valor mínimo da aposta"
+                        android:textColor="@color/cinza"
+                        android:textSize="14.2sp"
+                        android:textStyle="bold" />
+
+                    <com.blackcat.currencyedittext.CurrencyEditText
+                        android:id="@+id/tituloValorValorMinimoAposta"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_gravity="end"
+                        android:layout_marginRight="5dp"
+                        android:layout_toLeftOf="@+id/limparValorMinimoAposta"
+                        android:layout_toStartOf="@+id/limparValorMinimoAposta"
+                        android:background="@null"
+                        android:inputType="number"
+                        android:text="R$ 00,00"
+                        android:textColor="@color/verdeazul"
+                        android:textSize="15.8sp" />
+
+                    <Button
+                        android:id="@+id/limparValorMinimoAposta"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:background="@drawable/close" />
+                </RelativeLayout>
+
+                <SeekBar
+                    android:id="@+id/seekBarValorMinimoAposta"
+                    android:layout_width="match_parent"
+                    android:layout_height="26dp"
+                    android:backgroundTint="@color/verdeazul"
+                    android:thumb="@drawable/custom_thumb" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tituloValorMinimoApostaValorMinimo"
+                        style="@style/editTextArialMTTheme"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:text="1 real"
+                        android:textColor="@color/azulFormNovoTipoPagamento"
+                        android:textSize="14.2sp" />
+
+                    <TextView
+                        android:id="@+id/tituloValorMinimoApostaValorMaximo"
+                        style="@style/editTextArialMTTheme"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginRight="5dp"
+                        android:text="100 reais"
+                        android:textColor="@color/azulFormNovoTipoPagamento"
+                        android:textSize="14.2sp" />
+                </RelativeLayout>
             </LinearLayout>
 
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="111dp"
-                android:paddingHorizontal="20dp"
-                android:paddingVertical="12dp"
                 android:background="@color/cinzaclaro"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="12dp">
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
                     <TextView
+                        style="@style/editTextArialMTTheme"
                         android:layout_width="155dp"
                         android:layout_height="wrap_content"
                         android:text="Valor máximo da aposta"
-                        android:textStyle="bold"
                         android:textColor="@color/cinza"
                         android:textSize="14.2sp"
-                        style="@style/editTextArialMTTheme"/>
+                        android:textStyle="bold" />
+
                     <com.blackcat.currencyedittext.CurrencyEditText
                         android:id="@+id/tituloValorValorMaximoAposta"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
                         android:layout_gravity="end"
+                        android:layout_marginRight="5dp"
                         android:layout_toLeftOf="@+id/limparValorMaximoAposta"
                         android:layout_toStartOf="@+id/limparValorMaximoAposta"
+                        android:background="@null"
+                        android:inputType="number"
                         android:text="R$ 00,00"
                         android:textColor="@color/verdeazul"
-                        android:layout_marginRight="5dp"
-                        android:textSize="15.8sp"
-                        android:inputType="number"
-                        android:background="@null"
-                       />
+                        android:textSize="15.8sp" />
+
                     <Button
                         android:id="@+id/limparValorMaximoAposta"
                         android:layout_width="20dp"
@@ -215,13 +227,14 @@
                         android:layout_alignParentTop="true"
                         android:background="@drawable/close" />
                 </RelativeLayout>
+
                 <SeekBar
                     android:id="@+id/seekBarValorMaximoAposta"
                     android:layout_width="match_parent"
                     android:layout_height="26dp"
                     android:backgroundTint="@color/verdeazul"
-                    android:thumb="@drawable/custom_thumb"
-                    />
+                    android:thumb="@drawable/custom_thumb" />
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -234,91 +247,89 @@
                         android:text="1 real"
                         android:textColor="@color/azulFormNovoTipoPagamento"
                         android:textSize="14.2sp" />
+
                     <TextView
                         android:id="@+id/tituloValorMaximoApostaValorMaximo"
+                        style="@style/editTextArialMTTheme"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
                         android:layout_alignParentTop="true"
-                        android:text="100 reais"
-                        style="@style/editTextArialMTTheme"
-                        android:textColor="@color/azulFormNovoTipoPagamento"
                         android:layout_marginRight="5dp"
-                        android:textSize="14.2sp"/>
+                        android:text="100 reais"
+                        android:textColor="@color/azulFormNovoTipoPagamento"
+                        android:textSize="14.2sp" />
                 </RelativeLayout>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:background="@color/branco"
-                android:paddingVertical="40dp"
-                >
+                android:orientation="vertical"
+                android:paddingVertical="40dp">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Quais apostas você quer no rapidão?"
-                    android:textSize="14.2sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/azulFormNovoTipoPagamento"
                     android:paddingHorizontal="16dp"
-                    />
+                    android:text="Quais apostas você quer no rapidão?"
+                    android:textColor="@color/azulFormNovoTipoPagamento"
+                    android:textSize="14.2sp"
+                    android:textStyle="bold" />
 
                 <caixa.gov.br.loterias.view.custom.ExpandableHeightGridView
                     android:id="@+id/gridviewTiposApostasRapidao"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:columnWidth="156dp"
-                    android:numColumns="2"
-                    android:verticalSpacing="17dp"
-                    android:horizontalSpacing="0dp"
-                    android:stretchMode="spacingWidthUniform"
                     android:layout_marginTop="19dp"
-                    android:isScrollContainer="false"
+                    android:columnWidth="156dp"
                     android:focusable="false"
-                    />
+                    android:gravity="center"
+                    android:horizontalSpacing="0dp"
+                    android:isScrollContainer="false"
+                    android:numColumns="2"
+                    android:stretchMode="spacingWidthUniform"
+                    android:verticalSpacing="17dp" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/cinzaclaro"/>
+                android:background="@color/cinzaclaro" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:background="@color/branco"
-                android:paddingTop="40dp"
+                android:orientation="vertical"
                 android:paddingBottom="40dp"
-                >
+                android:paddingTop="40dp">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Números obrigatórios"
-                    android:textSize="14.2sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/azulFormNovoTipoPagamento"
                     android:paddingHorizontal="16dp"
-                    />
+                    android:text="Números obrigatórios"
+                    android:textColor="@color/azulFormNovoTipoPagamento"
+                    android:textSize="14.2sp"
+                    android:textStyle="bold" />
 
                 <caixa.gov.br.loterias.view.custom.ExpandableHeightGridView
                     android:id="@+id/gridviewNumerosObrigatoriosRapidao"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:columnWidth="56dp"
-                    android:numColumns="auto_fit"
-                    android:verticalSpacing="17dp"
-                    android:stretchMode="spacingWidthUniform"
-                    android:layout_marginTop="19dp"
-                    android:isScrollContainer="false"
                     android:layout_marginHorizontal="10dp"
+                    android:layout_marginTop="19dp"
+                    android:columnWidth="56dp"
                     android:focusable="false"
+                    android:gravity="center"
+                    android:isScrollContainer="false"
+                    android:numColumns="auto_fit"
+                    android:stretchMode="spacingWidthUniform"
+                    android:verticalSpacing="17dp"
 
                     />
 
@@ -327,39 +338,38 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/cinzaclaro"/>
+                android:background="@color/cinzaclaro" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:background="@color/branco"
-                android:paddingTop="40dp"
+                android:orientation="vertical"
                 android:paddingBottom="40dp"
-                >
+                android:paddingTop="40dp">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Números proibidos"
-                    android:textSize="14.2sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/azulFormNovoTipoPagamento"
                     android:paddingHorizontal="16dp"
-                    />
+                    android:text="Números proibidos"
+                    android:textColor="@color/azulFormNovoTipoPagamento"
+                    android:textSize="14.2sp"
+                    android:textStyle="bold" />
 
                 <caixa.gov.br.loterias.view.custom.ExpandableHeightGridView
                     android:id="@+id/gridviewNumerosProibidosRapidao"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:columnWidth="56dp"
-                    android:numColumns="auto_fit"
-                    android:verticalSpacing="17dp"
-                    android:stretchMode="spacingWidthUniform"
-                    android:layout_marginTop="19dp"
-                    android:isScrollContainer="false"
                     android:layout_marginHorizontal="10dp"
+                    android:layout_marginTop="19dp"
+                    android:columnWidth="56dp"
                     android:focusable="false"
+                    android:gravity="center"
+                    android:isScrollContainer="false"
+                    android:numColumns="auto_fit"
+                    android:stretchMode="spacingWidthUniform"
+                    android:verticalSpacing="17dp"
 
                     />
 
@@ -369,57 +379,58 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:background="@color/branco"
-                android:paddingTop="40dp"
+                android:orientation="vertical"
                 android:paddingBottom="40dp"
-                >
+                android:paddingTop="40dp">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Apostas favoritas"
-                    android:textSize="14.2sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/azulFormNovoTipoPagamento"
                     android:paddingHorizontal="16dp"
-                    />
+                    android:text="Apostas favoritas"
+                    android:textColor="@color/azulFormNovoTipoPagamento"
+                    android:textSize="14.2sp"
+                    android:textStyle="bold" />
 
                 <caixa.gov.br.loterias.view.custom.ExpandableHeightGridView
                     android:id="@+id/gridViewApostaFavorita"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:verticalSpacing="0dp"
-                    android:horizontalSpacing="0dp"
-                    android:stretchMode="columnWidth"
-                    android:numColumns="1"
-                    android:layout_marginTop="19dp"
                     android:layout_marginBottom="50dp"
+                    android:layout_marginTop="19dp"
                     android:focusable="false"
+                    android:horizontalSpacing="0dp"
+                    android:numColumns="1"
+                    android:stretchMode="columnWidth"
+                    android:verticalSpacing="0dp"
 
                     />
 
             </LinearLayout>
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="135dp"
                 android:orientation="vertical">
+
                 <Button
+                    android:id="@+id/SalvarApostaRapidao"
                     android:layout_width="184dp"
                     android:layout_height="84dp"
+                    android:layout_centerHorizontal="true"
                     android:background="@color/verdeazul"
-                    android:textColor="@color/branco"
-                    android:textSize="17.7sp"
-                    android:textStyle="bold"
                     android:text="Salvar"
                     android:textAllCaps="false"
-                    android:layout_centerHorizontal="true"
-                    android:id="@+id/SalvarApostaRapidao"/>
+                    android:textColor="@color/branco"
+                    android:textSize="17.7sp"
+                    android:textStyle="bold" />
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="95dp"
-                    android:background="@color/linhaDivisa"
                     android:layout_marginTop="44dp"
-                    >
+                    android:background="@color/linhaDivisa">
 
                 </View>
 

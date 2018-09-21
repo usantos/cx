@@ -161,7 +161,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             }
         });
 
-        if(data.get(position).getResultadosAberto() == true){
+        if(data.get(position).getResultadosAberto()){
             ViewGroup.LayoutParams layoutParams = holder.linearLayoutResultadosApostas.getLayoutParams();
             layoutParams.height = ViewUtils.getRealScreenSize(context).y - ViewUtils.setDisplayMetric(250, context);
             layoutParams.width = ViewUtils.setDisplayMetric(280, context);
@@ -352,7 +352,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             public void onResponse(ResultadoConcursoDTOResponse response) {
                 loadViewProgress.dismiss();
                 data.get(position).setResultadoConcursoDTO(response.getPayload());
-                if (animarView == true){
+                if (animarView){
                     AnimacaoAbrirResultados(context,
                             relativeLayoutTopResultados,
                             linearLayoutResultadosApostas,

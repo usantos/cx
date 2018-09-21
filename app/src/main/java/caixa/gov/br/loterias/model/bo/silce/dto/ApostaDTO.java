@@ -489,6 +489,8 @@ public class ApostaDTO {
         return "timemania";
       case DUPLA_SENA:
         return "duplasena";
+      case DIA_DE_SORTE:
+        return "diadesorte";
 //      case FEDERAL:
 //        return "federal";
 

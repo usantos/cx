@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -19,6 +20,7 @@ import java.util.List;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bean.Modalidade;
+import caixa.gov.br.loterias.model.bo.silce.dto.ModalidadeEnum;
 import caixa.gov.br.loterias.model.bo.silce.dto.PremiacaoConcursoDTO;
 import caixa.gov.br.loterias.utils.EstiloModalidade;
 import caixa.gov.br.loterias.utils.ViewUtils;
@@ -33,14 +35,8 @@ import caixa.gov.br.loterias.view.adapter.NumerosResultadosAdapter;
 @EViewGroup(R.layout.item_resultado_timemania)
 public class ModalideSorteioItemTimeManiaResultadoView extends LinearLayout {
 
-
-    private Modalidade modalidade;
-
-
-
     @ViewById
     protected RecyclerView recyclerNumerosResultado;
-
 
     @ViewById
     protected LinearLayout linearlayoutPremiadosListaText, item_resultado_content_view;
@@ -49,13 +45,16 @@ public class ModalideSorteioItemTimeManiaResultadoView extends LinearLayout {
     protected View tracoViewDivisoriaResultado;
 
     @ViewById
-    protected TextView textTimeCoracao;
+    protected TextView labelTimeCoracaoText, textTimeCoracao;
 
     @ViewById
     protected Button vejaDetalhesButton;
 
     @ViewById
     protected PartidaViewDetalhesResultado partidaViewDetalhesResultadoView;
+
+    @ViewById
+    protected ImageView timeCoracaoImage;
 
     @AfterViews
     protected void init() {
@@ -64,15 +63,22 @@ public class ModalideSorteioItemTimeManiaResultadoView extends LinearLayout {
 
     public void setLayout(Modalidade modalidade) {
 
-        this.modalidade = modalidade;
         EstiloModalidade estilo = new EstiloModalidade(modalidade.getTipoModalidade());
+        if (modalidade.getTipoModalidade() == ModalidadeEnum.DIA_DE_SORTE) {
+            timeCoracaoImage.setVisibility(View.GONE);
+            labelTimeCoracaoText.setText(R.string.label_mes_desejado);
+            //TODO quando retornar mes de sorte retirar mock
+            this.textTimeCoracao.setText("Janeiro");
+//            this.textTimeCoracao.setText(modalidade.getResultadoConcursoDTO().getMesDeSorte().getNome());
+        } else {
+            this.textTimeCoracao.setText(modalidade.getResultadoConcursoDTO().getPremiacaoTimeDoCoracao().getEquipe().getNome());
+        }
         this.tracoViewDivisoriaResultado.setBackground(getContext().getResources().getDrawable(estilo.getCorClara()));
-        this.textTimeCoracao.setText(modalidade.getResultadoConcursoDTO().getPremiacaoTimeDoCoracao().getEquipe().getNome());
         adicionarPremiados(modalidade.getResultadoConcursoDTO().getPremiacoesPrimeiroSorteio());
         NumerosResultadosAdapter numerosResultadosAdapter;
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         int numberOfColumns = 3;
-        if (modalidade.getResultadoConcursoDTO().getNumerosSorteadosPrimeiroSorteio().size()>6){
+        if (modalidade.getResultadoConcursoDTO().getNumerosSorteadosPrimeiroSorteio().size() > 6) {
             numberOfColumns = 4;
         }
         this.recyclerNumerosResultado.setLayoutManager(new GridLayoutManager(getContext(), numberOfColumns));
@@ -124,8 +130,8 @@ public class ModalideSorteioItemTimeManiaResultadoView extends LinearLayout {
         this.linearlayoutPremiadosListaText = premiadosListaText;
     }
 
-    private void adicionarPremiados(List<PremiacaoConcursoDTO> listaPremiados){
-        for (PremiacaoConcursoDTO premiacaoConcurso :  listaPremiados){
+    private void adicionarPremiados(List<PremiacaoConcursoDTO> listaPremiados) {
+        for (PremiacaoConcursoDTO premiacaoConcurso : listaPremiados) {
             TextView title1 = new TextView(getContext());
             title1.setText(premiacaoConcurso.getDescricao());
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
@@ -137,10 +143,10 @@ public class ModalideSorteioItemTimeManiaResultadoView extends LinearLayout {
             this.linearlayoutPremiadosListaText.addView(title1);
 
             TextView title2 = new TextView(getContext());
-            if (premiacaoConcurso.getQuantidadeGanhadores()>1){
-                title2.setText(premiacaoConcurso.getQuantidadeGanhadores() + " ganhadores");
-            }else{
-                title2.setText(premiacaoConcurso.getQuantidadeGanhadores() + " ganhador");
+            if (premiacaoConcurso.getQuantidadeGanhadores() > 1) {
+                title2.setText(getResources().getString(R.string.label_numero_ganhadores, premiacaoConcurso.getQuantidadeGanhadores()));
+            } else {
+                title2.setText(getResources().getString(R.string.label_numero_ganhador, premiacaoConcurso.getQuantidadeGanhadores()));
             }
 
             LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(

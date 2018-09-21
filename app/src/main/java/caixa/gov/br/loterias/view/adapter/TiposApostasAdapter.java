@@ -55,12 +55,10 @@ public class TiposApostasAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-
         if (convertView == null) {
             final LayoutInflater layoutInflater = LayoutInflater.from(mContext);
             convertView = layoutInflater.inflate(R.layout.linearlayout_tipos_apostas, null);
         }
-
         if (position == tiposAposta.size()){
             final LinearLayout linearLayoutTipoAposta = (LinearLayout)convertView.findViewById(R.id.LinearLayoutContentTiposAposta);
             linearLayoutTipoAposta.setBackgroundColor(ContextCompat.getColor(mContext, R.color.branco));
@@ -72,13 +70,11 @@ public class TiposApostasAdapter extends BaseAdapter {
             final ImageView imageViewTipoAPosta = (ImageView)convertView.findViewById(R.id.imageviewTrevoTipoAposta);
             imageViewTipoAPosta.setVisibility(View.GONE);
 
-
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             params.gravity = Gravity.CENTER_HORIZONTAL|Gravity.CENTER_VERTICAL;
             params.setMargins(0,0,0,0);
             tituloTipoAposta.setLayoutParams(params);
-
         }else{
             final TipoAposta tipoAposta = tiposAposta.get(position);
             final ImageView imageViewTipoAPosta = (ImageView)convertView.findViewById(R.id.imageviewTrevoTipoAposta);
@@ -90,7 +86,6 @@ public class TiposApostasAdapter extends BaseAdapter {
             final TextView tituloTipoAposta = (TextView)convertView.findViewById(R.id.tituloTipoApostaTextView);
             tituloTipoAposta.setText(tipoAposta.getTitulo());
         }
-
         return convertView;
     }
 
