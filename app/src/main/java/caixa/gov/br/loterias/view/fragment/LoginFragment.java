@@ -99,6 +99,19 @@ public class LoginFragment extends Fragment {
                                 tokenCorpo = new String(bytes, Charset.forName("UTF-8"));
                                 try {
                                     JSONObject jsonObject = new JSONObject(tokenCorpo);
+
+                                    String cpf = jsonObject.getString("cpf");
+                                    if(cpf.length() < 11){
+                                        StringBuilder zeros = new StringBuilder();
+                                        int totalIncluirZero = 11 - cpf.length();
+                                        for(int contador = 0; contador < totalIncluirZero; contador++){
+                                            zeros.append("0");
+                                        }
+                                        zeros.append(cpf);
+                                        cpf = zeros.toString();
+                                    }
+
+                                    InformacoesUsuarioSP.salvarCpfUsuario(cpf);
                                     InformacoesUsuarioSP.salvarNomeUsuairo(jsonObject.getString("name"));
                                 }catch (JSONException e){
                                     e.printStackTrace();
