@@ -1,5 +1,7 @@
 package caixa.gov.br.loterias.model.bo.silce.internals;
 
+import android.util.Log;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
@@ -36,6 +38,9 @@ public class GsonRequest<REQ, RSP> extends JsonRequest<RSP> {
                        Map<String, String> headers, Response.Listener<RSP> listener,
                        Response.ErrorListener mErrorListener) {
         super(method, url, bodyToJson(requestBody), listener, mErrorListener);
+
+        Log.i("caixa", url);
+
         this.responseKlazz = responseKlazz;
         this.headers = headers;
         this.listener = listener;
@@ -87,6 +92,7 @@ public class GsonRequest<REQ, RSP> extends JsonRequest<RSP> {
     protected Response<RSP> parseNetworkResponse(NetworkResponse response) {
         try {
             String json = new String(response.data, "UTF-8");
+            Log.i("caixa", json);
 
             return Response.success(
                     gson.fromJson(json, responseKlazz),
