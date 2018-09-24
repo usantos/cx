@@ -78,23 +78,30 @@ public class ListaComprasDetalhesAdapter extends BaseAdapter {
             TextView concursoListaComprasTextView = (TextView) convertView.findViewById(R.id.concursoListaComprasTextView);
             concursoListaComprasTextView.setText("Conc. "+ listaAposta.get(idLista).getConcursoAlvo());
 
-
-
             String numeroStr = "";
             if (listaAposta.get(idLista).getIndicadorSurpresinha().getValor() == 2){
-                int contador = 1;
-                for (int i =0; i < listaAposta.get(idLista).getQuantidadeNumeros(); i++){
-                    if (contador == 5){
-                        numeroStr = numeroStr + "XX\n";
-                        contador = 0;
-                    }else if (i == listaAposta.get(idLista).getQuantidadeNumeros() -1){
-                        numeroStr = numeroStr + "XX";
-                    }else{
-                        numeroStr = numeroStr + "XX - ";
+                if("".equals(listaAposta.get(idLista).getHoraEfetivacao())) {
+                    int contador = 1;
+                    for (int i = 0; i < listaAposta.get(idLista).getQuantidadeNumeros(); i++) {
+                        if (contador == 5) {
+                            numeroStr = numeroStr + "XX\n";
+                            contador = 0;
+                        } else if (i == listaAposta.get(idLista).getQuantidadeNumeros() - 1) {
+                            numeroStr = numeroStr + "XX";
+                        } else {
+                            numeroStr = numeroStr + "XX - ";
+                        }
+                        contador++;
                     }
-                    contador ++;
+                }else{
+                    List<Integer> numeros = listaAposta.get(idLista).getNumerosSelecionados();
+                    for(Integer numero : numeros){
+                        if(!"".equals(numeroStr)){
+                            numeroStr += " - ";
+                        }
+                        numeroStr += numero;
+                    }
                 }
-
             }else{
                 for (Integer num : listaAposta.get(idLista).getNumerosSelecionados()) {
                     if (num == (listaAposta.get(idLista).getNumerosSelecionados().get(listaAposta.get(idLista).getNumerosSelecionados().size() - 1))) {
