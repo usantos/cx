@@ -343,8 +343,11 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
 
         // Valor Minimo Aposta
 
-
-        int valueMaxApostaInt = Math.round(rapidao.getValorMaximo().floatValue());
+        float valor = 1000000;
+        if(rapidao.getValorMaximo() != null){
+            valor = rapidao.getValorMaximo().floatValue();
+        }
+        int valueMaxApostaInt = Math.round(valor);
 
         TextView tituloValorMinimoApostaValorMinimo = (TextView) findViewById(R.id.tituloValorMinimoApostaValorMinimo);
         tituloValorMinimoApostaValorMaximo = (TextView) findViewById(R.id.tituloValorMinimoApostaValorMaximo);

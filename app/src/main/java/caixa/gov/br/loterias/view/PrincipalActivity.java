@@ -61,6 +61,7 @@ import caixa.gov.br.loterias.model.bo.silce.dto.ParametrosSimulacaoResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.RepassometroDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.RepassometroDTOResponse;
 import caixa.gov.br.loterias.model.dao.DBLoteriasHelper;
+import caixa.gov.br.loterias.model.sp.CarrinhoSP;
 import caixa.gov.br.loterias.model.sp.InformacoesUsuarioSP;
 import caixa.gov.br.loterias.utils.EstiloModalidade;
 import caixa.gov.br.loterias.utils.ExpandableListDataSideMenu;
@@ -90,7 +91,7 @@ public class PrincipalActivity extends AppCompatActivity
     @ViewById
     protected Button buttonHomeBet;
     @ViewById
-    protected TextView textViewHomeMinimumPurchaseValue, tituloLerBilhetes, textoRepassados, valorRepassesPrincipal;
+    protected TextView ttvIniciais, textViewHomeCountBetsCart, textViewHomeMinimumPurchaseValue, tituloLerBilhetes, textoRepassados, valorRepassesPrincipal;
     @ViewById
     protected RelativeLayout relativeContentPrincipal,
             relativeBlankView, relativeLayoutContentRapidao, relativeLayoutContentLerBilhetes, relativeLayoutContentFavoritas, relativeLayoutContentRepassados,
@@ -116,16 +117,35 @@ public class PrincipalActivity extends AppCompatActivity
         String separarNome[] = InformacoesUsuarioSP.obterNome().toLowerCase().split(" ");
         String nomeUsuario = StringUtils.capitalizer(separarNome[0]+" "+separarNome[separarNome.length - 1]);
 
-        String texto = "Olá, _%_!";
-        texto = texto.replace("%", nomeUsuario);
-        nav_user.setText(ViewUtils.textFuturaAndFuturaBold( this,  texto));
+        String iniciais = "";
+        boolean proximo = false;
+        char separarNomeUsuario[] = nomeUsuario.toCharArray();
+        for(int contador = 0; contador < separarNomeUsuario.length; contador++){
+            if("".equals(iniciais) || proximo){
+                iniciais += separarNomeUsuario[contador];
+                proximo = false;
+            }
+            if(separarNomeUsuario[contador] == ' '){
+                proximo = true;
+            }
+        }
+        ttvIniciais.setText(iniciais);
+
+
+        if(!" ".equals(nomeUsuario)) {
+            String texto = "Olá, _%_!";
+            texto = texto.replace("%", nomeUsuario);
+            nav_user.setText(ViewUtils.textFuturaAndFuturaBold(this, texto));
+        }else {
+            nav_user.setText("Olá!");
+        }
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         toolbarListener();
-        nav_ultima_aposta.setText( ViewUtils.textFuturaAndFuturaBold( this,  "Sua última aposta foi em _24/08/2017_") );
+        nav_ultima_aposta.setText(ViewUtils.textFuturaAndFuturaBold( this,  "Sua última aposta foi em _24/08/2017_") );
         layoutSideMenu();
         callWebservice();
         iniciarBancoLocal();
@@ -145,6 +165,12 @@ public class PrincipalActivity extends AppCompatActivity
         homeCarousel.setItemTransformer(new ScaleTransformer.Builder()
                 .setMinScale(0.8f)
                 .build());
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        textViewHomeCountBetsCart.setText(CarrinhoSP.obterQuantidadeApostas());
     }
 
     private void callWebservice() {
