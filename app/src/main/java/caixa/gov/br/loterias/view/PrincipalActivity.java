@@ -359,6 +359,7 @@ public class PrincipalActivity extends AppCompatActivity
                         public void onResponse(NetworkResponse response) {
                             KeycloakBO_.getInstance_(PrincipalActivity.this).logout(PrincipalActivity.this);
                             loadViewProgress.dismiss();
+                            InformacoesUsuarioSP.limparRegistros();
                             startActivity(new Intent(PrincipalActivity.this, LoginActivity.class));
                             finish();
                         }

@@ -8,6 +8,7 @@ import android.util.Log;
 import android.widget.Button;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.model.sp.InformacoesUsuarioSP;
 
 public class SplashScreenActivity extends AppCompatActivity {
 
@@ -20,8 +21,13 @@ public class SplashScreenActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+                if(InformacoesUsuarioSP.existeUsuarioLogado()) {
+                    PrincipalActivity_.intent(SplashScreenActivity.this).start();
+                    finish();
+                }else{
+                    startActivity(new Intent(SplashScreenActivity.this, IntroducaoActivity.class));
+                }
                 finish();
-                startActivity(new Intent(SplashScreenActivity.this, IntroducaoActivity.class));
             }
         }, SPLASH_TIME);
     }

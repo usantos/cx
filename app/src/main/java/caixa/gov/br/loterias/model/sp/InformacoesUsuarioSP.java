@@ -48,4 +48,16 @@ public class InformacoesUsuarioSP {
         }
         return "";
     }
+
+    public static boolean existeUsuarioLogado() {
+        if(!"".equals(obterNome())){
+            return true;
+        }
+        return false;
+    }
+
+    public static void limparRegistros() {
+        salvarCpfUsuario("");
+        salvarNomeUsuairo("");
+    }
 }
