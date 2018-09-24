@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.androidannotations.annotations.AfterViews;
@@ -28,7 +29,7 @@ import caixa.gov.br.loterias.view.adapter.NumerosLotogolAdapter;
  * Created by joafilho on 28/12/2017.
  */
 @EViewGroup(R.layout.item_lotogol)
-public class ItemEquipeViewLotogol extends LinearLayout {
+public class ItemEquipeViewLotogol extends RelativeLayout {
 
     @ViewById
     ImageView itemImage;

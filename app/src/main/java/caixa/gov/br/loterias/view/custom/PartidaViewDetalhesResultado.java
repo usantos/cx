@@ -2,7 +2,6 @@ package caixa.gov.br.loterias.view.custom;
 
 import android.animation.Animator;
 import android.content.Context;
-import android.graphics.Typeface;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
@@ -14,14 +13,13 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bean.Modalidade;
 import caixa.gov.br.loterias.model.bo.silce.dto.GanhadoresPorRegiaoDTO;
-import caixa.gov.br.loterias.model.bo.silce.dto.PartidaLotecaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.PremiacaoConcursoDTO;
-import caixa.gov.br.loterias.model.bo.silce.dto.ResultadoConcursoDTO;
 import caixa.gov.br.loterias.utils.ViewUtils;
 
 /**
@@ -34,7 +32,8 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
     @ViewById
     protected Button voltarButton;
 
-    @ViewById LinearLayout contentResuldadoDetalhesPremiacaoLinearLayout;
+    @ViewById
+    LinearLayout contentResuldadoDetalhesPremiacaoLinearLayout;
 
     @AfterViews
     protected void init() {
@@ -42,9 +41,9 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
     }
 
     public void setLayout(Modalidade modalidade) {
-        if (modalidade.getResultadoConcursoDTO().getPremiacoesSegundoSorteio() == null){
+        if (modalidade.getResultadoConcursoDTO().getPremiacoesSegundoSorteio() == null) {
             TextView title1 = new TextView(getContext());
-            title1.setText("Premiação");
+            title1.setText(ViewUtils.textFuturaAndFuturaBold(getContext(), getResources().getString(R.string.label_premiacao_bold)));
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
@@ -56,7 +55,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
             adicionarPremiados(modalidade.getResultadoConcursoDTO().getPremiacoesPrimeiroSorteio());
 
             TextView titleGanhadores = new TextView(getContext());
-            titleGanhadores.setText("Ganhadores por região");
+            titleGanhadores.setText(ViewUtils.textFuturaAndFuturaBold(getContext(), getResources().getString(R.string.label_ganhadores_regiao_bold)));
             LinearLayout.LayoutParams layoutParamsGanhadores = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
@@ -67,9 +66,9 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
 
             adicionarGanhadoresRegiao(modalidade.getResultadoConcursoDTO().getGanhadoresPrimeiroSorteio());
 
-        }else{
+        } else {
             TextView title1 = new TextView(getContext());
-            title1.setText("Premiação - 1º sorteio");
+            title1.setText(ViewUtils.textFuturaAndFuturaBold(getContext(), getResources().getString(R.string.label_premiacao_primeiro_sorteio_bold)));
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
@@ -81,7 +80,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
             adicionarPremiados(modalidade.getResultadoConcursoDTO().getPremiacoesPrimeiroSorteio());
 
             TextView title2 = new TextView(getContext());
-            title2.setText("Premiação - 2º sorteio");
+            title2.setText(ViewUtils.textFuturaAndFuturaBold(getContext(), getResources().getString(R.string.label_premiacao_segundo_sorteio_bold)));
             LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
@@ -93,9 +92,8 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
             adicionarPremiados(modalidade.getResultadoConcursoDTO().getPremiacoesSegundoSorteio());
 
 
-
             TextView title3 = new TextView(getContext());
-            title3.setText("Ganhadores por região - 1º sorteio");
+            title3.setText(ViewUtils.textFuturaAndFuturaBold(getContext(), getResources().getString(R.string.label_ganhadores_regiao_primeiro_sorteio_bold)));
             LinearLayout.LayoutParams layoutParams3 = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
@@ -108,7 +106,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
 
 
             TextView title4 = new TextView(getContext());
-            title4.setText("Ganhadores por região - 2º sorteio");
+            title4.setText(ViewUtils.textFuturaAndFuturaBold(getContext(), getResources().getString(R.string.label_ganhadores_regiao_segundo_sorteio_bold)));
             LinearLayout.LayoutParams layoutParams4 = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
@@ -119,6 +117,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
 
             adicionarGanhadoresRegiao(modalidade.getResultadoConcursoDTO().getGanhadoresSegundoSorteio());
         }
+        adicionarArrecadacaoTotal(modalidade.getResultadoConcursoDTO().getArrecadacaoTotal());
     }
 
     public PartidaViewDetalhesResultado(Context context) {
@@ -133,10 +132,10 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
         super(context, attrs, defStyleAttr);
     }
 
-    public void mostrarDetalhes(boolean mostrarDetalhes, LinearLayout item_resultado_content_view, PartidaViewDetalhesResultado partidaViewDetalhesResultadoView){
-        if (mostrarDetalhes == true){
+    public void mostrarDetalhes(boolean mostrarDetalhes, LinearLayout item_resultado_content_view, PartidaViewDetalhesResultado partidaViewDetalhesResultadoView) {
+        if (mostrarDetalhes) {
             animacaoFadeOutResultado(item_resultado_content_view, partidaViewDetalhesResultadoView);
-        }else {
+        } else {
             animacaoFadeOutDetalhes(partidaViewDetalhesResultadoView, item_resultado_content_view);
         }
     }
@@ -149,12 +148,13 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
         this.voltarButton = voltarButton;
     }
 
-    private void animacaoFadeInDetalhes(View view){
+    private void animacaoFadeInDetalhes(View view) {
         view.setAlpha(0.0f);
         view.setVisibility(View.VISIBLE);
         view.animate().alpha(1.0f).setDuration(300).setListener(new Animator.AnimatorListener() {
             @Override
-            public void onAnimationStart(Animator animation) {}
+            public void onAnimationStart(Animator animation) {
+            }
 
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -162,20 +162,21 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
             }
 
             @Override
-            public void onAnimationCancel(Animator animation) {}
+            public void onAnimationCancel(Animator animation) {
+            }
 
             @Override
-            public void onAnimationRepeat(Animator animation) {}
+            public void onAnimationRepeat(Animator animation) {
+            }
         });
     }
 
 
-
-
-    private void animacaoFadeOutDetalhes(final View view, final View view2){
+    private void animacaoFadeOutDetalhes(final View view, final View view2) {
         view.animate().alpha(0.0f).setDuration(300).setListener(new Animator.AnimatorListener() {
             @Override
-            public void onAnimationStart(Animator animation) {}
+            public void onAnimationStart(Animator animation) {
+            }
 
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -184,20 +185,23 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
             }
 
             @Override
-            public void onAnimationCancel(Animator animation) {}
+            public void onAnimationCancel(Animator animation) {
+            }
 
             @Override
-            public void onAnimationRepeat(Animator animation) {}
+            public void onAnimationRepeat(Animator animation) {
+            }
         });
     }
 
 
-    private void animacaoFadeInResultado(View view){
+    private void animacaoFadeInResultado(View view) {
         view.setAlpha(0.0f);
         view.setVisibility(View.VISIBLE);
         view.animate().alpha(1.0f).setDuration(300).setListener(new Animator.AnimatorListener() {
             @Override
-            public void onAnimationStart(Animator animation) {}
+            public void onAnimationStart(Animator animation) {
+            }
 
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -205,20 +209,21 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
             }
 
             @Override
-            public void onAnimationCancel(Animator animation) {}
+            public void onAnimationCancel(Animator animation) {
+            }
 
             @Override
-            public void onAnimationRepeat(Animator animation) {}
+            public void onAnimationRepeat(Animator animation) {
+            }
         });
     }
 
 
-
-
-    private void animacaoFadeOutResultado(final View view, final View view2){
+    private void animacaoFadeOutResultado(final View view, final View view2) {
         view.animate().alpha(0.0f).setDuration(300).setListener(new Animator.AnimatorListener() {
             @Override
-            public void onAnimationStart(Animator animation) {}
+            public void onAnimationStart(Animator animation) {
+            }
 
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -227,15 +232,17 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
             }
 
             @Override
-            public void onAnimationCancel(Animator animation) {}
+            public void onAnimationCancel(Animator animation) {
+            }
 
             @Override
-            public void onAnimationRepeat(Animator animation) {}
+            public void onAnimationRepeat(Animator animation) {
+            }
         });
     }
 
-    private void adicionarPremiados(List<PremiacaoConcursoDTO> listaPremiados){
-        for (PremiacaoConcursoDTO premiacaoConcurso :  listaPremiados){
+    private void adicionarPremiados(List<PremiacaoConcursoDTO> listaPremiados) {
+        for (PremiacaoConcursoDTO premiacaoConcurso : listaPremiados) {
             TextView title1 = new TextView(getContext());
             title1.setText(premiacaoConcurso.getDescricao());
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
@@ -247,10 +254,10 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
             this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title1);
 
             TextView title2 = new TextView(getContext());
-            if (premiacaoConcurso.getQuantidadeGanhadores()>1){
-                title2.setText(premiacaoConcurso.getQuantidadeGanhadores() + " ganhadores");
-            }else{
-                title2.setText(premiacaoConcurso.getQuantidadeGanhadores() + " ganhador");
+            if (premiacaoConcurso.getQuantidadeGanhadores() > 1) {
+                title2.setText(getResources().getString(R.string.label_apostas_ganhadoras, premiacaoConcurso.getQuantidadeGanhadores()));
+            } else {
+                title2.setText(getResources().getString(R.string.label_aposta_ganhadora, premiacaoConcurso.getQuantidadeGanhadores()));
             }
 
             LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(
@@ -275,10 +282,10 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
     }
 
 
-    private void adicionarGanhadoresRegiao(List<GanhadoresPorRegiaoDTO> listaGanhadores){
-        for (GanhadoresPorRegiaoDTO ganhadoresPorRegiaoDTO :  listaGanhadores){
+    private void adicionarGanhadoresRegiao(List<GanhadoresPorRegiaoDTO> listaGanhadores) {
+        for (GanhadoresPorRegiaoDTO ganhadoresPorRegiaoDTO : listaGanhadores) {
             TextView title1 = new TextView(getContext());
-            title1.setText(ganhadoresPorRegiaoDTO.getMunicipioSorteio().getNome() + " / " + ganhadoresPorRegiaoDTO.getMunicipioSorteio().getUf());
+            title1.setText(getResources().getString(R.string.label_texto_barra_texto, ganhadoresPorRegiaoDTO.getMunicipioSorteio().getNome(), ganhadoresPorRegiaoDTO.getMunicipioSorteio().getUf()));
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
@@ -297,9 +304,29 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
             title2.setLayoutParams(layoutParams2);
             title2.setTextAppearance(getContext(), R.style.fontForTitle2Premiados);
             this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title2);
-
-
         }
     }
 
+    private void adicionarArrecadacaoTotal(BigDecimal valor) {
+        TextView title = new TextView(getContext());
+        title.setText(ViewUtils.textFuturaAndFuturaBold(getContext(), getResources().getString(R.string.label_arrecadacao_total_bold)));
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+        layoutParams.setMargins(16, 18, 0, 0);
+        title.setLayoutParams(layoutParams);
+        title.setTextAppearance(getContext(), R.style.fontForTitleTopoPremiados);
+        this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title);
+
+        TextView text = new TextView(getContext());
+        text.setText(ViewUtils.getMoedaFormat(valor));
+
+        LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+        layoutParams2.setMargins(16, 0, 0, 0);
+        text.setLayoutParams(layoutParams2);
+        text.setTextAppearance(getContext(), R.style.fontForTitle1Premiados);
+        this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(text);
+    }
 }

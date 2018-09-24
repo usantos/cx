@@ -20,9 +20,9 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="14dp"
             android:layout_marginBottom="14dp"
+            android:layout_marginTop="14dp"
+            android:orientation="horizontal"
             android:weightSum="1">
 
             <LinearLayout
@@ -100,15 +100,15 @@
             android:id="@+id/layoutTimeCoracao"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_marginBottom="13dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="4dp"
-            android:layout_marginBottom="13dp"
             android:orientation="horizontal"
             android:visibility="gone">
 
             <TextView
-                style="@style/ArialMT"
                 android:id="@+id/labelTimeCoracaoTxt"
+                style="@style/ArialMT"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/label_time_coracao"
@@ -133,7 +133,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/drawer_linha_divisao_cinza_claro"
         android:orientation="vertical"
-        tools:visibility="gone">
+        tools:visibility="visible">
 
         <RelativeLayout
             android:id="@+id/contentTest"
@@ -152,27 +152,28 @@
                 android:paddingEnd="0dp"
                 android:text="Mega-sena"
                 android:textSize="14.2sp" />
+
             <TextView
                 android:id="@+id/numeroConcurso"
                 style="@style/editTextArialMTTheme"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:maxWidth="100dp"
-                android:lines="1"
-                android:layout_marginBottom="13dp"
-                android:paddingEnd="0dp"
-                android:text="Conc. 666"
-                android:textSize="14.2sp"
                 android:layout_below="@id/tipoAposta"
-                />
+                android:layout_marginBottom="13dp"
+                android:lines="1"
+                android:maxWidth="100dp"
+                android:paddingEnd="0dp"
+                android:textSize="14.2sp"
+                tools:text="Conc. 777" />
 
             <RelativeLayout
                 android:id="@+id/layoutCabecalhoLoteca"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_toRightOf="@+id/tipoAposta"
-                android:visibility="gone">
+                android:layout_toEndOf="@+id/tipoAposta"
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <TextView
                     android:id="@+id/texto_coluna_loteca"
@@ -189,11 +190,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="14dp"
-                    android:layout_toRightOf="@+id/texto_coluna_loteca"
+                    android:layout_toEndOf="@+id/texto_coluna_loteca"
                     android:text="@string/label_time"
                     android:textSize="14.2sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    tools:visibility="visible" />
             </RelativeLayout>
+
+            <caixa.gov.br.loterias.view.custom.ExpandableHeightRecyclerView
+                android:id="@+id/recycleViewDetalheAposta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/layoutCabecalhoLoteca"
+                android:layout_below="@+id/numeroConcurso"
+                android:clickable="false"
+                android:nestedScrollingEnabled="false" />
 
             <TextView
                 android:id="@+id/numerosText"
@@ -218,12 +229,14 @@
                 android:text="R$ 0,00"
                 android:textAlignment="textEnd"
                 android:textSize="14.2sp" />
+
             <RelativeLayout
+                android:id="@+id/excluirApostaCarrinhoLayout"
                 android:layout_width="24dp"
                 android:layout_height="44dp"
                 android:layout_alignParentEnd="true"
-                android:id="@+id/excluirApostaCarrinhoLayout"
                 android:clickable="true">
+
                 <ImageView
                     android:id="@+id/excluirApostaCarrinho"
                     android:layout_width="14dp"
@@ -233,16 +246,8 @@
 
             </RelativeLayout>
 
-        </RelativeLayout>
 
-        <caixa.gov.br.loterias.view.custom.ExpandableHeightRecyclerView
-            android:id="@+id/recycleViewDetalheAposta"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="90dp"
-            android:layout_marginTop="53dp"
-            android:clickable="false"
-            android:nestedScrollingEnabled="false" />
+        </RelativeLayout>
     </RelativeLayout>
 </com.daimajia.swipe.SwipeLayout>
 

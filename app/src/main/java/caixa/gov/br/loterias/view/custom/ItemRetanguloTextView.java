@@ -1,10 +1,13 @@
 package caixa.gov.br.loterias.view.custom;
 
+import android.animation.Animator;
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
 
@@ -34,11 +37,35 @@ public class ItemRetanguloTextView extends RelativeLayout {
     public void setLayout(ParametroMesDeSorte mes) {
         mesDeSorte = mes;
         descricaoText.setText(mes.getNome());
-//        descricaoText.setSelected(mes.isSelecionado());
         descricaoText.setActivated(mes.isSelecionado());
+        if(mes.isSelecionado()){
+            animateView();
+        }
     }
 
     public ParametroMesDeSorte getMesDeSorte() {
         return mesDeSorte;
+    }
+
+    private void animateView(){
+        setAlpha(0.5f);
+        animate().alpha(1.0f).setDuration(200).setListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+            }
+        });
     }
 }

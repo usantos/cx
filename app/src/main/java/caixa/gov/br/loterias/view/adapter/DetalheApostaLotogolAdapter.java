@@ -6,7 +6,6 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
-import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.silce.dto.PartidaLotogolDTO;
 import caixa.gov.br.loterias.view.custom.ApostaPartidaLotogolView;
 import caixa.gov.br.loterias.view.custom.ApostaPartidaLotogolView_;
@@ -27,14 +26,16 @@ public class DetalheApostaLotogolAdapter extends RecyclerView.Adapter<DetalheApo
     @Override
     public ApostaLotogolHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         ApostaPartidaLotogolView view = ApostaPartidaLotogolView_.build(parent.getContext());
+        RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        view.setLayoutParams(lp);
         return new ApostaLotogolHolder(view);
     }
 
     @Override
     public void onBindViewHolder(ApostaLotogolHolder holder, int position) {
         holder.apostaPartidaLotogolView.setLayout(partidasLotogol.get(position));
-        if(position != 0){
-            holder.apostaPartidaLotogolView.getLayoutRowApostaPartidaLotogol().setBackgroundResource(R.drawable.drawer_linha_divisao_cinza_claro);
+        if (position == partidasLotogol.size() - 1) {
+            holder.apostaPartidaLotogolView.getLinhaDivisao().setVisibility(View.INVISIBLE);
         }
     }
 

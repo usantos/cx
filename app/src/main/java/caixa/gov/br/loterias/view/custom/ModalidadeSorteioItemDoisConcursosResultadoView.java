@@ -131,7 +131,7 @@ public class ModalidadeSorteioItemDoisConcursosResultadoView extends LinearLayou
 
     private void adicionarPremiados(List<PremiacaoConcursoDTO> listaPremiados, List<PremiacaoConcursoDTO> listaPremiadosSegundoConcurso){
         TextView premiadosTextview1 = new TextView(getContext());
-        premiadosTextview1.setText("Premiados - 1º sorteio");
+        premiadosTextview1.setText(ViewUtils.textFuturaAndFuturaBold(getContext(), getResources().getString(R.string.label_premiados_primeiro_sorteio_bold)));
         LinearLayout.LayoutParams layoutParamsPremiadosTextview1 = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
@@ -167,7 +167,7 @@ public class ModalidadeSorteioItemDoisConcursosResultadoView extends LinearLayou
 
 
         TextView premiadosTextview2= new TextView(getContext());
-        premiadosTextview2.setText("Premiados - 2º sorteio");
+        premiadosTextview2.setText(ViewUtils.textFuturaAndFuturaBold(getContext(), getResources().getString(R.string.label_premiados_segundo_sorteio_bold)));
         LinearLayout.LayoutParams layoutParamspremiadosTextview2 = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         layoutParamspremiadosTextview2.setMargins(16, 20, 0, 0);

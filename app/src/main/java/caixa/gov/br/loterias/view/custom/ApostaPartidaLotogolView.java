@@ -3,6 +3,7 @@ package caixa.gov.br.loterias.view.custom;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.LinearLayout;
 
 import org.androidannotations.annotations.AfterViews;
@@ -21,7 +22,7 @@ import caixa.gov.br.loterias.model.bo.silce.dto.PartidaLotogolDTO;
 public class ApostaPartidaLotogolView extends LinearLayout {
 
     @ViewById
-    LinearLayout layoutRowApostaPartidaLotogol;
+    View linhaDivisao;
 
     @ViewById
     ApostaEquipeLototgolView apostaEquipeLotogolUm, apostaEquipeLotogolDois;
@@ -48,7 +49,7 @@ public class ApostaPartidaLotogolView extends LinearLayout {
         apostaEquipeLotogolDois.setLayout(partidaLotogolDTO.getEquipe2());
     }
 
-    public LinearLayout getLayoutRowApostaPartidaLotogol() {
-        return layoutRowApostaPartidaLotogol;
+    public View getLinhaDivisao() {
+        return linhaDivisao;
     }
 }

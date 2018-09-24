@@ -158,9 +158,13 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
             holder.recycleViewDetalheAposta.setAdapter(detalheApostaLotogolAdapter);
             holder.recycleViewDetalheAposta.setExpanded(true);
 
-            ViewGroup.MarginLayoutParams marginLayoutParams = (ViewGroup.MarginLayoutParams) holder.recycleViewDetalheAposta.getLayoutParams();
-            marginLayoutParams.setMargins(0, 3, 0, 0);
-            holder.recycleViewDetalheAposta.setLayoutParams(marginLayoutParams);
+            holder.layoutCabecalhoLoteca.setVisibility(View.VISIBLE);
+            holder.layoutCabecalhoLoteca.getLayoutParams().height = 0;
+            RelativeLayout.LayoutParams relativeLayoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            relativeLayoutParams.addRule(RelativeLayout.START_OF, R.id.valorAposta);
+            relativeLayoutParams.addRule(RelativeLayout.BELOW, R.id.layoutCabecalhoLoteca);
+            relativeLayoutParams.addRule(RelativeLayout.ALIGN_START, R.id.layoutCabecalhoLoteca);
+            holder.recycleViewDetalheAposta.setLayoutParams(relativeLayoutParams);
             animacao = Boolean.FALSE;
             swipeLayout.setSwipeEnabled(animacao);
         }

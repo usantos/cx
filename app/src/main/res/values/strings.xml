@@ -219,6 +219,13 @@
     <string name="label_faixa_premiacao">Faixa de\npremiação</string>
     <string name="label_sorteio_case">Sorteio</string>
     <string name="label_premiacao">Premiação</string>
+    <string name="label_premiacao_bold">_Premia\u00e7\u00e3o_</string>
+    <string name="label_premiacao_primeiro_sorteio_bold">_Premia\u00e7\u00e3o - 1º sorteio_</string>
+    <string name="label_premiados_primeiro_sorteio_bold">_Premiados - 1º sorteio_</string>
+    <string name="label_premiacao_segundo_sorteio_bold">_Premia\u00e7\u00e3o - 2º sorteio_</string>
+    <string name="label_premiados_segundo_sorteio_bold">_Premiados - 2º sorteio_</string>
+    <string name="label_ganhadores_regiao_primeiro_sorteio_bold">_Ganhadores por regi\u00e3o - 1º sorteio_</string>
+    <string name="label_ganhadores_regiao_segundo_sorteio_bold">_Ganhadores por regi\u00e3o - 2º sorteio_</string>
     <string name="label_nao_foi_dessa_vez">Não foi dessa vez :(</string>
     <string name="label_pode_comemorar">Pode comemorar,</string>
     <string name="label_voce_foi_premiado">você foi premiado!</string>
@@ -300,6 +307,11 @@
     <string name="label_mes_sorte">M\u00eas de sorte&#160;</string>
     <string name="label_mes_sorte_dois_pontos">M\u00eas de sorte:&#160;</string>
     <string name="label_mes_desejado">M\u00eas desejado</string>
+    <string name="label_aposta_ganhadora">%d aposta ganhadora</string>
+    <string name="label_apostas_ganhadoras">%d apostas ganhadoras</string>
+    <string name="label_texto_barra_texto">%s / %s</string>
+    <string name="label_arrecadacao_total_bold">_Arrecada\u00e7\u00e3o total_</string>
+    <string name="label_ganhadores_regiao_bold">_Ganhadores por regi\u00e3o_</string>
     <string-array name="dia_sorte_meses">
         <item>Janeiro</item>
         <item>Fevereiro</item>
