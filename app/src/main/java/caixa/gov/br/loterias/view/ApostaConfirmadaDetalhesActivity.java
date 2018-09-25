@@ -205,7 +205,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
 
     @Click
     protected void comprovanteLayout() {
-        if (isHistorico == false){
+        if (!isHistorico){
             if (apostaDTO.getSituacao().getValor() == SituacoesEnum.toLong( SituacoesEnum.PREMIO_PAGO )) {
                 pdfUtils.createComprovantePremioPdf( detalhesPremioDTO, ApostaConfirmadaDetalhesActivity.this );
             }else{
@@ -253,7 +253,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
     protected void init() {
         setupToolbar();
 
-        if(isHistorico == false){
+        if(!isHistorico){
             if (apostaDTO.getSituacao().getValor() == SituacoesEnum.toLong( SituacoesEnum.PREMIO_PAGO )){
                 getApostaComprovantePremio();
             }else{
@@ -308,7 +308,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
 
     private void updateComprovante(){
 
-        if(isHistorico == false){
+        if(!isHistorico){
             if (apostaDTO.getSituacao().getValor() == SituacoesEnum.toLong( SituacoesEnum.PREMIO_PAGO )){
                 comprovanteText.setText(detalhesPremioDTO.getNsbi());
             }else{

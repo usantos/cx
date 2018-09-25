@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EViewGroup;
@@ -20,10 +21,10 @@ import caixa.gov.br.loterias.view.listener.LotogolListener;
  * Created by joafilho on 09/01/2018.
  */
 @EViewGroup(R.layout.row_partida_lotogol)
-public class PartidaViewLotogol extends LinearLayout implements LotogolListener {
+public class PartidaViewLotogol extends RelativeLayout implements LotogolListener {
 
     @ViewById
-    LinearLayout rowPartidaLotogol;
+    RelativeLayout rowPartidaLotogol;
 
     @ViewById
     ItemEquipeViewLotogol lotogolTimeUm, lotogolTimeDois;
@@ -59,12 +60,9 @@ public class PartidaViewLotogol extends LinearLayout implements LotogolListener 
         String paisTime1 = (parametroPartida.getEquipe1().getIndicadorSelecao() ? "" : " / " + parametroPartida.getEquipe1().getSiglaPais());
         String paisTime2 = (parametroPartida.getEquipe2().getIndicadorSelecao() ? "" : " / " + parametroPartida.getEquipe2().getSiglaPais());
 
-//        lotogolTimeUm.getItemImage().setImageResource(R.drawable.time);
         EscudoEquipeUtil.setEscudo(this.getContext(), parametroPartida.getEquipe1(), lotogolTimeUm.getItemImage());
-
         lotogolTimeUm.getItemTitle().setText(ViewUtils.fromHtml("<strong>" + parametroPartida.getEquipe1().getNome() + "</strong>" + paisTime1));
 
-//        lotogolTimeDois.getItemImage().setImageResource(R.drawable.time);
         EscudoEquipeUtil.setEscudo(this.getContext(), parametroPartida.getEquipe2(), lotogolTimeDois.getItemImage());
         lotogolTimeDois.getItemTitle().setText(ViewUtils.fromHtml("<strong>" + parametroPartida.getEquipe2().getNome() + "</strong>" + paisTime2));
 
@@ -89,7 +87,7 @@ public class PartidaViewLotogol extends LinearLayout implements LotogolListener 
 
     }
 
-    public LinearLayout getRowPartidaLotogol() {
+    public RelativeLayout getRowPartidaLotogol() {
         return rowPartidaLotogol;
     }
 }

@@ -3,6 +3,7 @@ package caixa.gov.br.loterias.view.adapter;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import java.util.List;
 
@@ -30,7 +31,6 @@ public class LotogolAdapter extends RecyclerView.Adapter<LotogolAdapter.LotogolH
     @Override
     public LotogolHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         PartidaViewLotogol view = PartidaViewLotogol_.build(parent.getContext());
-
         return new LotogolHolder(view);
     }
 

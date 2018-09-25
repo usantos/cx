@@ -48,24 +48,7 @@ public class ItemRetanguloTextView extends RelativeLayout {
     }
 
     private void animateView(){
-        setAlpha(0.5f);
-        animate().alpha(1.0f).setDuration(200).setListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-            }
-        });
+        setAlpha(0.0f);
+        animate().alpha(1.0f).setDuration(200).start();
     }
 }

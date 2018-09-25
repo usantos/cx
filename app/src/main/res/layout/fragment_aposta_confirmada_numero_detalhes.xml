@@ -63,7 +63,7 @@
             android:textColor="?android:attr/textColorSecondary"
             android:textSize="12sp"
             android:textStyle="bold"
-            tools:text="25/08/2016 - 21h20" />
+            tools:text="25/08/2016" />
 
         <TextView
             android:id="@+id/resultTxt"
@@ -123,6 +123,7 @@
             android:layout_height="wrap_content"
             android:layout_alignBottom="@id/dataApostaTxt"
             android:layout_alignTop="@id/dataAposta"
+            android:layout_marginBottom="0dp"
             android:layout_marginEnd="10dp"
             android:layout_marginStart="10dp"
             android:layout_toEndOf="@id/dataApostaTxt"

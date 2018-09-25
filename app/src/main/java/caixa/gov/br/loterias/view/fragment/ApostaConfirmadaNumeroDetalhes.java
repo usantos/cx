@@ -59,7 +59,7 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 
         concursoTxt.setText(String.format(Locale.getDefault(), "%d", aposta.getConcursoAlvo()));
         if(StringUtils.isEmpty(aposta.getHoraEfetivacao())){
-            dataApostaTxt.setText(aposta.getDataEfetivacao());
+            dataApostaTxt.setText(ViewUtils.getDateAndHour(aposta.getDataEfetivacao(), "21:20"));
         }else{
             dataApostaTxt.setText(ViewUtils.getDateAndHour(aposta.getDataEfetivacao(), aposta.getHoraEfetivacao()));
         }

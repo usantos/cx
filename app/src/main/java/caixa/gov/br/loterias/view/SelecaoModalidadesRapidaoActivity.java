@@ -25,15 +25,17 @@ import caixa.gov.br.loterias.model.bo.RedirectNetwork;
 import caixa.gov.br.loterias.model.bo.RequestListener;
 import caixa.gov.br.loterias.model.bo.silce.dto.ModalidadeDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ModalidadeDTOResponse;
+import caixa.gov.br.loterias.model.bo.silce.dto.ModalidadeEnum;
 import caixa.gov.br.loterias.model.bo.silce.dto.ModalidadeEnumSelecaoModalidades;
 import caixa.gov.br.loterias.model.bean.TipoAposta;
+import caixa.gov.br.loterias.utils.EstiloModalidade;
 import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
 import caixa.gov.br.loterias.model.bo.MensagensNetwork;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.adapter.TiposApostasMultiplaSelecaoAdapter;
 import caixa.gov.br.loterias.view.custom.ExpandableHeightGridView;
 
-public class SelecaoModalidadesRapidaoActivity extends AppCompatActivity{
+public class SelecaoModalidadesRapidaoActivity extends AppCompatActivity {
 
     Button salvarButtonRapidaoSelecionados;
 
@@ -51,10 +53,10 @@ public class SelecaoModalidadesRapidaoActivity extends AppCompatActivity{
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        String arrayAsString =  getIntent().getExtras().getString("tiposAposta");
+        String arrayAsString = getIntent().getExtras().getString("tiposAposta");
         tiposApostasSalvas = Arrays.asList(new Gson().fromJson(arrayAsString, TipoAposta[].class));
 
-        salvarButtonRapidaoSelecionados = (Button)findViewById(R.id.salvarModalidadesApostaRapidaoSelececao);
+        salvarButtonRapidaoSelecionados = (Button) findViewById(R.id.salvarModalidadesApostaRapidaoSelececao);
 
         salvarButtonRapidaoSelecionados.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,7 +83,7 @@ public class SelecaoModalidadesRapidaoActivity extends AppCompatActivity{
 
 
     @Override
-    public boolean onSupportNavigateUp(){
+    public boolean onSupportNavigateUp() {
         finish();
         return true;
     }
@@ -119,20 +121,19 @@ public class SelecaoModalidadesRapidaoActivity extends AppCompatActivity{
         return super.onOptionsItemSelected(item);
     }
 
-    private void abrirTermosUso(){
+    private void abrirTermosUso() {
         Intent activity = new Intent(SelecaoModalidadesRapidaoActivity.this, TermosUsoActivity.class);
         startActivity(activity);
     }
 
 
-    private void gridViewTipoAposta(){
+    private void gridViewTipoAposta() {
         //mock tipo aposta
 //
         //gridview
 
 
-
-        ExpandableHeightGridView gridViewTiposAposta = (ExpandableHeightGridView)findViewById(R.id.gridviewTiposApostasRapidaoSelecionar);
+        ExpandableHeightGridView gridViewTiposAposta = (ExpandableHeightGridView) findViewById(R.id.gridviewTiposApostasRapidaoSelecionar);
         TiposApostasMultiplaSelecaoAdapter tiposApostasAdapter = new TiposApostasMultiplaSelecaoAdapter(this, this, tiposAposta);
         gridViewTiposAposta.setAdapter(tiposApostasAdapter);
         gridViewTiposAposta.setExpanded(true);
@@ -142,7 +143,7 @@ public class SelecaoModalidadesRapidaoActivity extends AppCompatActivity{
         if (ativo) {
             salvarButtonRapidaoSelecionados.setBackgroundColor(getResources().getColor(R.color.verdeazul));
             salvarButtonRapidaoSelecionados.setClickable(true);
-        }else {
+        } else {
             salvarButtonRapidaoSelecionados.setBackgroundColor(getResources().getColor(R.color.branco));
             salvarButtonRapidaoSelecionados.setClickable(false);
         }
@@ -160,8 +161,8 @@ public class SelecaoModalidadesRapidaoActivity extends AppCompatActivity{
                 loadViewProgress.dismiss();
                 modalidades = response.getPayload();
 
-                if (response.getRedirect() != null){
-                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), SelecaoModalidadesRapidaoActivity.this);
+                if (response.getRedirect() != null) {
+                    RedirectNetwork.checkRedirectSucesso(response.getRedirect(), SelecaoModalidadesRapidaoActivity.this);
                 }
                 atualizarLayout();
 
@@ -170,69 +171,70 @@ public class SelecaoModalidadesRapidaoActivity extends AppCompatActivity{
             @Override
             public void onErrorResponse(VolleyError error) {
                 loadViewProgress.dismiss();
-                RedirectNetwork.checkRedirect( error, SelecaoModalidadesRapidaoActivity.this );
+                RedirectNetwork.checkRedirect(error, SelecaoModalidadesRapidaoActivity.this);
             }
         });
     }
 
-    private void atualizarLayout(){
+    private void atualizarLayout() {
         montarArrayTipoApostas();
 
     }
 
-    private void montarArrayTipoApostas(){
-        for (ModalidadeDTO item : modalidades){
+    private void montarArrayTipoApostas() {
+        for (ModalidadeDTO item : modalidades) {
             TipoAposta tipoAposta = null;
-            if (!item.getDescricao().equals( "Dia de Sorte" )){
-                switch (ModalidadeEnumSelecaoModalidades.toString(item.getDescricao())) {
-                    case QUINA:
-                        tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo, R.color.quinaclaro, false, item.getValor(), item.getDescricaoEspecial());
-                        break;
-                    case LOTECA:
-                        tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo, R.color.lotecaclaro, false, item.getValor(), item.getDescricaoEspecial());
-                        break;
-                    case LOTOGOL:
-                        tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo, R.color.lotogolclaro, false, item.getValor(), item.getDescricaoEspecial());
-                        break;
-                    case LOTOFACIL:
-                        tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo, R.color.lotofacilclaro, false, item.getValor(), item.getDescricaoEspecial());
-                        break;
-                    case LOTOMANIA:
-                        tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo, R.color.lotomaniaclaro, false, item.getValor(), item.getDescricaoEspecial());
-                        break;
-                    case MEGA_SENA:
-                        tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo, R.color.megasenaclaro, false, item.getValor(), item.getDescricaoEspecial());
-                        break;
-                    case TIMEMANIA:
-                        tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo, R.color.timemaniaclaro, false, item.getValor(), item.getDescricaoEspecial());
-                        break;
-                    case DUPLA_SENA:
-                        tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo, R.color.duplasenaclaro, false, item.getValor(), item.getDescricaoEspecial());
-                        break;
-                    case FEDERAL:
-                        tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo, R.color.federalclaro, false, item.getValor(), item.getDescricaoEspecial());
-                        break;
-                }
-                if (tipoAposta != null){
-                    tiposAposta.add(tipoAposta);
-                }
+            switch (ModalidadeEnumSelecaoModalidades.toString(item.getDescricao())) {
+                case QUINA:
+                    tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_5, R.color.quinaclaro, false, item.getValor(), item.getDescricaoEspecial());
+                    break;
+                case LOTECA:
+                    tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_10, R.color.lotecaclaro, false, item.getValor(), item.getDescricaoEspecial());
+                    break;
+                case LOTOGOL:
+                    tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_7, R.color.lotogolclaro, false, item.getValor(), item.getDescricaoEspecial());
+                    break;
+                case LOTOFACIL:
+                    tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_6, R.color.lotofacilclaro, false, item.getValor(), item.getDescricaoEspecial());
+                    break;
+                case LOTOMANIA:
+                    tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_4, R.color.lotomaniaclaro, false, item.getValor(), item.getDescricaoEspecial());
+                    break;
+                case MEGA_SENA:
+                    tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_megasena, R.color.megasenaclaro, false, item.getValor(), item.getDescricaoEspecial());
+                    break;
+                case TIMEMANIA:
+                    tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_8, R.color.timemaniaclaro, false, item.getValor(), item.getDescricaoEspecial());
+                    break;
+                case DUPLA_SENA:
+                    tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_9, R.color.duplasenaclaro, false, item.getValor(), item.getDescricaoEspecial());
+                    break;
+                case FEDERAL:
+                    tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo, R.color.federalclaro, false, item.getValor(), item.getDescricaoEspecial());
+                    break;
+                case DIA_DE_SORTE:
+                    tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_2, R.color.diasorteclaro, false, item.getValor(), item.getDescricaoEspecial());
+                    break;
+            }
+            if (tipoAposta != null) {
+                tipoAposta.setTitulo(tipoAposta.getTitulo().toLowerCase());
+                tiposAposta.add(tipoAposta);
             }
         }
-        if (tiposAposta != null || tiposAposta.size()>0){
-            for(TipoAposta tipoAposta : tiposAposta){
-               for(TipoAposta tipoApostaSalva : tiposApostasSalvas){
-                   if(tipoApostaSalva.getTitulo().equals(tipoAposta.getTitulo())){
-                       tipoAposta.setSelect(tipoApostaSalva.getSelect());
-                   }
-               }
+        if (tiposAposta != null || tiposAposta.size() > 0) {
+            for (TipoAposta tipoAposta : tiposAposta) {
+                for (TipoAposta tipoApostaSalva : tiposApostasSalvas) {
+                    if (tipoApostaSalva.getTitulo().equals(tipoAposta.getTitulo())) {
+                        tipoAposta.setSelect(tipoApostaSalva.getSelect());
+                    }
+                }
             }
             gridViewTipoAposta();
 
 
         }
-        final ScrollView scrollModalides = (ScrollView)findViewById(R.id.scrollViewSelecaoModalidadesRapidao);
-        scrollModalides.post(new Runnable()
-        {
+        final ScrollView scrollModalides = (ScrollView) findViewById(R.id.scrollViewSelecaoModalidadesRapidao);
+        scrollModalides.post(new Runnable() {
             public void run() {
                 scrollModalides.fullScroll(ScrollView.FOCUS_UP);
             }

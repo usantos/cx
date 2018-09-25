@@ -18,7 +18,8 @@ public enum ModalidadeEnumSelecaoModalidades {
     @SerializedName("Mega-Sena")MEGA_SENA,
     @SerializedName("Quina")QUINA,
     @SerializedName("Timemania")TIMEMANIA,
-    @SerializedName("Federal")FEDERAL;
+    @SerializedName("Federal")FEDERAL,
+    @SerializedName("Dia de Sorte")DIA_DE_SORTE;
 
     public static String fromString(ModalidadeEnumSelecaoModalidades modalidade) {
         switch (modalidade) {
@@ -66,6 +67,8 @@ public enum ModalidadeEnumSelecaoModalidades {
                 return ModalidadeEnumSelecaoModalidades.DUPLA_SENA;
             case "Federal":
                 return ModalidadeEnumSelecaoModalidades.FEDERAL;
+            case "Dia de Sorte":
+                return ModalidadeEnumSelecaoModalidades.DIA_DE_SORTE;
             default:
                 return null;
         }

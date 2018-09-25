@@ -49,17 +49,16 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="16dp">
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp">
                     <caixa.gov.br.loterias.view.custom.ExpandableHeightGridView
                         android:id="@+id/gridviewTiposApostasRapidaoSelecionar"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:columnWidth="156dp"
                         android:numColumns="2"
                         android:verticalSpacing="17dp"
-                        android:horizontalSpacing="0dp"
-                        android:stretchMode="spacingWidthUniform"
+                        android:horizontalSpacing="10dp"
                         android:layout_marginTop="19dp"
                         android:isScrollContainer="false"
                         />

@@ -1120,6 +1120,7 @@ public class DBLoteriasCrud {
             db.delete(DBTabelasLoterias.DBParametroEquipe.NOME_TABELA, null, null);
             db.delete(DBTabelasLoterias.DBPartidaLotogol.NOME_TABELA, null, null);
             db.delete(DBTabelasLoterias.DBPartidaLoteca.NOME_TABELA, null, null);
+            db.delete(DBTabelasLoterias.DBMesDeSorte.NOME_TABELA, null, null);
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
         } finally {

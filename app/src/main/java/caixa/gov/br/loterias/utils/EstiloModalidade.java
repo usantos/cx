@@ -15,6 +15,7 @@ public class EstiloModalidade {
     private final int imagemCalendario;
     private final int imagemRelogio;
     private final int trevoBackground;
+    private final int trevo;
     private final int stringId;
     private final int themeId;
     private final int menuItemColor;
@@ -35,6 +36,7 @@ public class EstiloModalidade {
                 menuItemColor = R.color.branco;
                 iconValidadeComprovanteColor = R.color.black;
                 iconImpressoraColor = R.color.branco;
+                trevo = R.drawable.trevo_5;
                 break;
             case LOTECA:
                 corClara = R.color.lotecaclaro;
@@ -48,6 +50,7 @@ public class EstiloModalidade {
                 menuItemColor = R.color.branco;
                 iconValidadeComprovanteColor = R.color.black;
                 iconImpressoraColor = R.color.branco;
+                trevo = R.drawable.trevo_10;
                 break;
 //            case FEDERAL:
 //                corClara = R.color.federalclaro;
@@ -72,6 +75,7 @@ public class EstiloModalidade {
                 menuItemColor = R.color.branco;
                 iconValidadeComprovanteColor = R.color.black;
                 iconImpressoraColor = R.color.branco;
+                trevo = R.drawable.trevo_7;
                 break;
             case DUPLA_SENA:
                 corClara = R.color.duplasenaclaro;
@@ -85,6 +89,7 @@ public class EstiloModalidade {
                 menuItemColor = R.color.branco;
                 iconValidadeComprovanteColor = R.color.black;
                 iconImpressoraColor = R.color.branco;
+                trevo = R.drawable.trevo_9;
                 break;
             case LOTOFACIL:
                 corClara = R.color.lotofacilclaro;
@@ -98,6 +103,7 @@ public class EstiloModalidade {
                 menuItemColor = R.color.branco;
                 iconValidadeComprovanteColor = R.color.black;
                 iconImpressoraColor = R.color.branco;
+                trevo = R.drawable.trevo_6;
                 break;
             case LOTOMANIA:
                 corClara = R.color.lotomaniaclaro;
@@ -111,6 +117,7 @@ public class EstiloModalidade {
                 menuItemColor = R.color.branco;
                 iconValidadeComprovanteColor = R.color.black;
                 iconImpressoraColor = R.color.branco;
+                trevo = R.drawable.trevo_4;
                 break;
             case TIMEMANIA:
                 corClara = R.color.timemaniaclaro;
@@ -124,8 +131,9 @@ public class EstiloModalidade {
                 menuItemColor = R.color.megasenamedio;
                 iconValidadeComprovanteColor = R.color.megasenamedio;
                 iconImpressoraColor = R.color.megasenamedio;
+                trevo = R.drawable.trevo_8;
                 break;
-            case DIA_DE_SORTE: //TODO:diasorte - Solicitar icones
+            case DIA_DE_SORTE:
                 corClara = R.color.diasorteclaro;
                 corMedia = R.color.diasortemedio;
                 corEscura = R.color.diasorteescuro;
@@ -137,6 +145,7 @@ public class EstiloModalidade {
                 menuItemColor = R.color.branco;
                 iconValidadeComprovanteColor = R.color.black;
                 iconImpressoraColor = R.color.branco;
+                trevo = R.drawable.trevo_2;
                 break;
             default: {
                 //MEGASENA
@@ -151,6 +160,7 @@ public class EstiloModalidade {
                 menuItemColor = R.color.branco;
                 iconValidadeComprovanteColor = R.color.black;
                 iconImpressoraColor = R.color.branco;
+                trevo = R.drawable.trevo_megasena;
             }
         }
 
@@ -198,5 +208,9 @@ public class EstiloModalidade {
 
     public int getIconImpressoraColor() {
         return iconImpressoraColor;
+    }
+
+    public int getTrevo() {
+        return trevo;
     }
 }

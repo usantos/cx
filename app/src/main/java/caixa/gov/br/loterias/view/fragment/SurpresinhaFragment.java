@@ -357,7 +357,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
 
     private void initDiaDeSorte() {
         escolhaItemImageView.setImageDrawable(getResources().getDrawable(R.drawable.agrupar_1));
-        infoItemSurpresaTextView.setText(R.string.label_mes_surpresa);
+        infoItemSurpresaTextView.setText(R.string.label_mes_sorte);
         infoItemSurpresaTextView.setTextColor(getResources().getColor(R.color.diasortemedio));
         escolherOutroItemBtn.setText(R.string.label_escolher_outro_mes);
         escolherOutroItemBtn.setVisibility(View.GONE);
