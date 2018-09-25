@@ -30,6 +30,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
 
     CompraDTO compraDTO;
     List<ApostaDTO> listaAposta = new ArrayList<>();
+    private ArrayList<String> tiposApostas = new ArrayList<>();
     int ordemCompra;
 
     @Override
@@ -104,7 +105,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
 
     private void montarLayout(){
         ListView listView = (ListView)findViewById(R.id.gridviewDetalhesCompras);
-        ListaComprasDetalhesAdapter listaAdapter = new ListaComprasDetalhesAdapter(this, this, listaAposta, compraDTO, ordemCompra);
+        ListaComprasDetalhesAdapter listaAdapter = new ListaComprasDetalhesAdapter(this, this, listaAposta, compraDTO, ordemCompra, tiposApostas);
         listView.setAdapter(listaAdapter);
 
     }
@@ -119,6 +120,12 @@ public class DetalhesComprasActivity extends AppCompatActivity {
             public void onResponse(AgrupadorApostaCompraDTOResponse response) {
                 loadViewProgress.dismiss();
                 listaAposta = response.getPayload().getApostas();
+
+                tiposApostas = new ArrayList<>();
+                for(ApostaDTO aposta : listaAposta){
+                    tiposApostas.add(aposta.getModalidade().toString());
+                }
+
                 montarLayout();
                 if (response.getRedirect() != null){
                     RedirectNetwork.checkRedirectSucesso( response.getRedirect(), DetalhesComprasActivity.this);

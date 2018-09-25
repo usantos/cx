@@ -236,9 +236,6 @@ public class ListaComprasActivity extends AppCompatActivity {
             }
         });
 
-
-
-
     }
 
     private void getComprasScroll(){

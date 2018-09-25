@@ -48,6 +48,7 @@
                     android:background="@drawable/background_gradient_verde">
 
                     <TextView
+                        android:id="@+id/ttvTituloAno"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingTop="40dp"

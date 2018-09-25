@@ -52,6 +52,7 @@
             android:id="@+id/LinearLayoutGroupComprasCenter"
             >
             <TextView
+                android:id="@+id/ttvTipoJogo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="14.2sp"
