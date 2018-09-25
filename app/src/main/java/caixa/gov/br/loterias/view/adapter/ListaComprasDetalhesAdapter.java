@@ -11,6 +11,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import caixa.gov.br.loterias.R;
@@ -18,6 +19,7 @@ import caixa.gov.br.loterias.model.bo.silce.dto.ApostaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.CompraDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ModalidadeEnum;
 import caixa.gov.br.loterias.utils.EstiloModalidade;
+import caixa.gov.br.loterias.utils.StringUtils;
 import caixa.gov.br.loterias.view.custom.ExpandableHeightRecyclerView;
 
 /**
@@ -32,13 +34,15 @@ public class ListaComprasDetalhesAdapter extends BaseAdapter {
     List<ApostaDTO> listaAposta;
     private final CompraDTO compraDTO;
     private final int ordemCompra;
-    // 1
-    public ListaComprasDetalhesAdapter(Activity activity, Context context, List<ApostaDTO> listaAposta, CompraDTO compraDTO, int ordemCompra) {
+    private ArrayList<String> tipos;
+
+    public ListaComprasDetalhesAdapter(Activity activity, Context context, List<ApostaDTO> listaAposta, CompraDTO compraDTO, int ordemCompra, ArrayList<String> tipos) {
         this.mContext = context;
         this.activity = activity;
         this.listaAposta = listaAposta;
         this.compraDTO = compraDTO;
         this.ordemCompra = ordemCompra;
+        this.tipos = tipos;
     }
 
     // 2
@@ -168,6 +172,22 @@ public class ListaComprasDetalhesAdapter extends BaseAdapter {
             convertView = layoutInflater.inflate(R.layout.list_group_compras, null);
             FrameLayout setaIndicador = (FrameLayout) convertView.findViewById(R.id.setaComprasGroup);
             setaIndicador.setVisibility(View.INVISIBLE);
+
+            TextView ttvTipoJogo = convertView.findViewById(R.id.ttvTipoJogo);
+            StringBuilder modalidade = new StringBuilder();
+            for(String tipo : tipos){
+                tipo = tipo.replace("_", " ");
+                tipo = StringUtils.capitalizer(tipo);
+                if(!modalidade.toString().contains(tipo)) {
+                    if (!"".equals(modalidade.toString())) {
+                        modalidade.append(", ");
+                    }
+                    modalidade.append(tipo);
+                }
+            }
+            if(!"".equals(modalidade.toString())){
+                ttvTipoJogo.setText(modalidade.toString());
+            }
 
             TextView dataCompra = (TextView) convertView.findViewById(R.id.dataCompra);
             dataCompra.setText(compraDTO.getDataEfetivacaoDebito());

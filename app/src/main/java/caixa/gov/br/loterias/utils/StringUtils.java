@@ -3,6 +3,7 @@ package caixa.gov.br.loterias.utils;
 public class StringUtils {
 
     public static String capitalizer(String texto){
+        texto = texto.toLowerCase();
         StringBuilder stringBuilder = new StringBuilder();
         char caracteres[] = texto.toCharArray();
         boolean primeiroCaracter = true;
