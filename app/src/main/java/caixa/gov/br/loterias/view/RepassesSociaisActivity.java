@@ -83,6 +83,12 @@ public class RepassesSociaisActivity extends SettingToolbarActivity {
 
     private void setLayout(){
 
+        TextView ttvTituloAno = findViewById(R.id.ttvTituloAno);
+        String dataBase[] = repasseOBj.getDataBase().split("/");
+        String texto = "Em %, as Loterias já destinaram";
+        texto = texto.replace("%", dataBase[dataBase.length - 1]);
+        ttvTituloAno.setText(texto);
+
         String htmlTextViewRepasseQuadro1 = "<html>Para cada <br><strong><font color=\"#ff7f00\">R$1,00</font></strong><br>apostados nas<br>loterias federais</html>";
         String htmlTextViewRepasseQuadro2 = "<html><strong><font color=\"#345ca5\">R$0,48*</font></strong><br>são destinados<br>a programas sociais</html>";
         String htmlTextButtonAposte = "_Aposte_\ne ajude ainda mais";

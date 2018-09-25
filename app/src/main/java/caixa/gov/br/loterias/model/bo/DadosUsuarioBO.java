@@ -145,13 +145,6 @@ public class DadosUsuarioBO extends BaseBO {
         salvarNomeUsuairo("");
     }
 
-    public static boolean existeUsuario(){
-        if(!"".equals(obterNome())){
-            return true;
-        }
-        return false;
-    }
-
     public static void updateFecharIntroducao(Activity activity, Boolean status){
         SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
