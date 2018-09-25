@@ -33,7 +33,6 @@ import caixa.gov.br.loterias.model.bo.silce.dto.ApostaDTO;
 
 import caixa.gov.br.loterias.model.bo.silce.dto.UsuarioLogadoResponse;
 import caixa.gov.br.loterias.model.dao.DBLoteriasCrud;
-import caixa.gov.br.loterias.model.sp.InformacoesUsuarioSP;
 import caixa.gov.br.loterias.utils.AppUtils;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.CadastrarActivity_;
@@ -111,8 +110,8 @@ public class LoginFragment extends Fragment {
                                         cpf = zeros.toString();
                                     }
 
-                                    InformacoesUsuarioSP.salvarCpfUsuario(cpf);
-                                    InformacoesUsuarioSP.salvarNomeUsuairo(jsonObject.getString("name"));
+                                    DadosUsuarioBO.salvarCpfUsuario(cpf);
+                                    DadosUsuarioBO.salvarNomeUsuairo(jsonObject.getString("name"));
                                 }catch (JSONException e){
                                     e.printStackTrace();
                                 }

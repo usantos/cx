@@ -3,6 +3,7 @@ package caixa.gov.br.loterias.model.sp;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import caixa.gov.br.loterias.model.bo.DadosUsuarioBO;
 import caixa.gov.br.loterias.utils.Aplicacao;
 
 public class RapidaoSP {
@@ -13,7 +14,7 @@ public class RapidaoSP {
         Context context = Aplicacao.application.getApplicationContext();
         if(context != null){
             SharedPreferences sharedPreferences = context.getSharedPreferences(RAPIDAO_KEY, Context.MODE_PRIVATE);
-            return sharedPreferences.getInt(InformacoesUsuarioSP.obterCpf(), valor);
+            return sharedPreferences.getInt(DadosUsuarioBO.obterCpf(), valor);
         }
         return valor;
     }
@@ -23,7 +24,7 @@ public class RapidaoSP {
         if(context != null){
             SharedPreferences sharedPreferences = context.getSharedPreferences(RAPIDAO_KEY, Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putInt(InformacoesUsuarioSP.obterCpf(), valor);
+            editor.putInt(DadosUsuarioBO.obterCpf(), valor);
             editor.apply();
         }
     }

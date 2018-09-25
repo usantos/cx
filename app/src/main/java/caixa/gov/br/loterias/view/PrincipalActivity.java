@@ -62,7 +62,6 @@ import caixa.gov.br.loterias.model.bo.silce.dto.RepassometroDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.RepassometroDTOResponse;
 import caixa.gov.br.loterias.model.dao.DBLoteriasHelper;
 import caixa.gov.br.loterias.model.sp.CarrinhoSP;
-import caixa.gov.br.loterias.model.sp.InformacoesUsuarioSP;
 import caixa.gov.br.loterias.utils.EstiloModalidade;
 import caixa.gov.br.loterias.utils.ExpandableListDataSideMenu;
 import caixa.gov.br.loterias.utils.StringUtils;
@@ -114,7 +113,7 @@ public class PrincipalActivity extends AppCompatActivity
     public void init() {
         setSupportActionBar(toolbar);
 
-        String separarNome[] = InformacoesUsuarioSP.obterNome().toLowerCase().split(" ");
+        String separarNome[] = DadosUsuarioBO.obterNome().toLowerCase().split(" ");
         String nomeUsuario = StringUtils.capitalizer(separarNome[0]+" "+separarNome[separarNome.length - 1]);
 
         String iniciais = "";
@@ -385,7 +384,7 @@ public class PrincipalActivity extends AppCompatActivity
                         public void onResponse(NetworkResponse response) {
                             KeycloakBO_.getInstance_(PrincipalActivity.this).logout(PrincipalActivity.this);
                             loadViewProgress.dismiss();
-                            InformacoesUsuarioSP.limparRegistros();
+                            DadosUsuarioBO.limparRegistros();
                             startActivity(new Intent(PrincipalActivity.this, LoginActivity.class));
                             finish();
                         }

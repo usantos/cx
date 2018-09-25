@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.android.volley.NetworkResponse;
+import com.google.gson.Gson;
 
 import org.androidannotations.annotations.EBean;
 
@@ -26,6 +27,7 @@ import caixa.gov.br.loterias.model.bo.silce.dto.ListCartaoDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.RetornoPadraoDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.UsuarioLogadoResponse;
 import caixa.gov.br.loterias.model.bo.silce.internals.GsonRequest;
+import caixa.gov.br.loterias.utils.Aplicacao;
 
 import static org.androidannotations.annotations.EBean.Scope.Singleton;
 
@@ -37,6 +39,9 @@ import static org.androidannotations.annotations.EBean.Scope.Singleton;
 public class DadosUsuarioBO extends BaseBO {
 
     private static final String USUARIO_KEY = "USUARIO_KEY";
+
+    private static final String NOME = "NOME";
+    private static final String CPF = "CPF";
 
     public void cartoes(final RequestListener<ListCartaoDTOResponse> listener) {
         LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
@@ -95,6 +100,56 @@ public class DadosUsuarioBO extends BaseBO {
 
         request.setErrorListener(interceptError(request, headers, listener));
         silceConnection.request(request);
+    }
+
+    public static void salvarNomeUsuairo(String name) {
+        Context context = Aplicacao.application.getApplicationContext();
+        if(context != null){
+            SharedPreferences sharedPreferences = context.getSharedPreferences(USUARIO_KEY,  Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString(NOME, name);
+            editor.apply();
+        }
+    }
+
+    public static String obterNome() {
+        Context context = Aplicacao.application.getApplicationContext();
+        if(context != null){
+            SharedPreferences sharedPreferences = context.getSharedPreferences(USUARIO_KEY, Context.MODE_PRIVATE);
+            return sharedPreferences.getString(NOME, "");
+        }
+        return "";
+    }
+
+    public static void salvarCpfUsuario(String cpf) {
+        Context context = Aplicacao.application.getApplicationContext();
+        if(context != null){
+            SharedPreferences sharedPreferences = context.getSharedPreferences(USUARIO_KEY, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString(CPF, cpf);
+            editor.apply();
+        }
+    }
+
+    public static String obterCpf() {
+        Context context = Aplicacao.application.getApplicationContext();
+        if(context != null){
+            SharedPreferences sharedPreferences = context.getSharedPreferences(USUARIO_KEY, Context.MODE_PRIVATE);
+            return sharedPreferences.getString(CPF, "");
+        }
+        return "";
+    }
+
+    public static void limparRegistros() {
+        salvarCpfUsuario("");
+        salvarNomeUsuairo("");
+    }
+
+    public static boolean existeUsuario(){
+        if(!"".equals(obterNome())){
+            return true;
+        }
+        return false;
     }
 
     public static void updateFecharIntroducao(Activity activity, Boolean status){
@@ -181,5 +236,4 @@ public class DadosUsuarioBO extends BaseBO {
         request.setErrorListener(interceptError(request, headers, listener));
         silceConnection.request(request);
     }
-
 }

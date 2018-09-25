@@ -76,6 +76,7 @@ public class GsonRequest<REQ, RSP> extends JsonRequest<RSP> {
 
     @Override
     protected void deliverResponse(RSP response) {
+        Log.i("caixa", "Solicitando resposta");
         if(listener != null){
             listener.onResponse(response);
         }
@@ -83,6 +84,7 @@ public class GsonRequest<REQ, RSP> extends JsonRequest<RSP> {
 
     @Override
     public void deliverError(VolleyError error) {
+        Log.i("caixa", "Solicitando resposta");
         if (error != null && mErrorListener != null){
             mErrorListener.onErrorResponse(error);
         }
