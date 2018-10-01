@@ -76,7 +76,7 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostasConfi
 
 //        if (context.getString(R.string.label_efetivada).equalsIgnoreCase(aposta.getSituacao().getDescricao())) {
 
-        if (isHistorico == false) {
+        if (!isHistorico) {
             holder.resultBtnLayout.setVisibility(View.VISIBLE);
             holder.resultBtnLayout.setOnClickListener(holder);
             holder.resultBtn.setOnClickListener(holder);

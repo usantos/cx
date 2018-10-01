@@ -23,7 +23,7 @@ import java.util.Locale;
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.ApostaBO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostaDTO;
-import caixa.gov.br.loterias.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
+import caixa.gov.br.loterias.utils.AppUtils;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.utils.helper.ConferirResultadoHelper;
 import caixa.gov.br.loterias.view.adapter.DezenasAdapter;
@@ -40,13 +40,13 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
     protected ApostaBO apostaBO;
 
     @ViewById
-    protected TextView concursoTxt, quantidadeApostadasTxt, dataApostaTxt, resultTxt, modalidadeTxt, apostaTrocaTxt, timeCoracaoTxt;
+    protected TextView concursoTxt, quantidadeApostadasTxt, dataApostaTxt, resultTxt, modalidadeTxt, apostaTrocaTxt, informacaoAdicionalTxt, labelInformacaoAdicionalTxt;
 
     @ViewById
     protected Button conferirResultadoButton;
 
     @ViewById
-    protected RelativeLayout timeCoracaoLayout;
+    protected RelativeLayout informacaoAdicionalLayout;
 
     @ViewById
     protected RecyclerView dezenasRecyclerView;
@@ -82,8 +82,12 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
             quantidadeApostadasTxt.setText(textoTeimosinha);
         }
         if (aposta.getTimeDoCoracao() != null) {
-            timeCoracaoLayout.setVisibility(View.VISIBLE);
-            timeCoracaoTxt.setText(aposta.getTimeDoCoracao().getNome());
+            informacaoAdicionalLayout.setVisibility(View.VISIBLE);
+            informacaoAdicionalTxt.setText(aposta.getTimeDoCoracao().getNome());
+        }else if(aposta.getMesDeSorte() != null && aposta.getMesDeSorte().getNumero() != null){
+            informacaoAdicionalLayout.setVisibility(View.VISIBLE);
+            labelInformacaoAdicionalTxt.setText(R.string.label_mes_sorte);
+            informacaoAdicionalTxt.setText(aposta.getMesDeSorte().getNome());
         }
         if (getActivity().getString(R.string.label_efetivada).equalsIgnoreCase(aposta.getSituacao().getDescricao())) {
             conferirResultadoButton.setVisibility(View.VISIBLE);
@@ -94,29 +98,9 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
     private void initdezenasRecyclerView() {
 
         if (!aposta.getNumerosSelecionados().isEmpty()) {
-            dezenasRecyclerView.setAdapter(new DezenasAdapter(listIntegerToListString()));
+            dezenasRecyclerView.setAdapter(new DezenasAdapter(AppUtils.listIntegerToListString(aposta.getNumerosSelecionados())));
             dezenasRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         }
-    }
-
-    private List<String> listIntegerToListString() {
-
-        List<String> lines = new ArrayList<>();
-        StringBuilder lineSB = new StringBuilder();
-
-        for (int i = 0; i < aposta.getNumerosSelecionados().size(); i++) {
-            if (i == 0) {
-                lineSB.append(ViewUtils.getNumberIntegerToString(aposta.getNumerosSelecionados().get(i)));
-            } else if (i % 5 == 0) {
-                lines.add(lineSB.toString());
-                lineSB = new StringBuilder();
-                lineSB.append(ViewUtils.getNumberIntegerToString(aposta.getNumerosSelecionados().get(i)));
-            } else {
-                lineSB.append(String.format(" - %s", ViewUtils.getNumberIntegerToString(aposta.getNumerosSelecionados().get(i))));
-            }
-        }
-        lines.add(lineSB.toString());
-        return lines;
     }
 
     @Click(R.id.conferirResultadoButton)

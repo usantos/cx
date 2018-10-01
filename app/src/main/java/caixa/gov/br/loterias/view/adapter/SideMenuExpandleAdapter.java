@@ -49,7 +49,7 @@ public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int listPosition, final int expandedListPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
-        final String expandedListText = (String) getChild(listPosition, expandedListPosition);
+         final String expandedListText = (String) getChild(listPosition, expandedListPosition);
         if (convertView == null) {
             LayoutInflater layoutInflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -127,6 +127,7 @@ public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
                 imageViewGroup.setImageResource(R.drawable.menu4_rapidao);
                 listTitleTextView.setTextColor(context.getResources().getColor(R.color.cinza));
                 convertView.setBackgroundColor(context.getResources().getColor(R.color.branco));
+                imagemMaisOpcoes.setVisibility(View.GONE);
                 convertView.findViewById(R.id.layoutItem).setBackgroundResource(R.drawable.drawer_linha_divisao_bg);
                 break;
             case 4:

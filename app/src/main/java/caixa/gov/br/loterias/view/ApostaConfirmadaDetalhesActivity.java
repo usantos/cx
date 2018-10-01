@@ -86,9 +86,6 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
     @Extra
     protected ApostaDTO apostaDTO;
 
-
-
-
     @Extra
     protected boolean isHistorico;
 
@@ -206,13 +203,13 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
     @Click
     protected void comprovanteLayout() {
         if (!isHistorico){
-            if (apostaDTO.getSituacao().getValor() == SituacoesEnum.toLong( SituacoesEnum.PREMIO_PAGO )) {
+            if (apostaDTO.getSituacao().getValor().equals(SituacoesEnum.toLong(SituacoesEnum.PREMIO_PAGO))) {
                 pdfUtils.createComprovantePremioPdf( detalhesPremioDTO, ApostaConfirmadaDetalhesActivity.this );
             }else{
                 pdfUtils.createComprovanteApostaPdf(comprovanteApostaDTO, ApostaConfirmadaDetalhesActivity.this);
             }
         }else{
-            if (apostaDTO.getSituacao().getValor() == SituacoesHistoricoEnum.toLong( SituacoesHistoricoEnum.PREMIO_PAGO )){
+            if (apostaDTO.getSituacao().getValor().equals(SituacoesHistoricoEnum.toLong(SituacoesHistoricoEnum.PREMIO_PAGO))){
                 pdfUtils.createComprovanteHistoricoPremioPdf(detalhesHistoricoPremioDTO, ApostaConfirmadaDetalhesActivity.this);
             }
         }
@@ -254,13 +251,13 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
         setupToolbar();
 
         if(!isHistorico){
-            if (apostaDTO.getSituacao().getValor() == SituacoesEnum.toLong( SituacoesEnum.PREMIO_PAGO )){
+            if (apostaDTO.getSituacao().getValor().equals(SituacoesEnum.toLong(SituacoesEnum.PREMIO_PAGO))){
                 getApostaComprovantePremio();
             }else{
                 getApostaComprovante();
             }
         }else{
-            if (apostaDTO.getSituacao().getValor() == SituacoesHistoricoEnum.toLong( SituacoesHistoricoEnum.PREMIO_PAGO )){
+            if (apostaDTO.getSituacao().getValor().equals(SituacoesHistoricoEnum.toLong(SituacoesHistoricoEnum.PREMIO_PAGO))){
                 getApostaComprovanteHistoricoPremio();
             }else{
                 comprovanteLayout.setVisibility(View.GONE);
@@ -309,14 +306,14 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
     private void updateComprovante(){
 
         if(!isHistorico){
-            if (apostaDTO.getSituacao().getValor() == SituacoesEnum.toLong( SituacoesEnum.PREMIO_PAGO )){
+            if (apostaDTO.getSituacao().getValor().equals(SituacoesEnum.toLong(SituacoesEnum.PREMIO_PAGO))){
                 comprovanteText.setText(detalhesPremioDTO.getNsbi());
             }else{
                 comprovanteText.setText(comprovanteApostaDTO.getNsbi());
             }
         }else{
-            if (apostaDTO.getSituacao().getValor() == SituacoesHistoricoEnum.toLong( SituacoesHistoricoEnum.PREMIO_PAGO )){
-                comprovanteText.setText("NSU Pagamento: " +String.valueOf(detalhesHistoricoPremioDTO.getPremioDTO().getNsuPagamento()));
+            if (apostaDTO.getSituacao().getValor().equals(SituacoesHistoricoEnum.toLong(SituacoesHistoricoEnum.PREMIO_PAGO))){
+                comprovanteText.setText(getString(R.string.label_nsu_pagamento_nsu, String.valueOf(detalhesHistoricoPremioDTO.getPremioDTO().getNsuPagamento())));
             }
         }
     }
@@ -397,7 +394,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
                 fragment = ApostaConfirmadaPartidaFragment_.builder().aposta(apostaDTO).loteca(Boolean.TRUE).build();
                 break;
             default:
-                if (apostaDTO.getSituacao().getValor() == SituacoesEnum.toLong( SituacoesEnum.PREMIO_PAGO )) {
+                if (apostaDTO.getSituacao().getValor().equals(SituacoesEnum.toLong(SituacoesEnum.PREMIO_PAGO))) {
 //                    fragment = ApostaConfirmadaNumeroDetalhesPremioPago_.builder().aposta(apostaDTO).resultadoConcursoDTO(resultadoConcursoDTO).build();
                     return;
                 } else {

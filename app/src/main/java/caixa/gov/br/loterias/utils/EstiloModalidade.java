@@ -140,7 +140,7 @@ public class EstiloModalidade {
                 imagemCalendario = R.drawable.rectangle_6_copy_5;
                 imagemRelogio = R.drawable.shape_3;
                 trevoBackground = R.drawable.background_trapeze_dia_sorte;
-                themeId = R.style.AppTheme_Modalidade_DiaSorte;
+                themeId = R.style.AppTheme_Modalidade_DiaDeSorte;
                 stringId = R.string.label_dia_de_sorte;
                 menuItemColor = R.color.branco;
                 iconValidadeComprovanteColor = R.color.black;

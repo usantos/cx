@@ -37,6 +37,7 @@
     <string name="ok">OK</string>
     <string name="label_sim">Sim</string>
     <string name="label_nao">Não</string>
+    <string name="label_compra_valor">Compra %d</string>
     <string name="label_atencao">Atenção</string>
     <string name="tituloSalvarAposta">Salve esta aposta :)</string>
     <string name="label_de_nome">Dê um nome</string>
@@ -198,6 +199,7 @@
     <string name="label_selecione_mes_ano">Selecione o mês e ano</string>
     <string name="label_selecione_mes">Selecione o mês</string>
     <string name="label_aposta_concurso">Conc. %d</string>
+    <string name="label_aposta_concurso_bold">Conc. _%d_</string>
     <string name="label_aposta_concursos">Conc. %d a %d</string>
     <string name="label_adicionar">Adicionar</string>
     <string name="label_adicionar_carrinho_apostas">ao carrinho de apostas</string>
@@ -281,6 +283,7 @@
     <string name="label_acertos">acertos</string>
     <string name="label_sucesso">Sucesso</string>
     <string name="label_otimo_novo_nome_sua_aposta">Ótimo! o novo nome da sua aposta é</string>
+    <string name="label_nsu_pagamento_nsu">NSU Pagamento: %s</string>
 
     <!-- Loterica Resgate Prêmio -->
     <string name="label_loterica_minusculo">lotérica</string>
@@ -304,7 +307,7 @@
     <string name="dia_sorte_escolha_mes">Escolha o _m\u00eas_ de prefer\u00eancia</string>
     <string name="label_mes_surpresa">M\u00eas surpresa</string>
     <string name="label_escolher_outro_mes">Escolher outro m\u00eas</string>
-    <string name="label_mes_sorte">M\u00eas de sorte&#160;</string>
+    <string name="label_mes_sorte">M\u00eas de Sorte&#160;</string>
     <string name="label_mes_sorte_dois_pontos">M\u00eas de sorte:&#160;</string>
     <string name="label_mes_desejado">M\u00eas desejado</string>
     <string name="label_aposta_ganhadora">%d aposta ganhadora</string>
@@ -312,6 +315,7 @@
     <string name="label_texto_barra_texto">%s / %s</string>
     <string name="label_arrecadacao_total_bold">_Arrecada\u00e7\u00e3o total_</string>
     <string name="label_ganhadores_regiao_bold">_Ganhadores por regi\u00e3o_</string>
+    <string name="label_tres_interrogacoes">\???\</string>
     <string-array name="dia_sorte_meses">
         <item>Janeiro</item>
         <item>Fevereiro</item>

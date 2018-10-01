@@ -3,6 +3,7 @@ package caixa.gov.br.loterias.utils;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -13,6 +14,8 @@ import android.widget.EditText;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import caixa.gov.br.loterias.R;
 
@@ -101,6 +104,46 @@ public class AppUtils {
             return editText.getText().toString();
         }
         return null;
+    }
+
+    public static List<String> listIntegerToListString(List<Integer> lista) {
+
+        List<String> lines = new ArrayList<>();
+        StringBuilder lineSB = new StringBuilder();
+
+        for (int i = 0; i < lista.size(); i++) {
+            if (i == 0) {
+                lineSB.append(ViewUtils.getNumberIntegerToString(lista.get(i)));
+            } else if (i % 5 == 0) {
+                lines.add(lineSB.toString());
+                lineSB = new StringBuilder();
+                lineSB.append(ViewUtils.getNumberIntegerToString(lista.get(i)));
+            } else {
+                lineSB.append(String.format(" - %s", ViewUtils.getNumberIntegerToString(lista.get(i))));
+            }
+        }
+        lines.add(lineSB.toString());
+        return lines;
+    }
+
+    public static List<String> listDezenasSurpresinha(int size) {
+
+        List<String> lines = new ArrayList<>();
+        StringBuilder lineSB = new StringBuilder();
+
+        for (int i = 0; i < size; i++) {
+            if (i == 0) {
+                lineSB.append("XX");
+            } else if (i % 5 == 0) {
+                lines.add(lineSB.toString());
+                lineSB = new StringBuilder();
+                lineSB.append("XX");
+            } else {
+                lineSB.append(String.format(" - %s", "XX"));
+            }
+        }
+        lines.add(lineSB.toString());
+        return lines;
     }
 
 }

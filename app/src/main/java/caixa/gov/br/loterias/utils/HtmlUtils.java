@@ -194,6 +194,11 @@ public class HtmlUtils {
                     htmlBodyList = ViewUtils.replaceNullable(htmlBodyList, BODY_INFORMACAO_APOSTA,
                             aposta.getTimeDoCoracao().getNome() + "/" + aposta.getTimeDoCoracao().getUf());
                     sbHtmlBodyList.append(htmlBodyList);
+                } else if (aposta.getMesDeSorte() != null) {
+                    htmlBodyList = getContentOfFile(FILE_PATH_COMPROVANTE_LISTA_CORPO_NUMERICO, context);
+                    htmlBodyList = ViewUtils.replaceNullable(htmlBodyList, BODY_INFORMACAO_APOSTA,
+                            context.getString(R.string.label_mes_sorte_dois_pontos) + aposta.getMesDeSorte().getNome());
+                    sbHtmlBodyList.append(htmlBodyList);
                 }
                 return sbHtmlBodyList.toString();
         }
