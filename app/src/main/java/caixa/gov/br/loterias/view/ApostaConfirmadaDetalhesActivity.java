@@ -86,9 +86,6 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
     @Extra
     protected ApostaDTO apostaDTO;
 
-
-
-
     @Extra
     protected boolean isHistorico;
 
