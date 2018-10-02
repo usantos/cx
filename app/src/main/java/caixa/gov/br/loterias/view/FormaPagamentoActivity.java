@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -20,6 +21,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
 import com.mercadopago.callbacks.Callback;
 import com.mercadopago.core.MercadoPago;
 import com.mercadopago.model.ApiException;
@@ -43,6 +45,7 @@ import caixa.gov.br.loterias.model.bo.DadosUsuarioBO;
 import caixa.gov.br.loterias.model.bo.DadosUsuarioBO_;
 import caixa.gov.br.loterias.model.bo.RedirectNetwork;
 import caixa.gov.br.loterias.model.bo.RequestListener;
+import caixa.gov.br.loterias.model.bo.silce.dto.CarrinhoDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ListCartaoDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.RetornoCartao;
 import caixa.gov.br.loterias.model.bo.silce.dto.RetornoPadraoDTO;
@@ -68,10 +71,24 @@ public class FormaPagamentoActivity extends SettingToolbarActivity implements Fo
         
         configuraClickBotoes();
         callWebservice();
+        recebendoInformacoes();
 
 //        mockFormasPagamento();
 
         ViewUtils.organizaTabLayout(this, R.id.formaPagamentoMainLayout, R.id.formasPagamentoRecyclerView, R.id.formaPagamentoScrollView);
+    }
+
+    private void recebendoInformacoes() {
+        try {
+            String json = getIntent().getExtras().getString("CARRINHO");
+            Gson gson = new Gson();
+            CarrinhoDTO carrinhoDTO = gson.fromJson(json, CarrinhoDTO.class);
+            TextView valorTotalCarrinho = findViewById(R.id.valorTotalCarrinho);
+            String valor = ViewUtils.getMoedaFormat(carrinhoDTO.getValorTotal());
+            valorTotalCarrinho.setText(valor);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private void mockFormasPagamento(){
@@ -153,11 +170,11 @@ public class FormaPagamentoActivity extends SettingToolbarActivity implements Fo
             callWebservice();
         }
     }
+
     @Override
     public void itemRemoved() {
         ViewUtils.organizaTabLayout(this, R.id.formaPagamentoMainLayout, R.id.formasPagamentoRecyclerView, R.id.formaPagamentoScrollView);
     }
-
 
     private void configuraClickBotoes() {
         ((Button) findViewById(R.id.botaoAvancarPagamento)).setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.apostarAutorizarCobranca)));
