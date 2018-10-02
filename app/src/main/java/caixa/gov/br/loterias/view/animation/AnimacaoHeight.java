@@ -1,53 +1,60 @@
 package caixa.gov.br.loterias.view.animation;
 
-import android.animation.Animator;
-import android.animation.ValueAnimator;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.Transformation;
 
 public class AnimacaoHeight {
-    public static void animateHeight(final View view, final int newHeight, ValueAnimator.AnimatorUpdateListener animatorUpdateListener, Animator.AnimatorListener animationListener) {
-        ValueAnimator anim = ValueAnimator.ofInt( view.getMeasuredHeight(), newHeight );
+    public static void expand(final View v) {
+        v.measure(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        final int targetHeight = v.getMeasuredHeight();
 
-        if (animatorUpdateListener == null){
-            animatorUpdateListener = new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                    int val = (Integer) valueAnimator.getAnimatedValue();
-                    ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
-                    layoutParams.height = val;
-                    view.setLayoutParams(layoutParams);
+        // Older versions of android (pre API 21) cancel animations for views with a height of 0.
+        v.getLayoutParams().height = 1;
+        v.setVisibility(View.VISIBLE);
+        Animation a = new Animation() {
+            @Override
+            protected void applyTransformation(float interpolatedTime, Transformation t) {
+                v.getLayoutParams().height = interpolatedTime == 1
+                        ? ViewGroup.LayoutParams.WRAP_CONTENT
+                        : (int) (targetHeight * interpolatedTime);
+                v.requestLayout();
+            }
+
+            @Override
+            public boolean willChangeBounds() {
+                return true;
+            }
+        };
+
+        // 1dp/ms
+        a.setDuration((int) (targetHeight / v.getContext().getResources().getDisplayMetrics().density));
+        v.startAnimation(a);
+    }
+
+    public static void collapse(final View v) {
+        final int initialHeight = v.getMeasuredHeight();
+
+        Animation a = new Animation() {
+            @Override
+            protected void applyTransformation(float interpolatedTime, Transformation t) {
+                if (interpolatedTime == 1) {
+                    v.setVisibility(View.GONE);
+                } else {
+                    v.getLayoutParams().height = initialHeight - (int) (initialHeight * interpolatedTime);
+                    v.requestLayout();
                 }
-            };
-        }
-        anim.addUpdateListener(animatorUpdateListener);
+            }
 
-        if (animationListener == null){
-            animationListener = new Animator.AnimatorListener() {
-                @Override
-                public void onAnimationStart(Animator animation) {
-                    view.setEnabled(false);
-                }
+            @Override
+            public boolean willChangeBounds() {
+                return true;
+            }
+        };
 
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    view.setEnabled(true);
-                }
-
-                @Override
-                public void onAnimationCancel(Animator animation) {
-
-                }
-
-                @Override
-                public void onAnimationRepeat(Animator animation) {
-
-                }
-            };
-        }
-
-        anim.addListener( animationListener );
-        anim.setDuration(500);
-        anim.start();
+        // 1dp/ms
+        a.setDuration((int) (initialHeight / v.getContext().getResources().getDisplayMetrics().density));
+        v.startAnimation(a);
     }
 }

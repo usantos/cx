@@ -4,10 +4,15 @@ import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
@@ -41,10 +46,11 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-        String compraDTOJson =  getIntent().getExtras().getString("CompraDTO");
+        String compraDTOJson = getIntent().getExtras().getString("CompraDTO");
         ordemCompra = getIntent().getExtras().getInt("ordem");
         compraDTO = new Gson().fromJson(compraDTOJson, CompraDTO.class);
 
+        criarCabecalho();
         callWebService();
 
     }
@@ -58,7 +64,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onSupportNavigateUp(){
+    public boolean onSupportNavigateUp() {
         finish();
         return true;
     }
@@ -95,40 +101,54 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void abrirTermosUso(){
+    private void criarCabecalho() {
+        FrameLayout setaIndicador = findViewById(R.id.setaComprasGroup);
+        setaIndicador.setVisibility(View.INVISIBLE);
+
+        TextView dataCompra = findViewById(R.id.dataCompra);
+        dataCompra.setText(compraDTO.getDataEfetivacaoDebito());
+        TextView valorCompra = findViewById(R.id.valorCompra);
+        valorCompra.setText(caixa.gov.br.loterias.utils.ViewUtils.getMoedaFormat(compraDTO.getValorTotal()));
+
+        TextView itemCompraOrdemTextView = findViewById(R.id.itemCompraOrdemTextView);
+        itemCompraOrdemTextView.setText(getString(R.string.label_compra_valor, ordemCompra));
+    }
+
+    private void abrirTermosUso() {
         Intent activity = new Intent(this, TermosUsoActivity.class);
         startActivity(activity);
     }
 
 
-
-    private void montarLayout(){
-        ListView listView = (ListView)findViewById(R.id.gridviewDetalhesCompras);
-        ListaComprasDetalhesAdapter listaAdapter = new ListaComprasDetalhesAdapter(this, this, listaAposta, compraDTO, ordemCompra);
+    private void montarLayout() {
+        RecyclerView listView = findViewById(R.id.gridviewDetalhesCompras);
+        listView.setLayoutManager(new LinearLayoutManager(this));
+        ListaComprasDetalhesAdapter listaAdapter = new ListaComprasDetalhesAdapter(this, this, listaAposta);
         listView.setAdapter(listaAdapter);
 
     }
 
-    private void callWebService(){
+    private void callWebService() {
 
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
         final ApostaBO apostaBO = ApostaBO_.getInstance_(DetalhesComprasActivity.this);
 
-        apostaBO.getDetalhesCompras(compraDTO.getId().toString() ,new RequestListener<AgrupadorApostaCompraDTOResponse>() {
+        apostaBO.getDetalhesCompras(compraDTO.getId().toString(), new RequestListener<AgrupadorApostaCompraDTOResponse>() {
             @Override
             public void onResponse(AgrupadorApostaCompraDTOResponse response) {
                 loadViewProgress.dismiss();
                 listaAposta = response.getPayload().getApostas();
                 montarLayout();
-                if (response.getRedirect() != null){
-                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), DetalhesComprasActivity.this);
+                if (response.getRedirect() != null) {
+                    RedirectNetwork.checkRedirectSucesso(response.getRedirect(), DetalhesComprasActivity.this);
                 }
             }
+
             @Override
             public void onErrorResponse(VolleyError error) {
                 loadViewProgress.dismiss();
                 montarLayout();
-                RedirectNetwork.checkRedirect( error, DetalhesComprasActivity.this );
+                RedirectNetwork.checkRedirect(error, DetalhesComprasActivity.this);
             }
         });
     }

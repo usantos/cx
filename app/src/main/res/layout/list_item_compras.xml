@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <LinearLayout
@@ -26,10 +26,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.3"
                 android:fontFamily="@font/arialmt"
-                android:text="Mega-sena"
-                android:textColor="@color/branco"
                 android:textSize="14.2sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                tools:text="Mega-sena" />
 
             <TextView
                 android:id="@+id/seusNumerosItemListaComprasTextView"
@@ -37,9 +36,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.7"
                 android:fontFamily="@font/arialmt"
-                android:text="Seus números"
-                android:textColor="@color/branco"
-                android:textSize="12.1sp" />
+                android:textSize="12.1sp"
+                tools:text="Seus números" />
         </LinearLayout>
 
         <LinearLayout
@@ -59,18 +57,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/arialmt"
-                    android:text="25/08/2016"
-                    android:textColor="@color/branco"
-                    android:textSize="14.2sp" />
+                    android:textSize="14.2sp"
+                    tools:text="25/08/2016" />
 
                 <TextView
                     android:id="@+id/concursoListaComprasTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/arialmt"
-                    tools:text="Conc. 2587"
-                    android:textColor="@color/branco"
-                    android:textSize="14.2sp" />
+                    android:textSize="14.2sp"
+                    tools:text="Conc. 2587" />
             </LinearLayout>
 
             <LinearLayout
@@ -107,9 +103,8 @@
             android:layout_marginTop="7dp"
             android:layout_weight="1"
             android:fontFamily="@font/arialmt"
-            android:text="Confirmada"
-            android:textColor="@color/branco"
             android:textSize="14.2sp"
+            tools:text="Confirmada"
 
             />
 
@@ -125,6 +120,6 @@
             android:textColor="@color/branco"
             android:textSize="14.2sp"
             android:textStyle="bold"
-            android:visibility="invisible"/>
+            android:visibility="invisible" />
     </LinearLayout>
 </LinearLayout>

@@ -15,6 +15,7 @@ import org.androidannotations.annotations.ViewById;
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.silce.dto.DuvidaDTO;
 import caixa.gov.br.loterias.utils.ViewUtils;
+import caixa.gov.br.loterias.view.animation.AnimacaoHeight;
 
 /**
  * Created by joafilho on 16/02/2018.
@@ -46,7 +47,6 @@ public class ItemDuvidaDetalheView extends LinearLayout {
 
     @AfterViews
     protected void init() {
-
     }
 
     public LinearLayout getLayoutItemDetalheDuvida() {
@@ -62,17 +62,17 @@ public class ItemDuvidaDetalheView extends LinearLayout {
     public void openCloseDetalhe() {
         if (layoutCabecalhoDuvidaDetalhe.isSelected()) {
             layoutCabecalhoDuvidaDetalhe.setSelected(Boolean.FALSE);
-            layoutTextDetalhe.setVisibility(GONE);
             textDuvidaDetalhe.setTypeface(ViewUtils.getFontArialMT(getContext()));
             textDuvidaDetalhe.setTextSize(14);
             textDuvidaDetalhe.setTextColor(getContext().getResources().getColor(R.color.cinza));
+            AnimacaoHeight.collapse(layoutTextDetalhe);
 
         } else {
             layoutCabecalhoDuvidaDetalhe.setSelected(Boolean.TRUE);
-            layoutTextDetalhe.setVisibility(VISIBLE);
             textDuvidaDetalhe.setTypeface(ViewUtils.getFontFutura(getContext()));
             textDuvidaDetalhe.setTextSize(16);
             textDuvidaDetalhe.setTextColor(getContext().getResources().getColor(R.color.verdeazul));
+            AnimacaoHeight.expand(layoutTextDetalhe);
         }
     }
 }

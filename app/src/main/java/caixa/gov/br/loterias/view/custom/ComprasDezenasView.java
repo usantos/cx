@@ -15,6 +15,8 @@ import org.androidannotations.annotations.ViewById;
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostaDTO;
 import caixa.gov.br.loterias.utils.AppUtils;
+import caixa.gov.br.loterias.utils.EstiloModalidade;
+import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.adapter.DezenasAdapter;
 
 @EViewGroup(R.layout.item_compras_dezenas_layout)
@@ -45,13 +47,13 @@ public class ComprasDezenasView extends LinearLayout {
         switch (aposta.getModalidade()) {
             case TIMEMANIA:
                 labelDetalheTxt.setText(R.string.label_time_coracao);
-                detalheTxt.setText(aposta.getTimeDoCoracao().getNome());
+                detalheTxt.setText(ViewUtils.textFuturaAndFuturaBold(getContext(), getContext().getString(R.string.texto_futura_bold, aposta.getTimeDoCoracao().getNome())));
                 detalheLayout.setVisibility(View.VISIBLE);
                 break;
 
             case DIA_DE_SORTE:
                 labelDetalheTxt.setText(R.string.label_mes_sorte);
-                detalheTxt.setText(aposta.getMesDeSorte() == null ? "" : aposta.getMesDeSorte().getNome());
+                detalheTxt.setText(aposta.getMesDeSorte() == null ? "" : ViewUtils.textFuturaAndFuturaBold(getContext(), getContext().getString(R.string.texto_futura_bold, aposta.getMesDeSorte().getNome())));
                 detalheLayout.setVisibility(View.VISIBLE);
                 break;
 
