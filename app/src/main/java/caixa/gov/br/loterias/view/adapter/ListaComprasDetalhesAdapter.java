@@ -83,27 +83,31 @@ public class ListaComprasDetalhesAdapter extends BaseAdapter {
             concursoListaComprasTextView.setText("Conc. "+ listaAposta.get(idLista).getConcursoAlvo());
 
             String numeroStr = "";
-            if (listaAposta.get(idLista).getNumerosSelecionados().size() == 0){
-                int contador = 1;
-                for (int i = 0; i < listaAposta.get(idLista).getQuantidadeNumeros(); i++) {
-                    if (contador == 5) {
-                        numeroStr = numeroStr + "XX\n";
-                        contador = 0;
-                    } else if (i == listaAposta.get(idLista).getQuantidadeNumeros() - 1) {
-                        numeroStr = numeroStr + "XX";
-                    } else {
-                        numeroStr = numeroStr + "XX - ";
+            try {
+                if (listaAposta.get(idLista).getNumerosSelecionados().size() == 0) {
+                    int contador = 1;
+                    for (int i = 0; i < listaAposta.get(idLista).getQuantidadeNumeros(); i++) {
+                        if (contador == 5) {
+                            numeroStr = numeroStr + "XX\n";
+                            contador = 0;
+                        } else if (i == listaAposta.get(idLista).getQuantidadeNumeros() - 1) {
+                            numeroStr = numeroStr + "XX";
+                        } else {
+                            numeroStr = numeroStr + "XX - ";
+                        }
+                        contador++;
                     }
-                    contador++;
-                }
-            }else{
-                for (Integer num : listaAposta.get(idLista).getNumerosSelecionados()) {
-                    if (num == (listaAposta.get(idLista).getNumerosSelecionados().get(listaAposta.get(idLista).getNumerosSelecionados().size() - 1))) {
-                        numeroStr += String.format("%02d", num);
-                    } else {
-                        numeroStr += String.format("%02d - ", num);
+                } else {
+                    for (Integer num : listaAposta.get(idLista).getNumerosSelecionados()) {
+                        if (num == (listaAposta.get(idLista).getNumerosSelecionados().get(listaAposta.get(idLista).getNumerosSelecionados().size() - 1))) {
+                            numeroStr += String.format("%02d", num);
+                        } else {
+                            numeroStr += String.format("%02d - ", num);
+                        }
                     }
                 }
+            }catch (Exception e){
+                e.printStackTrace();
             }
 
 

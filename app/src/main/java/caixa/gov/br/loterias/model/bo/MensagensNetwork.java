@@ -39,7 +39,6 @@ public class MensagensNetwork {
             } else if (error instanceof AuthFailureError) {
                 return context.getString(R.string.erro_401);
             }
-
             return context.getString(R.string.sistema_indisponivel);
         }
 
