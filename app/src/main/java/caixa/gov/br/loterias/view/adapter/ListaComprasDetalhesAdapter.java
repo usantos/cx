@@ -83,8 +83,8 @@ public class ListaComprasDetalhesAdapter extends BaseAdapter {
             concursoListaComprasTextView.setText("Conc. "+ listaAposta.get(idLista).getConcursoAlvo());
 
             String numeroStr = "";
-            if (listaAposta.get(idLista).getIndicadorSurpresinha().getValor() == 2){
-                if("".equals(listaAposta.get(idLista).getHoraEfetivacao())) {
+            try {
+                if (listaAposta.get(idLista).getNumerosSelecionados().size() == 0) {
                     int contador = 1;
                     for (int i = 0; i < listaAposta.get(idLista).getQuantidadeNumeros(); i++) {
                         if (contador == 5) {
@@ -97,23 +97,17 @@ public class ListaComprasDetalhesAdapter extends BaseAdapter {
                         }
                         contador++;
                     }
-                }else{
-                    List<Integer> numeros = listaAposta.get(idLista).getNumerosSelecionados();
-                    for(Integer numero : numeros){
-                        if(!"".equals(numeroStr)){
-                            numeroStr += " - ";
+                } else {
+                    for (Integer num : listaAposta.get(idLista).getNumerosSelecionados()) {
+                        if (num == (listaAposta.get(idLista).getNumerosSelecionados().get(listaAposta.get(idLista).getNumerosSelecionados().size() - 1))) {
+                            numeroStr += String.format("%02d", num);
+                        } else {
+                            numeroStr += String.format("%02d - ", num);
                         }
-                        numeroStr += numero;
                     }
                 }
-            }else{
-                for (Integer num : listaAposta.get(idLista).getNumerosSelecionados()) {
-                    if (num == (listaAposta.get(idLista).getNumerosSelecionados().get(listaAposta.get(idLista).getNumerosSelecionados().size() - 1))) {
-                        numeroStr += String.format("%02d", num);
-                    } else {
-                        numeroStr += String.format("%02d - ", num);
-                    }
-                }
+            }catch (Exception e){
+                e.printStackTrace();
             }
 
 
