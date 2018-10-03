@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -18,6 +19,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.github.pinball83.maskededittext.MaskedEditText;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.mercadopago.callbacks.Callback;
 import com.mercadopago.core.MercadoPago;
@@ -43,6 +45,7 @@ import caixa.gov.br.loterias.model.bo.ApostaBO_;
 import caixa.gov.br.loterias.model.bo.MensagensNetwork;
 import caixa.gov.br.loterias.model.bo.RedirectNetwork;
 import caixa.gov.br.loterias.model.bo.RequestListener;
+import caixa.gov.br.loterias.model.bo.silce.dto.CarrinhoDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.RetornoPadraoDTO;
 import caixa.gov.br.loterias.utils.MaskEditUtil;
 import caixa.gov.br.loterias.utils.ViewUtils;
@@ -62,6 +65,8 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nova_forma_pagamento);
+
+        recebendoInformacoes();
 
         editTextNumeroCartaoContent = (EditText) findViewById(R.id.editTextNumeroCartaoContent);
         editTextNomeClienteCartaoContent = (EditText) findViewById(R.id.editTextNomeClienteCartaoContent);
@@ -90,6 +95,18 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
         addRightImg((EditText) findViewById(R.id.editTextNomeClienteCartaoContent));
         addRightImg((EditText) findViewById(R.id.editTextCodigoSegurancaContent));
 
+    }
+
+    private void recebendoInformacoes() {
+        try {
+            String json = getIntent().getExtras().getString("CARRINHO");
+            CarrinhoDTO carrinhoDTO = new Gson().fromJson(json, CarrinhoDTO.class);
+            TextView valorTotalCarrinho = findViewById(R.id.valorTotalCarrinho);
+            String valor = ViewUtils.getMoedaFormat(carrinhoDTO.getValorTotal());
+            valorTotalCarrinho.setText(valor);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private void addRightImg(EditText textField) {

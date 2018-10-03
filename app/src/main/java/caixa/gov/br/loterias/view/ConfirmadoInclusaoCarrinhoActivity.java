@@ -165,16 +165,11 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
         if (id == R.id.action_termos) {
             abrirTermos();
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -196,32 +191,15 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-//            case R.id.botaoNovaAposta: {
-//                finish();
-//            }
-//
-//            break;
-//
             case R.id.botaoCarrinho: {
                 Intent activity = new Intent(this, CarrinhoActivity_.class);
                 startActivityForResult(activity, 0);
             }
             break;
-
             case R.id.botaoLinearLayoutVoltarPrincipal: {
                 PrincipalActivity_.intent(this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP).start();
 
             }
-//            case R.id.confirmarInclusaoApostaLayoutCarrinhoApostas: {
-//                Intent activity = new Intent(this, CarrinhoActivity.class);
-//                startActivityForResult(activity, 0);
-//            }
-//            case R.id.botaoAdicionarCompletarCartela: {
-//                if (isLotecaOrLotogol) {
-//                    setResult(RESULT_FINISH);
-//                    finish();
-//                }
-//            }
             break;
         }
     }
