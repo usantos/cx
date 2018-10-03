@@ -56,10 +56,13 @@ import caixa.gov.br.loterias.view.adapter.FormaPagamentoRecyclerViewAdapter;
 import caixa.gov.br.loterias.utils.ViewUtils;
 
 public class FormaPagamentoActivity extends SettingToolbarActivity implements FormaDePagamentoListener {
+
     private List<RetornoCartao> listaCartoes = null;
     private View itemToolbarSettings;
     private AlertDialog loadViewProgress;
     private FormaPagamentoRecyclerViewAdapter formaPagamentoRecyclerViewAdapter;
+    private CarrinhoDTO carrinhoDTO;
+    private Gson gson;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,12 +71,12 @@ public class FormaPagamentoActivity extends SettingToolbarActivity implements Fo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forma_pagamento);
         setTitle(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.title_activity_forma_pagamento)));
-        
+
+        gson = new Gson();
+
         configuraClickBotoes();
         callWebservice();
         recebendoInformacoes();
-
-//        mockFormasPagamento();
 
         ViewUtils.organizaTabLayout(this, R.id.formaPagamentoMainLayout, R.id.formasPagamentoRecyclerView, R.id.formaPagamentoScrollView);
     }
@@ -81,34 +84,12 @@ public class FormaPagamentoActivity extends SettingToolbarActivity implements Fo
     private void recebendoInformacoes() {
         try {
             String json = getIntent().getExtras().getString("CARRINHO");
-            Gson gson = new Gson();
-            CarrinhoDTO carrinhoDTO = gson.fromJson(json, CarrinhoDTO.class);
+            carrinhoDTO = gson.fromJson(json, CarrinhoDTO.class);
             TextView valorTotalCarrinho = findViewById(R.id.valorTotalCarrinho);
             String valor = ViewUtils.getMoedaFormat(carrinhoDTO.getValorTotal());
             valorTotalCarrinho.setText(valor);
         }catch (Exception e){
             e.printStackTrace();
-        }
-    }
-
-    private void mockFormasPagamento(){
-        RetornoCartao retornoCartao = new RetornoCartao();
-        retornoCartao.setIdCartao(new Long(1));
-        retornoCartao.setMesValidade(new Long(12));
-        retornoCartao.setAnoValidade(new Long(2020));
-        retornoCartao.setNomeMetodoPagamento("VISA");
-        retornoCartao.setPrimeirosDigitos("DDDD");
-        retornoCartao.setUltimosDigitos("AAAA");
-        listaCartoes =  new ArrayList<>();
-        listaCartoes.add(retornoCartao);
-        listaCartoes.add(retornoCartao);
-        listaCartoes.add(retornoCartao);
-        listaCartoes.add(retornoCartao);
-        listaCartoes.add(retornoCartao);
-        listaCartoes.add(retornoCartao);
-        listaCartoes.add(retornoCartao);
-        if (listaCartoes != null && listaCartoes.size() > 0) {
-            configuraRecyclerViewCarrinhoAposta();
         }
     }
 
@@ -235,6 +216,10 @@ public class FormaPagamentoActivity extends SettingToolbarActivity implements Fo
             @Override
             public void onClick(View view) {
                 Intent activity = new Intent(FormaPagamentoActivity.this, NovaFormaPagamentoActivity.class);
+                if(carrinhoDTO != null) {
+                    String carrinho = gson.toJson(carrinhoDTO);
+                    activity.putExtra("CARRINHO", carrinho);
+                }
                 startActivity(activity);
             }
         });
