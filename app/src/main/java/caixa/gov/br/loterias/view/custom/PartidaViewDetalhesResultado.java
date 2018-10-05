@@ -47,7 +47,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-            layoutParams.setMargins(16, 18, 0, 0);
+            layoutParams.setMargins(0, 18, 0, 0);
             title1.setLayoutParams(layoutParams);
             title1.setTextAppearance(getContext(), R.style.fontForTitleTopoPremiados);
             this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title1);
@@ -59,7 +59,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
             LinearLayout.LayoutParams layoutParamsGanhadores = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-            layoutParamsGanhadores.setMargins(16, 18, 0, 0);
+            layoutParamsGanhadores.setMargins(0, 18, 0, 0);
             titleGanhadores.setLayoutParams(layoutParamsGanhadores);
             titleGanhadores.setTextAppearance(getContext(), R.style.fontForTitleTopoPremiados);
             this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(titleGanhadores);
@@ -72,7 +72,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-            layoutParams.setMargins(16, 18, 0, 0);
+            layoutParams.setMargins(0, 18, 0, 0);
             title1.setLayoutParams(layoutParams);
             title1.setTextAppearance(getContext(), R.style.fontForTitleTopoPremiados);
             this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title1);
@@ -84,7 +84,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
             LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-            layoutParams.setMargins(16, 18, 0, 0);
+            layoutParams2.setMargins(0, 18, 0, 0);
             title2.setLayoutParams(layoutParams2);
             title2.setTextAppearance(getContext(), R.style.fontForTitleTopoPremiados);
             this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title2);
@@ -97,7 +97,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
             LinearLayout.LayoutParams layoutParams3 = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-            layoutParams.setMargins(16, 18, 0, 0);
+            layoutParams3.setMargins(0, 18, 0, 0);
             title3.setLayoutParams(layoutParams3);
             title3.setTextAppearance(getContext(), R.style.fontForTitleTopoPremiados);
             this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title3);
@@ -110,7 +110,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
             LinearLayout.LayoutParams layoutParams4 = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-            layoutParams.setMargins(16, 18, 0, 0);
+            layoutParams4.setMargins(0, 18, 0, 0);
             title4.setLayoutParams(layoutParams4);
             title4.setTextAppearance(getContext(), R.style.fontForTitleTopoPremiados);
             this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title4);
@@ -118,6 +118,8 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
             adicionarGanhadoresRegiao(modalidade.getResultadoConcursoDTO().getGanhadoresSegundoSorteio());
         }
         adicionarArrecadacaoTotal(modalidade.getResultadoConcursoDTO().getArrecadacaoTotal());
+
+        voltarButton.setText(ViewUtils.textFuturaAndFuturaBold(getContext(), getResources().getString(R.string.label_voltar_bold)));
     }
 
     public PartidaViewDetalhesResultado(Context context) {
@@ -248,7 +250,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-            layoutParams.setMargins(16, 18, 0, 0);
+            layoutParams.setMargins(0, 18, 0, 0);
             title1.setLayoutParams(layoutParams);
             title1.setTextAppearance(getContext(), R.style.fontForTitle1Premiados);
             this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title1);
@@ -256,14 +258,15 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
             TextView title2 = new TextView(getContext());
             if (premiacaoConcurso.getQuantidadeGanhadores() > 1) {
                 title2.setText(getResources().getString(R.string.label_apostas_ganhadoras, premiacaoConcurso.getQuantidadeGanhadores()));
-            } else {
+            } else if (premiacaoConcurso.getQuantidadeGanhadores() == 1) {
                 title2.setText(getResources().getString(R.string.label_aposta_ganhadora, premiacaoConcurso.getQuantidadeGanhadores()));
+            } else {
+                title2.setText("");
             }
 
             LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-            layoutParams2.setMargins(16, 0, 0, 0);
             title2.setLayoutParams(layoutParams2);
             title2.setTextAppearance(getContext(), R.style.fontForTitle2Premiados);
             this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title2);
@@ -273,7 +276,6 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
             LinearLayout.LayoutParams layoutParams3 = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-            layoutParams3.setMargins(16, 0, 0, 0);
             title3.setLayoutParams(layoutParams3);
             title3.setTextAppearance(getContext(), R.style.fontForTitle2Premiados);
             this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title3);
@@ -285,11 +287,11 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
     private void adicionarGanhadoresRegiao(List<GanhadoresPorRegiaoDTO> listaGanhadores) {
         for (GanhadoresPorRegiaoDTO ganhadoresPorRegiaoDTO : listaGanhadores) {
             TextView title1 = new TextView(getContext());
-            title1.setText(getResources().getString(R.string.label_texto_barra_texto, ganhadoresPorRegiaoDTO.getMunicipioSorteio().getNome(), ganhadoresPorRegiaoDTO.getMunicipioSorteio().getUf()));
+            title1.setText(getResources().getString(R.string.label_texto_barra_texto, ganhadoresPorRegiaoDTO.getMunicipioSorteio().getNome(), ganhadoresPorRegiaoDTO.getUfSorteio().getSigla()));
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-            layoutParams.setMargins(16, 18, 0, 0);
+            layoutParams.setMargins(0, 18, 0, 0);
             title1.setLayoutParams(layoutParams);
             title1.setTextAppearance(getContext(), R.style.fontForTitle1Premiados);
             this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title1);
@@ -300,7 +302,6 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
             LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-            layoutParams2.setMargins(16, 0, 0, 0);
             title2.setLayoutParams(layoutParams2);
             title2.setTextAppearance(getContext(), R.style.fontForTitle2Premiados);
             this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title2);
@@ -313,7 +314,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-        layoutParams.setMargins(16, 18, 0, 0);
+        layoutParams.setMargins(0, 18, 0, 0);
         title.setLayoutParams(layoutParams);
         title.setTextAppearance(getContext(), R.style.fontForTitleTopoPremiados);
         this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title);
@@ -324,7 +325,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
         LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-        layoutParams2.setMargins(16, 0, 0, 0);
+        layoutParams2.setMargins(0, 18, 0, 0);
         text.setLayoutParams(layoutParams2);
         text.setTextAppearance(getContext(), R.style.fontForTitle1Premiados);
         this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(text);

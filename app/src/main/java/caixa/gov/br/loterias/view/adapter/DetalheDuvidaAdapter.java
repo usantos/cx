@@ -53,7 +53,7 @@ public class DetalheDuvidaAdapter extends RecyclerView.Adapter<DetalheDuvidaAdap
 
         private ItemDuvidaDetalheView itemDuvidaDetalheView;
 
-        public DetalheDuvidaHolder(View itemView) {
+        DetalheDuvidaHolder(View itemView) {
             super(itemView);
             this.itemDuvidaDetalheView = (ItemDuvidaDetalheView) itemView;
         }

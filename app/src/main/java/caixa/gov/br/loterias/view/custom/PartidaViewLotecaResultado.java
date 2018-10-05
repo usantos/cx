@@ -16,6 +16,7 @@ import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.silce.dto.ParametroPartida;
 import caixa.gov.br.loterias.model.bo.silce.dto.PartidaLotecaDTO;
 import caixa.gov.br.loterias.utils.EscudoEquipeUtil;
+import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.adapter.LotecaAdapter;
 
 /**
@@ -31,14 +32,8 @@ public class PartidaViewLotecaResultado extends LinearLayout {
     @ViewById
     TextView paginaResultadoLotecaText;
 
-
     @ViewById
     TextView diaSemanaDataPartidaText;
-
-
-
-    private PartidaLotecaDTO parametroPartida;
-
 
     @AfterViews
     protected void init() {
@@ -48,9 +43,7 @@ public class PartidaViewLotecaResultado extends LinearLayout {
 
     public void setLayout(PartidaLotecaDTO parametroPartida) {
 
-        this.parametroPartida = parametroPartida;
-
-        if (parametroPartida.getEquipe1().getVitoria()){
+        if (parametroPartida.getEquipe1().getVitoria()) {
             lotecaTimeUm.getLinearLayoutContentItemLotecaResultado().setBackgroundColor(this.getContext().getResources().getColor(R.color.selecaoLotecaResultado));
         }
         lotecaTimeUm.getItemImage().setImageResource(R.drawable.time);
@@ -59,7 +52,7 @@ public class PartidaViewLotecaResultado extends LinearLayout {
         lotecaTimeUm.getItemTitle().setText(parametroPartida.getEquipe1().getNome());
         lotecaTimeUm.getItemDescription().setText(parametroPartida.getEquipe1().getIndicadorSelecao() ? "" : parametroPartida.getEquipe1().getSiglaPais());
 
-        if (parametroPartida.getEquipe2().getVitoria()){
+        if (parametroPartida.getEquipe2().getVitoria()) {
             lotecaTimeDois.getLinearLayoutContentItemLotecaResultado().setBackgroundColor(this.getContext().getResources().getColor(R.color.selecaoLotecaResultado));
         }
         lotecaTimeDois.setSelected(parametroPartida.getEquipe2().getVitoria());
@@ -68,10 +61,10 @@ public class PartidaViewLotecaResultado extends LinearLayout {
         lotecaTimeDois.getItemTitle().setText(parametroPartida.getEquipe2().getNome());
         lotecaTimeDois.getItemDescription().setText(parametroPartida.getEquipe2().getIndicadorSelecao() ? "" : parametroPartida.getEquipe2().getSiglaPais());
 
-
-        if (parametroPartida.getEmpate()){
+        if (parametroPartida.getEmpate()) {
             lotecaEmpate.getLinearLayoutContentItemLotecaResultado().setBackgroundColor(this.getContext().getResources().getColor(R.color.selecaoLotecaResultado));
         }
+        diaSemanaDataPartidaText.setText(ViewUtils.textFuturaAndFuturaBold(getContext(), getResources().getString(R.string.texto_futura_bold, getResources().getString(R.string.label_domingo))));
 
     }
 

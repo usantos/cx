@@ -79,7 +79,6 @@ public class ModalideSorteioItemTimeManiaResultadoView extends LinearLayout {
         this.tracoViewDivisoriaResultado.setBackground(getContext().getResources().getDrawable(estilo.getCorClara()));
         adicionarPremiados(modalidade.getResultadoConcursoDTO().getPremiacoesPrimeiroSorteio());
         NumerosResultadosAdapter numerosResultadosAdapter;
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         int numberOfColumns = 3;
         if (modalidade.getResultadoConcursoDTO().getNumerosSorteadosPrimeiroSorteio().size() > 6) {
             numberOfColumns = 4;
@@ -140,7 +139,7 @@ public class ModalideSorteioItemTimeManiaResultadoView extends LinearLayout {
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-            layoutParams.setMargins(16, 18, 0, 0);
+            layoutParams.setMargins(0, 18, 0, 0);
             title1.setLayoutParams(layoutParams);
             title1.setTextAppearance(getContext(), R.style.fontForTitle1Premiados);
             this.linearlayoutPremiadosListaText.addView(title1);
@@ -155,7 +154,6 @@ public class ModalideSorteioItemTimeManiaResultadoView extends LinearLayout {
             LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-            layoutParams2.setMargins(16, 0, 0, 0);
             title2.setLayoutParams(layoutParams2);
             title2.setTextAppearance(getContext(), R.style.fontForTitle2Premiados);
             this.linearlayoutPremiadosListaText.addView(title2);

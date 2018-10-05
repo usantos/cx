@@ -121,7 +121,7 @@ public class EstiloModalidade {
                 break;
             case TIMEMANIA:
                 corClara = R.color.timemaniaclaro;
-                corMedia = R.color.timemaniaescuro;
+                corMedia = R.color.timemaniamediaescuro;
                 corEscura = R.color.timemaniaescuro;
                 imagemCalendario = R.drawable.icon_data_timemania;
                 imagemRelogio = R.drawable.icon_horario_timemania;

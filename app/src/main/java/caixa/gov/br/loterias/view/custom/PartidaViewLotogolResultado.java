@@ -14,7 +14,6 @@ import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.silce.dto.PartidaLotogolDTO;
 import caixa.gov.br.loterias.utils.EscudoEquipeUtil;
 import caixa.gov.br.loterias.utils.ViewUtils;
-import caixa.gov.br.loterias.view.listener.LotogolListener;
 
 /**
  * Created by cedesbr450 on 02/04/18.
@@ -30,9 +29,7 @@ public class PartidaViewLotogolResultado extends LinearLayout {
     ItemEquipeViewLotogolResultado lotogolTimeUm, lotogolTimeDois;
 
     @ViewById
-    TextView paginaResultadoLotogolText;
-
-    private PartidaLotogolDTO parametroPartida;
+    TextView paginaResultadoLotogolText, diaSemanaDataPartidaText;
 
     @AfterViews
     protected void init() {
@@ -53,7 +50,6 @@ public class PartidaViewLotogolResultado extends LinearLayout {
 
     public void setLayout(PartidaLotogolDTO parametroPartida) {
 
-        this.parametroPartida = parametroPartida;
         lotogolTimeUm.setParametroEquipe(parametroPartida.getEquipe1().getParametroEquipe());
         lotogolTimeDois.setParametroEquipe(parametroPartida.getEquipe2().getParametroEquipe());
 
@@ -70,10 +66,7 @@ public class PartidaViewLotogolResultado extends LinearLayout {
         lotogolTimeDois.getItemTitle().setText(ViewUtils.fromHtml("<strong>" + parametroPartida.getEquipe2().getNome() + "</strong>" + paisTime2));
         lotogolTimeDois.getPlacarResultadoIremLotogolText().setText(parametroPartida.getEquipe2().getPlacar());
 
-    }
-
-    public LinearLayout getRowPartidaLotogol() {
-        return rowPartidaLotogol;
+        diaSemanaDataPartidaText.setText(ViewUtils.textFuturaAndFuturaBold(getContext(), getResources().getString(R.string.texto_futura_bold, getResources().getString(R.string.label_domingo))));
     }
 
     public TextView getPaginaResultadoLotogolText() {

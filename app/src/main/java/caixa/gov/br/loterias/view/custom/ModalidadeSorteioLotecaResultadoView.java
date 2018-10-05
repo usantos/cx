@@ -37,14 +37,8 @@ import caixa.gov.br.loterias.view.adapter.LotecaResultadoTimesAdapter;
 public class ModalidadeSorteioLotecaResultadoView extends LinearLayout implements DiscreteScrollView.ScrollListener<LotecaResultadoTimesAdapter.LotecaHolder>,
         DiscreteScrollView.OnItemChangedListener<LotecaResultadoTimesAdapter.LotecaHolder> {
 
-
-    private Modalidade modalidade;
-
-
-
     @ViewById
     protected DiscreteScrollView recyclerPartidasLotecas;
-
 
     @ViewById
     protected LinearLayout linearlayoutPremiadosListaText, item_resultado_content_view;
@@ -60,12 +54,10 @@ public class ModalidadeSorteioLotecaResultadoView extends LinearLayout implement
 
     @AfterViews
     protected void init() {
-
     }
 
     public void setLayout(Modalidade modalidade) {
 
-        this.modalidade = modalidade;
         EstiloModalidade estilo = new EstiloModalidade(modalidade.getTipoModalidade());
         tracoViewDivisoriaResultado.setBackground(getContext().getResources().getDrawable(estilo.getCorClara()));
         adicionarPremiados(modalidade.getResultadoConcursoDTO().getPremiacoesPrimeiroSorteio());
@@ -128,22 +120,21 @@ public class ModalidadeSorteioLotecaResultadoView extends LinearLayout implement
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-            layoutParams.setMargins(16, 18, 0, 0);
+            layoutParams.setMargins(0, 18, 0, 0);
             title1.setLayoutParams(layoutParams);
             title1.setTextAppearance(getContext(), R.style.fontForTitle1Premiados);
             this.linearlayoutPremiadosListaText.addView(title1);
 
             TextView title2 = new TextView(getContext());
             if (premiacaoConcurso.getQuantidadeGanhadores()>1){
-                title2.setText(premiacaoConcurso.getQuantidadeGanhadores() + " ganhadores");
+                title2.setText(getResources().getString(R.string.label_numero_ganhadores, premiacaoConcurso.getQuantidadeGanhadores()));
             }else{
-                title2.setText(premiacaoConcurso.getQuantidadeGanhadores() + " ganhador");
+                title2.setText(getResources().getString(R.string.label_numero_ganhador, premiacaoConcurso.getQuantidadeGanhadores()));
             }
 
             LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-            layoutParams2.setMargins(16, 0, 0, 0);
             title2.setLayoutParams(layoutParams2);
             title2.setTextAppearance(getContext(), R.style.fontForTitle2Premiados);
             this.linearlayoutPremiadosListaText.addView(title2);

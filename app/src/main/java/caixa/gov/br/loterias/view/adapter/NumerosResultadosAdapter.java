@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -47,8 +48,9 @@ public final class NumerosResultadosAdapter extends RecyclerView.Adapter<Numeros
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         EstiloModalidade estilo = new EstiloModalidade(modalidade);
-        final int numeroResultado = numeroslista.get(position);
+        int numeroResultado = numeroslista.get(position);
         holder.textViewTituloNumerosResultados.setText(numeroResultado < 10 ? "0" + numeroResultado : "" + numeroResultado);
+        holder.textViewTituloNumerosResultados.setTextColor(context.getResources().getColor(estilo.getMenuItemColor()));
         GradientDrawable drawable = new GradientDrawable();
         drawable.setColor(context.getResources().getColor(estilo.getCorClara()));
         drawable.setShape(GradientDrawable.OVAL);

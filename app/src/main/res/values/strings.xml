@@ -350,5 +350,12 @@
     <string name="MA021">E-mail inválido.</string>
     <string name="label_agencia_maiuscula">Agência</string>
     <string name="key_usuario_logado">usuariologado</string>
+    <string name="label_premiados">Premiados</string>
+    <string name="label_veja_mais_detalhes">Veja mais detalhes</string>
+    <string name="label_2_sorteio">2º sorteio</string>
+    <string name="label_1_sorteio">1º sorteio</string>
+    <string name="label_voltar_bold">_Voltar_</string>
+    <string name="label_domingo">Domingo</string>
+
 
 </resources>

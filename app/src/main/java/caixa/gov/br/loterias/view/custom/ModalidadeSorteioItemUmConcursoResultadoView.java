@@ -32,14 +32,8 @@ import caixa.gov.br.loterias.view.adapter.NumerosResultadosAdapter;
 @EViewGroup(R.layout.item_resultado_um_concurso)
 public class ModalidadeSorteioItemUmConcursoResultadoView extends LinearLayout {
 
-
-    private Modalidade modalidade;
-
-
-
     @ViewById
     protected RecyclerView recyclerNumerosResultado;
-
 
     @ViewById
     protected LinearLayout linearlayoutPremiadosListaText, item_resultado_content_view;
@@ -61,13 +55,11 @@ public class ModalidadeSorteioItemUmConcursoResultadoView extends LinearLayout {
 
     public void setLayout(Modalidade modalidade) {
 
-        this.modalidade = modalidade;
         EstiloModalidade estilo = new EstiloModalidade(modalidade.getTipoModalidade());
         tracoViewDivisoriaResultado.setBackground(getContext().getResources().getDrawable(estilo.getCorClara()));
 
         adicionarPremiados(modalidade.getResultadoConcursoDTO().getPremiacoesPrimeiroSorteio());
         NumerosResultadosAdapter numerosResultadosAdapter;
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         int numberOfColumns = 3;
         if (modalidade.getResultadoConcursoDTO().getNumerosSorteadosPrimeiroSorteio().size()>6){
             numberOfColumns = 4;
@@ -129,22 +121,21 @@ public class ModalidadeSorteioItemUmConcursoResultadoView extends LinearLayout {
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-            layoutParams.setMargins(16, 18, 0, 0);
+            layoutParams.setMargins(0, 18, 0, 0);
             title1.setLayoutParams(layoutParams);
             title1.setTextAppearance(getContext(), R.style.fontForTitle1Premiados);
             this.linearlayoutPremiadosListaText.addView(title1);
 
             TextView title2 = new TextView(getContext());
             if (premiacaoConcurso.getQuantidadeGanhadores()>1){
-                title2.setText(premiacaoConcurso.getQuantidadeGanhadores() + " ganhadores");
+                title2.setText(getResources().getString(R.string.label_numero_ganhadores, premiacaoConcurso.getQuantidadeGanhadores()));
             }else{
-                title2.setText(premiacaoConcurso.getQuantidadeGanhadores() + " ganhador");
+                title2.setText(getResources().getString(R.string.label_numero_ganhador, premiacaoConcurso.getQuantidadeGanhadores()));
             }
 
             LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-            layoutParams2.setMargins(16, 0, 0, 0);
             title2.setLayoutParams(layoutParams2);
             title2.setTextAppearance(getContext(), R.style.fontForTitle2Premiados);
             this.linearlayoutPremiadosListaText.addView(title2);

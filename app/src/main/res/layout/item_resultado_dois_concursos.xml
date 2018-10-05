@@ -1,81 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
     <LinearLayout
+        android:id="@+id/item_resultado_content_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:id="@+id/item_resultado_content_view">
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="1º sorteio"
-        android:textColor="@color/branco"
-        android:fontFamily="@font/futura_std_bold"
-        android:textSize="15.8sp"
-        android:textAlignment="center"
-        android:layout_marginTop="20dp"
-        />
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerNumerosResultado"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="19dp"
-        android:layout_gravity="center_horizontal"
-        />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="2º sorteio"
-        android:textColor="@color/branco"
-        android:fontFamily="@font/futura_std_bold"
-        android:textSize="15.8sp"
-        android:textAlignment="center"
-        android:layout_marginTop="20dp"
-        />
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerNumerosResultadoSegundoSorteio"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="19dp"
-        android:layout_gravity="center_horizontal"
-        />
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/megasenamedio"
-        android:layout_marginTop="10dp"
-        android:id="@+id/tracoViewDivisoriaResultado"
-        ></View>
-
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/linearlayoutPremiadosListaText"
-        android:layout_marginTop="20dp"
         android:orientation="vertical">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/futura_std_bold"
+            android:text="@string/label_1_sorteio"
+            android:textAlignment="center"
+            android:textColor="@color/branco"
+            android:textSize="15.8sp" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerNumerosResultado"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="19dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/futura_std_bold"
+            android:text="@string/label_2_sorteio"
+            android:textAlignment="center"
+            android:textColor="@color/branco"
+            android:textSize="15.8sp" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerNumerosResultadoSegundoSorteio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="19dp" />
+
+        <View
+            android:id="@+id/tracoViewDivisoriaResultado"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/megasenamedio" />
+
+        <LinearLayout
+            android:id="@+id/linearlayoutPremiadosListaText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/vejaDetalhesButton"
+            android:layout_width="246dp"
+            android:layout_height="56dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="18dp"
+            android:background="@drawable/button_border"
+            android:textAllCaps="false"
+            android:textColor="@color/branco" />
     </LinearLayout>
 
-    <Button
-        android:layout_width="246dp"
-        android:layout_height="56dp"
-        android:text="Veja mais detalhes"
-        android:background="@drawable/button_border"
-        android:layout_gravity="center_horizontal"
-        android:textColor="@color/branco"
-        android:layout_marginVertical="20dp"
-        android:id="@+id/vejaDetalhesButton"
-        android:textAllCaps="false"/>
-    </LinearLayout>
     <caixa.gov.br.loterias.view.custom.PartidaViewDetalhesResultado_
+        android:id="@+id/partidaViewDetalhesResultadoView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"
-        android:id="@+id/partidaViewDetalhesResultadoView"
-        />
+        android:visibility="gone" />
 
 </RelativeLayout>

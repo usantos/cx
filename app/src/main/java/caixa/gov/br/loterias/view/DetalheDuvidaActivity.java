@@ -44,7 +44,7 @@ public class DetalheDuvidaActivity extends AppCompatActivity {
         createToolBar();
     }
 
-    private void callWebservice(){
+    private void callWebservice() {
 
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
         DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(getApplicationContext());
@@ -58,15 +58,15 @@ public class DetalheDuvidaActivity extends AppCompatActivity {
                     createRecyclerView(secaoDTOList.get(0).getDuvidas());
                 }
                 loadViewProgress.dismiss();
-                if (response.getRedirect() != null){
-                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), DetalheDuvidaActivity.this);
+                if (response.getRedirect() != null) {
+                    RedirectNetwork.checkRedirectSucesso(response.getRedirect(), DetalheDuvidaActivity.this);
                 }
             }
 
             @Override
             public void onErrorResponse(VolleyError error) {
                 loadViewProgress.dismiss();
-                RedirectNetwork.checkRedirect( error, DetalheDuvidaActivity.this );
+                RedirectNetwork.checkRedirect(error, DetalheDuvidaActivity.this);
             }
         });
     }
@@ -87,7 +87,7 @@ public class DetalheDuvidaActivity extends AppCompatActivity {
     }
 
     private void createToolBar() {
-        setTitle(ViewUtils.textFuturaAndFuturaBold(getBaseContext(), "_" + secaoDTO.getNome() + "_"));
+        setTitle(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.texto_futura_bold, secaoDTO.getNome())));
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setElevation(0);
