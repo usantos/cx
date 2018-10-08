@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/row_partida_lotogol"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -33,8 +34,8 @@
             android:layout_width="18dp"
             android:layout_height="17dp"
             android:layout_gravity="top"
-            android:layout_marginLeft="25dp"
-            android:layout_marginRight="21dp"
+            android:layout_marginEnd="21dp"
+            android:layout_marginStart="25dp"
             android:layout_marginTop="60dp"
             android:src="@drawable/time_versus_white" />
 
@@ -50,9 +51,9 @@
         android:layout_height="20dp"
         android:layout_marginTop="20dp"
         android:fontFamily="@font/arialmt"
-        android:text="1 de 14"
         android:textAlignment="center"
         android:textColor="@color/branco"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        tools:text="1 de 14" />
 
 </LinearLayout>

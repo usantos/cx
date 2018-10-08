@@ -55,10 +55,6 @@ public class ApostaEquipeLototgolView extends LinearLayout {
         }
 
         String descricao = String.format("%s%n%s", equipeDTO.getNome(), paisTime);
-        EscudoEquipeUtil escudoEquipeUtil = new EscudoEquipeUtil();
-
-
-//        this.imagemEscudoApostaPartidaLotogol.setImageResource(R.drawable.time);
         EscudoEquipeUtil.setEscudo(this.getContext(), equipeDTO.getParametroEquipe(), imagemEscudoApostaPartidaLotogol);
         this.imagemPlacarApostaPartidaLotogol.setImageResource(placarImagem(equipeDTO.getPlacar()));
         this.textoApostaPartidaLotogol.setText(descricao);

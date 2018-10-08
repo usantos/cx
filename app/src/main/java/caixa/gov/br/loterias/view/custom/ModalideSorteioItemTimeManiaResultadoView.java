@@ -159,5 +159,4 @@ public class ModalideSorteioItemTimeManiaResultadoView extends LinearLayout {
             this.linearlayoutPremiadosListaText.addView(title2);
         }
     }
-
 }

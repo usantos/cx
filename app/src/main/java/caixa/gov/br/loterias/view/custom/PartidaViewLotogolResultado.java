@@ -53,8 +53,20 @@ public class PartidaViewLotogolResultado extends LinearLayout {
         lotogolTimeUm.setParametroEquipe(parametroPartida.getEquipe1().getParametroEquipe());
         lotogolTimeDois.setParametroEquipe(parametroPartida.getEquipe2().getParametroEquipe());
 
-        String paisTime1 = (parametroPartida.getEquipe1().getIndicadorSelecao() ? "" : " / " + parametroPartida.getEquipe1().getSiglaPais());
-        String paisTime2 = (parametroPartida.getEquipe2().getIndicadorSelecao() ? "" : " / " + parametroPartida.getEquipe2().getSiglaPais());
+        String paisTime1 = "";
+        if (parametroPartida.getEquipe1().getIndicadorSelecao() != null && parametroPartida.getEquipe1().getIndicadorSelecao()) {
+            paisTime1 = " / " + parametroPartida.getEquipe1().getSiglaPais();
+        } else {
+            paisTime1 = " / " + parametroPartida.getEquipe1().getUf();
+        }
+
+        String paisTime2 = "";
+        if (parametroPartida.getEquipe2().getIndicadorSelecao() != null && parametroPartida.getEquipe2().getIndicadorSelecao()) {
+            paisTime2 = " / " + parametroPartida.getEquipe2().getSiglaPais();
+        } else {
+            paisTime2 = " / " + parametroPartida.getEquipe2().getUf();
+        }
+
         lotogolTimeUm.getItemImage().setImageResource(R.drawable.time);
         EscudoEquipeUtil.setEscudo(this.getContext(), parametroPartida.getEquipe1().getParametroEquipe(), lotogolTimeUm.getItemImage());
 

@@ -20,6 +20,7 @@
     <string name="valorDessaAposta">Valor dessa aposta</string>
     <string name="imagemCarrinho">Carrinho</string>
     <string name="carrinhoDeApostas">Carrinho de apostas</string>
+    <string name="label_premio_estimado_concurso_numero_bold">Pr\u00eamio estimado do concurso _%d_</string>
 
     <string name="escolhaOmes">_Escolha_\no mês desejado</string>
     <string name="adicionarAoCarrinho">_Adicionar_\nao carrinho de apostas</string>
@@ -356,6 +357,8 @@
     <string name="label_1_sorteio">1º sorteio</string>
     <string name="label_voltar_bold">_Voltar_</string>
     <string name="label_domingo">Domingo</string>
+    <string name="label_resultados">Resultados</string>
+    <string name="label_acumulou_exclamacao">ACUMULOU!</string>
 
 
 </resources>

@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.LinearLayout;
 
 import java.util.List;
 
@@ -49,7 +48,7 @@ public class NumerosLotogolAdapter extends BaseAdapter {
             view = layoutInflater.inflate(R.layout.linearlayout_numeros_lotogol, null);
         }
 
-        ((LinearLayout) view.findViewById(R.id.linearLayoutNumerosPlacar)).setBackgroundResource(placarList.get(i).getBackGround());
+        view.findViewById(R.id.linearLayoutNumerosPlacar).setBackgroundResource(placarList.get(i).getBackGround());
         view.setTag(placarList.get(i).getValor());
         return view;
     }

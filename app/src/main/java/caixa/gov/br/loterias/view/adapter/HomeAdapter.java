@@ -85,6 +85,10 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             holder.game.setText(ModalidadeEnum.fromString(data.get(position).getTipoModalidade()));
         }
 
+        if(data.get(position).getConcurso().getAcumulado() != null){
+            holder.labelAcumulouTextView.setVisibility(View.VISIBLE);
+        }
+
         holder.relativeLayoutTopResultados.setBackgroundColor(ContextCompat.getColor(context, estilo.getCorEscura()));
         holder.linearLayoutResultadosApostas.setBackgroundColor(ContextCompat.getColor(context, estilo.getCorEscura()));
         //TODO: Altera a cor do título do carrosel
@@ -96,7 +100,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         String  estimativaFormatado = ViewUtils.getMoedaFormat(data.get(position).getConcurso().getEstimativa());
         holder.valorAcumulado.setText(estimativaFormatado);
 
-        holder.premioEstimadoConcurso.setText("Prêmio estimado do concurso " + data.get(position).getConcurso().getNumero());
+        holder.premioEstimadoConcurso.setText(ViewUtils.textFuturaAndFuturaBold(context, context.getString(R.string.label_premio_estimado_concurso_numero_bold,
+                data.get(position).getConcurso().getNumero())));
 
         DateFormat formatterDay = new SimpleDateFormat("EEEE");
         DateFormat formatterDate = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
@@ -121,7 +126,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         holder.tempoRestanteParaAposta.setText(retornaStringDias((Long) mapComDiferencaDeDatas.get(TimeUnit.DAYS))
                 +retornaStringHoras((Long) mapComDiferencaDeDatas.get(TimeUnit.DAYS), (Long) mapComDiferencaDeDatas.get(TimeUnit.HOURS)));
 
-//        aposta.setText(ViewUtils.fromHtml("<b>Aposte</b><br>por R$" + data.get(position).getValor()));
         Glide.with(holder.itemView.getContext())
                 .load(estilo.getImagemCalendario())
                 .into(holder.calendario);
@@ -132,7 +136,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         holder.buttonActionResultadosModalidade.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (holder.linearLayoutResultadosApostas.getHeight() == 00) {
+                if (holder.linearLayoutResultadosApostas.getHeight() == 0) {
                     if (data.get(position).getResultadoConcursoDTO() == null){
                         callWebserviceResultadoConcurso(holder.relativeLayoutTopResultados,
                                 holder.linearLayoutResultadosApostas,
@@ -209,34 +213,34 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         });
     }
 
-    public static String retornaStringDias (Long dia) {
+    private String retornaStringDias(Long dia) {
         if (dia > 0) {
             if (dia == 1) {
-                return String.format( "%d dia", dia);
+                return String.format(Locale.getDefault(), "%d dia", dia);
             }
-            return String.format( "%d dias", dia);
+            return String.format(Locale.getDefault(), "%d dias", dia);
         }
         return "";
     }
 
-    public static String retornaStringHoras (Long dia, Long hora) {
+    private String retornaStringHoras(Long dia, Long hora) {
         String string = "";
         string = dia > 0 ? " e " : "";
 
         if (hora > 0){
             if (hora == 1) {
-                return string + String.format( "%d hora", hora);
+                return string + String.format(Locale.getDefault(), "%d hora", hora);
             }
-            return string + String.format( "%d horas", hora);
+            return string + String.format(Locale.getDefault(), "%d horas", hora);
         }
         return "";
     }
 
-    public static Map<TimeUnit,Long> computeDiff(Date date1, Date date2) {
+    private Map<TimeUnit,Long> computeDiff(Date date1, Date date2) {
         long diffInMillies = date2.getTime() - date1.getTime();
         List<TimeUnit> units = new ArrayList<TimeUnit>(EnumSet.allOf(TimeUnit.class));
         Collections.reverse(units);
-        Map<TimeUnit,Long> result = new LinkedHashMap<TimeUnit,Long>();
+        Map<TimeUnit,Long> result = new LinkedHashMap<>();
         long milliesRest = diffInMillies;
         for ( TimeUnit unit : units ) {
             long diff = unit.convert(milliesRest,TimeUnit.MILLISECONDS);
@@ -258,6 +262,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         private ImageView relogio;
         private ImageView calendario;
         private TextView valorAcumulado;
+        private TextView labelAcumulouTextView;
         private ImageView trevo;
         private RelativeLayout trevoFundo;
         private TextView premioEstimadoConcurso;
@@ -272,23 +277,24 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
         public ViewHolder (View itemView) {
             super(itemView);
-            game = (TextView) itemView.findViewById(R.id.textViewCardTitle);
-            trevo = (ImageView) itemView.findViewById(R.id.trevoImagem);
-            trevoFundo = (RelativeLayout) itemView.findViewById(R.id.RelativeLayoutTrevo) ;
-            calendario = (ImageView)  itemView.findViewById(R.id.imageCalendar);
-            relogio = (ImageView)  itemView.findViewById(R.id.imageWatch);
+            game = itemView.findViewById(R.id.textViewCardTitle);
+            trevo = itemView.findViewById(R.id.trevoImagem);
+            trevoFundo = itemView.findViewById(R.id.RelativeLayoutTrevo) ;
+            calendario = itemView.findViewById(R.id.imageCalendar);
+            relogio = itemView.findViewById(R.id.imageWatch);
             titulo = itemView.findViewById(R.id.linearLayoutTopModalidades);
             valorAcumulado = itemView.findViewById(R.id.textVieCardAcumulatedValue);
-            premioEstimadoConcurso = (TextView) itemView.findViewById(R.id.textPremioEstimadoConcurso);
-            dataSorteio = (TextView) itemView.findViewById(R.id.textVieCardDrawDate);
-            tempoRestanteParaAposta = (TextView) itemView.findViewById(R.id.textVieCardClosingOfBets);
-            tempoRestanteParaAposta = (TextView) itemView.findViewById(R.id.textVieCardClosingOfBets);
-            buttonActionResultadosModalidade = (Button) itemView.findViewById(R.id.buttonActionResultadosModalidade);
-            relativeLayoutTopResultados = (RelativeLayout) itemView.findViewById(R.id.relativeLayoutTopResultados);
-            linearLayoutResultadosApostas = (LinearLayout) itemView.findViewById(R.id.linearLayoutResultadosApostas);
+            labelAcumulouTextView = itemView.findViewById(R.id.labelAcumulouTextView);
+            premioEstimadoConcurso = itemView.findViewById(R.id.textPremioEstimadoConcurso);
+            dataSorteio = itemView.findViewById(R.id.textVieCardDrawDate);
+            tempoRestanteParaAposta = itemView.findViewById(R.id.textVieCardClosingOfBets);
+            tempoRestanteParaAposta = itemView.findViewById(R.id.textVieCardClosingOfBets);
+            buttonActionResultadosModalidade = itemView.findViewById(R.id.buttonActionResultadosModalidade);
+            relativeLayoutTopResultados = itemView.findViewById(R.id.relativeLayoutTopResultados);
+            linearLayoutResultadosApostas = itemView.findViewById(R.id.linearLayoutResultadosApostas);
 
-            setaEsquerdaAcaoRelativeLayout = (RelativeLayout) itemView.findViewById(R.id.setaEsquerdaAcaoRelativeLayout);
-            setaDireitaAcaoRelativeLayout = (RelativeLayout) itemView.findViewById(R.id.setaDireitaAcaoRelativeLayout);
+            setaEsquerdaAcaoRelativeLayout =  itemView.findViewById(R.id.setaEsquerdaAcaoRelativeLayout);
+            setaDireitaAcaoRelativeLayout = itemView.findViewById(R.id.setaDireitaAcaoRelativeLayout);
 
         }
 
