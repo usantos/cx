@@ -17,9 +17,9 @@
     <string name="action_settings">Configurações</string>
     <string name="action_duvidas">Dúvidas</string>
 
-    <string name="valorDessaAposta">Valor dessa aposta</string>
+    <string name="valorDessaAposta">Valor dessa\naposta</string>
     <string name="imagemCarrinho">Carrinho</string>
-    <string name="carrinhoDeApostas">Carrinho de apostas</string>
+    <string name="carrinhoDeApostas">Carrinho \nde apostas</string>
     <string name="label_premio_estimado_concurso_numero_bold">Pr\u00eamio estimado do concurso _%d_</string>
 
     <string name="escolhaOmes">_Escolha_\no mês desejado</string>

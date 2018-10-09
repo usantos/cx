@@ -350,40 +350,32 @@
         app:layout_constraintRight_toLeftOf="@+id/viewTabBar" />
 
 
-    <android.support.constraint.ConstraintLayout
+    <RelativeLayout
         android:id="@+id/viewTabBar"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="94dp"
         android:background="@color/azulclaro"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <RelativeLayout
-            android:layout_width="89dp"
-            android:layout_height="0dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="13dp"
-            android:layout_marginTop="18dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/imageViewPaginacao"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0">
+            android:layout_toStartOf="@+id/imageViewPaginacao">
 
             <TextView
                 android:id="@+id/valorApostaCartela"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
+                android:layout_above="@+id/textInfoValorAposta"
                 android:layout_centerHorizontal="true"
+                android:layout_marginBottom="12dp"
                 android:layout_marginTop="10dp"
-                android:text="R$ 4,50"
                 android:textAlignment="center"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                tools:text="R$ 4,50" />
 
             <TextView
                 android:id="@+id/textInfoValorAposta"
@@ -400,59 +392,50 @@
 
         <ImageView
             android:id="@+id/imageViewPaginacao"
-            android:layout_width="150dp"
+            android:layout_width="184dp"
             android:layout_height="12dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
             android:layout_marginBottom="20dp"
             android:contentDescription="@string/imagemCarrinho"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
             app:srcCompat="@drawable/paginacao1" />
 
         <RelativeLayout
             android:id="@+id/simularApostaLayoutCarrinhoApostas"
-            android:layout_width="88dp"
-            android:layout_height="0dp"
+            android:layout_width="wrap_content"
+            android:layout_height="74dp"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="13dp"
-            android:layout_marginEnd="0dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@+id/imageViewPaginacao"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <Button
-                android:id="@+id/botaoCarrinho"
-                android:layout_width="34dp"
-                android:layout_height="40dp"
-                android:layout_centerHorizontal="true"
-                android:background="@drawable/icon_carrinho"
-                android:clickable="false" />
+            android:layout_toEndOf="@+id/imageViewPaginacao">
 
             <RelativeLayout
-                android:layout_width="76dp"
-                android:layout_height="40dp"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:clickable="false"
-                android:translationZ="2dp">
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true">
+
+                <Button
+                    android:id="@+id/botaoCarrinho"
+                    android:layout_width="34dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/icon_carrinho"
+                    android:layout_centerHorizontal="true"
+                    android:clickable="false" />
 
                 <TextView
                     android:id="@+id/textViewCarrinhoCartelaCount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
                     android:layout_marginTop="13dp"
                     android:background="@drawable/rounded_textview"
                     android:clickable="false"
                     android:gravity="center"
+                    android:outlineProvider="none"
                     android:text="0"
                     android:textColor="@color/branco"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    android:translationZ="2dp"
+                    android:layout_marginEnd="25dp"/>
             </RelativeLayout>
 
             <TextView
@@ -461,15 +444,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
                 android:clickable="false"
                 android:text="@string/carrinhoDeApostas"
                 android:textAlignment="center"
                 android:textColor="@color/azulescuro"
                 android:textSize="12sp" />
         </RelativeLayout>
-    </android.support.constraint.ConstraintLayout>
+    </RelativeLayout>
 
     <Button
         android:id="@+id/botaoAdicionarCompletarCartela"

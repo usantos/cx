@@ -62,8 +62,8 @@ public class ResultadoConcursoDTO {
     protected List<PremiacaoConcursoDTO> premiacoesSegundoSorteio = null;
     @SerializedName("premiacaoTimeDoCoracao")
     protected PremiacaoTimeDoCoracaoDTO premiacaoTimeDoCoracao = null;
-    @SerializedName("mesDeSorte")
-    protected ParametroMesDeSorte mesDeSorte = null;
+    @SerializedName("premiacaoMesDeSorte")
+    protected PremiacaoMesDeSorteDTO premiacaoMesDeSorte = null;
     @SerializedName("ganhadoresPrimeiroSorteio")
     protected List<GanhadoresPorRegiaoDTO> ganhadoresPrimeiroSorteio = null;
     @SerializedName("ganhadoresSegundoSorteio")
@@ -277,12 +277,12 @@ public class ResultadoConcursoDTO {
         this.premiacaoTimeDoCoracao = premiacaoTimeDoCoracao;
     }
 
-    public ParametroMesDeSorte getMesDeSorte() {
-        return mesDeSorte;
+    public PremiacaoMesDeSorteDTO getPremiacaoMesDeSorte() {
+        return premiacaoMesDeSorte;
     }
 
-    public void setMesDeSorte(ParametroMesDeSorte mesDeSorte) {
-        this.mesDeSorte = mesDeSorte;
+    public void setPremiacaoMesDeSorte(PremiacaoMesDeSorteDTO premiacaoMesDeSorte) {
+        this.premiacaoMesDeSorte = premiacaoMesDeSorte;
     }
 
     /**

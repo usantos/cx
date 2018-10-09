@@ -251,8 +251,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="100dp"
-            app:dsv_orientation="horizontal"
-            />
+            app:dsv_orientation="horizontal" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -267,35 +266,32 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="65dp"
-            android:text="valor mínimo da compra: R$0,00"
             android:textColor="@color/azulescuro"
-            android:textSize="10sp" />
+            android:textSize="10sp"
+            tools:text="valor mínimo da compra: R$0,00" />
 
         <RelativeLayout
             android:id="@+id/apostasConfirmadasBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="75dp"
+            android:layout_width="75dp"
+            android:layout_height="70dp"
             android:layout_alignParentStart="true"
-            android:layout_marginLeft="6dp"
             android:layout_marginTop="20dp">
 
             <ImageView
                 android:id="@+id/textViewHomeButtonAllBets"
                 android:layout_width="34dp"
                 android:layout_height="40dp"
-                android:layout_marginStart="25dp"
+                android:layout_centerHorizontal="true"
                 android:src="@drawable/icon_apostas" />
 
             <TextView
                 android:id="@+id/textViewHomeCountConfirmedBets"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/textViewHomeButtonAllBets"
-                android:layout_marginStart="52dp"
-                android:layout_marginTop="-25dp"
+                android:layout_alignBottom="@+id/textViewHomeButtonAllBets"
                 android:background="@drawable/rounded_textview"
+                android:layout_alignParentEnd="true"
                 android:gravity="center"
-                android:outlineProvider="none"
                 android:text="3"
                 android:textColor="@color/branco"
                 android:textSize="12sp"
@@ -306,8 +302,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:layout_marginStart="12dp"
                 android:text="Apostas\nconfirmadas"
+                android:layout_centerHorizontal="true"
                 android:textAlignment="center"
                 android:textColor="@color/azulescuro"
                 android:textSize="12sp" />
@@ -317,8 +313,8 @@
             android:id="@+id/relativeLayoutCarrinho"
             android:layout_width="75dp"
             android:layout_height="70dp"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="0dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="0dp"
             android:layout_marginTop="20dp"
             android:clickable="true">
 
@@ -370,13 +366,15 @@
 
     <Button
         android:id="@+id/buttonHomeBet"
-        android:layout_width="154dp"
+        android:layout_width="match_parent"
         android:layout_height="84dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="40dp"
+        android:layout_marginStart="88dp"
+        android:layout_marginEnd="88dp"
         android:background="@color/verdesenaclaro"
-        android:text=""
+        tools:text="Aposta\npor R$ 2,00"
         android:textAllCaps="false"
         android:textColor="@color/branco"
         android:textSize="16sp" />

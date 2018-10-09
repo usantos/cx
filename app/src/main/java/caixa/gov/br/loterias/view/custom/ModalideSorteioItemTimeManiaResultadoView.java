@@ -67,10 +67,10 @@ public class ModalideSorteioItemTimeManiaResultadoView extends LinearLayout {
         if (modalidade.getTipoModalidade() == ModalidadeEnum.DIA_DE_SORTE) {
             timeCoracaoImage.setVisibility(View.GONE);
             labelTimeCoracaoText.setText(R.string.label_mes_desejado);
-            if (modalidade.getResultadoConcursoDTO().getMesDeSorte() != null) {
-                this.textTimeCoracao.setText(modalidade.getResultadoConcursoDTO().getMesDeSorte().getNome());
+            if (modalidade.getResultadoConcursoDTO().getPremiacaoMesDeSorte() != null
+                    && modalidade.getResultadoConcursoDTO().getPremiacaoMesDeSorte().getMesDeSorte() != null) {
+                this.textTimeCoracao.setText(modalidade.getResultadoConcursoDTO().getPremiacaoMesDeSorte().getMesDeSorte().getNome());
             }else{
-                //TODO quando retornar mes de sorte retirar mock
                 this.textTimeCoracao.setText(R.string.label_tres_interrogacoes);
             }
         } else {

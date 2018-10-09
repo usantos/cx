@@ -81,7 +81,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
     protected DrawerLayout drawerLayout;
 
     @ViewById
-    protected ConstraintLayout toolBarLoteca, viewTabBar;
+    protected ConstraintLayout toolBarLoteca;
 
     @ViewById
     protected Button simularTelaAposta, surpresinhaTela, qtdNumerosButton, qtdConcursosButton, botaoLimparAposta, botaoAdicionarCompletarCartela, botaoCarrinho;
@@ -97,7 +97,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
     protected LinearLayout toolBarSimularAposta;
 
     @ViewById
-    protected RelativeLayout salvarApostaLayout, carrinhoApostas, simularApostaLayoutCarrinhoApostas;
+    protected RelativeLayout salvarApostaLayout, carrinhoApostas, simularApostaLayoutCarrinhoApostas, viewTabBar;
 
     @ViewById
     protected ImageButton btnSalvarAposta;

@@ -28,7 +28,7 @@ import caixa.gov.br.loterias.model.bo.silce.internals.SilceConnection;
      static final String BAIRROS_PATH = "/bairros";
 
      static final String LOGIN_PATH = "/usuarios/autenticar";
-     static final String LIST_CARTOES_PATH = "/usuarios/cartoes";
+     static final String LIST_CARTOES_PATH = "usuarios/cartoes";
      static final String SAIR_PATH = "/usuarios/sair";
      static final String GRAVAR_USUARIO_PATH = "/usuarios";
 
@@ -43,7 +43,7 @@ import caixa.gov.br.loterias.model.bo.silce.internals.SilceConnection;
      static final String APOSTAS_FAVORITAS_LISTA_UNICA_PATH = "/apostas-favoritas/lista-unica";
 
      static final String APOSTAS_MES_ANO_PATH = "/apostas/meses";
-     static final String APOSTAS_CONFIRMADAS_PATH = "/apostas";
+     static final String APOSTAS_CONFIRMADAS_PATH = "apostas";
      static final String APOSTAS_CONFIRMADAS_DETALHES_PATH = "/apostas/{id}/detalhes-premio";
      static final String APOSTAS_CONFIRMADAS_COMPROVANTE_PATH = "/apostas/{id}/comprovante";
      static final String APOSTAS_COMPROVANTE_PREMIO_PATH = "/apostas/{id}/comprovante-premio";
