@@ -85,10 +85,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             holder.game.setText(ModalidadeEnum.fromString(data.get(position).getTipoModalidade()));
         }
 
-        if(data.get(position).getConcurso().getAcumulado() != null){
-            holder.labelAcumulouTextView.setVisibility(View.VISIBLE);
-        }
-
         holder.relativeLayoutTopResultados.setBackgroundColor(ContextCompat.getColor(context, estilo.getCorEscura()));
         holder.linearLayoutResultadosApostas.setBackgroundColor(ContextCompat.getColor(context, estilo.getCorEscura()));
         //TODO: Altera a cor do título do carrosel

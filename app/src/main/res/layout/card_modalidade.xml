@@ -156,8 +156,7 @@
                             android:textAlignment="center"
                             android:textColor="@color/cinzaescuro"
                             android:textSize="25sp"
-                            android:textStyle="bold"
-                            android:visibility="invisible"/>
+                            android:textStyle="bold"/>
 
                         <TextView
                             android:id="@+id/textVieCardAcumulatedValue"
