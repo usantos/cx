@@ -175,7 +175,7 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
         } else if (ModalidadeEnum.DIA_DE_SORTE == aposta.getModalidade()) {
             layoutTimeCoracao.setVisibility(View.VISIBLE);
             labelTimeCoracao.setText(R.string.label_mes_sorte);
-            textViewTimeCoracao.setText(aposta.getMesDeSorte() != null ? aposta.getMesDeSorte().getNome() : context.getString(R.string.label_tres_interrogacoes));
+            textViewTimeCoracao.setText(aposta.getMesDeSorte() != null && aposta.getMesDeSorte().getNome() != null ? aposta.getMesDeSorte().getNome() : context.getString(R.string.label_tres_interrogacoes));
         }
 
         String numeroStr = "";
