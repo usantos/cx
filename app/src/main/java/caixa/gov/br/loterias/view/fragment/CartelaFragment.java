@@ -94,7 +94,6 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
     private SimularApostaActivity parentActivity;
     private AppCompatCheckBox selcioneOutrosNumeros;
     private View view;
-    private TextView infoEscolha, infoPaginacao;
     private EditText informeNomeTime;
     private RelativeLayout opcaoOutrosNumerosLayout;
     private LinearLayout selecioneTimeCoracaoLayout;
@@ -174,10 +173,17 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         }
 
         if (isTipoTimemania) {
-            RelativeLayout infoEscolhaPaginacaoLayout = view.findViewById(R.id.infoEscolhaPaginacaoLayout);
-            infoEscolha = infoEscolhaPaginacaoLayout.findViewById(R.id.infoEscolha);
-            infoPaginacao = infoEscolhaPaginacaoLayout.findViewById(R.id.infoPaginacao);
-            infoEscolhaPaginacaoLayout.setVisibility(View.VISIBLE);
+            RelativeLayout ttvLayout = view.findViewById(R.id.ttvLayout);
+            TextView ttvEscolha = view.findViewById(R.id.ttvEscolha);
+            TextView ttvPagina = view.findViewById(R.id.ttvPagina);
+            TextView ttvPaginaQuantidade = view.findViewById(R.id.ttvPaginaQuantidade);
+
+            ttvEscolha.setText(ViewUtils.textFuturaAndFuturaBold(parentActivity, getString(R.string.dia_sorte_escolha_dia)));
+            ttvEscolha.setTextColor(getResources().getColor(R.color.megasenamedio));
+            ttvPagina.setTextColor(getResources().getColor(R.color.megasenamedio));
+            ttvPaginaQuantidade.setTextColor(getResources().getColor(R.color.timemaniaclaro));
+            ttvPaginaQuantidade.setText(getString(R.string.paginacao_quantidade, getString(R.string.label_numerico_dois)));
+            ttvLayout.setVisibility(View.VISIBLE);
         }
 
         if (isTipoLotomania) {
@@ -206,8 +212,10 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
         {
             // Tela de escolha de números
-            infoEscolha.setText(ViewUtils.fromHtml(Constantes.ESCOLHA_NUMEROS_HTML));
-            infoPaginacao.setText(ViewUtils.fromHtml(Constantes.PAGINACAO_UM_DOIS));
+            TextView ttvEscolha = view.findViewById(R.id.ttvEscolha);
+            TextView ttvPagina = view.findViewById(R.id.ttvPagina);
+            ttvEscolha.setText(ViewUtils.textFuturaAndFuturaBold(parentActivity, getString(R.string.dia_sorte_escolha_dia)));
+            ttvPagina.setText(R.string.label_numerico_um);
         }
         editeAposta();
         if (!isEscolhaTimeCoracaoSurpresinha)
@@ -638,8 +646,10 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
     private void mostrarCartelaEscolhaTimeCoracao() {
         // Estando a aposta completa apresenta a tela de escolha do time
         // Seta a paginação
-        infoEscolha.setText(getString(R.string.label_escolha_time_seu_coracao));
-        infoPaginacao.setText(ViewUtils.fromHtml(Constantes.PAGINACAO_DOIS_DOIS));
+        TextView ttvEscolha = view.findViewById(R.id.ttvEscolha);
+        TextView ttvPagina = view.findViewById(R.id.ttvPagina);
+        ttvEscolha.setText(R.string.label_escolha_time_seu_coracao);
+        ttvPagina.setText(R.string.label_numerico_dois);
 
         isEcolhaTimeBtnAtivado = true;
         isTelaSelecaoTimeAtivado = true;

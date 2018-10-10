@@ -34,41 +34,6 @@
                     android:orientation="horizontal">
 
                     <RelativeLayout
-                        android:id="@+id/infoEscolhaPaginacaoLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:visibility="gone"
-                        app:layout_constraintLeft_toLeftOf="parent">
-
-                        <TextView
-                            android:id="@+id/infoEscolha"
-                            style="@style/ArialMT"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentTop="true"
-                            android:layout_marginLeft="45dp"
-                            android:layout_marginTop="41dp"
-                            android:textColor="@color/megasenamedio"
-                            android:textSize="14sp"
-                            tools:text="@string/dia_sorte_escolha_dia"/>
-
-                        <TextView
-                            android:id="@+id/infoPaginacao"
-                            style="@style/ArialMT"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_alignParentTop="true"
-                            android:layout_alignRight="@id/infoEscolha"
-                            android:layout_marginRight="45dp"
-                            android:layout_marginTop="41dp"
-                            android:textColor="@color/megasenamedio"
-                            android:textSize="14sp"
-                            tools:text="@string/paginacao_um_de_dois"/>
-                    </RelativeLayout>
-
-                    <RelativeLayout
                         android:id="@+id/ttvLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
