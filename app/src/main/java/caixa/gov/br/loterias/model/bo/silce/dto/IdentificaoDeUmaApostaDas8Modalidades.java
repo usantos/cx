@@ -487,6 +487,7 @@ IdentificaoDeUmaApostaDas8Modalidades {
         identificaoDeUmaApostaDas8Modalidades.setSituacao( apostaDTO.getSituacao() );
         identificaoDeUmaApostaDas8Modalidades.setTroca( apostaDTO.getTroca() );
         identificaoDeUmaApostaDas8Modalidades.setQuantidadeNumeros( apostaDTO.getQuantidadeNumeros() );
+        identificaoDeUmaApostaDas8Modalidades.setMesDeSorte( apostaDTO.getMesDeSorte() );
         return identificaoDeUmaApostaDas8Modalidades;
     }
 

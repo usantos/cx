@@ -120,7 +120,7 @@ public class AdicionarApostaCarrinhoHelper {
             @Override
             public void onResponse(AgrupadorDTOApostaDTOResponse response) {
                 DialogUtils.dismiss();
-                telaConfirmarCarrinho(apostaSurpresinha.getModalidade(), apostaSurpresinha.getValor());
+                telaConfirmarCarrinho(apostaSurpresinha.getModalidade(), apostaSurpresinha);
                 if (response.getRedirect() != null) {
                     RedirectNetwork.checkRedirectSucesso(response.getRedirect(), (Activity) context);
                 }
@@ -131,7 +131,7 @@ public class AdicionarApostaCarrinhoHelper {
                 DialogUtils.dismiss();
                 if (MensagensNetwork.isUnauthorizedError(error)) {
                     inserirSurpresinhaCarrinhoLocal(apostaSurpresinha);
-                    telaConfirmarCarrinho(apostaSurpresinha.getModalidade(), apostaSurpresinha.getValor());
+                    telaConfirmarCarrinho(apostaSurpresinha.getModalidade(), apostaSurpresinha);
                 } else {
                     RedirectNetwork.checkRedirect(error, (Activity) context);
                 }
@@ -144,7 +144,7 @@ public class AdicionarApostaCarrinhoHelper {
             @Override
             public void onResponse(AgrupadorDTOApostaDTOResponse result) {
                 DialogUtils.dismiss();
-                telaConfirmarCarrinho(aposta.getModalidade(), aposta.getValor());
+                telaConfirmarCarrinho(aposta.getModalidade(), aposta);
             }
 
             @Override
@@ -186,9 +186,22 @@ public class AdicionarApostaCarrinhoHelper {
         }
     }
 
-    private static void telaConfirmarCarrinho(ModalidadeEnum modalidadeEnum, BigDecimal valor) {
+    private static void telaConfirmarCarrinho(ModalidadeEnum modalidadeEnum,  Object aposta) {
+        BigDecimal valor = BigDecimal.ZERO;
+        Boolean espelho = false;
+
+        if(aposta instanceof IdentificaoDeUmaApostaDas8Modalidades){
+            valor = ((IdentificaoDeUmaApostaDas8Modalidades)aposta).getValor();
+            espelho = ((IdentificaoDeUmaApostaDas8Modalidades)aposta).getGerarApostaEspelho();
+        }else if(aposta instanceof IncluirSurpresinhaDTO){
+            valor = ((IncluirSurpresinhaDTO)aposta).getValor();
+        }
         Intent activity = new Intent(context, ConfirmadoInclusaoCarrinhoActivity.class);
         activity.putExtra("tipoAposta", modalidadeEnum);
+
+        if(modalidadeEnum == ModalidadeEnum.LOTOMANIA && espelho){
+            valor = valor.multiply(Constantes.DOIS_BIG_DECIMAL);
+        }
         activity.putExtra("valorAposta", valor);
         activity.putExtra("modalidade", (new Gson()).toJson(ViewUtils.getParametroSimulacao(SessaoUsuario.getInstance(), modalidadeEnum).getParametroJogo()));
         context.startActivity(activity);
@@ -412,11 +425,11 @@ public class AdicionarApostaCarrinhoHelper {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         AdicionarApostaCarrinhoHelper.inserirApostaCarrinhoLocal(context, aposta);
-                        telaConfirmarCarrinho(aposta.getModalidade(), aposta.getValor());
+                        telaConfirmarCarrinho(aposta.getModalidade(), aposta);
                     }
                 });
             } else if (AdicionarApostaCarrinhoHelper.inserirApostaCarrinhoLocal(context, aposta)) {
-                telaConfirmarCarrinho(aposta.getModalidade(), aposta.getValor());
+                telaConfirmarCarrinho(aposta.getModalidade(), aposta);
             }
         } else {
             String msgError = MensagensNetwork.setMensagem(error, context);

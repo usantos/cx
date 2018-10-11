@@ -140,6 +140,9 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
     protected void init() {
         invalidateOptionsMenu();
         zerarApostas();
+        if(aposta != null){
+            mesDeSorteCartela = aposta.getMesDeSorte();
+        }
     }
 
     public void zerarApostas() {

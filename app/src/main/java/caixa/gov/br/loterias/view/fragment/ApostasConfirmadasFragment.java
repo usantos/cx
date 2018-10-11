@@ -12,7 +12,6 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
-import com.google.gson.Gson;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -202,7 +201,7 @@ public class ApostasConfirmadasFragment extends Fragment implements ApostasConfi
 
                     @Override
                     public void onItemClick(final ApostaDTO apostaDTO) {
-                        ApostaConfirmadaDetalhesActivity_.intent(getActivity()).apostaDTO(apostaDTO).isHistorico( isHistorico ).start();
+                        ApostaConfirmadaDetalhesActivity_.intent(getActivity()).apostaDTO(apostaDTO).isHistorico(isHistorico).start();
                     }
                 });
                 apostasConfirmadasRecyclerView.setAdapter(adapter);
