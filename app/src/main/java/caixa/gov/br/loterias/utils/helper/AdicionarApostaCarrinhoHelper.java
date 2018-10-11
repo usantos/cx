@@ -196,12 +196,13 @@ public class AdicionarApostaCarrinhoHelper {
         }else if(aposta instanceof IncluirSurpresinhaDTO){
             valor = ((IncluirSurpresinhaDTO)aposta).getValor();
         }
-        Intent activity = new Intent(context, ConfirmadoInclusaoCarrinhoActivity.class);
-        activity.putExtra("tipoAposta", modalidadeEnum);
 
         if(modalidadeEnum == ModalidadeEnum.LOTOMANIA && espelho){
             valor = valor.multiply(Constantes.DOIS_BIG_DECIMAL);
         }
+
+        Intent activity = new Intent(context, ConfirmadoInclusaoCarrinhoActivity.class);
+        activity.putExtra("tipoAposta", modalidadeEnum);
         activity.putExtra("valorAposta", valor);
         activity.putExtra("modalidade", (new Gson()).toJson(ViewUtils.getParametroSimulacao(SessaoUsuario.getInstance(), modalidadeEnum).getParametroJogo()));
         context.startActivity(activity);

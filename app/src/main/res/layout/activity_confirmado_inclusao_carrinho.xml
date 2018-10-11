@@ -21,72 +21,66 @@
     <!--app:layout_constraintLeft_toRightOf="@+id/viewTabBar"-->
     <!--app:layout_constraintRight_toLeftOf="@+id/viewTabBar" />-->
 
-    <TextView
-        android:id="@+id/textObservacaoConfirmacao"
-        style="@style/editTextArialMTTheme"
-        android:layout_width="0dp"
+    <RelativeLayout
+        android:id="@+id/descricaoDetalheCarrinhoRelativeLayout"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="46dp"
-        android:layout_marginLeft="46dp"
-        android:layout_marginRight="46dp"
-        android:layout_marginStart="46dp"
-        android:layout_marginTop="11dp"
-        android:text="@string/infoValorMinimoCarrinho"
-        android:textAlignment="center"
-        android:textColor="@color/branco"
-        app:layout_constraintLeft_toLeftOf="@+id/imageSetaApontandoCarrinho"
-        app:layout_constraintRight_toRightOf="@+id/imageSetaApontandoCarrinho"
-        app:layout_constraintTop_toTopOf="@+id/imageSetaApontandoCarrinho" />
-
-    <TextView
-        android:id="@+id/textTituloTela"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="9dp"
-        android:layout_marginEnd="105dp"
-        android:layout_marginLeft="105dp"
-        android:layout_marginRight="105dp"
-        android:layout_marginStart="105dp"
-        android:text="@string/tituloApostaFeita"
-        android:textAlignment="center"
-        android:textColor="@color/branco"
-        android:textSize="14.2sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/imageSetaApontandoCarrinho"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
-
-    <!--<Button-->
-    <!--android:id="@+id/botaoNovaAposta"-->
-    <!--android:layout_width="174dp"-->
-    <!--android:layout_height="56dp"-->
-    <!--android:layout_marginBottom="10dp"-->
-    <!--android:background="@color/megasenaclaro"-->
-    <!--android:paddingLeft="14dp"-->
-    <!--android:paddingRight="14dp"-->
-    <!--android:text="@string/novaAposta"-->
-    <!--android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"-->
-    <!--android:textColor="@color/branco"-->
-    <!--android:textStyle="bold"-->
-    <!--app:layout_constraintBottom_toTopOf="@+id/botaoAdicionarCompletarCartela"-->
-    <!--app:layout_constraintLeft_toRightOf="@+id/viewTabBar"-->
-    <!--app:layout_constraintRight_toLeftOf="@+id/viewTabBar" />-->
-
-
-    <ImageView
-        android:id="@+id/imageSetaApontandoCarrinho"
-        android:layout_width="0dp"
-        android:layout_height="309dp"
-        android:layout_marginBottom="7dp"
-        android:layout_marginEnd="42dp"
-        android:layout_marginLeft="53dp"
-        android:layout_marginRight="42dp"
-        android:layout_marginStart="53dp"
         app:layout_constraintBottom_toTopOf="@+id/viewTabBar"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:srcCompat="@drawable/rectangle_5_copy" />
+        android:layout_marginBottom="11dp">
+
+        <TextView
+            android:id="@+id/textTituloTela"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="106dp"
+            android:layout_marginStart="106dp"
+            android:layout_marginTop="129dp"
+            android:text="@string/tituloApostaFeita"
+            android:textAlignment="center"
+            android:textColor="@color/branco"
+            android:textSize="14.2sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/imageSetaApontandoCarrinho"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textTituloTela"
+            android:layout_marginEnd="42dp"
+            android:layout_marginStart="59dp"
+            android:layout_marginTop="9dp"
+            app:srcCompat="@drawable/rectangle_5_copy" />
+
+        <TextView
+            android:id="@+id/textObservacaoConfirmacao"
+            style="@style/editTextArialMTTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/imageSetaApontandoCarrinho"
+            android:layout_marginEnd="97dp"
+            android:layout_marginStart="98dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/infoValorMinimoCarrinho"
+            android:textAlignment="center"
+            android:textColor="@color/branco" />
+
+        <!--<Button-->
+        <!--android:id="@+id/botaoNovaAposta"-->
+        <!--android:layout_width="174dp"-->
+        <!--android:layout_height="56dp"-->
+        <!--android:layout_marginBottom="10dp"-->
+        <!--android:background="@color/megasenaclaro"-->
+        <!--android:paddingLeft="14dp"-->
+        <!--android:paddingRight="14dp"-->
+        <!--android:text="@string/novaAposta"-->
+        <!--android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"-->
+        <!--android:textColor="@color/branco"-->
+        <!--android:textStyle="bold"-->
+        <!--app:layout_constraintBottom_toTopOf="@+id/botaoAdicionarCompletarCartela"-->
+        <!--app:layout_constraintLeft_toRightOf="@+id/viewTabBar"-->
+        <!--app:layout_constraintRight_toLeftOf="@+id/viewTabBar" />-->
+
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/viewTabBar"
@@ -97,7 +91,7 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <RelativeLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="13dp"
             android:layout_toStartOf="@+id/imageViewPaginacao">
@@ -164,6 +158,7 @@
                     android:id="@+id/textViewCarrinhoCartelaCount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="25dp"
                     android:layout_marginTop="14dp"
                     android:background="@drawable/rounded_textview"
                     android:clickable="false"
@@ -172,8 +167,7 @@
                     android:text="0"
                     android:textColor="@color/branco"
                     android:textSize="12sp"
-                    android:translationZ="2dp"
-                    android:layout_marginEnd="25dp"/>
+                    android:translationZ="2dp" />
             </RelativeLayout>
 
             <TextView
