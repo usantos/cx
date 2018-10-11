@@ -12,9 +12,10 @@
         android:id="@+id/atalhoRapidoLoterias"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="gone"
+        tools:visibility="visible">
 
         <RelativeLayout
             android:id="@+id/relativeLayoutContentRapidao"
@@ -238,7 +239,6 @@
                 </LinearLayout>
             </RelativeLayout>
         </RelativeLayout>
-
     </LinearLayout>
 
     <RelativeLayout
@@ -255,17 +255,20 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/roadapeLayout"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_alignParentBottom="true">
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:paddingBottom="15dp">
 
         <TextView
             android:id="@+id/textViewHomeMinimumPurchaseValue"
             style="@style/editTextArialMTTheme"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/apostasConfirmadasBtn"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="65dp"
+            android:layout_marginBottom="2dp"
             android:textColor="@color/azulescuro"
             android:textSize="10sp"
             tools:text="valor mínimo da compra: R$0,00" />
@@ -274,8 +277,7 @@
             android:id="@+id/apostasConfirmadasBtn"
             android:layout_width="75dp"
             android:layout_height="70dp"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="20dp">
+            android:layout_marginTop="7dp">
 
             <ImageView
                 android:id="@+id/textViewHomeButtonAllBets"
@@ -289,8 +291,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@+id/textViewHomeButtonAllBets"
-                android:background="@drawable/rounded_textview"
                 android:layout_alignParentEnd="true"
+                android:background="@drawable/rounded_textview"
                 android:gravity="center"
                 android:text="3"
                 android:textColor="@color/branco"
@@ -302,8 +304,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:text="Apostas\nconfirmadas"
                 android:layout_centerHorizontal="true"
+                android:text="Apostas\nconfirmadas"
                 android:textAlignment="center"
                 android:textColor="@color/azulescuro"
                 android:textSize="12sp" />
@@ -314,8 +316,7 @@
             android:layout_width="75dp"
             android:layout_height="70dp"
             android:layout_alignParentEnd="true"
-            android:layout_marginEnd="0dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="7dp"
             android:clickable="true">
 
             <ImageView
@@ -351,18 +352,17 @@
                 android:textSize="12sp" />
         </RelativeLayout>
 
-        <RelativeLayout
-            android:id="@+id/relativeBlankView"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:alpha="0.0"
-            android:background="@color/branco"
-            android:visibility="visible" />
 
     </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relativeBlankView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignTop="@+id/roadapeLayout"
+        android:alpha="0.0"
+        android:background="@color/branco"
+        android:visibility="visible" />
 
     <Button
         android:id="@+id/buttonHomeBet"
@@ -371,12 +371,12 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="40dp"
-        android:layout_marginStart="88dp"
         android:layout_marginEnd="88dp"
+        android:layout_marginStart="88dp"
         android:background="@color/verdesenaclaro"
-        tools:text="Aposta\npor R$ 2,00"
         android:textAllCaps="false"
         android:textColor="@color/branco"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        tools:text="Aposta\npor R$ 2,00" />
 
 </RelativeLayout>

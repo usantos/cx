@@ -106,6 +106,7 @@ public class PrincipalActivity extends AppCompatActivity
     private RepassometroDTO repassesSociais;
     private DBLoteriasHelper dbLoteriasHelper;
     private View actionApresentarTrevo, actionSettings;
+    private int groupHeight;
 
     @AfterViews
     public void init() {
@@ -116,12 +117,12 @@ public class PrincipalActivity extends AppCompatActivity
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         toolbarListener();
-        nav_user.setText(ViewUtils.textFuturaAndFuturaBold( this,  "Olá, _Renato Silva!_"));
-        nav_ultima_aposta.setText( ViewUtils.textFuturaAndFuturaBold( this,  "Sua última aposta foi em _24/08/2017_") );
+        nav_user.setText(ViewUtils.textFuturaAndFuturaBold(this, "Olá, _Renato Silva!_"));
+        nav_ultima_aposta.setText(ViewUtils.textFuturaAndFuturaBold(this, "Sua última aposta foi em _24/08/2017_"));
         layoutSideMenu();
         callWebservice();
         iniciarBancoLocal();
-     }
+    }
 
     private void iniciarBancoLocal() {
         dbLoteriasHelper = new DBLoteriasHelper(getApplicationContext());
@@ -160,25 +161,7 @@ public class PrincipalActivity extends AppCompatActivity
                     });
                     return;
                 }
-
-                SessaoUsuario sessaoUser = SessaoUsuario.getInstance();
-                try {
-                    DadosUsuarioToken dadosUsuarioToken = Utils.decodedToken( sessaoUser.getToken() );
-                    sessaoUser.setEmail( dadosUsuarioToken.getEmail() );
-                    sessaoUser.setNome( dadosUsuarioToken.getName() );
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                sessaoUser.setValorMinimimoAposta(response.getPayload().getValorMinimoCarrinho());
-                sessaoUser.setValorMaximoAposta(response.getPayload().getValorLimiteDiario());
-                sessaoUser.setParametrosSimulacao(response.getPayload());
-
-                textViewHomeMinimumPurchaseValue.setText(String.format("valor mínimo da compra: %s", ViewUtils.getMoedaFormat(response.getPayload().getValorMinimoCarrinho())));
-
-                montaListaModalidades();
-                montarCarrossel();
-
-                callRepassesSociais();
+                paramatroSimulacaoSuccess(response);
             }
 
             @Override
@@ -186,16 +169,37 @@ public class PrincipalActivity extends AppCompatActivity
                 loadViewProgress.dismiss();
                 ViewUtils.alertTitleButton(PrincipalActivity.this, R.string.label_atencao, MensagensNetwork.setMensagem(error,
                         getApplicationContext()),
-                        PrincipalActivity.this.getResources().getString( R.string.ok ),
+                        PrincipalActivity.this.getResources().getString(R.string.ok),
                         new DialogInterface.OnDismissListener() {
-                    @Override
-                    public void onDismiss(DialogInterface dialogInterface) {
-                        startActivity(new Intent(PrincipalActivity.this, LoginActivity.class));
-                        finish();
-                    }
-                });
+                            @Override
+                            public void onDismiss(DialogInterface dialogInterface) {
+                                startActivity(new Intent(PrincipalActivity.this, LoginActivity.class));
+                                finish();
+                            }
+                        });
             }
         });
+    }
+
+    private void paramatroSimulacaoSuccess(ParametrosSimulacaoResponse response) {
+        SessaoUsuario sessaoUser = SessaoUsuario.getInstance();
+        try {
+            DadosUsuarioToken dadosUsuarioToken = Utils.decodedToken(sessaoUser.getToken());
+            sessaoUser.setEmail(dadosUsuarioToken.getEmail());
+            sessaoUser.setNome(dadosUsuarioToken.getName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        sessaoUser.setValorMinimimoAposta(response.getPayload().getValorMinimoCarrinho());
+        sessaoUser.setValorMaximoAposta(response.getPayload().getValorLimiteDiario());
+        sessaoUser.setParametrosSimulacao(response.getPayload());
+
+        textViewHomeMinimumPurchaseValue.setText(String.format("valor mínimo da compra: %s", ViewUtils.getMoedaFormat(response.getPayload().getValorMinimoCarrinho())));
+
+        montaListaModalidades();
+        montarCarrossel();
+
+        callRepassesSociais();
     }
 
     private void callRepassesSociais() {
@@ -292,11 +296,11 @@ public class PrincipalActivity extends AppCompatActivity
                 PrincipalActivity.this,
                 estilo
         );
-        int positionTopBotao = (int) buttonHomeBet.getY();
+        int positionTopRodape = (int) relativeBlankView.getY();
 
         int itemSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 105, this.getResources().getDisplayMetrics());
 
-        animacoesAcessoRapido.AnimacaoDescerContent(positionTopBotao - itemSize);
+        animacoesAcessoRapido.AnimacaoDescerContent(positionTopRodape - itemSize);
     }
 
     private void AnimacaoFecharMenuRapido(View v) {
@@ -343,7 +347,7 @@ public class PrincipalActivity extends AppCompatActivity
         ViewUtils.alertTitleButtonYesOrNotListener(this, getResources().getString(R.string.MA008), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if (DadosUsuarioBO.checarUsuarioLogado( PrincipalActivity.this )){
+                if (DadosUsuarioBO.checarUsuarioLogado(PrincipalActivity.this)) {
                     final AlertDialog loadViewProgress = LoadingViewLoterias.show(PrincipalActivity.this);
 
                     DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_(PrincipalActivity.this);
@@ -359,10 +363,10 @@ public class PrincipalActivity extends AppCompatActivity
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             loadViewProgress.dismiss();
-                            RedirectNetwork.checkRedirect( error, PrincipalActivity.this );
+                            RedirectNetwork.checkRedirect(error, PrincipalActivity.this);
                         }
                     });
-                } else{
+                } else {
                     startActivity(new Intent(PrincipalActivity.this, LoginActivity.class));
                     finish();
                 }
@@ -448,7 +452,7 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     private void AbrirMenusGroup(int groupPosition) {
-        if (groupPosition == 1) {
+      if (groupPosition == 1) {
             drawerLayout.closeDrawers();
         } else if (groupPosition == 3) {
             startActivity(new Intent(PrincipalActivity.this, ListaRapidaoActivity.class));
@@ -465,13 +469,13 @@ public class PrincipalActivity extends AppCompatActivity
         } else if (groupPosition == 6) {
             sairLogin();
         }
-        if (groupPosition != 0){
-            drawerLayout.closeDrawer( Gravity.START, false);
+        if (groupPosition != 0) {
+            drawerLayout.closeDrawer(Gravity.START, false);
         }
     }
 
     private void AbrirMenusItens(int itemPosition) {
-        switch (itemPosition){
+        switch (itemPosition) {
             case 0:
                 startActivity(new Intent(PrincipalActivity.this, DadosPessoaisActivity.class));
                 break;
@@ -490,7 +494,8 @@ public class PrincipalActivity extends AppCompatActivity
             default:
                 break;
         }
-        drawerLayout.closeDrawer( Gravity.START, false);
+        sideMenuExpandableListView.collapseGroup(0);
+        drawerLayout.closeDrawer(Gravity.START, false);
     }
 
     private void layoutSideMenu() {
