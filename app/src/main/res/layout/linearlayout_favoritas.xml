@@ -161,7 +161,6 @@
                     android:layout_marginStart="16dp"
                     android:textColor="@color/azulescuroapostafavorita"
                     android:textSize="14.2sp"
-                    android:textStyle="bold"
                     tools:text="01 - 02 - 03 - 04 - 05 - 06 - 10 - 11 - 12 - 20 - 33 - 100"
 
                     />

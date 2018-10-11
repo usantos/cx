@@ -44,12 +44,14 @@ import caixa.gov.br.loterias.model.bo.silce.dto.CarrinhoDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.DTOEnumInteger;
 import caixa.gov.br.loterias.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import caixa.gov.br.loterias.model.bo.silce.dto.IncluirApostaFavoritaDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.ModalidadeEnum;
 import caixa.gov.br.loterias.model.bo.silce.dto.ParametroMesDeSorte;
 import caixa.gov.br.loterias.model.bo.silce.dto.ParametroSimulacao;
 import caixa.gov.br.loterias.model.bo.silce.dto.RetornoPadraoDTO;
 import caixa.gov.br.loterias.model.bo.MensagensNetwork;
 import caixa.gov.br.loterias.model.bo.silce.dto.TipoConcursoEnum;
 import caixa.gov.br.loterias.utils.DialogUtils;
+import caixa.gov.br.loterias.utils.EstiloModalidade;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.DadosPessoaisActivity;
 import caixa.gov.br.loterias.view.FavoritasActivity;
@@ -124,7 +126,9 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
 
         swipeLayout.getViewTreeObserver().addOnGlobalLayoutListener(swipeGlobalLayoutListener);
 
+        EstiloModalidade estilo = new EstiloModalidade(ModalidadeEnum.toString(listaApostaFavorita.get(position).getModalidade().getDescricao().toLowerCase()));
         holder.tituloApostaFavorita.setText(listaApostaFavorita.get(position).getModalidade().getDescricao());
+        holder.tituloApostaFavorita.setTextColor(context.getResources().getColor(estilo.getCorClara()));
         holder.tituloNomeApostaFavorita.setText(" | " + listaApostaFavorita.get(position).getNome());
 //
         String numeroStr = "";
