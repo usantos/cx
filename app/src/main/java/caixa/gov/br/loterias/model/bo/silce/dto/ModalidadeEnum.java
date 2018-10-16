@@ -69,6 +69,8 @@ public enum ModalidadeEnum {
                 return ModalidadeEnum.DUPLA_SENA;
             case "dia de sorte":
                 return ModalidadeEnum.DIA_DE_SORTE;
+            case "dupla sena":
+                return ModalidadeEnum.DUPLA_SENA;
             default:
                 return null;
         }

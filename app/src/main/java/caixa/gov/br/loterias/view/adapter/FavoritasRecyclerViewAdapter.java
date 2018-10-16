@@ -111,7 +111,7 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
         swipeGlobalLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                if (listaApostaFavorita.size() > 0) {
+                if (listaApostaFavorita.size() > 0 && position < listaApostaFavorita.size()) {
                     if (listaApostaFavorita.get(position).getOpenSwipeLayout() == null) {
                         listaApostaFavorita.get(position).setOpenSwipeLayout(false);
                     } else {
