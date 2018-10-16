@@ -29,6 +29,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
@@ -246,7 +247,6 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
         return true;
     }
 
@@ -564,7 +564,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
                 this.toolBarMenu = R.menu.itens_simular_actionbar_duvida;
                 break;
             case DIA_DE_SORTE:
-                configuraTipoApostaTela("_dia-sorte_", R.color.diasorteclaro, R.color.diasorteescuro, View.VISIBLE, View.GONE);
+                configuraTipoApostaTela("_dia de sorte_", R.color.diasorteclaro, R.color.diasorteescuro, View.VISIBLE, View.GONE);
                 this.toolBarMenu = R.menu.itens_simular_actionbar_duvida;
                 break;
         }
@@ -730,6 +730,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
 
     private void configuraTipoApostaTela(String titleActivity, int lightColor, int darkColor, int visibilityToolBarSimularAposta, int visibilityToolBarLoteca) {
         setTitle(ViewUtils.textFuturaAndFuturaBold(this, titleActivity));
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(ContextCompat.getColor(this, darkColor));
         }
