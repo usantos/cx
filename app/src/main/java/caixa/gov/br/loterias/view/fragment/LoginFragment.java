@@ -120,7 +120,9 @@ public class LoginFragment extends Fragment {
                                 DadosUsuarioBO.updateUsuarioLogado(getActivity(), true);
                                 verificarCadastroWebservice();
                             }
+
                         }
+
 
                         @Override
                         public void onFailure(Exception e) {
