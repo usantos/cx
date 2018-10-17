@@ -51,7 +51,7 @@ public class PdfUtils {
         }
     }
 
-    public void createComprovantePremioPdf(DetalhesPremioDTO detalhesHistoricoPremioDTO, AppCompatActivity activity) {
+    public void createComprovantePremioPdf(DetalhesHistoricoPremioDTO detalhesHistoricoPremioDTO, AppCompatActivity activity) {
         if (checkForPermission(activity)) {
             try {
                 String html = htmlUtils.getComprovanteCabecalhoRodapePremio(detalhesHistoricoPremioDTO, activity);

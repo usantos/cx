@@ -46,7 +46,7 @@ public class ApostaConfirmadaPartidaFragment extends Fragment {
     protected Button conferirResultadoButton;
 
     @FragmentArg
-    protected ApostaDTO aposta;
+    protected IdentificaoDeUmaApostaDas8Modalidades aposta;
 
     @FragmentArg
     protected boolean loteca;

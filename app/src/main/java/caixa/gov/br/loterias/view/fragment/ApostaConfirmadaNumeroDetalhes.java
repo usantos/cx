@@ -52,7 +52,7 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
     protected RecyclerView dezenasRecyclerView;
 
     @FragmentArg
-    protected ApostaDTO aposta;
+    protected IdentificaoDeUmaApostaDas8Modalidades aposta;
 
     @AfterViews
     protected void init() {
