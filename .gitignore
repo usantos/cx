@@ -315,3 +315,5 @@ gradle-app.setting
 /.idea/codeStyles
 /app/.idea/codeStyles/Project.xml
 /app/.idea
+.idea
+.idea/*
