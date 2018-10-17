@@ -54,6 +54,14 @@ public class SilceConnection {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        try {
+            if (req.getHeaders() == null) {
+                req.setHeaders(new HashMap<String, String>());
+            }
+            req.getHeaders().put("cookie", "security=true");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         requestQueue.add(req);
     }
 

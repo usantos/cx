@@ -42,6 +42,7 @@ import caixa.gov.br.loterias.model.bo.silce.dto.RapidaoDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.RapidaoDTOResponse;
 import caixa.gov.br.loterias.model.bean.TipoAposta;
 import caixa.gov.br.loterias.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse;
+import caixa.gov.br.loterias.model.sp.RapidaoSP;
 import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
 import caixa.gov.br.loterias.model.bo.MensagensNetwork;
 import caixa.gov.br.loterias.utils.ViewUtils;
@@ -70,9 +71,9 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
     ExpandableHeightGridView gridViewNumerosRapidaoObrigatorios;
 
     int valueMinApostaInt;
-
     int valorMinApostaCarrinho;
     int valorMaxApostaCarrinho;
+    private boolean primeiroCarregamento = true;
 
     TextView tituloValorMinimoApostaValorMaximo;
 
@@ -342,8 +343,11 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
 
         // Valor Minimo Aposta
 
-
-        int valueMaxApostaInt = Math.round(rapidao.getValorMaximo().floatValue());
+        float valor = 1000000;
+        if(rapidao.getValorMaximo() != null){
+            valor = rapidao.getValorMaximo().floatValue();
+        }
+        int valueMaxApostaInt = Math.round(valor);
 
         TextView tituloValorMinimoApostaValorMinimo = (TextView) findViewById(R.id.tituloValorMinimoApostaValorMinimo);
         tituloValorMinimoApostaValorMaximo = (TextView) findViewById(R.id.tituloValorMinimoApostaValorMaximo);
@@ -405,9 +409,10 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
         seekBarValorPremiumMinimun = (SeekBar) findViewById(R.id.seekBarPremiumMimimun);
 
         int valuePremMinInt = Math.round(rapidao.getValorMinimoPremioPrincipal().floatValue());
-        seekBarValorPremiumMinimun.setProgress((int)Math.round(valuePremMinInt));
+        int valorSalvo = RapidaoSP.obterValorPremioMinimoSalvo((int)Math.round(valuePremMinInt));
+        seekBarValorPremiumMinimun.setProgress(valorSalvo);
         BigDecimal valorProgressPremMin = new BigDecimal(Float.toString((float)valuePremMinInt));
-        tituloValorPremiumMinimum.setText(ViewUtils.getMoedaFormat(new BigDecimal(valorProgressPremMin.floatValue()*1000000.0)));
+        tituloValorPremiumMinimum.setText(ViewUtils.getMoedaFormat(new BigDecimal(valorSalvo*1000000.0)));
 
         seekBarValorPremiumMinimun.setOnSeekBarChangeListener(this);
         seekBarValorPremiumMinimun.setMax(100);
@@ -618,8 +623,13 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
                 tituloValorMinimoApostaValorMaximo.setText(ViewUtils.getMoedaFormat(new BigDecimal(Float.toString((float)(int)Math.round(Float.parseFloat(valorSetado))))));
 
             }else if (tituloValorPremiumMinimum.getText().hashCode() == s.hashCode()) {
-                seekBarValorPremiumMinimun.setProgress((int)Math.round(Float.parseFloat(valorSetado)/ 1000000));
-
+                if(!primeiroCarregamento) {
+                    int valor = (int) Math.round(Float.parseFloat(valorSetado) / 1000000);
+                    Log.i("caixa", "aaa => " + valor);
+                    RapidaoSP.salvarValorPremioMinimo(valor);
+                    seekBarValorPremiumMinimun.setProgress(valor);
+                }
+                primeiroCarregamento = false;
             }
         }
     };

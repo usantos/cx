@@ -778,6 +778,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                 botaoLimparAposta.setVisibility(View.GONE);
             } else {
                 botaoLimparAposta.setVisibility(View.VISIBLE);
+                atualizarBotaoFinalizarAdicionarCarrinho();
             }
         } else if (isTipoLotogol) {
 
@@ -785,6 +786,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
             for (ParametroPartida parametroPartida : parametroJogo.getPartidas()) {
                 if (StringUtils.isNotEmpty(parametroPartida.getEquipe1().getPlacar()) || StringUtils.isNotEmpty(parametroPartida.getEquipe2().getPlacar())) {
                     visibility = View.VISIBLE;
+                    atualizarBotaoFinalizarAdicionarCarrinho();
                     break;
                 }
             }
@@ -796,11 +798,13 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                 botaoLimparAposta.setVisibility(View.GONE);
             } else {
                 botaoLimparAposta.setVisibility(View.VISIBLE);
+                atualizarBotaoFinalizarAdicionarCarrinho();
             }
         } else if (dezenasSelecionadas.isEmpty()) {
             botaoLimparAposta.setVisibility(View.GONE);
         } else {
             botaoLimparAposta.setVisibility(View.VISIBLE);
+            atualizarBotaoFinalizarAdicionarCarrinho();
         }
     }
 

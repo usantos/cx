@@ -20,6 +20,7 @@
             android:layout_height="100dp"
             android:background="@drawable/shape">
             <TextView
+                android:id="@+id/ttvIniciais"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
@@ -38,7 +39,7 @@
                 android:id="@+id/nav_user"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Olá, Renato Silva!"
+                android:text="Olá, %!"
                 android:textColor="@color/verdeazul"
                 android:textSize="16dp"
                 android:layout_marginTop="21dp"/>

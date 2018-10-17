@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
+import com.google.gson.Gson;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -92,7 +93,10 @@ public class CarrinhoActivity extends SettingToolbarActivity {
 
     @Click(R.id.botaoAvancarPagamento)
     protected void clickBotaoAvancarPagamento() {
+        Gson gson = new Gson();
+        String json = gson.toJson(carrinho);
         Intent activity = new Intent(CarrinhoActivity.this, FormaPagamentoActivity.class);
+        activity.putExtra("CARRINHO", json);
         startActivity(activity);
     }
 
