@@ -297,8 +297,7 @@
                 android:text="3"
                 android:textColor="@color/branco"
                 android:textSize="12sp"
-                android:translationZ="2dp"
-                android:visibility="gone" />
+                android:translationZ="2dp" />
 
             <TextView
                 style="@style/editTextArialMTTheme"

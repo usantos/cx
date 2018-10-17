@@ -22,7 +22,7 @@
     <string name="carrinhoDeApostas">Carrinho \nde apostas</string>
     <string name="label_premio_estimado_concurso_numero_bold">Pr\u00eamio estimado do concurso _%d_</string>
 
-    <string name="escolhaOmes">_Escolha_\no mês desejado</string>
+    <string name="escolhaOmes">_Escolha_\no m\u00eas de sorte</string>
     <string name="adicionarAoCarrinho">_Adicionar_\nao carrinho de apostas</string>
     <string name="limparAposta">Limpar aposta</string>
     <string name="limparCarrinho">Limpar carrinho</string>
@@ -133,7 +133,7 @@
     <string name="label_triplas">Triplas</string>
     <string name="label_dois_pontos">:</string>
     <string name="label_informe">Informe</string>
-    <string name="label_resultado_das_partidas.">o resultado das partidas.</string>
+    <string name="label_resultado_das_partidas">o resultado das partidas.</string>
     <string name="label_selecionar_times_aleatoriamente">_Selecionar_\ntimes aleatoriamente</string>
     <string name="label_selecionar_time_aleatoriamente">_Selecionar_\ntime aleatoriamente</string>
     <string name="label_escolha_time_coracao">_Escolha_\no time do coração</string>

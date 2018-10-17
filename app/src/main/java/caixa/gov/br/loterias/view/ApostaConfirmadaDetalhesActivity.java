@@ -163,6 +163,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
             apostaFavoritaDTO.setNome(nomeApostaEditTxt.getText().toString());
             apostaFavoritaDTO.setNumerosSelecionados(aposta.getNumerosSelecionados());
             apostaFavoritaDTO.setTimeDoCoracao(aposta.getTimeDoCoracao());
+            apostaFavoritaDTO.setMesDeSorte(aposta.getMesDeSorte());
 
             dadosCorporativosBO.validarApostaFavorita(apostaFavoritaDTO, new RequestListener<NetworkResponse>() {
                 @Override
