@@ -46,7 +46,7 @@ public class ApostaConfirmadaPartidaFragment extends Fragment {
     protected Button conferirResultadoButton;
 
     @FragmentArg
-    protected ApostaDTO aposta;
+    protected IdentificaoDeUmaApostaDas8Modalidades aposta;
 
     @FragmentArg
     protected boolean loteca;
@@ -54,8 +54,8 @@ public class ApostaConfirmadaPartidaFragment extends Fragment {
     @AfterViews
     public void init() {
 
-        concursoCabecalhoTextView.setText(String.format(Locale.getDefault(), "%d", aposta.getConcursoAlvo()));
-        concursoRodaPeTextView.setText(String.format(Locale.getDefault(), "%d", aposta.getConcursoAlvo()));
+        concursoCabecalhoTextView.setText(String.format(Locale.getDefault(), "%d", aposta.getConcursoInicial()));
+        concursoRodaPeTextView.setText(String.format(Locale.getDefault(), "%d", aposta.getConcursoInicial()));
         if (StringUtils.isEmpty(aposta.getHoraEfetivacao())) {
             dataHoraTextView.setText(aposta.getDataEfetivacao());
         } else {

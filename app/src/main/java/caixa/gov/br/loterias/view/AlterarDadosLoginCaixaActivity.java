@@ -11,6 +11,7 @@ import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import caixa.gov.br.loterias.BuildConfig;
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.utils.AppUtils;
 import caixa.gov.br.loterias.utils.ViewUtils;
@@ -33,7 +34,10 @@ public class AlterarDadosLoginCaixaActivity extends AppCompatActivity {
         paginaAlterarDadosWebView = (WebView) findViewById( R.id.paginaAlterarDadosWebView );
 
         if(AppUtils.isNetworkAvailable( this )){
-            paginaAlterarDadosWebView.loadUrl("https://logindes.caixa.gov.br/auth/realms/internet/account?referrer=cli-web-lce&referrer_uri=http%3A%2F%2Fdf7390sr029.corp.caixa.gov.br%3A8280%2Fsilce-web%2F%3Fredirect_fragment%3D%252Fhome");
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append(BuildConfig.CAIXA_BASE_URL_SSO);
+            stringBuilder.append("/auth/realms/internet/account?referrer=cli-web-lce&referrer_uri=http%3A%2F%2Fdf7390sr029.corp.caixa.gov.br%3A8280%2Fsilce-web%2F%3Fredirect_fragment%3D%252Fhome");
+            paginaAlterarDadosWebView.loadUrl(stringBuilder.toString());
         }else{
             loadViewProgresas.hide();
             ViewUtils.alertTitulo( this, R.string.label_atencao, getResources().getString( R.string.seminternet ) );

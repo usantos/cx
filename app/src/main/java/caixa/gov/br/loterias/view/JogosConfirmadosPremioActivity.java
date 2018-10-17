@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 
 import com.google.zxing.WriterException;
@@ -83,6 +84,7 @@ public class JogosConfirmadosPremioActivity extends AppCompatActivity {
         if(tipoCaixa == false){
             Bitmap bitmap;
             ImageView qrCodeImage = (ImageView) findViewById(R.id.imagemQrCode);
+            LinearLayout lltQrCode = (LinearLayout) findViewById(R.id.lltQrCode);
             // Initializing the QR Encoder with your value to be encoded, type you required and Dimension
             QRGEncoder qrgEncoder = new QRGEncoder("Teste xxx", null, QRGContents.Type.TEXT, 105);
             try {
@@ -91,6 +93,7 @@ public class JogosConfirmadosPremioActivity extends AppCompatActivity {
                 // Setting Bitmap to ImageView
                 qrCodeImage.setImageBitmap(bitmap);
                 qrCodeImage.setVisibility(View.VISIBLE);
+                lltQrCode.setVisibility(View.VISIBLE);
             } catch (WriterException e) {
             }
         }

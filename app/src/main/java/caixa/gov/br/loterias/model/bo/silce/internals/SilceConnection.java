@@ -63,6 +63,7 @@ public class SilceConnection {
             e.printStackTrace();
         }
         requestQueue.add(req);
+        requestQueue.getCache().clear();
     }
 
     private RetryPolicy createRetryPolicy() {

@@ -12,6 +12,7 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
+import com.google.gson.Gson;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -24,6 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bean.ApostaPageRequest;
@@ -32,10 +34,19 @@ import caixa.gov.br.loterias.model.bo.MensagensNetwork;
 import caixa.gov.br.loterias.model.bo.RedirectNetwork;
 import caixa.gov.br.loterias.model.bo.RequestListener;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostaDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.ComprovanteApostaDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.ComprovanteApostaDTOResponse;
+import caixa.gov.br.loterias.model.bo.silce.dto.DetalhesHistoricoPremioDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.DetalhesHistoricoPremioDTOResponse;
+import caixa.gov.br.loterias.model.bo.silce.dto.DetalhesPremioDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.DetalhesPremioDTOResponse;
+import caixa.gov.br.loterias.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import caixa.gov.br.loterias.model.bo.silce.dto.MesAnoDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.MesAnoDTOResponse;
+import caixa.gov.br.loterias.model.bo.silce.dto.ResultadoConcursoDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOApostaDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOHistoricoApostaDTOResponse;
+import caixa.gov.br.loterias.model.bo.silce.dto.SituacaoResultadoBilheteEnum;
 import caixa.gov.br.loterias.utils.AppUtils;
 import caixa.gov.br.loterias.utils.DialogUtils;
 import caixa.gov.br.loterias.utils.helper.AdicionarApostaCarrinhoHelper;
@@ -201,7 +212,57 @@ public class ApostasConfirmadasFragment extends Fragment implements ApostasConfi
 
                     @Override
                     public void onItemClick(final ApostaDTO apostaDTO) {
-                        ApostaConfirmadaDetalhesActivity_.intent(getActivity()).apostaDTO(apostaDTO).isHistorico(isHistorico).start();
+                        DialogUtils.show(getActivity());
+                        if (isHistorico) {
+                            if (Objects.equals(apostaDTO.getSituacao().getValor(), SituacaoResultadoBilheteEnum.PAGA_HISTORICO.getValor())) {
+                                apostaBO.getApostaHistoricoComprovante(apostaDTO.getId(), new RequestListener<DetalhesHistoricoPremioDTOResponse>() {
+                                    @Override
+                                    public void onResponse(DetalhesHistoricoPremioDTOResponse result) {
+                                        getResultadoModalidadeConcurso(apostaDTO, result.getPayload());
+                                    }
+
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        onApostasConfirmadasError(error);
+                                    }
+                                });
+                            } else {
+                                String json = new Gson().toJson(apostaDTO);
+                                IdentificaoDeUmaApostaDas8Modalidades apostaDas8Modalidades = new Gson().fromJson(json, IdentificaoDeUmaApostaDas8Modalidades.class);
+                                ComprovanteApostaDTO comprovanteApostaDTO = new ComprovanteApostaDTO();
+                                comprovanteApostaDTO.setAposta(apostaDas8Modalidades);
+                                DialogUtils.dismiss();
+                                ApostaConfirmadaDetalhesActivity_.intent(getActivity()).comprovanteApostaDTO(comprovanteApostaDTO).start();
+                            }
+                        } else {
+                            if (Objects.equals(apostaDTO.getSituacao().getValor(), SituacaoResultadoBilheteEnum.PAGA.getValor())) {
+
+                                apostaBO.getApostaDetalhePremio(apostaDTO.getId(), new RequestListener<DetalhesPremioDTOResponse>() {
+                                    @Override
+                                    public void onResponse(DetalhesPremioDTOResponse result) {
+                                        getResultadoModalidadeConcurso(apostaDTO, result.getPayload());
+                                    }
+
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        onApostasConfirmadasError(error);
+                                    }
+                                });
+                            } else {
+                                apostaBO.getApostaDetalheComprovante(apostaDTO.getId(), new RequestListener<ComprovanteApostaDTOResponse>() {
+                                    @Override
+                                    public void onResponse(ComprovanteApostaDTOResponse result) {
+                                        DialogUtils.dismiss();
+                                        ApostaConfirmadaDetalhesActivity_.intent(getActivity()).comprovanteApostaDTO(result.getPayload()).start();
+                                    }
+
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        onApostasConfirmadasError(error);
+                                    }
+                                });
+                            }
+                        }
                     }
                 });
                 apostasConfirmadasRecyclerView.setAdapter(adapter);
@@ -293,6 +354,28 @@ public class ApostasConfirmadasFragment extends Fragment implements ApostasConfi
         }
     }
 
+
+    private void getResultadoModalidadeConcurso(ApostaDTO apostaDTO, final Object object) {
+        apostaBO.getResultadoModalidadeConcurso(ApostaDTO.lowerCaseFromString(apostaDTO.getModalidade()), apostaDTO.getConcursoAlvo(),
+                new RequestListener<ResultadoConcursoDTOResponse>() {
+                    @Override
+                    public void onResponse(ResultadoConcursoDTOResponse result) {
+                        DialogUtils.dismiss();
+                        if (object instanceof DetalhesHistoricoPremioDTO) {
+                            ApostaConfirmadaDetalhesActivity_.intent(getActivity()).detalhesHistoricoPremioDTO((DetalhesHistoricoPremioDTO) object)
+                                    .resultadoConcursoDTO(result.getPayload()).start();
+                        } else if (object instanceof DetalhesPremioDTO) {
+                            ApostaConfirmadaDetalhesActivity_.intent(getActivity()).detalhesPremioDTO((DetalhesPremioDTO) object)
+                                    .resultadoConcursoDTO(result.getPayload()).start();
+                        }
+                    }
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        onApostasConfirmadasError(error);
+                    }
+                });
+    }
 
     private void onApostasConfirmadasError(VolleyError error) {
         isLoading = false;

@@ -118,7 +118,7 @@ public class HtmlUtils {
         return html;
     }
 
-    public String getComprovanteCabecalhoRodapePremio(DetalhesPremioDTO detalhesPremioDTO, Context context) {
+    public String getComprovanteCabecalhoRodapePremio(DetalhesHistoricoPremioDTO detalhesPremioDTO, Context context) {
 
         String modadlidade = ModalidadeEnum.fromStringComprovante(detalhesPremioDTO.getAposta().getModalidade());
 
@@ -130,10 +130,10 @@ public class HtmlUtils {
         html = ViewUtils.replaceNullable(html, HEADER_COLUNA2_LINHA1_VALOR, String.valueOf(detalhesPremioDTO.getAposta().getConcursoAlvo()));
         html = ViewUtils.replaceNullable(html, HEADER_COLUNA1_LINHA2_VALOR, detalhesPremioDTO.getAposta().getHoraEfetivacao());
         html = ViewUtils.replaceNullable(html, HEADER_COLUNA2_LINHA2_TEXTO, context.getString(R.string.label_local_pagamento));
-        html = ViewUtils.replaceNullable(html, HEADER_COLUNA2_LINHA2_VALOR, detalhesPremioDTO.getPremio().getLocalPagamento());
+        html = ViewUtils.replaceNullable(html, HEADER_COLUNA2_LINHA2_VALOR, detalhesPremioDTO.getPremioDTO().getLocalPagamento());
         html = ViewUtils.replaceNullable(html, HEADER_COLUNA1_LINHA3_VALOR, modadlidade);
         html = ViewUtils.replaceNullable(html, HEADER_COLUNA2_LINHA3_TEXTO, context.getString(R.string.label_nsu_pagamento));
-        html = ViewUtils.replaceNullable(html, HEADER_COLUNA2_LINHA3_VALOR, String.valueOf(detalhesPremioDTO.getPremio().getNsuPagamento()));
+        html = ViewUtils.replaceNullable(html, HEADER_COLUNA2_LINHA3_VALOR, String.valueOf(detalhesPremioDTO.getPremioDTO().getNsuPagamento()));
         html = ViewUtils.replaceNullable(html, BODY_TITULO, modadlidade);
         html = ViewUtils.replaceNullable(html, BODY_LISTA_ITENS_APOSTA, getBodyList(detalhesPremioDTO.getAposta(), context));
         html = ViewUtils.replaceNullable(html, BODY_CONTEUDO, getBodyPremio(detalhesPremioDTO, context));
@@ -229,12 +229,12 @@ public class HtmlUtils {
         return htmlBody;
     }
 
-    private static String getBodyPremio(DetalhesPremioDTO detalhesPremioDTO, Context context) {
+    private static String getBodyPremio(DetalhesHistoricoPremioDTO detalhesPremioDTO, Context context) {
         int numeroFaixas = 0;
         String htmlBody = getContentOfFile(FILE_PATH_COMPROVANTE_CORPO_PREMIO, context);
 
-        if (detalhesPremioDTO.getPremio() != null && CollectionUtils.isNotEmpty(detalhesPremioDTO.getPremio().getConcursos())) {
-            for (ConcursoPremiadoDTO concursoPremiadoDTO : detalhesPremioDTO.getPremio().getConcursos()) {
+        if (detalhesPremioDTO.getPremioDTO() != null && CollectionUtils.isNotEmpty(detalhesPremioDTO.getPremioDTO().getConcursos())) {
+            for (ConcursoPremiadoDTO concursoPremiadoDTO : detalhesPremioDTO.getPremioDTO().getConcursos()) {
                 if (CollectionUtils.isNotEmpty(concursoPremiadoDTO.getFaixas())) {
                     numeroFaixas = numeroFaixas + concursoPremiadoDTO.getFaixas().size();
                 }
@@ -242,7 +242,7 @@ public class HtmlUtils {
         }
         htmlBody = ViewUtils.replaceNullable(htmlBody, BODY_COLUNA1_LINHA1_VALOR_PREMIO, String.valueOf(numeroFaixas));
         htmlBody = ViewUtils.replaceNullable(htmlBody, BODY_COLUNA2_LINHA1_VALOR_PREMIO, ViewUtils.getMoedaFormat(detalhesPremioDTO.getAposta().getValor()));
-        htmlBody = ViewUtils.replaceNullable(htmlBody, BODY_COLUNA3_LINHA1_VALOR_PREMIO, ViewUtils.getMoedaFormat(detalhesPremioDTO.getPremio().getValorLiquido()));
+        htmlBody = ViewUtils.replaceNullable(htmlBody, BODY_COLUNA3_LINHA1_VALOR_PREMIO, ViewUtils.getMoedaFormat(detalhesPremioDTO.getPremioDTO().getValorLiquido()));
         return htmlBody;
     }
 

@@ -1,6 +1,7 @@
 package caixa.gov.br.loterias.model.bo;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
@@ -35,6 +36,7 @@ public class MensagensNetwork {
             if (error instanceof TimeoutError) {
                 return context.getString(R.string.erro_408);
             }else if(error instanceof NoConnectionError){
+                Log.e("caixa", "Erro ao conexar com internet MensagensNetwork.setMensagem()");
                 return context.getString(R.string.seminternet);
             } else if (error instanceof AuthFailureError) {
                 return context.getString(R.string.erro_401);

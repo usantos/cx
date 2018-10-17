@@ -68,7 +68,7 @@ import caixa.gov.br.loterias.model.bo.silce.internals.SilceConnection;
 
      static final String RESULTADOS_MODALIDADE_CONCURSO_PATH = "/resultados/{modalidade}/{concurso}";
 
-     static final String CARRINHOS_REGISTRAR_APOSTAS_PATH = "/carrinhos/registrar-apostas";
+     static final String CARRINHOS_REGISTRAR_APOSTAS_PATH = "carrinhos/registrar-apostas";
 
      static final String USUARIOS_RECUPERAR_DADOS_PATH = "/usuarios/recuperar-dados";
 
