@@ -115,7 +115,7 @@ public class ApostasConfirmadasActivity extends AppCompatActivity {
             supportActionBar.setDisplayHomeAsUpEnabled(true);
             supportActionBar.setElevation(0);
         }
-        setTitle(ViewUtils.textFuturaAndFuturaBold(this, getTitle().toString()));
+        setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getTitle().toString()));
     }
 
     @Override

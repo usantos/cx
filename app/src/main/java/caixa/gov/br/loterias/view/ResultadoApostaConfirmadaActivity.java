@@ -122,7 +122,7 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
     }
 
     private void createToolBar() {
-        setTitle(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.title_activity_resultado_ler_bilhetes)));
+        setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.title_activity_resultado_ler_bilhetes)));
     }
 
     private Context getContext() {

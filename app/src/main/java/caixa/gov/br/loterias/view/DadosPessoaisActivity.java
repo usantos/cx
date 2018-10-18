@@ -82,7 +82,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
         TextView subtitleToolbar = (TextView) findViewById( R.id.subtitleToolbar );
         setSupportActionBar( toolbar );
         getSupportActionBar().setDisplayHomeAsUpEnabled( true );
-        setTitle( ViewUtils.textFuturaAndFuturaBold( this, getTitle().toString() ) );
+        setTitle( ViewUtils.textFuturaAndFuturaBoldTitle( this, getTitle().toString() ) );
         subtitleToolbar.setText( "Estes são seus dados pessoais.\nPor favor, mantenha-os sempre atualizados." );
         montarLayout();
         callWebservice();

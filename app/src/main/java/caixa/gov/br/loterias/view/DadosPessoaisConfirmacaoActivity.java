@@ -18,7 +18,7 @@ public class DadosPessoaisConfirmacaoActivity extends AppCompatActivity {
         setContentView( R.layout.activity_dados_pessoais_confirmacao );
         Toolbar toolbar = (Toolbar) findViewById( R.id.toolbar );
         setSupportActionBar( toolbar );
-        setTitle( ViewUtils.textFuturaAndFuturaBold( this, getTitle().toString() ) );
+        setTitle( ViewUtils.textFuturaAndFuturaBoldTitle( this, getTitle().toString() ) );
 
         TextView tituloConfirmacaoCadastroTextView = (TextView) findViewById( R.id.tituloConfirmacaoCadastroTextView );
         TextView subtituloConfirmaCadastroTextView = (TextView) findViewById( R.id.subtituloConfirmaCadastroTextView );

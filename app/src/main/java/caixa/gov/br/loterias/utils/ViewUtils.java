@@ -26,6 +26,7 @@ import android.support.v4.graphics.ColorUtils;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DialogTitle;
 import android.text.Html;
+import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
@@ -672,6 +673,22 @@ public class ViewUtils {
         PositionStringBold positionStringBold = positionString(texto);
         SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(texto.replace("_", ""));
         spannableStringBuilder.setSpan(new CustomTypefaceSpan("", font), positionStringBold.getStart(), positionStringBold.getEnd(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+
+        return spannableStringBuilder;
+    }
+
+    public static SpannableStringBuilder textFuturaAndFuturaBoldTitle(Context context, String texto) {
+        SpannableStringBuilder spannableStringBuilder = textFuturaAndFuturaBold(context, texto);
+        spannableStringBuilder.setSpan(new AbsoluteSizeSpan(16, true), 0, texto.replace("_", "").length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        return spannableStringBuilder;
+    }
+
+    public static SpannableStringBuilder textFuturaAndSizeTitle(Context context, String texto) {
+        Typeface font = ViewUtils.getFontFutura(context);
+        SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(texto);
+        spannableStringBuilder.setSpan(new CustomTypefaceSpan("", font), 0, texto.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+        spannableStringBuilder.setSpan(new AbsoluteSizeSpan(16, true), 0, texto.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         return spannableStringBuilder;
     }

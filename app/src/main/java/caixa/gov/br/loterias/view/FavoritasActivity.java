@@ -51,7 +51,7 @@ public class FavoritasActivity extends AppCompatActivity {
         setContentView(R.layout.activity_favoritas);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        setTitle(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.title_activity_favoritas_bold)));
+        setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.title_activity_favoritas_bold)));
 
         scrollViewContentViewFavoritas = (NestedScrollView) findViewById(R.id.scrollViewContentViewFavoritas);
 

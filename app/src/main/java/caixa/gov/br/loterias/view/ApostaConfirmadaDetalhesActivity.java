@@ -245,7 +245,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
 
         estilo = new EstiloModalidade(aposta.getModalidade());
         setTheme(estilo.getThemeId());
-        setTitle(AppUtils.capitalizeFirstChar(getString(estilo.getStringId())));
+        setTitle(ViewUtils.textFuturaAndSizeTitle(this, AppUtils.capitalizeFirstChar(getString(estilo.getStringId()))));
     }
 
     @OptionsMenuItem(R.id.action_duvida)

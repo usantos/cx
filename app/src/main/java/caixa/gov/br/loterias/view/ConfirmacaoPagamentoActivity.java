@@ -20,7 +20,7 @@ public class ConfirmacaoPagamentoActivity extends SettingToolbarActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirmacao_pagamento);
-        setTitle(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.title_activity_confirmacao_pagamento)));
+        setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.title_activity_confirmacao_pagamento)));
 
         configuraBotoes();
 

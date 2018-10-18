@@ -58,7 +58,7 @@ public class CarrinhoActivity extends SettingToolbarActivity {
     @AfterViews
     public void init() {
         ViewUtils.setMoedaFormatHtml(BigDecimal.ZERO, valorTotalCarrinho);
-        setTitle(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.title_activity_carrinho)));
+        setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.title_activity_carrinho)));
         callWebservice();
     }
 

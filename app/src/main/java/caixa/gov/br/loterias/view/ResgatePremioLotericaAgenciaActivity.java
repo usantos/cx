@@ -37,7 +37,7 @@ public class ResgatePremioLotericaAgenciaActivity extends SettingToolbarActivity
 
     @AfterViews
     protected void init() {
-        setTitle(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.title_activity_resultado_ler_bilhetes)));
+        setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.title_activity_resultado_ler_bilhetes)));
 
         if (codigoResgateDTO != null) {
             categoriaText.setText(R.string.label_loterica_minusculo);

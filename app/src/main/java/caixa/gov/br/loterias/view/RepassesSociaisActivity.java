@@ -36,7 +36,7 @@ public class RepassesSociaisActivity extends SettingToolbarActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        setTitle(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.title_activity_repasses_sociais)));
+        setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.title_activity_repasses_sociais)));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 

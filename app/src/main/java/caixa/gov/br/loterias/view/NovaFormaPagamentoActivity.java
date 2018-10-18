@@ -78,7 +78,7 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
         editTextAnoValidadeCartaooContent = (EditText) findViewById(R.id.editTextAnoValidadeCartaooContent);
         checkBoxSalvarCartao = (CheckBox) findViewById(R.id.checkBoxSalvarCartao);
 
-        setTitle(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.title_activity_forma_pagamento)));
+        setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.title_activity_forma_pagamento)));
 
         String[] values = new String[]{"01", "02", "02", "02", "02", "02", "02", "02", "02"};
 

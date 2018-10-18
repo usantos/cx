@@ -70,7 +70,7 @@ public class FormaPagamentoActivity extends SettingToolbarActivity implements Fo
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forma_pagamento);
-        setTitle(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.title_activity_forma_pagamento)));
+        setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.title_activity_forma_pagamento)));
 
         gson = new Gson();
 

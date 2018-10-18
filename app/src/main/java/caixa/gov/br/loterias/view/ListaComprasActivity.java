@@ -64,6 +64,7 @@ public class ListaComprasActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         TextView textBottomInformacaoTextView = (TextView) findViewById(R.id.textBottomInformacaoTextView);
         textBottomInformacaoTextView.setText("Compras mais antigas\npodem ser consultadas no site");
+        setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.texto_futura_bold, getString(R.string.title_activity_lista_compras))));
         scrollViewContentViewCompras = (NestedScrollView) findViewById(R.id.scrollViewContentViewCompras);
 
         progressLoadingMore = (ProgressBar) findViewById(R.id.compras_loading_more);

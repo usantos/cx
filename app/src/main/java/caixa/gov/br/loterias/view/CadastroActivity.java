@@ -55,7 +55,7 @@ public class CadastroActivity extends AppCompatActivity {
     protected MunicipioIdDTO municipioIdDTOLoteria;
 
     protected void createToolbar() {
-        setTitle(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.title_activity_toolbar)));
+        setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.title_activity_toolbar)));
 
 
         if (getSupportActionBar() != null) {
