@@ -20,6 +20,7 @@ public class EstiloModalidade {
     private final int menuItemColor;
     private final int iconValidadeComprovanteColor;
     private final int iconImpressoraColor;
+    private final int colorTextAlpha6;
 
     public EstiloModalidade(ModalidadeEnum modalidade) {
         switch (modalidade) {
@@ -35,6 +36,7 @@ public class EstiloModalidade {
                 menuItemColor = R.color.branco;
                 iconValidadeComprovanteColor = R.color.black;
                 iconImpressoraColor = R.color.branco;
+                colorTextAlpha6 = R.color.white_6;
                 break;
             case LOTECA:
                 corClara = R.color.lotecaclaro;
@@ -48,6 +50,7 @@ public class EstiloModalidade {
                 menuItemColor = R.color.branco;
                 iconValidadeComprovanteColor = R.color.black;
                 iconImpressoraColor = R.color.branco;
+                colorTextAlpha6 = R.color.white_6;
                 break;
 //            case FEDERAL:
 //                corClara = R.color.federalclaro;
@@ -72,6 +75,7 @@ public class EstiloModalidade {
                 menuItemColor = R.color.branco;
                 iconValidadeComprovanteColor = R.color.black;
                 iconImpressoraColor = R.color.branco;
+                colorTextAlpha6 = R.color.white_6;
                 break;
             case DUPLA_SENA:
                 corClara = R.color.duplasenaclaro;
@@ -85,6 +89,7 @@ public class EstiloModalidade {
                 menuItemColor = R.color.branco;
                 iconValidadeComprovanteColor = R.color.black;
                 iconImpressoraColor = R.color.branco;
+                colorTextAlpha6 = R.color.white_6;
                 break;
             case LOTOFACIL:
                 corClara = R.color.lotofacilclaro;
@@ -98,6 +103,7 @@ public class EstiloModalidade {
                 menuItemColor = R.color.branco;
                 iconValidadeComprovanteColor = R.color.black;
                 iconImpressoraColor = R.color.branco;
+                colorTextAlpha6 = R.color.white_6;
                 break;
             case LOTOMANIA:
                 corClara = R.color.lotomaniaclaro;
@@ -111,6 +117,7 @@ public class EstiloModalidade {
                 menuItemColor = R.color.branco;
                 iconValidadeComprovanteColor = R.color.black;
                 iconImpressoraColor = R.color.branco;
+                colorTextAlpha6 = R.color.white_6;
                 break;
             case TIMEMANIA:
                 corClara = R.color.timemaniaclaro;
@@ -124,6 +131,7 @@ public class EstiloModalidade {
                 menuItemColor = R.color.megasenamedio;
                 iconValidadeComprovanteColor = R.color.megasenamedio;
                 iconImpressoraColor = R.color.megasenamedio;
+                colorTextAlpha6 = R.color.verdemediotransparente;
                 break;
             case DIA_DE_SORTE:
                 corClara = R.color.megasenaclaro;
@@ -137,6 +145,7 @@ public class EstiloModalidade {
                 menuItemColor = R.color.branco;
                 iconValidadeComprovanteColor = R.color.black;
                 iconImpressoraColor = R.color.branco;
+                colorTextAlpha6 = R.color.white_6;
                 break;
             default: {
                 //MEGASENA
@@ -151,6 +160,7 @@ public class EstiloModalidade {
                 menuItemColor = R.color.branco;
                 iconValidadeComprovanteColor = R.color.black;
                 iconImpressoraColor = R.color.branco;
+                colorTextAlpha6 = R.color.white_6;
             }
         }
 
@@ -198,5 +208,9 @@ public class EstiloModalidade {
 
     public int getIconImpressoraColor() {
         return iconImpressoraColor;
+    }
+
+    public int getColorTextAlpha6() {
+        return colorTextAlpha6;
     }
 }

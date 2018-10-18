@@ -1,9 +1,14 @@
 package caixa.gov.br.loterias.view.fragment;
 
 
+import android.graphics.Typeface;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.androidannotations.annotations.AfterViews;
@@ -21,8 +26,10 @@ import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.silce.dto.ConcursoPremiadoDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import caixa.gov.br.loterias.model.bo.silce.dto.ResultadoConcursoDTO;
+import caixa.gov.br.loterias.utils.EstiloModalidade;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.adapter.DezenasAdapter;
+import caixa.gov.br.loterias.view.adapter.DezenasResultadoAdapter;
 
 @EFragment(R.layout.fragment_aposta_confirmada_numero_detalhes_premio_pago)
 public class ApostaConfirmadaNumeroDetalhesPremioPago extends Fragment {
@@ -41,6 +48,7 @@ public class ApostaConfirmadaNumeroDetalhesPremioPago extends Fragment {
     protected ResultadoConcursoDTO resultadoConcursoDTO;
 
     private int qtdAcertos;
+    private EstiloModalidade estilo;
 
     @AfterViews
     protected void init() {
@@ -50,6 +58,8 @@ public class ApostaConfirmadaNumeroDetalhesPremioPago extends Fragment {
         } else {
             dataApostaTxt.setText(ViewUtils.getDateAndHour(aposta.getDataEfetivacao(), aposta.getHoraEfetivacao()));
         }
+
+        estilo = new EstiloModalidade(aposta.getModalidade());
 
         int ganhadores;
         ganhadores = CollectionUtils.isNotEmpty(resultadoConcursoDTO.getGanhadoresPrimeiroSorteio()) ? resultadoConcursoDTO.getGanhadoresPrimeiroSorteio().size() : 0;
@@ -85,7 +95,7 @@ public class ApostaConfirmadaNumeroDetalhesPremioPago extends Fragment {
     private void initDezenasRecyclerView() {
 
         if (!aposta.getNumerosSelecionados().isEmpty()) {
-            dezenasRecyclerView.setAdapter(new DezenasAdapter(listIntegerToListStringBold(aposta.getNumerosSelecionados(), resultadoConcursoDTO.getNumerosSorteadosPrimeiroSorteio())));
+            dezenasRecyclerView.setAdapter(new DezenasResultadoAdapter(listIntegerToListViewBold(aposta.getNumerosSelecionados(), resultadoConcursoDTO.getNumerosSorteadosPrimeiroSorteio())));
             dezenasRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         }
     }
@@ -110,38 +120,61 @@ public class ApostaConfirmadaNumeroDetalhesPremioPago extends Fragment {
         return lines;
     }
 
-    private List<String> listIntegerToListStringBold(List<Integer> list, List<Integer> compareList) {
+    private List<View> listIntegerToListViewBold(List<Integer> list, List<Integer> compareList) {
 
-        List<String> lines = new ArrayList<>();
-        StringBuilder lineSB = new StringBuilder();
+        List<View> lines = new ArrayList<>();
+        LinearLayout linha = new LinearLayout(getContext());
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        linha.setOrientation(LinearLayout.HORIZONTAL);
+        linha.setLayoutParams(params);
 
         for (int i = 0; i < list.size(); i++) {
             if (i == 0) {
                 if (compareList.contains(list.get(i))) {
                     qtdAcertos = qtdAcertos + 1;
-                    lineSB.append(String.format("<b>%s</b>", ViewUtils.getNumberIntegerToString(list.get(i))));
+                    setTextInLayout(list, linha, i, estilo.getIconImpressoraColor(), true, false);
                 } else {
-                    lineSB.append(ViewUtils.getNumberIntegerToString(list.get(i)));
+                    setTextInLayout(list, linha, i, estilo.getColorTextAlpha6(), false, false);
                 }
             } else if (i % 5 == 0) {
-                lines.add(lineSB.toString());
-                lineSB = new StringBuilder();
+                lines.add(linha);
+                linha = new LinearLayout(getContext());
+                linha.setOrientation(LinearLayout.HORIZONTAL);
+                linha.setLayoutParams(params);
                 if (compareList.contains(list.get(i))) {
                     qtdAcertos = qtdAcertos + 1;
-                    lineSB.append(String.format("<b>%s</b>", ViewUtils.getNumberIntegerToString(list.get(i))));
+                    setTextInLayout(list, linha, i, estilo.getIconImpressoraColor(), true, false);
                 } else {
-                    lineSB.append(ViewUtils.getNumberIntegerToString(list.get(i)));
+                    setTextInLayout(list, linha, i, estilo.getColorTextAlpha6(), false, false);
                 }
             } else {
                 if (compareList.contains(list.get(i))) {
                     qtdAcertos = qtdAcertos + 1;
-                    lineSB.append(String.format("<b>%s</b>", String.format(" - %s", ViewUtils.getNumberIntegerToString(list.get(i)))));
+                    setTextInLayout(list, linha, i, estilo.getIconImpressoraColor(), true, true);
                 } else {
-                    lineSB.append(String.format(" - %s", ViewUtils.getNumberIntegerToString(list.get(i))));
+                    setTextInLayout(list, linha, i, estilo.getColorTextAlpha6(), false, true);
                 }
             }
         }
-        lines.add(lineSB.toString());
+        lines.add(linha);
         return lines;
+    }
+
+    private void setTextInLayout(List<Integer> list, LinearLayout linha, int i, int colorText, boolean bold, boolean separate) {
+        TextView textView = new TextView(getContext());
+        textView.setTextColor(getContext().getResources().getColor(colorText));
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+
+        if(bold){
+            textView.setTypeface(ViewUtils.getFontArialMT(getContext()), Typeface.BOLD);
+        }else{
+            textView.setTypeface(ViewUtils.getFontArialMT(getContext()));
+        }
+        if(separate){
+            textView.setText(String.format(" - %s", ViewUtils.getNumberIntegerToString(list.get(i))));
+        }else{
+            textView.setText(ViewUtils.getNumberIntegerToString(list.get(i)));
+        }
+        linha.addView(textView);
     }
 }

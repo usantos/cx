@@ -85,5 +85,7 @@
     <color name="white60">#99ffffff</color>
     <color name="selecaoLotecaResultado">#f9765e</color>
     <color name="black">#000000</color>
+    <color name="white_6">#66ffffff</color>
+    <color name="green_6">#66ffffff</color>
 
 </resources>
