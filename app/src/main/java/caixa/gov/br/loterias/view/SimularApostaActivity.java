@@ -683,7 +683,6 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 textoBotaoSurpresinhasSelecionado = (String) listViewItens.getItemAtPosition(position);
-                ;
                 qtdConcursoSelecionado = parametroSimulacao.getTeimosinhas().get(position);
             }
 
@@ -697,14 +696,12 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
             public void onClick(View v) {
                 qtdConcursosButton.setText(textoBotaoSurpresinhasSelecionado);
 
-                if (fragmentManager.findFragmentById(R.id.fragmentSimularApostas) instanceof CartelaFragment) {
-
-                    cartelaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
-                } else {
-
+                if (fragmentManager.findFragmentById(R.id.fragmentSimularApostas) instanceof SurpresinhaFragment) {
                     if (surpresinhaFragment.getParametroJogo() != null) {
                         surpresinhaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
                     }
+                } else {
+                    cartelaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
                 }
 
                 dialog.dismiss();
