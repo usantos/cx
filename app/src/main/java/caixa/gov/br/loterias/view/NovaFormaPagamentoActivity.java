@@ -26,6 +26,7 @@ import com.mercadopago.core.MercadoPago;
 import com.mercadopago.model.ApiException;
 import com.mercadopago.model.Card;
 import com.mercadopago.model.CardToken;
+import com.mercadopago.model.IdentificationType;
 import com.mercadopago.model.Token;
 
 
@@ -35,6 +36,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import caixa.gov.br.loterias.BuildConfig;
 import caixa.gov.br.loterias.R;
@@ -42,6 +44,7 @@ import caixa.gov.br.loterias.model.bean.MeioPagamento;
 import caixa.gov.br.loterias.model.bean.ParametrosPagamento;
 import caixa.gov.br.loterias.model.bo.ApostaBO;
 import caixa.gov.br.loterias.model.bo.ApostaBO_;
+import caixa.gov.br.loterias.model.bo.DadosUsuarioBO;
 import caixa.gov.br.loterias.model.bo.MensagensNetwork;
 import caixa.gov.br.loterias.model.bo.RedirectNetwork;
 import caixa.gov.br.loterias.model.bo.RequestListener;
@@ -166,8 +169,8 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
                         Integer.valueOf(editTextAnoValidadeCartaooContent.getText().toString()),
                         editTextCodigoSegurancaContent.getText().toString(),
                         editTextNomeClienteCartaoContent.getText().toString(),
-                        "",
-                        "");
+                        "CPF",
+                        DadosUsuarioBO.obterCpf());
 
 
 
@@ -183,6 +186,7 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
                 .setContext(this)
                 .setPublicKey( BuildConfig.PUBLIC_KEY_MP )
                 .build();
+
         mMercadoPago.createToken(cardToken, new Callback<Token>() {
             @Override
             public void success(Token token) {
@@ -220,7 +224,19 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 alertDialog.dismiss();
-                RedirectNetwork.checkRedirect( error, NovaFormaPagamentoActivity.this );
+
+                try {
+                    String mensagem = new String(error.networkResponse.data);
+                    if(mensagem.contains("{")){
+                        JSONObject jsonObject = new JSONObject(mensagem);
+                        ViewUtils.alert(NovaFormaPagamentoActivity.this, jsonObject.getString("mensagem"));
+                    }else{
+                        RedirectNetwork.checkRedirect( error, NovaFormaPagamentoActivity.this );
+                    }
+                }catch (Exception e){
+                    RedirectNetwork.checkRedirect( error, NovaFormaPagamentoActivity.this );
+                }
+
             }
         });
     }
