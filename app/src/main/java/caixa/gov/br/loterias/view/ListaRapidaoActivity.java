@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
+import com.google.gson.Gson;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -151,7 +152,10 @@ public class ListaRapidaoActivity extends AppCompatActivity {
         findViewById(R.id.botaoAvancarPagamentoRapidao).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Gson gson = new Gson();
+                String json = gson.toJson(carrinho);
                 Intent activity = new Intent(ListaRapidaoActivity.this, FormaPagamentoActivity.class);
+                activity.putExtra("CARRINHO", json);
 
                 startActivity(activity);
 
