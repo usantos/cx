@@ -593,7 +593,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         configuraBotoesListeners();
     }
 
-    private void configuraBotoesListeners() {
+    public void configuraBotoesListeners() {
         simularTelaAposta.setOnClickListener(this);
         surpresinhaTela.setOnClickListener(this);
         qtdNumerosButton.setOnClickListener(this);
@@ -661,6 +661,8 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         return fragmentManager.findFragmentById(R.id.fragmentSimularApostas) instanceof CartelaFragment;
     }
 
+
+
     private void modalTeimosinhas() {
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.custom_dialog_list_view);
@@ -726,6 +728,10 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
             simularTelaAposta.setBackgroundResource(R.drawable.icon_seleciona);
             surpresinhaTela.setBackgroundResource(R.drawable.icon_surpresinha);
         }
+    }
+
+    public Button getQtdNumerosButton() {
+        return qtdNumerosButton;
     }
 
     private void configuraTipoApostaTela(String titleActivity, int lightColor, int darkColor, int visibilityToolBarSimularAposta, int visibilityToolBarLoteca) {

@@ -84,6 +84,8 @@ public class MesesFragment extends Fragment {
         paginaQuantidadeText.setText(getString(R.string.paginacao_quantidade, getString(R.string.label_numerico_dois)));
         paginaQuantidadeText.setTextColor(getResources().getColor(R.color.diasortemedio));
 
+        parentActivity.getQtdNumerosButton().setOnClickListener(null);
+
         parentActivity.getBotaoAdicionarCompletarCartela().setText(ViewUtils.textFuturaAndFuturaBold(getContext(), getString(R.string.adicionarAoCarrinho)));
         if (dezenasSelecionadas == null) {
             parentActivity.getBotaoLimparAposta().setVisibility(View.VISIBLE);

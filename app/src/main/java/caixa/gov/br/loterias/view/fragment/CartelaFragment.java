@@ -160,6 +160,8 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                 dezenas.add(new Dezena("" + i, Boolean.FALSE));
             }
         }
+
+        parentActivity.configuraBotoesListeners();
     }
 
     @Override
