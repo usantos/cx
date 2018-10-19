@@ -143,35 +143,42 @@
             android:layout_marginTop="14dp"
             android:background="@color/branco">
 
-            <TextView
-                android:id="@+id/tipoAposta"
-                style="@style/editTextArialMTTheme"
-                android:layout_width="75dp"
-                android:layout_height="wrap_content"
-                android:lines="1"
-                android:paddingEnd="0dp"
-                android:text="Mega-sena"
-                android:textSize="14.2sp" />
-
-            <TextView
-                android:id="@+id/numeroConcurso"
-                style="@style/editTextArialMTTheme"
+            <LinearLayout
+                android:id="@+id/modalidadeConcursoLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/tipoAposta"
-                android:layout_marginBottom="13dp"
-                android:lines="1"
-                android:maxWidth="100dp"
-                android:paddingEnd="0dp"
-                android:textSize="14.2sp"
-                tools:text="Conc. 777" />
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tipoAposta"
+                    style="@style/editTextArialMTTheme"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:lines="1"
+                    android:paddingEnd="0dp"
+                    android:textSize="14.2sp"
+                    tools:text="Dia de Sorte" />
+
+                <TextView
+                    android:id="@+id/numeroConcurso"
+                    style="@style/editTextArialMTTheme"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tipoAposta"
+                    android:layout_marginBottom="13dp"
+                    android:lines="1"
+                    android:maxWidth="100dp"
+                    android:paddingEnd="0dp"
+                    android:textSize="14.2sp"
+                    tools:text="Conc. 777" />
+            </LinearLayout>
 
             <RelativeLayout
                 android:id="@+id/layoutCabecalhoLoteca"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_toEndOf="@+id/tipoAposta"
+                android:layout_toEndOf="@+id/modalidadeConcursoLayout"
                 android:visibility="gone"
                 tools:visibility="visible">
 
@@ -202,7 +209,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignStart="@+id/layoutCabecalhoLoteca"
-                android:layout_below="@+id/numeroConcurso"
+                android:layout_below="@+id/modalidadeConcursoLayout"
                 android:clickable="false"
                 android:nestedScrollingEnabled="false" />
 
@@ -212,7 +219,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_toEndOf="@+id/tipoAposta"
+                android:layout_toEndOf="@+id/modalidadeConcursoLayout"
                 android:layout_toStartOf="@+id/valorAposta"
                 android:text=""
                 android:textColor="@color/cinza"

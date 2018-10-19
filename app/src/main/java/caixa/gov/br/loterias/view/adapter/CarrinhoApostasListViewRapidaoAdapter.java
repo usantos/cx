@@ -84,6 +84,10 @@ public class CarrinhoApostasListViewRapidaoAdapter extends RecyclerView.Adapter<
         swipeLayout.addDrag(SwipeLayout.DragEdge.Left, swipeLayout.findViewById(R.id.dadosApostaCarrinho));
         swipeLayout.setDragEdge(SwipeLayout.DragEdge.Left);
 
+        LinearLayout layoutTimeCoracao = holder.dadosApostaCarrinho.findViewById(R.id.layoutTimeCoracao);
+        TextView labelTimeCoracao = holder.dadosApostaCarrinho.findViewById(R.id.labelTimeCoracaoTxt);
+        TextView textViewTimeCoracao = holder.dadosApostaCarrinho.findViewById(R.id.textViewTimeCoracao);
+
         holder.textViewTipoAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorClara()));
         holder.textViewNumeroConcurso.setTextColor(ContextCompat.getColor(context, estilo.getCorClara()));
         holder.valorAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorEscura()));
@@ -117,7 +121,15 @@ public class CarrinhoApostasListViewRapidaoAdapter extends RecyclerView.Adapter<
         quantidadeApostadas.setText(String.format( Locale.getDefault(), "%d %s", quantidadeNumeros, quantidadeApostadasString));
         quantidadeSorteios.setText(String.format(Locale.getDefault(), "%d %s", quantidadeTeimosinhas, quantidadeSorteiosString));
 
-
+        if (ModalidadeEnum.TIMEMANIA == apostas.get(position).getModalidade()) {
+            layoutTimeCoracao.setVisibility(View.VISIBLE);
+            textViewTimeCoracao.setText(apostas.get(position).getTimeDoCoracao().getNome());
+        } else if (ModalidadeEnum.DIA_DE_SORTE == apostas.get(position).getModalidade()) {
+            layoutTimeCoracao.setVisibility(View.VISIBLE);
+            labelTimeCoracao.setText(R.string.label_mes_sorte);
+            textViewTimeCoracao.setText(apostas.get(position).getMesDeSorte() != null && apostas.get(position).getMesDeSorte().getNome() != null
+                    ? apostas.get(position).getMesDeSorte().getNome() : context.getString(R.string.label_tres_interrogacoes));
+        }
 
 
         holder.itemView.findViewById(R.id.excluirApostaCarrinhoLayout).setOnClickListener(new View.OnClickListener() {

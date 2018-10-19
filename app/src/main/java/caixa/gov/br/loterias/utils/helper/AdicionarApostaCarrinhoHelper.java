@@ -46,6 +46,7 @@ import caixa.gov.br.loterias.utils.Constantes;
 import caixa.gov.br.loterias.utils.DialogUtils;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.ConfirmadoInclusaoCarrinhoActivity;
+import caixa.gov.br.loterias.view.SimularApostaActivity;
 
 /**
  * Created by joafilho on 10/04/2018.
@@ -206,6 +207,9 @@ public class AdicionarApostaCarrinhoHelper {
         activity.putExtra("valorAposta", valor);
         activity.putExtra("modalidade", (new Gson()).toJson(ViewUtils.getParametroSimulacao(SessaoUsuario.getInstance(), modalidadeEnum).getParametroJogo()));
         context.startActivity(activity);
+        if((Activity)context instanceof SimularApostaActivity){
+            ((SimularApostaActivity)context).zerarApostas();
+        }
     }
 
     private static boolean inserirApostaCarrinhoLocal(Context contextParam, IdentificaoDeUmaApostaDas8Modalidades aposta) {

@@ -359,6 +359,7 @@
     <string name="label_domingo">Domingo</string>
     <string name="label_resultados">Resultados</string>
     <string name="label_acumulou_exclamacao">ACUMULOU!</string>
+    <string name="label_nao_houve_acertador">N\u00e3o houve acertador!</string>
 
 
 </resources>

@@ -261,7 +261,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
             } else if (premiacaoConcurso.getQuantidadeGanhadores() == 1) {
                 title2.setText(getResources().getString(R.string.label_aposta_ganhadora, premiacaoConcurso.getQuantidadeGanhadores()));
             } else {
-                title2.setText("");
+                title2.setText(R.string.label_nao_houve_acertador);
             }
 
             LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(

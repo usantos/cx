@@ -352,7 +352,6 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         orderAscDezenas();
         IdentificaoDeUmaApostaDas8Modalidades aposta = getApostaPreenchida();
         AdicionarApostaCarrinhoHelper.incluirApostaCarrinhoCartela(parentActivity, aposta);
-        parentActivity.zerarApostas();
     }
 
     private IdentificaoDeUmaApostaDas8Modalidades getApostaPreenchida() {
