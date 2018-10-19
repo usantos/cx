@@ -146,6 +146,7 @@ public class CarrinhoActivity extends SettingToolbarActivity {
 
     private void limparCarrinhoAtualizarTela() {
         carrinho.getApostas().removeAll(carrinho.getApostas());
+        carrinho.setValorTotal(BigDecimal.ZERO);
         atualizaLayout(Boolean.FALSE);
     }
 

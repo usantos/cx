@@ -297,6 +297,7 @@ public class AdicionarApostaCarrinhoHelper {
             aposta.setEspelho(false);
 
             aposta.setTimeDoCoracao(apostaDTO.getTimeDoCoracao());
+            aposta.setMesDeSorte(apostaDTO.getMesDeSorte());
 
             aposta.setConcursoInicial(0);
             aposta.setSituacao(null);
