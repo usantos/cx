@@ -155,7 +155,9 @@
                         android:layout_gravity="start"
                         android:orientation="horizontal"
                         android:paddingTop="20dp"
-                        android:visibility="gone">
+                        android:visibility="gone"
+                        tools:visibility="visible"
+                        android:focusableInTouchMode="true">
 
                         <TextView
                             android:id="@+id/titleInformeBold"
@@ -187,7 +189,7 @@
                         android:clickable="false"
                         android:nestedScrollingEnabled="false"
                         android:orientation="vertical"
-                        android:paddingBottom="119dp" />
+                        android:paddingBottom="119dp"/>
                 </LinearLayout>
             </LinearLayout>
         </android.support.constraint.ConstraintLayout>
