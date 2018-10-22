@@ -14,7 +14,7 @@ public class SilceCrypto {
 
     public Bin encryptBody(String jsonString) {
         try {
-            return crypto.encrypt(Bin.fromUtf8(jsonString));
+            return crypto.encrypt(Bin.fromIso8859_1(jsonString));
         } catch (Exception e) {
             throw new RuntimeException("Falha ao tentar criptografar o corpo", e);
         }
