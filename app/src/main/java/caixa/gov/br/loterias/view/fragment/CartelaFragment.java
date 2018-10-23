@@ -1341,8 +1341,28 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         dezenasSelecionadas = listaOrdenadaAsc;
     }
 
+    private List<ParametroPartida> orderAscPartidas(){
+        ParametroPartida menorPartidaAtual = null;
+        List<ParametroPartida> listaOrdenadaAsc = new ArrayList<>();
+        while (partidasSelecionadas.size() > 0) {
+            for (ParametroPartida partida : partidasSelecionadas) {
+                if (menorPartidaAtual == null) {
+                    menorPartidaAtual = partida;
+                } else if (menorPartidaAtual.getNumero() > partida.getNumero()) {
+                    menorPartidaAtual = partida;
+                }
+            }
+            listaOrdenadaAsc.add(menorPartidaAtual);
+            partidasSelecionadas.remove(menorPartidaAtual);
+            menorPartidaAtual = null;
+        }
+
+        return listaOrdenadaAsc;
+    }
+
     private void setApostaLoteca(IdentificaoDeUmaApostaDas8Modalidades aposta) {
         if (isTipoLoteca) {
+            List<ParametroPartida> partidasSelecionadas = orderAscPartidas();
             aposta.setPartidasLoteca(new ArrayList<PartidaLotecaDTO>());
             for (ParametroPartida partida : partidasSelecionadas) {
                 PartidaLotecaDTO lotecaDTO = new PartidaLotecaDTO();
@@ -1362,6 +1382,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
     private void setApostaLotogol(IdentificaoDeUmaApostaDas8Modalidades aposta) {
         if (isTipoLotogol) {
+            List<ParametroPartida> partidasSelecionadas = orderAscPartidas();
             aposta.setPartidasLotogol(new ArrayList<PartidaLotogolDTO>());
             for (ParametroPartida partida : partidasSelecionadas) {
                 PartidaLotogolDTO lotogolDTO = new PartidaLotogolDTO();
