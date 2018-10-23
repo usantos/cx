@@ -9,6 +9,7 @@ import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.androidannotations.annotations.AfterViews;
@@ -25,6 +26,7 @@ import java.util.Locale;
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.silce.dto.ConcursoPremiadoDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
+import caixa.gov.br.loterias.model.bo.silce.dto.ModalidadeEnum;
 import caixa.gov.br.loterias.model.bo.silce.dto.ResultadoConcursoDTO;
 import caixa.gov.br.loterias.utils.EstiloModalidade;
 import caixa.gov.br.loterias.utils.ViewUtils;
@@ -36,10 +38,14 @@ public class ApostaConfirmadaNumeroDetalhesPremioPago extends Fragment {
 
 
     @ViewById
-    protected TextView concursoTxt, quantidadeAcertosTxt, acertosTxt, quantidadeGanhadoresTxt, ganhadoresTxt, dataApostaTxt;
+    protected TextView concursoTxt, quantidadeAcertosTxt, acertosTxt, quantidadeGanhadoresTxt, ganhadoresTxt, dataApostaTxt,
+            informacaoAdicionalResultadoLabelText, informacaoAdicionalResultadoText, informacaoAdicionalDezenasText;
 
     @ViewById
     protected RecyclerView dezenasResultadoRecyclerView, dezenasRecyclerView;
+
+    @ViewById
+    protected RelativeLayout informacaoAdicionalResultadoLayout;
 
     @FragmentArg
     protected IdentificaoDeUmaApostaDas8Modalidades aposta;
@@ -81,6 +87,25 @@ public class ApostaConfirmadaNumeroDetalhesPremioPago extends Fragment {
             acertosTxt.setText(R.string.label_acerto);
         } else {
             acertosTxt.setText(R.string.label_acertos);
+        }
+
+        if(aposta.getModalidade() == ModalidadeEnum.TIMEMANIA){
+            setValorAdicionalResultadoAposta(resultadoConcursoDTO.getPremiacaoTimeDoCoracao().getEquipe().getNome(),
+                    getString(R.string.label_time_coracao_dois_pontos_time, aposta.getTimeDoCoracao().getNome()),
+                    resultadoConcursoDTO.getPremiacaoTimeDoCoracao().getEquipe().getNumero().equals(aposta.getTimeDoCoracao().getNumero()));
+        }
+    }
+
+    private void setValorAdicionalResultadoAposta(String resultado, String aposta, boolean isIgual) {
+        informacaoAdicionalResultadoLayout.setVisibility(View.VISIBLE);
+        informacaoAdicionalDezenasText.setVisibility(View.VISIBLE);
+        informacaoAdicionalResultadoText.setText(resultado);
+        informacaoAdicionalDezenasText.setText(aposta);
+        if(isIgual){
+            informacaoAdicionalDezenasText.setTextColor(getContext().getResources().getColor(estilo.getIconImpressoraColor()));
+            informacaoAdicionalDezenasText.setTypeface(ViewUtils.getFontArialMT(getContext()), Typeface.BOLD);
+        }else{
+            informacaoAdicionalDezenasText.setTextColor(getContext().getResources().getColor(estilo.getColorTextAlpha6()));
         }
     }
 
