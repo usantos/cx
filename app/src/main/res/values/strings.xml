@@ -304,4 +304,6 @@
     <string name="MA021">E-mail inválido.</string>
     <string name="label_agencia_maiuscula">Agência</string>
     <string name="key_usuario_logado">usuariologado</string>
+    <string name="label_time_sorteado_espaco">Time sorteado&#160;</string>
+    <string name="label_time_coracao_dois_pontos_time">Time do cora\u00e7\u00e3o: %s</string>
 </resources>
