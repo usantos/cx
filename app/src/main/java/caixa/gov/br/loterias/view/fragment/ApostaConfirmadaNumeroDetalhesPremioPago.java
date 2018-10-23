@@ -89,10 +89,14 @@ public class ApostaConfirmadaNumeroDetalhesPremioPago extends Fragment {
             acertosTxt.setText(R.string.label_acertos);
         }
 
-        if(aposta.getModalidade() == ModalidadeEnum.TIMEMANIA){
+        if (aposta.getModalidade() == ModalidadeEnum.TIMEMANIA) {
             setValorAdicionalResultadoAposta(resultadoConcursoDTO.getPremiacaoTimeDoCoracao().getEquipe().getNome(),
                     getString(R.string.label_time_coracao_dois_pontos_time, aposta.getTimeDoCoracao().getNome()),
                     resultadoConcursoDTO.getPremiacaoTimeDoCoracao().getEquipe().getNumero().equals(aposta.getTimeDoCoracao().getNumero()));
+        } else if (aposta.getModalidade() == ModalidadeEnum.DIA_DE_SORTE) {
+            setValorAdicionalResultadoAposta(resultadoConcursoDTO.getPremiacaoMesDeSorte().getMesDeSorte().getNome(),
+                    getString(R.string.label_mes_sorte_dois_pontos_mes, aposta.getMesDeSorte().getNome()),
+                    resultadoConcursoDTO.getPremiacaoMesDeSorte().getMesDeSorte().getNumero().equals(aposta.getMesDeSorte().getNumero()));
         }
     }
 
@@ -101,10 +105,10 @@ public class ApostaConfirmadaNumeroDetalhesPremioPago extends Fragment {
         informacaoAdicionalDezenasText.setVisibility(View.VISIBLE);
         informacaoAdicionalResultadoText.setText(resultado);
         informacaoAdicionalDezenasText.setText(aposta);
-        if(isIgual){
+        if (isIgual) {
             informacaoAdicionalDezenasText.setTextColor(getContext().getResources().getColor(estilo.getIconImpressoraColor()));
             informacaoAdicionalDezenasText.setTypeface(ViewUtils.getFontArialMT(getContext()), Typeface.BOLD);
-        }else{
+        } else {
             informacaoAdicionalDezenasText.setTextColor(getContext().getResources().getColor(estilo.getColorTextAlpha6()));
         }
     }
@@ -190,14 +194,14 @@ public class ApostaConfirmadaNumeroDetalhesPremioPago extends Fragment {
         textView.setTextColor(getContext().getResources().getColor(colorText));
         textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
 
-        if(bold){
+        if (bold) {
             textView.setTypeface(ViewUtils.getFontArialMT(getContext()), Typeface.BOLD);
-        }else{
+        } else {
             textView.setTypeface(ViewUtils.getFontArialMT(getContext()));
         }
-        if(separate){
+        if (separate) {
             textView.setText(String.format(" - %s", ViewUtils.getNumberIntegerToString(list.get(i))));
-        }else{
+        } else {
             textView.setText(ViewUtils.getNumberIntegerToString(list.get(i)));
         }
         linha.addView(textView);
