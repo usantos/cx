@@ -124,6 +124,9 @@ public class HtmlUtils {
     public String getComprovanteCabecalhoRodapePremio(DetalhesHistoricoPremioDTO detalhesPremioDTO, Context context) {
 
         String modadlidade = ModalidadeEnum.fromStringComprovante(detalhesPremioDTO.getAposta().getModalidade());
+        String hora = DateUtils.getDateToString(
+                DateUtils.stringToDate(detalhesPremioDTO.getAposta().getHoraEfetivacao(), DateUtils.PATTERN_HH_MM_SS)
+                , DateUtils.PATTERN_HH_MM);
 
         String html = getContentOfFile(FILE_PATH_COMPROVANTE_CABECALHO_RODAPE, context);
         html = ViewUtils.replaceNullable(html, HEADER_TITLE_APP_TXT, context.getString(R.string.app_name));
@@ -131,7 +134,7 @@ public class HtmlUtils {
         html = ViewUtils.replaceNullable(html, BASE_64_LOGO, getBase64Logo(context));
         html = ViewUtils.replaceNullable(html, HEADER_COLUNA1_LINHA1_VALOR, detalhesPremioDTO.getAposta().getDataEfetivacao());
         html = ViewUtils.replaceNullable(html, HEADER_COLUNA2_LINHA1_VALOR, String.valueOf(detalhesPremioDTO.getAposta().getConcursoAlvo()));
-        html = ViewUtils.replaceNullable(html, HEADER_COLUNA1_LINHA2_VALOR, detalhesPremioDTO.getAposta().getHoraEfetivacao());
+        html = ViewUtils.replaceNullable(html, HEADER_COLUNA1_LINHA2_VALOR, hora);
         html = ViewUtils.replaceNullable(html, HEADER_COLUNA2_LINHA2_TEXTO, context.getString(R.string.label_local_pagamento));
         html = ViewUtils.replaceNullable(html, HEADER_COLUNA2_LINHA2_VALOR, detalhesPremioDTO.getPremioDTO().getLocalPagamento());
         html = ViewUtils.replaceNullable(html, HEADER_COLUNA1_LINHA3_VALOR, modadlidade);
