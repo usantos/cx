@@ -306,7 +306,7 @@
 
     <!-- DIA SORTE -->
     <string name="dia_sorte_escolha_dia">Escolha os _n\u00fameros_</string>
-    <string name="dia_sorte_escolha_mes">Escolha o _m\u00eas_ de prefer\u00eancia</string>
+    <string name="dia_sorte_escolha_mes">Escolha o _m\u00eas_ de sorte</string>
     <string name="label_mes_surpresa">M\u00eas surpresa</string>
     <string name="label_escolher_outro_mes">Escolher outro m\u00eas</string>
     <string name="label_mes_sorte">M\u00eas de Sorte&#160;</string>

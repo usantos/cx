@@ -20,6 +20,8 @@ public class DateUtils {
     public static final String PATTERN_DDMM_YYYY = "dd/MM/yyyy";
     public static final String PATTERN_DD_MM = "dd/MM";
     public static final String PATTERN_DD_MMM_YYYY = "dd MMM yyyy";
+    public static final String PATTERN_HH_MM_SS = "hh:mm:ss";
+    public static final String PATTERN_HH_MM = "hh:mm";
     public static String TAG = DateUtils.class.getSimpleName();
 
     public static String[] getAllMonthsOfYear(){
