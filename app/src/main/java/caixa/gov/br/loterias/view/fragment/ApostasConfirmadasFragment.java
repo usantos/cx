@@ -237,7 +237,7 @@ public class ApostasConfirmadasFragment extends Fragment implements ApostasConfi
                         } else {
                             if (Objects.equals(apostaDTO.getSituacao().getValor(), SituacaoResultadoBilheteEnum.PAGA.getValor())) {
 
-                                apostaBO.getApostaDetalhePremio(apostaDTO.getId(), new RequestListener<DetalhesPremioDTOResponse>() {
+                                apostaBO.getApostaComprovantePremio(apostaDTO.getId(), new RequestListener<DetalhesPremioDTOResponse>() {
                                     @Override
                                     public void onResponse(DetalhesPremioDTOResponse result) {
                                         getResultadoModalidadeConcurso(apostaDTO, result.getPayload());
