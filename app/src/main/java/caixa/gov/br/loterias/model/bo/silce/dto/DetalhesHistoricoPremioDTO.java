@@ -15,9 +15,9 @@ import io.swagger.annotations.ApiModel;
 @Parcel
 public class DetalhesHistoricoPremioDTO {
     @SerializedName("aposta")
-    private IdentificaoDeUmaApostaDas8Modalidades aposta = null;
+    protected IdentificaoDeUmaApostaDas8Modalidades aposta = null;
     @SerializedName("premio")
-    private PremioDTO premioDTO = null;
+    protected PremioDTO premioDTO = null;
 
     public IdentificaoDeUmaApostaDas8Modalidades getAposta() {
         return aposta;
