@@ -45,6 +45,7 @@ import caixa.gov.br.loterias.model.bo.silce.dto.DTOEnumInteger;
 import caixa.gov.br.loterias.model.bo.silce.dto.DetalhesHistoricoPremioDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.DetalhesHistoricoPremioDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.DetalhesPremioDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.DetalhesPremioDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import caixa.gov.br.loterias.model.bo.silce.dto.ParametroJogoDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ParametroSimulacao;
@@ -112,6 +113,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
     private boolean premioPago;
     private ApostaFavoritaDTO apostaFavoritaDTO;
     private ParametroSimulacao parametroSimulacao;
+    private boolean isHistorico;
 
     @Click
     protected void carrinhoApostasBtn() {
@@ -125,8 +127,8 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
 
     @Click
     protected void layoutTextoSalveAposta() {
-        layoutnomeApostaLayout.setVisibility( View.VISIBLE );
-        layoutTextoSalveAposta.setClickable( false );
+        layoutnomeApostaLayout.setVisibility(View.VISIBLE);
+        layoutTextoSalveAposta.setClickable(false);
     }
 
     @Click
@@ -198,10 +200,22 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
     protected void comprovanteLayout() {
         DialogUtils.show(this);
 
-        if (premioPago) {
+        if (premioPago && isHistorico) {
             apostaBO.getApostaHistoricoComprovante(aposta.getId(), new RequestListener<DetalhesHistoricoPremioDTOResponse>() {
                 @Override
                 public void onResponse(DetalhesHistoricoPremioDTOResponse result) {
+                    DialogUtils.dismiss();
+                    pdfUtils.createComprovanteHistoricoPremioPdf(result.getPayload(), ApostaConfirmadaDetalhesActivity.this);
+                }
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    onError(error);
+                }
+            });
+        } else if (premioPago) {
+            apostaBO.getApostaComprovantePremio(aposta.getId(), new RequestListener<DetalhesPremioDTOResponse>() {
+                @Override
+                public void onResponse(DetalhesPremioDTOResponse result) {
                     DialogUtils.dismiss();
                     pdfUtils.createComprovantePremioPdf(result.getPayload(), ApostaConfirmadaDetalhesActivity.this);
                 }
@@ -232,14 +246,17 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         if (comprovanteApostaDTO != null) {
-            premioPago = Boolean.FALSE;
+            premioPago = false;
+            isHistorico = false;
             aposta = comprovanteApostaDTO.getAposta();
         } else {
             premioPago = Boolean.TRUE;
             if (detalhesPremioDTO != null) {
                 aposta = detalhesPremioDTO.getAposta();
+                isHistorico = false;
             } else {
                 aposta = detalhesHistoricoPremioDTO.getAposta();
+                isHistorico = true;
             }
         }
 
@@ -283,7 +300,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
             if (detalhesPremioDTO != null) {
                 comprovanteText.setText(detalhesPremioDTO.getNsbi());
             } else {
-                comprovanteText.setText(String.valueOf(detalhesHistoricoPremioDTO.getPremioDTO().getNsuPagamento()));
+                comprovanteText.setText(getString(R.string.label_nsu_pagamento_nsu, String.valueOf(detalhesHistoricoPremioDTO.getPremioDTO().getNsuPagamento())));
             }
         } else if (StringUtils.isNotEmpty(comprovanteApostaDTO.getNsbi())) {
             comprovanteText.setText(comprovanteApostaDTO.getNsbi());
