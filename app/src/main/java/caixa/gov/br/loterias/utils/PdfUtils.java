@@ -16,6 +16,8 @@ import java.io.File;
 import caixa.gov.br.loterias.model.bo.silce.dto.ComprovanteApostaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.DetalhesHistoricoPremioDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.DetalhesPremioDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
+import caixa.gov.br.loterias.model.bo.silce.dto.PremioDTO;
 
 /**
  * Created by joafilho on 16/04/2018.
@@ -51,10 +53,10 @@ public class PdfUtils {
         }
     }
 
-    public void createComprovantePremioPdf(DetalhesHistoricoPremioDTO detalhesHistoricoPremioDTO, AppCompatActivity activity) {
+    public void createComprovantePremioPdf(DetalhesPremioDTO detalhesPremioDTO, AppCompatActivity activity) {
         if (checkForPermission(activity)) {
             try {
-                String html = htmlUtils.getComprovanteCabecalhoRodapePremio(detalhesHistoricoPremioDTO, activity);
+                String html = htmlUtils.getComprovanteCabecalhoRodapePremio(detalhesPremioDTO, activity);
 
                 // cria a estrutura de diretório
                 File dir = new File(FileUtils.getDownloadsDir(), DIRETORIO_COMPROVANTE);
