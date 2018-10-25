@@ -94,6 +94,7 @@ public class ApostaConfirmadaNumeroDetalhesPremioPago extends Fragment {
                     getString(R.string.label_time_coracao_dois_pontos_time, aposta.getTimeDoCoracao().getNome()),
                     resultadoConcursoDTO.getPremiacaoTimeDoCoracao().getEquipe().getNumero().equals(aposta.getTimeDoCoracao().getNumero()));
         } else if (aposta.getModalidade() == ModalidadeEnum.DIA_DE_SORTE) {
+            informacaoAdicionalResultadoLabelText.setText(R.string.label_mes_sorteado);
             setValorAdicionalResultadoAposta(resultadoConcursoDTO.getPremiacaoMesDeSorte().getMesDeSorte().getNome(),
                     getString(R.string.label_mes_sorte_dois_pontos_mes, aposta.getMesDeSorte().getNome()),
                     resultadoConcursoDTO.getPremiacaoMesDeSorte().getMesDeSorte().getNumero().equals(aposta.getMesDeSorte().getNumero()));
