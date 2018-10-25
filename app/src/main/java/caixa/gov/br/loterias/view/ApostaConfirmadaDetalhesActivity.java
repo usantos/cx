@@ -299,7 +299,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
             if (detalhesPremioDTO != null) {
                 comprovanteText.setText(detalhesPremioDTO.getNsbi());
             } else {
-                comprovanteText.setText(String.valueOf(detalhesHistoricoPremioDTO.getPremioDTO().getNsuPagamento()));
+                comprovanteText.setText(getString(R.string.label_nsu_pagamento_nsu, String.valueOf(detalhesHistoricoPremioDTO.getPremioDTO().getNsuPagamento())));
             }
         } else if (StringUtils.isNotEmpty(comprovanteApostaDTO.getNsbi())) {
             comprovanteText.setText(comprovanteApostaDTO.getNsbi());
