@@ -404,6 +404,7 @@
                 android:layout_height="135dp"
                 android:orientation="vertical">
                 <Button
+                    android:id="@+id/salvarApostaRapidao"
                     android:layout_width="184dp"
                     android:layout_height="84dp"
                     android:background="@color/verdeazul"

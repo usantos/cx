@@ -1,6 +1,5 @@
 package caixa.gov.br.loterias.view;
 
-import android.support.v7.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -25,17 +24,16 @@ import java.util.List;
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.DadosCorporativosBO;
 import caixa.gov.br.loterias.model.bo.DadosCorporativosBO_;
+import caixa.gov.br.loterias.model.bo.MensagensNetwork;
 import caixa.gov.br.loterias.model.bo.RequestListener;
 import caixa.gov.br.loterias.model.bo.silce.dto.ListSecaoDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ListSecaoDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.ResourceResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.TermoDeUsoDTOResponse;
-import caixa.gov.br.loterias.model.bo.MensagensNetwork;
 import caixa.gov.br.loterias.utils.DialogUtils;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.adapter.ItemDuvidaAdapter;
 import caixa.gov.br.loterias.view.custom.ExpandableHeightRecyclerView;
-import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
 
 public class TermosUsoActivity extends AppCompatActivity {
 
