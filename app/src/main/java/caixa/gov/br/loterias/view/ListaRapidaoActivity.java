@@ -117,8 +117,7 @@ public class ListaRapidaoActivity extends AppCompatActivity {
     }
 
     private void abrirConfigRapidao() {
-        Intent activity = new Intent(this, RapidaoConfigActivity.class);
-        startActivityForResult(activity, 1);
+        RapidaoConfigActivity_.intent(this).startForResult(1);
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

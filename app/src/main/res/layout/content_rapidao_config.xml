@@ -415,7 +415,7 @@
                 android:orientation="vertical">
 
                 <Button
-                    android:id="@+id/SalvarApostaRapidao"
+                    android:id="@+id/salvarApostaRapidao"
                     android:layout_width="184dp"
                     android:layout_height="84dp"
                     android:layout_centerHorizontal="true"

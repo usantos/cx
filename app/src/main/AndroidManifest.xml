@@ -127,7 +127,7 @@
                 android:value="caixa.gov.br.loterias.view.PrincipalActivity" />
         </activity>
         <activity
-            android:name=".view.RapidaoConfigActivity"
+            android:name=".view.RapidaoConfigActivity_"
             android:label="@string/title_activity_lista_rapidao"
             android:parentActivityName=".view.ListaRapidaoActivity"
             android:screenOrientation="portrait"
