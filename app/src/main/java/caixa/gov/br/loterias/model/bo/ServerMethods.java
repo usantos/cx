@@ -31,6 +31,7 @@ import caixa.gov.br.loterias.model.bo.silce.internals.SilceConnection;
      static final String LIST_CARTOES_PATH = "usuarios/cartoes";
      static final String SAIR_PATH = "/usuarios/sair";
      static final String GRAVAR_USUARIO_PATH = "/usuarios";
+     static final String EXCLUIR_CARTAO_PATH = "/usuarios/cartoes/";
 
      static final String LOTERICAS_PATH = "/lotericas";
      static final String LOTERICAS_HABILITADAS_PATH = "/lotericas/buscas-habilitadas";

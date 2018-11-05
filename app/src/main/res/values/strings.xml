@@ -284,7 +284,6 @@
     <string name="label_acertos">acertos</string>
     <string name="label_sucesso">Sucesso</string>
     <string name="label_otimo_novo_nome_sua_aposta">Ótimo! o novo nome da sua aposta é</string>
-    <string name="label_nsu_pagamento_nsu">NSU Pagamento: %s</string>
     <string name="texto_futura_bold">_%s_</string>
 
     <!-- Loterica Resgate Prêmio -->
@@ -343,6 +342,7 @@
     <string name="label_corpo_equipe">(%s) %s</string>
     <string name="label_local_pagamento">Local do pagamento</string>
     <string name="label_nsu_pagamento">NSU do pagamento</string>
+    <string name="label_nsu_pagamento_nsu">NSU pagamento: %s</string>
     <string name="label_digite_cod_seguranca">Digite o código de segurança do seu cartão</string>
     <string name="label_selecione_cartao">Selecione um cartão</string>
     <string name="label_informa_cvv">Favor informar o CVV</string>

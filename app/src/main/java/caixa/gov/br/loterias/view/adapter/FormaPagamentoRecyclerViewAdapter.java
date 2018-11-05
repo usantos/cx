@@ -10,12 +10,18 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
 
 import java.util.List;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.model.bo.DadosUsuarioBO_;
+import caixa.gov.br.loterias.model.bo.MensagensNetwork;
+import caixa.gov.br.loterias.model.bo.RequestListener;
+import caixa.gov.br.loterias.model.bo.silce.dto.ListCartaoDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.RetornoCartao;
+import caixa.gov.br.loterias.utils.DialogUtils;
 import caixa.gov.br.loterias.view.listener.FormaDePagamentoListener;
 import caixa.gov.br.loterias.utils.ViewUtils;
 
@@ -57,9 +63,22 @@ public class FormaPagamentoRecyclerViewAdapter  extends RecyclerView.Adapter<For
         public void onClick(View view) {
             switch (view.getId()){
                 case R.id.buttonRemoverFormaPagamento:{
-                    valoresList.remove(getAdapterPosition());
-                    notifyDataSetChanged();
-                    formaDePagamentoListener.itemRemoved();
+                    DialogUtils.show(context);
+                    DadosUsuarioBO_.getInstance_(context).deleteCartao(valoresList.get(getAdapterPosition()).getIdCartao(), new RequestListener<ListCartaoDTOResponse>() {
+                        @Override
+                        public void onResponse(ListCartaoDTOResponse result) {
+                            DialogUtils.dismiss();
+                            valoresList.remove(getAdapterPosition());
+                            notifyDataSetChanged();
+                            formaDePagamentoListener.itemRemoved();
+                        }
+
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            onError(error);
+                        }
+                    });
+
                 }
                 break;
                 default:{
@@ -99,5 +118,11 @@ public class FormaPagamentoRecyclerViewAdapter  extends RecyclerView.Adapter<For
     @Override
     public int getItemCount() {
         return valoresList.size();
+    }
+
+    private void onError(VolleyError error) {
+        DialogUtils.dismiss();
+        String msgError = MensagensNetwork.setMensagem(error, context);
+        ViewUtils.alert(context, msgError);
     }
 }
