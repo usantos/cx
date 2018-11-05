@@ -56,7 +56,7 @@ import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
 
 public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
 
-    private EditText editTextNumeroCartaoContent, editTextNomeClienteCartaoContent, editTextCodigoSegurancaContent, editTextMesValidadeCartaooContent,editTextAnoValidadeCartaooContent;
+    private EditText editTextNumeroCartaoContent, editTextNomeClienteCartaoContent, editTextCodigoSegurancaContent, editTextMesValidadeCartaooContent, editTextAnoValidadeCartaooContent;
 
     private AlertDialog alertDialog;
 
@@ -107,7 +107,7 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
             TextView valorTotalCarrinho = findViewById(R.id.valorTotalCarrinho);
             String valor = ViewUtils.getMoedaFormat(carrinhoDTO.getValorTotal());
             valorTotalCarrinho.setText(valor);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -117,9 +117,9 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
 
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-            /* When focus is lost check that the text field
-            * has valid values.
-            */
+                /* When focus is lost check that the text field
+                 * has valid values.
+                 */
                 if (!hasFocus) {
                     if (v.getClass() == MaskedEditText.class) {
                         if (((MaskedEditText) v).getUnmaskedText().toString().equals("")) {
@@ -155,14 +155,14 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
             public void onClick(View view) {
                 if (editTextAnoValidadeCartaooContent.getText().toString().equals("") ||
                         editTextMesValidadeCartaooContent.getText().toString().equals("") ||
-                                        editTextNumeroCartaoContent.getText().toString().equals("")||
-                                        editTextCodigoSegurancaContent.getText().toString().equals("") ||
-                                        editTextNomeClienteCartaoContent.getText().toString().equals("")){
-                                ViewUtils.alertTitleButton(NovaFormaPagamentoActivity.this,
-                                        R.string.label_atencao,
-                                        "Informe os dados do cartão.",
-                                        NovaFormaPagamentoActivity.this.getResources().getString( R.string.ok ));
-                                return;
+                        editTextNumeroCartaoContent.getText().toString().equals("") ||
+                        editTextCodigoSegurancaContent.getText().toString().equals("") ||
+                        editTextNomeClienteCartaoContent.getText().toString().equals("")) {
+                    ViewUtils.alertTitleButton(NovaFormaPagamentoActivity.this,
+                            R.string.label_atencao,
+                            "Informe os dados do cartão.",
+                            NovaFormaPagamentoActivity.this.getResources().getString(R.string.ok));
+                    return;
                 }
                 CardToken cardToken = new CardToken(editTextNumeroCartaoContent.getText().toString(),
                         Integer.valueOf(editTextMesValidadeCartaooContent.getText().toString()),
@@ -172,19 +172,16 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
                         "CPF",
                         DadosUsuarioBO.obterCpf());
 
-
-
                     createTokenAsync(cardToken);
-//                }
             }
         });
     }
 
     private void createTokenAsync(CardToken cardToken) {
-        alertDialog =  LoadingViewLoterias.show(this);
+        alertDialog = LoadingViewLoterias.show(this);
         MercadoPago mMercadoPago = new MercadoPago.Builder()
                 .setContext(this)
-                .setPublicKey( BuildConfig.PUBLIC_KEY_MP )
+                .setPublicKey(BuildConfig.PUBLIC_KEY_MP)
                 .build();
 
         mMercadoPago.createToken(cardToken, new Callback<Token>() {
@@ -213,9 +210,9 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
             @Override
             public void onResponse(RetornoPadraoDTO response) {
                 alertDialog.dismiss();
-                if (response.getRedirect() != null){
-                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), NovaFormaPagamentoActivity.this);
-                }else {
+                if (response.getRedirect() != null) {
+                    RedirectNetwork.checkRedirectSucesso(response.getRedirect(), NovaFormaPagamentoActivity.this);
+                } else {
                     Intent activity = new Intent(NovaFormaPagamentoActivity.this, ConfirmacaoPagamentoActivity.class);
                     startActivity(activity);
                 }
@@ -227,25 +224,25 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
 
                 try {
                     String mensagem = new String(error.networkResponse.data);
-                    if(mensagem.contains("{")){
+                    if (mensagem.contains("{")) {
                         JSONObject jsonObject = new JSONObject(mensagem);
                         ViewUtils.alert(NovaFormaPagamentoActivity.this, jsonObject.getString("mensagem"));
-                    }else{
-                        RedirectNetwork.checkRedirect( error, NovaFormaPagamentoActivity.this );
+                    } else {
+                        RedirectNetwork.checkRedirect(error, NovaFormaPagamentoActivity.this);
                     }
-                }catch (Exception e){
-                    RedirectNetwork.checkRedirect( error, NovaFormaPagamentoActivity.this );
+                } catch (Exception e) {
+                    RedirectNetwork.checkRedirect(error, NovaFormaPagamentoActivity.this);
                 }
 
             }
         });
     }
 
-    private void callWebServicePayment_method(final String token){
-        String bin = editTextNumeroCartaoContent.getText().toString().substring( 0, 7 );
-        bin = bin.replace( " ", "" );
-        String url = BuildConfig.MP_PAYMENT_URL+"bin="+ bin +"&public_key="+ BuildConfig.PUBLIC_KEY_MP;
-        StringRequest request = new StringRequest( Request.Method.GET, url, new Response.Listener<String>(){
+    private void callWebServicePayment_method(final String token) {
+        String bin = editTextNumeroCartaoContent.getText().toString().substring(0, 7);
+        bin = bin.replace(" ", "");
+        String url = BuildConfig.MP_PAYMENT_URL + "bin=" + bin + "&public_key=" + BuildConfig.PUBLIC_KEY_MP;
+        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.d("Response: ", response.toString());
@@ -255,7 +252,7 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
                     JSONObject responseObj = new JSONObject();
                     responseObj = jsonArray.getJSONObject(0);
                     String payment_method_id = responseObj.getString("payment_method_id");
-                    String thumbnail = (responseObj.getJSONObject("issuer")).getString( "thumbnail" );
+                    String thumbnail = (responseObj.getJSONObject("issuer")).getString("thumbnail");
                     callWebserviceRegistraAposta(token, payment_method_id);
 
                 } catch (JSONException e) {
@@ -263,10 +260,10 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
                     Toast.makeText(getApplicationContext(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 }
             }
-        },new Response.ErrorListener(){
+        }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
-                Log.d("volleyError", "volleyError: "+ volleyError.toString());
+                Log.d("volleyError", "volleyError: " + volleyError.toString());
             }
         });
 

@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 
 import org.androidannotations.annotations.EBean;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -104,8 +105,8 @@ public class DadosUsuarioBO extends BaseBO {
 
     public static void salvarNomeUsuairo(String name) {
         Context context = Aplicacao.application.getApplicationContext();
-        if(context != null){
-            SharedPreferences sharedPreferences = context.getSharedPreferences(USUARIO_KEY,  Context.MODE_PRIVATE);
+        if (context != null) {
+            SharedPreferences sharedPreferences = context.getSharedPreferences(USUARIO_KEY, Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString(NOME, name);
             editor.apply();
@@ -114,7 +115,7 @@ public class DadosUsuarioBO extends BaseBO {
 
     public static String obterNome() {
         Context context = Aplicacao.application.getApplicationContext();
-        if(context != null){
+        if (context != null) {
             SharedPreferences sharedPreferences = context.getSharedPreferences(USUARIO_KEY, Context.MODE_PRIVATE);
             return sharedPreferences.getString(NOME, "");
         }
@@ -123,7 +124,7 @@ public class DadosUsuarioBO extends BaseBO {
 
     public static void salvarCpfUsuario(String cpf) {
         Context context = Aplicacao.application.getApplicationContext();
-        if(context != null){
+        if (context != null) {
             SharedPreferences sharedPreferences = context.getSharedPreferences(USUARIO_KEY, Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString(CPF, cpf);
@@ -133,7 +134,7 @@ public class DadosUsuarioBO extends BaseBO {
 
     public static String obterCpf() {
         Context context = Aplicacao.application.getApplicationContext();
-        if(context != null){
+        if (context != null) {
             SharedPreferences sharedPreferences = context.getSharedPreferences(USUARIO_KEY, Context.MODE_PRIVATE);
             return sharedPreferences.getString(CPF, "");
         }
@@ -145,7 +146,7 @@ public class DadosUsuarioBO extends BaseBO {
         salvarNomeUsuairo("");
     }
 
-    public static void updateFecharIntroducao(Activity activity, Boolean status){
+    public static void updateFecharIntroducao(Activity activity, Boolean status) {
         SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putBoolean(activity.getString(R.string.key_introducao), status);
@@ -153,14 +154,14 @@ public class DadosUsuarioBO extends BaseBO {
 
     }
 
-    public static Boolean checarFecharIntroducao(Activity activity){
+    public static Boolean checarFecharIntroducao(Activity activity) {
         SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
         Boolean status = sharedPref.getBoolean(activity.getString(R.string.key_introducao), false);
         return status;
     }
 
 
-    public static void updateUsuarioLogado(Activity activity, Boolean status){
+    public static void updateUsuarioLogado(Activity activity, Boolean status) {
         SharedPreferences sharedPref = activity.getSharedPreferences(USUARIO_KEY, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putBoolean(activity.getString(R.string.key_usuario_logado), status);
@@ -168,14 +169,14 @@ public class DadosUsuarioBO extends BaseBO {
 
     }
 
-    public static Boolean checarUsuarioLogado(Activity activity){
+    public static Boolean checarUsuarioLogado(Activity activity) {
         SharedPreferences sharedPref = activity.getSharedPreferences(USUARIO_KEY, Context.MODE_PRIVATE);
         Boolean status = sharedPref.getBoolean(activity.getString(R.string.key_usuario_logado), false);
         return status;
     }
 
 
-    public static void updateVerificarIdade(Activity activity, Boolean status){
+    public static void updateVerificarIdade(Activity activity, Boolean status) {
         SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putBoolean(activity.getString(R.string.key_idade), status);
@@ -183,7 +184,7 @@ public class DadosUsuarioBO extends BaseBO {
 
     }
 
-    public static Boolean checarVerificarIdade(Activity activity){
+    public static Boolean checarVerificarIdade(Activity activity) {
         SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
         Boolean status = sharedPref.getBoolean(activity.getString(R.string.key_idade), true);
         return status;
@@ -204,7 +205,7 @@ public class DadosUsuarioBO extends BaseBO {
         silceConnection.request(request);
     }
 
-    public void putDadosUsuario(ApostadorAlteracaoDTO apostadorAlteracaoDTO, final RequestListener<CadastrarApostadorDTOResponse> listener){
+    public void putDadosUsuario(ApostadorAlteracaoDTO apostadorAlteracaoDTO, final RequestListener<CadastrarApostadorDTOResponse> listener) {
         LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
         headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
 
@@ -225,6 +226,16 @@ public class DadosUsuarioBO extends BaseBO {
                 listaApostas, UsuarioLogadoResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(), headers);
+
+        request.setErrorListener(interceptError(request, headers, listener));
+        silceConnection.request(request);
+    }
+
+    public void deleteCartao(Long idCartao, RequestListener<ListCartaoDTOResponse> listener) {
+        HashMap<String, String> headers = new LinkedHashMap<>();
+        headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
+        GsonRequest request = silceConnection.buildDeleteRequest(ServerMethods.EXCLUIR_CARTAO_PATH, idCartao.toString(), ListCartaoDTOResponse.class,
+                listener.getSilceListener(), listener.getErrorListener(), headers);
 
         request.setErrorListener(interceptError(request, headers, listener));
         silceConnection.request(request);
