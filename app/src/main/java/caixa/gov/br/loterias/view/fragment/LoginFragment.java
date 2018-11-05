@@ -23,6 +23,7 @@ import java.util.List;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bean.RetornoListaCarrinho;
+import caixa.gov.br.loterias.model.bo.AcessoBO;
 import caixa.gov.br.loterias.model.bo.AcessoBO_;
 import caixa.gov.br.loterias.model.bo.DadosUsuarioBO;
 import caixa.gov.br.loterias.model.bo.DadosUsuarioBO_;
@@ -37,6 +38,7 @@ import caixa.gov.br.loterias.model.dao.DBLoteriasCrud;
 import caixa.gov.br.loterias.utils.AppUtils;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.CadastrarActivity_;
+import caixa.gov.br.loterias.view.PrincipalActivity;
 import caixa.gov.br.loterias.view.PrincipalActivity_;
 import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
 
@@ -79,8 +81,8 @@ public class LoginFragment extends Fragment {
 
         KeycloakBO keycloakBO =  KeycloakBO_.getInstance_( getActivity() );
 
-        if (DadosUsuarioBO.checarFecharIntroducao(getActivity()) && DadosUsuarioBO.checarUsuarioLogado( getActivity() )){
-            connectKeycloak();
+        if (DadosUsuarioBO.checarFecharIntroducao(getActivity()) && DadosUsuarioBO.checarUsuarioLogado(getActivity())){
+            startActivity(new Intent(getContext(), PrincipalActivity_.class));
         }
 
         return v;
@@ -88,6 +90,7 @@ public class LoginFragment extends Fragment {
 
     private void connectKeycloak() {
         if(AppUtils.isNetworkAvailable(getActivity())){
+            AcessoBO.PRIMEIRO_LOGIN = true;
             AcessoBO_.getInstance_(getContext()).iniciarLoginSSO();
 //            KeycloakBO_.getInstance_(getActivity()).login(getActivity(), new KeycloakBO.OnLogin() {
 //                        @Override

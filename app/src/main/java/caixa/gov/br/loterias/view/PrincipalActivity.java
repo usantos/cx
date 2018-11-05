@@ -48,6 +48,7 @@ import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bean.DadosUsuarioToken;
 import caixa.gov.br.loterias.model.bean.Modalidade;
 import caixa.gov.br.loterias.model.bean.SessaoUsuario;
+import caixa.gov.br.loterias.model.bo.AcessoBO_;
 import caixa.gov.br.loterias.model.bo.DadosCorporativosBO;
 import caixa.gov.br.loterias.model.bo.DadosCorporativosBO_;
 import caixa.gov.br.loterias.model.bo.DadosUsuarioBO;
@@ -382,7 +383,9 @@ public class PrincipalActivity extends AppCompatActivity
                     dadosUsuarioBO.sair(new RequestListener<NetworkResponse>() {
                         @Override
                         public void onResponse(NetworkResponse response) {
-                            KeycloakBO_.getInstance_(PrincipalActivity.this).logout(PrincipalActivity.this);
+//                            KeycloakBO_.getInstance_(PrincipalActivity.this).logout(PrincipalActivity.this);
+                            AcessoBO_.getInstance_(PrincipalActivity.this).iniciarLogoutSSO();
+                            DadosUsuarioBO.updateUsuarioLogado(PrincipalActivity.this, false);
                             loadViewProgress.dismiss();
                             DadosUsuarioBO.limparRegistros();
                             startActivity(new Intent(PrincipalActivity.this, LoginActivity.class));

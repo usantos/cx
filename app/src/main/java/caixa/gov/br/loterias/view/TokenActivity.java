@@ -25,6 +25,7 @@ import java.util.List;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bean.RetornoListaCarrinho;
+import caixa.gov.br.loterias.model.bo.AcessoBO;
 import caixa.gov.br.loterias.model.bo.DadosUsuarioBO;
 import caixa.gov.br.loterias.model.bo.DadosUsuarioBO_;
 import caixa.gov.br.loterias.model.bo.RedirectNetwork;
@@ -82,7 +83,12 @@ public class TokenActivity extends AppCompatActivity {
                                 }
                             }
                             DadosUsuarioBO.updateUsuarioLogado(TokenActivity.this, true);
-                            verificarCadastroWebservice();
+                            if(AcessoBO.PRIMEIRO_LOGIN) {
+                                AcessoBO.PRIMEIRO_LOGIN = false;
+                                verificarCadastroWebservice();
+                            }else{
+                                finish();
+                            }
                         }
                     }
                 });
@@ -97,13 +103,11 @@ public class TokenActivity extends AppCompatActivity {
         final DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_(this);
         final RetornoListaCarrinho retornoListaCarrinho = new RetornoListaCarrinho();
         DBLoteriasCrud crud = new DBLoteriasCrud(this);
-//        carrinhoDTO.setApostas(crud.readAllIdentificaoDeUmaApostaDas8Modalidades());
         List<ApostaDTO> listApostas = new ArrayList<>();
         retornoListaCarrinho.setApostas( listApostas );
         dadosUsuarioBO.postVerificarCadastro(retornoListaCarrinho, new RequestListener<UsuarioLogadoResponse>() {
             @Override
             public void onResponse(UsuarioLogadoResponse response) {
-//                buttonLogin.setEnabled( true );
                 loadViewProgress.dismiss();
                 if (response.getRedirect() == null){
                     PrincipalActivity_.intent(TokenActivity.this).start();
@@ -115,7 +119,6 @@ public class TokenActivity extends AppCompatActivity {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-//                buttonLogin.setEnabled( true );
                 loadViewProgress.dismiss();
                 RedirectNetwork.checkRedirect(error, TokenActivity.this);
 
