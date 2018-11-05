@@ -251,6 +251,7 @@
             android:label="@string/title_activity_alterar_dados_login_caixa"
             android:theme="@style/AppTheme.DegradeActionBar"/>
         <activity
+            android:theme="@style/AppTheme.NoActionBar"
             android:name=".view.TokenActivity"
             tools:node="replace"
             android:screenOrientation="portrait">

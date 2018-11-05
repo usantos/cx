@@ -53,6 +53,10 @@ public class KeycloakBO {
         return accessToken;
     }
 
+    public void setAccessToken(String accessToken){
+        this.accessToken = accessToken;
+    }
+
     @AfterInject
     protected void init(){
         try {
@@ -111,6 +115,7 @@ public class KeycloakBO {
         webView.clearCache(true);
     }
 
+    //TODO: Reajustar
     public void login(final Activity activity, final OnLogin callback) {
         try {
             final AuthzModule authzModule = AuthorizationManager.getModule(MODULE_NAME);
