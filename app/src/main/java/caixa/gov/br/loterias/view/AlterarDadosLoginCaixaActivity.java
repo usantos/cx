@@ -34,9 +34,15 @@ public class AlterarDadosLoginCaixaActivity extends AppCompatActivity {
         paginaAlterarDadosWebView = (WebView) findViewById( R.id.paginaAlterarDadosWebView );
 
         if(AppUtils.isNetworkAvailable( this )){
+
             StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append(BuildConfig.CAIXA_BASE_URL_SSO);
-            stringBuilder.append("/auth/realms/internet/account?referrer=cli-web-lce&referrer_uri=http%3A%2F%2Fdf7390sr029.corp.caixa.gov.br%3A8280%2Fsilce-web%2F%3Fredirect_fragment%3D%252Fhome");
+            stringBuilder.append(BuildConfig.URL_SSO);
+            stringBuilder.append(BuildConfig.URL_SSO_ACCOUNT);
+            stringBuilder.append("?referrer=");
+            stringBuilder.append(BuildConfig.SSO_CLIENT_ID);
+            stringBuilder.append("&referrer_uri=http%3A%2F%2Fdf7390sr029.corp.caixa.gov.br%3A8280%2Fsilce-web%2F%3Fredirect_fragment%3D%252Fhome");
+
+            //stringBuilder.append("/auth/realms/internet/account?referrer=cli-web-lce&referrer_uri=http%3A%2F%2Fdf7390sr029.corp.caixa.gov.br%3A8280%2Fsilce-web%2F%3Fredirect_fragment%3D%252Fhome");
             paginaAlterarDadosWebView.loadUrl(stringBuilder.toString());
         }else{
             loadViewProgresas.hide();
