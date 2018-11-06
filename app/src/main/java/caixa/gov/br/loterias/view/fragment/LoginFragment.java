@@ -73,14 +73,12 @@ public class LoginFragment extends Fragment {
         buttonLogin  = (Button) v.findViewById(R.id.buttonFacaLogin);
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                buttonLogin.setEnabled( false );
                 DadosUsuarioBO.updateFecharIntroducao(getActivity(), true);
                 connectKeycloak();
             }
         });
 
         KeycloakBO keycloakBO =  KeycloakBO_.getInstance_( getActivity() );
-
         if (DadosUsuarioBO.checarFecharIntroducao(getActivity()) && DadosUsuarioBO.checarUsuarioLogado(getActivity())){
             startActivity(new Intent(getContext(), PrincipalActivity_.class));
         }
@@ -92,54 +90,6 @@ public class LoginFragment extends Fragment {
         if(AppUtils.isNetworkAvailable(getActivity())){
             AcessoBO.PRIMEIRO_LOGIN = true;
             AcessoBO_.getInstance_(getContext()).iniciarLoginSSO();
-//            KeycloakBO_.getInstance_(getActivity()).login(getActivity(), new KeycloakBO.OnLogin() {
-//                        @Override
-//                        public void onSuccess(String token) {
-//                            if (getActivity() != null) {
-//                                String separar[] = token.split("\\.");
-//                                if (separar.length > 0) {
-//                                     String tokenCorpo = separar[1];
-//                                    byte bytes[] = Base64.decode(tokenCorpo, Base64.URL_SAFE);
-//                                    tokenCorpo = new String(bytes, Charset.forName("UTF-8"));
-//                                    try {
-//                                        JSONObject jsonObject = new JSONObject(tokenCorpo);
-//
-//                                        String cpf = jsonObject.getString("cpf");
-//                                        if (cpf.length() < 11) {
-//                                            StringBuilder zeros = new StringBuilder();
-//                                            int totalIncluirZero = 11 - cpf.length();
-//                                            for (int contador = 0; contador < totalIncluirZero; contador++) {
-//                                                zeros.append("0");
-//                                            }
-//                                            zeros.append(cpf);
-//                                            cpf = zeros.toString();
-//                                        }
-//
-//                                        DadosUsuarioBO.salvarCpfUsuario(cpf);
-//                                        DadosUsuarioBO.salvarNomeUsuairo(jsonObject.getString("name"));
-//                                    } catch (JSONException e) {
-//                                        e.printStackTrace();
-//                                    }
-//                                }
-//
-//                                DadosUsuarioBO.updateUsuarioLogado(getActivity(), true);
-//                                verificarCadastroWebservice();
-//                            }
-//
-//                        }
-//
-//
-//                        @Override
-//                        public void onFailure(Exception e) {
-//                            buttonLogin.setEnabled(true);
-//                            if (getActivity() != null) {
-//                                if (!((OAuth2AuthorizationException) e).error.equals("dialog_dismissed")) {
-//                                    ViewUtils.alert(getActivity(), getString(R.string.sistema_indisponivel));
-//                                }
-//                            }
-//                        }
-//                    }
-//            );
         }else{
             buttonLogin.setEnabled( true );
             Log.e("caixa", "Erro ao conexar com internet LoginFragment.connectKeycloak()");
