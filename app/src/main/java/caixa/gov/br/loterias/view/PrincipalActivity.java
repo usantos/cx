@@ -110,6 +110,8 @@ public class PrincipalActivity extends AppCompatActivity
     private DBLoteriasHelper dbLoteriasHelper;
     private View actionApresentarTrevo, actionSettings;
 
+    private boolean realizandoLogin = false;
+
     @AfterViews
     public void init() {
         setSupportActionBar(toolbar);
@@ -171,6 +173,12 @@ public class PrincipalActivity extends AppCompatActivity
     protected void onStart() {
         super.onStart();
         textViewHomeCountBetsCart.setText(CarrinhoSP.obterQuantidadeApostas());
+        if(realizandoLogin){
+            DadosUsuarioBO.updateUsuarioLogado(PrincipalActivity.this, false);
+            DadosUsuarioBO.limparRegistros();
+            startActivity(new Intent(PrincipalActivity.this, LoginActivity.class));
+            finish();
+        }
     }
 
     private void callWebservice() {
@@ -385,11 +393,8 @@ public class PrincipalActivity extends AppCompatActivity
                         public void onResponse(NetworkResponse response) {
 //                            KeycloakBO_.getInstance_(PrincipalActivity.this).logout(PrincipalActivity.this);
                             AcessoBO_.getInstance_(PrincipalActivity.this).iniciarLogoutSSO();
-                            DadosUsuarioBO.updateUsuarioLogado(PrincipalActivity.this, false);
+                            realizandoLogin = true;
                             loadViewProgress.dismiss();
-                            DadosUsuarioBO.limparRegistros();
-                            startActivity(new Intent(PrincipalActivity.this, LoginActivity.class));
-                            finish();
                         }
 
                         @Override

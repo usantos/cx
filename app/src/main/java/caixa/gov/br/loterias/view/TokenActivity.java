@@ -94,7 +94,7 @@ public class TokenActivity extends AppCompatActivity {
                 });
             }
         }catch (Exception e){
-            e.printStackTrace();
+            finish();
         }
     }
 
