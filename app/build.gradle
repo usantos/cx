@@ -68,7 +68,7 @@ android {
                 buildConfigField "String", "SSO_CLIENT_SECRET", "\"b54d171d-03de-41f3-b1b1-64e98672cbb8\""
                 buildConfigField "String", "SSO_CLIENT_ID", "\"cli-mob-lce\""
                 buildConfigField "String", "SSO_REDIRECT", "\"br.gov.caixa.caixaloterias:/oauth2Callback\""
-                buildConfigField "String", "URL_SSO", "\"https://login.caixa.gov.br\""
+                buildConfigField "String", "URL_SSO", "\"https://logindes.caixa.gov.br\""
                 buildConfigField "String", "URL_ENDPOINT_TOKEN", "\"auth/realms/internet/protocol/openid-connect/token\""
                 buildConfigField "String", "URL_SSO_TOKEN", "URL_SSO+\"/\"+URL_ENDPOINT_TOKEN"
                 buildConfigField "String", "URL_SSO_AUTH", "URL_SSO+\"/auth/realms/internet/protocol/openid-connect/auth\""
@@ -76,10 +76,10 @@ android {
                 buildConfigField "String", "URL_SSO_ACCOUNT", "URL_SSO+\"/auth/realms/internet/account\""
                 buildConfigField "String", "MP_PAYMENT_URL", "\"https://api.mercadopago.com/v1/payment_methods/installments?\""
                 manifestPlaceholders = [
-                        appAuthRedirectScheme: "localhost",
-                        hostName: "localhost",
-                        path: "",
-                        scheme: "http"
+                        appAuthRedirectScheme: "br.gov.caixa.caixaloterias",
+                        hostName: "br.gov.caixa.caixaloterias",
+                        path: "/oauth2Callback",
+                        scheme: "https"
                 ]
             }
             caixadev {
@@ -91,8 +91,8 @@ android {
                 buildConfigField "String", "PUBLIC_KEY_MP", "\"TEST-946a3077-5cf1-446c-bab3-e3a266357e9f\""
                 buildConfigField "String", "SSO_CLIENT_SECRET", "\"b54d171d-03de-41f3-b1b1-64e98672cbb8\""
                 buildConfigField "String", "SSO_CLIENT_ID", "\"cli-mob-lce\""
-                buildConfigField "String", "OSS_REDIRECT", "\"br.gov.caixa.caixaloterias:/oauth2Callback\""
-                buildConfigField "String", "URL_SSO", "\"https://login.caixa.gov.br\""
+                buildConfigField "String", "SSO_REDIRECT", "\"br.gov.caixa.caixaloterias:/oauth2Callback\""
+                buildConfigField "String", "URL_SSO", "\"https://logindes.caixa.gov.br\""
                 buildConfigField "String", "URL_ENDPOINT_TOKEN", "\"auth/realms/internet/protocol/openid-connect/token\""
                 buildConfigField "String", "URL_SSO_TOKEN", "URL_SSO+\"/\"+URL_ENDPOINT_TOKEN"
                 buildConfigField "String", "URL_SSO_AUTH", "URL_SSO+\"/auth/realms/internet/protocol/openid-connect/auth\""
@@ -100,10 +100,10 @@ android {
                 buildConfigField "String", "URL_SSO_ACCOUNT", "URL_SSO+\"/auth/realms/internet/account\""
                 buildConfigField "String", "MP_PAYMENT_URL", "\"https://api.mercadopago.com/v1/payment_methods/installments?\""
                 manifestPlaceholders = [
-                        appAuthRedirectScheme: "localhost",
-                        hostName: "localhost",
-                        path: "",
-                        scheme: "http"
+                        appAuthRedirectScheme: "br.gov.caixa.caixaloterias",
+                        hostName: "br.gov.caixa.caixaloterias",
+                        path: "/oauth2Callback",
+                        scheme: "https"
                 ]
             }
             caixalab {
@@ -123,10 +123,10 @@ android {
                 buildConfigField "String", "URL_SSO_ACCOUNT", "URL_SSO+\"/auth/realms/internet/account\""
                 buildConfigField "String", "MP_PAYMENT_URL", "\"https://api.mercadopago.com/v1/payment_methods/installments?\""
                 manifestPlaceholders = [
-                        appAuthRedirectScheme: "localhost",
-                        hostName: "localhost",
-                        path: "",
-                        scheme: "http"
+                        appAuthRedirectScheme: "br.gov.caixa.caixaloterias",
+                        hostName: "br.gov.caixa.caixaloterias",
+                        path: "/oauth2Callback",
+                        scheme: "https"
                 ]
             }
             proxycap {
@@ -146,10 +146,10 @@ android {
                 buildConfigField "String", "URL_SSO_ACCOUNT", "URL_SSO+\"/auth/realms/internet/account\""
                 buildConfigField "String", "MP_PAYMENT_URL", "\"https://api.mercadopago.com/v1/payment_methods/installments?\""
                 manifestPlaceholders = [
-                        appAuthRedirectScheme: "localhost",
-                        hostName: "localhost",
-                        path: "",
-                        scheme: "http"
+                        appAuthRedirectScheme: "br.gov.caixa.caixaloterias",
+                        hostName: "br.gov.caixa.caixaloterias",
+                        path: "/oauth2Callback",
+                        scheme: "https"
                 ]
             }
             stubnet {
