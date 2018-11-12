@@ -4,7 +4,6 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -35,7 +34,6 @@ import android.text.style.StyleSpan;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.ContextThemeWrapper;
 import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,9 +47,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.apache.commons.lang.StringUtils;
-import org.w3c.dom.Text;
 
 import java.io.ByteArrayOutputStream;
 import java.lang.reflect.InvocationTargetException;
@@ -187,6 +182,30 @@ public class ViewUtils {
 
     public static void toast(Context context, int resString, int length) {
         ViewUtils.toast(context, context.getString(resString), length);
+    }
+
+    public static AlertDialog alertaCarregando(Context context, Activity activity, boolean cancelable){
+        View view = activity.getLayoutInflater().inflate(R.layout.alerta_carregando, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setView(view);
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+        alertDialog.setCancelable(cancelable);
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        WindowManager windowManager = activity.getWindowManager();
+        windowManager.getDefaultDisplay().getMetrics(displayMetrics);
+
+        int displayLargura = (int) (displayMetrics.widthPixels * 0.45f);
+
+        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+        layoutParams.copyFrom(alertDialog.getWindow().getAttributes());
+        layoutParams.width = displayLargura;
+
+        alertDialog.getWindow().setAttributes(layoutParams);
+
+        return alertDialog;
     }
 
     public static AlertDialog.Builder dialogo(Context context, String mensagem) {

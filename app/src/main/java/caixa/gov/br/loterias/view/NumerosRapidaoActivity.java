@@ -26,6 +26,7 @@ import java.util.List;
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bean.NumerosSelecionadosRapidao;
 
+import caixa.gov.br.loterias.model.bo.AcessoBO_;
 import caixa.gov.br.loterias.model.bo.DadosUsuarioBO;
 import caixa.gov.br.loterias.model.bo.DadosUsuarioBO_;
 import caixa.gov.br.loterias.model.bo.RedirectNetwork;
@@ -120,31 +121,40 @@ public class NumerosRapidaoActivity extends AppCompatActivity {
 
         gridViewNumeros();
 
+        AcessoBO_.getInstance_(this).iniciarLoginSSO();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         connectKeycloak();
     }
 
+    //TODO: LOGIN - Testar
     private void connectKeycloak() {
         if(AppUtils.isNetworkAvailable(NumerosRapidaoActivity.this)){
-            KeycloakBO_.getInstance_(NumerosRapidaoActivity.this).login(NumerosRapidaoActivity.this, new KeycloakBO.OnLogin() {
-                        @Override
-                        public void onSuccess(String token) {
-                            if(NumerosRapidaoActivity.this != null){
-                                DadosUsuarioBO.updateUsuarioLogado( NumerosRapidaoActivity.this, true );
-                                //loginSucess();
-                            }
-                        }
+            DadosUsuarioBO.updateUsuarioLogado( NumerosRapidaoActivity.this, true );
 
-                        @Override
-                        public void onFailure(Exception e) {
-                            if(NumerosRapidaoActivity.this != null){
-//                            OAuth2AuthorizationException.Error error = ((OAuth2AuthorizationException)e).type;
-                                if(!((OAuth2AuthorizationException) e).error.equals( "dialog_dismissed" )){
-                                    ViewUtils.alert(NumerosRapidaoActivity.this, getString(R.string.sistema_indisponivel));
-                                }
-                            }
-                        }
-                    }
-            );
+//            KeycloakBO_.getInstance_(NumerosRapidaoActivity.this).login(NumerosRapidaoActivity.this, new KeycloakBO.OnLogin() {
+//                        @Override
+//                        public void onSuccess(String token) {
+//                            if(NumerosRapidaoActivity.this != null){
+//                                DadosUsuarioBO.updateUsuarioLogado( NumerosRapidaoActivity.this, true );
+//                                //loginSucess();
+//                            }
+//                        }
+//
+//                        @Override
+//                        public void onFailure(Exception e) {
+//                            if(NumerosRapidaoActivity.this != null){
+////                            OAuth2AuthorizationException.Error error = ((OAuth2AuthorizationException)e).type;
+//                                if(!((OAuth2AuthorizationException) e).error.equals( "dialog_dismissed" )){
+//                                    ViewUtils.alert(NumerosRapidaoActivity.this, getString(R.string.sistema_indisponivel));
+//                                }
+//                            }
+//                        }
+//                    }
+//            );
         }else{
             ViewUtils.alert(NumerosRapidaoActivity.this, getString(R.string.seminternet));
         }

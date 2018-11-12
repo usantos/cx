@@ -48,6 +48,7 @@ import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bean.DadosUsuarioToken;
 import caixa.gov.br.loterias.model.bean.Modalidade;
 import caixa.gov.br.loterias.model.bean.SessaoUsuario;
+import caixa.gov.br.loterias.model.bo.AcessoBO_;
 import caixa.gov.br.loterias.model.bo.DadosCorporativosBO;
 import caixa.gov.br.loterias.model.bo.DadosCorporativosBO_;
 import caixa.gov.br.loterias.model.bo.DadosUsuarioBO;
@@ -110,6 +111,8 @@ public class PrincipalActivity extends AppCompatActivity
     private View actionApresentarTrevo, actionSettings;
     private int groupHeight;
 
+    private boolean realizandoLogin = false;
+
     @AfterViews
     public void init() {
         setSupportActionBar(toolbar);
@@ -171,6 +174,12 @@ public class PrincipalActivity extends AppCompatActivity
     protected void onStart() {
         super.onStart();
         textViewHomeCountBetsCart.setText(CarrinhoSP.obterQuantidadeApostas());
+        if(realizandoLogin){
+            DadosUsuarioBO.updateUsuarioLogado(PrincipalActivity.this, false);
+            DadosUsuarioBO.limparRegistros();
+            startActivity(new Intent(PrincipalActivity.this, LoginActivity.class));
+            finish();
+        }
     }
 
     private void callWebservice() {
@@ -387,11 +396,10 @@ public class PrincipalActivity extends AppCompatActivity
                     dadosUsuarioBO.sair(new RequestListener<NetworkResponse>() {
                         @Override
                         public void onResponse(NetworkResponse response) {
-                            KeycloakBO_.getInstance_(PrincipalActivity.this).logout(PrincipalActivity.this);
+//                            KeycloakBO_.getInstance_(PrincipalActivity.this).logout(PrincipalActivity.this);
+                            AcessoBO_.getInstance_(PrincipalActivity.this).iniciarLogoutSSO();
+                            realizandoLogin = true;
                             loadViewProgress.dismiss();
-                            DadosUsuarioBO.limparRegistros();
-                            startActivity(new Intent(PrincipalActivity.this, LoginActivity.class));
-                            finish();
                         }
 
                         @Override

@@ -93,6 +93,7 @@ public class SilceConnection {
         GsonRequest request = new GsonRequest<>(POST, url,
                 prepareBody(body), responseDataClass,
                 headers, listener, errorListener);
+
         request.setRetryPolicy(createRetryPolicy());
         Log.i(TAG_REQUEST, getPath(path, queryParams));
         return request;

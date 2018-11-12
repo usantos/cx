@@ -107,22 +107,24 @@ public class RedirectNetwork {
         }
     }
 
+    //TODO: LOGIN - Trocando
     private static void connectKeycloak(final Activity activity) {
         if(AppUtils.isNetworkAvailable(activity)){
-            KeycloakBO_.getInstance_(activity).login(activity, new KeycloakBO.OnLogin() {
-                        @Override
-                        public void onSuccess(String token) {
-
-                        }
-
-                        @Override
-                        public void onFailure(Exception e) {
-                            if(activity != null){
-                                ViewUtils.alert(activity, activity.getString(R.string.sistema_indisponivel));
-                            }
-                        }
-                    }
-            );
+            AcessoBO_.getInstance_(activity).iniciarLoginSSO();
+//            KeycloakBO_.getInstance_(activity).login(activity, new KeycloakBO.OnLogin() {
+//                        @Override
+//                        public void onSuccess(String token) {
+//
+//                        }
+//
+//                        @Override
+//                        public void onFailure(Exception e) {
+//                            if(activity != null){
+//                                ViewUtils.alert(activity, activity.getString(R.string.sistema_indisponivel));
+//                            }
+//                        }
+//                    }
+//            );
         }else{
             ViewUtils.alert(activity, activity.getString(R.string.seminternet));
         }

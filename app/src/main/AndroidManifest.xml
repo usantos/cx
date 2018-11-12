@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="caixa.gov.br.loterias">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -248,7 +249,23 @@
         <activity
             android:name=".view.AlterarDadosLoginCaixaActivity"
             android:label="@string/title_activity_alterar_dados_login_caixa"
-            android:theme="@style/AppTheme.DegradeActionBar"></activity>
+            android:theme="@style/AppTheme.DegradeActionBar"/>
+        <activity
+            android:theme="@style/AppTheme.NoActionBar"
+            android:name=".view.TokenActivity"
+            tools:node="replace"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:host="${hostName}"
+                    android:path="${path}"
+                    android:scheme="${scheme}"
+                    />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

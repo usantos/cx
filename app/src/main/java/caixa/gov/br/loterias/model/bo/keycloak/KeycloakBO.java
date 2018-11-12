@@ -34,7 +34,7 @@ import caixa.gov.br.loterias.model.bo.DadosUsuarioBO;
 public class KeycloakBO {
     private static final String TAG = KeycloakBO.class.getName();
 
-    private static final String SERVER_URL = caixa.gov.br.loterias.BuildConfig.CAIXA_BASE_URL_SSO;
+    private static final String SERVER_URL = BuildConfig.URL_SSO;
     //private static final String SERVER_URL = "http://10.130.9.22:81";
     private static final String AUTH_URL = SERVER_URL +"/auth";
     private static final String AUTH_ENDPOINT = "/realms/internet/protocol/openid-connect/auth";
@@ -43,7 +43,7 @@ public class KeycloakBO {
     private static final String AUTHZ_ACCOOUNT_ID = "keycloak-token";
     private static final String AUTH_CLIENT_ID = "cli-mob-lce";
 //    private static final String AUTH_REDIRECT_URL = "http://localhost";
-    private static final String AUTH_REDIRECT_URL = BuildConfig.CAIXA_BASE_OSS_REDIRECT;
+    private static final String AUTH_REDIRECT_URL = BuildConfig.SSO_REDIRECT;
     private static final String MODULE_NAME = "";
     private static final String CLIENT_SECRET = "b54d171d-03de-41f3-b1b1-64e98672cbb8";
 
@@ -51,6 +51,10 @@ public class KeycloakBO {
 
     public String getAccessToken(){
         return accessToken;
+    }
+
+    public void setAccessToken(String accessToken){
+        this.accessToken = accessToken;
     }
 
     @AfterInject
@@ -111,43 +115,44 @@ public class KeycloakBO {
         webView.clearCache(true);
     }
 
-    public void login(final Activity activity, final OnLogin callback) {
-        try {
-            final AuthzModule authzModule = AuthorizationManager.getModule(MODULE_NAME);
-            Log.i(TAG, "authzModule = " + authzModule.getClass().getName());
-            authzModule.requestAccess(activity, new Callback<String>() {
-                @SuppressWarnings("unchecked")
-                @Override
-                public void onSuccess(String token) {
-                    Log.i(TAG, "KeycloakBO.login.onResponse: " + token);
-                    accessToken = token;
-                    SessaoUsuario.getInstance().setToken( token );
-                    if(callback != null){
-                        callback.onSuccess(token);
-                    }
-                }
-
-                @Override
-                public void onFailure(Exception e) {
-                    Log.i(TAG, "KeycloakBO.login.onFailure: " + e);
-
-                    if(e instanceof OAuth2AuthorizationException){
-                        OAuth2AuthorizationException.Error error = ((OAuth2AuthorizationException)e).type;
-                        if(error.equals(OAuth2AuthorizationException.Error.INVALID_GRANT)){
-                            logout(activity);
-                        }
-                    }
-
-                    if(callback != null){
-                        callback.onFailure(e);
-                    }
-                }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
-    }
+    //TODO: Reajustar
+//    public void login(final Activity activity, final OnLogin callback) {
+//        try {
+//            final AuthzModule authzModule = AuthorizationManager.getModule(MODULE_NAME);
+//            Log.i(TAG, "authzModule = " + authzModule.getClass().getName());
+//            authzModule.requestAccess(activity, new Callback<String>() {
+//                @SuppressWarnings("unchecked")
+//                @Override
+//                public void onSuccess(String token) {
+//                    Log.i(TAG, "KeycloakBO.login.onResponse: " + token);
+//                    accessToken = token;
+//                    SessaoUsuario.getInstance().setToken( token );
+//                    if(callback != null){
+//                        callback.onSuccess(token);
+//                    }
+//                }
+//
+//                @Override
+//                public void onFailure(Exception e) {
+//                    Log.i(TAG, "KeycloakBO.login.onFailure: " + e);
+//
+//                    if(e instanceof OAuth2AuthorizationException){
+//                        OAuth2AuthorizationException.Error error = ((OAuth2AuthorizationException)e).type;
+//                        if(error.equals(OAuth2AuthorizationException.Error.INVALID_GRANT)){
+//                            logout(activity);
+//                        }
+//                    }
+//
+//                    if(callback != null){
+//                        callback.onFailure(e);
+//                    }
+//                }
+//            });
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            throw new RuntimeException(e);
+//        }
+//    }
 
 
     public void checkAcess(final Activity activity, final OnLogin callback) {
