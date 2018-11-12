@@ -88,10 +88,10 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostasConfi
 
         int teimosinhas = aposta.getQuantidadeTeimosinhas() != null ? aposta.getQuantidadeTeimosinhas() : 0;
         if (teimosinhas > 0) {
+            int quantidade = aposta.getConcursoInicial() + (teimosinhas - 1);
             holder.concursoTxt.setText(context.getString(R.string.label_aposta_concursos,
                     aposta.getConcursoInicial(),
-                    aposta.getConcursoAlvo()));
-
+                    quantidade));
         } else {
             holder.concursoTxt.setText(context.getString(R.string.label_aposta_concurso, aposta.getConcursoInicial()));
         }
