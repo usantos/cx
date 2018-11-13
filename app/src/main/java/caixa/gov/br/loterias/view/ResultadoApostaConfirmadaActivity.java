@@ -74,8 +74,15 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
         if (parametroSimulacao != null) {
             contenteResultadoPremiado.getAberturaApostaResultadoTextView().setText(ViewUtils.getDateAndHour(parametroSimulacao.getParametroJogo().getConcurso().getDataAbertura()));
             contenteResultadoPremiado.getEncerramentoResultadoTextView().setText(ViewUtils.getDateAndHour(parametroSimulacao.getParametroJogo().getConcurso().getDataFechamento()));
+
+            for (ParametroSimulacao parametro : sessaoUsuario.getParametrosSimulacao().getParametros()) {
+                if (parametro.getParametroJogo().getConcurso().getModalidade() == modalidadeEnum && parametro.getProximoConcurso() != null) {
+                    parametroSimulacao.setProximoConcurso(parametro.getProximoConcurso());
+                }
+            }
+
             if (parametroSimulacao.getProximoConcurso() != null) {
-                contenteResultadoPremiado.getProximoSorteioTextView().setText(parametroSimulacao.getProximoConcurso().getConcurso().getDataAbertura());
+                contenteResultadoPremiado.getProximoSorteioTextView().setText(ViewUtils.getDateAndHour(parametroSimulacao.getProximoConcurso().getConcurso().getDataFechamento()));
             }
         }
         createListPremiacao();
