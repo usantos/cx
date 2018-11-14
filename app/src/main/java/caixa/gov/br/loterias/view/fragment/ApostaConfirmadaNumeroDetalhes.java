@@ -121,12 +121,11 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
             public void onResponse(DTOEnumIntegerResponse result) {
                 if (Objects.equals(SituacaoResultadoBilheteEnum.PREMIADA.getValor().toString(), result.getPayload().getValor().toString())) {
                     ConferirResultadoHelper.context = getContext();
-                    ConferirResultadoHelper.getApostaDetalhePremio(aposta.getId());
-                    resultTxt.setText(result.getPayload().getDescricao());
                 } else {
                     DialogUtils.dismiss();
                     ViewUtils.alert(getContext(), getContext().getString(R.string.MA020));
                 }
+                resultTxt.setText(result.getPayload().getDescricao());
             }
 
             @Override
