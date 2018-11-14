@@ -25,7 +25,7 @@ import caixa.gov.br.loterias.view.ResultadoApostaConfirmadaActivity_;
 
 public class ConferirResultadoHelper {
 
-    private static Context context;
+    public static Context context;
 
     /**
      * Conferir resultado de acordo FA8 CSU18
@@ -55,7 +55,7 @@ public class ConferirResultadoHelper {
         });
     }
 
-    private static void getApostaDetalhePremio(Long apostaId) {
+    public static void getApostaDetalhePremio(Long apostaId) {
         ApostaBO apostaBO = ApostaBO_.getInstance_(context);
         apostaBO.getApostaDetalhePremio(apostaId, new RequestListener<DetalhesPremioDTOResponse>() {
             @Override
