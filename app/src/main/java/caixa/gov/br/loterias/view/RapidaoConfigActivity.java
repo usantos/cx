@@ -25,6 +25,7 @@ import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.ViewById;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -142,10 +143,10 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
             }
         }
         if (seekBar == seekBarPremiumMimimun) {
-            if (progressSet < 1) {
-                progressSet = 1;
-                setValue = true;
-            }
+//            if (progressSet < 1) {
+//                progressSet = 1;
+//                setValue = true;
+//            }
             if (setValue || primeiroCarregamento) {
                 int progressFormatMilhoes = progressSet * 1000000;
                 BigDecimal valorProgress = new BigDecimal(Float.toString((float) progressFormatMilhoes));
@@ -414,7 +415,13 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
         int valuePremMinInt = (int) floor(rapidao.getValorMinimoPremioPrincipal().doubleValue());
         int valorSalvo = RapidaoSP.obterValorPremioMinimoSalvo(Math.round(valuePremMinInt));
         seekBarPremiumMimimun.setProgress(valorSalvo);
-        tituloValorPremiumMinimum.setText(ViewUtils.getMoedaFormat(new BigDecimal(valorSalvo * 1000000.0)));
+
+        BigDecimal bigDecimal = new BigDecimal(valorSalvo * 1000000.0);
+        if(valorSalvo == 0){
+            bigDecimal = new BigDecimal(BigInteger.ZERO);
+        }
+
+        tituloValorPremiumMinimum.setText(ViewUtils.getMoedaFormat(bigDecimal));
 
         seekBarPremiumMimimun.setOnSeekBarChangeListener(this);
         seekBarPremiumMimimun.setMax(100);
