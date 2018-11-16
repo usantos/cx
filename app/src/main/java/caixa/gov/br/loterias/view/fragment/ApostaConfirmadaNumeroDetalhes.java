@@ -119,13 +119,13 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
         apostaBO.getApostaConferir(aposta.getId(), new RequestListener<DTOEnumIntegerResponse>() {
             @Override
             public void onResponse(DTOEnumIntegerResponse result) {
+                DialogUtils.dismiss();
                 if (Objects.equals(SituacaoResultadoBilheteEnum.PREMIADA.getValor().toString(), result.getPayload().getValor().toString())) {
-                    ConferirResultadoHelper.context = getContext();
+                    ConferirResultadoHelper.conferirResultado(aposta.getId(), getActivity());
                 } else {
-                    DialogUtils.dismiss();
                     ViewUtils.alert(getContext(), getContext().getString(R.string.MA020));
+                    resultTxt.setText(result.getPayload().getDescricao());
                 }
-                resultTxt.setText(result.getPayload().getDescricao());
             }
 
             @Override
@@ -133,6 +133,5 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 //                Log.i("a", "c");
             }
         });
-//            ConferirResultadoHelper.conferirResultado(aposta.getId(), getActivity());
     }
 }

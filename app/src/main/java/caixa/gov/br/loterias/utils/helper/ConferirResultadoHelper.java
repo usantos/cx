@@ -25,55 +25,52 @@ import caixa.gov.br.loterias.view.ResultadoApostaConfirmadaActivity_;
 
 public class ConferirResultadoHelper {
 
-    public static Context context;
-
     /**
      * Conferir resultado de acordo FA8 CSU18
      *
-     * @param apostaId
+     * @param apostaId Long
      */
-    public static void conferirResultado(final Long apostaId, Context contextParam) {
-        context = contextParam;
-        DialogUtils.show(context);
-        ApostaBO apostaBO = ApostaBO_.getInstance_(context);
+    public static void conferirResultado(final Long apostaId, final Context contextParam) {
+        DialogUtils.show(contextParam);
+        ApostaBO apostaBO = ApostaBO_.getInstance_(contextParam);
         apostaBO.getApostaConferir(apostaId, new RequestListener<DTOEnumIntegerResponse>() {
             @Override
             public void onResponse(DTOEnumIntegerResponse result) {
 
                 if (Objects.equals(SituacaoResultadoBilheteEnum.PREMIADA.getValor().toString(), result.getPayload().getValor().toString())) {
-                    getApostaDetalhePremio(apostaId);
+                    getApostaDetalhePremio(apostaId, contextParam);
                 } else {
                     DialogUtils.dismiss();
-                    ViewUtils.alert(context, context.getString(R.string.MA020));
+                    ViewUtils.alert(contextParam, contextParam.getString(R.string.MA020));
                 }
             }
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                onError(error);
+                onError(error, contextParam);
             }
         });
     }
 
-    public static void getApostaDetalhePremio(Long apostaId) {
-        ApostaBO apostaBO = ApostaBO_.getInstance_(context);
+    private static void getApostaDetalhePremio(Long apostaId, final Context contextParam) {
+        ApostaBO apostaBO = ApostaBO_.getInstance_(contextParam);
         apostaBO.getApostaDetalhePremio(apostaId, new RequestListener<DetalhesPremioDTOResponse>() {
             @Override
             public void onResponse(DetalhesPremioDTOResponse result) {
                 DialogUtils.dismiss();
-                ResultadoApostaConfirmadaActivity_.intent(context).detalhesPremioDTO(result.getPayload()).start();
+                ResultadoApostaConfirmadaActivity_.intent(contextParam).detalhesPremioDTO(result.getPayload()).start();
             }
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                onError(error);
+                onError(error, contextParam);
             }
         });
     }
 
-    private static void onError(VolleyError error) {
+    private static void onError(VolleyError error, Context contextParam) {
         DialogUtils.dismiss();
-        String msgError = MensagensNetwork.setMensagem(error, context);
-        ViewUtils.alert(context, msgError);
+        String msgError = MensagensNetwork.setMensagem(error, contextParam);
+        ViewUtils.alert(contextParam, msgError);
     }
 }
