@@ -1,6 +1,7 @@
 package caixa.gov.br.loterias.view;
 
 import android.content.Intent;
+import android.os.Build;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -111,8 +112,8 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
         int progressSet = progress;
 
         if (seekBar == seekBarValorMinimoAposta) {
-            if (progressSet < valorMinAposta) {
-                progressSet = valorMinAposta;
+            if (progressSet < 0) {
+                progressSet = 0;
                 setValue = true;
             } else if (progressSet > seekBarValorMaximoAposta.getProgress() && seekBarValorMaximoAposta.getProgress() >= 1) {
                 rapidao.setValorMinimo(rapidao.getValorMaximo());
@@ -197,12 +198,14 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
 
     @Click
     protected void limparValorMinimoAposta() {
+
         seekBarValorMinimoAposta.setProgress(0);
     }
 
     @Click
     protected void limparPremioMinimoAposta() {
-        seekBarPremiumMimimun.setProgress(1);
+        setValue = true;
+        seekBarPremiumMimimun.setProgress(0);
     }
 
     @Click
@@ -296,6 +299,7 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
                     favoritosSelecionados.remove(aposta);
                 }
             }
+
             @Override
             public void onIncluso(ApostaFavoritaDTO aposta) {
                 if (!favoritosSelecionados.contains(aposta)) {
@@ -414,11 +418,11 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
         //Premium Minimum
         int valuePremMinInt = (int) floor(rapidao.getValorMinimoPremioPrincipal().doubleValue());
         int valorSalvo = RapidaoSP.obterValorPremioMinimoSalvo(Math.round(valuePremMinInt));
-        seekBarPremiumMimimun.setProgress(valorSalvo);
+        seekBarPremiumMimimun.setProgress(valorSalvo / 1000000);
 
-        BigDecimal bigDecimal = new BigDecimal(valorSalvo * 1000000.0);
-        if(valorSalvo == 0){
-            bigDecimal = new BigDecimal(BigInteger.ZERO);
+        BigDecimal bigDecimal = new BigDecimal(valorSalvo);
+        if (valorSalvo == 0) {
+            bigDecimal = BigDecimal.ZERO;
         }
 
         tituloValorPremiumMinimum.setText(ViewUtils.getMoedaFormat(bigDecimal));
@@ -427,7 +431,7 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
         seekBarPremiumMimimun.setMax(100);
 
         tituloValorValorMinimoAposta.setText(ViewUtils.getMoedaFormat(valorMinimo));
-        tituloValorMinimoApostaValorMinimo.setText(ViewUtils.getMoedaFormat(valorMinApostaCarrinho));
+        tituloValorMinimoApostaValorMinimo.setText(ViewUtils.getMoedaFormat(BigDecimal.ZERO));
 
         tituloValorMinimoApostaValorMaximo.setText(ViewUtils.getMoedaFormat(new BigDecimal(Float.toString((float) valueMaxApostaInt))));
         tituloValorValorMaximoAposta.setText(ViewUtils.getMoedaFormat(BigDecimal.valueOf(valor)));
@@ -569,10 +573,20 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
 
             } else if (tituloValorPremiumMinimum.getText().hashCode() == s.hashCode()) {
                 if (!primeiroCarregamento) {
-                    int valor = Math.round(Float.parseFloat(valorSetado) / 1000000);
-                    Log.i("caixa", "aaa => " + valor);
-                    RapidaoSP.salvarValorPremioMinimo(valor);
-                    seekBarPremiumMimimun.setProgress(valor);
+                    BigDecimal valorSetadoBigDecimal = new BigDecimal(valorSetado);
+                    BigDecimal valorMaximoBarra = new BigDecimal(String.valueOf(seekBarPremiumMimimun.getMax() * 1000000));
+                    if (valorSetadoBigDecimal.compareTo(valorMaximoBarra) > 0) {
+                        Log.i("caixa", "aaa => " + seekBarPremiumMimimun.getMax());
+                        RapidaoSP.salvarValorPremioMinimo(seekBarPremiumMimimun.getMax() * 1000000);
+                        seekBarPremiumMimimun.setProgress(seekBarPremiumMimimun.getMax());
+                        tituloValorPremiumMinimum.setText(ViewUtils.getMoedaFormat(valorMaximoBarra));
+                    } else {
+                        int valor = Math.round(Float.parseFloat(valorSetado));
+                        Log.i("caixa", "aaa => " + valor);
+                        RapidaoSP.salvarValorPremioMinimo(valor);
+                        setValue = false;
+                        seekBarPremiumMimimun.setProgress(valor  / 1000000);
+                    }
                 }
                 primeiroCarregamento = false;
             }
