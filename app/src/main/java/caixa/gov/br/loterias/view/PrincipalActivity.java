@@ -48,6 +48,8 @@ import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bean.DadosUsuarioToken;
 import caixa.gov.br.loterias.model.bean.Modalidade;
 import caixa.gov.br.loterias.model.bean.SessaoUsuario;
+import caixa.gov.br.loterias.model.bo.ApostaBO;
+import caixa.gov.br.loterias.model.bo.ApostaBO_;
 import caixa.gov.br.loterias.model.bo.DadosCorporativosBO;
 import caixa.gov.br.loterias.model.bo.DadosCorporativosBO_;
 import caixa.gov.br.loterias.model.bo.DadosUsuarioBO;
@@ -56,12 +58,14 @@ import caixa.gov.br.loterias.model.bo.MensagensNetwork;
 import caixa.gov.br.loterias.model.bo.RedirectNetwork;
 import caixa.gov.br.loterias.model.bo.RequestListener;
 import caixa.gov.br.loterias.model.bo.keycloak.KeycloakBO_;
+import caixa.gov.br.loterias.model.bo.silce.dto.CarrinhoDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.ParametroSimulacao;
 import caixa.gov.br.loterias.model.bo.silce.dto.ParametrosSimulacaoResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.RepassometroDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.RepassometroDTOResponse;
 import caixa.gov.br.loterias.model.dao.DBLoteriasHelper;
 import caixa.gov.br.loterias.model.sp.CarrinhoSP;
+import caixa.gov.br.loterias.utils.DialogUtils;
 import caixa.gov.br.loterias.utils.EstiloModalidade;
 import caixa.gov.br.loterias.utils.ExpandableListDataSideMenu;
 import caixa.gov.br.loterias.utils.StringUtils;
@@ -459,7 +463,29 @@ public class PrincipalActivity extends AppCompatActivity
 
     @Click(R.id.relativeLayoutCarrinho)
     protected void clickRelativeLayoutCarrinho() {
-        CarrinhoActivity_.intent(PrincipalActivity.this).start();
+        DialogUtils.show(this);
+        ApostaBO apostaBO = ApostaBO_.getInstance_(this);
+
+        apostaBO.buscaCarrinho(new RequestListener<CarrinhoDTOResponse>() {
+            @Override
+            public void onResponse(CarrinhoDTOResponse response) {
+                DialogUtils.dismiss();
+                CarrinhoActivity_.intent(PrincipalActivity.this).carrinho(response.getPayload()).start();
+                if (response.getRedirect() != null){
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), PrincipalActivity.this);
+                }
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                DialogUtils.dismiss();
+                if (MensagensNetwork.isUnauthorizedError(error)) {
+                    CarrinhoActivity_.intent(PrincipalActivity.this).lerCarrinhoLocal(true).start();
+                } else {
+                    RedirectNetwork.checkRedirect( error, PrincipalActivity.this );
+                }
+            }
+        });
     }
 
     @Click(R.id.relativeLayoutContentFavoritas)

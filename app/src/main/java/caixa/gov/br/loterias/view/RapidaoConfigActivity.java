@@ -412,7 +412,7 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
         seekBarValorMaximoAposta.setProgress(Math.round(valueMaxApostaInt));
 
         seekBarValorMaximoAposta.setOnSeekBarChangeListener(this);
-        seekBarValorMaximoAposta.setMax((int) floor(valorMaxApostaCarrinho.doubleValue()));
+        seekBarValorMaximoAposta.setMax((int) floor(valorMaxApostaCarrinho != null ? valorMaxApostaCarrinho.doubleValue(): 0.0));
         seekBarValorMaximoAposta.setProgress(Math.round(valueMaxApostaInt));
 
         //Premium Minimum
