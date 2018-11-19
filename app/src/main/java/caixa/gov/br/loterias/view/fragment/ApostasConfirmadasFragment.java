@@ -49,6 +49,7 @@ import caixa.gov.br.loterias.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOHist
 import caixa.gov.br.loterias.model.bo.silce.dto.SituacaoResultadoBilheteEnum;
 import caixa.gov.br.loterias.utils.AppUtils;
 import caixa.gov.br.loterias.utils.DialogUtils;
+import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.utils.helper.AdicionarApostaCarrinhoHelper;
 import caixa.gov.br.loterias.utils.helper.ConferirResultadoHelper;
 import caixa.gov.br.loterias.view.ApostaConfirmadaDetalhesActivity_;
@@ -360,13 +361,17 @@ public class ApostasConfirmadasFragment extends Fragment implements ApostasConfi
                 new RequestListener<ResultadoConcursoDTOResponse>() {
                     @Override
                     public void onResponse(ResultadoConcursoDTOResponse result) {
-                        DialogUtils.dismiss();
-                        if (object instanceof DetalhesHistoricoPremioDTO) {
-                            ApostaConfirmadaDetalhesActivity_.intent(getActivity()).detalhesHistoricoPremioDTO((DetalhesHistoricoPremioDTO) object)
-                                    .resultadoConcursoDTO(result.getPayload()).start();
-                        } else if (object instanceof DetalhesPremioDTO) {
-                            ApostaConfirmadaDetalhesActivity_.intent(getActivity()).detalhesPremioDTO((DetalhesPremioDTO) object)
-                                    .resultadoConcursoDTO(result.getPayload()).start();
+                        try {
+                            DialogUtils.dismiss();
+                            if (object instanceof DetalhesHistoricoPremioDTO) {
+                                ApostaConfirmadaDetalhesActivity_.intent(getActivity()).detalhesHistoricoPremioDTO((DetalhesHistoricoPremioDTO) object)
+                                        .resultadoConcursoDTO(result.getPayload()).start();
+                            } else if (object instanceof DetalhesPremioDTO) {
+                                ApostaConfirmadaDetalhesActivity_.intent(getActivity()).detalhesPremioDTO((DetalhesPremioDTO) object)
+                                        .resultadoConcursoDTO(result.getPayload()).start();
+                            }
+                        }catch (Exception e){
+                            ViewUtils.alert(getContext(), getResources().getString(R.string.erro_500));
                         }
                     }
 

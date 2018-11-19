@@ -86,9 +86,13 @@ public class CarrinhoActivity extends SettingToolbarActivity {
 
     public void atualizaLayout(boolean animacao) {
         montarLayout();
-        if (carrinho.getApostas() != null) {
-            configuraRecyclerViewCarrinhoAposta(animacao);
-            setValorTotalCarrinho();
+        try {
+            if (carrinho.getApostas() != null) {
+                configuraRecyclerViewCarrinhoAposta(animacao);
+                setValorTotalCarrinho();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
         botaoAvancarPagamento.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.avancarFormaPagamento)));
 
