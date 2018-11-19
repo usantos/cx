@@ -78,9 +78,9 @@ public class LoginFragment extends Fragment {
             }
         });
 
-        KeycloakBO keycloakBO =  KeycloakBO_.getInstance_( getActivity() );
+        KeycloakBO keycloakBO =  KeycloakBO_.getInstance_(getActivity());
         if (DadosUsuarioBO.checarFecharIntroducao(getActivity()) && DadosUsuarioBO.checarUsuarioLogado(getActivity())){
-            startActivity(new Intent(getContext(), PrincipalActivity_.class));
+            connectKeycloak();
         }
 
         return v;

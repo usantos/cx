@@ -115,44 +115,43 @@ public class KeycloakBO {
         webView.clearCache(true);
     }
 
-    //TODO: Reajustar
-//    public void login(final Activity activity, final OnLogin callback) {
-//        try {
-//            final AuthzModule authzModule = AuthorizationManager.getModule(MODULE_NAME);
-//            Log.i(TAG, "authzModule = " + authzModule.getClass().getName());
-//            authzModule.requestAccess(activity, new Callback<String>() {
-//                @SuppressWarnings("unchecked")
-//                @Override
-//                public void onSuccess(String token) {
-//                    Log.i(TAG, "KeycloakBO.login.onResponse: " + token);
-//                    accessToken = token;
-//                    SessaoUsuario.getInstance().setToken( token );
-//                    if(callback != null){
-//                        callback.onSuccess(token);
-//                    }
-//                }
-//
-//                @Override
-//                public void onFailure(Exception e) {
-//                    Log.i(TAG, "KeycloakBO.login.onFailure: " + e);
-//
-//                    if(e instanceof OAuth2AuthorizationException){
-//                        OAuth2AuthorizationException.Error error = ((OAuth2AuthorizationException)e).type;
-//                        if(error.equals(OAuth2AuthorizationException.Error.INVALID_GRANT)){
-//                            logout(activity);
-//                        }
-//                    }
-//
-//                    if(callback != null){
-//                        callback.onFailure(e);
-//                    }
-//                }
-//            });
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            throw new RuntimeException(e);
-//        }
-//    }
+    public void login(final Activity activity, final OnLogin callback) {
+        try {
+            final AuthzModule authzModule = AuthorizationManager.getModule(MODULE_NAME);
+            Log.i(TAG, "authzModule = " + authzModule.getClass().getName());
+            authzModule.requestAccess(activity, new Callback<String>() {
+                @SuppressWarnings("unchecked")
+                @Override
+                public void onSuccess(String token) {
+                    Log.i(TAG, "KeycloakBO.login.onResponse: " + token);
+                    accessToken = token;
+                    SessaoUsuario.getInstance().setToken( token );
+                    if(callback != null){
+                        callback.onSuccess(token);
+                    }
+                }
+
+                @Override
+                public void onFailure(Exception e) {
+                    Log.i(TAG, "KeycloakBO.login.onFailure: " + e);
+
+                    if(e instanceof OAuth2AuthorizationException){
+                        OAuth2AuthorizationException.Error error = ((OAuth2AuthorizationException)e).type;
+                        if(error.equals(OAuth2AuthorizationException.Error.INVALID_GRANT)){
+                            logout(activity);
+                        }
+                    }
+
+                    if(callback != null){
+                        callback.onFailure(e);
+                    }
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
 
 
     public void checkAcess(final Activity activity, final OnLogin callback) {
