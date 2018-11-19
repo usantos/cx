@@ -171,7 +171,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:text="10/04 | 18:00"
                     android:textAlignment="textStart"
                     android:textColor="@color/branco"
                     android:textSize="14.2sp" />

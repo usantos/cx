@@ -14,6 +14,8 @@ package caixa.gov.br.loterias.model.bo.silce.dto;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.parceler.Parcel;
+
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -21,12 +23,13 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel(description = "")
+@Parcel
 public class CarrinhoDTO {
 
     @SerializedName("valorTotal")
-    private BigDecimal valorTotal = null;
+    protected BigDecimal valorTotal = null;
     @SerializedName("apostas")
-    private List<IdentificaoDeUmaApostaDas8Modalidades> apostas = null;
+    protected List<IdentificaoDeUmaApostaDas8Modalidades> apostas = null;
 
     /**
      * Valor total das apostas do carrinho

@@ -2,7 +2,6 @@ package caixa.gov.br.loterias.view;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.Button;
@@ -15,6 +14,7 @@ import com.google.gson.Gson;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 
 import java.math.BigDecimal;
@@ -32,16 +32,13 @@ import caixa.gov.br.loterias.model.bo.silce.dto.CarrinhoDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.CarrinhoDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import caixa.gov.br.loterias.model.dao.DBLoteriasCrud;
+import caixa.gov.br.loterias.utils.DialogUtils;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.view.adapter.CarrinhoApostasListViewAdapter;
 import caixa.gov.br.loterias.view.custom.ExpandableHeightRecyclerView;
-import caixa.gov.br.loterias.view.custom.LoadingViewLoterias;
 
 @EActivity(R.layout.activity_carrinho)
 public class CarrinhoActivity extends SettingToolbarActivity {
-
-    private CarrinhoDTO carrinho;
-    private AlertDialog alertDialog;
 
     @ViewById
     protected ExpandableHeightRecyclerView apostasListaRecycleView;
@@ -55,11 +52,21 @@ public class CarrinhoActivity extends SettingToolbarActivity {
     @ViewById
     protected LinearLayout limparCarrinhoLinearLayout;
 
+    @Extra
+    protected CarrinhoDTO carrinho;
+
+    @Extra
+    protected boolean lerCarrinhoLocal;
+
     @AfterViews
     public void init() {
         ViewUtils.setMoedaFormatHtml(BigDecimal.ZERO, valorTotalCarrinho);
         setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.title_activity_carrinho)));
-        callWebservice();
+        if(lerCarrinhoLocal){
+            lerCarrinhoLocal(true);
+        }else{
+            atualizaLayout(true);
+        }
     }
 
     @Override
@@ -111,12 +118,12 @@ public class CarrinhoActivity extends SettingToolbarActivity {
         ViewUtils.alertTitleButtonYesOrNotListener(this, getString(R.string.MA011), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                alertDialog = LoadingViewLoterias.show(CarrinhoActivity.this);
+                DialogUtils.show(CarrinhoActivity.this);
                 ApostaBO apostaBO = ApostaBO_.getInstance_(CarrinhoActivity.this);
                 apostaBO.limparCarrinho(new RequestListener<CarrinhoDTOResponse>() {
                     @Override
                     public void onResponse(CarrinhoDTOResponse result) {
-                        alertDialog.dismiss();
+                        DialogUtils.dismiss();
                         limparCarrinhoAtualizarTela();
                         if (result.getRedirect() != null){
                             RedirectNetwork.checkRedirectSucesso( result.getRedirect(), CarrinhoActivity.this);
@@ -125,7 +132,7 @@ public class CarrinhoActivity extends SettingToolbarActivity {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        alertDialog.dismiss();
+                        DialogUtils.dismiss();
                         if (MensagensNetwork.isUnauthorizedError(error)) {
                             deleteCarrinhoLocal();
                         } else {
@@ -158,13 +165,13 @@ public class CarrinhoActivity extends SettingToolbarActivity {
 
     private void callWebservice() {
 
-        alertDialog = LoadingViewLoterias.show(this);
+        DialogUtils.show(this);
         final ApostaBO apostaBO = ApostaBO_.getInstance_(CarrinhoActivity.this);
 
         apostaBO.buscaCarrinho(new RequestListener<CarrinhoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoDTOResponse response) {
-                alertDialog.dismiss();
+                DialogUtils.dismiss();
                 carrinho = response.getPayload();
                 atualizaLayout(Boolean.TRUE);
                 if (response.getRedirect() != null){
@@ -174,7 +181,7 @@ public class CarrinhoActivity extends SettingToolbarActivity {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                alertDialog.dismiss();
+                DialogUtils.dismiss();
                 if (MensagensNetwork.isUnauthorizedError(error)) {
                     lerCarrinhoLocal(Boolean.TRUE);
                 } else {

@@ -35,10 +35,13 @@ import org.apache.commons.lang.StringUtils;
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bean.SessaoUsuario;
 import caixa.gov.br.loterias.model.bo.ApostaBO;
+import caixa.gov.br.loterias.model.bo.ApostaBO_;
 import caixa.gov.br.loterias.model.bo.DadosCorporativosBO;
 import caixa.gov.br.loterias.model.bo.MensagensNetwork;
+import caixa.gov.br.loterias.model.bo.RedirectNetwork;
 import caixa.gov.br.loterias.model.bo.RequestListener;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostaFavoritaDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.CarrinhoDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.ComprovanteApostaDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ComprovanteApostaDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.DTOEnumInteger;
@@ -117,7 +120,29 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
 
     @Click
     protected void carrinhoApostasBtn() {
-        CarrinhoActivity_.intent(this).start();
+        DialogUtils.show(this);
+        ApostaBO apostaBO = ApostaBO_.getInstance_(this);
+
+        apostaBO.buscaCarrinho(new RequestListener<CarrinhoDTOResponse>() {
+            @Override
+            public void onResponse(CarrinhoDTOResponse response) {
+                DialogUtils.dismiss();
+                CarrinhoActivity_.intent(ApostaConfirmadaDetalhesActivity.this).carrinho(response.getPayload()).start();
+                if (response.getRedirect() != null){
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), ApostaConfirmadaDetalhesActivity.this);
+                }
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                DialogUtils.dismiss();
+                if (MensagensNetwork.isUnauthorizedError(error)) {
+                    CarrinhoActivity_.intent(ApostaConfirmadaDetalhesActivity.this).lerCarrinhoLocal(true).start();
+                } else {
+                    RedirectNetwork.checkRedirect( error, ApostaConfirmadaDetalhesActivity.this );
+                }
+            }
+        });
     }
 
     @Click

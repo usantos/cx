@@ -24,6 +24,7 @@ import caixa.gov.br.loterias.model.bo.ApostaBO;
 import caixa.gov.br.loterias.model.bo.MensagensNetwork;
 import caixa.gov.br.loterias.model.bo.RequestListener;
 import caixa.gov.br.loterias.model.bo.silce.dto.CodigoResgateDTOResponse;
+import caixa.gov.br.loterias.model.bo.silce.dto.ConcursoPremiadoDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.DetalhesPremioDTO;
 import caixa.gov.br.loterias.model.bo.silce.dto.ModalidadeEnum;
 import caixa.gov.br.loterias.model.bo.silce.dto.ParametroSimulacao;
@@ -56,8 +57,8 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
 
     @AfterViews
     protected void init() {
-
         createToolBar();
+
         ModalidadeEnum modalidadeEnum = detalhesPremioDTO.getAposta().getModalidade();
         EstiloModalidade estiloModalidade = new EstiloModalidade(modalidadeEnum);
         SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
@@ -71,10 +72,17 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
         contenteResultadoPremiado.getPremioResultadoTextView().setText(ViewUtils.getMoedaFormat(detalhesPremioDTO.getPremio().getValorLiquido()));
 
         if (parametroSimulacao != null) {
+            contenteResultadoPremiado.getAberturaApostaResultadoTextView().setText(ViewUtils.getDateAndHour(parametroSimulacao.getParametroJogo().getConcurso().getDataAbertura()));
+            contenteResultadoPremiado.getEncerramentoResultadoTextView().setText(ViewUtils.getDateAndHour(parametroSimulacao.getParametroJogo().getConcurso().getDataFechamento()));
+
+            for (ParametroSimulacao parametro : sessaoUsuario.getParametrosSimulacao().getParametros()) {
+                if (parametro.getParametroJogo().getConcurso().getModalidade() == modalidadeEnum && parametro.getProximoConcurso() != null) {
+                    parametroSimulacao.setProximoConcurso(parametro.getProximoConcurso());
+                }
+            }
+
             if (parametroSimulacao.getProximoConcurso() != null) {
-                contenteResultadoPremiado.getProximoSorteioTextView().setText(parametroSimulacao.getProximoConcurso().getConcurso().getDataAbertura());
-                contenteResultadoPremiado.getAberturaApostaResultadoTextView().setText(ViewUtils.getDateAndHour(parametroSimulacao.getParametroJogo().getConcurso().getDataAbertura()));
-                contenteResultadoPremiado.getEncerramentoResultadoTextView().setText(ViewUtils.getDateAndHour(parametroSimulacao.getParametroJogo().getConcurso().getDataFechamento()));
+                contenteResultadoPremiado.getProximoSorteioTextView().setText(ViewUtils.getDateAndHour(parametroSimulacao.getProximoConcurso().getConcurso().getDataFechamento()));
             }
         }
         createListPremiacao();

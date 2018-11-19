@@ -3,10 +3,13 @@ package caixa.gov.br.loterias.view.fragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.android.volley.VolleyError;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -19,12 +22,18 @@ import org.apache.commons.lang.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bo.ApostaBO;
+import caixa.gov.br.loterias.model.bo.ApostaBO_;
+import caixa.gov.br.loterias.model.bo.RequestListener;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostaDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.DTOEnumIntegerResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
+import caixa.gov.br.loterias.model.bo.silce.dto.SituacaoResultadoBilheteEnum;
 import caixa.gov.br.loterias.utils.AppUtils;
+import caixa.gov.br.loterias.utils.DialogUtils;
 import caixa.gov.br.loterias.utils.ViewUtils;
 import caixa.gov.br.loterias.utils.helper.ConferirResultadoHelper;
 import caixa.gov.br.loterias.view.adapter.DezenasAdapter;
@@ -57,7 +66,6 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 
     @AfterViews
     protected void init() {
-
         concursoTxt.setText(String.format(Locale.getDefault(), "%d", aposta.getConcursoInicial()));
         if(StringUtils.isEmpty(aposta.getHoraEfetivacao())){
             dataApostaTxt.setText(ViewUtils.getDateAndHour(aposta.getDataEfetivacao(), "21:20"));
@@ -106,6 +114,24 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 
     @Click(R.id.conferirResultadoButton)
     protected void conferirResultadoClick() {
-            ConferirResultadoHelper.conferirResultado(aposta.getId(), getActivity());
+        DialogUtils.show(getContext());
+        ApostaBO apostaBO = ApostaBO_.getInstance_(getContext());
+        apostaBO.getApostaConferir(aposta.getId(), new RequestListener<DTOEnumIntegerResponse>() {
+            @Override
+            public void onResponse(DTOEnumIntegerResponse result) {
+                DialogUtils.dismiss();
+                if (Objects.equals(SituacaoResultadoBilheteEnum.PREMIADA.getValor().toString(), result.getPayload().getValor().toString())) {
+                    ConferirResultadoHelper.conferirResultado(aposta.getId(), getActivity());
+                } else {
+                    ViewUtils.alert(getContext(), getContext().getString(R.string.MA020));
+                    resultTxt.setText(result.getPayload().getDescricao());
+                }
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+//                Log.i("a", "c");
+            }
+        });
     }
 }

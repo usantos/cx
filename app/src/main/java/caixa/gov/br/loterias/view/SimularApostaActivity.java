@@ -52,11 +52,15 @@ import java.util.Date;
 import java.util.List;
 
 import caixa.gov.br.loterias.R;
+import caixa.gov.br.loterias.model.bo.ApostaBO;
+import caixa.gov.br.loterias.model.bo.ApostaBO_;
 import caixa.gov.br.loterias.model.bo.DadosCorporativosBO;
 import caixa.gov.br.loterias.model.bo.DadosCorporativosBO_;
+import caixa.gov.br.loterias.model.bo.MensagensNetwork;
 import caixa.gov.br.loterias.model.bo.RedirectNetwork;
 import caixa.gov.br.loterias.model.bo.RequestListener;
 import caixa.gov.br.loterias.model.bo.silce.dto.ApostaFavoritaDTO;
+import caixa.gov.br.loterias.model.bo.silce.dto.CarrinhoDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.DTOEnumInteger;
 import caixa.gov.br.loterias.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import caixa.gov.br.loterias.model.bo.silce.dto.ModalidadeEnum;
@@ -301,7 +305,29 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
 
     @Override
     public void abreCarrinhoApostas() {
-        CarrinhoActivity_.intent(this).start();
+        DialogUtils.show(this);
+        ApostaBO apostaBO = ApostaBO_.getInstance_(this);
+
+        apostaBO.buscaCarrinho(new RequestListener<CarrinhoDTOResponse>() {
+            @Override
+            public void onResponse(CarrinhoDTOResponse response) {
+                DialogUtils.dismiss();
+                CarrinhoActivity_.intent(SimularApostaActivity.this).carrinho(response.getPayload()).start();
+                if (response.getRedirect() != null){
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), SimularApostaActivity.this);
+                }
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                DialogUtils.dismiss();
+                if (MensagensNetwork.isUnauthorizedError(error)) {
+                    CarrinhoActivity_.intent(SimularApostaActivity.this).lerCarrinhoLocal(true).start();
+                } else {
+                    RedirectNetwork.checkRedirect( error, SimularApostaActivity.this );
+                }
+            }
+        });
     }
 
     @Override

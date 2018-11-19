@@ -95,6 +95,7 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostasConfi
         } else {
             holder.concursoTxt.setText(context.getString(R.string.label_aposta_concurso, aposta.getConcursoInicial()));
         }
+
     }
 
     @Override

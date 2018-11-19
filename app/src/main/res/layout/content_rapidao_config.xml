@@ -81,7 +81,7 @@
                         style="@style/editTextArialMTTheme"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
-                        android:text="1 milhão"
+                        android:text="@string/label_zero"
                         android:textColor="@color/branco"
                         android:textSize="14.2sp" />
 

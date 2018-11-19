@@ -16,6 +16,7 @@ import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 
 import java.math.BigDecimal;
@@ -25,8 +26,15 @@ import java.util.Date;
 
 import caixa.gov.br.loterias.R;
 import caixa.gov.br.loterias.model.bean.SessaoUsuario;
+import caixa.gov.br.loterias.model.bo.ApostaBO;
+import caixa.gov.br.loterias.model.bo.ApostaBO_;
+import caixa.gov.br.loterias.model.bo.MensagensNetwork;
+import caixa.gov.br.loterias.model.bo.RedirectNetwork;
+import caixa.gov.br.loterias.model.bo.RequestListener;
+import caixa.gov.br.loterias.model.bo.silce.dto.CarrinhoDTOResponse;
 import caixa.gov.br.loterias.model.bo.silce.dto.ModalidadeEnum;
 import caixa.gov.br.loterias.model.bo.silce.dto.ParametroJogoDTO;
+import caixa.gov.br.loterias.utils.DialogUtils;
 import caixa.gov.br.loterias.utils.EstiloModalidade;
 import caixa.gov.br.loterias.utils.ViewUtils;
 
@@ -192,8 +200,29 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.botaoCarrinho: {
-                Intent activity = new Intent(this, CarrinhoActivity_.class);
-                startActivityForResult(activity, 0);
+                DialogUtils.show(this);
+                ApostaBO apostaBO = ApostaBO_.getInstance_(this);
+
+                apostaBO.buscaCarrinho(new RequestListener<CarrinhoDTOResponse>() {
+                    @Override
+                    public void onResponse(CarrinhoDTOResponse response) {
+                        DialogUtils.dismiss();
+                        CarrinhoActivity_.intent(ConfirmadoInclusaoCarrinhoActivity.this).carrinho(response.getPayload()).startForResult(0);
+                        if (response.getRedirect() != null){
+                            RedirectNetwork.checkRedirectSucesso( response.getRedirect(), ConfirmadoInclusaoCarrinhoActivity.this);
+                        }
+                    }
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        DialogUtils.dismiss();
+                        if (MensagensNetwork.isUnauthorizedError(error)) {
+                            CarrinhoActivity_.intent(ConfirmadoInclusaoCarrinhoActivity.this).lerCarrinhoLocal(true).startForResult(0);
+                        } else {
+                            RedirectNetwork.checkRedirect( error, ConfirmadoInclusaoCarrinhoActivity.this );
+                        }
+                    }
+                });
             }
             break;
             case R.id.botaoLinearLayoutVoltarPrincipal: {

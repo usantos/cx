@@ -364,6 +364,7 @@
     <string name="label_nao_houve_acertador">N\u00e3o houve acertador!</string>
     <string name="label_mes_sorte_dois_pontos_mes">M\u00eas de sorte: %s</string>
     <string name="label_mes_sorteado">M\u00eas da sorte&#160;</string>
+    <string name="label_zero">0 (zero)</string>
 
 
 </resources>
