@@ -18,6 +18,7 @@ import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.FragmentArg;
 import org.androidannotations.annotations.ViewById;
 import org.apache.commons.lang.StringUtils;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -127,10 +128,17 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
                     resultTxt.setText(result.getPayload().getDescricao());
                 }
             }
-
+//            {"codigo":"013004","mensagem":"O sistema para consulta da situação da aposta encontra-se indisponível. Tente novamente mais tarde. ","tipo":1,"redirect":"form-apostas"}
             @Override
             public void onErrorResponse(VolleyError error) {
-//                Log.i("a", "c");
+                DialogUtils.dismiss();
+                try{
+                    JSONObject geralJO = new JSONObject(new String(error.networkResponse.data));
+                    String mensagem = geralJO.getString("mensagem");
+                    ViewUtils.alert(getContext(), mensagem);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         });
     }
