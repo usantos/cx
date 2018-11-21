@@ -82,6 +82,7 @@ public class ApostaConfirmadaNumeroDetalhesPremioPago extends Fragment {
 
         initResultadoRecyclerView();
         initDezenasRecyclerView();
+
         quantidadeAcertosTxt.setText(String.valueOf(qtdAcertos));
         if (qtdAcertos > 1) {
             acertosTxt.setText(R.string.label_acertos);
