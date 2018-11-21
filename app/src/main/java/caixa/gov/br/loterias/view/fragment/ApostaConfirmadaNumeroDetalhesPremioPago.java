@@ -75,18 +75,18 @@ public class ApostaConfirmadaNumeroDetalhesPremioPago extends Fragment {
 
         quantidadeGanhadoresTxt.setText(String.valueOf(ganhadores));
         if (ganhadores > 1) {
-            ganhadoresTxt.setText(R.string.label_ganhador);
-        } else {
             ganhadoresTxt.setText(R.string.label_ganhadores);
+        } else {
+            ganhadoresTxt.setText(R.string.label_ganhador);
         }
 
         initResultadoRecyclerView();
         initDezenasRecyclerView();
         quantidadeAcertosTxt.setText(String.valueOf(qtdAcertos));
         if (qtdAcertos > 1) {
-            acertosTxt.setText(R.string.label_acerto);
-        } else {
             acertosTxt.setText(R.string.label_acertos);
+        } else {
+            acertosTxt.setText(R.string.label_acerto);
         }
 
         if (aposta.getModalidade() == ModalidadeEnum.TIMEMANIA) {
