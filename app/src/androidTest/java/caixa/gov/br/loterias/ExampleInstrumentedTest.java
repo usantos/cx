@@ -1,4 +1,4 @@
-package caixa.gov.br.loterias;
+package br.gov.caixa.loterias.apostar;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("caixa.gov.br.loterias", appContext.getPackageName());
+        assertEquals("br.gov.caixa.loterias.apostar", appContext.getPackageName());
     }
 }

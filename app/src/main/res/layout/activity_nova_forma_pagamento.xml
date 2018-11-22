@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/branco"
-        tools:context="caixa.gov.br.loterias.ui.NovaFormaPagamentoActivity">
+        tools:context="br.gov.caixa.loterias.apostar.ui.NovaFormaPagamentoActivity">
 
         <TextView
             android:id="@+id/textoInfoSelecioneFormaPagamento"

@@ -15,7 +15,7 @@
         android:textAlignment="center"
         />
 
-    <caixa.gov.br.loterias.view.custom.ApostaPartidaLotogolView
+    <br.gov.caixa.loterias.apostar.view.custom.ApostaPartidaLotogolView
         android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

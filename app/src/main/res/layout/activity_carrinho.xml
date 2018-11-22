@@ -43,7 +43,7 @@
             android:textSize="14.2sp" />
 
 
-        <caixa.gov.br.loterias.view.custom.ExpandableHeightRecyclerView
+        <br.gov.caixa.loterias.apostar.view.custom.ExpandableHeightRecyclerView
             android:id="@+id/apostasListaRecycleView"
             style="@style/editTextArialMTTheme"
             android:layout_width="match_parent"

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="caixa.gov.br.loterias.view.CadastrarPasso2Activity">
+    tools:context="br.gov.caixa.loterias.apostar.view.CadastrarPasso2Activity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -59,7 +59,7 @@
                 android:textColor="@color/cinza"
                 android:textSize="14sp" />
 
-            <caixa.gov.br.loterias.utils.segmentedbutton.SegmentedButtonGroup
+            <br.gov.caixa.loterias.apostar.utils.segmentedbutton.SegmentedButtonGroup
                 android:id="@+id/segmentedButtonTipoBuscaLoterica"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
@@ -78,7 +78,7 @@
                 android:textAlignment="center">
 
 
-                <caixa.gov.br.loterias.utils.segmentedbutton.SegmentedButton
+                <br.gov.caixa.loterias.apostar.utils.segmentedbutton.SegmentedButton
                     android:id="@+id/segmentedButtonLocalizacao"
                     android:layout_width="0dp"
                     android:layout_height="56dp"
@@ -90,7 +90,7 @@
                     app:sb_textColor="@color/verdeazul"
                     app:sb_textColor_onSelection="@color/branco" />
 
-                <caixa.gov.br.loterias.utils.segmentedbutton.SegmentedButton
+                <br.gov.caixa.loterias.apostar.utils.segmentedbutton.SegmentedButton
                     android:id="@+id/segmentedButtonCEP"
                     android:layout_width="0dp"
                     android:layout_height="56dp"
@@ -102,7 +102,7 @@
                     app:sb_textColor="@color/verdeazul"
                     app:sb_textColor_onSelection="@color/branco" />
 
-                <caixa.gov.br.loterias.utils.segmentedbutton.SegmentedButton
+                <br.gov.caixa.loterias.apostar.utils.segmentedbutton.SegmentedButton
                     android:id="@+id/segmentedButtonCodigoLoterica"
                     android:layout_width="0dp"
                     android:layout_height="56dp"
@@ -113,7 +113,7 @@
                     app:sb_textColor="@color/verdeazul"
                     app:sb_textColor_onSelection="@color/branco"/>
 
-            </caixa.gov.br.loterias.utils.segmentedbutton.SegmentedButtonGroup>
+            </br.gov.caixa.loterias.apostar.utils.segmentedbutton.SegmentedButtonGroup>
 
             <LinearLayout
                 android:id="@+id/encontrarLoterica"

@@ -1,4 +1,4 @@
-package caixa.gov.br.loterias.bo;
+package br.gov.caixa.loterias.apostar.bo;
 
 import android.content.Context;
 import android.support.test.rule.ActivityTestRule;
@@ -17,9 +17,9 @@ import org.junit.runner.RunWith;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
-import caixa.gov.br.loterias.R;
-import caixa.gov.br.loterias.model.bo.keycloak.KeycloakBO_;
-import caixa.gov.br.loterias.view.LoginActivity;
+import br.gov.caixa.loterias.apostar.R;
+import br.gov.caixa.loterias.apostar.model.bo.keycloak.KeycloakBO_;
+import br.gov.caixa.loterias.apostar.view.LoginActivity;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;

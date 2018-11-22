@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="caixa.gov.br.loterias.view.RestritoDezoitoAnosActivity"
+    tools:context="br.gov.caixa.loterias.apostar.view.RestritoDezoitoAnosActivity"
     tools:showIn="@layout/activity_restrito_dezoito_anos">
 
         <ImageView

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="caixa.gov.br.loterias">
+    package="br.gov.caixa.loterias.apostar">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -20,7 +20,7 @@
         android:theme="@style/AppTheme">
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="caixa.gov.br.loterias.fileprovider"
+            android:authorities="br.gov.caixa.loterias.apostar.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -125,7 +125,7 @@
             android:theme="@style/AppTheme.DegradeActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="caixa.gov.br.loterias.view.PrincipalActivity" />
+                android:value="br.gov.caixa.loterias.apostar.view.PrincipalActivity" />
         </activity>
         <activity
             android:name=".view.RapidaoConfigActivity_"
@@ -136,7 +136,7 @@
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize|adjustPan">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="caixa.gov.br.loterias.view.ListaRapidaoActivity" />
+                android:value="br.gov.caixa.loterias.apostar.view.ListaRapidaoActivity" />
         </activity>
         <activity
             android:name=".view.SelecaoModalidadesRapidaoActivity"
@@ -155,7 +155,7 @@
             android:theme="@style/AppTheme.DegradeActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="caixa.gov.br.loterias.view.SimularApostaActivity" />
+                android:value="br.gov.caixa.loterias.apostar.view.SimularApostaActivity" />
         </activity>
         <activity
             android:name=".view.FavoritasActivity"
@@ -204,7 +204,7 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:screenOrientation="portrait"
-                android:value="caixa.gov.br.loterias.view.PrincipalActivity" />
+                android:value="br.gov.caixa.loterias.apostar.view.PrincipalActivity" />
         </activity>
         <activity
             android:name=".view.JogosConfirmadosPremioActivity"

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="caixa.gov.br.loterias.view.ResgatePremioLotericaAgenciaActivity">
+    tools:context="br.gov.caixa.loterias.apostar.view.ResgatePremioLotericaAgenciaActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

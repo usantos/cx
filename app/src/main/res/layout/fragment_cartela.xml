@@ -71,7 +71,7 @@
                 </LinearLayout>
 
 
-                <caixa.gov.br.loterias.view.custom.ExpandableHeightGridView
+                <br.gov.caixa.loterias.apostar.view.custom.ExpandableHeightGridView
                     android:id="@+id/listaDezenas"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
@@ -119,7 +119,7 @@
                     android:textColor="@color/pretoLinhaFormNovoTipoPagamento"
                     android:textSize="16sp" />
 
-                <caixa.gov.br.loterias.view.custom.ExpandableHeightGridView
+                <br.gov.caixa.loterias.apostar.view.custom.ExpandableHeightGridView
                     android:id="@+id/gridTimes"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
@@ -181,7 +181,7 @@
                             android:textSize="14sp" />
                     </LinearLayout>
 
-                    <caixa.gov.br.loterias.view.custom.ExpandableHeightRecyclerView
+                    <br.gov.caixa.loterias.apostar.view.custom.ExpandableHeightRecyclerView
                         android:id="@+id/recyclerViewPartida"
                         android:layout_width="wrap_content"
                         android:layout_height="200dp"

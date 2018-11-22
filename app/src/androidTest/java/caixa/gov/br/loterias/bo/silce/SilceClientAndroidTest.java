@@ -1,4 +1,4 @@
-// package caixa.gov.br.loterias.bo.silce;
+// package br.gov.caixa.loterias.apostar.bo.silce;
 //
 //import android.content.Context;
 //import android.support.test.InstrumentationRegistry;
@@ -15,7 +15,7 @@
 //import java.util.concurrent.Semaphore;
 //import java.util.concurrent.TimeUnit;
 //
-//import caixa.gov.br.loterias.BuildConfig;
+//import br.gov.caixa.loterias.apostar.BuildConfig;
 //import ApostaBO;
 //import CompletaJogoRsp;
 //import UsuarioLogadoResponse;

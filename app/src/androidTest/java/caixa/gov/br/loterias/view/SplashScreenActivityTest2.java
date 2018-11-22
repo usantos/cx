@@ -1,4 +1,4 @@
-package caixa.gov.br.loterias.view;
+package br.gov.caixa.loterias.apostar.view;
 
 
 import android.support.test.espresso.ViewInteraction;
@@ -16,7 +16,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import caixa.gov.br.loterias.R;
+import br.gov.caixa.loterias.apostar.R;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;

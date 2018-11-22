@@ -8,17 +8,17 @@
     android:paddingTop="13dp"
     android:paddingBottom="12dp">
 
-    <caixa.gov.br.loterias.view.custom.ApostaEquipeLotecaView_
+    <br.gov.caixa.loterias.apostar.view.custom.ApostaEquipeLotecaView_
         android:id="@+id/apostas_partida_loteca_view_um"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <caixa.gov.br.loterias.view.custom.ApostaEquipeLotecaView_
+    <br.gov.caixa.loterias.apostar.view.custom.ApostaEquipeLotecaView_
         android:id="@+id/apostas_partida_loteca_view_empate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <caixa.gov.br.loterias.view.custom.ApostaEquipeLotecaView_
+    <br.gov.caixa.loterias.apostar.view.custom.ApostaEquipeLotecaView_
         android:id="@+id/apostas_partida_loteca_view_dois"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

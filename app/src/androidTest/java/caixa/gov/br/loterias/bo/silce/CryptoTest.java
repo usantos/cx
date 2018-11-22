@@ -1,12 +1,12 @@
-package caixa.gov.br.loterias.bo.silce;
+package br.gov.caixa.loterias.apostar.bo.silce;
 
 import android.support.test.runner.AndroidJUnit4;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import caixa.gov.br.loterias.model.bo.silce.internals.Bin;
-import caixa.gov.br.loterias.model.bo.silce.internals.Crypto;
+import br.gov.caixa.loterias.apostar.model.bo.silce.internals.Bin;
+import br.gov.caixa.loterias.apostar.model.bo.silce.internals.Crypto;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;

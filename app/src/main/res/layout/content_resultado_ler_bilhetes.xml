@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/branco"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="caixa.gov.br.loterias.view.ResultadoLerBilhetesActivity"
+    tools:context="br.gov.caixa.loterias.apostar.view.ResultadoLerBilhetesActivity"
     tools:showIn="@layout/activity_resultado_ler_bilhetes">
 
     <LinearLayout
@@ -23,7 +23,7 @@
             android:orientation="vertical"
             android:visibility="gone">
 
-            <caixa.gov.br.loterias.view.custom.ContenteResultadoPremiado_
+            <br.gov.caixa.loterias.apostar.view.custom.ContenteResultadoPremiado_
                 android:id="@+id/contenteResultadoPremiado"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />

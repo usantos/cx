@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="caixa.gov.br.loterias.view.DadosPessoaisConfirmacaoActivity"
+    tools:context="br.gov.caixa.loterias.apostar.view.DadosPessoaisConfirmacaoActivity"
     android:fitsSystemWindows="true"
     >
 

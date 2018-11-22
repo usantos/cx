@@ -59,7 +59,7 @@
             android:textColor="@color/branco" />
     </LinearLayout>
 
-    <caixa.gov.br.loterias.view.custom.PartidaViewDetalhesResultado_
+    <br.gov.caixa.loterias.apostar.view.custom.PartidaViewDetalhesResultado_
         android:id="@+id/partidaViewDetalhesResultadoView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

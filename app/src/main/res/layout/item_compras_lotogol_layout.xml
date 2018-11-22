@@ -4,10 +4,10 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     >
-    <caixa.gov.br.loterias.view.custom.ExpandableHeightRecyclerView
+    <br.gov.caixa.loterias.apostar.view.custom.ExpandableHeightRecyclerView
         android:layout_width="match_parent"
         android:layout_height="500dp"
         android:id="@+id/lotecaRecyclerViewItemCompra">
 
-    </caixa.gov.br.loterias.view.custom.ExpandableHeightRecyclerView>
+    </br.gov.caixa.loterias.apostar.view.custom.ExpandableHeightRecyclerView>
 </LinearLayout>

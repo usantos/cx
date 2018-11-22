@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:fitsSystemWindows="true"
-    tools:context="caixa.gov.br.loterias.view.DetalhesComprasActivity">
+    tools:context="br.gov.caixa.loterias.apostar.view.DetalhesComprasActivity">
 
     <include
         android:id="@+id/app_bar_degrade"

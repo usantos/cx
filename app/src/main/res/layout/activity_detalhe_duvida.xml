@@ -7,7 +7,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <caixa.gov.br.loterias.view.custom.ExpandableHeightRecyclerView
+        <br.gov.caixa.loterias.apostar.view.custom.ExpandableHeightRecyclerView
             android:id="@+id/recyclerViewDetalhesDuvida"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

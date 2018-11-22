@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="caixa.gov.br.loterias.view.LoginActivity">
+    tools:context="br.gov.caixa.loterias.apostar.view.LoginActivity">
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"

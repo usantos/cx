@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="caixa.gov.br.loterias.view.DadosPessoaisActivity"
+    tools:context="br.gov.caixa.loterias.apostar.view.DadosPessoaisActivity"
     tools:showIn="@layout/activity_dados_pessoais"
     android:orientation="vertical"
     >
@@ -84,7 +84,7 @@ adquiridas em um toque"
             </android.support.design.widget.TextInputLayout>
 
 
-            <caixa.gov.br.loterias.utils.segmentedbutton.SegmentedButtonGroup
+            <br.gov.caixa.loterias.apostar.utils.segmentedbutton.SegmentedButtonGroup
                 android:id="@+id/segmentedButtonSexo"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
@@ -101,7 +101,7 @@ adquiridas em um toque"
                 app:sbg_ripple="true"
                 app:sbg_selectorColor="@color/verdeazul">
 
-                <caixa.gov.br.loterias.utils.segmentedbutton.SegmentedButton
+                <br.gov.caixa.loterias.apostar.utils.segmentedbutton.SegmentedButton
                     android:layout_width="0dp"
                     android:layout_height="56dp"
                     android:layout_weight="1"
@@ -114,7 +114,7 @@ adquiridas em um toque"
                     app:sb_textGravity="center"
                     android:layout_gravity="center_vertical"/>
 
-                <caixa.gov.br.loterias.utils.segmentedbutton.SegmentedButton
+                <br.gov.caixa.loterias.apostar.utils.segmentedbutton.SegmentedButton
                     android:layout_width="0dp"
                     android:layout_height="56dp"
                     android:layout_weight="1"
@@ -124,7 +124,7 @@ adquiridas em um toque"
                     app:sb_textColor_onSelection="@color/branco"
                     app:sb_textStyle="bold" />
 
-            </caixa.gov.br.loterias.utils.segmentedbutton.SegmentedButtonGroup>
+            </br.gov.caixa.loterias.apostar.utils.segmentedbutton.SegmentedButtonGroup>
 
 
             <android.support.design.widget.TextInputLayout
