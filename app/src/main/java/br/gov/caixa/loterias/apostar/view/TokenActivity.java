@@ -33,9 +33,11 @@ import br.gov.caixa.loterias.apostar.model.bo.keycloak.KeycloakBO_;
 import br.gov.caixa.loterias.apostar.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostar.model.bo.silce.dto.UsuarioLogadoResponse;
 import br.gov.caixa.loterias.apostar.model.dao.DBLoteriasCrud;
+import br.gov.caixa.loterias.apostar.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostar.view.custom.LoadingViewLoterias;
 
 public class TokenActivity extends AppCompatActivity {
+
 
     private AlertDialog loadViewProgress;
 
@@ -53,6 +55,7 @@ public class TokenActivity extends AppCompatActivity {
                     @Override
                     public void onTokenRequestCompleted(@Nullable TokenResponse response, @Nullable AuthorizationException ex) {
                         if (!"".equals(response.accessToken) && !"".equals(response.refreshToken)) {
+                            LoginSP.loginRealizado(true);
                             String separar[] = response.accessToken.split("\\.");
                             if (separar.length > 0) {
                                 String tokenCorpo = separar[1];
@@ -82,46 +85,15 @@ public class TokenActivity extends AppCompatActivity {
                             DadosUsuarioBO.updateUsuarioLogado(TokenActivity.this, true);
                             if (AcessoBO.PRIMEIRO_LOGIN) {
                                 AcessoBO.PRIMEIRO_LOGIN = false;
-                                verificarCadastroWebservice();
-                            } else {
-                                finish();
                             }
                         }
+                        finish();
                     }
                 });
             }
         } catch (Exception e) {
             finish();
         }
-    }
-
-
-    private void verificarCadastroWebservice() {
-        final DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_(this);
-        final RetornoListaCarrinho retornoListaCarrinho = new RetornoListaCarrinho();
-        DBLoteriasCrud crud = new DBLoteriasCrud(this);
-        List<ApostaDTO> listApostas = new ArrayList<>();
-        retornoListaCarrinho.setApostas(listApostas);
-        dadosUsuarioBO.postVerificarCadastro(retornoListaCarrinho, new RequestListener<UsuarioLogadoResponse>() {
-            @Override
-            public void onResponse(UsuarioLogadoResponse response) {
-                loadViewProgress.dismiss();
-                if (response.getRedirect() == null) {
-                    PrincipalActivity_.intent(TokenActivity.this).start();
-                    TokenActivity.this.finish();
-                } else {
-                    RedirectNetwork.checkRedirectSucesso(response.getRedirect(), TokenActivity.this);
-                }
-            }
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                loadViewProgress.dismiss();
-                RedirectNetwork.checkRedirect(error, TokenActivity.this, new LoginActivity());
-//                startActivity(new Intent(TokenActivity.this, LoginActivity.class));
-//                finish();
-            }
-        });
     }
 
 }

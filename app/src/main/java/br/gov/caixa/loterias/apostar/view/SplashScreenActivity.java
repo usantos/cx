@@ -9,6 +9,7 @@ import android.widget.Button;
 
 import br.gov.caixa.loterias.apostar.R;
 import br.gov.caixa.loterias.apostar.model.bo.DadosUsuarioBO;
+import br.gov.caixa.loterias.apostar.model.sp.LoginSP;
 
 public class SplashScreenActivity extends AppCompatActivity {
 
@@ -17,10 +18,10 @@ public class SplashScreenActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+                LoginSP.limpar();
                 startActivity(new Intent(SplashScreenActivity.this, IntroducaoActivity.class));
                 finish();
             }

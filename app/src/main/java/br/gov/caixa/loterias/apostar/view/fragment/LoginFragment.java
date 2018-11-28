@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 
@@ -35,15 +36,18 @@ import br.gov.caixa.loterias.apostar.model.bo.silce.dto.ApostaDTO;
 
 import br.gov.caixa.loterias.apostar.model.bo.silce.dto.UsuarioLogadoResponse;
 import br.gov.caixa.loterias.apostar.model.dao.DBLoteriasCrud;
+import br.gov.caixa.loterias.apostar.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostar.utils.AppUtils;
 import br.gov.caixa.loterias.apostar.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.view.CadastrarActivity_;
 import br.gov.caixa.loterias.apostar.view.PrincipalActivity;
 import br.gov.caixa.loterias.apostar.view.PrincipalActivity_;
+import br.gov.caixa.loterias.apostar.view.TokenActivity;
 import br.gov.caixa.loterias.apostar.view.custom.LoadingViewLoterias;
 
 public class LoginFragment extends Fragment {
 
+    private AlertDialog loadViewProgress;
 
     Button buttonLogin;
 
@@ -79,11 +83,48 @@ public class LoginFragment extends Fragment {
         });
 
         KeycloakBO keycloakBO =  KeycloakBO_.getInstance_(getActivity());
-        if (DadosUsuarioBO.checarFecharIntroducao(getActivity()) && DadosUsuarioBO.checarUsuarioLogado(getActivity())){
+        if ((DadosUsuarioBO.checarFecharIntroducao(getActivity()) && DadosUsuarioBO.checarUsuarioLogado(getActivity())) && LoginSP.isPrimeiraInicializacao()){
+            LoginSP.primeiraInicializacao(false);
             connectKeycloak();
         }
 
         return v;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if(LoginSP.isLoginRealizado()) {
+            verificarCadastroWebservice();
+        }
+    }
+
+
+    private void verificarCadastroWebservice() {
+        loadViewProgress = LoadingViewLoterias.show(getContext());
+        final DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_(getContext());
+        final RetornoListaCarrinho retornoListaCarrinho = new RetornoListaCarrinho();
+        DBLoteriasCrud crud = new DBLoteriasCrud(getContext());
+        List<ApostaDTO> listApostas = new ArrayList<>();
+        retornoListaCarrinho.setApostas(listApostas);
+        dadosUsuarioBO.postVerificarCadastro(retornoListaCarrinho, new RequestListener<UsuarioLogadoResponse>() {
+            @Override
+            public void onResponse(UsuarioLogadoResponse response) {
+                loadViewProgress.dismiss();
+                if (response.getRedirect() == null) {
+                    PrincipalActivity_.intent(getActivity()).start();
+                    getActivity().finish();
+                } else {
+                    RedirectNetwork.checkRedirectSucesso(response.getRedirect(), getActivity());
+                }
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                loadViewProgress.dismiss();
+                RedirectNetwork.checkRedirect(error, getActivity());
+            }
+        });
     }
 
     private void connectKeycloak() {
