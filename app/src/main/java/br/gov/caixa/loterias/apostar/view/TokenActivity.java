@@ -1,17 +1,16 @@
 package br.gov.caixa.loterias.apostar.view;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
-import android.util.Log;
-import android.view.View;
 
 import com.android.volley.VolleyError;
 
 import net.openid.appauth.AuthorizationException;
-import net.openid.appauth.AuthorizationRequest;
 import net.openid.appauth.AuthorizationResponse;
 import net.openid.appauth.AuthorizationService;
 import net.openid.appauth.TokenResponse;
@@ -34,9 +33,7 @@ import br.gov.caixa.loterias.apostar.model.bo.keycloak.KeycloakBO_;
 import br.gov.caixa.loterias.apostar.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostar.model.bo.silce.dto.UsuarioLogadoResponse;
 import br.gov.caixa.loterias.apostar.model.dao.DBLoteriasCrud;
-import br.gov.caixa.loterias.apostar.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.view.custom.LoadingViewLoterias;
-import io.swagger.annotations.Authorization;
 
 public class TokenActivity extends AppCompatActivity {
 
@@ -47,15 +44,15 @@ public class TokenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_token);
         loadViewProgress = LoadingViewLoterias.show(this);
-        try{
+        try {
             AuthorizationResponse authorizationResponse = AuthorizationResponse.fromIntent(getIntent());
             AuthorizationException authorizationException = AuthorizationException.fromIntent(getIntent());
-            if(authorizationException == null && authorizationResponse != null) {
+            if (authorizationException == null && authorizationResponse != null) {
                 AuthorizationService authorizationService = new AuthorizationService(this);
                 authorizationService.performTokenRequest(authorizationResponse.createTokenExchangeRequest(), new AuthorizationService.TokenResponseCallback() {
                     @Override
                     public void onTokenRequestCompleted(@Nullable TokenResponse response, @Nullable AuthorizationException ex) {
-                        if(!"".equals(response.accessToken) && !"".equals(response.refreshToken)) {
+                        if (!"".equals(response.accessToken) && !"".equals(response.refreshToken)) {
                             String separar[] = response.accessToken.split("\\.");
                             if (separar.length > 0) {
                                 String tokenCorpo = separar[1];
@@ -83,17 +80,17 @@ public class TokenActivity extends AppCompatActivity {
                                 }
                             }
                             DadosUsuarioBO.updateUsuarioLogado(TokenActivity.this, true);
-                            if(AcessoBO.PRIMEIRO_LOGIN) {
+                            if (AcessoBO.PRIMEIRO_LOGIN) {
                                 AcessoBO.PRIMEIRO_LOGIN = false;
                                 verificarCadastroWebservice();
-                            }else{
+                            } else {
                                 finish();
                             }
                         }
                     }
                 });
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             finish();
         }
     }
@@ -104,15 +101,15 @@ public class TokenActivity extends AppCompatActivity {
         final RetornoListaCarrinho retornoListaCarrinho = new RetornoListaCarrinho();
         DBLoteriasCrud crud = new DBLoteriasCrud(this);
         List<ApostaDTO> listApostas = new ArrayList<>();
-        retornoListaCarrinho.setApostas( listApostas );
+        retornoListaCarrinho.setApostas(listApostas);
         dadosUsuarioBO.postVerificarCadastro(retornoListaCarrinho, new RequestListener<UsuarioLogadoResponse>() {
             @Override
             public void onResponse(UsuarioLogadoResponse response) {
                 loadViewProgress.dismiss();
-                if (response.getRedirect() == null){
+                if (response.getRedirect() == null) {
                     PrincipalActivity_.intent(TokenActivity.this).start();
                     TokenActivity.this.finish();
-                }else{
+                } else {
                     RedirectNetwork.checkRedirectSucesso(response.getRedirect(), TokenActivity.this);
                 }
             }
@@ -120,8 +117,9 @@ public class TokenActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 loadViewProgress.dismiss();
-                RedirectNetwork.checkRedirect(error, TokenActivity.this);
-
+                RedirectNetwork.checkRedirect(error, TokenActivity.this, new LoginActivity());
+//                startActivity(new Intent(TokenActivity.this, LoginActivity.class));
+//                finish();
             }
         });
     }

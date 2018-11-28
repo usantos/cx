@@ -1,6 +1,7 @@
 package br.gov.caixa.loterias.apostar.model.bo;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -29,6 +30,70 @@ import br.gov.caixa.loterias.apostar.view.TermosUsoActivity;
  */
 
 public class RedirectNetwork {
+
+    public static void checkRedirect(VolleyError error, final Context context, Activity activity){
+
+        if (error.networkResponse == null){
+            ViewUtils.alert( context, context.getResources().getString( R.string.seminternet ) );
+            return;
+        }
+        NetworkResponse response = error.networkResponse;
+
+        Gson gsonResponse = new Gson();
+
+        ErrorResponse errorResponse = new ErrorResponse();
+
+        String body;
+        //get response body and parse with appropriate encoding
+        if(error.networkResponse.data!=null) {
+            try {
+                body = new String(error.networkResponse.data,"UTF-8");
+                errorResponse = gsonResponse.fromJson(body, ErrorResponse.class);
+
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+
+        if (errorResponse.getRedirect() != null){
+            RedirectEnum redirectEnum = RedirectEnum.fromString( errorResponse.getRedirect() );
+            switch (redirectEnum){
+                case ACEITAR_TERMO_DE_USO:
+                    activity.startActivityForResult(new Intent(context, TermosUsoActivity.class), 1);
+                    return;
+                case LOGIN:
+                    connectKeycloak(activity);
+                    return;
+                case CADASTRAR_APOSTADOR:
+                    context.startActivity(new Intent(context, CadastrarActivity_.class));
+                    return;
+                default:
+                    break;
+            }
+        }
+
+        if (response.statusCode == 401){
+            connectKeycloak(activity);
+        }else {
+            if (errorResponse.getCodigo() != null &&  errorResponse.getCodigo().equals( "018003" )){
+                ViewUtils.alertTitleButtonYesOrNotListener(context, errorResponse.getMensagem(), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Uri webpage = Uri.parse("https://www.mercadopago.com.br/registration-mp?mode=mp");
+                        Intent intentAc = new Intent(Intent.ACTION_VIEW, webpage);
+                        if (intentAc.resolveActivity(context.getPackageManager()) != null) {
+                            context.startActivity(intentAc);
+                        }
+                    }
+                });
+            }else{
+                ViewUtils.alertTitleButton(context, R.string.label_atencao, MensagensNetwork.setMensagem( error, context ), context.getResources().getString( R.string.ok ) );
+            }
+        }
+    }
+
     public static void checkRedirect(VolleyError error, final Activity activity){
 
         if (error.networkResponse == null){
@@ -55,7 +120,6 @@ public class RedirectNetwork {
             }
         }
 
-
         if (errorResponse.getRedirect() != null){
             RedirectEnum redirectEnum = RedirectEnum.fromString( errorResponse.getRedirect() );
             switch (redirectEnum){
@@ -72,6 +136,7 @@ public class RedirectNetwork {
                     break;
             }
         }
+
         if (response.statusCode == 401){
             connectKeycloak(activity);
         }else {
@@ -91,6 +156,7 @@ public class RedirectNetwork {
             }
         }
     }
+
     public static void checkRedirectSucesso(RedirectEnum redirect, Activity activity){
         switch (redirect){
             case ACEITAR_TERMO_DE_USO:
