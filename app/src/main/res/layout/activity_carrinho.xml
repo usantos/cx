@@ -1,0 +1,182 @@
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/carrinhoScrollView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <LinearLayout
+        android:id="@+id/carrinhoMainLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/branco"
+        android:focusableInTouchMode="true"
+        android:minHeight="@dimen/activity_vertical_margin"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tituloConfirmaApostas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="17dp"
+            android:layout_marginStart="17dp"
+            android:layout_marginTop="40dp"
+            android:gravity="start"
+            android:text="@string/confirmarApostas"
+            android:textAlignment="textStart"
+            android:textColor="@color/colorAccent"
+            android:textSize="14.2sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/infoValorMinimo"
+            style="@style/editTextArialMTTheme"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="17dp"
+            android:layout_marginStart="17dp"
+            android:layout_marginTop="20dp"
+            android:gravity="start"
+            android:text="@string/label_lembrar_valor_minimo"
+            android:textAlignment="textStart"
+            android:textSize="14.2sp" />
+
+
+        <br.gov.caixa.loterias.apostar.view.custom.ExpandableHeightRecyclerView
+            android:id="@+id/apostasListaRecycleView"
+            style="@style/editTextArialMTTheme"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:nestedScrollingEnabled="false" />
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginTop="0dp"
+            android:background="@color/colorAccent">
+
+            <LinearLayout
+                android:id="@+id/limparCarrinhoLinearLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="14dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="19dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/icon_excluir" />
+
+                <TextView
+                    style="@style/ArialMT"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:text="@string/limparCarrinho"
+                    android:textAllCaps="false"
+                    android:textColor="@color/amareloQueimado"
+                    android:textSize="14.2sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textoTotal"
+                style="@style/editTextArialMTTheme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="9dp"
+                android:layout_marginRight="9dp"
+                android:layout_toLeftOf="@+id/valorTotalCarrinho"
+                android:layout_toStartOf="@+id/valorTotalCarrinho"
+                android:text="@string/total"
+                android:textColor="@color/branco"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/valorTotalCarrinho"
+                style="@style/editTextArialMTTheme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="36dp"
+                android:layout_marginRight="36dp"
+                android:textColor="@color/branco"
+                android:textSize="14sp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="bottom">
+
+            <View
+                android:id="@+id/viewTabBar"
+                android:layout_width="match_parent"
+                android:layout_height="94dp"
+                android:layout_alignTop="@id/botaoAvancarPagamento"
+                android:layout_marginLeft="0dp"
+                android:layout_marginRight="0dp"
+                android:layout_marginTop="42dp"
+                android:background="@color/azulclaro"
+                android:orientation="horizontal" />
+
+
+            <Button
+                android:id="@+id/botaoFazerNovaAposta"
+                android:layout_width="183dp"
+                android:layout_height="56dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="23dp"
+                android:background="@drawable/button_white_with_green_border"
+                android:paddingLeft="14dp"
+                android:paddingRight="14dp"
+                android:text="@string/fazerNovaAposta"
+                android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
+                android:textColor="@color/verdeazul"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/botaoAvancarPagamento"
+                android:layout_width="184dp"
+                android:layout_height="84dp"
+                android:layout_below="@id/botaoFazerNovaAposta"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="0dp"
+                android:layout_marginRight="0dp"
+                android:layout_marginTop="20dp"
+                android:background="@color/verdeazul"
+                android:text="@string/avancarFormaPagamento"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
+                android:textColor="@color/branco"
+                android:textSize="17sp" />
+
+            <ImageView
+                android:id="@+id/imageViewPaginacao"
+                android:layout_width="184dp"
+                android:layout_height="12dp"
+                android:layout_below="@id/botaoAvancarPagamento"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:contentDescription="@string/imagemCarrinho"
+                app:srcCompat="@drawable/paginacao1" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>
+

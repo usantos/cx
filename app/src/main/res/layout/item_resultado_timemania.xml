@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/item_resultado_content_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerNumerosResultado"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="19dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="34dp"
+            android:layout_marginEnd="33dp"
+            android:layout_marginStart="33dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/timeCoracaoImage"
+                android:layout_width="41dp"
+                android:layout_height="34dp"
+                android:src="@drawable/ic_timecoracao" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/labelTimeCoracaoText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/futura_std_book"
+                    android:text="@string/label_time_coracao"
+                    android:textColor="@color/branco"
+                    android:textSize="14.2sp" />
+
+                <TextView
+                    android:id="@+id/textTimeCoracao"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/futura_std_bold"
+                    android:textColor="@color/branco"
+                    android:textSize="14.2sp"
+                    tools:text="Flamengo" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:id="@+id/tracoViewDivisoriaResultado"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="19dp"
+            android:background="@color/megasenamedio" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/futura_std_bold"
+            android:text="@string/label_premiados"
+            android:textColor="@color/branco"
+            android:textSize="15.8sp" />
+
+        <LinearLayout
+            android:id="@+id/linearlayoutPremiadosListaText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/vejaDetalhesButton"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/button_border"
+            android:text="@string/label_veja_mais_detalhes"
+            android:textAllCaps="false"
+            android:textColor="@color/branco" />
+    </LinearLayout>
+
+    <br.gov.caixa.loterias.apostar.view.custom.PartidaViewDetalhesResultado_
+        android:id="@+id/partidaViewDetalhesResultadoView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
+</RelativeLayout>

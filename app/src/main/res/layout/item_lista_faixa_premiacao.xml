@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="30dp"
+    android:orientation="horizontal"
+    android:weightSum="1">
+
+    <TextView
+        style="@style/ArialMT"
+        android:id="@+id/concursoTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.24"
+        android:text="@string/label_concurso"
+        android:textColor="@color/cinza"
+        android:textSize="14sp" />
+
+    <TextView
+        style="@style/ArialMT"
+        android:id="@+id/faixaPremiacaoTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.27"
+        android:text="@string/label_faixa_premiacao"
+        android:textColor="@color/cinza"
+        android:textSize="14sp" />
+
+    <TextView
+        style="@style/ArialMT"
+        android:id="@+id/sorteioTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.24"
+        android:text="@string/label_sorteio_case"
+        android:textColor="@color/cinza"
+        android:textSize="14sp" />
+
+    <TextView
+        style="@style/ArialMT"
+        android:id="@+id/premiacaoTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.25"
+        android:text="@string/label_premiacao"
+        android:textColor="@color/cinza"
+        android:textSize="14sp" />
+
+</LinearLayout>

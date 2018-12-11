@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_item"
+    android:layout_width="280dp"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    app:cardBackgroundColor="@android:color/transparent"
+    app:cardCornerRadius="0dp"
+    app:cardElevation="0dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutTopResultados"
+            android:layout_width="240dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/megasenaescuro">
+
+            <RelativeLayout
+                android:id="@+id/setaEsquerdaAcaoRelativeLayout"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_alignParentStart="true"
+                android:visibility="invisible">
+
+                <ImageView
+                    android:layout_width="8dp"
+                    android:layout_height="12dp"
+                    android:layout_centerInParent="true"
+                    android:layout_marginStart="17dp"
+                    android:src="@drawable/seta_esquerda" />
+
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/buttonActionResultadosModalidade"
+                style="@style/editTextArialMTTheme"
+                android:layout_width="100dp"
+                android:layout_height="32dp"
+                android:layout_centerInParent="true"
+                android:layout_centerVertical="true"
+                android:background="@null"
+                android:gravity="center"
+                android:text="@string/label_resultados"
+                android:textAllCaps="false"
+                android:textColor="@color/branco" />
+
+            <RelativeLayout
+                android:id="@+id/setaDireitaAcaoRelativeLayout"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_alignParentEnd="true"
+                android:visibility="invisible">
+
+                <ImageView
+                    android:layout_width="8dp"
+                    android:layout_height="12dp"
+                    android:layout_centerInParent="true"
+                    android:layout_marginEnd="17dp"
+                    android:src="@drawable/seta_direita" />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayoutResultadosApostas"
+            android:layout_width="240dp"
+            android:layout_height="0dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/megasenaescuro"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/amarelo"
+                tools:text="Teste Teste Teste" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayoutContentCardModalide"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/linear_layout"
+                android:layout_width="280dp"
+                android:layout_height="match_parent"
+                android:background="@color/branco"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutTopModalidades"
+                    android:layout_width="match_parent"
+                    android:layout_height="71dp"
+                    android:background="@color/megasenaclaro"
+                    android:gravity="left"
+                    android:orientation="horizontal">
+
+                    <RelativeLayout
+                        android:id="@+id/RelativeLayoutTrevo"
+                        android:layout_width="90dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/background_trapeze_megasena">
+
+                        <ImageView
+                            android:id="@+id/trevoImagem"
+                            android:layout_width="23dp"
+                            android:layout_height="23dp"
+                            android:layout_marginStart="23dp"
+                            android:layout_marginTop="24dp"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/trevo" />
+                    </RelativeLayout>
+
+                    <TextView
+                        android:id="@+id/textViewCardTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="0dp"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/branco"
+                        android:textSize="18.0sp"
+                        android:textStyle="bold"
+                        tools:text="mega-sena" />
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:id="@+id/LinearLayoutContentCard"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/branco"
+                        android:orientation="vertical"
+
+                        >
+
+                        <TextView
+                            android:id="@+id/labelAcumulouTextView"
+                            style="@style/FuturaStdBold"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:text="@string/label_acumulou_exclamacao"
+                            android:textAlignment="center"
+                            android:textColor="@color/cinzaescuro"
+                            android:textSize="25sp"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:id="@+id/textVieCardAcumulatedValue"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:textAlignment="center"
+                            android:textColor="@color/megasenaclaro"
+                            android:textSize="25sp"
+                            android:textStyle="bold"
+                            tools:text="R$ 0,00" />
+
+                        <TextView
+                            android:id="@+id/textPremioEstimadoConcurso"
+                            style="@style/editTextArialMTTheme"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="3dp"
+                            android:textAlignment="center"
+                            android:textColor="@color/cinzaescuro"
+                            android:textSize="13.8sp"
+                            tools:text="Prêmio estimado do concurso " />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginBottom="40dp"
+                        android:gravity="bottom"
+                        android:orientation="vertical">
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:layout_marginLeft="26dp"
+                            android:layout_marginRight="26dp"
+                            android:background="@color/cinza2" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:layout_marginLeft="29dp"
+                            android:layout_marginRight="29dp"
+                            android:layout_marginTop="5dp"
+                            android:background="@color/branco"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:id="@+id/imageCalendar"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_gravity="center"
+                                android:background="@color/branco"
+                                android:src="@drawable/icon_data_megasena" />
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="30dp"
+                                android:layout_marginStart="20dp"
+                                android:background="@color/branco">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:text="Sorteio"
+                                    android:textColor="@color/cinzaescuro"
+                                    android:textSize="13sp" />
+
+                                <TextView
+                                    android:id="@+id/textVieCardDrawDate"
+                                    style="@style/editTextArialMTTheme"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:gravity="bottom"
+                                    android:textColor="@color/cinzaescuro"
+                                    android:textSize="13sp"
+                                    android:textStyle="bold"
+                                    tools:text="Sábado, 18 de julho" />
+                            </RelativeLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:layout_marginBottom="0dp"
+                            android:layout_marginLeft="29dp"
+                            android:layout_marginRight="29dp"
+                            android:layout_marginTop="5dp"
+                            android:background="@color/branco"
+
+                            >
+
+                            <ImageView
+                                android:id="@+id/imageWatch"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_gravity="center"
+                                android:background="@color/branco"
+                                android:src="@drawable/icon_horario_megasena" />
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="30dp"
+                                android:layout_marginStart="20dp"
+                                android:background="@color/branco">
+
+                                <TextView
+                                    style="@style/editTextArialMTTheme"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:text="Apostas se encerram em"
+                                    android:textColor="@color/cinzaescuro"
+                                    android:textSize="13sp" />
+
+                                <TextView
+                                    android:id="@+id/textVieCardClosingOfBets"
+                                    style="@style/editTextArialMTTheme"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:gravity="bottom"
+                                    android:textColor="@color/cinzaescuro"
+                                    android:textSize="13sp"
+                                    android:textStyle="bold"
+                                    tools:text="0 dias e 0 horas" />
+                            </RelativeLayout>
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</android.support.v7.widget.CardView>

@@ -1,0 +1,7 @@
+<inset
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/icon_trevo"
+    android:insetTop="2dp"
+    android:insetRight="2dp"
+    android:insetBottom="2dp"
+    android:insetLeft="2dp" />

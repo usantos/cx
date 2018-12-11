@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.daimajia.swipe.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swipeLayout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/dadosApostaCarrinho"
+        android:layout_width="229dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/dadosCarrinho"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/drawer_linha_divisao_cinza_claro"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="14dp"
+            android:layout_marginTop="14dp"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/labelQuantidadeApostadas"
+                    style="@style/ArialMT"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="@string/label_voce_apostou"
+                    android:textColor="@color/branco"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/quantidadeApostadas"
+                    style="@style/ArialMT"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="@string/label_voce_apostou"
+                    android:textColor="@color/branco"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/labelQuantidadeSorteios"
+                    style="@style/ArialMT"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="31dp"
+                    android:text="@string/label_para"
+                    android:textColor="@color/branco"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/quantidadeSorteios"
+                    style="@style/ArialMT"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:text="@string/label_para"
+                    android:textColor="@color/branco"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/buttonApostaEspelho"
+            android:layout_width="197dp"
+            android:layout_height="56dp"
+            android:layout_marginStart="16dp"
+            android:background="@drawable/button_border"
+            android:text="@string/label_aposta_espelho"
+            android:textAllCaps="false"
+            android:textColor="@color/branco"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/layoutTimeCoracao"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="13dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/labelTimeCoracaoTxt"
+                style="@style/ArialMT"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_time_coracao"
+                android:textColor="@color/branco"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/textViewTimeCoracao"
+                style="@style/ArialMT"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/branco"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/dadosCarrinho"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/drawer_linha_divisao_cinza_claro"
+        android:orientation="vertical"
+        tools:visibility="visible">
+
+        <RelativeLayout
+            android:id="@+id/contentTest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="14dp"
+            android:background="@color/branco">
+
+            <LinearLayout
+                android:id="@+id/modalidadeConcursoLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tipoAposta"
+                    style="@style/editTextArialMTTheme"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:lines="1"
+                    android:paddingEnd="0dp"
+                    android:textSize="14.2sp"
+                    tools:text="Dia de Sorte" />
+
+                <TextView
+                    android:id="@+id/numeroConcurso"
+                    style="@style/editTextArialMTTheme"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tipoAposta"
+                    android:layout_marginBottom="13dp"
+                    android:lines="1"
+                    android:maxWidth="100dp"
+                    android:paddingEnd="0dp"
+                    android:textSize="14.2sp"
+                    tools:text="Conc. 777" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/layoutCabecalhoLoteca"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_toEndOf="@+id/modalidadeConcursoLayout"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <TextView
+                    android:id="@+id/texto_coluna_loteca"
+                    style="@style/editTextArialMTTheme"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_coluna"
+                    android:textSize="14.2sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/texto_time_loteca"
+                    style="@style/editTextArialMTTheme"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="14dp"
+                    android:layout_toEndOf="@+id/texto_coluna_loteca"
+                    android:text="@string/label_time"
+                    android:textSize="14.2sp"
+                    android:textStyle="bold"
+                    tools:visibility="visible" />
+            </RelativeLayout>
+
+            <br.gov.caixa.loterias.apostar.view.custom.ExpandableHeightRecyclerView
+                android:id="@+id/recycleViewDetalheAposta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/layoutCabecalhoLoteca"
+                android:layout_below="@+id/modalidadeConcursoLayout"
+                android:clickable="false"
+                android:nestedScrollingEnabled="false" />
+
+            <TextView
+                android:id="@+id/numerosText"
+                style="@style/editTextArialMTTheme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_toEndOf="@+id/modalidadeConcursoLayout"
+                android:layout_toStartOf="@+id/valorAposta"
+                android:text=""
+                android:textColor="@color/cinza"
+                android:textSize="14.2sp" />
+
+            <TextView
+                android:id="@+id/valorAposta"
+                style="@style/editTextArialMTTheme"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="14dp"
+                android:layout_marginEnd="11dp"
+                android:layout_toStartOf="@+id/excluirApostaCarrinhoLayout"
+                android:text="R$ 0,00"
+                android:textAlignment="textEnd"
+                android:textSize="14.2sp" />
+
+            <RelativeLayout
+                android:id="@+id/excluirApostaCarrinhoLayout"
+                android:layout_width="24dp"
+                android:layout_height="44dp"
+                android:layout_alignParentEnd="true"
+                android:clickable="true">
+
+                <ImageView
+                    android:id="@+id/excluirApostaCarrinho"
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:layout_marginTop="2dp"
+                    android:src="@drawable/close" />
+
+            </RelativeLayout>
+
+
+        </RelativeLayout>
+    </RelativeLayout>
+</com.daimajia.swipe.SwipeLayout>
+
+

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="br.gov.caixa.loterias.apostar.view.RestritoDezoitoAnosActivity"
+    tools:showIn="@layout/activity_restrito_dezoito_anos">
+
+        <ImageView
+            android:id="@+id/icon_18_anos"
+            android:layout_width="63dp"
+            android:layout_height="66dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="18dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/icon_18_anos"
+            app:layout_constraintBottom_toTopOf="@+id/guidelineDezoitoAnos"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <View
+            android:id="@+id/viewTracoDezoito"
+            android:layout_width="142dp"
+            android:layout_height="1dp"
+            android:background="@color/linhaDivisa"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/guidelineDezoitoAnos"></View>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginStart="16dp"
+            android:background="@color/amarelo"
+            android:fontFamily="@font/futura_std_bold"
+            android:text="Entendi"
+            android:textAllCaps="false"
+            android:textColor="@color/branco"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:id="@+id/entendiButton"/>
+
+        <TextView
+            android:id="@+id/textViewTextoRestrito"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="18dp"
+            android:text="O uso do aplicativo é restrito a\nmaiores de 18 anos."
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/guidelineDezoitoAnos"
+            android:lines="2"
+            android:textAlignment="center"
+            android:textColor="@color/verdeazul"
+            android:fontFamily="@font/futura_std_book"
+            android:textSize="18sp"/>
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guidelineDezoitoAnos"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.5"
+            />
+</android.support.constraint.ConstraintLayout>

@@ -1,0 +1,206 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="br.gov.caixa.loterias.apostar.view.fragment.ApostaConfirmadaNumeroDetalhesPremioPago">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="24dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/concursoLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/arialmt"
+            android:text="@string/concurso"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/concursoTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/concursoLabel"
+            android:fontFamily="@font/arialmt"
+            android:textSize="12sp"
+            tools:text="1234" />
+
+        <TextView
+            android:id="@+id/resultadoTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_toEndOf="@id/concursoLabel"
+            android:fontFamily="@font/arialmt"
+            android:text="@string/label_resultado"
+            android:textSize="12sp" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/dezenasResultadoRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@id/resultadoTxt"
+            android:layout_below="@id/resultadoTxt"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:nestedScrollingEnabled="false" />
+
+        <RelativeLayout
+            android:id="@+id/informacaoAdicionalResultadoLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/dezenasResultadoRecyclerView"
+            android:layout_alignStart="@+id/dezenasResultadoRecyclerView"
+            android:layout_alignEnd="@+id/dezenasResultadoRecyclerView"
+            android:layout_toEndOf="@id/concursoLabel"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <TextView
+                android:id="@+id/informacaoAdicionalResultadoLabelText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="17dp"
+                android:fontFamily="@font/arialmt"
+                android:textSize="12sp"
+                android:text="@string/label_time_sorteado_espaco" />
+
+            <TextView
+                android:id="@+id/informacaoAdicionalResultadoText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/arialmt"
+                android:layout_alignTop="@+id/informacaoAdicionalResultadoLabelText"
+                android:layout_alignBottom="@+id/informacaoAdicionalResultadoLabelText"
+                android:layout_toEndOf="@+id/informacaoAdicionalResultadoLabelText"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                tools:text="Bahia"/>
+
+            <View
+                android:id="@+id/linhaSeparadoraResultadoView"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="18dp"
+                android:layout_below="@+id/informacaoAdicionalResultadoLabelText"
+                android:background="?android:attr/textColorSecondary" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/quantidadeAcertosTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/informacaoAdicionalResultadoLayout"
+            android:layout_marginTop="40dp"
+            android:fontFamily="@font/arialmt"
+            android:text="@string/label_teimosinha"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            tools:text="6" />
+
+        <TextView
+            android:id="@+id/acertosTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/quantidadeAcertosTxt"
+            android:fontFamily="@font/arialmt"
+            android:textSize="14sp"
+            tools:text="acertos" />
+
+        <TextView
+            android:id="@+id/quantidadeGanhadoresTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/acertosTxt"
+            android:layout_marginTop="21dp"
+            android:fontFamily="@font/arialmt"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            tools:text="147" />
+
+        <TextView
+            android:id="@+id/ganhadoresTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/quantidadeGanhadoresTxt"
+            android:fontFamily="@font/arialmt"
+            android:textSize="14sp"
+            tools:text="ganhadores" />
+
+        <TextView
+            android:id="@+id/seusNumerosTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/quantidadeAcertosTxt"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_toEndOf="@id/concursoLabel"
+            android:fontFamily="@font/arialmt"
+            android:text="@string/seus_numeros"
+            android:textSize="12sp" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/dezenasRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@id/seusNumerosTxt"
+            android:layout_below="@id/seusNumerosTxt"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:nestedScrollingEnabled="false" />
+
+        <TextView
+            android:id="@+id/informacaoAdicionalDezenasText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="17dp"
+            android:fontFamily="@font/arialmt"
+            android:layout_below="@+id/dezenasRecyclerView"
+            android:layout_alignStart="@+id/dezenasRecyclerView"
+            android:textSize="12sp"
+            android:text="@string/label_time_sorteado_espaco"
+            android:visibility="gone"
+            tools:visibility="visible"/>
+
+        <View
+            android:id="@+id/linhaSeparadoraView"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/dezenasRecyclerView"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="38dp"
+            android:layout_toEndOf="@+id/concursoLabel"
+            android:background="?android:attr/textColorSecondary" />
+
+        <TextView
+            android:id="@+id/dataApostaLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/linhaSeparadoraView"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="24dp"
+            android:layout_toEndOf="@id/concursoLabel"
+            android:fontFamily="@font/arialmt"
+            android:text="@string/label_data_aposta"
+            android:textColor="?android:attr/textColorSecondary"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/dataApostaTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/dataApostaLabel"
+            android:layout_toEndOf="@+id/dataApostaLabel"
+            android:fontFamily="@font/arialmt"
+            android:textColor="?android:attr/textColorSecondary"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            tools:text=" 25/08/2016 - 21h20" />
+
+    </RelativeLayout>
+
+</LinearLayout>

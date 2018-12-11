@@ -1,0 +1,195 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="br.gov.caixa.loterias.apostar.view.fragment.ApostaConfirmadaPartidaFragment">
+
+    <LinearLayout
+        android:id="@+id/apostaConfirmadaLotecaLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="15dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="40dp"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <LinearLayout
+
+            android:id="@+id/colunaConcursoLinearLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/ArialMT"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_concurso"
+                android:textColor="?android:attr/textColor"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/concursoCabecalhoTextView"
+                style="@style/ArialMT"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_concurso"
+                android:textColor="?android:attr/textColor"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/colunaSuaApostaLinearLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.7"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/ArialMT"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_sua_aposta"
+                android:textColor="?android:attr/textColor"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/cabecalhoLotecaLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="23dp"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/ArialMT"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_coluna"
+                    android:textColor="?android:attr/textColor"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    style="@style/ArialMT"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="21dp"
+                    android:text="@string/label_time"
+                    android:textColor="?android:attr/textColor"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <br.gov.caixa.loterias.apostar.view.custom.ExpandableHeightRecyclerView
+                android:id="@+id/listaPartidasApostadasExpandebleRecyclerView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="15dp"
+                android:layout_marginTop="11dp"
+                android:clickable="false"
+                android:nestedScrollingEnabled="false" />
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:background="@color/branco"/>
+
+            <LinearLayout
+                android:id="@+id/concursoRodapeLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/ArialMT"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_concurso_abreviado_espaco"
+                    android:textColor="?android:attr/textColor"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/concursoRodaPeTextView"
+                    style="@style/ArialMT"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_concurso_abreviado_espaco"
+                    android:textColor="?android:attr/textColor"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="19dp"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:layout_marginBottom="30dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/ArialMT"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/label_data_aposta"
+                        android:textColor="?android:attr/textColorSecondary"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/dataHoraTextView"
+                        style="@style/ArialMT"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/label_data_aposta"
+                        android:textColor="?android:attr/textColorSecondary"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/statusApostaTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/label_coluna"
+                        android:textColor="?android:attr/textColorSecondary"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/conferirResultadoButton"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginBottom="25dp"
+                android:background="@drawable/button_border"
+                android:text="@string/label_conferir_resultado"
+                android:textAllCaps="false"
+                android:textColor="?android:attr/textColor"
+                android:textSize="14sp"
+                android:visibility="gone"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>

@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/branco"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="br.gov.caixa.loterias.apostar.view.TermosUsoActivity"
+    tools:showIn="@layout/activity_termos_uso">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <RadioButton
+                android:id="@+id/buttonTermos"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/tab_selector"
+                android:text="Termos de uso"
+                android:textAlignment="center"
+                android:textColor="@color/tab_color"
+                android:button="@null"
+                android:checked="true"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <RadioButton
+                android:id="@+id/buttonPolitica"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:button="@null"
+                android:background="@color/cinzaclaro"
+                android:text="Política\nde privacidade"
+                android:textAlignment="center"
+                android:textColor="@color/tab_color"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:visibility="gone"
+                />
+
+            <RadioButton
+                android:id="@+id/buttonDuvidas"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:button="@null"
+                android:background="@drawable/tab_selector"
+                android:text="Dúvidas"
+                android:textAlignment="center"
+                android:textSize="12sp"
+                android:textColor="@color/tab_color"
+                android:textStyle="bold" />
+
+        </RadioGroup>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayouTermoAceite"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ScrollView
+                android:id="@+id/scrollViewTermoAceite"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="30dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="40dp"
+                android:paddingBottom="@dimen/bottom_padding_120">
+
+                <WebView xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/webViewConteudo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </ScrollView>
+
+            <RelativeLayout
+                android:id="@+id/footerAceiteTermo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/drawer_linha_divisao_cinza_claro"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:id="@+id/layoutClickAceiteTermo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <android.support.v7.widget.AppCompatCheckBox
+                        android:id="@+id/selcioneAceiteTermoUso"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="17dp"
+                        android:layout_marginTop="16dp"
+                        android:background="@drawable/check_box_selected"
+                        android:button="@color/transparente50"
+                        android:checked="true"
+                        android:clickable="false" />
+
+                    <TextView
+                        android:id="@+id/textoTermoAceite"
+                        style="@style/ArialMT"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="10dp"
+                        android:clickable="false"
+                        android:text="@string/label_declaracao_termo_uso"
+                        android:textColor="@color/cinza"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/buttonTermoAceite"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:layout_alignTop="@+id/layoutClickAceiteTermo"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="55dp"
+                    android:background="@color/amarelo"
+                    android:text="@string/label_cotinuar"
+                    android:textAllCaps="false"
+                    android:textColor="@color/branco"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutDuvidas"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <android.support.v4.widget.NestedScrollView
+                android:id="@+id/duvidasScrollView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <br.gov.caixa.loterias.apostar.view.custom.ExpandableHeightRecyclerView
+                    android:id="@+id/recyclerViewDuvidas"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="22dp"
+                    android:clickable="false"
+                    android:layout_gravity="center_horizontal"/>
+            </android.support.v4.widget.NestedScrollView>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>
