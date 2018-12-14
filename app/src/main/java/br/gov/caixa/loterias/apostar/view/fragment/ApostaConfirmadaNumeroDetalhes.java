@@ -54,9 +54,6 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
     protected TextView concursoTxt, quantidadeApostadasTxt, dataApostaTxt, resultTxt, modalidadeTxt, apostaTrocaTxt, informacaoAdicionalTxt, labelInformacaoAdicionalTxt;
 
     @ViewById
-    protected Button conferirResultadoButton;
-
-    @ViewById
     protected RelativeLayout informacaoAdicionalLayout;
 
     @ViewById
@@ -99,9 +96,7 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
             labelInformacaoAdicionalTxt.setText(R.string.label_mes_sorte);
             informacaoAdicionalTxt.setText(aposta.getMesDeSorte().getNome());
         }
-        if (getActivity().getString(R.string.label_efetivada).equalsIgnoreCase(aposta.getSituacao().getDescricao())) {
-            conferirResultadoButton.setVisibility(View.VISIBLE);
-        }
+
         initdezenasRecyclerView();
     }
 
@@ -111,35 +106,5 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
             dezenasRecyclerView.setAdapter(new DezenasAdapter(AppUtils.listIntegerToListString(aposta.getNumerosSelecionados())));
             dezenasRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         }
-    }
-
-    @Click(R.id.conferirResultadoButton)
-    protected void conferirResultadoClick() {
-        DialogUtils.show(getContext());
-        ApostaBO apostaBO = ApostaBO_.getInstance_(getContext());
-        apostaBO.getApostaConferir(aposta.getId(), new RequestListener<DTOEnumIntegerResponse>() {
-            @Override
-            public void onResponse(DTOEnumIntegerResponse result) {
-                DialogUtils.dismiss();
-                if (Objects.equals(SituacaoResultadoBilheteEnum.PREMIADA.getValor().toString(), result.getPayload().getValor().toString())) {
-                    ConferirResultadoHelper.conferirResultado(aposta.getId(), getActivity());
-                } else {
-                    ViewUtils.alert(getContext(), getContext().getString(R.string.MA020));
-                    resultTxt.setText(result.getPayload().getDescricao());
-                }
-            }
-//            {"codigo":"013004","mensagem":"O sistema para consulta da situação da aposta encontra-se indisponível. Tente novamente mais tarde. ","tipo":1,"redirect":"form-apostas"}
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                DialogUtils.dismiss();
-                try{
-                    JSONObject geralJO = new JSONObject(new String(error.networkResponse.data));
-                    String mensagem = geralJO.getString("mensagem");
-                    ViewUtils.alert(getContext(), mensagem);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-            }
-        });
     }
 }

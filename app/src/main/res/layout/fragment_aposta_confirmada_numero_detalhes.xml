@@ -180,22 +180,6 @@
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:nestedScrollingEnabled="false" />
 
-        <Button
-            android:id="@+id/conferirResultadoButton"
-            style="@style/ButtonNotShadowColored"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/dezenasRecyclerView"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:layout_marginEnd="32dp"
-            android:background="@drawable/background_border_color"
-            android:text="@string/conferir_resultados"
-            android:visibility="gone"
-            tools:visibility="visible" />
-
     </RelativeLayout>
 
 

@@ -434,6 +434,24 @@ public class ApostaBO extends BaseBO {
         silceConnection.request(request);
     }
 
+    public void getResultadoModalidade(final String modalidade, final RequestListener<ResultadoConcursoDTOResponse> listener) {
+        LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
+        headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
+
+        Map<String, String> queryParams = new HashMap<String, String>();
+
+        String url = ServerMethods.RESULTADOS_MODALIDADE_CONCURSO_PATH.replace("{modalidade}", modalidade);
+
+        final GsonRequest request = silceConnection.buildGetRequest(url,
+                queryParams,
+                ResultadoConcursoDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(), headers);
+
+        request.setErrorListener(interceptError(request, headers, listener));
+        silceConnection.request(request);
+    }
+
     public void getApostaDetalhePremio(Long id, final RequestListener<DetalhesPremioDTOResponse> listener) {
 
         String url = ServerMethods.APOSTAS_CONFIRMADAS_DETALHES_PATH.replace("{id}", id.toString());

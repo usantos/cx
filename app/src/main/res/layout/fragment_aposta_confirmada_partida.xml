@@ -176,18 +176,6 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <Button
-                android:id="@+id/conferirResultadoButton"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:layout_marginBottom="25dp"
-                android:background="@drawable/button_border"
-                android:text="@string/label_conferir_resultado"
-                android:textAllCaps="false"
-                android:textColor="?android:attr/textColor"
-                android:textSize="14sp"
-                android:visibility="gone"/>
-
         </LinearLayout>
 
     </LinearLayout>

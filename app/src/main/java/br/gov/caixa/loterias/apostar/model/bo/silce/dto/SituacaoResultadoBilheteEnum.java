@@ -10,6 +10,7 @@ public enum SituacaoResultadoBilheteEnum {
     PAGA_HISTORICO(3L),
     NAO_PREMIADO(9L),
     PRESCRITA(10L),
+    EFETIVADA(4L),
     PAGA(11L),
     PREMIADA(100L),
     NAO_APURADO(101L);

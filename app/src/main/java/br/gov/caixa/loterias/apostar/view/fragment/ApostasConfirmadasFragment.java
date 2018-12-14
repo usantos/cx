@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 
-import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
@@ -51,7 +50,6 @@ import br.gov.caixa.loterias.apostar.utils.AppUtils;
 import br.gov.caixa.loterias.apostar.utils.DialogUtils;
 import br.gov.caixa.loterias.apostar.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.utils.helper.AdicionarApostaCarrinhoHelper;
-import br.gov.caixa.loterias.apostar.utils.helper.ConferirResultadoHelper;
 import br.gov.caixa.loterias.apostar.view.ApostaConfirmadaDetalhesActivity_;
 import br.gov.caixa.loterias.apostar.view.ApostasConfirmadasActivity;
 import br.gov.caixa.loterias.apostar.view.adapter.ApostasConfirmadasAdapter;
@@ -87,21 +85,44 @@ public class ApostasConfirmadasFragment extends Fragment implements ApostasConfi
     private List<MesAnoDTO> mesesAnosDisponiveis;
     private boolean hasMoreItems;
     private boolean isLoading;
+    private boolean firstTime = true;
+    private boolean reloadingEntireList = false;
+
     private ApostaPageRequest page;
 
-    @AfterViews
+    private static ApostasConfirmadasFragment instance = null;
+    public static ApostasConfirmadasFragment getInstance(){
+        return instance;
+    }
+
+//    @AfterViews
     protected void init() {
-        if (getActivity() != null) {
-            LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-            apostasConfirmadasRecyclerView.setLayoutManager(layoutManager);
-            DividerItemDecoration divider = new DividerItemDecoration(getActivity(), layoutManager.getOrientation());
-            Drawable dividerDrawable = ContextCompat.getDrawable(getActivity(), R.drawable.recyclerview_divider);
-            if (dividerDrawable != null) {
-                divider.setDrawable(dividerDrawable);
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (firstTime) {
+            if (getActivity() != null) {
+                instance = this;
+
+                LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+                apostasConfirmadasRecyclerView.setLayoutManager(layoutManager);
+                DividerItemDecoration divider = new DividerItemDecoration(getActivity(), layoutManager.getOrientation());
+                Drawable dividerDrawable = ContextCompat.getDrawable(getActivity(), R.drawable.recyclerview_divider);
+                if (dividerDrawable != null) {
+                    divider.setDrawable(dividerDrawable);
+                }
+                apostasConfirmadasRecyclerView.addItemDecoration(divider);
+                apostasConfirmadasRecyclerView.setNestedScrollingEnabled(false);
+                requestMesesAnosDisponiveis();
+                firstTime = false;
             }
-            apostasConfirmadasRecyclerView.addItemDecoration(divider);
-            apostasConfirmadasRecyclerView.setNestedScrollingEnabled(false);
-            requestMesesAnosDisponiveis();
+        } else {
+            page.setOffset(0);
+            requestApostasConfirmadas();
         }
     }
 
@@ -195,10 +216,15 @@ public class ApostasConfirmadasFragment extends Fragment implements ApostasConfi
             if (PAGE_SIZE > apostasList.size()) {
                 hasMoreItems = false;
             }
+
+            if (page.getOffset() == 0) {
+                reloadingEntireList = true;
+            }
             page.setOffset(page.getOffset() + apostasList.size());
 
             ApostasConfirmadasAdapter adapter = (ApostasConfirmadasAdapter) apostasConfirmadasRecyclerView.getAdapter();
-            if (adapter == null) {
+            if (adapter == null || reloadingEntireList) {
+                reloadingEntireList = false;
                 adapter = new ApostasConfirmadasAdapter(getActivity(), apostasList, isHistorico);
                 adapter.setOnApostasConfirmadasListener(new ApostasConfirmadasAdapter.OnApostasConfirmadasListener() {
                     @Override
@@ -207,13 +233,9 @@ public class ApostasConfirmadasFragment extends Fragment implements ApostasConfi
                     }
 
                     @Override
-                    public void onResult(ApostaDTO apostaDTO) {
-                        ConferirResultadoHelper.conferirResultado(apostaDTO.getId(), getActivity());
-                    }
-
-                    @Override
                     public void onItemClick(final ApostaDTO apostaDTO) {
                         DialogUtils.show(getActivity());
+
                         if (isHistorico) {
                             if (Objects.equals(apostaDTO.getSituacao().getValor(), SituacaoResultadoBilheteEnum.PAGA_HISTORICO.getValor())) {
                                 apostaBO.getApostaHistoricoComprovante(apostaDTO.getId(), new RequestListener<DetalhesHistoricoPremioDTOResponse>() {
