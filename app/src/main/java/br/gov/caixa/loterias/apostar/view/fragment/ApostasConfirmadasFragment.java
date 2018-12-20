@@ -52,6 +52,7 @@ import br.gov.caixa.loterias.apostar.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostar.view.ApostaConfirmadaDetalhesActivity_;
 import br.gov.caixa.loterias.apostar.view.ApostasConfirmadasActivity;
+import br.gov.caixa.loterias.apostar.view.ApostasConfirmadasActivity_;
 import br.gov.caixa.loterias.apostar.view.adapter.ApostasConfirmadasAdapter;
 import br.gov.caixa.loterias.apostar.view.custom.MonthYearPickerDialog;
 import br.gov.caixa.loterias.apostar.view.custom.MonthYearPickerDialog_;
@@ -241,7 +242,7 @@ public class ApostasConfirmadasFragment extends Fragment implements ApostasConfi
                                 apostaBO.getApostaHistoricoComprovante(apostaDTO.getId(), new RequestListener<DetalhesHistoricoPremioDTOResponse>() {
                                     @Override
                                     public void onResponse(DetalhesHistoricoPremioDTOResponse result) {
-                                        getResultadoModalidadeConcurso(apostaDTO, result.getPayload());
+                                        ApostaConfirmadaDetalhesActivity_.intent(getActivity()).detalhesHistoricoPremioDTO(result.getPayload()).start();
                                     }
 
                                     @Override
@@ -263,7 +264,8 @@ public class ApostasConfirmadasFragment extends Fragment implements ApostasConfi
                                 apostaBO.getApostaComprovantePremio(apostaDTO.getId(), new RequestListener<DetalhesPremioDTOResponse>() {
                                     @Override
                                     public void onResponse(DetalhesPremioDTOResponse result) {
-                                        getResultadoModalidadeConcurso(apostaDTO, result.getPayload());
+                                        DialogUtils.dismiss();
+                                        ApostaConfirmadaDetalhesActivity_.intent(getActivity()).detalhesPremioDTO(result.getPayload()).start();
                                     }
 
                                     @Override
@@ -378,7 +380,8 @@ public class ApostasConfirmadasFragment extends Fragment implements ApostasConfi
     }
 
 
-    private void getResultadoModalidadeConcurso(ApostaDTO apostaDTO, final Object object) {
+    private void getResultadoModalidadeConcurso
+            (ApostaDTO apostaDTO, final Object object) {
         apostaBO.getResultadoModalidadeConcurso(ApostaDTO.lowerCaseFromString(apostaDTO.getModalidade()), apostaDTO.getConcursoAlvo(),
                 new RequestListener<ResultadoConcursoDTOResponse>() {
                     @Override

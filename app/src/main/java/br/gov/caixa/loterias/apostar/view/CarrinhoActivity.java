@@ -87,9 +87,13 @@ public class CarrinhoActivity extends SettingToolbarActivity {
     public void atualizaLayout(boolean animacao) {
         montarLayout();
         try {
-            if (carrinho.getApostas() != null) {
-                configuraRecyclerViewCarrinhoAposta(animacao);
-                setValorTotalCarrinho();
+            if (carrinho != null) {
+                if (carrinho.getApostas() != null) {
+                    configuraRecyclerViewCarrinhoAposta(animacao);
+                    setValorTotalCarrinho();
+                }
+            }  else {
+                callWebservice();
             }
         }catch (Exception e){
             e.printStackTrace();
