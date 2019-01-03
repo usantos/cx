@@ -37,6 +37,9 @@ public class ApostaConfirmadaPartidaFragment extends Fragment {
     protected LinearLayout cabecalhoLotecaLinearLayout;
 
     @ViewById
+    protected LinearLayout concursoRodapeLinearLayout;
+
+    @ViewById
     protected TextView concursoCabecalhoTextView, concursoRodaPeTextView, dataHoraTextView, statusApostaTextView;
 
     @ViewById
@@ -72,8 +75,10 @@ public class ApostaConfirmadaPartidaFragment extends Fragment {
 
         if (loteca) {
             cabecalhoLotecaLinearLayout.setVisibility(View.VISIBLE);
+            concursoRodapeLinearLayout.setVisibility(View.INVISIBLE);
             listaPartidasApostadasExpandebleRecyclerView.setAdapter(new DetalheApostaConfirmadaLotecaAdapter(aposta.getPartidasLoteca()));
         } else {
+            concursoRodapeLinearLayout.setVisibility(View.INVISIBLE);
             listaPartidasApostadasExpandebleRecyclerView.setAdapter(new DetalheApostaConfirmadaLotogolAdapter(aposta.getPartidasLotogol()));
         }
 
