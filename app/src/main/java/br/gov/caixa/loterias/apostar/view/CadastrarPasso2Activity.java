@@ -6,13 +6,10 @@ import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.text.Editable;
-import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -20,7 +17,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
@@ -39,11 +35,8 @@ import java.util.List;
 import br.gov.caixa.loterias.apostar.R;
 import br.gov.caixa.loterias.apostar.model.bo.DadosCorporativosBO;
 import br.gov.caixa.loterias.apostar.model.bo.DadosCorporativosBO_;
-import br.gov.caixa.loterias.apostar.model.bo.DadosUsuarioBO;
-import br.gov.caixa.loterias.apostar.model.bo.DadosUsuarioBO_;
 import br.gov.caixa.loterias.apostar.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.model.bo.RequestListener;
-import br.gov.caixa.loterias.apostar.model.bo.silce.dto.ApostadorDTO;
 import br.gov.caixa.loterias.apostar.model.bo.silce.dto.BairroDTO;
 import br.gov.caixa.loterias.apostar.model.bo.silce.dto.BairroDTOResponse;
 import br.gov.caixa.loterias.apostar.model.bo.silce.dto.DTOEnumInteger;
@@ -52,12 +45,10 @@ import br.gov.caixa.loterias.apostar.model.bo.silce.dto.LoteriasHabilitadaEnum;
 import br.gov.caixa.loterias.apostar.model.bo.silce.dto.LotericaCodigoWrapperResponse;
 import br.gov.caixa.loterias.apostar.model.bo.silce.dto.LotericaDTO;
 import br.gov.caixa.loterias.apostar.model.bo.silce.dto.LotericaDTOResponse;
-import br.gov.caixa.loterias.apostar.model.bo.silce.dto.UsuarioLogadoResponse;
-import br.gov.caixa.loterias.apostar.view.custom.LoadingViewLoterias;
-import br.gov.caixa.loterias.apostar.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostar.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.utils.segmentedbutton.SegmentedButton;
 import br.gov.caixa.loterias.apostar.utils.segmentedbutton.SegmentedButtonGroup;
+import br.gov.caixa.loterias.apostar.view.custom.LoadingViewLoterias;
 
 @EActivity(R.layout.activity_cadastrar_passo2)
 public class CadastrarPasso2Activity extends CadastroActivity {

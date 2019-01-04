@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.widget.Button;
 
 
 import com.android.volley.NetworkResponse;
@@ -22,6 +23,7 @@ import br.gov.caixa.loterias.apostar.model.bo.silce.dto.RedirectEnum;
 import br.gov.caixa.loterias.apostar.utils.AppUtils;
 import br.gov.caixa.loterias.apostar.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.view.CadastrarActivity_;
+import br.gov.caixa.loterias.apostar.view.FormaPagamentoActivity;
 import br.gov.caixa.loterias.apostar.view.TermosUsoActivity;
 
 
@@ -152,7 +154,12 @@ public class RedirectNetwork {
                             }
                         });
             }else{
-                ViewUtils.alertTitleButton(activity, R.string.label_atencao, MensagensNetwork.setMensagem( error, activity ), activity.getResources().getString( R.string.ok ) );
+                ViewUtils.alertTitleButton(activity, R.string.label_atencao, MensagensNetwork.setMensagem(error, activity), "Ok", new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialogInterface) {
+                        activity.onBackPressed();
+                    }
+                });
             }
         }
     }

@@ -287,19 +287,6 @@
                 android:src="@drawable/icon_apostas" />
 
             <TextView
-                android:id="@+id/textViewHomeCountConfirmedBets"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/textViewHomeButtonAllBets"
-                android:layout_alignParentEnd="true"
-                android:background="@drawable/rounded_textview"
-                android:gravity="center"
-                android:text="3"
-                android:textColor="@color/branco"
-                android:textSize="12sp"
-                android:translationZ="2dp" />
-
-            <TextView
                 style="@style/editTextArialMTTheme"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

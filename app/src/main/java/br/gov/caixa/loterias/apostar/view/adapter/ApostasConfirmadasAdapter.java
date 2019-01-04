@@ -1,7 +1,10 @@
 package br.gov.caixa.loterias.apostar.view.adapter;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,28 +66,15 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostasConfi
         holder.stripe.setBackgroundColor(color);
         holder.modalidadeTxt.setTextColor(color);
         holder.modalidadeTxt.setText(estiloModalidade.getStringId());
-//        holder.situacaoLabel.setTextColor(color);
-//        holder.situacaoTxt.setTextColor(color);
-//        String descricaoStatus = "";
-//        if (aposta.getSituacao().getValor() == 4){
-//            descricaoStatus = "Não Conferida";
-//        }else {
-//            descricaoStatus = aposta.getSituacao().getDescricao();
-//        }
-//        holder.situacaoTxt.setText(descricaoStatus);
-//        ViewUtils.setColorDrawable(context, holder.setaImg.getDrawable(), R.color.colorAccent);
-
-//        if (context.getString(R.string.label_efetivada).equalsIgnoreCase(aposta.getSituacao().getDescricao())) {
-
-        if (!isHistorico) {
-            holder.resultBtnLayout.setVisibility(View.VISIBLE);
-            holder.resultBtnLayout.setOnClickListener(holder);
-            holder.resultBtn.setOnClickListener(holder);
-        }else{
-            holder.resultBtnLayout.setVisibility(View.GONE);
-            holder.resultBtnLayout.setClickable(Boolean.FALSE);
-            holder.resultBtn.setClickable(Boolean.FALSE);
+        holder.situacaoTxt.setTextColor(color);
+        String descricaoStatus = "";
+        if (aposta.getSituacao().getValor() == 4){
+            descricaoStatus = "Clique para conferir o resultado.";
+            holder.situacaoTxt.setTextColor(ContextCompat.getColor(context, R.color.azulescuroapostafavorita));
+        } else {
+            descricaoStatus = aposta.getSituacao().getDescricao();
         }
+        holder.situacaoTxt.setText("situação: " + descricaoStatus.toLowerCase());
 
         int teimosinhas = aposta.getQuantidadeTeimosinhas() != null ? aposta.getQuantidadeTeimosinhas() : 0;
         if (teimosinhas > 0) {
@@ -116,8 +106,6 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostasConfi
     public interface OnApostasConfirmadasListener {
         void onReload(ApostaDTO apostaDTO);
 
-        void onResult(ApostaDTO apostaDTO);
-
         void onItemClick(ApostaDTO apostaDTO);
     }
 
@@ -125,13 +113,10 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostasConfi
         private View stripe;
         private TextView modalidadeTxt;
         private TextView concursoTxt;
-        private View resultBtn;
         private View reloadBtn;
         private ImageView setaImg;
-        private LinearLayout resultBtnLayout;
         private LinearLayout reloadBtnLayout;
         private LinearLayout setaLayout;
-        private TextView situacaoLabel;
         private TextView situacaoTxt;
 
         public ViewHolder(View view) {
@@ -139,14 +124,11 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostasConfi
             stripe = view.findViewById(R.id.stripe);
             modalidadeTxt = view.findViewById(R.id.modalidadeTxt);
             concursoTxt = view.findViewById(R.id.concursoTxt);
-            resultBtn = view.findViewById(R.id.resultBtn);
             reloadBtn = view.findViewById(R.id.reloadBtn);
             setaImg = view.findViewById(R.id.setaImg);
             setaLayout = view.findViewById(R.id.setaLayout);
-            resultBtnLayout = view.findViewById(R.id.resultBtnLayout);
             reloadBtnLayout = view.findViewById(R.id.reloadBtnLayout);
-//            situacaoLabel = view.findViewById(R.id.situacaoLabel);
-//            situacaoTxt = view.findViewById(R.id.situacaoTxt);
+            situacaoTxt = view.findViewById(R.id.situacaoTxt);
 
             setaLayout.setOnClickListener(this);
             setaImg.setOnClickListener(this);
@@ -162,14 +144,6 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostasConfi
                 ApostaDTO apostaDTO = list.get(getAdapterPosition());
 
                 switch (view.getId()) {
-                    case R.id.resultBtn: {
-                        onApostasConfirmadasListener.onResult(apostaDTO);
-                        break;
-                    }
-                    case R.id.resultBtnLayout: {
-                        onApostasConfirmadasListener.onResult(apostaDTO);
-                        break;
-                    }
                     case R.id.reloadBtn: {
                         onApostasConfirmadasListener.onReload(apostaDTO);
                         break;
