@@ -68,6 +68,7 @@ import br.gov.caixa.loterias.apostar.model.bo.silce.internals.SilceConnection;
 
 
      static final String RESULTADOS_MODALIDADE_CONCURSO_PATH = "resultados/{modalidade}/{concurso}";
+     static final String RESULTADOS_MODALIDADE_UTLIMO = "resultados/{modalidade}";
 
      static final String CARRINHOS_REGISTRAR_APOSTAS_PATH = "carrinhos/registrar-apostas";
 

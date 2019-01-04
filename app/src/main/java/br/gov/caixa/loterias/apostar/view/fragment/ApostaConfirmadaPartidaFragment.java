@@ -37,13 +37,13 @@ public class ApostaConfirmadaPartidaFragment extends Fragment {
     protected LinearLayout cabecalhoLotecaLinearLayout;
 
     @ViewById
+    protected LinearLayout concursoRodapeLinearLayout;
+
+    @ViewById
     protected TextView concursoCabecalhoTextView, concursoRodaPeTextView, dataHoraTextView, statusApostaTextView;
 
     @ViewById
     protected ExpandableHeightRecyclerView listaPartidasApostadasExpandebleRecyclerView;
-
-    @ViewById
-    protected Button conferirResultadoButton;
 
     @FragmentArg
     protected IdentificaoDeUmaApostaDas8Modalidades aposta;
@@ -62,23 +62,23 @@ public class ApostaConfirmadaPartidaFragment extends Fragment {
             dataHoraTextView.setText(ViewUtils.getDateAndHour(aposta.getDataEfetivacao(), aposta.getHoraEfetivacao()));
         }
         statusApostaTextView.setText(aposta.getSituacao().getDescricao());
-        if (getActivity().getString(R.string.label_efetivada).equalsIgnoreCase(aposta.getSituacao().getDescricao())) {
-            conferirResultadoButton.setVisibility(View.VISIBLE);
-        }
+
         initList();
     }
 
-    @Click(R.id.conferirResultadoButton)
-    protected void conferirResultadoClick() {
-        ConferirResultadoHelper.conferirResultado(aposta.getId(), getActivity());
-    }
+//    @Click(R.id.conferirResultadoButton)
+//    protected void conferirResultadoClick() {
+//        ConferirResultadoHelper.conferirResultado(aposta.getId(), getActivity());
+//    }
 
     private void initList() {
 
         if (loteca) {
             cabecalhoLotecaLinearLayout.setVisibility(View.VISIBLE);
+            concursoRodapeLinearLayout.setVisibility(View.INVISIBLE);
             listaPartidasApostadasExpandebleRecyclerView.setAdapter(new DetalheApostaConfirmadaLotecaAdapter(aposta.getPartidasLoteca()));
         } else {
+            concursoRodapeLinearLayout.setVisibility(View.INVISIBLE);
             listaPartidasApostadasExpandebleRecyclerView.setAdapter(new DetalheApostaConfirmadaLotogolAdapter(aposta.getPartidasLotogol()));
         }
 

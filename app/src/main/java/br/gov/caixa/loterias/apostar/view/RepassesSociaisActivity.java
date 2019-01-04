@@ -12,6 +12,7 @@ import com.android.volley.VolleyError;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Calendar;
 
 import br.gov.caixa.loterias.apostar.R;
 import br.gov.caixa.loterias.apostar.model.bo.DadosCorporativosBO;
@@ -84,9 +85,7 @@ public class RepassesSociaisActivity extends SettingToolbarActivity {
     private void setLayout(){
 
         TextView ttvTituloAno = findViewById(R.id.ttvTituloAno);
-        String dataBase[] = repasseOBj.getDataBase().split("/");
-        String texto = "Em %, as Loterias já destinaram";
-        texto = texto.replace("%", dataBase[dataBase.length - 1]);
+        String texto = "Em " + Calendar.getInstance().get(Calendar.YEAR)+ ", as Loterias já destinaram";
         ttvTituloAno.setText(texto);
 
         String htmlTextViewRepasseQuadro1 = "<html>Para cada <br><strong><font color=\"#ff7f00\">R$1,00</font></strong><br>apostados nas<br>loterias federais</html>";
@@ -147,8 +146,12 @@ public class RepassesSociaisActivity extends SettingToolbarActivity {
         });
     }
 
-    private String[] formatValorArrecados(BigDecimal valor){
-        valor = (repasseOBj.getArrecadacaoAcumulada().divide(BigDecimal.valueOf(100))).multiply(valor);
+    private String[] formatValorArrecados(BigDecimal valor) {
+        BigDecimal arrecadacaoAcumulada = new BigDecimal(0.0);
+        if (repasseOBj.getArrecadacaoAcumulada() != null) {
+            arrecadacaoAcumulada = repasseOBj.getArrecadacaoAcumulada();
+        }
+        valor = (arrecadacaoAcumulada.divide(BigDecimal.valueOf(100))).multiply(valor);
         String[] valores = new String[2];
 
         BigInteger valorArredondado = valor.toBigInteger();

@@ -31,8 +31,12 @@ public class AnimacaoCalculoRepassesSociais {
         double seconds = (todayDate.getTime() - dataBase.getTime()) / org.apache.commons.lang.time.DateUtils.MILLIS_PER_SECOND;
         oldValue = calculo;
 
-        calculo = (repassesSociais.getArrecadacaoAcumulada().doubleValue()) + (repassesSociais.getArrecadacaoUltimaSemana().doubleValue() / 604800.0) * seconds;
-        oldValue = oldValue == 0 ? repassesSociais.getArrecadacaoAcumulada().doubleValue() : oldValue;
+        double arrecadacaoAcumulada = 0.0;
+        if (repassesSociais.getArrecadacaoAcumulada() != null) {
+            arrecadacaoAcumulada = repassesSociais.getArrecadacaoAcumulada().doubleValue();
+        }
+        calculo = arrecadacaoAcumulada + (repassesSociais.getArrecadacaoUltimaSemana().doubleValue() / 604800.0) * seconds;
+        oldValue = oldValue == 0 ? arrecadacaoAcumulada : oldValue;
 
         final double calculoFinal = calculo;
         final double oldValueFinal = oldValue;

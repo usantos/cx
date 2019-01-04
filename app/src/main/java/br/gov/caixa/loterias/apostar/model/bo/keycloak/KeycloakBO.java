@@ -19,15 +19,12 @@ import org.androidannotations.annotations.EBean;
 import org.jboss.aerogear.android.authorization.AuthorizationManager;
 import org.jboss.aerogear.android.authorization.AuthzModule;
 import org.jboss.aerogear.android.authorization.oauth2.OAuth2AuthorizationConfiguration;
-import org.jboss.aerogear.android.authorization.oauth2.OAuth2AuthorizationException;
-import org.jboss.aerogear.android.core.Callback;
 import org.jboss.aerogear.android.pipe.module.AuthorizationFields;
 
 import java.net.URL;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostar.BuildConfig;
-import br.gov.caixa.loterias.apostar.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostar.model.bo.DadosUsuarioBO;
 
 @EBean(scope = EBean.Scope.Singleton)
@@ -81,20 +78,8 @@ public class KeycloakBO {
     }
 
     private String refreshAccess(){
-        final AuthzModule authzModule = AuthorizationManager.getModule(MODULE_NAME);
-        boolean refreshAccess = authzModule.refreshAccess();
-        if(refreshAccess){
-            AuthorizationFields fields = authzModule.getAuthorizationFields(null, null, null);
-            List<Pair<String, String>> headers = fields.getHeaders();
-            if(!headers.isEmpty()){
-                Pair<String, String> pair = headers.get(0);
-                if(pair.first.equals("Authorization")){
-                    accessToken = pair.second.replace("Bearer ", "");
-                    return accessToken;
-                }
-            }
-        }
-        return null;
+
+        return "";
     }
 
     public void logout(Activity activity){
@@ -113,90 +98,6 @@ public class KeycloakBO {
         clearCookies(activity);
         WebView webView = new WebView(activity);
         webView.clearCache(true);
-    }
-
-    public void login(final Activity activity, final OnLogin callback) {
-        try {
-            final AuthzModule authzModule = AuthorizationManager.getModule(MODULE_NAME);
-            Log.i(TAG, "authzModule = " + authzModule.getClass().getName());
-            authzModule.requestAccess(activity, new Callback<String>() {
-                @SuppressWarnings("unchecked")
-                @Override
-                public void onSuccess(String token) {
-                    Log.i(TAG, "KeycloakBO.login.onResponse: " + token);
-                    accessToken = token;
-                    SessaoUsuario.getInstance().setToken( token );
-                    if(callback != null){
-                        callback.onSuccess(token);
-                    }
-                }
-
-                @Override
-                public void onFailure(Exception e) {
-                    Log.i(TAG, "KeycloakBO.login.onFailure: " + e);
-
-                    if(e instanceof OAuth2AuthorizationException){
-                        OAuth2AuthorizationException.Error error = ((OAuth2AuthorizationException)e).type;
-                        if(error.equals(OAuth2AuthorizationException.Error.INVALID_GRANT)){
-                            logout(activity);
-                        }
-                    }
-
-                    if(callback != null){
-                        callback.onFailure(e);
-                    }
-                }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
-    }
-
-
-    public void checkAcess(final Activity activity, final OnLogin callback) {
-        try {
-            final AuthzModule authzModule = AuthorizationManager.getModule(MODULE_NAME);
-            Log.i(TAG, "authzModule = " + authzModule.getClass().getName());
-            authzModule.requestAccess(activity, new Callback<String>() {
-                @SuppressWarnings("unchecked")
-                @Override
-                public void onSuccess(String token) {
-                    Log.i(TAG, "KeycloakBO.login.onResponse: " + token);
-                    accessToken = token;
-                    if(callback != null){
-                        callback.onSuccess(token);
-                    }
-                }
-
-                @Override
-                public void onFailure(Exception e) {
-                    Log.i(TAG, "KeycloakBO.login.onFailure: " + e);
-
-                    if(e instanceof OAuth2AuthorizationException){
-                        OAuth2AuthorizationException.Error error = ((OAuth2AuthorizationException)e).type;
-                        if(error.equals(OAuth2AuthorizationException.Error.INVALID_GRANT)){
-                            logout(activity);
-                        }
-                    }
-
-                    if(callback != null){
-                        callback.onFailure(e);
-                    }
-                }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
-    }
-
-    public boolean temAutorizacao() {
-        return AuthorizationManager.getModule(MODULE_NAME).isAuthorized();
-    }
-
-    public boolean temLogin() {
-        return AuthorizationManager.getModule(MODULE_NAME).hasCredentials();
     }
 
     @SuppressWarnings("deprecation")

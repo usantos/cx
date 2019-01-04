@@ -1,10 +1,12 @@
 package br.gov.caixa.loterias.apostar.view;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -32,6 +34,8 @@ import org.androidannotations.annotations.ViewById;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 
+import java.util.Objects;
+
 import br.gov.caixa.loterias.apostar.R;
 import br.gov.caixa.loterias.apostar.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostar.model.bo.ApostaBO;
@@ -40,11 +44,14 @@ import br.gov.caixa.loterias.apostar.model.bo.DadosCorporativosBO;
 import br.gov.caixa.loterias.apostar.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostar.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.model.bo.RequestListener;
+import br.gov.caixa.loterias.apostar.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostar.model.bo.silce.dto.ApostaFavoritaDTO;
 import br.gov.caixa.loterias.apostar.model.bo.silce.dto.CarrinhoDTOResponse;
 import br.gov.caixa.loterias.apostar.model.bo.silce.dto.ComprovanteApostaDTO;
 import br.gov.caixa.loterias.apostar.model.bo.silce.dto.ComprovanteApostaDTOResponse;
 import br.gov.caixa.loterias.apostar.model.bo.silce.dto.DTOEnumInteger;
+import br.gov.caixa.loterias.apostar.model.bo.silce.dto.DTOEnumIntegerResponse;
+import br.gov.caixa.loterias.apostar.model.bo.silce.dto.DTOEnumLong;
 import br.gov.caixa.loterias.apostar.model.bo.silce.dto.DetalhesHistoricoPremioDTO;
 import br.gov.caixa.loterias.apostar.model.bo.silce.dto.DetalhesHistoricoPremioDTOResponse;
 import br.gov.caixa.loterias.apostar.model.bo.silce.dto.DetalhesPremioDTO;
@@ -53,15 +60,20 @@ import br.gov.caixa.loterias.apostar.model.bo.silce.dto.IdentificaoDeUmaApostaDa
 import br.gov.caixa.loterias.apostar.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostar.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostar.model.bo.silce.dto.ResultadoConcursoDTO;
+import br.gov.caixa.loterias.apostar.model.bo.silce.dto.ResultadoConcursoDTOResponse;
+import br.gov.caixa.loterias.apostar.model.bo.silce.dto.SituacaoResultadoBilheteEnum;
 import br.gov.caixa.loterias.apostar.utils.AppUtils;
 import br.gov.caixa.loterias.apostar.utils.DialogUtils;
 import br.gov.caixa.loterias.apostar.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostar.utils.PdfUtils;
 import br.gov.caixa.loterias.apostar.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.utils.helper.AdicionarApostaCarrinhoHelper;
+import br.gov.caixa.loterias.apostar.utils.helper.ConferirResultadoHandler;
+import br.gov.caixa.loterias.apostar.utils.helper.ConferirResultadoHelper;
 import br.gov.caixa.loterias.apostar.view.fragment.ApostaConfirmadaNumeroDetalhesPremioPago_;
 import br.gov.caixa.loterias.apostar.view.fragment.ApostaConfirmadaNumeroDetalhes_;
 import br.gov.caixa.loterias.apostar.view.fragment.ApostaConfirmadaPartidaFragment_;
+import br.gov.caixa.loterias.apostar.view.fragment.ApostasConfirmadasFragment_;
 
 /**
  * Created by pmotta on 22/03/2018.
@@ -70,7 +82,7 @@ import br.gov.caixa.loterias.apostar.view.fragment.ApostaConfirmadaPartidaFragme
 
 @EActivity(R.layout.activity_aposta_confirmada_detalhes)
 @OptionsMenu(R.menu.menu_apostas_confirmadas)
-public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
+public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implements ConferirResultadoHandler {
 
     @Bean
     protected DadosCorporativosBO dadosCorporativosBO;
@@ -93,8 +105,14 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
     @Extra
     protected DetalhesHistoricoPremioDTO detalhesHistoricoPremioDTO;
 
+    @Extra
+    protected DTOEnumLong situacaoAposta;
+
     @ViewById
     protected FrameLayout fragmentContainer;
+
+    @ViewById
+    protected FrameLayout linearLayoutBottom;
 
     @ViewById
     protected Toolbar toolbar;
@@ -285,6 +303,11 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
             }
         }
 
+        if (Objects.equals(aposta.getSituacao().getValor(), SituacaoResultadoBilheteEnum.EFETIVADA.getValor())) {
+            ConferirResultadoHelper.conferirResultadoHandler = this;
+            ConferirResultadoHelper.conferirResultado(aposta.getId(), this);
+        }
+
         estilo = new EstiloModalidade(aposta.getModalidade());
         setTheme(estilo.getThemeId());
         setTitle(ViewUtils.textFuturaAndSizeTitle(this, AppUtils.capitalizeFirstChar(getString(estilo.getStringId()))));
@@ -337,29 +360,84 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
             favoriteBtn.setVisibility(View.GONE);
         }
 
-        Fragment fragment;
+        chooseFragmentToPresent();
+    }
+
+    private void chooseFragmentToPresent() {
+        Fragment fragment = null;
 
         switch (aposta.getModalidade()) {
             case LOTOGOL:
                 disableButtonEditar();
                 fragment = ApostaConfirmadaPartidaFragment_.builder().aposta(aposta).loteca(Boolean.FALSE).build();
+
+                linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorEscura()));
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragmentContainer, fragment)
+                        .commit();
                 break;
             case LOTECA:
                 disableButtonEditar();
                 fragment = ApostaConfirmadaPartidaFragment_.builder().aposta(aposta).loteca(Boolean.TRUE).build();
+
+                linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorEscura()));
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragmentContainer, fragment)
+                        .commit();
                 break;
             default:
                 if (premioPago) {
-                    fragment = ApostaConfirmadaNumeroDetalhesPremioPago_.builder().aposta(aposta).resultadoConcursoDTO(resultadoConcursoDTO).build();
+                    //ADICIONAR CHAMADA DE RESULTADO
+                    if (detalhesHistoricoPremioDTO != null) {
+                        getResultadoModalidadeConcurso(aposta, detalhesHistoricoPremioDTO);
+                    } else if (detalhesPremioDTO != null) {
+                        getResultadoModalidadeConcurso(aposta, detalhesPremioDTO);
+                    }
                 } else {
                     fragment = ApostaConfirmadaNumeroDetalhes_.builder().aposta(aposta).build();
+
+                    linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorEscura()));
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.fragmentContainer, fragment)
+                            .commit();
                 }
                 break;
         }
+    }
 
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragmentContainer, fragment)
-                .commit();
+    private void getResultadoModalidadeConcurso
+            (IdentificaoDeUmaApostaDas8Modalidades apostaDTO, final Object object) {
+        apostaBO.getResultadoModalidadeConcurso(ApostaDTO.lowerCaseFromString(apostaDTO.getModalidade()), apostaDTO.getConcursoAlvo(),
+                new RequestListener<ResultadoConcursoDTOResponse>() {
+                    @Override
+                    public void onResponse(ResultadoConcursoDTOResponse result) {
+                        try {
+                            DialogUtils.dismiss();
+                            Fragment fragment;
+
+                            fragment = ApostaConfirmadaNumeroDetalhesPremioPago_.builder().aposta(aposta).resultadoConcursoDTO(resultadoConcursoDTO).build();
+
+                            linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), estilo.getCorEscura()));
+                            getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.fragmentContainer, fragment)
+                                    .commit();
+                        }catch (Exception e){
+                            ViewUtils.alert(getApplicationContext(), getResources().getString(R.string.erro_500));
+                        }
+                    }
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        onApostasConfirmadasError(error);
+                    }
+                });
+    }
+
+    private void onApostasConfirmadasError(VolleyError error) {
+        if (this != null) {
+            DialogUtils.dismiss();
+            RedirectNetwork.checkRedirect(error, this);
+        }
     }
 
     private void disableButtonEditar() {
@@ -375,9 +453,42 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity {
         }
     }
 
+    private static void getApostaDetalhePremio(Long apostaId, final Context contextParam) {
+        ApostaBO apostaBO = ApostaBO_.getInstance_(contextParam);
+        apostaBO.getApostaDetalhePremio(apostaId, new RequestListener<DetalhesPremioDTOResponse>() {
+            @Override
+            public void onResponse(DetalhesPremioDTOResponse result) {
+                DialogUtils.dismiss();
+                ResultadoApostaConfirmadaActivity_.intent(contextParam).detalhesPremioDTO(result.getPayload()).start();
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                onError(error, contextParam);
+            }
+        });
+    }
+
+    private static void onError(VolleyError error, Context contextParam) {
+        DialogUtils.dismiss();
+        String msgError = MensagensNetwork.setMensagem(error, contextParam);
+        ViewUtils.alert(contextParam, msgError);
+    }
+
     private void onError(VolleyError error) {
         DialogUtils.dismiss();
         String msgError = MensagensNetwork.setMensagem(error, this);
         ViewUtils.alert(this, msgError);
+    }
+
+    @Override
+    public void handle(DTOEnumLong situacao) {
+        aposta.setSituacao(situacao);
+
+        chooseFragmentToPresent();
+
+        if (Objects.equals(SituacaoResultadoBilheteEnum.PREMIADA.getValor().toString(), situacao.getValor().toString())) {
+            getApostaDetalhePremio(aposta.getId(), this);
+        }
     }
 }
