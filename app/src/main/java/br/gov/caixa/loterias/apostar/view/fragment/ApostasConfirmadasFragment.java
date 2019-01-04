@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 
+import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
@@ -96,9 +97,9 @@ public class ApostasConfirmadasFragment extends Fragment implements ApostasConfi
         return instance;
     }
 
-//    @AfterViews
+    @AfterViews
     protected void init() {
-
+        page = new ApostaPageRequest(PAGE_SIZE);
     }
 
     @Override
