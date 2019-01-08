@@ -3,6 +3,7 @@ package br.gov.caixa.loterias.apostar.view.fragment;
 import android.app.DatePickerDialog;
 import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -54,6 +55,7 @@ import br.gov.caixa.loterias.apostar.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostar.view.ApostaConfirmadaDetalhesActivity_;
 import br.gov.caixa.loterias.apostar.view.ApostasConfirmadasActivity;
 import br.gov.caixa.loterias.apostar.view.ApostasConfirmadasActivity_;
+import br.gov.caixa.loterias.apostar.view.PrincipalActivity_;
 import br.gov.caixa.loterias.apostar.view.adapter.ApostasConfirmadasAdapter;
 import br.gov.caixa.loterias.apostar.view.custom.MonthYearPickerDialog;
 import br.gov.caixa.loterias.apostar.view.custom.MonthYearPickerDialog_;
@@ -112,12 +114,6 @@ public class ApostasConfirmadasFragment extends Fragment implements ApostasConfi
 
                 LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
                 apostasConfirmadasRecyclerView.setLayoutManager(layoutManager);
-                DividerItemDecoration divider = new DividerItemDecoration(getActivity(), layoutManager.getOrientation());
-                Drawable dividerDrawable = ContextCompat.getDrawable(getActivity(), R.drawable.recyclerview_divider);
-                if (dividerDrawable != null) {
-                    divider.setDrawable(dividerDrawable);
-                }
-                apostasConfirmadasRecyclerView.addItemDecoration(divider);
                 apostasConfirmadasRecyclerView.setNestedScrollingEnabled(false);
                 requestMesesAnosDisponiveis();
                 firstTime = false;
@@ -204,6 +200,12 @@ public class ApostasConfirmadasFragment extends Fragment implements ApostasConfi
         }
     }
 
+    private void clearItemDecorations() {
+        while (apostasConfirmadasRecyclerView.getItemDecorationCount() != 0) {
+            apostasConfirmadasRecyclerView.removeItemDecorationAt(0);
+        }
+    }
+
     private void onApostasConfirmadasResult(final List<ApostaDTO> apostasList) {
         isLoading = false;
 
@@ -227,8 +229,26 @@ public class ApostasConfirmadasFragment extends Fragment implements ApostasConfi
             ApostasConfirmadasAdapter adapter = (ApostasConfirmadasAdapter) apostasConfirmadasRecyclerView.getAdapter();
             if (adapter == null || reloadingEntireList) {
                 reloadingEntireList = false;
+                if (apostasList.size() == 0) {
+                    clearItemDecorations();
+                    apostasConfirmadasRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), 0));
+                } else {
+                    LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+                    DividerItemDecoration divider = new DividerItemDecoration(getActivity(), layoutManager.getOrientation());
+                    Drawable dividerDrawable = ContextCompat.getDrawable(getActivity(), R.drawable.recyclerview_divider);
+                    if (dividerDrawable != null) {
+                        divider.setDrawable(dividerDrawable);
+                    }
+                    clearItemDecorations();
+                    apostasConfirmadasRecyclerView.addItemDecoration(divider);
+                }
                 adapter = new ApostasConfirmadasAdapter(getActivity(), apostasList, isHistorico);
                 adapter.setOnApostasConfirmadasListener(new ApostasConfirmadasAdapter.OnApostasConfirmadasListener() {
+                    @Override
+                    public void onEmptyCellClick() {
+                        getActivity().onBackPressed();
+                    }
+
                     @Override
                     public void onReload(ApostaDTO apostaDTO) {
                         AdicionarApostaCarrinhoHelper.incluirApostaCarrinho(getActivity(), apostaDTO);

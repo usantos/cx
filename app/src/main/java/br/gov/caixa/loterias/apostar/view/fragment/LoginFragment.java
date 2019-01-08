@@ -4,21 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 
-import org.jboss.aerogear.android.authorization.oauth2.OAuth2AuthorizationException;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,16 +26,13 @@ import br.gov.caixa.loterias.apostar.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.model.bo.keycloak.KeycloakBO;
 import br.gov.caixa.loterias.apostar.model.bo.keycloak.KeycloakBO_;
 import br.gov.caixa.loterias.apostar.model.bo.silce.dto.ApostaDTO;
-
 import br.gov.caixa.loterias.apostar.model.bo.silce.dto.UsuarioLogadoResponse;
 import br.gov.caixa.loterias.apostar.model.dao.DBLoteriasCrud;
 import br.gov.caixa.loterias.apostar.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostar.utils.AppUtils;
 import br.gov.caixa.loterias.apostar.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.view.CadastrarActivity_;
-import br.gov.caixa.loterias.apostar.view.PrincipalActivity;
 import br.gov.caixa.loterias.apostar.view.PrincipalActivity_;
-import br.gov.caixa.loterias.apostar.view.TokenActivity;
 import br.gov.caixa.loterias.apostar.view.custom.LoadingViewLoterias;
 
 public class LoginFragment extends Fragment {
