@@ -188,12 +188,6 @@ public class SelecaoModalidadesRapidaoActivity extends AppCompatActivity {
                 case QUINA:
                     tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_5, R.color.quinaclaro, false, item.getValor(), item.getDescricaoEspecial());
                     break;
-                case LOTECA:
-                    tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_10, R.color.lotecaclaro, false, item.getValor(), item.getDescricaoEspecial());
-                    break;
-                case LOTOGOL:
-                    tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_7, R.color.lotogolclaro, false, item.getValor(), item.getDescricaoEspecial());
-                    break;
                 case LOTOFACIL:
                     tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_6, R.color.lotofacilclaro, false, item.getValor(), item.getDescricaoEspecial());
                     break;
@@ -209,12 +203,12 @@ public class SelecaoModalidadesRapidaoActivity extends AppCompatActivity {
                 case DUPLA_SENA:
                     tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_9, R.color.duplasenaclaro, false, item.getValor(), item.getDescricaoEspecial());
                     break;
-                case FEDERAL:
-                    tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo, R.color.federalclaro, false, item.getValor(), item.getDescricaoEspecial());
-                    break;
+
                 case DIA_DE_SORTE:
                     tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_2, R.color.diasorteclaro, false, item.getValor(), item.getDescricaoEspecial());
                     break;
+                    default:
+                        break;
             }
             if (tipoAposta != null) {
                 tipoAposta.setTitulo(tipoAposta.getTitulo().toLowerCase());
