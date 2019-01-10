@@ -222,7 +222,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     }
 
     private SpannableStringBuilder retornaStringConcursoSemEstimativa(String numConcurso, int corModalidadeInt) {
-        final SpannableStringBuilder sb = new SpannableStringBuilder("Concurso \n\n" + numConcurso + "\n\nainda não possui prêmio estimado.");
+        final SpannableStringBuilder sb = new SpannableStringBuilder("Concurso \n\n" + numConcurso + "\n\nainda sem estimativa de prêmio.");
 
         final ForegroundColorSpan corModalidade = new ForegroundColorSpan(ContextCompat.getColor(context, corModalidadeInt));
         final ForegroundColorSpan corTexto = new ForegroundColorSpan(ContextCompat.getColor(context,R.color.cinzaescuro));
