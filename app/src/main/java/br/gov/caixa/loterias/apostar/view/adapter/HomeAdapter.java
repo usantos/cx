@@ -5,6 +5,10 @@ import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +37,7 @@ import br.gov.caixa.loterias.apostar.view.custom.LoadingViewLoterias;
 import br.gov.caixa.loterias.apostar.view.custom.ModalidadeSorteioResultadoView;
 import br.gov.caixa.loterias.apostar.view.custom.ModalidadeSorteioResultadoView_;
 
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -93,11 +98,18 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         holder.titulo.setBackgroundColor(ContextCompat.getColor(context, estilo.getCorClara()));
         holder.valorAcumulado.setTextColor(ContextCompat.getColor(context, estilo.getCorClara()));
 
-        String  estimativaFormatado = ViewUtils.getMoedaFormat(data.get(position).getConcurso().getEstimativa());
-        holder.valorAcumulado.setText(estimativaFormatado);
+        if (data.get(position).getConcurso().getEstimativa().compareTo(BigDecimal.ZERO) != 0) {
+            String  estimativaFormatado = ViewUtils.getMoedaFormat(data.get(position).getConcurso().getEstimativa());
+            holder.valorAcumulado.setText(estimativaFormatado);
+            holder.premioEstimadoConcurso.setText(ViewUtils.textFuturaAndFuturaBold(context, context.getString(R.string.label_premio_estimado_concurso_numero_bold,
+                    data.get(position).getConcurso().getNumero())));
 
-        holder.premioEstimadoConcurso.setText(ViewUtils.textFuturaAndFuturaBold(context, context.getString(R.string.label_premio_estimado_concurso_numero_bold,
-                data.get(position).getConcurso().getNumero())));
+        } else {
+            holder.valorAcumulado.setText(retornaStringConcursoSemEstimativa(data.get(position).getConcurso().getNumero().toString(), estilo.getCorClara()));
+
+            holder.premioEstimadoConcurso.setVisibility(View.INVISIBLE);
+        }
+
 
         DateFormat formatterDay = new SimpleDateFormat("EEEE");
         DateFormat formatterDate = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
@@ -209,6 +221,19 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         });
     }
 
+    private SpannableStringBuilder retornaStringConcursoSemEstimativa(String numConcurso, int corModalidadeInt) {
+        final SpannableStringBuilder sb = new SpannableStringBuilder("Concurso \n\n" + numConcurso + "\n\nnão possui prêmio estimado.");
+
+        final ForegroundColorSpan corModalidade = new ForegroundColorSpan(ContextCompat.getColor(context, corModalidadeInt));
+        final ForegroundColorSpan corTexto = new ForegroundColorSpan(ContextCompat.getColor(context,R.color.cinzaescuro));
+
+        sb.setSpan(corModalidade, 0, 7, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        sb.setSpan(corTexto, 10, 11 + numConcurso.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        sb.setSpan(corModalidade, 11 + numConcurso.length(), sb.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+
+        return sb;
+    }
+
     private String retornaStringDias(Long dia) {
         if (dia > 0) {
             if (dia == 1) {
@@ -280,7 +305,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             relogio = itemView.findViewById(R.id.imageWatch);
             titulo = itemView.findViewById(R.id.linearLayoutTopModalidades);
             valorAcumulado = itemView.findViewById(R.id.textVieCardAcumulatedValue);
-            labelAcumulouTextView = itemView.findViewById(R.id.labelAcumulouTextView);
             premioEstimadoConcurso = itemView.findViewById(R.id.textPremioEstimadoConcurso);
             dataSorteio = itemView.findViewById(R.id.textVieCardDrawDate);
             tempoRestanteParaAposta = itemView.findViewById(R.id.textVieCardClosingOfBets);
