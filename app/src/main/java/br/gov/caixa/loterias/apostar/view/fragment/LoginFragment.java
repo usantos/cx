@@ -82,7 +82,6 @@ public class LoginFragment extends Fragment {
             }
         });
 
-        KeycloakBO keycloakBO =  KeycloakBO_.getInstance_(getActivity());
         if ((DadosUsuarioBO.checarFecharIntroducao(getActivity()) && DadosUsuarioBO.checarUsuarioLogado(getActivity())) && LoginSP.isPrimeiraInicializacao()){
             LoginSP.primeiraInicializacao(false);
             connectKeycloak();
