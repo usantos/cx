@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="br.gov.caixa.loterias.apostar.view.DadosPessoaisActivity"
+    tools:context="br.gov.caixa.loterias.apostar.interno.view.DadosPessoaisActivity"
     tools:showIn="@layout/activity_dados_pessoais"
     android:orientation="vertical"
     >
@@ -84,7 +84,7 @@ adquiridas em um toque"
             </android.support.design.widget.TextInputLayout>
 
 
-            <br.gov.caixa.loterias.apostar.utils.segmentedbutton.SegmentedButtonGroup
+            <br.gov.caixa.loterias.apostar.interno.utils.segmentedbutton.SegmentedButtonGroup
                 android:id="@+id/segmentedButtonSexo"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
@@ -101,7 +101,7 @@ adquiridas em um toque"
                 app:sbg_ripple="true"
                 app:sbg_selectorColor="@color/verdeazul">
 
-                <br.gov.caixa.loterias.apostar.utils.segmentedbutton.SegmentedButton
+                <br.gov.caixa.loterias.apostar.interno.utils.segmentedbutton.SegmentedButton
                     android:layout_width="0dp"
                     android:layout_height="56dp"
                     android:layout_weight="1"
@@ -114,7 +114,7 @@ adquiridas em um toque"
                     app:sb_textGravity="center"
                     android:layout_gravity="center_vertical"/>
 
-                <br.gov.caixa.loterias.apostar.utils.segmentedbutton.SegmentedButton
+                <br.gov.caixa.loterias.apostar.interno.utils.segmentedbutton.SegmentedButton
                     android:layout_width="0dp"
                     android:layout_height="56dp"
                     android:layout_weight="1"
@@ -124,7 +124,7 @@ adquiridas em um toque"
                     app:sb_textColor_onSelection="@color/branco"
                     app:sb_textStyle="bold" />
 
-            </br.gov.caixa.loterias.apostar.utils.segmentedbutton.SegmentedButtonGroup>
+            </br.gov.caixa.loterias.apostar.interno.utils.segmentedbutton.SegmentedButtonGroup>
 
 
             <android.support.design.widget.TextInputLayout

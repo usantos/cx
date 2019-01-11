@@ -102,7 +102,7 @@
             </android.support.design.widget.TextInputLayout>
 
 
-            <br.gov.caixa.loterias.apostar.utils.segmentedbutton.SegmentedButtonGroup
+            <br.gov.caixa.loterias.apostar.interno.utils.segmentedbutton.SegmentedButtonGroup
                 android:id="@+id/segmentedButtonSexo"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
@@ -119,7 +119,7 @@
                 app:sbg_ripple="true"
                 app:sbg_selectorColor="@color/verdeazul">
 
-                <br.gov.caixa.loterias.apostar.utils.segmentedbutton.SegmentedButton
+                <br.gov.caixa.loterias.apostar.interno.utils.segmentedbutton.SegmentedButton
                     android:layout_width="0dp"
                     android:layout_height="56dp"
                     android:layout_weight="1"
@@ -132,7 +132,7 @@
                     app:sb_textGravity="center"
                     android:layout_gravity="center_vertical"/>
 
-                <br.gov.caixa.loterias.apostar.utils.segmentedbutton.SegmentedButton
+                <br.gov.caixa.loterias.apostar.interno.utils.segmentedbutton.SegmentedButton
                     android:layout_width="0dp"
                     android:layout_height="56dp"
                     android:layout_weight="1"
@@ -142,7 +142,7 @@
                     app:sb_textColor_onSelection="@color/branco"
                     app:sb_textStyle="bold" />
 
-            </br.gov.caixa.loterias.apostar.utils.segmentedbutton.SegmentedButtonGroup>
+            </br.gov.caixa.loterias.apostar.interno.utils.segmentedbutton.SegmentedButtonGroup>
 
 
             <!--<android.support.design.widget.TextInputLayout-->

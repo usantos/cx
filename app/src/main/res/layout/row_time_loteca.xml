@@ -8,7 +8,7 @@
     android:gravity="center"
     android:orientation="vertical">
 
-    <br.gov.caixa.loterias.apostar.view.custom.ItemEquipeView_
+    <br.gov.caixa.loterias.apostar.interno.view.custom.ItemEquipeView_
         android:id="@+id/loteca_time_um"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -16,7 +16,7 @@
         android:layout_alignParentBottom="true"
         android:outlineProvider="none" />
 
-    <br.gov.caixa.loterias.apostar.view.custom.ItemEquipeView_
+    <br.gov.caixa.loterias.apostar.interno.view.custom.ItemEquipeView_
         android:id="@+id/loteca_empate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -26,7 +26,7 @@
         android:layout_alignBottom="@+id/loteca_time_um"
         android:outlineProvider="none" />
 
-    <br.gov.caixa.loterias.apostar.view.custom.ItemEquipeView_
+    <br.gov.caixa.loterias.apostar.interno.view.custom.ItemEquipeView_
         android:id="@+id/loteca_time_dois"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
