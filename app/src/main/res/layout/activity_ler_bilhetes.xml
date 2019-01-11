@@ -6,7 +6,7 @@
     android:layout_height="fill_parent"
     android:gravity="center"
     android:orientation="horizontal"
-    tools:context="br.gov.caixa.loterias.apostar.view.LerBilhetesActivity">
+    tools:context="br.gov.caixa.loterias.apostar.interno.view.LerBilhetesActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"

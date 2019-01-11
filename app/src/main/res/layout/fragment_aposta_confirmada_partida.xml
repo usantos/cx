@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="br.gov.caixa.loterias.apostar.view.fragment.ApostaConfirmadaPartidaFragment">
+    tools:context="br.gov.caixa.loterias.apostar.interno.view.fragment.ApostaConfirmadaPartidaFragment">
 
     <LinearLayout
         android:id="@+id/apostaConfirmadaLotecaLinearLayout"
@@ -163,7 +163,7 @@
                     android:textStyle="bold" />
             </LinearLayout>
 
-            <br.gov.caixa.loterias.apostar.view.custom.ExpandableHeightRecyclerView
+            <br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightRecyclerView
                 android:id="@+id/listaPartidasApostadasExpandebleRecyclerView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
