@@ -294,7 +294,7 @@
                     android:textStyle="bold" />
             </LinearLayout>
 
-            <br.gov.caixa.loterias.apostar.view.custom.ExpandableHeightRecyclerView
+            <br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightRecyclerView
                 android:id="@+id/listaFaixaPremiacaoExpandableHeightRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

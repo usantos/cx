@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="br.gov.caixa.loterias.apostar.view.RapidaoConfigActivity"
+    tools:context="br.gov.caixa.loterias.apostar.interno.view.RapidaoConfigActivity"
     tools:showIn="@layout/activity_rapidao_config">
 
     <ScrollView
@@ -279,7 +279,7 @@
                     android:textSize="14.2sp"
                     android:textStyle="bold" />
 
-                <br.gov.caixa.loterias.apostar.view.custom.ExpandableHeightGridView
+                <br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightGridView
                     android:id="@+id/gridviewTiposApostasRapidao"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -317,7 +317,7 @@
                     android:textSize="14.2sp"
                     android:textStyle="bold" />
 
-                <br.gov.caixa.loterias.apostar.view.custom.ExpandableHeightGridView
+                <br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightGridView
                     android:id="@+id/gridviewNumerosObrigatoriosRapidao"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -357,7 +357,7 @@
                     android:textSize="14.2sp"
                     android:textStyle="bold" />
 
-                <br.gov.caixa.loterias.apostar.view.custom.ExpandableHeightGridView
+                <br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightGridView
                     android:id="@+id/gridviewNumerosProibidosRapidao"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -393,7 +393,7 @@
                     android:textSize="14.2sp"
                     android:textStyle="bold" />
 
-                <br.gov.caixa.loterias.apostar.view.custom.ExpandableHeightGridView
+                <br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightGridView
                     android:id="@+id/gridViewApostaFavorita"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

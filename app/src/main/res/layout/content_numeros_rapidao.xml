@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="br.gov.caixa.loterias.apostar.view.NumerosRapidaoActivity"
+    tools:context="br.gov.caixa.loterias.apostar.interno.view.NumerosRapidaoActivity"
     tools:showIn="@layout/activity_numeros_rapidao">
 
     <RelativeLayout
@@ -53,7 +53,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp">
-                    <br.gov.caixa.loterias.apostar.view.custom.ExpandableHeightGridView
+                    <br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightGridView
                         android:id="@+id/gridviewNumerosRapidaoSelecao"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

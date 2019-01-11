@@ -3,6 +3,6 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="br.gov.caixa.loterias.apostar.view.SplashScreenActivity">
+    tools:context="br.gov.caixa.loterias.apostar.interno.view.SplashScreenActivity">
 
 </FrameLayout>
