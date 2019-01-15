@@ -24,8 +24,10 @@ import java.util.List;
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bo.DadosCorporativosBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.DadosCorporativosBO_;
+import br.gov.caixa.loterias.apostar.interno.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
+import br.gov.caixa.loterias.apostar.interno.model.bo.keycloak.KeycloakBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ListSecaoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ListSecaoDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResourceResponse;
@@ -143,8 +145,17 @@ public class TermosUsoActivity extends AppCompatActivity {
         termosUsoButton.setChecked(Boolean.TRUE);
         listenerTermosUso();
         listenerDuvidas();
-        listenerPolitica();
-        verificaTermoAceito();
+
+        if (DadosUsuarioBO.checarUsuarioLogado(this)) {
+            listenerPolitica();
+            verificaTermoAceito();
+        } else {
+            isTermoAceito = Boolean.TRUE;
+            scrollViewTermoAceite.setPadding(0, 0, 0, 0);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(isTermoAceito);
+            footerAceiteTermo.setVisibility(View.GONE);
+            termosUsoButton.performClick();
+        }
     }
 
     @Override
@@ -181,7 +192,6 @@ public class TermosUsoActivity extends AppCompatActivity {
         termosUsoButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 getTermo();
-
             }
         });
     }
@@ -190,7 +200,6 @@ public class TermosUsoActivity extends AppCompatActivity {
         politicaButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 selectPoliticas();
-
             }
         });
     }
@@ -199,7 +208,6 @@ public class TermosUsoActivity extends AppCompatActivity {
         duvidasButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 selectDuvidas();
-
             }
         });
     }
@@ -224,7 +232,9 @@ public class TermosUsoActivity extends AppCompatActivity {
     private void selectDuvidas() {
         duvidasButton.setChecked(Boolean.TRUE);
         layoutDuvidas.setVisibility(View.VISIBLE);
-        initReciclerViewDuvidas();
+        if (secaoDuvidas == null) {
+            initReciclerViewDuvidas();
+        }
         unSelectTermoUso();
     }
 
