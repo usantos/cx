@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -58,48 +59,60 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostasConfi
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        ApostaDTO aposta = list.get(position);
-        EstiloModalidade estiloModalidade = new EstiloModalidade(aposta.getModalidade());
+        if (list.size() != 0) {
+            ApostaDTO aposta = list.get(position);
+            EstiloModalidade estiloModalidade = new EstiloModalidade(aposta.getModalidade());
 
-        int color = ContextCompat.getColor(context, estiloModalidade.getCorEscura());
+            int color = ContextCompat.getColor(context, estiloModalidade.getCorEscura());
 
-        holder.stripe.setBackgroundColor(color);
-        holder.modalidadeTxt.setTextColor(color);
-        holder.modalidadeTxt.setText(estiloModalidade.getStringId());
-        holder.situacaoTxt.setTextColor(color);
-        String descricaoStatus = "";
-        if (aposta.getSituacao().getValor() == 4){
-            descricaoStatus = "Clique para conferir o resultado.";
-            holder.situacaoTxt.setTextColor(ContextCompat.getColor(context, R.color.azulescuroapostafavorita));
-        } else {
-            descricaoStatus = aposta.getSituacao().getDescricao();
+            holder.stripe.setBackgroundColor(color);
+            holder.modalidadeTxt.setTextColor(color);
+            holder.modalidadeTxt.setText(estiloModalidade.getStringId());
+            holder.situacaoTxt.setTextColor(color);
+            String descricaoStatus = "";
+            if (aposta.getSituacao().getValor() == 4){
+                descricaoStatus = "Clique para conferir o resultado.";
+                holder.situacaoTxt.setTextColor(ContextCompat.getColor(context, R.color.azulescuroapostafavorita));
+            } else {
+                descricaoStatus = aposta.getSituacao().getDescricao();
+            }
+            holder.situacaoTxt.setText("situação: " + descricaoStatus.toLowerCase());
+
+            int teimosinhas = aposta.getQuantidadeTeimosinhas() != null ? aposta.getQuantidadeTeimosinhas() : 0;
+            if (teimosinhas > 0) {
+                int quantidade = aposta.getConcursoInicial() + (teimosinhas - 1);
+                holder.concursoTxt.setText(context.getString(R.string.label_aposta_concursos,
+                        aposta.getConcursoInicial(),
+                        quantidade));
+            } else {
+                holder.concursoTxt.setText(context.getString(R.string.label_aposta_concurso, aposta.getConcursoInicial()));
+            }
         }
-        holder.situacaoTxt.setText("situação: " + descricaoStatus.toLowerCase());
-
-        int teimosinhas = aposta.getQuantidadeTeimosinhas() != null ? aposta.getQuantidadeTeimosinhas() : 0;
-        if (teimosinhas > 0) {
-            int quantidade = aposta.getConcursoInicial() + (teimosinhas - 1);
-            holder.concursoTxt.setText(context.getString(R.string.label_aposta_concursos,
-                    aposta.getConcursoInicial(),
-                    quantidade));
-        } else {
-            holder.concursoTxt.setText(context.getString(R.string.label_aposta_concurso, aposta.getConcursoInicial()));
-        }
-
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         final Context context = parent.getContext();
-        final View view = LayoutInflater.from(context).inflate(R.layout.item_apostas_confirmadas,
-                parent,
-                false);
+        View view;
+        if (list.size() == 0) {
+            view = LayoutInflater.from(context).inflate(R.layout.row_apostas_confirmadas_empty,
+                    parent,
+                    false);
+        } else {
+            view = LayoutInflater.from(context).inflate(R.layout.item_apostas_confirmadas,
+                    parent,
+                    false);
+        }
+
 
         return new ViewHolder(view);
     }
 
     @Override
     public int getItemCount() {
+        if (list.size() == 0) {
+            return  1;
+        }
         return list.size();
     }
 
@@ -107,6 +120,8 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostasConfi
         void onReload(ApostaDTO apostaDTO);
 
         void onItemClick(ApostaDTO apostaDTO);
+
+        void onEmptyCellClick();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -118,22 +133,31 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostasConfi
         private LinearLayout reloadBtnLayout;
         private LinearLayout setaLayout;
         private TextView situacaoTxt;
+        private Button btnAposteAqui;
 
         public ViewHolder(View view) {
             super(view);
-            stripe = view.findViewById(R.id.stripe);
-            modalidadeTxt = view.findViewById(R.id.modalidadeTxt);
-            concursoTxt = view.findViewById(R.id.concursoTxt);
-            reloadBtn = view.findViewById(R.id.reloadBtn);
-            setaImg = view.findViewById(R.id.setaImg);
-            setaLayout = view.findViewById(R.id.setaLayout);
-            reloadBtnLayout = view.findViewById(R.id.reloadBtnLayout);
-            situacaoTxt = view.findViewById(R.id.situacaoTxt);
 
-            setaLayout.setOnClickListener(this);
-            setaImg.setOnClickListener(this);
-            reloadBtnLayout.setOnClickListener(this);
-            reloadBtn.setOnClickListener(this);
+            if (list.size() != 0) {
+                stripe = view.findViewById(R.id.stripe);
+                modalidadeTxt = view.findViewById(R.id.modalidadeTxt);
+                concursoTxt = view.findViewById(R.id.concursoTxt);
+                reloadBtn = view.findViewById(R.id.reloadBtn);
+                setaImg = view.findViewById(R.id.setaImg);
+                setaLayout = view.findViewById(R.id.setaLayout);
+                reloadBtnLayout = view.findViewById(R.id.reloadBtnLayout);
+                situacaoTxt = view.findViewById(R.id.situacaoTxt);
+
+                setaLayout.setOnClickListener(this);
+                setaImg.setOnClickListener(this);
+                reloadBtnLayout.setOnClickListener(this);
+                reloadBtn.setOnClickListener(this);
+            } else {
+                btnAposteAqui = view.findViewById(R.id.btnAposteAquiApostasConfirmadas);
+
+                btnAposteAqui.setOnClickListener(this);
+            }
+
 
             view.setOnClickListener(this);
         }
@@ -141,28 +165,32 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostasConfi
         @Override
         public void onClick(View view) {
             if (onApostasConfirmadasListener != null) {
-                ApostaDTO apostaDTO = list.get(getAdapterPosition());
+                if (view.getId() == R.id.row_apostas_confirmadas_empty || view.getId() == R.id.btnAposteAquiApostasConfirmadas) {
+                    onApostasConfirmadasListener.onEmptyCellClick();
+                } else {
+                    ApostaDTO apostaDTO = list.get(getAdapterPosition());
 
-                switch (view.getId()) {
-                    case R.id.reloadBtn: {
-                        onApostasConfirmadasListener.onReload(apostaDTO);
-                        break;
+                    switch (view.getId()) {
+                        case R.id.reloadBtn: {
+                            onApostasConfirmadasListener.onReload(apostaDTO);
+                            break;
+                        }
+                        case R.id.reloadBtnLayout: {
+                            onApostasConfirmadasListener.onReload(apostaDTO);
+                            break;
+                        }
+                        case R.id.setaLayout: {
+                            onApostasConfirmadasListener.onItemClick(apostaDTO);
+                            break;
+                        }
+                        case R.id.setaImg: {
+                            onApostasConfirmadasListener.onItemClick(apostaDTO);
+                            break;
+                        }
+                        default:
+                            onApostasConfirmadasListener.onItemClick(apostaDTO);
+                            break;
                     }
-                    case R.id.reloadBtnLayout: {
-                        onApostasConfirmadasListener.onReload(apostaDTO);
-                        break;
-                    }
-                    case R.id.setaLayout: {
-                        onApostasConfirmadasListener.onItemClick(apostaDTO);
-                        break;
-                    }
-                    case R.id.setaImg: {
-                        onApostasConfirmadasListener.onItemClick(apostaDTO);
-                        break;
-                    }
-                    default:
-                        onApostasConfirmadasListener.onItemClick(apostaDTO);
-                        break;
                 }
             }
         }
