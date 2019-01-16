@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/branco"
-    tools:context="br.gov.caixa.loterias.apostar.view.SimularApostaActivity">
+    tools:context="br.gov.caixa.loterias.apostar.interno.view.SimularApostaActivity">
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/toolBar"
@@ -427,6 +427,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="13dp"
+                    android:layout_marginEnd="25dp"
                     android:background="@drawable/rounded_textview"
                     android:clickable="false"
                     android:gravity="center"
@@ -435,7 +436,7 @@
                     android:textColor="@color/branco"
                     android:textSize="12sp"
                     android:translationZ="2dp"
-                    android:layout_marginEnd="25dp"/>
+                    android:visibility="invisible" />
             </RelativeLayout>
 
             <TextView

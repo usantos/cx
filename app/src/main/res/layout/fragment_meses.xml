@@ -42,7 +42,7 @@
                 android:layout_marginEnd="24dp"
                 tools:text=" | 2" />
 
-            <br.gov.caixa.loterias.apostar.view.custom.ExpandableHeightGridView
+            <br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightGridView
                 android:id="@+id/mesesGridView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
