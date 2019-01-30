@@ -223,7 +223,6 @@ dependencies {
     implementation 'io.swagger:swagger-annotations:1.5.16'
 
     //Android application with RESTful services secured with OAuth 2 using Pipe
-    implementation 'org.jboss.aerogear:aerogear-android-authz:4.0.0'
     implementation 'commons-codec:commons-codec:1.10'
 
     //Biblioteca de gerenciamento de imagens

@@ -96,6 +96,7 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
         SessaoUsuario sessaoUser = SessaoUsuario.getInstance();
         valorMinApostaCarrinho = sessaoUser.getValorMinimimoAposta();
         valorMaxApostaCarrinho = sessaoUser.getValorMaximoAposta();
+        tituloValorMinimoApostaValorMinimo.setText(ViewUtils.getMoedaFormat(valorMinApostaCarrinho));
 
         callWebservice();
 
@@ -112,8 +113,8 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
         int progressSet = progress;
 
         if (seekBar == seekBarValorMinimoAposta) {
-            if (progressSet < 0) {
-                progressSet = 0;
+            if (progressSet < valorMinAposta) {
+                progressSet = valorMinAposta;
                 setValue = true;
             } else if (progressSet > seekBarValorMaximoAposta.getProgress() && seekBarValorMaximoAposta.getProgress() >= 1) {
                 rapidao.setValorMinimo(rapidao.getValorMaximo());
@@ -144,10 +145,6 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
             }
         }
         if (seekBar == seekBarPremiumMimimun) {
-//            if (progressSet < 1) {
-//                progressSet = 1;
-//                setValue = true;
-//            }
             if (setValue || primeiroCarregamento) {
                 int progressFormatMilhoes = progressSet * 1000000;
                 BigDecimal valorProgress = new BigDecimal(Float.toString((float) progressFormatMilhoes));
@@ -431,8 +428,6 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
         seekBarPremiumMimimun.setMax(100);
 
         tituloValorValorMinimoAposta.setText(ViewUtils.getMoedaFormat(valorMinimo));
-        tituloValorMinimoApostaValorMinimo.setText(ViewUtils.getMoedaFormat(BigDecimal.ZERO));
-
         tituloValorMinimoApostaValorMaximo.setText(ViewUtils.getMoedaFormat(new BigDecimal(Float.toString((float) valueMaxApostaInt))));
         tituloValorValorMaximoAposta.setText(ViewUtils.getMoedaFormat(BigDecimal.valueOf(valor)));
         tituloValorMaximoApostaValorMinimo.setText(ViewUtils.getMoedaFormat(valorMinApostaCarrinho));

@@ -64,6 +64,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RepassometroDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RepassometroDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.dao.DBLoteriasHelper;
 import br.gov.caixa.loterias.apostar.interno.model.sp.CarrinhoSP;
+import br.gov.caixa.loterias.apostar.interno.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostar.interno.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostar.interno.utils.ExpandableListDataSideMenu;
 import br.gov.caixa.loterias.apostar.interno.utils.StringUtils;
@@ -401,7 +402,6 @@ public class PrincipalActivity extends AppCompatActivity
                     dadosUsuarioBO.sair(new RequestListener<NetworkResponse>() {
                         @Override
                         public void onResponse(NetworkResponse response) {
-//                            KeycloakBO_.getInstance_(PrincipalActivity.this).logout(PrincipalActivity.this);
                             AcessoBO_.getInstance_(PrincipalActivity.this).iniciarLogoutSSO();
                             realizandoLogin = true;
                             loadViewProgress.dismiss();
