@@ -171,6 +171,7 @@
     <string name="label_salve_esta_aposta_carinha">Salve esta aposta :)</string>
     <string name="label_aposta_espelho">Aposta espelho</string>
     <string name="label_aposte_agora">Aposte agora</string>
+    <string name="label_aposte_aqui">Aposte\naqui</string>
     <string name="label_faca_login_cadastre">Faça login/cadastre-se</string>
     <string name="label_coluna">Coluna</string>
     <string name="label_time">Time</string>
@@ -276,6 +277,7 @@
     <string name="label_numerico_dois">2</string>
     <string name="label_numerico_tres">3</string>
     <string name="label_situacao_list_apostas_confirmadas">Situação -&#160;</string>
+    <string name="label_empty_list_apostas_confirmadas">Você ainda não possui apostas confirmadas neste mês. Deseja apostar agora?</string>
     <string name="label_ganhador">ganhador</string>
     <string name="label_numero_ganhador">%d ganhador</string>
     <string name="label_ganhadores">ganhadores</string>

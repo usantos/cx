@@ -16,12 +16,8 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         FragmentManager fm = getSupportFragmentManager();
-        // create a FragmentTransaction to begin the transaction and replace the Fragment
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
-    // replace the FrameLayout with new Fragment
         fragmentTransaction.replace(R.id.frameLayout, new LoginFragment());
-        fragmentTransaction.commit(); // save the changes
-
-
+        fragmentTransaction.commit();
     }
 }
