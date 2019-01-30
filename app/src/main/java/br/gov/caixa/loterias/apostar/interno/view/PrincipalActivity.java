@@ -57,7 +57,6 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.DadosUsuarioBO_;
 import br.gov.caixa.loterias.apostar.interno.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
-import br.gov.caixa.loterias.apostar.interno.model.bo.keycloak.KeycloakBO_;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametrosSimulacaoResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RepassometroDTO;
@@ -403,6 +402,7 @@ public class PrincipalActivity extends AppCompatActivity
                         @Override
                         public void onResponse(NetworkResponse response) {
                             AcessoBO_.getInstance_(PrincipalActivity.this).iniciarLogoutSSO();
+                            LoginSP.loginRealizado(false);
                             realizandoLogin = true;
                             loadViewProgress.dismiss();
                         }

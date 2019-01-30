@@ -32,6 +32,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostar.interno.R;
+import br.gov.caixa.loterias.apostar.interno.model.bean.Modalidade;
 import br.gov.caixa.loterias.apostar.interno.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostar.interno.model.bean.TipoAposta;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO;
@@ -225,6 +226,12 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
         for (TipoAposta tipoAposta : tipoApostaLista) {
             if (tipoAposta.getSelect()) {
                 tipoApostaArrayList.add(tipoAposta);
+            }
+        }
+
+        for (int i = 0; i < tipoApostaArrayList.size(); i++) {
+            if (ModalidadeEnum.fromInteger(tipoApostaArrayList.get(i).getValor()) == ModalidadeEnum.LOTOGOL || ModalidadeEnum.fromInteger(tipoApostaArrayList.get(i).getValor()) == ModalidadeEnum.LOTECA ) {
+                tipoApostaArrayList.remove(i);
             }
         }
 

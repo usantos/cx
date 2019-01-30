@@ -23,7 +23,6 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.DadosUsuarioBO_;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
-import br.gov.caixa.loterias.apostar.interno.model.bo.keycloak.KeycloakBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.keycloak.KeycloakBO_;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.UsuarioLogadoResponse;
@@ -34,6 +33,7 @@ import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.CadastrarActivity_;
 import br.gov.caixa.loterias.apostar.interno.view.PrincipalActivity_;
 import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
+
 
 public class LoginFragment extends Fragment {
 
@@ -72,7 +72,6 @@ public class LoginFragment extends Fragment {
             }
         });
 
-        KeycloakBO keycloakBO =  KeycloakBO_.getInstance_(getActivity());
         if ((DadosUsuarioBO.checarFecharIntroducao(getActivity()) && DadosUsuarioBO.checarUsuarioLogado(getActivity())) && LoginSP.isPrimeiraInicializacao()){
             LoginSP.primeiraInicializacao(false);
             connectKeycloak();

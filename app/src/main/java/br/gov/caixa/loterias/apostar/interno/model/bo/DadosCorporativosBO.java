@@ -205,7 +205,6 @@ public class DadosCorporativosBO extends BaseBO{
 
     public void secaoDuvidas(final RequestListener<ListSecaoDTOResponse> listener) {
         LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
-        headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
 
         GsonRequest request = silceConnection.buildGetRequest(ServerMethods.DUVIDAS_SECOES_PATH, new LinkedHashMap<String, String>(), ListSecaoDTOResponse.class,
                 listener.getSilceListener(),
