@@ -17,12 +17,10 @@ import java.io.UnsupportedEncodingException;
 
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bean.ErrorResponse;
-import br.gov.caixa.loterias.apostar.interno.model.bo.AppAuth.TokenActivity;
 import br.gov.caixa.loterias.apostar.interno.model.bo.keycloak.KeycloakBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.keycloak.KeycloakBO_;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RedirectEnum;
 import br.gov.caixa.loterias.apostar.interno.utils.AppUtils;
-import br.gov.caixa.loterias.apostar.interno.utils.DialogUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.CadastrarActivity_;
 import br.gov.caixa.loterias.apostar.interno.view.FormaPagamentoActivity;
@@ -172,7 +170,7 @@ public class RedirectNetwork {
                 activity.startActivityForResult(new Intent(activity, TermosUsoActivity.class), 1);
                 break;
             case LOGIN:
-                AcessoBO_.getInstance_(activity).refreshAccessToken();
+                connectKeycloak(activity);
                 break;
             case CADASTRAR_APOSTADOR:
                 activity.startActivity(new Intent(activity, CadastrarActivity_.class));
@@ -185,8 +183,6 @@ public class RedirectNetwork {
     //TODO: LOGIN - Trocando
     private static void connectKeycloak(final Activity activity) {
         if(AppUtils.isNetworkAvailable(activity)){
-            
-
             AcessoBO_.getInstance_(activity).iniciarLoginSSO();
         }else{
             ViewUtils.alert(activity, activity.getString(R.string.seminternet));

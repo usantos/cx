@@ -26,7 +26,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.GsonReques
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.SilceConnection;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.SilceSingleton;
 import br.gov.caixa.loterias.apostar.interno.utils.AppUtils;
-import br.gov.caixa.loterias.apostar.interno.model.bo.AppAuth.TokenActivity;
+import br.gov.caixa.loterias.apostar.interno.view.TokenActivity;
 
 /**
  * Created by pmotta on 21/03/2018.
