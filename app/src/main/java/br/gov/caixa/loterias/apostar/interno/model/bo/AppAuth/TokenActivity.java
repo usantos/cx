@@ -1,38 +1,30 @@
-package br.gov.caixa.loterias.apostar.interno.view;
+package br.gov.caixa.loterias.apostar.interno.model.bo.AppAuth;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.MainThread;
 import android.support.annotation.Nullable;
+import android.support.annotation.WorkerThread;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 
-import com.android.volley.VolleyError;
-
+import net.openid.appauth.AppAuthConfiguration;
 import net.openid.appauth.AuthorizationException;
 import net.openid.appauth.AuthorizationResponse;
 import net.openid.appauth.AuthorizationService;
+import net.openid.appauth.ClientAuthentication;
+import net.openid.appauth.TokenRequest;
 import net.openid.appauth.TokenResponse;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.List;
 
 import br.gov.caixa.loterias.apostar.interno.R;
-import br.gov.caixa.loterias.apostar.interno.model.bean.RetornoListaCarrinho;
 import br.gov.caixa.loterias.apostar.interno.model.bo.AcessoBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.DadosUsuarioBO;
-import br.gov.caixa.loterias.apostar.interno.model.bo.DadosUsuarioBO_;
-import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
-import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.keycloak.KeycloakBO_;
-import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ApostaDTO;
-import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.UsuarioLogadoResponse;
-import br.gov.caixa.loterias.apostar.interno.model.dao.DBLoteriasCrud;
 import br.gov.caixa.loterias.apostar.interno.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
 
@@ -46,6 +38,7 @@ public class TokenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_token);
         loadViewProgress = LoadingViewLoterias.show(this);
+
         try {
             AuthorizationResponse authorizationResponse = AuthorizationResponse.fromIntent(getIntent());
             AuthorizationException authorizationException = AuthorizationException.fromIntent(getIntent());
@@ -95,5 +88,4 @@ public class TokenActivity extends AppCompatActivity {
             finish();
         }
     }
-
 }

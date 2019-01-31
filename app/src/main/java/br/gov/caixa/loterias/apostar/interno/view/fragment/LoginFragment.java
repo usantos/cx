@@ -12,6 +12,9 @@ import android.widget.Button;
 
 import com.android.volley.VolleyError;
 
+import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.EBean;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,8 +37,11 @@ import br.gov.caixa.loterias.apostar.interno.view.CadastrarActivity_;
 import br.gov.caixa.loterias.apostar.interno.view.PrincipalActivity_;
 import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
 
-
+@EBean
 public class LoginFragment extends Fragment {
+
+    @Bean
+    private AcessoBO acessoBO;
 
     private AlertDialog loadViewProgress;
 
@@ -83,8 +89,12 @@ public class LoginFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        if(LoginSP.isLoginRealizado()) {
-            verificarCadastroWebservice();
+        if (acessoBO.mStateManager.getCurrent().isAuthorized()) {
+            if(LoginSP.isLoginRealizado()) {
+                verificarCadastroWebservice();
+            }
+        } else {
+            connectKeycloak();
         }
     }
 
