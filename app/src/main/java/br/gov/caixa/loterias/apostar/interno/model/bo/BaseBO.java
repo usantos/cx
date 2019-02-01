@@ -4,14 +4,18 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.Nullable;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
+import net.openid.appauth.AuthorizationException;
 import net.openid.appauth.AuthorizationRequest;
 import net.openid.appauth.AuthorizationService;
 import net.openid.appauth.AuthorizationServiceConfiguration;
 import net.openid.appauth.ResponseTypeValues;
+import net.openid.appauth.TokenRequest;
+import net.openid.appauth.TokenResponse;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.Bean;
@@ -22,6 +26,7 @@ import java.util.HashMap;
 
 import br.gov.caixa.loterias.apostar.interno.BuildConfig;
 import br.gov.caixa.loterias.apostar.interno.model.bo.keycloak.KeycloakBO;
+import br.gov.caixa.loterias.apostar.interno.model.bo.keycloak.KeycloakBO_;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.GsonRequest;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.SilceConnection;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.SilceSingleton;
@@ -68,30 +73,30 @@ public class BaseBO {
                                         Uri.parse(BuildConfig.URL_SSO_TOKEN)
                                 );
 
-                                AuthorizationRequest.Builder builder = new AuthorizationRequest.Builder(
-                                        authorizationServiceConfiguration,
-                                        BuildConfig.SSO_CLIENT_ID,
-                                        ResponseTypeValues.CODE,
-                                        Uri.parse(BuildConfig.SSO_REDIRECT)
-                                );
-
-                                AuthorizationRequest authorizationRequest = builder.build();
-                                Intent intent = new Intent(context, TokenActivity.class);
-                                PendingIntent pendingIntent = PendingIntent.getActivity(context, authorizationRequest.hashCode(), intent, 0);
-
                                 AuthorizationService authorizationService = new AuthorizationService(context);
-                                authorizationService.performAuthorizationRequest(authorizationRequest, pendingIntent);
+                                TokenRequest.Builder tokenBuilder = new TokenRequest.Builder(authorizationServiceConfiguration, BuildConfig.SSO_CLIENT_ID);
+                                tokenBuilder.setRefreshToken(keycloakBO.getRefreshToken());
+                                tokenBuilder.setGrantType("refresh_token");
 
-                                //TO DO
-//                                if (keycloakBO.getAccessToken() != null) {
-//                                    //Atualiza o token com os headers
-//                                    headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
-//                                    request.setHeaders(headers);
-//                                    //Refaz a conexão
-//                                    silceConnection.request(request);
-//                                } else {
-//                                    listener.onErrorResponse(error);
-//                                }
+                                TokenRequest tokenRequest = tokenBuilder.build();
+
+                                authorizationService.performTokenRequest(tokenRequest, new AuthorizationService.TokenResponseCallback() {
+                                    @Override
+                                    public void onTokenRequestCompleted(@Nullable TokenResponse response, @Nullable AuthorizationException ex) {
+                                        KeycloakBO_.getInstance_(context).setAccessToken(response.accessToken);
+                                        KeycloakBO_.getInstance_(context).setRefreshToken(response.refreshToken);
+
+                                        if (keycloakBO.getAccessToken() != null) {
+                                            //Atualiza o token com os headers
+                                            headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
+                                            request.setHeaders(headers);
+                                            //Refaz a conexão
+                                            silceConnection.request(request);
+                                        } else {
+                                            listener.onErrorResponse(error);
+                                        }
+                                    }
+                                });
                             }
                         });
                     }else{

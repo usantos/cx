@@ -51,8 +51,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <service android:name="org.jboss.aerogear.android.authorization.oauth2.OAuth2AuthzService" />
-
         <activity
             android:name=".view.CadastrarActivity_"
             android:configChanges="orientation"

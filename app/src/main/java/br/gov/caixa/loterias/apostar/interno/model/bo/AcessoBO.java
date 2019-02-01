@@ -4,11 +4,15 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.Nullable;
 
+import net.openid.appauth.AuthorizationException;
 import net.openid.appauth.AuthorizationRequest;
 import net.openid.appauth.AuthorizationService;
 import net.openid.appauth.AuthorizationServiceConfiguration;
 import net.openid.appauth.ResponseTypeValues;
+import net.openid.appauth.TokenRequest;
+import net.openid.appauth.TokenResponse;
 
 import org.androidannotations.annotations.EBean;
 
@@ -45,6 +49,18 @@ public class AcessoBO {
 
             AuthorizationService authorizationService = new AuthorizationService(context);
             authorizationService.performAuthorizationRequest(authorizationRequest, pendingIntent);
+
+
+//            TokenRequest.Builder tokenBuilder = new TokenRequest.Builder(authorizationServiceConfiguration, BuildConfig.SSO_CLIENT_ID);
+//
+//            TokenRequest tokenRequest = tokenBuilder.build();
+//
+//            authorizationService.performTokenRequest(tokenRequest, new AuthorizationService.TokenResponseCallback() {
+//                @Override
+//                public void onTokenRequestCompleted(@Nullable TokenResponse response, @Nullable AuthorizationException ex) {
+//
+//                }
+//            });
         }
     }
 

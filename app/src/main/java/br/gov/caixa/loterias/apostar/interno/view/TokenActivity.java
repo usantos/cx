@@ -78,6 +78,7 @@ public class TokenActivity extends AppCompatActivity {
                                     DadosUsuarioBO.salvarCpfUsuario(cpf);
                                     DadosUsuarioBO.salvarNomeUsuairo(jsonObject.getString("name"));
                                     KeycloakBO_.getInstance_(TokenActivity.this).setAccessToken(response.accessToken);
+                                    KeycloakBO_.getInstance_(TokenActivity.this).setRefreshToken(response.refreshToken);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
