@@ -108,44 +108,11 @@ public class NumerosRapidaoActivity extends AppCompatActivity {
         });
 
         gridViewNumeros();
-
-        AcessoBO_.getInstance_(this).iniciarLoginSSO();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        connectKeycloak();
-    }
-
-    //TODO: LOGIN - Testar
-    private void connectKeycloak() {
-        if(AppUtils.isNetworkAvailable(NumerosRapidaoActivity.this)){
-            DadosUsuarioBO.updateUsuarioLogado( NumerosRapidaoActivity.this, true );
-
-//            KeycloakBO_.getInstance_(NumerosRapidaoActivity.this).login(NumerosRapidaoActivity.this, new KeycloakBO.OnLogin() {
-//                        @Override
-//                        public void onSuccess(String token) {
-//                            if(NumerosRapidaoActivity.this != null){
-//                                DadosUsuarioBO.updateUsuarioLogado( NumerosRapidaoActivity.this, true );
-//                                //loginSucess();
-//                            }
-//                        }
-//
-//                        @Override
-//                        public void onFailure(Exception e) {
-//                            if(NumerosRapidaoActivity.this != null){
-////                            OAuth2AuthorizationException.Error error = ((OAuth2AuthorizationException)e).type;
-//                                if(!((OAuth2AuthorizationException) e).error.equals( "dialog_dismissed" )){
-//                                    ViewUtils.alert(NumerosRapidaoActivity.this, getString(R.string.sistema_indisponivel));
-//                                }
-//                            }
-//                        }
-//                    }
-//            );
-        }else{
-            ViewUtils.alert(NumerosRapidaoActivity.this, getString(R.string.seminternet));
-        }
     }
 
     private void reloadGridView(){

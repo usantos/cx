@@ -1,7 +1,6 @@
 package br.gov.caixa.loterias.apostar.interno.view;
 
 import android.content.Intent;
-import android.os.Build;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -11,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -26,13 +26,11 @@ import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.ViewById;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostar.interno.R;
-import br.gov.caixa.loterias.apostar.interno.model.bean.Modalidade;
 import br.gov.caixa.loterias.apostar.interno.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostar.interno.model.bean.TipoAposta;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO;
@@ -76,6 +74,9 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
 
     @ViewById
     protected Toolbar toolbar;
+
+    @ViewById
+    protected Button btnAddRemoverNumsObrigatorios, btnAddRemoverNumsProibidos, btnAddRemoverApostasFav;
 
     private AlertDialog loadViewProgress;
     private List<ApostaFavoritaDTO> favoritosSelecionados, favoritosSalvos;
@@ -238,6 +239,7 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
         TiposApostasAdapter tiposApostasAdapter = new TiposApostasAdapter(this, tipoApostaArrayList);
         gridviewTiposApostasRapidao.setAdapter(tiposApostasAdapter);
         gridviewTiposApostasRapidao.setExpanded(true);
+
         gridviewTiposApostasRapidao.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
@@ -255,61 +257,44 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
         NumerosRapidaoAdapter numerosRapidaoAdapter = new NumerosRapidaoAdapter(this, listaNumerosObrigatorios, true);
         gridviewNumerosObrigatoriosRapidao.setAdapter(numerosRapidaoAdapter);
         gridviewNumerosObrigatoriosRapidao.setExpanded(true);
-        gridviewNumerosObrigatoriosRapidao.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                if (position == listaNumerosObrigatorios.size()) {
-                    Intent activity = new Intent(RapidaoConfigActivity.this, NumerosRapidaoActivity.class);
-                    String arrayAsString = new Gson().toJson(listaNumerosObrigatorios);
-                    activity.putExtra("numerosobrigatorios", arrayAsString);
-                    arrayAsString = new Gson().toJson(listaNumerosProibidos);
-                    activity.putExtra("numerosContrarios", arrayAsString);
-                    activity.putExtra("isTipoNrObrigatorios", true);
-                    startActivityForResult(activity, 6);
-                }
-            }
+
+        btnAddRemoverNumsObrigatorios.setOnClickListener( (View v) -> {
+            Intent activity = new Intent(RapidaoConfigActivity.this, NumerosRapidaoActivity.class);
+            String arrayAsString = new Gson().toJson(listaNumerosObrigatorios);
+            activity.putExtra("numerosobrigatorios", arrayAsString);
+            arrayAsString = new Gson().toJson(listaNumerosProibidos);
+            activity.putExtra("numerosContrarios", arrayAsString);
+            activity.putExtra("isTipoNrObrigatorios", true);
+            startActivityForResult(activity, 6);
         });
+
     }
 
     private void gridViewNumerosProibidos() {
         NumerosRapidaoAdapter numerosRapidaoAdapter2 = new NumerosRapidaoAdapter(this, listaNumerosProibidos, false);
         gridviewNumerosProibidosRapidao.setAdapter(numerosRapidaoAdapter2);
         gridviewNumerosProibidosRapidao.setExpanded(true);
-        gridviewNumerosProibidosRapidao.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                if (position == listaNumerosProibidos.size()) {
-                    Intent activity = new Intent(RapidaoConfigActivity.this, NumerosRapidaoActivity.class);
-                    String arrayAsString = new Gson().toJson(listaNumerosProibidos);
-                    activity.putExtra("numerosProibidos", arrayAsString);
-                    arrayAsString = new Gson().toJson(listaNumerosObrigatorios);
-                    activity.putExtra("numerosContrarios", arrayAsString);
-                    activity.putExtra("isTipoNrObrigatorios", false);
-                    startActivityForResult(activity, 7);
-                }
-            }
+
+        btnAddRemoverNumsProibidos.setOnClickListener( (View v) -> {
+            Intent activity = new Intent(RapidaoConfigActivity.this, NumerosRapidaoActivity.class);
+            String arrayAsString = new Gson().toJson(listaNumerosProibidos);
+            activity.putExtra("numerosProibidos", arrayAsString);
+            arrayAsString = new Gson().toJson(listaNumerosObrigatorios);
+            activity.putExtra("numerosContrarios", arrayAsString);
+            activity.putExtra("isTipoNrObrigatorios", false);
+            startActivityForResult(activity, 7);
         });
     }
 
     private void gridViewApostaFavorita() {
-        ApostaFavoritaAdapter apostaFavoritaAdapter = new ApostaFavoritaAdapter(this, apostaFavoritaConfiguradasLista, favoritosSalvos);
-        gridViewApostaFavorita.setAdapter(apostaFavoritaAdapter);
-        gridViewApostaFavorita.setExpanded(true);
         favoritosSelecionados = new ArrayList<>();
-        apostaFavoritaAdapter.setOnFavorito(new ApostaFavoritaAdapter.Favorito() {
-            @Override
-            public void onRemover(ApostaFavoritaDTO aposta) {
-                if (favoritosSelecionados.contains(aposta)) {
-                    favoritosSelecionados.remove(aposta);
-                }
-            }
 
-            @Override
-            public void onIncluso(ApostaFavoritaDTO aposta) {
-                if (!favoritosSelecionados.contains(aposta)) {
-                    favoritosSelecionados.add(aposta);
-                }
-            }
+        btnAddRemoverApostasFav.setOnClickListener((View v) -> {
+            Intent activity = new Intent(RapidaoConfigActivity.this, RapidaoApostaFavoritasSelecaoActivity.class);
+            String arrayAsString = new Gson().toJson(rapidao.getApostasFavoritas());
+            activity.putExtra("apostasFavoritas", arrayAsString);
+
+            startActivityForResult(activity, 8);
         });
     }
 

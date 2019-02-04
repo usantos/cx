@@ -24,14 +24,11 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ApostaFavoritaDT
 public class ApostaFavoritaAdapter extends BaseAdapter {
 
     private final Context mContext;
-    private final List<ApostaFavoritaDTO> favoritosConfiguracao;
     private List<ApostaFavoritaDTO> favoritosSalvos;
-    private Favorito favorito;
 
     // 1
-    public ApostaFavoritaAdapter(Context context, List<ApostaFavoritaDTO> favoritosConfiguracao, List<ApostaFavoritaDTO> favoritosSalvos) {
+    public ApostaFavoritaAdapter(Context context, List<ApostaFavoritaDTO> favoritosConfiguracao) {
         this.mContext = context;
-        this.favoritosConfiguracao = favoritosConfiguracao;
         this.favoritosSalvos = favoritosSalvos;
     }
 
@@ -63,22 +60,6 @@ public class ApostaFavoritaAdapter extends BaseAdapter {
 
         final ApostaFavoritaDTO aposta = favoritosSalvos.get( position );
 
-        CheckBox checkboxApostaFavorita = convertView.findViewById(R.id.checkboxApostaFavorita);
-        if(favoritosConfiguracao.contains(aposta)){
-            checkboxApostaFavorita.setChecked(true);
-        }
-        checkboxApostaFavorita.setOnCheckedChangeListener( new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(favorito != null) {
-                    if (b) {
-                        favorito.onIncluso(aposta);
-                    }else{
-                        favorito.onRemover(aposta);
-                    }
-                }
-            }
-        });
 
         final TextView tituloApostaFavorira = (TextView) convertView.findViewById( R.id.tituloApostaFavorira );
         tituloApostaFavorira.setText( aposta.getModalidade().getDescricao() );
@@ -97,17 +78,4 @@ public class ApostaFavoritaAdapter extends BaseAdapter {
 
         return convertView;
     }
-
-    public void setOnFavorito(Favorito favorito){
-        this.favorito = favorito;
-    }
-
-    public interface Favorito{
-
-        void onRemover(ApostaFavoritaDTO aposta);
-
-        void onIncluso(ApostaFavoritaDTO aposta);
-
-    }
-
 }

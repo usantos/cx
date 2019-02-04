@@ -1,7 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:gravity="center"
     >
     <LinearLayout
@@ -9,34 +9,33 @@
         android:layout_height="50dp"
         android:orientation="horizontal"
         android:id="@+id/LinearLayoutContentApostaFavorita">
+
         <CheckBox
+            android:id="@+id/checkboxApostaFavorita"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/checkboxApostaFavorita"
-            android:buttonTint="@color/verdeazul"
             android:layout_marginLeft="10dp"
-            />
+            android:buttonTint="@color/verdeazul" />
 
         <TextView
+            android:id="@+id/tituloApostaFavorira"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Mega-Sena"
-            android:textSize="14.2sp"
-            android:textColor="@color/verdeazul"
-            android:id="@+id/tituloApostaFavorira"
             android:layout_marginLeft="16dp"
-            />
+            android:text="Mega-Sena"
+            android:textColor="@color/verdeazul"
+            android:textSize="14.2sp" />
 
         <TextView
             android:id="@+id/numerosApostaFavorita"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
+            android:layout_marginRight="10dp"
             android:text="01 - 02 - 03 - 04 - 05 - 06 - 10 - 11 - 12 - 20 - 33 - 100"
             android:textColor="@color/azulescuroapostafavorita"
             android:textSize="14.2sp"
             android:textStyle="bold"
-            android:layout_marginRight="10dp"
 
             />
 

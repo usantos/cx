@@ -34,7 +34,7 @@ public class NumerosRapidaoAdapter extends BaseAdapter {
     // 2
     @Override
     public int getCount() {
-        return numeroslista.size() + 1;
+        return numeroslista.size();
     }
 
     // 3
@@ -59,18 +59,7 @@ public class NumerosRapidaoAdapter extends BaseAdapter {
             convertView = layoutInflater.inflate(R.layout.linearlayout_numeros_rapidao, null);
         }
 
-        if (position == numeroslista.size()) {
-            final LinearLayout linearLayoutNumerosRapidao = (LinearLayout) convertView.findViewById(R.id.LinearLayoutContentNumerosRapidao);
 
-            final TextView tituloTipoAposta = (TextView) convertView.findViewById(R.id.tituloNumeroRapidao);
-            tituloTipoAposta.setText("");
-            if (isObrigatorio != true) {
-                linearLayoutNumerosRapidao.setBackground(ContextCompat.getDrawable(mContext, R.drawable.icon_config_mais2));
-            } else {
-                linearLayoutNumerosRapidao.setBackground(ContextCompat.getDrawable(mContext, R.drawable.icon_config_mais));
-            }
-
-        } else {
             final int numeroRapidao = numeroslista.get(position);
             final TextView tituloTipoAposta = (TextView) convertView.findViewById(R.id.tituloNumeroRapidao);
             tituloTipoAposta.setText(numeroRapidao < 10 ? "0" + numeroRapidao : "" + numeroRapidao);
@@ -79,7 +68,6 @@ public class NumerosRapidaoAdapter extends BaseAdapter {
                 linearLayoutNumerosRapidao.setBackground(ContextCompat.getDrawable(mContext, R.drawable.circle_numeros_proibidos));
             }
 
-        }
 
         return convertView;
     }
