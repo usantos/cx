@@ -55,7 +55,7 @@ public class FavoritasActivity extends AppCompatActivity {
 
         scrollViewContentViewFavoritas = (NestedScrollView) findViewById(R.id.scrollViewContentViewFavoritas);
 
-        progressLoadingMore = (ProgressBar) findViewById(R.id.favoritas_loading_more_rapidao);
+        progressLoadingMore = (ProgressBar) findViewById(R.id.favoritas_loading_more);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 

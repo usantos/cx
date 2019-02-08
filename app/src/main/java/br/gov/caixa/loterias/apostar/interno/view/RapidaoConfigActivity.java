@@ -3,6 +3,8 @@ package br.gov.caixa.loterias.apostar.interno.view;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -46,6 +48,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResultadoPesquis
 import br.gov.caixa.loterias.apostar.interno.model.sp.RapidaoSP;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.ApostaFavoritaAdapter;
+import br.gov.caixa.loterias.apostar.interno.view.adapter.FavoritasRapidaoRecyclerAdapter;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.NumerosRapidaoAdapter;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.TiposApostasAdapter;
 import br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightGridView;
@@ -64,10 +67,13 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
     protected com.blackcat.currencyedittext.CurrencyEditText tituloValorValorMinimoAposta, tituloValorValorMaximoAposta, tituloValorPremiumMinimum;
 
     @ViewById
-    protected ExpandableHeightGridView gridviewNumerosProibidosRapidao, gridviewNumerosObrigatoriosRapidao, gridviewTiposApostasRapidao, gridViewApostaFavorita;
+    protected ExpandableHeightGridView gridviewNumerosProibidosRapidao, gridviewNumerosObrigatoriosRapidao, gridviewTiposApostasRapidao;
 
     @ViewById
-    protected TextView tituloValorMinimoApostaValorMaximo, tituloValorMaximoApostaValorMaximo, tituloValorMaximoApostaValorMinimo, tituloValorMinimoApostaValorMinimo;
+    protected RecyclerView gridViewApostaFavorita;
+
+    @ViewById
+    protected TextView tituloValorMinimoApostaValorMaximo, tituloValorMaximoApostaValorMaximo, tituloValorMaximoApostaValorMinimo, tituloValorMinimoApostaValorMinimo, tituloValorMinimoPremiumMiminum;
 
     @ViewById
     protected ScrollView scrollViewRapidaoConfig;
@@ -152,6 +158,7 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
                 BigDecimal valorProgress = new BigDecimal(Float.toString((float) progressFormatMilhoes));
                 rapidao.setValorMinimoPremioPrincipal(valorProgress);
                 tituloValorPremiumMinimum.setText(ViewUtils.getMoedaFormat(valorProgress));
+                tituloValorMinimoPremiumMiminum.setText(treatValorPremium(valorProgress));
             }
         }
         setValue = true;
@@ -193,6 +200,12 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
             gridViewNumerosProibidos();
         }
 
+         if (resultCode == RESULT_OK && requestCode == 8) {
+            String arrayAsString = data.getExtras().getString("apostasSalvas");
+            apostaFavoritaConfiguradasLista = new ArrayList<>(Arrays.asList(new Gson().fromJson(arrayAsString, ApostaFavoritaDTO[].class)));
+            rapidao.setApostasFavoritas(apostaFavoritaConfiguradasLista);
+            gridViewApostaFavorita();
+        }
     }
 
     @Click
@@ -253,6 +266,14 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
         });
     }
 
+    public String treatValorPremium(BigDecimal premium) {
+        if ((premium.divide(new BigDecimal(1000000))).compareTo(new BigDecimal(1.0)) == 0) {
+            return "1 milhão";
+        } else
+            return premium.divide(new BigDecimal(1000000)) + " milhões";
+    }
+
+
     private void gridViewNumerosObrigatorios() {
         NumerosRapidaoAdapter numerosRapidaoAdapter = new NumerosRapidaoAdapter(this, listaNumerosObrigatorios, true);
         gridviewNumerosObrigatoriosRapidao.setAdapter(numerosRapidaoAdapter);
@@ -289,6 +310,18 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
     private void gridViewApostaFavorita() {
         favoritosSelecionados = new ArrayList<>();
 
+//        ApostaFavoritaAdapter apostaFavoritaAdapter = new ApostaFavoritaAdapter(this, rapidao.getApostasFavoritas());
+        LinearLayoutManager layoutManager;
+
+        FavoritasRapidaoRecyclerAdapter apostaFavoritaAdapter  = new FavoritasRapidaoRecyclerAdapter(RapidaoConfigActivity.this,RapidaoConfigActivity.this, rapidao.getApostasFavoritas(), null);
+        layoutManager = new LinearLayoutManager(RapidaoConfigActivity.this);
+
+        gridViewApostaFavorita.setHasFixedSize(true);
+        gridViewApostaFavorita.setAdapter(apostaFavoritaAdapter);
+        gridViewApostaFavorita.setLayoutManager(layoutManager);
+
+        favoritosSelecionados = new ArrayList<>();
+
         btnAddRemoverApostasFav.setOnClickListener((View v) -> {
             Intent activity = new Intent(RapidaoConfigActivity.this, RapidaoApostaFavoritasSelecaoActivity.class);
             String arrayAsString = new Gson().toJson(rapidao.getApostasFavoritas());
@@ -310,10 +343,12 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
         ApostaBO apostaBO = ApostaBO_.getInstance_(RapidaoConfigActivity.this);
 
         apostaBO.getRapidoes(new RequestListener<RapidaoDTOResponse>() {
+
             @Override
             public void onResponse(final RapidaoDTOResponse response) {
+                loadViewProgress.dismiss();
                 rapidao = response.getPayload();
-                carregaApostaFavoritasServer(response);
+                processarRegistro(response);
             }
 
             @Override
@@ -324,31 +359,8 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
         });
     }
 
-    private void carregaApostaFavoritasServer(final RapidaoDTOResponse response) {
-        ApostaBO apostaBO = ApostaBO_.getInstance_(RapidaoConfigActivity.this);
-        apostaBO.getApostasFavoritas(0, new RequestListener<ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse>() {
-
-            @Override
-            public void onResponse(ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse result) {
-                favoritosSalvos = result.getPayload().getLista();
-                loadViewProgress.dismiss();
-                processarRegistro(response);
-            }
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.i("s", "");
-                favoritosSalvos = new ArrayList<>();
-                loadViewProgress.dismiss();
-                processarRegistro(response);
-            }
-        });
-    }
 
     private void processarRegistro(RapidaoDTOResponse response) {
-        //                Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-//                String json = gson.toJson(rapidao);
-//                rapidao = gson.fromJson(json, RapidaoDTO.class);
         if (rapidao.getValorMaximo() == null) {
             rapidao.setValorMaximo(SessaoUsuario.getInstance().parametrosSimulacao.getValorLimiteDiario());
         }
@@ -366,13 +378,13 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
             rapidao.setModalidades(new ArrayList<ModalidadeDTO>());
         }
 
-
         if (rapidao.getPrognosticosObrigatorios() != null) {
             listaNumerosObrigatorios = rapidao.getPrognosticosObrigatorios();
         }
         if (rapidao.getPrognosticosProibidos() != null) {
             listaNumerosProibidos = rapidao.getPrognosticosProibidos();
         }
+
         apostaFavoritaConfiguradasLista = rapidao.getApostasFavoritas();
 
         atualizaLayout();
@@ -386,6 +398,7 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
         tituloValorValorMinimoAposta.addTextChangedListener(textWatcher);
         tituloValorValorMaximoAposta.addTextChangedListener(textWatcher);
         tituloValorPremiumMinimum.addTextChangedListener(textWatcher);
+        tituloValorMinimoPremiumMiminum.addTextChangedListener(textWatcher);
 
         double valor = 1000000;
         BigDecimal valorMinimo = rapidao.getValorMinimo();
@@ -415,6 +428,7 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
         }
 
         tituloValorPremiumMinimum.setText(ViewUtils.getMoedaFormat(bigDecimal));
+        tituloValorMinimoPremiumMiminum.setText(treatValorPremium(bigDecimal));
 
         seekBarPremiumMimimun.setOnSeekBarChangeListener(this);
         seekBarPremiumMimimun.setMax(100);
@@ -464,9 +478,6 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
                 case DIA_DE_SORTE:
                     tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo, R.color.diasorteclaro, true, item.getValor(), item.getDescricaoEspecial());
                     break;
-//                case FEDERAL:
-//                    tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo, R.color.federalclaro, true, item.getValor(), item.getDescricaoEspecial());
-//                    break;
             }
             if (tipoAposta != null) {
                 tipoAposta.setTitulo(tipoAposta.getTitulo().toLowerCase());
@@ -496,7 +507,6 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
         rapidao.setModalidades(tipoApostaArrayList);
         rapidao.setPrognosticosObrigatorios(listaNumerosObrigatorios);
         rapidao.setPrognosticosProibidos(listaNumerosProibidos);
-        rapidao.setApostasFavoritas(favoritosSelecionados);
 
         apostaBO.postRapidoes(rapidao, new RequestListener<RapidaoDTOResponse>() {
             @Override
@@ -567,6 +577,7 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
                         RapidaoSP.salvarValorPremioMinimo(seekBarPremiumMimimun.getMax() * 1000000);
                         seekBarPremiumMimimun.setProgress(seekBarPremiumMimimun.getMax());
                         tituloValorPremiumMinimum.setText(ViewUtils.getMoedaFormat(valorMaximoBarra));
+                        tituloValorMinimoPremiumMiminum.setText(treatValorPremium(valorMaximoBarra));
                     } else {
                         int valor = Math.round(Float.parseFloat(valorSetado));
                         Log.i("caixa", "aaa => " + valor);

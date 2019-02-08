@@ -23,11 +23,13 @@ public final class FavoritasRapidaoRecyclerAdapter extends RecyclerView.Adapter<
     private final Context context;
     private final Activity activity;
     private final List<ApostaFavoritaDTO> listaApostaFavorita;
+    private final List<ApostaFavoritaDTO> listaApostasSelecionadas;
     private FavoritasRapidaoRecyclerAdapter.Favorito favorito;
 
-    public FavoritasRapidaoRecyclerAdapter(final Activity activity, final Context context, final List<ApostaFavoritaDTO> listaApostaFavorita) {
+    public FavoritasRapidaoRecyclerAdapter(final Activity activity, final Context context, final List<ApostaFavoritaDTO> listaApostaFavorita, final List<ApostaFavoritaDTO> listaApostasSelecionadas) {
         this.context = context;
         this.listaApostaFavorita = listaApostaFavorita;
+        this.listaApostasSelecionadas = listaApostasSelecionadas;
         this.activity = activity;
     }
 
@@ -45,6 +47,7 @@ public final class FavoritasRapidaoRecyclerAdapter extends RecyclerView.Adapter<
         EstiloModalidade estilo = new EstiloModalidade(ModalidadeEnum.toString(listaApostaFavorita.get(position).getModalidade().getDescricao().toLowerCase()));
         holder.modalidades.setText(listaApostaFavorita.get(position).getModalidade().getDescricao());
         holder.modalidades.setTextColor(context.getResources().getColor(estilo.getCorClara()));
+        holder.setIsRecyclable(false);
 
         String numeroStr = "";
         for (Integer num : listaApostaFavorita.get(position).getNumerosSelecionados()) {
@@ -54,11 +57,26 @@ public final class FavoritasRapidaoRecyclerAdapter extends RecyclerView.Adapter<
                 numeroStr += String.format("%02d - ", num);
             }
         }
-        holder.numerosEDetalhes.setText(numeroStr);
+
 
         final ApostaFavoritaDTO aposta = listaApostaFavorita.get( position );
 
-        holder.checkBox.setOnCheckedChangeListener( (CompoundButton compoundButton, boolean b) ->  {
+        if (ModalidadeEnum.fromInteger(aposta.getModalidade().getValor()) == ModalidadeEnum.TIMEMANIA) {
+            numeroStr += "\nTime do coração: " + aposta.getTimeDoCoracao().getNome();
+        }
+
+        if (ModalidadeEnum.fromInteger(aposta.getModalidade().getValor()) == ModalidadeEnum.DIA_DE_SORTE) {
+            numeroStr += "\nMês de sorte: " + aposta.getMesDeSorte().getNome();
+        }
+
+        holder.numerosEDetalhes.setText(numeroStr);
+
+        if (listaApostasSelecionadas != null) {
+            if (isSelected(aposta)) {
+                holder.checkBox.setChecked(true);
+            }
+
+            holder.checkBox.setOnCheckedChangeListener( (CompoundButton compoundButton, boolean b) ->  {
                 if(favorito != null) {
                     if (b) {
                         favorito.onIncluso(aposta);
@@ -66,7 +84,19 @@ public final class FavoritasRapidaoRecyclerAdapter extends RecyclerView.Adapter<
                         favorito.onRemover(aposta);
                     }
                 }
-        });
+            });
+        } else {
+            holder.checkBox.setVisibility(View.GONE);
+        }
+    }
+
+    private boolean isSelected(ApostaFavoritaDTO aposta) {
+        for (ApostaFavoritaDTO apostaSelecionada: listaApostasSelecionadas) {
+            if (apostaSelecionada.getId().compareTo(aposta.getId() ) == 0) {
+                return  true;
+            }
+        }
+        return false;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

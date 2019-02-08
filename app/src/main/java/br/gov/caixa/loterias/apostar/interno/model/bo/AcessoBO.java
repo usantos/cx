@@ -49,18 +49,6 @@ public class AcessoBO {
 
             AuthorizationService authorizationService = new AuthorizationService(context);
             authorizationService.performAuthorizationRequest(authorizationRequest, pendingIntent);
-
-
-//            TokenRequest.Builder tokenBuilder = new TokenRequest.Builder(authorizationServiceConfiguration, BuildConfig.SSO_CLIENT_ID);
-//
-//            TokenRequest tokenRequest = tokenBuilder.build();
-//
-//            authorizationService.performTokenRequest(tokenRequest, new AuthorizationService.TokenResponseCallback() {
-//                @Override
-//                public void onTokenRequestCompleted(@Nullable TokenResponse response, @Nullable AuthorizationException ex) {
-//
-//                }
-//            });
         }
     }
 

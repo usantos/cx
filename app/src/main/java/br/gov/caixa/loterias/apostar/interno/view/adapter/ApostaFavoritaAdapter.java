@@ -19,6 +19,8 @@ import java.util.List;
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bean.ApostaFavorita;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ApostaFavoritaDTO;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeEnum;
+import br.gov.caixa.loterias.apostar.interno.utils.EstiloModalidade;
 
 
 public class ApostaFavoritaAdapter extends BaseAdapter {
@@ -27,7 +29,7 @@ public class ApostaFavoritaAdapter extends BaseAdapter {
     private List<ApostaFavoritaDTO> favoritosSalvos;
 
     // 1
-    public ApostaFavoritaAdapter(Context context, List<ApostaFavoritaDTO> favoritosConfiguracao) {
+    public ApostaFavoritaAdapter(Context context, List<ApostaFavoritaDTO> favoritosSalvos) {
         this.mContext = context;
         this.favoritosSalvos = favoritosSalvos;
     }
@@ -63,6 +65,9 @@ public class ApostaFavoritaAdapter extends BaseAdapter {
 
         final TextView tituloApostaFavorira = (TextView) convertView.findViewById( R.id.tituloApostaFavorira );
         tituloApostaFavorira.setText( aposta.getModalidade().getDescricao() );
+        EstiloModalidade estilo = new EstiloModalidade(ModalidadeEnum.toString(favoritosSalvos.get(position).getModalidade().getDescricao().toLowerCase()));
+        tituloApostaFavorira.setText(favoritosSalvos.get(position).getModalidade().getDescricao());
+        tituloApostaFavorira.setTextColor(parent.getResources().getColor(estilo.getCorClara()));
 
         final TextView numerosApostaFavorita = (TextView) convertView.findViewById( R.id.numerosApostaFavorita );
         String numeroStr = "";
@@ -73,8 +78,19 @@ public class ApostaFavoritaAdapter extends BaseAdapter {
                 numeroStr += String.format( "%02d - ", num );
             }
         }
+
+        if (ModalidadeEnum.fromInteger(aposta.getModalidade().getValor()) == ModalidadeEnum.TIMEMANIA) {
+            numeroStr += "\nTime do coração: " + aposta.getTimeDoCoracao().getNome();
+        }
+
+        if (ModalidadeEnum.fromInteger(aposta.getModalidade().getValor()) == ModalidadeEnum.DIA_DE_SORTE) {
+            numeroStr += "\nMês de sorte: " + aposta.getMesDeSorte().getNome();
+        }
+
         numerosApostaFavorita.setText( numeroStr );
 
+        final CheckBox checkbox = (CheckBox) convertView.findViewById( R.id.checkboxApostaFavorita );
+        checkbox.setVisibility(View.GONE);
 
         return convertView;
     }

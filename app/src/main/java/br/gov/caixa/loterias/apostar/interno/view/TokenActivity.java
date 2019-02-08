@@ -25,6 +25,7 @@ import java.util.List;
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bean.RetornoListaCarrinho;
 import br.gov.caixa.loterias.apostar.interno.model.bo.AcessoBO;
+import br.gov.caixa.loterias.apostar.interno.model.bo.AcessoBO_;
 import br.gov.caixa.loterias.apostar.interno.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.DadosUsuarioBO_;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
@@ -54,38 +55,42 @@ public class TokenActivity extends AppCompatActivity {
                 authorizationService.performTokenRequest(authorizationResponse.createTokenExchangeRequest(), new AuthorizationService.TokenResponseCallback() {
                     @Override
                     public void onTokenRequestCompleted(@Nullable TokenResponse response, @Nullable AuthorizationException ex) {
-                        if (!"".equals(response.accessToken) && !"".equals(response.refreshToken)) {
-                            LoginSP.loginRealizado(true);
-                            String separar[] = response.accessToken.split("\\.");
-                            if (separar.length > 0) {
-                                String tokenCorpo = separar[1];
-                                byte bytes[] = Base64.decode(tokenCorpo, Base64.URL_SAFE);
-                                tokenCorpo = new String(bytes, Charset.forName("UTF-8"));
-                                try {
-                                    JSONObject jsonObject = new JSONObject(tokenCorpo);
+                        if (response.accessToken == null || response.refreshToken == null) {
+                            AcessoBO_.getInstance_(TokenActivity.this).iniciarLoginSSO();
+                        } else {
+                            if (!"".equals(response.accessToken) && !"".equals(response.refreshToken)) {
+                                LoginSP.loginRealizado(true);
+                                String separar[] = response.accessToken.split("\\.");
+                                if (separar.length > 0) {
+                                    String tokenCorpo = separar[1];
+                                    byte bytes[] = Base64.decode(tokenCorpo, Base64.URL_SAFE);
+                                    tokenCorpo = new String(bytes, Charset.forName("UTF-8"));
+                                    try {
+                                        JSONObject jsonObject = new JSONObject(tokenCorpo);
 
-                                    String cpf = jsonObject.getString("cpf");
-                                    if (cpf.length() < 11) {
-                                        StringBuilder zeros = new StringBuilder();
-                                        int totalIncluirZero = 11 - cpf.length();
-                                        for (int contador = 0; contador < totalIncluirZero; contador++) {
-                                            zeros.append("0");
+                                        String cpf = jsonObject.getString("cpf");
+                                        if (cpf.length() < 11) {
+                                            StringBuilder zeros = new StringBuilder();
+                                            int totalIncluirZero = 11 - cpf.length();
+                                            for (int contador = 0; contador < totalIncluirZero; contador++) {
+                                                zeros.append("0");
+                                            }
+                                            zeros.append(cpf);
+                                            cpf = zeros.toString();
                                         }
-                                        zeros.append(cpf);
-                                        cpf = zeros.toString();
-                                    }
 
-                                    DadosUsuarioBO.salvarCpfUsuario(cpf);
-                                    DadosUsuarioBO.salvarNomeUsuairo(jsonObject.getString("name"));
-                                    KeycloakBO_.getInstance_(TokenActivity.this).setAccessToken(response.accessToken);
-                                    KeycloakBO_.getInstance_(TokenActivity.this).setRefreshToken(response.refreshToken);
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
+                                        DadosUsuarioBO.salvarCpfUsuario(cpf);
+                                        DadosUsuarioBO.salvarNomeUsuairo(jsonObject.getString("name"));
+                                        KeycloakBO_.getInstance_(TokenActivity.this).setAccessToken(response.accessToken);
+                                        KeycloakBO_.getInstance_(TokenActivity.this).setRefreshToken(response.refreshToken);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
                                 }
-                            }
-                            DadosUsuarioBO.updateUsuarioLogado(TokenActivity.this, true);
-                            if (AcessoBO.PRIMEIRO_LOGIN) {
-                                AcessoBO.PRIMEIRO_LOGIN = false;
+                                DadosUsuarioBO.updateUsuarioLogado(TokenActivity.this, true);
+                                if (AcessoBO.PRIMEIRO_LOGIN) {
+                                    AcessoBO.PRIMEIRO_LOGIN = false;
+                                }
                             }
                         }
                         finish();

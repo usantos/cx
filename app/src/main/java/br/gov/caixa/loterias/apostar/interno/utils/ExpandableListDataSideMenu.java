@@ -34,7 +34,6 @@ public class ExpandableListDataSideMenu {
         expandableListDetail.put("Rapidão", Rapidao);
         expandableListDetail.put("Ler bilhete", bilhetes);
         expandableListDetail.put("Repasses sociais", sociais);
-        expandableListDetail.put("Sair", Sair);
         return expandableListDetail;
     }
 }

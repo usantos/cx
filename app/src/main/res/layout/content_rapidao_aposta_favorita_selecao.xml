@@ -86,9 +86,16 @@
     <ProgressBar
         android:id="@+id/favoritas_loading_more_rapidao"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:gravity="center_horizontal"
         android:padding="5dp"
         android:visibility="gone"
-        />
+        app:layout_constraintBottom_toTopOf="@+id/salvarNumerosApostaRapidaoSelecao"
+        app:layout_constraintEnd_toEndOf="@+id/recycleApostasFavoritasRapidao"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/recycleApostasFavoritasRapidao" />
 </android.support.constraint.ConstraintLayout>

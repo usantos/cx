@@ -400,7 +400,7 @@
                         android:text="Adicionar \nou remover"
                         android:textAlignment="center"
                         android:textAllCaps="false"
-                        android:textColor="@color/verdeagua" />
+                        android:textColor="@color/vermelhoBilhetes" />
 
                 </LinearLayout>
 
@@ -460,18 +460,16 @@
 
                 </LinearLayout>
 
-                <br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightGridView
+                <android.support.v7.widget.RecyclerView
                     android:id="@+id/gridViewApostaFavorita"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="19dp"
                     android:layout_marginBottom="50dp"
+                    android:paddingBottom="100dp"
                     android:focusable="false"
                     android:horizontalSpacing="0dp"
-                    android:numColumns="1"
-                    android:stretchMode="columnWidth"
                     android:verticalSpacing="0dp"
-
                     />
 
             </LinearLayout>

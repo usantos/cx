@@ -109,7 +109,7 @@
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/relativeLayoutContentFavoritas"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:background="@color/branco"
         android:visibility="visible">
@@ -157,13 +157,12 @@
                     android:id="@+id/numerosApostaFavorita"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="123dp"
+                    android:layout_alignParentTop="true"
                     android:layout_marginStart="16dp"
+                    android:layout_marginEnd="123dp"
                     android:textColor="@color/azulescuroapostafavorita"
                     android:textSize="14.2sp"
-                    tools:text="01 - 02 - 03 - 04 - 05 - 06 - 10 - 11 - 12 - 20 - 33 - 100"
-
-                    />
+                    tools:text="01 - 02 - 03 - 04 - 05 - 06 - 10 - 11 - 12 - 20 - 33 - 100" />
 
                 <LinearLayout
                     android:layout_width="123dp"
@@ -222,8 +221,8 @@
                     android:id="@+id/maisInformacoesLayout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignStart="@+id/numerosApostaFavorita"
                     android:layout_below="@+id/numerosApostaFavorita"
+                    android:layout_alignStart="@+id/numerosApostaFavorita"
                     android:orientation="horizontal"
                     android:visibility="gone"
                     tools:visibility="visible">

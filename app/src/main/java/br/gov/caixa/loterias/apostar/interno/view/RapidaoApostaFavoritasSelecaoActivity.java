@@ -14,13 +14,14 @@ import android.widget.ProgressBar;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostar.interno.R;
-import br.gov.caixa.loterias.apostar.interno.model.bean.NumerosSelecionadosRapidao;
+import br.gov.caixa.loterias.apostar.interno.model.bean.ApostaFavorita;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
@@ -28,9 +29,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ApostaFavoritaDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
-import br.gov.caixa.loterias.apostar.interno.view.adapter.ApostaFavoritaAdapter;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.FavoritasRapidaoRecyclerAdapter;
-import br.gov.caixa.loterias.apostar.interno.view.adapter.FavoritasRecyclerViewAdapter;
 import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
 
 public class RapidaoApostaFavoritasSelecaoActivity extends AppCompatActivity {
@@ -38,8 +37,8 @@ public class RapidaoApostaFavoritasSelecaoActivity extends AppCompatActivity {
     protected RecyclerView recycleApostasFavoritasRapidao;
     protected Button btnSalvar;
 
-    List<ApostaFavoritaDTO> apostaFavoritaLista = new ArrayList<ApostaFavoritaDTO>();
-    List<ApostaFavoritaDTO> apostasFavoritaListaSelecionadas = new ArrayList<ApostaFavoritaDTO>();
+    List<ApostaFavoritaDTO> apostaFavoritaLista = new ArrayList<>();
+    ArrayList<ApostaFavoritaDTO> apostasFavoritaListaSelecionadas = new ArrayList<>();
 
     int offsetItem = 0;
     Boolean bloquearRequestScroll = false;
@@ -58,14 +57,20 @@ public class RapidaoApostaFavoritasSelecaoActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         String arrayApostas =  getIntent().getExtras().getString("apostasFavoritas");
-        apostasFavoritaListaSelecionadas = Arrays.asList(new Gson().fromJson(arrayApostas, ApostaFavoritaDTO[].class));
+        apostasFavoritaListaSelecionadas = new Gson().fromJson(arrayApostas, new TypeToken<ArrayList<ApostaFavoritaDTO>>(){}.getType());
 
-        progressLoadingMore = (ProgressBar) findViewById(R.id.favoritas_loading_more);
+        progressLoadingMore = (ProgressBar) findViewById(R.id.favoritas_loading_more_rapidao);
         recycleApostasFavoritasRapidao = (RecyclerView) findViewById(R.id.recycleApostasFavoritasRapidao);
         btnSalvar = (Button) findViewById(R.id.salvarNumerosApostaRapidaoSelecao);
 
         listeners();
         callWebservice();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp(){
+        finish();
+        return true;
     }
 
     private void listeners() {
@@ -100,7 +105,7 @@ public class RapidaoApostaFavoritasSelecaoActivity extends AppCompatActivity {
 
                 apostaFavoritaLista = response.getPayload().getLista();
                 //recyclerView
-                apostaFavoritaAdapter  = new FavoritasRapidaoRecyclerAdapter(RapidaoApostaFavoritasSelecaoActivity.this,RapidaoApostaFavoritasSelecaoActivity.this, apostaFavoritaLista);
+                apostaFavoritaAdapter  = new FavoritasRapidaoRecyclerAdapter(RapidaoApostaFavoritasSelecaoActivity.this,RapidaoApostaFavoritasSelecaoActivity.this, apostaFavoritaLista, apostasFavoritaListaSelecionadas);
                 layoutManager = new LinearLayoutManager(RapidaoApostaFavoritasSelecaoActivity.this);
 
                 recycleApostasFavoritasRapidao.setHasFixedSize(true);
@@ -116,7 +121,7 @@ public class RapidaoApostaFavoritasSelecaoActivity extends AppCompatActivity {
                         int diff = (view.getBottom() - (recyclerView.getHeight() + recyclerView.getScrollY()));
 
                         // if diff is zero, then the bottom has been reached
-                        if (diff == 0 && bloquearRequestScroll == false) {
+                        if (diff <= 0 && bloquearRequestScroll == false) {
                             // do stuff
                             getFavoritasScroll();
                             bloquearRequestScroll = true;
@@ -128,14 +133,24 @@ public class RapidaoApostaFavoritasSelecaoActivity extends AppCompatActivity {
                 apostaFavoritaAdapter.setOnFavorito(new FavoritasRapidaoRecyclerAdapter.Favorito() {
                     @Override
                     public void onRemover(ApostaFavoritaDTO aposta) {
-                        if (apostasFavoritaListaSelecionadas.contains(aposta)) {
-                            apostasFavoritaListaSelecionadas.remove(aposta);
+                        for (ApostaFavoritaDTO apostasFavoritaListaSelecionada : apostasFavoritaListaSelecionadas) {
+                            if (apostasFavoritaListaSelecionada.getId().compareTo(aposta.getId()) == 0) {
+                                apostasFavoritaListaSelecionadas.remove(apostasFavoritaListaSelecionadas.indexOf(apostasFavoritaListaSelecionada));
+                                break;
+                            }
                         }
                     }
 
                     @Override
                     public void onIncluso(ApostaFavoritaDTO aposta) {
-                        if (!apostasFavoritaListaSelecionadas.contains(aposta)) {
+                        boolean duplicado = false;
+                        for (ApostaFavoritaDTO apostasFavoritaListaSelecionada : apostasFavoritaListaSelecionadas) {
+                            if (apostasFavoritaListaSelecionada.getId().compareTo(aposta.getId()) == 0) {
+                                duplicado = true;
+                            }
+                        }
+
+                        if (!apostasFavoritaListaSelecionadas.contains(aposta) && !duplicado) {
                             apostasFavoritaListaSelecionadas.add(aposta);
                         }
                     }
@@ -168,7 +183,7 @@ public class RapidaoApostaFavoritasSelecaoActivity extends AppCompatActivity {
                 }else{
                     apostaFavoritaLista.addAll(response.getPayload().getLista());
                     apostaFavoritaAdapter.notifyDataSetChanged();
-                    offsetItem = offsetItem +5;
+                    offsetItem += 8;
                 }
                 bloquearRequestScroll = false;
                 if (response.getRedirect() != null){
