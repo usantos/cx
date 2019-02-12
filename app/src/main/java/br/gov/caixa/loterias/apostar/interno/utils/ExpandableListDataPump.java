@@ -11,23 +11,23 @@ import java.util.List;
 
 public class ExpandableListDataPump {
     public static HashMap<String, List<String>> getData() {
-        HashMap<String, List<String>> expandableListDetail = new HashMap<String, List<String>>();
+        HashMap<String, List<String>> expandableListDetail = new HashMap<>();
 
-        List<String> cricket = new ArrayList<String>();
+        List<String> cricket = new ArrayList<>();
         cricket.add("India");
         cricket.add("Pakistan");
         cricket.add("Australia");
         cricket.add("England");
         cricket.add("South Africa");
 
-        List<String> football = new ArrayList<String>();
+        List<String> football = new ArrayList<>();
         football.add("Brazil");
         football.add("Spain");
         football.add("Germany");
         football.add("Netherlands");
         football.add("Italy");
 
-        List<String> basketball = new ArrayList<String>();
+        List<String> basketball = new ArrayList<>();
         basketball.add("United States");
         basketball.add("Spain");
         basketball.add("Argentina");

@@ -13,6 +13,7 @@ import net.openid.appauth.ResponseTypeValues;
 import org.androidannotations.annotations.EBean;
 
 import br.gov.caixa.loterias.apostar.interno.BuildConfig;
+import br.gov.caixa.loterias.apostar.interno.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostar.interno.utils.Aplicacao;
 import br.gov.caixa.loterias.apostar.interno.view.TokenActivity;
 
@@ -68,7 +69,8 @@ public class AcessoBO {
 
             AuthorizationService authorizationService = new AuthorizationService(context);
             authorizationService.performAuthorizationRequest(authorizationRequest, pendingIntent);
+
+            LoginSP.loginRealizado(false);
         }
     }
-
 }

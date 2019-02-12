@@ -130,16 +130,15 @@ public class UsuarioLogado {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class UsuarioLogado {\n");
 
-        sb.append("  nome: ").append(nome).append("\n");
-        sb.append("  email: ").append(email).append("\n");
-        sb.append("  token: ").append(token).append("\n");
-        sb.append("  tempoExpirarSegundos: ").append(tempoExpirarSegundos).append("\n");
-        sb.append("  carrinho: ").append(carrinho).append("\n");
-        sb.append("  primeiroNome: ").append(primeiroNome).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class UsuarioLogado {\n" +
+                "  nome: " + nome + "\n" +
+                "  email: " + email + "\n" +
+                "  token: " + token + "\n" +
+                "  tempoExpirarSegundos: " + tempoExpirarSegundos + "\n" +
+                "  carrinho: " + carrinho + "\n" +
+                "  primeiroNome: " + primeiroNome + "\n" +
+                "}\n";
+        return sb;
     }
 }

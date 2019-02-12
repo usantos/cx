@@ -3,7 +3,6 @@ package br.gov.caixa.loterias.apostar.interno.view;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -20,15 +19,11 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.github.pinball83.maskededittext.MaskedEditText;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.mercadopago.callbacks.Callback;
 import com.mercadopago.core.MercadoPago;
 import com.mercadopago.model.ApiException;
-import com.mercadopago.model.Card;
 import com.mercadopago.model.CardToken;
-import com.mercadopago.model.IdentificationType;
 import com.mercadopago.model.Token;
-
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,7 +31,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 import br.gov.caixa.loterias.apostar.interno.BuildConfig;
 import br.gov.caixa.loterias.apostar.interno.R;
@@ -45,7 +39,6 @@ import br.gov.caixa.loterias.apostar.interno.model.bean.ParametrosPagamento;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostar.interno.model.bo.DadosUsuarioBO;
-import br.gov.caixa.loterias.apostar.interno.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CarrinhoDTO;

@@ -435,33 +435,32 @@ IdentificaoDeUmaApostaDas8Modalidades {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class IdentificaoDeUmaApostaDas8Modalidades {\n");
 
-        sb.append("  id: ").append(id).append("\n");
-        sb.append("  modalidade: ").append(modalidade).append("\n");
-        sb.append("  tipoConcurso: ").append(tipoConcurso).append("\n");
-        sb.append("  partidasLotogol: ").append(partidasLotogol).append("\n");
-        sb.append("  partidasLoteca: ").append(partidasLoteca).append("\n");
-        sb.append("  numerosSelecionados: ").append(numerosSelecionados).append("\n");
-        sb.append("  indicadorSurpresinha: ").append(indicadorSurpresinha).append("\n");
-        sb.append("  valor: ").append(valor).append("\n");
-        sb.append("  concursoAlvo: ").append(concursoAlvo).append("\n");
-        sb.append("  quantidadeTeimosinhas: ").append(quantidadeTeimosinhas).append("\n");
-        sb.append("  quantidadeApostas: ").append(quantidadeApostas).append("\n");
-        sb.append("  espelho: ").append(espelho).append("\n");
-        sb.append("  timeDoCoracao: ").append(timeDoCoracao).append("\n");
-        sb.append("  concursoInicial: ").append(concursoInicial).append("\n");
-        sb.append("  situacao: ").append(situacao).append("\n");
-        sb.append("  troca: ").append(troca).append("\n");
-        sb.append("  dataEfetivacao: ").append(dataEfetivacao).append("\n");
-        sb.append("  horaEfetivacao: ").append(horaEfetivacao).append("\n");
-        sb.append("  loterica: ").append(loterica).append("\n");
-        sb.append("  vinculoEspelho: ").append(vinculoEspelho).append("\n");
-        sb.append("  quantidadeNumeros: ").append(quantidadeNumeros).append("\n");
-        sb.append("  surpresinha: ").append(surpresinha).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class IdentificaoDeUmaApostaDas8Modalidades {\n" +
+                "  id: " + id + "\n" +
+                "  modalidade: " + modalidade + "\n" +
+                "  tipoConcurso: " + tipoConcurso + "\n" +
+                "  partidasLotogol: " + partidasLotogol + "\n" +
+                "  partidasLoteca: " + partidasLoteca + "\n" +
+                "  numerosSelecionados: " + numerosSelecionados + "\n" +
+                "  indicadorSurpresinha: " + indicadorSurpresinha + "\n" +
+                "  valor: " + valor + "\n" +
+                "  concursoAlvo: " + concursoAlvo + "\n" +
+                "  quantidadeTeimosinhas: " + quantidadeTeimosinhas + "\n" +
+                "  quantidadeApostas: " + quantidadeApostas + "\n" +
+                "  espelho: " + espelho + "\n" +
+                "  timeDoCoracao: " + timeDoCoracao + "\n" +
+                "  concursoInicial: " + concursoInicial + "\n" +
+                "  situacao: " + situacao + "\n" +
+                "  troca: " + troca + "\n" +
+                "  dataEfetivacao: " + dataEfetivacao + "\n" +
+                "  horaEfetivacao: " + horaEfetivacao + "\n" +
+                "  loterica: " + loterica + "\n" +
+                "  vinculoEspelho: " + vinculoEspelho + "\n" +
+                "  quantidadeNumeros: " + quantidadeNumeros + "\n" +
+                "  surpresinha: " + surpresinha + "\n" +
+                "}\n";
+        return sb;
     }
 
 

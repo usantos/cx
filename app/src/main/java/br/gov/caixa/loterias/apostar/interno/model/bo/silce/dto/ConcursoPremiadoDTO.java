@@ -142,16 +142,15 @@ public class ConcursoPremiadoDTO {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class ConcursoPremiadoDTO {\n");
 
-        sb.append("  id: ").append(id).append("\n");
-        sb.append("  concurso: ").append(concurso).append("\n");
-        sb.append("  valorBruto: ").append(valorBruto).append("\n");
-        sb.append("  valorLiquido: ").append(valorLiquido).append("\n");
-        sb.append("  valorIRRF: ").append(valorIRRF).append("\n");
-        sb.append("  faixas: ").append(faixas).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class ConcursoPremiadoDTO {\n" +
+                "  id: " + id + "\n" +
+                "  concurso: " + concurso + "\n" +
+                "  valorBruto: " + valorBruto + "\n" +
+                "  valorLiquido: " + valorLiquido + "\n" +
+                "  valorIRRF: " + valorIRRF + "\n" +
+                "  faixas: " + faixas + "\n" +
+                "}\n";
+        return sb;
     }
 }

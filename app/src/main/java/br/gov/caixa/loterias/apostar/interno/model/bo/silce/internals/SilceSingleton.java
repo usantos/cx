@@ -1,12 +1,9 @@
 package br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.BasicNetwork;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.NoCache;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.EBean;

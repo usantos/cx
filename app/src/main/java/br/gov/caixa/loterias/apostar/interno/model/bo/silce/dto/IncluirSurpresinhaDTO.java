@@ -214,20 +214,19 @@ public class IncluirSurpresinhaDTO {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class IncluirSurpresinhaDTO {\n");
 
-        sb.append("  modalidade: ").append(modalidade).append("\n");
-        sb.append("  tipoConcurso: ").append(tipoConcurso).append("\n");
-        sb.append("  indicadorSurpresinha: ").append(indicadorSurpresinha).append("\n");
-        sb.append("  concursoAlvo: ").append(concursoAlvo).append("\n");
-        sb.append("  quantidadeNumeros: ").append(quantidadeNumeros).append("\n");
-        sb.append("  quantidadeTeimosinhas: ").append(quantidadeTeimosinhas).append("\n");
-        sb.append("  quantidadeSurpresinhas: ").append(quantidadeSurpresinhas).append("\n");
-        sb.append("  gerarEspelho: ").append(gerarEspelho).append("\n");
-        sb.append("  quantidadeApostas: ").append(quantidadeApostas).append("\n");
-        sb.append("  timeDoCoracao: ").append(timeDoCoracao).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class IncluirSurpresinhaDTO {\n" +
+                "  modalidade: " + modalidade + "\n" +
+                "  tipoConcurso: " + tipoConcurso + "\n" +
+                "  indicadorSurpresinha: " + indicadorSurpresinha + "\n" +
+                "  concursoAlvo: " + concursoAlvo + "\n" +
+                "  quantidadeNumeros: " + quantidadeNumeros + "\n" +
+                "  quantidadeTeimosinhas: " + quantidadeTeimosinhas + "\n" +
+                "  quantidadeSurpresinhas: " + quantidadeSurpresinhas + "\n" +
+                "  gerarEspelho: " + gerarEspelho + "\n" +
+                "  quantidadeApostas: " + quantidadeApostas + "\n" +
+                "  timeDoCoracao: " + timeDoCoracao + "\n" +
+                "}\n";
+        return sb;
     }
 }

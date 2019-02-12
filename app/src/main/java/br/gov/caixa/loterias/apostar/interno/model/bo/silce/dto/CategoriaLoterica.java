@@ -71,12 +71,11 @@ public class CategoriaLoterica {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class CategoriaLoterica {\n");
 
-        sb.append("  id: ").append(id).append("\n");
-        sb.append("  descricao: ").append(descricao).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class CategoriaLoterica {\n" +
+                "  id: " + id + "\n" +
+                "  descricao: " + descricao + "\n" +
+                "}\n";
+        return sb;
     }
 }

@@ -5,25 +5,19 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.widget.Button;
-
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 
-
 import java.io.UnsupportedEncodingException;
 
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bean.ErrorResponse;
-import br.gov.caixa.loterias.apostar.interno.model.bo.keycloak.KeycloakBO;
-import br.gov.caixa.loterias.apostar.interno.model.bo.keycloak.KeycloakBO_;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RedirectEnum;
 import br.gov.caixa.loterias.apostar.interno.utils.AppUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.CadastrarActivity_;
-import br.gov.caixa.loterias.apostar.interno.view.FormaPagamentoActivity;
 import br.gov.caixa.loterias.apostar.interno.view.TermosUsoActivity;
 
 
@@ -184,20 +178,6 @@ public class RedirectNetwork {
     private static void connectKeycloak(final Activity activity) {
         if(AppUtils.isNetworkAvailable(activity)){
             AcessoBO_.getInstance_(activity).iniciarLoginSSO();
-//            KeycloakBO_.getInstance_(activity).login(activity, new KeycloakBO.OnLogin() {
-//                        @Override
-//                        public void onSuccess(String token) {
-//
-//                        }
-//
-//                        @Override
-//                        public void onFailure(Exception e) {
-//                            if(activity != null){
-//                                ViewUtils.alert(activity, activity.getString(R.string.sistema_indisponivel));
-//                            }
-//                        }
-//                    }
-//            );
         }else{
             ViewUtils.alert(activity, activity.getString(R.string.seminternet));
         }

@@ -27,7 +27,6 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IdentificaoDeUma
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.PartidaLotecaDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.PartidaLotogolDTO;
-import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.PremioDTO;
 
 /**
  * Created by joafilho on 16/04/2018.
@@ -219,7 +218,7 @@ public class HtmlUtils {
 
     private static String getBodyAposta(ComprovanteApostaDTO comprovanteApostaDTO, Context context) {
         String htmlBody = getContentOfFile(FILE_PATH_COMPROVANTE_CORPO_APOSTA, context);
-        htmlBody = ViewUtils.replaceNullable(htmlBody, BASE_64_CODIGO_BARRAS_APOSTA, getBarcode(context, comprovanteApostaDTO.getNsbi()));
+        htmlBody = ViewUtils.replaceNullable(htmlBody, BASE_64_CODIGO_BARRAS_APOSTA, getBarcode(comprovanteApostaDTO.getNsbi()));
         htmlBody = ViewUtils.replaceNullable(htmlBody, BODY_CODIGO_NSBI_APOSTA, comprovanteApostaDTO.getNsbi());
 
         return htmlBody;
@@ -285,7 +284,7 @@ public class HtmlUtils {
         return Base64.encodeToString(ViewUtils.drawableInByte(context, R.drawable.logo_caixa_pdf_copy), Base64.DEFAULT);
     }
 
-    private static String getBarcode(Context context, String valor) {
+    private static String getBarcode(String valor) {
 
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         Bitmap bitmap = null;

@@ -38,10 +38,9 @@ public class Serializable {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class Serializable {\n");
 
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class Serializable {\n" +
+                "}\n";
+        return sb;
     }
 }

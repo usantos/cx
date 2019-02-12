@@ -95,12 +95,11 @@ public class CodigoResgateDTO {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class CodigoResgateDTO {\n");
 
-        sb.append("  nsb: ").append(nsb).append("\n");
-        sb.append("  codigo: ").append(codigo).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class CodigoResgateDTO {\n" +
+                "  nsb: " + nsb + "\n" +
+                "  codigo: " + codigo + "\n" +
+                "}\n";
+        return sb;
     }
 }

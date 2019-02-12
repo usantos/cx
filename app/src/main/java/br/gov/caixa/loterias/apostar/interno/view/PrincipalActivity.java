@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -45,6 +46,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import br.gov.caixa.loterias.apostar.interno.BuildConfig;
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bean.DadosUsuarioToken;
 import br.gov.caixa.loterias.apostar.interno.model.bean.Modalidade;
@@ -92,7 +94,7 @@ public class PrincipalActivity extends AppCompatActivity
     @ViewById
     protected Button buttonHomeBet;
     @ViewById
-    protected TextView ttvIniciais, textViewHomeCountBetsCart, textViewHomeMinimumPurchaseValue, tituloLerBilhetes, textoRepassados, valorRepassesPrincipal;
+    protected TextView ttvIniciais, textViewHomeCountBetsCart, textViewHomeMinimumPurchaseValue, tituloLerBilhetes, textoRepassados, valorRepassesPrincipal, txtVersaoMenu, nav_user, nav_ultima_aposta;
     @ViewById
     protected RelativeLayout relativeContentPrincipal,
             relativeBlankView, relativeLayoutContentRapidao, relativeLayoutContentLerBilhetes, relativeLayoutContentFavoritas, relativeLayoutContentRepassados,
@@ -104,7 +106,8 @@ public class PrincipalActivity extends AppCompatActivity
     @ViewById
     protected NavigationView nav_view;
     @ViewById
-    protected TextView nav_user, nav_ultima_aposta;
+    protected ConstraintLayout viewSair;
+
     private List<Modalidade> data;
     private List<ParametroSimulacao> modalidadesParaListar;
     private RepassometroDTO repassesSociais;
@@ -124,17 +127,19 @@ public class PrincipalActivity extends AppCompatActivity
         String iniciais = "";
         boolean proximo = false;
         char separarNomeUsuario[] = nomeUsuario.toCharArray();
-        for(int contador = 0; contador < separarNomeUsuario.length; contador++){
+
+        for (char caracter: separarNomeUsuario) {
             if("".equals(iniciais) || proximo){
-                iniciais += separarNomeUsuario[contador];
+                iniciais += caracter;
                 proximo = false;
             }
-            if(separarNomeUsuario[contador] == ' '){
+            if(caracter == ' '){
                 proximo = true;
             }
         }
-        ttvIniciais.setText(iniciais);
 
+        ttvIniciais.setText(iniciais);
+        txtVersaoMenu.setText(BuildConfig.VERSION_NAME);
 
         if(!" ".equals(nomeUsuario)) {
             String texto = "Olá, _%_!";
@@ -151,8 +156,15 @@ public class PrincipalActivity extends AppCompatActivity
         toolbarListener();
         nav_ultima_aposta.setText(ViewUtils.textFuturaAndFuturaBold( this,  "Sua última aposta foi em _24/08/2017_") );
         layoutSideMenu();
+        listenerSair();
         callWebservice();
         iniciarBancoLocal();
+    }
+
+    private void listenerSair() {
+        viewSair.setOnClickListener((View v) -> {
+            sairLogin();
+        });
     }
 
     private void iniciarBancoLocal() {
@@ -513,9 +525,8 @@ public class PrincipalActivity extends AppCompatActivity
             }
         } else if (groupPosition == 5) {
             startActivity(new Intent(PrincipalActivity.this, RepassesSociaisActivity.class));
-        } else if (groupPosition == 6) {
-            sairLogin();
         }
+
         if (groupPosition != 0) {
             drawerLayout.closeDrawer(Gravity.START, false);
         }

@@ -39,7 +39,7 @@ public class DadosCorporativosBO extends BaseBO{
 
         silceConnection.get(ServerMethods.UFS_PATH, queryParams, UnidadeFederacaoDTOResponse.class,
                 listener.getSilceListener(),
-                listener.getErrorListener(), new LinkedHashMap<String, String>());
+                listener.getErrorListener(), new LinkedHashMap<>());
     }
 
     public void municipios(String idUf, final RequestListener<MunicipioDTOResponse> listener) {
@@ -49,7 +49,7 @@ public class DadosCorporativosBO extends BaseBO{
 
         silceConnection.get(ServerMethods.MUNICIPIOS_PATH, queryParams, MunicipioDTOResponse.class,
                 listener.getSilceListener(),
-                listener.getErrorListener(), new LinkedHashMap<String, String>());
+                listener.getErrorListener(), new LinkedHashMap<>());
     }
 
     public void bairros(String idUf, String numeroCidade, String digitoVerificador, String cep, final RequestListener<BairroDTOResponse> listener) {
@@ -70,7 +70,7 @@ public class DadosCorporativosBO extends BaseBO{
 
         silceConnection.get(ServerMethods.BAIRROS_PATH, queryParams, BairroDTOResponse.class,
                 listener.getSilceListener(),
-                listener.getErrorListener(), new LinkedHashMap<String, String>());
+                listener.getErrorListener(), new LinkedHashMap<>());
     }
 
     public void termo(final RequestListener<TermoDeUsoDTOResponse> listener) {
@@ -79,13 +79,13 @@ public class DadosCorporativosBO extends BaseBO{
 
         silceConnection.get(ServerMethods.TERMO_PATH, queryParams, TermoDeUsoDTOResponse.class,
                 listener.getSilceListener(),
-                listener.getErrorListener(), new LinkedHashMap<String, String>());
+                listener.getErrorListener(), new LinkedHashMap<>());
     }
 
     public void repasses(final RequestListener<RepassometroDTOResponse> listener) {
 
         LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
-        LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
+        LinkedHashMap<String, String> headers = new LinkedHashMap<>();
 
         silceConnection.get(ServerMethods.REPASSOMETRO_PATH, queryParams, RepassometroDTOResponse.class,
                 listener.getSilceListener(),
@@ -93,7 +93,7 @@ public class DadosCorporativosBO extends BaseBO{
     }
 
     public void parametrosSimulacao(final RequestListener<ParametrosSimulacaoResponse> listener) {
-        LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
+        LinkedHashMap<String, String> headers = new LinkedHashMap<>();
         LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
 
         if (keycloakBO.getAccessToken() != null){
@@ -114,10 +114,10 @@ public class DadosCorporativosBO extends BaseBO{
     public void validarApostaFavorita(final ApostaFavoritaDTO aposta,
                                       final RequestListener<NetworkResponse> listener) {
 
-        LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
+        LinkedHashMap<String, String> headers = new LinkedHashMap<>();
         headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
 
-        GsonRequest request = silceConnection.buildPostRequest(ServerMethods.VALIDAR_FAVORITA_PATH, new LinkedHashMap<String, String>(),
+        GsonRequest request = silceConnection.buildPostRequest(ServerMethods.VALIDAR_FAVORITA_PATH, new LinkedHashMap<>(),
                 aposta, NetworkResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(), headers);
@@ -129,10 +129,10 @@ public class DadosCorporativosBO extends BaseBO{
     public void salvarApostaFavorita(final ApostaFavoritaDTO aposta,
                                      final RequestListener<NetworkResponse> listener) {
 
-        LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
+        LinkedHashMap<String, String> headers = new LinkedHashMap<>();
         headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
 
-        GsonRequest request = silceConnection.buildPostRequest(ServerMethods.INCLUIR_FAVORITA_PATH, new LinkedHashMap<String, String>(),
+        GsonRequest request = silceConnection.buildPostRequest(ServerMethods.INCLUIR_FAVORITA_PATH, new LinkedHashMap<>(),
                 aposta, NetworkResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(), headers);
@@ -142,9 +142,9 @@ public class DadosCorporativosBO extends BaseBO{
     }
 
     public void buscarLotericasHabilitadas(final RequestListener<ListDTOEnumIntegerResponse> listener) {
-        silceConnection.get(ServerMethods.LOTERICAS_HABILITADAS_PATH, new LinkedHashMap<String, String>(), ListDTOEnumIntegerResponse.class,
+        silceConnection.get(ServerMethods.LOTERICAS_HABILITADAS_PATH, new LinkedHashMap<>(), ListDTOEnumIntegerResponse.class,
                 listener.getSilceListener(),
-                listener.getErrorListener(), new LinkedHashMap<String, String>());
+                listener.getErrorListener(), new LinkedHashMap<>());
     }
 
     public void buscarLotericasCepOrBairroDTO(String cep, BairroDTO bairroDTO, final RequestListener<LotericaDTOResponse> listener) {
@@ -165,7 +165,7 @@ public class DadosCorporativosBO extends BaseBO{
 
         silceConnection.get(ServerMethods.LOTERICAS_PATH, queryParams, LotericaDTOResponse.class,
                 listener.getSilceListener(),
-                listener.getErrorListener(), new LinkedHashMap<String, String>());
+                listener.getErrorListener(), new LinkedHashMap<>());
     }
 
     public void buscarLoteriasCodigoCompleto(String codigoCompleto, final RequestListener<LotericaCodigoWrapperResponse> listener) {
@@ -174,15 +174,15 @@ public class DadosCorporativosBO extends BaseBO{
 
         silceConnection.get(ServerMethods.LOTERICAS_CODIGO_COMPLETO_PATH, queryParams, LotericaCodigoWrapperResponse.class,
                 listener.getSilceListener(),
-                listener.getErrorListener(), new LinkedHashMap<String, String>());
+                listener.getErrorListener(), new LinkedHashMap<>());
     }
 
     public void validaTermoAceito(final RequestListener<ResourceResponse> listener) {
 
-        LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
+        LinkedHashMap<String, String> headers = new LinkedHashMap<>();
         headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
 
-        GsonRequest request = silceConnection.buildGetRequest(ServerMethods.TERMO_VALIDA_ACEITO_PATH, new LinkedHashMap<String, String>(), ResourceResponse.class,
+        GsonRequest request = silceConnection.buildGetRequest(ServerMethods.TERMO_VALIDA_ACEITO_PATH, new LinkedHashMap<>(), ResourceResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(), headers);
 
@@ -192,10 +192,10 @@ public class DadosCorporativosBO extends BaseBO{
 
     public void aceiteTermo(final RequestListener<ResourceResponse> listener) {
 
-        LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
+        LinkedHashMap<String, String> headers = new LinkedHashMap<>();
         headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
 
-        GsonRequest request = silceConnection.buildPostRequest(ServerMethods.TERMO_ACEITAR_PATH, new LinkedHashMap<String, String>(), null, ResourceResponse.class,
+        GsonRequest request = silceConnection.buildPostRequest(ServerMethods.TERMO_ACEITAR_PATH, new LinkedHashMap<>(), null, ResourceResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(), headers);
 
@@ -204,9 +204,9 @@ public class DadosCorporativosBO extends BaseBO{
     }
 
     public void secaoDuvidas(final RequestListener<ListSecaoDTOResponse> listener) {
-        LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
+        LinkedHashMap<String, String> headers = new LinkedHashMap<>();
 
-        GsonRequest request = silceConnection.buildGetRequest(ServerMethods.DUVIDAS_SECOES_PATH, new LinkedHashMap<String, String>(), ListSecaoDTOResponse.class,
+        GsonRequest request = silceConnection.buildGetRequest(ServerMethods.DUVIDAS_SECOES_PATH, new LinkedHashMap<>(), ListSecaoDTOResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(), headers);
 
@@ -215,7 +215,7 @@ public class DadosCorporativosBO extends BaseBO{
     }
 
     public void duvidasPerguntasRespostas(Integer secao, final RequestListener<ListSecaoDTOResponse> listener) {
-        LinkedHashMap<String, String> headers = new LinkedHashMap<String, String>();
+        LinkedHashMap<String, String> headers = new LinkedHashMap<>();
         headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
 
         HashMap queryParams = new LinkedHashMap<String, String>();
@@ -230,7 +230,7 @@ public class DadosCorporativosBO extends BaseBO{
     }
 
     private static <T> String join(Collection<T> collection, String delimiter) {
-        StringBuffer result = new StringBuffer("");
+        StringBuilder result = new StringBuilder("");
         boolean first = true;
 
         for (T e : collection) {

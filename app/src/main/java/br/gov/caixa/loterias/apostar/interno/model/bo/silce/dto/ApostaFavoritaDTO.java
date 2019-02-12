@@ -12,7 +12,6 @@
 
 package br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto;
 
-import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -156,16 +155,15 @@ public class ApostaFavoritaDTO {
 
     @Override
     public String toString()  {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class ApostaFavoritaDTO {\n");
 
-        sb.append("  modalidade: ").append(modalidade).append("\n");
-        sb.append("  nome: ").append(nome).append("\n");
-        sb.append("  numerosSelecionados: ").append(numerosSelecionados).append("\n");
-        sb.append("  timeDoCoracao: ").append(timeDoCoracao).append("\n");
-        sb.append("  mesDeSorte: ").append(mesDeSorte).append("\n");
-        sb.append("  id: ").append(id).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class ApostaFavoritaDTO {\n" +
+                "  modalidade: " + modalidade + "\n" +
+                "  nome: " + nome + "\n" +
+                "  numerosSelecionados: " + numerosSelecionados + "\n" +
+                "  timeDoCoracao: " + timeDoCoracao + "\n" +
+                "  mesDeSorte: " + mesDeSorte + "\n" +
+                "  id: " + id + "\n" +
+                "}\n";
+        return sb;
     }
 }

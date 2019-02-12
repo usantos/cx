@@ -75,12 +75,11 @@ public class AgrupadorDTOIdentificaoDeUmaApostaDas8Modalidades {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class AgrupadorDTOIdentificaoDeUmaApostaDas8Modalidades {\n");
 
-        sb.append("  resultado: ").append(resultado).append("\n");
-        sb.append("  pageSize: ").append(pageSize).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class AgrupadorDTOIdentificaoDeUmaApostaDas8Modalidades {\n" +
+                "  resultado: " + resultado + "\n" +
+                "  pageSize: " + pageSize + "\n" +
+                "}\n";
+        return sb;
     }
 }

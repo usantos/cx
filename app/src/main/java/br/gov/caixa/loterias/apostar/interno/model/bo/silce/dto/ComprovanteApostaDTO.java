@@ -106,14 +106,13 @@ public class ComprovanteApostaDTO {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class ComprovanteApostaDTO {\n");
 
-        sb.append("  nsbi: ").append(nsbi).append("\n");
-        sb.append("  aposta: ").append(aposta).append("\n");
-        sb.append("  loterica: ").append(loterica).append("\n");
-        sb.append("  dataSorteio: ").append(dataSorteio).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class ComprovanteApostaDTO {\n" +
+                "  nsbi: " + nsbi + "\n" +
+                "  aposta: " + aposta + "\n" +
+                "  loterica: " + loterica + "\n" +
+                "  dataSorteio: " + dataSorteio + "\n" +
+                "}\n";
+        return sb;
     }
 }

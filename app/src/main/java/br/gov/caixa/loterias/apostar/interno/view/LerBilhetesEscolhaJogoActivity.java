@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostar.interno.R;
+import br.gov.caixa.loterias.apostar.interno.model.bean.TipoAposta;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
@@ -25,17 +26,14 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeEnumSelecaoModalidades;
-import br.gov.caixa.loterias.apostar.interno.model.bean.TipoAposta;
-import br.gov.caixa.loterias.apostar.interno.model.bo.MensagensNetwork;
-import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.TiposApostasConferirApostaAdapter;
 import br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightGridView;
 import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
 
 public class LerBilhetesEscolhaJogoActivity extends AppCompatActivity {
 
-    List<ModalidadeDTO> modalidades = new ArrayList<ModalidadeDTO>();
-    List<TipoAposta> tiposAposta = new ArrayList<TipoAposta>();
+    List<ModalidadeDTO> modalidades = new ArrayList<>();
+    List<TipoAposta> tiposAposta = new ArrayList<>();
 
     Button selecionarModalidadesConferirApostaButton;
 

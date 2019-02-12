@@ -28,7 +28,7 @@ public class NumeroSelecionadoRapidaoAdapter extends BaseAdapter {
     private final NumerosSelecionadosRapidao[] numerosSelecionadosRapidao;
     private final NumerosRapidaoActivity parentActivity;
     private final Boolean isObrigatorio;
-    private List<Integer> listaNumerosContrariosRapidao = new ArrayList<Integer>();
+    private List<Integer> listaNumerosContrariosRapidao = new ArrayList<>();
     // 1
     public NumeroSelecionadoRapidaoAdapter(NumerosRapidaoActivity parentActivity, Context context, NumerosSelecionadosRapidao[] numerosSelecionadosRapidao, Boolean isObrigatorio, List<Integer> listaNumerosContrariosRapidao) {
         this.parentActivity = parentActivity;

@@ -2,13 +2,10 @@ package br.gov.caixa.loterias.apostar.interno.view.custom;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
-import android.app.Activity;
 import android.content.Context;
 import android.support.v7.app.AlertDialog;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import br.gov.caixa.loterias.apostar.interno.R;

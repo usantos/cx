@@ -71,12 +71,11 @@ public class ResultadoConsultaBilheteFederalDTO {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class ResultadoConsultaBilheteFederalDTO {\n");
 
-        sb.append("  premio: ").append(premio).append("\n");
-        sb.append("  extracao: ").append(extracao).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class ResultadoConsultaBilheteFederalDTO {\n" +
+                "  premio: " + premio + "\n" +
+                "  extracao: " + extracao + "\n" +
+                "}\n";
+        return sb;
     }
 }

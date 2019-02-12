@@ -55,14 +55,14 @@ public class SilceCrypto {
     }
 
     private String concatenateParams(Map<String, String> params) {
-        String singleParam = "";
+        StringBuilder singleParam = new StringBuilder();
         for (Map.Entry<String, String> param : params.entrySet()) {
             if (param.getValue() != null) {
-                singleParam += param.getKey() + "==" + param.getValue() + "&&";
+                singleParam.append(param.getKey()).append("==").append(param.getValue()).append("&&");
             }
         }
 
-        return singleParam;
+        return singleParam.toString();
     }
 
     public static SilceCrypto create() {

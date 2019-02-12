@@ -7,8 +7,6 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.PartidaLotecaDTO;
-import br.gov.caixa.loterias.apostar.interno.view.custom.ApostaPartidaLotecaView;
-import br.gov.caixa.loterias.apostar.interno.view.custom.ApostaPartidaLotecaView_;
 import br.gov.caixa.loterias.apostar.interno.view.custom.PartidasLotecaApostasConfirmadasView;
 import br.gov.caixa.loterias.apostar.interno.view.custom.PartidasLotecaApostasConfirmadasView_;
 

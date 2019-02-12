@@ -86,15 +86,15 @@ public class LerBilhetesActivity extends AppCompatActivity {
         barcodeScannerView.pause();
     }
 
-    public void pause(View view) {
+    public void pause() {
         barcodeScannerView.pause();
     }
 
-    public void resume(View view) {
+    public void resume() {
         barcodeScannerView.resume();
     }
 
-    public void triggerScan(View view) {
+    public void triggerScan() {
         barcodeScannerView.decodeSingle(callback);
     }
 

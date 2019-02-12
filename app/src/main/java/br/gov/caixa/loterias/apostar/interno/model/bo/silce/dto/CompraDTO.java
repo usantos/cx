@@ -223,22 +223,21 @@ public class CompraDTO {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class CompraDTO {\n");
 
-        sb.append("  id: ").append(id).append("\n");
-        sb.append("  situacao: ").append(situacao).append("\n");
-        sb.append("  loterica: ").append(loterica).append("\n");
-        sb.append("  dataInicioCompra: ").append(dataInicioCompra).append("\n");
-        sb.append("  dataEfetivacaoDebito: ").append(dataEfetivacaoDebito).append("\n");
-        sb.append("  horaInicioCompra: ").append(horaInicioCompra).append("\n");
-        sb.append("  dataFinalizacaoCompra: ").append(dataFinalizacaoCompra).append("\n");
-        sb.append("  horaFinalizacaoCompra: ").append(horaFinalizacaoCompra).append("\n");
-        sb.append("  valorTotal: ").append(valorTotal).append("\n");
-        sb.append("  timestampUltimaAlteracao: ").append(timestampUltimaAlteracao).append("\n");
-        sb.append("  meioPagamento: ").append(meioPagamento).append("\n");
-        sb.append("  codigoMensageErro: ").append(codigoMensageErro).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class CompraDTO {\n" +
+                "  id: " + id + "\n" +
+                "  situacao: " + situacao + "\n" +
+                "  loterica: " + loterica + "\n" +
+                "  dataInicioCompra: " + dataInicioCompra + "\n" +
+                "  dataEfetivacaoDebito: " + dataEfetivacaoDebito + "\n" +
+                "  horaInicioCompra: " + horaInicioCompra + "\n" +
+                "  dataFinalizacaoCompra: " + dataFinalizacaoCompra + "\n" +
+                "  horaFinalizacaoCompra: " + horaFinalizacaoCompra + "\n" +
+                "  valorTotal: " + valorTotal + "\n" +
+                "  timestampUltimaAlteracao: " + timestampUltimaAlteracao + "\n" +
+                "  meioPagamento: " + meioPagamento + "\n" +
+                "  codigoMensageErro: " + codigoMensageErro + "\n" +
+                "}\n";
+        return sb;
     }
 }

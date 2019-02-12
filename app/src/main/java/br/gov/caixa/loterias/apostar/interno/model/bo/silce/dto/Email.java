@@ -71,12 +71,11 @@ public class Email {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class Email {\n");
 
-        sb.append("  valorMascarado: ").append(valorMascarado).append("\n");
-        sb.append("  valor: ").append(valor).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class Email {\n" +
+                "  valorMascarado: " + valorMascarado + "\n" +
+                "  valor: " + valor + "\n" +
+                "}\n";
+        return sb;
     }
 }

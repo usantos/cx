@@ -95,19 +95,20 @@
                     android:background="@drawable/custom_border_cinza"
                     />
             </RelativeLayout>
+
             <Button
+                android:id="@+id/salvarNumerosApostaRapidaoSelecao"
                 android:layout_width="184dp"
                 android:layout_height="84dp"
+                android:layout_below="@+id/layoutLimparSelecaoApostaRapidaSelecao"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="30dp"
                 android:background="@color/verdeazul"
+                android:text="Salvar"
+                android:textAllCaps="false"
                 android:textColor="@color/branco"
                 android:textSize="17.7sp"
-                android:textStyle="bold"
-                android:text="Salvar"
-                android:layout_centerHorizontal="true"
-                android:textAllCaps="false"
-                android:id="@+id/salvarNumerosApostaRapidaoSelecao"
-                android:layout_below="@+id/layoutLimparSelecaoApostaRapidaSelecao"
-                android:layout_marginTop="30dp"/>
+                android:textStyle="bold" />
             <View
                 android:layout_width="match_parent"
                 android:layout_height="95dp"

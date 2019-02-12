@@ -92,13 +92,12 @@ public class UnidadeFederacaoDTO {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class UnidadeFederacaoDTO {\n");
 
-        sb.append("  id: ").append(id).append("\n");
-        sb.append("  sigla: ").append(sigla).append("\n");
-        sb.append("  nome: ").append(nome).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class UnidadeFederacaoDTO {\n" +
+                "  id: " + id + "\n" +
+                "  sigla: " + sigla + "\n" +
+                "  nome: " + nome + "\n" +
+                "}\n";
+        return sb;
     }
 }

@@ -142,12 +142,6 @@ public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
                 imagemMaisOpcoes.setVisibility(View.GONE);
                 convertView.findViewById(R.id.layoutItem).setBackgroundResource(R.drawable.drawer_linha_divisao_bg);
                 break;
-            case 6:
-                imageViewGroup.setImageResource(R.drawable.icon_sair);
-                listTitleTextView.setTextColor(context.getResources().getColor(R.color.verdeazul));
-                convertView.setBackgroundColor(context.getResources().getColor(R.color.colorAccent));
-                imagemMaisOpcoes.setVisibility(View.GONE);
-                convertView.findViewById(R.id.layoutItem).setBackgroundResource(R.color.colorAccent);
             default:
                 break;
         }

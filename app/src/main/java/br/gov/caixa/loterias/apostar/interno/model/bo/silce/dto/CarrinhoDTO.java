@@ -79,12 +79,11 @@ public class CarrinhoDTO {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class CarrinhoDTO {\n");
 
-        sb.append("  valorTotal: ").append(valorTotal).append("\n");
-        sb.append("  apostas: ").append(apostas).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class CarrinhoDTO {\n" +
+                "  valorTotal: " + valorTotal + "\n" +
+                "  apostas: " + apostas + "\n" +
+                "}\n";
+        return sb;
     }
 }

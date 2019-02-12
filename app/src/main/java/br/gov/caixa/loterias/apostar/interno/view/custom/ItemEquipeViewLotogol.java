@@ -6,7 +6,6 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -22,8 +21,8 @@ import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.DezenaLotogol;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametroEquipe;
 import br.gov.caixa.loterias.apostar.interno.utils.Constantes;
-import br.gov.caixa.loterias.apostar.interno.view.listener.LotogolListener;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.NumerosLotogolAdapter;
+import br.gov.caixa.loterias.apostar.interno.view.listener.LotogolListener;
 
 /**
  * Created by joafilho on 28/12/2017.
@@ -92,7 +91,7 @@ public class ItemEquipeViewLotogol extends RelativeLayout {
         gridViewPlacarTresColunas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                clickItem(adapterView, view);
+                clickItem(view);
             }
         });
 
@@ -105,12 +104,12 @@ public class ItemEquipeViewLotogol extends RelativeLayout {
         gridViewPlacarDuasColunas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                clickItem(adapterView, view);
+                clickItem(view);
             }
         });
     }
 
-    private void clickItem(AdapterView<?> adapterView, View view) {
+    private void clickItem(View view) {
 
         if (view.getTag().toString().equals(parametroEquipe.getPlacar())) {
             parametroEquipe.setPlacar(StringUtils.EMPTY);

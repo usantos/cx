@@ -3,15 +3,14 @@ package br.gov.caixa.loterias.apostar.interno.view.adapter;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 
 import java.util.List;
 
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametroPartida;
 import br.gov.caixa.loterias.apostar.interno.view.custom.PartidaViewLotogol;
-import br.gov.caixa.loterias.apostar.interno.view.listener.LotogolListener;
 import br.gov.caixa.loterias.apostar.interno.view.custom.PartidaViewLotogol_;
+import br.gov.caixa.loterias.apostar.interno.view.listener.LotogolListener;
 
 /**
  * Created by joafilho on 26/12/2017.

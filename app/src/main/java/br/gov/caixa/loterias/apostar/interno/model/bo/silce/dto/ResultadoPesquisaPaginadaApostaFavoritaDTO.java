@@ -91,13 +91,12 @@ public class ResultadoPesquisaPaginadaApostaFavoritaDTO {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class ResultadoPesquisaPaginadaApostaFavoritaDTO {\n");
 
-        sb.append("  rowCount: ").append(rowCount).append("\n");
-        sb.append("  lista: ").append(lista).append("\n");
-        sb.append("  listaSize: ").append(listaSize).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class ResultadoPesquisaPaginadaApostaFavoritaDTO {\n" +
+                "  rowCount: " + rowCount + "\n" +
+                "  lista: " + lista + "\n" +
+                "  listaSize: " + listaSize + "\n" +
+                "}\n";
+        return sb;
     }
 }

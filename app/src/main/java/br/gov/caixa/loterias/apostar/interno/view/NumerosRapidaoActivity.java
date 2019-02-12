@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,10 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.android.volley.VolleyError;
 import com.google.gson.Gson;
-
-import org.jboss.aerogear.android.authorization.oauth2.OAuth2AuthorizationException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,25 +21,14 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bean.NumerosSelecionadosRapidao;
-
-import br.gov.caixa.loterias.apostar.interno.model.bo.AcessoBO_;
-import br.gov.caixa.loterias.apostar.interno.model.bo.DadosUsuarioBO;
-import br.gov.caixa.loterias.apostar.interno.model.bo.DadosUsuarioBO_;
-import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
-import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
-import br.gov.caixa.loterias.apostar.interno.model.bo.keycloak.KeycloakBO;
-import br.gov.caixa.loterias.apostar.interno.model.bo.keycloak.KeycloakBO_;
-import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ListCartaoDTOResponse;
-import br.gov.caixa.loterias.apostar.interno.utils.AppUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.NumeroSelecionadoRapidaoAdapter;
 import br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightGridView;
-import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
 
 public class NumerosRapidaoActivity extends AppCompatActivity {
     NumerosSelecionadosRapidao[] listaNumerosSelecionadosRapidao;
-    List<Integer> numerosLista =  new ArrayList<Integer>();
-    List<Integer> listaNumerosContrariosRapidao =  new ArrayList<Integer>();
+    List<Integer> numerosLista = new ArrayList<>();
+    List<Integer> listaNumerosContrariosRapidao = new ArrayList<>();
     Button salvarNumerosApostaRapidaoSelecao;
     Button limparButtonRapidaoSelecionados;
     TextView titleNumerosRapidaoObrigatorios;
@@ -69,14 +54,14 @@ public class NumerosRapidaoActivity extends AppCompatActivity {
         listaNumerosContrariosRapidao = Arrays.asList(new Gson().fromJson(arrayContrarios, Integer[].class));
 
         if(isTipoNrObrigatorios == true){
-            List<Integer> numerosObrigadoriosSalvos =  new ArrayList<Integer>();
+            List<Integer> numerosObrigadoriosSalvos = new ArrayList<>();
             String arrayObrigarios =  getIntent().getExtras().getString("numerosobrigatorios");
             numerosObrigadoriosSalvos = Arrays.asList(new Gson().fromJson(arrayObrigarios, Integer[].class));
             numerosLista = numerosObrigadoriosSalvos;
             gridViewNumerosRapidaoSlc = (ExpandableHeightGridView)findViewById(R.id.gridviewNumerosRapidaoSelecao);
 
         }else{
-            List<Integer> numerosProibidosSalvos =  new ArrayList<Integer>();
+            List<Integer> numerosProibidosSalvos = new ArrayList<>();
             String arrayProibidos =  getIntent().getExtras().getString("numerosProibidos");
             numerosProibidosSalvos = Arrays.asList(new Gson().fromJson(arrayProibidos, Integer[].class));
             numerosLista = numerosProibidosSalvos;
@@ -94,7 +79,7 @@ public class NumerosRapidaoActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent();
 
-                List<Integer> salvarNumero = new ArrayList<Integer>();
+                List<Integer> salvarNumero = new ArrayList<>();
                 for (NumerosSelecionadosRapidao numero : listaNumerosSelecionadosRapidao){
                     if (numero.getSelecionado() == true){
                         salvarNumero.add(numero.getNumero());
@@ -120,44 +105,11 @@ public class NumerosRapidaoActivity extends AppCompatActivity {
         });
 
         gridViewNumeros();
-
-        AcessoBO_.getInstance_(this).iniciarLoginSSO();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        connectKeycloak();
-    }
-
-    //TODO: LOGIN - Testar
-    private void connectKeycloak() {
-        if(AppUtils.isNetworkAvailable(NumerosRapidaoActivity.this)){
-            DadosUsuarioBO.updateUsuarioLogado( NumerosRapidaoActivity.this, true );
-
-//            KeycloakBO_.getInstance_(NumerosRapidaoActivity.this).login(NumerosRapidaoActivity.this, new KeycloakBO.OnLogin() {
-//                        @Override
-//                        public void onSuccess(String token) {
-//                            if(NumerosRapidaoActivity.this != null){
-//                                DadosUsuarioBO.updateUsuarioLogado( NumerosRapidaoActivity.this, true );
-//                                //loginSucess();
-//                            }
-//                        }
-//
-//                        @Override
-//                        public void onFailure(Exception e) {
-//                            if(NumerosRapidaoActivity.this != null){
-////                            OAuth2AuthorizationException.Error error = ((OAuth2AuthorizationException)e).type;
-//                                if(!((OAuth2AuthorizationException) e).error.equals( "dialog_dismissed" )){
-//                                    ViewUtils.alert(NumerosRapidaoActivity.this, getString(R.string.sistema_indisponivel));
-//                                }
-//                            }
-//                        }
-//                    }
-//            );
-        }else{
-            ViewUtils.alert(NumerosRapidaoActivity.this, getString(R.string.seminternet));
-        }
     }
 
     private void reloadGridView(){

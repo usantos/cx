@@ -101,14 +101,13 @@ public class CEP {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class CEP {\n");
 
-        sb.append("  cepSemMascara: ").append(cepSemMascara).append("\n");
-        sb.append("  complemento: ").append(complemento).append("\n");
-        sb.append("  cepComMascara: ").append(cepComMascara).append("\n");
-        sb.append("  numero: ").append(numero).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class CEP {\n" +
+                "  cepSemMascara: " + cepSemMascara + "\n" +
+                "  complemento: " + complemento + "\n" +
+                "  cepComMascara: " + cepComMascara + "\n" +
+                "  numero: " + numero + "\n" +
+                "}\n";
+        return sb;
     }
 }

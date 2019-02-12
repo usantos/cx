@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -18,15 +17,11 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
 import com.github.pinball83.maskededittext.MaskedEditText;
 
 import org.apache.commons.lang.StringUtils;
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,11 +43,8 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CadastrarApostad
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.MunicipioDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.MunicipioDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.MunicipioIdDTO;
-import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.SexoEnum;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.UnidadeFederacaoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.UnidadeFederacaoDTOResponse;
-import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.UsuarioLogado;
-import br.gov.caixa.loterias.apostar.interno.utils.AppUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.segmentedbutton.SegmentedButtonGroup;
 import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
@@ -207,7 +199,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
             @Override
             public void onResponse(UnidadeFederacaoDTOResponse response) {
                 loadViewProgress.dismiss();
-                listUFString = new ArrayList<String>();
+                listUFString = new ArrayList<>();
                 listUf = response.getPayload();
                 for (UnidadeFederacaoDTO uf : response.getPayload()) {
                     listUFString.add(uf.getSigla());
@@ -242,14 +234,14 @@ public class DadosPessoaisActivity extends AppCompatActivity {
                 idUf = municipioIdDTOSelect.getIdUF().toString();
             }
             loadViewProgress.show();
-            listMunicipios = new ArrayList<String>();
+            listMunicipios = new ArrayList<>();
 
             DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(DadosPessoaisActivity.this);
             dadosCorporativosBO.municipios(idUf, new RequestListener<MunicipioDTOResponse>() {
                 @Override
                 public void onResponse(MunicipioDTOResponse response) {
                     loadViewProgress.dismiss();
-                    listMunicipios = new ArrayList<String>();
+                    listMunicipios = new ArrayList<>();
                     municipioDTOList = response.getPayload();
                     for (MunicipioDTO municipio : municipioDTOList) {
                         listMunicipios.add(municipio.getNome());
@@ -280,7 +272,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
         TextView tituloDialog = (TextView) dialog.findViewById(R.id.tituloDialogCustom);
         tituloDialog.setText("UF");
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(DadosPessoaisActivity.this,
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(DadosPessoaisActivity.this,
                 R.layout.item_text_popup, R.id.textList, listUFString);
 
         // Assign adapter to ListView
@@ -358,7 +350,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
         TextView tituloDialog = (TextView) dialog.findViewById(R.id.tituloDialogCustom);
         tituloDialog.setText("Cidade");
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(DadosPessoaisActivity.this,
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(DadosPessoaisActivity.this,
                 R.layout.item_text_popup, R.id.textList, listMunicipios);
 
         // Assign adapter to ListView

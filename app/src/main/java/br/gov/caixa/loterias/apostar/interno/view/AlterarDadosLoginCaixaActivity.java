@@ -1,13 +1,9 @@
 package br.gov.caixa.loterias.apostar.interno.view;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -35,15 +31,13 @@ public class AlterarDadosLoginCaixaActivity extends AppCompatActivity {
 
         if(AppUtils.isNetworkAvailable( this )){
 
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append(BuildConfig.URL_SSO);
-            stringBuilder.append(BuildConfig.URL_SSO_ACCOUNT);
-            stringBuilder.append("?referrer=");
-            stringBuilder.append(BuildConfig.SSO_CLIENT_ID);
-            stringBuilder.append("&referrer_uri=http%3A%2F%2Fdf7390sr029.corp.caixa.gov.br%3A8280%2Fsilce-web%2F%3Fredirect_fragment%3D%252Fhome");
-
             //stringBuilder.append("/auth/realms/internet/account?referrer=cli-web-lce&referrer_uri=http%3A%2F%2Fdf7390sr029.corp.caixa.gov.br%3A8280%2Fsilce-web%2F%3Fredirect_fragment%3D%252Fhome");
-            paginaAlterarDadosWebView.loadUrl(stringBuilder.toString());
+            String stringBuilder = BuildConfig.URL_SSO +
+                    BuildConfig.URL_SSO_ACCOUNT +
+                    "?referrer=" +
+                    BuildConfig.SSO_CLIENT_ID +
+                    "&referrer_uri=http%3A%2F%2Fdf7390sr029.corp.caixa.gov.br%3A8280%2Fsilce-web%2F%3Fredirect_fragment%3D%252Fhome";
+            paginaAlterarDadosWebView.loadUrl(stringBuilder);
         }else{
             loadViewProgresas.hide();
             ViewUtils.alertTitulo( this, R.string.label_atencao, getResources().getString( R.string.seminternet ) );

@@ -71,12 +71,11 @@ public class CPF {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class CPF {\n");
 
-        sb.append("  cpfSemMascara: ").append(cpfSemMascara).append("\n");
-        sb.append("  cpfComMascara: ").append(cpfComMascara).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class CPF {\n" +
+                "  cpfSemMascara: " + cpfSemMascara + "\n" +
+                "  cpfComMascara: " + cpfComMascara + "\n" +
+                "}\n";
+        return sb;
     }
 }

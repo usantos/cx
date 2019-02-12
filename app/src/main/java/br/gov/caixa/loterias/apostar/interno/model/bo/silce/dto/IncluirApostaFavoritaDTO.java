@@ -99,14 +99,13 @@ public class IncluirApostaFavoritaDTO {
 
   @Override
   public String toString()  {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class IncluirApostaFavoritaDTO {\n");
-    
-    sb.append("  idApostaFavorita: ").append(idApostaFavorita).append("\n");
-    sb.append("  valorTipoConcurso: ").append(valorTipoConcurso).append("\n");
-    sb.append("  qtdTeimosinhas: ").append(qtdTeimosinhas).append("\n");
-    sb.append("  espelho: ").append(espelho).append("\n");
-    sb.append("}\n");
-    return sb.toString();
+
+      String sb = "class IncluirApostaFavoritaDTO {\n" +
+              "  idApostaFavorita: " + idApostaFavorita + "\n" +
+              "  valorTipoConcurso: " + valorTipoConcurso + "\n" +
+              "  qtdTeimosinhas: " + qtdTeimosinhas + "\n" +
+              "  espelho: " + espelho + "\n" +
+              "}\n";
+      return sb;
   }
 }

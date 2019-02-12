@@ -11,27 +11,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import java.util.List;
 
 import br.gov.caixa.loterias.apostar.interno.R;
-import br.gov.caixa.loterias.apostar.interno.model.bean.ApostaFavorita;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ApostaFavoritaDTO;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeEnum;
+import br.gov.caixa.loterias.apostar.interno.utils.EstiloModalidade;
 
 
 public class ApostaFavoritaAdapter extends BaseAdapter {
 
     private final Context mContext;
-    private final List<ApostaFavoritaDTO> favoritosConfiguracao;
     private List<ApostaFavoritaDTO> favoritosSalvos;
-    private Favorito favorito;
 
     // 1
-    public ApostaFavoritaAdapter(Context context, List<ApostaFavoritaDTO> favoritosConfiguracao, List<ApostaFavoritaDTO> favoritosSalvos) {
+    public ApostaFavoritaAdapter(Context context, List<ApostaFavoritaDTO> favoritosSalvos) {
         this.mContext = context;
-        this.favoritosConfiguracao = favoritosConfiguracao;
         this.favoritosSalvos = favoritosSalvos;
     }
 
@@ -63,51 +60,36 @@ public class ApostaFavoritaAdapter extends BaseAdapter {
 
         final ApostaFavoritaDTO aposta = favoritosSalvos.get( position );
 
-        CheckBox checkboxApostaFavorita = convertView.findViewById(R.id.checkboxApostaFavorita);
-        if(favoritosConfiguracao.contains(aposta)){
-            checkboxApostaFavorita.setChecked(true);
-        }
-        checkboxApostaFavorita.setOnCheckedChangeListener( new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(favorito != null) {
-                    if (b) {
-                        favorito.onIncluso(aposta);
-                    }else{
-                        favorito.onRemover(aposta);
-                    }
-                }
-            }
-        });
 
         final TextView tituloApostaFavorira = (TextView) convertView.findViewById( R.id.tituloApostaFavorira );
         tituloApostaFavorira.setText( aposta.getModalidade().getDescricao() );
+        EstiloModalidade estilo = new EstiloModalidade(ModalidadeEnum.toString(favoritosSalvos.get(position).getModalidade().getDescricao().toLowerCase()));
+        tituloApostaFavorira.setText(favoritosSalvos.get(position).getModalidade().getDescricao());
+        tituloApostaFavorira.setTextColor(parent.getResources().getColor(estilo.getCorClara()));
 
         final TextView numerosApostaFavorita = (TextView) convertView.findViewById( R.id.numerosApostaFavorita );
-        String numeroStr = "";
+        StringBuilder numeroStr = new StringBuilder();
         for (Integer num : aposta.getNumerosSelecionados()) {
             if (num == (aposta.getNumerosSelecionados().get( aposta.getNumerosSelecionados().size() - 1 ))) {
-                numeroStr += String.format( "%02d", num );
+                numeroStr.append(String.format("%02d", num));
             } else {
-                numeroStr += String.format( "%02d - ", num );
+                numeroStr.append(String.format("%02d - ", num));
             }
         }
-        numerosApostaFavorita.setText( numeroStr );
 
+        if (ModalidadeEnum.fromInteger(aposta.getModalidade().getValor()) == ModalidadeEnum.TIMEMANIA) {
+            numeroStr.append("\nTime do coração: ").append(aposta.getTimeDoCoracao().getNome());
+        }
+
+        if (ModalidadeEnum.fromInteger(aposta.getModalidade().getValor()) == ModalidadeEnum.DIA_DE_SORTE) {
+            numeroStr.append("\nMês de sorte: ").append(aposta.getMesDeSorte().getNome());
+        }
+
+        numerosApostaFavorita.setText(numeroStr.toString());
+
+        final CheckBox checkbox = (CheckBox) convertView.findViewById( R.id.checkboxApostaFavorita );
+        checkbox.setVisibility(View.GONE);
 
         return convertView;
     }
-
-    public void setOnFavorito(Favorito favorito){
-        this.favorito = favorito;
-    }
-
-    public interface Favorito{
-
-        void onRemover(ApostaFavoritaDTO aposta);
-
-        void onIncluso(ApostaFavoritaDTO aposta);
-
-    }
-
 }

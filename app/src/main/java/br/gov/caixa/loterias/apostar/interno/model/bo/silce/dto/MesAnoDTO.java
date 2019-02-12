@@ -74,12 +74,11 @@ public class MesAnoDTO {
 
   @Override
   public String toString()  {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class MesAnoDTO {\n");
-    
-    sb.append("  mes: ").append(mes).append("\n");
-    sb.append("  ano: ").append(ano).append("\n");
-    sb.append("}\n");
-    return sb.toString();
+
+      String sb = "class MesAnoDTO {\n" +
+              "  mes: " + mes + "\n" +
+              "  ano: " + ano + "\n" +
+              "}\n";
+      return sb;
   }
 }

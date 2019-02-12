@@ -1,14 +1,11 @@
 package br.gov.caixa.loterias.apostar.interno.view.fragment;
 
-import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -30,7 +27,6 @@ import br.gov.caixa.loterias.apostar.interno.view.SimularApostaActivity;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.MesesAdapter;
 import br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightGridView;
 import br.gov.caixa.loterias.apostar.interno.view.custom.ItemRetanguloTextView;
-import br.gov.caixa.loterias.apostar.interno.view.listener.CartelaFragmentListener;
 
 @EFragment(R.layout.fragment_meses)
 public class MesesFragment extends Fragment {

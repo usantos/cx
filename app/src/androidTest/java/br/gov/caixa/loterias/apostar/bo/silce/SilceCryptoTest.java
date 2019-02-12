@@ -2,6 +2,7 @@ package br.gov.caixa.loterias.apostar.bo.silce;
 
 
 import android.support.test.runner.AndroidJUnit4;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -9,11 +10,13 @@ import java.nio.charset.Charset;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.Bin;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.SilceCrypto;
 import br.gov.caixa.loterias.apostar.model.bo.silce.internals.Bin;
 import br.gov.caixa.loterias.apostar.model.bo.silce.internals.SilceCrypto;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
 @RunWith(AndroidJUnit4.class)
 public class SilceCryptoTest {

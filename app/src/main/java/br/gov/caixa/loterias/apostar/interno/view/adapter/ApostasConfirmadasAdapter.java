@@ -1,10 +1,7 @@
 package br.gov.caixa.loterias.apostar.interno.view.adapter;
 
 import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +16,6 @@ import java.util.List;
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostar.interno.utils.EstiloModalidade;
-import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 
 /**
  * Created by pmotta on 15/03/2018.

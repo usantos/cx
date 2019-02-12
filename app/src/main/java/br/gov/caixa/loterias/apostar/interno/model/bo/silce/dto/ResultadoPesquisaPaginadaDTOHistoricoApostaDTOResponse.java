@@ -144,17 +144,16 @@ public class ResultadoPesquisaPaginadaDTOHistoricoApostaDTOResponse {
 
   @Override
   public String toString()  {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class ResultadoPesquisaPaginadaDTOHistoricoApostaDTOResponse {\n");
-    
-    sb.append("  codigo: ").append(codigo).append("\n");
-    sb.append("  mensagem: ").append(mensagem).append("\n");
-    sb.append("  tipo: ").append(tipo).append("\n");
-    sb.append("  redirect: ").append(redirect).append("\n");
-    sb.append("  errosValidacao: ").append(errosValidacao).append("\n");
-    sb.append("  versao: ").append(versao).append("\n");
-    sb.append("  payload: ").append(payload).append("\n");
-    sb.append("}\n");
-    return sb.toString();
+
+      String sb = "class ResultadoPesquisaPaginadaDTOHistoricoApostaDTOResponse {\n" +
+              "  codigo: " + codigo + "\n" +
+              "  mensagem: " + mensagem + "\n" +
+              "  tipo: " + tipo + "\n" +
+              "  redirect: " + redirect + "\n" +
+              "  errosValidacao: " + errosValidacao + "\n" +
+              "  versao: " + versao + "\n" +
+              "  payload: " + payload + "\n" +
+              "}\n";
+      return sb;
   }
 }

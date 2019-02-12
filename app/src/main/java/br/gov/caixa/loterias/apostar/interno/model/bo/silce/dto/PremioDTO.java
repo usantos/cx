@@ -175,18 +175,17 @@ public class PremioDTO {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class PremioDTO {\n");
 
-        sb.append("  id: ").append(id).append("\n");
-        sb.append("  valorBruto: ").append(valorBruto).append("\n");
-        sb.append("  valorLiquido: ").append(valorLiquido).append("\n");
-        sb.append("  concursos: ").append(concursos).append("\n");
-        sb.append("  dataPagamento: ").append(dataPagamento).append("\n");
-        sb.append("  horaPagamento: ").append(horaPagamento).append("\n");
-        sb.append("  localPagamento: ").append(localPagamento).append("\n");
-        sb.append("  nsuPagamento: ").append(nsuPagamento).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class PremioDTO {\n" +
+                "  id: " + id + "\n" +
+                "  valorBruto: " + valorBruto + "\n" +
+                "  valorLiquido: " + valorLiquido + "\n" +
+                "  concursos: " + concursos + "\n" +
+                "  dataPagamento: " + dataPagamento + "\n" +
+                "  horaPagamento: " + horaPagamento + "\n" +
+                "  localPagamento: " + localPagamento + "\n" +
+                "  nsuPagamento: " + nsuPagamento + "\n" +
+                "}\n";
+        return sb;
     }
 }

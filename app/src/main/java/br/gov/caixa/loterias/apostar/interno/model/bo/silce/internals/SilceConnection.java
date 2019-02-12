@@ -9,16 +9,11 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
-
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.ParameterizedType;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Set;
 
 import static com.android.volley.Request.Method.DELETE;
 import static com.android.volley.Request.Method.GET;
@@ -48,7 +43,7 @@ public class SilceConnection {
     public void request(GsonRequest req) {
         try {
             if (req.getHeaders() == null) {
-                req.setHeaders(new HashMap<String, String>());
+                req.setHeaders(new HashMap<>());
             }
             req.getHeaders().put("cookie", "security=true");
         } catch (Exception e) {
@@ -56,7 +51,7 @@ public class SilceConnection {
         }
         try {
             if (req.getHeaders() == null) {
-                req.setHeaders(new HashMap<String, String>());
+                req.setHeaders(new HashMap<>());
             }
             req.getHeaders().put("cookie", "security=true");
         } catch (Exception e) {

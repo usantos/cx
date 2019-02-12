@@ -96,13 +96,12 @@ public class ModalidadeDTO {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class ModalidadeDTO {\n");
 
-        sb.append("  valor: ").append(valor).append("\n");
-        sb.append("  descricao: ").append(descricao).append("\n");
-        sb.append("  descricaoEspecial: ").append(descricaoEspecial).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class ModalidadeDTO {\n" +
+                "  valor: " + valor + "\n" +
+                "  descricao: " + descricao + "\n" +
+                "  descricaoEspecial: " + descricaoEspecial + "\n" +
+                "}\n";
+        return sb;
     }
 }

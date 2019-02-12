@@ -65,7 +65,7 @@ public class TiposApostasAdapter extends BaseAdapter {
             linearLayoutTipoAposta.setBackground(ContextCompat.getDrawable(mContext,R.drawable.customborder));
 
             final TextView tituloTipoAposta = (TextView)convertView.findViewById(R.id.tituloTipoApostaTextView);
-            tituloTipoAposta.setText("Adicionar");
+            tituloTipoAposta.setText("Adicionar ou remover");
             tituloTipoAposta.setTextColor(ContextCompat.getColor(mContext, R.color.verdeazul));
             final ImageView imageViewTipoAPosta = (ImageView)convertView.findViewById(R.id.imageviewTrevoTipoAposta);
             imageViewTipoAPosta.setVisibility(View.GONE);

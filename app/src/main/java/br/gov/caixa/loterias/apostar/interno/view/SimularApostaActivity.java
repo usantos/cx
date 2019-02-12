@@ -11,9 +11,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Spannable;
-import android.text.SpannableStringBuilder;
-import android.text.style.AbsoluteSizeSpan;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.Menu;
@@ -32,7 +29,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toolbar;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
@@ -640,7 +636,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         TextView tituloDialog = (TextView) dialog.findViewById(R.id.tituloDialogCustom);
         tituloDialog.setText("Quant. de Números");
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(SimularApostaActivity.this,
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(SimularApostaActivity.this,
                 R.layout.item_text_popup, R.id.textList, qtdNumerosList);
 
         listViewItens.setAdapter(adapter);
@@ -699,7 +695,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         final ListView listViewItens = dialog.findViewById(R.id.listaItensDialog);
         TextView tituloDialog = dialog.findViewById(R.id.tituloDialogCustom);
         tituloDialog.setText("Teimosinhas");
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(SimularApostaActivity.this,
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(SimularApostaActivity.this,
                 R.layout.item_text_popup, R.id.textList, qtdConcursosList);
 
         listViewItens.setAdapter(adapter);

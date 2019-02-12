@@ -1166,7 +1166,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
     private void setApostaLoteca(IdentificaoDeUmaApostaDas8Modalidades aposta) {
         if (isTipoLoteca) {
             List<ParametroPartida> partidasSelecionadas = orderAscPartidas();
-            aposta.setPartidasLoteca(new ArrayList<PartidaLotecaDTO>());
+            aposta.setPartidasLoteca(new ArrayList<>());
             for (ParametroPartida partida : partidasSelecionadas) {
                 PartidaLotecaDTO lotecaDTO = new PartidaLotecaDTO();
                 EquipeDTO equipeDTO1 = new EquipeDTO();
@@ -1186,7 +1186,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
     private void setApostaLotogol(IdentificaoDeUmaApostaDas8Modalidades aposta) {
         if (isTipoLotogol) {
             List<ParametroPartida> partidasSelecionadas = orderAscPartidas();
-            aposta.setPartidasLotogol(new ArrayList<PartidaLotogolDTO>());
+            aposta.setPartidasLotogol(new ArrayList<>());
             for (ParametroPartida partida : partidasSelecionadas) {
                 PartidaLotogolDTO lotogolDTO = new PartidaLotogolDTO();
                 EquipeDTO equipeDTO1 = new EquipeDTO();

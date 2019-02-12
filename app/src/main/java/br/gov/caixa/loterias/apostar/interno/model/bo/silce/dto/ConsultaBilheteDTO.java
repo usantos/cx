@@ -57,11 +57,10 @@ public class ConsultaBilheteDTO {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class ConsultaBilheteDTO {\n");
 
-        sb.append("  codigo: ").append(codigo).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class ConsultaBilheteDTO {\n" +
+                "  codigo: " + codigo + "\n" +
+                "}\n";
+        return sb;
     }
 }

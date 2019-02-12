@@ -1,18 +1,15 @@
 package br.gov.caixa.loterias.apostar.interno.view;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-
-import org.androidannotations.annotations.App;
 
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bo.DadosUsuarioBO;
-import br.gov.caixa.loterias.apostar.interno.utils.AppUtils;
 import br.gov.caixa.loterias.apostar.interno.view.fragment.Introducao1Fragment;
 import br.gov.caixa.loterias.apostar.interno.view.fragment.Introducao2Fragment;
 import br.gov.caixa.loterias.apostar.interno.view.fragment.Introducao3Fragment;

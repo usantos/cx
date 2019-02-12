@@ -1,14 +1,10 @@
 package br.gov.caixa.loterias.apostar.interno.view;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
-import android.widget.Button;
 
-import br.gov.caixa.loterias.apostar.interno.R;
-import br.gov.caixa.loterias.apostar.interno.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostar.interno.model.sp.LoginSP;
 
 public class SplashScreenActivity extends AppCompatActivity {
