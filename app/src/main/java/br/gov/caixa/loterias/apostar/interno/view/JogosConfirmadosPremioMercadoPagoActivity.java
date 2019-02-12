@@ -155,7 +155,7 @@ public class JogosConfirmadosPremioMercadoPagoActivity extends AppCompatActivity
     private void callWebserviceResgatarPremio() {
         InformacaoPagamentoDTO informacaoPagamentoDTO = new InformacaoPagamentoDTO();
         informacaoPagamentoDTO.setMeioPagamento( new Long( "1" ) );
-        Map<String, String> mapPagamento = new HashMap<String, String>();
+        Map<String, String> mapPagamento = new HashMap<>();
         mapPagamento.put("EMAIL", emailPremioMercadoPagoEditText.getText().toString());
         informacaoPagamentoDTO.setParametrosPagamento( mapPagamento );
 

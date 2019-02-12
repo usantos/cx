@@ -9,12 +9,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import br.gov.caixa.loterias.apostar.interno.BuildConfig;
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bean.RetornoListaCarrinho;
 import br.gov.caixa.loterias.apostar.interno.model.bo.AcessoBO;
@@ -40,6 +42,7 @@ public class LoginFragment extends Fragment {
     private AlertDialog loadViewProgress;
 
     Button buttonLogin;
+    TextView txtVersao;
 
     public LoginFragment() {}
 
@@ -64,7 +67,10 @@ public class LoginFragment extends Fragment {
             }
         });
 
-        buttonLogin  = (Button) v.findViewById(R.id.buttonFacaLogin);
+        buttonLogin  = v.findViewById(R.id.buttonFacaLogin);
+        txtVersao = v.findViewById(R.id.textVersao);
+        txtVersao.setText("v. "+ BuildConfig.VERSION_NAME);
+
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 DadosUsuarioBO.updateFecharIntroducao(getActivity(), true);

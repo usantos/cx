@@ -107,14 +107,13 @@ public class AutenticacaoDTO {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class AutenticacaoDTO {\n");
 
-        sb.append("  email: ").append(email).append("\n");
-        sb.append("  senha: ").append(senha).append("\n");
-        sb.append("  grecaptchaResponse: ").append(grecaptchaResponse).append("\n");
-        sb.append("  apostas: ").append(apostas).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class AutenticacaoDTO {\n" +
+                "  email: " + email + "\n" +
+                "  senha: " + senha + "\n" +
+                "  grecaptchaResponse: " + grecaptchaResponse + "\n" +
+                "  apostas: " + apostas + "\n" +
+                "}\n";
+        return sb;
     }
 }

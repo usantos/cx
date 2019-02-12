@@ -133,16 +133,15 @@ public class Data {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class Data {\n");
 
-        sb.append("  time: ").append(time).append("\n");
-        sb.append("  timeInMillis: ").append(timeInMillis).append("\n");
-        sb.append("  calendar: ").append(calendar).append("\n");
-        sb.append("  diaSemana: ").append(diaSemana).append("\n");
-        sb.append("  finalDeSemana: ").append(finalDeSemana).append("\n");
-        sb.append("  passado: ").append(passado).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class Data {\n" +
+                "  time: " + time + "\n" +
+                "  timeInMillis: " + timeInMillis + "\n" +
+                "  calendar: " + calendar + "\n" +
+                "  diaSemana: " + diaSemana + "\n" +
+                "  finalDeSemana: " + finalDeSemana + "\n" +
+                "  passado: " + passado + "\n" +
+                "}\n";
+        return sb;
     }
 }

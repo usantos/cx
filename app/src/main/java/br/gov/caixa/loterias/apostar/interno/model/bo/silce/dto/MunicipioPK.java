@@ -86,13 +86,12 @@ public class MunicipioPK {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class MunicipioPK {\n");
 
-        sb.append("  codigoUF: ").append(codigoUF).append("\n");
-        sb.append("  numero: ").append(numero).append("\n");
-        sb.append("  digitoVerificador: ").append(digitoVerificador).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class MunicipioPK {\n" +
+                "  codigoUF: " + codigoUF + "\n" +
+                "  numero: " + numero + "\n" +
+                "  digitoVerificador: " + digitoVerificador + "\n" +
+                "}\n";
+        return sb;
     }
 }

@@ -85,13 +85,12 @@ public class ResultadoPesquisaPaginadaDTOHistoricoApostaDTO {
 
   @Override
   public String toString()  {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class ResultadoPesquisaPaginadaDTOHistoricoApostaDTO {\n");
-    
-    sb.append("  rowCount: ").append(rowCount).append("\n");
-    sb.append("  lista: ").append(lista).append("\n");
-    sb.append("  listaSize: ").append(listaSize).append("\n");
-    sb.append("}\n");
-    return sb.toString();
+
+      String sb = "class ResultadoPesquisaPaginadaDTOHistoricoApostaDTO {\n" +
+              "  rowCount: " + rowCount + "\n" +
+              "  lista: " + lista + "\n" +
+              "  listaSize: " + listaSize + "\n" +
+              "}\n";
+      return sb;
   }
 }

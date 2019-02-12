@@ -3,8 +3,6 @@ package br.gov.caixa.loterias.apostar.interno.utils;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
@@ -16,8 +14,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-
-import br.gov.caixa.loterias.apostar.interno.R;
 
 /**
  * Created by lsimas on 10/04/2017.

@@ -104,14 +104,13 @@ public class MeioPagamentoDTO {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class MeioPagamentoDTO {\n");
 
-        sb.append("  id: ").append(id).append("\n");
-        sb.append("  nomePagamentoCompra: ").append(nomePagamentoCompra).append("\n");
-        sb.append("  nomePagamentoPremio: ").append(nomePagamentoPremio).append("\n");
-        sb.append("  publicKey: ").append(publicKey).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class MeioPagamentoDTO {\n" +
+                "  id: " + id + "\n" +
+                "  nomePagamentoCompra: " + nomePagamentoCompra + "\n" +
+                "  nomePagamentoPremio: " + nomePagamentoPremio + "\n" +
+                "  publicKey: " + publicKey + "\n" +
+                "}\n";
+        return sb;
     }
 }

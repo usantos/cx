@@ -6,13 +6,19 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="br.gov.caixa.loterias.apostar.interno.view.RapidaoConfigActivity"
-    tools:showIn="@layout/activity_rapidao_config">
+    tools:showIn="@layout/activity_rapidao_config"
+    >
 
     <ScrollView
         android:id="@+id/scrollViewRapidaoConfig"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:paddingBottom="100dp"
+        android:clipToPadding="false">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -48,8 +54,8 @@
                         android:layout_alignParentTop="true"
                         android:layout_gravity="end"
                         android:layout_marginRight="5dp"
-                        android:layout_toLeftOf="@+id/limparPremioMinimoAposta"
                         android:layout_toStartOf="@+id/limparPremioMinimoAposta"
+                        android:layout_toLeftOf="@+id/limparPremioMinimoAposta"
                         android:background="@null"
                         android:text="R$ 00,00"
                         android:textColor="@color/verdeazul"
@@ -59,9 +65,9 @@
                         android:id="@+id/limparPremioMinimoAposta"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
+                        android:layout_alignParentTop="true"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
-                        android:layout_alignParentTop="true"
                         android:background="@drawable/close" />
                 </RelativeLayout>
 
@@ -90,9 +96,9 @@
                         style="@style/editTextArialMTTheme"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
-                        android:layout_alignParentTop="true"
                         android:layout_marginRight="5dp"
                         android:text="100 milhões"
                         android:textColor="@color/branco"
@@ -128,8 +134,8 @@
                         android:layout_alignParentTop="true"
                         android:layout_gravity="end"
                         android:layout_marginRight="5dp"
-                        android:layout_toLeftOf="@+id/limparValorMinimoAposta"
                         android:layout_toStartOf="@+id/limparValorMinimoAposta"
+                        android:layout_toLeftOf="@+id/limparValorMinimoAposta"
                         android:background="@null"
                         android:inputType="number"
                         android:text="R$ 00,00"
@@ -140,9 +146,9 @@
                         android:id="@+id/limparValorMinimoAposta"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
+                        android:layout_alignParentTop="true"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
-                        android:layout_alignParentTop="true"
                         android:background="@drawable/close" />
                 </RelativeLayout>
 
@@ -171,16 +177,15 @@
                         style="@style/editTextArialMTTheme"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
-                        android:layout_alignParentTop="true"
                         android:layout_marginRight="5dp"
                         android:text="100 reais"
                         android:textColor="@color/azulFormNovoTipoPagamento"
                         android:textSize="14.2sp" />
                 </RelativeLayout>
             </LinearLayout>
-
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -210,8 +215,8 @@
                         android:layout_alignParentTop="true"
                         android:layout_gravity="end"
                         android:layout_marginRight="5dp"
-                        android:layout_toLeftOf="@+id/limparValorMaximoAposta"
                         android:layout_toStartOf="@+id/limparValorMaximoAposta"
+                        android:layout_toLeftOf="@+id/limparValorMaximoAposta"
                         android:background="@null"
                         android:inputType="number"
                         android:text="R$ 00,00"
@@ -222,9 +227,9 @@
                         android:id="@+id/limparValorMaximoAposta"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
+                        android:layout_alignParentTop="true"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
-                        android:layout_alignParentTop="true"
                         android:background="@drawable/close" />
                 </RelativeLayout>
 
@@ -253,9 +258,9 @@
                         style="@style/editTextArialMTTheme"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
-                        android:layout_alignParentTop="true"
                         android:layout_marginRight="5dp"
                         android:text="100 reais"
                         android:textColor="@color/azulFormNovoTipoPagamento"
@@ -283,9 +288,9 @@
                     android:id="@+id/gridviewTiposApostasRapidao"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="10dp"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="19dp"
+                    android:layout_marginEnd="10dp"
                     android:focusable="false"
                     android:gravity="center"
                     android:horizontalSpacing="10dp"
@@ -305,17 +310,38 @@
                 android:layout_height="wrap_content"
                 android:background="@color/branco"
                 android:orientation="vertical"
-                android:paddingBottom="40dp"
-                android:paddingTop="40dp">
+                android:paddingTop="40dp"
+                android:paddingBottom="40dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingHorizontal="16dp"
-                    android:text="Números obrigatórios"
-                    android:textColor="@color/azulFormNovoTipoPagamento"
-                    android:textSize="14.2sp"
-                    android:textStyle="bold" />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:paddingHorizontal="16dp"
+                        android:text="Números obrigatórios"
+                        android:textColor="@color/azulFormNovoTipoPagamento"
+                        android:textSize="14.2sp"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/btnAddRemoverNumsObrigatorios"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/button_white_with_green_border"
+                        android:text="Adicionar \nou remover"
+                        android:textAlignment="center"
+                        android:textAllCaps="false"
+                        android:textColor="@color/verdeagua" />
+
+                </LinearLayout>
 
                 <br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightGridView
                     android:id="@+id/gridviewNumerosObrigatoriosRapidao"
@@ -345,17 +371,38 @@
                 android:layout_height="wrap_content"
                 android:background="@color/branco"
                 android:orientation="vertical"
-                android:paddingBottom="40dp"
-                android:paddingTop="40dp">
+                android:paddingTop="40dp"
+                android:paddingBottom="40dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingHorizontal="16dp"
-                    android:text="Números proibidos"
-                    android:textColor="@color/azulFormNovoTipoPagamento"
-                    android:textSize="14.2sp"
-                    android:textStyle="bold" />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:paddingHorizontal="16dp"
+                        android:text="Números proibidos"
+                        android:textColor="@color/azulFormNovoTipoPagamento"
+                        android:textSize="14.2sp"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/btnAddRemoverNumsProibidos"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/button_white_with_green_border"
+                        android:text="Adicionar \nou remover"
+                        android:textAlignment="center"
+                        android:textAllCaps="false"
+                        android:textColor="@color/vermelhoBilhetes" />
+
+                </LinearLayout>
 
                 <br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightGridView
                     android:id="@+id/gridviewNumerosProibidosRapidao"
@@ -381,62 +428,86 @@
                 android:layout_height="wrap_content"
                 android:background="@color/branco"
                 android:orientation="vertical"
-                android:paddingBottom="40dp"
                 android:paddingTop="40dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingHorizontal="16dp"
-                    android:text="Apostas favoritas"
-                    android:textColor="@color/azulFormNovoTipoPagamento"
-                    android:textSize="14.2sp"
-                    android:textStyle="bold" />
+                    android:orientation="horizontal">
 
-                <br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightGridView
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:paddingHorizontal="16dp"
+                        android:text="Apostas favoritas"
+                        android:textColor="@color/azulFormNovoTipoPagamento"
+                        android:textSize="14.2sp"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/btnAddRemoverApostasFav"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/button_white_with_green_border"
+                        android:text="Adicionar \nou remover"
+                        android:textAlignment="center"
+                        android:textAllCaps="false"
+                        android:textColor="@color/verdeagua" />
+
+                </LinearLayout>
+
+                <android.support.v7.widget.RecyclerView
                     android:id="@+id/gridViewApostaFavorita"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginBottom="50dp"
                     android:layout_marginTop="19dp"
+                    android:layout_marginBottom="50dp"
+                    android:paddingBottom="100dp"
                     android:focusable="false"
                     android:horizontalSpacing="0dp"
-                    android:numColumns="1"
-                    android:stretchMode="columnWidth"
                     android:verticalSpacing="0dp"
-
                     />
 
             </LinearLayout>
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="135dp"
-                android:orientation="vertical">
-
-                <Button
-                    android:id="@+id/salvarApostaRapidao"
-                    android:layout_width="184dp"
-                    android:layout_height="84dp"
-                    android:layout_centerHorizontal="true"
-                    android:background="@color/verdeazul"
-                    android:text="Salvar"
-                    android:textAllCaps="false"
-                    android:textColor="@color/branco"
-                    android:textSize="17.7sp"
-                    android:textStyle="bold" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="95dp"
-                    android:layout_marginTop="44dp"
-                    android:background="@color/linhaDivisa">
-
-                </View>
-
-            </RelativeLayout>
-
         </LinearLayout>
     </ScrollView>
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="match_parent"
+        android:layout_height="95dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:background="@color/linhaDivisa"
+        app:layout_constraintBottom_toBottomOf="@+id/scrollViewRapidaoConfig"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+    </View>
+
+    <Button
+        android:id="@+id/salvarApostaRapidao"
+        android:layout_width="184dp"
+        android:layout_height="84dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="40dp"
+        android:background="@color/verdeazul"
+        android:text="Salvar"
+        android:textAllCaps="false"
+        android:textColor="@color/branco"
+        android:textSize="17.7sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/view2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

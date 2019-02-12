@@ -50,7 +50,6 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CarrinhoDTORespo
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ComprovanteApostaDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ComprovanteApostaDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.DTOEnumInteger;
-import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.DTOEnumIntegerResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.DTOEnumLong;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.DetalhesHistoricoPremioDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.DetalhesHistoricoPremioDTOResponse;
@@ -73,7 +72,6 @@ import br.gov.caixa.loterias.apostar.interno.utils.helper.ConferirResultadoHelpe
 import br.gov.caixa.loterias.apostar.interno.view.fragment.ApostaConfirmadaNumeroDetalhesPremioPago_;
 import br.gov.caixa.loterias.apostar.interno.view.fragment.ApostaConfirmadaNumeroDetalhes_;
 import br.gov.caixa.loterias.apostar.interno.view.fragment.ApostaConfirmadaPartidaFragment_;
-import br.gov.caixa.loterias.apostar.interno.view.fragment.ApostasConfirmadasFragment_;
 
 /**
  * Created by pmotta on 22/03/2018.
@@ -389,9 +387,9 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                 if (premioPago) {
                     //ADICIONAR CHAMADA DE RESULTADO
                     if (detalhesHistoricoPremioDTO != null) {
-                        getResultadoModalidadeConcurso(aposta, detalhesHistoricoPremioDTO);
+                        getResultadoModalidadeConcurso(aposta);
                     } else if (detalhesPremioDTO != null) {
-                        getResultadoModalidadeConcurso(aposta, detalhesPremioDTO);
+                        getResultadoModalidadeConcurso(aposta);
                     }
                 } else {
                     fragment = ApostaConfirmadaNumeroDetalhes_.builder().aposta(aposta).build();
@@ -406,7 +404,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     }
 
     private void getResultadoModalidadeConcurso
-            (IdentificaoDeUmaApostaDas8Modalidades apostaDTO, final Object object) {
+            (IdentificaoDeUmaApostaDas8Modalidades apostaDTO) {
         apostaBO.getResultadoModalidadeConcurso(ApostaDTO.lowerCaseFromString(apostaDTO.getModalidade()), apostaDTO.getConcursoAlvo(),
                 new RequestListener<ResultadoConcursoDTOResponse>() {
                     @Override

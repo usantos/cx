@@ -75,12 +75,11 @@ public class PremiacaoExtracaoOutrosPremiosDTO {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class PremiacaoExtracaoOutrosPremiosDTO {\n");
 
-        sb.append("  descricao: ").append(descricao).append("\n");
-        sb.append("  valorPremio: ").append(valorPremio).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class PremiacaoExtracaoOutrosPremiosDTO {\n" +
+                "  descricao: " + descricao + "\n" +
+                "  valorPremio: " + valorPremio + "\n" +
+                "}\n";
+        return sb;
     }
 }

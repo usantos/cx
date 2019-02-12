@@ -27,7 +27,6 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.DadosCorporativosBO_;
 import br.gov.caixa.loterias.apostar.interno.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
-import br.gov.caixa.loterias.apostar.interno.model.bo.keycloak.KeycloakBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ListSecaoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ListSecaoDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResourceResponse;

@@ -1,23 +1,19 @@
 package br.gov.caixa.loterias.apostar.interno.view.custom;
 
 import android.content.Context;
-import android.os.Build;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
 
 import br.gov.caixa.loterias.apostar.interno.R;
-import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametroPartida;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.PartidaLotecaDTO;
 import br.gov.caixa.loterias.apostar.interno.utils.EscudoEquipeUtil;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
-import br.gov.caixa.loterias.apostar.interno.view.adapter.LotecaAdapter;
 
 /**
  * Created by cedesbr450 on 02/04/18.

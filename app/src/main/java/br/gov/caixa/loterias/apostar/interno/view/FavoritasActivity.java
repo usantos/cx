@@ -1,10 +1,9 @@
 package br.gov.caixa.loterias.apostar.interno.view;
 
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,9 +13,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
 import com.android.volley.VolleyError;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO_;
@@ -24,17 +26,15 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ApostaFavoritaDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse;
-import br.gov.caixa.loterias.apostar.interno.view.adapter.FavoritasRecyclerViewAdapter;
-import br.gov.caixa.loterias.apostar.interno.view.custom.AdicionarCarrinhoFavoritasView;
-import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
-import br.gov.caixa.loterias.apostar.interno.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
+import br.gov.caixa.loterias.apostar.interno.view.adapter.FavoritasRecyclerViewAdapter;
+import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
 
 
 public class FavoritasActivity extends AppCompatActivity {
 
 
-    List<ApostaFavoritaDTO> apostaFavoritaLista = new ArrayList<ApostaFavoritaDTO>();
+    List<ApostaFavoritaDTO> apostaFavoritaLista = new ArrayList<>();
     public RecyclerView recyclerViewFavoritas;
     LinearLayoutManager layoutManager;
     Boolean isMaisCompras = true;
@@ -72,7 +72,6 @@ public class FavoritasActivity extends AppCompatActivity {
         }
     }
 
-
     @Override
     public boolean onSupportNavigateUp(){
         finish();
@@ -82,13 +81,11 @@ public class FavoritasActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.settings, menu);
 
         return true;
     }
 
-    // Mudando o texto dos MenuItem de acordo com os dados
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
@@ -98,9 +95,6 @@ public class FavoritasActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         if (id == R.id.action_settings) {
@@ -123,7 +117,6 @@ public class FavoritasActivity extends AppCompatActivity {
         subTituloFavoritas.setText("Nesta área estão todas as suas apostas da sorte.\nÉ só escolher e apostar. Boa Sorte!");
 
     }
-
 
     private void callWebservice() {
         offsetItem = 0;
@@ -187,9 +180,6 @@ public class FavoritasActivity extends AppCompatActivity {
         });
     }
 
-
-
-
     private void getFavoritasScroll(){
         if (isMaisCompras == false) {
             return;
@@ -222,5 +212,4 @@ public class FavoritasActivity extends AppCompatActivity {
             }
         });
     }
-    //
 }

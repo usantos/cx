@@ -13,7 +13,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
 import com.github.pinball83.maskededittext.MaskedEditText;
 
@@ -32,6 +31,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.DadosCorporativosBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.DadosCorporativosBO_;
 import br.gov.caixa.loterias.apostar.interno.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.DadosUsuarioBO_;
+import br.gov.caixa.loterias.apostar.interno.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.keycloak.KeycloakBO;
@@ -44,10 +44,9 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CadastrarApostad
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.MunicipioIdDTO;
 import br.gov.caixa.loterias.apostar.interno.utils.AppUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.Utils;
-import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
-import br.gov.caixa.loterias.apostar.interno.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.segmentedbutton.SegmentedButtonGroup;
+import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
 
 
 @EActivity(R.layout.activity_cadastrar)
@@ -88,7 +87,7 @@ public class CadastrarActivity extends CadastroActivity {
             cadastrarApostadorDTO.setSexo( CadastrarApostadorDTO.SexoEnum.M );
             cadastrarApostadorDTO.setMunicipioId(new MunicipioIdDTO());
             cadastrarApostadorDTO.setAceitaReceberNoticias( false );
-            List<ApostaDTO> apostas = new ArrayList<ApostaDTO>();
+            List<ApostaDTO> apostas = new ArrayList<>();
             cadastrarApostadorDTO.setApostas(apostas);
         }
 
@@ -107,8 +106,8 @@ public class CadastrarActivity extends CadastroActivity {
 
     public void addUFSpinner() {
 
-        listUFString = new ArrayList<String>();
-        listMunicipios = new ArrayList<String>();
+        listUFString = new ArrayList<>();
+        listMunicipios = new ArrayList<>();
 
         initOnclick();
         addListenerUF(editTextUFContent, listUFString);

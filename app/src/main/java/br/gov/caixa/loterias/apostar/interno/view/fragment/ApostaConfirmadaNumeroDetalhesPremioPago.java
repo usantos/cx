@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.Locale;
 
 import br.gov.caixa.loterias.apostar.interno.R;
-import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ConcursoPremiadoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResultadoConcursoDTO;

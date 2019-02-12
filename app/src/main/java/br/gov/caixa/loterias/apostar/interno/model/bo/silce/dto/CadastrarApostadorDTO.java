@@ -134,16 +134,15 @@ public class CadastrarApostadorDTO {
 
   @Override
   public String toString()  {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class CadastrarApostadorDTO {\n");
-    
-    sb.append("  cep: ").append(cep).append("\n");
-    sb.append("  aceitaTermosUso: ").append(aceitaTermosUso).append("\n");
-    sb.append("  aceitaReceberNoticias: ").append(aceitaReceberNoticias).append("\n");
-    sb.append("  municipioId: ").append(municipioId).append("\n");
-    sb.append("  sexo: ").append(sexo).append("\n");
-    sb.append("  apostas: ").append(apostas).append("\n");
-    sb.append("}\n");
-    return sb.toString();
+
+    String sb = "class CadastrarApostadorDTO {\n" +
+            "  cep: " + cep + "\n" +
+            "  aceitaTermosUso: " + aceitaTermosUso + "\n" +
+            "  aceitaReceberNoticias: " + aceitaReceberNoticias + "\n" +
+            "  municipioId: " + municipioId + "\n" +
+            "  sexo: " + sexo + "\n" +
+            "  apostas: " + apostas + "\n" +
+            "}\n";
+    return sb;
   }
 }

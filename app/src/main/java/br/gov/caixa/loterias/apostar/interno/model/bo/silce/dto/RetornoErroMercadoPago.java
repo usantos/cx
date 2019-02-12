@@ -116,15 +116,14 @@ public class RetornoErroMercadoPago {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class RetornoErroMercadoPago {\n");
 
-        sb.append("  message: ").append(message).append("\n");
-        sb.append("  error: ").append(error).append("\n");
-        sb.append("  status: ").append(status).append("\n");
-        sb.append("  causeCode: ").append(causeCode).append("\n");
-        sb.append("  causeMessage: ").append(causeMessage).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class RetornoErroMercadoPago {\n" +
+                "  message: " + message + "\n" +
+                "  error: " + error + "\n" +
+                "  status: " + status + "\n" +
+                "  causeCode: " + causeCode + "\n" +
+                "  causeMessage: " + causeMessage + "\n" +
+                "}\n";
+        return sb;
     }
 }

@@ -1,10 +1,9 @@
 package br.gov.caixa.loterias.apostar.interno.view;
 
-import android.support.v7.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
-
 import android.support.v4.widget.NestedScrollView;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -32,7 +31,6 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CompraDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.MesAnoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.MesAnoDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOCompraDTOResponse;
-import br.gov.caixa.loterias.apostar.interno.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.ListaComprasRecyclerViewAdapter;
 import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
@@ -188,11 +186,11 @@ public class ListaComprasActivity extends AppCompatActivity {
     private void addSpinner(){
         Spinner SelecaoMesSpinner;
         SelecaoMesSpinner = (Spinner) findViewById(R.id.SelecaoMesSpinner);
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
         for(MesAnoDTO item : listaMesAnoDTO){
             list.add(item.getMes().getDescricao() + " de " + item.getAno());
         }
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, R.layout.spinner_item,list);
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, list);
 
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         SelecaoMesSpinner.setAdapter(dataAdapter);

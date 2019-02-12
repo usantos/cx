@@ -98,14 +98,13 @@ public class ParametroPartida {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class ParametroPartida {\n");
 
-        sb.append("  numero: ").append(numero).append("\n");
-        sb.append("  equipe1: ").append(equipe1).append("\n");
-        sb.append("  equipe2: ").append(equipe2).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class ParametroPartida {\n" +
+                "  numero: " + numero + "\n" +
+                "  equipe1: " + equipe1 + "\n" +
+                "  equipe2: " + equipe2 + "\n" +
+                "}\n";
+        return sb;
     }
 
     public boolean isSelecionado() {

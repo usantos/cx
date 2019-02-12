@@ -520,42 +520,41 @@ public class Apostador {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class Apostador {\n");
 
-        sb.append("  id: ").append(id).append("\n");
-        sb.append("  cpf: ").append(cpf).append("\n");
-        sb.append("  email: ").append(email).append("\n");
-        sb.append("  novoEmail: ").append(novoEmail).append("\n");
-        sb.append("  confirmacaoEmail: ").append(confirmacaoEmail).append("\n");
-        sb.append("  nome: ").append(nome).append("\n");
-        sb.append("  primeiroNome: ").append(primeiroNome).append("\n");
-        sb.append("  nomeMae: ").append(nomeMae).append("\n");
-        sb.append("  dataNascimento: ").append(dataNascimento).append("\n");
-        sb.append("  dataUltimoAcesso: ").append(dataUltimoAcesso).append("\n");
-        sb.append("  dataAtualizacaoContadorTentativasAcesso: ").append(dataAtualizacaoContadorTentativasAcesso).append("\n");
-        sb.append("  dataFimBloqueioVinculacao: ").append(dataFimBloqueioVinculacao).append("\n");
-        sb.append("  contadorTentativasAcesso: ").append(contadorTentativasAcesso).append("\n");
-        sb.append("  telefone: ").append(telefone).append("\n");
-        sb.append("  cep: ").append(cep).append("\n");
-        sb.append("  senha: ").append(senha).append("\n");
-        sb.append("  novaSenha: ").append(novaSenha).append("\n");
-        sb.append("  confirmacaoSenha: ").append(confirmacaoSenha).append("\n");
-        sb.append("  aceitaTermosUso: ").append(aceitaTermosUso).append("\n");
-        sb.append("  aceitaReceberNoticias: ").append(aceitaReceberNoticias).append("\n");
-        sb.append("  municipio: ").append(municipio).append("\n");
-        sb.append("  situacao: ").append(situacao).append("\n");
-        sb.append("  dataCadastro: ").append(dataCadastro).append("\n");
-        sb.append("  loterica: ").append(loterica).append("\n");
-        sb.append("  sexo: ").append(sexo).append("\n");
-        sb.append("  ultimoTermoDeUsoAceito: ").append(ultimoTermoDeUsoAceito).append("\n");
-        sb.append("  dataUltimoAceiteTermoDeUso: ").append(dataUltimoAceiteTermoDeUso).append("\n");
-        sb.append("  mercadoPagoCustomerId: ").append(mercadoPagoCustomerId).append("\n");
-        sb.append("  vo: ").append(vo).append("\n");
-        sb.append("  alterouEmail: ").append(alterouEmail).append("\n");
-        sb.append("  sobrenome: ").append(sobrenome).append("\n");
-        sb.append("  carteiraVinculada: ").append(carteiraVinculada).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class Apostador {\n" +
+                "  id: " + id + "\n" +
+                "  cpf: " + cpf + "\n" +
+                "  email: " + email + "\n" +
+                "  novoEmail: " + novoEmail + "\n" +
+                "  confirmacaoEmail: " + confirmacaoEmail + "\n" +
+                "  nome: " + nome + "\n" +
+                "  primeiroNome: " + primeiroNome + "\n" +
+                "  nomeMae: " + nomeMae + "\n" +
+                "  dataNascimento: " + dataNascimento + "\n" +
+                "  dataUltimoAcesso: " + dataUltimoAcesso + "\n" +
+                "  dataAtualizacaoContadorTentativasAcesso: " + dataAtualizacaoContadorTentativasAcesso + "\n" +
+                "  dataFimBloqueioVinculacao: " + dataFimBloqueioVinculacao + "\n" +
+                "  contadorTentativasAcesso: " + contadorTentativasAcesso + "\n" +
+                "  telefone: " + telefone + "\n" +
+                "  cep: " + cep + "\n" +
+                "  senha: " + senha + "\n" +
+                "  novaSenha: " + novaSenha + "\n" +
+                "  confirmacaoSenha: " + confirmacaoSenha + "\n" +
+                "  aceitaTermosUso: " + aceitaTermosUso + "\n" +
+                "  aceitaReceberNoticias: " + aceitaReceberNoticias + "\n" +
+                "  municipio: " + municipio + "\n" +
+                "  situacao: " + situacao + "\n" +
+                "  dataCadastro: " + dataCadastro + "\n" +
+                "  loterica: " + loterica + "\n" +
+                "  sexo: " + sexo + "\n" +
+                "  ultimoTermoDeUsoAceito: " + ultimoTermoDeUsoAceito + "\n" +
+                "  dataUltimoAceiteTermoDeUso: " + dataUltimoAceiteTermoDeUso + "\n" +
+                "  mercadoPagoCustomerId: " + mercadoPagoCustomerId + "\n" +
+                "  vo: " + vo + "\n" +
+                "  alterouEmail: " + alterouEmail + "\n" +
+                "  sobrenome: " + sobrenome + "\n" +
+                "  carteiraVinculada: " + carteiraVinculada + "\n" +
+                "}\n";
+        return sb;
     }
 }

@@ -26,16 +26,14 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.DadosCorporativosBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.DadosCorporativosBO_;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
-import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ApostadorDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CadastrarApostadorDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.MunicipioDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.MunicipioDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.MunicipioIdDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.UnidadeFederacaoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.UnidadeFederacaoDTOResponse;
-import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
-import br.gov.caixa.loterias.apostar.interno.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
+import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
 
 /**
  * Created by joafilho on 06/12/2017.
@@ -161,7 +159,7 @@ public class CadastroActivity extends AppCompatActivity {
         TextView tituloDialog = (TextView) dialog.findViewById(R.id.tituloDialogCustom);
         tituloDialog.setText("UF");
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(CadastroActivity.this,
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(CadastroActivity.this,
                 R.layout.item_text_popup, R.id.textList, listUFString);
 
         // Assign adapter to ListView
@@ -231,7 +229,7 @@ public class CadastroActivity extends AppCompatActivity {
                 }
             }
             final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
-            listMunicipios = new ArrayList<String>();
+            listMunicipios = new ArrayList<>();
 
             DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(CadastroActivity.this);
             dadosCorporativosBO.municipios(idUf, new RequestListener<MunicipioDTOResponse>() {
@@ -286,7 +284,7 @@ public class CadastroActivity extends AppCompatActivity {
         TextView tituloDialog = (TextView) dialog.findViewById(R.id.tituloDialogCustom);
         tituloDialog.setText("Cidade");
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(CadastroActivity.this,
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(CadastroActivity.this,
                 R.layout.item_text_popup, R.id.textList, listMunicipios);
 
         // Assign adapter to ListView

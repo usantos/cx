@@ -78,12 +78,11 @@ public class DTOEnumLong {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class DTOEnumLong {\n");
 
-        sb.append("  valor: ").append(valor).append("\n");
-        sb.append("  descricao: ").append(descricao).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class DTOEnumLong {\n" +
+                "  valor: " + valor + "\n" +
+                "  descricao: " + descricao + "\n" +
+                "}\n";
+        return sb;
     }
 }

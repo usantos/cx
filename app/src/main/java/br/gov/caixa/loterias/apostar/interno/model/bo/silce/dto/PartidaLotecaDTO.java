@@ -98,13 +98,12 @@ public class PartidaLotecaDTO {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class PartidaLotecaDTO {\n");
 
-        sb.append("  equipe1: ").append(equipe1).append("\n");
-        sb.append("  equipe2: ").append(equipe2).append("\n");
-        sb.append("  empate: ").append(empate).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class PartidaLotecaDTO {\n" +
+                "  equipe1: " + equipe1 + "\n" +
+                "  equipe2: " + equipe2 + "\n" +
+                "  empate: " + empate + "\n" +
+                "}\n";
+        return sb;
     }
 }

@@ -75,12 +75,11 @@ public class AgrupadorDTO {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class AgrupadorDTO {\n");
 
-        sb.append("  resultado: ").append(resultado).append("\n");
-        sb.append("  pageSize: ").append(pageSize).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class AgrupadorDTO {\n" +
+                "  resultado: " + resultado + "\n" +
+                "  pageSize: " + pageSize + "\n" +
+                "}\n";
+        return sb;
     }
 }

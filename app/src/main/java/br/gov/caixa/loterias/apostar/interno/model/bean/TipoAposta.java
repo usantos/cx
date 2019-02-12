@@ -1,7 +1,5 @@
 package br.gov.caixa.loterias.apostar.interno.model.bean;
 
-import android.media.Image;
-
 /**
  * Created by cedesbr450 on 19/12/17.
  */

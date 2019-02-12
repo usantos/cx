@@ -86,13 +86,12 @@ public class Municipio {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class Municipio {\n");
 
-        sb.append("  id: ").append(id).append("\n");
-        sb.append("  uf: ").append(uf).append("\n");
-        sb.append("  nome: ").append(nome).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class Municipio {\n" +
+                "  id: " + id + "\n" +
+                "  uf: " + uf + "\n" +
+                "  nome: " + nome + "\n" +
+                "}\n";
+        return sb;
     }
 }

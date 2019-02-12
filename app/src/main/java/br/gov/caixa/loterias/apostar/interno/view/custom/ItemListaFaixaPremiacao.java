@@ -13,7 +13,6 @@ import org.androidannotations.annotations.ViewById;
 import java.util.Locale;
 
 import br.gov.caixa.loterias.apostar.interno.R;
-import br.gov.caixa.loterias.apostar.interno.mock.ItemListaFaixaPremiacaoMock;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.FaixaPremiadaDTO;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 

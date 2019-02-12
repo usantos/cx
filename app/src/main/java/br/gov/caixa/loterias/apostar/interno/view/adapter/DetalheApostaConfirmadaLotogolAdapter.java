@@ -8,8 +8,6 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.PartidaLotogolDTO;
-import br.gov.caixa.loterias.apostar.interno.view.custom.ApostaPartidaLotogolView;
-import br.gov.caixa.loterias.apostar.interno.view.custom.ApostaPartidaLotogolView_;
 import br.gov.caixa.loterias.apostar.interno.view.custom.PartidasLotogolApostasConfirmadasView;
 import br.gov.caixa.loterias.apostar.interno.view.custom.PartidasLotogolApostasConfirmadasView_;
 

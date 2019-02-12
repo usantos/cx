@@ -73,12 +73,11 @@ public class NovaSenhaDTO {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class NovaSenhaDTO {\n");
 
-        sb.append("  senhaAtual: ").append(senhaAtual).append("\n");
-        sb.append("  novaSenha: ").append(novaSenha).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class NovaSenhaDTO {\n" +
+                "  senhaAtual: " + senhaAtual + "\n" +
+                "  novaSenha: " + novaSenha + "\n" +
+                "}\n";
+        return sb;
     }
 }

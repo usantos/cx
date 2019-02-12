@@ -108,14 +108,13 @@ public class ParametrosSimulacao {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class ParametrosSimulacao {\n");
 
-        sb.append("  valorLimiteDiario: ").append(valorLimiteDiario).append("\n");
-        sb.append("  valorMinimoCarrinho: ").append(valorMinimoCarrinho).append("\n");
-        sb.append("  quantidadeMaximaApostasCarrinho: ").append(quantidadeMaximaApostasCarrinho).append("\n");
-        sb.append("  parametros: ").append(parametros).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class ParametrosSimulacao {\n" +
+                "  valorLimiteDiario: " + valorLimiteDiario + "\n" +
+                "  valorMinimoCarrinho: " + valorMinimoCarrinho + "\n" +
+                "  quantidadeMaximaApostasCarrinho: " + quantidadeMaximaApostasCarrinho + "\n" +
+                "  parametros: " + parametros + "\n" +
+                "}\n";
+        return sb;
     }
 }

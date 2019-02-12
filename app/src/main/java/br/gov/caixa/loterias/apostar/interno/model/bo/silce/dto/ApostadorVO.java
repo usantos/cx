@@ -461,38 +461,37 @@ public class ApostadorVO {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class ApostadorVO {\n");
 
-        sb.append("  id: ").append(id).append("\n");
-        sb.append("  cpf: ").append(cpf).append("\n");
-        sb.append("  email: ").append(email).append("\n");
-        sb.append("  novoEmail: ").append(novoEmail).append("\n");
-        sb.append("  confirmacaoEmail: ").append(confirmacaoEmail).append("\n");
-        sb.append("  nome: ").append(nome).append("\n");
-        sb.append("  nomeMae: ").append(nomeMae).append("\n");
-        sb.append("  dataNascimento: ").append(dataNascimento).append("\n");
-        sb.append("  dataUltimoAcesso: ").append(dataUltimoAcesso).append("\n");
-        sb.append("  dataAtualizacaoContadorTentativasAcesso: ").append(dataAtualizacaoContadorTentativasAcesso).append("\n");
-        sb.append("  dataFimBloqueioVinculacao: ").append(dataFimBloqueioVinculacao).append("\n");
-        sb.append("  contadorTentativasAcesso: ").append(contadorTentativasAcesso).append("\n");
-        sb.append("  telefoneDdd: ").append(telefoneDdd).append("\n");
-        sb.append("  telefoneNumero: ").append(telefoneNumero).append("\n");
-        sb.append("  cep: ").append(cep).append("\n");
-        sb.append("  senha: ").append(senha).append("\n");
-        sb.append("  novaSenha: ").append(novaSenha).append("\n");
-        sb.append("  confirmacaoSenha: ").append(confirmacaoSenha).append("\n");
-        sb.append("  aceitaTermosUso: ").append(aceitaTermosUso).append("\n");
-        sb.append("  aceitaReceberNoticias: ").append(aceitaReceberNoticias).append("\n");
-        sb.append("  municipioCodigoUf: ").append(municipioCodigoUf).append("\n");
-        sb.append("  municipioNumero: ").append(municipioNumero).append("\n");
-        sb.append("  municipioDigitoVerificador: ").append(municipioDigitoVerificador).append("\n");
-        sb.append("  situacaoId: ").append(situacaoId).append("\n");
-        sb.append("  dataCadastro: ").append(dataCadastro).append("\n");
-        sb.append("  lotericaId: ").append(lotericaId).append("\n");
-        sb.append("  sexo: ").append(sexo).append("\n");
-        sb.append("  municipioPK: ").append(municipioPK).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class ApostadorVO {\n" +
+                "  id: " + id + "\n" +
+                "  cpf: " + cpf + "\n" +
+                "  email: " + email + "\n" +
+                "  novoEmail: " + novoEmail + "\n" +
+                "  confirmacaoEmail: " + confirmacaoEmail + "\n" +
+                "  nome: " + nome + "\n" +
+                "  nomeMae: " + nomeMae + "\n" +
+                "  dataNascimento: " + dataNascimento + "\n" +
+                "  dataUltimoAcesso: " + dataUltimoAcesso + "\n" +
+                "  dataAtualizacaoContadorTentativasAcesso: " + dataAtualizacaoContadorTentativasAcesso + "\n" +
+                "  dataFimBloqueioVinculacao: " + dataFimBloqueioVinculacao + "\n" +
+                "  contadorTentativasAcesso: " + contadorTentativasAcesso + "\n" +
+                "  telefoneDdd: " + telefoneDdd + "\n" +
+                "  telefoneNumero: " + telefoneNumero + "\n" +
+                "  cep: " + cep + "\n" +
+                "  senha: " + senha + "\n" +
+                "  novaSenha: " + novaSenha + "\n" +
+                "  confirmacaoSenha: " + confirmacaoSenha + "\n" +
+                "  aceitaTermosUso: " + aceitaTermosUso + "\n" +
+                "  aceitaReceberNoticias: " + aceitaReceberNoticias + "\n" +
+                "  municipioCodigoUf: " + municipioCodigoUf + "\n" +
+                "  municipioNumero: " + municipioNumero + "\n" +
+                "  municipioDigitoVerificador: " + municipioDigitoVerificador + "\n" +
+                "  situacaoId: " + situacaoId + "\n" +
+                "  dataCadastro: " + dataCadastro + "\n" +
+                "  lotericaId: " + lotericaId + "\n" +
+                "  sexo: " + sexo + "\n" +
+                "  municipioPK: " + municipioPK + "\n" +
+                "}\n";
+        return sb;
     }
 }

@@ -1,12 +1,9 @@
 package br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto;
 
-import android.content.Intent;
-
 import com.google.gson.annotations.SerializedName;
 
 import org.parceler.Parcel;
 
-import br.gov.caixa.loterias.apostar.interno.model.bean.Modalidade;
 import io.swagger.annotations.ApiModel;
 
 @ApiModel(description = "")

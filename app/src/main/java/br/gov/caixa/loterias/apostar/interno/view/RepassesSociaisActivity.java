@@ -1,8 +1,8 @@
 package br.gov.caixa.loterias.apostar.interno.view;
 
 import android.content.Intent;
-import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
@@ -21,10 +21,9 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RepassometroDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RepassometroDTOResponse;
+import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.animation.AnimacaoCalculoRepassesSociais;
 import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
-import br.gov.caixa.loterias.apostar.interno.model.bo.MensagensNetwork;
-import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 
 public class RepassesSociaisActivity extends SettingToolbarActivity {
     private RepassometroDTO repasseOBj;

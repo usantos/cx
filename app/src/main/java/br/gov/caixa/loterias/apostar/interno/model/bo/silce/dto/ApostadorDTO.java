@@ -284,25 +284,24 @@ public class ApostadorDTO {
 
     @Override
     public String toString()  {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class ApostadorDTO {\n");
 
-        sb.append("  cpf: ").append(cpf).append("\n");
-        sb.append("  email: ").append(email).append("\n");
-        sb.append("  nome: ").append(nome).append("\n");
-        sb.append("  dataNascimento: ").append(dataNascimento).append("\n");
-        sb.append("  cep: ").append(cep).append("\n");
-        sb.append("  aceitaTermosUso: ").append(aceitaTermosUso).append("\n");
-        sb.append("  aceitaReceberNoticias: ").append(aceitaReceberNoticias).append("\n");
-        sb.append("  municipioId: ").append(municipioId).append("\n");
-        sb.append("  lotericaId: ").append(lotericaId).append("\n");
-        sb.append("  sexo: ").append(sexo).append("\n");
-        sb.append("  mercadoPagoCustomerId: ").append(mercadoPagoCustomerId).append("\n");
-        sb.append("  apostas: ").append(apostas).append("\n");
-        sb.append("  limiteMinimoDiario: ").append(limiteMinimoDiario).append("\n");
-        sb.append("  limiteDiario: ").append(limiteDiario).append("\n");
-        sb.append("  limiteDiarioAutorizado: ").append(limiteDiarioAutorizado).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class ApostadorDTO {\n" +
+                "  cpf: " + cpf + "\n" +
+                "  email: " + email + "\n" +
+                "  nome: " + nome + "\n" +
+                "  dataNascimento: " + dataNascimento + "\n" +
+                "  cep: " + cep + "\n" +
+                "  aceitaTermosUso: " + aceitaTermosUso + "\n" +
+                "  aceitaReceberNoticias: " + aceitaReceberNoticias + "\n" +
+                "  municipioId: " + municipioId + "\n" +
+                "  lotericaId: " + lotericaId + "\n" +
+                "  sexo: " + sexo + "\n" +
+                "  mercadoPagoCustomerId: " + mercadoPagoCustomerId + "\n" +
+                "  apostas: " + apostas + "\n" +
+                "  limiteMinimoDiario: " + limiteMinimoDiario + "\n" +
+                "  limiteDiario: " + limiteDiario + "\n" +
+                "  limiteDiarioAutorizado: " + limiteDiarioAutorizado + "\n" +
+                "}\n";
+        return sb;
     }
 }

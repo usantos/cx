@@ -5,11 +5,11 @@ import android.support.test.runner.AndroidJUnit4;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import br.gov.caixa.loterias.apostar.model.bo.silce.internals.Bin;
-import br.gov.caixa.loterias.apostar.model.bo.silce.internals.Crypto;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.Bin;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.Crypto;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
 
 @RunWith(AndroidJUnit4.class)
 public class CryptoTest {

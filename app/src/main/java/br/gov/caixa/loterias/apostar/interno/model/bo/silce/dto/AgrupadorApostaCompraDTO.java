@@ -205,21 +205,20 @@ public class AgrupadorApostaCompraDTO {
 
   @Override
   public String toString()  {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class AgrupadorApostaCompraDTO {\n");
-    
-    sb.append("  apostas: ").append(apostas).append("\n");
-    sb.append("  qtdApostas: ").append(qtdApostas).append("\n");
-    sb.append("  qtdApostasEmProcessamento: ").append(qtdApostasEmProcessamento).append("\n");
-    sb.append("  qtdApostasEfetivadas: ").append(qtdApostasEfetivadas).append("\n");
-    sb.append("  qtdNaoEfetivadasDinheiroDevolvido: ").append(qtdNaoEfetivadasDinheiroDevolvido).append("\n");
-    sb.append("  qtdNaoEfetivadasDinheiroEmDevolucao: ").append(qtdNaoEfetivadasDinheiroEmDevolucao).append("\n");
-    sb.append("  valorApostasEmProcessamento: ").append(valorApostasEmProcessamento).append("\n");
-    sb.append("  valorApostasEfetivadas: ").append(valorApostasEfetivadas).append("\n");
-    sb.append("  valorNaoEfetivadasDinheiroDevolvido: ").append(valorNaoEfetivadasDinheiroDevolvido).append("\n");
-    sb.append("  valorNaoEfetivadasDinheiroEmDevolucao: ").append(valorNaoEfetivadasDinheiroEmDevolucao).append("\n");
-    sb.append("  compra: ").append(compra).append("\n");
-    sb.append("}\n");
-    return sb.toString();
+
+    String sb = "class AgrupadorApostaCompraDTO {\n" +
+            "  apostas: " + apostas + "\n" +
+            "  qtdApostas: " + qtdApostas + "\n" +
+            "  qtdApostasEmProcessamento: " + qtdApostasEmProcessamento + "\n" +
+            "  qtdApostasEfetivadas: " + qtdApostasEfetivadas + "\n" +
+            "  qtdNaoEfetivadasDinheiroDevolvido: " + qtdNaoEfetivadasDinheiroDevolvido + "\n" +
+            "  qtdNaoEfetivadasDinheiroEmDevolucao: " + qtdNaoEfetivadasDinheiroEmDevolucao + "\n" +
+            "  valorApostasEmProcessamento: " + valorApostasEmProcessamento + "\n" +
+            "  valorApostasEfetivadas: " + valorApostasEfetivadas + "\n" +
+            "  valorNaoEfetivadasDinheiroDevolvido: " + valorNaoEfetivadasDinheiroDevolvido + "\n" +
+            "  valorNaoEfetivadasDinheiroEmDevolucao: " + valorNaoEfetivadasDinheiroEmDevolucao + "\n" +
+            "  compra: " + compra + "\n" +
+            "}\n";
+    return sb;
   }
 }

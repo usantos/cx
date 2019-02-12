@@ -7,7 +7,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import br.gov.caixa.loterias.apostar.interno.R;
-import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 
 /**
  * Created by joafilho on 19/12/2017.

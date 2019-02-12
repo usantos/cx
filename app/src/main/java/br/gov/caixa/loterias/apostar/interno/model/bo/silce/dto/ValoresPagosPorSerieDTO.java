@@ -75,12 +75,11 @@ public class ValoresPagosPorSerieDTO {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class ValoresPagosPorSerieDTO {\n");
 
-        sb.append("  dezenhaDeMilhar: ").append(dezenhaDeMilhar).append("\n");
-        sb.append("  bilhetesPremiados: ").append(bilhetesPremiados).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class ValoresPagosPorSerieDTO {\n" +
+                "  dezenhaDeMilhar: " + dezenhaDeMilhar + "\n" +
+                "  bilhetesPremiados: " + bilhetesPremiados + "\n" +
+                "}\n";
+        return sb;
     }
 }

@@ -43,7 +43,7 @@ public class AdicionarCarrinhoFavoritasView extends DialogFragment implements Vi
     private NumberPicker picker_tipo_concurso;
     private NumberPicker picker_qnt_teimosinhas;
 
-    public List<ParametroSimulacao>  arrayConcursos = new ArrayList<ParametroSimulacao>();
+    public List<ParametroSimulacao>  arrayConcursos = new ArrayList<>();
     public Long idApostaFavorita;
 
 
@@ -93,7 +93,7 @@ public class AdicionarCarrinhoFavoritasView extends DialogFragment implements Vi
             }
         }
 
-        listaConcursosString = new ArrayList<String>();
+        listaConcursosString = new ArrayList<>();
         for (int i= 0;  i < arrayConcursos.size(); i++){
             if (arrayConcursos.get( i ).getParametroJogo().getConcurso().getTipoConcurso() == TipoConcursoEnum.ESPECIAL){
                 listaConcursosString.add(arrayConcursos.get( i ).getParametroJogo().getConcurso().getModalidadeDetalhada().getDescricaoEspecial()  );
@@ -167,7 +167,7 @@ public class AdicionarCarrinhoFavoritasView extends DialogFragment implements Vi
 
     private void setPickerTeimosinhas(Integer position, View view){
         picker_qnt_teimosinhas = (NumberPicker) view.findViewById(R.id.picker_qnt_teimosinhas);
-        listaTeimosinhas = new ArrayList<String>();
+        listaTeimosinhas = new ArrayList<>();
         for (int i= 0;  i < arrayConcursos.get( position ).getParametroJogo().getTeimosinhas().size(); i++){
             listaTeimosinhas.add( arrayConcursos.get( position ).getParametroJogo().getTeimosinhas().get( i ).toString() );
         }

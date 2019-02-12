@@ -1,21 +1,15 @@
 package br.gov.caixa.loterias.apostar.interno.view.adapter;
 
-import android.animation.Animator;
 import android.app.Activity;
-import android.app.FragmentManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -25,7 +19,6 @@ import com.daimajia.swipe.SimpleSwipeListener;
 import com.daimajia.swipe.SwipeLayout;
 
 import org.apache.commons.lang.StringUtils;
-import org.bouncycastle.asn1.x509.Holder;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -43,17 +36,13 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CarrinhoDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.DTOEnumInteger;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
-import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IncluirApostaFavoritaDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeEnum;
-import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametroMesDeSorte;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RetornoPadraoDTO;
-import br.gov.caixa.loterias.apostar.interno.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostar.interno.utils.DialogUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
-import br.gov.caixa.loterias.apostar.interno.view.DadosPessoaisActivity;
 import br.gov.caixa.loterias.apostar.interno.view.FavoritasActivity;
 import br.gov.caixa.loterias.apostar.interno.view.custom.AdicionarCarrinhoFavoritasView;
 import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
@@ -131,15 +120,15 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
         holder.tituloApostaFavorita.setTextColor(context.getResources().getColor(estilo.getCorClara()));
         holder.tituloNomeApostaFavorita.setText(" | " + listaApostaFavorita.get(position).getNome());
 //
-        String numeroStr = "";
+        StringBuilder numeroStr = new StringBuilder();
         for (Integer num : listaApostaFavorita.get(position).getNumerosSelecionados()) {
             if (num.equals(listaApostaFavorita.get(position).getNumerosSelecionados().get(listaApostaFavorita.get(position).getNumerosSelecionados().size() - 1))) {
-                numeroStr += String.format("%02d", num);
+                numeroStr.append(String.format("%02d", num));
             } else {
-                numeroStr += String.format("%02d - ", num);
+                numeroStr.append(String.format("%02d - ", num));
             }
         }
-        holder.numerosApostaFavorita.setText(numeroStr);
+        holder.numerosApostaFavorita.setText(numeroStr.toString());
         holder.editarRelativeLayoutFavoritos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -306,7 +295,7 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
     private void adicionarCarrinho(ApostaBO apostaBO, Long idApostaFavorita, DTOEnumInteger modalidadeEnum) {
         SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
         List<ParametroSimulacao> arrayConcursos;
-        arrayConcursos = new ArrayList<ParametroSimulacao>();
+        arrayConcursos = new ArrayList<>();
         List<ParametroSimulacao> parametroSimulacaoList = sessaoUsuario.getParametrosSimulacao().getParametros();
         for (ParametroSimulacao concurso : parametroSimulacaoList) {
             if (concurso.getParametroJogo().getConcurso().getModalidadeDetalhada().getDescricao().equals(modalidadeEnum.getDescricao())) {

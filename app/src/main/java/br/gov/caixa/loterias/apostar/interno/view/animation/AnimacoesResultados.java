@@ -1,23 +1,10 @@
 package br.gov.caixa.loterias.apostar.interno.view.animation;
 
-import android.animation.Animator;
-import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
-import android.app.Activity;
 import android.content.Context;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.TransitionDrawable;
-import android.support.v4.content.ContextCompat;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
-
-import br.gov.caixa.loterias.apostar.interno.R;
-import br.gov.caixa.loterias.apostar.interno.utils.EstiloModalidade;
-import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 
 /**
  * Created by cedesbr450 on 22/03/18.

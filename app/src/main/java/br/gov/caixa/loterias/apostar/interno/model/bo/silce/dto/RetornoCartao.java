@@ -326,29 +326,28 @@ public class RetornoCartao {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class RetornoCartao {\n");
 
-        sb.append("  statusCodeHttp: ").append(statusCodeHttp).append("\n");
-        sb.append("  retornoErroMercadoPago: ").append(retornoErroMercadoPago).append("\n");
-        sb.append("  idCartao: ").append(idCartao).append("\n");
-        sb.append("  mesValidade: ").append(mesValidade).append("\n");
-        sb.append("  anoValidade: ").append(anoValidade).append("\n");
-        sb.append("  primeirosDigitos: ").append(primeirosDigitos).append("\n");
-        sb.append("  ultimosDigitos: ").append(ultimosDigitos).append("\n");
-        sb.append("  tamanhoCodigoSeguranca: ").append(tamanhoCodigoSeguranca).append("\n");
-        sb.append("  nomeMetodoPagamento: ").append(nomeMetodoPagamento).append("\n");
-        sb.append("  thumbnail: ").append(thumbnail).append("\n");
-        sb.append("  secureThumbnail: ").append(secureThumbnail).append("\n");
-        sb.append("  nsuTransacaoMpg: ").append(nsuTransacaoMpg).append("\n");
-        sb.append("  message: ").append(message).append("\n");
-        sb.append("  status: ").append(status).append("\n");
-        sb.append("  error: ").append(error).append("\n");
-        sb.append("  causeCode: ").append(causeCode).append("\n");
-        sb.append("  causeMessage: ").append(causeMessage).append("\n");
-        sb.append("  codigoErro: ").append(codigoErro).append("\n");
-        sb.append("  operacaoExecutadaComSucesso: ").append(operacaoExecutadaComSucesso).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class RetornoCartao {\n" +
+                "  statusCodeHttp: " + statusCodeHttp + "\n" +
+                "  retornoErroMercadoPago: " + retornoErroMercadoPago + "\n" +
+                "  idCartao: " + idCartao + "\n" +
+                "  mesValidade: " + mesValidade + "\n" +
+                "  anoValidade: " + anoValidade + "\n" +
+                "  primeirosDigitos: " + primeirosDigitos + "\n" +
+                "  ultimosDigitos: " + ultimosDigitos + "\n" +
+                "  tamanhoCodigoSeguranca: " + tamanhoCodigoSeguranca + "\n" +
+                "  nomeMetodoPagamento: " + nomeMetodoPagamento + "\n" +
+                "  thumbnail: " + thumbnail + "\n" +
+                "  secureThumbnail: " + secureThumbnail + "\n" +
+                "  nsuTransacaoMpg: " + nsuTransacaoMpg + "\n" +
+                "  message: " + message + "\n" +
+                "  status: " + status + "\n" +
+                "  error: " + error + "\n" +
+                "  causeCode: " + causeCode + "\n" +
+                "  causeMessage: " + causeMessage + "\n" +
+                "  codigoErro: " + codigoErro + "\n" +
+                "  operacaoExecutadaComSucesso: " + operacaoExecutadaComSucesso + "\n" +
+                "}\n";
+        return sb;
     }
 }

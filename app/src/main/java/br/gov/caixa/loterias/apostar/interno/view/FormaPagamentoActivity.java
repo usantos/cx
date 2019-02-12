@@ -1,10 +1,10 @@
 package br.gov.caixa.loterias.apostar.interno.view;
 
 import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
 import android.content.Intent;
-import android.support.constraint.ConstraintLayout;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -32,7 +32,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostar.interno.BuildConfig;
@@ -49,11 +48,10 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ListCartaoDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RetornoCartao;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RetornoPadraoDTO;
-import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
-import br.gov.caixa.loterias.apostar.interno.model.bo.MensagensNetwork;
-import br.gov.caixa.loterias.apostar.interno.view.listener.FormaDePagamentoListener;
-import br.gov.caixa.loterias.apostar.interno.view.adapter.FormaPagamentoRecyclerViewAdapter;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
+import br.gov.caixa.loterias.apostar.interno.view.adapter.FormaPagamentoRecyclerViewAdapter;
+import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
+import br.gov.caixa.loterias.apostar.interno.view.listener.FormaDePagamentoListener;
 
 public class FormaPagamentoActivity extends SettingToolbarActivity implements FormaDePagamentoListener {
 

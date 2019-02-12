@@ -90,13 +90,12 @@ public class GanhadoresPorRegiaoDTO {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class GanhadoresPorRegiaoDTO {\n");
 
-        sb.append("  municipioSorteio: ").append(municipioSorteio).append("\n");
-        sb.append("  ufSorteio: ").append(ufSorteio).append("\n");
-        sb.append("  descricao: ").append(descricao).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class GanhadoresPorRegiaoDTO {\n" +
+                "  municipioSorteio: " + municipioSorteio + "\n" +
+                "  ufSorteio: " + ufSorteio + "\n" +
+                "  descricao: " + descricao + "\n" +
+                "}\n";
+        return sb;
     }
 }

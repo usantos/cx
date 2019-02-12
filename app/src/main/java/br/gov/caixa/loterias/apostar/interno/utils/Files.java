@@ -6,6 +6,7 @@ import android.util.Log;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -26,7 +27,7 @@ import java.io.InputStream;
 
 public class Files {
 
-    public static void createWithBase64(String base64FileTemp, String extension_FileTemp) {
+    public static void createWithBase64(String base64FileTemp) {
         byte[] bytes = Base64.decode(base64FileTemp, Base64.DEFAULT);
 
         String fileString = Environment.getExternalStorageDirectory().toString() + "/tmp.png";
@@ -35,24 +36,16 @@ public class Files {
 
         File file = new File(fileString);
 
-        BufferedOutputStream bos = null;
-
         try {
             FileOutputStream fos = new FileOutputStream(file);
-            bos = new BufferedOutputStream(fos);
-            bos.write(bytes);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (bos != null) {
-                try {
-                    bos.flush();
-                    bos.close();
-                } catch (Exception ignored) {
-                }
+            try (BufferedOutputStream bos = new BufferedOutputStream(fos)) {
+                bos.write(bytes);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+        } catch(FileNotFoundException e) {
+            e.printStackTrace();
         }
-
     }
 
 
@@ -174,22 +167,17 @@ public class Files {
     public static String getDataColumn(Context context, Uri uri, String selection,
                                        String[] selectionArgs) {
 
-        Cursor cursor = null;
         final String column = MediaStore.Images.Media.DATA;
         final String[] projection = {
                 column
         };
 
-        try {
-            cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs,
-                    null);
+        try (Cursor cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs,
+                null)) {
             if (cursor != null && cursor.moveToFirst()) {
                 final int column_index = cursor.getColumnIndexOrThrow(column);
                 return cursor.getString(column_index);
             }
-        } finally {
-            if (cursor != null)
-                cursor.close();
         }
         return null;
     }
@@ -229,13 +217,10 @@ public class Files {
     public static String getFileName(Context context, Uri uri) {
         String result = null;
         if (uri.getScheme().equals("content")) {
-            Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
-            try {
+            try (Cursor cursor = context.getContentResolver().query(uri, null, null, null, null)) {
                 if (cursor != null && cursor.moveToFirst()) {
                     result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
                 }
-            } finally {
-                cursor.close();
             }
         }
         if (result == null) {

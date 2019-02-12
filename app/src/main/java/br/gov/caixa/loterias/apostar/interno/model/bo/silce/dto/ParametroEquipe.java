@@ -227,21 +227,20 @@ public class ParametroEquipe {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class ParametroEquipe {\n");
 
-        sb.append("  indicadorSelecao: ").append(indicadorSelecao).append("\n");
-        sb.append("  nome: ").append(nome).append("\n");
-        sb.append("  numero: ").append(numero).append("\n");
-        sb.append("  numeroPais: ").append(numeroPais).append("\n");
-        sb.append("  descricaoCurta: ").append(descricaoCurta).append("\n");
-        sb.append("  descricaoLonga: ").append(descricaoLonga).append("\n");
-        sb.append("  pais: ").append(pais).append("\n");
-        sb.append("  siglaPais: ").append(siglaPais).append("\n");
-        sb.append("  uf: ").append(uf).append("\n");
-        sb.append("  nomeClass: ").append(nomeClass).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class ParametroEquipe {\n" +
+                "  indicadorSelecao: " + indicadorSelecao + "\n" +
+                "  nome: " + nome + "\n" +
+                "  numero: " + numero + "\n" +
+                "  numeroPais: " + numeroPais + "\n" +
+                "  descricaoCurta: " + descricaoCurta + "\n" +
+                "  descricaoLonga: " + descricaoLonga + "\n" +
+                "  pais: " + pais + "\n" +
+                "  siglaPais: " + siglaPais + "\n" +
+                "  uf: " + uf + "\n" +
+                "  nomeClass: " + nomeClass + "\n" +
+                "}\n";
+        return sb;
     }
 
     public boolean isSelecionado() {

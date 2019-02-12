@@ -126,15 +126,14 @@ public class FaixaPremiadaDTO {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class FaixaPremiadaDTO {\n");
 
-        sb.append("  id: ").append(id).append("\n");
-        sb.append("  numero: ").append(numero).append("\n");
-        sb.append("  sorteio: ").append(sorteio).append("\n");
-        sb.append("  nome: ").append(nome).append("\n");
-        sb.append("  valorLiquido: ").append(valorLiquido).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class FaixaPremiadaDTO {\n" +
+                "  id: " + id + "\n" +
+                "  numero: " + numero + "\n" +
+                "  sorteio: " + sorteio + "\n" +
+                "  nome: " + nome + "\n" +
+                "  valorLiquido: " + valorLiquido + "\n" +
+                "}\n";
+        return sb;
     }
 }

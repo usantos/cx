@@ -9,10 +9,7 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeEnum;
-import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.PartidaLotecaDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.PartidaLotogolDTO;
-import br.gov.caixa.loterias.apostar.interno.view.custom.PartidaViewLotecaResultado;
-import br.gov.caixa.loterias.apostar.interno.view.custom.PartidaViewLotecaResultado_;
 import br.gov.caixa.loterias.apostar.interno.view.custom.PartidaViewLotogolResultado;
 import br.gov.caixa.loterias.apostar.interno.view.custom.PartidaViewLotogolResultado_;
 

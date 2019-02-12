@@ -140,21 +140,21 @@ public class CarrinhoApostasListViewRapidaoAdapter extends RecyclerView.Adapter<
             }
         });
 
-        String numeroStr = "";
+        StringBuilder numeroStr = new StringBuilder();
         if (apostas.get(position).getIndicadorSurpresinha().getValor() == 2) {
             for (int i = 0; i < apostas.get(position).getQuantidadeNumeros(); i++) {
                 if (i == apostas.get(position).getQuantidadeNumeros() - 1) {
-                    numeroStr += "XX";
+                    numeroStr.append("XX");
                 }else {
-                    numeroStr += "XX - ";
+                    numeroStr.append("XX - ");
                 }
             }
         } else {
             for (Integer num: apostas.get(position).getNumerosSelecionados()) {
                 if (num == (apostas.get(position).getNumerosSelecionados().get(apostas.get(position).getNumerosSelecionados().size() - 1))) {
-                    numeroStr += String.format("%02d", num);
+                    numeroStr.append(String.format("%02d", num));
                 }else {
-                    numeroStr += String.format("%02d - ", num);
+                    numeroStr.append(String.format("%02d - ", num));
                 }
             }
         }

@@ -75,12 +75,11 @@ public class MesDTO {
 
   @Override
   public String toString()  {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class MesDTO {\n");
-    
-    sb.append("  descricao: ").append(descricao).append("\n");
-    sb.append("  valor: ").append(valor).append("\n");
-    sb.append("}\n");
-    return sb.toString();
+
+      String sb = "class MesDTO {\n" +
+              "  descricao: " + descricao + "\n" +
+              "  valor: " + valor + "\n" +
+              "}\n";
+      return sb;
   }
 }

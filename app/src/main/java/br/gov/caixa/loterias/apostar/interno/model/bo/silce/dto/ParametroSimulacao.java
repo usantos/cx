@@ -71,12 +71,11 @@ public class ParametroSimulacao {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class ParametroSimulacao {\n");
 
-        sb.append("  parametroJogo: ").append(parametroJogo).append("\n");
-        sb.append("  proximoConcurso: ").append(proximoConcurso).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class ParametroSimulacao {\n" +
+                "  parametroJogo: " + parametroJogo + "\n" +
+                "  proximoConcurso: " + proximoConcurso + "\n" +
+                "}\n";
+        return sb;
     }
 }

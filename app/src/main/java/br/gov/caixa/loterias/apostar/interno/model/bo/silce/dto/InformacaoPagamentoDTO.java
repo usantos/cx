@@ -75,12 +75,11 @@ public class InformacaoPagamentoDTO {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class InformacaoPagamentoDTO {\n");
 
-        sb.append("  meioPagamento: ").append(meioPagamento).append("\n");
-        sb.append("  parametrosPagamento: ").append(parametrosPagamento).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class InformacaoPagamentoDTO {\n" +
+                "  meioPagamento: " + meioPagamento + "\n" +
+                "  parametrosPagamento: " + parametrosPagamento + "\n" +
+                "}\n";
+        return sb;
     }
 }

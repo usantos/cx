@@ -116,15 +116,14 @@ public class TermoDeUso {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class TermoDeUso {\n");
 
-        sb.append("  id: ").append(id).append("\n");
-        sb.append("  conteudo: ").append(conteudo).append("\n");
-        sb.append("  dataInicioVigencia: ").append(dataInicioVigencia).append("\n");
-        sb.append("  dataCriacao: ").append(dataCriacao).append("\n");
-        sb.append("  dataUltimaAlteracao: ").append(dataUltimaAlteracao).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class TermoDeUso {\n" +
+                "  id: " + id + "\n" +
+                "  conteudo: " + conteudo + "\n" +
+                "  dataInicioVigencia: " + dataInicioVigencia + "\n" +
+                "  dataCriacao: " + dataCriacao + "\n" +
+                "  dataUltimaAlteracao: " + dataUltimaAlteracao + "\n" +
+                "}\n";
+        return sb;
     }
 }

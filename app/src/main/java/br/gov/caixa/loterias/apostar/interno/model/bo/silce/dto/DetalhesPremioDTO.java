@@ -108,14 +108,13 @@ public class DetalhesPremioDTO {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class DetalhesPremioDTO {\n");
 
-        sb.append("  aposta: ").append(aposta).append("\n");
-        sb.append("  premio: ").append(premio).append("\n");
-        sb.append("  meiosResgate: ").append(meiosResgate).append("\n");
-        sb.append("  nsbi: ").append(nsbi).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class DetalhesPremioDTO {\n" +
+                "  aposta: " + aposta + "\n" +
+                "  premio: " + premio + "\n" +
+                "  meiosResgate: " + meiosResgate + "\n" +
+                "  nsbi: " + nsbi + "\n" +
+                "}\n";
+        return sb;
     }
 }

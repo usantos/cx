@@ -102,7 +102,7 @@
     <string name="MA020">A situação da aposta foi atualizada, por favor verifique o comprovante gerado.</string>
     <string name="msg_favor_inserir_nome_aposta">Favor inserir um nome para sua aposta favorita</string>
     <string name="msg_erro_data_invalida"> Data Inválida</string>
-    
+
     <string name="MN003">Para continuar navegando é necessário aceitar a nova versão do Termo de Uso.</string>
 
 
@@ -367,6 +367,9 @@
     <string name="label_mes_sorte_dois_pontos_mes">M\u00eas de sorte: %s</string>
     <string name="label_mes_sorteado">M\u00eas da sorte&#160;</string>
     <string name="label_zero">0 (zero)</string>
+    <string name="title_activity_rapidao_aposta_favorita_selecao">
+        RapidaoApostaFavoritaSelecaoActivity
+    </string>
 
 
 </resources>

@@ -114,14 +114,13 @@ public class PartidaLotogolDTO {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class PartidaLotogolDTO {\n");
 
-        sb.append("  equipe1: ").append(equipe1).append("\n");
-        sb.append("  equipe2: ").append(equipe2).append("\n");
-        sb.append("  indexPlacarEquipe1: ").append(indexPlacarEquipe1).append("\n");
-        sb.append("  indexPlacarEquipe2: ").append(indexPlacarEquipe2).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class PartidaLotogolDTO {\n" +
+                "  equipe1: " + equipe1 + "\n" +
+                "  equipe2: " + equipe2 + "\n" +
+                "  indexPlacarEquipe1: " + indexPlacarEquipe1 + "\n" +
+                "  indexPlacarEquipe2: " + indexPlacarEquipe2 + "\n" +
+                "}\n";
+        return sb;
     }
 }

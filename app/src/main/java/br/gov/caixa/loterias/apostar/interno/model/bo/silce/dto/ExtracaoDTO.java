@@ -137,16 +137,15 @@ public class ExtracaoDTO {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class ExtracaoDTO {\n");
 
-        sb.append("  municipioSorteio: ").append(municipioSorteio).append("\n");
-        sb.append("  ufSorteio: ").append(ufSorteio).append("\n");
-        sb.append("  planoSorteio: ").append(planoSorteio).append("\n");
-        sb.append("  dataSorteio: ").append(dataSorteio).append("\n");
-        sb.append("  numero: ").append(numero).append("\n");
-        sb.append("  dv: ").append(dv).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class ExtracaoDTO {\n" +
+                "  municipioSorteio: " + municipioSorteio + "\n" +
+                "  ufSorteio: " + ufSorteio + "\n" +
+                "  planoSorteio: " + planoSorteio + "\n" +
+                "  dataSorteio: " + dataSorteio + "\n" +
+                "  numero: " + numero + "\n" +
+                "  dv: " + dv + "\n" +
+                "}\n";
+        return sb;
     }
 }
