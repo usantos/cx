@@ -91,13 +91,12 @@ public class TipoPagamentoDTO {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class TipoPagamentoDTO {\n");
 
-        sb.append("  id: ").append(id).append("\n");
-        sb.append("  descricao: ").append(descricao).append("\n");
-        sb.append("  canal: ").append(canal).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class TipoPagamentoDTO {\n" +
+                "  id: " + id + "\n" +
+                "  descricao: " + descricao + "\n" +
+                "  canal: " + canal + "\n" +
+                "}\n";
+        return sb;
     }
 }

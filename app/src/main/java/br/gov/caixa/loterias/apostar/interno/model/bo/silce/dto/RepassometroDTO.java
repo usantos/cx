@@ -189,19 +189,18 @@ public class RepassometroDTO {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class RepassometroDTO {\n");
-        sb.append("  arrecadacaoAcumulada: ").append(arrecadacaoAcumulada).append("\n");
-        sb.append("  arrecadacaoUltimaSemana: ").append(arrecadacaoUltimaSemana).append("\n");
-        sb.append("  dataBase: ").append(dataBase).append("\n");
-        sb.append("  dataBase: ").append(percentualCultura).append("\n");
-        sb.append("  dataBase: ").append(percentualEducacao).append("\n");
-        sb.append("  dataBase: ").append(percentualEsporte).append("\n");
-        sb.append("  dataBase: ").append(percentualOutros).append("\n");
-        sb.append("  dataBase: ").append(percentualProgramasSociais).append("\n");
-        sb.append("  dataBase: ").append(percentualSeguranca).append("\n");
-        sb.append("  dataBase: ").append(percentualSeguridade).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class RepassometroDTO {\n" +
+                "  arrecadacaoAcumulada: " + arrecadacaoAcumulada + "\n" +
+                "  arrecadacaoUltimaSemana: " + arrecadacaoUltimaSemana + "\n" +
+                "  dataBase: " + dataBase + "\n" +
+                "  dataBase: " + percentualCultura + "\n" +
+                "  dataBase: " + percentualEducacao + "\n" +
+                "  dataBase: " + percentualEsporte + "\n" +
+                "  dataBase: " + percentualOutros + "\n" +
+                "  dataBase: " + percentualProgramasSociais + "\n" +
+                "  dataBase: " + percentualSeguranca + "\n" +
+                "  dataBase: " + percentualSeguridade + "\n" +
+                "}\n";
+        return sb;
     }
 }

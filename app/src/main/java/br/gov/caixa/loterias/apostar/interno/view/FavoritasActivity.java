@@ -34,7 +34,7 @@ import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
 public class FavoritasActivity extends AppCompatActivity {
 
 
-    List<ApostaFavoritaDTO> apostaFavoritaLista = new ArrayList<ApostaFavoritaDTO>();
+    List<ApostaFavoritaDTO> apostaFavoritaLista = new ArrayList<>();
     public RecyclerView recyclerViewFavoritas;
     LinearLayoutManager layoutManager;
     Boolean isMaisCompras = true;

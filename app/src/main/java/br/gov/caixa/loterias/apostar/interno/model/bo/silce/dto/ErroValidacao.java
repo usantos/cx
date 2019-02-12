@@ -60,11 +60,10 @@ public class ErroValidacao {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class ErroValidacao {\n");
 
-        sb.append("  mensagem: ").append(mensagem).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class ErroValidacao {\n" +
+                "  mensagem: " + mensagem + "\n" +
+                "}\n";
+        return sb;
     }
 }

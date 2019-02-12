@@ -105,14 +105,13 @@ public class AtivarUsuarioDTO {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class AtivarUsuarioDTO {\n");
 
-        sb.append("  cpf: ").append(cpf).append("\n");
-        sb.append("  email: ").append(email).append("\n");
-        sb.append("  codigoValidacao: ").append(codigoValidacao).append("\n");
-        sb.append("  senha: ").append(senha).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class AtivarUsuarioDTO {\n" +
+                "  cpf: " + cpf + "\n" +
+                "  email: " + email + "\n" +
+                "  codigoValidacao: " + codigoValidacao + "\n" +
+                "  senha: " + senha + "\n" +
+                "}\n";
+        return sb;
     }
 }

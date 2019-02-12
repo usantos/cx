@@ -1,11 +1,6 @@
 package br.gov.caixa.loterias.apostar.interno.model.bo;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-
-import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.SilceConnection;
-
- class ServerMethods {
+class ServerMethods {
      static final String COMPLETA_JOGO_PATH = "/apostas/completar-jogo";
      static final String VALIDAR_FAVORITA_PATH = "/apostas-favoritas/validar";
      static final String INCLUIR_FAVORITA_PATH = "/apostas-favoritas";

@@ -19,30 +19,27 @@ public final class DBTabelasLoterias {
      */
     public static String criarTebelaLoteria() {
 
-        StringBuilder sb = new StringBuilder();
-
-        sb.append(" CREATE TABLE " + DBLoterica.NOME_TABELA);
-        sb.append(" ( ");
-        sb.append(DBLoterica._ID + " INTEGER PRIMARY KEY, ");
-        sb.append(DBLoterica.COLUNA_NOME_FANTASIA + " TEXT, ");
-        sb.append(DBLoterica.COLUNA_NOME + " TEXT, ");
-        sb.append(DBLoterica.COLUNA_LOGRADOURO + " TEXT, ");
-        sb.append(DBLoterica.COLUNA_BAIRRO + " TEXT, ");
-        sb.append(DBLoterica.COLUNA_NOME_MUNICIPIO + " TEXT,");
-        sb.append(DBLoterica.COLUNA_NOME_UF + " TEXT, ");
-        sb.append(DBLoterica.COLUNA_ID_LOTERICA + " NUMERIC, ");
-        sb.append(DBLoterica.COLUNA_CODIGO + " TEXT, ");
-        sb.append(DBLoterica.COLUNA_ID_UF + " NUMERIC, ");
-        sb.append(DBLoterica.COLUNA_ID_MUNICIPIO + " NUMERIC, ");
-        sb.append(DBLoterica.COLUNA_DV_MUNICIPIO + " NUMERIC, ");
-        sb.append(DBLoterica.COLUNA_SITUACAO_VALOR + " NUMERIC, ");
-        sb.append(DBLoterica.COLUNA_SITUACAO_DESCRICAO + " TEXT, ");
-        sb.append(DBLoterica.COLUNA_POLO + " NUMERIC, ");
-        sb.append(DBLoterica.COLUNA_DV + " NUMERIC, ");
-        sb.append(DBLoterica.COLUNA_NUMERO_FORMATADO + " TEXT ");
-        sb.append(" ) ");
-
-        return sb.toString();
+        String sb = (" CREATE TABLE " + DBLoterica.NOME_TABELA) +
+                " ( " +
+                DBLoterica._ID + " INTEGER PRIMARY KEY, " +
+                DBLoterica.COLUNA_NOME_FANTASIA + " TEXT, " +
+                DBLoterica.COLUNA_NOME + " TEXT, " +
+                DBLoterica.COLUNA_LOGRADOURO + " TEXT, " +
+                DBLoterica.COLUNA_BAIRRO + " TEXT, " +
+                DBLoterica.COLUNA_NOME_MUNICIPIO + " TEXT," +
+                DBLoterica.COLUNA_NOME_UF + " TEXT, " +
+                DBLoterica.COLUNA_ID_LOTERICA + " NUMERIC, " +
+                DBLoterica.COLUNA_CODIGO + " TEXT, " +
+                DBLoterica.COLUNA_ID_UF + " NUMERIC, " +
+                DBLoterica.COLUNA_ID_MUNICIPIO + " NUMERIC, " +
+                DBLoterica.COLUNA_DV_MUNICIPIO + " NUMERIC, " +
+                DBLoterica.COLUNA_SITUACAO_VALOR + " NUMERIC, " +
+                DBLoterica.COLUNA_SITUACAO_DESCRICAO + " TEXT, " +
+                DBLoterica.COLUNA_POLO + " NUMERIC, " +
+                DBLoterica.COLUNA_DV + " NUMERIC, " +
+                DBLoterica.COLUNA_NUMERO_FORMATADO + " TEXT " +
+                " ) ";
+        return sb;
     }
 
     /**
@@ -52,39 +49,36 @@ public final class DBTabelasLoterias {
      */
     public static String criarTabelaIdentificaoDeUmaApostaDas8Modalidades() {
 
-        StringBuilder sb = new StringBuilder();
-
-        sb.append(" CREATE TABLE " + DBIdentificaoDeUmaApostaDas8Modalidades.NOME_TABELA);
-        sb.append(" ( ");
-        sb.append(DBIdentificaoDeUmaApostaDas8Modalidades._ID + " INTEGER PRIMARY KEY, ");
-        sb.append(DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_ID_IDENTIFICADOR + " NUMERIC, ");
-        sb.append(DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_MODALIDADE + " TEXT, ");
-        sb.append(DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_TIPO_CONCURSO_VALOR + " TEXT, ");
-        sb.append(DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_TIPO_CONCURSO_DESCRICAO + " TEXT, ");
-        sb.append(DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_NUMEROS_SELECIONADOS + " TEXT, ");
-        sb.append(DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_INDICADOR_SURPRESINHA_VALOR + " INTEGER, ");
-        sb.append(DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_INDICADOR_SURPRESINHA_DESCRICAO + " TEXT, ");
-        sb.append(DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_VALOR + " REAL, ");
-        sb.append(DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_CONCURSO_ALVO + " INTEGER, ");
-        sb.append(DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_QUANTIDADE_TEIMOSINHAS + " INTEGER, ");
-        sb.append(DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_QUANTIDADE_APOSTAS + " INTEGER, ");
-        sb.append(DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_ESPELHO + " INTEGER, ");
-        sb.append(DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_CONCURSO_INICIAL + " INTEGER, ");
-        sb.append(DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_SITUACAO_VALOR + " NUMERIC, ");
-        sb.append(DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_SITUACAO_DESCRICAO + " TEXT, ");
-        sb.append(DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_TROCA + " INTEGER, ");
-        sb.append(DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_DATA_EFETIVACAO + " TEXT, ");
-        sb.append(DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_HORA_EFETIVACAO + " TEXT, ");
-        sb.append(DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_LOTERICA_ID + " NUMERIC, ");
-        sb.append(DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_VINCULO_ESPELHO + " NUMERIC, ");
-        sb.append(DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_QUANTIDADE_NUMEROS + " INTEGER, ");
-        sb.append(DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_SURPRESINHA + " INTEGER, ");
-        sb.append(DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_QUANTIDADE_SURPRESINHA + " INTEGER, ");
-        sb.append(DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_ID_TIME_CORACAO + " NUMERIC, ");
-        sb.append(DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_ID_MES_SORTE + " NUMERIC ");
-        sb.append(" ) ");
-
-        return sb.toString();
+        String sb = (" CREATE TABLE " + DBIdentificaoDeUmaApostaDas8Modalidades.NOME_TABELA) +
+                " ( " +
+                DBIdentificaoDeUmaApostaDas8Modalidades._ID + " INTEGER PRIMARY KEY, " +
+                DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_ID_IDENTIFICADOR + " NUMERIC, " +
+                DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_MODALIDADE + " TEXT, " +
+                DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_TIPO_CONCURSO_VALOR + " TEXT, " +
+                DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_TIPO_CONCURSO_DESCRICAO + " TEXT, " +
+                DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_NUMEROS_SELECIONADOS + " TEXT, " +
+                DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_INDICADOR_SURPRESINHA_VALOR + " INTEGER, " +
+                DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_INDICADOR_SURPRESINHA_DESCRICAO + " TEXT, " +
+                DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_VALOR + " REAL, " +
+                DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_CONCURSO_ALVO + " INTEGER, " +
+                DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_QUANTIDADE_TEIMOSINHAS + " INTEGER, " +
+                DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_QUANTIDADE_APOSTAS + " INTEGER, " +
+                DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_ESPELHO + " INTEGER, " +
+                DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_CONCURSO_INICIAL + " INTEGER, " +
+                DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_SITUACAO_VALOR + " NUMERIC, " +
+                DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_SITUACAO_DESCRICAO + " TEXT, " +
+                DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_TROCA + " INTEGER, " +
+                DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_DATA_EFETIVACAO + " TEXT, " +
+                DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_HORA_EFETIVACAO + " TEXT, " +
+                DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_LOTERICA_ID + " NUMERIC, " +
+                DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_VINCULO_ESPELHO + " NUMERIC, " +
+                DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_QUANTIDADE_NUMEROS + " INTEGER, " +
+                DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_SURPRESINHA + " INTEGER, " +
+                DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_QUANTIDADE_SURPRESINHA + " INTEGER, " +
+                DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_ID_TIME_CORACAO + " NUMERIC, " +
+                DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_ID_MES_SORTE + " NUMERIC " +
+                " ) ";
+        return sb;
     }
 
     /**
@@ -94,27 +88,24 @@ public final class DBTabelasLoterias {
      */
     public static String criarTabelaEquipe() {
 
-        StringBuilder sb = new StringBuilder();
-
-        sb.append(" CREATE TABLE " + DBEquipe.NOME_TABELA);
-        sb.append(" ( ");
-        sb.append(DBEquipe._ID + " INTEGER PRIMARY KEY, ");
-        sb.append(DBEquipe.COLUNA_PLACAR + " TEXT, ");
-        sb.append(DBEquipe.COLUNA_VITORIA + " INTEGER, ");
-        sb.append(DBEquipe.COLUNA_ID_PARAMETRO_EQUIPE + " NUMERIC, ");
-        sb.append(DBEquipe.COLUNA_NOME + " TEXT, ");
-        sb.append(DBEquipe.COLUNA_NUMERO + " INTEGER, ");
-        sb.append(DBEquipe.COLUNA_NUMERO_PAIS + " INTEGER, ");
-        sb.append(DBEquipe.COLUNA_PAIS + " TEXT, ");
-        sb.append(DBEquipe.COLUNA_SIGLA_PAIS + " TEXT, ");
-        sb.append(DBEquipe.COLUNA_UF + " TEXT, ");
-        sb.append(DBEquipe.COLUNA_NOME_CLASS + " TEXT, ");
-        sb.append(DBEquipe.COLUNA_INDICADOR_SELECAO + " INTEGER, ");
-        sb.append(DBEquipe.COLUNA_DESCRICAO_CURTA + " TEXT, ");
-        sb.append(DBEquipe.COLUNA_DESCRICAO_LONGA + " TEXT ");
-        sb.append(" ) ");
-
-        return sb.toString();
+        String sb = (" CREATE TABLE " + DBEquipe.NOME_TABELA) +
+                " ( " +
+                DBEquipe._ID + " INTEGER PRIMARY KEY, " +
+                DBEquipe.COLUNA_PLACAR + " TEXT, " +
+                DBEquipe.COLUNA_VITORIA + " INTEGER, " +
+                DBEquipe.COLUNA_ID_PARAMETRO_EQUIPE + " NUMERIC, " +
+                DBEquipe.COLUNA_NOME + " TEXT, " +
+                DBEquipe.COLUNA_NUMERO + " INTEGER, " +
+                DBEquipe.COLUNA_NUMERO_PAIS + " INTEGER, " +
+                DBEquipe.COLUNA_PAIS + " TEXT, " +
+                DBEquipe.COLUNA_SIGLA_PAIS + " TEXT, " +
+                DBEquipe.COLUNA_UF + " TEXT, " +
+                DBEquipe.COLUNA_NOME_CLASS + " TEXT, " +
+                DBEquipe.COLUNA_INDICADOR_SELECAO + " INTEGER, " +
+                DBEquipe.COLUNA_DESCRICAO_CURTA + " TEXT, " +
+                DBEquipe.COLUNA_DESCRICAO_LONGA + " TEXT " +
+                " ) ";
+        return sb;
     }
 
     /**
@@ -124,24 +115,21 @@ public final class DBTabelasLoterias {
      */
     public static String criarTabelaParametroEquipe() {
 
-        StringBuilder sb = new StringBuilder();
-
-        sb.append(" CREATE TABLE " + DBParametroEquipe.NOME_TABELA);
-        sb.append(" ( ");
-        sb.append(DBParametroEquipe._ID + " INTEGER PRIMARY KEY, ");
-        sb.append(DBParametroEquipe.COLUNA_INDICADOR_SELECAO + " INTEGER, ");
-        sb.append(DBParametroEquipe.COLUNA_NOME + " TEXT, ");
-        sb.append(DBParametroEquipe.COLUNA_NUMERO + " INTEGER, ");
-        sb.append(DBParametroEquipe.COLUNA_NUMERO_PAIS + " INTEGER, ");
-        sb.append(DBParametroEquipe.COLUNA_DESCRICAO_CURTA + " TEXT, ");
-        sb.append(DBParametroEquipe.COLUNA_DESCRICAO_LONGA + " TEXT, ");
-        sb.append(DBParametroEquipe.COLUNA_PAIS + " TEXT, ");
-        sb.append(DBParametroEquipe.COLUNA_SIGLA_PAIS + " TEXT, ");
-        sb.append(DBParametroEquipe.COLUNA_UF + " TEXT, ");
-        sb.append(DBParametroEquipe.COLUNA_NOME_CLASS + " TEXT ");
-        sb.append(" ) ");
-
-        return sb.toString();
+        String sb = (" CREATE TABLE " + DBParametroEquipe.NOME_TABELA) +
+                " ( " +
+                DBParametroEquipe._ID + " INTEGER PRIMARY KEY, " +
+                DBParametroEquipe.COLUNA_INDICADOR_SELECAO + " INTEGER, " +
+                DBParametroEquipe.COLUNA_NOME + " TEXT, " +
+                DBParametroEquipe.COLUNA_NUMERO + " INTEGER, " +
+                DBParametroEquipe.COLUNA_NUMERO_PAIS + " INTEGER, " +
+                DBParametroEquipe.COLUNA_DESCRICAO_CURTA + " TEXT, " +
+                DBParametroEquipe.COLUNA_DESCRICAO_LONGA + " TEXT, " +
+                DBParametroEquipe.COLUNA_PAIS + " TEXT, " +
+                DBParametroEquipe.COLUNA_SIGLA_PAIS + " TEXT, " +
+                DBParametroEquipe.COLUNA_UF + " TEXT, " +
+                DBParametroEquipe.COLUNA_NOME_CLASS + " TEXT " +
+                " ) ";
+        return sb;
     }
 
     /**
@@ -151,19 +139,16 @@ public final class DBTabelasLoterias {
      */
     public static String criarTabelaLotogol() {
 
-        StringBuilder sb = new StringBuilder();
-
-        sb.append(" CREATE TABLE " + DBPartidaLotogol.NOME_TABELA);
-        sb.append(" ( ");
-        sb.append(DBPartidaLotogol._ID + " INTEGER PRIMARY KEY, ");
-        sb.append(DBPartidaLotogol.COLUNA_ID_IDENTIFICAO_DE_UMA_APOSTA_DAS_8_MODALIDADES + " NUMERIC, ");
-        sb.append(DBPartidaLotogol.COLUNA_ID_EQUIPE_UM + " NUMERIC, ");
-        sb.append(DBPartidaLotogol.COLUNA_ID_EQUIPE_DOIS + " NUMERIC, ");
-        sb.append(DBPartidaLotogol.COLUNA_INDEX_PLACAR_EQUIPE_UM + " INTEGER, ");
-        sb.append(DBPartidaLotogol.COLUNA_INDEX_PLACAR_EQUIPE_DOIS + " INTEGER ");
-        sb.append(" ) ");
-
-        return sb.toString();
+        String sb = (" CREATE TABLE " + DBPartidaLotogol.NOME_TABELA) +
+                " ( " +
+                DBPartidaLotogol._ID + " INTEGER PRIMARY KEY, " +
+                DBPartidaLotogol.COLUNA_ID_IDENTIFICAO_DE_UMA_APOSTA_DAS_8_MODALIDADES + " NUMERIC, " +
+                DBPartidaLotogol.COLUNA_ID_EQUIPE_UM + " NUMERIC, " +
+                DBPartidaLotogol.COLUNA_ID_EQUIPE_DOIS + " NUMERIC, " +
+                DBPartidaLotogol.COLUNA_INDEX_PLACAR_EQUIPE_UM + " INTEGER, " +
+                DBPartidaLotogol.COLUNA_INDEX_PLACAR_EQUIPE_DOIS + " INTEGER " +
+                " ) ";
+        return sb;
     }
 
     /**
@@ -173,18 +158,15 @@ public final class DBTabelasLoterias {
      */
     public static String criarTabelaLoteca(){
 
-        StringBuilder sb = new StringBuilder();
-
-        sb.append(" CREATE TABLE " + DBPartidaLoteca.NOME_TABELA);
-        sb.append(" ( ");
-        sb.append(DBPartidaLoteca._ID + " INTEGER PRIMARY KEY, ");
-        sb.append(DBPartidaLoteca.COLUNA_ID_IDENTIFICAO_DE_UMA_APOSTA_DAS_8_MODALIDADES + " NUMERIC, ");
-        sb.append(DBPartidaLoteca.COLUNA_ID_EQUIPE_UM + " NUMERIC, ");
-        sb.append(DBPartidaLoteca.COLUNA_ID_EQUIPE_DOIS + " NUMERIC, ");
-        sb.append(DBPartidaLoteca.COLUNA_EMPATE + " INTEGER ");
-        sb.append(" ) ");
-
-        return sb.toString();
+        String sb = (" CREATE TABLE " + DBPartidaLoteca.NOME_TABELA) +
+                " ( " +
+                DBPartidaLoteca._ID + " INTEGER PRIMARY KEY, " +
+                DBPartidaLoteca.COLUNA_ID_IDENTIFICAO_DE_UMA_APOSTA_DAS_8_MODALIDADES + " NUMERIC, " +
+                DBPartidaLoteca.COLUNA_ID_EQUIPE_UM + " NUMERIC, " +
+                DBPartidaLoteca.COLUNA_ID_EQUIPE_DOIS + " NUMERIC, " +
+                DBPartidaLoteca.COLUNA_EMPATE + " INTEGER " +
+                " ) ";
+        return sb;
     }
 
     /**
@@ -194,17 +176,14 @@ public final class DBTabelasLoterias {
      */
     public static String criarTabelaMesDeSorte(){
 
-        StringBuilder sb = new StringBuilder();
-
-        sb.append(" CREATE TABLE " + DBMesDeSorte.NOME_TABELA);
-        sb.append(" ( ");
-        sb.append(DBMesDeSorte._ID + " INTEGER PRIMARY KEY, ");
-        sb.append(DBMesDeSorte.COLUNA_NUMERO + " NUMERIC, ");
-        sb.append(DBMesDeSorte.COLUNA_NOME + " TEXT, ");
-        sb.append(DBMesDeSorte.COLUNA_ABREVIACAO + " TEXT ");
-        sb.append(" ) ");
-
-        return sb.toString();
+        String sb = (" CREATE TABLE " + DBMesDeSorte.NOME_TABELA) +
+                " ( " +
+                DBMesDeSorte._ID + " INTEGER PRIMARY KEY, " +
+                DBMesDeSorte.COLUNA_NUMERO + " NUMERIC, " +
+                DBMesDeSorte.COLUNA_NOME + " TEXT, " +
+                DBMesDeSorte.COLUNA_ABREVIACAO + " TEXT " +
+                " ) ";
+        return sb;
     }
 
     /**
@@ -215,11 +194,7 @@ public final class DBTabelasLoterias {
      */
     public static String deleteTabela(String tabela) {
 
-        StringBuilder sb = new StringBuilder();
-
-        sb.append("DROP TABLE IF EXISTS " + tabela);
-
-        return sb.toString();
+        return ("DROP TABLE IF EXISTS " + tabela);
     }
 
     /**

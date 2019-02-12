@@ -49,12 +49,12 @@ public final class FavoritasRapidaoRecyclerAdapter extends RecyclerView.Adapter<
         holder.modalidades.setTextColor(context.getResources().getColor(estilo.getCorClara()));
         holder.setIsRecyclable(false);
 
-        String numeroStr = "";
+        StringBuilder numeroStr = new StringBuilder();
         for (Integer num : listaApostaFavorita.get(position).getNumerosSelecionados()) {
             if (num.equals(listaApostaFavorita.get(position).getNumerosSelecionados().get(listaApostaFavorita.get(position).getNumerosSelecionados().size() - 1))) {
-                numeroStr += String.format("%02d", num);
+                numeroStr.append(String.format("%02d", num));
             } else {
-                numeroStr += String.format("%02d - ", num);
+                numeroStr.append(String.format("%02d - ", num));
             }
         }
 
@@ -62,14 +62,14 @@ public final class FavoritasRapidaoRecyclerAdapter extends RecyclerView.Adapter<
         final ApostaFavoritaDTO aposta = listaApostaFavorita.get( position );
 
         if (ModalidadeEnum.fromInteger(aposta.getModalidade().getValor()) == ModalidadeEnum.TIMEMANIA) {
-            numeroStr += "\nTime do coração: " + aposta.getTimeDoCoracao().getNome();
+            numeroStr.append("\nTime do coração: ").append(aposta.getTimeDoCoracao().getNome());
         }
 
         if (ModalidadeEnum.fromInteger(aposta.getModalidade().getValor()) == ModalidadeEnum.DIA_DE_SORTE) {
-            numeroStr += "\nMês de sorte: " + aposta.getMesDeSorte().getNome();
+            numeroStr.append("\nMês de sorte: ").append(aposta.getMesDeSorte().getNome());
         }
 
-        holder.numerosEDetalhes.setText(numeroStr);
+        holder.numerosEDetalhes.setText(numeroStr.toString());
 
         if (listaApostasSelecionadas != null) {
             if (isSelected(aposta)) {

@@ -57,11 +57,10 @@ public class TermoDeUsoDTO {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class TermoDeUsoDTO {\n");
 
-        sb.append("  conteudo: ").append(conteudo).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class TermoDeUsoDTO {\n" +
+                "  conteudo: " + conteudo + "\n" +
+                "}\n";
+        return sb;
     }
 }

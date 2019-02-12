@@ -1,8 +1,6 @@
 package br.gov.caixa.loterias.apostar.interno.model.bo;
 
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 
@@ -10,10 +8,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
 import net.openid.appauth.AuthorizationException;
-import net.openid.appauth.AuthorizationRequest;
 import net.openid.appauth.AuthorizationService;
 import net.openid.appauth.AuthorizationServiceConfiguration;
-import net.openid.appauth.ResponseTypeValues;
 import net.openid.appauth.TokenRequest;
 import net.openid.appauth.TokenResponse;
 
@@ -31,7 +27,6 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.GsonReques
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.SilceConnection;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.SilceSingleton;
 import br.gov.caixa.loterias.apostar.interno.utils.AppUtils;
-import br.gov.caixa.loterias.apostar.interno.view.TokenActivity;
 
 /**
  * Created by pmotta on 21/03/2018.
@@ -65,7 +60,7 @@ public class BaseBO {
                     if(MensagensNetwork.isUnauthorizedError(error) && keycloakBO.getAccessToken() != null) {
                         keycloakBO.refreshAccess(new KeycloakBO.OnRefreshAccess() {
                             @Override
-                            public void onRefreshAccess(String token) {
+                            public void onRefreshAccess() {
                                 //Se retornar o token, tenta fazer a mesma requisição
 
                                 AuthorizationServiceConfiguration authorizationServiceConfiguration = new AuthorizationServiceConfiguration(

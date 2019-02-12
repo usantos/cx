@@ -298,26 +298,25 @@ public class ConcursoDTO {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class ConcursoDTO {\n");
 
-        sb.append("  modalidade: ").append(modalidade).append("\n");
-        sb.append("  modalidadeDetalhada: ").append(modalidadeDetalhada).append("\n");
-        sb.append("  tipoConcurso: ").append(tipoConcurso).append("\n");
-        sb.append("  numero: ").append(numero).append("\n");
-        sb.append("  dataFechamento: ").append(dataFechamento).append("\n");
-        sb.append("  dataAbertura: ").append(dataAbertura).append("\n");
-        sb.append("  dataHoraSorteio: ").append(dataHoraSorteio).append("\n");
-        sb.append("  dataSorteio: ").append(dataSorteio).append("\n");
-        sb.append("  valorApostaMinima: ").append(valorApostaMinima).append("\n");
-        sb.append("  situacao: ").append(situacao).append("\n");
-        sb.append("  bloqueado: ").append(bloqueado).append("\n");
-        sb.append("  dataFinalBloqueio: ").append(dataFinalBloqueio).append("\n");
-        sb.append("  estimativa: ").append(estimativa).append("\n");
-        sb.append("  acumulado: ").append(acumulado).append("\n");
-        sb.append("  naoInicializado: ").append(naoInicializado).append("\n");
-        sb.append("  aberto: ").append(aberto).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class ConcursoDTO {\n" +
+                "  modalidade: " + modalidade + "\n" +
+                "  modalidadeDetalhada: " + modalidadeDetalhada + "\n" +
+                "  tipoConcurso: " + tipoConcurso + "\n" +
+                "  numero: " + numero + "\n" +
+                "  dataFechamento: " + dataFechamento + "\n" +
+                "  dataAbertura: " + dataAbertura + "\n" +
+                "  dataHoraSorteio: " + dataHoraSorteio + "\n" +
+                "  dataSorteio: " + dataSorteio + "\n" +
+                "  valorApostaMinima: " + valorApostaMinima + "\n" +
+                "  situacao: " + situacao + "\n" +
+                "  bloqueado: " + bloqueado + "\n" +
+                "  dataFinalBloqueio: " + dataFinalBloqueio + "\n" +
+                "  estimativa: " + estimativa + "\n" +
+                "  acumulado: " + acumulado + "\n" +
+                "  naoInicializado: " + naoInicializado + "\n" +
+                "  aberto: " + aberto + "\n" +
+                "}\n";
+        return sb;
     }
 }

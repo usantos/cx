@@ -5,7 +5,6 @@ import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
@@ -21,22 +20,6 @@ import android.widget.TextView;
 import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
 
-import br.gov.caixa.loterias.apostar.interno.R;
-import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO;
-import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO_;
-import br.gov.caixa.loterias.apostar.interno.model.bo.MensagensNetwork;
-import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
-import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ApostaDTO;
-import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeEnum;
-import br.gov.caixa.loterias.apostar.interno.model.bean.Modalidade;
-import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResultadoConcursoDTOResponse;
-import br.gov.caixa.loterias.apostar.interno.utils.EstiloModalidade;
-import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
-import br.gov.caixa.loterias.apostar.interno.view.animation.AnimacoesResultados;
-import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
-import br.gov.caixa.loterias.apostar.interno.view.custom.ModalidadeSorteioResultadoView;
-import br.gov.caixa.loterias.apostar.interno.view.custom.ModalidadeSorteioResultadoView_;
-
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -50,6 +33,22 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+
+import br.gov.caixa.loterias.apostar.interno.R;
+import br.gov.caixa.loterias.apostar.interno.model.bean.Modalidade;
+import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO;
+import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO_;
+import br.gov.caixa.loterias.apostar.interno.model.bo.MensagensNetwork;
+import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ApostaDTO;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeEnum;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResultadoConcursoDTOResponse;
+import br.gov.caixa.loterias.apostar.interno.utils.EstiloModalidade;
+import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
+import br.gov.caixa.loterias.apostar.interno.view.animation.AnimacoesResultados;
+import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
+import br.gov.caixa.loterias.apostar.interno.view.custom.ModalidadeSorteioResultadoView;
+import br.gov.caixa.loterias.apostar.interno.view.custom.ModalidadeSorteioResultadoView_;
 
 /**
  * Created by brfernan on 26/10/2017.
@@ -106,6 +105,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
         } else {
             holder.valorAcumulado.setText(retornaStringConcursoSemEstimativa(data.get(position).getConcurso().getNumero().toString(), estilo.getCorClara()));
+            holder.valorAcumulado.setTextSize(14);
 
             holder.premioEstimadoConcurso.setVisibility(View.INVISIBLE);
         }
@@ -259,7 +259,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
     private Map<TimeUnit,Long> computeDiff(Date date1, Date date2) {
         long diffInMillies = date2.getTime() - date1.getTime();
-        List<TimeUnit> units = new ArrayList<TimeUnit>(EnumSet.allOf(TimeUnit.class));
+        List<TimeUnit> units = new ArrayList<>(EnumSet.allOf(TimeUnit.class));
         Collections.reverse(units);
         Map<TimeUnit,Long> result = new LinkedHashMap<>();
         long milliesRest = diffInMillies;

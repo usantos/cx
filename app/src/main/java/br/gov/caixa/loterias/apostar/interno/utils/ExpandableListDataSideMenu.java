@@ -11,21 +11,21 @@ import java.util.List;
 
 public class ExpandableListDataSideMenu {
     public static HashMap<String, List<String>> getData() {
-        LinkedHashMap<String, List<String>> expandableListDetail = new LinkedHashMap<String, List<String>>();
+        LinkedHashMap<String, List<String>> expandableListDetail = new LinkedHashMap<>();
 
-        List<String> minhaArea = new ArrayList<String>();
+        List<String> minhaArea = new ArrayList<>();
         minhaArea.add("Dados Pessoais");
         minhaArea.add("Alterar dados do login Caixa");
         minhaArea.add("Apostas confirmadas");
         minhaArea.add("Compras");
         minhaArea.add("Favoritas");
 
-        List<String> Apostar = new ArrayList<String>();
-        List<String> Resultados = new ArrayList<String>();
-        List<String> Rapidao = new ArrayList<String>();
-        List<String> bilhetes = new ArrayList<String>();
-        List<String> sociais = new ArrayList<String>();
-        List<String> Sair = new ArrayList<String>();
+        List<String> Apostar = new ArrayList<>();
+        List<String> Resultados = new ArrayList<>();
+        List<String> Rapidao = new ArrayList<>();
+        List<String> bilhetes = new ArrayList<>();
+        List<String> sociais = new ArrayList<>();
+        List<String> Sair = new ArrayList<>();
 
 
         expandableListDetail.put("Minha área", minhaArea);

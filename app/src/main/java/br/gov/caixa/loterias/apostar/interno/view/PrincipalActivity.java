@@ -46,6 +46,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import br.gov.caixa.loterias.apostar.interno.BuildConfig;
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bean.DadosUsuarioToken;
 import br.gov.caixa.loterias.apostar.interno.model.bean.Modalidade;
@@ -126,17 +127,19 @@ public class PrincipalActivity extends AppCompatActivity
         String iniciais = "";
         boolean proximo = false;
         char separarNomeUsuario[] = nomeUsuario.toCharArray();
-        for(int contador = 0; contador < separarNomeUsuario.length; contador++){
+
+        for (char caracter: separarNomeUsuario) {
             if("".equals(iniciais) || proximo){
-                iniciais += separarNomeUsuario[contador];
+                iniciais += caracter;
                 proximo = false;
             }
-            if(separarNomeUsuario[contador] == ' '){
+            if(caracter == ' '){
                 proximo = true;
             }
         }
-        ttvIniciais.setText(iniciais);
 
+        ttvIniciais.setText(iniciais);
+        txtVersaoMenu.setText(BuildConfig.VERSION_NAME);
 
         if(!" ".equals(nomeUsuario)) {
             String texto = "Olá, _%_!";

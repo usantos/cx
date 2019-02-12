@@ -101,14 +101,13 @@ public class Telefone {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class Telefone {\n");
 
-        sb.append("  ddd: ").append(ddd).append("\n");
-        sb.append("  numero: ").append(numero).append("\n");
-        sb.append("  numeroMascarado: ").append(numeroMascarado).append("\n");
-        sb.append("  numeroCompletoSemMascara: ").append(numeroCompletoSemMascara).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class Telefone {\n" +
+                "  ddd: " + ddd + "\n" +
+                "  numero: " + numero + "\n" +
+                "  numeroMascarado: " + numeroMascarado + "\n" +
+                "  numeroCompletoSemMascara: " + numeroCompletoSemMascara + "\n" +
+                "}\n";
+        return sb;
     }
 }

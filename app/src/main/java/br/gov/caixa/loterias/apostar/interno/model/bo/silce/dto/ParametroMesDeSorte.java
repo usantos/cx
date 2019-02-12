@@ -88,14 +88,13 @@ public class ParametroMesDeSorte {
 
   @Override
   public String toString()  {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class ParametroMesDeSorte {\n");
-    
-    sb.append("  numero: ").append(numero).append("\n");
-    sb.append("  nome: ").append(nome).append("\n");
-    sb.append("  abreviacao: ").append(abreviacao).append("\n");
-    sb.append("}\n");
-    return sb.toString();
+
+      String sb = "class ParametroMesDeSorte {\n" +
+              "  numero: " + numero + "\n" +
+              "  nome: " + nome + "\n" +
+              "  abreviacao: " + abreviacao + "\n" +
+              "}\n";
+      return sb;
   }
 
   public boolean isSelecionado() {

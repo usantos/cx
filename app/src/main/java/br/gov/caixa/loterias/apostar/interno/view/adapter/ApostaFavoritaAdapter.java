@@ -11,13 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import java.util.List;
 
 import br.gov.caixa.loterias.apostar.interno.R;
-import br.gov.caixa.loterias.apostar.interno.model.bean.ApostaFavorita;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ApostaFavoritaDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostar.interno.utils.EstiloModalidade;
@@ -70,24 +68,24 @@ public class ApostaFavoritaAdapter extends BaseAdapter {
         tituloApostaFavorira.setTextColor(parent.getResources().getColor(estilo.getCorClara()));
 
         final TextView numerosApostaFavorita = (TextView) convertView.findViewById( R.id.numerosApostaFavorita );
-        String numeroStr = "";
+        StringBuilder numeroStr = new StringBuilder();
         for (Integer num : aposta.getNumerosSelecionados()) {
             if (num == (aposta.getNumerosSelecionados().get( aposta.getNumerosSelecionados().size() - 1 ))) {
-                numeroStr += String.format( "%02d", num );
+                numeroStr.append(String.format("%02d", num));
             } else {
-                numeroStr += String.format( "%02d - ", num );
+                numeroStr.append(String.format("%02d - ", num));
             }
         }
 
         if (ModalidadeEnum.fromInteger(aposta.getModalidade().getValor()) == ModalidadeEnum.TIMEMANIA) {
-            numeroStr += "\nTime do coração: " + aposta.getTimeDoCoracao().getNome();
+            numeroStr.append("\nTime do coração: ").append(aposta.getTimeDoCoracao().getNome());
         }
 
         if (ModalidadeEnum.fromInteger(aposta.getModalidade().getValor()) == ModalidadeEnum.DIA_DE_SORTE) {
-            numeroStr += "\nMês de sorte: " + aposta.getMesDeSorte().getNome();
+            numeroStr.append("\nMês de sorte: ").append(aposta.getMesDeSorte().getNome());
         }
 
-        numerosApostaFavorita.setText( numeroStr );
+        numerosApostaFavorita.setText(numeroStr.toString());
 
         final CheckBox checkbox = (CheckBox) convertView.findViewById( R.id.checkboxApostaFavorita );
         checkbox.setVisibility(View.GONE);

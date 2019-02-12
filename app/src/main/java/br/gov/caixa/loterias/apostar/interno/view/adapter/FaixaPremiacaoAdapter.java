@@ -6,8 +6,6 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
-import br.gov.caixa.loterias.apostar.interno.mock.ItemListaFaixaPremiacaoMock;
-import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ConcursoPremiadoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.FaixaPremiadaDTO;
 import br.gov.caixa.loterias.apostar.interno.view.custom.ItemListaFaixaPremiacao;
 import br.gov.caixa.loterias.apostar.interno.view.custom.ItemListaFaixaPremiacao_;

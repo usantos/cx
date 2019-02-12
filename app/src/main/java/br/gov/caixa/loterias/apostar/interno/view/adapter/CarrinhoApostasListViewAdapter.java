@@ -21,10 +21,8 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import br.gov.caixa.loterias.apostar.interno.R;
-import br.gov.caixa.loterias.apostar.interno.model.bean.Modalidade;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO_;
-import br.gov.caixa.loterias.apostar.interno.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CarrinhoDTOResponse;
@@ -34,7 +32,6 @@ import br.gov.caixa.loterias.apostar.interno.model.dao.DBLoteriasCrud;
 import br.gov.caixa.loterias.apostar.interno.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.CarrinhoActivity;
-import br.gov.caixa.loterias.apostar.interno.view.DadosPessoaisActivity;
 import br.gov.caixa.loterias.apostar.interno.view.animation.AnimacaoSwipeList;
 import br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightRecyclerView;
 import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
@@ -178,26 +175,26 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
             textViewTimeCoracao.setText(aposta.getMesDeSorte() != null && aposta.getMesDeSorte().getNome() != null ? aposta.getMesDeSorte().getNome() : context.getString(R.string.label_tres_interrogacoes));
         }
 
-        String numeroStr = "";
+        StringBuilder numeroStr = new StringBuilder();
         if (aposta.getIndicadorSurpresinha().getValor() == 2) {
             for (int i = 0; i < aposta.getQuantidadeNumeros(); i++) {
                 if (i == aposta.getQuantidadeNumeros() - 1) {
-                    numeroStr += "XX";
+                    numeroStr.append("XX");
                 } else {
-                    numeroStr += "XX - ";
+                    numeroStr.append("XX - ");
                 }
             }
         } else {
             for (Integer num : aposta.getNumerosSelecionados()) {
                 if (num == (aposta.getNumerosSelecionados().get(aposta.getNumerosSelecionados().size() - 1))) {
-                    numeroStr += String.format("%02d", num);
+                    numeroStr.append(String.format("%02d", num));
                 } else {
-                    numeroStr += String.format("%02d - ", num);
+                    numeroStr.append(String.format("%02d - ", num));
                 }
             }
         }
 
-        holder.numerosAposta.setText(numeroStr);
+        holder.numerosAposta.setText(numeroStr.toString());
         ViewUtils.setMoedaFormatHtml(aposta.getValor(), holder.valorAposta);
 
         if (animacao) {

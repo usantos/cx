@@ -135,16 +135,15 @@ public class ApostadorAlteracaoDTO {
 
     @Override
     public String toString()  {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class ApostadorAlteracaoDTO {\n");
 
-        sb.append("  cep: ").append(cep).append("\n");
-        sb.append("  municipioId: ").append(municipioId).append("\n");
-        sb.append("  lotericaId: ").append(lotericaId).append("\n");
-        sb.append("  sexo: ").append(sexo).append("\n");
-        sb.append("  alterandoLoterica: ").append(alterandoLoterica).append("\n");
-        sb.append("  limiteDiario: ").append(limiteDiario).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class ApostadorAlteracaoDTO {\n" +
+                "  cep: " + cep + "\n" +
+                "  municipioId: " + municipioId + "\n" +
+                "  lotericaId: " + lotericaId + "\n" +
+                "  sexo: " + sexo + "\n" +
+                "  alterandoLoterica: " + alterandoLoterica + "\n" +
+                "  limiteDiario: " + limiteDiario + "\n" +
+                "}\n";
+        return sb;
     }
 }

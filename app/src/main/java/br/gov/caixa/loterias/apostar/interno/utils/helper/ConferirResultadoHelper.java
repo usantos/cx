@@ -4,21 +4,14 @@ import android.content.Context;
 
 import com.android.volley.VolleyError;
 
-import java.util.Objects;
-
-import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostar.interno.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.DTOEnumIntegerResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.DTOEnumLong;
-import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.DetalhesPremioDTOResponse;
-import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.SituacaoResultadoBilheteEnum;
 import br.gov.caixa.loterias.apostar.interno.utils.DialogUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
-import br.gov.caixa.loterias.apostar.interno.view.ApostaConfirmadaDetalhesActivity_;
-import br.gov.caixa.loterias.apostar.interno.view.ResultadoApostaConfirmadaActivity_;
 
 public class ConferirResultadoHelper  {
 

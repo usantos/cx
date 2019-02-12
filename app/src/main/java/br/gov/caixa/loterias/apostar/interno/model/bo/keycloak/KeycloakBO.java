@@ -81,7 +81,7 @@ public class KeycloakBO {
     }
 
     public interface OnRefreshAccess{
-        void onRefreshAccess(String token);
+        void onRefreshAccess();
     }
 
     public interface OnLogin{
@@ -107,7 +107,7 @@ public class KeycloakBO {
         protected void onPostExecute(String token) {
             super.onPostExecute(token);
             if(listener != null){
-                listener.onRefreshAccess(token);
+                listener.onRefreshAccess();
             }
         }
     }

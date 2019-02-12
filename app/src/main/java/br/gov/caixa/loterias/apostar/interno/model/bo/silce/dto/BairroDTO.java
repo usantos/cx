@@ -88,13 +88,12 @@ public class BairroDTO {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class BairroDTO {\n");
 
-        sb.append("  id: ").append(id).append("\n");
-        sb.append("  nome: ").append(nome).append("\n");
-        sb.append("  municipio: ").append(municipio).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class BairroDTO {\n" +
+                "  id: " + id + "\n" +
+                "  nome: " + nome + "\n" +
+                "  municipio: " + municipio + "\n" +
+                "}\n";
+        return sb;
     }
 }

@@ -125,15 +125,14 @@ public class ParametroValorApostaDTO {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class ParametroValorApostaDTO {\n");
 
-        sb.append("  valor: ").append(valor).append("\n");
-        sb.append("  numeroPrognosticos: ").append(numeroPrognosticos).append("\n");
-        sb.append("  quantidadeDuplos: ").append(quantidadeDuplos).append("\n");
-        sb.append("  quantidadeTriplos: ").append(quantidadeTriplos).append("\n");
-        sb.append("  numeroApostas: ").append(numeroApostas).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class ParametroValorApostaDTO {\n" +
+                "  valor: " + valor + "\n" +
+                "  numeroPrognosticos: " + numeroPrognosticos + "\n" +
+                "  quantidadeDuplos: " + quantidadeDuplos + "\n" +
+                "  quantidadeTriplos: " + quantidadeTriplos + "\n" +
+                "  numeroApostas: " + numeroApostas + "\n" +
+                "}\n";
+        return sb;
     }
 }

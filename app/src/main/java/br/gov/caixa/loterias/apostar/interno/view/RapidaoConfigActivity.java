@@ -44,10 +44,8 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RapidaoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RapidaoDTOResponse;
-import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.sp.RapidaoSP;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
-import br.gov.caixa.loterias.apostar.interno.view.adapter.ApostaFavoritaAdapter;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.FavoritasRapidaoRecyclerAdapter;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.NumerosRapidaoAdapter;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.TiposApostasAdapter;
@@ -236,7 +234,7 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
     }
 
     private void gridViewTipoAposta() {
-        final ArrayList<TipoAposta> tipoApostaArrayList = new ArrayList<TipoAposta>();
+        final ArrayList<TipoAposta> tipoApostaArrayList = new ArrayList<>();
         for (TipoAposta tipoAposta : tipoApostaLista) {
             if (tipoAposta.getSelect()) {
                 tipoApostaArrayList.add(tipoAposta);
@@ -371,11 +369,11 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
             rapidao.setValorMinimoPremioPrincipal(new BigDecimal("0.0"));
         }
         if (rapidao.getApostasFavoritas() == null) {
-            rapidao.setApostasFavoritas(new ArrayList<ApostaFavoritaDTO>());
+            rapidao.setApostasFavoritas(new ArrayList<>());
         }
 
         if (rapidao.getModalidades() == null) {
-            rapidao.setModalidades(new ArrayList<ModalidadeDTO>());
+            rapidao.setModalidades(new ArrayList<>());
         }
 
         if (rapidao.getPrognosticosObrigatorios() != null) {
@@ -494,7 +492,7 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
         final ApostaBO apostaBO = ApostaBO_.getInstance_(RapidaoConfigActivity.this);
 
 
-        final List<ModalidadeDTO> tipoApostaArrayList = new ArrayList<ModalidadeDTO>();
+        final List<ModalidadeDTO> tipoApostaArrayList = new ArrayList<>();
         for (TipoAposta tipoAposta : tipoApostaLista) {
             if (tipoAposta.getSelect() != null && tipoAposta.getSelect()) {
                 ModalidadeDTO modalidadeDTO = new ModalidadeDTO();

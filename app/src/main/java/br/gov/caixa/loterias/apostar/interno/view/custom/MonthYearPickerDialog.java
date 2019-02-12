@@ -3,7 +3,6 @@ package br.gov.caixa.loterias.apostar.interno.view.custom;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -103,7 +102,7 @@ public class MonthYearPickerDialog extends DialogFragment {
             MesAnoDTO mesAnoAtual = mesesAnos.get(0);
 
             int currentYear = mesAnoAtual.getAno().intValue();
-            monthYearsMap.put(currentYear, new ArrayList<Integer>());
+            monthYearsMap.put(currentYear, new ArrayList<>());
 
             for (MesAnoDTO mesAno : mesesAnos) {
                 int year = mesAno.getAno().intValue();
@@ -111,7 +110,7 @@ public class MonthYearPickerDialog extends DialogFragment {
 
                 if(currentYear != year){
                     currentYear = year;
-                    monthYearsMap.put(currentYear, new ArrayList<Integer>());
+                    monthYearsMap.put(currentYear, new ArrayList<>());
                 }
                 List<Integer> monthList = monthYearsMap.get(year);
                 monthList.add(month);

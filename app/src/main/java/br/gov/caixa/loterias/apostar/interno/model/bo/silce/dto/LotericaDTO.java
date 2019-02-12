@@ -293,25 +293,24 @@ public class LotericaDTO {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class LotericaDTO {\n");
 
-        sb.append("  nomeFantasia: ").append(nomeFantasia).append("\n");
-        sb.append("  nome: ").append(nome).append("\n");
-        sb.append("  logradouro: ").append(logradouro).append("\n");
-        sb.append("  bairro: ").append(bairro).append("\n");
-        sb.append("  nomeMunicipio: ").append(nomeMunicipio).append("\n");
-        sb.append("  nomeUF: ").append(nomeUF).append("\n");
-        sb.append("  id: ").append(id).append("\n");
-        sb.append("  codigo: ").append(codigo).append("\n");
-        sb.append("  idUF: ").append(idUF).append("\n");
-        sb.append("  idMunicipio: ").append(idMunicipio).append("\n");
-        sb.append("  dvMunicipio: ").append(dvMunicipio).append("\n");
-        sb.append("  situacao: ").append(situacao).append("\n");
-        sb.append("  polo: ").append(polo).append("\n");
-        sb.append("  dv: ").append(dv).append("\n");
-        sb.append("  numeroFormatado: ").append(numeroFormatado).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class LotericaDTO {\n" +
+                "  nomeFantasia: " + nomeFantasia + "\n" +
+                "  nome: " + nome + "\n" +
+                "  logradouro: " + logradouro + "\n" +
+                "  bairro: " + bairro + "\n" +
+                "  nomeMunicipio: " + nomeMunicipio + "\n" +
+                "  nomeUF: " + nomeUF + "\n" +
+                "  id: " + id + "\n" +
+                "  codigo: " + codigo + "\n" +
+                "  idUF: " + idUF + "\n" +
+                "  idMunicipio: " + idMunicipio + "\n" +
+                "  dvMunicipio: " + dvMunicipio + "\n" +
+                "  situacao: " + situacao + "\n" +
+                "  polo: " + polo + "\n" +
+                "  dv: " + dv + "\n" +
+                "  numeroFormatado: " + numeroFormatado + "\n" +
+                "}\n";
+        return sb;
     }
 }

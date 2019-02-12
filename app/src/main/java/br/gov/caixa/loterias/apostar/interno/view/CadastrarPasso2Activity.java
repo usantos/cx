@@ -96,9 +96,9 @@ public class CadastrarPasso2Activity extends CadastroActivity {
         initOnclick();
         initRightImg();
 
-        listUFString = new ArrayList<String>();
-        listMunicipios = new ArrayList<String>();
-        listBairros = new ArrayList<String>();
+        listUFString = new ArrayList<>();
+        listMunicipios = new ArrayList<>();
+        listBairros = new ArrayList<>();
 
         addListenerUF(editTextUFPasso2Content, listUFString);
         addListenerMunicipio(editTextMunicipioPasso2Content, listMunicipios, Boolean.FALSE);
@@ -327,7 +327,7 @@ public class CadastrarPasso2Activity extends CadastroActivity {
             @Override
             public void onResponse(LotericaCodigoWrapperResponse response) {
                 loadViewProgress.dismiss();
-                List<LotericaDTO> lotericaDTOList = new ArrayList<LotericaDTO>();
+                List<LotericaDTO> lotericaDTOList = new ArrayList<>();
                 lotericaDTOList.add(response.getPayload());
 //                popularRadio(lotericaDTOList);
 
@@ -358,7 +358,7 @@ public class CadastrarPasso2Activity extends CadastroActivity {
         if (StringUtils.isEmpty(municipioSelect)) {
             showDialogBairro();
         } else {
-            listBairros = new ArrayList<String>();
+            listBairros = new ArrayList<>();
             final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
 
             DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(CadastrarPasso2Activity.this);
@@ -413,7 +413,7 @@ public class CadastrarPasso2Activity extends CadastroActivity {
         TextView tituloDialog = (TextView) dialog.findViewById(R.id.tituloDialogCustom);
         tituloDialog.setText("Bairro");
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(CadastrarPasso2Activity.this,
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(CadastrarPasso2Activity.this,
                 R.layout.item_text_popup, R.id.textList, listBairros);
 
         // Assign adapter to ListView

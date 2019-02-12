@@ -21,17 +21,14 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bean.NumerosSelecionadosRapidao;
-import br.gov.caixa.loterias.apostar.interno.model.bo.AcessoBO_;
-import br.gov.caixa.loterias.apostar.interno.model.bo.DadosUsuarioBO;
-import br.gov.caixa.loterias.apostar.interno.utils.AppUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.NumeroSelecionadoRapidaoAdapter;
 import br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightGridView;
 
 public class NumerosRapidaoActivity extends AppCompatActivity {
     NumerosSelecionadosRapidao[] listaNumerosSelecionadosRapidao;
-    List<Integer> numerosLista =  new ArrayList<Integer>();
-    List<Integer> listaNumerosContrariosRapidao =  new ArrayList<Integer>();
+    List<Integer> numerosLista = new ArrayList<>();
+    List<Integer> listaNumerosContrariosRapidao = new ArrayList<>();
     Button salvarNumerosApostaRapidaoSelecao;
     Button limparButtonRapidaoSelecionados;
     TextView titleNumerosRapidaoObrigatorios;
@@ -57,14 +54,14 @@ public class NumerosRapidaoActivity extends AppCompatActivity {
         listaNumerosContrariosRapidao = Arrays.asList(new Gson().fromJson(arrayContrarios, Integer[].class));
 
         if(isTipoNrObrigatorios == true){
-            List<Integer> numerosObrigadoriosSalvos =  new ArrayList<Integer>();
+            List<Integer> numerosObrigadoriosSalvos = new ArrayList<>();
             String arrayObrigarios =  getIntent().getExtras().getString("numerosobrigatorios");
             numerosObrigadoriosSalvos = Arrays.asList(new Gson().fromJson(arrayObrigarios, Integer[].class));
             numerosLista = numerosObrigadoriosSalvos;
             gridViewNumerosRapidaoSlc = (ExpandableHeightGridView)findViewById(R.id.gridviewNumerosRapidaoSelecao);
 
         }else{
-            List<Integer> numerosProibidosSalvos =  new ArrayList<Integer>();
+            List<Integer> numerosProibidosSalvos = new ArrayList<>();
             String arrayProibidos =  getIntent().getExtras().getString("numerosProibidos");
             numerosProibidosSalvos = Arrays.asList(new Gson().fromJson(arrayProibidos, Integer[].class));
             numerosLista = numerosProibidosSalvos;
@@ -82,7 +79,7 @@ public class NumerosRapidaoActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent();
 
-                List<Integer> salvarNumero = new ArrayList<Integer>();
+                List<Integer> salvarNumero = new ArrayList<>();
                 for (NumerosSelecionadosRapidao numero : listaNumerosSelecionadosRapidao){
                     if (numero.getSelecionado() == true){
                         salvarNumero.add(numero.getNumero());

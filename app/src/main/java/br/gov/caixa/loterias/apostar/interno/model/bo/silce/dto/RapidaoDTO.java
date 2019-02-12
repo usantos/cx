@@ -164,17 +164,16 @@ public class    RapidaoDTO {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class RapidaoDTO {\n");
 
-        sb.append("  valorMinimo: ").append(valorMinimo).append("\n");
-        sb.append("  valorMaximo: ").append(valorMaximo).append("\n");
-        sb.append("  valorMinimoPremioPrincipal: ").append(valorMinimoPremioPrincipal).append("\n");
-        sb.append("  prognosticosObrigatorios: ").append(prognosticosObrigatorios).append("\n");
-        sb.append("  prognosticosProibidos: ").append(prognosticosProibidos).append("\n");
-        sb.append("  modalidades: ").append(modalidades).append("\n");
-        sb.append("  apostasFavoritas: ").append(apostasFavoritas).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class RapidaoDTO {\n" +
+                "  valorMinimo: " + valorMinimo + "\n" +
+                "  valorMaximo: " + valorMaximo + "\n" +
+                "  valorMinimoPremioPrincipal: " + valorMinimoPremioPrincipal + "\n" +
+                "  prognosticosObrigatorios: " + prognosticosObrigatorios + "\n" +
+                "  prognosticosProibidos: " + prognosticosProibidos + "\n" +
+                "  modalidades: " + modalidades + "\n" +
+                "  apostasFavoritas: " + apostasFavoritas + "\n" +
+                "}\n";
+        return sb;
     }
 }

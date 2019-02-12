@@ -369,30 +369,29 @@ public class ResultadoConcursoDTO {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class ResultadoConcursoDTO {\n");
 
-        sb.append("  municipioSorteio: ").append(municipioSorteio).append("\n");
-        sb.append("  ufSorteio: ").append(ufSorteio).append("\n");
-        sb.append("  aviso: ").append(aviso).append("\n");
-        sb.append("  arrecadacaoTotal: ").append(arrecadacaoTotal).append("\n");
-        sb.append("  acumuladoParaProximoConcurso: ").append(acumuladoParaProximoConcurso).append("\n");
-        sb.append("  acumulou: ").append(acumulou).append("\n");
-        sb.append("  numerosSorteadosPrimeiroSorteio: ").append(numerosSorteadosPrimeiroSorteio).append("\n");
-        sb.append("  numerosSorteadosSegundoSorteio: ").append(numerosSorteadosSegundoSorteio).append("\n");
-        sb.append("  partidasLotogol: ").append(partidasLotogol).append("\n");
-        sb.append("  partidasLoteca: ").append(partidasLoteca).append("\n");
-        sb.append("  concurso: ").append(concurso).append("\n");
-        sb.append("  proximoConcurso: ").append(proximoConcurso).append("\n");
-        sb.append("  proximoConcursoFinalZero: ").append(proximoConcursoFinalZero).append("\n");
-        sb.append("  proximoConcursoFinalCinco: ").append(proximoConcursoFinalCinco).append("\n");
-        sb.append("  proximoConcursoEspecial: ").append(proximoConcursoEspecial).append("\n");
-        sb.append("  premiacoesPrimeiroSorteio: ").append(premiacoesPrimeiroSorteio).append("\n");
-        sb.append("  premiacoesSegundoSorteio: ").append(premiacoesSegundoSorteio).append("\n");
-        sb.append("  premiacaoTimeDoCoracao: ").append(premiacaoTimeDoCoracao).append("\n");
-        sb.append("  ganhadoresPrimeiroSorteio: ").append(ganhadoresPrimeiroSorteio).append("\n");
-        sb.append("  ganhadoresSegundoSorteio: ").append(ganhadoresSegundoSorteio).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class ResultadoConcursoDTO {\n" +
+                "  municipioSorteio: " + municipioSorteio + "\n" +
+                "  ufSorteio: " + ufSorteio + "\n" +
+                "  aviso: " + aviso + "\n" +
+                "  arrecadacaoTotal: " + arrecadacaoTotal + "\n" +
+                "  acumuladoParaProximoConcurso: " + acumuladoParaProximoConcurso + "\n" +
+                "  acumulou: " + acumulou + "\n" +
+                "  numerosSorteadosPrimeiroSorteio: " + numerosSorteadosPrimeiroSorteio + "\n" +
+                "  numerosSorteadosSegundoSorteio: " + numerosSorteadosSegundoSorteio + "\n" +
+                "  partidasLotogol: " + partidasLotogol + "\n" +
+                "  partidasLoteca: " + partidasLoteca + "\n" +
+                "  concurso: " + concurso + "\n" +
+                "  proximoConcurso: " + proximoConcurso + "\n" +
+                "  proximoConcursoFinalZero: " + proximoConcursoFinalZero + "\n" +
+                "  proximoConcursoFinalCinco: " + proximoConcursoFinalCinco + "\n" +
+                "  proximoConcursoEspecial: " + proximoConcursoEspecial + "\n" +
+                "  premiacoesPrimeiroSorteio: " + premiacoesPrimeiroSorteio + "\n" +
+                "  premiacoesSegundoSorteio: " + premiacoesSegundoSorteio + "\n" +
+                "  premiacaoTimeDoCoracao: " + premiacaoTimeDoCoracao + "\n" +
+                "  ganhadoresPrimeiroSorteio: " + ganhadoresPrimeiroSorteio + "\n" +
+                "  ganhadoresSegundoSorteio: " + ganhadoresSegundoSorteio + "\n" +
+                "}\n";
+        return sb;
     }
 }

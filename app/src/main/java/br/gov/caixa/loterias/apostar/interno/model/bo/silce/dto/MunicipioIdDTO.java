@@ -95,13 +95,12 @@ public class MunicipioIdDTO {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class MunicipioIdDTO {\n");
 
-        sb.append("  idUF: ").append(idUF).append("\n");
-        sb.append("  numero: ").append(numero).append("\n");
-        sb.append("  digitoVerificador: ").append(digitoVerificador).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class MunicipioIdDTO {\n" +
+                "  idUF: " + idUF + "\n" +
+                "  numero: " + numero + "\n" +
+                "  digitoVerificador: " + digitoVerificador + "\n" +
+                "}\n";
+        return sb;
     }
 }

@@ -120,15 +120,15 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
         holder.tituloApostaFavorita.setTextColor(context.getResources().getColor(estilo.getCorClara()));
         holder.tituloNomeApostaFavorita.setText(" | " + listaApostaFavorita.get(position).getNome());
 //
-        String numeroStr = "";
+        StringBuilder numeroStr = new StringBuilder();
         for (Integer num : listaApostaFavorita.get(position).getNumerosSelecionados()) {
             if (num.equals(listaApostaFavorita.get(position).getNumerosSelecionados().get(listaApostaFavorita.get(position).getNumerosSelecionados().size() - 1))) {
-                numeroStr += String.format("%02d", num);
+                numeroStr.append(String.format("%02d", num));
             } else {
-                numeroStr += String.format("%02d - ", num);
+                numeroStr.append(String.format("%02d - ", num));
             }
         }
-        holder.numerosApostaFavorita.setText(numeroStr);
+        holder.numerosApostaFavorita.setText(numeroStr.toString());
         holder.editarRelativeLayoutFavoritos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -295,7 +295,7 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
     private void adicionarCarrinho(ApostaBO apostaBO, Long idApostaFavorita, DTOEnumInteger modalidadeEnum) {
         SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
         List<ParametroSimulacao> arrayConcursos;
-        arrayConcursos = new ArrayList<ParametroSimulacao>();
+        arrayConcursos = new ArrayList<>();
         List<ParametroSimulacao> parametroSimulacaoList = sessaoUsuario.getParametrosSimulacao().getParametros();
         for (ParametroSimulacao concurso : parametroSimulacaoList) {
             if (concurso.getParametroJogo().getConcurso().getModalidadeDetalhada().getDescricao().equals(modalidadeEnum.getDescricao())) {

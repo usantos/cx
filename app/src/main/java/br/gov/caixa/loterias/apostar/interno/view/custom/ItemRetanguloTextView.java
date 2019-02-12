@@ -1,13 +1,10 @@
 package br.gov.caixa.loterias.apostar.interno.view.custom;
 
-import android.animation.Animator;
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
 

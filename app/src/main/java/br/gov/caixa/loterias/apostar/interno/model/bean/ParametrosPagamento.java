@@ -1,7 +1,5 @@
 package br.gov.caixa.loterias.apostar.interno.model.bean;
 
-import java.util.Optional;
-
 /**
  * Created by cedesbr450 on 05/04/18.
  */
@@ -33,7 +31,7 @@ public class ParametrosPagamento {
         return TOKEN;
     }
 
-    public void setToken(String token) {
+    public void setToken() {
         this.TOKEN = TOKEN;
     }
 

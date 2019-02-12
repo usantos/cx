@@ -121,15 +121,14 @@ public class EsqueciMinhaSenhaDTO {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class EsqueciMinhaSenhaDTO {\n");
 
-        sb.append("  cpf: ").append(cpf).append("\n");
-        sb.append("  nome: ").append(nome).append("\n");
-        sb.append("  nomeDaMae: ").append(nomeDaMae).append("\n");
-        sb.append("  email: ").append(email).append("\n");
-        sb.append("  dataNascimento: ").append(dataNascimento).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class EsqueciMinhaSenhaDTO {\n" +
+                "  cpf: " + cpf + "\n" +
+                "  nome: " + nome + "\n" +
+                "  nomeDaMae: " + nomeDaMae + "\n" +
+                "  email: " + email + "\n" +
+                "  dataNascimento: " + dataNascimento + "\n" +
+                "}\n";
+        return sb;
     }
 }

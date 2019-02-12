@@ -1,8 +1,8 @@
 package br.gov.caixa.loterias.apostar.interno.view;
 
-import android.support.v7.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -19,29 +19,26 @@ import java.util.Arrays;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostar.interno.R;
+import br.gov.caixa.loterias.apostar.interno.model.bean.TipoAposta;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeDTOResponse;
-import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeEnumSelecaoModalidades;
-import br.gov.caixa.loterias.apostar.interno.model.bean.TipoAposta;
-import br.gov.caixa.loterias.apostar.interno.utils.EstiloModalidade;
-import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
-import br.gov.caixa.loterias.apostar.interno.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.TiposApostasMultiplaSelecaoAdapter;
 import br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightGridView;
+import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
 
 public class SelecaoModalidadesRapidaoActivity extends AppCompatActivity {
 
     Button salvarButtonRapidaoSelecionados;
 
-    List<ModalidadeDTO> modalidades = new ArrayList<ModalidadeDTO>();
-    List<TipoAposta> tiposAposta = new ArrayList<TipoAposta>();
-    List<TipoAposta> tiposApostasSalvas = new ArrayList<TipoAposta>();
+    List<ModalidadeDTO> modalidades = new ArrayList<>();
+    List<TipoAposta> tiposAposta = new ArrayList<>();
+    List<TipoAposta> tiposApostasSalvas = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

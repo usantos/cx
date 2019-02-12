@@ -2,11 +2,7 @@ package br.gov.caixa.loterias.apostar.interno.model.sp;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Shader;
 
-import java.util.List;
-
-import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostar.interno.utils.Aplicacao;
 
 public class CarrinhoSP {

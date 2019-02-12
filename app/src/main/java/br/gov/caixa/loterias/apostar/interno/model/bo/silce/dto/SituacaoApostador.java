@@ -86,13 +86,12 @@ public class SituacaoApostador {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class SituacaoApostador {\n");
 
-        sb.append("  id: ").append(id).append("\n");
-        sb.append("  descricao: ").append(descricao).append("\n");
-        sb.append("  _enum: ").append(_enum).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class SituacaoApostador {\n" +
+                "  id: " + id + "\n" +
+                "  descricao: " + descricao + "\n" +
+                "  _enum: " + _enum + "\n" +
+                "}\n";
+        return sb;
     }
 }

@@ -292,25 +292,24 @@ public class ParametroJogoDTO {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class ParametroJogoDTO {\n");
 
-        sb.append("  concurso: ").append(concurso).append("\n");
-        sb.append("  situacaoConcursoCanal: ").append(situacaoConcursoCanal).append("\n");
-        sb.append("  probabilidadeDeGanhar: ").append(probabilidadeDeGanhar).append("\n");
-        sb.append("  aceitaEspelho: ").append(aceitaEspelho).append("\n");
-        sb.append("  prognosticoMaximo: ").append(prognosticoMaximo).append("\n");
-        sb.append("  quantidadeMinima: ").append(quantidadeMinima).append("\n");
-        sb.append("  quantidadeMaxima: ").append(quantidadeMaxima).append("\n");
-        sb.append("  quantidadeSurpresinhas: ").append(quantidadeSurpresinhas).append("\n");
-        sb.append("  teimosinhas: ").append(teimosinhas).append("\n");
-        sb.append("  valoresAposta: ").append(valoresAposta).append("\n");
-        sb.append("  equipes: ").append(equipes).append("\n");
-        sb.append("  partidas: ").append(partidas).append("\n");
-        sb.append("  valorApostaMinima: ").append(valorApostaMinima).append("\n");
-        sb.append("  concursoDisponivelSimulacao: ").append(concursoDisponivelSimulacao).append("\n");
-        sb.append("  concursoCanalAberto: ").append(concursoCanalAberto).append("\n");
-        sb.append("}\n");
-        return sb.toString();
+        String sb = "class ParametroJogoDTO {\n" +
+                "  concurso: " + concurso + "\n" +
+                "  situacaoConcursoCanal: " + situacaoConcursoCanal + "\n" +
+                "  probabilidadeDeGanhar: " + probabilidadeDeGanhar + "\n" +
+                "  aceitaEspelho: " + aceitaEspelho + "\n" +
+                "  prognosticoMaximo: " + prognosticoMaximo + "\n" +
+                "  quantidadeMinima: " + quantidadeMinima + "\n" +
+                "  quantidadeMaxima: " + quantidadeMaxima + "\n" +
+                "  quantidadeSurpresinhas: " + quantidadeSurpresinhas + "\n" +
+                "  teimosinhas: " + teimosinhas + "\n" +
+                "  valoresAposta: " + valoresAposta + "\n" +
+                "  equipes: " + equipes + "\n" +
+                "  partidas: " + partidas + "\n" +
+                "  valorApostaMinima: " + valorApostaMinima + "\n" +
+                "  concursoDisponivelSimulacao: " + concursoDisponivelSimulacao + "\n" +
+                "  concursoCanalAberto: " + concursoCanalAberto + "\n" +
+                "}\n";
+        return sb;
     }
 }
