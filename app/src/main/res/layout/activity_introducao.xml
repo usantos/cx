@@ -11,19 +11,23 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <android.support.v4.view.ViewPager
             android:id="@+id/vpPager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent" />
 
         <me.relex.circleindicator.CircleIndicator
-            android:visibility="visible"
             android:id="@+id/indicator_custom"
             android:layout_width="fill_parent"
             android:layout_height="40dp"
-            android:layout_alignParentBottom="true"/>
+            android:layout_alignParentBottom="true"
+            android:visibility="visible" />
 
     </RelativeLayout>
 
