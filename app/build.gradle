@@ -6,7 +6,7 @@ android {
         }
     }
     compileSdkVersion 27
-    buildToolsVersion '27.0.0'
+    buildToolsVersion '27.0.3'
     defaultConfig {
         applicationId "br.gov.caixa.loterias.apostar.interno"
         minSdkVersion 21
