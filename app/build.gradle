@@ -39,7 +39,7 @@ android {
         }
         flavorDimensions 'default'
         productFlavors {
-            caixaprod {
+            prd {
                 dimension "default"
                 //applicationIdSuffix ".caixaprod"
                 buildConfigField "boolean", "CAIXA_NETWORK_STUB", "false"
@@ -62,7 +62,7 @@ android {
                         scheme: "https"
                 ]
             }
-            caixahmg {
+            dev {
                 dimension "default"
                 //applicationIdSuffix ".caixahmg"
                 buildConfigField "boolean", "CAIXA_NETWORK_STUB", "false"
@@ -85,7 +85,7 @@ android {
                         scheme: "https"
                 ]
             }
-            caixadev {
+            internoLoterias {
                 dimension "default"
                 //applicationIdSuffix ".caixadev"
                 buildConfigField "boolean", "CAIXA_NETWORK_STUB", "false"
@@ -140,9 +140,11 @@ dependencies {
 
     //Serialização em Parcelable
     implementation "org.parceler:parceler-api:$parcelerVersion"
+    annotationProcessor "org.parceler:parceler:$parcelerVersion"
 
     //Android Annotations
     implementation "org.androidannotations:androidannotations-api:$AAVersion"
+    annotationProcessor "org.androidannotations:androidannotations:$AAVersion"
 
     //Progressbar
     implementation 'me.relex:circleindicator:1.2.2@aar'
