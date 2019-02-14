@@ -39,7 +39,7 @@ android {
         }
         flavorDimensions 'default'
         productFlavors {
-            caixaprod {
+            prd {
                 dimension "default"
                 //applicationIdSuffix ".caixaprod"
                 buildConfigField "boolean", "CAIXA_NETWORK_STUB", "false"
@@ -62,7 +62,7 @@ android {
                         scheme: "https"
                 ]
             }
-            caixahmg {
+            dev {
                 dimension "default"
                 //applicationIdSuffix ".caixahmg"
                 buildConfigField "boolean", "CAIXA_NETWORK_STUB", "false"
@@ -85,7 +85,7 @@ android {
                         scheme: "https"
                 ]
             }
-            caixadev {
+            internoLoterias {
                 dimension "default"
                 //applicationIdSuffix ".caixadev"
                 buildConfigField "boolean", "CAIXA_NETWORK_STUB", "false"
@@ -109,52 +109,7 @@ android {
                         scheme: "https"
                 ]
             }
-            caixalab {
-                dimension "default"
-                //applicationIdSuffix ".caixalab"
-                buildConfigField "boolean", "CAIXA_NETWORK_STUB", "false"
-                buildConfigField "String", "CAIXA_BASE_URL_SILCE", "\"http://172.16.141.157:80/silce-servico-rest/rest/v1/\""
-                buildConfigField "String", "PUBLIC_KEY_MP", "\"TEST-946a3077-5cf1-446c-bab3-e3a266357e9f\""
-                buildConfigField "String", "SSO_CLIENT_SECRET", "\"b54d171d-03de-41f3-b1b1-64e98672cbb8\""
-                buildConfigField "String", "SSO_CLIENT_ID", "\"cli-mob-lce\""
-                buildConfigField "String", "SSO_REDIRECT", "\"br.gov.caixa.caixaloterias:/oauth2Callback\""
-                buildConfigField "String", "URL_SSO", "\"https://login.caixa.gov.br\""
-                buildConfigField "String", "URL_ENDPOINT_TOKEN", "\"auth/realms/internet/protocol/openid-connect/token\""
-                buildConfigField "String", "URL_SSO_TOKEN", "URL_SSO+\"/\"+URL_ENDPOINT_TOKEN"
-                buildConfigField "String", "URL_SSO_AUTH", "URL_SSO+\"/auth/realms/internet/protocol/openid-connect/auth\""
-                buildConfigField "String", "URL_SSO_LOGOUT", "URL_SSO+\"/auth/realms/internet/protocol/openid-connect/logout\""
-                buildConfigField "String", "URL_SSO_ACCOUNT", "URL_SSO+\"/auth/realms/internet/account\""
-                buildConfigField "String", "MP_PAYMENT_URL", "\"https://api.mercadopago.com/v1/payment_methods/installments?\""
-                manifestPlaceholders = [
-                        appAuthRedirectScheme: "br.gov.caixa.caixaloterias",
-                        hostName: "br.gov.caixa.caixaloterias",
-                        path: "/oauth2Callback",
-                        scheme: "https"
-                ]
-            }
-            proxycap {
-                dimension "default"
-                //applicationIdSuffix ".proxycap"
-                buildConfigField "boolean", "CAIXA_NETWORK_STUB", "false"
-                buildConfigField "String", "CAIXA_BASE_URL_SILCE", "\"http://10.130.9.22:81/silce-servico-rest/rest/v1/\""
-                buildConfigField "String", "PUBLIC_KEY_MP", "\"TEST-946a3077-5cf1-446c-bab3-e3a266357e9f\""
-                buildConfigField "String", "SSO_CLIENT_SECRET", "\"b54d171d-03de-41f3-b1b1-64e98672cbb8\""
-                buildConfigField "String", "SSO_CLIENT_ID", "\"cli-mob-lce\""
-                buildConfigField "String", "SSO_REDIRECT", "\"br.gov.caixa.caixaloterias:/oauth2Callback\""
-                buildConfigField "String", "URL_SSO", "\"https://login.caixa.gov.br\""
-                buildConfigField "String", "URL_ENDPOINT_TOKEN", "\"auth/realms/internet/protocol/openid-connect/token\""
-                buildConfigField "String", "URL_SSO_TOKEN", "URL_SSO+\"/\"+URL_ENDPOINT_TOKEN"
-                buildConfigField "String", "URL_SSO_AUTH", "URL_SSO+\"/auth/realms/internet/protocol/openid-connect/auth\""
-                buildConfigField "String", "URL_SSO_LOGOUT", "URL_SSO+\"/auth/realms/internet/protocol/openid-connect/logout\""
-                buildConfigField "String", "URL_SSO_ACCOUNT", "URL_SSO+\"/auth/realms/internet/account\""
-                buildConfigField "String", "MP_PAYMENT_URL", "\"https://api.mercadopago.com/v1/payment_methods/installments?\""
-                manifestPlaceholders = [
-                        appAuthRedirectScheme: "br.gov.caixa.caixaloterias",
-                        hostName: "br.gov.caixa.caixaloterias",
-                        path: "/oauth2Callback",
-                        scheme: "https"
-                ]
-            }
+
             stubnet {
                 dimension "default"
                 //applicationIdSuffix ".stubnet"
@@ -185,9 +140,11 @@ dependencies {
 
     //Serialização em Parcelable
     implementation "org.parceler:parceler-api:$parcelerVersion"
+    annotationProcessor "org.parceler:parceler:$parcelerVersion"
 
     //Android Annotations
     implementation "org.androidannotations:androidannotations-api:$AAVersion"
+    annotationProcessor "org.androidannotations:androidannotations:$AAVersion"
 
     //Progressbar
     implementation 'me.relex:circleindicator:1.2.2@aar'
