@@ -285,27 +285,30 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
 
 
     private void adicionarGanhadoresRegiao(List<GanhadoresPorRegiaoDTO> listaGanhadores) {
-        for (GanhadoresPorRegiaoDTO ganhadoresPorRegiaoDTO : listaGanhadores) {
-            TextView title1 = new TextView(getContext());
-            title1.setText(getResources().getString(R.string.label_texto_barra_texto, ganhadoresPorRegiaoDTO.getMunicipioSorteio().getNome(), ganhadoresPorRegiaoDTO.getUfSorteio().getSigla()));
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        if (listaGanhadores != null) {
+            for (GanhadoresPorRegiaoDTO ganhadoresPorRegiaoDTO : listaGanhadores) {
+                TextView title1 = new TextView(getContext());
+                title1.setText(getResources().getString(R.string.label_texto_barra_texto, ganhadoresPorRegiaoDTO.getMunicipioSorteio().getNome(), ganhadoresPorRegiaoDTO.getUfSorteio().getSigla()));
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-            layoutParams.setMargins(0, 18, 0, 0);
-            title1.setLayoutParams(layoutParams);
-            title1.setTextAppearance(getContext(), R.style.fontForTitle1Premiados);
-            this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title1);
+                layoutParams.setMargins(0, 18, 0, 0);
+                title1.setLayoutParams(layoutParams);
+                title1.setTextAppearance(getContext(), R.style.fontForTitle1Premiados);
+                this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title1);
 
-            TextView title2 = new TextView(getContext());
-            title2.setText(ganhadoresPorRegiaoDTO.getDescricao());
+                TextView title2 = new TextView(getContext());
+                title2.setText(ganhadoresPorRegiaoDTO.getDescricao());
 
-            LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-            title2.setLayoutParams(layoutParams2);
-            title2.setTextAppearance(getContext(), R.style.fontForTitle2Premiados);
-            this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title2);
+                title2.setLayoutParams(layoutParams2);
+                title2.setTextAppearance(getContext(), R.style.fontForTitle2Premiados);
+                this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title2);
+            }
         }
+
     }
 
     private void adicionarArrecadacaoTotal(BigDecimal valor) {

@@ -269,11 +269,4 @@ public class ListaComprasActivity extends AppCompatActivity {
             }
         });
     }
-
-
-
-
-
-
-
 }

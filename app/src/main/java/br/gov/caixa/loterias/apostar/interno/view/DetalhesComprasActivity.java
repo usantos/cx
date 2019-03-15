@@ -107,13 +107,15 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         FrameLayout setaIndicador = findViewById(R.id.setaComprasGroup);
         setaIndicador.setVisibility(View.INVISIBLE);
 
-        TextView dataCompra = findViewById(R.id.dataCompra);
-        dataCompra.setText(compraDTO.getDataEfetivacaoDebito());
+        TextView dataCompra = findViewById(R.id.dataCompraTextView);
+        dataCompra.setText("Data: " + compraDTO.getDataEfetivacaoDebito());
         TextView valorCompra = findViewById(R.id.valorCompra);
-        valorCompra.setText(br.gov.caixa.loterias.apostar.interno.utils.ViewUtils.getMoedaFormat(compraDTO.getValorTotal()));
+        valorCompra.setText(ViewUtils.textFuturaAndFuturaBold(this, this.getString(R.string.label_compra_lista_valor,
+                ViewUtils.getMoedaFormat(compraDTO.getValorTotal()))));
 
-        TextView itemCompraOrdemTextView = findViewById(R.id.itemCompraOrdemTextView);
-        itemCompraOrdemTextView.setText(getString(R.string.label_compra_valor, ordemCompra));
+        TextView situacaoCompraTextView = findViewById(R.id.situacaoCompraTextView);
+        situacaoCompraTextView.setText(ViewUtils.textFuturaAndFuturaBold(this, this.getString(R.string.label_compra_lista_situacao,
+                compraDTO.getSituacao().getDescricao())));
     }
 
     private void abrirTermosUso() {

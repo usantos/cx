@@ -32,11 +32,13 @@ public class AlterarDadosLoginCaixaActivity extends AppCompatActivity {
         if(AppUtils.isNetworkAvailable( this )){
 
             //stringBuilder.append("/auth/realms/internet/account?referrer=cli-web-lce&referrer_uri=http%3A%2F%2Fdf7390sr029.corp.caixa.gov.br%3A8280%2Fsilce-web%2F%3Fredirect_fragment%3D%252Fhome");
-            String stringBuilder = BuildConfig.URL_SSO +
-                    BuildConfig.URL_SSO_ACCOUNT +
+            String stringBuilder = BuildConfig.URL_SSO_ACCOUNT +
                     "?referrer=" +
                     BuildConfig.SSO_CLIENT_ID +
                     "&referrer_uri=http%3A%2F%2Fdf7390sr029.corp.caixa.gov.br%3A8280%2Fsilce-web%2F%3Fredirect_fragment%3D%252Fhome";
+
+            paginaAlterarDadosWebView.getSettings().setJavaScriptEnabled(true);
+
             paginaAlterarDadosWebView.loadUrl(stringBuilder);
         }else{
             loadViewProgresas.hide();

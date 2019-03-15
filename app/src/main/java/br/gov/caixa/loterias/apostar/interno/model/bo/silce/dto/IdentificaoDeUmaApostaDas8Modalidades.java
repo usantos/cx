@@ -490,6 +490,32 @@ IdentificaoDeUmaApostaDas8Modalidades {
         return identificaoDeUmaApostaDas8Modalidades;
     }
 
+    public final static IdentificaoDeUmaApostaDas8Modalidades clone (IdentificaoDeUmaApostaDas8Modalidades aposta){
+        IdentificaoDeUmaApostaDas8Modalidades identificaoDeUmaApostaDas8Modalidades = new IdentificaoDeUmaApostaDas8Modalidades();
+        identificaoDeUmaApostaDas8Modalidades.setModalidade( aposta.getModalidade() );
+        identificaoDeUmaApostaDas8Modalidades.setConcursoAlvo( aposta.getConcursoAlvo() );
+        identificaoDeUmaApostaDas8Modalidades.setConcursoInicial( aposta.getConcursoInicial() );
+        identificaoDeUmaApostaDas8Modalidades.setDataEfetivacao( aposta.getDataEfetivacao() );
+        identificaoDeUmaApostaDas8Modalidades.setEspelho( aposta.getEspelho() );
+        identificaoDeUmaApostaDas8Modalidades.setHoraEfetivacao( aposta.getHoraEfetivacao() );
+        identificaoDeUmaApostaDas8Modalidades.setId( aposta.getId() );
+        identificaoDeUmaApostaDas8Modalidades.setLoterica( aposta.getLoterica() );
+        identificaoDeUmaApostaDas8Modalidades.setTipoConcurso( aposta.getTipoConcurso() );
+        identificaoDeUmaApostaDas8Modalidades.setPartidasLotogol( aposta.getPartidasLotogol() );
+        identificaoDeUmaApostaDas8Modalidades.setPartidasLoteca( aposta.getPartidasLoteca() );
+        identificaoDeUmaApostaDas8Modalidades.setNumerosSelecionados( aposta.getNumerosSelecionados() );
+        identificaoDeUmaApostaDas8Modalidades.setIndicadorSurpresinha( aposta.getIndicadorSurpresinha() );
+        identificaoDeUmaApostaDas8Modalidades.setValor( aposta.getValor() );
+        identificaoDeUmaApostaDas8Modalidades.setQuantidadeTeimosinhas( aposta.getQuantidadeTeimosinhas() );
+        identificaoDeUmaApostaDas8Modalidades.setQuantidadeApostas( aposta.getQuantidadeApostas() );
+        identificaoDeUmaApostaDas8Modalidades.setTimeDoCoracao( aposta.getTimeDoCoracao() );
+        identificaoDeUmaApostaDas8Modalidades.setSituacao( aposta.getSituacao() );
+        identificaoDeUmaApostaDas8Modalidades.setTroca( aposta.getTroca() );
+        identificaoDeUmaApostaDas8Modalidades.setQuantidadeNumeros( aposta.getQuantidadeNumeros() );
+        identificaoDeUmaApostaDas8Modalidades.setMesDeSorte( aposta.getMesDeSorte() );
+        return identificaoDeUmaApostaDas8Modalidades;
+    }
+
     public static Boolean checkExisteUmaApostaIgualCarrinho(final IdentificaoDeUmaApostaDas8Modalidades identificaoDeUmaApostaDas8Modalidades, final CarrinhoDTO carrinhoDTO){
         if (identificaoDeUmaApostaDas8Modalidades.getModalidade() == ModalidadeEnum.LOTECA ||
                 identificaoDeUmaApostaDas8Modalidades.getModalidade() == ModalidadeEnum.LOTOGOL){

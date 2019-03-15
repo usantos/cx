@@ -43,7 +43,7 @@ public class TokenActivity extends AppCompatActivity {
                     @Override
                     public void onTokenRequestCompleted(@Nullable TokenResponse response, @Nullable AuthorizationException ex) {
                         if (response.accessToken == null || response.refreshToken == null) {
-                            AcessoBO_.getInstance_(TokenActivity.this).iniciarLoginSSO();
+                            AcessoBO_.getInstance_(TokenActivity.this).iniciarLoginSSO(TokenActivity.this);
                         } else {
                             if (!"".equals(response.accessToken) && !"".equals(response.refreshToken)) {
                                 LoginSP.loginRealizado(true);
