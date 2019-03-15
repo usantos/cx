@@ -19,6 +19,7 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CompraDTO;
+import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.DetalhesComprasActivity;
 
 
@@ -35,36 +36,55 @@ public final class ListaComprasRecyclerViewAdapter extends RecyclerView.Adapter<
 
     @Override
     public ViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
+
         final Context context = parent.getContext();
-        final View view = LayoutInflater.from(context).inflate(R.layout.list_group_compras, parent, false);
+        View view;
+        if (listaCompras.size() == 0) {
+            view = LayoutInflater.from(context).inflate(R.layout.row_compras_empty,
+                    parent,
+                    false);
+        } else {
+            view = LayoutInflater.from(context).inflate(R.layout.list_group_compras,
+                    parent,
+                    false);
+        }
+
         final ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
+        if (listaCompras.size() != 0) {
+            CompraDTO compra = listaCompras.get(position);
 
-        holder.dataCompra.setText(listaCompras.get(position).getDataFinalizacaoCompra());
-        holder.valorCompra.setText(br.gov.caixa.loterias.apostar.interno.utils.ViewUtils.getMoedaFormat(listaCompras.get(position).getValorTotal()));
-        final int ordemLista = position + 1;
-        holder.itemCompraOrdemTextView.setText("Compra " + ordemLista);
+            holder.dataCompra.setText("Data: " + listaCompras.get(position).getDataFinalizacaoCompra());
+            holder.valorCompra.setText(br.gov.caixa.loterias.apostar.interno.utils.ViewUtils.getMoedaFormat(compra.getValorTotal()));
+            final int ordemLista = position + 1;
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+            holder.valorCompra.setText(ViewUtils.textFuturaAndFuturaBold(context, context.getString(R.string.label_compra_lista_valor,
+                    ViewUtils.getMoedaFormat(compra.getValorTotal()))));
 
-                Intent activity = new Intent(context, DetalhesComprasActivity.class);
-                String arrayAsString = new Gson().toJson(listaCompras.get(position));
-                activity.putExtra("CompraDTO", arrayAsString);
-                activity.putExtra("ordem", ordemLista);
-                context.startActivity(activity);
-            }
-        });
+            holder.itemCompraOrdemTextView.setText(ViewUtils.textFuturaAndFuturaBold(context, context.getString(R.string.label_compra_lista_situacao,
+                    compra.getSituacao().getDescricao())));;
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    Intent activity = new Intent(context, DetalhesComprasActivity.class);
+                    String arrayAsString = new Gson().toJson(listaCompras.get(position));
+                    activity.putExtra("CompraDTO", arrayAsString);
+                    activity.putExtra("ordem", ordemLista);
+                    context.startActivity(activity);
+                }
+            });
+        }
     }
 
     @Override
     public int getItemCount() {
-        return listaCompras.size();
+        return listaCompras.size() == 0 ? 1 : listaCompras.size();
     }
 
     public List<CompraDTO> getCompras() {
@@ -78,9 +98,9 @@ public final class ListaComprasRecyclerViewAdapter extends RecyclerView.Adapter<
 
         public ViewHolder(final View itemView) {
             super(itemView);
-            dataCompra = (TextView) itemView.findViewById(R.id.dataCompra);
+            dataCompra = (TextView) itemView.findViewById(R.id.dataCompraTextView);
             valorCompra = (TextView) itemView.findViewById(R.id.valorCompra);
-            itemCompraOrdemTextView = (TextView) itemView.findViewById(R.id.itemCompraOrdemTextView);
+            itemCompraOrdemTextView = (TextView) itemView.findViewById(R.id.situacaoCompraTextView);
         }
     }
 

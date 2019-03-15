@@ -1,6 +1,7 @@
 package br.gov.caixa.loterias.apostar.interno.utils.helper;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,6 +14,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -40,6 +42,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.PartidaLotecaDTO
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.PartidaLotogolDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostar.interno.model.dao.DBLoteriasCrud;
+import br.gov.caixa.loterias.apostar.interno.model.dao.DBTabelasLoterias;
 import br.gov.caixa.loterias.apostar.interno.utils.Constantes;
 import br.gov.caixa.loterias.apostar.interno.utils.DialogUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
@@ -91,15 +94,7 @@ public class AdicionarApostaCarrinhoHelper {
         apostaBO.buscaCarrinho(new RequestListener<CarrinhoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoDTOResponse response) {
-                final CarrinhoDTO carrinhoDTO = response.getPayload();
-                //checar valor máximo aposta excedido
-                if (carrinhoDTO.getApostas().size() >= SessaoUsuario.getInstance().getParametrosSimulacao().getQuantidadeMaximaApostasCarrinho()) {
-                    DialogUtils.dismiss();
-                    ViewUtils.alertTitleButton(context, R.string.label_atencao, context.getResources().getString(R.string.MA013), context.getResources().getString(R.string.ok));
-
-                } else {
-                    checarLimiteDiario(apostaBO, aposta, carrinhoDTO);
-                }
+                checarLimiteDiario(apostaBO, aposta, response.getPayload());
             }
 
             @Override
@@ -157,7 +152,7 @@ public class AdicionarApostaCarrinhoHelper {
         if (SessaoUsuario.getInstance().getParametrosSimulacao().getValorLimiteDiario()
                 .compareTo(carrinhoDTO.getValorTotal()
                         .add(IdentificaoDeUmaApostaDas8Modalidades.getValorApostaPorPrognostico(aposta)))
-                <= 0) {
+                < 0) {
             DialogUtils.dismiss();
             ViewUtils.alertTitleButtonYesOrNotListener(context, context.getResources().getString(R.string.MA014), new DialogInterface.OnClickListener() {
                 @Override
@@ -223,30 +218,48 @@ public class AdicionarApostaCarrinhoHelper {
         if (crud.existIdentificaoDeUmaApostaDas8Modalidades(aposta) && (!isTipoLotogol && !isTipoLoteca)) {
             ViewUtils.alert(contextParam, contextParam.getString(R.string.MA015));
             return Boolean.FALSE;
-        }
-        //TODO subistituir por quantidade máxima
-        else if (quantidadeApostaCarrinho >= SessaoUsuario.getInstance().getParametrosSimulacao().getQuantidadeMaximaApostasCarrinho()) {
+        } else if (quantidadeApostaCarrinho >= SessaoUsuario.getInstance().getParametrosSimulacao().getQuantidadeMaximaApostasCarrinho()) {
             ViewUtils.alert(contextParam, contextParam.getString(R.string.MA013));
             return Boolean.FALSE;
-        }
-//        //TODO subistituir por valor máxima
-//        else if (valorTotalCarrinho.compareTo(BigDecimal.TEN) == 1) {
-//            ViewUtils.alert(contextParam, contextParam.getString(R.string.MA014));
-//            return Boolean.FALSE;
-//        }
+        } else {
+            if (aposta.getModalidade() == ModalidadeEnum.LOTOMANIA && aposta.getGerarApostaEspelho()) {
+                IdentificaoDeUmaApostaDas8Modalidades apostaEspelho = IdentificaoDeUmaApostaDas8Modalidades.clone(aposta);
+                List<Integer> numerosEspelho = new ArrayList<>();
 
-        else {
-            Long id = crud.insertIdentificaoDeUmaApostaDas8Modalidades(aposta);
-
-            if (isTipoLotogol) {
-                for (PartidaLotogolDTO partidaLotogolDTO : aposta.getPartidasLotogol()) {
-                    crud.inserirPartidaLotogol(partidaLotogolDTO, id);
+                for (int i = 1; i < 100; i++) {
+                    if (!aposta.getNumerosSelecionados().contains(i)) {
+                        numerosEspelho.add(i);
+                    }
                 }
-            } else if (isTipoLoteca) {
-                for (PartidaLotecaDTO partidaLotecaDTO : aposta.getPartidasLoteca()) {
-                    crud.inserirPartidaLoteca(partidaLotecaDTO, id);
+
+                apostaEspelho.setNumerosSelecionados(numerosEspelho);
+                apostaEspelho.setEspelho(true);
+                Long idAposta = crud.insertIdentificaoDeUmaApostaDas8Modalidades(aposta);
+
+
+                ContentValues cv = new ContentValues();
+                cv.put("vinculo_espelho", idAposta + aposta.getConcursoAlvo());
+                crud.update(cv, "_ID="+ idAposta);
+
+                Long idApostaEspelho = crud.insertIdentificaoDeUmaApostaDas8Modalidades(apostaEspelho);
+
+                cv = new ContentValues();
+                cv.put("vinculo_espelho", idAposta + aposta.getConcursoAlvo());
+                crud.update(cv, "_ID="+ idApostaEspelho);
+            } else {
+                Long id = crud.insertIdentificaoDeUmaApostaDas8Modalidades(aposta);
+
+                if (isTipoLotogol) {
+                    for (PartidaLotogolDTO partidaLotogolDTO : aposta.getPartidasLotogol()) {
+                        crud.inserirPartidaLotogol(partidaLotogolDTO, id);
+                    }
+                } else if (isTipoLoteca) {
+                    for (PartidaLotecaDTO partidaLotecaDTO : aposta.getPartidasLoteca()) {
+                        crud.inserirPartidaLoteca(partidaLotecaDTO, id);
+                    }
                 }
             }
+
             return Boolean.TRUE;
         }
     }
@@ -424,12 +437,13 @@ public class AdicionarApostaCarrinhoHelper {
             DBLoteriasCrud crud = new DBLoteriasCrud(context);
             BigDecimal valorTotalCarrinho = crud.sumValorIdentificaoDeUmaApostaDas8Modalidades();
             valorTotalCarrinho = valorTotalCarrinho.add(aposta.getValor());
-            if (valorTotalCarrinho.compareTo(BigDecimal.TEN) == 1) {
+            if (valorTotalCarrinho.compareTo(SessaoUsuario.getInstance().getParametrosSimulacao().getValorLimiteDiario()) == 1) {
                 ViewUtils.alertTitleButtonYesOrNotListener(context, context.getResources().getString(R.string.MA014), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        AdicionarApostaCarrinhoHelper.inserirApostaCarrinhoLocal(context, aposta);
-                        telaConfirmarCarrinho(aposta.getModalidade(), aposta);
+                        if (AdicionarApostaCarrinhoHelper.inserirApostaCarrinhoLocal(context, aposta)) {
+                            telaConfirmarCarrinho(aposta.getModalidade(), aposta);
+                        }
                     }
                 });
             } else if (AdicionarApostaCarrinhoHelper.inserirApostaCarrinhoLocal(context, aposta)) {

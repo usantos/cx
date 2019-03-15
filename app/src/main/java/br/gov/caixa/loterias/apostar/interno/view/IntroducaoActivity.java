@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bo.DadosUsuarioBO;
+import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostar.interno.view.fragment.Introducao1Fragment;
 import br.gov.caixa.loterias.apostar.interno.view.fragment.Introducao2Fragment;
 import br.gov.caixa.loterias.apostar.interno.view.fragment.Introducao3Fragment;
@@ -29,6 +30,8 @@ public class IntroducaoActivity extends AppCompatActivity {
             startActivity(new Intent(IntroducaoActivity.this, LoginActivity.class));
             finish();
         }
+
+        FirebaseManager.registraEvento(this ,"ENTROU_TUTORIAL");
 
 
         adapterViewPager = new MyPagerAdapter(getSupportFragmentManager());

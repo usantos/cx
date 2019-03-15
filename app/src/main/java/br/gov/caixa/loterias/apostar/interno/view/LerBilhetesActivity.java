@@ -2,12 +2,18 @@ package br.gov.caixa.loterias.apostar.interno.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.safetynet.SafetyNet;
+import com.google.android.gms.safetynet.SafetyNetApi;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.zxing.ResultPoint;
 import com.journeyapps.barcodescanner.BarcodeCallback;
 import com.journeyapps.barcodescanner.BarcodeResult;
@@ -27,13 +33,46 @@ public class LerBilhetesActivity extends AppCompatActivity {
     private BarcodeCallback callback = new BarcodeCallback() {
         @Override
         public void barcodeResult(BarcodeResult result) {
-            ResultadoLerBilhetesActivity_.intent(LerBilhetesActivity.this).codBarras(result.getText()).start();
+            captchaToken(result.getText());
         }
 
         @Override
         public void possibleResultPoints(List<ResultPoint> resultPoints) {
         }
     };
+
+    protected void captchaToken(String resultBarcode) {
+
+        //Porq não funciona aqui e funciona no oncreate de outra activity?
+        SafetyNet.getClient(this).verifyWithRecaptcha("6LcOHZQUAAAAACNBYY7zprEoihu9ZyFHzYTHL8w9")
+                .addOnSuccessListener(this,
+                        new OnSuccessListener<SafetyNetApi.RecaptchaTokenResponse>() {
+                            @Override
+                            public void onSuccess(SafetyNetApi.RecaptchaTokenResponse response) {
+                                String userResponseToken = response.getTokenResult();
+                                System.out.println("Token" + userResponseToken);
+
+                                if (!userResponseToken.isEmpty()) {
+                                    ResultadoLerBilhetesActivity_.intent(LerBilhetesActivity.this).codBarras(resultBarcode).start();
+                                } else {
+                                    System.out.println("Erro não autorizado");
+                                }
+                            }
+                        })
+                .addOnFailureListener(this, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        if (e instanceof ApiException) {
+                            ApiException apiException = (ApiException) e;
+                            int statusCode = apiException.getStatusCode();
+                            System.out.println("Erro status code: " + statusCode);
+                        } else {
+                            System.out.println("Erro desconhecido");
+
+                        }
+                    }
+                });
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

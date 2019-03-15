@@ -1,5 +1,6 @@
 package br.gov.caixa.loterias.apostar.interno.model.bo;
 
+import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -24,9 +25,8 @@ public class AcessoBO {
 
     public static Boolean PRIMEIRO_LOGIN = false;
 
-    public void iniciarLoginSSO(){
-        Context context = Aplicacao.application.getApplicationContext();
-        if(context != null) {
+    public void iniciarLoginSSO(Activity activity){
+        if(activity != null) {
             AuthorizationServiceConfiguration authorizationServiceConfiguration = new AuthorizationServiceConfiguration(
                     Uri.parse(BuildConfig.URL_SSO_AUTH),
                     Uri.parse(BuildConfig.URL_SSO_TOKEN)
@@ -40,10 +40,11 @@ public class AcessoBO {
             );
 
             AuthorizationRequest authorizationRequest = builder.build();
-            Intent intent = new Intent(context, TokenActivity.class);
-            PendingIntent pendingIntent = PendingIntent.getActivity(context, authorizationRequest.hashCode(), intent, 0);
+            Intent intent = new Intent(activity, TokenActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            PendingIntent pendingIntent = PendingIntent.getActivity(activity, authorizationRequest.hashCode(), intent, 0);
 
-            AuthorizationService authorizationService = new AuthorizationService(context);
+            AuthorizationService authorizationService = new AuthorizationService(activity);
             authorizationService.performAuthorizationRequest(authorizationRequest, pendingIntent);
         }
     }

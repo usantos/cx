@@ -373,7 +373,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(context);
         final ApostaBO apostaBO = ApostaBO_.getInstance_(context);
 
-        apostaBO.getResultadoModalidadeConcurso(modalidade, concurso, new RequestListener<ResultadoConcursoDTOResponse>() {
+        apostaBO.getResultadoModalidade(modalidade, new RequestListener<ResultadoConcursoDTOResponse>() {
             @Override
             public void onResponse(ResultadoConcursoDTOResponse response) {
                 loadViewProgress.dismiss();

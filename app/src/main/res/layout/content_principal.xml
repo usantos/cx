@@ -78,13 +78,14 @@
             android:id="@+id/relativeLayoutContentLerBilhetes"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:alpha="0.0">
+            android:alpha="0.0"
+            android:visibility="gone">
 
             <RelativeLayout
                 android:layout_width="294dp"
                 android:layout_height="match_parent"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentTop="true">
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -98,16 +99,16 @@
                             android:id="@+id/tituloLerBilhetes"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
                             android:layout_alignParentTop="true"
+                            android:layout_alignParentEnd="true"
                             android:textColor="@color/vermelhoBilhetes"
                             android:textSize="14sp" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
                             android:layout_below="@+id/tituloLerBilhetes"
+                            android:layout_alignParentEnd="true"
                             android:gravity="end"
                             android:text="@string/label_apostou_loterica_confira_resultados"
                             android:textColor="@color/cinza"

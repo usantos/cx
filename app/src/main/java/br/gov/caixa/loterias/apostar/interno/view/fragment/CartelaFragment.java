@@ -49,6 +49,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostar.interno.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
+import br.gov.caixa.loterias.apostar.interno.model.bo.keycloak.KeycloakBO_;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.data.CompletaJogoRsp;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ApostaFavoritaDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.DTOEnumCharacter;
@@ -573,18 +574,14 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
                 aposta.setGeraEspelho(true);
                 aposta.setValor(aposta.getValor().divide(Constantes.DOIS_BIG_DECIMAL));
-                AdicionarApostaCarrinhoHelper.adicionarApostaCarrinhoRequest(getContext(), ApostaBO_.getInstance_(getActivity()), aposta);
-
-
+                AdicionarApostaCarrinhoHelper.incluirApostaCarrinhoCartela(parentActivity, aposta);
             } else {
                 adicionarApostaNoCarrinho();
             }
-
         } else {
             preencheNumerosAleatorios();
             setVisibilityCheckedNumerosLayout(View.VISIBLE);
             onClickOutrosNumerosLayout();
-
         }
     }
 

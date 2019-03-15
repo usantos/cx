@@ -51,7 +51,7 @@ public final class DBTabelasLoterias {
 
         String sb = (" CREATE TABLE " + DBIdentificaoDeUmaApostaDas8Modalidades.NOME_TABELA) +
                 " ( " +
-                DBIdentificaoDeUmaApostaDas8Modalidades._ID + " INTEGER PRIMARY KEY, " +
+                DBIdentificaoDeUmaApostaDas8Modalidades._ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL , " +
                 DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_ID_IDENTIFICADOR + " NUMERIC, " +
                 DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_MODALIDADE + " TEXT, " +
                 DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_TIPO_CONCURSO_VALOR + " TEXT, " +
