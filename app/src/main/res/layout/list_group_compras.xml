@@ -1,102 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <LinearLayout
-        android:id="@+id/content_item_favoritas"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        android:layout_marginHorizontal="13dp"
-        android:layout_marginTop="12dp"
-        android:orientation="horizontal">
+        android:layout_marginVertical="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:orientation="vertical"
+        android:weightSum="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-
-        <LinearLayout
-            android:id="@+id/LinearLayoutGroupComprasLeft"
-            android:layout_width="0dip"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.3"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/itemCompraOrdemTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/arialmt"
-                android:text="Compra 001"
-                android:textColor="@color/cinza"
-                android:textSize="14.2sp" />
-
-            <TextView
-                android:id="@+id/dataCompra"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/arialmt"
-                android:text="23/07/2017"
-                android:textColor="@color/cinza"
-                android:textSize="14.2sp" />
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:id="@+id/LinearLayoutGroupComprasCenter"
-            android:layout_width="0dip"
+        <TextView
+            android:id="@+id/situacaoCompraTextView"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
-            android:orientation="horizontal">
+            android:fontFamily="@font/arialmt"
+            android:text="Compra 001"
+            android:textColor="@color/cinza"
+            android:textSize="14.2sp" />
 
-            <TextView
-                android:id="@+id/ttvTipoJogo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/arialmt"
-                android:textColor="@color/cinza"
-                android:textSize="14.2sp"
-                android:text="Mega-sena, lotomania, lotofácil, Mega-sena, lotomania, lotofácil, Mega-sena, lotomania, lotofácil, Mega-sena, lotomania, lotofácil" />
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:id="@+id/LinearLayoutGroupComprasRight"
-            android:layout_width="0dip"
+        <TextView
+            android:id="@+id/dataCompraTextView"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.2"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/valorCompra"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/arialmt"
-                android:gravity="end"
-                android:text="R$ 4,50"
-                android:textColor="@color/cinza"
-                android:textSize="14.2sp" />
-
-
-            <FrameLayout
-                android:id="@+id/setaComprasGroup"
-                android:layout_width="11dp"
-                android:layout_height="20dp"
-                android:layout_gravity="end"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/seta_direita_cinza"
-                android:padding="7dp">
-
-            </FrameLayout>
-        </LinearLayout>
-
-
+            android:layout_weight="0.5"
+            android:text="TextView" />
     </LinearLayout>
+    <TextView
+        android:id="@+id/valorCompra"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="@font/arialmt"
+        android:gravity="end"
+        android:text="R$ 4,50"
+        android:textColor="@color/cinza"
+        android:textSize="14.2sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/setaComprasGroup"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@+id/content_item_favoritas"
-        android:background="@color/cinzaclaro"></View>
-</RelativeLayout>
+    <FrameLayout
+        android:id="@+id/setaComprasGroup"
+        android:layout_width="11dp"
+        android:layout_height="20dp"
+        android:layout_gravity="end"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/seta_direita_cinza"
+        android:padding="7dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </FrameLayout>
+
+</android.support.constraint.ConstraintLayout>
 

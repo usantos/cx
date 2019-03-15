@@ -232,7 +232,6 @@ public class DBLoteriasCrud {
                 values.put(DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_ID_MES_SORTE, this.insertParametroMesDeSorte(aposta.getMesDeSorte()));
 
                 if (aposta.getTipoConcurso() != null) {
-
                     values.put(DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_TIPO_CONCURSO_VALOR, aposta.getTipoConcurso().getValor());
                     values.put(DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_TIPO_CONCURSO_DESCRICAO, aposta.getTipoConcurso().getDescricao());
                 }
@@ -1061,13 +1060,37 @@ public class DBLoteriasCrud {
                         this.deletePartidaLoteca(partidaLotecaDTO);
                     }
                 }
-                this.deleteItem(aposta.getIdDB(), DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.NOME_TABELA);
+
+                if (aposta.getModalidade() == ModalidadeEnum.LOTOMANIA) {
+                    List<IdentificaoDeUmaApostaDas8Modalidades> apostas = readAllIdentificaoDeUmaApostaDas8Modalidades();
+                    for (IdentificaoDeUmaApostaDas8Modalidades apostaFor : apostas) {
+                        if (apostaFor.getVinculoEspelho().compareTo(aposta.getVinculoEspelho()) == 0) {
+                            if (!aposta.getEspelho()) {
+                                ContentValues cv = new ContentValues();
+                                cv.put(DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_ESPELHO, 0);
+                                cv.put(DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_VINCULO_ESPELHO, "");
+
+
+                                this.update(cv, DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades._ID + "=" + apostaFor.getIdDB());
+                            }
+                        }
+                    }
+                    this.deleteItem(aposta.getIdDB(), DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.NOME_TABELA);
+                } else {
+                    this.deleteItem(aposta.getIdDB(), DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.NOME_TABELA);
+                }
             }
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
         } finally {
             this.closeDBLoteriasHelper();
         }
+    }
+
+    public void update(ContentValues cv, String whereClause) {
+        this.initDBLoteriasHelper();
+        this.db = dbLoteriasHelper.getWritableDatabase();
+        db.update(DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.NOME_TABELA, cv, whereClause, null);
     }
 
     private void deleteEquipe(EquipeDTO equipeDTO) {

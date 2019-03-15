@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'io.fabric'
 
 android {
     signingConfigs {
@@ -11,7 +13,7 @@ android {
         applicationId "br.gov.caixa.loterias.apostar.interno"
         minSdkVersion 21
         targetSdkVersion 27
-        versionCode 21101003
+        versionCode 21101004
         versionName "1.0.0"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -109,7 +111,6 @@ android {
                         scheme: "https"
                 ]
             }
-
             stubnet {
                 dimension "default"
                 //applicationIdSuffix ".stubnet"
@@ -130,6 +131,7 @@ dependencies {
     // implementation deps
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+
     implementation "com.android.support:design:$supportVersion"
     implementation "com.android.support:percent:$supportVersion"
     implementation "com.android.support:cardview-v7:$supportVersion"
@@ -196,6 +198,10 @@ dependencies {
     //Apache commons
     implementation 'org.apache.commons:commons-collections4:4.1'
 
+    implementation 'com.google.firebase:firebase-core:16.0.6'
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.9.9'
+    implementation 'com.google.android.gms:play-services-safetynet:16.0.0'
+
     // testImplementation deps
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:1.10.19'
@@ -209,4 +215,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestUtil 'com.android.support.test:orchestrator:1.0.2'
 }
+
+
 

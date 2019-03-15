@@ -347,13 +347,8 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
             @Override
             public void onResponse(CarrinhoDTOResponse response) {
                 final CarrinhoDTO carrinhoDTO = response.getPayload();
-                //checar valor máximo aposta excedido
-                if (carrinhoDTO.getApostas().size() >= SessaoUsuario.getInstance().getParametrosSimulacao().getQuantidadeMaximaApostasCarrinho()) {
-                    DialogUtils.dismiss();
-                    ViewUtils.alertTitleButton(context, R.string.label_atencao, context.getResources().getString(R.string.MA013), context.getResources().getString(R.string.ok));
-                } else {
-                    checarLimiteDiario(apostaBO, apostaFavoritaDTO, carrinhoDTO);
-                }
+
+                checarLimiteDiario(apostaBO, apostaFavoritaDTO, carrinhoDTO);
             }
 
             @Override
@@ -367,8 +362,7 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
     private void checarLimiteDiario(final ApostaBO apostaBO, final ApostaFavoritaDTO apostaFavoritaDTO, final CarrinhoDTO carrinhoDTO) {
         if (SessaoUsuario.getInstance().getParametrosSimulacao().getValorLimiteDiario()
                 .compareTo(carrinhoDTO.getValorTotal()
-                        .add(IdentificaoDeUmaApostaDas8Modalidades.getValorApostaFavoritaPorProagnostico(apostaFavoritaDTO)))
-                <= 0) {
+                        .add(IdentificaoDeUmaApostaDas8Modalidades.getValorApostaFavoritaPorProagnostico(apostaFavoritaDTO))) < 0) {
             DialogUtils.dismiss();
             ViewUtils.alertTitleButtonYesOrNotListener(context, context.getResources().getString(R.string.MA014), new DialogInterface.OnClickListener() {
                 @Override

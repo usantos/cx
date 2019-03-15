@@ -92,7 +92,7 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
         }
 
 //        findViewById(R.id.botaoNovaAposta).setOnClickListener(this);
-        findViewById(R.id.botaoCarrinho).setOnClickListener(this);
+        findViewById(R.id.confirmarInclusaoApostaLayoutCarrinhoApostas).setOnClickListener(this);
         findViewById(R.id.botaoLinearLayoutVoltarPrincipal).setOnClickListener(this);
 //        findViewById(R.id.confirmarInclusaoApostaLayoutCarrinhoApostas).setOnClickListener(this);
 
@@ -199,7 +199,7 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.botaoCarrinho: {
+            case R.id.confirmarInclusaoApostaLayoutCarrinhoApostas: {
                 DialogUtils.show(this);
                 ApostaBO apostaBO = ApostaBO_.getInstance_(this);
 
