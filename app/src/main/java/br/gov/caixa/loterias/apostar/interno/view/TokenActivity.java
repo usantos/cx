@@ -22,6 +22,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.AcessoBO_;
 import br.gov.caixa.loterias.apostar.interno.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.keycloak.KeycloakBO_;
 import br.gov.caixa.loterias.apostar.interno.model.sp.LoginSP;
+import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
 
 public class TokenActivity extends AppCompatActivity {
@@ -70,6 +71,7 @@ public class TokenActivity extends AppCompatActivity {
                                         DadosUsuarioBO.salvarNomeUsuairo(jsonObject.getString("name"));
                                         KeycloakBO_.getInstance_(TokenActivity.this).setAccessToken(response.accessToken);
                                         KeycloakBO_.getInstance_(TokenActivity.this).setRefreshToken(response.refreshToken);
+                                        FirebaseManager.registraEvento(TokenActivity.this ,"EFETUOU_LOGIN_SUCESSO");
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }

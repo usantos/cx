@@ -42,9 +42,11 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametroJogoDTO
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametroValorApostaDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostar.interno.utils.Constantes;
+import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostar.interno.view.SimularApostaActivity;
+import br.gov.caixa.loterias.apostar.interno.view.TermosUsoActivity;
 import br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightGridView;
 
 @EFragment(R.layout.fragment_surpresinha)
@@ -87,6 +89,8 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
 
     @AfterViews
     protected void init() {
+        FirebaseManager.registraEvento(getContext() ,"ENTROU_SURPRESINHA");
+
         parentActivity = ((SimularApostaActivity) getActivity());
         if (parentActivity != null) {
             parametroJogo = parentActivity.getParametroSimulacao();

@@ -33,6 +33,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CarrinhoDTORespo
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostar.interno.model.dao.DBLoteriasCrud;
 import br.gov.caixa.loterias.apostar.interno.utils.DialogUtils;
+import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.CarrinhoApostasListViewAdapter;
 import br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightRecyclerView;
@@ -131,6 +132,7 @@ public class CarrinhoActivity extends SettingToolbarActivity {
                 apostaBO.limparCarrinho(new RequestListener<CarrinhoDTOResponse>() {
                     @Override
                     public void onResponse(CarrinhoDTOResponse result) {
+                        FirebaseManager.registraEvento(CarrinhoActivity.this ,"LIMPOU_CARRINHO_DE_APOSTAS_ONLINE");
                         DialogUtils.dismiss();
                         limparCarrinhoAtualizarTela();
                         if (result.getRedirect() != null){
@@ -154,6 +156,7 @@ public class CarrinhoActivity extends SettingToolbarActivity {
     }
 
     private void deleteCarrinhoLocal() {
+        FirebaseManager.registraEvento(CarrinhoActivity.this ,"LIMPOU_CARRINHO_DE_APOSTAS_LOCAL");
         DBLoteriasCrud crud = new DBLoteriasCrud(getApplicationContext());
         crud.deleteAll();
         limparCarrinhoAtualizarTela();
@@ -179,6 +182,8 @@ public class CarrinhoActivity extends SettingToolbarActivity {
         apostaBO.buscaCarrinho(new RequestListener<CarrinhoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoDTOResponse response) {
+                FirebaseManager.registraEvento(CarrinhoActivity.this ,"ENTROU_CARRINHO_DE_APOSTAS");
+
                 DialogUtils.dismiss();
                 carrinho = response.getPayload();
                 atualizaLayout(Boolean.TRUE);

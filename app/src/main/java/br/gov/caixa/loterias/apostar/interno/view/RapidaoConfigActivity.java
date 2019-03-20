@@ -45,6 +45,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RapidaoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RapidaoDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.sp.RapidaoSP;
+import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.FavoritasRapidaoRecyclerAdapter;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.NumerosRapidaoAdapter;
@@ -255,6 +256,7 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
             @Override
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 if (position == tipoApostaArrayList.size()) {
+                    FirebaseManager.registraEvento(RapidaoConfigActivity.this ,"ENTROU_LISTA_MODALIDADE_CONFIG_RAPIDAO");
                     Intent activity = new Intent(RapidaoConfigActivity.this, SelecaoModalidadesRapidaoActivity.class);
                     String arrayAsString = new Gson().toJson(tipoApostaLista);
                     activity.putExtra("tiposAposta", arrayAsString);
@@ -295,6 +297,7 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
         gridviewNumerosProibidosRapidao.setExpanded(true);
 
         btnAddRemoverNumsProibidos.setOnClickListener( (View v) -> {
+            FirebaseManager.registraEvento(RapidaoConfigActivity.this ,"ENTROU_LISTA_FAVORITAS_CONFIG_RAPIDAO");
             Intent activity = new Intent(RapidaoConfigActivity.this, NumerosRapidaoActivity.class);
             String arrayAsString = new Gson().toJson(listaNumerosProibidos);
             activity.putExtra("numerosProibidos", arrayAsString);
@@ -346,6 +349,7 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
             public void onResponse(final RapidaoDTOResponse response) {
                 loadViewProgress.dismiss();
                 rapidao = response.getPayload();
+                FirebaseManager.registraEvento(RapidaoConfigActivity.this ,"ENTROU_CONFIGURACOES_RAPIDAO");
                 processarRegistro(response);
             }
 
@@ -510,6 +514,7 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
             @Override
             public void onResponse(RapidaoDTOResponse response) {
                 loadViewProgress.dismiss();
+                FirebaseManager.registraEvento(RapidaoConfigActivity.this ,"EFETUOU_CONFIGURACOES_RAPIDAO_SUCESSO");
                 Intent intent = new Intent();
                 setResult(RESULT_OK, intent);
                 finish();
