@@ -64,6 +64,7 @@ public class CarrinhoActivity extends SettingToolbarActivity {
         ViewUtils.setMoedaFormatHtml(BigDecimal.ZERO, valorTotalCarrinho);
         setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.title_activity_carrinho)));
         if(lerCarrinhoLocal){
+            FirebaseManager.registraEvento(CarrinhoActivity.this ,"ENTROU_CARRINHO_DE_APOSTAS_OFFLINE");
             lerCarrinhoLocal(true);
         }else{
             atualizaLayout(true);
@@ -182,7 +183,7 @@ public class CarrinhoActivity extends SettingToolbarActivity {
         apostaBO.buscaCarrinho(new RequestListener<CarrinhoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoDTOResponse response) {
-                FirebaseManager.registraEvento(CarrinhoActivity.this ,"ENTROU_CARRINHO_DE_APOSTAS");
+                FirebaseManager.registraEvento(CarrinhoActivity.this ,"ENTROU_CARRINHO_DE_APOSTAS_ONLINE");
 
                 DialogUtils.dismiss();
                 carrinho = response.getPayload();

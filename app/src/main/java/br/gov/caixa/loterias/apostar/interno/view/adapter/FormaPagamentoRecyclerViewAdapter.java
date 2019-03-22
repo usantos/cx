@@ -22,6 +22,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ListCartaoDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RetornoCartao;
 import br.gov.caixa.loterias.apostar.interno.utils.DialogUtils;
+import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostar.interno.view.listener.FormaDePagamentoListener;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 
@@ -67,6 +68,7 @@ public class FormaPagamentoRecyclerViewAdapter  extends RecyclerView.Adapter<For
                     DadosUsuarioBO_.getInstance_(context).deleteCartao(valoresList.get(getAdapterPosition()).getIdCartao(), new RequestListener<ListCartaoDTOResponse>() {
                         @Override
                         public void onResponse(ListCartaoDTOResponse result) {
+                            FirebaseManager.registraEvento(context ,"EFETUOU_EXCLUSAO_FORMA_DE_PAGAMENTO_SUCESSO");
                             DialogUtils.dismiss();
                             valoresList.remove(getAdapterPosition());
                             notifyDataSetChanged();

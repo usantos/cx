@@ -68,6 +68,7 @@ import br.gov.caixa.loterias.apostar.interno.model.sp.CarrinhoSP;
 import br.gov.caixa.loterias.apostar.interno.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostar.interno.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostar.interno.utils.ExpandableListDataSideMenu;
+import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostar.interno.utils.StringUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.Utils;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
@@ -204,6 +205,7 @@ public class PrincipalActivity extends AppCompatActivity
             @Override
             public void onResponse(ParametrosSimulacaoResponse response) {
                 loadViewProgress.dismiss();
+                FirebaseManager.registraEvento(PrincipalActivity.this ,"ENTROU_LISTA_MODALIDADES");
 
                 if(response.getPayload().getValorLimiteDiario() == null){
                     response.getPayload().setValorLimiteDiario(BigDecimal.ZERO);
@@ -220,6 +222,7 @@ public class PrincipalActivity extends AppCompatActivity
                     });
                     return;
                 }
+
                 paramatroSimulacaoSuccess(response);
             }
 
@@ -337,6 +340,8 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     private void AnimacaoAbrirMenuRapido(View v) {
+        FirebaseManager.registraEvento(PrincipalActivity.this ,"ENTROU_MENU_TREVO");
+
         relativeContentPrincipal.setEnabled(false);
         actionApresentarTrevo.setEnabled(false);
         atalhoRapidoLoterias.setVisibility(View.VISIBLE);
@@ -413,6 +418,8 @@ public class PrincipalActivity extends AppCompatActivity
                     dadosUsuarioBO.sair(new RequestListener<NetworkResponse>() {
                         @Override
                         public void onResponse(NetworkResponse response) {
+                            FirebaseManager.registraEvento(PrincipalActivity.this ,"EFETUOU_LOGOUT_SUCESSO");
+
                             AcessoBO_.getInstance_(PrincipalActivity.this).iniciarLogoutSSO();
                             LoginSP.loginRealizado(false);
                             realizandoLogin = true;
@@ -426,6 +433,7 @@ public class PrincipalActivity extends AppCompatActivity
                         }
                     });
                 } else {
+                    FirebaseManager.registraEvento(PrincipalActivity.this ,"EFETUOU_LOGOUT_OFFLINE_SUCESSO");
                     startActivity(new Intent(PrincipalActivity.this, LoginActivity.class));
                     finish();
                 }
@@ -463,6 +471,8 @@ public class PrincipalActivity extends AppCompatActivity
 
     @Click(R.id.buttonHomeBet)
     protected void clickButtonHomeBet() {
+        FirebaseManager.registraEvento(PrincipalActivity.this ,"ENTROU_SIMULAR_APOSTA" + modalidadesParaListar.get(Integer.parseInt(buttonHomeBet.getTag().toString())).getParametroJogo().getConcurso().getModalidade());
+
         Intent activity = new Intent(PrincipalActivity.this, SimularApostaActivity_.class);
         activity.putExtra("tipoAposta", modalidadesParaListar.get(Integer.parseInt(buttonHomeBet.getTag().toString())).getParametroJogo().getConcurso().getModalidade());
         activity.putExtra("modalidade", (new Gson()).toJson(modalidadesParaListar.get(Integer.parseInt(buttonHomeBet.getTag().toString())).getParametroJogo()));
@@ -511,9 +521,7 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     private void AbrirMenusGroup(int groupPosition) {
-      if (groupPosition == 1) {
-            drawerLayout.closeDrawers();
-        } else if (groupPosition == 3) {
+        if (groupPosition == 3) {
             startActivity(new Intent(PrincipalActivity.this, ListaRapidaoActivity.class));
         } else if (groupPosition == 4) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)

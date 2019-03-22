@@ -66,8 +66,10 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.PartidaLotecaDTO
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.PartidaLotogolDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostar.interno.utils.Constantes;
+import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.helper.AdicionarApostaCarrinhoHelper;
+import br.gov.caixa.loterias.apostar.interno.view.PrincipalActivity;
 import br.gov.caixa.loterias.apostar.interno.view.SimularApostaActivity;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.LotecaAdapter;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.LotogolAdapter;
@@ -616,6 +618,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                 parametroJogo.getPrognosticoMaximo(), new RequestListener<CompletaJogoRsp>() {
                     @Override
                     public void onResponse(CompletaJogoRsp response) {
+                        FirebaseManager.registraEvento(getContext() ,"ENTROU_COMPLETAR_COM_NUMEROS_ALEATORIOS");
                         isEcolhaTimeBtnAtivado = true;
                         dezenasSelecionadas.clear();
                         dezenasSelecionadas.addAll(response.getPayload());

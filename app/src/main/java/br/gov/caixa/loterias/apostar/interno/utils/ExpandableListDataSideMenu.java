@@ -28,7 +28,6 @@ public class ExpandableListDataSideMenu {
 
 
         expandableListDetail.put("Minha área", minhaArea);
-        expandableListDetail.put("Apostar", Apostar);
         expandableListDetail.put("Resultados", Resultados);
         expandableListDetail.put("Rapidão", Rapidao);
 //        expandableListDetail.put("Ler bilhete", bilhetes);
