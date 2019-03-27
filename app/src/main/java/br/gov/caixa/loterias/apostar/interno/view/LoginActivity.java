@@ -14,8 +14,6 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FirebaseManager.registraEvento(this ,"ENTROU_LOGIN");
-
 
         setContentView(R.layout.activity_login);
 

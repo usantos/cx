@@ -43,6 +43,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RetornoPadraoDTO;
+import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostar.interno.utils.MaskEditUtil;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
@@ -58,6 +59,7 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         ViewUtils.configuraStatusBarGradientLayout(this, getWindow());
+        FirebaseManager.registraEvento(this ,"ENTROU_ADICAO_FORMA_DE_PAGAMENTO");
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nova_forma_pagamento);
@@ -203,6 +205,12 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
             @Override
             public void onResponse(RetornoPadraoDTO response) {
                 alertDialog.dismiss();
+
+                if (checkBoxSalvarCartao.isChecked()) {
+                    FirebaseManager.registraEvento(NovaFormaPagamentoActivity.this ,"EFETUOU_ADICAO_FORMA_DE_PAGAMENTO_SUCESSO");
+                }
+                FirebaseManager.registraEvento(NovaFormaPagamentoActivity.this ,"EFETUOU_PAGAMENTO_SUCESSO");
+
                 if (response.getRedirect() != null) {
                     RedirectNetwork.checkRedirectSucesso(response.getRedirect(), NovaFormaPagamentoActivity.this);
                 } else {

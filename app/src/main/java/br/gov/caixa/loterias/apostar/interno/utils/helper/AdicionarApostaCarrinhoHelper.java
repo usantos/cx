@@ -45,6 +45,7 @@ import br.gov.caixa.loterias.apostar.interno.model.dao.DBLoteriasCrud;
 import br.gov.caixa.loterias.apostar.interno.model.dao.DBTabelasLoterias;
 import br.gov.caixa.loterias.apostar.interno.utils.Constantes;
 import br.gov.caixa.loterias.apostar.interno.utils.DialogUtils;
+import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.ConfirmadoInclusaoCarrinhoActivity;
 import br.gov.caixa.loterias.apostar.interno.view.SimularApostaActivity;
@@ -138,6 +139,8 @@ public class AdicionarApostaCarrinhoHelper {
             @Override
             public void onResponse(AgrupadorDTOApostaDTOResponse result) {
                 DialogUtils.dismiss();
+                FirebaseManager.registraEvento(context ,"ENTROU_ADICAO_APOSTA_CARRINHO_ONLINE");
+
                 telaConfirmarCarrinho(aposta.getModalidade(), aposta);
             }
 
@@ -259,6 +262,8 @@ public class AdicionarApostaCarrinhoHelper {
                     }
                 }
             }
+            FirebaseManager.registraEvento(context ,"ENTROU_ADICAO_APOSTA_CARRINHO_OFFLINE");
+
 
             return Boolean.TRUE;
         }

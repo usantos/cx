@@ -45,6 +45,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.MunicipioDTOResp
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.MunicipioIdDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.UnidadeFederacaoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.UnidadeFederacaoDTOResponse;
+import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.segmentedbutton.SegmentedButtonGroup;
 import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
@@ -182,6 +183,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
                 if (response.getRedirect() != null){
                     RedirectNetwork.checkRedirectSucesso( response.getRedirect(), DadosPessoaisActivity.this);
                 }
+                FirebaseManager.registraEvento(DadosPessoaisActivity.this ,"ENTROU_EDITAR_CADASTRO");
             }
 
             @Override
@@ -461,6 +463,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
         dadosUsuarioBO.putDadosUsuario(apostadorAlteracaoDTO, new RequestListener<CadastrarApostadorDTOResponse>() {
             @Override
             public void onResponse(CadastrarApostadorDTOResponse response) {
+                FirebaseManager.registraEvento(DadosPessoaisActivity.this ,"EFETUOU_EDICAO_CADASTRO_SUCESSO");
 
                 loadViewProgress.dismiss();
                 if (response.getRedirect() != null){

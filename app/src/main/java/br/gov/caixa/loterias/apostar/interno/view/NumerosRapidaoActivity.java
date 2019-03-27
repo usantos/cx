@@ -21,6 +21,7 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bean.NumerosSelecionadosRapidao;
+import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.NumeroSelecionadoRapidaoAdapter;
 import br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightGridView;
@@ -54,6 +55,8 @@ public class NumerosRapidaoActivity extends AppCompatActivity {
         listaNumerosContrariosRapidao = Arrays.asList(new Gson().fromJson(arrayContrarios, Integer[].class));
 
         if(isTipoNrObrigatorios == true){
+            FirebaseManager.registraEvento(this ,"ENTROU_SELECIONA_NUMEROS_OBRIGATORIOS_CONFIG_RAPIDAO");
+
             List<Integer> numerosObrigadoriosSalvos = new ArrayList<>();
             String arrayObrigarios =  getIntent().getExtras().getString("numerosobrigatorios");
             numerosObrigadoriosSalvos = Arrays.asList(new Gson().fromJson(arrayObrigarios, Integer[].class));
@@ -61,6 +64,8 @@ public class NumerosRapidaoActivity extends AppCompatActivity {
             gridViewNumerosRapidaoSlc = (ExpandableHeightGridView)findViewById(R.id.gridviewNumerosRapidaoSelecao);
 
         }else{
+            FirebaseManager.registraEvento(this ,"ENTROU_SELECIONA_NUMEROS_PROIBIDOS_CONFIG_RAPIDAO");
+
             List<Integer> numerosProibidosSalvos = new ArrayList<>();
             String arrayProibidos =  getIntent().getExtras().getString("numerosProibidos");
             numerosProibidosSalvos = Arrays.asList(new Gson().fromJson(arrayProibidos, Integer[].class));

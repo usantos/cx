@@ -48,6 +48,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ListCartaoDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RetornoCartao;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RetornoPadraoDTO;
+import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.FormaPagamentoRecyclerViewAdapter;
 import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
@@ -98,6 +99,7 @@ public class FormaPagamentoActivity extends SettingToolbarActivity implements Fo
         dadosUsuarioBO.cartoes(new RequestListener<ListCartaoDTOResponse>() {
             @Override
             public void onResponse(ListCartaoDTOResponse response) {
+                FirebaseManager.registraEvento(FormaPagamentoActivity.this ,"ENTROU_FORMAS_DE_PAGAMENTO");
                 loadViewProgress.dismiss();
                 listaCartoes = response.getPayload();
                 if (listaCartoes != null && listaCartoes.size() > 0) {
@@ -259,6 +261,7 @@ public class FormaPagamentoActivity extends SettingToolbarActivity implements Fo
                 if (response.getRedirect() != null){
                     RedirectNetwork.checkRedirectSucesso( response.getRedirect(), FormaPagamentoActivity.this);
                 }else{
+                    FirebaseManager.registraEvento(FormaPagamentoActivity.this ,"EFETUOU_PAGAMENTO_SUCESSO");
                     Intent activity = new Intent(FormaPagamentoActivity.this, ConfirmacaoPagamentoActivity.class);
                     startActivity(activity);
                 }
@@ -303,8 +306,4 @@ public class FormaPagamentoActivity extends SettingToolbarActivity implements Fo
         RequestQueue rQueue = Volley.newRequestQueue(FormaPagamentoActivity.this);
         rQueue.add(request);
     }
-
-
-
-
 }
