@@ -94,7 +94,7 @@ public class PrincipalActivity extends AppCompatActivity
     @ViewById
     protected Button buttonHomeBet;
     @ViewById
-    protected TextView ttvIniciais, textViewHomeCountBetsCart, textViewHomeMinimumPurchaseValue, tituloLerBilhetes, textoRepassados, valorRepassesPrincipal, txtVersaoMenu, nav_user, nav_ultima_aposta;
+    protected TextView textViewHomeCountBetsCart, textViewHomeMinimumPurchaseValue, tituloLerBilhetes, textoRepassados, valorRepassesPrincipal, txtVersaoMenu, nav_user;
     @ViewById
     protected RelativeLayout relativeContentPrincipal,
             relativeBlankView, relativeLayoutContentRapidao, relativeLayoutContentLerBilhetes, relativeLayoutContentFavoritas, relativeLayoutContentRepassados,
@@ -113,7 +113,7 @@ public class PrincipalActivity extends AppCompatActivity
     private RepassometroDTO repassesSociais;
     private DBLoteriasHelper dbLoteriasHelper;
     private View actionApresentarTrevo, actionSettings;
-    private int groupHeight;
+    private AlertDialog loadViewProgress;
 
     private boolean realizandoLogin = false;
 
@@ -124,21 +124,6 @@ public class PrincipalActivity extends AppCompatActivity
         String separarNome[] = DadosUsuarioBO.obterNome().toLowerCase().split(" ");
         String nomeUsuario = StringUtils.capitalizer(separarNome[0]+" "+separarNome[separarNome.length - 1]);
 
-        String iniciais = "";
-        boolean proximo = false;
-        char separarNomeUsuario[] = nomeUsuario.toCharArray();
-
-        for (char caracter: separarNomeUsuario) {
-            if("".equals(iniciais) || proximo){
-                iniciais += caracter;
-                proximo = false;
-            }
-            if(caracter == ' '){
-                proximo = true;
-            }
-        }
-
-        ttvIniciais.setText(iniciais);
         txtVersaoMenu.setText(BuildConfig.VERSION_NAME);
 
         if(!" ".equals(nomeUsuario)) {
@@ -146,7 +131,7 @@ public class PrincipalActivity extends AppCompatActivity
             texto = texto.replace("%", nomeUsuario);
             nav_user.setText(ViewUtils.textFuturaAndFuturaBold(this, texto));
         }else {
-            nav_user.setText("Olá!");
+            nav_user.setText("Olá, seja bem-vindo ao\n App Loterias.");
         }
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -154,7 +139,6 @@ public class PrincipalActivity extends AppCompatActivity
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         toolbarListener();
-        nav_ultima_aposta.setText(ViewUtils.textFuturaAndFuturaBold( this,  "Sua última aposta foi em _24/08/2017_") );
         layoutSideMenu();
         listenerSair();
         callWebservice();
@@ -196,7 +180,7 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     private void callWebservice() {
-        final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
+        loadViewProgress = LoadingViewLoterias.show(this);
 
         final DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(PrincipalActivity.this);
 
@@ -599,9 +583,16 @@ public class PrincipalActivity extends AppCompatActivity
         }
     }
 
+    private void dismissProgressDialog() {
+        if (loadViewProgress != null && loadViewProgress.isShowing()) {
+            loadViewProgress.dismiss();
+        }
+    }
+
     @Override
     protected void onDestroy() {
         dbLoteriasHelper.close();
+        dismissProgressDialog();
         super.onDestroy();
     }
 }

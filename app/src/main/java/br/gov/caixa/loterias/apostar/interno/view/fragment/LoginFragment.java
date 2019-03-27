@@ -19,6 +19,7 @@ import java.util.List;
 import br.gov.caixa.loterias.apostar.interno.BuildConfig;
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bean.RetornoListaCarrinho;
+import br.gov.caixa.loterias.apostar.interno.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostar.interno.model.bo.AcessoBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.AcessoBO_;
 import br.gov.caixa.loterias.apostar.interno.model.bo.DadosUsuarioBO;
@@ -56,13 +57,13 @@ public class LoginFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_login, container, false);
 
-        Button buttonAposte = (Button) v.findViewById(R.id.buttonAposteAgora);
+        Button buttonAposte = v.findViewById(R.id.buttonAposteAgora);
         buttonAposte.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                KeycloakBO_.getInstance_(getActivity()).limparSessao(getActivity());
+                KeycloakBO_.getInstance_(getContext()).limparSessao(getActivity());
 
                 DadosUsuarioBO.updateFecharIntroducao(getActivity(), true);
-                startActivity(new Intent(getActivity(), PrincipalActivity_.class));
+                startActivity(new Intent(getContext(), PrincipalActivity_.class));
                 getActivity().finish();
             }
         });
@@ -107,6 +108,8 @@ public class LoginFragment extends Fragment {
             public void onResponse(UsuarioLogadoResponse response) {
                 loadViewProgress.dismiss();
                 if (response.getRedirect() == null) {
+                    SessaoUsuario.getInstance().setValorMaximoAposta(response.getPayload().getLimiteDiario());
+
                     PrincipalActivity_.intent(getActivity()).start();
                     getActivity().finish();
                 } else {
@@ -123,7 +126,7 @@ public class LoginFragment extends Fragment {
     }
 
     private void connectKeycloak() {
-        if(AppUtils.isNetworkAvailable(getActivity())){
+        if(AppUtils.isNetworkAvailable(getContext())){
             AcessoBO.PRIMEIRO_LOGIN = true;
             AcessoBO_.getInstance_(getContext()).iniciarLoginSSO(getActivity());
         }else{

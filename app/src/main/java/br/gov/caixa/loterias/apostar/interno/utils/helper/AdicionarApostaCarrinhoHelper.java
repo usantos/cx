@@ -222,7 +222,7 @@ public class AdicionarApostaCarrinhoHelper {
             ViewUtils.alert(contextParam, contextParam.getString(R.string.MA013));
             return Boolean.FALSE;
         } else {
-            if (aposta.getModalidade() == ModalidadeEnum.LOTOMANIA && aposta.getGerarApostaEspelho()) {
+            if (aposta.getModalidade() == ModalidadeEnum.LOTOMANIA && aposta.getGerarApostaEspelho() && aposta.getNumerosSelecionados() != null) {
                 IdentificaoDeUmaApostaDas8Modalidades apostaEspelho = IdentificaoDeUmaApostaDas8Modalidades.clone(aposta);
                 List<Integer> numerosEspelho = new ArrayList<>();
 
@@ -233,9 +233,9 @@ public class AdicionarApostaCarrinhoHelper {
                 }
 
                 apostaEspelho.setNumerosSelecionados(numerosEspelho);
+
                 apostaEspelho.setEspelho(true);
                 Long idAposta = crud.insertIdentificaoDeUmaApostaDas8Modalidades(aposta);
-
 
                 ContentValues cv = new ContentValues();
                 cv.put("vinculo_espelho", idAposta + aposta.getConcursoAlvo());

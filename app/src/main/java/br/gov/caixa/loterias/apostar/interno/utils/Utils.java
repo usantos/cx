@@ -37,19 +37,20 @@ public class Utils {
     }
 
     public static DadosUsuarioToken decodedToken(String JWTEncoded) throws Exception {
-        DadosUsuarioToken dadosUsuarioToken = new DadosUsuarioToken();
-        try {
-            String[] split = JWTEncoded.split("\\.");
-//            Log.d("JWT_DECODED", "Header: " + getJson(split[0]));
-            String json = getJson(split[1]);
-            Gson gson = new Gson();
-            dadosUsuarioToken = gson.fromJson(json, DadosUsuarioToken.class);
-            //new JSONObject(json);
-            Log.d( "retorno", json.toString() );
-        } catch (UnsupportedEncodingException e) {
-            //Error
+        if (JWTEncoded != null) {
+            DadosUsuarioToken dadosUsuarioToken = new DadosUsuarioToken();
+            try {
+                String[] split = JWTEncoded.split("\\.");
+                String json = getJson(split[1]);
+                Gson gson = new Gson();
+                dadosUsuarioToken = gson.fromJson(json, DadosUsuarioToken.class);
+            } catch (UnsupportedEncodingException e) {
+
+            }
+            return dadosUsuarioToken;
+        } else {
+            return new DadosUsuarioToken();
         }
-        return dadosUsuarioToken;
     }
 
     private static String getJson(String strEncoded) throws UnsupportedEncodingException{

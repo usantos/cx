@@ -28,9 +28,15 @@ import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.ViewById;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.ParsePosition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bean.SessaoUsuario;
@@ -109,6 +115,11 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
         scrollViewRapidaoConfig.setFocusableInTouchMode(true);
         scrollViewRapidaoConfig.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
         setValue = true;
+
+
+        tituloValorValorMinimoAposta.setLocale(new Locale("pt", "BR"));
+        tituloValorValorMaximoAposta.setLocale(new Locale("pt", "BR"));
+        tituloValorPremiumMinimum.setLocale(new Locale("pt", "BR"));
     }
 
     @Override
@@ -393,11 +404,6 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
 
     private void atualizaLayout() {
 
-        tituloValorValorMinimoAposta.addTextChangedListener(textWatcher);
-        tituloValorValorMaximoAposta.addTextChangedListener(textWatcher);
-        tituloValorPremiumMinimum.addTextChangedListener(textWatcher);
-        tituloValorMinimoPremiumMiminum.addTextChangedListener(textWatcher);
-
         double valor = 1000000;
         BigDecimal valorMinimo = rapidao.getValorMinimo();
         if (rapidao.getValorMaximo() != null) {
@@ -433,9 +439,15 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
 
         tituloValorValorMinimoAposta.setText(ViewUtils.getMoedaFormat(valorMinimo));
         tituloValorMinimoApostaValorMaximo.setText(ViewUtils.getMoedaFormat(new BigDecimal(Float.toString((float) valueMaxApostaInt))));
+
         tituloValorValorMaximoAposta.setText(ViewUtils.getMoedaFormat(BigDecimal.valueOf(valor)));
         tituloValorMaximoApostaValorMinimo.setText(ViewUtils.getMoedaFormat(valorMinApostaCarrinho));
         tituloValorMaximoApostaValorMaximo.setText(ViewUtils.getMoedaFormat(valorMaxApostaCarrinho));
+
+        tituloValorValorMinimoAposta.addTextChangedListener(textWatcher);
+        tituloValorValorMaximoAposta.addTextChangedListener(textWatcher);
+        tituloValorPremiumMinimum.addTextChangedListener(textWatcher);
+        tituloValorMinimoPremiumMiminum.addTextChangedListener(textWatcher);
 
         montarListaEstilo();
         gridViewNumerosObrigatorios();
@@ -537,24 +549,24 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
 
         @Override
         public void afterTextChanged(Editable s) {
-            String valorSetado = s.toString();
+            String valorSetado = s.toString().replaceAll("\\s","");
             valorSetado = valorSetado.replace("R$", "");
             valorSetado = valorSetado.replace("$", "");
             valorSetado = valorSetado.replace(".", "");
             valorSetado = valorSetado.replace(",", ".");
 
+            BigDecimal valorSetadoBigDecimal = new BigDecimal(valorSetado);
+
             if (tituloValorValorMinimoAposta.getText().hashCode() == s.hashCode()) {
-                BigDecimal valorSetadoBigDecimal = new BigDecimal(valorSetado);
                 if (valorSetadoBigDecimal.compareTo(rapidao.getValorMaximo()) > 0) {
                     rapidao.setValorMinimo(rapidao.getValorMaximo());
-                    tituloValorValorMinimoAposta.setText(ViewUtils.getMoedaFormat(rapidao.getValorMinimo()));
+                    tituloValorValorMinimoAposta.setText(ViewUtils.getMoedaFormat(rapidao.getValorMaximo()));
                 } else {
                     rapidao.setValorMinimo(new BigDecimal(valorSetado));
                 }
                 setValue = false;
                 seekBarValorMinimoAposta.setProgress((int) floor(Double.parseDouble(valorSetado)));
             } else if (tituloValorValorMaximoAposta.getText().hashCode() == s.hashCode()) {
-                BigDecimal valorSetadoBigDecimal = new BigDecimal(valorSetado);
                 if (valorSetadoBigDecimal.compareTo(valorMaxApostaCarrinho) > 0) {
                     tituloValorValorMaximoAposta.setText(ViewUtils.getMoedaFormat(valorMaxApostaCarrinho));
                     valorSetado = valorMaxApostaCarrinho.toString();
@@ -565,20 +577,16 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
                 setValue = false;
                 seekBarValorMaximoAposta.setProgress((int) floor(Double.parseDouble(valorSetado)));
                 seekBarValorMinimoAposta.setMax((int) floor(Double.parseDouble(valorSetado)));
-
             } else if (tituloValorPremiumMinimum.getText().hashCode() == s.hashCode()) {
                 if (!primeiroCarregamento) {
-                    BigDecimal valorSetadoBigDecimal = new BigDecimal(valorSetado);
                     BigDecimal valorMaximoBarra = new BigDecimal(String.valueOf(seekBarPremiumMimimun.getMax() * 1000000));
                     if (valorSetadoBigDecimal.compareTo(valorMaximoBarra) > 0) {
-                        Log.i("caixa", "aaa => " + seekBarPremiumMimimun.getMax());
                         RapidaoSP.salvarValorPremioMinimo(seekBarPremiumMimimun.getMax() * 1000000);
                         seekBarPremiumMimimun.setProgress(seekBarPremiumMimimun.getMax());
                         tituloValorPremiumMinimum.setText(ViewUtils.getMoedaFormat(valorMaximoBarra));
                         tituloValorMinimoPremiumMiminum.setText(treatValorPremium(valorMaximoBarra));
                     } else {
                         int valor = Math.round(Float.parseFloat(valorSetado));
-                        Log.i("caixa", "aaa => " + valor);
                         RapidaoSP.salvarValorPremioMinimo(valor);
                         setValue = false;
                         seekBarPremiumMimimun.setProgress(valor  / 1000000);
@@ -586,7 +594,6 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
                 }
                 primeiroCarregamento = false;
             }
-            Log.i("TAG_RAPIDAO", "changeText");
         }
     };
 }

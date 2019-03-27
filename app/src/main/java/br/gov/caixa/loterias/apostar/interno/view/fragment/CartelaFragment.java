@@ -162,7 +162,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
             }
         }
 
-        parentActivity.configuraBotoesListeners();
+//        parentActivity.configuraBotoesListeners();
     }
 
     @Override
