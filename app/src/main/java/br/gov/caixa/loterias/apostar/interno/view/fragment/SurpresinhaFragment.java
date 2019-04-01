@@ -285,7 +285,6 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         }
 
         AdicionarApostaCarrinhoHelper.incluirApostaCarrinhoSurpresinha(parentActivity, aposta);
-        parentActivity.zerarApostas();
     }
 
     @Override

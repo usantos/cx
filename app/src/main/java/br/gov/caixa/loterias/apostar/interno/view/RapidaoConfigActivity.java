@@ -168,7 +168,6 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
                 BigDecimal valorProgress = new BigDecimal(Float.toString((float) progressFormatMilhoes));
                 rapidao.setValorMinimoPremioPrincipal(valorProgress);
                 tituloValorPremiumMinimum.setText(ViewUtils.getMoedaFormat(valorProgress));
-                tituloValorMinimoPremiumMiminum.setText(treatValorPremium(valorProgress));
             }
         }
         setValue = true;
@@ -436,7 +435,7 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
         }
 
         tituloValorPremiumMinimum.setText(ViewUtils.getMoedaFormat(bigDecimal));
-        tituloValorMinimoPremiumMiminum.setText(treatValorPremium(bigDecimal));
+        tituloValorMinimoPremiumMiminum.setText("0 milhão");
 
         seekBarPremiumMimimun.setOnSeekBarChangeListener(this);
         seekBarPremiumMimimun.setMax(100);
@@ -451,7 +450,6 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
         tituloValorValorMinimoAposta.addTextChangedListener(textWatcher);
         tituloValorValorMaximoAposta.addTextChangedListener(textWatcher);
         tituloValorPremiumMinimum.addTextChangedListener(textWatcher);
-        tituloValorMinimoPremiumMiminum.addTextChangedListener(textWatcher);
 
         montarListaEstilo();
         gridViewNumerosObrigatorios();
@@ -589,7 +587,6 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
                         RapidaoSP.salvarValorPremioMinimo(seekBarPremiumMimimun.getMax() * 1000000);
                         seekBarPremiumMimimun.setProgress(seekBarPremiumMimimun.getMax());
                         tituloValorPremiumMinimum.setText(ViewUtils.getMoedaFormat(valorMaximoBarra));
-                        tituloValorMinimoPremiumMiminum.setText(treatValorPremium(valorMaximoBarra));
                     } else {
                         int valor = Math.round(Float.parseFloat(valorSetado));
                         RapidaoSP.salvarValorPremioMinimo(valor);

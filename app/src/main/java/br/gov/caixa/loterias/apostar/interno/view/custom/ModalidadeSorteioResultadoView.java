@@ -55,7 +55,7 @@ public class ModalidadeSorteioResultadoView extends ScrollView {
 
         this.modalidade = modalidade;
 
-        this.numeroeDataConcursoResultadoMegaSena.setText(ViewUtils.fromHtml("Nº <b>" + modalidade.getConcurso().getNumero() + "</b> | " + modalidade.getConcurso().getDataSorteio()));
+        this.numeroeDataConcursoResultadoMegaSena.setText(ViewUtils.fromHtml("Nº <b>" + modalidade.getResultadoConcursoDTO().getConcurso().getNumero() + "</b> | " + modalidade.getResultadoConcursoDTO().getConcurso().getDataSorteio()));
         setContentResultadoPorModalide(modalidade);
 
         this.scrollResultados.setFocusableInTouchMode(true);

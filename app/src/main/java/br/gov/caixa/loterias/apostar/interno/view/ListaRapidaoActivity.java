@@ -54,11 +54,18 @@ public class ListaRapidaoActivity extends AppCompatActivity {
         configuraActivityCarrinho();
 
         recyclerView = findViewById(R.id.apostasListaRecycleViewRapidao);
+
         valorTotalCarrinhoRapidao = findViewById(R.id.valorTotalCarrinhoRapidao);
         FirebaseManager.registraEvento(ListaRapidaoActivity.this ,"ENTROU_LISTA_APOSTAS_RAPIDAO");
 
-        callWebservice(0);
         ViewUtils.organizaTabLayout(this, R.id.carrinhoRapidaoMainLayout, R.id.apostasListaRecycleViewRapidao, R.id.carrinhoRapidaoScrollView);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        callWebservice(0);
     }
 
     public void atualizaLayout() {
@@ -242,7 +249,6 @@ public class ListaRapidaoActivity extends AppCompatActivity {
             valorTotal = valorTotal.add(aposta.getValor());
         }
 
-        ViewUtils.setMoedaFormatHtml(valorTotal, valorTotalCarrinhoRapidao);
+        valorTotalCarrinhoRapidao.setText("Total: "+ ViewUtils.getMoedaFormat(valorTotal));
     }
-
 }

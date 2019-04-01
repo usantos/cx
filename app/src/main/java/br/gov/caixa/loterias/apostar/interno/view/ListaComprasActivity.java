@@ -70,8 +70,14 @@ public class ListaComprasActivity extends AppCompatActivity {
         recyclerViewCompras = (RecyclerView)findViewById(R.id.recyclerCompras);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        callWebServiceMesCompras();
         FirebaseManager.registraEvento(this ,"ENTROU_LISTA_COMPRAS");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        callWebServiceMesCompras();
     }
 
     @Override
@@ -180,9 +186,6 @@ public class ListaComprasActivity extends AppCompatActivity {
         });
     }
 
-
-
-
     private void addSpinner(){
         Spinner SelecaoMesSpinner;
         SelecaoMesSpinner = (Spinner) findViewById(R.id.SelecaoMesSpinner);
@@ -208,8 +211,6 @@ public class ListaComprasActivity extends AppCompatActivity {
             }
         });
     }
-
-
 
     private void initRecyclerView() {
         layoutManager = new LinearLayoutManager(this);

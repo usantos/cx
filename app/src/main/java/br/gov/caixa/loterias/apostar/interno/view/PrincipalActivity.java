@@ -122,18 +122,8 @@ public class PrincipalActivity extends AppCompatActivity
     public void init() {
         setSupportActionBar(toolbar);
 
-        String separarNome[] = DadosUsuarioBO.obterNome().toLowerCase().split(" ");
-        String nomeUsuario = StringUtils.capitalizer(separarNome[0]+" "+separarNome[separarNome.length - 1]);
 
         txtVersaoMenu.setText(BuildConfig.VERSION_NAME);
-
-        if(!" ".equals(nomeUsuario)) {
-            String texto = "Olá, _%_!";
-            texto = texto.replace("%", nomeUsuario);
-            nav_user.setText(ViewUtils.textFuturaAndFuturaBold(this, texto));
-        }else {
-            nav_user.setText("Olá, seja bem-vindo ao\n App Loterias.");
-        }
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -144,6 +134,22 @@ public class PrincipalActivity extends AppCompatActivity
         listenerSair();
         callWebservice();
         iniciarBancoLocal();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        String separarNome[] = DadosUsuarioBO.obterNome().toLowerCase().split(" ");
+        String nomeUsuario = StringUtils.capitalizer(separarNome[0]+" "+separarNome[separarNome.length - 1]);
+
+        if(!" ".equals(nomeUsuario)) {
+            String texto = "Olá, _%_!";
+            texto = texto.replace("%", nomeUsuario);
+            nav_user.setText(ViewUtils.textFuturaAndFuturaBold(this, texto));
+        }else {
+            nav_user.setText("Olá, seja bem-vindo ao\n App Loterias.");
+        }
+
     }
 
     private void listenerSair() {
@@ -505,8 +511,10 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     private void AbrirMenusGroup(int groupPosition) {
-        if (groupPosition == 3) {
+        if (groupPosition == 2) {
             startActivity(new Intent(PrincipalActivity.this, ListaRapidaoActivity.class));
+        } else if (groupPosition == 3) {
+            startActivity(new Intent(PrincipalActivity.this, RepassesSociaisActivity.class));
         } else if (groupPosition == 4) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
                     != PackageManager.PERMISSION_GRANTED) {
@@ -515,9 +523,7 @@ public class PrincipalActivity extends AppCompatActivity
             } else {
                 startActivity(new Intent(PrincipalActivity.this, LerBilhetesActivity.class));
             }
-        } else if (groupPosition == 5) {
-            startActivity(new Intent(PrincipalActivity.this, RepassesSociaisActivity.class));
-        }
+        } else
 
         if (groupPosition != 0) {
             drawerLayout.closeDrawer(Gravity.START, false);

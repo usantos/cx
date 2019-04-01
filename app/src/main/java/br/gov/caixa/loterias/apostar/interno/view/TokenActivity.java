@@ -96,7 +96,6 @@ public class TokenActivity extends AppCompatActivity {
 
                                 final DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_(TokenActivity.this);
                                 final RetornoListaCarrinho retornoListaCarrinho = new RetornoListaCarrinho();
-                                DBLoteriasCrud crud = new DBLoteriasCrud(TokenActivity.this);
                                 List<ApostaDTO> listApostas = new ArrayList<>();
                                 retornoListaCarrinho.setApostas(listApostas);
                                 dadosUsuarioBO.postVerificarCadastro(retornoListaCarrinho, new RequestListener<UsuarioLogadoResponse>() {
@@ -104,7 +103,7 @@ public class TokenActivity extends AppCompatActivity {
                                     public void onResponse(UsuarioLogadoResponse response) {
                                         if (response.getRedirect() == null) {
                                             SessaoUsuario.getInstance().setValorMaximoAposta(response.getPayload().getLimiteDiario());
-
+                                            finish();
                                         } else {
                                             finish();
                                         }
@@ -116,9 +115,9 @@ public class TokenActivity extends AppCompatActivity {
                                     }
                                 });
                             }
+                        } else {
+                            finish();
                         }
-
-                        finish();
                     }
                 });
             }
@@ -126,5 +125,4 @@ public class TokenActivity extends AppCompatActivity {
             finish();
         }
     }
-
 }

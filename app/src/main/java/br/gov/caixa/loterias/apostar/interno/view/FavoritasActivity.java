@@ -60,8 +60,14 @@ public class FavoritasActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        callWebservice();
         FirebaseManager.registraEvento(this ,"ENTROU_LISTA_FAVORITOS");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        callWebservice();
     }
 
     @Override
