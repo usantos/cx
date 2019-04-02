@@ -38,21 +38,6 @@ public class AppUtils {
         return ActivityCompat.checkSelfPermission(activity, Manifest.permission.USE_FINGERPRINT) != PackageManager.PERMISSION_GRANTED;
     }
 
-
-    public static String getOSVersion() {
-        return Build.VERSION.RELEASE;
-    }
-
-    public static String getApplicationVersion(Context context) {
-        try {
-            PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-            return pInfo.versionName;
-        } catch (PackageManager.NameNotFoundException e) {
-        }
-
-        return null;
-    }
-
     public static String capitalizeFirstChar(String string) {
         StringBuilder sb = new StringBuilder(string);
         sb.setCharAt(0, Character.toUpperCase(sb.charAt(0)));
@@ -73,33 +58,8 @@ public class AppUtils {
         return String.valueOf(chars);
     }
 
-    public static boolean isStringEmpty(String string) {
-        // Null-safe, short-circuit evaluation.
-        return string == null || string.trim().isEmpty();
-    }
-
     public static String removeMasckCPF(String cpf) {
         return cpf.replaceAll("[.-]", "").trim();
-    }
-
-    public static String dateFormatteAaaaMmDd(String data, String formato){
-
-        SimpleDateFormat dateFormatter = new SimpleDateFormat(formato);
-        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-        try {
-            return dateFormatter.format(df.parse(data));
-        } catch (Exception e) {
-            return "";
-        }
-    }
-
-    public static String getEditTextValue(EditText editText) {
-        assert editText != null;
-
-        if (editText.getText() != null) {
-            return editText.getText().toString();
-        }
-        return null;
     }
 
     public static List<String> listIntegerToListString(List<Integer> lista) {

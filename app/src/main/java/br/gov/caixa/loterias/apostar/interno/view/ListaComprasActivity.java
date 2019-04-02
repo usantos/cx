@@ -31,6 +31,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CompraDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.MesAnoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.MesAnoDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOCompraDTOResponse;
+import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.ListaComprasRecyclerViewAdapter;
 import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
@@ -69,9 +70,14 @@ public class ListaComprasActivity extends AppCompatActivity {
         recyclerViewCompras = (RecyclerView)findViewById(R.id.recyclerCompras);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        FirebaseManager.registraEvento(this ,"ENTROU_LISTA_COMPRAS");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
         callWebServiceMesCompras();
-
-
     }
 
     @Override
@@ -180,9 +186,6 @@ public class ListaComprasActivity extends AppCompatActivity {
         });
     }
 
-
-
-
     private void addSpinner(){
         Spinner SelecaoMesSpinner;
         SelecaoMesSpinner = (Spinner) findViewById(R.id.SelecaoMesSpinner);
@@ -208,8 +211,6 @@ public class ListaComprasActivity extends AppCompatActivity {
             }
         });
     }
-
-
 
     private void initRecyclerView() {
         layoutManager = new LinearLayoutManager(this);

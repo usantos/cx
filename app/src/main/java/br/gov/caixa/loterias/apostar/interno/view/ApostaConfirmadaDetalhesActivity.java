@@ -64,6 +64,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.SituacaoResultad
 import br.gov.caixa.loterias.apostar.interno.utils.AppUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.DialogUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.EstiloModalidade;
+import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostar.interno.utils.PdfUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.helper.AdicionarApostaCarrinhoHelper;
@@ -285,6 +286,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FirebaseManager.registraEvento(this ,"ENTROU_GERENCIAR_APOSTAS_DETALHE");
 
         if (comprovanteApostaDTO != null) {
             premioPago = false;

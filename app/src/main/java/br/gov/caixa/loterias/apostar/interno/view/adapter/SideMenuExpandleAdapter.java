@@ -108,20 +108,13 @@ public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
                 imagemMaisOpcoes.setSelected(isExpanded);
                 break;
             case 1:
-                imageViewGroup.setImageResource(R.drawable.menu2_apostar);
-                listTitleTextView.setTextColor(context.getResources().getColor(R.color.cinza));
-                convertView.setBackgroundColor(context.getResources().getColor(R.color.branco));
-                imagemMaisOpcoes.setVisibility(View.GONE);
-                convertView.findViewById(R.id.layoutItem).setBackgroundResource(R.drawable.drawer_linha_divisao_bg);
-                break;
-            case 2:
                 imageViewGroup.setImageResource(R.drawable.menu3_resultados);
                 listTitleTextView.setTextColor(context.getResources().getColor(R.color.cinza));
                 convertView.setBackgroundColor(context.getResources().getColor(R.color.branco));
                 imagemMaisOpcoes.setVisibility(View.GONE);
                 convertView.findViewById(R.id.layoutItem).setBackgroundResource(R.drawable.drawer_linha_divisao_bg);
                 break;
-            case 3:
+            case 2:
                 imageViewGroup.setImageResource(R.drawable.menu4_rapidao);
                 listTitleTextView.setTextColor(context.getResources().getColor(R.color.cinza));
                 convertView.setBackgroundColor(context.getResources().getColor(R.color.branco));
@@ -135,7 +128,7 @@ public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
 //                imagemMaisOpcoes.setVisibility(View.GONE);
 //                convertView.findViewById(R.id.layoutItem).setBackgroundResource(R.drawable.drawer_linha_divisao_bg);
 //                break;
-            case 4:
+            case 3:
                 imageViewGroup.setImageResource(R.drawable.menu6_repasses);
                 listTitleTextView.setTextColor(context.getResources().getColor(R.color.cinza));
                 convertView.setBackgroundColor(context.getResources().getColor(R.color.branco));

@@ -1,7 +1,5 @@
 package br.gov.caixa.loterias.apostar.interno.utils;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -41,8 +39,6 @@ import android.view.ViewParent;
 import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -51,8 +47,6 @@ import android.widget.Toast;
 import java.io.ByteArrayOutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -152,16 +146,6 @@ public class ViewUtils {
         return original.substring(0, 1).toUpperCase() + original.substring(1);
     }
 
-    public static void closeKeyboard(Activity activity) {
-        // Check if no view has focus:
-        View view = activity.getCurrentFocus();
-        if (view != null) {
-            InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
-    }
-
-    @SuppressWarnings("deprecation")
     public static Spanned fromHtml(String html) {
         Spanned result;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
@@ -178,34 +162,6 @@ public class ViewUtils {
         }
         toast = Toast.makeText(context, text, length);
         toast.show();
-    }
-
-    public static void toast(Context context, int resString, int length) {
-        ViewUtils.toast(context, context.getString(resString), length);
-    }
-
-    public static AlertDialog alertaCarregando(Context context, Activity activity, boolean cancelable){
-        View view = activity.getLayoutInflater().inflate(R.layout.alerta_carregando, null);
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setView(view);
-
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
-        alertDialog.setCancelable(cancelable);
-
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        WindowManager windowManager = activity.getWindowManager();
-        windowManager.getDefaultDisplay().getMetrics(displayMetrics);
-
-        int displayLargura = (int) (displayMetrics.widthPixels * 0.45f);
-
-        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
-        layoutParams.copyFrom(alertDialog.getWindow().getAttributes());
-        layoutParams.width = displayLargura;
-
-        alertDialog.getWindow().setAttributes(layoutParams);
-
-        return alertDialog;
     }
 
     public static AlertDialog.Builder dialogo(Context context, String mensagem) {
@@ -337,88 +293,6 @@ public class ViewUtils {
         return dialog;
     }
 
-    public static void cancelAnimation(View view) {
-        Animation a = view.getAnimation();
-        if (a != null) {
-            a.cancel();
-            a.setAnimationListener(null);
-        }
-        view.clearAnimation();
-    }
-
-    public static void flipTop(final View view, final AnimationEndListener listenerAdapter) {
-        view.animate().rotationX(90).setDuration(200).setListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                view.setRotationX(-90);
-                view.animate().rotationX(0).setDuration(200).setListener(null);
-                if (listenerAdapter != null) {
-                    listenerAdapter.onAnimationEnd();
-                }
-            }
-        });
-    }
-
-    public static void flipBottom(final View view, final AnimationEndListener listenerAdapter) {
-        view.animate().rotationX(-90).setDuration(200).setListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                view.setRotationX(90);
-                view.animate().rotationX(0).setDuration(200).setListener(null);
-                if (listenerAdapter != null) {
-                    listenerAdapter.onAnimationEnd();
-                }
-            }
-        });
-    }
-
-    public static void fadeOut(final View view, final int finalVisibility) {
-        Animation animation = AnimationUtils.loadAnimation(view.getContext(), android.R.anim.fade_out);
-        animation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                view.setVisibility(finalVisibility);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-            }
-        });
-        view.startAnimation(animation);
-    }
-
-    public static void fadeIn(final View view, final int finalVisibility) {
-        Animation animation = AnimationUtils.loadAnimation(view.getContext(), android.R.anim.fade_in);
-        animation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                view.setVisibility(finalVisibility);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-            }
-        });
-        view.startAnimation(animation);
-    }
-
-    public static void removeKeyboardListener(final Activity activity, final ViewTreeObserver.OnGlobalLayoutListener listener) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-            return;
-        }
-
-        final View rootView = activity.getWindow().getDecorView().findViewById(android.R.id.content).getRootView();
-        rootView.getViewTreeObserver().removeOnGlobalLayoutListener(listener);
-    }
-
     public static ViewTreeObserver.OnGlobalLayoutListener setKeyboardListener(final Activity activity, final KeyboardListener listener) {
 
         DisplayMetrics dm = new DisplayMetrics();
@@ -469,77 +343,38 @@ public class ViewUtils {
         return layoutListener;
     }
 
-    /**
-     * Used to scroll to the given view.
-     *
-     * @param scrollViewParent Parent ScrollView
-     * @param view             View to which we need to scroll.
-     */
-    public static void scrollToView(final ScrollView scrollViewParent, final View view) {
-        // Get deepChild Offset
-        Point childOffset = new Point();
-        getDeepChildOffset(scrollViewParent, view.getParent(), view, childOffset);
-
-        // Scroll to child.
-        scrollViewParent.smoothScrollTo(0, childOffset.y);
-    }
-
-    /**
-     * Used to get deep child offset.
-     * <p/>
-     * 1. We need to scroll to child in scrollview, but the child may not the direct child to scrollview.
-     * 2. So to get correct child position to scroll, we need to iterate through all of its parent views till the main parent.
-     *
-     * @param mainParent        Main Top parent.
-     * @param parent            Parent.
-     * @param child             Child.
-     * @param accumulatedOffset Accumalated Offset.
-     */
-    private static void getDeepChildOffset(final ViewGroup mainParent, final ViewParent parent, final View child, final Point accumulatedOffset) {
-        if (!(parent instanceof ViewGroup)) {
-            return;
-        }
-
-        ViewGroup parentGroup = (ViewGroup) parent;
-        accumulatedOffset.x += child.getLeft();
-        accumulatedOffset.y += child.getTop();
-        if (parentGroup.equals(mainParent)) {
-            return;
-        }
-        getDeepChildOffset(mainParent, parentGroup.getParent(), parentGroup, accumulatedOffset);
-    }
-
-    public static DecimalFormat getMoedaFormatter() {
-        DecimalFormatSymbols sym = new DecimalFormatSymbols();
-        sym.setDecimalSeparator(',');
-        sym.setGroupingSeparator('.');
-
-        DecimalFormat formatter = new DecimalFormat("###,###.##", sym);
-        formatter.setMinimumFractionDigits(2);
-        formatter.setDecimalSeparatorAlwaysShown(true);
-        return formatter;
-    }
-
     public static String getMoedaFormat(BigDecimal valor) {
         if (valor == null) {
             valor = BigDecimal.ZERO;
         }
         Locale ptBrLocale = new Locale("pt", "BR");
         NumberFormat nf = NumberFormat.getCurrencyInstance(ptBrLocale);
-        return nf.format(valor).replace("R$", "R$ ");
+        return nf.format(valor).replace("R$", "R$");
     }
 
     public static void setMoedaFormatHtml(BigDecimal valor, TextView valorTextView) {
-        String valoFormatoMoeda = getMoedaFormat(valor);
-        String[] valorFormatoMoedaArray = valoFormatoMoeda.split("\\s");
+        String valorFormatoMoeda = getMoedaFormat(valor);
 
+        if (Build.VERSION.SDK_INT < 28) {
+            if (!valorFormatoMoeda.contains(" ")) {
+                valorFormatoMoeda = new StringBuffer(valorFormatoMoeda).insert(2, " ").toString();
+            }
+        }
+
+        String[] valorFormatoMoedaArray = valorFormatoMoeda.split("\\s");
         valorTextView.setText(fromHtml(valorFormatoMoedaArray[0] + "<strong> " + valorFormatoMoedaArray[1] + "</strong>"));
     }
 
     public static void setMoedaFormatHtml(BigDecimal valor, TextView valorTextView, String complemento) {
-        String valoFormatoMoeda = getMoedaFormat(valor);
-        String[] valorFormatoMoedaArray = valoFormatoMoeda.split("\\s");
+        String valorFormatoMoeda = getMoedaFormat(valor);
 
+        if (Build.VERSION.SDK_INT < 28) {
+            if (!valorFormatoMoeda.contains(" ")) {
+                valorFormatoMoeda = new StringBuffer(valorFormatoMoeda).insert(2, " ").toString();
+            }
+        }
+
+        String[] valorFormatoMoedaArray = valorFormatoMoeda.split("\\s");
         valorTextView.setText(fromHtml(complemento + valorFormatoMoedaArray[0] + "<strong> " + valorFormatoMoedaArray[1] + "</strong>"));
     }
 
@@ -629,25 +464,6 @@ public class ViewUtils {
             });
         }
     }
-
-    public static Point getNavigationBarSize(Context context) {
-        Point appUsableSize = getAppUsableScreenSize(context);
-        Point realScreenSize = getRealScreenSize(context);
-
-        // navigation bar on the right
-        if (appUsableSize.x < realScreenSize.x) {
-            return new Point(realScreenSize.x - appUsableSize.x, appUsableSize.y);
-        }
-
-        // navigation bar at the bottom
-        if (appUsableSize.y < realScreenSize.y) {
-            return new Point(appUsableSize.x, realScreenSize.y - appUsableSize.y);
-        }
-
-        // navigation bar is not present
-        return new Point();
-    }
-
 
     // Metodos relacionados a caso o conteudo da tela seja inferior o ao height do dispositivo, mantenha a tab no bottom da tela
 

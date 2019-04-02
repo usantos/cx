@@ -29,6 +29,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CarrinhoDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
+import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.CarrinhoApostasListViewRapidaoAdapter;
 import br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightRecyclerView;
@@ -53,10 +54,18 @@ public class ListaRapidaoActivity extends AppCompatActivity {
         configuraActivityCarrinho();
 
         recyclerView = findViewById(R.id.apostasListaRecycleViewRapidao);
+
         valorTotalCarrinhoRapidao = findViewById(R.id.valorTotalCarrinhoRapidao);
+        FirebaseManager.registraEvento(ListaRapidaoActivity.this ,"ENTROU_LISTA_APOSTAS_RAPIDAO");
+
+        ViewUtils.organizaTabLayout(this, R.id.carrinhoRapidaoMainLayout, R.id.apostasListaRecycleViewRapidao, R.id.carrinhoRapidaoScrollView);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
 
         callWebservice(0);
-        ViewUtils.organizaTabLayout(this, R.id.carrinhoRapidaoMainLayout, R.id.apostasListaRecycleViewRapidao, R.id.carrinhoRapidaoScrollView);
     }
 
     public void atualizaLayout() {
@@ -214,6 +223,8 @@ public class ListaRapidaoActivity extends AppCompatActivity {
             @Override
             public void onResponse(CarrinhoDTOResponse response) {
                 loadViewProgress.dismiss();
+                FirebaseManager.registraEvento(ListaRapidaoActivity.this ,"GEROU_LISTA_APOSTAS_RAPIDAO");
+
                 carrinho = response.getPayload();
                 apostas = null;
                 apostas = carrinho.getApostas();
@@ -238,7 +249,6 @@ public class ListaRapidaoActivity extends AppCompatActivity {
             valorTotal = valorTotal.add(aposta.getValor());
         }
 
-        ViewUtils.setMoedaFormatHtml(valorTotal, valorTotalCarrinhoRapidao);
+        valorTotalCarrinhoRapidao.setText("Total: "+ ViewUtils.getMoedaFormat(valorTotal));
     }
-
 }

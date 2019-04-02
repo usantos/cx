@@ -14,6 +14,8 @@ package br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.math.BigDecimal;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -31,7 +33,8 @@ public class UsuarioLogado {
     private CarrinhoDTO carrinho = null;
     @SerializedName("primeiroNome")
     private String primeiroNome = null;
-
+    @SerializedName("limiteDiario")
+    private BigDecimal limiteDiario = null;
     /**
      **/
     @ApiModelProperty(value = "")
@@ -41,6 +44,17 @@ public class UsuarioLogado {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    /**
+     **/
+    @ApiModelProperty(value = "")
+    public BigDecimal getLimiteDiario() {
+        return limiteDiario;
+    }
+
+    public void setLimiteDiario(BigDecimal nome) {
+        this.limiteDiario = limiteDiario;
     }
 
     /**
@@ -113,7 +127,9 @@ public class UsuarioLogado {
                 (this.token == null ? usuarioLogado.token == null : this.token.equals(usuarioLogado.token)) &&
                 (this.tempoExpirarSegundos == null ? usuarioLogado.tempoExpirarSegundos == null : this.tempoExpirarSegundos.equals(usuarioLogado.tempoExpirarSegundos)) &&
                 (this.carrinho == null ? usuarioLogado.carrinho == null : this.carrinho.equals(usuarioLogado.carrinho)) &&
-                (this.primeiroNome == null ? usuarioLogado.primeiroNome == null : this.primeiroNome.equals(usuarioLogado.primeiroNome));
+                (this.primeiroNome == null ? usuarioLogado.primeiroNome == null : this.primeiroNome.equals(usuarioLogado.primeiroNome)) &&
+                (this.limiteDiario == null ? usuarioLogado.limiteDiario == null : this.limiteDiario.equals(usuarioLogado.limiteDiario));
+
     }
 
     @Override
@@ -125,6 +141,7 @@ public class UsuarioLogado {
         result = 31 * result + (this.tempoExpirarSegundos == null ? 0 : this.tempoExpirarSegundos.hashCode());
         result = 31 * result + (this.carrinho == null ? 0 : this.carrinho.hashCode());
         result = 31 * result + (this.primeiroNome == null ? 0 : this.primeiroNome.hashCode());
+        result = 31 * result + (this.limiteDiario == null ? 0 : this.limiteDiario.hashCode());
         return result;
     }
 
@@ -138,6 +155,7 @@ public class UsuarioLogado {
                 "  tempoExpirarSegundos: " + tempoExpirarSegundos + "\n" +
                 "  carrinho: " + carrinho + "\n" +
                 "  primeiroNome: " + primeiroNome + "\n" +
+                "  limiteDiario: " + limiteDiario + "\n" +
                 "}\n";
         return sb;
     }

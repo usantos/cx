@@ -45,6 +45,7 @@ import br.gov.caixa.loterias.apostar.interno.model.dao.DBLoteriasCrud;
 import br.gov.caixa.loterias.apostar.interno.model.dao.DBTabelasLoterias;
 import br.gov.caixa.loterias.apostar.interno.utils.Constantes;
 import br.gov.caixa.loterias.apostar.interno.utils.DialogUtils;
+import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.ConfirmadoInclusaoCarrinhoActivity;
 import br.gov.caixa.loterias.apostar.interno.view.SimularApostaActivity;
@@ -138,6 +139,8 @@ public class AdicionarApostaCarrinhoHelper {
             @Override
             public void onResponse(AgrupadorDTOApostaDTOResponse result) {
                 DialogUtils.dismiss();
+                FirebaseManager.registraEvento(context ,"ENTROU_ADICAO_APOSTA_CARRINHO_ONLINE");
+
                 telaConfirmarCarrinho(aposta.getModalidade(), aposta);
             }
 
@@ -148,7 +151,8 @@ public class AdicionarApostaCarrinhoHelper {
         });
     }
 
-    private static void checarLimiteDiario(final ApostaBO apostaBO, final IdentificaoDeUmaApostaDas8Modalidades aposta, final CarrinhoDTO carrinhoDTO) {
+    private static void checarLimiteDiario
+            (final ApostaBO apostaBO, final IdentificaoDeUmaApostaDas8Modalidades aposta, final CarrinhoDTO carrinhoDTO) {
         if (SessaoUsuario.getInstance().getParametrosSimulacao().getValorLimiteDiario()
                 .compareTo(carrinhoDTO.getValorTotal()
                         .add(IdentificaoDeUmaApostaDas8Modalidades.getValorApostaPorPrognostico(aposta)))
@@ -222,7 +226,7 @@ public class AdicionarApostaCarrinhoHelper {
             ViewUtils.alert(contextParam, contextParam.getString(R.string.MA013));
             return Boolean.FALSE;
         } else {
-            if (aposta.getModalidade() == ModalidadeEnum.LOTOMANIA && aposta.getGerarApostaEspelho()) {
+            if (aposta.getModalidade() == ModalidadeEnum.LOTOMANIA && aposta.getGerarApostaEspelho() && aposta.getNumerosSelecionados() != null) {
                 IdentificaoDeUmaApostaDas8Modalidades apostaEspelho = IdentificaoDeUmaApostaDas8Modalidades.clone(aposta);
                 List<Integer> numerosEspelho = new ArrayList<>();
 
@@ -233,9 +237,9 @@ public class AdicionarApostaCarrinhoHelper {
                 }
 
                 apostaEspelho.setNumerosSelecionados(numerosEspelho);
+
                 apostaEspelho.setEspelho(true);
                 Long idAposta = crud.insertIdentificaoDeUmaApostaDas8Modalidades(aposta);
-
 
                 ContentValues cv = new ContentValues();
                 cv.put("vinculo_espelho", idAposta + aposta.getConcursoAlvo());
@@ -259,6 +263,8 @@ public class AdicionarApostaCarrinhoHelper {
                     }
                 }
             }
+            FirebaseManager.registraEvento(context ,"ENTROU_ADICAO_APOSTA_CARRINHO_OFFLINE");
+
 
             return Boolean.TRUE;
         }
@@ -434,19 +440,7 @@ public class AdicionarApostaCarrinhoHelper {
     private static void onError(VolleyError error) {
         DialogUtils.dismiss();
         if (MensagensNetwork.isUnauthorizedError(error)) {
-            DBLoteriasCrud crud = new DBLoteriasCrud(context);
-            BigDecimal valorTotalCarrinho = crud.sumValorIdentificaoDeUmaApostaDas8Modalidades();
-            valorTotalCarrinho = valorTotalCarrinho.add(aposta.getValor());
-            if (valorTotalCarrinho.compareTo(SessaoUsuario.getInstance().getParametrosSimulacao().getValorLimiteDiario()) == 1) {
-                ViewUtils.alertTitleButtonYesOrNotListener(context, context.getResources().getString(R.string.MA014), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        if (AdicionarApostaCarrinhoHelper.inserirApostaCarrinhoLocal(context, aposta)) {
-                            telaConfirmarCarrinho(aposta.getModalidade(), aposta);
-                        }
-                    }
-                });
-            } else if (AdicionarApostaCarrinhoHelper.inserirApostaCarrinhoLocal(context, aposta)) {
+            if (AdicionarApostaCarrinhoHelper.inserirApostaCarrinhoLocal(context, aposta)) {
                 telaConfirmarCarrinho(aposta.getModalidade(), aposta);
             }
         } else {

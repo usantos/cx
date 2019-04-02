@@ -22,6 +22,8 @@ public class IntroducaoActivity extends AppCompatActivity {
 
     ViewPager vpPager;
 
+    Boolean pulouTour = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,9 +32,7 @@ public class IntroducaoActivity extends AppCompatActivity {
             startActivity(new Intent(IntroducaoActivity.this, LoginActivity.class));
             finish();
         }
-
-        FirebaseManager.registraEvento(this ,"ENTROU_TUTORIAL");
-
+        FirebaseManager.registraEvento(IntroducaoActivity.this  ,"ENTROU_TOUR_TELA1");
 
         adapterViewPager = new MyPagerAdapter(getSupportFragmentManager());
         vpPager = (ViewPager) findViewById(R.id.vpPager);
@@ -47,14 +47,25 @@ public class IntroducaoActivity extends AppCompatActivity {
             // This method will be invoked when a new page becomes selected.
             @Override
             public void onPageSelected(int position) {
-//                Toast.makeText(IntroducaoActivity.this,
-//                        "Selected page position: " + position, Toast.LENGTH_SHORT).show();
+                switch (position) {
+                    case 1: {
+                        FirebaseManager.registraEvento(IntroducaoActivity.this ,"ENTROU_TOUR_TELA2");
+                    }
+                    case 2: {
+                        FirebaseManager.registraEvento(IntroducaoActivity.this ,"ENTROU_TOUR_TELA3");
+                    }
+                    case 3: {
+                        if (!pulouTour) {
+                            FirebaseManager.registraEvento(IntroducaoActivity.this ,"ENTROU_TOUR_TELA4");
+                        }
+                    }
+                }
             }
 
             // This method will be invoked when the current page is scrolled
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                // Code goes here
+
             }
 
             // Called when the scroll state changes:
@@ -106,6 +117,8 @@ public class IntroducaoActivity extends AppCompatActivity {
     }
 
     public void pularIntroducao(){
+        FirebaseManager.registraEvento(IntroducaoActivity.this ,"PULOU_TOUR");
+        pulouTour = true;
         vpPager.setCurrentItem(3, true);
     }
 }
