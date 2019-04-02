@@ -151,7 +151,8 @@ public class AdicionarApostaCarrinhoHelper {
         });
     }
 
-    private static void checarLimiteDiario(final ApostaBO apostaBO, final IdentificaoDeUmaApostaDas8Modalidades aposta, final CarrinhoDTO carrinhoDTO) {
+    private static void checarLimiteDiario
+            (final ApostaBO apostaBO, final IdentificaoDeUmaApostaDas8Modalidades aposta, final CarrinhoDTO carrinhoDTO) {
         if (SessaoUsuario.getInstance().getParametrosSimulacao().getValorLimiteDiario()
                 .compareTo(carrinhoDTO.getValorTotal()
                         .add(IdentificaoDeUmaApostaDas8Modalidades.getValorApostaPorPrognostico(aposta)))
@@ -439,19 +440,7 @@ public class AdicionarApostaCarrinhoHelper {
     private static void onError(VolleyError error) {
         DialogUtils.dismiss();
         if (MensagensNetwork.isUnauthorizedError(error)) {
-            DBLoteriasCrud crud = new DBLoteriasCrud(context);
-            BigDecimal valorTotalCarrinho = crud.sumValorIdentificaoDeUmaApostaDas8Modalidades();
-            valorTotalCarrinho = valorTotalCarrinho.add(aposta.getValor());
-            if (valorTotalCarrinho.compareTo(SessaoUsuario.getInstance().getParametrosSimulacao().getValorLimiteDiario()) == 1) {
-                ViewUtils.alertTitleButtonYesOrNotListener(context, context.getResources().getString(R.string.MA014), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        if (AdicionarApostaCarrinhoHelper.inserirApostaCarrinhoLocal(context, aposta)) {
-                            telaConfirmarCarrinho(aposta.getModalidade(), aposta);
-                        }
-                    }
-                });
-            } else if (AdicionarApostaCarrinhoHelper.inserirApostaCarrinhoLocal(context, aposta)) {
+            if (AdicionarApostaCarrinhoHelper.inserirApostaCarrinhoLocal(context, aposta)) {
                 telaConfirmarCarrinho(aposta.getModalidade(), aposta);
             }
         } else {
