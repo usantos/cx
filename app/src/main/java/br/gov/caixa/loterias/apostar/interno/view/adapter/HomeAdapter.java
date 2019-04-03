@@ -24,6 +24,7 @@ import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -100,9 +101,11 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         if (data.get(position).getConcurso().getEstimativa().compareTo(BigDecimal.ZERO) != 0) {
             String  estimativaFormatado = ViewUtils.getMoedaFormat(data.get(position).getConcurso().getEstimativa());
             holder.valorAcumulado.setText(estimativaFormatado);
+            holder.valorAcumulado.setTextSize(20);
             holder.premioEstimadoConcurso.setText(ViewUtils.textFuturaAndFuturaBold(context, context.getString(R.string.label_premio_estimado_concurso_numero_bold,
                     data.get(position).getConcurso().getNumero())));
 
+            holder.premioEstimadoConcurso.setVisibility(View.VISIBLE);
         } else {
             holder.valorAcumulado.setText(retornaStringConcursoSemEstimativa(data.get(position).getConcurso().getNumero().toString(), estilo.getCorClara()));
             holder.valorAcumulado.setTextSize(14);
@@ -110,26 +113,41 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             holder.premioEstimadoConcurso.setVisibility(View.INVISIBLE);
         }
 
+        DateFormat formatterDay;
+        DateFormat formatterMonth;
 
-        DateFormat formatterDay = new SimpleDateFormat("EEEE");
         DateFormat formatterDate = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         Locale BRAZIL = new Locale("pt","BR");
         formatterDay = SimpleDateFormat.getDateInstance(DateFormat.FULL, BRAZIL);
+        formatterMonth = SimpleDateFormat.getDateInstance(DateFormat.MEDIUM, BRAZIL);
+
         Date dataSorteioFormatada = null;
-        Date dataFechamandoSorteio = null;
+        Date dataFechamentoSorteio = null;
 
         try {
             dataSorteioFormatada = formatterDate.parse(data.get(position).getConcurso().getDataHoraSorteio());
-            dataFechamandoSorteio = formatterDate.parse(data.get(position).getConcurso().getDataFechamento());
+            dataFechamentoSorteio = formatterDate.parse(data.get(position).getConcurso().getDataFechamento());
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
-        String[] split = formatterDay.format(dataSorteioFormatada).split(",");
-        String[] splitDataFormatadaSilce = data.get(position).getConcurso().getDataSorteio().split(" ");
-        holder.dataSorteio.setText(ViewUtils.capitalized(split[0]) + ", " + splitDataFormatadaSilce[0] + " de " + splitDataFormatadaSilce[1]);
+        if (data.get(position).getTipoModalidade() == ModalidadeEnum.LOTECA ||
+                data.get(position).getTipoModalidade() == ModalidadeEnum.LOTOGOL) {
+            holder.textViewSorteioOuEncerramento.setText(R.string.label_encerramento);
 
-        Map mapComDiferencaDeDatas = computeDiff(new Date(), dataFechamandoSorteio);
+            String[] split = formatterDay.format(dataFechamentoSorteio).split(",");
+            String[] splitMedium = formatterMonth.format(dataFechamentoSorteio).split(" ");
+
+            holder.dataSorteio.setText(ViewUtils.capitalized(split[0]) + ", " + splitMedium[0] + " de " + splitMedium[2]);
+        } else {
+            holder.textViewSorteioOuEncerramento.setText(R.string.label_sorteio_case);
+
+            String[] split = formatterDay.format(dataSorteioFormatada).split(",");
+            String[] splitDataFormatadaSilce = data.get(position).getConcurso().getDataSorteio().split(" ");
+            holder.dataSorteio.setText(ViewUtils.capitalized(split[0]) + ", " + splitDataFormatadaSilce[0] + " de " + splitDataFormatadaSilce[1]);
+        }
+
+        Map mapComDiferencaDeDatas = computeDiff(new Date(), dataFechamentoSorteio);
 
         holder.tempoRestanteParaAposta.setText(retornaStringDias((Long) mapComDiferencaDeDatas.get(TimeUnit.DAYS))
                 +retornaStringHoras((Long) mapComDiferencaDeDatas.get(TimeUnit.DAYS), (Long) mapComDiferencaDeDatas.get(TimeUnit.HOURS)));
@@ -288,6 +306,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         private RelativeLayout trevoFundo;
         private TextView premioEstimadoConcurso;
         private TextView dataSorteio;
+        private TextView textViewSorteioOuEncerramento;
         private TextView tempoRestanteParaAposta;
         private Button buttonActionResultadosModalidade;
         private RelativeLayout relativeLayoutTopResultados;
@@ -307,6 +326,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             valorAcumulado = itemView.findViewById(R.id.textVieCardAcumulatedValue);
             premioEstimadoConcurso = itemView.findViewById(R.id.textPremioEstimadoConcurso);
             dataSorteio = itemView.findViewById(R.id.textVieCardDrawDate);
+            textViewSorteioOuEncerramento = itemView.findViewById(R.id.textViewSorteioOuEncerramento);
             tempoRestanteParaAposta = itemView.findViewById(R.id.textVieCardClosingOfBets);
             tempoRestanteParaAposta = itemView.findViewById(R.id.textVieCardClosingOfBets);
             buttonActionResultadosModalidade = itemView.findViewById(R.id.buttonActionResultadosModalidade);

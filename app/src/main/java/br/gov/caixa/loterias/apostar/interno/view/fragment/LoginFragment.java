@@ -19,6 +19,7 @@ import java.util.List;
 import br.gov.caixa.loterias.apostar.interno.BuildConfig;
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bean.RetornoListaCarrinho;
+import br.gov.caixa.loterias.apostar.interno.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostar.interno.model.bo.AcessoBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.AcessoBO_;
 import br.gov.caixa.loterias.apostar.interno.model.bo.DadosUsuarioBO;
@@ -31,6 +32,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.UsuarioLogadoRes
 import br.gov.caixa.loterias.apostar.interno.model.dao.DBLoteriasCrud;
 import br.gov.caixa.loterias.apostar.interno.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostar.interno.utils.AppUtils;
+import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.CadastrarActivity_;
 import br.gov.caixa.loterias.apostar.interno.view.PrincipalActivity_;
@@ -56,13 +58,14 @@ public class LoginFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_login, container, false);
 
-        Button buttonAposte = (Button) v.findViewById(R.id.buttonAposteAgora);
+        Button buttonAposte = v.findViewById(R.id.buttonAposteAgora);
         buttonAposte.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                FirebaseManager.registraEvento(getContext() ,"ENTROU_OPCAO_DEGUSTAR");
                 KeycloakBO_.getInstance_(getActivity()).limparSessao(getActivity());
 
                 DadosUsuarioBO.updateFecharIntroducao(getActivity(), true);
-                startActivity(new Intent(getActivity(), PrincipalActivity_.class));
+                startActivity(new Intent(getContext(), PrincipalActivity_.class));
                 getActivity().finish();
             }
         });
@@ -73,6 +76,8 @@ public class LoginFragment extends Fragment {
 
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                FirebaseManager.registraEvento(getContext() ,"ENTROU_LOGIN");
+
                 DadosUsuarioBO.updateFecharIntroducao(getActivity(), true);
                 connectKeycloak();
             }
@@ -107,6 +112,8 @@ public class LoginFragment extends Fragment {
             public void onResponse(UsuarioLogadoResponse response) {
                 loadViewProgress.dismiss();
                 if (response.getRedirect() == null) {
+                    SessaoUsuario.getInstance().setValorMaximoAposta(response.getPayload().getLimiteDiario());
+
                     PrincipalActivity_.intent(getActivity()).start();
                     getActivity().finish();
                 } else {
@@ -123,7 +130,7 @@ public class LoginFragment extends Fragment {
     }
 
     private void connectKeycloak() {
-        if(AppUtils.isNetworkAvailable(getActivity())){
+        if(AppUtils.isNetworkAvailable(getContext())){
             AcessoBO.PRIMEIRO_LOGIN = true;
             AcessoBO_.getInstance_(getContext()).iniciarLoginSSO(getActivity());
         }else{

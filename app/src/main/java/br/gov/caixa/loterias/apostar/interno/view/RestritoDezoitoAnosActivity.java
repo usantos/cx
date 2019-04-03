@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import br.gov.caixa.loterias.apostar.interno.R;
+import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 
 public class RestritoDezoitoAnosActivity extends AppCompatActivity {
@@ -17,6 +18,8 @@ public class RestritoDezoitoAnosActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FirebaseManager.registraEvento(this ,"ENTROU_VALIDACAO_DEZOITO_ANOS");
+
         setContentView(R.layout.activity_restrito_dezoito_anos);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

@@ -48,6 +48,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResultadoPesquis
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.SituacaoResultadoBilheteEnum;
 import br.gov.caixa.loterias.apostar.interno.utils.AppUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.DialogUtils;
+import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostar.interno.view.ApostaConfirmadaDetalhesActivity_;
@@ -100,6 +101,8 @@ public class ApostasConfirmadasFragment extends Fragment implements ApostasConfi
         super.onResume();
 
         if (firstTime) {
+            FirebaseManager.registraEvento(getContext() ,"ENTROU_GERENCIAR_APOSTAS");
+
             if (getActivity() != null) {
                 instance = this;
 

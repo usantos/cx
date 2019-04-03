@@ -10,6 +10,7 @@ import android.webkit.WebViewClient;
 import br.gov.caixa.loterias.apostar.interno.BuildConfig;
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.utils.AppUtils;
+import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
 
@@ -40,6 +41,7 @@ public class AlterarDadosLoginCaixaActivity extends AppCompatActivity {
             paginaAlterarDadosWebView.getSettings().setJavaScriptEnabled(true);
 
             paginaAlterarDadosWebView.loadUrl(stringBuilder);
+            FirebaseManager.registraEvento(this ,"ENTROU_ALTERAR_DADOS_CAIXA");
         }else{
             loadViewProgresas.hide();
             ViewUtils.alertTitulo( this, R.string.label_atencao, getResources().getString( R.string.seminternet ) );

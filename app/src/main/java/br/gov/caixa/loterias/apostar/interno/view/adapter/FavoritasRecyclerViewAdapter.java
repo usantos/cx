@@ -42,6 +42,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RetornoPadraoDTO
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostar.interno.utils.DialogUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.EstiloModalidade;
+import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.FavoritasActivity;
 import br.gov.caixa.loterias.apostar.interno.view.custom.AdicionarCarrinhoFavoritasView;
@@ -119,7 +120,6 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
         holder.tituloApostaFavorita.setText(listaApostaFavorita.get(position).getModalidade().getDescricao());
         holder.tituloApostaFavorita.setTextColor(context.getResources().getColor(estilo.getCorClara()));
         holder.tituloNomeApostaFavorita.setText(" | " + listaApostaFavorita.get(position).getNome());
-//
         StringBuilder numeroStr = new StringBuilder();
         for (Integer num : listaApostaFavorita.get(position).getNumerosSelecionados()) {
             if (num.equals(listaApostaFavorita.get(position).getNumerosSelecionados().get(listaApostaFavorita.get(position).getNumerosSelecionados().size() - 1))) {
@@ -236,6 +236,7 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
         apostaBO.deleteApostasFavoritas(listaApostaFavorita.get(position).getId() + "", new RequestListener<RetornoPadraoDTO>() {
             @Override
             public void onResponse(RetornoPadraoDTO response) {
+                FirebaseManager.registraEvento(context ,"EFETUOU_EXCLUSAO_FAVORITO");
                 loadViewProgress.dismiss();
                 removeAt(position);
             }
@@ -252,6 +253,7 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
         apostaBO.postIncluirApostaFavoritaCarrinho(idApostaFavorita, valorTipoConcurso, qtdTeimosinhas, new RequestListener<CarrinhoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoDTOResponse response) {
+                FirebaseManager.registraEvento(context ,"EFETUOU_INCLUSAO_FAVORITO_NO_CARRINHO");
                 DialogUtils.dismiss();
                 ViewUtils.alert(context, context.getResources().getString(R.string.label_aposta_salva_carinha));
             }
@@ -273,6 +275,7 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
         apostaBO.postApostasFavoritas(apostaFavoritaDTO, new RequestListener<Boolean>() {
             @Override
             public void onResponse(Boolean response) {
+                FirebaseManager.registraEvento(context ,"EFETUOU_TROCA_DO_NOME_DA_APOSTA_FAVORITA");
                 apostaFavoritaDTO.setOpenSwipeLayout(true);
                 apostaFavoritaDTO.setNome(holder.editTextNomeDaAposta.getText().toString());
                 holder.tituloNomeApostaFavorita.setText(" | " + holder.editTextNomeDaAposta.getText().toString());

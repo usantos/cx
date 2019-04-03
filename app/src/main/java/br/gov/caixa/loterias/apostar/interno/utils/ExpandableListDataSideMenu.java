@@ -20,7 +20,6 @@ public class ExpandableListDataSideMenu {
         minhaArea.add("Compras");
         minhaArea.add("Favoritas");
 
-        List<String> Apostar = new ArrayList<>();
         List<String> Resultados = new ArrayList<>();
         List<String> Rapidao = new ArrayList<>();
         List<String> bilhetes = new ArrayList<>();
@@ -28,7 +27,6 @@ public class ExpandableListDataSideMenu {
 
 
         expandableListDetail.put("Minha área", minhaArea);
-        expandableListDetail.put("Apostar", Apostar);
         expandableListDetail.put("Resultados", Resultados);
         expandableListDetail.put("Rapidão", Rapidao);
 //        expandableListDetail.put("Ler bilhete", bilhetes);

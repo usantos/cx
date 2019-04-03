@@ -27,6 +27,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.AgrupadorApostaCompraDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CompraDTO;
+import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.ListaComprasDetalhesAdapter;
 import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
@@ -141,6 +142,8 @@ public class DetalhesComprasActivity extends AppCompatActivity {
             @Override
             public void onResponse(AgrupadorApostaCompraDTOResponse response) {
                 loadViewProgress.dismiss();
+                FirebaseManager.registraEvento(DetalhesComprasActivity.this ,"ENTROU_COMPRAS_DETALHE");
+
                 listaAposta = response.getPayload().getApostas();
 
                 tiposApostas = new ArrayList<>();

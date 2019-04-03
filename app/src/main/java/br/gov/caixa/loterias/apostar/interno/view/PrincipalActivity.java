@@ -68,6 +68,7 @@ import br.gov.caixa.loterias.apostar.interno.model.sp.CarrinhoSP;
 import br.gov.caixa.loterias.apostar.interno.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostar.interno.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostar.interno.utils.ExpandableListDataSideMenu;
+import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostar.interno.utils.StringUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.Utils;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
@@ -94,7 +95,7 @@ public class PrincipalActivity extends AppCompatActivity
     @ViewById
     protected Button buttonHomeBet;
     @ViewById
-    protected TextView ttvIniciais, textViewHomeCountBetsCart, textViewHomeMinimumPurchaseValue, tituloLerBilhetes, textoRepassados, valorRepassesPrincipal, txtVersaoMenu, nav_user, nav_ultima_aposta;
+    protected TextView textViewHomeCountBetsCart, textViewHomeMinimumPurchaseValue, tituloLerBilhetes, textoRepassados, valorRepassesPrincipal, txtVersaoMenu, nav_user;
     @ViewById
     protected RelativeLayout relativeContentPrincipal,
             relativeBlankView, relativeLayoutContentRapidao, relativeLayoutContentLerBilhetes, relativeLayoutContentFavoritas, relativeLayoutContentRepassados,
@@ -113,7 +114,7 @@ public class PrincipalActivity extends AppCompatActivity
     private RepassometroDTO repassesSociais;
     private DBLoteriasHelper dbLoteriasHelper;
     private View actionApresentarTrevo, actionSettings;
-    private int groupHeight;
+    private AlertDialog loadViewProgress;
 
     private boolean realizandoLogin = false;
 
@@ -121,44 +122,34 @@ public class PrincipalActivity extends AppCompatActivity
     public void init() {
         setSupportActionBar(toolbar);
 
-        String separarNome[] = DadosUsuarioBO.obterNome().toLowerCase().split(" ");
-        String nomeUsuario = StringUtils.capitalizer(separarNome[0]+" "+separarNome[separarNome.length - 1]);
 
-        String iniciais = "";
-        boolean proximo = false;
-        char separarNomeUsuario[] = nomeUsuario.toCharArray();
-
-        for (char caracter: separarNomeUsuario) {
-            if("".equals(iniciais) || proximo){
-                iniciais += caracter;
-                proximo = false;
-            }
-            if(caracter == ' '){
-                proximo = true;
-            }
-        }
-
-        ttvIniciais.setText(iniciais);
         txtVersaoMenu.setText(BuildConfig.VERSION_NAME);
-
-        if(!" ".equals(nomeUsuario)) {
-            String texto = "Olá, _%_!";
-            texto = texto.replace("%", nomeUsuario);
-            nav_user.setText(ViewUtils.textFuturaAndFuturaBold(this, texto));
-        }else {
-            nav_user.setText("Olá!");
-        }
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         toolbarListener();
-        nav_ultima_aposta.setText(ViewUtils.textFuturaAndFuturaBold( this,  "Sua última aposta foi em _24/08/2017_") );
         layoutSideMenu();
         listenerSair();
         callWebservice();
         iniciarBancoLocal();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        String separarNome[] = DadosUsuarioBO.obterNome().toLowerCase().split(" ");
+        String nomeUsuario = StringUtils.capitalizer(separarNome[0]+" "+separarNome[separarNome.length - 1]);
+
+        if(!" ".equals(nomeUsuario)) {
+            String texto = "Olá, _%_!";
+            texto = texto.replace("%", nomeUsuario);
+            nav_user.setText(ViewUtils.textFuturaAndFuturaBold(this, texto));
+        }else {
+            nav_user.setText("Olá, seja bem-vindo ao\n App Loterias.");
+        }
+
     }
 
     private void listenerSair() {
@@ -196,7 +187,7 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     private void callWebservice() {
-        final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
+        loadViewProgress = LoadingViewLoterias.show(this);
 
         final DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(PrincipalActivity.this);
 
@@ -204,6 +195,7 @@ public class PrincipalActivity extends AppCompatActivity
             @Override
             public void onResponse(ParametrosSimulacaoResponse response) {
                 loadViewProgress.dismiss();
+                FirebaseManager.registraEvento(PrincipalActivity.this ,"ENTROU_LISTA_MODALIDADES");
 
                 if(response.getPayload().getValorLimiteDiario() == null){
                     response.getPayload().setValorLimiteDiario(BigDecimal.ZERO);
@@ -220,6 +212,7 @@ public class PrincipalActivity extends AppCompatActivity
                     });
                     return;
                 }
+
                 paramatroSimulacaoSuccess(response);
             }
 
@@ -337,6 +330,8 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     private void AnimacaoAbrirMenuRapido(View v) {
+        FirebaseManager.registraEvento(PrincipalActivity.this ,"ENTROU_MENU_TREVO");
+
         relativeContentPrincipal.setEnabled(false);
         actionApresentarTrevo.setEnabled(false);
         atalhoRapidoLoterias.setVisibility(View.VISIBLE);
@@ -413,6 +408,8 @@ public class PrincipalActivity extends AppCompatActivity
                     dadosUsuarioBO.sair(new RequestListener<NetworkResponse>() {
                         @Override
                         public void onResponse(NetworkResponse response) {
+                            FirebaseManager.registraEvento(PrincipalActivity.this ,"EFETUOU_LOGOUT_SUCESSO");
+
                             AcessoBO_.getInstance_(PrincipalActivity.this).iniciarLogoutSSO();
                             LoginSP.loginRealizado(false);
                             realizandoLogin = true;
@@ -426,6 +423,7 @@ public class PrincipalActivity extends AppCompatActivity
                         }
                     });
                 } else {
+                    FirebaseManager.registraEvento(PrincipalActivity.this ,"EFETUOU_LOGOUT_OFFLINE_SUCESSO");
                     startActivity(new Intent(PrincipalActivity.this, LoginActivity.class));
                     finish();
                 }
@@ -463,6 +461,8 @@ public class PrincipalActivity extends AppCompatActivity
 
     @Click(R.id.buttonHomeBet)
     protected void clickButtonHomeBet() {
+        FirebaseManager.registraEvento(PrincipalActivity.this ,"ENTROU_SIMULAR_APOSTA" + modalidadesParaListar.get(Integer.parseInt(buttonHomeBet.getTag().toString())).getParametroJogo().getConcurso().getModalidade());
+
         Intent activity = new Intent(PrincipalActivity.this, SimularApostaActivity_.class);
         activity.putExtra("tipoAposta", modalidadesParaListar.get(Integer.parseInt(buttonHomeBet.getTag().toString())).getParametroJogo().getConcurso().getModalidade());
         activity.putExtra("modalidade", (new Gson()).toJson(modalidadesParaListar.get(Integer.parseInt(buttonHomeBet.getTag().toString())).getParametroJogo()));
@@ -511,10 +511,10 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     private void AbrirMenusGroup(int groupPosition) {
-      if (groupPosition == 1) {
-            drawerLayout.closeDrawers();
-        } else if (groupPosition == 3) {
+        if (groupPosition == 2) {
             startActivity(new Intent(PrincipalActivity.this, ListaRapidaoActivity.class));
+        } else if (groupPosition == 3) {
+            startActivity(new Intent(PrincipalActivity.this, RepassesSociaisActivity.class));
         } else if (groupPosition == 4) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
                     != PackageManager.PERMISSION_GRANTED) {
@@ -523,9 +523,7 @@ public class PrincipalActivity extends AppCompatActivity
             } else {
                 startActivity(new Intent(PrincipalActivity.this, LerBilhetesActivity.class));
             }
-        } else if (groupPosition == 5) {
-            startActivity(new Intent(PrincipalActivity.this, RepassesSociaisActivity.class));
-        }
+        } else
 
         if (groupPosition != 0) {
             drawerLayout.closeDrawer(Gravity.START, false);
@@ -599,9 +597,16 @@ public class PrincipalActivity extends AppCompatActivity
         }
     }
 
+    private void dismissProgressDialog() {
+        if (loadViewProgress != null && loadViewProgress.isShowing()) {
+            loadViewProgress.dismiss();
+        }
+    }
+
     @Override
     protected void onDestroy() {
         dbLoteriasHelper.close();
+        dismissProgressDialog();
         super.onDestroy();
     }
 }

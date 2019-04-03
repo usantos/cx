@@ -32,6 +32,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ListSecaoDTOResp
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResourceResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.TermoDeUsoDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.utils.DialogUtils;
+import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.ItemDuvidaAdapter;
 import br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightRecyclerView;
@@ -174,6 +175,7 @@ public class TermosUsoActivity extends AppCompatActivity {
                 webViewConteudo.loadData(termoHtml, "text/html; charset=UTF-8", "UTF-8");
                 DialogUtils.dismiss();
                 selectTermoUso();
+                FirebaseManager.registraEvento(TermosUsoActivity.this ,"ENTROU_TERMOS_DE_USO");
             }
 
             @Override
@@ -311,6 +313,7 @@ public class TermosUsoActivity extends AppCompatActivity {
                     DialogUtils.dismiss();
                     secaoDuvidas = response.getPayload();
                     createRecyclerView();
+                    FirebaseManager.registraEvento(TermosUsoActivity.this ,"ENTROU_DUVIDAS");
                 }
 
                 @Override

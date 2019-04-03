@@ -66,6 +66,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametroMesDeSo
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametroValorApostaDTO;
 import br.gov.caixa.loterias.apostar.interno.utils.Constantes;
 import br.gov.caixa.loterias.apostar.interno.utils.DialogUtils;
+import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.fragment.CartelaFragment;
 import br.gov.caixa.loterias.apostar.interno.view.fragment.MesesFragment_;
@@ -437,6 +438,8 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
                 dadosCorporativosBO.salvarApostaFavorita(aposta, new RequestListener<NetworkResponse>() {
                     @Override
                     public void onResponse(NetworkResponse response) {
+                        FirebaseManager.registraEvento(SimularApostaActivity.this ,"EFETUOU_ADICAO_APOSTA_FAVORITA_SUCESSO");
+
                         DialogUtils.dismiss();
 
                         RelativeLayout salvarApostaLayout = getSalvarApostaLayout();
@@ -629,6 +632,8 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
     }
 
     private void modalNumeros() {
+        FirebaseManager.registraEvento(this ,"ENTROU_SELECAO_PROGNOSTICOS");
+
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.custom_dialog_list_view);
 
@@ -689,6 +694,8 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
 
 
     private void modalTeimosinhas() {
+        FirebaseManager.registraEvento(this ,"ENTROU_POPUP_TEIMOSINHA");
+
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.custom_dialog_list_view);
 

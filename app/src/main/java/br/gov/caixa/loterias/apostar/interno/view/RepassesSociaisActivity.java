@@ -21,6 +21,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RepassometroDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RepassometroDTOResponse;
+import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.animation.AnimacaoCalculoRepassesSociais;
 import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
@@ -66,6 +67,7 @@ public class RepassesSociaisActivity extends SettingToolbarActivity {
             @Override
             public void onResponse(RepassometroDTOResponse response) {
                 loadViewProgress.dismiss();
+                FirebaseManager.registraEvento(RepassesSociaisActivity.this ,"ENTROU_REPASSOMETRO");
                 repasseOBj = response.getPayload();
                 setLayout();
                 if (response.getRedirect() != null){
