@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "415314801313",
+    "firebase_url": "https://simlo-c411b.firebaseio.com",
+    "project_id": "simlo-c411b",
+    "storage_bucket": "simlo-c411b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:415314801313:android:27dce0823e7bf26c",
+        "android_client_info": {
+          "package_name": "br.gov.caixa.loterias.apostar.interno"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "415314801313-udpvsr92cmonlc9t3d45tv6nvbt9nami.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3rRRAbB_035uYkCH4kUqzepgLAded6L4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
