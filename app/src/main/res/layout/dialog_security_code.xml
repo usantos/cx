@@ -8,7 +8,7 @@
         android:layout_height="wrap_content"
         android:text="@string/label_digite_cod_seguranca"
         android:gravity="left"
-        android:lines="4"/>
+        />
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="50dp"

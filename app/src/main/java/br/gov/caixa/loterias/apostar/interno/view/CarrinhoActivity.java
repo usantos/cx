@@ -229,5 +229,6 @@ public class CarrinhoActivity extends SettingToolbarActivity {
             valorTotalCarrinho = valorTotalCarrinho.add(aposta.getValor());
         }
         ViewUtils.setMoedaFormatHtml(valorTotalCarrinho, this.valorTotalCarrinho);
+        carrinho.setValorTotal(valorTotalCarrinho);
     }
 }

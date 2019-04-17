@@ -415,6 +415,8 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                             DialogUtils.dismiss();
                             Fragment fragment;
 
+                            resultadoConcursoDTO = result.getPayload();
+
                             fragment = ApostaConfirmadaNumeroDetalhesPremioPago_.builder().aposta(aposta).resultadoConcursoDTO(resultadoConcursoDTO).build();
 
                             linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), estilo.getCorEscura()));
