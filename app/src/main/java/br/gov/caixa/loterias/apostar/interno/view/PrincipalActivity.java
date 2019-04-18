@@ -77,6 +77,7 @@ import br.gov.caixa.loterias.apostar.interno.view.adapter.SideMenuExpandleAdapte
 import br.gov.caixa.loterias.apostar.interno.view.animation.AnimacaoCalculoRepassesSociais;
 import br.gov.caixa.loterias.apostar.interno.view.animation.AnimacoesAcessoRapido;
 import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
+import br.gov.caixa.loterias.apostar.view.LerBilhetesActivity;
 
 @OptionsMenu(R.menu.principal)
 @EActivity(R.layout.activity_principal)
