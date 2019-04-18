@@ -32,12 +32,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostar.interno.BuildConfig;
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bean.MeioPagamento;
 import br.gov.caixa.loterias.apostar.interno.model.bean.ParametrosPagamento;
+import br.gov.caixa.loterias.apostar.interno.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostar.interno.model.bo.DadosUsuarioBO;
@@ -45,9 +47,11 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.DadosUsuarioBO_;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CarrinhoDTO;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ListCartaoDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RetornoCartao;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RetornoPadraoDTO;
+import br.gov.caixa.loterias.apostar.interno.model.dao.DBLoteriasCrud;
 import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.FormaPagamentoRecyclerViewAdapter;
@@ -74,18 +78,25 @@ public class FormaPagamentoActivity extends SettingToolbarActivity implements Fo
         gson = new Gson();
 
         configuraClickBotoes();
-        callWebservice();
-        recebendoInformacoes();
 
         ViewUtils.organizaTabLayout(this, R.id.formaPagamentoMainLayout, R.id.formasPagamentoRecyclerView, R.id.formaPagamentoScrollView);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        callWebservice();
+        recebendoInformacoes();
+    }
+
     private void recebendoInformacoes() {
+
         try {
             String json = getIntent().getExtras().getString("CARRINHO");
             carrinhoDTO = gson.fromJson(json, CarrinhoDTO.class);
-            TextView valorTotalCarrinho = findViewById(R.id.valorTotalCarrinho);
             String valor = ViewUtils.getMoedaFormat(carrinhoDTO.getValorTotal());
+            TextView valorTotalCarrinho = findViewById(R.id.valorTotalCarrinho);
             valorTotalCarrinho.setText(valor);
         }catch (Exception e){
             e.printStackTrace();
@@ -175,36 +186,31 @@ public class FormaPagamentoActivity extends SettingToolbarActivity implements Fo
 
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder( FormaPagamentoActivity.this);
                 alertDialogBuilder.setView(promptsView);
-                final EditText userInput = (EditText) promptsView
+                final EditText userInput = promptsView
                         .findViewById(R.id.cvvCardNumberEditText);
                 alertDialogBuilder
                         .setCancelable(false)
                         .setPositiveButton("Confirmar",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog,int id) {
-                                        if (userInput.getText().toString().length() == 3){
-                                            String cardId = formaPagamentoRecyclerViewAdapter.valoresList.get(formaPagamentoRecyclerViewAdapter.selected_position).getIdCartao().toString();
-                                            createToken( cardId,  userInput.getText().toString());
-                                        }else{
-                                            ViewUtils.alertTitleButtonPositiveListener(
-                                                    FormaPagamentoActivity.this,
-                                                    R.string.label_atencao, getResources().getString( R.string.label_informa_cvv ),
-                                                    R.string.ok, new DialogInterface.OnClickListener() {
-                                                        @Override
-                                                        public void onClick(DialogInterface dialog, int which) {
-                                                            ((Button) findViewById(R.id.botaoAvancarPagamento)).performClick();
-                                                        }
+                                (DialogInterface dialog, int which) -> {
+                                    if (userInput.getText().toString().length() == 3){
+                                        String cardId = formaPagamentoRecyclerViewAdapter.valoresList.get(formaPagamentoRecyclerViewAdapter.selected_position).getIdCartao().toString();
+                                        createToken( cardId,  userInput.getText().toString());
+                                    }else{
+                                        ViewUtils.alertTitleButtonPositiveListener(
+                                                FormaPagamentoActivity.this,
+                                                R.string.label_atencao, getResources().getString( R.string.label_informa_cvv ),
+                                                R.string.ok, new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialog, int which) {
+                                                        ((Button) findViewById(R.id.botaoAvancarPagamento)).performClick();
                                                     }
-                                            );
-                                        }
-
+                                                }
+                                        );
                                     }
                                 })
                         .setNegativeButton("Cancelar",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog,int id) {
+                                (DialogInterface dialog, int which) -> {
                                         dialog.cancel();
-                                    }
                                 });
                 AlertDialog alertDialog = alertDialogBuilder.create();
                 alertDialog.show();
@@ -228,7 +234,7 @@ public class FormaPagamentoActivity extends SettingToolbarActivity implements Fo
     private void createToken(String cardId, String securityCode) {
         SavedCardToken savedCardToken = new SavedCardToken(cardId, securityCode);
 
-        loadViewProgress.show();
+        loadViewProgress = LoadingViewLoterias.show(this);
         MercadoPago mMercadoPago = new MercadoPago.Builder()
                 .setContext(this)
                 .setPublicKey( BuildConfig.PUBLIC_KEY_MP )
@@ -299,6 +305,7 @@ public class FormaPagamentoActivity extends SettingToolbarActivity implements Fo
         },new Response.ErrorListener(){
             @Override
             public void onErrorResponse(VolleyError volleyError) {
+                loadViewProgress.dismiss();
                 Log.d("volleyError", "volleyError: "+ volleyError.toString());
             }
         });

@@ -77,6 +77,7 @@ import br.gov.caixa.loterias.apostar.interno.view.adapter.SideMenuExpandleAdapte
 import br.gov.caixa.loterias.apostar.interno.view.animation.AnimacaoCalculoRepassesSociais;
 import br.gov.caixa.loterias.apostar.interno.view.animation.AnimacoesAcessoRapido;
 import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
+import br.gov.caixa.loterias.apostar.view.LerBilhetesActivity;
 
 @OptionsMenu(R.menu.principal)
 @EActivity(R.layout.activity_principal)
@@ -301,15 +302,12 @@ public class PrincipalActivity extends AppCompatActivity
                 actionApresentarTrevo = toolbar.findViewById(R.id.action_apresentar_trevo);
                 if (actionApresentarTrevo != null) {
                     toolbar.removeOnLayoutChangeListener(this);
-                    actionApresentarTrevo.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            if (modalidadesParaListar != null && modalidadesParaListar.size() > 0) {
-                                if (relativeContentPrincipal.isEnabled()) {
-                                    AnimacaoAbrirMenuRapido(actionApresentarTrevo);
-                                } else {
-                                    AnimacaoFecharMenuRapido(actionApresentarTrevo);
-                                }
+                    actionApresentarTrevo.setOnClickListener(view -> {
+                        if (modalidadesParaListar != null && modalidadesParaListar.size() > 0) {
+                            if (relativeContentPrincipal.isEnabled()) {
+                                AnimacaoAbrirMenuRapido(actionApresentarTrevo);
+                            } else {
+                                AnimacaoFecharMenuRapido(actionApresentarTrevo);
                             }
                         }
                     });
@@ -317,12 +315,9 @@ public class PrincipalActivity extends AppCompatActivity
                 actionSettings = toolbar.findViewById(R.id.action_settings);
                 if (actionSettings != null) {
                     toolbar.removeOnLayoutChangeListener(this);
-                    actionSettings.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            Intent activity = new Intent(PrincipalActivity.this, TermosUsoActivity.class);
-                            startActivity(activity);
-                        }
+                    actionSettings.setOnClickListener(view -> {
+                        Intent activity = new Intent(PrincipalActivity.this, TermosUsoActivity.class);
+                        startActivity(activity);
                     });
                 }
             }

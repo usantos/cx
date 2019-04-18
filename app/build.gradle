@@ -13,8 +13,8 @@ android {
         applicationId "br.gov.caixa.loterias.apostar.interno"
         minSdkVersion 21
         targetSdkVersion 27
-        versionCode 21101011
-        versionName "1.0.1"
+        versionCode 21101021
+        versionName "1.0.2"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -200,7 +200,6 @@ dependencies {
 
     implementation 'com.google.firebase:firebase-core:16.0.6'
     implementation 'com.crashlytics.sdk.android:crashlytics:2.9.9'
-    implementation 'com.google.android.gms:play-services-safetynet:16.0.0'
 
     // testImplementation deps
     testImplementation 'junit:junit:4.12'
