@@ -7,24 +7,24 @@
         android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:text="@string/label_digite_cod_seguranca"
-        android:gravity="left"
+        android:gravity="center"
         />
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="50dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="left"
-        >
-    <EditText
-        android:id="@+id/cvvCardNumberEditText"
-        android:inputType="textPassword"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:hint="CVV"
-        android:textSize="12dp"
-        android:maxLength="3"
+        android:layout_gravity="center"
+        android:layout_marginTop="50px">
 
-        />
+        <EditText
+            android:id="@+id/cvvCardNumberEditText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:hint="CVV"
+            android:inputType="textPassword"
+            android:maxLength="3"
+            android:textSize="12dp" />
     </android.support.design.widget.TextInputLayout>
 
 </LinearLayout>
