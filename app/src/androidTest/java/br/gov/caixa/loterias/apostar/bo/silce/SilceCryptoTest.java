@@ -12,8 +12,6 @@ import java.util.Map;
 
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.Bin;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.SilceCrypto;
-import br.gov.caixa.loterias.apostar.model.bo.silce.internals.Bin;
-import br.gov.caixa.loterias.apostar.model.bo.silce.internals.SilceCrypto;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;

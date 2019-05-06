@@ -25,17 +25,23 @@ public final class FavoritasRapidaoRecyclerAdapter extends RecyclerView.Adapter<
     private final List<ApostaFavoritaDTO> listaApostaFavorita;
     private final List<ApostaFavoritaDTO> listaApostasSelecionadas;
     private FavoritasRapidaoRecyclerAdapter.Favorito favorito;
+    boolean isConfigFavoritasList = false;
 
-    public FavoritasRapidaoRecyclerAdapter(final Activity activity, final Context context, final List<ApostaFavoritaDTO> listaApostaFavorita, final List<ApostaFavoritaDTO> listaApostasSelecionadas) {
+    public FavoritasRapidaoRecyclerAdapter(final Activity activity, final Context context, final List<ApostaFavoritaDTO> listaApostaFavorita, final List<ApostaFavoritaDTO> listaApostasSelecionadas, boolean isConfigFavoritasList) {
         this.context = context;
         this.listaApostaFavorita = listaApostaFavorita;
         this.listaApostasSelecionadas = listaApostasSelecionadas;
         this.activity = activity;
+        this.isConfigFavoritasList = isConfigFavoritasList;
     }
 
     @Override
     public FavoritasRapidaoRecyclerAdapter.ViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
         final Context context = parent.getContext();
+        if (listaApostaFavorita.size() == 0) {
+            return new FavoritasRapidaoRecyclerAdapter.ViewHolder(LayoutInflater.from(context).inflate(R.layout.row_apostas_favoritas_rapidao_empty, parent, false));
+        }
+
         final View view = LayoutInflater.from(context).inflate(R.layout.linearlayout_aposta_favorita, parent, false);
         final FavoritasRapidaoRecyclerAdapter.ViewHolder viewHolder = new FavoritasRapidaoRecyclerAdapter.ViewHolder(view);
 
@@ -44,49 +50,51 @@ public final class FavoritasRapidaoRecyclerAdapter extends RecyclerView.Adapter<
 
     @Override
     public void onBindViewHolder(@NonNull FavoritasRapidaoRecyclerAdapter.ViewHolder holder, int position) {
-        EstiloModalidade estilo = new EstiloModalidade(ModalidadeEnum.toString(listaApostaFavorita.get(position).getModalidade().getDescricao().toLowerCase()));
-        holder.modalidades.setText(listaApostaFavorita.get(position).getModalidade().getDescricao());
-        holder.modalidades.setTextColor(context.getResources().getColor(estilo.getCorClara()));
-        holder.setIsRecyclable(false);
+        if (listaApostaFavorita.size() > 0) {
+            EstiloModalidade estilo = new EstiloModalidade(ModalidadeEnum.toString(listaApostaFavorita.get(position).getModalidade().getDescricao().toLowerCase()));
+            holder.modalidades.setText(listaApostaFavorita.get(position).getModalidade().getDescricao());
+            holder.modalidades.setTextColor(context.getResources().getColor(estilo.getCorClara()));
+            holder.setIsRecyclable(false);
 
-        StringBuilder numeroStr = new StringBuilder();
-        for (Integer num : listaApostaFavorita.get(position).getNumerosSelecionados()) {
-            if (num.equals(listaApostaFavorita.get(position).getNumerosSelecionados().get(listaApostaFavorita.get(position).getNumerosSelecionados().size() - 1))) {
-                numeroStr.append(String.format("%02d", num));
-            } else {
-                numeroStr.append(String.format("%02d - ", num));
-            }
-        }
-
-
-        final ApostaFavoritaDTO aposta = listaApostaFavorita.get( position );
-
-        if (ModalidadeEnum.fromInteger(aposta.getModalidade().getValor()) == ModalidadeEnum.TIMEMANIA) {
-            numeroStr.append("\nTime do coração: ").append(aposta.getTimeDoCoracao().getNome());
-        }
-
-        if (ModalidadeEnum.fromInteger(aposta.getModalidade().getValor()) == ModalidadeEnum.DIA_DE_SORTE) {
-            numeroStr.append("\nMês de sorte: ").append(aposta.getMesDeSorte().getNome());
-        }
-
-        holder.numerosEDetalhes.setText(numeroStr.toString());
-
-        if (listaApostasSelecionadas != null) {
-            if (isSelected(aposta)) {
-                holder.checkBox.setChecked(true);
-            }
-
-            holder.checkBox.setOnCheckedChangeListener( (CompoundButton compoundButton, boolean b) ->  {
-                if(favorito != null) {
-                    if (b) {
-                        favorito.onIncluso(aposta);
-                    }else{
-                        favorito.onRemover(aposta);
-                    }
+            StringBuilder numeroStr = new StringBuilder();
+            for (Integer num : listaApostaFavorita.get(position).getNumerosSelecionados()) {
+                if (num.equals(listaApostaFavorita.get(position).getNumerosSelecionados().get(listaApostaFavorita.get(position).getNumerosSelecionados().size() - 1))) {
+                    numeroStr.append(String.format("%02d", num));
+                } else {
+                    numeroStr.append(String.format("%02d - ", num));
                 }
-            });
-        } else {
-            holder.checkBox.setVisibility(View.GONE);
+            }
+
+
+            final ApostaFavoritaDTO aposta = listaApostaFavorita.get( position );
+
+            if (ModalidadeEnum.fromInteger(aposta.getModalidade().getValor()) == ModalidadeEnum.TIMEMANIA) {
+                numeroStr.append("\nTime do coração: ").append(aposta.getTimeDoCoracao().getNome());
+            }
+
+            if (ModalidadeEnum.fromInteger(aposta.getModalidade().getValor()) == ModalidadeEnum.DIA_DE_SORTE) {
+                numeroStr.append("\nMês de sorte: ").append(aposta.getMesDeSorte().getNome());
+            }
+
+            holder.numerosEDetalhes.setText(numeroStr.toString());
+
+            if (listaApostasSelecionadas != null) {
+                if (isSelected(aposta)) {
+                    holder.checkBox.setChecked(true);
+                }
+
+                holder.checkBox.setOnCheckedChangeListener( (CompoundButton compoundButton, boolean b) ->  {
+                    if(favorito != null) {
+                        if (b) {
+                            favorito.onIncluso(aposta);
+                        }else{
+                            favorito.onRemover(aposta);
+                        }
+                    }
+                });
+            } else {
+                holder.checkBox.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -114,7 +122,11 @@ public final class FavoritasRapidaoRecyclerAdapter extends RecyclerView.Adapter<
 
         @Override
     public int getItemCount() {
-        return listaApostaFavorita.size();
+        if (!isConfigFavoritasList) {
+            return listaApostaFavorita.size() == 0 ? 1 : listaApostaFavorita.size();
+        } else {
+            return listaApostaFavorita.size();
+        }
     }
 
     public void setOnFavorito(FavoritasRapidaoRecyclerAdapter.Favorito favorito){

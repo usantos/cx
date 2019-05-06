@@ -234,11 +234,10 @@ public class ApostaBO extends BaseBO {
                                      final RequestListener<ResultadoConsultaBilheteDTOResponse> listener) {
 
         LinkedHashMap<String, String> headers = new LinkedHashMap<>();
-        headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
 
         Map<String, String> params = new HashMap<>();
         params.put("codigo", codigoBilhete);
-        params.put("grecaptchaResponse", " ");
+        params.put("grecaptchaResponse", "");
 
         final GsonRequest request = silceConnection.buildPostRequest(ServerMethods.BILHETES_CONFERIR_BILHETE_PATH, new LinkedHashMap<>(),
                 params, ResultadoConsultaBilheteDTOResponse.class,

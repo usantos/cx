@@ -14,8 +14,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+
 import br.com.sapereaude.maskedEditText.MaskedEditText;
 import br.gov.caixa.loterias.apostar.interno.R;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.Crypto;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 
 public class InsercaoManualCodBarrasActivity extends AppCompatActivity {
@@ -57,8 +66,23 @@ public class InsercaoManualCodBarrasActivity extends AppCompatActivity {
                 if("".equals(editTextNumeroBilhete.getRawText())){
                     Toast.makeText(InsercaoManualCodBarrasActivity.this, "Informe o código do bilhete!", Toast.LENGTH_SHORT).show();
                 }else{
-                    ResultadoLerBilhetesActivity_.intent(InsercaoManualCodBarrasActivity.this).codBarras(editTextNumeroBilhete.getRawText()).start();
-                }
+                    try {
+                        String code = Crypto.cripfyBarcode(editTextNumeroBilhete.getRawText());
+                        ResultadoLerBilhetesActivity_.intent(InsercaoManualCodBarrasActivity.this).codBarras(code).start();
+                    } catch (NoSuchAlgorithmException e) {
+                        e.printStackTrace();
+                    } catch (InvalidKeySpecException e) {
+                        e.printStackTrace();
+                    } catch (NoSuchPaddingException e) {
+                        e.printStackTrace();
+                    } catch (BadPaddingException e) {
+                        e.printStackTrace();
+                    } catch (IllegalBlockSizeException e) {
+                        e.printStackTrace();
+                    } catch (InvalidKeyException e) {
+                        e.printStackTrace();
+                    }
+                 }
             }
         });
 

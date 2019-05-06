@@ -78,18 +78,23 @@ public class BaseBO {
                                 authorizationService.performTokenRequest(tokenRequest, new AuthorizationService.TokenResponseCallback() {
                                     @Override
                                     public void onTokenRequestCompleted(@Nullable TokenResponse response, @Nullable AuthorizationException ex) {
-                                        KeycloakBO_.getInstance_(context).setAccessToken(response.accessToken);
-                                        KeycloakBO_.getInstance_(context).setRefreshToken(response.refreshToken);
-
-                                        if (keycloakBO.getAccessToken() != null) {
-                                            //Atualiza o token com os headers
-                                            headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
-                                            request.setHeaders(headers);
-                                            //Refaz a conexão
-                                            silceConnection.request(request);
-                                        } else {
+                                        if (response.accessToken == null || response.refreshToken == null) {
                                             listener.onErrorResponse(error);
+                                        } else {
+                                            KeycloakBO_.getInstance_(context).setAccessToken(response.accessToken);
+                                            KeycloakBO_.getInstance_(context).setRefreshToken(response.refreshToken);
+
+                                            if (keycloakBO.getAccessToken() != null) {
+                                                //Atualiza o token com os headers
+                                                headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
+                                                request.setHeaders(headers);
+                                                //Refaz a conexão
+                                                silceConnection.request(request);
+                                            } else {
+                                                listener.onErrorResponse(error);
+                                            }
                                         }
+
                                     }
                                 });
                             }

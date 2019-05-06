@@ -103,7 +103,11 @@ public class RapidaoApostaFavoritasSelecaoActivity extends AppCompatActivity {
 
                 apostaFavoritaLista = response.getPayload().getLista();
                 //recyclerView
-                apostaFavoritaAdapter  = new FavoritasRapidaoRecyclerAdapter(RapidaoApostaFavoritasSelecaoActivity.this,RapidaoApostaFavoritasSelecaoActivity.this, apostaFavoritaLista, apostasFavoritaListaSelecionadas);
+                apostaFavoritaAdapter  = new FavoritasRapidaoRecyclerAdapter(RapidaoApostaFavoritasSelecaoActivity.this,
+                                                                 RapidaoApostaFavoritasSelecaoActivity.this,
+                                                                        apostaFavoritaLista, apostasFavoritaListaSelecionadas,
+                                                       false);
+
                 layoutManager = new LinearLayoutManager(RapidaoApostaFavoritasSelecaoActivity.this);
 
                 recycleApostasFavoritasRapidao.setHasFixedSize(true);
