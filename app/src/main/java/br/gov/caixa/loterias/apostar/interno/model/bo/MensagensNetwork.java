@@ -58,7 +58,9 @@ public class MensagensNetwork {
             }
         }
 
-        if (errorResponse.getMensagem() == null){
+        if (errorResponse == null){
+            errorResponse.setMensagem( context.getString( R.string.sistema_indisponivel ) );
+        } else if (errorResponse.getMensagem() == null) {
             errorResponse.setMensagem( context.getString( R.string.sistema_indisponivel ) );
         }
 

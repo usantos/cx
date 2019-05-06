@@ -160,29 +160,29 @@ public class ModalidadeSorteioItemDoisConcursosResultadoView extends LinearLayou
         premiadosTextview2.setTextAppearance(getContext(), R.style.fontForTitleTopoPremiados);
         this.linearlayoutPremiadosListaText.addView(premiadosTextview2);
 
+        if (listaPremiadosSegundoConcurso != null) {
+            for (PremiacaoConcursoDTO premiacaoConcurso :  listaPremiadosSegundoConcurso){
+                TextView title1Segundo = new TextView(getContext());
+                title1Segundo.setText(premiacaoConcurso.getDescricao());
+                LinearLayout.LayoutParams layoutParamtitle1Segundo = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                layoutParamtitle1Segundo.setMargins(0, 18, 0, 0);
+                title1Segundo.setLayoutParams(layoutParamtitle1Segundo);
+                title1Segundo.setTextAppearance(getContext(), R.style.fontForTitle1Premiados);
+                this.linearlayoutPremiadosListaText.addView(title1Segundo);
 
-        for (PremiacaoConcursoDTO premiacaoConcurso :  listaPremiadosSegundoConcurso){
-            TextView title1Segundo = new TextView(getContext());
-            title1Segundo.setText(premiacaoConcurso.getDescricao());
-            LinearLayout.LayoutParams layoutParamtitle1Segundo = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            layoutParamtitle1Segundo.setMargins(0, 18, 0, 0);
-            title1Segundo.setLayoutParams(layoutParamtitle1Segundo);
-            title1Segundo.setTextAppearance(getContext(), R.style.fontForTitle1Premiados);
-            this.linearlayoutPremiadosListaText.addView(title1Segundo);
-
-            TextView title2Segundo = new TextView(getContext());
-            if (premiacaoConcurso.getQuantidadeGanhadores()>1){
-                title2Segundo.setText(getResources().getString(R.string.label_numero_ganhadores, premiacaoConcurso.getQuantidadeGanhadores()));
-            }else{
-                title2Segundo.setText(getResources().getString(R.string.label_numero_ganhador, premiacaoConcurso.getQuantidadeGanhadores()));
+                TextView title2Segundo = new TextView(getContext());
+                if (premiacaoConcurso.getQuantidadeGanhadores()>1){
+                    title2Segundo.setText(getResources().getString(R.string.label_numero_ganhadores, premiacaoConcurso.getQuantidadeGanhadores()));
+                }else{
+                    title2Segundo.setText(getResources().getString(R.string.label_numero_ganhador, premiacaoConcurso.getQuantidadeGanhadores()));
+                }
+                LinearLayout.LayoutParams layoutParamtitle2Segundo = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                title2Segundo.setLayoutParams(layoutParamtitle2Segundo);
+                title2Segundo.setTextAppearance(getContext(), R.style.fontForTitle2Premiados);
+                this.linearlayoutPremiadosListaText.addView(title2Segundo);
             }
-            LinearLayout.LayoutParams layoutParamtitle2Segundo = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            title2Segundo.setLayoutParams(layoutParamtitle2Segundo);
-            title2Segundo.setTextAppearance(getContext(), R.style.fontForTitle2Premiados);
-            this.linearlayoutPremiadosListaText.addView(title2Segundo);
         }
     }
-
 }

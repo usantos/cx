@@ -1,8 +1,9 @@
-package br.gov.caixa.loterias.apostar.view;
+package br.gov.caixa.loterias.apostar.interno.view;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -13,12 +14,25 @@ import com.journeyapps.barcodescanner.BarcodeCallback;
 import com.journeyapps.barcodescanner.BarcodeResult;
 import com.journeyapps.barcodescanner.DecoratedBarcodeView;
 
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidKeyException;
+import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
+import java.security.PublicKey;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.List;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+
 import br.gov.caixa.loterias.apostar.interno.R;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.Crypto;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
-import br.gov.caixa.loterias.apostar.interno.view.InsercaoManualCodBarrasActivity;
-import br.gov.caixa.loterias.apostar.interno.view.ResultadoLerBilhetesActivity_;
+
+import static org.apache.commons.lang.CharEncoding.UTF_8;
 
 
 public class LerBilhetesActivity extends AppCompatActivity {
@@ -29,7 +43,22 @@ public class LerBilhetesActivity extends AppCompatActivity {
     private BarcodeCallback callback = new BarcodeCallback() {
         @Override
         public void barcodeResult(BarcodeResult result) {
-            ResultadoLerBilhetesActivity_.intent(LerBilhetesActivity.this).codBarras(result.getText()).start();
+            try {
+                String code = Crypto.cripfyBarcode(result.getText());
+                ResultadoLerBilhetesActivity_.intent(LerBilhetesActivity.this).codBarras(code).start();
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            } catch (InvalidKeySpecException e) {
+                e.printStackTrace();
+            } catch (NoSuchPaddingException e) {
+                e.printStackTrace();
+            } catch (BadPaddingException e) {
+                e.printStackTrace();
+            } catch (IllegalBlockSizeException e) {
+                e.printStackTrace();
+            } catch (InvalidKeyException e) {
+                e.printStackTrace();
+            }
         }
 
         @Override

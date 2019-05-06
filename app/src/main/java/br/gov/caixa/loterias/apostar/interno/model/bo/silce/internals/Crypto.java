@@ -1,11 +1,32 @@
 package br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals;
 
+import android.os.Build;
+
+import com.android.volley.VolleyError;
+
+import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.KeyGenerator;
+import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.commons.codec.binary.Base64;
+
+import java.security.InvalidKeyException;
+import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
+import java.security.PublicKey;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.X509EncodedKeySpec;
+
+import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
+import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResultadoConsultaBilheteDTOResponse;
+import br.gov.caixa.loterias.apostar.interno.view.PrincipalActivity;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class Crypto {
     private Base64 base64 = new Base64();
@@ -48,5 +69,32 @@ public class Crypto {
 
     public static Crypto createWithKey(Bin key, Bin initializationVector) {
         return new Crypto(key, initializationVector);
+    }
+
+    static public String cripfyBarcode(String code) throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, BadPaddingException, IllegalBlockSizeException, InvalidKeyException {
+        String chave = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAmFerQzZx7Z+JPp12mtl7B5cy+pB6L53OAFLd8h1k1gy/my0kqJGugKIZRcklszhPZMyfrNc4fkSh3QPcn4jVVizjzSyGZBc8D97yuDsID0FiNYl5v7so9/6HI95DPdTzrEiGazXm6SuIwW1ylCLKanADzcPb67+pYV3nNuaOQuw7n5e71h97DP+FgJ6xvIuIVQpGYnawmqG3O2MqF00aWXvdJTEEVPogx1azJOjjGYu97DvNj1jpmkOBb0B5I++Z+GYPM+Uu/1z+bcfsUHSkOvLtjkhDmrsbYTnJibyZgb0ohLSfOpMGsvqpqjwzhT11+Sr0Xf55gETvfiiNUnhEqQIDAQAB";
+        byte[] keyBytes;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            keyBytes = java.util.Base64.getDecoder().decode(chave);
+        } else {
+            keyBytes = android.util.Base64.decode(chave, android.util.Base64.DEFAULT);
+        }
+
+        X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyBytes);
+        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+        PublicKey publicKey = keyFactory.generatePublic(keySpec);
+        Cipher encryptCipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+        encryptCipher.init(Cipher.ENCRYPT_MODE, publicKey);
+
+        byte[] cipherText = encryptCipher.doFinal(code.getBytes(UTF_8));
+
+        String codigo;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            codigo = java.util.Base64.getEncoder().encodeToString(cipherText);;
+        } else {
+            codigo = android.util.Base64.encodeToString(cipherText, android.util.Base64.DEFAULT);
+        }
+
+        return codigo;
     }
 }

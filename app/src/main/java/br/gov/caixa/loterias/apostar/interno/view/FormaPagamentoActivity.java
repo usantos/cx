@@ -66,6 +66,7 @@ public class FormaPagamentoActivity extends SettingToolbarActivity implements Fo
     private FormaPagamentoRecyclerViewAdapter formaPagamentoRecyclerViewAdapter;
     private CarrinhoDTO carrinhoDTO;
     private Gson gson;
+    private Boolean flagEntrouAddCartao = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,12 +116,20 @@ public class FormaPagamentoActivity extends SettingToolbarActivity implements Fo
                 listaCartoes = response.getPayload();
                 if (listaCartoes != null && listaCartoes.size() > 0) {
                     configuraRecyclerViewCarrinhoAposta();
-                    ((Button) findViewById(R.id.botaoAvancarPagamento)).setClickable( true );
-                    ((Button) findViewById(R.id.botaoAvancarPagamento)).setBackgroundColor( getResources().getColor(R.color.verdeazul ));
+                    (findViewById(R.id.botaoAvancarPagamento)).setClickable( true );
+                    (findViewById(R.id.botaoAvancarPagamento)).setBackgroundColor( getResources().getColor(R.color.verdeazul ));
                 }else {
-                    ((Button) findViewById(R.id.botaoAvancarPagamento)).setClickable( false );
-                    ((Button) findViewById(R.id.botaoAvancarPagamento)).setBackgroundColor( getResources().getColor(R.color.cinzaescuro ));
+                    if (!flagEntrouAddCartao) {
+                        Intent activity = new Intent(FormaPagamentoActivity.this, NovaFormaPagamentoActivity.class);
+                        if(carrinhoDTO != null) {
+                            String carrinho = gson.toJson(carrinhoDTO);
+                            activity.putExtra("CARRINHO", carrinho);
+                        }
+                        startActivity(activity);
+                        flagEntrouAddCartao = true;
+                    }
 
+                    (findViewById(R.id.botaoAvancarPagamento)).setBackgroundColor( getResources().getColor(R.color.cinzaescuro ));
                 }
                 if (response.getRedirect() != null){
                     RedirectNetwork.checkRedirectSucesso( response.getRedirect(), FormaPagamentoActivity.this);
@@ -174,46 +183,54 @@ public class FormaPagamentoActivity extends SettingToolbarActivity implements Fo
         findViewById(R.id.botaoAvancarPagamento).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (formaPagamentoRecyclerViewAdapter.selected_position < 0){
+                if (formaPagamentoRecyclerViewAdapter != null) {
+                    if (formaPagamentoRecyclerViewAdapter.selected_position < 0){
+                        ViewUtils.alertTitleButton(
+                                FormaPagamentoActivity.this,
+                                R.string.label_atencao, getResources().getString( R.string.label_selecione_cartao ),
+                                getResources().getString( R.string.ok ));
+                        return;
+                    }
+                    LayoutInflater li = LayoutInflater.from(FormaPagamentoActivity.this);
+                    View promptsView = li.inflate(R.layout.dialog_security_code, null);
+
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder( FormaPagamentoActivity.this);
+                    alertDialogBuilder.setView(promptsView);
+                    final EditText userInput = promptsView
+                            .findViewById(R.id.cvvCardNumberEditText);
+                    alertDialogBuilder
+                            .setCancelable(false)
+                            .setPositiveButton("Confirmar",
+                                    (DialogInterface dialog, int which) -> {
+                                        if (userInput.getText().toString().length() == 3){
+                                            String cardId = formaPagamentoRecyclerViewAdapter.valoresList.get(formaPagamentoRecyclerViewAdapter.selected_position).getIdCartao().toString();
+                                            createToken( cardId,  userInput.getText().toString());
+                                        }else{
+                                            ViewUtils.alertTitleButtonPositiveListener(
+                                                    FormaPagamentoActivity.this,
+                                                    R.string.label_atencao, getResources().getString( R.string.label_informa_cvv ),
+                                                    R.string.ok, new DialogInterface.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(DialogInterface dialog, int which) {
+                                                            ((Button) findViewById(R.id.botaoAvancarPagamento)).performClick();
+                                                        }
+                                                    }
+                                            );
+                                        }
+                                    })
+                            .setNegativeButton("Cancelar",
+                                    (DialogInterface dialog, int which) -> {
+                                        dialog.cancel();
+                                    });
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    alertDialog.show();
+                } else {
                     ViewUtils.alertTitleButton(
                             FormaPagamentoActivity.this,
-                            R.string.label_atencao, getResources().getString( R.string.label_selecione_cartao ),
+                            R.string.label_atencao, getResources().getString( R.string.label_adicione_um_cartao ),
                             getResources().getString( R.string.ok ));
                     return;
                 }
-                LayoutInflater li = LayoutInflater.from(FormaPagamentoActivity.this);
-                View promptsView = li.inflate(R.layout.dialog_security_code, null);
-
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder( FormaPagamentoActivity.this);
-                alertDialogBuilder.setView(promptsView);
-                final EditText userInput = promptsView
-                        .findViewById(R.id.cvvCardNumberEditText);
-                alertDialogBuilder
-                        .setCancelable(false)
-                        .setPositiveButton("Confirmar",
-                                (DialogInterface dialog, int which) -> {
-                                    if (userInput.getText().toString().length() == 3){
-                                        String cardId = formaPagamentoRecyclerViewAdapter.valoresList.get(formaPagamentoRecyclerViewAdapter.selected_position).getIdCartao().toString();
-                                        createToken( cardId,  userInput.getText().toString());
-                                    }else{
-                                        ViewUtils.alertTitleButtonPositiveListener(
-                                                FormaPagamentoActivity.this,
-                                                R.string.label_atencao, getResources().getString( R.string.label_informa_cvv ),
-                                                R.string.ok, new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialog, int which) {
-                                                        ((Button) findViewById(R.id.botaoAvancarPagamento)).performClick();
-                                                    }
-                                                }
-                                        );
-                                    }
-                                })
-                        .setNegativeButton("Cancelar",
-                                (DialogInterface dialog, int which) -> {
-                                        dialog.cancel();
-                                });
-                AlertDialog alertDialog = alertDialogBuilder.create();
-                alertDialog.show();
             }
         });
 

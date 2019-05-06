@@ -321,10 +321,9 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
     private void gridViewApostaFavorita() {
         favoritosSelecionados = new ArrayList<>();
 
-//        ApostaFavoritaAdapter apostaFavoritaAdapter = new ApostaFavoritaAdapter(this, rapidao.getApostasFavoritas());
         LinearLayoutManager layoutManager;
 
-        FavoritasRapidaoRecyclerAdapter apostaFavoritaAdapter  = new FavoritasRapidaoRecyclerAdapter(RapidaoConfigActivity.this,RapidaoConfigActivity.this, rapidao.getApostasFavoritas(), null);
+        FavoritasRapidaoRecyclerAdapter apostaFavoritaAdapter  = new FavoritasRapidaoRecyclerAdapter(RapidaoConfigActivity.this,RapidaoConfigActivity.this, rapidao.getApostasFavoritas(), null, true);
         layoutManager = new LinearLayoutManager(RapidaoConfigActivity.this);
 
         gridViewApostaFavorita.setHasFixedSize(true);

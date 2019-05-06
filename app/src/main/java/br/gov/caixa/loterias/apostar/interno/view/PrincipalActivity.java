@@ -36,6 +36,7 @@ import com.yarolegovich.discretescrollview.DiscreteScrollView;
 import com.yarolegovich.discretescrollview.transform.ScaleTransformer;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OptionsMenu;
@@ -52,6 +53,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bean.DadosUsuarioToken;
 import br.gov.caixa.loterias.apostar.interno.model.bean.Modalidade;
 import br.gov.caixa.loterias.apostar.interno.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostar.interno.model.bo.AcessoBO_;
+import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.DadosCorporativosBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.DadosCorporativosBO_;
 import br.gov.caixa.loterias.apostar.interno.model.bo.DadosUsuarioBO;
@@ -77,7 +79,6 @@ import br.gov.caixa.loterias.apostar.interno.view.adapter.SideMenuExpandleAdapte
 import br.gov.caixa.loterias.apostar.interno.view.animation.AnimacaoCalculoRepassesSociais;
 import br.gov.caixa.loterias.apostar.interno.view.animation.AnimacoesAcessoRapido;
 import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
-import br.gov.caixa.loterias.apostar.view.LerBilhetesActivity;
 
 @OptionsMenu(R.menu.principal)
 @EActivity(R.layout.activity_principal)
@@ -109,6 +110,9 @@ public class PrincipalActivity extends AppCompatActivity
     protected NavigationView nav_view;
     @ViewById
     protected ConstraintLayout viewSair;
+
+    @Bean
+    protected ApostaBO apostaBO;
 
     private List<Modalidade> data;
     private List<ParametroSimulacao> modalidadesParaListar;
@@ -508,9 +512,9 @@ public class PrincipalActivity extends AppCompatActivity
     private void AbrirMenusGroup(int groupPosition) {
         if (groupPosition == 2) {
             startActivity(new Intent(PrincipalActivity.this, ListaRapidaoActivity.class));
-        } else if (groupPosition == 3) {
-            startActivity(new Intent(PrincipalActivity.this, RepassesSociaisActivity.class));
         } else if (groupPosition == 4) {
+            startActivity(new Intent(PrincipalActivity.this, RepassesSociaisActivity.class));
+        } else if (groupPosition == 3) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
                     != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this,
