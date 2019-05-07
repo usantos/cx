@@ -104,7 +104,7 @@ public class RedirectNetwork {
 
         String body;
         //get response body and parse with appropriate encoding
-        if(error.networkResponse.data!=null) {
+        if(error.networkResponse.data != null) {
             try {
                 body = new String(error.networkResponse.data,"UTF-8");
                 errorResponse = gsonResponse.fromJson(body, ErrorResponse.class);
@@ -116,20 +116,22 @@ public class RedirectNetwork {
             }
         }
 
-        if (errorResponse.getRedirect() != null){
-            RedirectEnum redirectEnum = RedirectEnum.fromString( errorResponse.getRedirect() );
-            switch (redirectEnum){
-                case ACEITAR_TERMO_DE_USO:
-                    activity.startActivityForResult(new Intent(activity, TermosUsoActivity.class), 1);
-                    return;
-                case LOGIN:
-                    connectKeycloak(activity);
-                    return;
-                case CADASTRAR_APOSTADOR:
-                    activity.startActivity(new Intent(activity, CadastrarActivity_.class));
-                    return;
-                default:
-                    break;
+        if (errorResponse != null) {
+            if (errorResponse.getRedirect() != null){
+                RedirectEnum redirectEnum = RedirectEnum.fromString( errorResponse.getRedirect() );
+                switch (redirectEnum){
+                    case ACEITAR_TERMO_DE_USO:
+                        activity.startActivityForResult(new Intent(activity, TermosUsoActivity.class), 1);
+                        return;
+                    case LOGIN:
+                        connectKeycloak(activity);
+                        return;
+                    case CADASTRAR_APOSTADOR:
+                        activity.startActivity(new Intent(activity, CadastrarActivity_.class));
+                        return;
+                    default:
+                        break;
+                }
             }
         }
 

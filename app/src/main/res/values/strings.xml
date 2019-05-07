@@ -246,6 +246,7 @@
     <string name="label_time_coracao_dois_pontos">Time do coração:&#160;</string>
     <string name="label_empty"> </string>
     <string name="label_rapidao">Rapidão</string>
+    <string name="label_apostas_fav_rapidao_empty">Você ainda não possui apostas favoritas. É muito fácil! Simule uma aposta e adicione como favorita.</string>
     <string name="label_faca_apostas_apenas_um_clique">Faça várias apostas\nem apenas um clique.</string>
     <string name="label_ler_bilhestes_bold">Ler _bilhetes_</string>
     <string name="label_repassados_boas_causas_bold">_repassados_ para boas causas.</string>
@@ -351,7 +352,8 @@
     <string name="label_nsu_pagamento">NSU do pagamento</string>
     <string name="label_nsu_pagamento_nsu">NSU pagamento: %s</string>
     <string name="label_digite_cod_seguranca">Digite o Código de Segurança do seu cartão. \n\nApós a confirmação, o valor não poderá ser estornado. Confirma o pagamento?</string>
-    <string name="label_selecione_cartao">Selecione um cartão</string>
+    <string name="label_selecione_cartao">Ao menos um cartão precisa estar selecionado.</string>
+    <string name="label_adicione_um_cartao">Para efetuar o pagamento, um cartão de crédito será necessário. Adicione um e prossiga.</string>
     <string name="label_informa_cvv">Favor informar o CVV</string>
     <string name="botao_digitar_aposta">_Digitar_ sua aposta realizada</string>
     <string name="termos_nao_aceitos">Para continuar é necessário o aceite do termo.</string>
