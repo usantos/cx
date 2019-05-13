@@ -378,5 +378,9 @@
         RapidaoApostaFavoritaSelecaoActivity
     </string>
 
+    <!-- Versão App -->
+    <string name="label_explicacao_atualizacao">O seu aplicativo está desatualizado. Para continuar, será necessário efetuar a atualização.</string>
+    <string name="title_atualizar">Atualizar</string>
+
 
 </resources>

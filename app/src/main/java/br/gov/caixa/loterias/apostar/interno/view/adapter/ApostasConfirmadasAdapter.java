@@ -9,34 +9,49 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.android.volley.VolleyError;
 
 import java.util.List;
 
 import br.gov.caixa.loterias.apostar.interno.R;
+import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO;
+import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO_;
+import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ApostaDTO;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.DTOEnumLong;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResultadoConcursoDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.utils.EstiloModalidade;
+import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
+import br.gov.caixa.loterias.apostar.interno.utils.helper.ConferirResultadoHandler;
+import br.gov.caixa.loterias.apostar.interno.utils.helper.ConferirResultadoHelper;
+import br.gov.caixa.loterias.apostar.interno.view.ApostasConfirmadasActivity;
 
 /**
  * Created by pmotta on 15/03/2018.
  */
 
-public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostasConfirmadasAdapter.ViewHolder> {
+public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostasConfirmadasAdapter.ViewHolder> implements ConferirResultadoHandler {
 
     private final Context context;
     private final List<ApostaDTO> list;
     private boolean isHistorico;
     private OnApostasConfirmadasListener onApostasConfirmadasListener;
+    private ApostasConfirmadasActivity parentActivity;
 
-    public ApostasConfirmadasAdapter(Context context, List<ApostaDTO> list, boolean isHistorico) {
-        this(context, list, null, isHistorico);
+    public ApostasConfirmadasAdapter(ApostasConfirmadasActivity parentActivity, Context context, List<ApostaDTO> list, boolean isHistorico) {
+        this(parentActivity, context, list, null, isHistorico);
     }
 
-    public ApostasConfirmadasAdapter(Context context, List<ApostaDTO> list, OnApostasConfirmadasListener listener, boolean isHistorico) {
+    public ApostasConfirmadasAdapter(ApostasConfirmadasActivity parentActivity, Context context, List<ApostaDTO> list, OnApostasConfirmadasListener listener, boolean isHistorico) {
         this.list = list;
         this.context = context;
         this.onApostasConfirmadasListener = listener;
         this.isHistorico = isHistorico;
+        this.parentActivity = parentActivity;
     }
 
     public OnApostasConfirmadasListener getOnApostasConfirmadasListener() {
@@ -61,14 +76,17 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostasConfi
 
             int color = ContextCompat.getColor(context, estiloModalidade.getCorEscura());
 
+            holder.color = color;
             holder.stripe.setBackgroundColor(color);
             holder.modalidadeTxt.setTextColor(color);
             holder.modalidadeTxt.setText(estiloModalidade.getStringId());
             holder.situacaoTxt.setTextColor(color);
             String descricaoStatus = "";
             if (aposta.getSituacao().getValor() == 4){
-                descricaoStatus = "Clique para conferir o resultado.";
+                descricaoStatus = "Conferindo resultado.";
                 holder.situacaoTxt.setTextColor(ContextCompat.getColor(context, R.color.azulescuroapostafavorita));
+                holder.progressBarSituacao.setVisibility(View.VISIBLE);
+                conferirResultado(aposta, holder);
             } else {
                 descricaoStatus = aposta.getSituacao().getDescricao();
             }
@@ -85,6 +103,25 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostasConfi
             }
         }
     }
+
+    private void conferirResultado (ApostaDTO aposta, ViewHolder holder) {
+        ConferirResultadoHelper.conferirResultadoHandler = this;
+        ConferirResultadoHelper.conferirResultadoWithoutLoading(holder, aposta.getId(), parentActivity.getApplicationContext());
+    }
+
+    @Override
+    public void handle(ViewHolder holder, DTOEnumLong situacao) {
+        holder.situacaoTxt.setText("situação: " + situacao.getDescricao().toLowerCase());
+
+        holder.stripe.setBackgroundColor(holder.color);
+        holder.modalidadeTxt.setTextColor(holder.color);
+        holder.situacaoTxt.setTextColor(holder.color);
+
+        holder.progressBarSituacao.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void handle(DTOEnumLong situacao) { }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -130,6 +167,8 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostasConfi
         private LinearLayout setaLayout;
         private TextView situacaoTxt;
         private Button btnAposteAqui;
+        private ProgressBar progressBarSituacao;
+        private int color;
 
         public ViewHolder(View view) {
             super(view);
@@ -143,6 +182,7 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostasConfi
                 setaLayout = view.findViewById(R.id.setaLayout);
                 reloadBtnLayout = view.findViewById(R.id.reloadBtnLayout);
                 situacaoTxt = view.findViewById(R.id.situacaoTxt);
+                progressBarSituacao = view.findViewById(R.id.progressBarSituacao);
 
                 setaLayout.setOnClickListener(this);
                 setaImg.setOnClickListener(this);

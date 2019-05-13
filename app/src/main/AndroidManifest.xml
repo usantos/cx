@@ -18,6 +18,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <activity android:name=".view.AtualizacaoActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:screenOrientation="portrait"
+                android:value=".view.SplashScreenActivity" />
+        </activity>
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="br.gov.caixa.loterias.apostar.fileprovider"
@@ -112,7 +124,7 @@
             android:label="@string/title_activity_repasses_sociais"
             android:parentActivityName=".view.PrincipalActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.DegradeActionBar"></activity>
+            android:theme="@style/AppTheme.DegradeActionBar" />
         <activity
             android:name=".view.ListaRapidaoActivity"
             android:label="@string/title_activity_lista_rapidao"
@@ -271,7 +283,8 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".view.RapidaoConfigActivity_" />
-            ></activity>
+            >
+        </activity>
     </application>
 
 </manifest>
