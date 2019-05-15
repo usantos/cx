@@ -7,7 +7,7 @@
     android:fitsSystemWindows="true"
     >
 
-    <include layout="@layout/app_bar_degrade"/>
+    <include layout="@layout/app_bar_degrade_with_icon"/>
     <include layout="@layout/content_atualizacao_app" />
 
 </android.support.design.widget.CoordinatorLayout>

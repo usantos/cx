@@ -57,7 +57,7 @@ public final class NumerosResultadosAdapter extends RecyclerView.Adapter<Numeros
 
     @Override
     public int getItemCount() {
-        return numeroslista.size();
+        return numeroslista != null ? numeroslista.size() : 0;
     }
 
     public List<Integer> getNumeros() {
