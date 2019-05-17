@@ -293,7 +293,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                android:text="Apostas\nconfirmadas"
+                android:text="@string/minhasApostas"
                 android:textAlignment="center"
                 android:textColor="@color/azulescuro"
                 android:textSize="12sp" />

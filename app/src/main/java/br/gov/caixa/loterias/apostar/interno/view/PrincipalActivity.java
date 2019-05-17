@@ -122,6 +122,7 @@ public class PrincipalActivity extends AppCompatActivity
     private AlertDialog loadViewProgress;
 
     private boolean realizandoLogin = false;
+    private boolean recarregarBuscaParam = false;
 
     @AfterViews
     public void init() {
@@ -155,6 +156,9 @@ public class PrincipalActivity extends AppCompatActivity
             nav_user.setText("Olá, seja bem-vindo ao\n App Loterias.");
         }
 
+        if (recarregarBuscaParam) {
+            callWebservice();
+        }
     }
 
     private void listenerSair() {
@@ -192,7 +196,8 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     private void callWebservice() {
-        loadViewProgress = LoadingViewLoterias.show(this);
+        loadViewProgress
+                = LoadingViewLoterias.show(this);
 
         final DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(PrincipalActivity.this);
 
@@ -208,14 +213,11 @@ public class PrincipalActivity extends AppCompatActivity
 
                 modalidadesParaListar = response.getPayload().getParametros();
                 if (modalidadesParaListar == null || modalidadesParaListar.isEmpty()) {
-                    ViewUtils.alert(PrincipalActivity.this, getString(R.string.sistema_indisponivel), new DialogInterface.OnDismissListener() {
-                        @Override
-                        public void onDismiss(DialogInterface dialogInterface) {
-                            startActivity(new Intent(PrincipalActivity.this, LoginActivity.class));
-                            finish();
-                        }
-                    });
-                    return;
+                    recarregarBuscaParam = true;
+                    Intent appIndis = new Intent(PrincipalActivity.this, AppIndisponivelActivity.class);
+                    appIndis.putExtra("IS_BUSCA_PARAM", true);
+
+                    startActivity(appIndis);
                 }
 
                 paramatroSimulacaoSuccess(response);
@@ -223,17 +225,12 @@ public class PrincipalActivity extends AppCompatActivity
 
             @Override
             public void onErrorResponse(VolleyError error) {
+                recarregarBuscaParam = true;
                 loadViewProgress.dismiss();
-                ViewUtils.alertTitleButton(PrincipalActivity.this, R.string.label_atencao, MensagensNetwork.setMensagem(error,
-                        getApplicationContext()),
-                        PrincipalActivity.this.getResources().getString(R.string.ok),
-                        new DialogInterface.OnDismissListener() {
-                            @Override
-                            public void onDismiss(DialogInterface dialogInterface) {
-                                startActivity(new Intent(PrincipalActivity.this, LoginActivity.class));
-                                finish();
-                            }
-                        });
+                Intent appIndis = new Intent(PrincipalActivity.this, AppIndisponivelActivity.class);
+                appIndis.putExtra("IS_BUSCA_PARAM", true);
+
+                startActivity(appIndis);
             }
         });
     }

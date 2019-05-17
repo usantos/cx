@@ -18,7 +18,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AppIndisponivelActivity"></activity>
+        <activity android:name=".view.AppIndisponivelActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
         <activity
             android:name=".view.AtualizacaoActivity"
             android:configChanges="orientation"
@@ -32,7 +35,7 @@
 
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="br.gov.caixa.loterias.apostar.fileprovider"
+            android:authorities="${applicationId}.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -205,7 +208,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.ApostasConfirmadasActivity_"
-            android:label="@string/title_activity_apostas_confirmadas"
+            android:label="@string/title_activity_minhas_apostas"
             android:parentActivityName=".view.PrincipalActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar">
@@ -283,7 +286,6 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".view.RapidaoConfigActivity_" />
-            >
         </activity>
     </application>
 

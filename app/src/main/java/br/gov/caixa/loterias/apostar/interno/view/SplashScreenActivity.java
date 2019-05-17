@@ -47,7 +47,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                RedirectNetwork.checkRedirect( error, SplashScreenActivity.this );
+                startActivity(new Intent(SplashScreenActivity.this, AppIndisponivelActivity.class));
             }
         });
     }
