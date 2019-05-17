@@ -70,6 +70,7 @@ import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostar.interno.utils.helper.ConferirResultadoHandler;
 import br.gov.caixa.loterias.apostar.interno.utils.helper.ConferirResultadoHelper;
+import br.gov.caixa.loterias.apostar.interno.view.adapter.ApostasConfirmadasAdapter;
 import br.gov.caixa.loterias.apostar.interno.view.fragment.ApostaConfirmadaNumeroDetalhesPremioPago_;
 import br.gov.caixa.loterias.apostar.interno.view.fragment.ApostaConfirmadaNumeroDetalhes_;
 import br.gov.caixa.loterias.apostar.interno.view.fragment.ApostaConfirmadaPartidaFragment_;
@@ -493,4 +494,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
             getApostaDetalhePremio(aposta.getId(), this);
         }
     }
+
+    @Override
+    public void handle(ApostasConfirmadasAdapter.ViewHolder holder, DTOEnumLong situacao) { }
 }

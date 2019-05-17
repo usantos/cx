@@ -80,5 +80,7 @@ class ServerMethods {
 
      static final String APOSTAS_RESGATAR_PATH = "apostas/{idAposta}/resgatar-premio";
 
+     static final String APP_VERSAO_ATUALIZACAO_PATH = "app/valida-versao/{versao-app}";
+
      private ServerMethods(){}
 }

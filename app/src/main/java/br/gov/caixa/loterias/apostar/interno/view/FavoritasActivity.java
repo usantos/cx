@@ -50,13 +50,13 @@ public class FavoritasActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favoritas);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.title_activity_favoritas_bold)));
 
-        scrollViewContentViewFavoritas = (NestedScrollView) findViewById(R.id.scrollViewContentViewFavoritas);
+        scrollViewContentViewFavoritas = findViewById(R.id.scrollViewContentViewFavoritas);
 
-        progressLoadingMore = (ProgressBar) findViewById(R.id.favoritas_loading_more);
+        progressLoadingMore = findViewById(R.id.favoritas_loading_more);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 

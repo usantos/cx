@@ -4,10 +4,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+
+import com.android.volley.VolleyError;
 import com.crashlytics.android.Crashlytics;
 
+import br.gov.caixa.loterias.apostar.interno.BuildConfig;
+import br.gov.caixa.loterias.apostar.interno.model.bo.AcessoBO;
+import br.gov.caixa.loterias.apostar.interno.model.bo.AcessoBO_;
+import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
+import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.MesAnoDTOResponse;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.VersionResponse;
 import br.gov.caixa.loterias.apostar.interno.model.sp.LoginSP;
-import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
 import io.fabric.sdk.android.Fabric;
 
 public class SplashScreenActivity extends AppCompatActivity {
@@ -20,13 +28,27 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         Fabric.with(this, new Crashlytics());
 
-        new Handler().postDelayed(new Runnable() {
+        AcessoBO_.getInstance_(this).getVerificaVersao(BuildConfig.VERSION_NAME, new RequestListener<VersionResponse>() {
             @Override
-            public void run() {
-                LoginSP.limpar();
-                startActivity(new Intent(SplashScreenActivity.this, IntroducaoActivity.class));
-                finish();
+            public void onResponse(VersionResponse response) {
+                if (!response.getPayload()) {
+                    startActivity(new Intent(SplashScreenActivity.this, AtualizacaoActivity.class));
+                } else {
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            LoginSP.limpar();
+                            startActivity(new Intent(SplashScreenActivity.this, IntroducaoActivity.class));
+                            finish();
+                        }
+                    }, SPLASH_TIME);
+                }
             }
-        }, SPLASH_TIME);
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                startActivity(new Intent(SplashScreenActivity.this, AppIndisponivelActivity.class));
+            }
+        });
     }
 }
