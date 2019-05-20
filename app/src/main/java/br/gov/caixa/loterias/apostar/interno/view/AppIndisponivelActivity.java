@@ -66,9 +66,12 @@ public class AppIndisponivelActivity extends AppCompatActivity {
                     }
                 });
             } else {
+                loadViewProgress = LoadingViewLoterias.show(this);
+
                 AcessoBO_.getInstance_(this).getVerificaVersao(BuildConfig.VERSION_NAME, new RequestListener<VersionResponse>() {
                     @Override
                     public void onResponse(VersionResponse response) {
+                        loadViewProgress.dismiss();
                         if (!response.getPayload()) {
                             ViewUtils.alert(AppIndisponivelActivity.this, AppIndisponivelActivity.this.getString(R.string.erro_500));
                         } else {
@@ -78,6 +81,7 @@ public class AppIndisponivelActivity extends AppCompatActivity {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        loadViewProgress.dismiss();
                         ViewUtils.alert( AppIndisponivelActivity.this, error.getMessage());
                     }
                 });
