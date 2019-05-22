@@ -17,6 +17,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bean.ErrorResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RedirectEnum;
 import br.gov.caixa.loterias.apostar.interno.utils.AppUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
+import br.gov.caixa.loterias.apostar.interno.view.AppIndisponivelActivity;
 import br.gov.caixa.loterias.apostar.interno.view.CadastrarActivity_;
 import br.gov.caixa.loterias.apostar.interno.view.TermosUsoActivity;
 
@@ -25,7 +26,7 @@ import br.gov.caixa.loterias.apostar.interno.view.TermosUsoActivity;
  * Created by cedesbr450 on 11/04/18.
  */
 
-public class RedirectNetwork {
+public class  RedirectNetwork {
 
     public static void checkRedirect(VolleyError error, final Context context, Activity activity){
 
@@ -64,6 +65,9 @@ public class RedirectNetwork {
                     return;
                 case CADASTRAR_APOSTADOR:
                     context.startActivity(new Intent(context, CadastrarActivity_.class));
+                    return;
+                case INDISPONIVEL:
+                    context.startActivity(new Intent(context, AppIndisponivelActivity.class));
                     return;
                 default:
                     break;
@@ -129,6 +133,9 @@ public class RedirectNetwork {
                     case CADASTRAR_APOSTADOR:
                         activity.startActivity(new Intent(activity, CadastrarActivity_.class));
                         return;
+                    case INDISPONIVEL:
+                        activity.startActivity(new Intent(activity, AppIndisponivelActivity.class));
+                        return;
                     default:
                         break;
                 }
@@ -171,6 +178,9 @@ public class RedirectNetwork {
             case CADASTRAR_APOSTADOR:
                 activity.startActivity(new Intent(activity, CadastrarActivity_.class));
                 break;
+            case INDISPONIVEL:
+                activity.startActivity(new Intent(activity, AppIndisponivelActivity.class));
+                return;
             default:
                 break;
         }

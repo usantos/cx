@@ -29,7 +29,8 @@ public enum RedirectEnum {
     @SerializedName("cadastrar-apostador")CADASTRAR_APOSTADOR,
     @SerializedName("selecionar-loterica")SELECIONAR_LOTERICA,
     @SerializedName("aceitar-termo-de-uso")ACEITAR_TERMO_DE_USO,
-    @SerializedName("login")LOGIN;
+    @SerializedName("login")LOGIN,
+    @SerializedName("indisponivel")INDISPONIVEL;
 
     @Override
     public String toString() {
@@ -84,6 +85,8 @@ public enum RedirectEnum {
                 return RedirectEnum.ACEITAR_TERMO_DE_USO;
             case "login":
                 return RedirectEnum.LOGIN;
+            case "indisponivel":
+                return RedirectEnum.INDISPONIVEL;
             default:
                 return null;
         }
