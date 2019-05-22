@@ -78,14 +78,11 @@ public class  RedirectNetwork {
             connectKeycloak(activity);
         }else {
             if (errorResponse.getCodigo() != null &&  errorResponse.getCodigo().equals( "018003" )){
-                ViewUtils.alertTitleButtonYesOrNotListener(context, errorResponse.getMensagem(), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Uri webpage = Uri.parse("https://www.mercadopago.com.br/registration-mp?mode=mp");
-                        Intent intentAc = new Intent(Intent.ACTION_VIEW, webpage);
-                        if (intentAc.resolveActivity(context.getPackageManager()) != null) {
-                            context.startActivity(intentAc);
-                        }
+                ViewUtils.alertTitleButtonYesOrNotListener(context, errorResponse.getMensagem(), (dialog, which) -> {
+                    Uri webpage = Uri.parse("https://www.mercadopago.com.br/registration-mp?mode=mp");
+                    Intent intentAc = new Intent(Intent.ACTION_VIEW, webpage);
+                    if (intentAc.resolveActivity(context.getPackageManager()) != null) {
+                        context.startActivity(intentAc);
                     }
                 });
             }else{
@@ -134,7 +131,11 @@ public class  RedirectNetwork {
                         activity.startActivity(new Intent(activity, CadastrarActivity_.class));
                         return;
                     case INDISPONIVEL:
-                        activity.startActivity(new Intent(activity, AppIndisponivelActivity.class));
+                        if (activity.getClass() != AppIndisponivelActivity.class) {
+                            activity.startActivityForResult(new Intent(activity, AppIndisponivelActivity.class), 1);
+                        } else {
+                            ViewUtils.alertTitleButton(activity, R.string.label_atencao, activity.getResources().getString(R.string.erro_500), "Ok", dialogInterface -> activity.onBackPressed());
+                        }
                         return;
                     default:
                         break;
@@ -146,23 +147,15 @@ public class  RedirectNetwork {
             connectKeycloak(activity);
         }else {
             if (errorResponse.getCodigo() != null &&  errorResponse.getCodigo().equals( "018003" )){
-                ViewUtils.alertTitleButtonYesOrNotListener(activity, errorResponse.getMensagem(), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Uri webpage = Uri.parse("https://www.mercadopago.com.br/registration-mp?mode=mp");
-                                Intent intentAc = new Intent(Intent.ACTION_VIEW, webpage);
-                                if (intentAc.resolveActivity(activity.getPackageManager()) != null) {
-                                    activity.startActivity(intentAc);
-                                }
-                            }
-                        });
-            }else{
-                ViewUtils.alertTitleButton(activity, R.string.label_atencao, MensagensNetwork.setMensagem(error, activity), "Ok", new DialogInterface.OnDismissListener() {
-                    @Override
-                    public void onDismiss(DialogInterface dialogInterface) {
-                        activity.onBackPressed();
+                ViewUtils.alertTitleButtonYesOrNotListener(activity, errorResponse.getMensagem(), (dialog, which) -> {
+                    Uri webpage = Uri.parse("https://www.mercadopago.com.br/registration-mp?mode=mp");
+                    Intent intentAc = new Intent(Intent.ACTION_VIEW, webpage);
+                    if (intentAc.resolveActivity(activity.getPackageManager()) != null) {
+                        activity.startActivity(intentAc);
                     }
                 });
+            }else{
+                ViewUtils.alertTitleButton(activity, R.string.label_atencao, MensagensNetwork.setMensagem(error, activity), "Ok", dialogInterface -> activity.onBackPressed());
             }
         }
     }
@@ -179,7 +172,7 @@ public class  RedirectNetwork {
                 activity.startActivity(new Intent(activity, CadastrarActivity_.class));
                 break;
             case INDISPONIVEL:
-                activity.startActivity(new Intent(activity, AppIndisponivelActivity.class));
+                activity.startActivityForResult(new Intent(activity, AppIndisponivelActivity.class), 1);
                 return;
             default:
                 break;

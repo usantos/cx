@@ -1,29 +1,23 @@
 package br.gov.caixa.loterias.apostar.interno.view;
 
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
-import android.os.Handler;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.widget.Button;
 
 import com.android.volley.VolleyError;
-
-import java.math.BigDecimal;
 
 import br.gov.caixa.loterias.apostar.interno.BuildConfig;
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bo.AcessoBO_;
 import br.gov.caixa.loterias.apostar.interno.model.bo.DadosCorporativosBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.DadosCorporativosBO_;
-import br.gov.caixa.loterias.apostar.interno.model.bo.MensagensNetwork;
+import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametrosSimulacaoResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.VersionResponse;
 import br.gov.caixa.loterias.apostar.interno.model.sp.LoginSP;
-import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
 
@@ -62,7 +56,7 @@ public class AppIndisponivelActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         loadViewProgress.dismiss();
-                        ViewUtils.alert( AppIndisponivelActivity.this, error.getMessage());
+                        RedirectNetwork.checkRedirect(error, AppIndisponivelActivity.this);
                     }
                 });
             } else {
@@ -75,6 +69,9 @@ public class AppIndisponivelActivity extends AppCompatActivity {
                         if (!response.getPayload()) {
                             ViewUtils.alert(AppIndisponivelActivity.this, AppIndisponivelActivity.this.getString(R.string.erro_500));
                         } else {
+                            LoginSP.limpar();
+                            Intent intent = new Intent();
+                            setResult(RESULT_OK, intent);
                             finish();
                         }
                     }
@@ -82,7 +79,7 @@ public class AppIndisponivelActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         loadViewProgress.dismiss();
-                        ViewUtils.alert( AppIndisponivelActivity.this, error.getMessage());
+                        RedirectNetwork.checkRedirect(error, AppIndisponivelActivity.this);
                     }
                 });
             }

@@ -40,7 +40,6 @@ public class RepassesSociaisActivity extends SettingToolbarActivity {
         setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.title_activity_repasses_sociais)));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
         callWebservice();
     }
 

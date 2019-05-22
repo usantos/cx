@@ -50,15 +50,6 @@ public class SilceConnection {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        try {
-            if (req.getHeaders() == null) {
-                req.setHeaders(new HashMap<>());
-            }
-            req.getHeaders().put("cookie", "security=true");
-            req.getHeaders().put("Subcanal", "2");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         requestQueue.add(req);
         requestQueue.getCache().clear();
     }

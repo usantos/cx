@@ -102,10 +102,10 @@ public class BaseBO {
                                 });
                             }
                         });
-                    }else{
+                    } else{
                         listener.onErrorResponse(error);
                     }
-                }else{
+                } else{
                     listener.onErrorResponse(error);
                 }
             }

@@ -30,7 +30,7 @@ public enum RedirectEnum {
     @SerializedName("selecionar-loterica")SELECIONAR_LOTERICA,
     @SerializedName("aceitar-termo-de-uso")ACEITAR_TERMO_DE_USO,
     @SerializedName("login")LOGIN,
-    @SerializedName("indisponivel")INDISPONIVEL;
+    @SerializedName("indisponibilidade")INDISPONIVEL;
 
     @Override
     public String toString() {
@@ -85,7 +85,7 @@ public enum RedirectEnum {
                 return RedirectEnum.ACEITAR_TERMO_DE_USO;
             case "login":
                 return RedirectEnum.LOGIN;
-            case "indisponivel":
+            case "indisponibilidade":
                 return RedirectEnum.INDISPONIVEL;
             default:
                 return null;
