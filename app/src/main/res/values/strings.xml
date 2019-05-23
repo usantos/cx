@@ -387,5 +387,20 @@
     <string name="title_tente_novamente">Tentar novamente</string>
 
 
-
+    <string name="label_rapidao_resolve">Deixa que o _Rapidão_ resolve!</string>
+    <string name="label_limites_1">Selecione os _limites da sua compra,_</string>
+    <string name="label_limites_2">\nsuas _modalidades favoritas._</string>
+    <string name="label_numeros_proibidos"><![CDATA[Fuja dos números  <font color=\'#EE0000\'>\"proibidos\"</font> que não te dão sorte]]></string>
+    <string name="botao_configure_agora">Configure\n_Agora_</string>
+    <string name="botao_gerar_rapidao">Gerar\n_Rapidao_</string>
+    <string name="label_bem_vindo_ao">Bem vindo ao</string>
+    <string name="label_ganhe_tempo">Ganhe tempo no seu dia a dia,\nCrie apostas com apenas um clique</string>
+    <string name="label_rapidao_explicacao">O rapidão é um misturador de combinações de\napostas que pode ter a sua cara. Basta configurar\nseu funcionamento...</string>
+    <string name="label_varias_apostas">Várias apostas com apenas um clique.</string>
+    <string name="botao_gerar_nrapidao">Gerar\\nRapidao</string>
+    <string name="botao_configure_nagora">Configure\\nAgora</string>
+    <string name="label_tambem_pode">Também pode!</string>
+    <string name="label_quer_adicionar">Quer adicionar suas apostas favoritas?\n_Também pode!_</string>
+    <string name="label_modalidades_favoritas">Selecione os limites da sua compra,\\nsuas modalidades favoritas.</string>
+    <string name="label_configure_o_rapidao">Configure o que o rapidão vai misturar:</string>
 </resources>
