@@ -33,6 +33,7 @@ import static org.androidannotations.annotations.EBean.Scope.Singleton;
 public class DadosUsuarioBO extends BaseBO {
 
     private static final String USUARIO_KEY = "USUARIO_KEY";
+    private final static String RAPIDAO_KEY = "RAPIDAO_KEY";
 
     private static final String NOME = "NOME";
     private static final String CPF = "CPF";
@@ -153,6 +154,21 @@ public class DadosUsuarioBO extends BaseBO {
         return status;
     }
 
+    public static Boolean chegarTutorialRapidao() {
+        Context context =  Aplicacao.application.getApplicationContext();
+        SharedPreferences sharedPref = context.getSharedPreferences(RAPIDAO_KEY,Context.MODE_PRIVATE);
+        Boolean status = sharedPref.getBoolean(RAPIDAO_KEY, false);
+        return status;
+    }
+
+    public static void updateTutorialRapidao(Boolean status) {
+        Context context =  Aplicacao.application.getApplicationContext();
+        SharedPreferences sharedPref = context.getSharedPreferences(RAPIDAO_KEY,Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putBoolean(RAPIDAO_KEY, status);
+        editor.commit();
+
+    }
 
     public static void updateUsuarioLogado(Activity activity, Boolean status) {
         SharedPreferences sharedPref = activity.getSharedPreferences(USUARIO_KEY, Context.MODE_PRIVATE);

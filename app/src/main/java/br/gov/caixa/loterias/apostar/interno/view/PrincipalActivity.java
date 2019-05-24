@@ -49,6 +49,7 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostar.interno.BuildConfig;
 import br.gov.caixa.loterias.apostar.interno.R;
+import br.gov.caixa.loterias.apostar.interno.TutorialRapidaoActivity;
 import br.gov.caixa.loterias.apostar.interno.model.bean.DadosUsuarioToken;
 import br.gov.caixa.loterias.apostar.interno.model.bean.Modalidade;
 import br.gov.caixa.loterias.apostar.interno.model.bean.SessaoUsuario;
@@ -475,7 +476,7 @@ public class PrincipalActivity extends AppCompatActivity
     @Click(R.id.relativeLayoutContentRapidao)
     protected void clickRelativeLayoutContentRapidao() {
         AnimacaoFecharMenuRapido(relativeContentPrincipal);
-        startActivity(new Intent(PrincipalActivity.this, ListaRapidaoActivity.class));
+        redirecionaRapidao();
     }
 
     @Click(R.id.relativeLayoutCarrinho)
@@ -561,22 +562,20 @@ public class PrincipalActivity extends AppCompatActivity
         expandableListTitle = new ArrayList<>(expandableListDetail.keySet());
         expandableListAdapter = new SideMenuExpandleAdapter(this, expandableListTitle, expandableListDetail);
         sideMenuExpandableListView.setAdapter(expandableListAdapter);
-        sideMenuExpandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+        sideMenuExpandableListView.setOnGroupExpandListener(groupPosition -> AbrirMenusGroup(groupPosition));
 
-            @Override
-            public void onGroupExpand(int groupPosition) {
-                AbrirMenusGroup(groupPosition);
-            }
+        sideMenuExpandableListView.setOnChildClickListener((parent, v, groupPosition, childPosition, id) -> {
+            AbrirMenusItens(childPosition);
+            return false;
         });
+    }
 
-        sideMenuExpandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v,
-                                        int groupPosition, int childPosition, long id) {
-                AbrirMenusItens(childPosition);
-                return false;
-            }
-        });
+    private void redirecionaRapidao(){
+        if (DadosUsuarioBO.chegarTutorialRapidao()){
+            startActivity(new Intent(PrincipalActivity.this, ListaRapidaoActivity.class));
+        }else {
+            startActivity(new Intent(PrincipalActivity.this, TutorialRapidaoActivity.class));
+        }
     }
 
     @Override
@@ -605,4 +604,5 @@ public class PrincipalActivity extends AppCompatActivity
         dismissProgressDialog();
         super.onDestroy();
     }
+
 }
