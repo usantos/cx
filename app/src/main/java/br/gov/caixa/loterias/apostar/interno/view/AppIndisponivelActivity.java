@@ -66,14 +66,11 @@ public class AppIndisponivelActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(VersionResponse response) {
                         loadViewProgress.dismiss();
-                        if (!response.getPayload()) {
-                            ViewUtils.alert(AppIndisponivelActivity.this, AppIndisponivelActivity.this.getString(R.string.erro_500));
-                        } else {
-                            LoginSP.limpar();
-                            Intent intent = new Intent();
-                            setResult(RESULT_OK, intent);
-                            finish();
-                        }
+
+                        LoginSP.limpar();
+                        Intent intent = new Intent();
+                        setResult(RESULT_OK, intent);
+                        finish();
                     }
 
                     @Override

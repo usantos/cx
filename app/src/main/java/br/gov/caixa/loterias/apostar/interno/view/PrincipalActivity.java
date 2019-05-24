@@ -272,7 +272,8 @@ public class PrincipalActivity extends AppCompatActivity
         });
     }
 
-    private List<Modalidade> montaListaModalidades() {
+    private List<Modalidade> montaListaModalidades
+            () {
         List<Modalidade> listaModalidades = new ArrayList<>();
 
         for (ParametroSimulacao parametro : modalidadesParaListar) {

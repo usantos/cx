@@ -84,11 +84,14 @@ public class GsonRequest<REQ, RSP> extends JsonRequest<RSP> {
     @Override
     public void deliverError(VolleyError error) {
         if (error != null && mErrorListener != null){
-            try {
-                Log.d("ERROR_RESPONSE", new String(error.networkResponse.data, "UTF-8"));
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
+            if (error.networkResponse != null) {
+                try {
+                    Log.d("ERROR_RESPONSE", new String(error.networkResponse.data, "UTF-8"));
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
             }
+
             mErrorListener.onErrorResponse(error);
         }
     }

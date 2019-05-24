@@ -16,11 +16,15 @@ public abstract class RequestListener<T> {
 
     public RequestListener(){
         silceListener = result -> {
-            Log.d("RESPONSE_BODY", result.toString());
+            if (result != null) {
+                Log.d("RESPONSE_BODY", result.toString());
+            }
             RequestListener.this.onResponse(result);
         };
         errorListener = error -> {
-            Log.d("ERROR_BODY", error.toString());
+            if (error != null) {
+                Log.d("ERROR_BODY", error.toString());
+            }
             RequestListener.this.onErrorResponse(error);
         };
     }
