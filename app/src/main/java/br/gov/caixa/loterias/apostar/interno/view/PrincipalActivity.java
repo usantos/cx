@@ -508,11 +508,11 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     private void AbrirMenusGroup(int groupPosition) {
-        if (groupPosition == 2) {
-            startActivity(new Intent(PrincipalActivity.this, ListaRapidaoActivity.class));
-        } else if (groupPosition == 4) {
-            startActivity(new Intent(PrincipalActivity.this, RepassesSociaisActivity.class));
+        if (groupPosition == 1) {
+            redirecionaRapidao();
         } else if (groupPosition == 3) {
+            startActivity(new Intent(PrincipalActivity.this, RepassesSociaisActivity.class));
+        } else if (groupPosition == 2) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
                     != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this,
