@@ -197,8 +197,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             layoutParams.width = ViewUtils.setDisplayMetric(280, context);
             holder.linearLayoutResultadosApostas.setLayoutParams(layoutParams);
 
-            holder.setaDireitaAcaoRelativeLayout.setVisibility(View.VISIBLE);
-            holder.setaEsquerdaAcaoRelativeLayout.setVisibility(View.VISIBLE);
+            //holder.setaDireitaAcaoRelativeLayout.setVisibility(View.VISIBLE);
+            //holder.setaEsquerdaAcaoRelativeLayout.setVisibility(View.VISIBLE);
         }else{
             ViewGroup.LayoutParams layoutParams = holder.linearLayoutResultadosApostas.getLayoutParams();
             layoutParams.height = 0;
@@ -357,8 +357,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         );
         data.get(position).setResultadosAberto(true);
         animacoesResultados.AnimacaoDescerContent(ViewUtils.getRealScreenSize(context).y - ViewUtils.setDisplayMetric(315, context));
-        setaDireitaAcaoRelativeLayout.setVisibility(View.VISIBLE);
-        setaEsquerdaAcaoRelativeLayout.setVisibility(View.VISIBLE);
+        //setaDireitaAcaoRelativeLayout.setVisibility(View.VISIBLE);
+        //setaEsquerdaAcaoRelativeLayout.setVisibility(View.VISIBLE);
     }
 
     private void AnimacaoFecharResultados(Context context,
@@ -375,8 +375,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         );
 
         animacoesResultados.AnimacaoSubirContent();
-        setaDireitaAcaoRelativeLayout.setVisibility(View.INVISIBLE);
-        setaEsquerdaAcaoRelativeLayout.setVisibility(View.INVISIBLE);
+        //setaDireitaAcaoRelativeLayout.setVisibility(View.INVISIBLE);
+        //setaEsquerdaAcaoRelativeLayout.setVisibility(View.INVISIBLE);
     }
 
 
