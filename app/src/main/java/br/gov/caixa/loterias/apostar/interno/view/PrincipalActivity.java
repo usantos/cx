@@ -572,7 +572,7 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     private void redirecionaRapidao(){
-        if (DadosUsuarioBO.chegarTutorialRapidao()){
+        if (DadosUsuarioBO.checarTutorialRapidao()){
             startActivity(new Intent(PrincipalActivity.this, ListaRapidaoActivity.class));
         }else {
             startActivity(new Intent(PrincipalActivity.this, TutorialRapidaoActivity.class));
