@@ -40,6 +40,7 @@ public class TokenActivity extends AppCompatActivity {
 
 
     private AlertDialog loadViewProgress;
+    private AuthorizationService authorizationService;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,7 +51,7 @@ public class TokenActivity extends AppCompatActivity {
             AuthorizationResponse authorizationResponse = AuthorizationResponse.fromIntent(getIntent());
             AuthorizationException authorizationException = AuthorizationException.fromIntent(getIntent());
             if (authorizationException == null && authorizationResponse != null) {
-                AuthorizationService authorizationService = new AuthorizationService(this);
+                authorizationService = new AuthorizationService(this);
                 authorizationService.performTokenRequest(authorizationResponse.createTokenExchangeRequest(), new AuthorizationService.TokenResponseCallback() {
                     @Override
                     public void onTokenRequestCompleted(@Nullable TokenResponse response, @Nullable AuthorizationException ex) {
@@ -124,5 +125,11 @@ public class TokenActivity extends AppCompatActivity {
         } catch (Exception e) {
             finish();
         }
+    }
+    @Override
+    public void finish() {
+        authorizationService.dispose();
+        loadViewProgress.dismiss();
+        super.finish();
     }
 }

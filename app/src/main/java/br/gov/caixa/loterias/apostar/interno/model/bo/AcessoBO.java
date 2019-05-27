@@ -28,6 +28,7 @@ import static org.androidannotations.annotations.EBean.Scope.Singleton;
 public class AcessoBO extends BaseBO {
 
     public static Boolean PRIMEIRO_LOGIN = false;
+    public static AuthorizationService authorizationService;
 
     public void iniciarLoginSSO(Activity activity){
         if(activity != null) {
@@ -48,7 +49,7 @@ public class AcessoBO extends BaseBO {
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             PendingIntent pendingIntent = PendingIntent.getActivity(activity, authorizationRequest.hashCode(), intent, 0);
 
-            AuthorizationService authorizationService = new AuthorizationService(activity);
+            authorizationService = new AuthorizationService(activity);
             authorizationService.performAuthorizationRequest(authorizationRequest, pendingIntent);
         }
     }
