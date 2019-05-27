@@ -27,7 +27,10 @@ public class SplashScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         Fabric.with(this, new Crashlytics());
+        verificaVersao();
+    }
 
+    public void verificaVersao() {
         AcessoBO_.getInstance_(this).getVerificaVersao(BuildConfig.VERSION_NAME, new RequestListener<VersionResponse>() {
             @Override
             public void onResponse(VersionResponse response) {
@@ -47,8 +50,16 @@ public class SplashScreenActivity extends AppCompatActivity {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                startActivity(new Intent(SplashScreenActivity.this, AppIndisponivelActivity.class));
+                startActivityForResult(new Intent(SplashScreenActivity.this, AppIndisponivelActivity.class), 1);
             }
         });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == 1) {
+            verificaVersao();
+        }
     }
 }

@@ -26,6 +26,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.DadosCorporativosBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.DadosCorporativosBO_;
 import br.gov.caixa.loterias.apostar.interno.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.MensagensNetwork;
+import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ListSecaoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ListSecaoDTOResponse;
@@ -171,6 +172,10 @@ public class TermosUsoActivity extends AppCompatActivity {
         dadosCorporativosBO.termo(new RequestListener<TermoDeUsoDTOResponse>() {
             @Override
             public void onResponse(TermoDeUsoDTOResponse response) {
+                if (response.getRedirect() != null){
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), TermosUsoActivity.this);
+                }
+                
                 termoHtml = response.getPayload().getConteudo();
                 webViewConteudo.loadData(termoHtml, "text/html; charset=UTF-8", "UTF-8");
                 DialogUtils.dismiss();
@@ -181,10 +186,7 @@ public class TermosUsoActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 DialogUtils.dismiss();
-                ViewUtils.alertTitleButton(TermosUsoActivity.this,
-                        R.string.label_atencao,
-                        MensagensNetwork.setMensagem(error, getApplicationContext()),
-                        getApplicationContext().getResources().getString( R.string.ok ));
+                RedirectNetwork.checkRedirect(error, TermosUsoActivity.this);
             }
         });
     }

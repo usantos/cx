@@ -89,6 +89,8 @@ public class ConferirResultadoHelper  {
     private static void onError(VolleyError error, Context contextParam) {
         DialogUtils.dismiss();
         String msgError = MensagensNetwork.setMensagem(error, contextParam);
+
+//        Rodar na thread de UI
         ViewUtils.alert(contextParam, msgError);
     }
 }

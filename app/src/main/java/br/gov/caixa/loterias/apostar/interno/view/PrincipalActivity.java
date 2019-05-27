@@ -218,7 +218,7 @@ public class PrincipalActivity extends AppCompatActivity
                     Intent appIndis = new Intent(PrincipalActivity.this, AppIndisponivelActivity.class);
                     appIndis.putExtra("IS_BUSCA_PARAM", true);
 
-                    startActivity(appIndis);
+                    startActivityForResult(appIndis, 1);
                 }
 
                 paramatroSimulacaoSuccess(response);
@@ -231,7 +231,7 @@ public class PrincipalActivity extends AppCompatActivity
                 Intent appIndis = new Intent(PrincipalActivity.this, AppIndisponivelActivity.class);
                 appIndis.putExtra("IS_BUSCA_PARAM", true);
 
-                startActivity(appIndis);
+                startActivityForResult(appIndis, 1);
             }
         });
     }
@@ -273,7 +273,8 @@ public class PrincipalActivity extends AppCompatActivity
         });
     }
 
-    private List<Modalidade> montaListaModalidades() {
+    private List<Modalidade> montaListaModalidades
+            () {
         List<Modalidade> listaModalidades = new ArrayList<>();
 
         for (ParametroSimulacao parametro : modalidadesParaListar) {
