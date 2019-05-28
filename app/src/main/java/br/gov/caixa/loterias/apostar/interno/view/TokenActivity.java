@@ -128,8 +128,10 @@ public class TokenActivity extends AppCompatActivity {
     }
     @Override
     public void finish() {
-        authorizationService.dispose();
-        loadViewProgress.dismiss();
+
+        if(loadViewProgress != null){
+            loadViewProgress.dismiss();
+        }
         super.finish();
     }
 }

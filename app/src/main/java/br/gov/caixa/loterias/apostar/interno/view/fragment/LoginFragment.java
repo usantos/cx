@@ -145,9 +145,4 @@ public class LoginFragment extends Fragment {
         getActivity().finish();
     }
 
-    @Override
-    public void onDestroy() {
-        AcessoBO_.authorizationService.dispose();
-        super.onDestroy();
-    }
 }
