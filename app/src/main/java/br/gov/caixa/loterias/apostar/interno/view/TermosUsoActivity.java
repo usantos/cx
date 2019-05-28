@@ -252,6 +252,9 @@ public class TermosUsoActivity extends AppCompatActivity {
         dadosCorporativosBO.validaTermoAceito(new RequestListener<ResourceResponse>() {
             @Override
             public void onResponse(ResourceResponse response) {
+                if (response.getRedirect() != null) {
+                    RedirectNetwork.checkRedirectSucesso(response.getRedirect(), TermosUsoActivity.this);
+                }
                 isTermoAceito = Boolean.TRUE;
                 scrollViewTermoAceite.setPadding(0, 0, 0, 0);
                 getSupportActionBar().setDisplayHomeAsUpEnabled(isTermoAceito);
@@ -268,12 +271,7 @@ public class TermosUsoActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 DialogUtils.dismiss();
                 exibeRodapeAceite();
-                ViewUtils.alertTitleButton(TermosUsoActivity.this,
-                        R.string.label_atencao,
-                        MensagensNetwork.setMensagem(error, getApplicationContext()),
-                        TermosUsoActivity.this.getResources().getString( R.string.ok ));
-                termosUsoButton.performClick();
-
+                RedirectNetwork.checkRedirect(error, TermosUsoActivity.this);
             }
         });
     }
