@@ -22,13 +22,13 @@ public class AlterarDadosLoginCaixaActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_alterar_dados_login_caixa );
-        Toolbar toolbar = (Toolbar) findViewById( R.id.toolbar );
+        Toolbar toolbar = findViewById( R.id.toolbar );
         setSupportActionBar( toolbar );
         loadViewProgresas = LoadingViewLoterias.show(this);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        paginaAlterarDadosWebView = (WebView) findViewById( R.id.paginaAlterarDadosWebView );
+        paginaAlterarDadosWebView = findViewById( R.id.paginaAlterarDadosWebView );
 
         if(AppUtils.isNetworkAvailable( this )){
 
@@ -59,5 +59,11 @@ public class AlterarDadosLoginCaixaActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp(){
         finish();
         return true;
+    }
+
+    @Override
+    public void finish() {
+        loadViewProgresas.dismiss();
+        super.finish();
     }
 }

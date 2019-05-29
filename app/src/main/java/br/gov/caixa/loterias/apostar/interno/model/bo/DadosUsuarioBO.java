@@ -154,7 +154,7 @@ public class DadosUsuarioBO extends BaseBO {
         return status;
     }
 
-    public static Boolean chegarTutorialRapidao() {
+    public static Boolean checarTutorialRapidao() {
         Context context =  Aplicacao.application.getApplicationContext();
         SharedPreferences sharedPref = context.getSharedPreferences(RAPIDAO_KEY,Context.MODE_PRIVATE);
         Boolean status = sharedPref.getBoolean(RAPIDAO_KEY, false);

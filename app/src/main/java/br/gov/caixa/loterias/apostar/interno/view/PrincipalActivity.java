@@ -160,6 +160,7 @@ public class PrincipalActivity extends AppCompatActivity
         if (recarregarBuscaParam) {
             callWebservice();
         }
+        layoutSideMenu();
     }
 
     private void listenerSair() {
@@ -509,6 +510,9 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     private void AbrirMenusGroup(int groupPosition) {
+        if (groupPosition != 0) {
+            drawerLayout.closeDrawer(Gravity.START, false);
+        }
         if (groupPosition == 1) {
             redirecionaRapidao();
         } else if (groupPosition == 3) {
@@ -521,10 +525,6 @@ public class PrincipalActivity extends AppCompatActivity
             } else {
                 startActivity(new Intent(PrincipalActivity.this, LerBilhetesActivity.class));
             }
-        } else
-
-        if (groupPosition != 0) {
-            drawerLayout.closeDrawer(Gravity.START, false);
         }
     }
 
@@ -563,7 +563,8 @@ public class PrincipalActivity extends AppCompatActivity
         expandableListTitle = new ArrayList<>(expandableListDetail.keySet());
         expandableListAdapter = new SideMenuExpandleAdapter(this, expandableListTitle, expandableListDetail);
         sideMenuExpandableListView.setAdapter(expandableListAdapter);
-        sideMenuExpandableListView.setOnGroupExpandListener(groupPosition -> AbrirMenusGroup(groupPosition));
+        sideMenuExpandableListView.setOnGroupExpandListener(groupPosition ->
+                AbrirMenusGroup(groupPosition));
 
         sideMenuExpandableListView.setOnChildClickListener((parent, v, groupPosition, childPosition, id) -> {
             AbrirMenusItens(childPosition);
@@ -572,7 +573,7 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     private void redirecionaRapidao(){
-        if (DadosUsuarioBO.chegarTutorialRapidao()){
+        if (DadosUsuarioBO.checarTutorialRapidao()){
             startActivity(new Intent(PrincipalActivity.this, ListaRapidaoActivity.class));
         }else {
             startActivity(new Intent(PrincipalActivity.this, TutorialRapidaoActivity.class));
