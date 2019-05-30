@@ -16,11 +16,8 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
-
 import com.android.volley.VolleyError;
-
 import java.util.List;
-
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bo.DadosCorporativosBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.DadosCorporativosBO_;
@@ -56,72 +53,37 @@ public class TermosUsoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_termos_uso);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.title_activity_toolbar)));
 
-        termosUsoButton = findViewById(R.id.buttonTermos);
-        duvidasButton = findViewById(R.id.buttonDuvidas);
-        politicaButton = findViewById(R.id.buttonPolitica);
-
-        webViewConteudo = findViewById(R.id.webViewConteudo);
-        footerAceiteTermo = findViewById(R.id.footerAceiteTermo);
-        scrollViewTermoAceite = findViewById(R.id.scrollViewTermoAceite);
-        selcioneAceiteTermoUso = findViewById(R.id.selcioneAceiteTermoUso);
-        layoutDuvidas = findViewById(R.id.layoutDuvidas);
-        relativeLayouTermoAceite = findViewById(R.id.relativeLayouTermoAceite);
-        recyclerViewDuvidas = findViewById(R.id.recyclerViewDuvidas);
-        buttonTermoAceite = findViewById(R.id.buttonTermoAceite);
+        setViews();
+        setListeners();
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             openAjuda = bundle.getBoolean("ajuda");
         }
 
-        buttonTermoAceite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-               if (selcioneAceiteTermoUso.isChecked()){
-                   DialogUtils.show(TermosUsoActivity.this);
-                   DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(TermosUsoActivity.this);
-                   dadosCorporativosBO.aceiteTermo(new RequestListener<ResourceResponse>() {
-                       @Override
-                       public void onResponse(ResourceResponse response) {
-                           DialogUtils.dismiss();
-                           Intent intent = new Intent();
-                           setResult(RESULT_OK, intent);
-                           finish();
-                       }
+        setWebview();
 
-                       @Override
-                       public void onErrorResponse(VolleyError error) {
-                           DialogUtils.dismiss();
-                           ViewUtils.alertTitleButton(TermosUsoActivity.this, R.string.label_atencao, MensagensNetwork.setMensagem(error, getApplicationContext()), getApplicationContext().getResources().getString( R.string.ok ));
-                       }
-                   });
-               }else {
-                   ViewUtils.alertTitleButton( TermosUsoActivity.this, R.string.label_atencao, TermosUsoActivity.this.getResources().getString( R.string.MN003 ), getApplicationContext().getResources().getString( R.string.ok ) );
-               }
+        termosUsoButton.setChecked(Boolean.TRUE);
+        listenerTermosUso();
+        listenerDuvidas();
+        checaAceiteTermoEConfiguraTela();
+    }
 
-            }
-        });
+    private void checaAceiteTermoEConfiguraTela() {
+        if (DadosUsuarioBO.checarUsuarioLogado(this)) {
+            listenerPolitica();
+            verificaTermoAceito();
+        } else {
+            isTermoAceito = Boolean.TRUE;
+            scrollViewTermoAceite.setPadding(0, 0, 0, 0);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(isTermoAceito);
+            footerAceiteTermo.setVisibility(View.GONE);
+            termosUsoButton.performClick();
+        }
+    }
 
-        layoutClickAceiteTermo = findViewById(R.id.layoutClickAceiteTermo);
-        layoutClickAceiteTermo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (selcioneAceiteTermoUso.isChecked()) {
-                    selcioneAceiteTermoUso.setChecked(Boolean.FALSE);
-//                    disableButton();
-                } else {
-                    selcioneAceiteTermoUso.setChecked(Boolean.TRUE);
-//                    enableButton();
-                }
-            }
-        });
-
-
+    private void setWebview() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             WebView.setWebContentsDebuggingEnabled(true);
         }
@@ -143,39 +105,83 @@ public class TermosUsoActivity extends AppCompatActivity {
             public void onPageFinished(WebView view, String url) {
             }
         });
-        termosUsoButton.setChecked(Boolean.TRUE);
-        listenerTermosUso();
-        listenerDuvidas();
 
-        if (DadosUsuarioBO.checarUsuarioLogado(this)) {
-            listenerPolitica();
-            verificaTermoAceito();
-        } else {
-            isTermoAceito = Boolean.TRUE;
-            scrollViewTermoAceite.setPadding(0, 0, 0, 0);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(isTermoAceito);
-            footerAceiteTermo.setVisibility(View.GONE);
-            termosUsoButton.performClick();
-        }
+    }
+
+    private void setListeners() {
+        buttonTermoAceite.setOnClickListener(view -> {
+            if (selcioneAceiteTermoUso.isChecked()){
+                DialogUtils.show(TermosUsoActivity.this);
+                DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(TermosUsoActivity.this);
+                dadosCorporativosBO.aceiteTermo(new RequestListener<ResourceResponse>() {
+                    @Override
+                    public void onResponse(ResourceResponse response) {
+                        DialogUtils.dismiss();
+                        Intent intent = new Intent();
+                        setResult(RESULT_OK, intent);
+                        finish();
+                    }
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        DialogUtils.dismiss();
+                        ViewUtils.alertTitleButton(TermosUsoActivity.this, R.string.label_atencao, MensagensNetwork.setMensagem(error, getApplicationContext()), getApplicationContext().getResources().getString( R.string.ok ));
+                    }
+                });
+            }else {
+                ViewUtils.alertTitleButton( TermosUsoActivity.this, R.string.label_atencao, TermosUsoActivity.this.getResources().getString( R.string.MN003 ), getApplicationContext().getResources().getString( R.string.ok ) );
+            }
+
+        });
+
+        layoutClickAceiteTermo.setOnClickListener(view -> {
+            if (selcioneAceiteTermoUso.isChecked()) {
+                selcioneAceiteTermoUso.setChecked(Boolean.FALSE);
+            } else {
+                selcioneAceiteTermoUso.setChecked(Boolean.TRUE);
+            }
+        });
+    }
+
+    private void setViews() {
+        setContentView(R.layout.activity_termos_uso);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.title_activity_toolbar)));
+
+        termosUsoButton = findViewById(R.id.buttonTermos);
+        duvidasButton = findViewById(R.id.buttonDuvidas);
+        politicaButton = findViewById(R.id.buttonPolitica);
+
+        webViewConteudo = findViewById(R.id.webViewConteudo);
+        footerAceiteTermo = findViewById(R.id.footerAceiteTermo);
+        scrollViewTermoAceite = findViewById(R.id.scrollViewTermoAceite);
+        selcioneAceiteTermoUso = findViewById(R.id.selcioneAceiteTermoUso);
+        layoutDuvidas = findViewById(R.id.layoutDuvidas);
+        relativeLayouTermoAceite = findViewById(R.id.relativeLayouTermoAceite);
+        recyclerViewDuvidas = findViewById(R.id.recyclerViewDuvidas);
+        buttonTermoAceite = findViewById(R.id.buttonTermoAceite);
+        layoutClickAceiteTermo = findViewById(R.id.layoutClickAceiteTermo);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == 1) {
+            setViews();
+
+            Bundle bundle = getIntent().getExtras();
+            if (bundle != null) {
+                openAjuda = bundle.getBoolean("ajuda");
+            }
+
+            listenerTermosUso();
+            listenerDuvidas();
+
             if (duvidasButton.isChecked()) {
-                duvidasButton.performClick();
+                selectDuvidas();
             }else{
-                if (DadosUsuarioBO.checarUsuarioLogado(this)) {
-                    listenerPolitica();
-                    verificaTermoAceito();
-                } else {
-                    isTermoAceito = Boolean.TRUE;
-                    scrollViewTermoAceite.setPadding(0, 0, 0, 0);
-                    getSupportActionBar().setDisplayHomeAsUpEnabled(isTermoAceito);
-                    footerAceiteTermo.setVisibility(View.GONE);
-                    termosUsoButton.performClick();
-                }
+                checaAceiteTermoEConfiguraTela();
             }
         }
     }
@@ -213,27 +219,15 @@ public class TermosUsoActivity extends AppCompatActivity {
     }
 
     private void listenerTermosUso() {
-        termosUsoButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                getTermo();
-            }
-        });
+        termosUsoButton.setOnClickListener(v -> getTermo());
     }
 
     private void listenerPolitica() {
-        politicaButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                selectPoliticas();
-            }
-        });
+        politicaButton.setOnClickListener(v -> selectPoliticas());
     }
 
     private void listenerDuvidas() {
-        duvidasButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                selectDuvidas();
-            }
-        });
+        duvidasButton.setOnClickListener(v -> selectDuvidas());
     }
 
     private void selectTermoUso() {
@@ -270,13 +264,9 @@ public class TermosUsoActivity extends AppCompatActivity {
         DialogUtils.show(this);
         DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(TermosUsoActivity.this);
 
-        dadosCorporativosBO.validaTermoAceito(new RequestListener<ResourceResponse>() {
+        dadosCorporativosBO.validaTermoAceito(new RequestListener<Boolean>() {
             @Override
-            public void onResponse(ResourceResponse response) {
-                if (response.getRedirect() != null){
-                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), TermosUsoActivity.this);
-                }
-
+            public void onResponse(Boolean response) {
                 isTermoAceito = Boolean.TRUE;
                 scrollViewTermoAceite.setPadding(0, 0, 0, 0);
                 getSupportActionBar().setDisplayHomeAsUpEnabled(isTermoAceito);
@@ -312,16 +302,6 @@ public class TermosUsoActivity extends AppCompatActivity {
         if (isTermoAceito) {
             super.onBackPressed();
         }
-    }
-
-    private void disableButton() {
-        buttonTermoAceite.setClickable(Boolean.FALSE);
-        buttonTermoAceite.setBackgroundResource(R.color.azulclaro);
-    }
-
-    private void enableButton() {
-        buttonTermoAceite.setClickable(Boolean.TRUE);
-        buttonTermoAceite.setBackgroundResource(R.color.amarelo);
     }
 
     private void initReciclerViewDuvidas() {
