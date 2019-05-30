@@ -17,6 +17,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bean.ErrorResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RedirectEnum;
 import br.gov.caixa.loterias.apostar.interno.utils.AppUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
+import br.gov.caixa.loterias.apostar.interno.view.AppIndisponivelActivity;
 import br.gov.caixa.loterias.apostar.interno.view.CadastrarActivity_;
 import br.gov.caixa.loterias.apostar.interno.view.TermosUsoActivity;
 
@@ -25,7 +26,7 @@ import br.gov.caixa.loterias.apostar.interno.view.TermosUsoActivity;
  * Created by cedesbr450 on 11/04/18.
  */
 
-public class RedirectNetwork {
+public class  RedirectNetwork {
 
     public static void checkRedirect(VolleyError error, final Context context, Activity activity){
 
@@ -65,6 +66,9 @@ public class RedirectNetwork {
                 case CADASTRAR_APOSTADOR:
                     context.startActivity(new Intent(context, CadastrarActivity_.class));
                     return;
+                case INDISPONIVEL:
+                    context.startActivity(new Intent(context, AppIndisponivelActivity.class));
+                    return;
                 default:
                     break;
             }
@@ -74,14 +78,11 @@ public class RedirectNetwork {
             connectKeycloak(activity);
         }else {
             if (errorResponse.getCodigo() != null &&  errorResponse.getCodigo().equals( "018003" )){
-                ViewUtils.alertTitleButtonYesOrNotListener(context, errorResponse.getMensagem(), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Uri webpage = Uri.parse("https://www.mercadopago.com.br/registration-mp?mode=mp");
-                        Intent intentAc = new Intent(Intent.ACTION_VIEW, webpage);
-                        if (intentAc.resolveActivity(context.getPackageManager()) != null) {
-                            context.startActivity(intentAc);
-                        }
+                ViewUtils.alertTitleButtonYesOrNotListener(context, errorResponse.getMensagem(), (dialog, which) -> {
+                    Uri webpage = Uri.parse("https://www.mercadopago.com.br/registration-mp?mode=mp");
+                    Intent intentAc = new Intent(Intent.ACTION_VIEW, webpage);
+                    if (intentAc.resolveActivity(context.getPackageManager()) != null) {
+                        context.startActivity(intentAc);
                     }
                 });
             }else{
@@ -129,6 +130,13 @@ public class RedirectNetwork {
                     case CADASTRAR_APOSTADOR:
                         activity.startActivity(new Intent(activity, CadastrarActivity_.class));
                         return;
+                    case INDISPONIVEL:
+                        if (activity.getClass() != AppIndisponivelActivity.class) {
+                            activity.startActivityForResult(new Intent(activity, AppIndisponivelActivity.class), 1);
+                        } else {
+                            ViewUtils.alertTitleButton(activity, R.string.label_atencao, activity.getResources().getString(R.string.erro_500), "Ok", dialogInterface -> activity.onBackPressed());
+                        }
+                        return;
                     default:
                         break;
                 }
@@ -139,23 +147,15 @@ public class RedirectNetwork {
             connectKeycloak(activity);
         }else {
             if (errorResponse.getCodigo() != null &&  errorResponse.getCodigo().equals( "018003" )){
-                ViewUtils.alertTitleButtonYesOrNotListener(activity, errorResponse.getMensagem(), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Uri webpage = Uri.parse("https://www.mercadopago.com.br/registration-mp?mode=mp");
-                                Intent intentAc = new Intent(Intent.ACTION_VIEW, webpage);
-                                if (intentAc.resolveActivity(activity.getPackageManager()) != null) {
-                                    activity.startActivity(intentAc);
-                                }
-                            }
-                        });
-            }else{
-                ViewUtils.alertTitleButton(activity, R.string.label_atencao, MensagensNetwork.setMensagem(error, activity), "Ok", new DialogInterface.OnDismissListener() {
-                    @Override
-                    public void onDismiss(DialogInterface dialogInterface) {
-                        activity.onBackPressed();
+                ViewUtils.alertTitleButtonYesOrNotListener(activity, errorResponse.getMensagem(), (dialog, which) -> {
+                    Uri webpage = Uri.parse("https://www.mercadopago.com.br/registration-mp?mode=mp");
+                    Intent intentAc = new Intent(Intent.ACTION_VIEW, webpage);
+                    if (intentAc.resolveActivity(activity.getPackageManager()) != null) {
+                        activity.startActivity(intentAc);
                     }
                 });
+            }else{
+                ViewUtils.alertTitleButton(activity, R.string.label_atencao, MensagensNetwork.setMensagem(error, activity), "Ok", dialogInterface -> activity.onBackPressed());
             }
         }
     }
@@ -171,6 +171,9 @@ public class RedirectNetwork {
             case CADASTRAR_APOSTADOR:
                 activity.startActivity(new Intent(activity, CadastrarActivity_.class));
                 break;
+            case INDISPONIVEL:
+                activity.startActivityForResult(new Intent(activity, AppIndisponivelActivity.class), 1);
+                return;
             default:
                 break;
         }

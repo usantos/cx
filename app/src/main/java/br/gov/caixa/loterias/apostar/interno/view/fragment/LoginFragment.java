@@ -145,7 +145,4 @@ public class LoginFragment extends Fragment {
         getActivity().finish();
     }
 
-
-
-
 }

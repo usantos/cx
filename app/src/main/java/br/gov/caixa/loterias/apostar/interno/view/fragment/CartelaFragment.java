@@ -1,5 +1,6 @@
 package br.gov.caixa.loterias.apostar.interno.view.fragment;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
@@ -49,6 +50,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostar.interno.model.bo.MensagensNetwork;
+import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.keycloak.KeycloakBO_;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.data.CompletaJogoRsp;
@@ -633,12 +635,14 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                         atualizaStatusBotaoFinalizar();
                         verificaSeMostraBotaoLimparAposta();
                         verificaSeMostraSalvarApostaView();
+                        if (response.getRedirect() != null) {
+                            RedirectNetwork.checkRedirectSucesso(response.getRedirect(), getActivity());
+                        }
                     }
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
-                        ViewUtils.alert(getActivity(), MensagensNetwork.setMensagem(error, getActivity()));
+                        RedirectNetwork.checkRedirect(error, getActivity());
                     }
                 });
     }

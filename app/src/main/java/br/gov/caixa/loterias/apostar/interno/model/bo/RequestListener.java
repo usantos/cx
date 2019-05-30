@@ -1,5 +1,7 @@
 package br.gov.caixa.loterias.apostar.interno.model.bo;
 
+import android.util.Log;
+
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
@@ -13,17 +15,17 @@ public abstract class RequestListener<T> {
     private Response.ErrorListener errorListener;
 
     public RequestListener(){
-        silceListener = new Response.Listener<T>(){
-            @Override
-            public void onResponse(T result) {
-                RequestListener.this.onResponse(result);
+        silceListener = result -> {
+            if (result != null) {
+                Log.d("RESPONSE_BODY", result.toString());
             }
+            RequestListener.this.onResponse(result);
         };
-        errorListener = new Response.ErrorListener(){
-            @Override
-            public void onErrorResponse(final VolleyError error) {
-                RequestListener.this.onErrorResponse(error);
+        errorListener = error -> {
+            if (error != null) {
+                Log.d("ERROR_BODY", error.toString());
             }
+            RequestListener.this.onErrorResponse(error);
         };
     }
 

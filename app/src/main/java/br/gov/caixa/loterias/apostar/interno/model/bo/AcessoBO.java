@@ -13,7 +13,11 @@ import net.openid.appauth.ResponseTypeValues;
 
 import org.androidannotations.annotations.EBean;
 
+import java.util.LinkedHashMap;
+
 import br.gov.caixa.loterias.apostar.interno.BuildConfig;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.VersionResponse;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.GsonRequest;
 import br.gov.caixa.loterias.apostar.interno.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostar.interno.utils.Aplicacao;
 import br.gov.caixa.loterias.apostar.interno.view.TokenActivity;
@@ -21,9 +25,10 @@ import br.gov.caixa.loterias.apostar.interno.view.TokenActivity;
 import static org.androidannotations.annotations.EBean.Scope.Singleton;
 
 @EBean(scope = Singleton)
-public class AcessoBO {
+public class AcessoBO extends BaseBO {
 
     public static Boolean PRIMEIRO_LOGIN = false;
+    public AuthorizationService authorizationService;
 
     public void iniciarLoginSSO(Activity activity){
         if(activity != null) {
@@ -44,7 +49,7 @@ public class AcessoBO {
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             PendingIntent pendingIntent = PendingIntent.getActivity(activity, authorizationRequest.hashCode(), intent, 0);
 
-            AuthorizationService authorizationService = new AuthorizationService(activity);
+            authorizationService = new AuthorizationService(activity);
             authorizationService.performAuthorizationRequest(authorizationRequest, pendingIntent);
         }
     }
@@ -73,5 +78,19 @@ public class AcessoBO {
 
             LoginSP.loginRealizado(false);
         }
+    }
+
+    public void getVerificaVersao(String versao, final RequestListener<VersionResponse> listener) {
+        LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
+        LinkedHashMap<String, String> headers = new LinkedHashMap<>();
+
+        String path = ServerMethods.APP_VERSAO_ATUALIZACAO_PATH.replace("{versao-app}", String.valueOf( versao ));
+
+        GsonRequest request = silceConnection.buildGetRequest(path, queryParams, VersionResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(), headers);
+
+        request.setErrorListener(interceptError(request, headers, listener));
+        silceConnection.request(request);
     }
 }

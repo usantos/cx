@@ -49,6 +49,7 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostar.interno.BuildConfig;
 import br.gov.caixa.loterias.apostar.interno.R;
+import br.gov.caixa.loterias.apostar.interno.TutorialRapidaoActivity;
 import br.gov.caixa.loterias.apostar.interno.model.bean.DadosUsuarioToken;
 import br.gov.caixa.loterias.apostar.interno.model.bean.Modalidade;
 import br.gov.caixa.loterias.apostar.interno.model.bean.SessaoUsuario;
@@ -122,6 +123,7 @@ public class PrincipalActivity extends AppCompatActivity
     private AlertDialog loadViewProgress;
 
     private boolean realizandoLogin = false;
+    private boolean recarregarBuscaParam = false;
 
     @AfterViews
     public void init() {
@@ -155,6 +157,10 @@ public class PrincipalActivity extends AppCompatActivity
             nav_user.setText("Olá, seja bem-vindo ao\n App Loterias.");
         }
 
+        if (recarregarBuscaParam) {
+            callWebservice();
+        }
+        layoutSideMenu();
     }
 
     private void listenerSair() {
@@ -192,7 +198,8 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     private void callWebservice() {
-        loadViewProgress = LoadingViewLoterias.show(this);
+        loadViewProgress
+                = LoadingViewLoterias.show(this);
 
         final DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(PrincipalActivity.this);
 
@@ -208,14 +215,11 @@ public class PrincipalActivity extends AppCompatActivity
 
                 modalidadesParaListar = response.getPayload().getParametros();
                 if (modalidadesParaListar == null || modalidadesParaListar.isEmpty()) {
-                    ViewUtils.alert(PrincipalActivity.this, getString(R.string.sistema_indisponivel), new DialogInterface.OnDismissListener() {
-                        @Override
-                        public void onDismiss(DialogInterface dialogInterface) {
-                            startActivity(new Intent(PrincipalActivity.this, LoginActivity.class));
-                            finish();
-                        }
-                    });
-                    return;
+                    recarregarBuscaParam = true;
+                    Intent appIndis = new Intent(PrincipalActivity.this, AppIndisponivelActivity.class);
+                    appIndis.putExtra("IS_BUSCA_PARAM", true);
+
+                    startActivityForResult(appIndis, 1);
                 }
 
                 paramatroSimulacaoSuccess(response);
@@ -223,17 +227,12 @@ public class PrincipalActivity extends AppCompatActivity
 
             @Override
             public void onErrorResponse(VolleyError error) {
+                recarregarBuscaParam = true;
                 loadViewProgress.dismiss();
-                ViewUtils.alertTitleButton(PrincipalActivity.this, R.string.label_atencao, MensagensNetwork.setMensagem(error,
-                        getApplicationContext()),
-                        PrincipalActivity.this.getResources().getString(R.string.ok),
-                        new DialogInterface.OnDismissListener() {
-                            @Override
-                            public void onDismiss(DialogInterface dialogInterface) {
-                                startActivity(new Intent(PrincipalActivity.this, LoginActivity.class));
-                                finish();
-                            }
-                        });
+                Intent appIndis = new Intent(PrincipalActivity.this, AppIndisponivelActivity.class);
+                appIndis.putExtra("IS_BUSCA_PARAM", true);
+
+                startActivityForResult(appIndis, 1);
             }
         });
     }
@@ -275,7 +274,8 @@ public class PrincipalActivity extends AppCompatActivity
         });
     }
 
-    private List<Modalidade> montaListaModalidades() {
+    private List<Modalidade> montaListaModalidades
+            () {
         List<Modalidade> listaModalidades = new ArrayList<>();
 
         for (ParametroSimulacao parametro : modalidadesParaListar) {
@@ -478,7 +478,7 @@ public class PrincipalActivity extends AppCompatActivity
     @Click(R.id.relativeLayoutContentRapidao)
     protected void clickRelativeLayoutContentRapidao() {
         AnimacaoFecharMenuRapido(relativeContentPrincipal);
-        startActivity(new Intent(PrincipalActivity.this, ListaRapidaoActivity.class));
+        redirecionaRapidao();
     }
 
     @Click(R.id.relativeLayoutCarrinho)
@@ -510,11 +510,14 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     private void AbrirMenusGroup(int groupPosition) {
-        if (groupPosition == 2) {
-            startActivity(new Intent(PrincipalActivity.this, ListaRapidaoActivity.class));
-        } else if (groupPosition == 4) {
-            startActivity(new Intent(PrincipalActivity.this, RepassesSociaisActivity.class));
+        if (groupPosition != 0) {
+            drawerLayout.closeDrawer(Gravity.START, false);
+        }
+        if (groupPosition == 1) {
+            redirecionaRapidao();
         } else if (groupPosition == 3) {
+            startActivity(new Intent(PrincipalActivity.this, RepassesSociaisActivity.class));
+        } else if (groupPosition == 2) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
                     != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this,
@@ -522,10 +525,6 @@ public class PrincipalActivity extends AppCompatActivity
             } else {
                 startActivity(new Intent(PrincipalActivity.this, LerBilhetesActivity.class));
             }
-        } else
-
-        if (groupPosition != 0) {
-            drawerLayout.closeDrawer(Gravity.START, false);
         }
     }
 
@@ -564,22 +563,21 @@ public class PrincipalActivity extends AppCompatActivity
         expandableListTitle = new ArrayList<>(expandableListDetail.keySet());
         expandableListAdapter = new SideMenuExpandleAdapter(this, expandableListTitle, expandableListDetail);
         sideMenuExpandableListView.setAdapter(expandableListAdapter);
-        sideMenuExpandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+        sideMenuExpandableListView.setOnGroupExpandListener(groupPosition ->
+                AbrirMenusGroup(groupPosition));
 
-            @Override
-            public void onGroupExpand(int groupPosition) {
-                AbrirMenusGroup(groupPosition);
-            }
+        sideMenuExpandableListView.setOnChildClickListener((parent, v, groupPosition, childPosition, id) -> {
+            AbrirMenusItens(childPosition);
+            return false;
         });
+    }
 
-        sideMenuExpandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v,
-                                        int groupPosition, int childPosition, long id) {
-                AbrirMenusItens(childPosition);
-                return false;
-            }
-        });
+    private void redirecionaRapidao(){
+        if (DadosUsuarioBO.checarTutorialRapidao()){
+            startActivity(new Intent(PrincipalActivity.this, ListaRapidaoActivity.class));
+        }else {
+            startActivity(new Intent(PrincipalActivity.this, TutorialRapidaoActivity.class));
+        }
     }
 
     @Override
@@ -608,4 +606,5 @@ public class PrincipalActivity extends AppCompatActivity
         dismissProgressDialog();
         super.onDestroy();
     }
+
 }

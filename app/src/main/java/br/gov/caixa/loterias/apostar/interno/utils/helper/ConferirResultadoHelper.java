@@ -12,6 +12,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.DTOEnumIntegerRe
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.DTOEnumLong;
 import br.gov.caixa.loterias.apostar.interno.utils.DialogUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
+import br.gov.caixa.loterias.apostar.interno.view.adapter.ApostasConfirmadasAdapter;
 
 public class ConferirResultadoHelper  {
 
@@ -44,9 +45,52 @@ public class ConferirResultadoHelper  {
         });
     }
 
+    public static void conferirResultado(ApostasConfirmadasAdapter.ViewHolder holder, final Long apostaId, final Context contextParam) {
+        DialogUtils.show(contextParam);
+        ApostaBO apostaBO = ApostaBO_.getInstance_(contextParam);
+        apostaBO.getApostaConferir(apostaId, new RequestListener<DTOEnumIntegerResponse>() {
+            @Override
+            public void onResponse(DTOEnumIntegerResponse result) {
+                DialogUtils.dismiss();
+
+                final DTOEnumLong resultCheckFinal = new DTOEnumLong();
+                resultCheckFinal.setValor(result.getPayload().getValor().longValue());
+                resultCheckFinal.setDescricao(result.getPayload().getDescricao());
+
+                conferirResultadoHandler.handle(holder,resultCheckFinal);
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                onError(error, contextParam);
+            }
+        });
+    }
+
+    public static void conferirResultadoWithoutLoading(ApostasConfirmadasAdapter.ViewHolder holder, final Long apostaId, final Context contextParam) {
+        ApostaBO apostaBO = ApostaBO_.getInstance_(contextParam);
+        apostaBO.getApostaConferir(apostaId, new RequestListener<DTOEnumIntegerResponse>() {
+            @Override
+            public void onResponse(DTOEnumIntegerResponse result) {
+                final DTOEnumLong resultCheckFinal = new DTOEnumLong();
+                resultCheckFinal.setValor(result.getPayload().getValor().longValue());
+                resultCheckFinal.setDescricao(result.getPayload().getDescricao());
+
+                conferirResultadoHandler.handle(holder,resultCheckFinal);
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                onError(error, contextParam);
+            }
+        });
+    }
+
     private static void onError(VolleyError error, Context contextParam) {
         DialogUtils.dismiss();
         String msgError = MensagensNetwork.setMensagem(error, contextParam);
+
+//        Rodar na thread de UI
         ViewUtils.alert(contextParam, msgError);
     }
 }

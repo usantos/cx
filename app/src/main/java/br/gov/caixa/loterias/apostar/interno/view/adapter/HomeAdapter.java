@@ -40,12 +40,15 @@ import br.gov.caixa.loterias.apostar.interno.model.bean.Modalidade;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostar.interno.model.bo.MensagensNetwork;
+import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResultadoConcursoDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
+import br.gov.caixa.loterias.apostar.interno.view.DetalheDuvidaActivity;
+import br.gov.caixa.loterias.apostar.interno.view.FavoritasActivity;
 import br.gov.caixa.loterias.apostar.interno.view.animation.AnimacoesResultados;
 import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
 import br.gov.caixa.loterias.apostar.interno.view.custom.ModalidadeSorteioResultadoView;
@@ -197,8 +200,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             layoutParams.width = ViewUtils.setDisplayMetric(280, context);
             holder.linearLayoutResultadosApostas.setLayoutParams(layoutParams);
 
-            holder.setaDireitaAcaoRelativeLayout.setVisibility(View.VISIBLE);
-            holder.setaEsquerdaAcaoRelativeLayout.setVisibility(View.VISIBLE);
+            //holder.setaDireitaAcaoRelativeLayout.setVisibility(View.VISIBLE);
+            //holder.setaEsquerdaAcaoRelativeLayout.setVisibility(View.VISIBLE);
         }else{
             ViewGroup.LayoutParams layoutParams = holder.linearLayoutResultadosApostas.getLayoutParams();
             layoutParams.height = 0;
@@ -210,33 +213,27 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             holder.linearLayoutResultadosApostas.removeAllViews();
         }
 
-        holder.setaEsquerdaAcaoRelativeLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        holder.setaEsquerdaAcaoRelativeLayout.setOnClickListener( view ->
                 callWebserviceResultadoConcurso(holder.relativeLayoutTopResultados,
-                        holder.linearLayoutResultadosApostas,
-                        ApostaDTO.lowerCaseFromString(data.get(position).getTipoModalidade()),
-                        data.get(position).getConcurso().getNumero()-1,
-                        position,
-                        holder.setaEsquerdaAcaoRelativeLayout,
-                        holder.setaDireitaAcaoRelativeLayout,
-                        false);
-            }
-        });
+                    holder.linearLayoutResultadosApostas,
+                    ApostaDTO.lowerCaseFromString(data.get(position).getTipoModalidade()),
+                    data.get(position).getConcurso().getNumero()-1,
+                    position,
+                    holder.setaEsquerdaAcaoRelativeLayout,
+                    holder.setaDireitaAcaoRelativeLayout,
+                    false
+                ));
 
-        holder.setaDireitaAcaoRelativeLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        holder.setaDireitaAcaoRelativeLayout.setOnClickListener( view ->
                 callWebserviceResultadoConcurso(holder.relativeLayoutTopResultados,
-                        holder.linearLayoutResultadosApostas,
-                        ApostaDTO.lowerCaseFromString(data.get(position).getTipoModalidade()),
-                        data.get(position).getConcurso().getNumero()+1,
-                        position,
-                        holder.setaEsquerdaAcaoRelativeLayout,
-                        holder.setaDireitaAcaoRelativeLayout,
-                        false);
-            }
-        });
+                    holder.linearLayoutResultadosApostas,
+                    ApostaDTO.lowerCaseFromString(data.get(position).getTipoModalidade()),
+                    data.get(position).getConcurso().getNumero()+1,
+                    position,
+                    holder.setaEsquerdaAcaoRelativeLayout,
+                    holder.setaDireitaAcaoRelativeLayout,
+                    false
+                ));
     }
 
     private SpannableStringBuilder retornaStringConcursoSemEstimativa(String numConcurso, int corModalidadeInt) {
@@ -357,8 +354,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         );
         data.get(position).setResultadosAberto(true);
         animacoesResultados.AnimacaoDescerContent(ViewUtils.getRealScreenSize(context).y - ViewUtils.setDisplayMetric(315, context));
-        setaDireitaAcaoRelativeLayout.setVisibility(View.VISIBLE);
-        setaEsquerdaAcaoRelativeLayout.setVisibility(View.VISIBLE);
+        //setaDireitaAcaoRelativeLayout.setVisibility(View.VISIBLE);
+        //setaEsquerdaAcaoRelativeLayout.setVisibility(View.VISIBLE);
     }
 
     private void AnimacaoFecharResultados(Context context,
@@ -375,8 +372,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         );
 
         animacoesResultados.AnimacaoSubirContent();
-        setaDireitaAcaoRelativeLayout.setVisibility(View.INVISIBLE);
-        setaEsquerdaAcaoRelativeLayout.setVisibility(View.INVISIBLE);
+        //setaDireitaAcaoRelativeLayout.setVisibility(View.INVISIBLE);
+        //setaEsquerdaAcaoRelativeLayout.setVisibility(View.INVISIBLE);
     }
 
 
@@ -397,6 +394,11 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             @Override
             public void onResponse(ResultadoConcursoDTOResponse response) {
                 loadViewProgress.dismiss();
+
+                if (response.getRedirect() != null){
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), activity);
+                }
+
                 data.get(position).setResultadoConcursoDTO(response.getPayload());
                 if (animarView){
                     AnimacaoAbrirResultados(context,
@@ -414,8 +416,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             @Override
             public void onErrorResponse(VolleyError error) {
                 loadViewProgress.dismiss();
-                ViewUtils.alert(activity, MensagensNetwork.setMensagem(error, context));
-
+                RedirectNetwork.checkRedirect(error, activity);
             }
         });
     }

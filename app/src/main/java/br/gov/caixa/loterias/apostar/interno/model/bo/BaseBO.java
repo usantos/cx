@@ -19,10 +19,13 @@ import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.RootContext;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import br.gov.caixa.loterias.apostar.interno.BuildConfig;
 import br.gov.caixa.loterias.apostar.interno.model.bo.keycloak.KeycloakBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.keycloak.KeycloakBO_;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ApostadorDTOResponse;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.VersionResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.GsonRequest;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.SilceConnection;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.SilceSingleton;
@@ -99,10 +102,10 @@ public class BaseBO {
                                 });
                             }
                         });
-                    }else{
+                    } else{
                         listener.onErrorResponse(error);
                     }
-                }else{
+                } else{
                     listener.onErrorResponse(error);
                 }
             }

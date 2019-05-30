@@ -26,10 +26,10 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResultadoConsultaBilheteDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.view.PrincipalActivity;
 
+import static br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.Bin.FLAGS_BASE64;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class Crypto {
-    private Base64 base64 = new Base64();
     private IvParameterSpec iv;
     private SecretKeySpec key;
     private KeyGenerator gen;
@@ -77,7 +77,7 @@ public class Crypto {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             keyBytes = java.util.Base64.getDecoder().decode(chave);
         } else {
-            keyBytes = android.util.Base64.decode(chave, android.util.Base64.DEFAULT);
+            keyBytes = android.util.Base64.decode(chave, FLAGS_BASE64);
         }
 
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyBytes);
@@ -92,7 +92,7 @@ public class Crypto {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             codigo = java.util.Base64.getEncoder().encodeToString(cipherText);;
         } else {
-            codigo = android.util.Base64.encodeToString(cipherText, android.util.Base64.DEFAULT);
+            codigo = android.util.Base64.encodeToString(cipherText, FLAGS_BASE64);
         }
 
         return codigo;

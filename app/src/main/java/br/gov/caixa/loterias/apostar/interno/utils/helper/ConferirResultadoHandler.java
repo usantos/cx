@@ -1,6 +1,7 @@
 package br.gov.caixa.loterias.apostar.interno.utils.helper;
 
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.DTOEnumLong;
+import br.gov.caixa.loterias.apostar.interno.view.adapter.ApostasConfirmadasAdapter;
 
 /**
  * Created by joafilho on 10/04/2018.
@@ -9,5 +10,6 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.DTOEnumLong;
 
 
 public interface ConferirResultadoHandler {
-    public void handle(DTOEnumLong situacao);
+    void handle(DTOEnumLong situacao);
+    void handle(ApostasConfirmadasAdapter.ViewHolder holder, DTOEnumLong situacao);
 }

@@ -241,7 +241,7 @@ public class ApostasConfirmadasFragment extends Fragment implements ApostasConfi
                     clearItemDecorations();
                     apostasConfirmadasRecyclerView.addItemDecoration(divider);
                 }
-                adapter = new ApostasConfirmadasAdapter(getActivity(), apostasList, isHistorico);
+                adapter = new ApostasConfirmadasAdapter(((ApostasConfirmadasActivity)getActivity()), getActivity(), apostasList, isHistorico);
                 adapter.setOnApostasConfirmadasListener(new ApostasConfirmadasAdapter.OnApostasConfirmadasListener() {
                     @Override
                     public void onEmptyCellClick() {
