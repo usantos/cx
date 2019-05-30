@@ -166,7 +166,16 @@ public class TermosUsoActivity extends AppCompatActivity {
             if (duvidasButton.isChecked()) {
                 duvidasButton.performClick();
             }else{
-                termosUsoButton.performClick();
+                if (DadosUsuarioBO.checarUsuarioLogado(this)) {
+                    listenerPolitica();
+                    verificaTermoAceito();
+                } else {
+                    isTermoAceito = Boolean.TRUE;
+                    scrollViewTermoAceite.setPadding(0, 0, 0, 0);
+                    getSupportActionBar().setDisplayHomeAsUpEnabled(isTermoAceito);
+                    footerAceiteTermo.setVisibility(View.GONE);
+                    termosUsoButton.performClick();
+                }
             }
         }
     }
