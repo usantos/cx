@@ -25,12 +25,15 @@ import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO_;
+import br.gov.caixa.loterias.apostar.interno.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CarrinhoDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResourceResponse;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostar.interno.model.dao.DBLoteriasCrud;
 import br.gov.caixa.loterias.apostar.interno.utils.DialogUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
@@ -59,6 +62,9 @@ public class CarrinhoActivity extends SettingToolbarActivity {
     @Extra
     protected boolean lerCarrinhoLocal;
 
+    protected boolean ocorrendoValidacao = false;
+
+
     @AfterViews
     public void init() {
         ViewUtils.setMoedaFormatHtml(BigDecimal.ZERO, valorTotalCarrinho);
@@ -70,6 +76,15 @@ public class CarrinhoActivity extends SettingToolbarActivity {
             atualizaLayout(true);
         }
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+            if(ocorrendoValidacao){
+                validarCarrinho();
+            }
+    }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -110,14 +125,40 @@ public class CarrinhoActivity extends SettingToolbarActivity {
 
     @Click(R.id.botaoAvancarPagamento)
     protected void clickBotaoAvancarPagamento() {
-        Gson gson = new Gson();
+        /*Gson gson = new Gson();
         String json = gson.toJson(carrinho);
         Intent activity = new Intent(CarrinhoActivity.this, FormaPagamentoActivity.class);
         activity.putExtra("CARRINHO", json);
-        startActivity(activity);
+        startActivity(activity);*/
+        validarCarrinho();
+    }
+    private void validarCarrinho() {
+        ocorrendoValidacao = true;
+        DialogUtils.show(CarrinhoActivity.this);
+        ApostaBO_.getInstance_(CarrinhoActivity.this).validarCarrinho(new RequestListener<ResourceResponse>() {
+            @Override
+            public void onResponse(ResourceResponse result) {
+                ocorrendoValidacao = false;
+                DialogUtils.dismiss();
+                Gson gson = new Gson();
+                String json = gson.toJson(carrinho);
+                Intent activity = new Intent(CarrinhoActivity.this, FormaPagamentoActivity.class);
+                activity.putExtra("CARRINHO", json);
+                startActivity(activity);
+                //startActivity(new Intent(CarrinhoActivity.this, FormaPagamentoActivity.class));
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                ocorrendoValidacao = false;
+                DialogUtils.dismiss();
+                RedirectNetwork.checkRedirect(error, CarrinhoActivity.this);
+
+            }
+        });
     }
 
-    @Click(R.id.botaoFazerNovaAposta)
+        @Click(R.id.botaoFazerNovaAposta)
     protected void clickBotaoFazerNovaAposta() {
         setResult(2);
         finish();

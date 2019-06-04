@@ -30,6 +30,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.DadosUsuarioBO_;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.keycloak.KeycloakBO_;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ApostaDTO;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.UsuarioLogadoResponse;
 import br.gov.caixa.loterias.apostar.interno.model.dao.DBLoteriasCrud;
 import br.gov.caixa.loterias.apostar.interno.model.sp.LoginSP;
@@ -96,14 +97,15 @@ public class TokenActivity extends AppCompatActivity {
                                 }
 
                                 final DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_(TokenActivity.this);
-                                final RetornoListaCarrinho retornoListaCarrinho = new RetornoListaCarrinho();
-                                List<ApostaDTO> listApostas = new ArrayList<>();
-                                retornoListaCarrinho.setApostas(listApostas);
-                                dadosUsuarioBO.postVerificarCadastro(retornoListaCarrinho, new RequestListener<UsuarioLogadoResponse>() {
+                                DBLoteriasCrud crud = new DBLoteriasCrud(TokenActivity.this);
+                                List<IdentificaoDeUmaApostaDas8Modalidades> listApostas = crud.readAllIdentificaoDeUmaApostaDas8Modalidades();
+                                dadosUsuarioBO.postVerificarCadastro(listApostas, new RequestListener<UsuarioLogadoResponse>() {
+
                                     @Override
                                     public void onResponse(UsuarioLogadoResponse response) {
                                         if (response.getRedirect() == null) {
                                             SessaoUsuario.getInstance().setValorMaximoAposta(response.getPayload().getLimiteDiario());
+                                            crud.deleteAll();
                                             finish();
                                         } else {
                                             finish();

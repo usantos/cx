@@ -223,7 +223,7 @@ public class DBLoteriasCrud {
                 values.put(DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_TROCA, aposta.getTroca());
                 values.put(DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_DATA_EFETIVACAO, aposta.getDataEfetivacao());
                 values.put(DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_HORA_EFETIVACAO, aposta.getHoraEfetivacao());
-                values.put(DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_LOTERICA_ID, this.insertLotericaDTO(aposta.getLoterica()));
+                //values.put(DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_LOTERICA_ID, this.insertLotericaDTO(aposta.getLoterica()));
                 values.put(DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_VINCULO_ESPELHO, aposta.getVinculoEspelho());
                 values.put(DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_QUANTIDADE_NUMEROS, aposta.getQuantidadeNumeros());
                 values.put(DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_SURPRESINHA, aposta.getSurpresinha());
@@ -356,7 +356,7 @@ public class DBLoteriasCrud {
                 aposta.setTroca(cursor.getInt(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_TROCA)) == 1 ? Boolean.TRUE : Boolean.FALSE);
                 aposta.setDataEfetivacao(cursor.getString(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_DATA_EFETIVACAO)));
                 aposta.setHoraEfetivacao(cursor.getString(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_HORA_EFETIVACAO)));
-                aposta.setLoterica(this.readLotericaDTO(cursor.getLong(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_LOTERICA_ID))));
+               //aposta.setLoterica(this.readLotericaDTO(cursor.getLong(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_LOTERICA_ID))));
                 aposta.setVinculoEspelho(cursor.getLong(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_VINCULO_ESPELHO)));
                 aposta.setQuantidadeNumeros(cursor.getInt(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_QUANTIDADE_NUMEROS)));
                 aposta.setSurpresinha(cursor.getInt(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_SURPRESINHA)) == 1 ? Boolean.TRUE : Boolean.FALSE);
@@ -1047,7 +1047,7 @@ public class DBLoteriasCrud {
     public void deleteIdentificaoDeUmaApostaDas8Modalidades(IdentificaoDeUmaApostaDas8Modalidades aposta) {
         try {
             if (aposta != null) {
-                this.deleteLoterica(aposta.getLoterica());
+                //this.deleteLoterica(aposta.getLoterica());
                 this.deleteParametroEquipe(aposta.getTimeDoCoracao());
 
                 if (aposta.getPartidasLotogol() != null) {
