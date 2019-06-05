@@ -25,7 +25,6 @@ import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO_;
-import br.gov.caixa.loterias.apostar.interno.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
@@ -80,7 +79,9 @@ public class CarrinhoActivity extends SettingToolbarActivity {
     @Override
     protected void onResume() {
         super.onResume();
-            if(ocorrendoValidacao){
+              if(ocorrendoValidacao){
+                  setCarrinho(CarrinhoSingleton.getInstance().getCarrinho());
+                  atualizaLayout(true);
                 validarCarrinho();
             }
     }
@@ -150,7 +151,6 @@ public class CarrinhoActivity extends SettingToolbarActivity {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                ocorrendoValidacao = false;
                 DialogUtils.dismiss();
                 RedirectNetwork.checkRedirect(error, CarrinhoActivity.this);
 

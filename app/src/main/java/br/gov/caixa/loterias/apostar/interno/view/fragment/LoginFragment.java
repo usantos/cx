@@ -112,6 +112,7 @@ public class LoginFragment extends Fragment {
                     SessaoUsuario.getInstance().setValorMaximoAposta(response.getPayload().getLimiteDiario());
 
                     crud.deleteAll();
+                    CarrinhoSingleton.getInstance().setCarrinho(null);
                     CarrinhoSingleton.getInstance().setCarrinho(response.getPayload().getCarrinho());
 
                     PrincipalActivity_.intent(getActivity()).start();

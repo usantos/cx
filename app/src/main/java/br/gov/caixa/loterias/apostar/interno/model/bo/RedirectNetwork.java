@@ -19,6 +19,7 @@ import br.gov.caixa.loterias.apostar.interno.utils.AppUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.AppIndisponivelActivity;
 import br.gov.caixa.loterias.apostar.interno.view.CadastrarActivity_;
+import br.gov.caixa.loterias.apostar.interno.view.CarrinhoActivity;
 import br.gov.caixa.loterias.apostar.interno.view.TermosUsoActivity;
 
 
@@ -136,6 +137,9 @@ public class  RedirectNetwork {
                         } else {
                             ViewUtils.alertTitleButton(activity, R.string.label_atencao, activity.getResources().getString(R.string.erro_500), "Ok", dialogInterface -> activity.onBackPressed());
                         }
+                        return;
+                    case CARRINHO:
+                        activity.startActivityForResult(new Intent(activity, CarrinhoActivity.class), 1);
                         return;
                     default:
                         break;
