@@ -239,6 +239,7 @@ public class AdicionarApostaCarrinhoHelper {
                 apostaEspelho.setNumerosSelecionados(numerosEspelho);
 
                 apostaEspelho.setEspelho(true);
+                aposta.setGerarEspelho(true);
                 Long idAposta = crud.insertIdentificaoDeUmaApostaDas8Modalidades(aposta);
 
                 ContentValues cv = new ContentValues();

@@ -85,9 +85,9 @@ IdentificaoDeUmaApostaDas8Modalidades {
 
     @ApiModelProperty(value = "Gerar aposta espelho")
     public Boolean getGerarApostaEspelho(){
-        return true;
+        return geraEspelho;
     }
-    public void setGeraEspelho(Boolean geraEspelho){
+    public void setGerarEspelho(Boolean geraEspelho){
         this.geraEspelho = geraEspelho;
     }
 
@@ -393,6 +393,7 @@ IdentificaoDeUmaApostaDas8Modalidades {
                 (this.quantidadeTeimosinhas == null ? identificaoDeUmaApostaDas8Modalidades.quantidadeTeimosinhas == null : this.quantidadeTeimosinhas.equals(identificaoDeUmaApostaDas8Modalidades.quantidadeTeimosinhas)) &&
                 (this.quantidadeApostas == null ? identificaoDeUmaApostaDas8Modalidades.quantidadeApostas == null : this.quantidadeApostas.equals(identificaoDeUmaApostaDas8Modalidades.quantidadeApostas)) &&
                 (this.espelho == null ? identificaoDeUmaApostaDas8Modalidades.espelho == null : this.espelho.equals(identificaoDeUmaApostaDas8Modalidades.espelho)) &&
+                (this.geraEspelho == null ? identificaoDeUmaApostaDas8Modalidades.geraEspelho == null : this.geraEspelho.equals(identificaoDeUmaApostaDas8Modalidades.geraEspelho)) &&
                 (this.timeDoCoracao == null ? identificaoDeUmaApostaDas8Modalidades.timeDoCoracao == null : this.timeDoCoracao.equals(identificaoDeUmaApostaDas8Modalidades.timeDoCoracao)) &&
                 (this.concursoInicial == null ? identificaoDeUmaApostaDas8Modalidades.concursoInicial == null : this.concursoInicial.equals(identificaoDeUmaApostaDas8Modalidades.concursoInicial)) &&
                 (this.situacao == null ? identificaoDeUmaApostaDas8Modalidades.situacao == null : this.situacao.equals(identificaoDeUmaApostaDas8Modalidades.situacao)) &&
@@ -420,6 +421,7 @@ IdentificaoDeUmaApostaDas8Modalidades {
         result = 31 * result + (this.quantidadeTeimosinhas == null ? 0 : this.quantidadeTeimosinhas.hashCode());
         result = 31 * result + (this.quantidadeApostas == null ? 0 : this.quantidadeApostas.hashCode());
         result = 31 * result + (this.espelho == null ? 0 : this.espelho.hashCode());
+        result = 31 * result + (this.geraEspelho == null ? 0 : this.geraEspelho.hashCode());
         result = 31 * result + (this.timeDoCoracao == null ? 0 : this.timeDoCoracao.hashCode());
         result = 31 * result + (this.concursoInicial == null ? 0 : this.concursoInicial.hashCode());
         result = 31 * result + (this.situacao == null ? 0 : this.situacao.hashCode());
@@ -449,6 +451,7 @@ IdentificaoDeUmaApostaDas8Modalidades {
                 "  quantidadeTeimosinhas: " + quantidadeTeimosinhas + "\n" +
                 "  quantidadeApostas: " + quantidadeApostas + "\n" +
                 "  espelho: " + espelho + "\n" +
+                "  geraEspelho: " + geraEspelho + "\n" +
                 "  timeDoCoracao: " + timeDoCoracao + "\n" +
                 "  concursoInicial: " + concursoInicial + "\n" +
                 "  situacao: " + situacao + "\n" +
@@ -497,6 +500,7 @@ IdentificaoDeUmaApostaDas8Modalidades {
         identificaoDeUmaApostaDas8Modalidades.setConcursoInicial( aposta.getConcursoInicial() );
         identificaoDeUmaApostaDas8Modalidades.setDataEfetivacao( aposta.getDataEfetivacao() );
         identificaoDeUmaApostaDas8Modalidades.setEspelho( aposta.getEspelho() );
+        identificaoDeUmaApostaDas8Modalidades.setGerarEspelho( aposta.getGerarApostaEspelho() );
         identificaoDeUmaApostaDas8Modalidades.setHoraEfetivacao( aposta.getHoraEfetivacao() );
         identificaoDeUmaApostaDas8Modalidades.setId( aposta.getId() );
         //identificaoDeUmaApostaDas8Modalidades.setLoterica( aposta.getLoterica() );
