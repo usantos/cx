@@ -42,7 +42,6 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.PartidaLotecaDTO
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.PartidaLotogolDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostar.interno.model.dao.DBLoteriasCrud;
-import br.gov.caixa.loterias.apostar.interno.model.dao.DBTabelasLoterias;
 import br.gov.caixa.loterias.apostar.interno.utils.Constantes;
 import br.gov.caixa.loterias.apostar.interno.utils.DialogUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
@@ -230,7 +229,7 @@ public class AdicionarApostaCarrinhoHelper {
                 IdentificaoDeUmaApostaDas8Modalidades apostaEspelho = IdentificaoDeUmaApostaDas8Modalidades.clone(aposta);
                 List<Integer> numerosEspelho = new ArrayList<>();
 
-                for (int i = 1; i < 100; i++) {
+                for (int i = 1; i <= 100; i++) {
                     if (!aposta.getNumerosSelecionados().contains(i)) {
                         numerosEspelho.add(i);
                     }

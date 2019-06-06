@@ -387,6 +387,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         aposta.setQuantidadeTeimosinhas(parentActivity.qtdConcursoSelecionado);
         aposta.setQuantidadeApostas(1);
         aposta.setEspelho(false);
+        aposta.setGerarEspelho(false);
 
         aposta.setTimeDoCoracao(equipeSelecionada);
 
