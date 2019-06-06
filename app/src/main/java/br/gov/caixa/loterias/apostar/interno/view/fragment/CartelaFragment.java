@@ -70,6 +70,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.PartidaLotecaDTO
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.PartidaLotogolDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostar.interno.utils.Constantes;
+import br.gov.caixa.loterias.apostar.interno.utils.DialogUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
@@ -621,12 +622,14 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
     }
 
     private void preencheNumerosAleatorios() {
+        DialogUtils.show(getActivity());
         ApostaBO apostaBO = ApostaBO_.getInstance_(getActivity());
         orderAscDezenas();
         apostaBO.completaJogo(parentActivity.qtdDezenasPossiveisSelecionado, dezenasSelecionadas, 1,
                 parametroJogo.getPrognosticoMaximo(), new RequestListener<CompletaJogoRsp>() {
                     @Override
                     public void onResponse(CompletaJogoRsp response) {
+                        DialogUtils.dismiss();
                         FirebaseManager.registraEvento(getContext() ,"ENTROU_COMPLETAR_COM_NUMEROS_ALEATORIOS");
                         isEcolhaTimeBtnAtivado = true;
                         dezenasSelecionadas.clear();
@@ -642,6 +645,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        DialogUtils.dismiss();
                         RedirectNetwork.checkRedirect(error, getActivity());
                     }
                 });
