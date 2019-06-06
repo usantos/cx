@@ -13,7 +13,7 @@ android {
         applicationId "br.gov.caixa.loterias.apostar.interno"
         minSdkVersion 21
         targetSdkVersion 27
-        versionCode 21101051
+        versionCode 21101052
         versionName "1.0.5"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -91,8 +91,7 @@ android {
                 dimension "default"
                 //applicationIdSuffix ".caixadev"
                 buildConfigField "boolean", "CAIXA_NETWORK_STUB", "false"
-//                    buildConfigField "String", "CAIXA_BASE_URL_SILCE", "\"http://simlo.des.caixa/silce-servico-rest/rest/v1/\""
-                buildConfigField "String", "CAIXA_BASE_URL_SILCE", "\"http://df7390sr029.corp.caixa.gov.br:8280/silce-servico-rest/rest/v1/\""
+                buildConfigField "String", "CAIXA_BASE_URL_SILCE", "\"https://www.loteriasonline.caixa.gov.br/silce-servico-rest/rest/v1/\""
                 buildConfigField "String", "PUBLIC_KEY_MP", "\"TEST-946a3077-5cf1-446c-bab3-e3a266357e9f\""
                 buildConfigField "String", "SSO_CLIENT_SECRET", "\"b54d171d-03de-41f3-b1b1-64e98672cbb8\""
                 buildConfigField "String", "SSO_CLIENT_ID", "\"cli-mob-lce\""

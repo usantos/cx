@@ -497,4 +497,9 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
 
     @Override
     public void handle(ApostasConfirmadasAdapter.ViewHolder holder, DTOEnumLong situacao) { }
+
+    @Override
+    public void handleError(ApostasConfirmadasAdapter.ViewHolder holder) {
+
+    }
 }
