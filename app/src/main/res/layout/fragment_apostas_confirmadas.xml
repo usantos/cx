@@ -7,10 +7,10 @@
     <include layout="@layout/spinner_date"/>
 
     <android.support.v7.widget.RecyclerView
-        android:layout_marginTop="@dimen/activity_vertical_margin"
         android:id="@+id/apostasConfirmadasRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_vertical_margin" />
 
     <ProgressBar
         android:layout_marginTop="@dimen/activity_vertical_margin"
