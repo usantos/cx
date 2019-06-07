@@ -32,14 +32,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostar.interno.BuildConfig;
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bean.MeioPagamento;
 import br.gov.caixa.loterias.apostar.interno.model.bean.ParametrosPagamento;
-import br.gov.caixa.loterias.apostar.interno.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostar.interno.model.bo.DadosUsuarioBO;
@@ -47,11 +45,9 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.DadosUsuarioBO_;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CarrinhoDTO;
-import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ListCartaoDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RetornoCartao;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RetornoPadraoDTO;
-import br.gov.caixa.loterias.apostar.interno.model.dao.DBLoteriasCrud;
 import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.FormaPagamentoRecyclerViewAdapter;
@@ -125,7 +121,7 @@ public class FormaPagamentoActivity extends SettingToolbarActivity implements Fo
                             String carrinho = gson.toJson(carrinhoDTO);
                             activity.putExtra("CARRINHO", carrinho);
                         }
-                        startActivity(activity);
+                        startActivityForResult(activity,600);
                         flagEntrouAddCartao = true;
                     }
 
@@ -144,6 +140,7 @@ public class FormaPagamentoActivity extends SettingToolbarActivity implements Fo
             }
         });
     }
+
 
     private void configuraRecyclerViewCarrinhoAposta() {
         RecyclerView recyclerView = findViewById(R.id.formasPagamentoRecyclerView);
@@ -169,7 +166,15 @@ public class FormaPagamentoActivity extends SettingToolbarActivity implements Fo
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == 1) {
             callWebservice();
+        }else if (requestCode == 600) {
+            if (listaCartoes == null){
+                finish();
+            }else if ( listaCartoes.size() == 0){
+                finish();
+            }
+
         }
+
     }
 
     @Override
