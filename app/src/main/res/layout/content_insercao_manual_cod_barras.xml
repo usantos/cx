@@ -27,20 +27,16 @@
         android:layout_marginTop="40dp"
         android:textColorHint="@color/verdeazul">
 
-        <br.com.sapereaude.maskedEditText.MaskedEditText
+        <EditText
             android:id="@+id/editTextNumeroBilhete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAllCaps="true"
-            android:inputType="textCapCharacters"
+            android:inputType="text"
             android:ems="25"
-            android:text="7673-2a9091bc04b8dc815-e0"
             android:fontFamily="@font/arialmt"
-            app:mask="####-#################-##"
             android:textColorHint="@color/verdeazul"
-            android:textSize="14sp"
-            app:notMaskedSymbol="#"
-            />
+            android:textSize="14sp" />
 
     </android.support.design.widget.TextInputLayout>
 

@@ -222,27 +222,6 @@
                     android:inputType="textPersonName" />
             </android.support.design.widget.TextInputLayout>
 
-            <!--<android.support.design.widget.TextInputLayout-->
-                <!--android:id="@+id/editTextNascimento"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_below="@id/editTextMunicipio"-->
-                <!--android:layout_marginLeft="16dp"-->
-                <!--android:layout_marginRight="16dp"-->
-                <!--android:layout_marginTop="20dp">-->
-
-                <!--<com.github.pinball83.maskededittext.MaskedEditText-->
-                    <!--android:id="@+id/editTextNascimentoContent"-->
-                    <!--style="@style/editTextRegisterTheme"-->
-                    <!--android:ems="10"-->
-                    <!--android:hint="@string/label_nascimento"-->
-                    <!--android:inputType="number"-->
-                    <!--app:mask="**/**/****"-->
-                    <!--app:notMaskedSymbol="*"-->
-                    <!--android:enabled="false"/>-->
-            <!--</android.support.design.widget.TextInputLayout>-->
-
-
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/editTextEmail"
                 android:layout_width="match_parent"

@@ -6,12 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.InputFilter;
-import android.text.Spanned;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import java.security.InvalidKeyException;
@@ -22,14 +21,14 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
-import br.com.sapereaude.maskedEditText.MaskedEditText;
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.Crypto;
+import br.gov.caixa.loterias.apostar.interno.utils.MaskEditUtil;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 
 public class InsercaoManualCodBarrasActivity extends AppCompatActivity {
 
-    MaskedEditText editTextNumeroBilhete;
+    EditText editTextNumeroBilhete;
     Button buttonContinuarInsercaoManualBilhetes;
 
     @Override
@@ -41,52 +40,45 @@ public class InsercaoManualCodBarrasActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle( ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.label_ler_bilhestes_bold)));
 
-
-        InputFilter inputFilter = new InputFilter() {
-            @Override
-            public CharSequence filter(CharSequence charSequence, int start, int end, Spanned spanned, int dstart, int dend) {
-                StringBuilder stringBuilder = new StringBuilder();
-                for(int i = start; i < end; i++){
-                    Character character = charSequence.charAt(i);
-                    character = Character.toUpperCase(character);
-                    stringBuilder.append(character);
-                }
-                return stringBuilder.toString();
+        InputFilter inputFilter = (charSequence, start, end, spanned, dstart, dend) -> {
+            StringBuilder stringBuilder = new StringBuilder();
+            for(int i = start; i < end; i++){
+                Character character = charSequence.charAt(i);
+                character = Character.toUpperCase(character);
+                stringBuilder.append(character);
             }
+            return stringBuilder.toString();
         };
 
 
-        buttonContinuarInsercaoManualBilhetes = (Button) findViewById(R.id.buttonContinuarInsercaoManualBilhetes);
+        buttonContinuarInsercaoManualBilhetes = findViewById(R.id.buttonContinuarInsercaoManualBilhetes);
         editTextNumeroBilhete = findViewById(R.id.editTextNumeroBilhete);
         editTextNumeroBilhete.addTextChangedListener(textWatcher);
         editTextNumeroBilhete.setFilters(new InputFilter[]{inputFilter});
-        buttonContinuarInsercaoManualBilhetes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if("".equals(editTextNumeroBilhete.getRawText())){
-                    Toast.makeText(InsercaoManualCodBarrasActivity.this, "Informe o código do bilhete!", Toast.LENGTH_SHORT).show();
-                }else{
-                    try {
-                        String code = Crypto.cripfyBarcode(editTextNumeroBilhete.getRawText());
-                        ResultadoLerBilhetesActivity_.intent(InsercaoManualCodBarrasActivity.this).codBarras(code).start();
-                    } catch (NoSuchAlgorithmException e) {
-                        e.printStackTrace();
-                    } catch (InvalidKeySpecException e) {
-                        e.printStackTrace();
-                    } catch (NoSuchPaddingException e) {
-                        e.printStackTrace();
-                    } catch (BadPaddingException e) {
-                        e.printStackTrace();
-                    } catch (IllegalBlockSizeException e) {
-                        e.printStackTrace();
-                    } catch (InvalidKeyException e) {
-                        e.printStackTrace();
-                    }
-                 }
-            }
+        buttonContinuarInsercaoManualBilhetes.setOnClickListener(v -> {
+            if("".equals(editTextNumeroBilhete.getText())){
+                Toast.makeText(InsercaoManualCodBarrasActivity.this, "Informe o código do bilhete!", Toast.LENGTH_SHORT).show();
+            }else{
+                try {
+                    String code = Crypto.cripfyBarcode(removerMascara(editTextNumeroBilhete));
+                    ResultadoLerBilhetesActivity_.intent(InsercaoManualCodBarrasActivity.this).codBarras(code).start();
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                } catch (InvalidKeySpecException e) {
+                    e.printStackTrace();
+                } catch (NoSuchPaddingException e) {
+                    e.printStackTrace();
+                } catch (BadPaddingException e) {
+                    e.printStackTrace();
+                } catch (IllegalBlockSizeException e) {
+                    e.printStackTrace();
+                } catch (InvalidKeyException e) {
+                    e.printStackTrace();
+                }
+             }
         });
 
-
+        editTextNumeroBilhete.addTextChangedListener(MaskEditUtil.mask(editTextNumeroBilhete, MaskEditUtil.FORMAT_NSBI));
     }
 
     @Override
@@ -132,12 +124,8 @@ public class InsercaoManualCodBarrasActivity extends AppCompatActivity {
         startActivity(activity);
     }
 
-    private String removerMascara(MaskedEditText maskedEditText){
-
-        String caracter = String.valueOf(maskedEditText.getCharRepresentation());
-
-        return "";
-
+    private String removerMascara(EditText maskedEditText){
+        return maskedEditText.getText().toString().replaceAll("-", "");
     }
 
     private TextWatcher textWatcher = new TextWatcher() {
