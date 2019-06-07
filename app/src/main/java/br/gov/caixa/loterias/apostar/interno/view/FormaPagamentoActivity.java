@@ -167,14 +167,10 @@ public class FormaPagamentoActivity extends SettingToolbarActivity implements Fo
         if (resultCode == RESULT_OK && requestCode == 1) {
             callWebservice();
         }else if (requestCode == 600) {
-            if (listaCartoes == null){
-                finish();
-            }else if ( listaCartoes.size() == 0){
+            if (listaCartoes == null || listaCartoes.size() == 0){
                 finish();
             }
-
         }
-
     }
 
     @Override
