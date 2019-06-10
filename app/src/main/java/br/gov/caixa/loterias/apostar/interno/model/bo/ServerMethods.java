@@ -10,6 +10,8 @@ class ServerMethods {
      static final String BUSCA_CARRINHO_PATH = "/carrinhos";
      static final String DELETE_APOSTA_CARRINHO_PATH = "carrinhos/apostas/";
      static final String LIMPAR_CARRINHO_PATH = "/carrinhos/limpar";
+     static final String VALIDAR_CARRINHO = "carrinhos/validar";
+
 
      static final String INCLUIR_APOSTAS_CARRINHO_PATH = "/carrinhos/incluir-apostas";
 
