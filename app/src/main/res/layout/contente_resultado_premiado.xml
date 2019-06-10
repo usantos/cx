@@ -278,7 +278,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
                     android:layout_weight="0.24"
-                    android:text="@string/label_sorteio_case"
+                    android:text="@string/title_sorteio"
                     android:textColor="@color/verdeazul"
                     android:textSize="14sp"
                     android:textStyle="bold" />

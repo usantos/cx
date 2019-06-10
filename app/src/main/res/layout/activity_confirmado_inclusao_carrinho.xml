@@ -164,7 +164,7 @@
                     android:clickable="false"
                     android:gravity="center"
                     android:outlineProvider="none"
-                    android:text="0"
+                    tools:text="0"
                     android:textColor="@color/branco"
                     android:textSize="12sp"
                     android:translationZ="2dp"
@@ -204,23 +204,14 @@
         app:layout_constraintRight_toLeftOf="@+id/viewTabBar">
 
         <TextView
+            android:id="@+id/txtVoltarAoInicio"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
-            android:fontFamily="@font/futura_std_bold"
-            android:text="Voltar"
+            android:text="@string/btn_title_voltarAoInicio"
             android:textAlignment="center"
             android:textColor="@color/branco"
             android:textSize="17.7sp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/futura_std_book"
-            android:text="ao início"
-            android:textAlignment="center"
-            android:textColor="@color/branco"
-            android:textSize="14.2sp" />
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

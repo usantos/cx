@@ -23,7 +23,7 @@ public class ConfirmacaoPagamentoActivity extends SettingToolbarActivity {
     }
 
     private void configuraBotoes(){
-        ((Button) findViewById(R.id.botaoVoltarInicio)).setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.confirmacaoPagamentoBotaoVoltarInicio)));
+        ((Button) findViewById(R.id.botaoVoltarInicio)).setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.btn_title_voltarAoInicio)));
 
         findViewById(R.id.botaoVoltarInicio).setOnClickListener(new View.OnClickListener() {
             @Override

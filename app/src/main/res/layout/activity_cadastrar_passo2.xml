@@ -21,7 +21,7 @@
                 android:layout_height="30dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="10dp"
-                android:text="Cadastrar"
+                android:text="@string/title_cadastrar"
                 android:textColor="@color/cinza"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -152,7 +152,7 @@
                                 android:drawableRight="@drawable/combo"
                                 android:ems="10"
                                 android:focusableInTouchMode="false"
-                                android:hint="UF"
+                                android:hint="@string/title_uf"
                                 android:inputType="textPersonName"
                                 android:textColor="@color/cinza" />
                         </android.support.design.widget.TextInputLayout>

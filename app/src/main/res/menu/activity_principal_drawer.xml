@@ -7,33 +7,33 @@
         <item
             android:id="@+id/nav_minhaarea"
             android:icon="@drawable/menu1_area"
-            android:title="Minha área">
+            android:title="@string/title_minhaArea">
         </item>
         <item
             android:id="@+id/nav_slideshow"
             android:icon="@drawable/menu3_resultados"
-            android:title="Resultados" />
+            android:title="@string/label_resultado" />
         <item
             android:id="@+id/nav_rapidao"
             android:icon="@drawable/menu4_rapidao"
-            android:title="Rapidão" />
+            android:title="@string/label_rapidao" />
 
         <item
             android:id="@+id/nav_bilhetes"
             android:icon="@drawable/menu5_bilhetes"
-            android:title="Ler Bilhete" />
+            android:title="@string/title_lerBilhete" />
 
         <item
             android:id="@+id/nav_sociais"
             android:icon="@drawable/menu6_repasses"
-            android:title="Repasses sociais" />
+            android:title="@string/title_repassesSociais" />
     </group>
 
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_sair"
             android:icon="@drawable/icon_sair"
-            android:title="Sair" />
+            android:title="@string/title_sair" />
     </group>
 
 
