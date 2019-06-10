@@ -9,7 +9,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
-import com.google.gson.Gson;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -79,11 +78,11 @@ public class CarrinhoActivity extends SettingToolbarActivity {
     @Override
     protected void onResume() {
         super.onResume();
-              if(ocorrendoValidacao){
-                  setCarrinho(CarrinhoSingleton.getInstance().getCarrinho());
-                  atualizaLayout(true);
-                validarCarrinho();
-            }
+        if(ocorrendoValidacao){
+            carrinho = CarrinhoSingleton.getInstance().getCarrinho();
+            atualizaLayout(true);
+            validarCarrinho();
+        }
     }
 
 
@@ -122,15 +121,11 @@ public class CarrinhoActivity extends SettingToolbarActivity {
 
     public void setCarrinho(CarrinhoDTO carrinho) {
         this.carrinho = carrinho;
+        CarrinhoSingleton.getInstance().setCarrinho(this.carrinho);
     }
 
     @Click(R.id.botaoAvancarPagamento)
     protected void clickBotaoAvancarPagamento() {
-        /*Gson gson = new Gson();
-        String json = gson.toJson(carrinho);
-        Intent activity = new Intent(CarrinhoActivity.this, FormaPagamentoActivity.class);
-        activity.putExtra("CARRINHO", json);
-        startActivity(activity);*/
         validarCarrinho();
     }
     private void validarCarrinho() {
@@ -141,12 +136,8 @@ public class CarrinhoActivity extends SettingToolbarActivity {
             public void onResponse(ResourceResponse result) {
                 ocorrendoValidacao = false;
                 DialogUtils.dismiss();
-                Gson gson = new Gson();
-                String json = gson.toJson(carrinho);
-                Intent activity = new Intent(CarrinhoActivity.this, FormaPagamentoActivity.class);
-                activity.putExtra("CARRINHO", json);
-                startActivity(activity);
-                //startActivity(new Intent(CarrinhoActivity.this, FormaPagamentoActivity.class));
+                CarrinhoSingleton.getInstance().setCarrinho(carrinho);
+                startActivity(new Intent(CarrinhoActivity.this, FormaPagamentoActivity.class));
             }
 
             @Override
@@ -158,7 +149,7 @@ public class CarrinhoActivity extends SettingToolbarActivity {
         });
     }
 
-        @Click(R.id.botaoFazerNovaAposta)
+    @Click(R.id.botaoFazerNovaAposta)
     protected void clickBotaoFazerNovaAposta() {
         setResult(2);
         finish();
@@ -207,6 +198,7 @@ public class CarrinhoActivity extends SettingToolbarActivity {
     private void limparCarrinhoAtualizarTela() {
         carrinho.getApostas().removeAll(carrinho.getApostas());
         carrinho.setValorTotal(BigDecimal.ZERO);
+        CarrinhoSingleton.getInstance().setCarrinho(carrinho);
         atualizaLayout(Boolean.FALSE);
     }
 
@@ -227,7 +219,7 @@ public class CarrinhoActivity extends SettingToolbarActivity {
                 FirebaseManager.registraEvento(CarrinhoActivity.this ,"ENTROU_CARRINHO_DE_APOSTAS_ONLINE");
 
                 DialogUtils.dismiss();
-                carrinho = response.getPayload();
+                setCarrinho(response.getPayload());
                 atualizaLayout(Boolean.TRUE);
                 if (response.getRedirect() != null){
                     RedirectNetwork.checkRedirectSucesso( response.getRedirect(), CarrinhoActivity.this);

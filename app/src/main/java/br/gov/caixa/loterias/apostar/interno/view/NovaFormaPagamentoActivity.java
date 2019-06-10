@@ -18,7 +18,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.github.pinball83.maskededittext.MaskedEditText;
-import com.google.gson.Gson;
 import com.mercadopago.callbacks.Callback;
 import com.mercadopago.core.MercadoPago;
 import com.mercadopago.model.ApiException;
@@ -41,8 +40,8 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostar.interno.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
-import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RetornoPadraoDTO;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostar.interno.utils.MaskEditUtil;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
@@ -97,10 +96,8 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
 
     private void recebendoInformacoes() {
         try {
-            String json = getIntent().getExtras().getString("CARRINHO");
-            CarrinhoDTO carrinhoDTO = new Gson().fromJson(json, CarrinhoDTO.class);
+            String valor = ViewUtils.getMoedaFormat(CarrinhoSingleton.getInstance().getCarrinho().getValorTotal());
             TextView valorTotalCarrinho = findViewById(R.id.valorTotalCarrinho);
-            String valor = ViewUtils.getMoedaFormat(carrinhoDTO.getValorTotal());
             valorTotalCarrinho.setText(valor);
         } catch (Exception e) {
             e.printStackTrace();
