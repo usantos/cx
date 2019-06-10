@@ -1,6 +1,5 @@
 package br.gov.caixa.loterias.apostar.interno.view.fragment;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
@@ -49,10 +48,8 @@ import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO_;
-import br.gov.caixa.loterias.apostar.interno.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
-import br.gov.caixa.loterias.apostar.interno.model.bo.keycloak.KeycloakBO_;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.data.CompletaJogoRsp;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ApostaFavoritaDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.DTOEnumCharacter;
@@ -64,18 +61,15 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametroEquipe;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametroPartida;
-import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametroValorApostaDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.PartidaLotecaDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.PartidaLotogolDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostar.interno.utils.Constantes;
 import br.gov.caixa.loterias.apostar.interno.utils.DialogUtils;
-import br.gov.caixa.loterias.apostar.interno.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.helper.AdicionarApostaCarrinhoHelper;
-import br.gov.caixa.loterias.apostar.interno.view.PrincipalActivity;
 import br.gov.caixa.loterias.apostar.interno.view.SimularApostaActivity;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.LotecaAdapter;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.LotogolAdapter;
@@ -584,7 +578,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
                 IdentificaoDeUmaApostaDas8Modalidades aposta = getApostaPreenchida();
 
-                aposta.setGeraEspelho(true);
+                aposta.setGerarEspelho(true);
                 aposta.setValor(aposta.getValor().divide(Constantes.DOIS_BIG_DECIMAL));
                 AdicionarApostaCarrinhoHelper.incluirApostaCarrinhoCartela(parentActivity, aposta);
             } else {
