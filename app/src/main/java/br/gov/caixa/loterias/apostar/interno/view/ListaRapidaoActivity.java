@@ -10,12 +10,10 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
-import com.google.gson.Gson;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -26,9 +24,11 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
-import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CarrinhoDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResourceResponse;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.CarrinhoSingleton;
+import br.gov.caixa.loterias.apostar.interno.utils.DialogUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.CarrinhoApostasListViewRapidaoAdapter;
@@ -37,8 +37,6 @@ import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
 
 public class ListaRapidaoActivity extends AppCompatActivity {
 
-
-    public CarrinhoDTO carrinho;
     private ExpandableHeightRecyclerView recyclerView;
     public List<IdentificaoDeUmaApostaDas8Modalidades> apostas;
     private TextView valorTotalCarrinhoRapidao;
@@ -146,24 +144,24 @@ public class ListaRapidaoActivity extends AppCompatActivity {
         ((Button) findViewById(R.id.botaoAvancarPagamentoRapidao)).setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.avancarFormaPagamento)));
 
 
-        findViewById(R.id.botaoFazerNovaApostaRapidao).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                callWebservice(1);
+        findViewById(R.id.botaoFazerNovaApostaRapidao).setOnClickListener(view -> callWebservice(1));
 
+
+        findViewById(R.id.botaoAvancarPagamentoRapidao).setOnClickListener(view -> validarCarrinho());
+    }
+    private void validarCarrinho() {
+        DialogUtils.show(ListaRapidaoActivity.this);
+        ApostaBO_.getInstance_(ListaRapidaoActivity.this).validarCarrinho(new RequestListener<ResourceResponse>() {
+            @Override
+            public void onResponse(ResourceResponse result) {
+                DialogUtils.dismiss();
+                startActivity(new Intent(ListaRapidaoActivity.this, FormaPagamentoActivity.class));
             }
-        });
 
-
-        findViewById(R.id.botaoAvancarPagamentoRapidao).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Gson gson = new Gson();
-                String json = gson.toJson(carrinho);
-                Intent activity = new Intent(ListaRapidaoActivity.this, FormaPagamentoActivity.class);
-                activity.putExtra("CARRINHO", json);
-
-                startActivity(activity);
+            public void onErrorResponse(VolleyError error) {
+                DialogUtils.dismiss();
+                RedirectNetwork.checkRedirect(error, ListaRapidaoActivity.this);
 
             }
         });
@@ -175,12 +173,7 @@ public class ListaRapidaoActivity extends AppCompatActivity {
         CarrinhoApostasListViewRapidaoAdapter carrinhoApostasListViewRapidaoAdapter =
                 new CarrinhoApostasListViewRapidaoAdapter(this, (ArrayList<IdentificaoDeUmaApostaDas8Modalidades>) apostas, this);
         recyclerView.setAdapter(carrinhoApostasListViewRapidaoAdapter);
-        carrinhoApostasListViewRapidaoAdapter.setOnCarrinhoApostasRapidaoListener(new CarrinhoApostasListViewRapidaoAdapter.OnCarrinhoApostasRapidaoListener() {
-            @Override
-            public void onRemove(IdentificaoDeUmaApostaDas8Modalidades apostaDas8Modalidades) {
-                callWebserviceRemoveItem(apostaDas8Modalidades);
-            }
-        });
+        carrinhoApostasListViewRapidaoAdapter.setOnCarrinhoApostasRapidaoListener(apostaDas8Modalidades -> callWebserviceRemoveItem(apostaDas8Modalidades));
         recyclerView.setLayoutManager(layout);
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setExpanded(true);
@@ -196,8 +189,9 @@ public class ListaRapidaoActivity extends AppCompatActivity {
             @Override
             public void onResponse(CarrinhoDTOResponse response) {
                 loadViewProgress.dismiss();
-                carrinho = response.getPayload();
-                apostas = carrinho.getApostas();
+                CarrinhoSingleton.getInstance().setCarrinho(response.getPayload());
+                apostas = null;
+                apostas = CarrinhoSingleton.getInstance().getCarrinho().getApostas();
                 atualizaLayout();
                 if (response.getRedirect() != null){
                     RedirectNetwork.checkRedirectSucesso( response.getRedirect(), ListaRapidaoActivity.this);
@@ -225,9 +219,9 @@ public class ListaRapidaoActivity extends AppCompatActivity {
                 loadViewProgress.dismiss();
                 FirebaseManager.registraEvento(ListaRapidaoActivity.this ,"GEROU_LISTA_APOSTAS_RAPIDAO");
 
-                carrinho = response.getPayload();
+                CarrinhoSingleton.getInstance().setCarrinho(response.getPayload());
                 apostas = null;
-                apostas = carrinho.getApostas();
+                apostas = CarrinhoSingleton.getInstance().getCarrinho().getApostas();
                 atualizaLayout();
                 if (response.getRedirect() != null){
                     RedirectNetwork.checkRedirectSucesso( response.getRedirect(), ListaRapidaoActivity.this);

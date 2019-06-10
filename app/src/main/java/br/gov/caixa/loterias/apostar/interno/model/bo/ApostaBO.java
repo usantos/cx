@@ -131,7 +131,7 @@ public class ApostaBO extends BaseBO {
         silceConnection.request(request);
     }
 
-    public void deleteApostaCarrinho(String id, final RequestListener<CarrinhoDTOResponse> listener) {
+    public void  deleteApostaCarrinho(String id, final RequestListener<CarrinhoDTOResponse> listener) {
         LinkedHashMap<String, String> headers = new LinkedHashMap<>();
         headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
 
