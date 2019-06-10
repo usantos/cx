@@ -106,7 +106,7 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostasConfi
 
     private void conferirResultado (ApostaDTO aposta, ViewHolder holder) {
         ConferirResultadoHelper.conferirResultadoHandler = this;
-        ConferirResultadoHelper.conferirResultadoWithoutLoading(holder, aposta.getId(), parentActivity.getApplicationContext());
+        ConferirResultadoHelper.conferirResultadoWithoutLoading(holder, aposta.getId(), parentActivity);
     }
 
     @Override
@@ -116,6 +116,13 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostasConfi
         holder.stripe.setBackgroundColor(holder.color);
         holder.modalidadeTxt.setTextColor(holder.color);
         holder.situacaoTxt.setTextColor(holder.color);
+
+        holder.progressBarSituacao.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void handleError(ViewHolder holder) {
+        holder.situacaoTxt.setText("Não foi possível conferir o resultado.");
 
         holder.progressBarSituacao.setVisibility(View.INVISIBLE);
     }

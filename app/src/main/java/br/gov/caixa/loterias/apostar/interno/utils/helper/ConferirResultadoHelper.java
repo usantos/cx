@@ -1,5 +1,6 @@
 package br.gov.caixa.loterias.apostar.interno.utils.helper;
 
+import android.app.Activity;
 import android.content.Context;
 
 import com.android.volley.VolleyError;
@@ -23,7 +24,7 @@ public class ConferirResultadoHelper  {
      *
      * @param apostaId Long
      */
-    public static void conferirResultado(final Long apostaId, final Context contextParam) {
+    public static void conferirResultado(final Long apostaId, final Activity contextParam) {
         DialogUtils.show(contextParam);
         ApostaBO apostaBO = ApostaBO_.getInstance_(contextParam);
         apostaBO.getApostaConferir(apostaId, new RequestListener<DTOEnumIntegerResponse>() {
@@ -45,7 +46,7 @@ public class ConferirResultadoHelper  {
         });
     }
 
-    public static void conferirResultado(ApostasConfirmadasAdapter.ViewHolder holder, final Long apostaId, final Context contextParam) {
+    public static void conferirResultado(ApostasConfirmadasAdapter.ViewHolder holder, final Long apostaId, final Activity contextParam) {
         DialogUtils.show(contextParam);
         ApostaBO apostaBO = ApostaBO_.getInstance_(contextParam);
         apostaBO.getApostaConferir(apostaId, new RequestListener<DTOEnumIntegerResponse>() {
@@ -67,7 +68,7 @@ public class ConferirResultadoHelper  {
         });
     }
 
-    public static void conferirResultadoWithoutLoading(ApostasConfirmadasAdapter.ViewHolder holder, final Long apostaId, final Context contextParam) {
+    public static void conferirResultadoWithoutLoading(ApostasConfirmadasAdapter.ViewHolder holder, final Long apostaId, final Activity contextParam) {
         ApostaBO apostaBO = ApostaBO_.getInstance_(contextParam);
         apostaBO.getApostaConferir(apostaId, new RequestListener<DTOEnumIntegerResponse>() {
             @Override
@@ -81,16 +82,19 @@ public class ConferirResultadoHelper  {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                onError(error, contextParam);
+                onErrorWithoutAlert(holder);
             }
         });
     }
 
-    private static void onError(VolleyError error, Context contextParam) {
+    private static void onError(VolleyError error, Activity contextParam) {
         DialogUtils.dismiss();
         String msgError = MensagensNetwork.setMensagem(error, contextParam);
 
-//        Rodar na thread de UI
         ViewUtils.alert(contextParam, msgError);
+    }
+
+    private static void onErrorWithoutAlert(ApostasConfirmadasAdapter.ViewHolder holder) {
+        conferirResultadoHandler.handleError(holder);
     }
 }

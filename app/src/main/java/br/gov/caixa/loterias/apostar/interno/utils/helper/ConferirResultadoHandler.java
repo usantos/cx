@@ -12,4 +12,5 @@ import br.gov.caixa.loterias.apostar.interno.view.adapter.ApostasConfirmadasAdap
 public interface ConferirResultadoHandler {
     void handle(DTOEnumLong situacao);
     void handle(ApostasConfirmadasAdapter.ViewHolder holder, DTOEnumLong situacao);
+    void handleError(ApostasConfirmadasAdapter.ViewHolder holder);
 }
