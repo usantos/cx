@@ -21,7 +21,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.gson.Gson;
 import com.mercadopago.callbacks.Callback;
 import com.mercadopago.core.MercadoPago;
 import com.mercadopago.model.ApiException;
@@ -32,26 +31,22 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostar.interno.BuildConfig;
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bean.MeioPagamento;
 import br.gov.caixa.loterias.apostar.interno.model.bean.ParametrosPagamento;
-import br.gov.caixa.loterias.apostar.interno.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostar.interno.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.DadosUsuarioBO_;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
-import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CarrinhoDTO;
-import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ListCartaoDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RetornoCartao;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RetornoPadraoDTO;
-import br.gov.caixa.loterias.apostar.interno.model.dao.DBLoteriasCrud;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.FormaPagamentoRecyclerViewAdapter;
@@ -64,8 +59,6 @@ public class FormaPagamentoActivity extends SettingToolbarActivity implements Fo
     private View itemToolbarSettings;
     private AlertDialog loadViewProgress;
     private FormaPagamentoRecyclerViewAdapter formaPagamentoRecyclerViewAdapter;
-    private CarrinhoDTO carrinhoDTO;
-    private Gson gson;
     private Boolean flagEntrouAddCartao = false;
 
     @Override
@@ -75,8 +68,6 @@ public class FormaPagamentoActivity extends SettingToolbarActivity implements Fo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forma_pagamento);
         setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.title_activity_forma_pagamento)));
-
-        gson = new Gson();
 
         configuraClickBotoes();
 
@@ -94,9 +85,7 @@ public class FormaPagamentoActivity extends SettingToolbarActivity implements Fo
     private void recebendoInformacoes() {
 
         try {
-            String json = getIntent().getExtras().getString("CARRINHO");
-            carrinhoDTO = gson.fromJson(json, CarrinhoDTO.class);
-            String valor = ViewUtils.getMoedaFormat(carrinhoDTO.getValorTotal());
+            String valor = ViewUtils.getMoedaFormat(CarrinhoSingleton.getInstance().getCarrinho().getValorTotal());
             TextView valorTotalCarrinho = findViewById(R.id.valorTotalCarrinho);
             valorTotalCarrinho.setText(valor);
         }catch (Exception e){
@@ -120,12 +109,7 @@ public class FormaPagamentoActivity extends SettingToolbarActivity implements Fo
                     (findViewById(R.id.botaoAvancarPagamento)).setBackgroundColor( getResources().getColor(R.color.verdeazul ));
                 }else {
                     if (!flagEntrouAddCartao) {
-                        Intent activity = new Intent(FormaPagamentoActivity.this, NovaFormaPagamentoActivity.class);
-                        if(carrinhoDTO != null) {
-                            String carrinho = gson.toJson(carrinhoDTO);
-                            activity.putExtra("CARRINHO", carrinho);
-                        }
-                        startActivity(activity);
+                        startActivityForResult(new Intent(FormaPagamentoActivity.this, NovaFormaPagamentoActivity.class),600);
                         flagEntrouAddCartao = true;
                     }
 
@@ -144,6 +128,7 @@ public class FormaPagamentoActivity extends SettingToolbarActivity implements Fo
             }
         });
     }
+
 
     private void configuraRecyclerViewCarrinhoAposta() {
         RecyclerView recyclerView = findViewById(R.id.formasPagamentoRecyclerView);
@@ -169,6 +154,10 @@ public class FormaPagamentoActivity extends SettingToolbarActivity implements Fo
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == 1) {
             callWebservice();
+        }else if (requestCode == 600) {
+            if (listaCartoes == null || listaCartoes.size() == 0){
+                finish();
+            }
         }
     }
 
@@ -180,72 +169,59 @@ public class FormaPagamentoActivity extends SettingToolbarActivity implements Fo
     private void configuraClickBotoes() {
         ((Button) findViewById(R.id.botaoAvancarPagamento)).setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.apostarAutorizarCobranca)));
         ((Button) findViewById(R.id.botaoAdicionarFormaPagamento)).setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.adicionarFormaPagamento)));
-        findViewById(R.id.botaoAvancarPagamento).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (formaPagamentoRecyclerViewAdapter != null) {
-                    if (formaPagamentoRecyclerViewAdapter.selected_position < 0){
-                        ViewUtils.alertTitleButton(
-                                FormaPagamentoActivity.this,
-                                R.string.label_atencao, getResources().getString( R.string.label_selecione_cartao ),
-                                getResources().getString( R.string.ok ));
-                        return;
-                    }
-                    LayoutInflater li = LayoutInflater.from(FormaPagamentoActivity.this);
-                    View promptsView = li.inflate(R.layout.dialog_security_code, null);
-
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder( FormaPagamentoActivity.this);
-                    alertDialogBuilder.setView(promptsView);
-                    final EditText userInput = promptsView
-                            .findViewById(R.id.cvvCardNumberEditText);
-                    alertDialogBuilder
-                            .setCancelable(false)
-                            .setPositiveButton("Confirmar",
-                                    (DialogInterface dialog, int which) -> {
-                                        if (userInput.getText().toString().length() == 3){
-                                            String cardId = formaPagamentoRecyclerViewAdapter.valoresList.get(formaPagamentoRecyclerViewAdapter.selected_position).getIdCartao().toString();
-                                            createToken( cardId,  userInput.getText().toString());
-                                        }else{
-                                            ViewUtils.alertTitleButtonPositiveListener(
-                                                    FormaPagamentoActivity.this,
-                                                    R.string.label_atencao, getResources().getString( R.string.label_informa_cvv ),
-                                                    R.string.ok, new DialogInterface.OnClickListener() {
-                                                        @Override
-                                                        public void onClick(DialogInterface dialog, int which) {
-                                                            ((Button) findViewById(R.id.botaoAvancarPagamento)).performClick();
-                                                        }
-                                                    }
-                                            );
-                                        }
-                                    })
-                            .setNegativeButton("Cancelar",
-                                    (DialogInterface dialog, int which) -> {
-                                        dialog.cancel();
-                                    });
-                    AlertDialog alertDialog = alertDialogBuilder.create();
-                    alertDialog.show();
-                } else {
+        findViewById(R.id.botaoAvancarPagamento).setOnClickListener(view -> {
+            if (formaPagamentoRecyclerViewAdapter != null) {
+                if (formaPagamentoRecyclerViewAdapter.selected_position < 0){
                     ViewUtils.alertTitleButton(
                             FormaPagamentoActivity.this,
-                            R.string.label_atencao, getResources().getString( R.string.label_adicione_um_cartao ),
+                            R.string.label_atencao, getResources().getString( R.string.label_selecione_cartao ),
                             getResources().getString( R.string.ok ));
                     return;
                 }
+                LayoutInflater li = LayoutInflater.from(FormaPagamentoActivity.this);
+                View promptsView = li.inflate(R.layout.dialog_security_code, null);
+
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder( FormaPagamentoActivity.this);
+                alertDialogBuilder.setView(promptsView);
+                final EditText userInput = promptsView
+                        .findViewById(R.id.cvvCardNumberEditText);
+                alertDialogBuilder
+                        .setCancelable(false)
+                        .setPositiveButton("Confirmar",
+                                (DialogInterface dialog, int which) -> {
+                                    if (userInput.getText().toString().length() == 3){
+                                        String cardId = formaPagamentoRecyclerViewAdapter.valoresList.get(formaPagamentoRecyclerViewAdapter.selected_position).getIdCartao().toString();
+                                        createToken( cardId,  userInput.getText().toString());
+                                    }else{
+                                        ViewUtils.alertTitleButtonPositiveListener(
+                                                FormaPagamentoActivity.this,
+                                                R.string.label_atencao, getResources().getString( R.string.label_informa_cvv ),
+                                                R.string.ok, new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialog, int which) {
+                                                        ((Button) findViewById(R.id.botaoAvancarPagamento)).performClick();
+                                                    }
+                                                }
+                                        );
+                                    }
+                                })
+                        .setNegativeButton("Cancelar",
+                                (DialogInterface dialog, int which) -> {
+                                    dialog.cancel();
+                                });
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+            } else {
+                ViewUtils.alertTitleButton(
+                        FormaPagamentoActivity.this,
+                        R.string.label_atencao, getResources().getString( R.string.label_adicione_um_cartao ),
+                        getResources().getString( R.string.ok ));
+                return;
             }
         });
 
         final Button buttonAdicionarFormaPagamento = (findViewById(R.id.botaoAdicionarFormaPagamento));
-        buttonAdicionarFormaPagamento.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent activity = new Intent(FormaPagamentoActivity.this, NovaFormaPagamentoActivity.class);
-                if(carrinhoDTO != null) {
-                    String carrinho = gson.toJson(carrinhoDTO);
-                    activity.putExtra("CARRINHO", carrinho);
-                }
-                startActivity(activity);
-            }
-        });
+        buttonAdicionarFormaPagamento.setOnClickListener(view -> startActivity(new Intent(FormaPagamentoActivity.this, NovaFormaPagamentoActivity.class)));
     }
 
     private void createToken(String cardId, String securityCode) {
@@ -319,12 +295,9 @@ public class FormaPagamentoActivity extends SettingToolbarActivity implements Fo
                     Toast.makeText(getApplicationContext(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 }
             }
-        },new Response.ErrorListener(){
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                loadViewProgress.dismiss();
-                Log.d("volleyError", "volleyError: "+ volleyError.toString());
-            }
+        }, volleyError -> {
+            loadViewProgress.dismiss();
+            Log.d("volleyError", "volleyError: "+ volleyError.toString());
         });
 
         RequestQueue rQueue = Volley.newRequestQueue(FormaPagamentoActivity.this);

@@ -12,6 +12,10 @@ import android.widget.TextView;
 import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostar.interno.utils.AppUtils;
@@ -64,11 +68,7 @@ public class ComprasDezenasView extends LinearLayout {
 
     private void initRecyclerView(ApostaDTO aposta) {
         if (!aposta.getNumerosSelecionados().isEmpty()) {
-            if (aposta.getIndicadorSurpresinha().getValor() == 2) {
-                dezenasRecyclerView.setAdapter(new DezenasAdapter(AppUtils.listDezenasSurpresinha(aposta.getNumerosSelecionados().size())));
-            } else {
-                dezenasRecyclerView.setAdapter(new DezenasAdapter(AppUtils.listIntegerToListString(aposta.getNumerosSelecionados())));
-            }
+            dezenasRecyclerView.setAdapter(new DezenasAdapter(AppUtils.listIntegerToListString(aposta.getNumerosSelecionados())));
             dezenasRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         }
     }

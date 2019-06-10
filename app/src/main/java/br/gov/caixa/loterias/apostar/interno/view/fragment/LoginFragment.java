@@ -28,7 +28,9 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.keycloak.KeycloakBO_;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ApostaDTO;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.UsuarioLogadoResponse;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostar.interno.model.dao.DBLoteriasCrud;
 import br.gov.caixa.loterias.apostar.interno.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostar.interno.utils.AppUtils;
@@ -59,28 +61,24 @@ public class LoginFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_login, container, false);
 
         Button buttonAposte = v.findViewById(R.id.buttonAposteAgora);
-        buttonAposte.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                FirebaseManager.registraEvento(getContext() ,"ENTROU_OPCAO_DEGUSTAR");
-                KeycloakBO_.getInstance_(getActivity()).limparSessao(getActivity());
+        buttonAposte.setOnClickListener(v1 -> {
+            FirebaseManager.registraEvento(getContext() ,"ENTROU_OPCAO_DEGUSTAR");
+            KeycloakBO_.getInstance_(getActivity()).limparSessao(getActivity());
 
-                DadosUsuarioBO.updateFecharIntroducao(getActivity(), true);
-                startActivity(new Intent(getContext(), PrincipalActivity_.class));
-                getActivity().finish();
-            }
+            DadosUsuarioBO.updateFecharIntroducao(getActivity(), true);
+            startActivity(new Intent(getContext(), PrincipalActivity_.class));
+            getActivity().finish();
         });
 
         buttonLogin  = v.findViewById(R.id.buttonFacaLogin);
         txtVersao = v.findViewById(R.id.textVersao);
         txtVersao.setText("v. "+ BuildConfig.VERSION_NAME);
 
-        buttonLogin.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                FirebaseManager.registraEvento(getContext() ,"ENTROU_LOGIN");
+        buttonLogin.setOnClickListener(v12 -> {
+            FirebaseManager.registraEvento(getContext() ,"ENTROU_LOGIN");
 
-                DadosUsuarioBO.updateFecharIntroducao(getActivity(), true);
-                connectKeycloak();
-            }
+            DadosUsuarioBO.updateFecharIntroducao(getActivity(), true);
+            connectKeycloak();
         });
 
         if ((DadosUsuarioBO.checarFecharIntroducao(getActivity()) && DadosUsuarioBO.checarUsuarioLogado(getActivity())) && LoginSP.isPrimeiraInicializacao()){
@@ -103,16 +101,19 @@ public class LoginFragment extends Fragment {
     private void verificarCadastroWebservice() {
         loadViewProgress = LoadingViewLoterias.show(getContext());
         final DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_(getContext());
-        final RetornoListaCarrinho retornoListaCarrinho = new RetornoListaCarrinho();
         DBLoteriasCrud crud = new DBLoteriasCrud(getContext());
-        List<ApostaDTO> listApostas = new ArrayList<>();
-        retornoListaCarrinho.setApostas(listApostas);
-        dadosUsuarioBO.postVerificarCadastro(retornoListaCarrinho, new RequestListener<UsuarioLogadoResponse>() {
+        List<IdentificaoDeUmaApostaDas8Modalidades> listApostas = crud.readAllIdentificaoDeUmaApostaDas8Modalidades();
+        dadosUsuarioBO.postVerificarCadastro(listApostas, new RequestListener<UsuarioLogadoResponse>() {
+
             @Override
             public void onResponse(UsuarioLogadoResponse response) {
                 loadViewProgress.dismiss();
                 if (response.getRedirect() == null) {
                     SessaoUsuario.getInstance().setValorMaximoAposta(response.getPayload().getLimiteDiario());
+
+                    crud.deleteAll();
+                    CarrinhoSingleton.getInstance().setCarrinho(null);
+                    CarrinhoSingleton.getInstance().setCarrinho(response.getPayload().getCarrinho());
 
                     PrincipalActivity_.intent(getActivity()).start();
                     getActivity().finish();

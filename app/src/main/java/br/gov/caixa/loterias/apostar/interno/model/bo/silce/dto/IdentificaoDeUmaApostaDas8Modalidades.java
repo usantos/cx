@@ -68,8 +68,8 @@ IdentificaoDeUmaApostaDas8Modalidades {
     protected String dataEfetivacao = null;
     @SerializedName("horaEfetivacao")
     protected String horaEfetivacao = null;
-    @SerializedName("loterica")
-    protected LotericaDTO loterica = null;
+    //@SerializedName("loterica")
+    //protected LotericaDTO loterica = null;
     @SerializedName("vinculoEspelho")
     protected Long vinculoEspelho = null;
     @SerializedName("quantidadeNumeros")
@@ -85,9 +85,9 @@ IdentificaoDeUmaApostaDas8Modalidades {
 
     @ApiModelProperty(value = "Gerar aposta espelho")
     public Boolean getGerarApostaEspelho(){
-        return true;
+        return geraEspelho;
     }
-    public void setGeraEspelho(Boolean geraEspelho){
+    public void setGerarEspelho(Boolean geraEspelho){
         this.geraEspelho = geraEspelho;
     }
 
@@ -303,7 +303,7 @@ IdentificaoDeUmaApostaDas8Modalidades {
     }
 
     /**
-     **/
+
     @ApiModelProperty(value = "")
     public LotericaDTO getLoterica() {
         return loterica;
@@ -312,7 +312,7 @@ IdentificaoDeUmaApostaDas8Modalidades {
     public void setLoterica(LotericaDTO loterica) {
         this.loterica = loterica;
     }
-
+     **/
     /**
      * Indica se a aposta possuí uma aposta espelho, válido apenas para a modalidade Lotomania
      **/
@@ -393,13 +393,14 @@ IdentificaoDeUmaApostaDas8Modalidades {
                 (this.quantidadeTeimosinhas == null ? identificaoDeUmaApostaDas8Modalidades.quantidadeTeimosinhas == null : this.quantidadeTeimosinhas.equals(identificaoDeUmaApostaDas8Modalidades.quantidadeTeimosinhas)) &&
                 (this.quantidadeApostas == null ? identificaoDeUmaApostaDas8Modalidades.quantidadeApostas == null : this.quantidadeApostas.equals(identificaoDeUmaApostaDas8Modalidades.quantidadeApostas)) &&
                 (this.espelho == null ? identificaoDeUmaApostaDas8Modalidades.espelho == null : this.espelho.equals(identificaoDeUmaApostaDas8Modalidades.espelho)) &&
+                (this.geraEspelho == null ? identificaoDeUmaApostaDas8Modalidades.geraEspelho == null : this.geraEspelho.equals(identificaoDeUmaApostaDas8Modalidades.geraEspelho)) &&
                 (this.timeDoCoracao == null ? identificaoDeUmaApostaDas8Modalidades.timeDoCoracao == null : this.timeDoCoracao.equals(identificaoDeUmaApostaDas8Modalidades.timeDoCoracao)) &&
                 (this.concursoInicial == null ? identificaoDeUmaApostaDas8Modalidades.concursoInicial == null : this.concursoInicial.equals(identificaoDeUmaApostaDas8Modalidades.concursoInicial)) &&
                 (this.situacao == null ? identificaoDeUmaApostaDas8Modalidades.situacao == null : this.situacao.equals(identificaoDeUmaApostaDas8Modalidades.situacao)) &&
                 (this.troca == null ? identificaoDeUmaApostaDas8Modalidades.troca == null : this.troca.equals(identificaoDeUmaApostaDas8Modalidades.troca)) &&
                 (this.dataEfetivacao == null ? identificaoDeUmaApostaDas8Modalidades.dataEfetivacao == null : this.dataEfetivacao.equals(identificaoDeUmaApostaDas8Modalidades.dataEfetivacao)) &&
                 (this.horaEfetivacao == null ? identificaoDeUmaApostaDas8Modalidades.horaEfetivacao == null : this.horaEfetivacao.equals(identificaoDeUmaApostaDas8Modalidades.horaEfetivacao)) &&
-                (this.loterica == null ? identificaoDeUmaApostaDas8Modalidades.loterica == null : this.loterica.equals(identificaoDeUmaApostaDas8Modalidades.loterica)) &&
+                //(this.loterica == null ? identificaoDeUmaApostaDas8Modalidades.loterica == null : this.loterica.equals(identificaoDeUmaApostaDas8Modalidades.loterica)) &&
                 (this.vinculoEspelho == null ? identificaoDeUmaApostaDas8Modalidades.vinculoEspelho == null : this.vinculoEspelho.equals(identificaoDeUmaApostaDas8Modalidades.vinculoEspelho)) &&
                 (this.quantidadeNumeros == null ? identificaoDeUmaApostaDas8Modalidades.quantidadeNumeros == null : this.quantidadeNumeros.equals(identificaoDeUmaApostaDas8Modalidades.quantidadeNumeros)) &&
                 (this.surpresinha == null ? identificaoDeUmaApostaDas8Modalidades.surpresinha == null : this.surpresinha.equals(identificaoDeUmaApostaDas8Modalidades.surpresinha));
@@ -420,13 +421,14 @@ IdentificaoDeUmaApostaDas8Modalidades {
         result = 31 * result + (this.quantidadeTeimosinhas == null ? 0 : this.quantidadeTeimosinhas.hashCode());
         result = 31 * result + (this.quantidadeApostas == null ? 0 : this.quantidadeApostas.hashCode());
         result = 31 * result + (this.espelho == null ? 0 : this.espelho.hashCode());
+        result = 31 * result + (this.geraEspelho == null ? 0 : this.geraEspelho.hashCode());
         result = 31 * result + (this.timeDoCoracao == null ? 0 : this.timeDoCoracao.hashCode());
         result = 31 * result + (this.concursoInicial == null ? 0 : this.concursoInicial.hashCode());
         result = 31 * result + (this.situacao == null ? 0 : this.situacao.hashCode());
         result = 31 * result + (this.troca == null ? 0 : this.troca.hashCode());
         result = 31 * result + (this.dataEfetivacao == null ? 0 : this.dataEfetivacao.hashCode());
         result = 31 * result + (this.horaEfetivacao == null ? 0 : this.horaEfetivacao.hashCode());
-        result = 31 * result + (this.loterica == null ? 0 : this.loterica.hashCode());
+        //result = 31 * result + (this.loterica == null ? 0 : this.loterica.hashCode());
         result = 31 * result + (this.vinculoEspelho == null ? 0 : this.vinculoEspelho.hashCode());
         result = 31 * result + (this.quantidadeNumeros == null ? 0 : this.quantidadeNumeros.hashCode());
         result = 31 * result + (this.surpresinha == null ? 0 : this.surpresinha.hashCode());
@@ -449,13 +451,14 @@ IdentificaoDeUmaApostaDas8Modalidades {
                 "  quantidadeTeimosinhas: " + quantidadeTeimosinhas + "\n" +
                 "  quantidadeApostas: " + quantidadeApostas + "\n" +
                 "  espelho: " + espelho + "\n" +
+                "  geraEspelho: " + geraEspelho + "\n" +
                 "  timeDoCoracao: " + timeDoCoracao + "\n" +
                 "  concursoInicial: " + concursoInicial + "\n" +
                 "  situacao: " + situacao + "\n" +
                 "  troca: " + troca + "\n" +
                 "  dataEfetivacao: " + dataEfetivacao + "\n" +
                 "  horaEfetivacao: " + horaEfetivacao + "\n" +
-                "  loterica: " + loterica + "\n" +
+                //"  loterica: " + loterica + "\n" +
                 "  vinculoEspelho: " + vinculoEspelho + "\n" +
                 "  quantidadeNumeros: " + quantidadeNumeros + "\n" +
                 "  surpresinha: " + surpresinha + "\n" +
@@ -473,7 +476,7 @@ IdentificaoDeUmaApostaDas8Modalidades {
         identificaoDeUmaApostaDas8Modalidades.setEspelho( apostaDTO.getEspelho() );
         identificaoDeUmaApostaDas8Modalidades.setHoraEfetivacao( apostaDTO.getHoraEfetivacao() );
         identificaoDeUmaApostaDas8Modalidades.setId( apostaDTO.getId() );
-        identificaoDeUmaApostaDas8Modalidades.setLoterica( apostaDTO.getLoterica() );
+        //identificaoDeUmaApostaDas8Modalidades.setLoterica( apostaDTO.getLoterica() );
         identificaoDeUmaApostaDas8Modalidades.setTipoConcurso( apostaDTO.getTipoConcurso() );
         identificaoDeUmaApostaDas8Modalidades.setPartidasLotogol( apostaDTO.getPartidasLotogol() );
         identificaoDeUmaApostaDas8Modalidades.setPartidasLoteca( apostaDTO.getPartidasLoteca() );
@@ -497,9 +500,10 @@ IdentificaoDeUmaApostaDas8Modalidades {
         identificaoDeUmaApostaDas8Modalidades.setConcursoInicial( aposta.getConcursoInicial() );
         identificaoDeUmaApostaDas8Modalidades.setDataEfetivacao( aposta.getDataEfetivacao() );
         identificaoDeUmaApostaDas8Modalidades.setEspelho( aposta.getEspelho() );
+        identificaoDeUmaApostaDas8Modalidades.setGerarEspelho( aposta.getGerarApostaEspelho() );
         identificaoDeUmaApostaDas8Modalidades.setHoraEfetivacao( aposta.getHoraEfetivacao() );
         identificaoDeUmaApostaDas8Modalidades.setId( aposta.getId() );
-        identificaoDeUmaApostaDas8Modalidades.setLoterica( aposta.getLoterica() );
+        //identificaoDeUmaApostaDas8Modalidades.setLoterica( aposta.getLoterica() );
         identificaoDeUmaApostaDas8Modalidades.setTipoConcurso( aposta.getTipoConcurso() );
         identificaoDeUmaApostaDas8Modalidades.setPartidasLotogol( aposta.getPartidasLotogol() );
         identificaoDeUmaApostaDas8Modalidades.setPartidasLoteca( aposta.getPartidasLoteca() );

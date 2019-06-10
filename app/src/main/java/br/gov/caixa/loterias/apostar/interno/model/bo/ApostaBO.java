@@ -27,6 +27,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.MesAnoDTORespons
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RapidaoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RapidaoDTOResponse;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResourceResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResultadoConcursoDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResultadoConsultaBilheteDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOApostaDTOResponse;
@@ -75,6 +76,19 @@ public class ApostaBO extends BaseBO {
         silceConnection.request(request);
     }
 
+    public void validarCarrinho(final RequestListener<ResourceResponse> listener) {
+        LinkedHashMap<String, String> headers = new LinkedHashMap<>();
+        headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
+
+        final GsonRequest request = silceConnection.buildGetRequest(ServerMethods.VALIDAR_CARRINHO, new LinkedHashMap<>(), ResourceResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(), headers);
+
+        request.setErrorListener(interceptError(request, headers, listener));
+        silceConnection.request(request);
+    }
+
+
     public void adicionarApostasNoCarrinho(final List<IdentificaoDeUmaApostaDas8Modalidades> apostas,
                                            final RequestListener<AgrupadorDTOApostaDTOResponse> listener) {
 
@@ -117,7 +131,7 @@ public class ApostaBO extends BaseBO {
         silceConnection.request(request);
     }
 
-    public void deleteApostaCarrinho(String id, final RequestListener<CarrinhoDTOResponse> listener) {
+    public void  deleteApostaCarrinho(String id, final RequestListener<CarrinhoDTOResponse> listener) {
         LinkedHashMap<String, String> headers = new LinkedHashMap<>();
         headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
 
