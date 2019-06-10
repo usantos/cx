@@ -16,12 +16,13 @@
         app:layout_constraintGuide_percent="0.64" />
 
     <View
+        android:id="@+id/linhaTopo"
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:background="@color/verdeazul"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guidelineTopo"
-        android:id="@+id/linhaTopo"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <ScrollView
