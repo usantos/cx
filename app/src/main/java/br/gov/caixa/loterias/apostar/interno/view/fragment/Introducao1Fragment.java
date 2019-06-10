@@ -82,18 +82,13 @@ public class Introducao1Fragment extends Fragment {
         textView1.setText(ViewUtils.textFuturaAndFuturaBold(getContext(), "Uma nova _experiência_"));
 
         Button button = (Button) v.findViewById(R.id.buttonPularIntroducao);
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                // Do something in response to button click
-                ((IntroducaoActivity) getActivity()).pularIntroducao();
-            }
+        button.setOnClickListener(v1 -> {
+            // Do something in response to button click
+            ((IntroducaoActivity) getActivity()).pularIntroducao();
         });
-        ViewUtils.alertVerificarIdadeListener(getActivity(), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                startActivity(new Intent(getActivity(), RestritoDezoitoAnosActivity.class));
-                getActivity().finish();
-            }
+        ViewUtils.alertVerificarIdadeListener(getActivity(), (dialog, which) -> {
+            startActivity(new Intent(getActivity(), RestritoDezoitoAnosActivity.class));
+            getActivity().finish();
         });
 
 

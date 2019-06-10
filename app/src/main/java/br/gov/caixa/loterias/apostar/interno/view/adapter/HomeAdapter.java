@@ -162,35 +162,32 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                 .load(estilo.getImagemRelogio())
                 .into(holder.relogio);
 
-        holder.buttonActionResultadosModalidade.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (holder.linearLayoutResultadosApostas.getHeight() == 0) {
-                    if (data.get(position).getResultadoConcursoDTO() == null){
-                        callWebserviceResultadoConcurso(holder.relativeLayoutTopResultados,
-                                holder.linearLayoutResultadosApostas,
-                                ApostaDTO.lowerCaseFromString(data.get(position).getTipoModalidade()),
-                                data.get(position).getConcurso().getNumero(), position,
-                                holder.setaEsquerdaAcaoRelativeLayout,
-                                holder.setaDireitaAcaoRelativeLayout,
-                                true);
-                    }
-                    else{
-                        AnimacaoAbrirResultados(context,
-                                holder.relativeLayoutTopResultados,
-                                holder.linearLayoutResultadosApostas,
-                                position,
-                                holder.setaEsquerdaAcaoRelativeLayout,
-                                holder.setaDireitaAcaoRelativeLayout);
-                    }
-                } else {
-                    data.get(position).setResultadosAberto(false);
-                    AnimacaoFecharResultados(context,
+        holder.buttonActionResultadosModalidade.setOnClickListener(view -> {
+            if (holder.linearLayoutResultadosApostas.getHeight() == 0) {
+                if (data.get(position).getResultadoConcursoDTO() == null){
+                    callWebserviceResultadoConcurso(holder.relativeLayoutTopResultados,
+                            holder.linearLayoutResultadosApostas,
+                            ApostaDTO.lowerCaseFromString(data.get(position).getTipoModalidade()),
+                            data.get(position).getConcurso().getNumero(), position,
+                            holder.setaEsquerdaAcaoRelativeLayout,
+                            holder.setaDireitaAcaoRelativeLayout,
+                            true);
+                }
+                else{
+                    AnimacaoAbrirResultados(context,
                             holder.relativeLayoutTopResultados,
                             holder.linearLayoutResultadosApostas,
+                            position,
                             holder.setaEsquerdaAcaoRelativeLayout,
                             holder.setaDireitaAcaoRelativeLayout);
                 }
+            } else {
+                data.get(position).setResultadosAberto(false);
+                AnimacaoFecharResultados(context,
+                        holder.relativeLayoutTopResultados,
+                        holder.linearLayoutResultadosApostas,
+                        holder.setaEsquerdaAcaoRelativeLayout,
+                        holder.setaDireitaAcaoRelativeLayout);
             }
         });
 

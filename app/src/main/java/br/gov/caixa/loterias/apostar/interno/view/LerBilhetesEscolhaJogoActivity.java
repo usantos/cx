@@ -48,11 +48,8 @@ public class LerBilhetesEscolhaJogoActivity extends AppCompatActivity {
 
         selecionarModalidadesConferirApostaButton = (Button)findViewById(R.id.selecionarModalidadesConferirApostaButton);
 
-        selecionarModalidadesConferirApostaButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        selecionarModalidadesConferirApostaButton.setOnClickListener(view -> {
 
-            }
         });
 
         callWebservice();
@@ -204,12 +201,7 @@ public class LerBilhetesEscolhaJogoActivity extends AppCompatActivity {
         gridViewTipoAposta();
 
         final ScrollView scrollModalides = (ScrollView)findViewById(R.id.scrollViewSelecaoModalidadesRapidao);
-        scrollModalides.post(new Runnable()
-        {
-            public void run() {
-                scrollModalides.fullScroll(ScrollView.FOCUS_UP);
-            }
-        });
+        scrollModalides.post(() -> scrollModalides.fullScroll(ScrollView.FOCUS_UP));
     }
 
 }

@@ -25,12 +25,7 @@ public class DadosPessoaisConfirmacaoActivity extends AppCompatActivity {
         tituloConfirmacaoCadastroTextView.setText( ViewUtils.textFuturaAndFuturaBold( this, "_Seu cadastro_ foi atualizado\ncom sucesso." ) );
         subtituloConfirmaCadastroTextView.setText( "Aguarde apenas um instante enquanto\nte redirecionamos para a tela inicial.\n:)" );
 
-        Utils.delay(3, new Utils.DelayCallback() {
-            @Override
-            public void afterDelay() {
-                finish();
-            }
-        });
+        Utils.delay(3, () -> finish());
     }
 
     @Override

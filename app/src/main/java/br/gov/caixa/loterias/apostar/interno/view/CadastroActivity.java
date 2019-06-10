@@ -82,27 +82,22 @@ public class CadastroActivity extends AppCompatActivity {
     }
 
     protected void addRightImg(EditText textField) {
-        textField.setOnFocusChangeListener(new EditText.OnFocusChangeListener() {
-
-
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-            /* When focus is lost check that the text field
-            * has valid values.
-            */
-                if (!hasFocus) {
-                    if (v.getClass() == MaskedEditText.class) {
-                        if (((MaskedEditText) v).getUnmaskedText().toString().equals("")) {
-                            ((MaskedEditText) v).setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-                        } else {
-                            ((MaskedEditText) v).setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
-                        }
+        textField.setOnFocusChangeListener((v, hasFocus) -> {
+        /* When focus is lost check that the text field
+        * has valid values.
+        */
+            if (!hasFocus) {
+                if (v.getClass() == MaskedEditText.class) {
+                    if (((MaskedEditText) v).getUnmaskedText().toString().equals("")) {
+                        ((MaskedEditText) v).setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                     } else {
-                        if (((EditText) v).getText().toString().equals("")) {
-                            ((EditText) v).setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-                        } else {
-                            ((EditText) v).setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
-                        }
+                        ((MaskedEditText) v).setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
+                    }
+                } else {
+                    if (((EditText) v).getText().toString().equals("")) {
+                        ((EditText) v).setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                    } else {
+                        ((EditText) v).setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
                     }
                 }
             }
@@ -113,13 +108,7 @@ public class CadastroActivity extends AppCompatActivity {
         this.listUFString = listUFString;
         editTextUFContent = editTextUF;
         editTextUFContent.setClickable(true);
-        editTextUFContent.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                getUFS();
-            }
-        });
+        editTextUFContent.setOnClickListener(v -> getUFS());
     }
 
     private void getUFS() {
@@ -165,39 +154,27 @@ public class CadastroActivity extends AppCompatActivity {
         // Assign adapter to ListView
         listViewItens.setAdapter(adapter);
         // ListView Item Click Listener
-        listViewItens.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listViewItens.setOnItemClickListener((parent, view, position, id) -> {
+            // ListView Clicked item index
+            int itemPosition = position;
 
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                // ListView Clicked item index
-                int itemPosition = position;
-
-                // ListView Clicked item value
-                String itemValue = (String) listViewItens.getItemAtPosition(position);
-                ufSelect = itemValue;
-            }
-
+            // ListView Clicked item value
+            String itemValue = (String) listViewItens.getItemAtPosition(position);
+            ufSelect = itemValue;
         });
 
         Button dialogButtonOk = (Button) dialog.findViewById(R.id.dialogButtonOK);
         Button dialogButtonCancelar = (Button) dialog.findViewById(R.id.dialogButtonCancelar);
 
         // if button is clicked, close the custom dialog
-        dialogButtonOk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editTextUFContent.setText(ufSelect);
-                dialog.dismiss();
-            }
+        dialogButtonOk.setOnClickListener(v -> {
+            editTextUFContent.setText(ufSelect);
+            dialog.dismiss();
         });
 
-        dialogButtonCancelar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ufSelect = "";
-                dialog.dismiss();
-            }
+        dialogButtonCancelar.setOnClickListener(v -> {
+            ufSelect = "";
+            dialog.dismiss();
         });
 
         dialog.show();
@@ -208,13 +185,7 @@ public class CadastroActivity extends AppCompatActivity {
         this.listMunicipios = listMunicipios;
         this.isMunicipioUsuario = isMunicipioUsuario;
         editTextMunicipioContent.setClickable(true);
-        editTextMunicipioContent.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                getMunicipios();
-            }
-        });
+        editTextMunicipioContent.setOnClickListener(v -> getMunicipios());
     }
 
     private void getMunicipios() {
@@ -262,12 +233,7 @@ public class CadastroActivity extends AppCompatActivity {
             myDialog = new AlertDialog.Builder(this)
                     .setTitle("Atenção")
                     .setMessage("Selecione primeiro a UF, assim nossa precisão de municípios será incrível.")
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            myDialog.dismiss();
-                        }
-                    })
+                    .setPositiveButton("OK", (dialog, which) -> myDialog.dismiss())
                     .create();
         }
         myDialog.show();
@@ -290,54 +256,42 @@ public class CadastroActivity extends AppCompatActivity {
         // Assign adapter to ListView
         listViewItens.setAdapter(adapter);
         // ListView Item Click Listener
-        listViewItens.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listViewItens.setOnItemClickListener((parent, view, position, id) -> {
+            // ListView Clicked item index
+            int itemPosition = position;
 
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                // ListView Clicked item index
-                int itemPosition = position;
-
-                // ListView Clicked item value
-                String itemValue = (String) listViewItens.getItemAtPosition(position);
-                municipioSelect = itemValue;
-            }
-
+            // ListView Clicked item value
+            String itemValue = (String) listViewItens.getItemAtPosition(position);
+            municipioSelect = itemValue;
         });
 
         Button dialogButtonOk = (Button) dialog.findViewById(R.id.dialogButtonOK);
         Button dialogButtonCancelar = (Button) dialog.findViewById(R.id.dialogButtonCancelar);
 
         // if button is clicked, close the custom dialog
-        dialogButtonOk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editTextMunicipioContent.setText(municipioSelect);
-                if (isMunicipioUsuario) {
-                    for (MunicipioDTO municipio : municipioDTOList) {
-                        if (municipio.getNome().equals(municipioSelect)) {
-                            cadastrarApostadorDTO.setMunicipioId(municipio.getId());
-                            break;
-                        }
-                    }
-                } else {
-                    for (MunicipioDTO municipio : municipioDTOList) {
-                        if (municipio.getNome().equals(municipioSelect)) {
-                            municipioIdDTOLoteria = municipio.getId();
-                            break;
-                        }
+        dialogButtonOk.setOnClickListener(v -> {
+            editTextMunicipioContent.setText(municipioSelect);
+            if (isMunicipioUsuario) {
+                for (MunicipioDTO municipio : municipioDTOList) {
+                    if (municipio.getNome().equals(municipioSelect)) {
+                        cadastrarApostadorDTO.setMunicipioId(municipio.getId());
+                        break;
                     }
                 }
-                dialog.dismiss();
+            } else {
+                for (MunicipioDTO municipio : municipioDTOList) {
+                    if (municipio.getNome().equals(municipioSelect)) {
+                        municipioIdDTOLoteria = municipio.getId();
+                        break;
+                    }
+                }
             }
+            dialog.dismiss();
         });
 
-        dialogButtonCancelar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                municipioSelect = "";
-                dialog.dismiss();
-            }
+        dialogButtonCancelar.setOnClickListener(v -> {
+            municipioSelect = "";
+            dialog.dismiss();
         });
 
         dialog.show();

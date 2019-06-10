@@ -77,26 +77,18 @@ public class JogosConfirmadosPremioMercadoPagoActivity extends AppCompatActivity
 
         emailPremioMercadoPagoEditText.setText( SessaoUsuario.getInstance().getEmail() );
 
-        resgatarPremioButton.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!ValidacaoUtils.validarEmail( emailPremioMercadoPagoEditText.getText().toString() )) {
-                    ViewUtils.alertTitleButton( JogosConfirmadosPremioMercadoPagoActivity.this,
-                            R.string.label_atencao,
-                            getResources().getString( R.string.MA021 ),
-                            getResources().getString( R.string.ok ) );
-                    return;
-                }
-                callWebserviceResgatarPremio();
+        resgatarPremioButton.setOnClickListener(view -> {
+            if (!ValidacaoUtils.validarEmail( emailPremioMercadoPagoEditText.getText().toString() )) {
+                ViewUtils.alertTitleButton( JogosConfirmadosPremioMercadoPagoActivity.this,
+                        R.string.label_atencao,
+                        getResources().getString( R.string.MA021 ),
+                        getResources().getString( R.string.ok ) );
+                return;
             }
-        } );
+            callWebserviceResgatarPremio();
+        });
 
-        voltarPremioButton.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        } );
+        voltarPremioButton.setOnClickListener(view -> finish());
     }
 
     @Override

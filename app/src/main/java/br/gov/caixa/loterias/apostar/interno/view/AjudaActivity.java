@@ -128,12 +128,7 @@ public class AjudaActivity extends AppCompatActivity {
 
         ImageView fecharImageView = (ImageView) tb.findViewById(R.id.action_fechar);
         fecharImageView.setImageResource(iconFechar);
-        fecharImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        fecharImageView.setOnClickListener(v -> onBackPressed());
 
         setSupportActionBar(tb);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(this, backGroundToolBar)));

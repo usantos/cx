@@ -32,22 +32,16 @@ public class CustomCaptureActivity extends CaptureActivity{
 
     private void initButtons(){
         imageFechar = findViewById(R.id.imageFechar);
-        imageFechar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setResult(FECHAR);
-                finish();
-            }
+        imageFechar.setOnClickListener(view -> {
+            setResult(FECHAR);
+            finish();
         });
 
         buttomDigitarAposta = findViewById(R.id.buttomDigitarAposta);
         buttomDigitarAposta.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.label_digite_aposta_realizada)));
-        buttomDigitarAposta.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setResult(DIGITAR_APOSTA);
-                finish();
-            }
+        buttomDigitarAposta.setOnClickListener(view -> {
+            setResult(DIGITAR_APOSTA);
+            finish();
         });
     }
 }

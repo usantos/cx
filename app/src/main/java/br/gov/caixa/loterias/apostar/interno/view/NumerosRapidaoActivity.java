@@ -79,34 +79,28 @@ public class NumerosRapidaoActivity extends AppCompatActivity {
 
 
 
-        salvarNumerosApostaRapidaoSelecao.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent();
+        salvarNumerosApostaRapidaoSelecao.setOnClickListener(view -> {
+            Intent intent = new Intent();
 
-                List<Integer> salvarNumero = new ArrayList<>();
-                for (NumerosSelecionadosRapidao numero : listaNumerosSelecionadosRapidao){
-                    if (numero.getSelecionado() == true){
-                        salvarNumero.add(numero.getNumero());
-                    }
+            List<Integer> salvarNumero = new ArrayList<>();
+            for (NumerosSelecionadosRapidao numero : listaNumerosSelecionadosRapidao){
+                if (numero.getSelecionado() == true){
+                    salvarNumero.add(numero.getNumero());
                 }
-                String arrayNumeros = new Gson().toJson(salvarNumero);
-                intent.putExtra("numerosRapidao", arrayNumeros);
-                setResult(RESULT_OK, intent);
-                finish();
             }
+            String arrayNumeros = new Gson().toJson(salvarNumero);
+            intent.putExtra("numerosRapidao", arrayNumeros);
+            setResult(RESULT_OK, intent);
+            finish();
         });
 
 
         limparButtonRapidaoSelecionados = (Button)findViewById(R.id.botaoLimparSelecaoApostaRapidaSelecao);
-        limparButtonRapidaoSelecionados.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                for (NumerosSelecionadosRapidao numero : listaNumerosSelecionadosRapidao){
-                    numero.setSelecionado(false);
-                }
-                reloadGridView();
+        limparButtonRapidaoSelecionados.setOnClickListener(view -> {
+            for (NumerosSelecionadosRapidao numero : listaNumerosSelecionadosRapidao){
+                numero.setSelecionado(false);
             }
+            reloadGridView();
         });
 
         gridViewNumeros();
@@ -187,12 +181,7 @@ public class NumerosRapidaoActivity extends AppCompatActivity {
         gridViewNumerosRapidaoSlc.setExpanded(true);
 
         final ScrollView scrollNumerosRapidao = (ScrollView)findViewById(R.id.scrollNumerosRapidao);
-        scrollNumerosRapidao.post(new Runnable()
-        {
-            public void run() {
-                scrollNumerosRapidao.fullScroll(ScrollView.FOCUS_UP);
-            }
-        });
+        scrollNumerosRapidao.post(() -> scrollNumerosRapidao.fullScroll(ScrollView.FOCUS_UP));
     }
 
 

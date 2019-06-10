@@ -150,50 +150,36 @@ public class CadastrarPasso2Activity extends CadastroActivity {
     }
 
     private void initOnclick() {
-        this.termoPolitica.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getBaseContext(), TermosUsoActivity.class);
-                startActivity(intent);
+        this.termoPolitica.setOnClickListener(view -> {
+            Intent intent = new Intent(getBaseContext(), TermosUsoActivity.class);
+            startActivity(intent);
+        });
+
+        this.segmentedButtonTipoBuscaLoterica.setOnClickedButtonListener(position -> {
+            if (position == 0) {
+                focusButtonLocalizacao();
+            } else if (position == 1) {
+                focusButtonCEP();
+            } else {
+                focusButtonCodigoLoterica();
             }
         });
 
-        this.segmentedButtonTipoBuscaLoterica.setOnClickedButtonListener(new SegmentedButtonGroup.OnClickedButtonListener() {
-            @Override
-            public void onClickedButton(int position) {
-                if (position == 0) {
-                    focusButtonLocalizacao();
-                } else if (position == 1) {
-                    focusButtonCEP();
-                } else {
-                    focusButtonCodigoLoterica();
-                }
+        this.editTextCEPPasso2Content.setOnEditorActionListener((textView, i, keyEvent) -> {
+
+            String cep = textView.getText().toString().replace("-", "").trim();
+
+            if (StringUtils.isNotEmpty(cep) && (keyEvent != null && (keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (i == EditorInfo.IME_ACTION_DONE)) {
+                buscarLoteriasLocalizacaoCep(cep, null);
             }
+            return false;
         });
 
-        this.editTextCEPPasso2Content.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-
-            @Override
-            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-
-                String cep = textView.getText().toString().replace("-", "").trim();
-
-                if (StringUtils.isNotEmpty(cep) && (keyEvent != null && (keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (i == EditorInfo.IME_ACTION_DONE)) {
-                    buscarLoteriasLocalizacaoCep(cep, null);
-                }
-                return false;
+        this.editTextCodigoLotericaPasso2Content.setOnEditorActionListener((textView, i, keyEvent) -> {
+            if ((keyEvent != null && (keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (i == EditorInfo.IME_ACTION_DONE)) {
+                buscarLoteriasCodigoCompleto();
             }
-        });
-
-        this.editTextCodigoLotericaPasso2Content.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-
-            @Override
-            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                if ((keyEvent != null && (keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (i == EditorInfo.IME_ACTION_DONE)) {
-                    buscarLoteriasCodigoCompleto();
-                }
-                return false;
-            }
+            return false;
         });
     }
 
@@ -344,13 +330,7 @@ public class CadastrarPasso2Activity extends CadastroActivity {
     private void addListenerBairro() {
         this.listBairros = listBairros;
         editTextBairroPasso2Content.setClickable(true);
-        editTextBairroPasso2Content.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                getBairros();
-            }
-        });
+        editTextBairroPasso2Content.setOnClickListener(v -> getBairros());
     }
 
     private void getBairros() {
@@ -391,12 +371,7 @@ public class CadastrarPasso2Activity extends CadastroActivity {
             myDialog = new AlertDialog.Builder(this)
                     .setTitle("Atenção")
                     .setMessage("Selecione primeiro o Município, assim nossa precisão de Bairros será incrível.")
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            myDialog.dismiss();
-                        }
-                    })
+                    .setPositiveButton("OK", (dialog, which) -> myDialog.dismiss())
                     .create();
         }
         myDialog.show();
@@ -419,44 +394,32 @@ public class CadastrarPasso2Activity extends CadastroActivity {
         // Assign adapter to ListView
         listViewItens.setAdapter(adapter);
         // ListView Item Click Listener
-        listViewItens.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listViewItens.setOnItemClickListener((parent, view, position, id) -> {
+            // ListView Clicked item index
+            int itemPosition = position;
 
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                // ListView Clicked item index
-                int itemPosition = position;
-
-                // ListView Clicked item value
-                String itemValue = (String) listViewItens.getItemAtPosition(position);
-                bairroSelected = itemValue;
-            }
-
+            // ListView Clicked item value
+            String itemValue = (String) listViewItens.getItemAtPosition(position);
+            bairroSelected = itemValue;
         });
 
         Button dialogButtonOk = (Button) dialog.findViewById(R.id.dialogButtonOK);
         Button dialogButtonCancelar = (Button) dialog.findViewById(R.id.dialogButtonCancelar);
 
         // if button is clicked, close the custom dialog
-        dialogButtonOk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editTextBairroPasso2Content.setText(bairroSelected);
-                for (BairroDTO bairroDTO : listBairroDTO) {
-                    if (bairroDTO.getNome().equalsIgnoreCase(bairroSelected)) {
-                        buscarLoteriasLocalizacaoCep(null, bairroDTO);
-                    }
+        dialogButtonOk.setOnClickListener(v -> {
+            editTextBairroPasso2Content.setText(bairroSelected);
+            for (BairroDTO bairroDTO : listBairroDTO) {
+                if (bairroDTO.getNome().equalsIgnoreCase(bairroSelected)) {
+                    buscarLoteriasLocalizacaoCep(null, bairroDTO);
                 }
-                dialog.dismiss();
             }
+            dialog.dismiss();
         });
 
-        dialogButtonCancelar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                bairroSelected = "";
-                dialog.dismiss();
-            }
+        dialogButtonCancelar.setOnClickListener(v -> {
+            bairroSelected = "";
+            dialog.dismiss();
         });
 
         dialog.show();

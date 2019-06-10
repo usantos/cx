@@ -148,25 +148,17 @@ public class FavoritasActivity extends AppCompatActivity {
                 recyclerViewFavoritas.setHasFixedSize(true);
                 recyclerViewFavoritas.setAdapter(favoritasAdapter);
                 recyclerViewFavoritas.setLayoutManager(layoutManager);
-                favoritasAdapter.setOnExcluiuTudo( new FavoritasRecyclerViewAdapter.ExcluiuTudo() {
-                    @Override
-                    public void onVazio() {
-                        callWebservice();
-                    }
-                });
+                favoritasAdapter.setOnExcluiuTudo(() -> callWebservice());
 
-                scrollViewContentViewFavoritas.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
-                    @Override
-                    public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                        View view = (View) v.getChildAt(v.getChildCount() - 1);
-                        int diff = (view.getBottom() - (v.getHeight() + v.getScrollY()));
+                scrollViewContentViewFavoritas.setOnScrollChangeListener((NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) -> {
+                    View view = (View) v.getChildAt(v.getChildCount() - 1);
+                    int diff = (view.getBottom() - (v.getHeight() + v.getScrollY()));
 
-                        // if diff is zero, then the bottom has been reached
-                        if (diff == 0 && bloquearRequestScroll == false) {
-                            // do stuff
-                            getFavoritasScroll();
-                            bloquearRequestScroll = true;
-                        }
+                    // if diff is zero, then the bottom has been reached
+                    if (diff == 0 && bloquearRequestScroll == false) {
+                        // do stuff
+                        getFavoritasScroll();
+                        bloquearRequestScroll = true;
                     }
                 });
 

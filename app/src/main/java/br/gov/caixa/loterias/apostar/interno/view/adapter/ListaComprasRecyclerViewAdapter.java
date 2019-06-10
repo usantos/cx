@@ -68,16 +68,13 @@ public final class ListaComprasRecyclerViewAdapter extends RecyclerView.Adapter<
             holder.itemCompraOrdemTextView.setText(ViewUtils.textFuturaAndFuturaBold(context, context.getString(R.string.label_compra_lista_situacao,
                     compra.getSituacao().getDescricao())));;
 
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
+            holder.itemView.setOnClickListener(view -> {
 
-                    Intent activity = new Intent(context, DetalhesComprasActivity.class);
-                    String arrayAsString = new Gson().toJson(listaCompras.get(position));
-                    activity.putExtra("CompraDTO", arrayAsString);
-                    activity.putExtra("ordem", ordemLista);
-                    context.startActivity(activity);
-                }
+                Intent activity = new Intent(context, DetalhesComprasActivity.class);
+                String arrayAsString = new Gson().toJson(listaCompras.get(position));
+                activity.putExtra("CompraDTO", arrayAsString);
+                activity.putExtra("ordem", ordemLista);
+                context.startActivity(activity);
             });
         }
     }

@@ -105,26 +105,22 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
     }
 
     private void addRightImg(EditText textField) {
-        textField.setOnFocusChangeListener(new EditText.OnFocusChangeListener() {
-
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                /* When focus is lost check that the text field
-                 * has valid values.
-                 */
-                if (!hasFocus) {
-                    if (v.getClass() == MaskedEditText.class) {
-                        if (((MaskedEditText) v).getUnmaskedText().toString().equals("")) {
-                            ((MaskedEditText) v).setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-                        } else {
-                            ((MaskedEditText) v).setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
-                        }
+        textField.setOnFocusChangeListener((v, hasFocus) -> {
+            /* When focus is lost check that the text field
+             * has valid values.
+             */
+            if (!hasFocus) {
+                if (v.getClass() == MaskedEditText.class) {
+                    if (((MaskedEditText) v).getUnmaskedText().toString().equals("")) {
+                        ((MaskedEditText) v).setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                     } else {
-                        if (((EditText) v).getText().toString().equals("")) {
-                            ((EditText) v).setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-                        } else {
-                            ((EditText) v).setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
-                        }
+                        ((MaskedEditText) v).setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
+                    }
+                } else {
+                    if (((EditText) v).getText().toString().equals("")) {
+                        ((EditText) v).setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                    } else {
+                        ((EditText) v).setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
                     }
                 }
             }
@@ -142,30 +138,27 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
     private void configuraBotoesListener() {
         ((Button) findViewById(R.id.botaoAvancarPagamento)).setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.apostarAutorizarCobranca)));
 
-        findViewById(R.id.botaoAvancarPagamento).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (editTextAnoValidadeCartaooContent.getText().toString().equals("") ||
-                        editTextMesValidadeCartaooContent.getText().toString().equals("") ||
-                        editTextNumeroCartaoContent.getText().toString().equals("") ||
-                        editTextCodigoSegurancaContent.getText().toString().equals("") ||
-                        editTextNomeClienteCartaoContent.getText().toString().equals("")) {
-                    ViewUtils.alertTitleButton(NovaFormaPagamentoActivity.this,
-                            R.string.label_atencao,
-                            "Informe os dados do cartão.",
-                            NovaFormaPagamentoActivity.this.getResources().getString(R.string.ok));
-                    return;
-                }
-                CardToken cardToken = new CardToken(editTextNumeroCartaoContent.getText().toString(),
-                        Integer.valueOf(editTextMesValidadeCartaooContent.getText().toString()),
-                        Integer.valueOf(editTextAnoValidadeCartaooContent.getText().toString()),
-                        editTextCodigoSegurancaContent.getText().toString(),
-                        editTextNomeClienteCartaoContent.getText().toString(),
-                        "CPF",
-                        DadosUsuarioBO.obterCpf());
-
-                    createTokenAsync(cardToken);
+        findViewById(R.id.botaoAvancarPagamento).setOnClickListener(view -> {
+            if (editTextAnoValidadeCartaooContent.getText().toString().equals("") ||
+                    editTextMesValidadeCartaooContent.getText().toString().equals("") ||
+                    editTextNumeroCartaoContent.getText().toString().equals("") ||
+                    editTextCodigoSegurancaContent.getText().toString().equals("") ||
+                    editTextNomeClienteCartaoContent.getText().toString().equals("")) {
+                ViewUtils.alertTitleButton(NovaFormaPagamentoActivity.this,
+                        R.string.label_atencao,
+                        "Informe os dados do cartão.",
+                        NovaFormaPagamentoActivity.this.getResources().getString(R.string.ok));
+                return;
             }
+            CardToken cardToken = new CardToken(editTextNumeroCartaoContent.getText().toString(),
+                    Integer.valueOf(editTextMesValidadeCartaooContent.getText().toString()),
+                    Integer.valueOf(editTextAnoValidadeCartaooContent.getText().toString()),
+                    editTextCodigoSegurancaContent.getText().toString(),
+                    editTextNomeClienteCartaoContent.getText().toString(),
+                    "CPF",
+                    DadosUsuarioBO.obterCpf());
+
+                createTokenAsync(cardToken);
         });
     }
 
@@ -240,30 +233,22 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
         String bin = editTextNumeroCartaoContent.getText().toString().substring(0, 7);
         bin = bin.replace(" ", "");
         String url = BuildConfig.MP_PAYMENT_URL + "bin=" + bin + "&public_key=" + BuildConfig.PUBLIC_KEY_MP;
-        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Log.d("Response: ", response.toString());
-                try {
-                    //Do it with this it will work
-                    JSONArray jsonArray = new JSONArray(response);
-                    JSONObject responseObj = new JSONObject();
-                    responseObj = jsonArray.getJSONObject(0);
-                    String payment_method_id = responseObj.getString("payment_method_id");
-                    String thumbnail = (responseObj.getJSONObject("issuer")).getString("thumbnail");
-                    callWebserviceRegistraAposta(token, payment_method_id);
+        StringRequest request = new StringRequest(Request.Method.GET, url, response -> {
+            Log.d("Response: ", response.toString());
+            try {
+                //Do it with this it will work
+                JSONArray jsonArray = new JSONArray(response);
+                JSONObject responseObj = new JSONObject();
+                responseObj = jsonArray.getJSONObject(0);
+                String payment_method_id = responseObj.getString("payment_method_id");
+                String thumbnail = (responseObj.getJSONObject("issuer")).getString("thumbnail");
+                callWebserviceRegistraAposta(token, payment_method_id);
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Toast.makeText(getApplicationContext(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Toast.makeText(getApplicationContext(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
             }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                Log.d("volleyError", "volleyError: " + volleyError.toString());
-            }
-        });
+        }, volleyError -> Log.d("volleyError", "volleyError: " + volleyError.toString()));
 
         RequestQueue rQueue = Volley.newRequestQueue(NovaFormaPagamentoActivity.this);
         rQueue.add(request);

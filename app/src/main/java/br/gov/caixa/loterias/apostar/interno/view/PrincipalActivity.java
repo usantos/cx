@@ -397,35 +397,32 @@ public class PrincipalActivity extends AppCompatActivity
 
     private void sairLogin() {
 
-        ViewUtils.alertTitleButtonYesOrNotListener(this, getResources().getString(R.string.MA008), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (DadosUsuarioBO.checarUsuarioLogado(PrincipalActivity.this)) {
-                    final AlertDialog loadViewProgress = LoadingViewLoterias.show(PrincipalActivity.this);
+        ViewUtils.alertTitleButtonYesOrNotListener(this, getResources().getString(R.string.MA008), (dialog, which) -> {
+            if (DadosUsuarioBO.checarUsuarioLogado(PrincipalActivity.this)) {
+                final AlertDialog loadViewProgress = LoadingViewLoterias.show(PrincipalActivity.this);
 
-                    DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_(PrincipalActivity.this);
-                    dadosUsuarioBO.sair(new RequestListener<NetworkResponse>() {
-                        @Override
-                        public void onResponse(NetworkResponse response) {
-                            FirebaseManager.registraEvento(PrincipalActivity.this ,"EFETUOU_LOGOUT_SUCESSO");
+                DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_(PrincipalActivity.this);
+                dadosUsuarioBO.sair(new RequestListener<NetworkResponse>() {
+                    @Override
+                    public void onResponse(NetworkResponse response) {
+                        FirebaseManager.registraEvento(PrincipalActivity.this ,"EFETUOU_LOGOUT_SUCESSO");
 
-                            AcessoBO_.getInstance_(PrincipalActivity.this).iniciarLogoutSSO();
-                            LoginSP.loginRealizado(false);
-                            realizandoLogin = true;
-                            loadViewProgress.dismiss();
-                        }
+                        AcessoBO_.getInstance_(PrincipalActivity.this).iniciarLogoutSSO();
+                        LoginSP.loginRealizado(false);
+                        realizandoLogin = true;
+                        loadViewProgress.dismiss();
+                    }
 
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            loadViewProgress.dismiss();
-                            RedirectNetwork.checkRedirect(error, PrincipalActivity.this);
-                        }
-                    });
-                } else {
-                    FirebaseManager.registraEvento(PrincipalActivity.this ,"EFETUOU_LOGOUT_OFFLINE_SUCESSO");
-                    startActivity(new Intent(PrincipalActivity.this, LoginActivity.class));
-                    finish();
-                }
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        loadViewProgress.dismiss();
+                        RedirectNetwork.checkRedirect(error, PrincipalActivity.this);
+                    }
+                });
+            } else {
+                FirebaseManager.registraEvento(PrincipalActivity.this ,"EFETUOU_LOGOUT_OFFLINE_SUCESSO");
+                startActivity(new Intent(PrincipalActivity.this, LoginActivity.class));
+                finish();
             }
         });
     }

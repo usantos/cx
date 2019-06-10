@@ -139,11 +139,7 @@ public class RepassesSociaisActivity extends SettingToolbarActivity {
         ButtonAposte.setText(ViewUtils.textFuturaAndFuturaBold(this, htmlTextButtonAposte));
 
 
-        ButtonAposte.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        ButtonAposte.setOnClickListener(v -> finish());
     }
 
     private String[] formatValorArrecados(BigDecimal valor) {

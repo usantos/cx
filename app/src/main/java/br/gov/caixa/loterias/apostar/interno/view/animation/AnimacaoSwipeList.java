@@ -16,18 +16,12 @@ public class AnimacaoSwipeList {
 
 
     public static void animacaoSwipeList(final Context context, final int position, final SwipeLayout swipeLayout) {
-        swipeLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                swipeLayout.open();
-                swipeLayout.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        swipeLayout.close();
-                        swipeLayout.startAnimation(AnimationUtils.loadAnimation(context, R.anim.bounce_left));
-                    }
-                }, (1500 + (position == 0 ? position + 2 : position * 8)));
-            }
+        swipeLayout.post(() -> {
+            swipeLayout.open();
+            swipeLayout.postDelayed(() -> {
+                swipeLayout.close();
+                swipeLayout.startAnimation(AnimationUtils.loadAnimation(context, R.anim.bounce_left));
+            }, (1500 + (position == 0 ? position + 2 : position * 8)));
         });
     }
 

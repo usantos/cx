@@ -54,75 +54,72 @@ public class TokenActivity extends AppCompatActivity {
             AuthorizationException authorizationException = AuthorizationException.fromIntent(getIntent());
             if (authorizationException == null && authorizationResponse != null) {
                 authorizationService = new AuthorizationService(this);
-                authorizationService.performTokenRequest(authorizationResponse.createTokenExchangeRequest(), new AuthorizationService.TokenResponseCallback() {
-                    @Override
-                    public void onTokenRequestCompleted(@Nullable TokenResponse response, @Nullable AuthorizationException ex) {
-                        if (response != null) {
-                            if (response.accessToken == null || response.refreshToken == null) {
-                                AcessoBO_.getInstance_(TokenActivity.this).iniciarLoginSSO(TokenActivity.this);
-                            } else {
-                                if (!"".equals(response.accessToken) && !"".equals(response.refreshToken)) {
-                                    LoginSP.loginRealizado(true);
-                                    String separar[] = response.accessToken.split("\\.");
-                                    if (separar.length > 0) {
-                                        String tokenCorpo = separar[1];
-                                        byte bytes[] = Base64.decode(tokenCorpo, Base64.URL_SAFE);
-                                        tokenCorpo = new String(bytes, Charset.forName("UTF-8"));
-                                        try {
-                                            JSONObject jsonObject = new JSONObject(tokenCorpo);
+                authorizationService.performTokenRequest(authorizationResponse.createTokenExchangeRequest(), (response, ex) -> {
+                    if (response != null) {
+                        if (response.accessToken == null || response.refreshToken == null) {
+                            AcessoBO_.getInstance_(TokenActivity.this).iniciarLoginSSO(TokenActivity.this);
+                        } else {
+                            if (!"".equals(response.accessToken) && !"".equals(response.refreshToken)) {
+                                LoginSP.loginRealizado(true);
+                                String separar[] = response.accessToken.split("\\.");
+                                if (separar.length > 0) {
+                                    String tokenCorpo = separar[1];
+                                    byte bytes[] = Base64.decode(tokenCorpo, Base64.URL_SAFE);
+                                    tokenCorpo = new String(bytes, Charset.forName("UTF-8"));
+                                    try {
+                                        JSONObject jsonObject = new JSONObject(tokenCorpo);
 
-                                            String cpf = jsonObject.getString("cpf");
-                                            if (cpf.length() < 11) {
-                                                StringBuilder zeros = new StringBuilder();
-                                                int totalIncluirZero = 11 - cpf.length();
-                                                for (int contador = 0; contador < totalIncluirZero; contador++) {
-                                                    zeros.append("0");
-                                                }
-                                                zeros.append(cpf);
-                                                cpf = zeros.toString();
+                                        String cpf = jsonObject.getString("cpf");
+                                        if (cpf.length() < 11) {
+                                            StringBuilder zeros = new StringBuilder();
+                                            int totalIncluirZero = 11 - cpf.length();
+                                            for (int contador = 0; contador < totalIncluirZero; contador++) {
+                                                zeros.append("0");
                                             }
-
-                                            DadosUsuarioBO.salvarCpfUsuario(cpf);
-                                            DadosUsuarioBO.salvarNomeUsuairo(jsonObject.getString("name"));
-                                            KeycloakBO_.getInstance_(TokenActivity.this).setAccessToken(response.accessToken);
-                                            KeycloakBO_.getInstance_(TokenActivity.this).setRefreshToken(response.refreshToken);
-                                            FirebaseManager.registraEvento(TokenActivity.this ,"EFETUOU_LOGIN_SUCESSO");
-                                        } catch (JSONException e) {
-                                            e.printStackTrace();
+                                            zeros.append(cpf);
+                                            cpf = zeros.toString();
                                         }
+
+                                        DadosUsuarioBO.salvarCpfUsuario(cpf);
+                                        DadosUsuarioBO.salvarNomeUsuairo(jsonObject.getString("name"));
+                                        KeycloakBO_.getInstance_(TokenActivity.this).setAccessToken(response.accessToken);
+                                        KeycloakBO_.getInstance_(TokenActivity.this).setRefreshToken(response.refreshToken);
+                                        FirebaseManager.registraEvento(TokenActivity.this ,"EFETUOU_LOGIN_SUCESSO");
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
                                     }
-                                    DadosUsuarioBO.updateUsuarioLogado(TokenActivity.this, true);
-                                    if (AcessoBO.PRIMEIRO_LOGIN) {
-                                        AcessoBO.PRIMEIRO_LOGIN = false;
+                                }
+                                DadosUsuarioBO.updateUsuarioLogado(TokenActivity.this, true);
+                                if (AcessoBO.PRIMEIRO_LOGIN) {
+                                    AcessoBO.PRIMEIRO_LOGIN = false;
+                                }
+                            }
+
+                            final DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_(TokenActivity.this);
+                            DBLoteriasCrud crud = new DBLoteriasCrud(TokenActivity.this);
+                            List<IdentificaoDeUmaApostaDas8Modalidades> listApostas = crud.readAllIdentificaoDeUmaApostaDas8Modalidades();
+                            dadosUsuarioBO.postVerificarCadastro(listApostas, new RequestListener<UsuarioLogadoResponse>() {
+
+                                @Override
+                                public void onResponse(UsuarioLogadoResponse response) {
+                                    if (response.getRedirect() == null) {
+                                        SessaoUsuario.getInstance().setValorMaximoAposta(response.getPayload().getLimiteDiario());
+                                        CarrinhoSingleton.getInstance().setCarrinho(response.getPayload().getCarrinho());
+                                        crud.deleteAll();
+                                        finish();
+                                    } else {
+                                        finish();
                                     }
                                 }
 
-                                final DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_(TokenActivity.this);
-                                DBLoteriasCrud crud = new DBLoteriasCrud(TokenActivity.this);
-                                List<IdentificaoDeUmaApostaDas8Modalidades> listApostas = crud.readAllIdentificaoDeUmaApostaDas8Modalidades();
-                                dadosUsuarioBO.postVerificarCadastro(listApostas, new RequestListener<UsuarioLogadoResponse>() {
-
-                                    @Override
-                                    public void onResponse(UsuarioLogadoResponse response) {
-                                        if (response.getRedirect() == null) {
-                                            SessaoUsuario.getInstance().setValorMaximoAposta(response.getPayload().getLimiteDiario());
-                                            CarrinhoSingleton.getInstance().setCarrinho(response.getPayload().getCarrinho());
-                                            crud.deleteAll();
-                                            finish();
-                                        } else {
-                                            finish();
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onErrorResponse(VolleyError error) {
-                                        finish();
-                                    }
-                                });
-                            }
-                        } else {
-                            finish();
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    finish();
+                                }
+                            });
                         }
+                    } else {
+                        finish();
                     }
                 });
             }

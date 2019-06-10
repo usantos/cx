@@ -133,20 +133,17 @@ public class ApostasConfirmadasFragment extends Fragment implements ApostasConfi
                     .build();
 
             pd.show(getActivity().getSupportFragmentManager(), MONTH_YEAR_DIALOG);
-            pd.setListener(new DatePickerDialog.OnDateSetListener() {
-                @Override
-                public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                    page = new ApostaPageRequest(PAGE_SIZE);
-                    page.setAno(year);
-                    page.setMes(month + 1);
-                    page.setOffset(0);
+            pd.setListener((datePicker, year, month, day) -> {
+                page = new ApostaPageRequest(PAGE_SIZE);
+                page.setAno(year);
+                page.setMes(month + 1);
+                page.setOffset(0);
 
-                    hasMoreItems = true;
-                    apostasConfirmadasRecyclerView.setAdapter(null);
+                hasMoreItems = true;
+                apostasConfirmadasRecyclerView.setAdapter(null);
 
-                    updateResultDate();
-                    requestApostasConfirmadas();
-                }
+                updateResultDate();
+                requestApostasConfirmadas();
             });
         }
     }

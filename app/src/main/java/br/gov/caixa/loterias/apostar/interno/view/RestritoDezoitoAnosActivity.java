@@ -28,12 +28,9 @@ public class RestritoDezoitoAnosActivity extends AppCompatActivity {
         textViewTextoRestrito.setText(ViewUtils.textFuturaAndFuturaBold(this, " O uso do aplicativo é restrito a\nmaiores de _18 anos._"));
 
         Button buttonDigitarAposta = (Button) findViewById(R.id.entendiButton);
-        buttonDigitarAposta.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent activity = new Intent(RestritoDezoitoAnosActivity.this, IntroducaoActivity.class);
-                startActivity(activity);
-            }
+        buttonDigitarAposta.setOnClickListener(v -> {
+            Intent activity = new Intent(RestritoDezoitoAnosActivity.this, IntroducaoActivity.class);
+            startActivity(activity);
         });
     }
 

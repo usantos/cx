@@ -55,16 +55,13 @@ public class SelecaoModalidadesRapidaoActivity extends AppCompatActivity {
 
         salvarButtonRapidaoSelecionados = (Button) findViewById(R.id.salvarModalidadesApostaRapidaoSelececao);
 
-        salvarButtonRapidaoSelecionados.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent();
+        salvarButtonRapidaoSelecionados.setOnClickListener(view -> {
+            Intent intent = new Intent();
 
-                String arrayAsString = new Gson().toJson(tiposAposta);
-                intent.putExtra("tiposAposta", arrayAsString);
-                setResult(RESULT_OK, intent);
-                finish();
-            }
+            String arrayAsString1 = new Gson().toJson(tiposAposta);
+            intent.putExtra("tiposAposta", arrayAsString1);
+            setResult(RESULT_OK, intent);
+            finish();
         });
 
         callWebservice();
@@ -225,11 +222,7 @@ public class SelecaoModalidadesRapidaoActivity extends AppCompatActivity {
 
         }
         final ScrollView scrollModalides = (ScrollView) findViewById(R.id.scrollViewSelecaoModalidadesRapidao);
-        scrollModalides.post(new Runnable() {
-            public void run() {
-                scrollModalides.fullScroll(ScrollView.FOCUS_UP);
-            }
-        });
+        scrollModalides.post(() -> scrollModalides.fullScroll(ScrollView.FOCUS_UP));
     }
 
 }

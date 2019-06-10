@@ -221,18 +221,15 @@ public class ListaComprasActivity extends AppCompatActivity {
         recyclerViewCompras.setLayoutManager(layoutManager);
 
 
-        scrollViewContentViewCompras.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
-            @Override
-            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                View view = (View) v.getChildAt(v.getChildCount() - 1);
-                int diff = (view.getBottom() - (v.getHeight() + v.getScrollY()));
+        scrollViewContentViewCompras.setOnScrollChangeListener((NestedScrollView v,int scrollX,int scrollY,int oldScrollX,int oldScrollY) -> {
+            View view =  v.getChildAt(v.getChildCount() - 1);
+            int diff = (view.getBottom() - (v.getHeight() + v.getScrollY()));
 
-                // if diff is zero, then the bottom has been reached
-                if (diff == 0 && bloquearRequestScroll == false) {
-                    // do stuff
-                    getComprasScroll();
-                    bloquearRequestScroll = true;
-                }
+            // if diff is zero, then the bottom has been reached
+            if (diff == 0 && bloquearRequestScroll == false) {
+                // do stuff
+                getComprasScroll();
+                bloquearRequestScroll = true;
             }
         });
 

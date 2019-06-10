@@ -3,7 +3,6 @@ package br.gov.caixa.loterias.apostar.interno.utils.helper;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 
 import com.android.volley.VolleyError;
@@ -157,12 +156,7 @@ public class AdicionarApostaCarrinhoHelper {
                         .add(IdentificaoDeUmaApostaDas8Modalidades.getValorApostaPorPrognostico(aposta)))
                 < 0) {
             DialogUtils.dismiss();
-            ViewUtils.alertTitleButtonYesOrNotListener(context, context.getResources().getString(R.string.MA014), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    checarApostasRepetidas(apostaBO, aposta, carrinhoDTO);
-                }
-            });
+            ViewUtils.alertTitleButtonYesOrNotListener(context, context.getResources().getString(R.string.MA014), (dialog, which) -> checarApostasRepetidas(apostaBO, aposta, carrinhoDTO));
         } else {
             checarApostasRepetidas(apostaBO, aposta, carrinhoDTO);
         }
@@ -171,12 +165,9 @@ public class AdicionarApostaCarrinhoHelper {
     private static void checarApostasRepetidas(final ApostaBO apostaBO, final IdentificaoDeUmaApostaDas8Modalidades aposta, final CarrinhoDTO carrinhoDTO) {
         if (IdentificaoDeUmaApostaDas8Modalidades.checkExisteUmaApostaIgualCarrinho(aposta, carrinhoDTO)) {
             DialogUtils.dismiss();
-            ViewUtils.alertTitleButtonYesOrNotListener(context, context.getResources().getString(R.string.MA015), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    DialogUtils.show(context);
-                    postAdicionarApostaCarrinho(apostaBO);
-                }
+            ViewUtils.alertTitleButtonYesOrNotListener(context, context.getResources().getString(R.string.MA015), (dialog, which) -> {
+                DialogUtils.show(context);
+                postAdicionarApostaCarrinho(apostaBO);
             });
         } else {
             postAdicionarApostaCarrinho(apostaBO);

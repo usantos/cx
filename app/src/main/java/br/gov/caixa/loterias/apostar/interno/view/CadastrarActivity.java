@@ -132,28 +132,26 @@ public class CadastrarActivity extends CadastroActivity {
     }
 
     private void addListenerFinalizar() {
-        buttonFinalizarCadastro.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if (validarCamposObrigatorios()) {
+        buttonFinalizarCadastro.setOnClickListener(v -> {
+            if (validarCamposObrigatorios()) {
 
-                    final AlertDialog loadViewProgress = LoadingViewLoterias.show(CadastrarActivity.this);
-                    DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_(CadastrarActivity.this);
-                    dadosUsuarioBO.gravarUsuario(cadastrarApostadorDTO, new RequestListener<ApostadorDTOResponse>() {
-                        @Override
-                        public void onResponse(ApostadorDTOResponse response) {
-                            loadViewProgress.dismiss();
-                             startActivity( new Intent(CadastrarActivity.this, CadastrarConfirmacao.class ));
-                             CadastrarActivity.this.finish();
-                        }
+                final AlertDialog loadViewProgress = LoadingViewLoterias.show(CadastrarActivity.this);
+                DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_(CadastrarActivity.this);
+                dadosUsuarioBO.gravarUsuario(cadastrarApostadorDTO, new RequestListener<ApostadorDTOResponse>() {
+                    @Override
+                    public void onResponse(ApostadorDTOResponse response) {
+                        loadViewProgress.dismiss();
+                         startActivity( new Intent(CadastrarActivity.this, CadastrarConfirmacao.class ));
+                         CadastrarActivity.this.finish();
+                    }
 
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            loadViewProgress.dismiss();
-                            ViewUtils.alert(CadastrarActivity.this, MensagensNetwork.setMensagem(error, CadastrarActivity.this));
-                        }
-                    });
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        loadViewProgress.dismiss();
+                        ViewUtils.alert(CadastrarActivity.this, MensagensNetwork.setMensagem(error, CadastrarActivity.this));
+                    }
+                });
 
-                }
             }
         });
     }
@@ -161,17 +159,14 @@ public class CadastrarActivity extends CadastroActivity {
 
     private void initOnclick() {
 
-        this.segmentedButtonSexo.setOnClickedButtonListener(new SegmentedButtonGroup.OnClickedButtonListener() {
-            @Override
-            public void onClickedButton(int position) {
-                CadastrarApostadorDTO.SexoEnum sexoEnum;
-                if (position == 0) {
-                    sexoEnum = CadastrarApostadorDTO.SexoEnum.M;
-                } else {
-                    sexoEnum = CadastrarApostadorDTO.SexoEnum.F;
-                }
-                cadastrarApostadorDTO.setSexo( sexoEnum );
+        this.segmentedButtonSexo.setOnClickedButtonListener(position -> {
+            CadastrarApostadorDTO.SexoEnum sexoEnum;
+            if (position == 0) {
+                sexoEnum = CadastrarApostadorDTO.SexoEnum.M;
+            } else {
+                sexoEnum = CadastrarApostadorDTO.SexoEnum.F;
             }
+            cadastrarApostadorDTO.setSexo( sexoEnum );
         });
 
         this.editTextCepContent.addTextChangedListener(new TextWatcher() {
@@ -199,26 +194,16 @@ public class CadastrarActivity extends CadastroActivity {
     public Dialog onCreateDialogSingleChoice(List<String> listString, String TituloAlert) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(TituloAlert)
-                .setSingleChoiceItems(listString.toArray(new String[listString.size()]), 0, new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                .setSingleChoiceItems(listString.toArray(new String[listString.size()]), 0, (dialog, which) -> {
 // TODO Auto-generated method stub
 
-                    }
                 })
 
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
+                .setPositiveButton("OK", (dialog, id) -> {
 
-                    }
                 })
-                .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
+                .setNegativeButton("Cancelar", (dialog, id) -> {
 
-                    }
                 });
 
         return builder.create();
