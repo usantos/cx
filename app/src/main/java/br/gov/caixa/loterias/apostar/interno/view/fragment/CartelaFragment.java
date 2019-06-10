@@ -584,7 +584,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
                 IdentificaoDeUmaApostaDas8Modalidades aposta = getApostaPreenchida();
 
-                aposta.setGeraEspelho(true);
+                aposta.setGerarEspelho(true);
                 aposta.setValor(aposta.getValor().divide(Constantes.DOIS_BIG_DECIMAL));
                 AdicionarApostaCarrinhoHelper.incluirApostaCarrinhoCartela(parentActivity, aposta);
             } else {
