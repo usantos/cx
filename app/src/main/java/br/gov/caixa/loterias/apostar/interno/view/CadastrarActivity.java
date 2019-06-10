@@ -113,10 +113,10 @@ public class CadastrarActivity extends CadastroActivity {
         addListenerUF(editTextUFContent, listUFString);
         addListenerMunicipio(editTextMunicipioContent, listMunicipios, Boolean.TRUE);
 
-        addRightImg((EditText) findViewById(R.id.editTextNomeContent));
-        addRightImg((EditText) findViewById(R.id.editTextCepContent));
-        addRightImg((EditText) findViewById(R.id.editTextCpfContent));
-        addRightImg((EditText) findViewById(R.id.editTextEmailContent));
+        addRightImg(findViewById(R.id.editTextNomeContent));
+        addRightImg(findViewById(R.id.editTextCepContent));
+        addRightImg(findViewById(R.id.editTextCpfContent));
+        addRightImg(findViewById(R.id.editTextEmailContent));
         addListenerFinalizar();
 
     }

@@ -71,8 +71,8 @@ public class DadosPessoaisActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_dados_pessoais );
-        Toolbar toolbar = (Toolbar) findViewById( R.id.toolbar );
-        TextView subtitleToolbar = (TextView) findViewById( R.id.subtitleToolbar );
+        Toolbar toolbar = findViewById( R.id.toolbar );
+        TextView subtitleToolbar = findViewById( R.id.subtitleToolbar );
         setSupportActionBar( toolbar );
         getSupportActionBar().setDisplayHomeAsUpEnabled( true );
         setTitle( ViewUtils.textFuturaAndFuturaBoldTitle( this, getTitle().toString() ) );
@@ -90,14 +90,14 @@ public class DadosPessoaisActivity extends AppCompatActivity {
     }
 
     private void montarLayout() {
-        editTextCpfContent = (MaskedEditText) findViewById( R.id.editTextCpfContent );
-        editTextNomeContent = (EditText) findViewById( R.id.editTextNomeContent );
-        editTextCepContent = (MaskedEditText) findViewById( R.id.editTextCepContent );
-        editTextUFContent = (EditText) findViewById( R.id.editTextUFContent );
-        editTextMunicipioContent = (EditText) findViewById( R.id.editTextMunicipioContent );
-        editTextEmailContent = (EditText) findViewById( R.id.editTextEmailContent );
-        segmentedButtonSexo = (SegmentedButtonGroup) findViewById( R.id.segmentedButtonSexo );
-        updateDadosPesoaisButton = (Button) findViewById( R.id.updateDadosPesoaisButton );
+        editTextCpfContent = findViewById( R.id.editTextCpfContent );
+        editTextNomeContent = findViewById( R.id.editTextNomeContent );
+        editTextCepContent = findViewById( R.id.editTextCepContent );
+        editTextUFContent = findViewById( R.id.editTextUFContent );
+        editTextMunicipioContent = findViewById( R.id.editTextMunicipioContent );
+        editTextEmailContent = findViewById( R.id.editTextEmailContent );
+        segmentedButtonSexo = findViewById( R.id.segmentedButtonSexo );
+        updateDadosPesoaisButton = findViewById( R.id.updateDadosPesoaisButton );
 
         editTextMunicipioContent.setClickable(true);
         editTextMunicipioContent.setOnClickListener(v -> getMunicipios());
@@ -255,8 +255,8 @@ public class DadosPessoaisActivity extends AppCompatActivity {
 
         // set the custom dialog components - listview and button
 
-        final ListView listViewItens = (ListView) dialog.findViewById(R.id.listaItensDialog);
-        TextView tituloDialog = (TextView) dialog.findViewById(R.id.tituloDialogCustom);
+        final ListView listViewItens = dialog.findViewById(R.id.listaItensDialog);
+        TextView tituloDialog = dialog.findViewById(R.id.tituloDialogCustom);
         tituloDialog.setText("UF");
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(DadosPessoaisActivity.this,
@@ -274,8 +274,8 @@ public class DadosPessoaisActivity extends AppCompatActivity {
             ufSelect = itemValue;
         });
 
-        Button dialogButtonOk = (Button) dialog.findViewById(R.id.dialogButtonOK);
-        Button dialogButtonCancelar = (Button) dialog.findViewById(R.id.dialogButtonCancelar);
+        Button dialogButtonOk = dialog.findViewById(R.id.dialogButtonOK);
+        Button dialogButtonCancelar = dialog.findViewById(R.id.dialogButtonCancelar);
 
         // if button is clicked, close the custom dialog
         dialogButtonOk.setOnClickListener(v -> {
@@ -316,8 +316,8 @@ public class DadosPessoaisActivity extends AppCompatActivity {
 
         // set the custom dialog components - listview and button
 
-        final ListView listViewItens = (ListView) dialog.findViewById(R.id.listaItensDialog);
-        TextView tituloDialog = (TextView) dialog.findViewById(R.id.tituloDialogCustom);
+        final ListView listViewItens = dialog.findViewById(R.id.listaItensDialog);
+        TextView tituloDialog = dialog.findViewById(R.id.tituloDialogCustom);
         tituloDialog.setText("Cidade");
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(DadosPessoaisActivity.this,
@@ -334,8 +334,8 @@ public class DadosPessoaisActivity extends AppCompatActivity {
             municipioSelect = itemValue;
         });
 
-        Button dialogButtonOk = (Button) dialog.findViewById(R.id.dialogButtonOK);
-        Button dialogButtonCancelar = (Button) dialog.findViewById(R.id.dialogButtonCancelar);
+        Button dialogButtonOk = dialog.findViewById(R.id.dialogButtonOK);
+        Button dialogButtonCancelar = dialog.findViewById(R.id.dialogButtonCancelar);
 
         // if button is clicked, close the custom dialog
         dialogButtonOk.setOnClickListener(v -> {

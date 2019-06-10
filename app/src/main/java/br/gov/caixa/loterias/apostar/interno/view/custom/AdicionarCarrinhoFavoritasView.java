@@ -71,12 +71,12 @@ public class AdicionarCarrinhoFavoritasView extends DialogFragment implements Vi
     @Override
     public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        picker_tipo_concurso = (NumberPicker) view.findViewById(R.id.picker_tipo_concurso);
+        picker_tipo_concurso = view.findViewById(R.id.picker_tipo_concurso);
 
-        adicionarCarrinhoFavoritosButton = (Button) view.findViewById(R.id.adicionarCarrinhoFavoritosButton);
-        cancelarModalFavoritosAddCarrinhoButton = (Button) view.findViewById(R.id.cancelarModalFavoritosAddCarrinhoButton);
-        selecioneConcursoButton = (Button) view.findViewById(R.id.selecioneConcursoButton);
-        selecioneQntTeimosinhaButton = (Button) view.findViewById(R.id.selecioneQntTeimosinhaButton);
+        adicionarCarrinhoFavoritosButton = view.findViewById(R.id.adicionarCarrinhoFavoritosButton);
+        cancelarModalFavoritosAddCarrinhoButton = view.findViewById(R.id.cancelarModalFavoritosAddCarrinhoButton);
+        selecioneConcursoButton = view.findViewById(R.id.selecioneConcursoButton);
+        selecioneQntTeimosinhaButton = view.findViewById(R.id.selecioneQntTeimosinhaButton);
 
 
         cancelarModalFavoritosAddCarrinhoButton.setOnClickListener( this );
@@ -152,7 +152,7 @@ public class AdicionarCarrinhoFavoritasView extends DialogFragment implements Vi
     }
 
     private void setPickerTeimosinhas(Integer position, View view){
-        picker_qnt_teimosinhas = (NumberPicker) view.findViewById(R.id.picker_qnt_teimosinhas);
+        picker_qnt_teimosinhas = view.findViewById(R.id.picker_qnt_teimosinhas);
         listaTeimosinhas = new ArrayList<>();
         for (int i= 0;  i < arrayConcursos.get( position ).getParametroJogo().getTeimosinhas().size(); i++){
             listaTeimosinhas.add( arrayConcursos.get( position ).getParametroJogo().getTeimosinhas().get( i ).toString() );

@@ -59,15 +59,15 @@ public class ListaComprasActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_compras);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        TextView textBottomInformacaoTextView = (TextView) findViewById(R.id.textBottomInformacaoTextView);
+        TextView textBottomInformacaoTextView = findViewById(R.id.textBottomInformacaoTextView);
         textBottomInformacaoTextView.setText("Compras mais antigas\npodem ser consultadas no site");
         setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.texto_futura_bold, getString(R.string.title_activity_lista_compras))));
-        scrollViewContentViewCompras = (NestedScrollView) findViewById(R.id.scrollViewContentViewCompras);
+        scrollViewContentViewCompras = findViewById(R.id.scrollViewContentViewCompras);
 
-        progressLoadingMore = (ProgressBar) findViewById(R.id.compras_loading_more);
-        recyclerViewCompras = (RecyclerView)findViewById(R.id.recyclerCompras);
+        progressLoadingMore = findViewById(R.id.compras_loading_more);
+        recyclerViewCompras = findViewById(R.id.recyclerCompras);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         FirebaseManager.registraEvento(this ,"ENTROU_LISTA_COMPRAS");
@@ -188,7 +188,7 @@ public class ListaComprasActivity extends AppCompatActivity {
 
     private void addSpinner(){
         Spinner SelecaoMesSpinner;
-        SelecaoMesSpinner = (Spinner) findViewById(R.id.SelecaoMesSpinner);
+        SelecaoMesSpinner = findViewById(R.id.SelecaoMesSpinner);
         List<String> list = new ArrayList<>();
         for(MesAnoDTO item : listaMesAnoDTO){
             list.add(item.getMes().getDescricao() + " de " + item.getAno());

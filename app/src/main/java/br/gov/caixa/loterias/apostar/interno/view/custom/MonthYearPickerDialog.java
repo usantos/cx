@@ -145,8 +145,8 @@ public class MonthYearPickerDialog extends DialogFragment {
         LayoutInflater inflater = activity.getLayoutInflater();
 
         View dialog = inflater.inflate(R.layout.dialog_month_year, null);
-        monthPicker = (NumberPicker) dialog.findViewById(R.id.picker_month);
-        yearPicker = (NumberPicker) dialog.findViewById(R.id.picker_year);
+        monthPicker = dialog.findViewById(R.id.picker_month);
+        yearPicker = dialog.findViewById(R.id.picker_year);
 
         yearPicker.setOnValueChangedListener(changeValueListener);
 

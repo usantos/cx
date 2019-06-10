@@ -196,7 +196,7 @@ public class FormaPagamentoActivity extends SettingToolbarActivity implements Fo
                                         ViewUtils.alertTitleButtonPositiveListener(
                                                 FormaPagamentoActivity.this,
                                                 R.string.label_atencao, getResources().getString( R.string.label_informa_cvv ),
-                                                R.string.ok, (dialog1, which1) -> ((Button) findViewById(R.id.botaoAvancarPagamento)).performClick()
+                                                R.string.ok, (dialog1, which1) -> findViewById(R.id.botaoAvancarPagamento).performClick()
                                         );
                                     }
                                 })

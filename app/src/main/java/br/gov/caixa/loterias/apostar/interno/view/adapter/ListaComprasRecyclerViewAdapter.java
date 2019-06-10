@@ -95,9 +95,9 @@ public final class ListaComprasRecyclerViewAdapter extends RecyclerView.Adapter<
 
         public ViewHolder(final View itemView) {
             super(itemView);
-            dataCompra = (TextView) itemView.findViewById(R.id.dataCompraTextView);
-            valorCompra = (TextView) itemView.findViewById(R.id.valorCompra);
-            itemCompraOrdemTextView = (TextView) itemView.findViewById(R.id.situacaoCompraTextView);
+            dataCompra = itemView.findViewById(R.id.dataCompraTextView);
+            valorCompra = itemView.findViewById(R.id.valorCompra);
+            itemCompraOrdemTextView = itemView.findViewById(R.id.situacaoCompraTextView);
         }
     }
 

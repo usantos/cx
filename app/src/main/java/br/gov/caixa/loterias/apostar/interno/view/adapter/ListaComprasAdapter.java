@@ -53,9 +53,9 @@ public class ListaComprasAdapter extends BaseAdapter {
             convertView = layoutInflater.inflate(R.layout.list_group_compras, null);
         }
 
-        TextView dataCompra = (TextView) convertView.findViewById(R.id.dataCompraTextView);
+        TextView dataCompra = convertView.findViewById(R.id.dataCompraTextView);
         dataCompra.setText(compraDTO.get(position).getDataEfetivacaoDebito());
-        TextView valorCompra = (TextView) convertView.findViewById(R.id.valorCompra);
+        TextView valorCompra = convertView.findViewById(R.id.valorCompra);
         valorCompra.setText(br.gov.caixa.loterias.apostar.interno.utils.ViewUtils.getMoedaFormat(compraDTO.get(position).getValorTotal()));
 
         return convertView;

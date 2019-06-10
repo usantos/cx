@@ -65,12 +65,12 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
 
         recebendoInformacoes();
 
-        editTextNumeroCartaoContent = (EditText) findViewById(R.id.editTextNumeroCartaoContent);
-        editTextNomeClienteCartaoContent = (EditText) findViewById(R.id.editTextNomeClienteCartaoContent);
-        editTextCodigoSegurancaContent = (EditText) findViewById(R.id.editTextCodigoSegurancaContent);
-        editTextMesValidadeCartaooContent = (EditText) findViewById(R.id.editTextMesValidadeCartaooContent);
-        editTextAnoValidadeCartaooContent = (EditText) findViewById(R.id.editTextAnoValidadeCartaooContent);
-        checkBoxSalvarCartao = (CheckBox) findViewById(R.id.checkBoxSalvarCartao);
+        editTextNumeroCartaoContent = findViewById(R.id.editTextNumeroCartaoContent);
+        editTextNomeClienteCartaoContent = findViewById(R.id.editTextNomeClienteCartaoContent);
+        editTextCodigoSegurancaContent = findViewById(R.id.editTextCodigoSegurancaContent);
+        editTextMesValidadeCartaooContent = findViewById(R.id.editTextMesValidadeCartaooContent);
+        editTextAnoValidadeCartaooContent = findViewById(R.id.editTextAnoValidadeCartaooContent);
+        checkBoxSalvarCartao = findViewById(R.id.checkBoxSalvarCartao);
 
         setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.title_activity_forma_pagamento)));
 
@@ -88,9 +88,9 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
         configuraBotoesListener();
 
         editTextNumeroCartaoContent.addTextChangedListener(MaskEditUtil.mask(editTextNumeroCartaoContent, MaskEditUtil.FORMAT_CRED_CARD));
-        addRightImg((EditText) findViewById(R.id.editTextNumeroCartaoContent));
-        addRightImg((EditText) findViewById(R.id.editTextNomeClienteCartaoContent));
-        addRightImg((EditText) findViewById(R.id.editTextCodigoSegurancaContent));
+        addRightImg(findViewById(R.id.editTextNumeroCartaoContent));
+        addRightImg(findViewById(R.id.editTextNomeClienteCartaoContent));
+        addRightImg(findViewById(R.id.editTextCodigoSegurancaContent));
 
     }
 

@@ -63,11 +63,11 @@ public class TiposApostasConferirApostaAdapter extends BaseAdapter {
         }
 
         final TipoAposta tipoAposta = tiposAposta.get(position);
-        final ImageView imageViewTipoAPosta = (ImageView)convertView.findViewById(R.id.imageviewTrevoTipoAposta);
+        final ImageView imageViewTipoAPosta = convertView.findViewById(R.id.imageviewTrevoTipoAposta);
 
-        final LinearLayout linearLayoutTipoAposta = (LinearLayout)convertView.findViewById(R.id.LinearLayoutContentTiposAposta);
+        final LinearLayout linearLayoutTipoAposta = convertView.findViewById(R.id.LinearLayoutContentTiposAposta);
 
-        final TextView tituloTipoAposta = (TextView)convertView.findViewById(R.id.tituloTipoApostaTextView);
+        final TextView tituloTipoAposta = convertView.findViewById(R.id.tituloTipoApostaTextView);
         tituloTipoAposta.setText(tipoAposta.getTitulo());
 
         if (tipoAposta.getSelect()){

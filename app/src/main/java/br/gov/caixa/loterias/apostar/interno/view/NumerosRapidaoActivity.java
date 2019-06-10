@@ -42,12 +42,12 @@ public class NumerosRapidaoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_numeros_rapidao);
         setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.title_activity_lista_rapidao)));
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        salvarNumerosApostaRapidaoSelecao = (Button)findViewById(R.id.salvarNumerosApostaRapidaoSelecao);
-        titleNumerosRapidaoObrigatorios  = (TextView)findViewById(R.id.titleNumerosRapidao);
-        textoSelecaoNumerosRapidao  = (TextView)findViewById(R.id.textoSelecaoNumerosRapidao);
+        salvarNumerosApostaRapidaoSelecao = findViewById(R.id.salvarNumerosApostaRapidaoSelecao);
+        titleNumerosRapidaoObrigatorios  = findViewById(R.id.titleNumerosRapidao);
+        textoSelecaoNumerosRapidao  = findViewById(R.id.textoSelecaoNumerosRapidao);
 
         isTipoNrObrigatorios =  getIntent().getExtras().getBoolean("isTipoNrObrigatorios");
 
@@ -61,7 +61,7 @@ public class NumerosRapidaoActivity extends AppCompatActivity {
             String arrayObrigarios =  getIntent().getExtras().getString("numerosobrigatorios");
             numerosObrigadoriosSalvos = Arrays.asList(new Gson().fromJson(arrayObrigarios, Integer[].class));
             numerosLista = numerosObrigadoriosSalvos;
-            gridViewNumerosRapidaoSlc = (ExpandableHeightGridView)findViewById(R.id.gridviewNumerosRapidaoSelecao);
+            gridViewNumerosRapidaoSlc = findViewById(R.id.gridviewNumerosRapidaoSelecao);
 
         }else{
             FirebaseManager.registraEvento(this ,"ENTROU_SELECIONA_NUMEROS_PROIBIDOS_CONFIG_RAPIDAO");
@@ -74,7 +74,7 @@ public class NumerosRapidaoActivity extends AppCompatActivity {
             textoSelecaoNumerosRapidao.setText("Selecione os números que não deverão aparecer em suas apostas.");
             titleNumerosRapidaoObrigatorios.setTextColor(ContextCompat.getColor(this, R.color.vermelhoBilhetes));
             salvarNumerosApostaRapidaoSelecao.setBackgroundColor(ContextCompat.getColor(this, R.color.vermelhoBilhetes));
-            gridViewNumerosRapidaoSlc = (ExpandableHeightGridView)findViewById(R.id.gridviewNumerosRapidaoSelecao);
+            gridViewNumerosRapidaoSlc = findViewById(R.id.gridviewNumerosRapidaoSelecao);
         }
 
 
@@ -95,7 +95,7 @@ public class NumerosRapidaoActivity extends AppCompatActivity {
         });
 
 
-        limparButtonRapidaoSelecionados = (Button)findViewById(R.id.botaoLimparSelecaoApostaRapidaSelecao);
+        limparButtonRapidaoSelecionados = findViewById(R.id.botaoLimparSelecaoApostaRapidaSelecao);
         limparButtonRapidaoSelecionados.setOnClickListener(view -> {
             for (NumerosSelecionadosRapidao numero : listaNumerosSelecionadosRapidao){
                 numero.setSelecionado(false);
@@ -180,14 +180,14 @@ public class NumerosRapidaoActivity extends AppCompatActivity {
         gridViewNumerosRapidaoSlc.setAdapter(numerosSlcRapidaoAdapter);
         gridViewNumerosRapidaoSlc.setExpanded(true);
 
-        final ScrollView scrollNumerosRapidao = (ScrollView)findViewById(R.id.scrollNumerosRapidao);
+        final ScrollView scrollNumerosRapidao = findViewById(R.id.scrollNumerosRapidao);
         scrollNumerosRapidao.post(() -> scrollNumerosRapidao.fullScroll(ScrollView.FOCUS_UP));
     }
 
 
 
     public void mudarLayoutBotaoLimparSelecao(Boolean ativo) {
-        final RelativeLayout limpaselecaorelativeLayout = (RelativeLayout)findViewById(R.id.layoutLimparSelecaoApostaRapidaSelecao);
+        final RelativeLayout limpaselecaorelativeLayout = findViewById(R.id.layoutLimparSelecaoApostaRapidaSelecao);
         if (ativo) {
             limpaselecaorelativeLayout.setVisibility(View.VISIBLE);
         }else {

@@ -50,7 +50,7 @@ public class ApostasConfirmadasActivity extends AppCompatActivity {
 
     private void setupScrollView() {
         scrollView.setOnScrollChangeListener((NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY)  -> {
-            View view = (View) v.getChildAt(v.getChildCount() - 1);
+            View view = v.getChildAt(v.getChildCount() - 1);
             int diff = (view.getBottom() - (v.getHeight() + v.getScrollY()));
             // if diff is zero, then the bottom has been reached
             if (diff == 0) {

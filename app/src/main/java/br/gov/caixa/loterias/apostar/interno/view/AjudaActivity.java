@@ -30,12 +30,12 @@ public class AjudaActivity extends AppCompatActivity {
     }
 
     private void init() {
-        textConcurso = (TextView) findViewById(R.id.textConcurso);
-        textAbertura = (TextView) findViewById(R.id.textAbertura);
-        textProximoSorteio = (TextView) findViewById(R.id.textProximoSorteio);
-        textEncerramento = (TextView) findViewById(R.id.textEncerramento);
-        titleTextScroll = (TextView) findViewById(R.id.titleTextScroll);
-        textScroll = (TextView) findViewById(R.id.textScroll);
+        textConcurso = findViewById(R.id.textConcurso);
+        textAbertura = findViewById(R.id.textAbertura);
+        textProximoSorteio = findViewById(R.id.textProximoSorteio);
+        textEncerramento = findViewById(R.id.textEncerramento);
+        titleTextScroll = findViewById(R.id.titleTextScroll);
+        textScroll = findViewById(R.id.textScroll);
     }
 
     private void tipoJogo() {
@@ -119,14 +119,14 @@ public class AjudaActivity extends AppCompatActivity {
     private void creatToolBar(int titulo, int corEscura, int backGroundToolBar, int toolBarTrapezio, int iconFechar) {
 
         setContentView(R.layout.custom_toolbar_ajuda);
-        Toolbar tb = (Toolbar) findViewById(R.id.toolBarAjuda);
+        Toolbar tb = findViewById(R.id.toolBarAjuda);
 
         ((AppBarLayout) tb.getParent()).setBackgroundColor(getResources().getColor(corEscura));
-        ((LinearLayout) tb.findViewById(R.id.layoutTrevo)).setBackgroundResource(toolBarTrapezio);
+        tb.findViewById(R.id.layoutTrevo).setBackgroundResource(toolBarTrapezio);
 
         ((TextView) tb.findViewById(R.id.titulo_modalidade)).setText(titulo);
 
-        ImageView fecharImageView = (ImageView) tb.findViewById(R.id.action_fechar);
+        ImageView fecharImageView = tb.findViewById(R.id.action_fechar);
         fecharImageView.setImageResource(iconFechar);
         fecharImageView.setOnClickListener(v -> onBackPressed());
 

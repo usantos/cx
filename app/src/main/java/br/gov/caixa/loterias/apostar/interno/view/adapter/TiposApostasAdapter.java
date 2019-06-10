@@ -60,14 +60,14 @@ public class TiposApostasAdapter extends BaseAdapter {
             convertView = layoutInflater.inflate(R.layout.linearlayout_tipos_apostas, null);
         }
         if (position == tiposAposta.size()){
-            final LinearLayout linearLayoutTipoAposta = (LinearLayout)convertView.findViewById(R.id.LinearLayoutContentTiposAposta);
+            final LinearLayout linearLayoutTipoAposta = convertView.findViewById(R.id.LinearLayoutContentTiposAposta);
             linearLayoutTipoAposta.setBackgroundColor(ContextCompat.getColor(mContext, R.color.branco));
             linearLayoutTipoAposta.setBackground(ContextCompat.getDrawable(mContext,R.drawable.customborder));
 
-            final TextView tituloTipoAposta = (TextView)convertView.findViewById(R.id.tituloTipoApostaTextView);
+            final TextView tituloTipoAposta = convertView.findViewById(R.id.tituloTipoApostaTextView);
             tituloTipoAposta.setText("Adicionar ou remover");
             tituloTipoAposta.setTextColor(ContextCompat.getColor(mContext, R.color.verdeazul));
-            final ImageView imageViewTipoAPosta = (ImageView)convertView.findViewById(R.id.imageviewTrevoTipoAposta);
+            final ImageView imageViewTipoAPosta = convertView.findViewById(R.id.imageviewTrevoTipoAposta);
             imageViewTipoAPosta.setVisibility(View.GONE);
 
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
@@ -77,13 +77,13 @@ public class TiposApostasAdapter extends BaseAdapter {
             tituloTipoAposta.setLayoutParams(params);
         }else{
             final TipoAposta tipoAposta = tiposAposta.get(position);
-            final ImageView imageViewTipoAPosta = (ImageView)convertView.findViewById(R.id.imageviewTrevoTipoAposta);
+            final ImageView imageViewTipoAPosta = convertView.findViewById(R.id.imageviewTrevoTipoAposta);
             imageViewTipoAPosta.setImageResource(R.drawable.trevo);
 
-            final LinearLayout linearLayoutTipoAposta = (LinearLayout)convertView.findViewById(R.id.LinearLayoutContentTiposAposta);
+            final LinearLayout linearLayoutTipoAposta = convertView.findViewById(R.id.LinearLayoutContentTiposAposta);
             linearLayoutTipoAposta.setBackgroundColor(ContextCompat.getColor(mContext, tipoAposta.getCorBackground()));
 
-            final TextView tituloTipoAposta = (TextView)convertView.findViewById(R.id.tituloTipoApostaTextView);
+            final TextView tituloTipoAposta = convertView.findViewById(R.id.tituloTipoApostaTextView);
             tituloTipoAposta.setText(tipoAposta.getTitulo());
         }
         return convertView;

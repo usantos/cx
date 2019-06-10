@@ -144,8 +144,8 @@ public class CadastroActivity extends AppCompatActivity {
 
         // set the custom dialog components - listview and button
 
-        final ListView listViewItens = (ListView) dialog.findViewById(R.id.listaItensDialog);
-        TextView tituloDialog = (TextView) dialog.findViewById(R.id.tituloDialogCustom);
+        final ListView listViewItens = dialog.findViewById(R.id.listaItensDialog);
+        TextView tituloDialog = dialog.findViewById(R.id.tituloDialogCustom);
         tituloDialog.setText("UF");
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(CadastroActivity.this,
@@ -163,8 +163,8 @@ public class CadastroActivity extends AppCompatActivity {
             ufSelect = itemValue;
         });
 
-        Button dialogButtonOk = (Button) dialog.findViewById(R.id.dialogButtonOK);
-        Button dialogButtonCancelar = (Button) dialog.findViewById(R.id.dialogButtonCancelar);
+        Button dialogButtonOk = dialog.findViewById(R.id.dialogButtonOK);
+        Button dialogButtonCancelar = dialog.findViewById(R.id.dialogButtonCancelar);
 
         // if button is clicked, close the custom dialog
         dialogButtonOk.setOnClickListener(v -> {
@@ -246,8 +246,8 @@ public class CadastroActivity extends AppCompatActivity {
 
         // set the custom dialog components - listview and button
 
-        final ListView listViewItens = (ListView) dialog.findViewById(R.id.listaItensDialog);
-        TextView tituloDialog = (TextView) dialog.findViewById(R.id.tituloDialogCustom);
+        final ListView listViewItens = dialog.findViewById(R.id.listaItensDialog);
+        TextView tituloDialog = dialog.findViewById(R.id.tituloDialogCustom);
         tituloDialog.setText("Cidade");
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(CadastroActivity.this,
@@ -265,8 +265,8 @@ public class CadastroActivity extends AppCompatActivity {
             municipioSelect = itemValue;
         });
 
-        Button dialogButtonOk = (Button) dialog.findViewById(R.id.dialogButtonOK);
-        Button dialogButtonCancelar = (Button) dialog.findViewById(R.id.dialogButtonCancelar);
+        Button dialogButtonOk = dialog.findViewById(R.id.dialogButtonOK);
+        Button dialogButtonCancelar = dialog.findViewById(R.id.dialogButtonCancelar);
 
         // if button is clicked, close the custom dialog
         dialogButtonOk.setOnClickListener(v -> {

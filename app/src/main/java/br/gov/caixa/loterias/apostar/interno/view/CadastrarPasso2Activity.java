@@ -108,7 +108,7 @@ public class CadastrarPasso2Activity extends CadastroActivity {
 
     private void initRightImg() {
         // addRightImg((EditText) findViewById(R.id.editTextBairroPasso2Content));
-        addRightImg((EditText) findViewById(R.id.editTextCEPPasso2Content));
+        addRightImg(findViewById(R.id.editTextCEPPasso2Content));
     }
 
 
@@ -384,8 +384,8 @@ public class CadastrarPasso2Activity extends CadastroActivity {
 
         // set the custom dialog components - listview and button
 
-        final ListView listViewItens = (ListView) dialog.findViewById(R.id.listaItensDialog);
-        TextView tituloDialog = (TextView) dialog.findViewById(R.id.tituloDialogCustom);
+        final ListView listViewItens = dialog.findViewById(R.id.listaItensDialog);
+        TextView tituloDialog = dialog.findViewById(R.id.tituloDialogCustom);
         tituloDialog.setText("Bairro");
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(CadastrarPasso2Activity.this,
@@ -403,8 +403,8 @@ public class CadastrarPasso2Activity extends CadastroActivity {
             bairroSelected = itemValue;
         });
 
-        Button dialogButtonOk = (Button) dialog.findViewById(R.id.dialogButtonOK);
-        Button dialogButtonCancelar = (Button) dialog.findViewById(R.id.dialogButtonCancelar);
+        Button dialogButtonOk = dialog.findViewById(R.id.dialogButtonOK);
+        Button dialogButtonCancelar = dialog.findViewById(R.id.dialogButtonCancelar);
 
         // if button is clicked, close the custom dialog
         dialogButtonOk.setOnClickListener(v -> {

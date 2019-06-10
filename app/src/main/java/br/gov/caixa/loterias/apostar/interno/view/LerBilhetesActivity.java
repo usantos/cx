@@ -64,7 +64,7 @@ public class LerBilhetesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ler_bilhetes);
 
-        TextView textoLeitorCodBarras = (TextView) findViewById(R.id.TextoLeitorCodBarras);
+        TextView textoLeitorCodBarras = findViewById(R.id.TextoLeitorCodBarras);
         textoLeitorCodBarras.setText("Posicione a linha abaixo sobre o código de barras\ne aguarde a focalização da câmera.");
 
         Button fecharLeitor = findViewById(R.id.fecharLeitorCodBarras);

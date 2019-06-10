@@ -45,7 +45,7 @@ public class SelecaoModalidadesRapidaoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selecao_modalidades_rapidao);
         setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.title_activity_lista_rapidao)));
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -53,7 +53,7 @@ public class SelecaoModalidadesRapidaoActivity extends AppCompatActivity {
         String arrayAsString = getIntent().getExtras().getString("tiposAposta");
         tiposApostasSalvas = Arrays.asList(new Gson().fromJson(arrayAsString, TipoAposta[].class));
 
-        salvarButtonRapidaoSelecionados = (Button) findViewById(R.id.salvarModalidadesApostaRapidaoSelececao);
+        salvarButtonRapidaoSelecionados = findViewById(R.id.salvarModalidadesApostaRapidaoSelececao);
 
         salvarButtonRapidaoSelecionados.setOnClickListener(view -> {
             Intent intent = new Intent();
@@ -127,7 +127,7 @@ public class SelecaoModalidadesRapidaoActivity extends AppCompatActivity {
         //gridview
 
 
-        ExpandableHeightGridView gridViewTiposAposta = (ExpandableHeightGridView) findViewById(R.id.gridviewTiposApostasRapidaoSelecionar);
+        ExpandableHeightGridView gridViewTiposAposta = findViewById(R.id.gridviewTiposApostasRapidaoSelecionar);
         TiposApostasMultiplaSelecaoAdapter tiposApostasAdapter = new TiposApostasMultiplaSelecaoAdapter(this, this, tiposAposta);
         gridViewTiposAposta.setAdapter(tiposApostasAdapter);
         gridViewTiposAposta.setExpanded(true);
@@ -221,7 +221,7 @@ public class SelecaoModalidadesRapidaoActivity extends AppCompatActivity {
 
 
         }
-        final ScrollView scrollModalides = (ScrollView) findViewById(R.id.scrollViewSelecaoModalidadesRapidao);
+        final ScrollView scrollModalides = findViewById(R.id.scrollViewSelecaoModalidadesRapidao);
         scrollModalides.post(() -> scrollModalides.fullScroll(ScrollView.FOCUS_UP));
     }
 

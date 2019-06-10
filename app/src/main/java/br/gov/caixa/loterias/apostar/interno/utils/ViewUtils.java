@@ -192,7 +192,7 @@ public class ViewUtils {
                 .setCancelable(false)
                 .setOnDismissListener(listener)
                 .setPositiveButton("OK", (dialog1, which) -> dialog1.dismiss()).show();
-        TextView textView = ((TextView) dialog.findViewById(android.R.id.message));
+        TextView textView = dialog.findViewById(android.R.id.message);
         textView.setTypeface(getFontFutura(context));
         return dialog;
     }
@@ -203,8 +203,8 @@ public class ViewUtils {
                 .setOnDismissListener(listener)
                 .setPositiveButton("OK", (dialog1, which) -> dialog1.dismiss()).show();
 
-        DialogTitle textTitleView = ((DialogTitle) dialog.findViewById(R.id.alertTitle));
-        TextView textMessageView = ((TextView) dialog.findViewById(android.R.id.message));
+        DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
+        TextView textMessageView = dialog.findViewById(android.R.id.message);
         textTitleView.setTypeface(getFontFuturaBold(context));
         textMessageView.setTypeface(getFontFutura(context));
         return dialog;
@@ -216,8 +216,8 @@ public class ViewUtils {
                 .setOnDismissListener(listener)
                 .setPositiveButton(buttonName, (dialog1, which) -> dialog1.dismiss()).show();
 
-        DialogTitle textTitleView = ((DialogTitle) dialog.findViewById(R.id.alertTitle));
-        TextView textMessageView = ((TextView) dialog.findViewById(android.R.id.message));
+        DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
+        TextView textMessageView = dialog.findViewById(android.R.id.message);
         textTitleView.setTypeface(getFontFuturaBold(context));
         textMessageView.setTypeface(getFontFutura(context));
         return dialog;
@@ -229,8 +229,8 @@ public class ViewUtils {
                 .setNegativeButton(R.string.cancelar, (dialogInterface, i) -> dialogInterface.dismiss())
                 .setPositiveButton(buttonName, listener).show();
 
-        DialogTitle textTitleView = ((DialogTitle) dialog.findViewById(R.id.alertTitle));
-        TextView textMessageView = ((TextView) dialog.findViewById(android.R.id.message));
+        DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
+        TextView textMessageView = dialog.findViewById(android.R.id.message);
         textTitleView.setTypeface(getFontFuturaBold(context));
         textMessageView.setTypeface(getFontFutura(context));
         return dialog;
@@ -243,8 +243,8 @@ public class ViewUtils {
                 .setPositiveButton(R.string.label_sim, listener)
                 .show();
 
-        DialogTitle textTitleView = ((DialogTitle) dialog.findViewById(R.id.alertTitle));
-        TextView textMessageView = ((TextView) dialog.findViewById(android.R.id.message));
+        DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
+        TextView textMessageView = dialog.findViewById(android.R.id.message);
         textTitleView.setTypeface(getFontFuturaBold(context));
         textMessageView.setTypeface(getFontFutura(context));
         return dialog;
@@ -256,8 +256,8 @@ public class ViewUtils {
                 .setNegativeButton(R.string.label_nao, listener)
                 .setPositiveButton(R.string.label_sim, (dialogInterface, i) -> dialogInterface.dismiss()).show();
 
-        DialogTitle textTitleView = ((DialogTitle) dialog.findViewById(R.id.alertTitle));
-        TextView textMessageView = ((TextView) dialog.findViewById(android.R.id.message));
+        DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
+        TextView textMessageView = dialog.findViewById(android.R.id.message);
         textTitleView.setTypeface(getFontFuturaBold(context));
         textMessageView.setTypeface(getFontFutura(context));
         return dialog;
@@ -422,7 +422,7 @@ public class ViewUtils {
                         int heightElementToExpand = activity.findViewById(idViewToExpand).getMeasuredHeight();
                         float heightStatusBar = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 25, resources.getDisplayMetrics());
 
-                        if (!((ScrollView) activity.findViewById(idScrollView)).canScrollVertically(1)) {
+                        if (!activity.findViewById(idScrollView).canScrollVertically(1)) {
                             ConstraintSet set = new ConstraintSet();
 
                             set.clone(constraintLayout);

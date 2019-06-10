@@ -637,8 +637,8 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.custom_dialog_list_view);
 
-        final ListView listViewItens = (ListView) dialog.findViewById(R.id.listaItensDialog);
-        TextView tituloDialog = (TextView) dialog.findViewById(R.id.tituloDialogCustom);
+        final ListView listViewItens = dialog.findViewById(R.id.listaItensDialog);
+        TextView tituloDialog = dialog.findViewById(R.id.tituloDialogCustom);
         tituloDialog.setText("Quant. de Números");
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(SimularApostaActivity.this,

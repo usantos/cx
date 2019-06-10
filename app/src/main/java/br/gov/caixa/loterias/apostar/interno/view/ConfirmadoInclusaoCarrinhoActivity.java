@@ -119,7 +119,7 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
 //        Button botaoVerCarrinhoAposta = (Button) findViewById(R.id.botaoVerCarrinhoAposta);
 //        Button botaoAdicionarCompletarCartela = (Button) findViewById(R.id.botaoAdicionarCompletarCartela);
 
-        LinearLayout botaoLinearLayoutVoltarPrincipal = (LinearLayout) findViewById(R.id.botaoLinearLayoutVoltarPrincipal);
+        LinearLayout botaoLinearLayoutVoltarPrincipal = findViewById(R.id.botaoLinearLayoutVoltarPrincipal);
 
 //        if (isLotecaOrLotogol) {
 //            botaoNovaAposta.setVisibility(View.INVISIBLE);

@@ -184,17 +184,17 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
 
         public ViewHolder(final View itemView) {
             super(itemView);
-            tituloApostaFavorita = (TextView) itemView.findViewById(R.id.tituloApostaFavorita);
-            tituloNomeApostaFavorita = (TextView) itemView.findViewById(R.id.tituloNomeApostaFavorita);
-            numerosApostaFavorita = (TextView) itemView.findViewById(R.id.numerosApostaFavorita);
-            nomeApostaSalvoTextView = (TextView) itemView.findViewById(R.id.nomeApostaSalvoTextView);
-            editarRelativeLayoutAddCarrinho = (RelativeLayout) itemView.findViewById(R.id.editarRelativeLayoutAddCarrinho);
-            editarRelativeLayoutFavoritos = (RelativeLayout) itemView.findViewById(R.id.editarRelativeLayoutFavoritos);
-            exluirRelativeLayoutFavoritos = (RelativeLayout) itemView.findViewById(R.id.exluirRelativeLayoutFavoritos);
-            linearLayoutLayoutContentAlterarFavoritasSalvo = (LinearLayout) itemView.findViewById(R.id.linearLayoutLayoutContentAlterarFavoritasSalvo);
-            relativeLayoutContentAlterarFavoritasEditar = (RelativeLayout) itemView.findViewById(R.id.relativeLayoutContentAlterarFavoritasEditar);
-            editTextNomeDaAposta = (EditText) itemView.findViewById(R.id.editTextNomeDaAposta);
-            layoutSalvarNomeAposta = (RelativeLayout) itemView.findViewById(R.id.layoutSalvarNomeAposta);
+            tituloApostaFavorita = itemView.findViewById(R.id.tituloApostaFavorita);
+            tituloNomeApostaFavorita = itemView.findViewById(R.id.tituloNomeApostaFavorita);
+            numerosApostaFavorita = itemView.findViewById(R.id.numerosApostaFavorita);
+            nomeApostaSalvoTextView = itemView.findViewById(R.id.nomeApostaSalvoTextView);
+            editarRelativeLayoutAddCarrinho = itemView.findViewById(R.id.editarRelativeLayoutAddCarrinho);
+            editarRelativeLayoutFavoritos = itemView.findViewById(R.id.editarRelativeLayoutFavoritos);
+            exluirRelativeLayoutFavoritos = itemView.findViewById(R.id.exluirRelativeLayoutFavoritos);
+            linearLayoutLayoutContentAlterarFavoritasSalvo = itemView.findViewById(R.id.linearLayoutLayoutContentAlterarFavoritasSalvo);
+            relativeLayoutContentAlterarFavoritasEditar = itemView.findViewById(R.id.relativeLayoutContentAlterarFavoritasEditar);
+            editTextNomeDaAposta = itemView.findViewById(R.id.editTextNomeDaAposta);
+            layoutSalvarNomeAposta = itemView.findViewById(R.id.layoutSalvarNomeAposta);
             maisInformacoesLayout = itemView.findViewById(R.id.maisInformacoesLayout);
             labelInformacaoText = itemView.findViewById(R.id.labelInformacaoText);
             informacaoText = itemView.findViewById(R.id.informacaoText);

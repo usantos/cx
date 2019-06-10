@@ -194,7 +194,7 @@ public class AdicionarApostaCarrinhoHelper {
         activity.putExtra("valorAposta", valor);
         activity.putExtra("modalidade", (new Gson()).toJson(ViewUtils.getParametroSimulacao(SessaoUsuario.getInstance(), modalidadeEnum).getParametroJogo()));
         context.startActivity(activity);
-        if((Activity)context instanceof SimularApostaActivity){
+        if(context instanceof SimularApostaActivity){
             ((SimularApostaActivity)context).zerarApostas();
         }
     }

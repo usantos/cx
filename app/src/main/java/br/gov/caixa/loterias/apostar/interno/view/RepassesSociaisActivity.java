@@ -34,7 +34,7 @@ public class RepassesSociaisActivity extends SettingToolbarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_repasses_sociais);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.title_activity_repasses_sociais)));
@@ -91,49 +91,49 @@ public class RepassesSociaisActivity extends SettingToolbarActivity {
         String htmlTextViewRepasseQuadro1 = "<html>Para cada <br><strong><font color=\"#ff7f00\">R$1,00</font></strong><br>apostados nas<br>loterias federais</html>";
         String htmlTextViewRepasseQuadro2 = "<html><strong><font color=\"#345ca5\">R$0,48*</font></strong><br>são destinados<br>a programas sociais</html>";
         String htmlTextButtonAposte = "_Aposte_\ne ajude ainda mais";
-        TextView TextViewRepasseQuadro1 = (TextView) findViewById(R.id.textViewRepasseQuadro1);
-        TextView TextViewRepasseQuadro2 = (TextView) findViewById(R.id.textViewRepasseQuadro2);
-        TextView valorRepasses = (TextView) findViewById(R.id.valorRepassesSociais);
+        TextView TextViewRepasseQuadro1 = findViewById(R.id.textViewRepasseQuadro1);
+        TextView TextViewRepasseQuadro2 = findViewById(R.id.textViewRepasseQuadro2);
+        TextView valorRepasses = findViewById(R.id.valorRepassesSociais);
 
-        TextView textViewEducacaoValorArrecadado = (TextView) findViewById(R.id.textViewEducacaoValorArrecadado);
+        TextView textViewEducacaoValorArrecadado = findViewById(R.id.textViewEducacaoValorArrecadado);
         String[] valoresEducacao = formatValorArrecados(repasseOBj.getPercentualEducacao());
         textViewEducacaoValorArrecadado.setText(valoresEducacao[0]);
-        TextView textViewEducacaoUnidadeValor = (TextView) findViewById(R.id.textViewEducacaoUnidadeValor);
+        TextView textViewEducacaoUnidadeValor = findViewById(R.id.textViewEducacaoUnidadeValor);
         textViewEducacaoUnidadeValor.setText(valoresEducacao[1]);
 
         String[] valoresCultura = formatValorArrecados(repasseOBj.getPercentualCultura());
-        TextView textViewCulturaValorArrecadado = (TextView) findViewById(R.id.textViewCulturaValorArrecadado);
+        TextView textViewCulturaValorArrecadado = findViewById(R.id.textViewCulturaValorArrecadado);
         textViewCulturaValorArrecadado.setText(valoresCultura[0]);
-        TextView textViewCulturaUnidadeValor = (TextView) findViewById(R.id.textViewCulturaUnidadeValor);
+        TextView textViewCulturaUnidadeValor = findViewById(R.id.textViewCulturaUnidadeValor);
         textViewCulturaUnidadeValor.setText(valoresCultura[1]);
 
         String[] valoresEsporte = formatValorArrecados(repasseOBj.getPercentualEsporte());
-        TextView textViewEsporteValorArrecadado = (TextView) findViewById(R.id.textViewEsporteValorArrecadado);
+        TextView textViewEsporteValorArrecadado = findViewById(R.id.textViewEsporteValorArrecadado);
         textViewEsporteValorArrecadado.setText(valoresEsporte[0]);
-        TextView textViewEsporteUnidadeValor = (TextView) findViewById(R.id.textViewEsporteUnidadeValor);
+        TextView textViewEsporteUnidadeValor = findViewById(R.id.textViewEsporteUnidadeValor);
         textViewEsporteUnidadeValor.setText(valoresEsporte[1]);
 
         String[] valoresSeguranca = formatValorArrecados(repasseOBj.getPercentualSeguranca());
-        TextView textViewSegurancaValorArrecadado = (TextView) findViewById(R.id.textViewSegurancaValorArrecadado);
+        TextView textViewSegurancaValorArrecadado = findViewById(R.id.textViewSegurancaValorArrecadado);
         textViewSegurancaValorArrecadado.setText(valoresSeguranca[0]);
-        TextView textViewSegurancaUnidadeValor = (TextView) findViewById(R.id.textViewSegurancaUnidadeValor);
+        TextView textViewSegurancaUnidadeValor = findViewById(R.id.textViewSegurancaUnidadeValor);
         textViewSegurancaUnidadeValor.setText(valoresSeguranca[1]);
 
         String[] valoresSeguridade = formatValorArrecados(repasseOBj.getPercentualSeguridade());
-        TextView textViewSeguridadeValorArrecadado = (TextView) findViewById(R.id.textViewSeguridadeValorArrecadado);
+        TextView textViewSeguridadeValorArrecadado = findViewById(R.id.textViewSeguridadeValorArrecadado);
         textViewSeguridadeValorArrecadado.setText(valoresSeguridade[0]);
-        TextView textViewSeguridadeUnidadeValor = (TextView) findViewById(R.id.textViewSeguridadeUnidadeValor);
+        TextView textViewSeguridadeUnidadeValor = findViewById(R.id.textViewSeguridadeUnidadeValor);
         textViewSeguridadeUnidadeValor.setText(valoresSeguridade[1]);
 
         String[] valoresOutros = formatValorArrecados(repasseOBj.getPercentualOutros());
-        TextView textViewOutrosValorArrecadado = (TextView) findViewById(R.id.textViewOutrosValorArrecadado);
+        TextView textViewOutrosValorArrecadado = findViewById(R.id.textViewOutrosValorArrecadado);
         textViewOutrosValorArrecadado.setText(valoresOutros[0]);
-        TextView textViewOutrosUnidadeValor = (TextView) findViewById(R.id.textViewOutrosUnidadeValor);
+        TextView textViewOutrosUnidadeValor = findViewById(R.id.textViewOutrosUnidadeValor);
         textViewOutrosUnidadeValor.setText(valoresOutros[1]);
 
         AnimacaoCalculoRepassesSociais.start(valorRepasses, 0, 0, repasseOBj);
 
-        Button ButtonAposte = (Button) findViewById(R.id.ButtonAposteSociais);
+        Button ButtonAposte = findViewById(R.id.ButtonAposteSociais);
         TextViewRepasseQuadro1.setText(ViewUtils.fromHtml(htmlTextViewRepasseQuadro1));
         TextViewRepasseQuadro2.setText(ViewUtils.fromHtml(htmlTextViewRepasseQuadro2));
         ButtonAposte.setText(ViewUtils.textFuturaAndFuturaBold(this, htmlTextButtonAposte));
