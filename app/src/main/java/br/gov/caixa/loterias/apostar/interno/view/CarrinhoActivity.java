@@ -9,7 +9,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
-import com.google.gson.Gson;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -31,6 +30,8 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CarrinhoDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResourceResponse;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostar.interno.model.dao.DBLoteriasCrud;
 import br.gov.caixa.loterias.apostar.interno.utils.DialogUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
@@ -59,6 +60,9 @@ public class CarrinhoActivity extends SettingToolbarActivity {
     @Extra
     protected boolean lerCarrinhoLocal;
 
+    protected boolean ocorrendoValidacao = false;
+
+
     @AfterViews
     public void init() {
         ViewUtils.setMoedaFormatHtml(BigDecimal.ZERO, valorTotalCarrinho);
@@ -70,6 +74,17 @@ public class CarrinhoActivity extends SettingToolbarActivity {
             atualizaLayout(true);
         }
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(ocorrendoValidacao){
+            carrinho = CarrinhoSingleton.getInstance().getCarrinho();
+            atualizaLayout(true);
+            validarCarrinho();
+        }
+    }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -106,15 +121,32 @@ public class CarrinhoActivity extends SettingToolbarActivity {
 
     public void setCarrinho(CarrinhoDTO carrinho) {
         this.carrinho = carrinho;
+        CarrinhoSingleton.getInstance().setCarrinho(this.carrinho);
     }
 
     @Click(R.id.botaoAvancarPagamento)
     protected void clickBotaoAvancarPagamento() {
-        Gson gson = new Gson();
-        String json = gson.toJson(carrinho);
-        Intent activity = new Intent(CarrinhoActivity.this, FormaPagamentoActivity.class);
-        activity.putExtra("CARRINHO", json);
-        startActivity(activity);
+        validarCarrinho();
+    }
+    private void validarCarrinho() {
+        ocorrendoValidacao = true;
+        DialogUtils.show(CarrinhoActivity.this);
+        ApostaBO_.getInstance_(CarrinhoActivity.this).validarCarrinho(new RequestListener<ResourceResponse>() {
+            @Override
+            public void onResponse(ResourceResponse result) {
+                ocorrendoValidacao = false;
+                DialogUtils.dismiss();
+                CarrinhoSingleton.getInstance().setCarrinho(carrinho);
+                startActivity(new Intent(CarrinhoActivity.this, FormaPagamentoActivity.class));
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                DialogUtils.dismiss();
+                RedirectNetwork.checkRedirect(error, CarrinhoActivity.this);
+
+            }
+        });
     }
 
     @Click(R.id.botaoFazerNovaAposta)
@@ -166,6 +198,7 @@ public class CarrinhoActivity extends SettingToolbarActivity {
     private void limparCarrinhoAtualizarTela() {
         carrinho.getApostas().removeAll(carrinho.getApostas());
         carrinho.setValorTotal(BigDecimal.ZERO);
+        CarrinhoSingleton.getInstance().setCarrinho(carrinho);
         atualizaLayout(Boolean.FALSE);
     }
 
@@ -186,7 +219,7 @@ public class CarrinhoActivity extends SettingToolbarActivity {
                 FirebaseManager.registraEvento(CarrinhoActivity.this ,"ENTROU_CARRINHO_DE_APOSTAS_ONLINE");
 
                 DialogUtils.dismiss();
-                carrinho = response.getPayload();
+                setCarrinho(response.getPayload());
                 atualizaLayout(Boolean.TRUE);
                 if (response.getRedirect() != null){
                     RedirectNetwork.checkRedirectSucesso( response.getRedirect(), CarrinhoActivity.this);

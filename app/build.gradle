@@ -126,7 +126,6 @@ dependencies {
     implementation 'me.relex:circleindicator:1.2.2@aar'
 
     //EditText
-    implementation 'ru.egslava:MaskedEditText:1.0.5'
     implementation 'com.github.pinball83:masked-edittext:1.0.3'
     implementation 'com.github.BlacKCaT27:CurrencyEditText:2.0.2'
 

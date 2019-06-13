@@ -64,6 +64,7 @@ public final class DBTabelasLoterias {
                 DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_QUANTIDADE_TEIMOSINHAS + " INTEGER, " +
                 DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_QUANTIDADE_APOSTAS + " INTEGER, " +
                 DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_ESPELHO + " INTEGER, " +
+                DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_GERAR_ESPELHO+ " INTEGER, " +
                 DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_CONCURSO_INICIAL + " INTEGER, " +
                 DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_SITUACAO_VALOR + " NUMERIC, " +
                 DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_SITUACAO_DESCRICAO + " TEXT, " +
@@ -237,6 +238,7 @@ public final class DBTabelasLoterias {
         static final String COLUNA_QUANTIDADE_TEIMOSINHAS = "quantidade_teimosinhas";
         static final String COLUNA_QUANTIDADE_APOSTAS = "quantidade_apostas";
         static final String COLUNA_ESPELHO = "espelho";
+        static final String COLUNA_GERAR_ESPELHO = "gera_espelho";
         static final String COLUNA_CONCURSO_INICIAL = "concurso_inicial";
         static final String COLUNA_SITUACAO_VALOR = "situacao_valor";
         static final String COLUNA_SITUACAO_DESCRICAO = "situacao_descricao";

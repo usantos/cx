@@ -10,6 +10,7 @@ import org.androidannotations.annotations.EBean;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bean.RetornoListaCarrinho;
@@ -18,6 +19,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ApostadorDTOResp
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.AutenticacaoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CadastrarApostadorDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CadastrarApostadorDTOResponse;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ListCartaoDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.UsuarioLogadoResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.GsonRequest;
@@ -33,7 +35,7 @@ import static org.androidannotations.annotations.EBean.Scope.Singleton;
 public class DadosUsuarioBO extends BaseBO {
 
     private static final String USUARIO_KEY = "USUARIO_KEY";
-    private final static String RAPIDAO_KEY = "RAPIDAO_KEY";
+        private final static String RAPIDAO_KEY = "RAPIDAO_KEY";
 
     private static final String NOME = "NOME";
     private static final String CPF = "CPF";
@@ -227,12 +229,14 @@ public class DadosUsuarioBO extends BaseBO {
         silceConnection.request(request);
     }
 
-    public void postVerificarCadastro(final RetornoListaCarrinho listaApostas, final RequestListener<UsuarioLogadoResponse> listener) {
+    public void postVerificarCadastro(final List<IdentificaoDeUmaApostaDas8Modalidades> listaApostas, final RequestListener<UsuarioLogadoResponse> listener) {
         LinkedHashMap<String, String> headers = new LinkedHashMap<>();
         headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
 
+        AutenticacaoDTO autenticacaoDTO = new AutenticacaoDTO();
+        autenticacaoDTO.setApostas(listaApostas);
         final GsonRequest request = silceConnection.buildPostRequest(ServerMethods.USUARIOS_VERIFICAR_CADASTRO_PATH, new LinkedHashMap<>(),
-                listaApostas, UsuarioLogadoResponse.class,
+                autenticacaoDTO, UsuarioLogadoResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(), headers);
 

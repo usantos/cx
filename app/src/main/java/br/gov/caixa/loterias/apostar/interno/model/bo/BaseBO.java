@@ -19,13 +19,10 @@ import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.RootContext;
 
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 
 import br.gov.caixa.loterias.apostar.interno.BuildConfig;
 import br.gov.caixa.loterias.apostar.interno.model.bo.keycloak.KeycloakBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.keycloak.KeycloakBO_;
-import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ApostadorDTOResponse;
-import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.VersionResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.GsonRequest;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.SilceConnection;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.SilceSingleton;
@@ -81,23 +78,26 @@ public class BaseBO {
                                 authorizationService.performTokenRequest(tokenRequest, new AuthorizationService.TokenResponseCallback() {
                                     @Override
                                     public void onTokenRequestCompleted(@Nullable TokenResponse response, @Nullable AuthorizationException ex) {
-                                        if (response.accessToken == null || response.refreshToken == null) {
-                                            listener.onErrorResponse(error);
-                                        } else {
-                                            KeycloakBO_.getInstance_(context).setAccessToken(response.accessToken);
-                                            KeycloakBO_.getInstance_(context).setRefreshToken(response.refreshToken);
-
-                                            if (keycloakBO.getAccessToken() != null) {
-                                                //Atualiza o token com os headers
-                                                headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
-                                                request.setHeaders(headers);
-                                                //Refaz a conexão
-                                                silceConnection.request(request);
-                                            } else {
+                                        if (response != null) {
+                                            if (response.accessToken == null || response.refreshToken == null) {
                                                 listener.onErrorResponse(error);
-                                            }
-                                        }
+                                            } else {
+                                                KeycloakBO_.getInstance_(context).setAccessToken(response.accessToken);
+                                                KeycloakBO_.getInstance_(context).setRefreshToken(response.refreshToken);
 
+                                                if (keycloakBO.getAccessToken() != null) {
+                                                    //Atualiza o token com os headers
+                                                    headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
+                                                    request.setHeaders(headers);
+                                                    //Refaz a conexão
+                                                    silceConnection.request(request);
+                                                } else {
+                                                    listener.onErrorResponse(error);
+                                                }
+                                            }
+                                        } else {
+                                            listener.onErrorResponse(error);
+                                        }
                                     }
                                 });
                             }
