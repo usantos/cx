@@ -454,7 +454,7 @@ public class PrincipalActivity extends AppCompatActivity
             viewHolder.setOverlayColor(this, estilo);
 
             buttonHomeBet.setTag(adapterPosition);
-            buttonHomeBet.setText(ViewUtils.textFuturaAndFuturaBold(this, "_Aposte_\npor R$" + modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima()));
+            buttonHomeBet.setText(ViewUtils.textFuturaAndFuturaBold(this, "_Aposte_\npor " + ViewUtils.getMoedaFormat(modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima())));
         }
     }
 
