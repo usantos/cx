@@ -403,4 +403,32 @@
     <string name="label_quer_adicionar">Quer adicionar suas apostas favoritas?\n_Também pode!_</string>
     <string name="label_modalidades_favoritas">Selecione os limites da sua compra,\\nsuas modalidades favoritas.</string>
     <string name="label_configure_o_rapidao">Configure o que o rapidão vai misturar:</string>
+
+    <!-- Mercado pago -->
+    <string name="mercado_pago_mes_invalido">Mês inválido.</string>
+    <string name="mercado_pago_ano_invalido">Ano inválido.</string>
+    <string name="mercado_pago_email_invalido">Email inválido.</string>
+    <string name="mercado_pago_padrao">Não foi possível realizar o pagamento.\nFavor entrar em contato com o Mercado Pago através do site\nwww.mercadopago.com.br.</string>
+    <string name="mercado_pago_digito_verificador_invalido">Não foi possível realizar o crédito do prêmio, pois o seu CPF não coincide com o CPF registrado no MercadoPago para o e-mail informado.</string>
+    <string name="mercado_pago_digito_verificador_titular_invalido">Revise o seu documento.</string>
+    <string name="mercado_pago_digital_invalida">Digital inválida.</string>
+    <string name="mercado_pago_tipo_metodo_pagamento_invalido">Tipo de pagamento inválido.</string>
+    <string name="mercado_pago_id_metodo_pagamento_invalido">Método de pagamento inválido.</string>
+    <string name="mercado_pago_consumidor_nao_permitido">A operação não esta permitida para o consumidor.</string>
+    <string name="mercado_pago_vendedor_nao_permitido">A operação não esta permitida para o vendedor.</string>
+    <string name="mercado_pago_usuarios_invalidos_envolvidos">Usuários inválidos estão envolvidos na transação.</string>
+    <string name="mercado_pago_consumidor_igual_vendedor">O consumidor possui os mesmos dados do vendedor.</string>
+    <string name="mercado_pago_nome_titular_invalido">Nome do titular inválido.</string>
+    <string name="mercado_pago_cliente_nao_autorizado">Cliente não autorizado.</string>
+    <string name="mercado_pago_metodo_pagamento_vazio">Método de pagamento está vazio.</string>
+    <string name="mercado_pago_codigo_seguranca_invalido">O código de segurança esta inválido.</string>
+    <string name="mercado_pago_codigo_seguranca_vazio">O coódigo de seguranç está vazio.</string>
+    <string name="mercado_pago_metodo_pagamento_invalido">Método de pagamento inválido.</string>
+    <string name="mercado_pago_numero_cartao_Vazio">O número do cartão está vazio.</string>
+    <string name="mercado_pago_mes_vazio">O mês está vazio.</string>
+    <string name="mercado_pago_ano_vazio">O ano está vazio.</string>
+    <string name="mercado_pago_nome_titular_vazio">O nome do titular esta vazio.</string>
+    <string name="mercado_pago_numero_documento_vazio">O número do documento está vazio.</string>
+    <string name="mercado_pago_tipo_vazio">O tipo está vazio.</string>
+
 </resources>

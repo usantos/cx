@@ -44,6 +44,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RetornoPadraoDTO
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostar.interno.utils.MaskEditUtil;
+import br.gov.caixa.loterias.apostar.interno.utils.MercadoPagoUtil;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
 
@@ -187,7 +188,7 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
             public void failure(ApiException apiException) {
                 //TODO: Manage API Failure
                 alertDialog.dismiss();
-                ViewUtils.alert(NovaFormaPagamentoActivity.this, apiException.getMessage());
+                ViewUtils.alert(NovaFormaPagamentoActivity.this, MercadoPagoUtil.getMessageFromCode(apiException.getCause().get(0).getCode()));
             }
         });
     }
