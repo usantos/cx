@@ -52,6 +52,7 @@
     <string name="tituloApostaFeita">Essa aposta foi para o seu carrinho.</string>
     <string name="novaAposta">Fazer nova aposta</string>
     <string name="confirmarApostas">Confirme suas apostas e pressione\nAVANÇAR para continuar.</string>
+    <string name="label_acompanhe_suas_compras">_Acompanhe_\nsuas compras</string>
     <string name="avancarFormaPagamento">_Avançar_\npara a forma de pagamento</string>
     <string name="fazerNovaAposta">Fazer nova aposta</string>
 

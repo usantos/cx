@@ -14,7 +14,7 @@ public class MercadoPagoUtil {
     public static final String INVALID_CARD_HOLDER_NAME = "3001";
     public static final String UNAUTHORIZED_CLIENT = "3010";
     public static final String PAYMENT_METHOD_NOT_FOUND = "3012";
-    public static final String INVALID_SECURITY_CODE = "3013";
+    public static final String INVALID_SECURITY_CODE = "E203";
     public static final String SECURITY_CODE_REQUIRED = "3014";
     public static final String INVALID_PAYMENT_METHOD = "3015";
     public static final String INVALID_CARD_NUMBER = "3017";

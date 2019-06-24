@@ -2,7 +2,6 @@ package br.gov.caixa.loterias.apostar.interno.view;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 
 import br.gov.caixa.loterias.apostar.interno.R;
@@ -19,17 +18,18 @@ public class ConfirmacaoPagamentoActivity extends SettingToolbarActivity {
         setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.title_activity_confirmacao_pagamento)));
 
         configuraBotoes();
-
     }
+
+    @Override
+    public void onBackPressed() { }
 
     private void configuraBotoes(){
         ((Button) findViewById(R.id.botaoVoltarInicio)).setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.confirmacaoPagamentoBotaoVoltarInicio)));
+        ((Button) findViewById(R.id.botaoAcompanheSuasCompras)).setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.label_acompanhe_suas_compras)));
 
-        findViewById(R.id.botaoVoltarInicio).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                PrincipalActivity_.intent(ConfirmacaoPagamentoActivity.this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP |  Intent.FLAG_ACTIVITY_SINGLE_TOP).start();
-            }
-        });
+        findViewById(R.id.botaoVoltarInicio).setOnClickListener(view -> PrincipalActivity_.intent(ConfirmacaoPagamentoActivity.this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP |  Intent.FLAG_ACTIVITY_SINGLE_TOP).start());
+
+        findViewById(R.id.botaoAcompanheSuasCompras).setOnClickListener(view ->
+                startActivity(new Intent(ConfirmacaoPagamentoActivity.this,ListaComprasActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK |  Intent.FLAG_ACTIVITY_SINGLE_TOP)));
     }
 }
