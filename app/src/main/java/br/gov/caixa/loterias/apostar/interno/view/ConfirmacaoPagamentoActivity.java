@@ -31,5 +31,10 @@ public class ConfirmacaoPagamentoActivity extends SettingToolbarActivity {
 
         findViewById(R.id.botaoAcompanheSuasCompras).setOnClickListener(view ->
                 startActivity(new Intent(ConfirmacaoPagamentoActivity.this,ListaComprasActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK |  Intent.FLAG_ACTIVITY_SINGLE_TOP)));
+
+        findViewById(R.id.botao_termo).setOnClickListener(v -> {
+            Intent activity = new Intent(this, TermosUsoActivity.class);
+            startActivity(activity);
+        });
     }
 }

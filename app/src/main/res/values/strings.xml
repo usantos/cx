@@ -52,6 +52,7 @@
     <string name="tituloApostaFeita">Essa aposta foi para o seu carrinho.</string>
     <string name="novaAposta">Fazer nova aposta</string>
     <string name="confirmarApostas">Confirme suas apostas e pressione\nAVANÇAR para continuar.</string>
+    <string name="confirmacao">Confirmação</string>
     <string name="label_acompanhe_suas_compras">_Acompanhe_\nsuas compras</string>
     <string name="avancarFormaPagamento">_Avançar_\npara a forma de pagamento</string>
     <string name="fazerNovaAposta">Fazer nova aposta</string>
@@ -109,6 +110,7 @@
     <string name="msg_erro_data_invalida"> Data Inválida</string>
 
     <string name="MN003">Para continuar navegando é necessário aceitar a nova versão do Termo de Uso.</string>
+    <string name="exclusao_cartao">Deseja realmente excluir essa forma de pagamento?</string>
 
 
     <string name="title_activity_lista_rapidao">_Rapidão_</string>
@@ -423,9 +425,10 @@
     <string name="mercado_pago_cliente_nao_autorizado">Cliente não autorizado.</string>
     <string name="mercado_pago_metodo_pagamento_vazio">Método de pagamento está vazio.</string>
     <string name="mercado_pago_codigo_seguranca_invalido">O código de segurança esta inválido.</string>
-    <string name="mercado_pago_codigo_seguranca_vazio">O coódigo de seguranç está vazio.</string>
+    <string name="mercado_pago_codigo_seguranca_vazio">O código de segurança está vazio.</string>
     <string name="mercado_pago_metodo_pagamento_invalido">Método de pagamento inválido.</string>
     <string name="mercado_pago_numero_cartao_Vazio">O número do cartão está vazio.</string>
+    <string name="mercado_pago_numero_cartao_Incorreto">O número do cartão está incorreto.</string>
     <string name="mercado_pago_mes_vazio">O mês está vazio.</string>
     <string name="mercado_pago_ano_vazio">O ano está vazio.</string>
     <string name="mercado_pago_nome_titular_vazio">O nome do titular esta vazio.</string>

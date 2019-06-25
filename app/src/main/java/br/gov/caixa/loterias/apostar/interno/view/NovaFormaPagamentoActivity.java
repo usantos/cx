@@ -41,6 +41,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RetornoPadraoDTO;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.Bin;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostar.interno.utils.MaskEditUtil;
@@ -181,6 +182,7 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
             @Override
             public void success(Token token) {
 //                Log.d("token", token.getId());
+                alertDialog.dismiss();
                 callWebServicePayment_method(token.getId());
             }
 
@@ -263,6 +265,9 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
                 Log.d("volleyError", "volleyError: " + volleyError.toString());
+                if(Bin.fromBytes(volleyError.networkResponse.data).toUtf8().contains("not_found")){
+                    ViewUtils.alert(NovaFormaPagamentoActivity.this, getString(R.string.mercado_pago_numero_cartao_Incorreto));
+                }
             }
         });
 
