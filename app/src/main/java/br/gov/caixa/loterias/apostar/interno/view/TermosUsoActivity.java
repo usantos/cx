@@ -16,8 +16,11 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
+
 import com.android.volley.VolleyError;
+
 import java.util.List;
+
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bo.DadosCorporativosBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.DadosCorporativosBO_;
@@ -28,6 +31,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ListSecaoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ListSecaoDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResourceResponse;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RetornoPadraoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.TermoDeUsoDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.utils.DialogUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
@@ -264,9 +268,10 @@ public class TermosUsoActivity extends AppCompatActivity {
         DialogUtils.show(this);
         DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(TermosUsoActivity.this);
 
-        dadosCorporativosBO.validaTermoAceito(new RequestListener<Boolean>() {
+        dadosCorporativosBO.validaTermoAceito(new RequestListener<RetornoPadraoDTO>() {
+
             @Override
-            public void onResponse(Boolean response) {
+            public void onResponse(RetornoPadraoDTO result) {
                 isTermoAceito = Boolean.TRUE;
                 scrollViewTermoAceite.setPadding(0, 0, 0, 0);
                 getSupportActionBar().setDisplayHomeAsUpEnabled(isTermoAceito);

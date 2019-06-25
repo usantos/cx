@@ -51,7 +51,7 @@ import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
 
 public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
 
-    private EditText editTextNumeroCartaoContent, editTextNomeClienteCartaoContent, editTextCodigoSegurancaContent, editTextMesValidadeCartaooContent, editTextAnoValidadeCartaooContent;
+    private EditText editTextNumeroCartaoContent, editTextNomeClienteCartaoContent, editTextCodigoSegurancaContent, editTextMesValidadeCartaoContent, editTextAnoValidadeCartaooContent;
 
     private AlertDialog alertDialog;
 
@@ -70,7 +70,7 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
         editTextNumeroCartaoContent = (EditText) findViewById(R.id.editTextNumeroCartaoContent);
         editTextNomeClienteCartaoContent = (EditText) findViewById(R.id.editTextNomeClienteCartaoContent);
         editTextCodigoSegurancaContent = (EditText) findViewById(R.id.editTextCodigoSegurancaContent);
-        editTextMesValidadeCartaooContent = (EditText) findViewById(R.id.editTextMesValidadeCartaooContent);
+        editTextMesValidadeCartaoContent = (EditText) findViewById(R.id.editTextMesValidadeCartaooContent);
         editTextAnoValidadeCartaooContent = (EditText) findViewById(R.id.editTextAnoValidadeCartaooContent);
         checkBoxSalvarCartao = (CheckBox) findViewById(R.id.checkBoxSalvarCartao);
 
@@ -144,31 +144,39 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
     private void configuraBotoesListener() {
         ((Button) findViewById(R.id.botaoAvancarPagamento)).setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.apostarAutorizarCobranca)));
 
-        findViewById(R.id.botaoAvancarPagamento).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (editTextAnoValidadeCartaooContent.getText().toString().equals("") ||
-                        editTextMesValidadeCartaooContent.getText().toString().equals("") ||
-                        editTextNumeroCartaoContent.getText().toString().equals("") ||
-                        editTextCodigoSegurancaContent.getText().toString().equals("") ||
-                        editTextNomeClienteCartaoContent.getText().toString().equals("")) {
-                    ViewUtils.alertTitleButton(NovaFormaPagamentoActivity.this,
-                            R.string.label_atencao,
-                            "Informe os dados do cartão.",
-                            NovaFormaPagamentoActivity.this.getResources().getString(R.string.ok));
-                    return;
-                }
+        findViewById(R.id.botaoAvancarPagamento).setOnClickListener(view -> {
+            if(!camposInvalidos()){
                 CardToken cardToken = new CardToken(editTextNumeroCartaoContent.getText().toString(),
-                        Integer.valueOf(editTextMesValidadeCartaooContent.getText().toString()),
+                        Integer.valueOf(editTextMesValidadeCartaoContent.getText().toString()),
                         Integer.valueOf(editTextAnoValidadeCartaooContent.getText().toString()),
                         editTextCodigoSegurancaContent.getText().toString(),
                         editTextNomeClienteCartaoContent.getText().toString(),
                         "CPF",
                         DadosUsuarioBO.obterCpf());
 
-                    createTokenAsync(cardToken);
+                createTokenAsync(cardToken);
             }
         });
+    }
+
+    private boolean camposInvalidos(){
+        String errorMessage = getString(R.string.msg_campos_em_branco);
+        boolean invalido;
+        invalido = (editTextAnoValidadeCartaooContent.getText().toString().trim().equals("") ||
+                editTextMesValidadeCartaoContent.getText().toString().trim().equals("") ||
+                editTextNumeroCartaoContent.getText().toString().trim().equals("") ||
+                editTextCodigoSegurancaContent.getText().toString().trim().equals("") ||
+                editTextNomeClienteCartaoContent.getText().toString().trim().equals(""));
+        if(editTextNumeroCartaoContent.getText().toString().length() < 16 && editTextAnoValidadeCartaooContent.getText().toString().length() > 0){
+            invalido =  true ;
+            errorMessage = getString(R.string.mercado_pago_numero_cartao_Incorreto);
+        }
+        if(invalido){
+            ViewUtils.alertTitleButton(NovaFormaPagamentoActivity.this,
+                    R.string.label_atencao,errorMessage,
+                    NovaFormaPagamentoActivity.this.getResources().getString(R.string.ok));
+        }
+        return invalido;
     }
 
     private void createTokenAsync(CardToken cardToken) {

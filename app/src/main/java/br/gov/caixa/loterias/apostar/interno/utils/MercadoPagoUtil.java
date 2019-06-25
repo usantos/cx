@@ -11,7 +11,7 @@ public class MercadoPagoUtil {
     public static final String COLLECTOR_NOT_ALLOWED_TO_OPERATE = "2022";
     public static final String INVALID_USERS_INVOLVED = "2035";
     public static final String CUSTOMER_EQUAL_TO_COLLECTOR = "3000";
-    public static final String INVALID_CARD_HOLDER_NAME = "3001";
+    public static final String INVALID_CARD_HOLDER_NAME = "E208";
     public static final String UNAUTHORIZED_CLIENT = "3010";
     public static final String PAYMENT_METHOD_NOT_FOUND = "3012";
     public static final String INVALID_SECURITY_CODE = "E203";

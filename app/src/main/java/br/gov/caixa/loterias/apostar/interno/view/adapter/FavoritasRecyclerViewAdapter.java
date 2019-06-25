@@ -272,9 +272,9 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
         final ApostaBO apostaBO = ApostaBO_.getInstance_(activity);
         apostaFavoritaDTO.setNome(holder.editTextNomeDaAposta.getText().toString());
         apostaFavoritaDTO.setOpenSwipeLayout(null);
-        apostaBO.postApostasFavoritas(apostaFavoritaDTO, new RequestListener<Boolean>() {
+        apostaBO.postApostasFavoritas(apostaFavoritaDTO, new RequestListener<RetornoPadraoDTO>() {
             @Override
-            public void onResponse(Boolean response) {
+            public void onResponse(RetornoPadraoDTO response) {
                 FirebaseManager.registraEvento(context ,"EFETUOU_TROCA_DO_NOME_DA_APOSTA_FAVORITA");
                 apostaFavoritaDTO.setOpenSwipeLayout(true);
                 apostaFavoritaDTO.setNome(holder.editTextNomeDaAposta.getText().toString());

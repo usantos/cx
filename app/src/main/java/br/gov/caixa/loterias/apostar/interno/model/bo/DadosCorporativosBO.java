@@ -178,11 +178,11 @@ public class DadosCorporativosBO extends BaseBO{
                 listener.getErrorListener(), new LinkedHashMap<>());
     }
 
-    public void validaTermoAceito(final RequestListener<Boolean> listener) {
+    public void validaTermoAceito(final RequestListener<RetornoPadraoDTO> listener) {
         LinkedHashMap<String, String> headers = new LinkedHashMap<>();
         headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
 
-        final GsonRequest request = silceConnection.buildGetRequest(ServerMethods.TERMO_VALIDA_ACEITO_PATH, new LinkedHashMap<>(), Boolean.class,
+        final GsonRequest request = silceConnection.buildGetRequest(ServerMethods.TERMO_VALIDA_ACEITO_PATH, new LinkedHashMap<>(), RetornoPadraoDTO.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(), headers);
 

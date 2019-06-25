@@ -61,6 +61,7 @@
     <string name="tituloFormaPagamento">Agora é pra valer!</string>
     <string name="infoFormaPagamento">Selecione sua forma de pagamento para prosseguir</string>
     <string name="apostarAutorizarCobranca">_Apostar_\ne autorizar cobrança</string>
+    <string name="msg_campos_em_branco">Preencha todos os campos antes de prosseguir.</string>
 
     <string name="total">Total</string>
 
@@ -428,7 +429,7 @@
     <string name="mercado_pago_codigo_seguranca_vazio">O código de segurança está vazio.</string>
     <string name="mercado_pago_metodo_pagamento_invalido">Método de pagamento inválido.</string>
     <string name="mercado_pago_numero_cartao_Vazio">O número do cartão está vazio.</string>
-    <string name="mercado_pago_numero_cartao_Incorreto">O número do cartão está incorreto.</string>
+    <string name="mercado_pago_numero_cartao_Incorreto">Preencha o número do cartão corretamente.</string>
     <string name="mercado_pago_mes_vazio">O mês está vazio.</string>
     <string name="mercado_pago_ano_vazio">O ano está vazio.</string>
     <string name="mercado_pago_nome_titular_vazio">O nome do titular esta vazio.</string>
