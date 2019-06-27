@@ -389,6 +389,7 @@ public class AdicionarApostaCarrinhoHelper {
         apostaDas8Modalidades.setQuantidadeApostas(aposta.getQuantidadeApostas());
         apostaDas8Modalidades.setTimeDoCoracao(aposta.getTimeDoCoracao());
         apostaDas8Modalidades.setSurpresinha(true);
+        apostaDas8Modalidades.setGerarEspelho(aposta.getGerarEspelho());
 
         BigDecimal valorIndividual = aposta.getValor().divide(new BigDecimal(aposta.getQuantidadeSurpresinhas()));
         for (int contador = 0; contador < aposta.getQuantidadeSurpresinhas(); contador++) {

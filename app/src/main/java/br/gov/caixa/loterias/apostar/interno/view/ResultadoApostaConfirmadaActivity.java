@@ -29,7 +29,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametroSimulac
 import br.gov.caixa.loterias.apostar.interno.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.FaixaPremiacaoAdapter;
-import br.gov.caixa.loterias.apostar.interno.view.custom.ContenteResultadoPremiado;
+import br.gov.caixa.loterias.apostar.interno.view.custom.ContentResultadoPremiado;
 import br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightRecyclerView;
 import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
 
@@ -43,7 +43,7 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
     protected Toolbar toolbar;
 
     @ViewById
-    protected ContenteResultadoPremiado contenteResultadoPremiado;
+    protected ContentResultadoPremiado contenteResultadoPremiado;
 
     @ViewById
     protected RelativeLayout lotericaLayout, agenciaCaixaLayout, mercadoPagoLayout;
@@ -53,11 +53,13 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
 
     private AlertDialog alertDialog;
 
+    ModalidadeEnum modalidadeEnum;
+
     @AfterViews
     protected void init() {
         createToolBar();
 
-        ModalidadeEnum modalidadeEnum = detalhesPremioDTO.getAposta().getModalidade();
+        modalidadeEnum = detalhesPremioDTO.getAposta().getModalidade();
         EstiloModalidade estiloModalidade = new EstiloModalidade(modalidadeEnum);
         SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
         ParametroSimulacao parametroSimulacao = ViewUtils.getParametroSimulacao(sessaoUsuario, modalidadeEnum);
@@ -66,8 +68,8 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
         contenteResultadoPremiado.getTopo2ModalidadeResultadoLinearLayout().setBackgroundColor(ContextCompat.getColor(this, estiloModalidade.getCorEscura()));
         contenteResultadoPremiado.getFundoBackgroundTrapezeResultadoLinearLayout().setBackground(ContextCompat.getDrawable(this, estiloModalidade.getTrevoBackground()));
         contenteResultadoPremiado.getTituloModalidadeTextView().setText(ModalidadeEnum.fromString(detalhesPremioDTO.getAposta().getModalidade()));
-        contenteResultadoPremiado.getLimiteDiarioResultadoTextView().setText(ViewUtils.getMoedaFormat(sessaoUsuario.getParametrosSimulacao().getValorLimiteDiario()));
         contenteResultadoPremiado.getPremioResultadoTextView().setText(ViewUtils.getMoedaFormat(detalhesPremioDTO.getPremio().getValorLiquido()));
+        contenteResultadoPremiado.getBotaoAposteAgora().setText(ViewUtils.textFuturaAndFuturaBold(this ,getString(R.string.botao_aposte_agora)));
 
         if (parametroSimulacao != null) {
             contenteResultadoPremiado.getAberturaApostaResultadoTextView().setText(ViewUtils.getDateAndHour(parametroSimulacao.getParametroJogo().getConcurso().getDataAbertura()));
@@ -104,6 +106,15 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
             }
         });
 
+    }
+
+    @Click(R.id.botaoAposteAgora)
+    protected void clickBotaoAposteAgora() {
+
+        Intent it = new Intent(ResultadoApostaConfirmadaActivity.this, PrincipalActivity_.class);
+        it.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |  Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        it.putExtra("MODALIDADE_APOSTAR_AGORA", modalidadeEnum);
+        startActivity(it);
     }
 
     @Click(R.id.agenciaCaixaLayout)

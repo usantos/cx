@@ -4,11 +4,13 @@ import com.google.gson.annotations.SerializedName;
 
 import org.parceler.Parcel;
 
+import java.io.Serializable;
+
 import io.swagger.annotations.ApiModel;
 
 @ApiModel(description = "")
 @Parcel
-public enum ModalidadeEnum {
+public enum ModalidadeEnum implements Serializable {
 
     @SerializedName("DIA_DE_SORTE")DIA_DE_SORTE,
     @SerializedName("DUPLA_SENA")DUPLA_SENA,

@@ -65,10 +65,11 @@
 
     <string name="total">Total</string>
 
-    <string name="confirmacaoPagamentoInfoApostas">Você pode visualizá-las na área Apostas realizadas do aplicativo</string>
-    <string name="confirmacaopagamentoParabens">Parabéns!\nSuas apostas foram efetivadas.</string>
+    <string name="confirmacaoPagamentoInfoApostas">Enquanto são processadas\nvocê pode acompanhá-las\na área Compras do aplicativo.</string>
+    <string name="confirmacaopagamentoParabens">Parabéns!\nSuas apostas foram\nrealizadas com sucesso.</string>
     <string name="minhasApostas">Minhas apostas</string>
     <string name="confirmacaoPagamentoBotaoVoltarInicio">_Voltar_\nao início</string>
+    <string name="label_concurso_atual">Informações do concurso atual.</string>
 
     <string name="novaFormaPagamentoTitulo">Cadastrar cartão</string>
     <string name="novaFormaPagamentoNenhumCartaoCadastrado">Notamos que você ainda não possui nenhum cartão de crédito cadastrado. Para continuar, informe:</string>
@@ -179,6 +180,7 @@
     <string name="label_salve_esta_aposta_carinha">Salve esta aposta :)</string>
     <string name="label_aposta_espelho">Aposta espelho</string>
     <string name="label_aposte_agora">Aposte agora</string>
+    <string name="botao_aposte_agora">Aposte\n_agora_</string>
     <string name="label_experimente">Experimente</string>
     <string name="label_aposte_aqui">Aposte\naqui</string>
     <string name="label_faca_login_cadastre">Faça login/cadastre-se</string>

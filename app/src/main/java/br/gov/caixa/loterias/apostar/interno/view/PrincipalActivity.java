@@ -5,6 +5,7 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
@@ -62,6 +63,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.DadosUsuarioBO_;
 import br.gov.caixa.loterias.apostar.interno.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametrosSimulacaoResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RepassometroDTO;
@@ -124,6 +126,7 @@ public class PrincipalActivity extends AppCompatActivity
 
     private boolean realizandoLogin = false;
     private boolean recarregarBuscaParam = false;
+    private HomeAdapter adapter;
 
     @AfterViews
     public void init() {
@@ -141,6 +144,32 @@ public class PrincipalActivity extends AppCompatActivity
         listenerSair();
         callWebservice();
         iniciarBancoLocal();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        abrirModalidadeAposteAgora(intent);
+    }
+
+    private void abrirModalidadeAposteAgora(Intent intent){
+        Bundle extras = intent.getExtras();
+        if (extras!= null) {
+            if (extras.containsKey("MODALIDADE_APOSTAR_AGORA")) {
+                ModalidadeEnum modalidade = (ModalidadeEnum) extras.getSerializable("MODALIDADE_APOSTAR_AGORA");
+                int position = adapter.retornaPosicaoPorModalidade(modalidade);
+                EstiloModalidade estilo;
+                if(position != -1){
+                    estilo = new EstiloModalidade(data.get(position).getTipoModalidade());
+                    homeCarousel.scrollToPosition(position);
+                    buttonHomeBet.setTag(position);
+                    buttonHomeBet.setText(ViewUtils.textFuturaAndFuturaBold(this, "_Aposte_\npor " + ViewUtils.getMoedaFormat(modalidadesParaListar.get(position).getParametroJogo().getConcurso().getValorApostaMinima())));
+                    buttonHomeBet.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorClara()));
+                    findViewById(R.id.buttonHomeBet).performClick();
+                }
+
+            }
+        }
     }
 
     @Override
@@ -176,7 +205,8 @@ public class PrincipalActivity extends AppCompatActivity
 
     private void montarCarrossel() {
         data = montaListaModalidades();
-        homeCarousel.setAdapter(new HomeAdapter(this, this, data, buttonHomeBet));
+        adapter = new HomeAdapter(this, this, data, buttonHomeBet);
+        homeCarousel.setAdapter(adapter);
         homeCarousel.addScrollListener(this);
         homeCarousel.addOnItemChangedListener(this);
         homeCarousel.scrollToPosition(0);
