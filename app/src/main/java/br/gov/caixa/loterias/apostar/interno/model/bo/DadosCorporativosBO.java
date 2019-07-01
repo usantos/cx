@@ -20,7 +20,6 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.MunicipioDTOResp
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametrosSimulacaoResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RepassometroDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResourceResponse;
-import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RetornoPadraoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.TermoDeUsoDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.UnidadeFederacaoDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.GsonRequest;
@@ -178,11 +177,11 @@ public class DadosCorporativosBO extends BaseBO{
                 listener.getErrorListener(), new LinkedHashMap<>());
     }
 
-    public void validaTermoAceito(final RequestListener<RetornoPadraoDTO> listener) {
+    public void validaTermoAceito(final RequestListener<ResourceResponse> listener) {
         LinkedHashMap<String, String> headers = new LinkedHashMap<>();
         headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
 
-        final GsonRequest request = silceConnection.buildGetRequest(ServerMethods.TERMO_VALIDA_ACEITO_PATH, new LinkedHashMap<>(), RetornoPadraoDTO.class,
+        final GsonRequest request = silceConnection.buildGetRequest(ServerMethods.TERMO_VALIDA_ACEITO_PATH, new LinkedHashMap<>(), ResourceResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(), headers);
 

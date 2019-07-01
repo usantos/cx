@@ -58,7 +58,9 @@ public class  RedirectNetwork {
             RedirectEnum redirectEnum = RedirectEnum.fromString( errorResponse.getRedirect() );
             switch (redirectEnum){
                 case ACEITAR_TERMO_DE_USO:
-                    activity.startActivityForResult(new Intent(context, TermosUsoActivity.class), 1);
+                    if (!activity.getClass().equals(TermosUsoActivity.class)) {
+                        activity.startActivityForResult(new Intent(activity, TermosUsoActivity.class), 1);
+                    }
                     return;
                 case LOGIN:
                     connectKeycloak(activity);
@@ -122,7 +124,9 @@ public class  RedirectNetwork {
                 RedirectEnum redirectEnum = RedirectEnum.fromString( errorResponse.getRedirect() );
                 switch (redirectEnum){
                     case ACEITAR_TERMO_DE_USO:
-                        activity.startActivityForResult(new Intent(activity, TermosUsoActivity.class), 1);
+                        if (!activity.getClass().equals(TermosUsoActivity.class)) {
+                            activity.startActivityForResult(new Intent(activity, TermosUsoActivity.class), 1);
+                        }
                         return;
                     case LOGIN:
                         connectKeycloak(activity);
@@ -172,7 +176,9 @@ public class  RedirectNetwork {
     public static void checkRedirectSucesso(RedirectEnum redirect, Activity activity){
         switch (redirect){
             case ACEITAR_TERMO_DE_USO:
-                activity.startActivityForResult(new Intent(activity, TermosUsoActivity.class), 1);
+                if (!activity.getClass().equals(TermosUsoActivity.class)) {
+                    activity.startActivityForResult(new Intent(activity, TermosUsoActivity.class), 1);
+                }
                 break;
             case LOGIN:
                 connectKeycloak(activity);

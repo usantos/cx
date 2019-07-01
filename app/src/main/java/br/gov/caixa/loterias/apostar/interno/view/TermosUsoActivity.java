@@ -31,7 +31,6 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ListSecaoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ListSecaoDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResourceResponse;
-import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RetornoPadraoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.TermoDeUsoDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.utils.DialogUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
@@ -57,21 +56,19 @@ public class TermosUsoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setViews();
         setListeners();
-
+        getExtras();
+        setWebview();
+        listenerTermosUso();
+        listenerDuvidas();
+        checaAceiteTermoEConfiguraTela();
+    }
+    private  void getExtras(){
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             openAjuda = bundle.getBoolean("ajuda");
         }
-
-        setWebview();
-
-        termosUsoButton.setChecked(Boolean.TRUE);
-        listenerTermosUso();
-        listenerDuvidas();
-        checaAceiteTermoEConfiguraTela();
     }
 
     private void checaAceiteTermoEConfiguraTela() {
@@ -166,6 +163,8 @@ public class TermosUsoActivity extends AppCompatActivity {
         recyclerViewDuvidas = findViewById(R.id.recyclerViewDuvidas);
         buttonTermoAceite = findViewById(R.id.buttonTermoAceite);
         layoutClickAceiteTermo = findViewById(R.id.layoutClickAceiteTermo);
+
+        termosUsoButton.setChecked(Boolean.TRUE);
     }
 
     @Override
@@ -206,7 +205,7 @@ public class TermosUsoActivity extends AppCompatActivity {
                 if (response.getRedirect() != null){
                     RedirectNetwork.checkRedirectSucesso( response.getRedirect(), TermosUsoActivity.this);
                 }
-                
+
                 termoHtml = response.getPayload().getConteudo();
                 webViewConteudo.loadData(termoHtml, "text/html; charset=UTF-8", "UTF-8");
                 DialogUtils.dismiss();
@@ -268,10 +267,10 @@ public class TermosUsoActivity extends AppCompatActivity {
         DialogUtils.show(this);
         DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(TermosUsoActivity.this);
 
-        dadosCorporativosBO.validaTermoAceito(new RequestListener<RetornoPadraoDTO>() {
+        dadosCorporativosBO.validaTermoAceito(new RequestListener<ResourceResponse>() {
 
             @Override
-            public void onResponse(RetornoPadraoDTO result) {
+            public void onResponse(ResourceResponse result) {
                 isTermoAceito = Boolean.TRUE;
                 scrollViewTermoAceite.setPadding(0, 0, 0, 0);
                 getSupportActionBar().setDisplayHomeAsUpEnabled(isTermoAceito);
