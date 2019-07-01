@@ -286,6 +286,7 @@ public class TermosUsoActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 DialogUtils.dismiss();
+                getTermo();
                 exibeRodapeAceite();
                 RedirectNetwork.checkRedirect(error, TermosUsoActivity.this);
             }
