@@ -481,8 +481,7 @@ public class PrincipalActivity extends AppCompatActivity
         //viewHolder will never be null, because we never remove items from adapter's list
         if (viewHolder != null) {
             EstiloModalidade estilo = new EstiloModalidade(data.get(adapterPosition).getTipoModalidade());
-            viewHolder.setOverlayColor(this, estilo);
-
+            buttonHomeBet.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorClara()));
             buttonHomeBet.setTag(adapterPosition);
             buttonHomeBet.setText(ViewUtils.textFuturaAndFuturaBold(this, "_Aposte_\npor " + ViewUtils.getMoedaFormat(modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima())));
         }
