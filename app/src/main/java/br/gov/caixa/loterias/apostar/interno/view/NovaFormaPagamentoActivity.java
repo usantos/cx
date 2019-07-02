@@ -12,7 +12,6 @@ import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -47,7 +46,6 @@ import br.gov.caixa.loterias.apostar.interno.utils.MaskEditUtil;
 import br.gov.caixa.loterias.apostar.interno.utils.MercadoPagoUtil;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
-import retrofit2.http.HEAD;
 
 public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
 
@@ -153,15 +151,6 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
 
                 createTokenAsync(cardToken);
             }
-            CardToken cardToken = new CardToken(editTextNumeroCartaoContent.getText().toString(),
-                    Integer.valueOf(editTextMesValidadeCartaoContent.getText().toString()),
-                    Integer.valueOf(editTextAnoValidadeCartaoContent.getText().toString()),
-                    editTextCodigoSegurancaContent.getText().toString(),
-                    editTextNomeClienteCartaoContent.getText().toString(),
-                    "CPF",
-                    DadosUsuarioBO.obterCpf());
-
-                createTokenAsync(cardToken);
         });
     }
 
