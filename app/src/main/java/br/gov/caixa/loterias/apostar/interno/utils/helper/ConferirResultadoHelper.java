@@ -1,7 +1,6 @@
 package br.gov.caixa.loterias.apostar.interno.utils.helper;
 
 import android.app.Activity;
-import android.content.Context;
 
 import com.android.volley.VolleyError;
 
@@ -30,7 +29,7 @@ public class ConferirResultadoHelper  {
         apostaBO.getApostaConferir(apostaId, new RequestListener<DTOEnumIntegerResponse>() {
             @Override
             public void onResponse(DTOEnumIntegerResponse result) {
-                DialogUtils.dismiss();
+                //DialogUtils.dismiss();
 
                 final DTOEnumLong resultCheckFinal = new DTOEnumLong();
                 resultCheckFinal.setValor(result.getPayload().getValor().longValue());

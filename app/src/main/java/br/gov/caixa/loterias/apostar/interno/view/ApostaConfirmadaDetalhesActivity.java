@@ -467,6 +467,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
 
             @Override
             public void onErrorResponse(VolleyError error) {
+                DialogUtils.dismiss();
                 onError(error, contextParam);
             }
         });
@@ -490,7 +491,8 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
 
         chooseFragmentToPresent();
 
-        if (Objects.equals(SituacaoResultadoBilheteEnum.PREMIADA.getValor().toString(), situacao.getValor().toString())) {
+        if (Objects.equals(SituacaoResultadoBilheteEnum.PREMIADA.getValor().toString(), situacao.getValor().toString())||
+                Objects.equals(SituacaoResultadoBilheteEnum.NAO_SORTEADA_AINDA_CONCORRENDO.getValor().toString(), situacao.getValor().toString())) {
             getApostaDetalhePremio(aposta.getId(), this);
         }
     }
