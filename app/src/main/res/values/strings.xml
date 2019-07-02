@@ -464,5 +464,6 @@
     <string name="mercado_pago_nome_titular_vazio">O nome do titular esta vazio.</string>
     <string name="mercado_pago_numero_documento_vazio">O número do documento está vazio.</string>
     <string name="mercado_pago_tipo_vazio">O tipo está vazio.</string>
+    <string name="mercado_pago_data_expiracao_invalida">Data de expiração inválida.</string>
 
 </resources>

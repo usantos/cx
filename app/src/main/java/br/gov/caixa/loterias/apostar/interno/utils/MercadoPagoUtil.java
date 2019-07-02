@@ -32,6 +32,7 @@ public class MercadoPagoUtil {
     public static final String INVALID_IDENTIFICATION_NUMBER = "2067";
     public static final String INVALID_CARD_HOLDER_IDENTIFICATION_NUMBER = "324";
     public static final String INVALID_ESC = "E216";
+    public static final String INVALID_EXPIRATION_DATE = "301";
     public static final String INVALID_FINGERPRINT = "E217";
 
 
@@ -67,6 +68,7 @@ public class MercadoPagoUtil {
             //Rever
             //case INVALID_ESC : return context.getString(R.string.);
             case INVALID_FINGERPRINT : return context.getString(R.string.mercado_pago_digital_invalida);
+            case INVALID_EXPIRATION_DATE: return context.getString(R.string.mercado_pago_data_expiracao_invalida);
             default: return context.getString(R.string.mercado_pago_padrao);
         }
     }
