@@ -48,6 +48,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RetornoCartao;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RetornoPadraoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
+import br.gov.caixa.loterias.apostar.interno.utils.MercadoPagoUtil;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.FormaPagamentoRecyclerViewAdapter;
 import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
@@ -237,7 +238,7 @@ public class FormaPagamentoActivity extends SettingToolbarActivity implements Fo
             public void failure(ApiException apiException) {
                 //TODO: Manage API Failure
                 loadViewProgress.dismiss();
-                ViewUtils.alert(FormaPagamentoActivity.this, apiException.getMessage());
+                ViewUtils.alert(FormaPagamentoActivity.this,MercadoPagoUtil.getMessageFromCode(apiException.getCause().get(0).getCode()));
             }
         });
     }

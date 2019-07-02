@@ -106,7 +106,9 @@
             android:name=".view.ConfirmacaoPagamentoActivity"
             android:configChanges="orientation"
             android:label="@string/title_activity_confirmacao_pagamento"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
         <activity
             android:name=".view.NovaFormaPagamentoActivity"
             android:configChanges="orientation"

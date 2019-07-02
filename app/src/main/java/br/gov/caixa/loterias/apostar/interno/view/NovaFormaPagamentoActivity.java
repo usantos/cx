@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -41,15 +40,18 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RetornoPadraoDTO;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.Bin;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostar.interno.utils.MaskEditUtil;
+import br.gov.caixa.loterias.apostar.interno.utils.MercadoPagoUtil;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
+import retrofit2.http.HEAD;
 
 public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
 
-    private EditText editTextNumeroCartaoContent, editTextNomeClienteCartaoContent, editTextCodigoSegurancaContent, editTextMesValidadeCartaooContent, editTextAnoValidadeCartaooContent;
+    private EditText editTextNumeroCartaoContent, editTextNomeClienteCartaoContent, editTextCodigoSegurancaContent, editTextMesValidadeCartaoContent, editTextAnoValidadeCartaoContent;
 
     private AlertDialog alertDialog;
 
@@ -65,11 +67,12 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
 
         recebendoInformacoes();
 
-        editTextNumeroCartaoContent = findViewById(R.id.editTextNumeroCartaoContent);
+
+        editTextNumeroCartaoContent =  findViewById(R.id.editTextNumeroCartaoContent);
         editTextNomeClienteCartaoContent = findViewById(R.id.editTextNomeClienteCartaoContent);
         editTextCodigoSegurancaContent = findViewById(R.id.editTextCodigoSegurancaContent);
-        editTextMesValidadeCartaooContent = findViewById(R.id.editTextMesValidadeCartaooContent);
-        editTextAnoValidadeCartaooContent = findViewById(R.id.editTextAnoValidadeCartaooContent);
+        editTextMesValidadeCartaoContent = findViewById(R.id.editTextMesValidadeCartaooContent);
+        editTextAnoValidadeCartaoContent = findViewById(R.id.editTextAnoValidadeCartaooContent);
         checkBoxSalvarCartao = findViewById(R.id.checkBoxSalvarCartao);
 
         setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.title_activity_forma_pagamento)));
@@ -139,20 +142,20 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
         ((Button) findViewById(R.id.botaoAvancarPagamento)).setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.apostarAutorizarCobranca)));
 
         findViewById(R.id.botaoAvancarPagamento).setOnClickListener(view -> {
-            if (editTextAnoValidadeCartaooContent.getText().toString().equals("") ||
-                    editTextMesValidadeCartaooContent.getText().toString().equals("") ||
-                    editTextNumeroCartaoContent.getText().toString().equals("") ||
-                    editTextCodigoSegurancaContent.getText().toString().equals("") ||
-                    editTextNomeClienteCartaoContent.getText().toString().equals("")) {
-                ViewUtils.alertTitleButton(NovaFormaPagamentoActivity.this,
-                        R.string.label_atencao,
-                        "Informe os dados do cartão.",
-                        NovaFormaPagamentoActivity.this.getResources().getString(R.string.ok));
-                return;
+            if(!camposInvalidos()){
+                CardToken cardToken = new CardToken(editTextNumeroCartaoContent.getText().toString(),
+                        Integer.valueOf(editTextMesValidadeCartaoContent.getText().toString()),
+                        Integer.valueOf(editTextAnoValidadeCartaoContent.getText().toString()),
+                        editTextCodigoSegurancaContent.getText().toString(),
+                        editTextNomeClienteCartaoContent.getText().toString(),
+                        "CPF",
+                        DadosUsuarioBO.obterCpf());
+
+                createTokenAsync(cardToken);
             }
             CardToken cardToken = new CardToken(editTextNumeroCartaoContent.getText().toString(),
-                    Integer.valueOf(editTextMesValidadeCartaooContent.getText().toString()),
-                    Integer.valueOf(editTextAnoValidadeCartaooContent.getText().toString()),
+                    Integer.valueOf(editTextMesValidadeCartaoContent.getText().toString()),
+                    Integer.valueOf(editTextAnoValidadeCartaoContent.getText().toString()),
                     editTextCodigoSegurancaContent.getText().toString(),
                     editTextNomeClienteCartaoContent.getText().toString(),
                     "CPF",
@@ -160,6 +163,26 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
 
                 createTokenAsync(cardToken);
         });
+    }
+
+    private boolean camposInvalidos(){
+        String errorMessage = getString(R.string.msg_campos_em_branco);
+        boolean invalido;
+        invalido = (editTextAnoValidadeCartaoContent.getText().toString().trim().equals("") ||
+                editTextMesValidadeCartaoContent.getText().toString().trim().equals("") ||
+                editTextNumeroCartaoContent.getText().toString().trim().equals("") ||
+                editTextCodigoSegurancaContent.getText().toString().trim().equals("") ||
+                editTextNomeClienteCartaoContent.getText().toString().trim().equals(""));
+        if(editTextNumeroCartaoContent.getText().toString().length() < 16 && editTextAnoValidadeCartaoContent.getText().toString().length() > 0){
+            invalido =  true ;
+            errorMessage = getString(R.string.mercado_pago_numero_cartao_Incorreto);
+        }
+        if(invalido){
+            ViewUtils.alertTitleButton(NovaFormaPagamentoActivity.this,
+                    R.string.label_atencao,errorMessage,
+                    NovaFormaPagamentoActivity.this.getResources().getString(R.string.ok));
+        }
+        return invalido;
     }
 
     private void createTokenAsync(CardToken cardToken) {
@@ -173,6 +196,7 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
             @Override
             public void success(Token token) {
 //                Log.d("token", token.getId());
+                alertDialog.dismiss();
                 callWebServicePayment_method(token.getId());
             }
 
@@ -180,7 +204,7 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
             public void failure(ApiException apiException) {
                 //TODO: Manage API Failure
                 alertDialog.dismiss();
-                ViewUtils.alert(NovaFormaPagamentoActivity.this, apiException.getMessage());
+                ViewUtils.alert(NovaFormaPagamentoActivity.this, MercadoPagoUtil.getMessageFromCode(apiException.getCause().get(0).getCode()));
             }
         });
     }
@@ -248,7 +272,12 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
                 e.printStackTrace();
                 Toast.makeText(getApplicationContext(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
             }
-        }, volleyError -> Log.d("volleyError", "volleyError: " + volleyError.toString()));
+        }, volleyError -> {
+            Log.d("volleyError", "volleyError: " + volleyError.toString());
+            if(Bin.fromBytes(volleyError.networkResponse.data).toUtf8().contains("not_found")){
+                ViewUtils.alert(NovaFormaPagamentoActivity.this, getString(R.string.mercado_pago_numero_cartao_Incorreto));
+            }
+        });
 
         RequestQueue rQueue = Volley.newRequestQueue(NovaFormaPagamentoActivity.this);
         rQueue.add(request);

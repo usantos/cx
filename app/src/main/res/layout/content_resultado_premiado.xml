@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:focusableInTouchMode="true"
     android:orientation="vertical">
 
     <LinearLayout
@@ -64,150 +65,6 @@
             android:textColor="@color/branco"
             android:textSize="20.1sp"
             android:textStyle="bold" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/dadosModalidadeLinearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="156dp"
-        android:background="@color/cinza"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="78dp"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="78dp"
-                android:layout_weight="0.5"
-                android:orientation="vertical">
-
-                <TextView
-                    style="@style/ArialMT"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="40dp"
-                    android:text="@string/label_abertura_aposta"
-                    android:textAlignment="textStart"
-                    android:textColor="@color/branco"
-                    android:textSize="14.2sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/aberturaApostaResultadoTextView"
-                    style="@style/ArialMT"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:textAlignment="textStart"
-                    android:textColor="@color/branco"
-                    android:textSize="14.2sp"
-                    tools:text="nº 1456" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="78dp"
-                android:layout_weight="0.5"
-                android:orientation="vertical">
-
-                <TextView
-                    style="@style/ArialMT"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginTop="40dp"
-                    android:text="@string/label_encerramento"
-                    android:textAlignment="textEnd"
-                    android:textColor="@color/branco"
-                    android:textSize="14.2sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/encerramentoResultadoTextView"
-                    style="@style/ArialMT"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:text="09/12"
-                    android:textAlignment="textEnd"
-                    android:textColor="@color/branco"
-                    android:textSize="14.2sp" />
-
-
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="78dp"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="78dp"
-                android:layout_weight="0.5"
-                android:orientation="vertical">
-
-                <TextView
-                    style="@style/ArialMT"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/label_proximo_sorteio"
-                    android:textAlignment="textStart"
-                    android:textColor="@color/branco"
-                    android:textSize="14.2sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/proximoSorteioTextView"
-                    style="@style/ArialMT"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:textAlignment="textStart"
-                    android:textColor="@color/branco"
-                    android:textSize="14.2sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="78dp"
-                android:layout_weight="0.5"
-                android:orientation="vertical">
-
-                <TextView
-                    style="@style/ArialMT"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/label_limite_diario"
-                    android:textAlignment="textEnd"
-                    android:textColor="@color/branco"
-                    android:textSize="14.2sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/limiteDiarioResultadoTextView"
-                    style="@style/ArialMT"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    tools:text="11/04 | 15h50"
-                    android:textAlignment="textEnd"
-                    android:textColor="@color/branco"
-                    android:textSize="14.2sp" />
-
-            </LinearLayout>
-        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -278,7 +135,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
                     android:layout_weight="0.24"
-                    android:text="@string/title_sorteio"
+                    android:text="@string/label_sorteio_case"
                     android:textColor="@color/verdeazul"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -306,6 +163,154 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="29dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/dadosModalidadeLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="156dp"
+        android:background="@color/cinza"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_height="wrap_content"
+                android:text="@string/label_concurso_atual"
+                android:textColor="@color/branco"
+                android:textSize="14.2sp"
+                android:textStyle="bold"
+                >
+            </TextView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="78dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="78dp"
+                android:layout_weight="0.5"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/ArialMT"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="40dp"
+                    android:text="@string/label_abertura_aposta"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/branco"
+                    android:textSize="14.2sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/aberturaApostaResultadoTextView"
+                    style="@style/ArialMT"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/branco"
+                    android:textSize="14.2sp"
+                    tools:text="nº 1456" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="78dp"
+                android:layout_weight="0.5"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/ArialMT"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginTop="40dp"
+                    android:text="@string/label_encerramento"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/branco"
+                    android:textSize="14.2sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/encerramentoResultadoTextView"
+                    style="@style/ArialMT"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:text="09/12"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/branco"
+                    android:textSize="14.2sp" />
+
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="78dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="78dp"
+                android:layout_weight="0.5"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/ArialMT"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/label_proximo_sorteio"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/branco"
+                    android:textSize="14.2sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/proximoSorteioTextView"
+                    style="@style/ArialMT"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/branco"
+                    android:textSize="14.2sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="78dp"
+                android:layout_weight="0.5"
+                android:orientation="horizontal">
+
+                <Button
+                android:id="@+id/botaoAposteAgora"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                tools:text="@string/botao_aposte_agora"
+                android:textAllCaps="false"
+                android:background="@drawable/button_border"
+                android:textColor="@color/branco"
+                android:layout_gravity="start"
+                android:textSize="14.2sp"
+                android:layout_marginEnd="16dp" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

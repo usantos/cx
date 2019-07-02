@@ -100,12 +100,11 @@ public class SilceConnection {
         return request;
     }
 
-    public <T> GsonRequest buildDeleteRequest(String path, String param,
+    public <T> GsonRequest buildDeleteRequest(String path, Map<String, String> queryParams,
                                               Class<T> responseDataClass,
                                               Response.Listener<T> listener,
                                               Response.ErrorListener errorListener, Map<String, String> headers) {
-        String url = (path + param);
-        url = fillUrl(url);
+        String url = fillUrlWithQueryParams(path, queryParams);
         GsonRequest request = new GsonRequest<String, T>(DELETE, url, responseDataClass,
                 headers, listener, errorListener);
         request.setRetryPolicy(createRetryPolicy());
@@ -118,13 +117,6 @@ public class SilceConnection {
                         Response.Listener<T> listener,
                         Response.ErrorListener errorListener, Map<String, String> headers) {
         request(buildGetRequest(path, queryParams, responseDataClass, listener, errorListener, headers));
-    }
-
-    public <T> void delete(String path, String param,
-                           Class<T> responseDataClass,
-                           Response.Listener<T> listener,
-                           Response.ErrorListener errorListener, LinkedHashMap<String, String> headers) {
-        request(buildDeleteRequest(path, param, responseDataClass, listener, errorListener, headers));
     }
 
     public <REQ, RSP> void post(String path, Map<String, String> queryParams,

@@ -132,10 +132,13 @@ public class ApostaBO extends BaseBO {
     }
 
     public void  deleteApostaCarrinho(String id, final RequestListener<CarrinhoDTOResponse> listener) {
+        LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
+        queryParams.put("id", id);
+
         LinkedHashMap<String, String> headers = new LinkedHashMap<>();
         headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
 
-        final GsonRequest request = silceConnection.buildDeleteRequest(ServerMethods.DELETE_APOSTA_CARRINHO_PATH, id, CarrinhoDTOResponse.class,
+        final GsonRequest request = silceConnection.buildDeleteRequest(ServerMethods.DELETE_APOSTA_CARRINHO_PATH + id, queryParams, CarrinhoDTOResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(), headers);
 
@@ -310,10 +313,14 @@ public class ApostaBO extends BaseBO {
     }
 
     public void deleteApostasFavoritas(final String idAposta, final RequestListener<RetornoPadraoDTO> listener) {
+        LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
+        queryParams.put("id", idAposta);
+
         LinkedHashMap<String, String> headers = new LinkedHashMap<>();
         headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
 
-        final GsonRequest request = silceConnection.buildDeleteRequest(ServerMethods.APOSTAS_FAVORITAS_PATH, idAposta, RetornoPadraoDTO.class,
+
+        final GsonRequest request = silceConnection.buildDeleteRequest(ServerMethods.APOSTAS_FAVORITAS_PATH + idAposta ,queryParams, RetornoPadraoDTO.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(), headers);
 
@@ -321,12 +328,12 @@ public class ApostaBO extends BaseBO {
         silceConnection.request(request);
     }
 
-    public void postApostasFavoritas(final ApostaFavoritaDTO apostaFavoritaDTO, final RequestListener<Boolean> listener) {
+    public void postApostasFavoritas(final ApostaFavoritaDTO apostaFavoritaDTO, final RequestListener<RetornoPadraoDTO> listener) {
         LinkedHashMap<String, String> headers = new LinkedHashMap<>();
         headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
 
         final GsonRequest request = silceConnection.buildPostRequest(ServerMethods.APOSTAS_FAVORITAS_PATH, new LinkedHashMap<>(),
-                apostaFavoritaDTO, Boolean.class,
+                apostaFavoritaDTO, RetornoPadraoDTO.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(), headers);
 
