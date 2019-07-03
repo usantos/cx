@@ -188,7 +188,7 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
         } else {
             statusResultadoNaoPremiadTextView.setText(R.string.label_nao_foi_dessa_vez);
         }
-        mensagemNaoPremiadoTextView.setText(resultadoConsultaBilheteDTO.getSituacao().getDescricao());
+        //mensagemNaoPremiadoTextView.setText(resultadoConsultaBilheteDTO.getSituacao().getDescricao());
     }
 
     private void createToolBar() {

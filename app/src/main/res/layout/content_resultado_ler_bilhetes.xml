@@ -335,7 +335,7 @@
                     android:layout_marginEnd="68dp"
                     android:layout_marginStart="68dp"
                     android:layout_marginTop="41dp"
-                    android:text="@string/label_aposte_agora"
+                    tools:text="@string/label_aposte_agora"
                     android:textAlignment="center"
                     android:textColor="@color/cinza"
                     android:textSize="14sp" />
