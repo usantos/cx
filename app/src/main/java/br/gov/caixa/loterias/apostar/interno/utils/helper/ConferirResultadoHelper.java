@@ -10,6 +10,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.DTOEnumIntegerResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.DTOEnumLong;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.SituacaoResultadoBilheteEnum;
 import br.gov.caixa.loterias.apostar.interno.utils.DialogUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.ApostasConfirmadasAdapter;
@@ -29,10 +30,15 @@ public class ConferirResultadoHelper  {
         apostaBO.getApostaConferir(apostaId, new RequestListener<DTOEnumIntegerResponse>() {
             @Override
             public void onResponse(DTOEnumIntegerResponse result) {
-                //DialogUtils.dismiss();
+                long codigoResultado = result.getPayload().getValor().longValue();
+
+                if(!(codigoResultado == SituacaoResultadoBilheteEnum.PREMIADA_AINDA_CONCORRENDO.getValor() || codigoResultado == SituacaoResultadoBilheteEnum.PREMIADA.getValor())){
+                    DialogUtils.dismiss();
+                }
+
 
                 final DTOEnumLong resultCheckFinal = new DTOEnumLong();
-                resultCheckFinal.setValor(result.getPayload().getValor().longValue());
+                resultCheckFinal.setValor(codigoResultado);
                 resultCheckFinal.setDescricao(result.getPayload().getDescricao());
 
                 conferirResultadoHandler.handle(resultCheckFinal);
@@ -40,6 +46,7 @@ public class ConferirResultadoHelper  {
 
             @Override
             public void onErrorResponse(VolleyError error) {
+                DialogUtils.dismiss();
                 onError(error, contextParam);
             }
         });

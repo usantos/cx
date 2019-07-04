@@ -14,7 +14,7 @@ public enum SituacaoResultadoBilheteEnum {
     PAGA(11L),
     PREMIADA(100L),
     NAO_APURADO(101L),
-    NAO_SORTEADA_AINDA_CONCORRENDO(103L);
+    PREMIADA_AINDA_CONCORRENDO(103L);
 
     private Long valor;
 
