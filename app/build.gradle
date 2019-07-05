@@ -13,8 +13,8 @@ android {
         applicationId "br.gov.caixa.loterias.apostar.interno"
         minSdkVersion 21
         targetSdkVersion 27
-        versionCode 21101081
-        versionName "1.0.8"
+        versionCode 21101091
+        versionName "1.0.9"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
