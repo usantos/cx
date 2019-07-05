@@ -14,7 +14,7 @@ import br.gov.caixa.loterias.apostar.interno.R;
 
 /**
  * Created by joafilho on 02/04/2018.
- * Class ContenteResultadoPremiado
+ * Class ContentResultadoPremiado
  */
 
 @EViewGroup(R.layout.content_resultado_premiado)

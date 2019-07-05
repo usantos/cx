@@ -2,7 +2,6 @@ package br.gov.caixa.loterias.apostar.interno.view;
 
 
 import android.Manifest;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -126,7 +125,6 @@ public class PrincipalActivity extends AppCompatActivity
 
     private boolean realizandoLogin = false;
     private boolean recarregarBuscaParam = false;
-    private HomeAdapter adapter;
 
     @AfterViews
     public void init() {
@@ -157,7 +155,7 @@ public class PrincipalActivity extends AppCompatActivity
         if (extras!= null) {
             if (extras.containsKey("MODALIDADE_APOSTAR_AGORA")) {
                 ModalidadeEnum modalidade = (ModalidadeEnum) extras.getSerializable("MODALIDADE_APOSTAR_AGORA");
-                int position = adapter.retornaPosicaoPorModalidade(modalidade);
+                int position =  ((HomeAdapter)homeCarousel.getAdapter()).retornaPosicaoPorModalidade(modalidade);
                 EstiloModalidade estilo;
                 if(position != -1){
                     estilo = new EstiloModalidade(data.get(position).getTipoModalidade());
@@ -205,8 +203,7 @@ public class PrincipalActivity extends AppCompatActivity
 
     private void montarCarrossel() {
         data = montaListaModalidades();
-        adapter = new HomeAdapter(this, this, data, buttonHomeBet);
-        homeCarousel.setAdapter(adapter);
+        homeCarousel.setAdapter(new HomeAdapter(this, this, data, buttonHomeBet));
         homeCarousel.addScrollListener(this);
         homeCarousel.addOnItemChangedListener(this);
         homeCarousel.scrollToPosition(0);

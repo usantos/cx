@@ -24,7 +24,7 @@
             android:visibility="gone">
 
             <br.gov.caixa.loterias.apostar.interno.view.custom.ContentResultadoPremiado_
-                android:id="@+id/contenteResultadoPremiado"
+                android:id="@+id/contentResultadoPremiado"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 

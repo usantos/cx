@@ -132,13 +132,10 @@ public class ApostaBO extends BaseBO {
     }
 
     public void  deleteApostaCarrinho(String id, final RequestListener<CarrinhoDTOResponse> listener) {
-        LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
-        queryParams.put("id", id);
-
         LinkedHashMap<String, String> headers = new LinkedHashMap<>();
         headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
 
-        final GsonRequest request = silceConnection.buildDeleteRequest(ServerMethods.DELETE_APOSTA_CARRINHO_PATH + id, queryParams, CarrinhoDTOResponse.class,
+        final GsonRequest request = silceConnection.buildDeleteRequest(ServerMethods.DELETE_APOSTA_CARRINHO_PATH + id, new LinkedHashMap<>(), CarrinhoDTOResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(), headers);
 

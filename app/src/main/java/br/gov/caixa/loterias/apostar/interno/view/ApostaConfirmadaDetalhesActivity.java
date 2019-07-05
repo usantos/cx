@@ -491,8 +491,8 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
 
         chooseFragmentToPresent();
 
-        if (Objects.equals(SituacaoResultadoBilheteEnum.PREMIADA.getValor().toString(), situacao.getValor().toString())||
-                Objects.equals(SituacaoResultadoBilheteEnum.PREMIADA_AINDA_CONCORRENDO.getValor().toString(), situacao.getValor().toString())) {
+        if (Objects.equals(SituacaoResultadoBilheteEnum.PREMIADA.getValor(), situacao.getValor())||
+                Objects.equals(SituacaoResultadoBilheteEnum.PREMIADA_AINDA_CONCORRENDO.getValor(), situacao.getValor())) {
             getApostaDetalhePremio(aposta.getId(), this);
         }
     }
