@@ -28,12 +28,7 @@ public class Utils {
 
     public static void delay(int secs, final DelayCallback delayCallback){
         Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                delayCallback.afterDelay();
-            }
-        }, secs * 1000);
+        handler.postDelayed(() -> delayCallback.afterDelay(), secs * 1000);
     }
 
     public static DadosUsuarioToken decodedToken(String JWTEncoded) throws Exception {

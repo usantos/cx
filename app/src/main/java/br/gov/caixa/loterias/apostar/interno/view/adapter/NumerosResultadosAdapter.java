@@ -70,8 +70,8 @@ public final class NumerosResultadosAdapter extends RecyclerView.Adapter<Numeros
 
         public ViewHolder(final View itemView) {
             super(itemView);
-            textViewTituloNumerosResultados = (TextView) itemView.findViewById(R.id.textViewTituloNumerosResultados);
-            linearLayoutContentNumerosResultados = (LinearLayout) itemView.findViewById(R.id.linearLayoutContentNumerosResultados);
+            textViewTituloNumerosResultados = itemView.findViewById(R.id.textViewTituloNumerosResultados);
+            linearLayoutContentNumerosResultados = itemView.findViewById(R.id.linearLayoutContentNumerosResultados);
         }
     }
 

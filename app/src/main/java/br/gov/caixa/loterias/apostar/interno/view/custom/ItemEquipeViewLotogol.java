@@ -88,12 +88,7 @@ public class ItemEquipeViewLotogol extends RelativeLayout {
         numerosLotogolAdapterListUm = new NumerosLotogolAdapter(getContext(), placarListUm);
         gridViewPlacarTresColunas.setAdapter(numerosLotogolAdapterListUm);
         gridViewPlacarTresColunas.setExpanded(true);
-        gridViewPlacarTresColunas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                clickItem(view);
-            }
-        });
+        gridViewPlacarTresColunas.setOnItemClickListener((adapterView, view, i, l) -> clickItem(view));
 
         placarListDois.add(new DezenaLotogol(R.drawable.dezena_lotogol_selected_3, Constantes.TRES_STRING));
         placarListDois.add(new DezenaLotogol(R.drawable.dezena_lotogol_selected_plus, Constantes.PLUS_STRING));
@@ -101,12 +96,7 @@ public class ItemEquipeViewLotogol extends RelativeLayout {
         numerosLotogolAdapterListDois = new NumerosLotogolAdapter(getContext(), placarListDois);
         gridViewPlacarDuasColunas.setAdapter(numerosLotogolAdapterListDois);
         gridViewPlacarDuasColunas.setExpanded(true);
-        gridViewPlacarDuasColunas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                clickItem(view);
-            }
-        });
+        gridViewPlacarDuasColunas.setOnItemClickListener((adapterView, view, i, l) -> clickItem(view));
     }
 
     private void clickItem(View view) {

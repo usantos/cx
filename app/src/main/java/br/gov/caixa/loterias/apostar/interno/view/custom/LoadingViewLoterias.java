@@ -20,7 +20,7 @@ public class LoadingViewLoterias {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context, R.style.DialogFullScreenTheme);
 
         View layout = LayoutInflater.from(context).inflate(R.layout.dialog_loading, null);
-        ImageView imageView = (ImageView) layout.findViewById(R.id.logoImg);
+        ImageView imageView = layout.findViewById(R.id.logoImg);
         ObjectAnimator animator = ObjectAnimator
                 .ofFloat(imageView, "rotation", imageView.getRotation() + 360).setDuration(1200);
         animator.setRepeatCount(ObjectAnimator.INFINITE);

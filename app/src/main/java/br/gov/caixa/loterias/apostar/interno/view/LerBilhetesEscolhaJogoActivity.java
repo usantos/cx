@@ -42,17 +42,14 @@ public class LerBilhetesEscolhaJogoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ler_bilhetes_escolha_jogo);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        selecionarModalidadesConferirApostaButton = (Button)findViewById(R.id.selecionarModalidadesConferirApostaButton);
+        selecionarModalidadesConferirApostaButton = findViewById(R.id.selecionarModalidadesConferirApostaButton);
 
-        selecionarModalidadesConferirApostaButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        selecionarModalidadesConferirApostaButton.setOnClickListener(view -> {
 
-            }
         });
 
         callWebservice();
@@ -118,7 +115,7 @@ public class LerBilhetesEscolhaJogoActivity extends AppCompatActivity {
 
 
 
-        ExpandableHeightGridView gridViewTiposAposta = (ExpandableHeightGridView)findViewById(R.id.gridviewTiposApostasConferirAposta);
+        ExpandableHeightGridView gridViewTiposAposta = findViewById(R.id.gridviewTiposApostasConferirAposta);
         TiposApostasConferirApostaAdapter tiposApostasAdapter = new TiposApostasConferirApostaAdapter(LerBilhetesEscolhaJogoActivity.this, this, tiposAposta);
         gridViewTiposAposta.setAdapter(tiposApostasAdapter);
         gridViewTiposAposta.setExpanded(true);
@@ -203,13 +200,8 @@ public class LerBilhetesEscolhaJogoActivity extends AppCompatActivity {
         }
         gridViewTipoAposta();
 
-        final ScrollView scrollModalides = (ScrollView)findViewById(R.id.scrollViewSelecaoModalidadesRapidao);
-        scrollModalides.post(new Runnable()
-        {
-            public void run() {
-                scrollModalides.fullScroll(ScrollView.FOCUS_UP);
-            }
-        });
+        final ScrollView scrollModalides = findViewById(R.id.scrollViewSelecaoModalidadesRapidao);
+        scrollModalides.post(() -> scrollModalides.fullScroll(ScrollView.FOCUS_UP));
     }
 
 }

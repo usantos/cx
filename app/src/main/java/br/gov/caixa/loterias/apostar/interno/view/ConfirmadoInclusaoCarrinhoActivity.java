@@ -58,6 +58,7 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
         setContentView(R.layout.activity_confirmado_inclusao_carrinho);
 
         parametroSimulacao = new Gson().fromJson(getIntent().getStringExtra("modalidade"), ParametroJogoDTO.class);
+        ((TextView) findViewById(R.id.txtVoltarAoInicio)).setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.btn_title_voltarAoInicio)));
 
         invalidateOptionsMenu();
         configuraActivityIncluidoApostaCarrinho();
@@ -118,7 +119,7 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
 //        Button botaoVerCarrinhoAposta = (Button) findViewById(R.id.botaoVerCarrinhoAposta);
 //        Button botaoAdicionarCompletarCartela = (Button) findViewById(R.id.botaoAdicionarCompletarCartela);
 
-        LinearLayout botaoLinearLayoutVoltarPrincipal = (LinearLayout) findViewById(R.id.botaoLinearLayoutVoltarPrincipal);
+        LinearLayout botaoLinearLayoutVoltarPrincipal = findViewById(R.id.botaoLinearLayoutVoltarPrincipal);
 
 //        if (isLotecaOrLotogol) {
 //            botaoNovaAposta.setVisibility(View.INVISIBLE);

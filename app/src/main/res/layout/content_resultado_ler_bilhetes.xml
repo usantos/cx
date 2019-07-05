@@ -23,8 +23,8 @@
             android:orientation="vertical"
             android:visibility="gone">
 
-            <br.gov.caixa.loterias.apostar.interno.view.custom.ContenteResultadoPremiado_
-                android:id="@+id/contenteResultadoPremiado"
+            <br.gov.caixa.loterias.apostar.interno.view.custom.ContentResultadoPremiado_
+                android:id="@+id/contentResultadoPremiado"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 

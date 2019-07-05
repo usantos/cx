@@ -43,19 +43,13 @@ public class AnimacaoCalculoRepassesSociais {
 
         ValueAnimator animator = new  ValueAnimator();
         animator.setObjectValues(oldValue, calculo); //double value
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            public void onAnimationUpdate(ValueAnimator animation) {
-                String valorUpdate = String.format( "%.2f", animation.getAnimatedValue());
-                valorUpdate = valorUpdate.replace(",", ".");
-                textView.setText(ViewUtils.getMoedaFormat(new BigDecimal(valorUpdate)));
-            }
+        animator.addUpdateListener(animation -> {
+            String valorUpdate = String.format( "%.2f", animation.getAnimatedValue());
+            valorUpdate = valorUpdate.replace(",", ".");
+            textView.setText(ViewUtils.getMoedaFormat(new BigDecimal(valorUpdate)));
         });
-        animator.setEvaluator(new TypeEvaluator<Double>() { // problem here
-            @Override
-            public Double evaluate(float fraction, Double startValue, Double endValue) {
-                return  (startValue + (double)((endValue - startValue) * fraction));
-            }
-        });
+        // problem here
+        animator.setEvaluator(( TypeEvaluator<Double>)(fraction, startValue, endValue) -> (startValue + (endValue - startValue) * fraction));
         animator.addListener(new AnimatorListenerAdapter()
         {
             @Override

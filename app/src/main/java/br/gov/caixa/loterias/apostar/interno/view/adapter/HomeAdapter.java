@@ -24,7 +24,6 @@ import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -39,7 +38,6 @@ import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bean.Modalidade;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO_;
-import br.gov.caixa.loterias.apostar.interno.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ApostaDTO;
@@ -47,8 +45,6 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResultadoConcursoDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
-import br.gov.caixa.loterias.apostar.interno.view.DetalheDuvidaActivity;
-import br.gov.caixa.loterias.apostar.interno.view.FavoritasActivity;
 import br.gov.caixa.loterias.apostar.interno.view.animation.AnimacoesResultados;
 import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
 import br.gov.caixa.loterias.apostar.interno.view.custom.ModalidadeSorteioResultadoView;
@@ -162,35 +158,32 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                 .load(estilo.getImagemRelogio())
                 .into(holder.relogio);
 
-        holder.buttonActionResultadosModalidade.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (holder.linearLayoutResultadosApostas.getHeight() == 0) {
-                    if (data.get(position).getResultadoConcursoDTO() == null){
-                        callWebserviceResultadoConcurso(holder.relativeLayoutTopResultados,
-                                holder.linearLayoutResultadosApostas,
-                                ApostaDTO.lowerCaseFromString(data.get(position).getTipoModalidade()),
-                                data.get(position).getConcurso().getNumero(), position,
-                                holder.setaEsquerdaAcaoRelativeLayout,
-                                holder.setaDireitaAcaoRelativeLayout,
-                                true);
-                    }
-                    else{
-                        AnimacaoAbrirResultados(context,
-                                holder.relativeLayoutTopResultados,
-                                holder.linearLayoutResultadosApostas,
-                                position,
-                                holder.setaEsquerdaAcaoRelativeLayout,
-                                holder.setaDireitaAcaoRelativeLayout);
-                    }
-                } else {
-                    data.get(position).setResultadosAberto(false);
-                    AnimacaoFecharResultados(context,
+        holder.buttonActionResultadosModalidade.setOnClickListener(view -> {
+            if (holder.linearLayoutResultadosApostas.getHeight() == 0) {
+                if (data.get(position).getResultadoConcursoDTO() == null){
+                    callWebserviceResultadoConcurso(holder.relativeLayoutTopResultados,
+                            holder.linearLayoutResultadosApostas,
+                            ApostaDTO.lowerCaseFromString(data.get(position).getTipoModalidade()),
+                            data.get(position).getConcurso().getNumero(), position,
+                            holder.setaEsquerdaAcaoRelativeLayout,
+                            holder.setaDireitaAcaoRelativeLayout,
+                            true);
+                }
+                else{
+                    AnimacaoAbrirResultados(context,
                             holder.relativeLayoutTopResultados,
                             holder.linearLayoutResultadosApostas,
+                            position,
                             holder.setaEsquerdaAcaoRelativeLayout,
                             holder.setaDireitaAcaoRelativeLayout);
                 }
+            } else {
+                data.get(position).setResultadosAberto(false);
+                AnimacaoFecharResultados(context,
+                        holder.relativeLayoutTopResultados,
+                        holder.linearLayoutResultadosApostas,
+                        holder.setaEsquerdaAcaoRelativeLayout,
+                        holder.setaDireitaAcaoRelativeLayout);
             }
         });
 
@@ -247,6 +240,15 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         sb.setSpan(corModalidade, 11 + numConcurso.length(), sb.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
 
         return sb;
+    }
+
+    public int retornaPosicaoPorModalidade(ModalidadeEnum modalidade){
+        for (int i = 0; i < data.size(); i++) {
+            if (data !=null && data.get(i).getTipoModalidade().equals(modalidade)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     private String retornaStringDias(Long dia) {

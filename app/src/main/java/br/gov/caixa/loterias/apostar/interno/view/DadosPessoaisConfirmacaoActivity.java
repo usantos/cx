@@ -16,21 +16,16 @@ public class DadosPessoaisConfirmacaoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_dados_pessoais_confirmacao );
-        Toolbar toolbar = (Toolbar) findViewById( R.id.toolbar );
+        Toolbar toolbar = findViewById( R.id.toolbar );
         setSupportActionBar( toolbar );
         setTitle( ViewUtils.textFuturaAndFuturaBoldTitle( this, getTitle().toString() ) );
 
-        TextView tituloConfirmacaoCadastroTextView = (TextView) findViewById( R.id.tituloConfirmacaoCadastroTextView );
-        TextView subtituloConfirmaCadastroTextView = (TextView) findViewById( R.id.subtituloConfirmaCadastroTextView );
+        TextView tituloConfirmacaoCadastroTextView = findViewById( R.id.tituloConfirmacaoCadastroTextView );
+        TextView subtituloConfirmaCadastroTextView = findViewById( R.id.subtituloConfirmaCadastroTextView );
         tituloConfirmacaoCadastroTextView.setText( ViewUtils.textFuturaAndFuturaBold( this, "_Seu cadastro_ foi atualizado\ncom sucesso." ) );
         subtituloConfirmaCadastroTextView.setText( "Aguarde apenas um instante enquanto\nte redirecionamos para a tela inicial.\n:)" );
 
-        Utils.delay(3, new Utils.DelayCallback() {
-            @Override
-            public void afterDelay() {
-                finish();
-            }
-        });
+        Utils.delay(3, () -> finish());
     }
 
     @Override

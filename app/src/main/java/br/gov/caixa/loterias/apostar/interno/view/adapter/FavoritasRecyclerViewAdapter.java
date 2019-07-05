@@ -98,17 +98,14 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
             }
         });
 
-        swipeGlobalLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                if (listaApostaFavorita.size() > 0 && position < listaApostaFavorita.size()) {
-                    if (listaApostaFavorita.get(position).getOpenSwipeLayout() == null) {
-                        listaApostaFavorita.get(position).setOpenSwipeLayout(false);
-                    } else {
-                        if (listaApostaFavorita.get(position).getOpenSwipeLayout()) {
-                            // Opens the layout without animation
-                            swipeLayout.open(false);
-                        }
+        swipeGlobalLayoutListener = () -> {
+            if (listaApostaFavorita.size() > 0 && position < listaApostaFavorita.size()) {
+                if (listaApostaFavorita.get(position).getOpenSwipeLayout() == null) {
+                    listaApostaFavorita.get(position).setOpenSwipeLayout(false);
+                } else {
+                    if (listaApostaFavorita.get(position).getOpenSwipeLayout()) {
+                        // Opens the layout without animation
+                        swipeLayout.open(false);
                     }
                 }
             }
@@ -129,39 +126,23 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
             }
         }
         holder.numerosApostaFavorita.setText(numeroStr.toString());
-        holder.editarRelativeLayoutFavoritos.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                swipeLayout.open(true);
-            }
+        holder.editarRelativeLayoutFavoritos.setOnClickListener(v -> swipeLayout.open(true));
+
+        holder.exluirRelativeLayoutFavoritos.setOnClickListener(v -> deleteFavoritaCallWebservice(position));
+
+        holder.editarRelativeLayoutAddCarrinho.setOnClickListener(view -> {
+            SessaoUsuario.getInstance().getParametrosSimulacao().setQuantidadeMaximaApostasCarrinho(3);
+            SessaoUsuario.getInstance().getParametrosSimulacao().setValorLimiteDiario(new BigDecimal("8"));
+            adicionarApostaCarrinhoRequest(ApostaBO_.getInstance_(activity), listaApostaFavorita.get(position));
         });
 
-        holder.exluirRelativeLayoutFavoritos.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                deleteFavoritaCallWebservice(position);
-            }
-        });
-
-        holder.editarRelativeLayoutAddCarrinho.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SessaoUsuario.getInstance().getParametrosSimulacao().setQuantidadeMaximaApostasCarrinho(3);
-                SessaoUsuario.getInstance().getParametrosSimulacao().setValorLimiteDiario(new BigDecimal("8"));
-                adicionarApostaCarrinhoRequest(ApostaBO_.getInstance_(activity), listaApostaFavorita.get(position));
-            }
-        });
-
-        holder.layoutSalvarNomeAposta.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (holder.editTextNomeDaAposta.getText().toString().equals("")) {
-                    ViewUtils.alertTitleButton(context, R.string.label_atencao,
-                            context.getResources().getString(R.string.MA002) + " nome da aposta",
-                            context.getResources().getString(R.string.ok));
-                } else {
-                    alterarFavoritaCallWebservice(listaApostaFavorita.get(position), holder);
-                }
+        holder.layoutSalvarNomeAposta.setOnClickListener(v -> {
+            if (holder.editTextNomeDaAposta.getText().toString().equals("")) {
+                ViewUtils.alertTitleButton(context, R.string.label_atencao,
+                        context.getResources().getString(R.string.MA002) + " nome da aposta",
+                        context.getResources().getString(R.string.ok));
+            } else {
+                alterarFavoritaCallWebservice(listaApostaFavorita.get(position), holder);
             }
         });
 
@@ -203,17 +184,17 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
 
         public ViewHolder(final View itemView) {
             super(itemView);
-            tituloApostaFavorita = (TextView) itemView.findViewById(R.id.tituloApostaFavorita);
-            tituloNomeApostaFavorita = (TextView) itemView.findViewById(R.id.tituloNomeApostaFavorita);
-            numerosApostaFavorita = (TextView) itemView.findViewById(R.id.numerosApostaFavorita);
-            nomeApostaSalvoTextView = (TextView) itemView.findViewById(R.id.nomeApostaSalvoTextView);
-            editarRelativeLayoutAddCarrinho = (RelativeLayout) itemView.findViewById(R.id.editarRelativeLayoutAddCarrinho);
-            editarRelativeLayoutFavoritos = (RelativeLayout) itemView.findViewById(R.id.editarRelativeLayoutFavoritos);
-            exluirRelativeLayoutFavoritos = (RelativeLayout) itemView.findViewById(R.id.exluirRelativeLayoutFavoritos);
-            linearLayoutLayoutContentAlterarFavoritasSalvo = (LinearLayout) itemView.findViewById(R.id.linearLayoutLayoutContentAlterarFavoritasSalvo);
-            relativeLayoutContentAlterarFavoritasEditar = (RelativeLayout) itemView.findViewById(R.id.relativeLayoutContentAlterarFavoritasEditar);
-            editTextNomeDaAposta = (EditText) itemView.findViewById(R.id.editTextNomeDaAposta);
-            layoutSalvarNomeAposta = (RelativeLayout) itemView.findViewById(R.id.layoutSalvarNomeAposta);
+            tituloApostaFavorita = itemView.findViewById(R.id.tituloApostaFavorita);
+            tituloNomeApostaFavorita = itemView.findViewById(R.id.tituloNomeApostaFavorita);
+            numerosApostaFavorita = itemView.findViewById(R.id.numerosApostaFavorita);
+            nomeApostaSalvoTextView = itemView.findViewById(R.id.nomeApostaSalvoTextView);
+            editarRelativeLayoutAddCarrinho = itemView.findViewById(R.id.editarRelativeLayoutAddCarrinho);
+            editarRelativeLayoutFavoritos = itemView.findViewById(R.id.editarRelativeLayoutFavoritos);
+            exluirRelativeLayoutFavoritos = itemView.findViewById(R.id.exluirRelativeLayoutFavoritos);
+            linearLayoutLayoutContentAlterarFavoritasSalvo = itemView.findViewById(R.id.linearLayoutLayoutContentAlterarFavoritasSalvo);
+            relativeLayoutContentAlterarFavoritasEditar = itemView.findViewById(R.id.relativeLayoutContentAlterarFavoritasEditar);
+            editTextNomeDaAposta = itemView.findViewById(R.id.editTextNomeDaAposta);
+            layoutSalvarNomeAposta = itemView.findViewById(R.id.layoutSalvarNomeAposta);
             maisInformacoesLayout = itemView.findViewById(R.id.maisInformacoesLayout);
             labelInformacaoText = itemView.findViewById(R.id.labelInformacaoText);
             informacaoText = itemView.findViewById(R.id.informacaoText);
@@ -272,9 +253,9 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
         final ApostaBO apostaBO = ApostaBO_.getInstance_(activity);
         apostaFavoritaDTO.setNome(holder.editTextNomeDaAposta.getText().toString());
         apostaFavoritaDTO.setOpenSwipeLayout(null);
-        apostaBO.postApostasFavoritas(apostaFavoritaDTO, new RequestListener<Boolean>() {
+        apostaBO.postApostasFavoritas(apostaFavoritaDTO, new RequestListener<RetornoPadraoDTO>() {
             @Override
-            public void onResponse(Boolean response) {
+            public void onResponse(RetornoPadraoDTO response) {
                 FirebaseManager.registraEvento(context ,"EFETUOU_TROCA_DO_NOME_DA_APOSTA_FAVORITA");
                 apostaFavoritaDTO.setOpenSwipeLayout(true);
                 apostaFavoritaDTO.setNome(holder.editTextNomeDaAposta.getText().toString());
@@ -367,12 +348,9 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
                 .compareTo(carrinhoDTO.getValorTotal()
                         .add(IdentificaoDeUmaApostaDas8Modalidades.getValorApostaFavoritaPorProagnostico(apostaFavoritaDTO))) < 0) {
             DialogUtils.dismiss();
-            ViewUtils.alertTitleButtonYesOrNotListener(context, context.getResources().getString(R.string.MA014), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    DialogUtils.show(context);
-                    checarApostasRepetidas(apostaBO, apostaFavoritaDTO, carrinhoDTO);
-                }
+            ViewUtils.alertTitleButtonYesOrNotListener(context, context.getResources().getString(R.string.MA014), (dialog, which) -> {
+                DialogUtils.show(context);
+                checarApostasRepetidas(apostaBO, apostaFavoritaDTO, carrinhoDTO);
             });
         } else {
             checarApostasRepetidas(apostaBO, apostaFavoritaDTO, carrinhoDTO);
@@ -382,12 +360,9 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
     private void checarApostasRepetidas(final ApostaBO apostaBO, final ApostaFavoritaDTO apostaFavoritaDTO, final CarrinhoDTO carrinhoDTO) {
         if (IdentificaoDeUmaApostaDas8Modalidades.checkExisteUmaApostaIgualCarrinho(apostaFavoritaDTO, carrinhoDTO)) {
             DialogUtils.dismiss();
-            ViewUtils.alertTitleButtonYesOrNotListener(context, context.getResources().getString(R.string.MA015), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    DialogUtils.show(activity);
-                    adicionarCarrinho(apostaBO, apostaFavoritaDTO.getId(), apostaFavoritaDTO.getModalidade());
-                }
+            ViewUtils.alertTitleButtonYesOrNotListener(context, context.getResources().getString(R.string.MA015), (dialog, which) -> {
+                DialogUtils.show(activity);
+                adicionarCarrinho(apostaBO, apostaFavoritaDTO.getId(), apostaFavoritaDTO.getModalidade());
             });
         } else {
             adicionarCarrinho(apostaBO, apostaFavoritaDTO.getId(), apostaFavoritaDTO.getModalidade());

@@ -262,16 +262,13 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
         gridviewTiposApostasRapidao.setAdapter(tiposApostasAdapter);
         gridviewTiposApostasRapidao.setExpanded(true);
 
-        gridviewTiposApostasRapidao.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                if (position == tipoApostaArrayList.size()) {
-                    FirebaseManager.registraEvento(RapidaoConfigActivity.this ,"ENTROU_LISTA_MODALIDADE_CONFIG_RAPIDAO");
-                    Intent activity = new Intent(RapidaoConfigActivity.this, SelecaoModalidadesRapidaoActivity.class);
-                    String arrayAsString = new Gson().toJson(tipoApostaLista);
-                    activity.putExtra("tiposAposta", arrayAsString);
-                    startActivityForResult(activity, 5);
-                }
+        gridviewTiposApostasRapidao.setOnItemClickListener((parent, v, position, id) -> {
+            if (position == tipoApostaArrayList.size()) {
+                FirebaseManager.registraEvento(RapidaoConfigActivity.this ,"ENTROU_LISTA_MODALIDADE_CONFIG_RAPIDAO");
+                Intent activity = new Intent(RapidaoConfigActivity.this, SelecaoModalidadesRapidaoActivity.class);
+                String arrayAsString = new Gson().toJson(tipoApostaLista);
+                activity.putExtra("tiposAposta", arrayAsString);
+                startActivityForResult(activity, 5);
             }
         });
     }

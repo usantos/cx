@@ -52,6 +52,8 @@
     <string name="tituloApostaFeita">Essa aposta foi para o seu carrinho.</string>
     <string name="novaAposta">Fazer nova aposta</string>
     <string name="confirmarApostas">Confirme suas apostas e pressione\nAVANÇAR para continuar.</string>
+    <string name="confirmacao">Confirmação</string>
+    <string name="label_acompanhe_suas_compras">_Acompanhe_\nsuas compras</string>
     <string name="avancarFormaPagamento">_Avançar_\npara a forma de pagamento</string>
     <string name="fazerNovaAposta">Fazer nova aposta</string>
 
@@ -59,13 +61,16 @@
     <string name="tituloFormaPagamento">Agora é pra valer!</string>
     <string name="infoFormaPagamento">Selecione sua forma de pagamento para prosseguir</string>
     <string name="apostarAutorizarCobranca">_Apostar_\ne autorizar cobrança</string>
+    <string name="msg_campos_em_branco">Preencha todos os campos antes de prosseguir.</string>
 
     <string name="total">Total</string>
 
-    <string name="confirmacaoPagamentoInfoApostas">Você pode visualizá-las na área Apostas realizadas do aplicativo</string>
-    <string name="confirmacaopagamentoParabens">Parabéns!\nSuas apostas foram efetivadas.</string>
+    <string name="confirmacaoPagamentoInfoApostas">Enquanto são processadas\nvocê pode acompanhá-las\na área Compras do aplicativo.</string>
+    <string name="confirmacaopagamentoParabens">Parabéns!\nSuas apostas foram\nrealizadas com sucesso.</string>
     <string name="minhasApostas">Minhas apostas</string>
+    <string name="btn_title_voltarAoInicio">_Voltar_\nao início</string>
     <string name="confirmacaoPagamentoBotaoVoltarInicio">_Voltar_\nao início</string>
+    <string name="label_concurso_atual">Informações do concurso atual.</string>
 
     <string name="novaFormaPagamentoTitulo">Cadastrar cartão</string>
     <string name="novaFormaPagamentoNenhumCartaoCadastrado">Notamos que você ainda não possui nenhum cartão de crédito cadastrado. Para continuar, informe:</string>
@@ -108,6 +113,7 @@
     <string name="msg_erro_data_invalida"> Data Inválida</string>
 
     <string name="MN003">Para continuar navegando é necessário aceitar a nova versão do Termo de Uso.</string>
+    <string name="exclusao_cartao">Deseja realmente excluir essa forma de pagamento?</string>
 
 
     <string name="title_activity_lista_rapidao">_Rapidão_</string>
@@ -117,17 +123,16 @@
     </string>
     <string name="title_activity_numeros_rapidao">NumerosRapidaoActivity</string>
 
-    <string name="label_cpf">CPF</string>
+    <string name="title_cpf">CPF</string>
     <string name="label_nome">Nome</string>
     <string name="label_nome_mae">Nome da Mãe</string>
     <string name="label_cep">CEP</string>
     <string name="label_municipio">Município</string>
-    <string name="label_uf">UF</string>
+    <string name="title_uf">UF</string>
     <string name="label_nascimento">Nascimento</string>
     <string name="label_email">E-mail</string>
     <string name="label_boas_vindas">Que bom ver você por aqui :)</string>
     <string name="label_cadastro_rapido">O cadastro é bem rápido.\nPara começar, informe os dados abaixo:</string>
-    <string name="label_cadastrar">Cadastrar</string>
     <string name="label_encontre_lotorica_atraves_endereco_cep_codigo">Para isso, encontre a lotérica através\nde seu endereço, CEP ou código.</string>
     <string name="label_empate">Empate</string>
     <string name="label_nome_do_seu_time">Nome do seu time</string>
@@ -175,6 +180,7 @@
     <string name="label_salve_esta_aposta_carinha">Salve esta aposta :)</string>
     <string name="label_aposta_espelho">Aposta espelho</string>
     <string name="label_aposte_agora">Aposte agora</string>
+    <string name="botao_aposte_agora">Aposte\n_agora_</string>
     <string name="label_experimente">Experimente</string>
     <string name="label_aposte_aqui">Aposte\naqui</string>
     <string name="label_faca_login_cadastre">Faça login/cadastre-se</string>
@@ -187,7 +193,7 @@
     <string name="title_activity_detalhes_compras">Apostas da Compra</string>
     <string name="label_empty_list_compras">Você ainda não possui compras neste mês.</string>
     <string name="label_declaracao_termo_uso">Declaro ter lido e concordado com os\ntermos de uso</string>
-    <string name="label_cotinuar">Continuar</string>
+    <string name="title_continuar">Continuar</string>
     <string name="MA008">Tem certeza que deseja sair?</string>
 
     <string name="label_voce_apostou">Você apostou</string>
@@ -403,4 +409,61 @@
     <string name="label_quer_adicionar">Quer adicionar suas apostas favoritas?\n_Também pode!_</string>
     <string name="label_modalidades_favoritas">Selecione os limites da sua compra,\\nsuas modalidades favoritas.</string>
     <string name="label_configure_o_rapidao">Configure o que o rapidão vai misturar:</string>
+    <string name="title_cadastrar">Cadastrar</string>
+    <string name="title_voltar">Voltar</string>
+    <string name="title_orientacaoCodigoBarras">Posicione a linha abaixo sobre o código de barras e aguarde a focalização da câmera.</string>
+    <string name="title_digitarCodigoBarras">Digitar sua aposta realizada</string>
+    <string name="title_numCartao">Número do cartão</string>
+    <string name="title_nomeIgualAoCartao">Nome igual ao do cartão</string>
+    <string name="title_cvv">Código de segurança</string>
+    <string name="title_anoValidade">Ano de validade</string>
+    <string name="title_salvarCartao">Salvar este cartão para futuras apostas</string>
+    <string name="title_mesDeValidade">Mês de validade</string>
+    <string name="title_sair">Sair</string>
+    <string name="title_minhaArea">Minha área</string>
+    <string name="title_lerBilhete">Ler Bilhete</string>
+    <string name="title_repassesSociais">Repasses sociais</string>
+    <string name="title_aguarde">Aguarde</string>
+    <string name="title_sorteio">Sorteio</string>
+    <string name="title_apostasEncerram">Apostas se encerram em</string>
+    <string name="title_cadastroRealizado">Seu cadastro foi realizado com sucesso.</string>
+    <string name="title_aguardeRedirecionamento">Aguarde apenas um instante enquanto te redirecionamos para a home. :)</string>
+    <string name="title_informeNumBilhete">Por favor, informe o número do seu bilhete.</string>
+    <string name="title_apostas_favoritas">Apostas favoritas</string>
+    <string name="title_orientacaoRapidao">Selecione as opções que você quer contemplar no Rapidão.</string>
+    <string name="title_salvar">Salvar</string>
+    <string name="title_entendi">Entendi</string>
+    <string name="title_restrito18anos">O uso do aplicativo é restrito a maiores de 18 anos.</string>
+    <string name="title_modalidades">Modalidades</string>
+    <string name="title_selecioneOpcoesRapidao">Selecione as opções que você quer contemplar no Rapidão.</string>
+
+    <!-- Mercado pago -->
+    <string name="mercado_pago_mes_invalido">Mês inválido.</string>
+    <string name="mercado_pago_ano_invalido">Ano inválido.</string>
+    <string name="mercado_pago_email_invalido">Email inválido.</string>
+    <string name="mercado_pago_padrao">Não foi possível realizar o pagamento.\nFavor entrar em contato com o Mercado Pago através do site\nwww.mercadopago.com.br.</string>
+    <string name="mercado_pago_digito_verificador_invalido">Não foi possível realizar o crédito do prêmio, pois o seu CPF não coincide com o CPF registrado no MercadoPago para o e-mail informado.</string>
+    <string name="mercado_pago_digito_verificador_titular_invalido">Revise o seu documento.</string>
+    <string name="mercado_pago_digital_invalida">Digital inválida.</string>
+    <string name="mercado_pago_tipo_metodo_pagamento_invalido">Tipo de pagamento inválido.</string>
+    <string name="mercado_pago_id_metodo_pagamento_invalido">Método de pagamento inválido.</string>
+    <string name="mercado_pago_consumidor_nao_permitido">A operação não esta permitida para o consumidor.</string>
+    <string name="mercado_pago_vendedor_nao_permitido">A operação não esta permitida para o vendedor.</string>
+    <string name="mercado_pago_usuarios_invalidos_envolvidos">Usuários inválidos estão envolvidos na transação.</string>
+    <string name="mercado_pago_consumidor_igual_vendedor">O consumidor possui os mesmos dados do vendedor.</string>
+    <string name="mercado_pago_nome_titular_invalido">Nome do titular inválido.</string>
+    <string name="mercado_pago_cliente_nao_autorizado">Cliente não autorizado.</string>
+    <string name="mercado_pago_metodo_pagamento_vazio">Método de pagamento está vazio.</string>
+    <string name="mercado_pago_codigo_seguranca_invalido">O código de segurança esta inválido.</string>
+    <string name="mercado_pago_codigo_seguranca_vazio">O código de segurança está vazio.</string>
+    <string name="mercado_pago_metodo_pagamento_invalido">Método de pagamento inválido.</string>
+    <string name="mercado_pago_numero_cartao_Vazio">O número do cartão está vazio.</string>
+    <string name="mercado_pago_numero_cartao_Incorreto">Preencha o número do cartão corretamente.</string>
+    <string name="mercado_pago_mes_vazio">O mês está vazio.</string>
+    <string name="mercado_pago_ano_vazio">O ano está vazio.</string>
+    <string name="mercado_pago_nome_titular_vazio">O nome do titular esta vazio.</string>
+    <string name="mercado_pago_numero_documento_vazio">O número do documento está vazio.</string>
+    <string name="mercado_pago_tipo_vazio">O tipo está vazio.</string>
+    <string name="mercado_pago_data_expiracao_invalida">Data de expiração inválida.</string>
+
 </resources>

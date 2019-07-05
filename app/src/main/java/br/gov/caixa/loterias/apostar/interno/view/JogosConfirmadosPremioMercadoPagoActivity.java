@@ -45,21 +45,21 @@ public class JogosConfirmadosPremioMercadoPagoActivity extends AppCompatActivity
         setContentView(R.layout.activity_jogos_confirmados_premio_mercado_pago);
         setTitle( ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.title_activity_resultado_ler_bilhetes)));
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        emailPremioMercadoPagoEditText = (EditText) findViewById( R.id.emailPremioMercadoPagoEditText );
-        textoTituloPremioConfirmado = (TextView) findViewById( R.id.textoTituloPremioConfirmado );
-        textoPremioConfirmado = (TextView) findViewById( R.id.textoPremioConfirmado );
-        valorPremioTextView = (TextView) findViewById( R.id.valorPremioTextView );
-        resgatarPremioButton = (Button) findViewById( R.id.resgatarPremioButton );
-        voltarPremioButton = (Button) findViewById( R.id.voltarPremioButton );
+        emailPremioMercadoPagoEditText = findViewById( R.id.emailPremioMercadoPagoEditText );
+        textoTituloPremioConfirmado = findViewById( R.id.textoTituloPremioConfirmado );
+        textoPremioConfirmado = findViewById( R.id.textoPremioConfirmado );
+        valorPremioTextView = findViewById( R.id.valorPremioTextView );
+        resgatarPremioButton = findViewById( R.id.resgatarPremioButton );
+        voltarPremioButton = findViewById( R.id.voltarPremioButton );
 
-        contentTopoConfirmarLinearLayout = (LinearLayout) findViewById( R.id.contentTopoConfirmarLinearLayout );
-        contentTopoConfirmadoLinearLayout = (LinearLayout) findViewById( R.id.contentTopoConfirmadoLinearLayout );
-        contentConfirmarLinearLayout = (LinearLayout) findViewById( R.id.contentConfirmarLinearLayout );
-        contentConfirmadoLinearLayout = (LinearLayout) findViewById( R.id.contentConfirmadoLinearLayout );
+        contentTopoConfirmarLinearLayout = findViewById( R.id.contentTopoConfirmarLinearLayout );
+        contentTopoConfirmadoLinearLayout = findViewById( R.id.contentTopoConfirmadoLinearLayout );
+        contentConfirmarLinearLayout = findViewById( R.id.contentConfirmarLinearLayout );
+        contentConfirmadoLinearLayout = findViewById( R.id.contentConfirmadoLinearLayout );
 
 
         textoTituloPremioConfirmado.setText( "Em breve seu prêmio estará disponível\n em sua conta no mercado pago" );
@@ -77,26 +77,18 @@ public class JogosConfirmadosPremioMercadoPagoActivity extends AppCompatActivity
 
         emailPremioMercadoPagoEditText.setText( SessaoUsuario.getInstance().getEmail() );
 
-        resgatarPremioButton.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!ValidacaoUtils.validarEmail( emailPremioMercadoPagoEditText.getText().toString() )) {
-                    ViewUtils.alertTitleButton( JogosConfirmadosPremioMercadoPagoActivity.this,
-                            R.string.label_atencao,
-                            getResources().getString( R.string.MA021 ),
-                            getResources().getString( R.string.ok ) );
-                    return;
-                }
-                callWebserviceResgatarPremio();
+        resgatarPremioButton.setOnClickListener(view -> {
+            if (!ValidacaoUtils.validarEmail( emailPremioMercadoPagoEditText.getText().toString() )) {
+                ViewUtils.alertTitleButton( JogosConfirmadosPremioMercadoPagoActivity.this,
+                        R.string.label_atencao,
+                        getResources().getString( R.string.MA021 ),
+                        getResources().getString( R.string.ok ) );
+                return;
             }
-        } );
+            callWebserviceResgatarPremio();
+        });
 
-        voltarPremioButton.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        } );
+        voltarPremioButton.setOnClickListener(view -> finish());
     }
 
     @Override

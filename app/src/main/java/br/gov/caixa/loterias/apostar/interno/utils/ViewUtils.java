@@ -191,13 +191,8 @@ public class ViewUtils {
         Dialog dialog = ViewUtils.dialogo(context, mensagem)
                 .setCancelable(false)
                 .setOnDismissListener(listener)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }).show();
-        TextView textView = ((TextView) dialog.findViewById(android.R.id.message));
+                .setPositiveButton("OK", (dialog1, which) -> dialog1.dismiss()).show();
+        TextView textView = dialog.findViewById(android.R.id.message);
         textView.setTypeface(getFontFutura(context));
         return dialog;
     }
@@ -206,15 +201,10 @@ public class ViewUtils {
         Dialog dialog = ViewUtils.dialogo(context, titulo, mensagem)
                 .setCancelable(false)
                 .setOnDismissListener(listener)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }).show();
+                .setPositiveButton("OK", (dialog1, which) -> dialog1.dismiss()).show();
 
-        DialogTitle textTitleView = ((DialogTitle) dialog.findViewById(R.id.alertTitle));
-        TextView textMessageView = ((TextView) dialog.findViewById(android.R.id.message));
+        DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
+        TextView textMessageView = dialog.findViewById(android.R.id.message);
         textTitleView.setTypeface(getFontFuturaBold(context));
         textMessageView.setTypeface(getFontFutura(context));
         return dialog;
@@ -224,15 +214,10 @@ public class ViewUtils {
         Dialog dialog = ViewUtils.dialogo(context, title, message)
                 .setCancelable(false)
                 .setOnDismissListener(listener)
-                .setPositiveButton(buttonName, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }).show();
+                .setPositiveButton(buttonName, (dialog1, which) -> dialog1.dismiss()).show();
 
-        DialogTitle textTitleView = ((DialogTitle) dialog.findViewById(R.id.alertTitle));
-        TextView textMessageView = ((TextView) dialog.findViewById(android.R.id.message));
+        DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
+        TextView textMessageView = dialog.findViewById(android.R.id.message);
         textTitleView.setTypeface(getFontFuturaBold(context));
         textMessageView.setTypeface(getFontFutura(context));
         return dialog;
@@ -241,16 +226,11 @@ public class ViewUtils {
     public static Dialog alertTitleButtonPositiveListener(Context context, int title, String message, int buttonName, DialogInterface.OnClickListener listener) {
         Dialog dialog = ViewUtils.dialogo(context, title, message)
                 .setCancelable(true)
-                .setNegativeButton(R.string.cancelar, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                })
+                .setNegativeButton(R.string.cancelar, (dialogInterface, i) -> dialogInterface.dismiss())
                 .setPositiveButton(buttonName, listener).show();
 
-        DialogTitle textTitleView = ((DialogTitle) dialog.findViewById(R.id.alertTitle));
-        TextView textMessageView = ((TextView) dialog.findViewById(android.R.id.message));
+        DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
+        TextView textMessageView = dialog.findViewById(android.R.id.message);
         textTitleView.setTypeface(getFontFuturaBold(context));
         textMessageView.setTypeface(getFontFutura(context));
         return dialog;
@@ -259,17 +239,12 @@ public class ViewUtils {
     public static Dialog alertTitleButtonYesOrNotListener(Context context, String message, DialogInterface.OnClickListener listener) {
         Dialog dialog = ViewUtils.dialogo(context, R.string.label_atencao, message)
                 .setCancelable(false)
-                .setNegativeButton (R.string.label_nao, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                })
+                .setNegativeButton (R.string.label_nao, (dialogInterface, i) -> dialogInterface.dismiss())
                 .setPositiveButton(R.string.label_sim, listener)
                 .show();
 
-        DialogTitle textTitleView = ((DialogTitle) dialog.findViewById(R.id.alertTitle));
-        TextView textMessageView = ((TextView) dialog.findViewById(android.R.id.message));
+        DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
+        TextView textMessageView = dialog.findViewById(android.R.id.message);
         textTitleView.setTypeface(getFontFuturaBold(context));
         textMessageView.setTypeface(getFontFutura(context));
         return dialog;
@@ -279,15 +254,10 @@ public class ViewUtils {
         Dialog dialog = ViewUtils.dialogo(context, R.string.label_atencao, context.getResources().getString(R.string.MA003))
                 .setCancelable(false)
                 .setNegativeButton(R.string.label_nao, listener)
-                .setPositiveButton(R.string.label_sim, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                }).show();
+                .setPositiveButton(R.string.label_sim, (dialogInterface, i) -> dialogInterface.dismiss()).show();
 
-        DialogTitle textTitleView = ((DialogTitle) dialog.findViewById(R.id.alertTitle));
-        TextView textMessageView = ((TextView) dialog.findViewById(android.R.id.message));
+        DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
+        TextView textMessageView = dialog.findViewById(android.R.id.message);
         textTitleView.setTypeface(getFontFuturaBold(context));
         textMessageView.setTypeface(getFontFutura(context));
         return dialog;
@@ -452,7 +422,7 @@ public class ViewUtils {
                         int heightElementToExpand = activity.findViewById(idViewToExpand).getMeasuredHeight();
                         float heightStatusBar = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 25, resources.getDisplayMetrics());
 
-                        if (!((ScrollView) activity.findViewById(idScrollView)).canScrollVertically(1)) {
+                        if (!activity.findViewById(idScrollView).canScrollVertically(1)) {
                             ConstraintSet set = new ConstraintSet();
 
                             set.clone(constraintLayout);

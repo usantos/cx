@@ -53,7 +53,7 @@ public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = layoutInflater.inflate(R.layout.list_item_side_menu, null);
         }
-        TextView expandedListTextView = (TextView) convertView
+        TextView expandedListTextView = convertView
                 .findViewById(R.id.titleItemSideMenu);
         expandedListTextView.setText(expandedListText);
         return convertView;
@@ -94,9 +94,9 @@ public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
         listTitleTextView.setTypeface(null, Typeface.BOLD);
         listTitleTextView.setText(listTitle);
 
-        ImageView imagemMaisOpcoes = (ImageView) convertView.findViewById(R.id.imagemMaisOpcoes);
+        ImageView imagemMaisOpcoes = convertView.findViewById(R.id.imagemMaisOpcoes);
 
-        ImageView imageViewGroup = (ImageView) convertView
+        ImageView imageViewGroup = convertView
                 .findViewById(R.id.imagemItemGroupSideMenu);
         switch (listPosition) {
             case 0:

@@ -134,7 +134,7 @@
                     android:layout_marginRight="16dp"
                     android:layout_marginTop="55dp"
                     android:background="@color/amarelo"
-                    android:text="@string/label_cotinuar"
+                    android:text="@string/title_continuar"
                     android:textAllCaps="false"
                     android:textColor="@color/branco"
                     android:textSize="16sp"

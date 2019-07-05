@@ -50,16 +50,16 @@ public class RapidaoApostaFavoritasSelecaoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_rapidao_aposta_favorita_selecao);
 
         setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.title_activity_lista_rapidao)));
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         String arrayApostas =  getIntent().getExtras().getString("apostasFavoritas");
         apostasFavoritaListaSelecionadas = new Gson().fromJson(arrayApostas, new TypeToken<ArrayList<ApostaFavoritaDTO>>(){}.getType());
 
-        progressLoadingMore = (ProgressBar) findViewById(R.id.favoritas_loading_more_rapidao);
-        recycleApostasFavoritasRapidao = (RecyclerView) findViewById(R.id.recycleApostasFavoritasRapidao);
-        btnSalvar = (Button) findViewById(R.id.salvarNumerosApostaRapidaoSelecao);
+        progressLoadingMore = findViewById(R.id.favoritas_loading_more_rapidao);
+        recycleApostasFavoritasRapidao = findViewById(R.id.recycleApostasFavoritasRapidao);
+        btnSalvar = findViewById(R.id.salvarNumerosApostaRapidaoSelecao);
 
         listeners();
         callWebservice();
@@ -119,7 +119,7 @@ public class RapidaoApostaFavoritasSelecaoActivity extends AppCompatActivity {
                     public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                         super.onScrollStateChanged(recyclerView, newState);
 
-                        View view = (View) recyclerView.getChildAt(recyclerView.getChildCount() - 1);
+                        View view = recyclerView.getChildAt(recyclerView.getChildCount() - 1);
                         int diff = (view.getBottom() - (recyclerView.getHeight() + recyclerView.getScrollY()));
 
                         // if diff is zero, then the bottom has been reached

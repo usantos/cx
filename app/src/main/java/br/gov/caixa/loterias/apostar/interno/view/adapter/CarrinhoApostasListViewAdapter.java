@@ -133,12 +133,7 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
             buttonApostaEspelho.setVisibility(View.VISIBLE);
         }
 
-        holder.itemView.findViewById(R.id.excluirApostaCarrinho).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                deletarAposta(aposta);
-            }
-        });
+        holder.itemView.findViewById(R.id.excluirApostaCarrinho).setOnClickListener(view -> deletarAposta(aposta));
 
         if (apostas.get(position).getPartidasLoteca() != null && !apostas.get(position).getPartidasLoteca().isEmpty()) {
             DetalheApostaLotecaAdapter detalheApostaLotecaAdapter = new DetalheApostaLotecaAdapter(apostas.get(position).getPartidasLoteca());
@@ -204,35 +199,32 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
 
     private void deletarAposta(final IdentificaoDeUmaApostaDas8Modalidades aposta) {
 
-        ViewUtils.alertTitleButtonYesOrNotListener(context, context.getResources().getString(R.string.MA010), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                ApostaBO apostaBO = ApostaBO_.getInstance_(parentActivity);
-                final Dialog loadViewProgress = LoadingViewLoterias.show(parentActivity);
-                apostaBO.deleteApostaCarrinho(aposta.getId().toString(), new RequestListener<CarrinhoDTOResponse>() {
-                    @Override
-                    public void onResponse(CarrinhoDTOResponse response) {
-                        loadViewProgress.dismiss();
-                        parentActivity.setCarrinho(response.getPayload());
-                        deletarApostaBaseLocal(aposta, Boolean.FALSE);
-                        parentActivity.atualizaLayout(Boolean.FALSE);
-                        if (response.getRedirect() != null) {
-                            RedirectNetwork.checkRedirectSucesso(response.getRedirect(), parentActivity);
-                        }
+        ViewUtils.alertTitleButtonYesOrNotListener(context, context.getResources().getString(R.string.MA010), (dialogInterface, i) -> {
+            ApostaBO apostaBO = ApostaBO_.getInstance_(parentActivity);
+            final Dialog loadViewProgress = LoadingViewLoterias.show(parentActivity);
+            apostaBO.deleteApostaCarrinho(aposta.getId().toString(), new RequestListener<CarrinhoDTOResponse>() {
+                @Override
+                public void onResponse(CarrinhoDTOResponse response) {
+                    loadViewProgress.dismiss();
+                    parentActivity.setCarrinho(response.getPayload());
+                    deletarApostaBaseLocal(aposta, Boolean.FALSE);
+                    parentActivity.atualizaLayout(Boolean.FALSE);
+                    if (response.getRedirect() != null) {
+                        RedirectNetwork.checkRedirectSucesso(response.getRedirect(), parentActivity);
                     }
+                }
 
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        loadViewProgress.dismiss();
-                        if (error.networkResponse != null && error.networkResponse.statusCode != 401) {
-                            RedirectNetwork.checkRedirect(error, parentActivity);
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    loadViewProgress.dismiss();
+                    if (error.networkResponse != null && error.networkResponse.statusCode != 401) {
+                        RedirectNetwork.checkRedirect(error, parentActivity);
 
-                        } else {
-                            deletarApostaBaseLocal(aposta, Boolean.TRUE);
-                        }
+                    } else {
+                        deletarApostaBaseLocal(aposta, Boolean.TRUE);
                     }
-                });
-            }
+                }
+            });
         });
     }
 

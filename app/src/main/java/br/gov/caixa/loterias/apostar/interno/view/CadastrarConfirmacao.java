@@ -15,21 +15,18 @@ public class CadastrarConfirmacao extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_cadastrar_confirmacao );
-        Toolbar toolbar = (Toolbar) findViewById( R.id.toolbar );
+        Toolbar toolbar = findViewById( R.id.toolbar );
         setSupportActionBar( toolbar );
         setTitle( ViewUtils.textFuturaAndFuturaBoldTitle( this, getTitle().toString() ) );
 
-        TextView tituloConfirmacaoCadastroTextView = (TextView) findViewById( R.id.tituloConfirmacaoCadastroTextView );
-        TextView subtituloConfirmaCadastroTextView = (TextView) findViewById( R.id.subtituloConfirmaCadastroTextView );
+        TextView tituloConfirmacaoCadastroTextView = findViewById( R.id.tituloConfirmacaoCadastroTextView );
+        TextView subtituloConfirmaCadastroTextView = findViewById( R.id.subtituloConfirmaCadastroTextView );
         tituloConfirmacaoCadastroTextView.setText( ViewUtils.textFuturaAndFuturaBold( this, "_Excelente_!\nSeu cadastro foi realizado\ncom sucesso!" ) );
         subtituloConfirmaCadastroTextView.setText( "Aguarde apenas um instante enquanto\nte redirecionamos para suas apostas :)" );
 
-        Utils.delay(3, new Utils.DelayCallback() {
-            @Override
-            public void afterDelay() {
-                PrincipalActivity_.intent(CadastrarConfirmacao.this).start();
-                CadastrarConfirmacao.this.finish();
-            }
+        Utils.delay(3, () -> {
+            PrincipalActivity_.intent(CadastrarConfirmacao.this).start();
+            CadastrarConfirmacao.this.finish();
         });
     }
 

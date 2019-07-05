@@ -324,7 +324,7 @@
                 android:background="@drawable/rounded_textview"
                 android:gravity="center"
                 android:outlineProvider="none"
-                android:text="3"
+                tools:text="3"
                 android:textColor="@color/branco"
                 android:textSize="12sp"
                 android:translationZ="2dp"

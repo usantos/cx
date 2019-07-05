@@ -35,8 +35,8 @@ public class IntroducaoActivity extends AppCompatActivity {
         FirebaseManager.registraEvento(IntroducaoActivity.this  ,"ENTROU_TOUR_TELA1");
 
         adapterViewPager = new MyPagerAdapter(getSupportFragmentManager());
-        vpPager = (ViewPager) findViewById(R.id.vpPager);
-        CircleIndicator indicator = (CircleIndicator) findViewById(R.id.indicator_custom);
+        vpPager = findViewById(R.id.vpPager);
+        CircleIndicator indicator = findViewById(R.id.indicator_custom);
         vpPager.setAdapter(adapterViewPager);
         indicator.setViewPager(vpPager);
 

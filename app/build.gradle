@@ -137,10 +137,7 @@ dependencies {
 
     //Biblioteca para arrastar os itens do Recyclerview
     implementation "com.daimajia.swipelayout:library:1.2.0@aar"
-
-    //Biblioteca para exibição de Dialog
-    implementation 'com.code-troopers.betterpickers:library:3.1.0'
-
+    
     //Serialização de JSON
     implementation 'com.google.code.gson:gson:2.8.5'
 
@@ -160,7 +157,6 @@ dependencies {
     //Biblioteca de scanner de código de barras
     implementation 'com.journeyapps:zxing-android-embedded:3.5.0'
     implementation 'commons-lang:commons-lang:2.6'
-    //compile 'me.dm7.barcodescanner:zxing:1.9'
 
     //QRCode gerador
     implementation 'androidmads.library.qrgenearator:QRGenearator:1.0.3'

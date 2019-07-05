@@ -132,13 +132,7 @@ public class CarrinhoApostasListViewRapidaoAdapter extends RecyclerView.Adapter<
         }
 
 
-        holder.itemView.findViewById(R.id.excluirApostaCarrinhoLayout).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onCarrinhoApostasRapidaoListener.onRemove( apostas.get( position ) );
-
-            }
-        });
+        holder.itemView.findViewById(R.id.excluirApostaCarrinhoLayout).setOnClickListener(view -> onCarrinhoApostasRapidaoListener.onRemove( apostas.get( position ) ));
 
         StringBuilder numeroStr = new StringBuilder();
         if (apostas.get(position).getIndicadorSurpresinha().getValor() == 2) {

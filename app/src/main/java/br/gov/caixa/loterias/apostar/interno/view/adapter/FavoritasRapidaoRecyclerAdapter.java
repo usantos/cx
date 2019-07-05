@@ -114,9 +114,9 @@ public final class FavoritasRapidaoRecyclerAdapter extends RecyclerView.Adapter<
 
         public ViewHolder(final View itemView) {
             super(itemView);
-            modalidades = (TextView) itemView.findViewById(R.id.tituloApostaFavorira);
-            numerosEDetalhes = (TextView) itemView.findViewById(R.id.numerosApostaFavorita);
-            checkBox = (CheckBox) itemView.findViewById(R.id.checkboxApostaFavorita);
+            modalidades = itemView.findViewById(R.id.tituloApostaFavorira);
+            numerosEDetalhes = itemView.findViewById(R.id.numerosApostaFavorita);
+            checkBox = itemView.findViewById(R.id.checkboxApostaFavorita);
         }
     }
 

@@ -117,8 +117,8 @@ public class FavoritasActivity extends AppCompatActivity {
     }
 
     private void atualizaLayout(){
-        TextView tituloFavoritas = (TextView) findViewById(R.id.tituloFavoritas);
-        TextView subTituloFavoritas = (TextView) findViewById(R.id.subTituloFavoritas);
+        TextView tituloFavoritas = findViewById(R.id.tituloFavoritas);
+        TextView subTituloFavoritas = findViewById(R.id.subTituloFavoritas);
         tituloFavoritas.setText("Os seus números da sorte\nno mesmo lugar");
         subTituloFavoritas.setText("Nesta área estão todas as suas apostas da sorte.\nÉ só escolher e apostar. Boa Sorte!");
 
@@ -141,32 +141,24 @@ public class FavoritasActivity extends AppCompatActivity {
 
                 apostaFavoritaLista = response.getPayload().getLista();
                 //recyclerView
-                recyclerViewFavoritas = (RecyclerView) findViewById(R.id.recyclerFavoritas);
+                recyclerViewFavoritas = findViewById(R.id.recyclerFavoritas);
                 favoritasAdapter = new FavoritasRecyclerViewAdapter(FavoritasActivity.this, FavoritasActivity.this, apostaFavoritaLista);
                 layoutManager = new LinearLayoutManager(FavoritasActivity.this);
 
                 recyclerViewFavoritas.setHasFixedSize(true);
                 recyclerViewFavoritas.setAdapter(favoritasAdapter);
                 recyclerViewFavoritas.setLayoutManager(layoutManager);
-                favoritasAdapter.setOnExcluiuTudo( new FavoritasRecyclerViewAdapter.ExcluiuTudo() {
-                    @Override
-                    public void onVazio() {
-                        callWebservice();
-                    }
-                });
+                favoritasAdapter.setOnExcluiuTudo(() -> callWebservice());
 
-                scrollViewContentViewFavoritas.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
-                    @Override
-                    public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                        View view = (View) v.getChildAt(v.getChildCount() - 1);
-                        int diff = (view.getBottom() - (v.getHeight() + v.getScrollY()));
+                scrollViewContentViewFavoritas.setOnScrollChangeListener((NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) -> {
+                    View view = v.getChildAt(v.getChildCount() - 1);
+                    int diff = (view.getBottom() - (v.getHeight() + v.getScrollY()));
 
-                        // if diff is zero, then the bottom has been reached
-                        if (diff == 0 && bloquearRequestScroll == false) {
-                            // do stuff
-                            getFavoritasScroll();
-                            bloquearRequestScroll = true;
-                        }
+                    // if diff is zero, then the bottom has been reached
+                    if (diff == 0 && bloquearRequestScroll == false) {
+                        // do stuff
+                        getFavoritasScroll();
+                        bloquearRequestScroll = true;
                     }
                 });
 

@@ -48,6 +48,7 @@
                         android:layout_marginStart="16dp"
                         android:textSize="14sp"
                         app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
                         tools:text="lotofácil"
                         tools:textColor="#642475" />
 
@@ -59,6 +60,7 @@
                         android:textColor="@color/azulescuroapostafavorita"
                         android:textSize="12sp"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
                         tools:text="Conc. 0000 a 0000" />
                 </android.support.constraint.ConstraintLayout>
 

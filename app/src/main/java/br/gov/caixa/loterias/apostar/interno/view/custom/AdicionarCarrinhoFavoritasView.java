@@ -71,12 +71,12 @@ public class AdicionarCarrinhoFavoritasView extends DialogFragment implements Vi
     @Override
     public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        picker_tipo_concurso = (NumberPicker) view.findViewById(R.id.picker_tipo_concurso);
+        picker_tipo_concurso = view.findViewById(R.id.picker_tipo_concurso);
 
-        adicionarCarrinhoFavoritosButton = (Button) view.findViewById(R.id.adicionarCarrinhoFavoritosButton);
-        cancelarModalFavoritosAddCarrinhoButton = (Button) view.findViewById(R.id.cancelarModalFavoritosAddCarrinhoButton);
-        selecioneConcursoButton = (Button) view.findViewById(R.id.selecioneConcursoButton);
-        selecioneQntTeimosinhaButton = (Button) view.findViewById(R.id.selecioneQntTeimosinhaButton);
+        adicionarCarrinhoFavoritosButton = view.findViewById(R.id.adicionarCarrinhoFavoritosButton);
+        cancelarModalFavoritosAddCarrinhoButton = view.findViewById(R.id.cancelarModalFavoritosAddCarrinhoButton);
+        selecioneConcursoButton = view.findViewById(R.id.selecioneConcursoButton);
+        selecioneQntTeimosinhaButton = view.findViewById(R.id.selecioneQntTeimosinhaButton);
 
 
         cancelarModalFavoritosAddCarrinhoButton.setOnClickListener( this );
@@ -110,42 +110,28 @@ public class AdicionarCarrinhoFavoritasView extends DialogFragment implements Vi
         setPickerTeimosinhas( 0 , view);
 
 
-        picker_tipo_concurso.setOnValueChangedListener( new NumberPicker.OnValueChangeListener() {
-            @Override
-            public void onValueChange(NumberPicker numberPicker, int oldVal, int newVal) {
-                setPickerTeimosinhas( newVal, view );
-            }
+        picker_tipo_concurso.setOnValueChangedListener((numberPicker, oldVal, newVal) -> setPickerTeimosinhas( newVal, view ));
+
+
+        picker_qnt_teimosinhas.setOnValueChangedListener((numberPicker, oldVal, newVal) -> {
+
         });
 
-
-        picker_qnt_teimosinhas.setOnValueChangedListener( new NumberPicker.OnValueChangeListener() {
-            @Override
-            public void onValueChange(NumberPicker numberPicker, int oldVal, int newVal) {
-
+        selecioneConcursoButton.setOnClickListener(view12 -> {
+            Integer alturaAnimacao = 0;
+            if (picker_tipo_concurso.getHeight()==0){
+                alturaAnimacao = 100;
             }
+            setarAlturaConteudo( alturaAnimacao, picker_tipo_concurso );
         });
 
-        selecioneConcursoButton.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Integer alturaAnimacao = 0;
-                if (picker_tipo_concurso.getHeight()==0){
-                    alturaAnimacao = 100;
-                }
-                setarAlturaConteudo( alturaAnimacao, picker_tipo_concurso );
+        selecioneQntTeimosinhaButton.setOnClickListener(view1 -> {
+            Integer alturaAnimacao = 0;
+            if (picker_qnt_teimosinhas.getHeight()==0){
+                alturaAnimacao = 100;
             }
-        } );
-
-        selecioneQntTeimosinhaButton.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Integer alturaAnimacao = 0;
-                if (picker_qnt_teimosinhas.getHeight()==0){
-                    alturaAnimacao = 100;
-                }
-                setarAlturaConteudo( alturaAnimacao, picker_qnt_teimosinhas );
-            }
-        } );
+            setarAlturaConteudo( alturaAnimacao, picker_qnt_teimosinhas );
+        });
 
     }
 
@@ -166,7 +152,7 @@ public class AdicionarCarrinhoFavoritasView extends DialogFragment implements Vi
     }
 
     private void setPickerTeimosinhas(Integer position, View view){
-        picker_qnt_teimosinhas = (NumberPicker) view.findViewById(R.id.picker_qnt_teimosinhas);
+        picker_qnt_teimosinhas = view.findViewById(R.id.picker_qnt_teimosinhas);
         listaTeimosinhas = new ArrayList<>();
         for (int i= 0;  i < arrayConcursos.get( position ).getParametroJogo().getTeimosinhas().size(); i++){
             listaTeimosinhas.add( arrayConcursos.get( position ).getParametroJogo().getTeimosinhas().get( i ).toString() );
@@ -181,14 +167,11 @@ public class AdicionarCarrinhoFavoritasView extends DialogFragment implements Vi
 
     private void setarAlturaConteudo(Integer alturaConteudo, final View view){
         ValueAnimator animator = ValueAnimator.ofInt(view.getHeight(), ViewUtils.setDisplayMetric( alturaConteudo, getContext() ));
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                int val = (Integer) valueAnimator.getAnimatedValue();
-                ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
-                layoutParams.height = val;
-                view.setLayoutParams(layoutParams);
-            }
+        animator.addUpdateListener(valueAnimator -> {
+            int val = (Integer) valueAnimator.getAnimatedValue();
+            ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
+            layoutParams.height = val;
+            view.setLayoutParams(layoutParams);
         });
         animator.setDuration(500);
         animator.start();

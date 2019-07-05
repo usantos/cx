@@ -52,62 +52,50 @@ public class BaseBO {
     }
 
     protected <T> Response.ErrorListener interceptError(final GsonRequest request, final HashMap<String, String> headers, final RequestListener<T> listener){
-        return new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(final VolleyError error) {
-                if(AppUtils.isNetworkAvailable(context)){
-                    //Caso não esteja autorizado tenta atualizar o token de acesso
-                    if(MensagensNetwork.isUnauthorizedError(error) && keycloakBO.getAccessToken() != null) {
-                        keycloakBO.refreshAccess(new KeycloakBO.OnRefreshAccess() {
-                            @Override
-                            public void onRefreshAccess() {
-                                //Se retornar o token, tenta fazer a mesma requisição
+        return error -> {
+            if(AppUtils.isNetworkAvailable(context)){
+                //Caso não esteja autorizado tenta atualizar o token de acesso
+                if(MensagensNetwork.isUnauthorizedError(error) && keycloakBO.getAccessToken() != null) {
+                    keycloakBO.refreshAccess(() -> {
+                        //Se retornar o token, tenta fazer a mesma requisição
 
-                                AuthorizationServiceConfiguration authorizationServiceConfiguration = new AuthorizationServiceConfiguration(
-                                        Uri.parse(BuildConfig.URL_SSO_AUTH),
-                                        Uri.parse(BuildConfig.URL_SSO_TOKEN)
-                                );
+                        AuthorizationServiceConfiguration authorizationServiceConfiguration = new AuthorizationServiceConfiguration(
+                                Uri.parse(BuildConfig.URL_SSO_AUTH),
+                                Uri.parse(BuildConfig.URL_SSO_TOKEN)
+                        );
 
-                                AuthorizationService authorizationService = new AuthorizationService(context);
-                                TokenRequest.Builder tokenBuilder = new TokenRequest.Builder(authorizationServiceConfiguration, BuildConfig.SSO_CLIENT_ID);
-                                tokenBuilder.setRefreshToken(keycloakBO.getRefreshToken());
-                                tokenBuilder.setGrantType("refresh_token");
+                        AuthorizationService authorizationService = new AuthorizationService(context);
+                        TokenRequest.Builder tokenBuilder = new TokenRequest.Builder(authorizationServiceConfiguration, BuildConfig.SSO_CLIENT_ID);
+                        tokenBuilder.setRefreshToken(keycloakBO.getRefreshToken());
+                        tokenBuilder.setGrantType("refresh_token");
 
-                                TokenRequest tokenRequest = tokenBuilder.build();
+                        TokenRequest tokenRequest = tokenBuilder.build();
 
-                                authorizationService.performTokenRequest(tokenRequest, new AuthorizationService.TokenResponseCallback() {
-                                    @Override
-                                    public void onTokenRequestCompleted(@Nullable TokenResponse response, @Nullable AuthorizationException ex) {
-                                        if (response != null) {
-                                            if (response.accessToken == null || response.refreshToken == null) {
-                                                listener.onErrorResponse(error);
-                                            } else {
-                                                KeycloakBO_.getInstance_(context).setAccessToken(response.accessToken);
-                                                KeycloakBO_.getInstance_(context).setRefreshToken(response.refreshToken);
+                        authorizationService.performTokenRequest(tokenRequest, (response, ex) -> {
+                            if (response.accessToken == null || response.refreshToken == null) {
+                                listener.onErrorResponse(error);
+                            } else {
+                                KeycloakBO_.getInstance_(context).setAccessToken(response.accessToken);
+                                KeycloakBO_.getInstance_(context).setRefreshToken(response.refreshToken);
 
-                                                if (keycloakBO.getAccessToken() != null) {
-                                                    //Atualiza o token com os headers
-                                                    headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
-                                                    request.setHeaders(headers);
-                                                    //Refaz a conexão
-                                                    silceConnection.request(request);
-                                                } else {
-                                                    listener.onErrorResponse(error);
-                                                }
-                                            }
-                                        } else {
-                                            listener.onErrorResponse(error);
-                                        }
-                                    }
-                                });
+                                if (keycloakBO.getAccessToken() != null) {
+                                    //Atualiza o token com os headers
+                                    headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
+                                    request.setHeaders(headers);
+                                    //Refaz a conexão
+                                    silceConnection.request(request);
+                                } else {
+                                    listener.onErrorResponse(error);
+                                }
                             }
+
                         });
-                    } else{
-                        listener.onErrorResponse(error);
-                    }
+                    });
                 } else{
                     listener.onErrorResponse(error);
                 }
+            } else{
+                listener.onErrorResponse(error);
             }
         };
     }

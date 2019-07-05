@@ -39,18 +39,15 @@ public class AnimacoesResultados {
 
     private void aumentarLarguraConteudo(){
         ValueAnimator animator = ValueAnimator.ofInt(valorSizeEncolhido, valorSizeExpandido);
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                int val = (Integer) valueAnimator.getAnimatedValue();
-                ViewGroup.LayoutParams layoutParams = relativeLayoutTopResultados.getLayoutParams();
-                layoutParams.width = val;
-                relativeLayoutTopResultados.setLayoutParams(layoutParams);
+        animator.addUpdateListener(valueAnimator -> {
+            int val = (Integer) valueAnimator.getAnimatedValue();
+            ViewGroup.LayoutParams layoutParams = relativeLayoutTopResultados.getLayoutParams();
+            layoutParams.width = val;
+            relativeLayoutTopResultados.setLayoutParams(layoutParams);
 
-                ViewGroup.LayoutParams layoutParamsScroll = linearLayoutResultadosApostas.getLayoutParams();
-                layoutParamsScroll.width = val;
-                linearLayoutResultadosApostas.setLayoutParams(layoutParamsScroll);
-            }
+            ViewGroup.LayoutParams layoutParamsScroll = linearLayoutResultadosApostas.getLayoutParams();
+            layoutParamsScroll.width = val;
+            linearLayoutResultadosApostas.setLayoutParams(layoutParamsScroll);
         });
         animator.setDuration(500);
         animator.start();
@@ -58,18 +55,15 @@ public class AnimacoesResultados {
 
     private void dimininuirLarguraConteudo(){
         ValueAnimator animator = ValueAnimator.ofInt(valorSizeExpandido, valorSizeEncolhido);
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                int val = (Integer) valueAnimator.getAnimatedValue();
-                ViewGroup.LayoutParams layoutParams = relativeLayoutTopResultados.getLayoutParams();
-                layoutParams.width = val;
-                relativeLayoutTopResultados.setLayoutParams(layoutParams);
+        animator.addUpdateListener(valueAnimator -> {
+            int val = (Integer) valueAnimator.getAnimatedValue();
+            ViewGroup.LayoutParams layoutParams = relativeLayoutTopResultados.getLayoutParams();
+            layoutParams.width = val;
+            relativeLayoutTopResultados.setLayoutParams(layoutParams);
 
-                ViewGroup.LayoutParams layoutParamsScroll = linearLayoutResultadosApostas.getLayoutParams();
-                layoutParamsScroll.width = val;
-                linearLayoutResultadosApostas.setLayoutParams(layoutParamsScroll);
-            }
+            ViewGroup.LayoutParams layoutParamsScroll = linearLayoutResultadosApostas.getLayoutParams();
+            layoutParamsScroll.width = val;
+            linearLayoutResultadosApostas.setLayoutParams(layoutParamsScroll);
         });
         animator.setDuration(500);
         animator.start();
@@ -78,14 +72,11 @@ public class AnimacoesResultados {
 
     private void aumentarAlturaConteudo(int alturaConteudo){
         ValueAnimator animator = ValueAnimator.ofInt(linearLayoutResultadosApostas.getHeight(), alturaConteudo);
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                int val = (Integer) valueAnimator.getAnimatedValue();
-                ViewGroup.LayoutParams layoutParams = linearLayoutResultadosApostas.getLayoutParams();
-                layoutParams.height = val;
-                linearLayoutResultadosApostas.setLayoutParams(layoutParams);
-            }
+        animator.addUpdateListener(valueAnimator -> {
+            int val = (Integer) valueAnimator.getAnimatedValue();
+            ViewGroup.LayoutParams layoutParams = linearLayoutResultadosApostas.getLayoutParams();
+            layoutParams.height = val;
+            linearLayoutResultadosApostas.setLayoutParams(layoutParams);
         });
         animator.setDuration(500);
         animator.start();
@@ -93,14 +84,11 @@ public class AnimacoesResultados {
 
     private void diminuirAlturaConteudo(){
         ValueAnimator animator = ValueAnimator.ofInt(linearLayoutResultadosApostas.getHeight(), 0);
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                int val = (Integer) valueAnimator.getAnimatedValue();
-                ViewGroup.LayoutParams layoutParams = linearLayoutResultadosApostas.getLayoutParams();
-                layoutParams.height = val;
-                linearLayoutResultadosApostas.setLayoutParams(layoutParams);
-            }
+        animator.addUpdateListener(valueAnimator -> {
+            int val = (Integer) valueAnimator.getAnimatedValue();
+            ViewGroup.LayoutParams layoutParams = linearLayoutResultadosApostas.getLayoutParams();
+            layoutParams.height = val;
+            linearLayoutResultadosApostas.setLayoutParams(layoutParams);
         });
         animator.setDuration(500);
         animator.start();

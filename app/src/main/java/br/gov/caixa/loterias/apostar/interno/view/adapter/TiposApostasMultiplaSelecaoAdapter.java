@@ -63,11 +63,11 @@ public class TiposApostasMultiplaSelecaoAdapter extends BaseAdapter {
         }
 
         final TipoAposta tipoAposta = tiposAposta.get(position);
-        final ImageView imageViewTipoAPosta = (ImageView)convertView.findViewById(R.id.imageviewTrevoTipoAposta);
+        final ImageView imageViewTipoAPosta = convertView.findViewById(R.id.imageviewTrevoTipoAposta);
 
-        final LinearLayout linearLayoutTipoAposta = (LinearLayout)convertView.findViewById(R.id.LinearLayoutContentTiposAposta);
+        final LinearLayout linearLayoutTipoAposta = convertView.findViewById(R.id.LinearLayoutContentTiposAposta);
 
-        final TextView tituloTipoAposta = (TextView)convertView.findViewById(R.id.tituloTipoApostaTextView);
+        final TextView tituloTipoAposta = convertView.findViewById(R.id.tituloTipoApostaTextView);
         tituloTipoAposta.setText(tipoAposta.getTitulo());
 
         if (tipoAposta.getSelect()){
@@ -81,31 +81,28 @@ public class TiposApostasMultiplaSelecaoAdapter extends BaseAdapter {
             tituloTipoAposta.setTextColor(ContextCompat.getColor(mContext, R.color.cinzatextoselecionado));
         }
 
-        convertView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (tiposAposta.get(position).getSelect()){
-                    tiposAposta.get(position).setSelect(false);
-                    imageViewTipoAPosta.setImageResource(tipoAposta.getImagemTrevo());
-                    linearLayoutTipoAposta.setBackgroundColor(ContextCompat.getColor(mContext, R.color.branco));
-                    linearLayoutTipoAposta.setBackground(ContextCompat.getDrawable(mContext,R.drawable.custom_border_cinza));
-                    tituloTipoAposta.setTextColor(ContextCompat.getColor(mContext, R.color.cinzatextoselecionado));
-                }else{
-                    tiposAposta.get(position).setSelect(true);
-                    imageViewTipoAPosta.setImageResource(R.drawable.trevo);
-                    linearLayoutTipoAposta.setBackgroundColor(ContextCompat.getColor(mContext, tipoAposta.getCorBackground()));
-                    tituloTipoAposta.setTextColor(ContextCompat.getColor(mContext, R.color.branco));
-                }
-
-                for (TipoAposta item : tiposAposta) {
-                    if (item.getSelect()) {
-                        parentActivity.mudarLayoutBotaoSalvar(true);
-                        return;
-                    }
-                }
-                parentActivity.mudarLayoutBotaoSalvar(false);
-
+        convertView.setOnClickListener(v -> {
+            if (tiposAposta.get(position).getSelect()){
+                tiposAposta.get(position).setSelect(false);
+                imageViewTipoAPosta.setImageResource(tipoAposta.getImagemTrevo());
+                linearLayoutTipoAposta.setBackgroundColor(ContextCompat.getColor(mContext, R.color.branco));
+                linearLayoutTipoAposta.setBackground(ContextCompat.getDrawable(mContext,R.drawable.custom_border_cinza));
+                tituloTipoAposta.setTextColor(ContextCompat.getColor(mContext, R.color.cinzatextoselecionado));
+            }else{
+                tiposAposta.get(position).setSelect(true);
+                imageViewTipoAPosta.setImageResource(R.drawable.trevo);
+                linearLayoutTipoAposta.setBackgroundColor(ContextCompat.getColor(mContext, tipoAposta.getCorBackground()));
+                tituloTipoAposta.setTextColor(ContextCompat.getColor(mContext, R.color.branco));
             }
+
+            for (TipoAposta item : tiposAposta) {
+                if (item.getSelect()) {
+                    parentActivity.mudarLayoutBotaoSalvar(true);
+                    return;
+                }
+            }
+            parentActivity.mudarLayoutBotaoSalvar(false);
+
         });
 
 

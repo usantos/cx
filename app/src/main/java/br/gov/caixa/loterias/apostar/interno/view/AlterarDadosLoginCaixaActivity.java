@@ -36,8 +36,6 @@ public class AlterarDadosLoginCaixaActivity extends AppCompatActivity {
                     BuildConfig.SSO_CLIENT_ID +
                     "&referrer_uri=http%3A%2F%2Fdf7390sr029.corp.caixa.gov.br%3A8280%2Fsilce-web%2F%3Fredirect_fragment%3D%252Fhome";
 
-            paginaAlterarDadosWebView.getSettings().setJavaScriptEnabled(true);
-
             paginaAlterarDadosWebView.loadUrl(stringBuilder);
             FirebaseManager.registraEvento(this ,"ENTROU_ALTERAR_DADOS_CAIXA");
         }else{

@@ -86,7 +86,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="36dp"
                 android:layout_marginRight="36dp"
-                android:text="R$ 00,00"
+                tools:text="R$ 00,00"
                 android:textColor="@color/branco"
                 android:textSize="14sp"
                 android:textStyle="bold"

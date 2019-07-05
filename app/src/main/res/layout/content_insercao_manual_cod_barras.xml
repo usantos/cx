@@ -12,7 +12,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Por favor, informe o número do seu bilhete."
+        android:text="@string/title_informeNumBilhete"
         android:textColor="@color/colorAccent"
         android:fontFamily="@font/futura_std_bold"
         android:textSize="14.2sp"
@@ -44,7 +44,7 @@
         android:layout_width="match_parent"
         android:layout_height="55dp"
         android:layout_marginHorizontal="20dp"
-        android:text="Continuar"
+        android:text="@string/title_continuar"
         android:textAllCaps="false"
         android:layout_marginTop="49dp"
         android:fontFamily="@font/futura_std_bold"
