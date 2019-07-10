@@ -12,18 +12,11 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.android.volley.VolleyError;
-
 import java.util.List;
 
 import br.gov.caixa.loterias.apostar.interno.R;
-import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO;
-import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO_;
-import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.DTOEnumLong;
-import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
-import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResultadoConcursoDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.helper.ConferirResultadoHandler;
@@ -79,7 +72,7 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostasConfi
             holder.color = color;
             holder.stripe.setBackgroundColor(color);
             holder.modalidadeTxt.setTextColor(color);
-            holder.modalidadeTxt.setText(estiloModalidade.getStringId());
+            holder.modalidadeTxt.setText(ViewUtils.getNomeModalidadePorAposta(aposta));
             holder.situacaoTxt.setTextColor(color);
             String descricaoStatus = "";
             if (aposta.getSituacao().getValor() == 4){

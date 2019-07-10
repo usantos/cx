@@ -34,13 +34,9 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,8 +52,10 @@ import java.util.Locale;
 
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bean.SessaoUsuario;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ConcursoPremiadoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.FaixaPremiadaDTO;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.PremioDTO;
@@ -594,6 +592,22 @@ public class ViewUtils {
             }
         }
         return null;
+    }
+
+    public static String getNomeModalidadePorAposta(ApostaDTO aposta) {
+        if(aposta.getTipoConcurso().getDescricao().equalsIgnoreCase("ESPECIAL")){
+            return getParametroSimulacao(SessaoUsuario.getInstance(),aposta.getModalidade()).getParametroJogo().getConcurso().getModalidadeDetalhada().getDescricaoEspecial().toLowerCase();
+        }else {
+            return getParametroSimulacao(SessaoUsuario.getInstance(),aposta.getModalidade()).getParametroJogo().getConcurso().getModalidadeDetalhada().getDescricao().toLowerCase();
+        }
+    }
+
+    public static String getNomeModalidadePorAposta(IdentificaoDeUmaApostaDas8Modalidades aposta) {
+        if(aposta.getTipoConcurso().getDescricao().equalsIgnoreCase("ESPECIAL")){
+            return getParametroSimulacao(SessaoUsuario.getInstance(),aposta.getModalidade()).getParametroJogo().getConcurso().getModalidadeDetalhada().getDescricaoEspecial().toLowerCase();
+        }else {
+            return getParametroSimulacao(SessaoUsuario.getInstance(),aposta.getModalidade()).getParametroJogo().getConcurso().getModalidadeDetalhada().getDescricao().toLowerCase();
+        }
     }
 
     public static int getSmallSizeQrCode(Context context) {
