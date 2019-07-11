@@ -602,12 +602,8 @@ public class ViewUtils {
         }
     }
 
-    public static String getNomeModalidadePorAposta(IdentificaoDeUmaApostaDas8Modalidades aposta) {
-        if(aposta.getTipoConcurso().getDescricao().equalsIgnoreCase("ESPECIAL")){
-            return getParametroSimulacao(SessaoUsuario.getInstance(),aposta.getModalidade()).getParametroJogo().getConcurso().getModalidadeDetalhada().getDescricaoEspecial().toLowerCase();
-        }else {
-            return getParametroSimulacao(SessaoUsuario.getInstance(),aposta.getModalidade()).getParametroJogo().getConcurso().getModalidadeDetalhada().getDescricao().toLowerCase();
-        }
+    public static Integer getConcursoAtualPorAposta(IdentificaoDeUmaApostaDas8Modalidades aposta) {
+        return getParametroSimulacao(SessaoUsuario.getInstance(),aposta.getModalidade()).getParametroJogo().getConcurso().getNumero();
     }
 
     public static int getSmallSizeQrCode(Context context) {

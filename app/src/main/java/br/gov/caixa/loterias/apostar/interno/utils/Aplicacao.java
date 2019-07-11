@@ -23,6 +23,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametrosSimulacao;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametrosSimulacaoResponse;
 import br.gov.caixa.loterias.apostar.interno.view.PrincipalActivity_;
+import br.gov.caixa.loterias.apostar.interno.view.SplashScreenActivity;
 import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
 
 public class Aplicacao extends MultiDexApplication {
@@ -90,6 +91,9 @@ public class Aplicacao extends MultiDexApplication {
      public void atualizaBuscaParametros(Activity activity){
 
              loadViewProgress = LoadingViewLoterias.show(activity);
+             if(activity.getClass().toString().equalsIgnoreCase(SplashScreenActivity.class.toString())){
+                 loadViewProgress.dismiss();
+             }
              final DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(Aplicacao.application.getApplicationContext());
              dadosCorporativosBO.parametrosSimulacao(new RequestListener<ParametrosSimulacaoResponse>() {
                  @Override
