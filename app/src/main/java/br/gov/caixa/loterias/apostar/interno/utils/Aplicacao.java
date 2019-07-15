@@ -105,7 +105,9 @@ class ActivityLifecycleCallbacks implements Application.ActivityLifecycleCallbac
         dadosCorporativosBO.parametrosSimulacao(new RequestListener<ParametrosSimulacaoResponse>() {
             @Override
             public void onResponse(ParametrosSimulacaoResponse response) {
-                loadViewProgress.dismiss();
+                if(!activity.isDestroyed()){
+                    loadViewProgress.dismiss();
+                }
                 if (response.getPayload().getParametros().size() == 0) {
                     ViewUtils.alert(Aplicacao.application.getApplicationContext(), Aplicacao.application.getApplicationContext().getString(R.string.erro_500));
                 } else {
@@ -118,7 +120,9 @@ class ActivityLifecycleCallbacks implements Application.ActivityLifecycleCallbac
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                loadViewProgress.dismiss();
+                if(!activity.isDestroyed()){
+                    loadViewProgress.dismiss();
+                }
                 RedirectNetwork.checkRedirect(error, activity);
             }
         });
