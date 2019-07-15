@@ -56,6 +56,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ConcursoPremiadoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.FaixaPremiadaDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.PremioDTO;
@@ -595,11 +596,8 @@ public class ViewUtils {
     }
 
     public static String getNomeModalidadePorAposta(ApostaDTO aposta) {
-        if(aposta.getTipoConcurso().getDescricao().equalsIgnoreCase("ESPECIAL")){
-            return getParametroSimulacao(SessaoUsuario.getInstance(),aposta.getModalidade()).getParametroJogo().getConcurso().getModalidadeDetalhada().getDescricaoEspecial().toLowerCase();
-        }else {
-            return getParametroSimulacao(SessaoUsuario.getInstance(),aposta.getModalidade()).getParametroJogo().getConcurso().getModalidadeDetalhada().getDescricao().toLowerCase();
-        }
+        ModalidadeDTO modalidadeDetalhada = getParametroSimulacao(SessaoUsuario.getInstance(),aposta.getModalidade()).getParametroJogo().getConcurso().getModalidadeDetalhada();
+        return aposta.getTipoConcurso().getDescricao().equalsIgnoreCase("ESPECIAL") ? modalidadeDetalhada.getDescricaoEspecial().toLowerCase() : modalidadeDetalhada.getDescricao().toLowerCase();
     }
 
     public static Integer getConcursoAtualPorAposta(IdentificaoDeUmaApostaDas8Modalidades aposta) {
