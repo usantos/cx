@@ -23,8 +23,8 @@ import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
 
 public class AppIndisponivelActivity extends AppCompatActivity {
 
-    public Button buttonTentarNovamente;
-    public Boolean isBuscaParametro;
+    private Button buttonTentarNovamente;
+    private Boolean isBuscaParametro;
     private AlertDialog loadViewProgress;
 
     @Override
@@ -44,7 +44,7 @@ public class AppIndisponivelActivity extends AppCompatActivity {
                 dadosCorporativosBO.parametrosSimulacao(new RequestListener<ParametrosSimulacaoResponse>() {
                     @Override
                     public void onResponse(ParametrosSimulacaoResponse response) {
-                        if (response.getPayload().getParametros().size() == 0) {
+                        if (response.getPayload().getParametros().isEmpty()) {
                             loadViewProgress.dismiss();
                             ViewUtils.alert(AppIndisponivelActivity.this, AppIndisponivelActivity.this.getString(R.string.erro_500));
                         } else {
