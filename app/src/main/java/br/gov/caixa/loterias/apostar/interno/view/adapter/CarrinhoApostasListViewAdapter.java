@@ -2,7 +2,6 @@ package br.gov.caixa.loterias.apostar.interno.view.adapter;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -98,7 +97,7 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
         holder.textViewNumeroConcurso.setTextColor(ContextCompat.getColor(context, estilo.getCorClara()));
         holder.valorAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorEscura()));
         holder.textViewTipoAposta.setText(ViewUtils.capitalized(ModalidadeEnum.fromString(aposta.getModalidade())));
-        holder.textViewNumeroConcurso.setText(context.getString(R.string.label_aposta_concurso, aposta.getConcursoAlvo()));
+        holder.textViewNumeroConcurso.setText(context.getString(R.string.label_aposta_concurso, ViewUtils.getConcursoAtualPorAposta(aposta)));
         holder.dadosApostaCarrinho.setBackgroundResource(estilo.getCorEscura());
 
         TextView quantidadeApostadas = holder.dadosApostaCarrinho.findViewById(R.id.quantidadeApostadas);

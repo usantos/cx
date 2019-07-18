@@ -84,7 +84,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="16dp"
+                    android:layout_marginRight="10dp"
                     android:fontFamily="@font/arialmt"
                     android:gravity="center_vertical"
                     android:paddingLeft="3dp"
@@ -99,7 +99,7 @@
                     android:layout_height="8dp"
                     android:layout_alignParentRight="true"
                     android:layout_marginTop="25dp"
-                    android:layout_marginRight="16dp"
+                    android:layout_marginRight="5dp"
                     android:src="@drawable/combo2" />
             </RelativeLayout>
         </LinearLayout>
