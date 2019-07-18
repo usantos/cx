@@ -596,12 +596,22 @@ public class ViewUtils {
     }
 
     public static String getNomeModalidadePorAposta(ApostaDTO aposta) {
-        ModalidadeDTO modalidadeDetalhada = getParametroSimulacao(SessaoUsuario.getInstance(),aposta.getModalidade()).getParametroJogo().getConcurso().getModalidadeDetalhada();
-        return aposta.getTipoConcurso().getDescricao().equalsIgnoreCase("ESPECIAL") ? modalidadeDetalhada.getDescricaoEspecial().toLowerCase() : modalidadeDetalhada.getDescricao().toLowerCase();
+        ParametroSimulacao param = getParametroSimulacao(SessaoUsuario.getInstance(),aposta.getModalidade());
+        if(param != null){
+            ModalidadeDTO modalidadeDetalhada = param.getParametroJogo().getConcurso().getModalidadeDetalhada();
+            return aposta.getTipoConcurso().getDescricao().equalsIgnoreCase("ESPECIAL") ?
+                    modalidadeDetalhada.getDescricaoEspecial().toLowerCase() :
+                    modalidadeDetalhada.getDescricao().toLowerCase();
+        }
+        return "";
     }
 
     public static Integer getConcursoAtualPorAposta(IdentificaoDeUmaApostaDas8Modalidades aposta) {
-        return getParametroSimulacao(SessaoUsuario.getInstance(),aposta.getModalidade()).getParametroJogo().getConcurso().getNumero();
+        ParametroSimulacao param = getParametroSimulacao(SessaoUsuario.getInstance(),aposta.getModalidade());
+        if(param != null) {
+            return param.getParametroJogo().getConcurso().getNumero();
+        }
+        return -1;
     }
 
     public static int getSmallSizeQrCode(Context context) {
