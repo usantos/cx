@@ -51,8 +51,8 @@ public class ListaComprasActivity extends AppCompatActivity {
     ListaComprasRecyclerViewAdapter listaComprasRecyclerViewAdapter;
 
     LinearLayoutManager layoutManager;
-    public RecyclerView recyclerViewCompras;
-    public ProgressBar progressLoadingMore;
+    RecyclerView recyclerViewCompras;
+    ProgressBar progressLoadingMore;
     NestedScrollView scrollViewContentViewCompras;
 
     @Override
@@ -187,8 +187,8 @@ public class ListaComprasActivity extends AppCompatActivity {
     }
 
     private void addSpinner(){
-        Spinner SelecaoMesSpinner;
-        SelecaoMesSpinner = findViewById(R.id.SelecaoMesSpinner);
+        Spinner selecaoMesSpinner;
+        selecaoMesSpinner = findViewById(R.id.SelecaoMesSpinner);
         List<String> list = new ArrayList<>();
         for(MesAnoDTO item : listaMesAnoDTO){
             list.add(item.getMes().getDescricao() + " de " + item.getAno());
@@ -196,8 +196,8 @@ public class ListaComprasActivity extends AppCompatActivity {
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, list);
 
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        SelecaoMesSpinner.setAdapter(dataAdapter);
-        SelecaoMesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        selecaoMesSpinner.setAdapter(dataAdapter);
+        selecaoMesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 // Your code here
                 mes = listaMesAnoDTO.get(i).getMes().getValor().intValue();
@@ -226,7 +226,7 @@ public class ListaComprasActivity extends AppCompatActivity {
             int diff = (view.getBottom() - (v.getHeight() + v.getScrollY()));
 
             // if diff is zero, then the bottom has been reached
-            if (diff == 0 && bloquearRequestScroll == false) {
+            if (diff == 0 && !bloquearRequestScroll) {
                 // do stuff
                 getComprasScroll();
                 bloquearRequestScroll = true;
@@ -236,7 +236,7 @@ public class ListaComprasActivity extends AppCompatActivity {
     }
 
     private void getComprasScroll(){
-        if (isMaisCompras == false) {
+        if (!isMaisCompras) {
             return;
         }
         final ApostaBO apostaBO = ApostaBO_.getInstance_(ListaComprasActivity.this);
@@ -246,7 +246,7 @@ public class ListaComprasActivity extends AppCompatActivity {
             @Override
             public void onResponse(ResultadoPesquisaPaginadaDTOCompraDTOResponse response) {
                 progressLoadingMore.setVisibility(View.GONE);
-                if(response.getPayload().getLista().size() == 0){
+                if(response.getPayload().getLista().isEmpty()){
                     isMaisCompras = false;
                 }else{
                     listaComprasDto.addAll(response.getPayload().getLista());

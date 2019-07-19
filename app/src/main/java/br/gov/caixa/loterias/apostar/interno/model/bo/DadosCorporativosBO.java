@@ -5,7 +5,6 @@ import com.android.volley.NetworkResponse;
 import org.androidannotations.annotations.EBean;
 import org.apache.commons.lang.StringUtils;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
@@ -32,6 +31,8 @@ import static org.androidannotations.annotations.EBean.Scope.Singleton;
 
 @EBean(scope = Singleton)
 public class DadosCorporativosBO extends BaseBO{
+    private static final String AUTHORIZATION = "Authorization";
+    private static final String BEARER = "Bearer ";
 
     public void ufs(final RequestListener<UnidadeFederacaoDTOResponse> listener) {
 
@@ -97,7 +98,7 @@ public class DadosCorporativosBO extends BaseBO{
         LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
 
         if (keycloakBO.getAccessToken() != null){
-            headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
+            headers.put(AUTHORIZATION, BEARER + keycloakBO.getAccessToken());
             GsonRequest request = silceConnection.buildGetRequest(ServerMethods.PARAM_SIMULACAO_PATH, queryParams, ParametrosSimulacaoResponse.class,
                     listener.getSilceListener(),
                     listener.getErrorListener(), headers);
@@ -115,7 +116,7 @@ public class DadosCorporativosBO extends BaseBO{
                                       final RequestListener<NetworkResponse> listener) {
 
         LinkedHashMap<String, String> headers = new LinkedHashMap<>();
-        headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
+        headers.put(AUTHORIZATION, BEARER + keycloakBO.getAccessToken());
 
         GsonRequest request = silceConnection.buildPostRequest(ServerMethods.VALIDAR_FAVORITA_PATH, new LinkedHashMap<>(),
                 aposta, NetworkResponse.class,
@@ -130,7 +131,7 @@ public class DadosCorporativosBO extends BaseBO{
                                      final RequestListener<NetworkResponse> listener) {
 
         LinkedHashMap<String, String> headers = new LinkedHashMap<>();
-        headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
+        headers.put(AUTHORIZATION, BEARER + keycloakBO.getAccessToken());
 
         GsonRequest request = silceConnection.buildPostRequest(ServerMethods.INCLUIR_FAVORITA_PATH, new LinkedHashMap<>(),
                 aposta, NetworkResponse.class,
@@ -156,7 +157,6 @@ public class DadosCorporativosBO extends BaseBO{
         }
         if (bairroDTO != null) {
             queryParams.put("idBairro", bairroDTO.getId().toString());
-            //queryParams.put("codigoUF", bairroDTO.getMunicipio().getUf().ge);
             queryParams.put("numero", bairroDTO.getMunicipio().getId().getNumero().toString());
             queryParams.put("digitoVerificador", bairroDTO.getMunicipio().getId().getDigitoVerificador().toString());
             queryParams.put("idUF", bairroDTO.getMunicipio().getUf().getId().toString());
@@ -179,7 +179,7 @@ public class DadosCorporativosBO extends BaseBO{
 
     public void validaTermoAceito(final RequestListener<ResourceResponse> listener) {
         LinkedHashMap<String, String> headers = new LinkedHashMap<>();
-        headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
+        headers.put(AUTHORIZATION, BEARER + keycloakBO.getAccessToken());
 
         final GsonRequest request = silceConnection.buildGetRequest(ServerMethods.TERMO_VALIDA_ACEITO_PATH, new LinkedHashMap<>(), ResourceResponse.class,
                 listener.getSilceListener(),
@@ -193,7 +193,7 @@ public class DadosCorporativosBO extends BaseBO{
     public void aceiteTermo(final RequestListener<ResourceResponse> listener) {
 
         LinkedHashMap<String, String> headers = new LinkedHashMap<>();
-        headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
+        headers.put(AUTHORIZATION, BEARER + keycloakBO.getAccessToken());
 
         GsonRequest request = silceConnection.buildPostRequest(ServerMethods.TERMO_ACEITAR_PATH, new LinkedHashMap<>(), null, ResourceResponse.class,
                 listener.getSilceListener(),
@@ -216,7 +216,7 @@ public class DadosCorporativosBO extends BaseBO{
 
     public void duvidasPerguntasRespostas(Integer secao, final RequestListener<ListSecaoDTOResponse> listener) {
         LinkedHashMap<String, String> headers = new LinkedHashMap<>();
-        headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
+        headers.put(AUTHORIZATION, BEARER + keycloakBO.getAccessToken());
 
         HashMap queryParams = new LinkedHashMap<String, String>();
         queryParams.put("secao", secao.toString());
@@ -228,21 +228,4 @@ public class DadosCorporativosBO extends BaseBO{
         request.setErrorListener(interceptError(request, headers, listener));
         silceConnection.request(request);
     }
-
-    private static <T> String join(Collection<T> collection, String delimiter) {
-        StringBuilder result = new StringBuilder("");
-        boolean first = true;
-
-        for (T e : collection) {
-            if (!first) {
-                result.append(delimiter);
-                first = true;
-            }
-            result.append(e);
-        }
-
-        return result.toString();
-    }
-
-
 }

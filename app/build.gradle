@@ -1,20 +1,21 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'io.fabric'
+apply plugin: 'org.sonarqube'
 
 android {
     signingConfigs {
         config {
         }
     }
-    compileSdkVersion 27
-    buildToolsVersion '27.0.3'
+    compileSdkVersion 28
+    buildToolsVersion '28.0.3'
     defaultConfig {
         applicationId "br.gov.caixa.loterias.apostar.interno"
         minSdkVersion 21
-        targetSdkVersion 27
-        versionCode 21101091
-        versionName "1.0.9"
+        targetSdkVersion 28
+        versionCode 211010101
+        versionName "1.0.10"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -88,8 +89,25 @@ android {
             stubnet {
                 dimension "default"
                 //applicationIdSuffix ".stubnet"
-                buildConfigField "boolean", "CAIXA_NETWORK_STUB", "true"
-                buildConfigField "String", "CAIXA_BASE_URL_SILCE", "null"
+                buildConfigField "boolean", "CAIXA_NETWORK_STUB", "false"
+                buildConfigField "String", "CAIXA_BASE_URL_SILCE", "\"http://simlo.des.caixa/silce-servico-rest/rest/v1/\""
+                buildConfigField "String", "PUBLIC_KEY_MP", "\"TEST-946a3077-5cf1-446c-bab3-e3a266357e9f\""
+                buildConfigField "String", "SSO_CLIENT_SECRET", "\"b54d171d-03de-41f3-b1b1-64e98672cbb8\""
+                buildConfigField "String", "SSO_CLIENT_ID", "\"cli-mob-lce\""
+                buildConfigField "String", "SSO_REDIRECT", "\"br.gov.caixa.caixaloterias:/oauth2Callback\""
+                buildConfigField "String", "URL_SSO", "\"https://logindes.caixa.gov.br\""
+                buildConfigField "String", "URL_ENDPOINT_TOKEN", "\"auth/realms/internet/protocol/openid-connect/token\""
+                buildConfigField "String", "URL_SSO_TOKEN", "URL_SSO+\"/\"+URL_ENDPOINT_TOKEN"
+                buildConfigField "String", "URL_SSO_AUTH", "URL_SSO+\"/auth/realms/internet/protocol/openid-connect/auth\""
+                buildConfigField "String", "URL_SSO_LOGOUT", "URL_SSO+\"/auth/realms/internet/protocol/openid-connect/logout\""
+                buildConfigField "String", "URL_SSO_ACCOUNT", "URL_SSO+\"/auth/realms/internet/account\""
+                buildConfigField "String", "MP_PAYMENT_URL", "\"https://api.mercadopago.com/v1/payment_methods/installments?\""
+                manifestPlaceholders = [
+                        appAuthRedirectScheme: "br.gov.caixa.caixaloterias",
+                        hostName: "br.gov.caixa.caixaloterias",
+                        path: "/oauth2Callback",
+                        scheme: "https"
+                ]
             }
         }
     }
@@ -98,7 +116,7 @@ android {
 dependencies {
 
     // versions
-    def AAVersion = '4.3.1'
+    def AAVersion = '4.6.0'
     def supportVersion = '27.1.1'
     def parcelerVersion = '1.1.6'
 
@@ -170,6 +188,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:16.0.6'
     implementation 'com.crashlytics.sdk.android:crashlytics:2.9.9'
 
+
+
     // testImplementation deps
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:1.10.19'
@@ -182,6 +202,23 @@ dependencies {
 
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestUtil 'com.android.support.test:orchestrator:1.0.2'
+}
+
+sonarqube {
+    properties {
+        def libraries = project.android.sdkDirectory.getPath() + "/platforms/android-28/android.jar"/* + ", build/intermediates/exploded-aar*//**//*classes.jar"*/
+        property "sonar.sources", "src/main/java"
+        property "sonar.binaries", "build/intermediates/classes/debug"
+        property "sonar.libraries", libraries
+        property "sonar.tests", "src/test/java, src/androidTest/java"
+//        property "sonar.java.test.binaries", "build/intermediates/class/debug"
+        property "sonar.java.test.libraries", libraries
+        property "sonar.jacoco.reportPath", "build/jacoco/testDebugUnitTest.exec"
+        property "sonar.java.coveragePlugin", "jacoco"
+        property "sonar.junit.reportsPath", "build/test-results/debug"
+        property "sonar.android.lint.report", "build/outputs/lint-results"
+    }
+
 }
 
 
