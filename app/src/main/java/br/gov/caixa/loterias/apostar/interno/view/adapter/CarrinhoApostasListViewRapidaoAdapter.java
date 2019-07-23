@@ -145,7 +145,7 @@ public class CarrinhoApostasListViewRapidaoAdapter extends RecyclerView.Adapter<
             }
         } else {
             for (Integer num: apostas.get(position).getNumerosSelecionados()) {
-                if (num == (apostas.get(position).getNumerosSelecionados().get(apostas.get(position).getNumerosSelecionados().size() - 1))) {
+                if (num.equals(apostas.get(position).getNumerosSelecionados().get(apostas.get(position).getNumerosSelecionados().size() - 1))) {
                     numeroStr.append(String.format("%02d", num));
                 }else {
                     numeroStr.append(String.format("%02d - ", num));

@@ -68,6 +68,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.TipoConcursoEnum
 import br.gov.caixa.loterias.apostar.interno.utils.Constantes;
 import br.gov.caixa.loterias.apostar.interno.utils.DialogUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
+import br.gov.caixa.loterias.apostar.interno.utils.Utils;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostar.interno.view.SimularApostaActivity;
@@ -502,7 +503,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
     private void selecionarTimeAleatorio() {
         int randomInt = 0;
-        Random randomGenerator = new Random();
+        Random randomGenerator = Utils.getRandom();
         randomInt = randomGenerator.nextInt(listaEquipefiltro.size() - 1);
         equipeSelecionada = listaEquipefiltro.get(randomInt);
         equipeSelecionada.setSelecionado(true);

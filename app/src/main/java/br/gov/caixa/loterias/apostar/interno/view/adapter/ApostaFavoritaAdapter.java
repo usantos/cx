@@ -70,7 +70,7 @@ public class ApostaFavoritaAdapter extends BaseAdapter {
         final TextView numerosApostaFavorita = convertView.findViewById( R.id.numerosApostaFavorita );
         StringBuilder numeroStr = new StringBuilder();
         for (Integer num : aposta.getNumerosSelecionados()) {
-            if (num == (aposta.getNumerosSelecionados().get( aposta.getNumerosSelecionados().size() - 1 ))) {
+            if (num.equals(aposta.getNumerosSelecionados().get( aposta.getNumerosSelecionados().size() - 1 ))) {
                 numeroStr.append(String.format("%02d", num));
             } else {
                 numeroStr.append(String.format("%02d - ", num));

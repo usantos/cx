@@ -2,6 +2,7 @@ package br.gov.caixa.loterias.apostar.interno.view.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -110,7 +111,7 @@ public class ListaComprasDetalhesAdapter extends RecyclerView.Adapter<ListaCompr
         private TextView concursoListaComprasTextView;
         private TextView statusResultadoApostaListaComprasTextView;
         private LinearLayout topListItemComprasLinearLayout;
-        private LinearLayout bottomListItemComprasLinearLayout;
+        private ConstraintLayout bottomListItemComprasLinearLayout;
         private TextView seusNumerosItemListaComprasTextView;
         private LinearLayout itemComprasContentModalideLinearLayout;
 

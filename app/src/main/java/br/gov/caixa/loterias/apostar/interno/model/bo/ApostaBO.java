@@ -159,10 +159,9 @@ public class ApostaBO extends BaseBO {
 
     private static String join(List<Integer> collection, String delimiter) {
         StringBuilder result = new StringBuilder("");
-        boolean first = false;
 
         for (Integer e : collection) {
-            if (!(e == collection.get(0))) {
+            if (!(e.equals( collection.get(0)))) {
                 result.append(delimiter);
             }
             result.append(e);

@@ -12,6 +12,7 @@ import com.google.gson.JsonParser;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Random;
 
 import br.gov.caixa.loterias.apostar.interno.model.bean.DadosUsuarioToken;
 
@@ -21,6 +22,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bean.DadosUsuarioToken;
 
 public class Utils {
 
+    private static Random random;
 
     public interface DelayCallback{
         void afterDelay();
@@ -51,5 +53,12 @@ public class Utils {
     private static String getJson(String strEncoded) throws UnsupportedEncodingException{
         byte[] decodedBytes = Base64.decode(strEncoded, Base64.URL_SAFE);
         return new String(decodedBytes, "UTF-8");
+    }
+
+    public static Random getRandom() {
+        if(random == null){
+            random = new Random();
+        }
+        return random;
     }
 }

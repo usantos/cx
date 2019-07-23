@@ -321,7 +321,7 @@ public class PrincipalActivity extends AppCompatActivity
 
         tituloLerBilhetes.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.label_ler_bilhestes_bold)));
         textoRepassados.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.label_repassados_boas_causas_bold)));
-        AnimacaoCalculoRepassesSociais.start(valorRepassesPrincipal, 0, 0, repassesSociais);
+        AnimacaoCalculoRepassesSociais.start(valorRepassesPrincipal, 0, repassesSociais);
     }
 
     private void toolbarListener() {

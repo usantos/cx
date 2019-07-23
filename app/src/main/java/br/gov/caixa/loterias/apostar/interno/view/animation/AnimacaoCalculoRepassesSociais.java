@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.TypeEvaluator;
 import android.animation.ValueAnimator;
+import android.util.Log;
 import android.widget.TextView;
 
 import java.math.BigDecimal;
@@ -19,16 +20,20 @@ import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
  */
 
 public class AnimacaoCalculoRepassesSociais {
-    public static void start(final TextView textView, double oldValue, double calculo, final RepassometroDTO repassesSociais){
+
+    private AnimacaoCalculoRepassesSociais(){ }
+
+    public static void start(final TextView textView, double calculo, final RepassometroDTO repassesSociais){
         Date dataBase = new Date(System.currentTimeMillis());
         SimpleDateFormat simpleDate = new SimpleDateFormat("dd/MM/yyyy");
+        double oldValue ;
         try {
             dataBase  = simpleDate.parse(repassesSociais.getDataBase());
         } catch (ParseException e) {
-            e.printStackTrace();
+            Log.e("ERRO_ACRS", e.toString());
         }
         Date todayDate = new Date();
-        double seconds = (todayDate.getTime() - dataBase.getTime()) / org.apache.commons.lang.time.DateUtils.MILLIS_PER_SECOND;
+        double seconds = ((double) todayDate.getTime() - dataBase.getTime()) / org.apache.commons.lang.time.DateUtils.MILLIS_PER_SECOND;
         oldValue = calculo;
 
         double arrecadacaoAcumulada = 0.0;
@@ -39,7 +44,6 @@ public class AnimacaoCalculoRepassesSociais {
         oldValue = oldValue == 0 ? arrecadacaoAcumulada * 0.48 : oldValue;
 
         final double calculoFinal = calculo;
-        final double oldValueFinal = oldValue;
 
         ValueAnimator animator = new  ValueAnimator();
         animator.setObjectValues(oldValue, calculo); //double value
@@ -56,7 +60,7 @@ public class AnimacaoCalculoRepassesSociais {
             public void onAnimationEnd(Animator animation)
             {
                 // done
-                start(textView, oldValueFinal, calculoFinal, repassesSociais);
+                start(textView, calculoFinal, repassesSociais);
             }
         });
         animator.setDuration(1000);

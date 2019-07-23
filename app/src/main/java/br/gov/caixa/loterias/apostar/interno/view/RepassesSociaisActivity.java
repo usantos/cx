@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -28,7 +27,6 @@ import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
 
 public class RepassesSociaisActivity extends SettingToolbarActivity {
     private RepassometroDTO repasseOBj;
-//    RepassometroDTO repassesSociais;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,8 +89,8 @@ public class RepassesSociaisActivity extends SettingToolbarActivity {
         String htmlTextViewRepasseQuadro1 = "<html>Para cada <br><strong><font color=\"#ff7f00\">R$1,00</font></strong><br>apostados nas<br>loterias federais</html>";
         String htmlTextViewRepasseQuadro2 = "<html><strong><font color=\"#345ca5\">R$0,48*</font></strong><br>são destinados<br>a programas sociais</html>";
         String htmlTextButtonAposte = "_Aposte_\ne ajude ainda mais";
-        TextView TextViewRepasseQuadro1 = findViewById(R.id.textViewRepasseQuadro1);
-        TextView TextViewRepasseQuadro2 = findViewById(R.id.textViewRepasseQuadro2);
+        TextView textViewRepasseQuadro1 = findViewById(R.id.textViewRepasseQuadro1);
+        TextView textViewRepasseQuadro2 = findViewById(R.id.textViewRepasseQuadro2);
         TextView valorRepasses = findViewById(R.id.valorRepassesSociais);
 
         TextView textViewEducacaoValorArrecadado = findViewById(R.id.textViewEducacaoValorArrecadado);
@@ -131,19 +129,19 @@ public class RepassesSociaisActivity extends SettingToolbarActivity {
         TextView textViewOutrosUnidadeValor = findViewById(R.id.textViewOutrosUnidadeValor);
         textViewOutrosUnidadeValor.setText(valoresOutros[1]);
 
-        AnimacaoCalculoRepassesSociais.start(valorRepasses, 0, 0, repasseOBj);
+        AnimacaoCalculoRepassesSociais.start(valorRepasses, 0, repasseOBj);
 
-        Button ButtonAposte = findViewById(R.id.ButtonAposteSociais);
-        TextViewRepasseQuadro1.setText(ViewUtils.fromHtml(htmlTextViewRepasseQuadro1));
-        TextViewRepasseQuadro2.setText(ViewUtils.fromHtml(htmlTextViewRepasseQuadro2));
-        ButtonAposte.setText(ViewUtils.textFuturaAndFuturaBold(this, htmlTextButtonAposte));
+        Button buttonAposte = findViewById(R.id.ButtonAposteSociais);
+        textViewRepasseQuadro1.setText(ViewUtils.fromHtml(htmlTextViewRepasseQuadro1));
+        textViewRepasseQuadro2.setText(ViewUtils.fromHtml(htmlTextViewRepasseQuadro2));
+        buttonAposte.setText(ViewUtils.textFuturaAndFuturaBold(this, htmlTextButtonAposte));
 
 
-        ButtonAposte.setOnClickListener(v -> finish());
+        buttonAposte.setOnClickListener(v -> finish());
     }
 
     private String[] formatValorArrecados(BigDecimal valor) {
-        BigDecimal arrecadacaoAcumulada = new BigDecimal(0.0);
+        BigDecimal arrecadacaoAcumulada = BigDecimal.valueOf(0.0);
         if (repasseOBj.getArrecadacaoAcumulada() != null) {
             arrecadacaoAcumulada = repasseOBj.getArrecadacaoAcumulada();
         }
