@@ -60,13 +60,8 @@ public class MensagensNetwork {
             }
         }
 
-        if (errorResponse != null){
-            if (errorResponse.getMensagem() != null) {
-                errorResponse.setMensagem( context.getString( R.string.sistema_indisponivel ) );
-            }
-        } else {
+        if (errorResponse == null){
             errorResponse = new ErrorResponse();
-            errorResponse.setMensagem( context.getString( R.string.sistema_indisponivel ) );
         }
 
         switch (response.statusCode){
@@ -80,7 +75,9 @@ public class MensagensNetwork {
                 errorResponse.setMensagem(  context.getString(R.string.erro_500) );
                 break;
             default:
-                errorResponse.setMensagem(  context.getString(R.string.erro_500) );
+                if(errorResponse.getMensagem().isEmpty()){
+                    errorResponse.setMensagem(  context.getString(R.string.erro_500) );
+                }
             break;
         }
 
