@@ -143,6 +143,9 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         } else if (parametroJogo.getConcurso().getValorApostaMinima() != null) {
             valorEmReais = parametroJogo.getConcurso().getValorApostaMinima();
         }
+
+        valorEmReais = valorEmReais.equals(BigDecimal.ZERO) ? parametroJogo.getValoresAposta().get(0).getValor(): valorEmReais;
+
         if (qtdTeimosinhas != 0) {
             valorEmReais = valorEmReais.multiply(BigDecimal.valueOf(qtdTeimosinhas).movePointLeft(0));
         }
@@ -951,6 +954,16 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
                 if (dezenasSelecionadas.contains(valorSelecionado)) {
                     dezenasSelecionadas.remove(valorSelecionado);
+                    if(dezenasSelecionadas.size() >= parametroJogo.getQuantidadeMinima()){
+                        parentActivity.qtdDezenasPossiveisSelecionado -= 1;
+                        parentActivity.verificaNovoQtdDezenasMax(dezenasSelecionadas.size());
+                        verificaSeMostraBotaoLimparAposta();
+                    }
+                    if (isTipoLotomania && selcioneOutrosNumeros.isChecked()) {
+                        selcioneOutrosNumeros.setChecked(false);
+                    }
+                    atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
+
                 } else {
                     int maxNumerosParaSelecionar = parametroJogo.getQuantidadeMaxima();
                     if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) {
@@ -1074,7 +1087,6 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         }
         atualizaValorApostaLoteca();
         atualizaStatusBotaoFinalizar();
-        verificaSeMostraBotaoLimparAposta();
     }
 
     private void limparPartidadasSelecionasLoteca(boolean desativado) {
