@@ -3,6 +3,10 @@ package br.gov.caixa.loterias.apostar.interno.view.fragment;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -18,7 +22,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -81,6 +84,38 @@ import br.gov.caixa.loterias.apostar.interno.view.listener.CartelaFragmentListen
 import br.gov.caixa.loterias.apostar.interno.view.listener.LotogolListener;
 
 public class CartelaFragment extends Fragment implements OnClickListener, LotecaAdapter.LocateAdapterListener, LotogolListener {
+    private SensorManager mSensorManager;
+    private float mAccel; // acceleration apart from gravity
+    private float mAccelCurrent; // current acceleration including gravity
+    private float mAccelLast; // last acceleration including gravity
+    private boolean isNumerosAleatoriosShake = false;
+
+    private final SensorEventListener mSensorListener = new SensorEventListener() {
+
+        public void onSensorChanged(SensorEvent se) {
+            float x = se.values[0];
+            float y = se.values[1];
+            float z = se.values[2];
+            mAccelLast = mAccelCurrent;
+            mAccelCurrent = (float) Math.sqrt((double) (x*x + y*y + z*z));
+            float delta = mAccelCurrent - mAccelLast;
+            mAccel = mAccel * 0.9f + delta; // perform low-cut filter
+
+            if (mAccel > 10 && mAccel < 16) {
+                if (!isNumerosAleatoriosShake) {
+                    isNumerosAleatoriosShake = true;
+                    botaoLimparAposta.performClick();
+                    preencheNumerosAleatorios();
+                }
+            }
+            System.out.println(mAccel);
+        }
+
+        public void onAccuracyChanged(Sensor sensor, int accuracy) {
+        }
+
+        
+    };
 
     private List<Dezena> dezenas = new ArrayList<>();
     private List<Integer> dezenasSelecionadas = new ArrayList<>();
@@ -161,6 +196,12 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mSensorManager = (SensorManager)this.getContext().getSystemService(Context.SENSOR_SERVICE);
+        mSensorManager.registerListener(mSensorListener, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
+        mAccel = 0.00f;
+        mAccelCurrent = SensorManager.GRAVITY_EARTH;
+        mAccelLast = SensorManager.GRAVITY_EARTH;
+
         parentActivity = ((SimularApostaActivity) getActivity());
         if (parentActivity != null) {
             parametroJogo = parentActivity.getParametroSimulacao();
@@ -279,7 +320,13 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
     @Override
     public void onResume() {
         super.onResume();
+        mSensorManager.registerListener(mSensorListener, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
+    }
 
+    @Override
+    public void onPause() {
+        mSensorManager.unregisterListener(mSensorListener);
+        super.onPause();
     }
 
     @Override
@@ -626,6 +673,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                     @Override
                     public void onResponse(CompletaJogoRsp response) {
                         DialogUtils.dismiss();
+                        isNumerosAleatoriosShake = false;
                         FirebaseManager.registraEvento(getContext() ,"ENTROU_COMPLETAR_COM_NUMEROS_ALEATORIOS");
                         isEcolhaTimeBtnAtivado = true;
                         dezenasSelecionadas.clear();
@@ -641,6 +689,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        isNumerosAleatoriosShake = false;
                         DialogUtils.dismiss();
                         RedirectNetwork.checkRedirect(error, getActivity());
                     }
@@ -772,7 +821,6 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         relativelayoutParams.height = (int) (64 * scale + 0.5f);
 
         salvarApostaLayout.setLayoutParams(relativelayoutParams);
-        salvarApostaLayout.setOnClickListener(null);
 
         ImageView starSalvarApostaImageView = parentActivity.getIconStarSalvar();
         starSalvarApostaImageView.setBackgroundResource(R.drawable.icon_favoritar);

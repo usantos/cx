@@ -7,9 +7,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import br.gov.caixa.loterias.apostar.interno.R;
@@ -132,7 +130,7 @@ public class AjudaActivity extends AppCompatActivity {
 
         setSupportActionBar(tb);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(this, backGroundToolBar)));
-        getSupportActionBar().setTitle(null);
+        getSupportActionBar().setTitle("");
     }
 
     private void carregarCampos() {
