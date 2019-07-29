@@ -614,6 +614,14 @@ public class ViewUtils {
         return -1;
     }
 
+    public static Integer getConcursoAtualPorModalidade(String modalidade) {
+        ParametroSimulacao param = getParametroSimulacao(SessaoUsuario.getInstance(),ModalidadeEnum.toString(modalidade));
+        if(param != null) {
+            return param.getParametroJogo().getConcurso().getNumero();
+        }
+        return -1;
+    }
+
     public static int getSmallSizeQrCode(Context context) {
 
 //        Point point = getAppUsableScreenSize(context);

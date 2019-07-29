@@ -430,7 +430,7 @@ public class ApostaBO extends BaseBO {
         silceConnection.request(request);
     }
 
-    public void getResultadoModalidadeConcurso(final String modalidade, final int concurso, final RequestListener<ResultadoConcursoDTOResponse> listener) {
+    public void getResultadoModalidadeConcurso(final String modalidade, final Integer concurso, final RequestListener<ResultadoConcursoDTOResponse> listener) {
         LinkedHashMap<String, String> headers = new LinkedHashMap<>();
         headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
 

@@ -26,6 +26,7 @@ import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,6 +50,7 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostar.interno.BuildConfig;
 import br.gov.caixa.loterias.apostar.interno.R;
+import br.gov.caixa.loterias.apostar.interno.SelecaoModalidadesResultados;
 import br.gov.caixa.loterias.apostar.interno.TutorialRapidaoActivity;
 import br.gov.caixa.loterias.apostar.interno.model.bean.DadosUsuarioToken;
 import br.gov.caixa.loterias.apostar.interno.model.bean.Modalidade;
@@ -536,18 +538,24 @@ public class PrincipalActivity extends AppCompatActivity
         if (groupPosition != 0) {
             drawerLayout.closeDrawer(Gravity.START, false);
         }
-        if (groupPosition == 1) {
-            redirecionaRapidao();
-        } else if (groupPosition == 3) {
-            startActivity(new Intent(PrincipalActivity.this, RepassesSociaisActivity.class));
-        } else if (groupPosition == 2) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-                    != PackageManager.PERMISSION_GRANTED) {
+        switch (groupPosition) {
+            case 1: startActivity(new Intent(PrincipalActivity.this, SelecaoModalidadesResultados.class));
+                break;
+            case 2: redirecionaRapidao();
+                break;
+
+            case 3: if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.CAMERA}, ZXING_CAMERA_PERMISSION);
             } else {
                 startActivity(new Intent(PrincipalActivity.this, LerBilhetesActivity.class));
             }
+                break;
+            case 4: startActivity(new Intent(PrincipalActivity.this, RepassesSociaisActivity.class));
+                break;
+
+            default:
+                break;
         }
     }
 

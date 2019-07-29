@@ -467,4 +467,7 @@
     <string name="mercado_pago_tipo_vazio">O tipo está vazio.</string>
     <string name="mercado_pago_data_expiracao_invalida">Data de expiração inválida.</string>
 
+    <!-- Resultados -->
+    <string name="resultados_selecione_opcoes">Selecione a modalidade para\n ver os seus resultados.</string>
+    <string name="resultados_titulo">Concurso nº %s</string>
 </resources>
