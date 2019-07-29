@@ -12,6 +12,7 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import java.util.List;
+import java.util.Locale;
 
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ApostaFavoritaDTO;
@@ -51,7 +52,7 @@ public final class FavoritasRapidaoRecyclerAdapter extends RecyclerView.Adapter<
     @Override
     public void onBindViewHolder(@NonNull FavoritasRapidaoRecyclerAdapter.ViewHolder holder, int position) {
         if (listaApostaFavorita.size() > 0) {
-            EstiloModalidade estilo = new EstiloModalidade(ModalidadeEnum.toString(listaApostaFavorita.get(position).getModalidade().getDescricao().toLowerCase()));
+            EstiloModalidade estilo = new EstiloModalidade(ModalidadeEnum.toString(listaApostaFavorita.get(position).getModalidade().getDescricao().toLowerCase(new Locale("pt", "BR"))));
             holder.modalidades.setText(listaApostaFavorita.get(position).getModalidade().getDescricao());
             holder.modalidades.setTextColor(context.getResources().getColor(estilo.getCorClara()));
             holder.setIsRecyclable(false);

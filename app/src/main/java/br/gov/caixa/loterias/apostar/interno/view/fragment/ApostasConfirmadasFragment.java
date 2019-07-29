@@ -1,6 +1,5 @@
 package br.gov.caixa.loterias.apostar.interno.view.fragment;
 
-import android.app.DatePickerDialog;
 import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -8,7 +7,6 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.DatePicker;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -140,7 +138,7 @@ public class ApostasConfirmadasFragment extends Fragment implements ApostasConfi
                 page.setOffset(0);
 
                 hasMoreItems = true;
-                apostasConfirmadasRecyclerView.setAdapter(null);
+//                apostasConfirmadasRecyclerView.setAdapter(null);
 
                 updateResultDate();
                 requestApostasConfirmadas();

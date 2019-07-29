@@ -3,17 +3,13 @@ package br.gov.caixa.loterias.apostar.interno.utils;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
-import android.os.Build;
 import android.support.v4.app.ActivityCompat;
-import android.widget.EditText;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by lsimas on 10/04/2017.
@@ -45,7 +41,7 @@ public class AppUtils {
     }
 
     public static String capitalizeString(String string) {
-        char[] chars = string.toLowerCase().toCharArray();
+        char[] chars = string.toLowerCase(new Locale("pt", "BR")).toCharArray();
         boolean found = false;
         for (int i = 0; i < chars.length; i++) {
             if (!found && Character.isLetter(chars[i])) {

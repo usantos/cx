@@ -14,6 +14,7 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import java.util.List;
+import java.util.Locale;
 
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ApostaFavoritaDTO;
@@ -63,7 +64,7 @@ public class ApostaFavoritaAdapter extends BaseAdapter {
 
         final TextView tituloApostaFavorira = convertView.findViewById( R.id.tituloApostaFavorira );
         tituloApostaFavorira.setText( aposta.getModalidade().getDescricao() );
-        EstiloModalidade estilo = new EstiloModalidade(ModalidadeEnum.toString(favoritosSalvos.get(position).getModalidade().getDescricao().toLowerCase()));
+        EstiloModalidade estilo = new EstiloModalidade(ModalidadeEnum.toString(favoritosSalvos.get(position).getModalidade().getDescricao().toLowerCase(new Locale("pt", "BR"))));
         tituloApostaFavorira.setText(favoritosSalvos.get(position).getModalidade().getDescricao());
         tituloApostaFavorira.setTextColor(parent.getResources().getColor(estilo.getCorClara()));
 

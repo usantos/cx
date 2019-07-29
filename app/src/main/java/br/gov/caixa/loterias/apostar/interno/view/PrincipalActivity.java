@@ -46,6 +46,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import br.gov.caixa.loterias.apostar.interno.BuildConfig;
 import br.gov.caixa.loterias.apostar.interno.R;
@@ -173,7 +174,7 @@ public class PrincipalActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        String separarNome[] = DadosUsuarioBO.obterNome().toLowerCase().split(" ");
+        String separarNome[] = DadosUsuarioBO.obterNome().toLowerCase(new Locale("pt", "BR")).split(" ");
         String nomeUsuario = StringUtils.capitalizer(separarNome[0]+" "+separarNome[separarNome.length - 1]);
 
         if(!" ".equals(nomeUsuario)) {
