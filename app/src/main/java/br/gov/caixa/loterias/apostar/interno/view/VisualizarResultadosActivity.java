@@ -1,12 +1,15 @@
 package br.gov.caixa.loterias.apostar.interno.view;
 
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -20,43 +23,70 @@ import com.android.volley.VolleyError;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostar.interno.R;
+import br.gov.caixa.loterias.apostar.interno.model.bean.Modalidade;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostar.interno.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ApostaDTO;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ConcursoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.PremiacaoConcursoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResultadoConcursoDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
-import br.gov.caixa.loterias.apostar.interno.view.adapter.NumerosResultadosAdapter;
 import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
+import br.gov.caixa.loterias.apostar.interno.view.custom.PartidaViewDetalhesResultado;
+import br.gov.caixa.loterias.apostar.interno.view.fragment.ResultadoDuplaSenaFragment;
+import br.gov.caixa.loterias.apostar.interno.view.fragment.ResultadoGenericoFragment;
+import br.gov.caixa.loterias.apostar.interno.view.fragment.ResultadoLotecaFragment;
+import br.gov.caixa.loterias.apostar.interno.view.fragment.ResultadoLotogolFragment;
+import br.gov.caixa.loterias.apostar.interno.view.fragment.ResultadoTimemaniaDiaDeSorteFragment;
+
 import static br.gov.caixa.loterias.apostar.interno.SelecaoModalidadesResultados.MODALIDADE;
 
 public class VisualizarResultadosActivity extends AppCompatActivity {
 
     private static final String CONCURSO = "CONCURSO";
-    private String modalidade;
+    private static final String COR_CLARA = "COR_CLARA";
+    private static final String COR_ESCURA = "COR_ESCURA";
+    private static final String TRAPEZIO = "TRAPEZIO";
+
+    private String txtModalidade;
     private Integer concursoAtual;
     private Integer concursoAlvo;
-    private LinearLayout layoutPremiados;
-    private RecyclerView rvNumerosResultado;
+    private Integer corClara;
+    private Integer corEscura;
+    private Integer resourceTrapezio;
+
+
+    private Toolbar toolbar;
+
+    private View divisoria;
+    private View containerFragment;
+
     private TextView tituloModalidade;
     private TextView dataSorteio;
     private TextView txtPremiados;
     private TextView tvNumeroSorteio;
-    private Toolbar toolbar;
-    private View divisoria;
+
+    private RecyclerView rvNumerosResultado;
     private ScrollView scrollResultado;
+
+    private LinearLayout layoutPremiados;
     private ConstraintLayout layoutHeader;
     private ConstraintLayout layoutTrevo;
     private ConstraintLayout layoutPrimeiraParte;
     private ConstraintLayout layoutListaPremiacao;
+
     private Button btnVoltar;
     private Button btnConcursoAnterior;
     private Button btnProximoConcurso;
+
+    private Button btnVoltarInterno;
+    private PartidaViewDetalhesResultado partidaViewDetalhesResultado;
+    private Modalidade modalidade;
 
 
     @Override
@@ -71,7 +101,6 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
 
     private void setViews() {
         toolbar = findViewById(R.id.toolbar);
-        rvNumerosResultado = findViewById(R.id.rv_numeros_resultado);
         tituloModalidade = findViewById(R.id.tv_titulo_modalidade);
         layoutHeader = findViewById(R.id.cl_top_modalidades);
         layoutTrevo = findViewById(R.id.cl_trevo);
@@ -86,22 +115,30 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
         btnProximoConcurso = findViewById(R.id.btn_proximo_concurso);
         txtPremiados = findViewById(R.id.tv_premiados);
         tvNumeroSorteio = findViewById(R.id.tv_numero_sorteio);
+        partidaViewDetalhesResultado = findViewById(R.id.pvdr_resultado_partida);
+        btnVoltarInterno = findViewById(R.id.voltarButton);
+        containerFragment = findViewById(R.id.v_container_fragment);
 
         txtPremiados.setText(getString(R.string.label_premiados));
         tvNumeroSorteio.setText(getString(R.string.resultados_numeros_sorteados));
+        btnVoltarInterno.setVisibility(View.GONE);
+
+        if(corEscura!= null && corClara !=null && resourceTrapezio!= null){
+            setBackground(corClara,corEscura,resourceTrapezio);
+        }
 
     }
     private void setMethods(){
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        if (modalidade != null) {
-            concursoAtual = ViewUtils.getConcursoAtualPorModalidade(modalidade);
+        if (txtModalidade != null) {
+            concursoAtual = ViewUtils.getConcursoAtualPorModalidade(txtModalidade);
             if(concursoAlvo == null){
                 concursoAlvo = concursoAtual - 1;
             }
-            getResutadoModalidade(ApostaDTO.lowerCaseFromString(ModalidadeEnum.toString(modalidade)), concursoAlvo);
+            getResultadoModalidade(ApostaDTO.lowerCaseFromString(ModalidadeEnum.toString(txtModalidade)), concursoAlvo);
             setTitlePorConcurso(concursoAlvo);
-            tituloModalidade.setText(modalidade);
+            tituloModalidade.setText(txtModalidade);
         }
         setButtons();
     }
@@ -112,72 +149,87 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
         btnProximoConcurso.setText(ViewUtils.textFuturaAndFuturaBold(this,getString(R.string.resultados_botao,proximo)));
         btnConcursoAnterior.setText(ViewUtils.textFuturaAndFuturaBold(this,getString(R.string.resultados_botao,anterior)));
         btnVoltar.setText(ViewUtils.textFuturaAndFuturaBold(this,getString(R.string.label_voltar_bold)));
-        btnProximoConcurso.setOnClickListener(view -> reestartActivity(proximo));
+        if((concursoAlvo +1) == concursoAtual){
+            btnProximoConcurso.setEnabled(false);
+            btnProximoConcurso.setAlpha(.5f);
+        }else {
+            btnProximoConcurso.setOnClickListener(view -> reestartActivity(proximo));
+        }
+
         btnConcursoAnterior.setOnClickListener(view -> reestartActivity(anterior));
         btnVoltar.setOnClickListener(view -> finish());
     }
 
-    private void reestartActivity(String concurso){
-        Intent it = new Intent(VisualizarResultadosActivity.this,VisualizarResultadosActivity.class);
-        it.putExtra(CONCURSO,concurso);
-        it.putExtra(MODALIDADE,modalidade);
-        startActivity(it);
-        this.overridePendingTransition(0, 0);
-        finish();
+    @SuppressLint("MissingSuperCall")
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        //Do not call super class method here.
+        //super.onSaveInstanceState(outState);
     }
 
-    private void configuraTema(ResultadoConcursoDTO response) {
-        switch (ModalidadeEnum.toString(modalidade)) {
+    private void configuraModalidade(ResultadoConcursoDTO response) {
+
+        divisoria.setVisibility(View.VISIBLE);
+        tvNumeroSorteio.setVisibility(View.VISIBLE);
+        layoutListaPremiacao.setVisibility(View.VISIBLE);
+        dataSorteio.setText(getString(R.string.resultados_data_sorteio,response.getConcurso().getDataSorteio()));
+
+        switch (ModalidadeEnum.toString(txtModalidade)) {
             case MEGA_SENA:
                 setBackground(R.color.megasenaclaro, R.color.megasenaescuro, R.drawable.background_trapeze_megasena);
-                configuraMega(response);
-                break;
-            case DUPLA_SENA:
-                setBackground(R.color.duplasenaclaro, R.color.duplasenaescuro, R.drawable.background_trapeze_duplasena);
-                break;
-            case TIMEMANIA:
-                setBackground(R.color.timemaniaclaro, R.color.timemaniamediaescuro, R.drawable.background_trapeze_timemania);
-                break;
-            case LOTECA:
-                setBackground(R.color.lotecaclaro, R.color.lotecaescuro, R.drawable.background_trapeze_loteca);
-                break;
-            case LOTOGOL:
-                setBackground(R.color.lotogolclaro, R.color.lotogolescuro, R.drawable.background_trapeze_lotogol);
-                break;
-            case DIA_DE_SORTE:
-                setBackground(R.color.diasorteclaro, R.color.diasorteescuro, R.drawable.background_trapeze_dia_sorte);
+                configuraResultadoSuperior(response,ResultadoGenericoFragment.newInstance(response));
                 break;
             case LOTOFACIL:
                 setBackground(R.color.lotofacilclaro, R.color.lotofacilescuro, R.drawable.background_trapeze_lotofacil);
+                configuraResultadoSuperior(response,ResultadoGenericoFragment.newInstance(response));
                 break;
             case LOTOMANIA:
                 setBackground(R.color.lotomaniaclaro, R.color.lotomaniaescuro, R.drawable.background_trapeze_lotomania);
-                configuraMega(response);
+                configuraResultadoSuperior(response,ResultadoGenericoFragment.newInstance(response));
                 break;
             case QUINA:
                 setBackground(R.color.quinaclaro, R.color.quinaescuro, R.drawable.background_trapeze_quina);
+                configuraResultadoSuperior(response,ResultadoGenericoFragment.newInstance(response));
+                break;
+            case DUPLA_SENA:
+                setBackground(R.color.duplasenaclaro, R.color.duplasenaescuro, R.drawable.background_trapeze_duplasena);
+                configuraResultadoSuperior(response,ResultadoDuplaSenaFragment.newInstance(response));
+                txtPremiados.setVisibility(View.GONE);
+                break;
+            case TIMEMANIA:
+                setBackground(R.color.timemaniaclaro, R.color.timemaniamediaescuro, R.drawable.background_trapeze_timemania);
+                configuraResultadoSuperior(response, ResultadoTimemaniaDiaDeSorteFragment.newInstance(response));
+                break;
+            case DIA_DE_SORTE:
+                setBackground(R.color.diasorteclaro, R.color.diasorteescuro, R.drawable.background_trapeze_dia_sorte);
+                configuraResultadoSuperior(response, ResultadoTimemaniaDiaDeSorteFragment.newInstance(response));
+                break;
+            case LOTECA:
+                setBackground(R.color.lotecaclaro, R.color.lotecaescuro, R.drawable.background_trapeze_loteca);
+                configuraResultadoSuperior(response, ResultadoLotecaFragment.newInstance(response));
+                tvNumeroSorteio.setVisibility(View.GONE);
+                break;
+            case LOTOGOL:
+                setBackground(R.color.lotogolclaro, R.color.lotogolescuro, R.drawable.background_trapeze_lotogol);
+                configuraResultadoSuperior(response, ResultadoLotogolFragment.newInstance(response));
+                tvNumeroSorteio.setVisibility(View.GONE);
                 break;
             default:
                 break;
         }
     }
 
-    private void configuraMega(ResultadoConcursoDTO response) {
-        NumerosResultadosAdapter numerosResultadosAdapter;
-        int numberOfColumns = 3;
-        if (response.getNumerosSorteadosPrimeiroSorteio().size() > 6) {
-            numberOfColumns = 4;
-        }
-
-        this.rvNumerosResultado.setLayoutManager(new GridLayoutManager(this, numberOfColumns));
-        numerosResultadosAdapter = new NumerosResultadosAdapter(this, response.getNumerosSorteadosPrimeiroSorteio(), ModalidadeEnum.toString(modalidade));
-        this.rvNumerosResultado.setAdapter(numerosResultadosAdapter);
-        dataSorteio.setText(getString(R.string.resultados_data_sorteio,response.getConcurso().getDataSorteio()));
-
-        adicionarPremiados(response.getPremiacoesPrimeiroSorteio());
+    private void configuraResultadoSuperior(ResultadoConcursoDTO response, Fragment f) {
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+        fragmentTransaction.replace(R.id.v_container_fragment,f);
+        fragmentTransaction.commit();
     }
 
     private void setBackground(int corClara, int corEscura, int resourceTrapezio) {
+        this.corClara = corClara;
+        this.corEscura = corEscura;
+        this.resourceTrapezio = resourceTrapezio;
         scrollResultado.setBackgroundResource(corEscura);
         layoutHeader.setBackgroundResource(corClara);
         divisoria.setBackgroundResource(corClara);
@@ -185,17 +237,18 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
         layoutTrevo.setBackgroundResource(resourceTrapezio);
     }
 
-    private void getResutadoModalidade(String modalidade, int concurso) {
+    private void getResultadoModalidade(String txtmodalidade, int concurso) {
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
         final ApostaBO apostaBO = ApostaBO_.getInstance_(this);
-        apostaBO.getResultadoModalidadeConcurso(modalidade, concurso, new RequestListener<ResultadoConcursoDTOResponse>() {
+        apostaBO.getResultadoModalidadeConcurso(txtmodalidade, concurso, new RequestListener<ResultadoConcursoDTOResponse>() {
             @Override
             public void onResponse(ResultadoConcursoDTOResponse response) {
                 loadViewProgress.dismiss();
                 if (response.getRedirect() != null) {
                     RedirectNetwork.checkRedirectSucesso(response.getRedirect(), VisualizarResultadosActivity.this);
                 }
-                configuraTema(response.getPayload());
+                configuraModalidade(response.getPayload());
+                configuraGeral(response);
             }
 
             @Override
@@ -205,6 +258,25 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
                 ViewUtils.alertTitleButton(VisualizarResultadosActivity.this, R.string.label_atencao, MensagensNetwork.setMensagem(error, VisualizarResultadosActivity.this), "Ok", dialogInterface ->btnConcursoAnterior.performClick());
             }
         });
+    }
+    private void configuraGeral(ResultadoConcursoDTOResponse response){
+        ConcursoDTO concurso = response.getPayload().getConcurso();
+        modalidade = new Modalidade (concurso.getModalidade().name(),
+                concurso.getValorApostaMinima(),
+                concurso.getModalidade().toString(),
+                concurso.getModalidadeDetalhada().toString(),
+                concurso.getModalidade(),
+                concurso,
+                concurso.getAberto(),
+                response.getPayload());
+
+
+        if(modalidade.getDescricao().equals(ModalidadeEnum.DUPLA_SENA.name())){
+            adicionarPremiados(response.getPayload().getPremiacoesPrimeiroSorteio(),response.getPayload().getPremiacoesSegundoSorteio());
+        }else {
+            adicionarPremiados(response.getPayload().getPremiacoesPrimeiroSorteio());
+        }
+        partidaViewDetalhesResultado.setLayout(modalidade);
     }
 
 
@@ -236,6 +308,33 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
         }
     }
 
+    private void adicionarPremiados(List<PremiacaoConcursoDTO> listaPremiados, List<PremiacaoConcursoDTO> listaPremiadosSegundoConcurso){
+        TextView premiadosTextview1 = new TextView(VisualizarResultadosActivity.this);
+        premiadosTextview1.setText(ViewUtils.textFuturaAndFuturaBold(VisualizarResultadosActivity.this, getResources().getString(R.string.label_premiados_primeiro_sorteio_bold)));
+        LinearLayout.LayoutParams layoutParamsPremiadosTextview1 = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        layoutParamsPremiadosTextview1.setMargins(0, 35, 0, 0);
+
+        premiadosTextview1.setLayoutParams(layoutParamsPremiadosTextview1);
+        premiadosTextview1.setTextAppearance(VisualizarResultadosActivity.this, R.style.fontForTitleTopoPremiados);
+        this.layoutPremiados.addView(premiadosTextview1);
+
+        adicionarPremiados(listaPremiados);
+
+        TextView premiadosTextview2= new TextView(VisualizarResultadosActivity.this);
+        premiadosTextview2.setText(ViewUtils.textFuturaAndFuturaBold(VisualizarResultadosActivity.this, getResources().getString(R.string.label_premiados_segundo_sorteio_bold)));
+        LinearLayout.LayoutParams layoutParamspremiadosTextview2 = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        layoutParamspremiadosTextview2.setMargins(0, 20, 0, 0);
+        premiadosTextview2.setLayoutParams(layoutParamspremiadosTextview2);
+        premiadosTextview2.setTextAppearance(VisualizarResultadosActivity.this, R.style.fontForTitleTopoPremiados);
+        this.layoutPremiados.addView(premiadosTextview2);
+
+        if (listaPremiadosSegundoConcurso != null) {
+            adicionarPremiados(listaPremiadosSegundoConcurso);
+        }
+    }
+
     private void setTitlePorConcurso(int concurso) {
         setTitle(getString(R.string.resultados_titulo, String.valueOf(concurso)));
     }
@@ -244,13 +343,29 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
     private void getExtras() {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            modalidade = bundle.getString(MODALIDADE);
+            txtModalidade = bundle.getString(MODALIDADE);
             if(bundle.getString(CONCURSO) != null){
                 concursoAlvo = Integer.valueOf(bundle.getString(CONCURSO));
+                corClara = bundle.getInt(COR_CLARA);
+                corEscura =  bundle.getInt(COR_ESCURA);
+                resourceTrapezio =  bundle.getInt(TRAPEZIO);
             }
 
         }
     }
+
+    private void reestartActivity(String concurso){
+        Intent it = new Intent(VisualizarResultadosActivity.this,VisualizarResultadosActivity.class);
+        it.putExtra(CONCURSO,concurso);
+        it.putExtra(MODALIDADE, txtModalidade);
+        it.putExtra(COR_CLARA,corClara);
+        it.putExtra(COR_ESCURA,corEscura);
+        it.putExtra(TRAPEZIO,resourceTrapezio);
+        startActivity(it);
+        this.overridePendingTransition(R.anim.mpsdk_fade_in, R.anim.mpsdk_fade_out);
+        finish();
+    }
+
 
     @Override
     public boolean onSupportNavigateUp() {
