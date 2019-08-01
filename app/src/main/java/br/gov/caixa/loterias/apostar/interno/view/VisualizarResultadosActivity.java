@@ -298,6 +298,7 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
                 }
                 configuraModalidade(response.getPayload());
                 configuraGeral(response);
+
             }
 
             @Override
@@ -328,6 +329,10 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
             adicionarPremiados(response.getPayload().getPremiacoesPrimeiroSorteio());
         }
         partidaViewDetalhesResultado.setLayout(modalidade);
+
+        if(response.getPayload().getConcurso().getTipoConcurso().toString().equalsIgnoreCase("ESPECIAL")){
+            tituloModalidade.setText(response.getPayload().getConcurso().getModalidadeDetalhada().getDescricaoEspecial().toLowerCase());
+        }
     }
 
     private void adicionarPremiados(List<PremiacaoConcursoDTO> listaPremiados){
