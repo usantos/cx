@@ -474,4 +474,5 @@
     <string name="resultados_data_sorteio">Data do sorteio: %s</string>
     <string name="resultados_numeros_sorteados">Números sorteados:</string>
     <string name="resultados_placeholder_toolbar">Digite o nº do concurso Ex: 1230</string>
+    <string name="resultados_validacao_concurso">O concurso mais atual é o de nº %s</string>
 </resources>

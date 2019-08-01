@@ -2,6 +2,8 @@ package br.gov.caixa.loterias.apostar.interno.view;
 
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
@@ -14,7 +16,9 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -171,27 +175,45 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
             if (etPesquisar.getVisibility() == View.INVISIBLE){
                 etPesquisar.setText("");
                 etPesquisar.setVisibility(View.VISIBLE);
+                etPesquisar.requestFocus();
+
             }else {
+                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                 etPesquisar.setVisibility(View.INVISIBLE);
+
             }
         });
 
         etPesquisar.setOnEditorActionListener(
                 (v, actionId, event) -> {
                     if (actionId == EditorInfo.IME_ACTION_DONE) {
-                        etPesquisar.setVisibility(View.GONE);
-                        reestartActivity(etPesquisar.getText().toString());
+                        configuraPesquisa();
                     }
                     return true;
                 });
+        etPesquisar.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput((etPesquisar), InputMethodManager.SHOW_IMPLICIT);
+            }
+        });
+    }
 
+    private void configuraPesquisa(){
+        if(etPesquisar.getText().length() > 0){
+            if(Integer.valueOf( etPesquisar.getText().toString()) <= concursoAtual){
+                etPesquisar.setVisibility(View.GONE);
+                reestartActivity(etPesquisar.getText().toString());
+            }else {
+                ViewUtils.alert(this,getString(R.string.resultados_validacao_concurso,String.valueOf(concursoAtual-1)));
+            }
+        }
     }
 
     @SuppressLint("MissingSuperCall")
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        //Do not call super class method here.
-        //super.onSaveInstanceState(outState);
     }
 
     private void configuraModalidade(ResultadoConcursoDTO response) {
@@ -281,11 +303,13 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 loadViewProgress.dismiss();
-                RedirectNetwork.checkRedirect(error, VisualizarResultadosActivity.this);
-                ViewUtils.alertTitleButton(VisualizarResultadosActivity.this, R.string.label_atencao, MensagensNetwork.setMensagem(error, VisualizarResultadosActivity.this), "Ok", dialogInterface ->btnConcursoAnterior.performClick());
+                //RedirectNetwork.checkRedirect(error, VisualizarResultadosActivity.this);
+                //ViewUtils.alertTitleButton(VisualizarResultadosActivity.this, R.string.label_atencao, MensagensNetwork.setMensagem(error, VisualizarResultadosActivity.this), "Ok", dialogInterface ->btnConcursoAnterior.performClick());
+                ViewUtils.alertTitleButton(VisualizarResultadosActivity.this, R.string.label_atencao, MensagensNetwork.setMensagem(error, VisualizarResultadosActivity.this), "Ok", dialogInterface ->{});
             }
         });
     }
+
     private void configuraGeral(ResultadoConcursoDTOResponse response){
         ConcursoDTO concurso = response.getPayload().getConcurso();
         modalidade = new Modalidade (concurso.getModalidade().name(),
@@ -305,7 +329,6 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
         }
         partidaViewDetalhesResultado.setLayout(modalidade);
     }
-
 
     private void adicionarPremiados(List<PremiacaoConcursoDTO> listaPremiados){
         for (PremiacaoConcursoDTO premiacaoConcurso :  listaPremiados){
@@ -366,7 +389,6 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
         setTitle(getString(R.string.resultados_titulo, String.valueOf(concurso)));
     }
 
-
     private void getExtras() {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
@@ -392,7 +414,6 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
         this.overridePendingTransition(R.anim.mpsdk_fade_in, R.anim.mpsdk_fade_out);
         finish();
     }
-
 
     @Override
     public boolean onSupportNavigateUp() {

@@ -26,6 +26,7 @@
             app:layout_constraintStart_toStartOf="parent"
             android:textColor="@color/black"
             android:paddingLeft="10dp"
+            android:focusableInTouchMode="true"
             android:inputType="number"
             android:textColorHint="@color/mpsdk_darker_gray"
             android:textSize="14sp"
