@@ -12,8 +12,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -83,10 +87,13 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
     private Button btnVoltar;
     private Button btnConcursoAnterior;
     private Button btnProximoConcurso;
-
     private Button btnVoltarInterno;
+
     private PartidaViewDetalhesResultado partidaViewDetalhesResultado;
     private Modalidade modalidade;
+
+    private ImageButton ibPesquisar;
+    private EditText etPesquisar;
 
 
     @Override
@@ -118,11 +125,13 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
         partidaViewDetalhesResultado = findViewById(R.id.pvdr_resultado_partida);
         btnVoltarInterno = findViewById(R.id.voltarButton);
         containerFragment = findViewById(R.id.v_container_fragment);
+        ibPesquisar = findViewById(R.id.ib_pesquisar);
+        etPesquisar = findViewById(R.id.et_pesquisar);
 
         txtPremiados.setText(getString(R.string.label_premiados));
         tvNumeroSorteio.setText(getString(R.string.resultados_numeros_sorteados));
         btnVoltarInterno.setVisibility(View.GONE);
-
+        ibPesquisar.setVisibility(View.VISIBLE);
         if(corEscura!= null && corClara !=null && resourceTrapezio!= null){
             setBackground(corClara,corEscura,resourceTrapezio);
         }
@@ -158,6 +167,24 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
 
         btnConcursoAnterior.setOnClickListener(view -> reestartActivity(anterior));
         btnVoltar.setOnClickListener(view -> finish());
+        ibPesquisar.setOnClickListener(view -> {
+            if (etPesquisar.getVisibility() == View.INVISIBLE){
+                etPesquisar.setText("");
+                etPesquisar.setVisibility(View.VISIBLE);
+            }else {
+                etPesquisar.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        etPesquisar.setOnEditorActionListener(
+                (v, actionId, event) -> {
+                    if (actionId == EditorInfo.IME_ACTION_DONE) {
+                        etPesquisar.setVisibility(View.GONE);
+                        reestartActivity(etPesquisar.getText().toString());
+                    }
+                    return true;
+                });
+
     }
 
     @SuppressLint("MissingSuperCall")
