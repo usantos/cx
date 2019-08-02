@@ -223,7 +223,7 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
         divisoria.setVisibility(View.VISIBLE);
         tvNumeroSorteio.setVisibility(View.VISIBLE);
         layoutListaPremiacao.setVisibility(View.VISIBLE);
-        dataSorteio.setText(getString(R.string.resultados_data_sorteio,response.getConcurso().getDataSorteio()));
+        dataSorteio.setText(ViewUtils.textFuturaAndFuturaBold(this,getString(R.string.resultados_data_sorteio, ("_"+response.getConcurso().getDataSorteio()+"_"))));
 
         switch (ModalidadeEnum.toString(txtModalidade)) {
             case MEGA_SENA:

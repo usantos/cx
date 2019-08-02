@@ -40,8 +40,6 @@ public class LotogolResultadoTimesAdapter extends RecyclerView.Adapter<LotogolRe
     public void onBindViewHolder(LotogolHolder holder, int position) {
         holder.partidaRow.setLayout(partidalotogolLista.get(position));
         holder.partidaRow.getPaginaResultadoLotogolText().setText(position+1 + " de " + partidalotogolLista.size());
-
-//        holder.partidaRow.getPaginaResultadoLotecaText().setText(position+1 + " de " + partidalotecaLista.size());
     }
 
     @Override

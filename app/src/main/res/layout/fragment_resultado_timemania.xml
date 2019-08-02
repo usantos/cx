@@ -35,17 +35,18 @@
         android:textColor="@color/branco"
         android:textSize="14.2sp"
         app:layout_constraintStart_toEndOf="@+id/iv_time_coracao"
-        app:layout_constraintTop_toBottomOf="@+id/tv_descricao" />
+        app:layout_constraintTop_toTopOf="@+id/iv_time_coracao" />
 
     <TextView
         android:id="@+id/tv_descricao"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="15dp"
         android:layout_marginStart="8dp"
         android:fontFamily="@font/futura_std_bold"
         android:textColor="@color/branco"
         android:textSize="14.2sp"
         app:layout_constraintStart_toEndOf="@+id/iv_time_coracao"
-        app:layout_constraintTop_toTopOf="@+id/iv_time_coracao"
+        app:layout_constraintTop_toBottomOf="@+id/tv_titulo"
         tools:text="Flamengo" />
+
 </android.support.constraint.ConstraintLayout>
