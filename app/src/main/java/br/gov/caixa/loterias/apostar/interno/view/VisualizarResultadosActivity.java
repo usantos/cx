@@ -162,7 +162,7 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
         btnProximoConcurso.setText(ViewUtils.textFuturaAndFuturaBold(this,getString(R.string.resultados_botao,proximo)));
         btnConcursoAnterior.setText(ViewUtils.textFuturaAndFuturaBold(this,getString(R.string.resultados_botao,anterior)));
         btnVoltar.setText(ViewUtils.textFuturaAndFuturaBold(this,getString(R.string.label_voltar_bold)));
-        if((concursoAlvo +1) == concursoAtual){
+        if((concursoAlvo +1) >= concursoAtual){
             btnProximoConcurso.setEnabled(false);
             btnProximoConcurso.setAlpha(.5f);
         }else {
@@ -176,8 +176,10 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
                 etPesquisar.setText("");
                 etPesquisar.setVisibility(View.VISIBLE);
                 etPesquisar.requestFocus();
+                setTitle("");
 
             }else {
+                setTitlePorConcurso(concursoAlvo);
                 InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                 etPesquisar.setVisibility(View.INVISIBLE);
@@ -202,7 +204,7 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
 
     private void configuraPesquisa(){
         if(etPesquisar.getText().length() > 0){
-            if(Integer.valueOf( etPesquisar.getText().toString()) <= concursoAtual){
+            if(Integer.valueOf( etPesquisar.getText().toString()) < concursoAtual){
                 etPesquisar.setVisibility(View.GONE);
                 reestartActivity(etPesquisar.getText().toString());
             }else {

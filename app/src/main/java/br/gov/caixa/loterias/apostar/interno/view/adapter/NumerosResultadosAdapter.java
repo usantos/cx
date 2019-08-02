@@ -47,9 +47,9 @@ public final class NumerosResultadosAdapter extends RecyclerView.Adapter<Numeros
         EstiloModalidade estilo = new EstiloModalidade(modalidade);
         int numeroResultado = numeroslista.get(position);
         holder.textViewTituloNumerosResultados.setText(numeroResultado < 10 ? "0" + numeroResultado : "" + numeroResultado);
-        holder.textViewTituloNumerosResultados.setTextColor(context.getResources().getColor(estilo.getMenuItemColor()));
+        holder.textViewTituloNumerosResultados.setTextColor(context.getResources().getColor(estilo.getCorClara()));
         GradientDrawable drawable = new GradientDrawable();
-        drawable.setColor(context.getResources().getColor(estilo.getCorClara()));
+        drawable.setColor(context.getResources().getColor(R.color.branco));
         drawable.setShape(GradientDrawable.OVAL);
         drawable.setSize(ViewUtils.setDisplayMetric(40, context), ViewUtils.setDisplayMetric(40, context));
         holder.linearLayoutContentNumerosResultados.setBackground(drawable);
