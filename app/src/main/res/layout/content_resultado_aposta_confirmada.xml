@@ -43,20 +43,23 @@
                 android:layout_marginTop="@dimen/activity_vertical_margin"
                 android:background="@drawable/custom_border_cinza_escuro"
                 android:baselineAligned="true"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                >
 
                 <RelativeLayout
                     android:id="@+id/lotericaLayout"
                     android:layout_width="0dp"
                     android:layout_height="56dp"
                     android:layout_margin="0dp"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:visibility="gone">
 
                     <TextView
                         android:id="@+id/lotericaText"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
+                        android:layout_centerHorizontal="true"
                         android:text="@string/label_loterica"
                         android:textColor="@color/cinza"
                         android:textSize="14.2sp" />
@@ -68,7 +71,8 @@
                     android:layout_width="0dp"
                     android:layout_height="56dp"
                     android:layout_margin="0dp"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:visibility="gone">
 
                     <View
                         android:id="@+id/linhaSeparadoraUm"
@@ -83,6 +87,7 @@
                         android:layout_alignBottom="@+id/linhaSeparadoraUm"
                         android:layout_alignTop="@+id/linhaSeparadoraUm"
                         android:gravity="center"
+                        android:layout_centerHorizontal="true"
                         android:paddingEnd="@dimen/text_margin_small"
                         android:paddingStart="@dimen/text_margin_small"
                         android:text="@string/label_agencia_caixa"
@@ -96,7 +101,8 @@
                     android:id="@+id/mercadoPagoLayout"
                     android:layout_width="0dp"
                     android:layout_height="56dp"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:visibility="gone">
 
                     <View
                         android:id="@+id/linhaSeparadoraDois"
@@ -111,6 +117,7 @@
                         android:layout_alignBottom="@+id/linhaSeparadoraDois"
                         android:layout_alignTop="@+id/linhaSeparadoraDois"
                         android:gravity="center"
+                        android:layout_centerHorizontal="true"
                         android:paddingEnd="@dimen/text_margin_small"
                         android:paddingStart="@dimen/text_margin_small"
                         android:text="@string/label_mercado_pago"

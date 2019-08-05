@@ -6,6 +6,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.android.volley.VolleyError;
@@ -26,6 +27,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CodigoResgateDTO
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.DetalhesPremioDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametroSimulacao;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.TipoPagamentoDTO;
 import br.gov.caixa.loterias.apostar.interno.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.FaixaPremiacaoAdapter;
@@ -86,6 +88,7 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
             }
         }
         createListPremiacao();
+        trataFormasDeResgate();
     }
 
     @Click(R.id.lotericaLayout)
@@ -128,6 +131,22 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
         intent.putExtra( "valorPremio", ViewUtils.getMoedaFormat(detalhesPremioDTO.getPremio().getValorLiquido()) );
         intent.putExtra( "idAposta", detalhesPremioDTO.getAposta().getId() );
         startActivity( intent );
+    }
+
+    private void trataFormasDeResgate() {
+        for (TipoPagamentoDTO meioPagamento: detalhesPremioDTO.getMeiosResgate()) {
+            switch (meioPagamento.getCanal()) {
+                case SIGEL:
+                    agenciaCaixaLayout.setVisibility(View.VISIBLE);
+                    break;
+                case SILCE:
+                    mercadoPagoLayout.setVisibility(View.VISIBLE);
+                    break;
+                case SISPL:
+                    lotericaLayout.setVisibility(View.VISIBLE);
+                    break;
+            }
+        }
     }
 
     private void createListPremiacao() {
