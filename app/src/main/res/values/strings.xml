@@ -467,4 +467,12 @@
     <string name="mercado_pago_tipo_vazio">O tipo está vazio.</string>
     <string name="mercado_pago_data_expiracao_invalida">Data de expiração inválida.</string>
 
+    <!-- Resultados -->
+    <string name="resultados_selecione_opcoes">Selecione a modalidade para\n ver os seus resultados.</string>
+    <string name="resultados_titulo">Concurso nº %s</string>
+    <string name="resultados_botao">Concurso\nnº _%s_</string>
+    <string name="resultados_data_sorteio">Data do sorteio: %s</string>
+    <string name="resultados_numeros_sorteados">Números sorteados:</string>
+    <string name="resultados_placeholder_toolbar">Digite o nº do concurso Ex: 1230</string>
+    <string name="resultados_validacao_concurso">O concurso mais atual é o de nº %s</string>
 </resources>

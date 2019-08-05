@@ -19,11 +19,18 @@
         android:supportsRtl="true"
         android:networkSecurityConfig="@xml/network_security_config"
         android:theme="@style/AppTheme">
-        <activity android:name=".TutorialRapidaoActivity"
+        <activity
+            android:name=".SelecaoModalidadesResultados"
             android:theme="@style/AppTheme.NoActionBar"/>
+
+        <activity android:name=".view.VisualizarResultadosActivity"
+                  android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".TutorialRapidaoActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".view.AppIndisponivelActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".view.AtualizacaoActivity"
             android:configChanges="orientation"
@@ -108,8 +115,7 @@
             android:configChanges="orientation"
             android:label="@string/title_activity_confirmacao_pagamento"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".view.NovaFormaPagamentoActivity"
             android:configChanges="orientation"
