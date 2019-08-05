@@ -76,7 +76,7 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
 
     private TextView tituloModalidade;
     private TextView dataSorteio;
-    private TextView txtPremiados;
+    //private TextView txtPremiados;
     private TextView tvNumeroSorteio;
 
     private RecyclerView rvNumerosResultado;
@@ -124,7 +124,7 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
         btnVoltar = findViewById(R.id.btn_voltar);
         btnConcursoAnterior = findViewById(R.id.btn_concurso_anterior);
         btnProximoConcurso = findViewById(R.id.btn_proximo_concurso);
-        txtPremiados = findViewById(R.id.tv_premiados);
+        //txtPremiados = findViewById(R.id.tv_premiados);
         tvNumeroSorteio = findViewById(R.id.tv_numero_sorteio);
         partidaViewDetalhesResultado = findViewById(R.id.pvdr_resultado_partida);
         btnVoltarInterno = findViewById(R.id.voltarButton);
@@ -132,7 +132,7 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
         ibPesquisar = findViewById(R.id.ib_pesquisar);
         etPesquisar = findViewById(R.id.et_pesquisar);
 
-        txtPremiados.setText(getString(R.string.label_premiados));
+        //txtPremiados.setText(getString(R.string.label_premiados));
         tvNumeroSorteio.setText(getString(R.string.resultados_numeros_sorteados));
         btnVoltarInterno.setVisibility(View.GONE);
         ibPesquisar.setVisibility(View.VISIBLE);
@@ -145,15 +145,8 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         if (txtModalidade != null) {
-            concursoAtual = ViewUtils.getConcursoAtualPorModalidade(txtModalidade);
-            if(concursoAlvo == null){
-                concursoAlvo = concursoAtual - 1;
-            }
-            getResultadoModalidade(ApostaDTO.lowerCaseFromString(ModalidadeEnum.toString(txtModalidade)), concursoAlvo);
-            setTitlePorConcurso(concursoAlvo);
-            tituloModalidade.setText(txtModalidade);
+            getResultadoModalidade(ApostaDTO.lowerCaseFromString(ModalidadeEnum.toString(txtModalidade)));
         }
-        setButtons();
     }
 
     private void setButtons(){
@@ -162,7 +155,7 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
         btnProximoConcurso.setText(ViewUtils.textFuturaAndFuturaBold(this,getString(R.string.resultados_botao,proximo)));
         btnConcursoAnterior.setText(ViewUtils.textFuturaAndFuturaBold(this,getString(R.string.resultados_botao,anterior)));
         btnVoltar.setText(ViewUtils.textFuturaAndFuturaBold(this,getString(R.string.label_voltar_bold)));
-        if((concursoAlvo +1) >= concursoAtual){
+        if(concursoAlvo >= concursoAtual){
             btnProximoConcurso.setEnabled(false);
             btnProximoConcurso.setAlpha(.5f);
         }else {
@@ -204,11 +197,11 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
 
     private void configuraPesquisa(){
         if(etPesquisar.getText().length() > 0){
-            if(Integer.valueOf( etPesquisar.getText().toString()) < concursoAtual){
+            if(Integer.valueOf( etPesquisar.getText().toString()) <= concursoAtual){
                 etPesquisar.setVisibility(View.GONE);
                 reestartActivity(etPesquisar.getText().toString());
             }else {
-                ViewUtils.alert(this,getString(R.string.resultados_validacao_concurso,String.valueOf(concursoAtual-1)));
+                ViewUtils.alert(this,getString(R.string.resultados_validacao_concurso,String.valueOf(concursoAtual)));
             }
         }
     }
@@ -245,7 +238,7 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
             case DUPLA_SENA:
                 setBackground(R.color.duplasenaclaro, R.color.duplasenaescuro, R.drawable.background_trapeze_duplasena);
                 configuraResultadoSuperior(response,ResultadoDuplaSenaFragment.newInstance(response));
-                txtPremiados.setVisibility(View.GONE);
+                //txtPremiados.setVisibility(View.GONE);
                 break;
             case TIMEMANIA:
                 setBackground(R.color.timemaniaclaro, R.color.timemaniamediaescuro, R.drawable.background_trapeze_timemania);
@@ -306,11 +299,42 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 loadViewProgress.dismiss();
-                //RedirectNetwork.checkRedirect(error, VisualizarResultadosActivity.this);
-                //ViewUtils.alertTitleButton(VisualizarResultadosActivity.this, R.string.label_atencao, MensagensNetwork.setMensagem(error, VisualizarResultadosActivity.this), "Ok", dialogInterface ->btnConcursoAnterior.performClick());
                 ViewUtils.alertTitleButton(VisualizarResultadosActivity.this, R.string.label_atencao, MensagensNetwork.setMensagem(error, VisualizarResultadosActivity.this), "Ok", dialogInterface ->{});
             }
         });
+    }
+
+    private void getResultadoModalidade(String txtmodalidade) {
+        final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
+        final ApostaBO apostaBO = ApostaBO_.getInstance_(this);
+        apostaBO.getResultadoModalidade(txtmodalidade, new RequestListener<ResultadoConcursoDTOResponse>() {
+            @Override
+            public void onResponse(ResultadoConcursoDTOResponse response) {
+                loadViewProgress.dismiss();
+                if (response.getRedirect() != null) {
+                    RedirectNetwork.checkRedirectSucesso(response.getRedirect(), VisualizarResultadosActivity.this);
+                }
+                configuraRetornoPrimeiraRequisicao(response);
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                loadViewProgress.dismiss();
+                ViewUtils.alertTitleButton(VisualizarResultadosActivity.this, R.string.label_atencao, MensagensNetwork.setMensagem(error, VisualizarResultadosActivity.this), "Ok", dialogInterface ->{});
+            }
+        });
+    }
+
+    private void configuraRetornoPrimeiraRequisicao(ResultadoConcursoDTOResponse response){
+        concursoAtual = response.getPayload().getConcurso().getNumero();
+        if(concursoAlvo == null){
+            concursoAlvo = concursoAtual;
+        }
+        configuraModalidade(response.getPayload());
+        configuraGeral(response);
+        setTitlePorConcurso(concursoAlvo);
+        tituloModalidade.setText(txtModalidade);
+        setButtons();
     }
 
     private void configuraGeral(ResultadoConcursoDTOResponse response){
@@ -325,13 +349,12 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
                 response.getPayload());
 
 
-        if(modalidade.getDescricao().equals(ModalidadeEnum.DUPLA_SENA.name())){
+       /* if(modalidade.getDescricao().equals(ModalidadeEnum.DUPLA_SENA.name())){
             adicionarPremiados(response.getPayload().getPremiacoesPrimeiroSorteio(),response.getPayload().getPremiacoesSegundoSorteio());
         }else {
             adicionarPremiados(response.getPayload().getPremiacoesPrimeiroSorteio());
-        }
+        }*/
         partidaViewDetalhesResultado.setLayout(modalidade);
-
         if(response.getPayload().getConcurso().getTipoConcurso().toString().equalsIgnoreCase("ESPECIAL")){
             tituloModalidade.setText(response.getPayload().getConcurso().getModalidadeDetalhada().getDescricaoEspecial().toLowerCase());
         }

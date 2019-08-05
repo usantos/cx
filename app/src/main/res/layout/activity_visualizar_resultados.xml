@@ -152,6 +152,7 @@
                     tools:text="@string/label_premiados"
                     android:textColor="@color/branco"
                     android:textSize="15.8sp"
+                    android:visibility="gone"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
