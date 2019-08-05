@@ -249,6 +249,20 @@ public class ViewUtils {
         return dialog;
     }
 
+    public static Dialog alertTitleCustomPositiveListener(Context context,String negativeTitle, String positiveTitle, String message, DialogInterface.OnClickListener listener) {
+        Dialog dialog = ViewUtils.dialogo(context, R.string.label_atencao, message)
+                .setCancelable(false)
+                .setNegativeButton (negativeTitle, (dialogInterface, i) -> dialogInterface.dismiss())
+                .setPositiveButton(positiveTitle, listener)
+                .show();
+
+        DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
+        TextView textMessageView = dialog.findViewById(android.R.id.message);
+        textTitleView.setTypeface(getFontFuturaBold(context));
+        textMessageView.setTypeface(getFontFutura(context));
+        return dialog;
+    }
+
     public static Dialog alertVerificarIdadeListener(Context context, DialogInterface.OnClickListener listener) {
         Dialog dialog = ViewUtils.dialogo(context, R.string.label_atencao, context.getResources().getString(R.string.MA003))
                 .setCancelable(false)

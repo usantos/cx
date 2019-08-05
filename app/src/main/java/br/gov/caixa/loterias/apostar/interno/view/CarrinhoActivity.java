@@ -1,6 +1,5 @@
 package br.gov.caixa.loterias.apostar.interno.view;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
@@ -144,7 +143,6 @@ public class CarrinhoActivity extends SettingToolbarActivity {
             public void onErrorResponse(VolleyError error) {
                 DialogUtils.dismiss();
                 RedirectNetwork.checkRedirect(error, CarrinhoActivity.this);
-
             }
         });
     }
