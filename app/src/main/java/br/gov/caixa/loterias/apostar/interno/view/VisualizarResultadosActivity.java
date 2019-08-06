@@ -2,7 +2,6 @@ package br.gov.caixa.loterias.apostar.interno.view;
 
 
 import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
@@ -14,9 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -56,7 +53,8 @@ import static br.gov.caixa.loterias.apostar.interno.SelecaoModalidadesResultados
 
 public class VisualizarResultadosActivity extends AppCompatActivity {
 
-    private static final String CONCURSO = "CONCURSO";
+    private static final String CONCURSO_ALVO = "CONCURSO_ALVO";
+    private static final String CONCURSO_ATUAL = "CONCURSO_ATUAL";
     private static final String COR_CLARA = "COR_CLARA";
     private static final String COR_ESCURA = "COR_ESCURA";
     private static final String TRAPEZIO = "TRAPEZIO";
@@ -145,7 +143,11 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         if (txtModalidade != null) {
-            getResultadoModalidade(ApostaDTO.lowerCaseFromString(ModalidadeEnum.toString(txtModalidade)));
+            if(concursoAtual == null){
+                getResultadoModalidade(ApostaDTO.lowerCaseFromString(ModalidadeEnum.toString(txtModalidade)));
+            }else {
+                getResultadoModalidade(ApostaDTO.lowerCaseFromString(ModalidadeEnum.toString(txtModalidade)),concursoAlvo);
+            }
         }
     }
 
@@ -169,9 +171,11 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
                 etPesquisar.setText("");
                 etPesquisar.setVisibility(View.VISIBLE);
                 etPesquisar.requestFocus();
+                ibPesquisar.setImageDrawable(getDrawable(R.drawable.ic_x));
                 setTitle("");
 
             }else {
+                ibPesquisar.setImageDrawable(getDrawable(R.drawable.ic_lupa));
                 setTitlePorConcurso(concursoAlvo);
                 InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
@@ -292,9 +296,7 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
                     RedirectNetwork.checkRedirectSucesso(response.getRedirect(), VisualizarResultadosActivity.this);
                 }
                 configuraModalidade(response.getPayload());
-                configuraGeral(response);
-
-            }
+                configuraGeral(response); }
 
             @Override
             public void onErrorResponse(VolleyError error) {
@@ -332,9 +334,6 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
         }
         configuraModalidade(response.getPayload());
         configuraGeral(response);
-        setTitlePorConcurso(concursoAlvo);
-        tituloModalidade.setText(txtModalidade);
-        setButtons();
     }
 
     private void configuraGeral(ResultadoConcursoDTOResponse response){
@@ -357,8 +356,11 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
         partidaViewDetalhesResultado.setLayout(modalidade);
         if(response.getPayload().getConcurso().getTipoConcurso().toString().equalsIgnoreCase("ESPECIAL")){
             tituloModalidade.setText(response.getPayload().getConcurso().getModalidadeDetalhada().getDescricaoEspecial().toLowerCase());
+        }else {
+            tituloModalidade.setText(txtModalidade);
         }
-    }
+        setButtons();
+        setTitlePorConcurso(concursoAlvo); }
 
     private void adicionarPremiados(List<PremiacaoConcursoDTO> listaPremiados){
         for (PremiacaoConcursoDTO premiacaoConcurso :  listaPremiados){
@@ -423,8 +425,9 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             txtModalidade = bundle.getString(MODALIDADE);
-            if(bundle.getString(CONCURSO) != null){
-                concursoAlvo = Integer.valueOf(bundle.getString(CONCURSO));
+            if(bundle.getString(CONCURSO_ALVO) != null){
+                concursoAlvo = Integer.valueOf(bundle.getString(CONCURSO_ALVO));
+                concursoAtual = bundle.getInt(CONCURSO_ATUAL);
                 corClara = bundle.getInt(COR_CLARA);
                 corEscura =  bundle.getInt(COR_ESCURA);
                 resourceTrapezio =  bundle.getInt(TRAPEZIO);
@@ -435,11 +438,12 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
 
     private void reestartActivity(String concurso){
         Intent it = new Intent(VisualizarResultadosActivity.this,VisualizarResultadosActivity.class);
-        it.putExtra(CONCURSO,concurso);
+        it.putExtra(CONCURSO_ALVO,concurso);
         it.putExtra(MODALIDADE, txtModalidade);
         it.putExtra(COR_CLARA,corClara);
         it.putExtra(COR_ESCURA,corEscura);
         it.putExtra(TRAPEZIO,resourceTrapezio);
+        it.putExtra(CONCURSO_ATUAL,concursoAtual);
         startActivity(it);
         this.overridePendingTransition(R.anim.mpsdk_fade_in, R.anim.mpsdk_fade_out);
         finish();
