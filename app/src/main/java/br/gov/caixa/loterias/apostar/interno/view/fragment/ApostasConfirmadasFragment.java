@@ -394,34 +394,6 @@ public class ApostasConfirmadasFragment extends Fragment implements ApostasConfi
         }
     }
 
-
-    private void getResultadoModalidadeConcurso
-            (ApostaDTO apostaDTO, final Object object) {
-        apostaBO.getResultadoModalidadeConcurso(ApostaDTO.lowerCaseFromString(apostaDTO.getModalidade()), apostaDTO.getConcursoAlvo(),
-                new RequestListener<ResultadoConcursoDTOResponse>() {
-                    @Override
-                    public void onResponse(ResultadoConcursoDTOResponse result) {
-                        try {
-                            DialogUtils.dismiss();
-                            if (object instanceof DetalhesHistoricoPremioDTO) {
-                                ApostaConfirmadaDetalhesActivity_.intent(getActivity()).detalhesHistoricoPremioDTO((DetalhesHistoricoPremioDTO) object)
-                                        .resultadoConcursoDTO(result.getPayload()).start();
-                            } else if (object instanceof DetalhesPremioDTO) {
-                                ApostaConfirmadaDetalhesActivity_.intent(getActivity()).detalhesPremioDTO((DetalhesPremioDTO) object)
-                                        .resultadoConcursoDTO(result.getPayload()).start();
-                            }
-                        }catch (Exception e){
-                            ViewUtils.alert(getContext(), getResources().getString(R.string.erro_500));
-                        }
-                    }
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        onApostasConfirmadasError(error);
-                    }
-                });
-    }
-
     private void onApostasConfirmadasError(VolleyError error) {
         isLoading = false;
         if (getActivity() != null) {

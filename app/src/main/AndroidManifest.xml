@@ -24,7 +24,8 @@
             android:theme="@style/AppTheme.NoActionBar"/>
 
         <activity android:name=".view.VisualizarResultadosActivity"
-                  android:theme="@style/AppTheme.NoActionBar"/>
+                  android:theme="@style/AppTheme.NoActionBar"
+                  android:windowSoftInputMode="adjustNothing" />
         <activity
             android:name=".TutorialRapidaoActivity"
             android:theme="@style/AppTheme.NoActionBar" />

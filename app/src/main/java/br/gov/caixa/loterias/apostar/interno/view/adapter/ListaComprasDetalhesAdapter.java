@@ -111,7 +111,7 @@ public class ListaComprasDetalhesAdapter extends RecyclerView.Adapter<ListaCompr
         private TextView concursoListaComprasTextView;
         private TextView statusResultadoApostaListaComprasTextView;
         private LinearLayout topListItemComprasLinearLayout;
-        private ConstraintLayout bottomListItemComprasLinearLayout;
+        private LinearLayout bottomListItemComprasLinearLayout;
         private TextView seusNumerosItemListaComprasTextView;
         private LinearLayout itemComprasContentModalideLinearLayout;
 

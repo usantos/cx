@@ -430,14 +430,14 @@ public class ApostaBO extends BaseBO {
         silceConnection.request(request);
     }
 
-    public void getResultadoModalidadeConcurso(final String modalidade, final Integer concurso, final RequestListener<ResultadoConcursoDTOResponse> listener) {
+    public void getResultadoModalidade(final String modalidade, final String concurso, final RequestListener<ResultadoConcursoDTOResponse> listener) {
         LinkedHashMap<String, String> headers = new LinkedHashMap<>();
         headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
 
         Map<String, String> queryParams = new HashMap<>();
 
         String url = ServerMethods.RESULTADOS_MODALIDADE_CONCURSO_PATH.replace("{modalidade}", modalidade);
-        url = url.replace("{concurso}", String.valueOf(concurso));
+        url = url.replace("{concurso}",concurso);
 
         final GsonRequest request = silceConnection.buildGetRequest(url,
                 queryParams,
@@ -450,21 +450,7 @@ public class ApostaBO extends BaseBO {
     }
 
     public void getResultadoModalidade(final String modalidade, final RequestListener<ResultadoConcursoDTOResponse> listener) {
-        LinkedHashMap<String, String> headers = new LinkedHashMap<>();
-        headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
-
-        Map<String, String> queryParams = new HashMap<>();
-
-        String url = ServerMethods.RESULTADOS_MODALIDADE_UTLIMO.replace("{modalidade}", modalidade);
-
-        final GsonRequest request = silceConnection.buildGetRequest(url,
-                queryParams,
-                ResultadoConcursoDTOResponse.class,
-                listener.getSilceListener(),
-                listener.getErrorListener(), headers);
-
-        request.setErrorListener(interceptError(request, headers, listener));
-        silceConnection.request(request);
+        getResultadoModalidade( modalidade, "", listener);
     }
 
     public void getApostaDetalhePremio(Long id, final RequestListener<DetalhesPremioDTOResponse> listener) {

@@ -137,6 +137,7 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
         if(corEscura!= null && corClara !=null && resourceTrapezio!= null){
             setBackground(corClara,corEscura,resourceTrapezio);
         }
+        setTitle("");
 
     }
     private void setMethods(){
@@ -144,11 +145,12 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         if (txtModalidade != null) {
             if(concursoAtual == null){
-                getResultadoModalidade(ApostaDTO.lowerCaseFromString(ModalidadeEnum.toString(txtModalidade)));
+                getResultadoModalidade(ApostaDTO.lowerCaseFromString(ModalidadeEnum.toString(txtModalidade)),"");
             }else {
-                getResultadoModalidade(ApostaDTO.lowerCaseFromString(ModalidadeEnum.toString(txtModalidade)),concursoAlvo);
+                getResultadoModalidade(ApostaDTO.lowerCaseFromString(ModalidadeEnum.toString(txtModalidade)),concursoAlvo.toString());
             }
         }
+        configBtnsPesq();
     }
 
     private void setButtons(){
@@ -161,13 +163,26 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
             btnProximoConcurso.setEnabled(false);
             btnProximoConcurso.setAlpha(.5f);
         }else {
-            btnProximoConcurso.setOnClickListener(view -> reestartActivity(proximo));
+            btnProximoConcurso.setOnClickListener(view ->
+            {
+                btnProximoConcurso.setEnabled(false);
+                btnConcursoAnterior.setEnabled(false);
+                reestartActivity(proximo);
+            });
         }
 
-        btnConcursoAnterior.setOnClickListener(view -> reestartActivity(anterior));
+        btnConcursoAnterior.setOnClickListener(view -> {
+            btnProximoConcurso.setEnabled(false);
+            btnConcursoAnterior.setEnabled(false);
+            reestartActivity(anterior);}
+            );
         btnVoltar.setOnClickListener(view -> finish());
+        configBtnsPesq();
+    }
+
+    private void configBtnsPesq(){
         ibPesquisar.setOnClickListener(view -> {
-            if (etPesquisar.getVisibility() == View.INVISIBLE){
+            if (etPesquisar.getVisibility() == View.GONE){
                 etPesquisar.setText("");
                 etPesquisar.setVisibility(View.VISIBLE);
                 etPesquisar.requestFocus();
@@ -176,10 +191,12 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
 
             }else {
                 ibPesquisar.setImageDrawable(getDrawable(R.drawable.ic_lupa));
-                setTitlePorConcurso(concursoAlvo);
+                if (concursoAlvo != null) {
+                    setTitlePorConcurso(concursoAlvo);
+                }
                 InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-                etPesquisar.setVisibility(View.INVISIBLE);
+                etPesquisar.setVisibility(View.GONE);
 
             }
         });
@@ -200,7 +217,7 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
     }
 
     private void configuraPesquisa(){
-        if(etPesquisar.getText().length() > 0){
+        if(etPesquisar.getText().length() > 0 && concursoAtual != null){
             if(Integer.valueOf( etPesquisar.getText().toString()) <= concursoAtual){
                 etPesquisar.setVisibility(View.GONE);
                 reestartActivity(etPesquisar.getText().toString());
@@ -285,38 +302,17 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
         layoutTrevo.setBackgroundResource(resourceTrapezio);
     }
 
-    private void getResultadoModalidade(String txtmodalidade, int concurso) {
+    private void getResultadoModalidade(String txtmodalidade, String concurso) {
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
         final ApostaBO apostaBO = ApostaBO_.getInstance_(this);
-        apostaBO.getResultadoModalidadeConcurso(txtmodalidade, concurso, new RequestListener<ResultadoConcursoDTOResponse>() {
+        apostaBO.getResultadoModalidade(txtmodalidade,String.valueOf(concurso), new RequestListener<ResultadoConcursoDTOResponse>() {
             @Override
             public void onResponse(ResultadoConcursoDTOResponse response) {
                 loadViewProgress.dismiss();
                 if (response.getRedirect() != null) {
                     RedirectNetwork.checkRedirectSucesso(response.getRedirect(), VisualizarResultadosActivity.this);
                 }
-                configuraModalidade(response.getPayload());
-                configuraGeral(response); }
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                loadViewProgress.dismiss();
-                ViewUtils.alertTitleButton(VisualizarResultadosActivity.this, R.string.label_atencao, MensagensNetwork.setMensagem(error, VisualizarResultadosActivity.this), "Ok", dialogInterface ->{});
-            }
-        });
-    }
-
-    private void getResultadoModalidade(String txtmodalidade) {
-        final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
-        final ApostaBO apostaBO = ApostaBO_.getInstance_(this);
-        apostaBO.getResultadoModalidade(txtmodalidade, new RequestListener<ResultadoConcursoDTOResponse>() {
-            @Override
-            public void onResponse(ResultadoConcursoDTOResponse response) {
-                loadViewProgress.dismiss();
-                if (response.getRedirect() != null) {
-                    RedirectNetwork.checkRedirectSucesso(response.getRedirect(), VisualizarResultadosActivity.this);
-                }
-                configuraRetornoPrimeiraRequisicao(response);
+                configuraRetornoRequisicao(response);
             }
 
             @Override
@@ -327,8 +323,10 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
         });
     }
 
-    private void configuraRetornoPrimeiraRequisicao(ResultadoConcursoDTOResponse response){
-        concursoAtual = response.getPayload().getConcurso().getNumero();
+    private void configuraRetornoRequisicao(ResultadoConcursoDTOResponse response){
+        if(concursoAtual == null){
+            concursoAtual = response.getPayload().getConcurso().getNumero();
+        }
         if(concursoAlvo == null){
             concursoAlvo = concursoAtual;
         }
