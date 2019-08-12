@@ -2,6 +2,7 @@ package br.gov.caixa.loterias.apostar.interno.view.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;

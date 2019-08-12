@@ -40,7 +40,9 @@ class RoundHelper {
         } else {
             gradient = getGradientDrawable(dividerColor, dividerRadius, dividerSize);
         }
-        layout.setDividerDrawable(gradient);
+        if (gradient != null) {
+            layout.setDividerDrawable(gradient);
+        }
     }
 
     private static GradientDrawable getGradientDrawable(int dividerColor, int dividerRadius, int dividerSize) {

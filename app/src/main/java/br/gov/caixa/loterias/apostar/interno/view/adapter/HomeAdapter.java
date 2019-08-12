@@ -84,7 +84,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         estilo = new EstiloModalidade(data.get(position).getTipoModalidade());
 
         if (data.get(position).getConcurso().getTipoConcurso().toString().equals("ESPECIAL")){
-            holder.game.setText(data.get(position).getConcurso().getModalidadeDetalhada().getDescricaoEspecial().toLowerCase());
+            holder.game.setText(data.get(position).getConcurso().getModalidadeDetalhada().getDescricaoEspecial().toLowerCase(new Locale("pt", "BR")));
         }else{
             holder.game.setText(ModalidadeEnum.fromString(data.get(position).getTipoModalidade()));
         }

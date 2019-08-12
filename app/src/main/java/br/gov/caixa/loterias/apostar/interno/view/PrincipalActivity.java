@@ -26,6 +26,7 @@ import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,9 +47,11 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import br.gov.caixa.loterias.apostar.interno.BuildConfig;
 import br.gov.caixa.loterias.apostar.interno.R;
+import br.gov.caixa.loterias.apostar.interno.SelecaoModalidadesResultados;
 import br.gov.caixa.loterias.apostar.interno.TutorialRapidaoActivity;
 import br.gov.caixa.loterias.apostar.interno.model.bean.DadosUsuarioToken;
 import br.gov.caixa.loterias.apostar.interno.model.bean.Modalidade;
@@ -173,7 +176,7 @@ public class PrincipalActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        String separarNome[] = DadosUsuarioBO.obterNome().toLowerCase().split(" ");
+        String separarNome[] = DadosUsuarioBO.obterNome().toLowerCase(new Locale("pt", "BR")).split(" ");
         String nomeUsuario = StringUtils.capitalizer(separarNome[0]+" "+separarNome[separarNome.length - 1]);
 
         if(!" ".equals(nomeUsuario)) {
@@ -321,7 +324,7 @@ public class PrincipalActivity extends AppCompatActivity
 
         tituloLerBilhetes.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.label_ler_bilhestes_bold)));
         textoRepassados.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.label_repassados_boas_causas_bold)));
-        AnimacaoCalculoRepassesSociais.start(valorRepassesPrincipal, 0, 0, repassesSociais);
+        AnimacaoCalculoRepassesSociais.start(valorRepassesPrincipal, 0, repassesSociais);
     }
 
     private void toolbarListener() {
@@ -536,18 +539,24 @@ public class PrincipalActivity extends AppCompatActivity
         if (groupPosition != 0) {
             drawerLayout.closeDrawer(Gravity.START, false);
         }
-        if (groupPosition == 1) {
-            redirecionaRapidao();
-        } else if (groupPosition == 3) {
-            startActivity(new Intent(PrincipalActivity.this, RepassesSociaisActivity.class));
-        } else if (groupPosition == 2) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-                    != PackageManager.PERMISSION_GRANTED) {
+        switch (groupPosition) {
+            case 1: startActivity(new Intent(PrincipalActivity.this, SelecaoModalidadesResultados.class));
+                break;
+            case 2: redirecionaRapidao();
+                break;
+
+            case 3: if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.CAMERA}, ZXING_CAMERA_PERMISSION);
             } else {
                 startActivity(new Intent(PrincipalActivity.this, LerBilhetesActivity.class));
             }
+                break;
+            case 4: startActivity(new Intent(PrincipalActivity.this, RepassesSociaisActivity.class));
+                break;
+
+            default:
+                break;
         }
     }
 

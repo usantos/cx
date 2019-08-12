@@ -47,6 +47,7 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
         this.apostas = apostas;
         this.parentActivity = parentActivity;
         this.animacao = animacao;
+        this.setHasStableIds(true);
     }
 
 
@@ -180,7 +181,7 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
             }
         } else {
             for (Integer num : aposta.getNumerosSelecionados()) {
-                if (num == (aposta.getNumerosSelecionados().get(aposta.getNumerosSelecionados().size() - 1))) {
+                if (num.equals(aposta.getNumerosSelecionados().get(aposta.getNumerosSelecionados().size() - 1))) {
                     numeroStr.append(String.format("%02d", num));
                 } else {
                     numeroStr.append(String.format("%02d - ", num));

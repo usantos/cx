@@ -19,6 +19,7 @@ import java.util.List;
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bean.Modalidade;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.GanhadoresPorRegiaoDTO;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.PremiacaoConcursoDTO;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 
@@ -41,7 +42,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
     }
 
     public void setLayout(Modalidade modalidade) {
-        if (modalidade.getResultadoConcursoDTO().getPremiacoesSegundoSorteio() == null) {
+        if (modalidade.getTipoModalidade() != ModalidadeEnum.DUPLA_SENA) {
             TextView title1 = new TextView(getContext());
             title1.setText(ViewUtils.textFuturaAndFuturaBold(getContext(), getResources().getString(R.string.label_premiacao_bold)));
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
@@ -89,8 +90,9 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
             title2.setTextAppearance(getContext(), R.style.fontForTitleTopoPremiados);
             this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title2);
 
-            adicionarPremiados(modalidade.getResultadoConcursoDTO().getPremiacoesSegundoSorteio());
-
+            if(modalidade.getResultadoConcursoDTO().getPremiacoesSegundoSorteio() != null){
+                adicionarPremiados(modalidade.getResultadoConcursoDTO().getPremiacoesSegundoSorteio());
+            }
 
             TextView title3 = new TextView(getContext());
             title3.setText(ViewUtils.textFuturaAndFuturaBold(getContext(), getResources().getString(R.string.label_ganhadores_regiao_primeiro_sorteio_bold)));
@@ -114,8 +116,10 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
             title4.setLayoutParams(layoutParams4);
             title4.setTextAppearance(getContext(), R.style.fontForTitleTopoPremiados);
             this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title4);
+            if(modalidade.getResultadoConcursoDTO().getGanhadoresSegundoSorteio() != null){
+                adicionarGanhadoresRegiao(modalidade.getResultadoConcursoDTO().getGanhadoresSegundoSorteio());
+            }
 
-            adicionarGanhadoresRegiao(modalidade.getResultadoConcursoDTO().getGanhadoresSegundoSorteio());
         }
         adicionarArrecadacaoTotal(modalidade.getResultadoConcursoDTO().getArrecadacaoTotal());
 

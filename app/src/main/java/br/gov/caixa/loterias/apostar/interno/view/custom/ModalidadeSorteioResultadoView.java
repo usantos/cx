@@ -56,7 +56,7 @@ public class ModalidadeSorteioResultadoView extends ScrollView {
         this.modalidade = modalidade;
 
         this.numeroeDataConcursoResultadoMegaSena.setText(ViewUtils.fromHtml("Nº <b>" + modalidade.getResultadoConcursoDTO().getConcurso().getNumero() + "</b> | " + modalidade.getResultadoConcursoDTO().getConcurso().getDataSorteio()));
-        setContentResultadoPorModalide(modalidade);
+        setContentResultadoPorModalidade(modalidade);
 
         this.scrollResultados.setFocusableInTouchMode(true);
         this.scrollResultados.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
@@ -93,7 +93,7 @@ public class ModalidadeSorteioResultadoView extends ScrollView {
         this.numeroeDataConcursoResultadoMegaSena = numeroeDataConcursoResultadoMegaSena;
     }
 
-    private void setContentResultadoPorModalide(Modalidade modalidade) {
+    private void setContentResultadoPorModalidade(Modalidade modalidade) {
         switch (modalidade.getTipoModalidade()) {
             case DUPLA_SENA:
                 this.contentResultadoItem.removeAllViews();

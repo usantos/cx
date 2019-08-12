@@ -24,7 +24,9 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametrosSimulacao;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametrosSimulacaoResponse;
+import br.gov.caixa.loterias.apostar.interno.view.AppIndisponivelActivity;
 import br.gov.caixa.loterias.apostar.interno.view.CarrinhoActivity_;
+import br.gov.caixa.loterias.apostar.interno.view.PrincipalActivity;
 import br.gov.caixa.loterias.apostar.interno.view.PrincipalActivity_;
 import br.gov.caixa.loterias.apostar.interno.view.SplashScreenActivity;
 import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
@@ -108,8 +110,10 @@ class ActivityLifecycleCallbacks implements Application.ActivityLifecycleCallbac
                 if(!activity.isDestroyed()){
                     loadViewProgress.dismiss();
                 }
-                if (response.getPayload().getParametros().size() == 0) {
-                    ViewUtils.alert(Aplicacao.application.getApplicationContext(), Aplicacao.application.getApplicationContext().getString(R.string.erro_500));
+                if (response.getPayload().getParametros().isEmpty()) {
+                    Intent appIndis = new Intent(activity, AppIndisponivelActivity.class);
+                    appIndis.putExtra("IS_BUSCA_PARAM", true);
+                    activity.startActivityForResult(appIndis, 1);
                 } else {
                     if (response.getPayload().getValorLimiteDiario() == null) {
                         response.getPayload().setValorLimiteDiario(BigDecimal.ZERO);

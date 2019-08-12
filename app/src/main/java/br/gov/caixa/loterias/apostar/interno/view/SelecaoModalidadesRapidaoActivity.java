@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ScrollView;
 
@@ -17,6 +16,7 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bean.TipoAposta;
@@ -205,7 +205,7 @@ public class SelecaoModalidadesRapidaoActivity extends AppCompatActivity {
                         break;
             }
             if (tipoAposta != null) {
-                tipoAposta.setTitulo(tipoAposta.getTitulo().toLowerCase());
+                tipoAposta.setTitulo(tipoAposta.getTitulo().toLowerCase(new Locale("pt", "BR")));
                 tiposAposta.add(tipoAposta);
             }
         }

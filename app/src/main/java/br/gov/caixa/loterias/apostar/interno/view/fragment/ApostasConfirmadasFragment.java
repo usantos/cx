@@ -1,6 +1,5 @@
 package br.gov.caixa.loterias.apostar.interno.view.fragment;
 
-import android.app.DatePickerDialog;
 import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -8,7 +7,6 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.DatePicker;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -140,7 +138,7 @@ public class ApostasConfirmadasFragment extends Fragment implements ApostasConfi
                 page.setOffset(0);
 
                 hasMoreItems = true;
-                apostasConfirmadasRecyclerView.setAdapter(null);
+//                apostasConfirmadasRecyclerView.setAdapter(null);
 
                 updateResultDate();
                 requestApostasConfirmadas();
@@ -394,34 +392,6 @@ public class ApostasConfirmadasFragment extends Fragment implements ApostasConfi
             //TODO: validar mensagem de erro.
             dateResultTxt.setText("Nenhuma aposta disponível.");
         }
-    }
-
-
-    private void getResultadoModalidadeConcurso
-            (ApostaDTO apostaDTO, final Object object) {
-        apostaBO.getResultadoModalidadeConcurso(ApostaDTO.lowerCaseFromString(apostaDTO.getModalidade()), apostaDTO.getConcursoAlvo(),
-                new RequestListener<ResultadoConcursoDTOResponse>() {
-                    @Override
-                    public void onResponse(ResultadoConcursoDTOResponse result) {
-                        try {
-                            DialogUtils.dismiss();
-                            if (object instanceof DetalhesHistoricoPremioDTO) {
-                                ApostaConfirmadaDetalhesActivity_.intent(getActivity()).detalhesHistoricoPremioDTO((DetalhesHistoricoPremioDTO) object)
-                                        .resultadoConcursoDTO(result.getPayload()).start();
-                            } else if (object instanceof DetalhesPremioDTO) {
-                                ApostaConfirmadaDetalhesActivity_.intent(getActivity()).detalhesPremioDTO((DetalhesPremioDTO) object)
-                                        .resultadoConcursoDTO(result.getPayload()).start();
-                            }
-                        }catch (Exception e){
-                            ViewUtils.alert(getContext(), getResources().getString(R.string.erro_500));
-                        }
-                    }
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        onApostasConfirmadasError(error);
-                    }
-                });
     }
 
     private void onApostasConfirmadasError(VolleyError error) {

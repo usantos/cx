@@ -3,13 +3,13 @@ package br.gov.caixa.loterias.apostar.interno.view.custom;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.NumberPicker;
 
 import org.androidannotations.annotations.EFragment;
@@ -55,8 +55,6 @@ public class MonthYearPickerDialog extends DialogFragment {
     }
 
     private void setMonthsAvailable(int year, Integer selectedMonth){
-        yearPicker.setOnValueChangedListener(null);
-
         String[] months = DateUtils.getAllMonthsOfYear();
         int minValue;
         int maxValue;
@@ -188,9 +186,10 @@ public class MonthYearPickerDialog extends DialogFragment {
                             int year = Integer.parseInt(yearPicker.getDisplayedValues()[yearPicker.getValue()]);
                             String monthName = monthPicker.getDisplayedValues()[monthPicker.getValue()];
                             int month = DateUtils.parseMonthName(monthName);
-                            listener.onDateSet(null, year, month, 0);
+                            listener.onDateSet
+                                    (new DatePicker(getContext()), year, month, 0);
                         }else{
-                            listener.onDateSet(null, yearPicker.getValue(), monthPicker.getValue() - 1, 0);
+                            listener.onDateSet(new DatePicker(getContext()), yearPicker.getValue(), monthPicker.getValue() - 1, 0);
                         }
                     }
                 })

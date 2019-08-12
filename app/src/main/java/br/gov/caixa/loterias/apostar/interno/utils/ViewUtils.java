@@ -249,6 +249,20 @@ public class ViewUtils {
         return dialog;
     }
 
+    public static Dialog alertTitleCustomPositiveListener(Context context,String negativeTitle, String positiveTitle, String message, DialogInterface.OnClickListener listener) {
+        Dialog dialog = ViewUtils.dialogo(context, R.string.label_atencao, message)
+                .setCancelable(false)
+                .setNegativeButton (negativeTitle, (dialogInterface, i) -> dialogInterface.dismiss())
+                .setPositiveButton(positiveTitle, listener)
+                .show();
+
+        DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
+        TextView textMessageView = dialog.findViewById(android.R.id.message);
+        textTitleView.setTypeface(getFontFuturaBold(context));
+        textMessageView.setTypeface(getFontFutura(context));
+        return dialog;
+    }
+
     public static Dialog alertVerificarIdadeListener(Context context, DialogInterface.OnClickListener listener) {
         Dialog dialog = ViewUtils.dialogo(context, R.string.label_atencao, context.getResources().getString(R.string.MA003))
                 .setCancelable(false)
@@ -600,14 +614,22 @@ public class ViewUtils {
         if(param != null){
             ModalidadeDTO modalidadeDetalhada = param.getParametroJogo().getConcurso().getModalidadeDetalhada();
             return aposta.getTipoConcurso().getDescricao().equalsIgnoreCase("ESPECIAL") ?
-                    modalidadeDetalhada.getDescricaoEspecial().toLowerCase() :
-                    modalidadeDetalhada.getDescricao().toLowerCase();
+                    modalidadeDetalhada.getDescricaoEspecial().toLowerCase(new Locale("pt", "BR")):
+                    modalidadeDetalhada.getDescricao().toLowerCase(new Locale("pt", "BR"));
         }
         return "";
     }
 
     public static Integer getConcursoAtualPorAposta(IdentificaoDeUmaApostaDas8Modalidades aposta) {
         ParametroSimulacao param = getParametroSimulacao(SessaoUsuario.getInstance(),aposta.getModalidade());
+        if(param != null) {
+            return param.getParametroJogo().getConcurso().getNumero();
+        }
+        return -1;
+    }
+
+    public static Integer getConcursoAtualPorModalidade(String modalidade) {
+        ParametroSimulacao param = getParametroSimulacao(SessaoUsuario.getInstance(),ModalidadeEnum.toString(modalidade));
         if(param != null) {
             return param.getParametroJogo().getConcurso().getNumero();
         }

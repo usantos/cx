@@ -43,6 +43,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametroValorAp
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostar.interno.utils.Constantes;
 import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
+import br.gov.caixa.loterias.apostar.interno.utils.Utils;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostar.interno.view.SimularApostaActivity;
@@ -221,17 +222,17 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
 
         if (qtdSurpresinhas > 0) {
             if (qtdTeimosinhas == 0) {
-                valorEmReais = valorEmReais.multiply(new BigDecimal(1.0)).multiply(new BigDecimal(qtdSurpresinhas));
+                valorEmReais = valorEmReais.multiply(BigDecimal.valueOf(1.0)).multiply(BigDecimal.valueOf(qtdSurpresinhas));
                 ViewUtils.setMoedaFormatHtml(valorEmReais, valorAposta);
             } else {
-                valorEmReais = valorEmReais.multiply(new BigDecimal(qtdTeimosinhas)).multiply(new BigDecimal(qtdSurpresinhas));
+                valorEmReais = valorEmReais.multiply(BigDecimal.valueOf(qtdTeimosinhas)).multiply(BigDecimal.valueOf(qtdSurpresinhas));
                 ViewUtils.setMoedaFormatHtml(valorEmReais, valorAposta);
             }
         } else {
             if (qtdTeimosinhas == 0) {
                 ViewUtils.setMoedaFormatHtml(valorEmReais, valorAposta);
             } else {
-                valorEmReais = valorEmReais.multiply(new BigDecimal(qtdTeimosinhas));
+                valorEmReais = valorEmReais.multiply(BigDecimal.valueOf(qtdTeimosinhas));
                 ViewUtils.setMoedaFormatHtml(valorEmReais, valorAposta);
             }
         }
@@ -270,7 +271,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         aposta.setTimeDoCoracao(equipeSelecionada);
 
         if (isTipoTimeMania && aposta.getTimeDoCoracao() == null) {
-            Random randomGenerator = new Random();
+            Random randomGenerator = Utils.getRandom();
             aposta.setTimeDoCoracao(parametroJogo.getEquipes().get(randomGenerator.nextInt(parametroJogo.getEquipes().size())));
             //TODO lógica para sortear time de acordo quantidade de surpresinhas
 //            List<ParametroEquipe> parametroEquipeList = new ArrayList<>();

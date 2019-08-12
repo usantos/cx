@@ -23,6 +23,7 @@ import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 
 import java.math.BigDecimal;
+import java.util.Locale;
 import java.util.Objects;
 
 import br.gov.caixa.loterias.apostar.interno.R;
@@ -193,7 +194,7 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
         if (Objects.equals(resultadoConsultaBilheteDTO.getSituacao().getValor(), SituacaoResultadoBilheteEnum.PAGA.getValor())) {
             statusResultadoNaoPremiadTextView.setText(R.string.label_premio_pago);
             if (resultadoConsultaBilheteDTO != null && resultadoConsultaBilheteDTO.getModalidadeDTO() != null) {
-                modalidadeEnum = ModalidadeEnum.toString(resultadoConsultaBilheteDTO.getModalidadeDTO().getDescricao().toLowerCase());
+                modalidadeEnum = ModalidadeEnum.toString(resultadoConsultaBilheteDTO.getModalidadeDTO().getDescricao().toLowerCase(new Locale("pt", "BR")));
                 EstiloModalidade estiloModalidade = new EstiloModalidade(modalidadeEnum);
                 backgroundTopoNaoPremiadoLayout.setBackgroundColor(ContextCompat.getColor(this, estiloModalidade.getCorEscura()));
             }

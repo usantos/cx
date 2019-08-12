@@ -408,7 +408,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
 
     private void getResultadoModalidadeConcurso
             (IdentificaoDeUmaApostaDas8Modalidades apostaDTO) {
-        apostaBO.getResultadoModalidadeConcurso(ApostaDTO.lowerCaseFromString(apostaDTO.getModalidade()), apostaDTO.getConcursoAlvo(),
+        apostaBO.getResultadoModalidade(ApostaDTO.lowerCaseFromString(apostaDTO.getModalidade()), apostaDTO.getConcursoAlvo().toString(),
                 new RequestListener<ResultadoConcursoDTOResponse>() {
                     @Override
                     public void onResponse(ResultadoConcursoDTOResponse result) {

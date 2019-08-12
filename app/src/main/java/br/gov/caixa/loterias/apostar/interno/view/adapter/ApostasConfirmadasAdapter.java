@@ -13,6 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.List;
+import java.util.Locale;
 
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ApostaDTO;
@@ -83,7 +84,7 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostasConfi
             } else {
                 descricaoStatus = aposta.getSituacao().getDescricao();
             }
-            holder.situacaoTxt.setText("situação: " + descricaoStatus.toLowerCase());
+            holder.situacaoTxt.setText("situação: " + descricaoStatus.toLowerCase(new Locale("pt", "BR")));
 
             int teimosinhas = aposta.getQuantidadeTeimosinhas() != null ? aposta.getQuantidadeTeimosinhas() : 0;
             if (teimosinhas > 0) {
@@ -104,7 +105,7 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostasConfi
 
     @Override
     public void handle(ViewHolder holder, DTOEnumLong situacao) {
-        holder.situacaoTxt.setText("situação: " + situacao.getDescricao().toLowerCase());
+        holder.situacaoTxt.setText("situação: " + situacao.getDescricao().toLowerCase(new Locale("pt", "BR")));
 
         holder.stripe.setBackgroundColor(holder.color);
         holder.modalidadeTxt.setTextColor(holder.color);
