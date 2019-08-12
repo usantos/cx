@@ -48,6 +48,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RetornoCartao;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RetornoPadraoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
+import br.gov.caixa.loterias.apostar.interno.utils.MercadoPagoUtil;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.FormaPagamentoRecyclerViewAdapter;
 import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
@@ -196,12 +197,7 @@ public class FormaPagamentoActivity extends SettingToolbarActivity implements Fo
                                         ViewUtils.alertTitleButtonPositiveListener(
                                                 FormaPagamentoActivity.this,
                                                 R.string.label_atencao, getResources().getString( R.string.label_informa_cvv ),
-                                                R.string.ok, new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialog, int which) {
-                                                        ((Button) findViewById(R.id.botaoAvancarPagamento)).performClick();
-                                                    }
-                                                }
+                                                R.string.ok, (dialog1, which1) -> findViewById(R.id.botaoAvancarPagamento).performClick()
                                         );
                                     }
                                 })
@@ -242,7 +238,7 @@ public class FormaPagamentoActivity extends SettingToolbarActivity implements Fo
             public void failure(ApiException apiException) {
                 //TODO: Manage API Failure
                 loadViewProgress.dismiss();
-                ViewUtils.alert(FormaPagamentoActivity.this, apiException.getMessage());
+                ViewUtils.alert(FormaPagamentoActivity.this,MercadoPagoUtil.getMessageFromCode(apiException.getCause().get(0).getCode()));
             }
         });
     }
@@ -277,23 +273,20 @@ public class FormaPagamentoActivity extends SettingToolbarActivity implements Fo
     private void callWebServicePayment_method(final String token){
         String bin = formaPagamentoRecyclerViewAdapter.valoresList.get( formaPagamentoRecyclerViewAdapter.selected_position ).getPrimeirosDigitos();
         String url = BuildConfig.MP_PAYMENT_URL+"bin="+ bin +"&public_key="+ BuildConfig.PUBLIC_KEY_MP;
-        StringRequest request = new StringRequest( Request.Method.GET, url, new Response.Listener<String>(){
-            @Override
-            public void onResponse(String response) {
-                Log.d("Response: ", response.toString());
-                try {
-                    //Do it with this it will work
-                    JSONArray jsonArray = new JSONArray(response);
-                    JSONObject responseObj = new JSONObject();
-                    responseObj = jsonArray.getJSONObject(0);
-                    String payment_method_id = responseObj.getString("payment_method_id");
-                    String thumbnail = (responseObj.getJSONObject("issuer")).getString( "thumbnail" );
-                    callWebserviceRegistraAposta(token, payment_method_id);
+        StringRequest request = new StringRequest( Request.Method.GET, url, response -> {
+            Log.d("Response: ", response.toString());
+            try {
+                //Do it with this it will work
+                JSONArray jsonArray = new JSONArray(response);
+                JSONObject responseObj = new JSONObject();
+                responseObj = jsonArray.getJSONObject(0);
+                String payment_method_id = responseObj.getString("payment_method_id");
+                String thumbnail = (responseObj.getJSONObject("issuer")).getString( "thumbnail" );
+                callWebserviceRegistraAposta(token, payment_method_id);
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Toast.makeText(getApplicationContext(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Toast.makeText(getApplicationContext(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
             }
         }, volleyError -> {
             loadViewProgress.dismiss();

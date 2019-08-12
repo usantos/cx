@@ -37,13 +37,10 @@ public class SplashScreenActivity extends AppCompatActivity {
                 if (!response.getPayload()) {
                     startActivity(new Intent(SplashScreenActivity.this, AtualizacaoActivity.class));
                 } else {
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            LoginSP.limpar();
-                            startActivity(new Intent(SplashScreenActivity.this, IntroducaoActivity.class));
-                            finish();
-                        }
+                    new Handler().postDelayed(() -> {
+                        LoginSP.limpar();
+                        startActivity(new Intent(SplashScreenActivity.this, IntroducaoActivity.class));
+                        finish();
                     }, SPLASH_TIME);
                 }
             }

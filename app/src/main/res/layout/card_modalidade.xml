@@ -211,7 +211,7 @@
                                     android:id="@+id/textViewSorteioOuEncerramento"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    android:text="Sorteio"
+                                    android:text="@string/title_sorteio"
                                     android:textColor="@color/cinzaescuro"
                                     android:textSize="13sp" />
 
@@ -257,7 +257,7 @@
                                     style="@style/editTextArialMTTheme"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    android:text="Apostas se encerram em"
+                                    android:text="@string/title_apostasEncerram"
                                     android:textColor="@color/cinzaescuro"
                                     android:textSize="13sp" />
 

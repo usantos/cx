@@ -127,12 +127,9 @@ public class MonthYearPickerDialog extends DialogFragment {
         return yearValues;
     }
 
-    private final NumberPicker.OnValueChangeListener changeValueListener = new NumberPicker.OnValueChangeListener() {
-        @Override
-        public void onValueChange(NumberPicker numberPicker, int oldVal, int newVal) {
-            if(monthYearsMap != null){
-                setMonthsAvailable(Integer.parseInt(numberPicker.getDisplayedValues()[newVal]));
-            }
+    private final NumberPicker.OnValueChangeListener changeValueListener = (numberPicker, oldVal, newVal) -> {
+        if(monthYearsMap != null){
+            setMonthsAvailable(Integer.parseInt(numberPicker.getDisplayedValues()[newVal]));
         }
     };
 
@@ -148,8 +145,8 @@ public class MonthYearPickerDialog extends DialogFragment {
         LayoutInflater inflater = activity.getLayoutInflater();
 
         View dialog = inflater.inflate(R.layout.dialog_month_year, null);
-        monthPicker = (NumberPicker) dialog.findViewById(R.id.picker_month);
-        yearPicker = (NumberPicker) dialog.findViewById(R.id.picker_year);
+        monthPicker = dialog.findViewById(R.id.picker_month);
+        yearPicker = dialog.findViewById(R.id.picker_year);
 
         yearPicker.setOnValueChangedListener(changeValueListener);
 
@@ -185,26 +182,19 @@ public class MonthYearPickerDialog extends DialogFragment {
         builder.setView(dialog)
                 .setTitle(R.string.label_selecione_mes)
                 // Add action buttons
-                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        if(listener != null){
-                            if(monthYearsMap != null){
-                                int year = Integer.parseInt(yearPicker.getDisplayedValues()[yearPicker.getValue()]);
-                                String monthName = monthPicker.getDisplayedValues()[monthPicker.getValue()];
-                                int month = DateUtils.parseMonthName(monthName);
-                                listener.onDateSet(null, year, month, 0);
-                            }else{
-                                listener.onDateSet(null, yearPicker.getValue(), monthPicker.getValue() - 1, 0);
-                            }
+                .setPositiveButton(R.string.ok, (dialog12, id) -> {
+                    if(listener != null){
+                        if(monthYearsMap != null){
+                            int year = Integer.parseInt(yearPicker.getDisplayedValues()[yearPicker.getValue()]);
+                            String monthName = monthPicker.getDisplayedValues()[monthPicker.getValue()];
+                            int month = DateUtils.parseMonthName(monthName);
+                            listener.onDateSet(null, year, month, 0);
+                        }else{
+                            listener.onDateSet(null, yearPicker.getValue(), monthPicker.getValue() - 1, 0);
                         }
                     }
                 })
-                .setNegativeButton(R.string.cancelar, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        MonthYearPickerDialog.this.getDialog().cancel();
-                    }
-                });
+                .setNegativeButton(R.string.cancelar, (dialog1, id) -> MonthYearPickerDialog.this.getDialog().cancel());
 
         return builder.create();
     }

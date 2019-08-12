@@ -61,13 +61,13 @@ public class ApostaFavoritaAdapter extends BaseAdapter {
         final ApostaFavoritaDTO aposta = favoritosSalvos.get( position );
 
 
-        final TextView tituloApostaFavorira = (TextView) convertView.findViewById( R.id.tituloApostaFavorira );
+        final TextView tituloApostaFavorira = convertView.findViewById( R.id.tituloApostaFavorira );
         tituloApostaFavorira.setText( aposta.getModalidade().getDescricao() );
         EstiloModalidade estilo = new EstiloModalidade(ModalidadeEnum.toString(favoritosSalvos.get(position).getModalidade().getDescricao().toLowerCase()));
         tituloApostaFavorira.setText(favoritosSalvos.get(position).getModalidade().getDescricao());
         tituloApostaFavorira.setTextColor(parent.getResources().getColor(estilo.getCorClara()));
 
-        final TextView numerosApostaFavorita = (TextView) convertView.findViewById( R.id.numerosApostaFavorita );
+        final TextView numerosApostaFavorita = convertView.findViewById( R.id.numerosApostaFavorita );
         StringBuilder numeroStr = new StringBuilder();
         for (Integer num : aposta.getNumerosSelecionados()) {
             if (num == (aposta.getNumerosSelecionados().get( aposta.getNumerosSelecionados().size() - 1 ))) {
@@ -87,7 +87,7 @@ public class ApostaFavoritaAdapter extends BaseAdapter {
 
         numerosApostaFavorita.setText(numeroStr.toString());
 
-        final CheckBox checkbox = (CheckBox) convertView.findViewById( R.id.checkboxApostaFavorita );
+        final CheckBox checkbox = convertView.findViewById( R.id.checkboxApostaFavorita );
         checkbox.setVisibility(View.GONE);
 
         return convertView;

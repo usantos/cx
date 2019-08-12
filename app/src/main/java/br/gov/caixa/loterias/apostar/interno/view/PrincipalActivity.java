@@ -2,9 +2,9 @@ package br.gov.caixa.loterias.apostar.interno.view;
 
 
 import android.Manifest;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
@@ -62,6 +62,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.DadosUsuarioBO_;
 import br.gov.caixa.loterias.apostar.interno.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametrosSimulacaoResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RepassometroDTO;
@@ -141,6 +142,32 @@ public class PrincipalActivity extends AppCompatActivity
         listenerSair();
         callWebservice();
         iniciarBancoLocal();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        abrirModalidadeAposteAgora(intent);
+    }
+
+    private void abrirModalidadeAposteAgora(Intent intent){
+        Bundle extras = intent.getExtras();
+        if (extras!= null) {
+            if (extras.containsKey("MODALIDADE_APOSTAR_AGORA")) {
+                ModalidadeEnum modalidade = (ModalidadeEnum) extras.getSerializable("MODALIDADE_APOSTAR_AGORA");
+                int position =  ((HomeAdapter)homeCarousel.getAdapter()).retornaPosicaoPorModalidade(modalidade);
+                EstiloModalidade estilo;
+                if(position != -1){
+                    estilo = new EstiloModalidade(data.get(position).getTipoModalidade());
+                    homeCarousel.scrollToPosition(position);
+                    buttonHomeBet.setTag(position);
+                    buttonHomeBet.setText(ViewUtils.textFuturaAndFuturaBold(this, "_Aposte_\npor " + ViewUtils.getMoedaFormat(modalidadesParaListar.get(position).getParametroJogo().getConcurso().getValorApostaMinima())));
+                    buttonHomeBet.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorClara()));
+                    findViewById(R.id.buttonHomeBet).performClick();
+                }
+
+            }
+        }
     }
 
     @Override
@@ -397,35 +424,32 @@ public class PrincipalActivity extends AppCompatActivity
 
     private void sairLogin() {
 
-        ViewUtils.alertTitleButtonYesOrNotListener(this, getResources().getString(R.string.MA008), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (DadosUsuarioBO.checarUsuarioLogado(PrincipalActivity.this)) {
-                    final AlertDialog loadViewProgress = LoadingViewLoterias.show(PrincipalActivity.this);
+        ViewUtils.alertTitleButtonYesOrNotListener(this, getResources().getString(R.string.MA008), (dialog, which) -> {
+            if (DadosUsuarioBO.checarUsuarioLogado(PrincipalActivity.this)) {
+                final AlertDialog loadViewProgress = LoadingViewLoterias.show(PrincipalActivity.this);
 
-                    DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_(PrincipalActivity.this);
-                    dadosUsuarioBO.sair(new RequestListener<NetworkResponse>() {
-                        @Override
-                        public void onResponse(NetworkResponse response) {
-                            FirebaseManager.registraEvento(PrincipalActivity.this ,"EFETUOU_LOGOUT_SUCESSO");
+                DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_(PrincipalActivity.this);
+                dadosUsuarioBO.sair(new RequestListener<NetworkResponse>() {
+                    @Override
+                    public void onResponse(NetworkResponse response) {
+                        FirebaseManager.registraEvento(PrincipalActivity.this ,"EFETUOU_LOGOUT_SUCESSO");
 
-                            AcessoBO_.getInstance_(PrincipalActivity.this).iniciarLogoutSSO();
-                            LoginSP.loginRealizado(false);
-                            realizandoLogin = true;
-                            loadViewProgress.dismiss();
-                        }
+                        AcessoBO_.getInstance_(PrincipalActivity.this).iniciarLogoutSSO();
+                        LoginSP.loginRealizado(false);
+                        realizandoLogin = true;
+                        loadViewProgress.dismiss();
+                    }
 
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            loadViewProgress.dismiss();
-                            RedirectNetwork.checkRedirect(error, PrincipalActivity.this);
-                        }
-                    });
-                } else {
-                    FirebaseManager.registraEvento(PrincipalActivity.this ,"EFETUOU_LOGOUT_OFFLINE_SUCESSO");
-                    startActivity(new Intent(PrincipalActivity.this, LoginActivity.class));
-                    finish();
-                }
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        loadViewProgress.dismiss();
+                        RedirectNetwork.checkRedirect(error, PrincipalActivity.this);
+                    }
+                });
+            } else {
+                FirebaseManager.registraEvento(PrincipalActivity.this ,"EFETUOU_LOGOUT_OFFLINE_SUCESSO");
+                startActivity(new Intent(PrincipalActivity.this, LoginActivity.class));
+                finish();
             }
         });
     }
@@ -451,8 +475,7 @@ public class PrincipalActivity extends AppCompatActivity
         //viewHolder will never be null, because we never remove items from adapter's list
         if (viewHolder != null) {
             EstiloModalidade estilo = new EstiloModalidade(data.get(adapterPosition).getTipoModalidade());
-            viewHolder.setOverlayColor(this, estilo);
-
+            buttonHomeBet.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorClara()));
             buttonHomeBet.setTag(adapterPosition);
             buttonHomeBet.setText(ViewUtils.textFuturaAndFuturaBold(this, "_Aposte_\npor " + ViewUtils.getMoedaFormat(modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima())));
         }

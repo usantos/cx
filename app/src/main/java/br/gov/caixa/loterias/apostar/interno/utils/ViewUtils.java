@@ -34,13 +34,9 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,8 +52,11 @@ import java.util.Locale;
 
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bean.SessaoUsuario;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ConcursoPremiadoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.FaixaPremiadaDTO;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.PremioDTO;
@@ -191,13 +190,8 @@ public class ViewUtils {
         Dialog dialog = ViewUtils.dialogo(context, mensagem)
                 .setCancelable(false)
                 .setOnDismissListener(listener)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }).show();
-        TextView textView = ((TextView) dialog.findViewById(android.R.id.message));
+                .setPositiveButton("OK", (dialog1, which) -> dialog1.dismiss()).show();
+        TextView textView = dialog.findViewById(android.R.id.message);
         textView.setTypeface(getFontFutura(context));
         return dialog;
     }
@@ -206,15 +200,10 @@ public class ViewUtils {
         Dialog dialog = ViewUtils.dialogo(context, titulo, mensagem)
                 .setCancelable(false)
                 .setOnDismissListener(listener)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }).show();
+                .setPositiveButton("OK", (dialog1, which) -> dialog1.dismiss()).show();
 
-        DialogTitle textTitleView = ((DialogTitle) dialog.findViewById(R.id.alertTitle));
-        TextView textMessageView = ((TextView) dialog.findViewById(android.R.id.message));
+        DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
+        TextView textMessageView = dialog.findViewById(android.R.id.message);
         textTitleView.setTypeface(getFontFuturaBold(context));
         textMessageView.setTypeface(getFontFutura(context));
         return dialog;
@@ -224,15 +213,10 @@ public class ViewUtils {
         Dialog dialog = ViewUtils.dialogo(context, title, message)
                 .setCancelable(false)
                 .setOnDismissListener(listener)
-                .setPositiveButton(buttonName, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }).show();
+                .setPositiveButton(buttonName, (dialog1, which) -> dialog1.dismiss()).show();
 
-        DialogTitle textTitleView = ((DialogTitle) dialog.findViewById(R.id.alertTitle));
-        TextView textMessageView = ((TextView) dialog.findViewById(android.R.id.message));
+        DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
+        TextView textMessageView = dialog.findViewById(android.R.id.message);
         textTitleView.setTypeface(getFontFuturaBold(context));
         textMessageView.setTypeface(getFontFutura(context));
         return dialog;
@@ -241,16 +225,11 @@ public class ViewUtils {
     public static Dialog alertTitleButtonPositiveListener(Context context, int title, String message, int buttonName, DialogInterface.OnClickListener listener) {
         Dialog dialog = ViewUtils.dialogo(context, title, message)
                 .setCancelable(true)
-                .setNegativeButton(R.string.cancelar, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                })
+                .setNegativeButton(R.string.cancelar, (dialogInterface, i) -> dialogInterface.dismiss())
                 .setPositiveButton(buttonName, listener).show();
 
-        DialogTitle textTitleView = ((DialogTitle) dialog.findViewById(R.id.alertTitle));
-        TextView textMessageView = ((TextView) dialog.findViewById(android.R.id.message));
+        DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
+        TextView textMessageView = dialog.findViewById(android.R.id.message);
         textTitleView.setTypeface(getFontFuturaBold(context));
         textMessageView.setTypeface(getFontFutura(context));
         return dialog;
@@ -259,17 +238,12 @@ public class ViewUtils {
     public static Dialog alertTitleButtonYesOrNotListener(Context context, String message, DialogInterface.OnClickListener listener) {
         Dialog dialog = ViewUtils.dialogo(context, R.string.label_atencao, message)
                 .setCancelable(false)
-                .setNegativeButton (R.string.label_nao, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                })
+                .setNegativeButton (R.string.label_nao, (dialogInterface, i) -> dialogInterface.dismiss())
                 .setPositiveButton(R.string.label_sim, listener)
                 .show();
 
-        DialogTitle textTitleView = ((DialogTitle) dialog.findViewById(R.id.alertTitle));
-        TextView textMessageView = ((TextView) dialog.findViewById(android.R.id.message));
+        DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
+        TextView textMessageView = dialog.findViewById(android.R.id.message);
         textTitleView.setTypeface(getFontFuturaBold(context));
         textMessageView.setTypeface(getFontFutura(context));
         return dialog;
@@ -279,15 +253,10 @@ public class ViewUtils {
         Dialog dialog = ViewUtils.dialogo(context, R.string.label_atencao, context.getResources().getString(R.string.MA003))
                 .setCancelable(false)
                 .setNegativeButton(R.string.label_nao, listener)
-                .setPositiveButton(R.string.label_sim, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                }).show();
+                .setPositiveButton(R.string.label_sim, (dialogInterface, i) -> dialogInterface.dismiss()).show();
 
-        DialogTitle textTitleView = ((DialogTitle) dialog.findViewById(R.id.alertTitle));
-        TextView textMessageView = ((TextView) dialog.findViewById(android.R.id.message));
+        DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
+        TextView textMessageView = dialog.findViewById(android.R.id.message);
         textTitleView.setTypeface(getFontFuturaBold(context));
         textMessageView.setTypeface(getFontFutura(context));
         return dialog;
@@ -452,7 +421,7 @@ public class ViewUtils {
                         int heightElementToExpand = activity.findViewById(idViewToExpand).getMeasuredHeight();
                         float heightStatusBar = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 25, resources.getDisplayMetrics());
 
-                        if (!((ScrollView) activity.findViewById(idScrollView)).canScrollVertically(1)) {
+                        if (!activity.findViewById(idScrollView).canScrollVertically(1)) {
                             ConstraintSet set = new ConstraintSet();
 
                             set.clone(constraintLayout);
@@ -624,6 +593,25 @@ public class ViewUtils {
             }
         }
         return null;
+    }
+
+    public static String getNomeModalidadePorAposta(ApostaDTO aposta) {
+        ParametroSimulacao param = getParametroSimulacao(SessaoUsuario.getInstance(),aposta.getModalidade());
+        if(param != null){
+            ModalidadeDTO modalidadeDetalhada = param.getParametroJogo().getConcurso().getModalidadeDetalhada();
+            return aposta.getTipoConcurso().getDescricao().equalsIgnoreCase("ESPECIAL") ?
+                    modalidadeDetalhada.getDescricaoEspecial().toLowerCase() :
+                    modalidadeDetalhada.getDescricao().toLowerCase();
+        }
+        return "";
+    }
+
+    public static Integer getConcursoAtualPorAposta(IdentificaoDeUmaApostaDas8Modalidades aposta) {
+        ParametroSimulacao param = getParametroSimulacao(SessaoUsuario.getInstance(),aposta.getModalidade());
+        if(param != null) {
+            return param.getParametroJogo().getConcurso().getNumero();
+        }
+        return -1;
     }
 
     public static int getSmallSizeQrCode(Context context) {

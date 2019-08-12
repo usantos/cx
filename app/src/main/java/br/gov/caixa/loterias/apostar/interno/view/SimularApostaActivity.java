@@ -18,7 +18,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -153,7 +152,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
     public void zerarApostas() {
         qtdNumerosList = new ArrayList<>();
         qtdConcursosList = new ArrayList<>();
-        textoBotaoSurpresinhasSelecionado = "nenhum";
+        textoBotaoSurpresinhasSelecionado = getString(R.string.label_sem_teimosinha);
         mesDeSorteCartela = null;
         mesDeSorteSurpresinha = null;
         parametroSimulacao = new Gson().fromJson(getIntent().getStringExtra("modalidade"), ParametroJogoDTO.class);
@@ -533,7 +532,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
             if (parametroSimulacao.getTeimosinhas() != null) {
                 for (Integer numeroTeimosinha : parametroSimulacao.getTeimosinhas()) {
                     if (numeroTeimosinha == 0) {
-                        qtdConcursosList.add("nenhum");
+                        qtdConcursosList.add(getString(R.string.label_sem_teimosinha));
                     } else if (numeroTeimosinha == 1) {
                         qtdConcursosList.add("" + numeroTeimosinha + " concurso");
                     } else {
@@ -637,52 +636,38 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.custom_dialog_list_view);
 
-        final ListView listViewItens = (ListView) dialog.findViewById(R.id.listaItensDialog);
-        TextView tituloDialog = (TextView) dialog.findViewById(R.id.tituloDialogCustom);
+        final ListView listViewItens = dialog.findViewById(R.id.listaItensDialog);
+        TextView tituloDialog = dialog.findViewById(R.id.tituloDialogCustom);
         tituloDialog.setText("Quant. de Números");
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(SimularApostaActivity.this,
                 R.layout.item_text_popup, R.id.textList, qtdNumerosList);
 
         listViewItens.setAdapter(adapter);
-        listViewItens.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                String itemValue = (String) listViewItens.getItemAtPosition(position);
-                textoBotaoPrognosticosSelecionado = parametroSimulacao.getValoresAposta().get(position).getNumeroPrognosticos() + " números";
-                qtdDezenasPossiveisSelecionado = parametroSimulacao.getValoresAposta().get(position).getNumeroPrognosticos();
-            }
-
+        listViewItens.setOnItemClickListener((parent, view, position, id) -> {
+            String itemValue = (String) listViewItens.getItemAtPosition(position);
+            textoBotaoPrognosticosSelecionado = parametroSimulacao.getValoresAposta().get(position).getNumeroPrognosticos() + " números";
+            qtdDezenasPossiveisSelecionado = parametroSimulacao.getValoresAposta().get(position).getNumeroPrognosticos();
         });
 
         Button dialogButtonOk = dialog.findViewById(R.id.dialogButtonOK);
         Button dialogButtonCancelar = dialog.findViewById(R.id.dialogButtonCancelar);
 
-        dialogButtonOk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                qtdNumerosButton.setText(textoBotaoPrognosticosSelecionado);
+        dialogButtonOk.setOnClickListener(v -> {
+            qtdNumerosButton.setText(textoBotaoPrognosticosSelecionado);
 
-                if (isFragmentCartela()) {
-                    cartelaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
-                    cartelaFragment.atualizaStatusBotaoFinalizar();
-                } else {
-                    if (surpresinhaFragment.getParametroJogo() != null) {
-                        surpresinhaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
-                    }
+            if (isFragmentCartela()) {
+                cartelaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
+                cartelaFragment.atualizaStatusBotaoFinalizar();
+            } else {
+                if (surpresinhaFragment.getParametroJogo() != null) {
+                    surpresinhaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
                 }
-                dialog.dismiss();
             }
+            dialog.dismiss();
         });
 
-        dialogButtonCancelar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
+        dialogButtonCancelar.setOnClickListener(v -> dialog.dismiss());
 
         dialog.show();
     }
@@ -706,43 +691,29 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
                 R.layout.item_text_popup, R.id.textList, qtdConcursosList);
 
         listViewItens.setAdapter(adapter);
-        listViewItens.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                textoBotaoSurpresinhasSelecionado = (String) listViewItens.getItemAtPosition(position);
-                qtdConcursoSelecionado = parametroSimulacao.getTeimosinhas().get(position);
-            }
-
+        listViewItens.setOnItemClickListener((parent, view, position, id) -> {
+            textoBotaoSurpresinhasSelecionado = (String) listViewItens.getItemAtPosition(position);
+            qtdConcursoSelecionado = parametroSimulacao.getTeimosinhas().get(position);
         });
 
         Button dialogButtonOk = dialog.findViewById(R.id.dialogButtonOK);
         Button dialogButtonCancelar = dialog.findViewById(R.id.dialogButtonCancelar);
 
-        dialogButtonOk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                qtdConcursosButton.setText(textoBotaoSurpresinhasSelecionado);
+        dialogButtonOk.setOnClickListener(v -> {
+            qtdConcursosButton.setText(textoBotaoSurpresinhasSelecionado);
 
-                if (fragmentManager.findFragmentById(R.id.fragmentSimularApostas) instanceof SurpresinhaFragment) {
-                    if (surpresinhaFragment.getParametroJogo() != null) {
-                        surpresinhaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
-                    }
-                } else {
-                    cartelaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
+            if (fragmentManager.findFragmentById(R.id.fragmentSimularApostas) instanceof SurpresinhaFragment) {
+                if (surpresinhaFragment.getParametroJogo() != null) {
+                    surpresinhaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
                 }
-
-                dialog.dismiss();
+            } else {
+                cartelaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
             }
+
+            dialog.dismiss();
         });
 
-        dialogButtonCancelar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
+        dialogButtonCancelar.setOnClickListener(v -> dialog.dismiss());
 
         dialog.show();
     }

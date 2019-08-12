@@ -99,12 +99,7 @@ public class PdfUtils {
     public void createAndOpenPDF(final AppCompatActivity appC, String html, String filePath) throws Exception {
         try {
             final File filePDF = new File(filePath);
-            gerarPDF(html, filePDF, appC, new PdfConverter.onWriteFinishedCallBack() {
-                @Override
-                public void onWriteFinished() {
-                    FileUtils.openFile(filePDF, "application/pdf", appC);
-                }
-            });
+            gerarPDF(html, filePDF, appC, () -> FileUtils.openFile(filePDF, "application/pdf", appC));
 
         } catch (Exception ex) {
             throw new Exception("Falha ao invocar PdfUtils.sharePDF(). Detalhes: " + ex);

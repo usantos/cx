@@ -26,7 +26,7 @@ public class JogosConfirmadosPremioActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_jogos_confirmados_premio);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -83,8 +83,8 @@ public class JogosConfirmadosPremioActivity extends AppCompatActivity {
     private void montarLayout(){
         if(tipoCaixa == false){
             Bitmap bitmap;
-            ImageView qrCodeImage = (ImageView) findViewById(R.id.imagemQrCode);
-            LinearLayout lltQrCode = (LinearLayout) findViewById(R.id.lltQrCode);
+            ImageView qrCodeImage = findViewById(R.id.imagemQrCode);
+            LinearLayout lltQrCode = findViewById(R.id.lltQrCode);
             // Initializing the QR Encoder with your value to be encoded, type you required and Dimension
             QRGEncoder qrgEncoder = new QRGEncoder("Teste xxx", null, QRGContents.Type.TEXT, 105);
             try {

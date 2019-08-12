@@ -58,7 +58,7 @@ public class  RedirectNetwork {
             RedirectEnum redirectEnum = RedirectEnum.fromString( errorResponse.getRedirect() );
             switch (redirectEnum){
                 case ACEITAR_TERMO_DE_USO:
-                    activity.startActivityForResult(new Intent(context, TermosUsoActivity.class), 1);
+                    verificaRedirectTermo(activity);
                     return;
                 case LOGIN:
                     connectKeycloak(activity);
@@ -88,6 +88,12 @@ public class  RedirectNetwork {
             }else{
                 ViewUtils.alertTitleButton(context, R.string.label_atencao, MensagensNetwork.setMensagem( error, context ), context.getResources().getString( R.string.ok ) );
             }
+        }
+    }
+
+    private static void  verificaRedirectTermo(Activity activity){
+        if (!activity.getClass().equals(TermosUsoActivity.class)) {
+            activity.startActivityForResult(new Intent(activity, TermosUsoActivity.class), 1);
         }
     }
 
@@ -122,7 +128,7 @@ public class  RedirectNetwork {
                 RedirectEnum redirectEnum = RedirectEnum.fromString( errorResponse.getRedirect() );
                 switch (redirectEnum){
                     case ACEITAR_TERMO_DE_USO:
-                        activity.startActivityForResult(new Intent(activity, TermosUsoActivity.class), 1);
+                        verificaRedirectTermo(activity);
                         return;
                     case LOGIN:
                         connectKeycloak(activity);
@@ -172,7 +178,7 @@ public class  RedirectNetwork {
     public static void checkRedirectSucesso(RedirectEnum redirect, Activity activity){
         switch (redirect){
             case ACEITAR_TERMO_DE_USO:
-                activity.startActivityForResult(new Intent(activity, TermosUsoActivity.class), 1);
+                verificaRedirectTermo(activity);
                 break;
             case LOGIN:
                 connectKeycloak(activity);

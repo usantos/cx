@@ -72,7 +72,7 @@ public class Introducao3Fragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_introducao3, container, false);
 
-        textView1 = (TextView) v.findViewById(R.id.textView1Fragment3);
+        textView1 = v.findViewById(R.id.textView1Fragment3);
         textView1.setText(ViewUtils.textFuturaAndFuturaBold(getContext(), "Mais _praticidade_"));
 
         return v;

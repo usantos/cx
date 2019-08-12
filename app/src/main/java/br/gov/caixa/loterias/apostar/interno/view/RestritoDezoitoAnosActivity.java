@@ -21,19 +21,16 @@ public class RestritoDezoitoAnosActivity extends AppCompatActivity {
         FirebaseManager.registraEvento(this ,"ENTROU_VALIDACAO_DEZOITO_ANOS");
 
         setContentView(R.layout.activity_restrito_dezoito_anos);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        TextView textViewTextoRestrito = (TextView) findViewById(R.id.textViewTextoRestrito);
+        TextView textViewTextoRestrito = findViewById(R.id.textViewTextoRestrito);
         textViewTextoRestrito.setText(ViewUtils.textFuturaAndFuturaBold(this, " O uso do aplicativo é restrito a\nmaiores de _18 anos._"));
 
-        Button buttonDigitarAposta = (Button) findViewById(R.id.entendiButton);
-        buttonDigitarAposta.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent activity = new Intent(RestritoDezoitoAnosActivity.this, IntroducaoActivity.class);
-                startActivity(activity);
-            }
+        Button buttonDigitarAposta = findViewById(R.id.entendiButton);
+        buttonDigitarAposta.setOnClickListener(v -> {
+            Intent activity = new Intent(RestritoDezoitoAnosActivity.this, IntroducaoActivity.class);
+            startActivity(activity);
         });
     }
 

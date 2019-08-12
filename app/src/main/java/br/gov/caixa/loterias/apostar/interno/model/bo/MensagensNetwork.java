@@ -52,15 +52,20 @@ public class MensagensNetwork {
                 body = new String(error.networkResponse.data,"UTF-8");
                 errorResponse = gsonResponse.fromJson(body, ErrorResponse.class);
             } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
+                errorResponse = new ErrorResponse();
+                errorResponse.setMensagem( context.getString( R.string.sistema_indisponivel ));
             } catch (Exception e){
-                e.printStackTrace();
+                errorResponse = new ErrorResponse();
+                errorResponse.setMensagem( context.getString( R.string.sistema_indisponivel ));
             }
         }
 
-        if (errorResponse == null){
-            errorResponse.setMensagem( context.getString( R.string.sistema_indisponivel ) );
-        } else if (errorResponse.getMensagem() == null) {
+        if (errorResponse != null){
+            if (errorResponse.getMensagem() != null) {
+                errorResponse.setMensagem( context.getString( R.string.sistema_indisponivel ) );
+            }
+        } else {
+            errorResponse = new ErrorResponse();
             errorResponse.setMensagem( context.getString( R.string.sistema_indisponivel ) );
         }
 
@@ -74,6 +79,9 @@ public class MensagensNetwork {
             case INTERNAL_SERVER_ERROR:
                 errorResponse.setMensagem(  context.getString(R.string.erro_500) );
                 break;
+            default:
+                errorResponse.setMensagem(  context.getString(R.string.erro_500) );
+            break;
         }
 
         return errorResponse.getMensagem();

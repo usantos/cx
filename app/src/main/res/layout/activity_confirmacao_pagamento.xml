@@ -9,6 +9,19 @@
     tools:context="br.gov.caixa.loterias.apostar.interno.view.ConfirmacaoPagamentoActivity"
     android:background="@drawable/navigation_gradient">
 
+    <ImageButton
+        android:id="@+id/botao_termo"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/duvidas_toolbar_icon"
+        android:layout_marginTop="12dp"
+        android:layout_marginRight="8dp"
+        android:background="@color/transparente"
+        />
+
     <TextView
         android:id="@+id/textInfoApostas"
         android:layout_width="0dp"
@@ -27,6 +40,19 @@
         app:layout_constraintHorizontal_bias="0.0"
         style="@style/editTextArialMTTheme"/>
 
+    <View
+        android:id="@+id/v_linha"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:background="@color/verdeazul"
+        app:layout_constraintTop_toBottomOf="@id/textTitulo"
+        app:layout_constraintBottom_toTopOf="@+id/textInfoApostas"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
     <ImageView
         android:id="@+id/imageViewSetaParaApostas"
         android:layout_width="0dp"
@@ -40,12 +66,27 @@
         android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
+        android:visibility="invisible"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textTitulo"
         app:srcCompat="@drawable/rectangle_5_copy"
         android:scaleY="-1"
         android:rotation="180"/>
+
+    <TextView
+        android:id="@+id/textConfirmacao"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="@string/confirmacao"
+        android:textAlignment="center"
+        android:textColor="@color/branco"
+        android:textStyle="bold"
+        android:textSize="14.2sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textTitulo"
@@ -83,6 +124,7 @@
             android:layout_marginTop="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginBottom="13dp"
+            android:visibility="gone"
             android:layout_marginRight="10dp"
             app:layout_constraintRight_toLeftOf="@+id/imageViewPaginacao"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -101,7 +143,7 @@
                 android:background="@drawable/rounded_textview"
                 android:layout_marginRight="6dp"
                 android:gravity="center"
-                android:text="0"
+                tools:text="0"
                 android:textColor="@color/branco"
                 android:textSize="12sp"
                 android:outlineProvider="none"
@@ -145,6 +187,25 @@
 
     </android.support.constraint.ConstraintLayout>
 
+
+    <Button
+        android:id="@+id/botaoAcompanheSuasCompras"
+        android:layout_width="184dp"
+        android:layout_height="84dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/button_border"
+        android:paddingLeft="14dp"
+        android:paddingRight="14dp"
+        tools:text="@string/label_acompanhe_suas_compras"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
+        android:textColor="@color/branco"
+        android:textSize="17sp"
+        app:layout_constraintBottom_toTopOf="@+id/botaoVoltarInicio"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+
     <Button
         android:id="@+id/botaoVoltarInicio"
         android:layout_width="184dp"
@@ -157,7 +218,7 @@
         android:background="@color/verdeazul"
         android:paddingLeft="14dp"
         android:paddingRight="14dp"
-        android:text="@string/confirmacaoPagamentoBotaoVoltarInicio"
+        android:text="@string/btn_title_voltarAoInicio"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
         android:textColor="@color/branco"

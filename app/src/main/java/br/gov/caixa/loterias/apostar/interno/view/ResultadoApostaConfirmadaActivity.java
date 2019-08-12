@@ -29,7 +29,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametroSimulac
 import br.gov.caixa.loterias.apostar.interno.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.FaixaPremiacaoAdapter;
-import br.gov.caixa.loterias.apostar.interno.view.custom.ContenteResultadoPremiado;
+import br.gov.caixa.loterias.apostar.interno.view.custom.ContentResultadoPremiado;
 import br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightRecyclerView;
 import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
 
@@ -43,7 +43,7 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
     protected Toolbar toolbar;
 
     @ViewById
-    protected ContenteResultadoPremiado contenteResultadoPremiado;
+    protected ContentResultadoPremiado contentResultadoPremiado;
 
     @ViewById
     protected RelativeLayout lotericaLayout, agenciaCaixaLayout, mercadoPagoLayout;
@@ -53,25 +53,27 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
 
     private AlertDialog alertDialog;
 
+    ModalidadeEnum modalidadeEnum;
+
     @AfterViews
     protected void init() {
         createToolBar();
 
-        ModalidadeEnum modalidadeEnum = detalhesPremioDTO.getAposta().getModalidade();
+        modalidadeEnum = detalhesPremioDTO.getAposta().getModalidade();
         EstiloModalidade estiloModalidade = new EstiloModalidade(modalidadeEnum);
         SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
         ParametroSimulacao parametroSimulacao = ViewUtils.getParametroSimulacao(sessaoUsuario, modalidadeEnum);
 
-        contenteResultadoPremiado.getTopoModalidadeResultadoLinearLayout().setBackgroundColor(ContextCompat.getColor(this, estiloModalidade.getCorClara()));
-        contenteResultadoPremiado.getTopo2ModalidadeResultadoLinearLayout().setBackgroundColor(ContextCompat.getColor(this, estiloModalidade.getCorEscura()));
-        contenteResultadoPremiado.getFundoBackgroundTrapezeResultadoLinearLayout().setBackground(ContextCompat.getDrawable(this, estiloModalidade.getTrevoBackground()));
-        contenteResultadoPremiado.getTituloModalidadeTextView().setText(ModalidadeEnum.fromString(detalhesPremioDTO.getAposta().getModalidade()));
-        contenteResultadoPremiado.getLimiteDiarioResultadoTextView().setText(ViewUtils.getMoedaFormat(sessaoUsuario.getParametrosSimulacao().getValorLimiteDiario()));
-        contenteResultadoPremiado.getPremioResultadoTextView().setText(ViewUtils.getMoedaFormat(detalhesPremioDTO.getPremio().getValorLiquido()));
+        contentResultadoPremiado.getTopoModalidadeResultadoLinearLayout().setBackgroundColor(ContextCompat.getColor(this, estiloModalidade.getCorClara()));
+        contentResultadoPremiado.getTopo2ModalidadeResultadoLinearLayout().setBackgroundColor(ContextCompat.getColor(this, estiloModalidade.getCorEscura()));
+        contentResultadoPremiado.getFundoBackgroundTrapezeResultadoLinearLayout().setBackground(ContextCompat.getDrawable(this, estiloModalidade.getTrevoBackground()));
+        contentResultadoPremiado.getTituloModalidadeTextView().setText(ModalidadeEnum.fromString(detalhesPremioDTO.getAposta().getModalidade()));
+        contentResultadoPremiado.getPremioResultadoTextView().setText(ViewUtils.getMoedaFormat(detalhesPremioDTO.getPremio().getValorLiquido()));
+        contentResultadoPremiado.getBotaoAposteAgora().setText(ViewUtils.textFuturaAndFuturaBold(this ,getString(R.string.botao_aposte_agora)));
 
         if (parametroSimulacao != null) {
-            contenteResultadoPremiado.getAberturaApostaResultadoTextView().setText(ViewUtils.getDateAndHour(parametroSimulacao.getParametroJogo().getConcurso().getDataAbertura()));
-            contenteResultadoPremiado.getEncerramentoResultadoTextView().setText(ViewUtils.getDateAndHour(parametroSimulacao.getParametroJogo().getConcurso().getDataFechamento()));
+            contentResultadoPremiado.getAberturaApostaResultadoTextView().setText(ViewUtils.getDateAndHour(parametroSimulacao.getParametroJogo().getConcurso().getDataAbertura()));
+            contentResultadoPremiado.getEncerramentoResultadoTextView().setText(ViewUtils.getDateAndHour(parametroSimulacao.getParametroJogo().getConcurso().getDataFechamento()));
 
             for (ParametroSimulacao parametro : sessaoUsuario.getParametrosSimulacao().getParametros()) {
                 if (parametro.getParametroJogo().getConcurso().getModalidade() == modalidadeEnum && parametro.getProximoConcurso() != null) {
@@ -80,7 +82,7 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
             }
 
             if (parametroSimulacao.getProximoConcurso() != null) {
-                contenteResultadoPremiado.getProximoSorteioTextView().setText(ViewUtils.getDateAndHour(parametroSimulacao.getProximoConcurso().getConcurso().getDataFechamento()));
+                contentResultadoPremiado.getProximoSorteioTextView().setText(ViewUtils.getDateAndHour(parametroSimulacao.getProximoConcurso().getConcurso().getDataFechamento()));
             }
         }
         createListPremiacao();
@@ -106,6 +108,15 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
 
     }
 
+    @Click(R.id.botaoAposteAgora)
+    protected void clickBotaoAposteAgora() {
+
+        Intent it = new Intent(ResultadoApostaConfirmadaActivity.this, PrincipalActivity_.class);
+        it.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |  Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        it.putExtra("MODALIDADE_APOSTAR_AGORA", modalidadeEnum);
+        startActivity(it);
+    }
+
     @Click(R.id.agenciaCaixaLayout)
     protected void clickAgenciaCaixaLayout() {
         ResgatePremioLotericaAgenciaActivity_.intent(this).nsbi(detalhesPremioDTO.getNsbi()).start();
@@ -120,7 +131,7 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
     }
 
     private void createListPremiacao() {
-        ExpandableHeightRecyclerView listaFaixaPremiacaoExpandableHeightRecyclerView = contenteResultadoPremiado.getListaFaixaPremiacaoExpandableHeightRecyclerView();
+        ExpandableHeightRecyclerView listaFaixaPremiacaoExpandableHeightRecyclerView = contentResultadoPremiado.getListaFaixaPremiacaoExpandableHeightRecyclerView();
 
         listaFaixaPremiacaoExpandableHeightRecyclerView.setAdapter(new FaixaPremiacaoAdapter(ViewUtils.getFaixaPremiacaoDTO(detalhesPremioDTO.getPremio())));
         listaFaixaPremiacaoExpandableHeightRecyclerView.setExpanded(Boolean.TRUE);

@@ -31,7 +31,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="0.24"
-        android:text="@string/label_sorteio_case"
+        android:text="@string/title_sorteio"
         android:textColor="@color/cinza"
         android:textSize="14sp" />
 

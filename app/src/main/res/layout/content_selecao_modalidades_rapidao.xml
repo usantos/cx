@@ -23,7 +23,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Modalidades"
+                    android:text="@string/title_modalidades"
                     android:textStyle="bold"
                     android:textSize="18sp"
                     android:textAlignment="center"
@@ -38,7 +38,7 @@
                     <TextView
                         android:layout_width="200dp"
                         android:layout_height="wrap_content"
-                        android:text="Selecione as opções que você quer contemplar no Rapidão."
+                        android:text="@string/title_selecioneOpcoesRapidao"
                         android:textSize="14sp"
                         android:textColor="@color/cinza"
                         android:layout_centerHorizontal="true"
@@ -79,7 +79,7 @@
                 android:textColor="@color/branco"
                 android:textSize="17.7sp"
                 android:textStyle="bold"
-                android:text="Salvar"
+                android:text="@string/title_salvar"
                 android:textAllCaps="false"
                 android:layout_centerHorizontal="true"
                 android:id="@+id/salvarModalidadesApostaRapidaoSelececao"/>

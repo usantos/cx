@@ -23,8 +23,8 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ListCartaoDTORes
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RetornoCartao;
 import br.gov.caixa.loterias.apostar.interno.utils.DialogUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
-import br.gov.caixa.loterias.apostar.interno.view.listener.FormaDePagamentoListener;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
+import br.gov.caixa.loterias.apostar.interno.view.listener.FormaDePagamentoListener;
 
 
 public class FormaPagamentoRecyclerViewAdapter  extends RecyclerView.Adapter<FormaPagamentoRecyclerViewAdapter.ApostaHolder> {
@@ -63,24 +63,26 @@ public class FormaPagamentoRecyclerViewAdapter  extends RecyclerView.Adapter<For
         @Override
         public void onClick(View view) {
             switch (view.getId()){
-                case R.id.buttonRemoverFormaPagamento:{
-                    DialogUtils.show(context);
-                    DadosUsuarioBO_.getInstance_(context).deleteCartao(valoresList.get(getAdapterPosition()).getIdCartao(), new RequestListener<ListCartaoDTOResponse>() {
-                        @Override
-                        public void onResponse(ListCartaoDTOResponse result) {
-                            FirebaseManager.registraEvento(context ,"EFETUOU_EXCLUSAO_FORMA_DE_PAGAMENTO_SUCESSO");
-                            DialogUtils.dismiss();
-                            valoresList.remove(getAdapterPosition());
-                            notifyDataSetChanged();
-                            formaDePagamentoListener.itemRemoved();
-                        }
+                case R.id.buttonRemoverFormaPagamento: {
+                    ViewUtils.alertTitleButtonYesOrNotListener(context, context.getString(R.string.exclusao_cartao), (dialog, which) -> {
+                        DialogUtils.show(context);
+                        DadosUsuarioBO_.getInstance_(context).deleteCartao(valoresList.get(getAdapterPosition()).getIdCartao(), new RequestListener<ListCartaoDTOResponse>() {
+                            @Override
+                            public void onResponse(ListCartaoDTOResponse result) {
+                                FirebaseManager.registraEvento(context, "EFETUOU_EXCLUSAO_FORMA_DE_PAGAMENTO_SUCESSO");
+                                DialogUtils.dismiss();
+                                valoresList.remove(getAdapterPosition());
+                                notifyDataSetChanged();
+                                formaDePagamentoListener.itemRemoved();
+                                selected_position = -1;
+                            }
 
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            onError(error);
-                        }
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                onError(error);
+                            }
+                        });
                     });
-
                 }
                 break;
                 default:{

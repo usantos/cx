@@ -21,7 +21,8 @@
             android:layout_height="56dp"
             android:background="@color/azulclaro"
             android:orientation="horizontal"
-            android:weightSum="1">
+            android:weightSum="1"
+            app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
                 android:id="@+id/layoutFragments"
@@ -83,7 +84,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="16dp"
+                    android:layout_marginRight="10dp"
                     android:fontFamily="@font/arialmt"
                     android:gravity="center_vertical"
                     android:paddingLeft="3dp"
@@ -97,8 +98,8 @@
                     android:layout_width="12dp"
                     android:layout_height="8dp"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="16dp"
                     android:layout_marginTop="25dp"
+                    android:layout_marginRight="5dp"
                     android:src="@drawable/combo2" />
             </RelativeLayout>
         </LinearLayout>
@@ -124,7 +125,9 @@
                 android:paddingTop="36dp"
                 android:text="@string/label_suas_apostas"
                 android:textSize="14sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/labelSimplesLoteca"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/labelSimplesLoteca"
@@ -134,7 +137,9 @@
                 android:paddingLeft="17dp"
                 android:paddingTop="59dp"
                 android:text="@string/label_simples"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 style="@style/ArialMT"
@@ -144,7 +149,9 @@
                 android:paddingTop="59dp"
                 android:text="@string/label_dois_pontos"
                 android:textColor="@color/verdeazul"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/labelValueSimplesLoteca"
@@ -156,18 +163,21 @@
                 android:text="0"
                 android:textColor="@color/verdeazul"
                 android:textSize="18sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/labelDuplasLoteca"
                 style="@style/editTextArialMTTheme"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="17dp"
                 android:paddingLeft="100dp"
                 android:paddingTop="59dp"
                 android:text="@string/label_duplas"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 style="@style/ArialMT"
@@ -177,7 +187,9 @@
                 android:paddingTop="59dp"
                 android:text="@string/label_dois_pontos"
                 android:textColor="@color/verdeazul"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/labelValueDuplasLoteca"
@@ -189,18 +201,21 @@
                 android:text="0"
                 android:textColor="@color/verdeazul"
                 android:textSize="18sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/labelTriplasLoteca"
                 style="@style/editTextArialMTTheme"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="17dp"
                 android:paddingLeft="180dp"
                 android:paddingTop="59dp"
                 android:text="@string/label_triplas"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 style="@style/ArialMT"
@@ -210,7 +225,9 @@
                 android:paddingTop="59dp"
                 android:text="@string/label_dois_pontos"
                 android:textColor="@color/verdeazul"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/labelValueTriplasLoteca"
@@ -222,7 +239,9 @@
                 android:text="0"
                 android:textColor="@color/verdeazul"
                 android:textSize="18sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
         </android.support.constraint.ConstraintLayout>
     </android.support.constraint.ConstraintLayout>
 

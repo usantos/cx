@@ -157,33 +157,30 @@ public class CarrinhoActivity extends SettingToolbarActivity {
 
     @Click(R.id.limparCarrinhoLinearLayout)
     protected void clickLimparCarrinhoLinearLayout() {
-        ViewUtils.alertTitleButtonYesOrNotListener(this, getString(R.string.MA011), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                DialogUtils.show(CarrinhoActivity.this);
-                ApostaBO apostaBO = ApostaBO_.getInstance_(CarrinhoActivity.this);
-                apostaBO.limparCarrinho(new RequestListener<CarrinhoDTOResponse>() {
-                    @Override
-                    public void onResponse(CarrinhoDTOResponse result) {
-                        FirebaseManager.registraEvento(CarrinhoActivity.this ,"LIMPOU_CARRINHO_DE_APOSTAS_ONLINE");
-                        DialogUtils.dismiss();
-                        limparCarrinhoAtualizarTela();
-                        if (result.getRedirect() != null){
-                            RedirectNetwork.checkRedirectSucesso( result.getRedirect(), CarrinhoActivity.this);
-                        }
+        ViewUtils.alertTitleButtonYesOrNotListener(this, getString(R.string.MA011), (dialogInterface, i) -> {
+            DialogUtils.show(CarrinhoActivity.this);
+            ApostaBO apostaBO = ApostaBO_.getInstance_(CarrinhoActivity.this);
+            apostaBO.limparCarrinho(new RequestListener<CarrinhoDTOResponse>() {
+                @Override
+                public void onResponse(CarrinhoDTOResponse result) {
+                    FirebaseManager.registraEvento(CarrinhoActivity.this ,"LIMPOU_CARRINHO_DE_APOSTAS_ONLINE");
+                    DialogUtils.dismiss();
+                    limparCarrinhoAtualizarTela();
+                    if (result.getRedirect() != null){
+                        RedirectNetwork.checkRedirectSucesso( result.getRedirect(), CarrinhoActivity.this);
                     }
+                }
 
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        DialogUtils.dismiss();
-                        if (MensagensNetwork.isUnauthorizedError(error)) {
-                            deleteCarrinhoLocal();
-                        } else {
-                            RedirectNetwork.checkRedirect( error, CarrinhoActivity.this );
-                        }
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    DialogUtils.dismiss();
+                    if (MensagensNetwork.isUnauthorizedError(error)) {
+                        deleteCarrinhoLocal();
+                    } else {
+                        RedirectNetwork.checkRedirect( error, CarrinhoActivity.this );
                     }
-                });
-            }
+                }
+            });
         });
 
     }

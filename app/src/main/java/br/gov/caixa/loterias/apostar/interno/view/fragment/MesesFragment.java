@@ -94,15 +94,12 @@ public class MesesFragment extends Fragment {
     }
 
     private void acaoBotaoLimpar() {
-        parentActivity.getBotaoLimparAposta().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                limparTodosMeses();
-                mesesAdapter.notifyDataSetChanged();
-                gerenciarStatusBotoes(false);
-                parentActivity.getSalvarApostaLayout().setVisibility(View.GONE);
-                limparMesDeSorte();
-            }
+        parentActivity.getBotaoLimparAposta().setOnClickListener(v -> {
+            limparTodosMeses();
+            mesesAdapter.notifyDataSetChanged();
+            gerenciarStatusBotoes(false);
+            parentActivity.getSalvarApostaLayout().setVisibility(View.GONE);
+            limparMesDeSorte();
         });
     }
 
@@ -111,16 +108,13 @@ public class MesesFragment extends Fragment {
         mesesGridView.setAdapter(mesesAdapter);
         mesesGridView.setExpanded(true);
 
-        mesesGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ItemRetanguloTextView viewClickada = (ItemRetanguloTextView) view;
-                limparTodosMeses();
-                viewClickada.getMesDeSorte().setSelecionado(true);
-                setMesDeSorte(viewClickada.getMesDeSorte());
-                mesesAdapter.notifyDataSetChanged();
-                gerenciarStatusBotoes(true);
-            }
+        mesesGridView.setOnItemClickListener((parent, view, position, id) -> {
+            ItemRetanguloTextView viewClickada = (ItemRetanguloTextView) view;
+            limparTodosMeses();
+            viewClickada.getMesDeSorte().setSelecionado(true);
+            setMesDeSorte(viewClickada.getMesDeSorte());
+            mesesAdapter.notifyDataSetChanged();
+            gerenciarStatusBotoes(true);
         });
     }
 
@@ -139,27 +133,21 @@ public class MesesFragment extends Fragment {
             }
             parentActivity.getSalvarApostaLayout().setVisibility(View.VISIBLE);
             tamanhoBotaoSalvarAposta(parentActivity.getSalvarApostaLayout().getLayoutParams(), 64);
-            parentActivity.getSalvarApostaLayout().setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+            parentActivity.getSalvarApostaLayout().setOnClickListener(v -> {
 
-                    tamanhoBotaoSalvarAposta(parentActivity.getSalvarApostaLayout().getLayoutParams(), 140);
-                    parentActivity.getSalvarApostaLayout().setOnClickListener(null);
-                }
+                tamanhoBotaoSalvarAposta(parentActivity.getSalvarApostaLayout().getLayoutParams(), 140);
+                parentActivity.getSalvarApostaLayout().setOnClickListener(null);
             });
 
-            parentActivity.getSalvarApostaLayout().findViewById(R.id.btnSalvarAposta).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    EditText nomeAposta = parentActivity.getEditNomeAposta();
+            parentActivity.getSalvarApostaLayout().findViewById(R.id.btnSalvarAposta).setOnClickListener(v -> {
+                EditText nomeAposta = parentActivity.getEditNomeAposta();
 
-                    if (!TextUtils.isEmpty(nomeAposta.getText().toString())) {
-                        ApostaFavoritaDTO aposta = new ApostaFavoritaDTO();
-                        aposta.setMesDeSorte(getItemSelecionado());
-                        parentActivity.salvarAposta(aposta, nomeAposta.getText().toString(), dezenasSelecionadas);
-                    } else {
-                        ViewUtils.alert(getActivity(), getString(R.string.msg_favor_inserir_nome_aposta));
-                    }
+                if (!TextUtils.isEmpty(nomeAposta.getText().toString())) {
+                    ApostaFavoritaDTO aposta = new ApostaFavoritaDTO();
+                    aposta.setMesDeSorte(getItemSelecionado());
+                    parentActivity.salvarAposta(aposta, nomeAposta.getText().toString(), dezenasSelecionadas);
+                } else {
+                    ViewUtils.alert(getActivity(), getString(R.string.msg_favor_inserir_nome_aposta));
                 }
             });
         }

@@ -3,6 +3,7 @@ package br.gov.caixa.loterias.apostar.interno.view.custom;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -13,30 +14,33 @@ import br.gov.caixa.loterias.apostar.interno.R;
 
 /**
  * Created by joafilho on 02/04/2018.
- * Class ContenteResultadoPremiado
+ * Class ContentResultadoPremiado
  */
 
-@EViewGroup(R.layout.contente_resultado_premiado)
-public class ContenteResultadoPremiado extends LinearLayout {
+@EViewGroup(R.layout.content_resultado_premiado)
+public class ContentResultadoPremiado extends LinearLayout {
 
     @ViewById
     protected LinearLayout topoModalidadeResultadoLinearLayout, fundoBackgroundTrapezeResultadoLinearLayout, topo2ModalidadeResultadoLinearLayout, premioGanhoLinearLayout;
 
     @ViewById
-    protected TextView tituloModalidadeTextView, aberturaApostaResultadoTextView, encerramentoResultadoTextView, proximoSorteioTextView, limiteDiarioResultadoTextView, premioResultadoTextView;
+    protected TextView tituloModalidadeTextView, aberturaApostaResultadoTextView, encerramentoResultadoTextView, proximoSorteioTextView, premioResultadoTextView;
 
     @ViewById
     protected ExpandableHeightRecyclerView listaFaixaPremiacaoExpandableHeightRecyclerView;
 
-    public ContenteResultadoPremiado(Context context) {
+    @ViewById
+    protected Button botaoAposteAgora ;
+
+    public ContentResultadoPremiado(Context context) {
         super(context);
     }
 
-    public ContenteResultadoPremiado(Context context, @Nullable AttributeSet attrs) {
+    public ContentResultadoPremiado(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public ContenteResultadoPremiado(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public ContentResultadoPremiado(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
@@ -68,13 +72,11 @@ public class ContenteResultadoPremiado extends LinearLayout {
         return proximoSorteioTextView;
     }
 
-    public TextView getLimiteDiarioResultadoTextView() {
-        return limiteDiarioResultadoTextView;
-    }
-
     public TextView getPremioResultadoTextView() {
         return premioResultadoTextView;
     }
+
+    public Button getBotaoAposteAgora(){ return botaoAposteAgora; }
 
     public ExpandableHeightRecyclerView getListaFaixaPremiacaoExpandableHeightRecyclerView() {
         return listaFaixaPremiacaoExpandableHeightRecyclerView;

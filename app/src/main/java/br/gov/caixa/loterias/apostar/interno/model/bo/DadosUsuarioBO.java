@@ -13,7 +13,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostar.interno.R;
-import br.gov.caixa.loterias.apostar.interno.model.bean.RetornoListaCarrinho;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ApostadorAlteracaoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ApostadorDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.AutenticacaoDTO;
@@ -245,9 +244,12 @@ public class DadosUsuarioBO extends BaseBO {
     }
 
     public void deleteCartao(Long idCartao, RequestListener<ListCartaoDTOResponse> listener) {
+        LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
+        queryParams.put("meioPagamento", "1");
+
         HashMap<String, String> headers = new LinkedHashMap<>();
         headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
-        GsonRequest request = silceConnection.buildDeleteRequest(ServerMethods.EXCLUIR_CARTAO_PATH, idCartao.toString(), ListCartaoDTOResponse.class,
+        GsonRequest request = silceConnection.buildDeleteRequest(ServerMethods.EXCLUIR_CARTAO_PATH + idCartao.toString(), queryParams, ListCartaoDTOResponse.class,
                 listener.getSilceListener(), listener.getErrorListener(), headers);
 
         request.setErrorListener(interceptError(request, headers, listener));

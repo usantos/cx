@@ -3,7 +3,6 @@ package br.gov.caixa.loterias.apostar.interno.utils.helper;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 
 import com.android.volley.VolleyError;
@@ -157,12 +156,7 @@ public class AdicionarApostaCarrinhoHelper {
                         .add(IdentificaoDeUmaApostaDas8Modalidades.getValorApostaPorPrognostico(aposta)))
                 < 0) {
             DialogUtils.dismiss();
-            ViewUtils.alertTitleButtonYesOrNotListener(context, context.getResources().getString(R.string.MA014), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    checarApostasRepetidas(apostaBO, aposta, carrinhoDTO);
-                }
-            });
+            ViewUtils.alertTitleButtonYesOrNotListener(context, context.getResources().getString(R.string.MA014), (dialog, which) -> checarApostasRepetidas(apostaBO, aposta, carrinhoDTO));
         } else {
             checarApostasRepetidas(apostaBO, aposta, carrinhoDTO);
         }
@@ -171,12 +165,9 @@ public class AdicionarApostaCarrinhoHelper {
     private static void checarApostasRepetidas(final ApostaBO apostaBO, final IdentificaoDeUmaApostaDas8Modalidades aposta, final CarrinhoDTO carrinhoDTO) {
         if (IdentificaoDeUmaApostaDas8Modalidades.checkExisteUmaApostaIgualCarrinho(aposta, carrinhoDTO)) {
             DialogUtils.dismiss();
-            ViewUtils.alertTitleButtonYesOrNotListener(context, context.getResources().getString(R.string.MA015), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    DialogUtils.show(context);
-                    postAdicionarApostaCarrinho(apostaBO);
-                }
+            ViewUtils.alertTitleButtonYesOrNotListener(context, context.getResources().getString(R.string.MA015), (dialog, which) -> {
+                DialogUtils.show(context);
+                postAdicionarApostaCarrinho(apostaBO);
             });
         } else {
             postAdicionarApostaCarrinho(apostaBO);
@@ -203,7 +194,7 @@ public class AdicionarApostaCarrinhoHelper {
         activity.putExtra("valorAposta", valor);
         activity.putExtra("modalidade", (new Gson()).toJson(ViewUtils.getParametroSimulacao(SessaoUsuario.getInstance(), modalidadeEnum).getParametroJogo()));
         context.startActivity(activity);
-        if((Activity)context instanceof SimularApostaActivity){
+        if(context instanceof SimularApostaActivity){
             ((SimularApostaActivity)context).zerarApostas();
         }
     }
@@ -389,6 +380,7 @@ public class AdicionarApostaCarrinhoHelper {
         apostaDas8Modalidades.setQuantidadeApostas(aposta.getQuantidadeApostas());
         apostaDas8Modalidades.setTimeDoCoracao(aposta.getTimeDoCoracao());
         apostaDas8Modalidades.setSurpresinha(true);
+        apostaDas8Modalidades.setGerarEspelho(aposta.getGerarEspelho());
 
         BigDecimal valorIndividual = aposta.getValor().divide(new BigDecimal(aposta.getQuantidadeSurpresinhas()));
         for (int contador = 0; contador < aposta.getQuantidadeSurpresinhas(); contador++) {

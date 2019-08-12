@@ -21,7 +21,7 @@
                 android:layout_height="30dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="10dp"
-                android:text="@string/label_cadastrar"
+                android:text="@string/title_cadastrar"
                 android:textColor="@color/cinza"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -71,7 +71,7 @@
                 <com.github.pinball83.maskededittext.MaskedEditText
                     android:id="@+id/editTextCpfContent"
                     android:ems="10"
-                    android:hint="@string/label_cpf"
+                    android:hint="@string/title_cpf"
                     style="@style/editTextRegisterTheme"
                     android:inputType="number"
                     app:mask="***.***.***-**"
@@ -198,7 +198,7 @@
                     style="@style/editTextRegisterTheme"
                     android:ems="10"
                     android:focusableInTouchMode="false"
-                    android:hint="@string/label_uf"
+                    android:hint="@string/title_uf"
                     android:inputType="textPersonName"/>
             </android.support.design.widget.TextInputLayout>
 

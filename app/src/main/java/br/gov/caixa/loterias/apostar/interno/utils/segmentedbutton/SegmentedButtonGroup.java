@@ -260,12 +260,9 @@ public class SegmentedButtonGroup extends LinearLayout {
             // RIPPLE
             BackgroundView rippleView = new BackgroundView(getContext());
             if (!draggable) {
-                rippleView.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (clickable && enabled)
-                            toggle(position, animateSelectorDuration, true);
-                    }
+                rippleView.setOnClickListener(v -> {
+                    if (clickable && enabled)
+                        toggle(position, animateSelectorDuration, true);
                 });
             }
 
@@ -746,18 +743,15 @@ public class SegmentedButtonGroup extends LinearLayout {
         toggledPosition = position;
 
         ValueAnimator animator = ValueAnimator.ofFloat(toggledPositionOffset, position);
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                float animatedValue = toggledPositionOffset = (float) animation.getAnimatedValue();
+        animator.addUpdateListener(animation -> {
+            float animatedValue = toggledPositionOffset = (float) animation.getAnimatedValue();
 
-                int position = (int) animatedValue;
-                float positionOffset = animatedValue - position;
+            int position1 = (int) animatedValue;
+            float positionOffset = animatedValue - position1;
 
-                animateViews(position, positionOffset);
+            animateViews(position1, positionOffset);
 
-                invalidate();
-            }
+            invalidate();
         });
         animator.setInterpolator(interpolatorSelector);
         animator.setDuration(duration);

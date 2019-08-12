@@ -116,51 +116,42 @@
         </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/layouScrolltAjuda"
+    <ScrollView
+        android:id="@+id/scrollAjuda"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/cinza"
-        android:orientation="vertical"
-        android:paddingLeft="38dp"
-        android:paddingTop="34dp">
+        android:layout_marginBottom="39dp">
 
-        <ScrollView
-            android:id="@+id/scrollAjuda"
+        <LinearLayout
+            android:id="@+id/layouTextScrolltAjuda"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="39dp">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="39dp"
+            android:background="@color/cinza"
+            android:orientation="vertical"
+            android:paddingEnd="36dp"
+            android:paddingStart="36dp">
 
-            <LinearLayout
-                android:id="@+id/layouTextScrolltAjuda"
+            <TextView
+                android:id="@+id/titleTextScroll"
+                style="@style/ArialMT"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="14.2dp"
+                android:text="@string/label_regras_jogo"
+                android:textColor="@color/branco"
+                android:textSize="14.2sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textScroll"
+                style="@style/ArialMT"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="39dp"
-                android:background="@color/cinza"
-                android:orientation="vertical"
-                android:paddingRight="36dp">
-
-                <TextView
-                    android:id="@+id/titleTextScroll"
-                    style="@style/ArialMT"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="14.2dp"
-                    android:text="@string/label_regras_jogo"
-                    android:textColor="@color/branco"
-                    android:textSize="14.2sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/textScroll"
-                    style="@style/ArialMT"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="39dp"
-                    android:text="@string/label_regras_jogo"
-                    android:textColor="@color/branco"
-                    android:textSize="14.2sp" />
-            </LinearLayout>
-        </ScrollView>
-    </LinearLayout>
+                android:text="@string/label_regras_jogo"
+                android:textColor="@color/branco"
+                android:textSize="14.2sp" />
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

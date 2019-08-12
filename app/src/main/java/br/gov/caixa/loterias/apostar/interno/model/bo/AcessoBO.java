@@ -28,7 +28,7 @@ import static org.androidannotations.annotations.EBean.Scope.Singleton;
 public class AcessoBO extends BaseBO {
 
     public static Boolean PRIMEIRO_LOGIN = false;
-    public AuthorizationService authorizationService;
+    AuthorizationService authorizationService;
 
     public void iniciarLoginSSO(Activity activity){
         if(activity != null) {

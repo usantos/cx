@@ -71,8 +71,8 @@ public class DadosPessoaisActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_dados_pessoais );
-        Toolbar toolbar = (Toolbar) findViewById( R.id.toolbar );
-        TextView subtitleToolbar = (TextView) findViewById( R.id.subtitleToolbar );
+        Toolbar toolbar = findViewById( R.id.toolbar );
+        TextView subtitleToolbar = findViewById( R.id.subtitleToolbar );
         setSupportActionBar( toolbar );
         getSupportActionBar().setDisplayHomeAsUpEnabled( true );
         setTitle( ViewUtils.textFuturaAndFuturaBoldTitle( this, getTitle().toString() ) );
@@ -90,56 +90,41 @@ public class DadosPessoaisActivity extends AppCompatActivity {
     }
 
     private void montarLayout() {
-        editTextCpfContent = (MaskedEditText) findViewById( R.id.editTextCpfContent );
-        editTextNomeContent = (EditText) findViewById( R.id.editTextNomeContent );
-        editTextCepContent = (MaskedEditText) findViewById( R.id.editTextCepContent );
-        editTextUFContent = (EditText) findViewById( R.id.editTextUFContent );
-        editTextMunicipioContent = (EditText) findViewById( R.id.editTextMunicipioContent );
-        editTextEmailContent = (EditText) findViewById( R.id.editTextEmailContent );
-        segmentedButtonSexo = (SegmentedButtonGroup) findViewById( R.id.segmentedButtonSexo );
-        updateDadosPesoaisButton = (Button) findViewById( R.id.updateDadosPesoaisButton );
+        editTextCpfContent = findViewById( R.id.editTextCpfContent );
+        editTextNomeContent = findViewById( R.id.editTextNomeContent );
+        editTextCepContent = findViewById( R.id.editTextCepContent );
+        editTextUFContent = findViewById( R.id.editTextUFContent );
+        editTextMunicipioContent = findViewById( R.id.editTextMunicipioContent );
+        editTextEmailContent = findViewById( R.id.editTextEmailContent );
+        segmentedButtonSexo = findViewById( R.id.segmentedButtonSexo );
+        updateDadosPesoaisButton = findViewById( R.id.updateDadosPesoaisButton );
 
         editTextMunicipioContent.setClickable(true);
-        editTextMunicipioContent.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                getMunicipios();
-            }
-        });
+        editTextMunicipioContent.setOnClickListener(v -> getMunicipios());
 
         editTextUFContent.setClickable(true);
-        editTextUFContent.setOnClickListener(new View.OnClickListener() {
+        editTextUFContent.setOnClickListener(v -> getUFS());
 
-            @Override
-            public void onClick(View v) {
-                getUFS();
+
+
+        updateDadosPesoaisButton.setOnClickListener(view -> {
+            if (validarCamposObrigatorios()){
+                ApostadorAlteracaoDTO apostadorAlteracaoDTO = new ApostadorAlteracaoDTO();
+                apostadorAlteracaoDTO.setCep( editTextCepContent.getUnmaskedText() );
+                ApostadorAlteracaoDTO.SexoEnum sexoEnum;
+                if (segmentedButtonSexo.getPosition() == 0){
+                    sexoEnum = ApostadorAlteracaoDTO.SexoEnum.M;
+                }else {
+                    sexoEnum = ApostadorAlteracaoDTO.SexoEnum.F;
+                }
+                apostadorAlteracaoDTO.setSexo( sexoEnum);
+                apostadorAlteracaoDTO.setAlterandoLoterica( false );
+                apostadorAlteracaoDTO.setMunicipioId( municipioIdDTOSelect );
+                SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
+                apostadorAlteracaoDTO.setLimiteDiario( sessaoUsuario.getValorMaximoAposta() );
+                updateDadosCadastrais( apostadorAlteracaoDTO );
             }
         });
-
-
-
-        updateDadosPesoaisButton.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (validarCamposObrigatorios()){
-                    ApostadorAlteracaoDTO apostadorAlteracaoDTO = new ApostadorAlteracaoDTO();
-                    apostadorAlteracaoDTO.setCep( editTextCepContent.getUnmaskedText() );
-                    ApostadorAlteracaoDTO.SexoEnum sexoEnum;
-                    if (segmentedButtonSexo.getPosition() == 0){
-                        sexoEnum = ApostadorAlteracaoDTO.SexoEnum.M;
-                    }else {
-                        sexoEnum = ApostadorAlteracaoDTO.SexoEnum.F;
-                    }
-                    apostadorAlteracaoDTO.setSexo( sexoEnum);
-                    apostadorAlteracaoDTO.setAlterandoLoterica( false );
-                    apostadorAlteracaoDTO.setMunicipioId( municipioIdDTOSelect );
-                    SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
-                    apostadorAlteracaoDTO.setLimiteDiario( sessaoUsuario.getValorMaximoAposta() );
-                    updateDadosCadastrais( apostadorAlteracaoDTO );
-                }
-            }
-        } );
 
 
     }
@@ -270,8 +255,8 @@ public class DadosPessoaisActivity extends AppCompatActivity {
 
         // set the custom dialog components - listview and button
 
-        final ListView listViewItens = (ListView) dialog.findViewById(R.id.listaItensDialog);
-        TextView tituloDialog = (TextView) dialog.findViewById(R.id.tituloDialogCustom);
+        final ListView listViewItens = dialog.findViewById(R.id.listaItensDialog);
+        TextView tituloDialog = dialog.findViewById(R.id.tituloDialogCustom);
         tituloDialog.setText("UF");
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(DadosPessoaisActivity.this,
@@ -280,43 +265,31 @@ public class DadosPessoaisActivity extends AppCompatActivity {
         // Assign adapter to ListView
         listViewItens.setAdapter(adapter);
         // ListView Item Click Listener
-        listViewItens.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listViewItens.setOnItemClickListener((parent, view, position, id) -> {
+            // ListView Clicked item index
+            int itemPosition = position;
 
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                // ListView Clicked item index
-                int itemPosition = position;
-
-                // ListView Clicked item value
-                String itemValue = (String) listViewItens.getItemAtPosition(position);
-                ufSelect = itemValue;
-            }
-
+            // ListView Clicked item value
+            String itemValue = (String) listViewItens.getItemAtPosition(position);
+            ufSelect = itemValue;
         });
 
-        Button dialogButtonOk = (Button) dialog.findViewById(R.id.dialogButtonOK);
-        Button dialogButtonCancelar = (Button) dialog.findViewById(R.id.dialogButtonCancelar);
+        Button dialogButtonOk = dialog.findViewById(R.id.dialogButtonOK);
+        Button dialogButtonCancelar = dialog.findViewById(R.id.dialogButtonCancelar);
 
         // if button is clicked, close the custom dialog
-        dialogButtonOk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!ufSelect.equals( editTextUFContent.getText().toString() )){
-                    editTextMunicipioContent.setText( "" );
-                    municipioIdDTOSelect = null;
-                }
-                editTextUFContent.setText(ufSelect);
-                dialog.dismiss();
+        dialogButtonOk.setOnClickListener(v -> {
+            if (!ufSelect.equals( editTextUFContent.getText().toString() )){
+                editTextMunicipioContent.setText( "" );
+                municipioIdDTOSelect = null;
             }
+            editTextUFContent.setText(ufSelect);
+            dialog.dismiss();
         });
 
-        dialogButtonCancelar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ufSelect = editTextUFContent.getText().toString();
-                dialog.dismiss();
-            }
+        dialogButtonCancelar.setOnClickListener(v -> {
+            ufSelect = editTextUFContent.getText().toString();
+            dialog.dismiss();
         });
 
         dialog.show();
@@ -329,12 +302,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
             myDialog = new AlertDialog.Builder(this)
                     .setTitle("Atenção")
                     .setMessage("Selecione primeiro a UF, assim nossa precisão de municípios será incrível.")
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            myDialog.dismiss();
-                        }
-                    })
+                    .setPositiveButton("OK", (dialog, which) -> myDialog.dismiss())
                     .create();
         }
         myDialog.show();
@@ -348,8 +316,8 @@ public class DadosPessoaisActivity extends AppCompatActivity {
 
         // set the custom dialog components - listview and button
 
-        final ListView listViewItens = (ListView) dialog.findViewById(R.id.listaItensDialog);
-        TextView tituloDialog = (TextView) dialog.findViewById(R.id.tituloDialogCustom);
+        final ListView listViewItens = dialog.findViewById(R.id.listaItensDialog);
+        TextView tituloDialog = dialog.findViewById(R.id.tituloDialogCustom);
         tituloDialog.setText("Cidade");
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(DadosPessoaisActivity.this,
@@ -358,38 +326,26 @@ public class DadosPessoaisActivity extends AppCompatActivity {
         // Assign adapter to ListView
         listViewItens.setAdapter(adapter);
         // ListView Item Click Listener
-        listViewItens.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                // ListView Clicked item index
-                // ListView Clicked item value
-                String itemValue = (String) listViewItens.getItemAtPosition(position);
-                municipioIdDTOSelect = municipioDTOList.get( position ).getId();
-                municipioSelect = itemValue;
-            }
-
+        listViewItens.setOnItemClickListener((parent, view, position, id) -> {
+            // ListView Clicked item index
+            // ListView Clicked item value
+            String itemValue = (String) listViewItens.getItemAtPosition(position);
+            municipioIdDTOSelect = municipioDTOList.get( position ).getId();
+            municipioSelect = itemValue;
         });
 
-        Button dialogButtonOk = (Button) dialog.findViewById(R.id.dialogButtonOK);
-        Button dialogButtonCancelar = (Button) dialog.findViewById(R.id.dialogButtonCancelar);
+        Button dialogButtonOk = dialog.findViewById(R.id.dialogButtonOK);
+        Button dialogButtonCancelar = dialog.findViewById(R.id.dialogButtonCancelar);
 
         // if button is clicked, close the custom dialog
-        dialogButtonOk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editTextMunicipioContent.setText(municipioSelect);
-                dialog.dismiss();
-            }
+        dialogButtonOk.setOnClickListener(v -> {
+            editTextMunicipioContent.setText(municipioSelect);
+            dialog.dismiss();
         });
 
-        dialogButtonCancelar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                municipioSelect = "";
-                dialog.dismiss();
-            }
+        dialogButtonCancelar.setOnClickListener(v -> {
+            municipioSelect = "";
+            dialog.dismiss();
         });
 
         dialog.show();
