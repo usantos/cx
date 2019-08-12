@@ -154,6 +154,9 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
     }
 
     private void setButtons(){
+        if(concursoAlvo == null){
+            return;
+        }
         String anterior = String.valueOf(concursoAlvo-1);
         String proximo = String.valueOf(concursoAlvo +1);
         btnProximoConcurso.setText(ViewUtils.textFuturaAndFuturaBold(this,getString(R.string.resultados_botao,proximo)));
@@ -318,6 +321,7 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 loadViewProgress.dismiss();
+                setButtons();
                 ViewUtils.alertTitleButton(VisualizarResultadosActivity.this, R.string.label_atencao, MensagensNetwork.setMensagem(error, VisualizarResultadosActivity.this), "Ok", dialogInterface ->{});
             }
         });

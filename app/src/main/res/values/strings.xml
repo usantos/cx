@@ -65,7 +65,7 @@
 
     <string name="total">Total</string>
 
-    <string name="confirmacaoPagamentoInfoApostas">Enquanto são processadas\nvocê pode acompanhá-las\na área Compras do aplicativo.</string>
+    <string name="confirmacaoPagamentoInfoApostas">Enquanto são processadas\nvocê pode acompanhá-las\nna área Compras do aplicativo.</string>
     <string name="confirmacaopagamentoParabens">Parabéns!\nSuas apostas foram\nrealizadas com sucesso.</string>
     <string name="minhasApostas">Minhas apostas</string>
     <string name="btn_title_voltarAoInicio">_Voltar_\nao início</string>
