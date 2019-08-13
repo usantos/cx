@@ -30,7 +30,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/infoValorMinimo"
+            android:id="@+id/tv_info_valor_minimo"
             style="@style/editTextArialMTTheme"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -44,7 +44,7 @@
 
 
         <br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightRecyclerView
-            android:id="@+id/apostasListaRecycleView"
+            android:id="@+id/erv_apostas_listas"
             style="@style/editTextArialMTTheme"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -61,7 +61,7 @@
             android:background="@color/colorAccent">
 
             <LinearLayout
-                android:id="@+id/limparCarrinhoLinearLayout"
+                android:id="@+id/ll_limpar_carrinho"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginStart="14dp"
@@ -94,15 +94,15 @@
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="9dp"
                 android:layout_marginRight="9dp"
-                android:layout_toLeftOf="@+id/valorTotalCarrinho"
-                android:layout_toStartOf="@+id/valorTotalCarrinho"
+                android:layout_toLeftOf="@+id/tv_valor_total_carrinho"
+                android:layout_toStartOf="@+id/tv_valor_total_carrinho"
                 android:text="@string/total"
                 android:textColor="@color/branco"
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/valorTotalCarrinho"
+                android:id="@+id/tv_valor_total_carrinho"
                 style="@style/editTextArialMTTheme"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -125,7 +125,7 @@
                 android:id="@+id/viewTabBar"
                 android:layout_width="match_parent"
                 android:layout_height="94dp"
-                android:layout_alignTop="@id/botaoAvancarPagamento"
+                android:layout_alignTop="@id/btn_avancar_pagamento"
                 android:layout_marginLeft="0dp"
                 android:layout_marginRight="0dp"
                 android:layout_marginTop="42dp"
@@ -134,7 +134,7 @@
 
 
             <Button
-                android:id="@+id/botaoFazerNovaAposta"
+                android:id="@+id/btn_nova_aposta"
                 android:layout_width="183dp"
                 android:layout_height="56dp"
                 android:layout_centerHorizontal="true"
@@ -149,10 +149,10 @@
                 android:textStyle="bold" />
 
             <Button
-                android:id="@+id/botaoAvancarPagamento"
+                android:id="@+id/btn_avancar_pagamento"
                 android:layout_width="184dp"
                 android:layout_height="84dp"
-                android:layout_below="@id/botaoFazerNovaAposta"
+                android:layout_below="@id/btn_nova_aposta"
                 android:layout_centerHorizontal="true"
                 android:layout_marginLeft="0dp"
                 android:layout_marginRight="0dp"
@@ -168,7 +168,7 @@
                 android:id="@+id/imageViewPaginacao"
                 android:layout_width="184dp"
                 android:layout_height="12dp"
-                android:layout_below="@id/botaoAvancarPagamento"
+                android:layout_below="@id/btn_avancar_pagamento"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"
                 android:contentDescription="@string/imagemCarrinho"

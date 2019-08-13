@@ -38,6 +38,7 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
+import org.parceler.Parcels;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -74,6 +75,8 @@ import br.gov.caixa.loterias.apostar.interno.view.fragment.SurpresinhaFragment.S
 import br.gov.caixa.loterias.apostar.interno.view.fragment.SurpresinhaFragment_;
 import br.gov.caixa.loterias.apostar.interno.view.listener.CartelaFragmentListener;
 
+import static br.gov.caixa.loterias.apostar.interno.view.CarrinhoActivity.CARRINHO;
+import static br.gov.caixa.loterias.apostar.interno.view.CarrinhoActivity.LER_CARRINHO_LOCAL;
 import static java.lang.String.format;
 
 @EActivity(R.layout.activity_simular_aposta)
@@ -309,7 +312,8 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
             @Override
             public void onResponse(CarrinhoDTOResponse response) {
                 DialogUtils.dismiss();
-                CarrinhoActivity_.intent(SimularApostaActivity.this).carrinho(response.getPayload()).start();
+                //CarrinhoActivity_.intent(SimularApostaActivity.this).carrinho().start();
+                startActivity(new Intent(SimularApostaActivity.this, CarrinhoActivity.class).putExtra(CARRINHO, Parcels.wrap(response.getPayload())));
                 if (response.getRedirect() != null){
                     RedirectNetwork.checkRedirectSucesso( response.getRedirect(), SimularApostaActivity.this);
                 }
@@ -319,7 +323,9 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
             public void onErrorResponse(VolleyError error) {
                 DialogUtils.dismiss();
                 if (MensagensNetwork.isUnauthorizedError(error)) {
-                    CarrinhoActivity_.intent(SimularApostaActivity.this).lerCarrinhoLocal(true).start();
+                    //CarrinhoActivity_.intent(SimularApostaActivity.this).lerCarrinhoLocal(true).start();
+                    startActivity(new Intent(SimularApostaActivity.this, CarrinhoActivity.class).putExtra(LER_CARRINHO_LOCAL, true));
+
                 } else {
                     RedirectNetwork.checkRedirect( error, SimularApostaActivity.this );
                 }

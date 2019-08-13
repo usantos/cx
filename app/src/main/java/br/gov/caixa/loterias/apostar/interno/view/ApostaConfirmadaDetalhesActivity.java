@@ -33,6 +33,7 @@ import org.androidannotations.annotations.OptionsMenuItem;
 import org.androidannotations.annotations.ViewById;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.parceler.Parcels;
 
 import java.util.Objects;
 
@@ -74,6 +75,9 @@ import br.gov.caixa.loterias.apostar.interno.view.adapter.ApostasConfirmadasAdap
 import br.gov.caixa.loterias.apostar.interno.view.fragment.ApostaConfirmadaNumeroDetalhesPremioPago_;
 import br.gov.caixa.loterias.apostar.interno.view.fragment.ApostaConfirmadaNumeroDetalhes_;
 import br.gov.caixa.loterias.apostar.interno.view.fragment.ApostaConfirmadaPartidaFragment_;
+
+import static br.gov.caixa.loterias.apostar.interno.view.CarrinhoActivity.CARRINHO;
+import static br.gov.caixa.loterias.apostar.interno.view.CarrinhoActivity.LER_CARRINHO_LOCAL;
 
 /**
  * Created by pmotta on 22/03/2018.
@@ -145,7 +149,8 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
             @Override
             public void onResponse(CarrinhoDTOResponse response) {
                 DialogUtils.dismiss();
-                CarrinhoActivity_.intent(ApostaConfirmadaDetalhesActivity.this).carrinho(response.getPayload()).start();
+                //CarrinhoActivity_.intent(ApostaConfirmadaDetalhesActivity.this).carrinho(response.getPayload()).start();
+                startActivity(new Intent(ApostaConfirmadaDetalhesActivity.this, CarrinhoActivity.class).putExtra(CARRINHO, Parcels.wrap(response.getPayload())));
                 if (response.getRedirect() != null){
                     RedirectNetwork.checkRedirectSucesso( response.getRedirect(), ApostaConfirmadaDetalhesActivity.this);
                 }
@@ -155,7 +160,8 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
             public void onErrorResponse(VolleyError error) {
                 DialogUtils.dismiss();
                 if (MensagensNetwork.isUnauthorizedError(error)) {
-                    CarrinhoActivity_.intent(ApostaConfirmadaDetalhesActivity.this).lerCarrinhoLocal(true).start();
+                    startActivity(new Intent(ApostaConfirmadaDetalhesActivity.this, CarrinhoActivity.class).putExtra(LER_CARRINHO_LOCAL, true));
+                    //CarrinhoActivity_.intent(ApostaConfirmadaDetalhesActivity.this).lerCarrinhoLocal(true).start();
                 } else {
                     RedirectNetwork.checkRedirect( error, ApostaConfirmadaDetalhesActivity.this );
                 }

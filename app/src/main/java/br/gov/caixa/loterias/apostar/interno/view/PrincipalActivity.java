@@ -509,7 +509,7 @@ public class PrincipalActivity extends AppCompatActivity
 
     @Click(R.id.relativeLayoutCarrinho)
     protected void clickRelativeLayoutCarrinho() {
-        CarrinhoActivity_.intent(PrincipalActivity.this).start();
+        startActivity(new Intent(PrincipalActivity.this, CarrinhoActivity.class));
     }
 
     @Click(R.id.relativeLayoutContentFavoritas)

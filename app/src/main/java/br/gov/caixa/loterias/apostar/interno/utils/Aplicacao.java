@@ -15,7 +15,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bean.DadosUsuarioToken;
 import br.gov.caixa.loterias.apostar.interno.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostar.interno.model.bo.DadosCorporativosBO;
@@ -25,8 +24,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametrosSimulacao;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametrosSimulacaoResponse;
 import br.gov.caixa.loterias.apostar.interno.view.AppIndisponivelActivity;
-import br.gov.caixa.loterias.apostar.interno.view.CarrinhoActivity_;
-import br.gov.caixa.loterias.apostar.interno.view.PrincipalActivity;
+import br.gov.caixa.loterias.apostar.interno.view.CarrinhoActivity;
 import br.gov.caixa.loterias.apostar.interno.view.PrincipalActivity_;
 import br.gov.caixa.loterias.apostar.interno.view.SplashScreenActivity;
 import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
@@ -151,7 +149,7 @@ class ActivityLifecycleCallbacks implements Application.ActivityLifecycleCallbac
         }
     }
     private void atualizaLayout(Activity activity){
-        ArrayList<String> permitidas = new ArrayList<>((Arrays.asList(PrincipalActivity_.class.toString().toUpperCase(), CarrinhoActivity_.class.toString().toUpperCase())));
+        ArrayList<String> permitidas = new ArrayList<>((Arrays.asList(PrincipalActivity_.class.toString().toUpperCase(), CarrinhoActivity.class.toString().toUpperCase())));
         if(permitidas.contains(activity.getClass().toString().toUpperCase())){
             isRecreated = true;
             if (android.os.Build.VERSION.SDK_INT >= 11){

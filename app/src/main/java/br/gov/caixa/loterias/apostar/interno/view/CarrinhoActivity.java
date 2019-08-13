@@ -1,6 +1,7 @@
 package br.gov.caixa.loterias.apostar.interno.view;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.Button;
@@ -8,12 +9,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
-
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.Extra;
-import org.androidannotations.annotations.ViewById;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -38,40 +33,61 @@ import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.CarrinhoApostasListViewAdapter;
 import br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightRecyclerView;
 
-@EActivity(R.layout.activity_carrinho)
+
 public class CarrinhoActivity extends SettingToolbarActivity {
 
-    @ViewById
-    protected ExpandableHeightRecyclerView apostasListaRecycleView;
+    public static String CARRINHO = "CARRINHO";
+    public static String LER_CARRINHO_LOCAL = "LER_CARRINHO_LOCAL";
 
-    @ViewById
-    protected TextView valorTotalCarrinho, infoValorMinimo;
-
-    @ViewById
-    protected Button botaoAvancarPagamento, botaoFazerNovaAposta;
-
-    @ViewById
-    protected LinearLayout limparCarrinhoLinearLayout;
-
-    @Extra
-    protected CarrinhoDTO carrinho;
-
-    @Extra
-    protected boolean lerCarrinhoLocal;
-
-    protected boolean ocorrendoValidacao = false;
+    private ExpandableHeightRecyclerView apostasListaRecycleView;
+    private TextView valorTotalCarrinho, infoValorMinimo;
+    private Button botaoAvancarPagamento, botaoFazerNovaAposta;
+    private LinearLayout limparCarrinhoLinearLayout;
+    private CarrinhoDTO carrinho;
+    private boolean lerCarrinhoLocal;
+    private boolean ocorrendoValidacao = false;
 
 
-    @AfterViews
-    public void init() {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_carrinho);
+        pegaExtras();
+        setaViews();
+        setaMetodos();
+    }
+
+    private void pegaExtras(){
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            carrinho = bundle.getParcelable(CARRINHO);
+            lerCarrinhoLocal = bundle.getBoolean(LER_CARRINHO_LOCAL);
+        }
+    }
+
+    private void setaViews(){
+        apostasListaRecycleView = findViewById(R.id.erv_apostas_listas);
+        valorTotalCarrinho = findViewById(R.id.tv_valor_total_carrinho);
+        infoValorMinimo = findViewById(R.id.tv_info_valor_minimo);
+        botaoAvancarPagamento = findViewById(R.id.btn_avancar_pagamento);
+        botaoFazerNovaAposta  = findViewById(R.id.btn_nova_aposta);
+        limparCarrinhoLinearLayout = findViewById(R.id.ll_limpar_carrinho);
+
         ViewUtils.setMoedaFormatHtml(BigDecimal.ZERO, valorTotalCarrinho);
         setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.title_activity_carrinho)));
+    }
+    private void setaMetodos(){
         if(lerCarrinhoLocal){
             FirebaseManager.registraEvento(CarrinhoActivity.this ,"ENTROU_CARRINHO_DE_APOSTAS_OFFLINE");
             lerCarrinhoLocal(true);
         }else{
             atualizaLayout(true);
         }
+
+        botaoAvancarPagamento.setOnClickListener(v -> validarCarrinho());
+        botaoFazerNovaAposta.setOnClickListener(v -> clickBotaoFazerNovaAposta());
+        limparCarrinhoLinearLayout.setOnClickListener(v -> clickLimparCarrinhoLinearLayout());
     }
 
     @Override
@@ -123,10 +139,7 @@ public class CarrinhoActivity extends SettingToolbarActivity {
         CarrinhoSingleton.getInstance().setCarrinho(this.carrinho);
     }
 
-    @Click(R.id.botaoAvancarPagamento)
-    protected void clickBotaoAvancarPagamento() {
-        validarCarrinho();
-    }
+
     private void validarCarrinho() {
         ocorrendoValidacao = true;
         DialogUtils.show(CarrinhoActivity.this);
@@ -147,13 +160,11 @@ public class CarrinhoActivity extends SettingToolbarActivity {
         });
     }
 
-    @Click(R.id.botaoFazerNovaAposta)
     protected void clickBotaoFazerNovaAposta() {
         setResult(2);
         finish();
     }
 
-    @Click(R.id.limparCarrinhoLinearLayout)
     protected void clickLimparCarrinhoLinearLayout() {
         ViewUtils.alertTitleButtonYesOrNotListener(this, getString(R.string.MA011), (dialogInterface, i) -> {
             DialogUtils.show(CarrinhoActivity.this);

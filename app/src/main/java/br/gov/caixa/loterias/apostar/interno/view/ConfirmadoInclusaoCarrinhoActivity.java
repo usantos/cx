@@ -19,6 +19,8 @@ import android.widget.TextView;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 
+import org.parceler.Parcels;
+
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -37,6 +39,9 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametroJogoDTO
 import br.gov.caixa.loterias.apostar.interno.utils.DialogUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
+
+import static br.gov.caixa.loterias.apostar.interno.view.CarrinhoActivity.CARRINHO;
+import static br.gov.caixa.loterias.apostar.interno.view.CarrinhoActivity.LER_CARRINHO_LOCAL;
 
 public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implements OnClickListener {
 
@@ -208,7 +213,8 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
                     @Override
                     public void onResponse(CarrinhoDTOResponse response) {
                         DialogUtils.dismiss();
-                        CarrinhoActivity_.intent(ConfirmadoInclusaoCarrinhoActivity.this).carrinho(response.getPayload()).startForResult(0);
+                        //CarrinhoActivity_.intent(ConfirmadoInclusaoCarrinhoActivity.this).carrinho(response.getPayload()).startForResult(0);
+                        startActivityForResult((new Intent(ConfirmadoInclusaoCarrinhoActivity.this, CarrinhoActivity.class).putExtra(CARRINHO, Parcels.wrap(response.getPayload()))),0);
                         if (response.getRedirect() != null){
                             RedirectNetwork.checkRedirectSucesso( response.getRedirect(), ConfirmadoInclusaoCarrinhoActivity.this);
                         }
@@ -218,7 +224,8 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
                     public void onErrorResponse(VolleyError error) {
                         DialogUtils.dismiss();
                         if (MensagensNetwork.isUnauthorizedError(error)) {
-                            CarrinhoActivity_.intent(ConfirmadoInclusaoCarrinhoActivity.this).lerCarrinhoLocal(true).startForResult(0);
+                            //CarrinhoActivity_.intent(ConfirmadoInclusaoCarrinhoActivity.this).lerCarrinhoLocal(true).startForResult(0);
+                            startActivityForResult((new Intent(ConfirmadoInclusaoCarrinhoActivity.this, CarrinhoActivity.class).putExtra(LER_CARRINHO_LOCAL, true)),0);
                         } else {
                             RedirectNetwork.checkRedirect( error, ConfirmadoInclusaoCarrinhoActivity.this );
                         }
