@@ -145,7 +145,7 @@ public class  RedirectNetwork {
                         }
                         return;
                     case CARRINHO:
-                        activity.startActivityForResult(new Intent(activity, CarrinhoActivity.class), 1);
+                        activity.startActivity(new Intent(activity, CarrinhoActivity.class));
                         return;
                     default:
                         break;

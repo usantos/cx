@@ -2,6 +2,7 @@ package br.gov.caixa.loterias.apostar.interno.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.Button;
@@ -34,6 +35,7 @@ import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.CarrinhoApostasListViewAdapter;
 import br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightRecyclerView;
+import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
 
 
 public class CarrinhoActivity extends SettingToolbarActivity {
@@ -46,7 +48,7 @@ public class CarrinhoActivity extends SettingToolbarActivity {
     private Button botaoAvancarPagamento, botaoFazerNovaAposta;
     private LinearLayout limparCarrinhoLinearLayout;
     private CarrinhoDTO carrinho;
-    private boolean lerCarrinhoLocal;
+    private boolean lerCarrinhoLocal = false;
     private boolean ocorrendoValidacao = false;
 
 
@@ -64,10 +66,9 @@ public class CarrinhoActivity extends SettingToolbarActivity {
     protected void onResume() {
         super.onResume();
         if(ocorrendoValidacao){
-            carrinho = CarrinhoSingleton.getInstance().getCarrinho();
-            atualizaLayout(true);
             validarCarrinho();
         }
+        lerCarrinho();
     }
 
     @Override
@@ -77,6 +78,21 @@ public class CarrinhoActivity extends SettingToolbarActivity {
             callWebservice();
         }
     }
+
+
+    private void lerCarrinho() {
+        if(getIntent().getComponent().getClassName().equals(CarrinhoActivity.class.getName())){
+            lerCarrinhoLocal = false;
+            carrinho = null;
+        }
+        if(lerCarrinhoLocal){
+            FirebaseManager.registraEvento(CarrinhoActivity.this ,"ENTROU_CARRINHO_DE_APOSTAS_OFFLINE");
+            lerCarrinhoLocal(true);
+        }else{
+            atualizaLayout(true);
+        }
+    }
+
 
     private void pegaExtras(){
         Bundle bundle = getIntent().getExtras();
@@ -98,13 +114,6 @@ public class CarrinhoActivity extends SettingToolbarActivity {
         setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.title_activity_carrinho)));
     }
     private void setaMetodos(){
-        if(lerCarrinhoLocal){
-            FirebaseManager.registraEvento(CarrinhoActivity.this ,"ENTROU_CARRINHO_DE_APOSTAS_OFFLINE");
-            lerCarrinhoLocal(true);
-        }else{
-            atualizaLayout(true);
-        }
-
         botaoAvancarPagamento.setOnClickListener(v -> validarCarrinho());
         botaoFazerNovaAposta.setOnClickListener(v -> clickBotaoFazerNovaAposta());
         limparCarrinhoLinearLayout.setOnClickListener(v -> clickLimparCarrinhoLinearLayout());
@@ -112,7 +121,6 @@ public class CarrinhoActivity extends SettingToolbarActivity {
 
 
     public void atualizaLayout(boolean animacao) {
-        montarLayout();
         try {
             if (carrinho != null) {
                 if (carrinho.getApostas() != null) {
@@ -125,7 +133,7 @@ public class CarrinhoActivity extends SettingToolbarActivity {
         }catch (Exception e){
             e.printStackTrace();
         }
-        botaoAvancarPagamento.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.avancarFormaPagamento)));
+        montarLayout();
     }
 
 
@@ -217,24 +225,24 @@ public class CarrinhoActivity extends SettingToolbarActivity {
         SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
         BigDecimal valorCarrinho = sessaoUsuario.getValorMinimimoAposta() == null ? BigDecimal.ZERO : sessaoUsuario.getValorMinimimoAposta();
         ViewUtils.setMoedaFormatHtml(valorCarrinho, infoValorMinimo, getResources().getString(R.string.label_lembrar_valor_minimo).replace("_", "<br>") + " ");
+        botaoAvancarPagamento.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.avancarFormaPagamento)));
     }
 
     private void callWebservice() {
 
-        DialogUtils.show(this);
         final ApostaBO apostaBO = ApostaBO_.getInstance_(CarrinhoActivity.this);
+        DialogUtils.show(CarrinhoActivity.this);
 
         apostaBO.buscaCarrinho(new RequestListener<CarrinhoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoDTOResponse response) {
                 FirebaseManager.registraEvento(CarrinhoActivity.this ,"ENTROU_CARRINHO_DE_APOSTAS_ONLINE");
-
-                DialogUtils.dismiss();
-                setCarrinho(response.getPayload());
-                atualizaLayout(Boolean.TRUE);
                 if (response.getRedirect() != null){
                     RedirectNetwork.checkRedirectSucesso( response.getRedirect(), CarrinhoActivity.this);
                 }
+                DialogUtils.dismiss();
+                setCarrinho(response.getPayload());
+                atualizaLayout(Boolean.TRUE);
             }
 
             @Override
