@@ -58,10 +58,28 @@ public class CarrinhoActivity extends SettingToolbarActivity {
         setaMetodos();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(ocorrendoValidacao){
+            carrinho = CarrinhoSingleton.getInstance().getCarrinho();
+            atualizaLayout(true);
+            validarCarrinho();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == 1) {
+            callWebservice();
+        }
+    }
+
     private void pegaExtras(){
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            carrinho = bundle.getParcelable(CARRINHO);
+            carrinho =(CarrinhoDTO) bundle.getSerializable(CARRINHO);
             lerCarrinhoLocal = bundle.getBoolean(LER_CARRINHO_LOCAL);
         }
     }
@@ -90,31 +108,6 @@ public class CarrinhoActivity extends SettingToolbarActivity {
         limparCarrinhoLinearLayout.setOnClickListener(v -> clickLimparCarrinhoLinearLayout());
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if(ocorrendoValidacao){
-            carrinho = CarrinhoSingleton.getInstance().getCarrinho();
-            atualizaLayout(true);
-            validarCarrinho();
-        }
-    }
-
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && requestCode == 1) {
-            callWebservice();
-        }
-    }
-
-    public void lerCarrinhoLocal(Boolean animacao) {
-        DBLoteriasCrud crud = new DBLoteriasCrud(getApplicationContext());
-        carrinho = new CarrinhoDTO();
-        carrinho.setApostas(crud.readAllIdentificaoDeUmaApostaDas8Modalidades());
-        atualizaLayout(animacao);
-    }
 
     public void atualizaLayout(boolean animacao) {
         montarLayout();
@@ -131,8 +124,18 @@ public class CarrinhoActivity extends SettingToolbarActivity {
             e.printStackTrace();
         }
         botaoAvancarPagamento.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.avancarFormaPagamento)));
-
     }
+
+
+
+    public void lerCarrinhoLocal(Boolean animacao) {
+        DBLoteriasCrud crud = new DBLoteriasCrud(getApplicationContext());
+        carrinho = new CarrinhoDTO();
+        carrinho.setApostas(crud.readAllIdentificaoDeUmaApostaDas8Modalidades());
+        atualizaLayout(animacao);
+    }
+
+
 
     public void setCarrinho(CarrinhoDTO carrinho) {
         this.carrinho = carrinho;

@@ -16,6 +16,7 @@ import com.google.gson.annotations.SerializedName;
 
 import org.parceler.Parcel;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -24,7 +25,7 @@ import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel(description = "")
 @Parcel
-public class CarrinhoDTO {
+public class CarrinhoDTO implements Serializable {
 
     @SerializedName("valorTotal")
     protected BigDecimal valorTotal = null;

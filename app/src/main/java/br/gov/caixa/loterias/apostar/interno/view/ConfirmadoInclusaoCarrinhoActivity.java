@@ -214,7 +214,9 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
                     public void onResponse(CarrinhoDTOResponse response) {
                         DialogUtils.dismiss();
                         //CarrinhoActivity_.intent(ConfirmadoInclusaoCarrinhoActivity.this).carrinho(response.getPayload()).startForResult(0);
-                        startActivityForResult((new Intent(ConfirmadoInclusaoCarrinhoActivity.this, CarrinhoActivity.class).putExtra(CARRINHO, Parcels.wrap(response.getPayload()))),0);
+                        Bundle args = new Bundle();
+                        args.putSerializable(CARRINHO, response.getPayload());
+                        startActivityForResult(new Intent(ConfirmadoInclusaoCarrinhoActivity.this, CarrinhoActivity.class).putExtras(args),0);
                         if (response.getRedirect() != null){
                             RedirectNetwork.checkRedirectSucesso( response.getRedirect(), ConfirmadoInclusaoCarrinhoActivity.this);
                         }
