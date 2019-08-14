@@ -25,7 +25,7 @@ import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel(description = "")
 @Parcel
-public class CarrinhoDTO implements Serializable {
+public class CarrinhoDTO {
 
     @SerializedName("valorTotal")
     protected BigDecimal valorTotal = null;

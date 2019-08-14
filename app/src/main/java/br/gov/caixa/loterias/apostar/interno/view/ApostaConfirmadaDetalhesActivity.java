@@ -151,7 +151,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                 DialogUtils.dismiss();
                 //CarrinhoActivity_.intent(ApostaConfirmadaDetalhesActivity.this).carrinho(response.getPayload()).start();
                 Bundle args = new Bundle();
-                args.putSerializable(CARRINHO, response.getPayload());
+                args.putParcelable(CARRINHO, Parcels.wrap(response.getPayload()));
                 startActivity(new Intent(ApostaConfirmadaDetalhesActivity.this, CarrinhoActivity.class).putExtras(args));
                 if (response.getRedirect() != null){
                     RedirectNetwork.checkRedirectSucesso( response.getRedirect(), ApostaConfirmadaDetalhesActivity.this);

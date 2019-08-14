@@ -6,6 +6,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcel;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.TypedValue;
@@ -215,7 +216,7 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
                         DialogUtils.dismiss();
                         //CarrinhoActivity_.intent(ConfirmadoInclusaoCarrinhoActivity.this).carrinho(response.getPayload()).startForResult(0);
                         Bundle args = new Bundle();
-                        args.putSerializable(CARRINHO, response.getPayload());
+                        args.putParcelable(CARRINHO, Parcels.wrap(response.getPayload()));
                         startActivityForResult(new Intent(ConfirmadoInclusaoCarrinhoActivity.this, CarrinhoActivity.class).putExtras(args),0);
                         if (response.getRedirect() != null){
                             RedirectNetwork.checkRedirectSucesso( response.getRedirect(), ConfirmadoInclusaoCarrinhoActivity.this);

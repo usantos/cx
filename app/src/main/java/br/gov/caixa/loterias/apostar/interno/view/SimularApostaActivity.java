@@ -314,7 +314,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
                 DialogUtils.dismiss();
                 //CarrinhoActivity_.intent(SimularApostaActivity.this).carrinho().start();
                 Bundle args = new Bundle();
-                args.putSerializable(CARRINHO, response.getPayload());
+                args.putParcelable(CARRINHO, Parcels.wrap(response.getPayload()));
                 startActivity(new Intent(SimularApostaActivity.this, CarrinhoActivity.class).putExtras(args));
                 if (response.getRedirect() != null){
                     RedirectNetwork.checkRedirectSucesso( response.getRedirect(), SimularApostaActivity.this);

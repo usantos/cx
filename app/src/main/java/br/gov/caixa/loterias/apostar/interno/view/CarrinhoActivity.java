@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 
+import org.parceler.Parcels;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -79,7 +81,7 @@ public class CarrinhoActivity extends SettingToolbarActivity {
     private void pegaExtras(){
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            carrinho =(CarrinhoDTO) bundle.getSerializable(CARRINHO);
+            carrinho = Parcels.unwrap(bundle.getParcelable(CARRINHO));
             lerCarrinhoLocal = bundle.getBoolean(LER_CARRINHO_LOCAL);
         }
     }
