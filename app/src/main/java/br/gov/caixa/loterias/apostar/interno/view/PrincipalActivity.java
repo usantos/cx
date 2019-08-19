@@ -26,7 +26,6 @@ import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -576,6 +575,9 @@ public class PrincipalActivity extends AppCompatActivity
                 break;
             case 4:
                 startActivity(new Intent(PrincipalActivity.this, FavoritasActivity.class));
+                break;
+            case 5:
+                startActivity(new Intent(PrincipalActivity.this, CarrinhosFavoritosActivity.class));
                 break;
             default:
                 break;

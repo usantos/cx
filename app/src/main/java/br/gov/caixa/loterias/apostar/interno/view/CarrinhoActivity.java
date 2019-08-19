@@ -3,6 +3,7 @@ package br.gov.caixa.loterias.apostar.interno.view;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
@@ -49,6 +50,7 @@ public class CarrinhoActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private Dialog dialogFavoritar;
     private ExpandableHeightRecyclerView apostasListaRecycleView;
+    private ConstraintLayout clCarrinhosFavoritos;
     private TextView tvValorTotal, infoValorMinimo;
     private Button btnAvancaPagamento, btnNovaAposta;
     private ImageButton btnLimpar, btnFavoritar;
@@ -142,6 +144,7 @@ public class CarrinhoActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         btnLimpar = findViewById(R.id.ib_excluir);
         btnFavoritar = findViewById(R.id.ib_favoritar);
+        clCarrinhosFavoritos = findViewById(R.id.cl_carrinhos_favoritos);
 
 
         ViewUtils.setMoedaFormatHtml(BigDecimal.ZERO, tvValorTotal);
@@ -156,6 +159,7 @@ public class CarrinhoActivity extends AppCompatActivity {
         btnNovaAposta.setOnClickListener(v -> clickBotaoFazerNovaAposta());
         btnLimpar.setOnClickListener(v -> clickLimparCarrinhoLinearLayout());
         btnFavoritar.setOnClickListener(v -> dialogFavoritar.show());
+        clCarrinhosFavoritos.setOnClickListener(v -> mandaParaCarrinhosFavoritos());
     }
 
 
@@ -223,9 +227,10 @@ public class CarrinhoActivity extends AppCompatActivity {
                 ViewUtils.alertTitleButton(CarrinhoActivity.this,
                         R.string.label_atencao, getString(R.string.carrinho_fav_lbl_msg),
                         getString(R.string.ok), dialogInterface -> {
-                                                                    dialogFavoritar.dismiss();
-                                                                    startActivity(new Intent(CarrinhoActivity.this,CarrinhosFavoritosActivity.class));
-                                                                    });
+                                                   dialogFavoritar.dismiss();
+                                                   mandaParaCarrinhosFavoritos();
+                                                  }
+                                           );
             }
 
             @Override
@@ -236,7 +241,9 @@ public class CarrinhoActivity extends AppCompatActivity {
         });
     }
 
-
+    private void mandaParaCarrinhosFavoritos(){
+        startActivity(new Intent(CarrinhoActivity.this,CarrinhosFavoritosActivity.class));
+    }
 
     protected void clickBotaoFazerNovaAposta() {
         setResult(2);

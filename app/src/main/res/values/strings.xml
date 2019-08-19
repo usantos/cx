@@ -478,6 +478,8 @@
 
     <!-- Carrinhos Favoritos -->
     <string name="carrinho_fav_btn">Carrinhos\nfavoritos</string>
-    <string name="carrinho_fav_lbl_msg">Carrinho favoritado com sucesso.</string>
+    <string name="carrinho_fav_titulo">_Carrinhos_ Favoritos</string>
+    <string name="carrinho_fav_lbl_msg">Carrinho salvo com sucesso.</string>
+    <string name="carrinho_fav_manter_surp">Manter apostas como\nsurpresinhas</string>
 
 </resources>

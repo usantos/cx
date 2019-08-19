@@ -43,7 +43,9 @@ import static org.androidannotations.annotations.EBean.Scope.Singleton;
 @EBean(scope = Singleton)
 public class ApostaBO extends BaseBO {
 
-    public void salvarCarrinhoFavorito(final String nomeCarrinho,final String idCompra,
+    public void salvarCarrinhoFavorito(final String nomeCarrinho,
+                                       final String idCompra,
+                                       final Boolean mantemSurpresinhas,
                                        final RequestListener<CarrinhoFavoritoDTOResponse> listener) {
         String url;
 
@@ -52,7 +54,7 @@ public class ApostaBO extends BaseBO {
 
         Map<String, String> params = new HashMap<>();
         params.put("nome", nomeCarrinho);
-        params.put("manterSurpresinhas","true");
+        params.put("manterSurpresinhas",mantemSurpresinhas.toString());
 
         if(idCompra != null){
             url = ServerMethods.CARRINHO_FAVORITO_SALVAR_COMPRA.replace("{idCompra}", idCompra);
@@ -74,8 +76,14 @@ public class ApostaBO extends BaseBO {
 
 
     public void salvarCarrinhoFavorito(final String nomeCarrinho,
+                                       final String idCompra,
                                                final RequestListener<CarrinhoFavoritoDTOResponse> listener) {
-        salvarCarrinhoFavorito(nomeCarrinho,null,listener);
+        salvarCarrinhoFavorito(nomeCarrinho,idCompra,true,listener);
+    }
+
+    public void salvarCarrinhoFavorito(final String nomeCarrinho,
+                                       final RequestListener<CarrinhoFavoritoDTOResponse> listener) {
+        salvarCarrinhoFavorito(nomeCarrinho,null,true, listener);
     }
 
     public void completaJogo(final int quantidadeTotalNumeros,
