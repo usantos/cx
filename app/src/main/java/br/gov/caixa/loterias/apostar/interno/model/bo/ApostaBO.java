@@ -14,6 +14,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.AgrupadorApostaC
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.AgrupadorDTOApostaDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ApostaFavoritaDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CarrinhoDTOResponse;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CarrinhoFavoritoDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CodigoResgateDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ComprovanteApostaDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.DTOEnumIntegerResponse;
@@ -41,6 +42,41 @@ import static org.androidannotations.annotations.EBean.Scope.Singleton;
 
 @EBean(scope = Singleton)
 public class ApostaBO extends BaseBO {
+
+    public void salvarCarrinhoFavorito(final String nomeCarrinho,final String idCompra,
+                                       final RequestListener<CarrinhoFavoritoDTOResponse> listener) {
+        String url;
+
+        LinkedHashMap<String, String> headers = new LinkedHashMap<>();
+        headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
+
+        Map<String, String> params = new HashMap<>();
+        params.put("nome", nomeCarrinho);
+        params.put("manterSurpresinhas","true");
+
+        if(idCompra != null){
+            url = ServerMethods.CARRINHO_FAVORITO_SALVAR_COMPRA.replace("{idCompra}", idCompra);
+        } else {
+            url = ServerMethods.CARRINHO_FAVORITO_SALVAR;
+        }
+
+
+        final GsonRequest request = silceConnection.buildPostRequest(url, new LinkedHashMap<>(),
+                params, CarrinhoFavoritoDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(), headers);
+
+        request.setErrorListener(interceptError(request, headers, listener));
+        silceConnection.request(request);
+    }
+
+
+
+
+    public void salvarCarrinhoFavorito(final String nomeCarrinho,
+                                               final RequestListener<CarrinhoFavoritoDTOResponse> listener) {
+        salvarCarrinhoFavorito(nomeCarrinho,null,listener);
+    }
 
     public void completaJogo(final int quantidadeTotalNumeros,
                              final List<Integer> numerosMarcados,

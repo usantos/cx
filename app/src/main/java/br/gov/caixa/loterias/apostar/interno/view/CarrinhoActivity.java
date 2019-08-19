@@ -1,12 +1,15 @@
 package br.gov.caixa.loterias.apostar.interno.view;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -26,6 +29,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CarrinhoDTOResponse;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CarrinhoFavoritoDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResourceResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.CarrinhoSingleton;
@@ -35,18 +39,19 @@ import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.CarrinhoApostasListViewAdapter;
 import br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightRecyclerView;
-import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
 
 
-public class CarrinhoActivity extends SettingToolbarActivity {
+public class CarrinhoActivity extends AppCompatActivity {
 
     public static String CARRINHO = "CARRINHO";
     public static String LER_CARRINHO_LOCAL = "LER_CARRINHO_LOCAL";
 
+    private Toolbar toolbar;
+    private Dialog dialogFavoritar;
     private ExpandableHeightRecyclerView apostasListaRecycleView;
-    private TextView valorTotalCarrinho, infoValorMinimo;
-    private Button botaoAvancarPagamento, botaoFazerNovaAposta;
-    private LinearLayout limparCarrinhoLinearLayout;
+    private TextView tvValorTotal, infoValorMinimo;
+    private Button btnAvancaPagamento, btnNovaAposta;
+    private ImageButton btnLimpar, btnFavoritar;
     private CarrinhoDTO carrinho;
     private boolean lerCarrinhoLocal = false;
     private boolean ocorrendoValidacao = false;
@@ -79,6 +84,12 @@ public class CarrinhoActivity extends SettingToolbarActivity {
         }
     }
 
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
+    }
+
 
     private void lerCarrinho() {
         if(getIntent().getComponent().getClassName().equals(CarrinhoActivity.class.getName())){
@@ -93,6 +104,26 @@ public class CarrinhoActivity extends SettingToolbarActivity {
         }
     }
 
+    private void setaDialogFavoritar() {
+        dialogFavoritar = new Dialog(this);
+        dialogFavoritar.setContentView(R.layout.custom_dialog_edit_text);
+
+        TextView tituloDialog = dialogFavoritar.findViewById(R.id.tv_titulo);
+        tituloDialog.setText("Carrinho Favorito");
+
+        EditText etCarrinho = dialogFavoritar.findViewById(R.id.et_carrinho);
+
+        Button btnOk = dialogFavoritar.findViewById(R.id.btn_ok);
+        Button btnCancelar = dialogFavoritar.findViewById(R.id.btn_cancelar);
+
+        btnOk.setOnClickListener(v -> {
+            String text  = etCarrinho.getText().toString();
+            if(text != null && !text.isEmpty()){
+                favoritarCarrinho(text);
+            }
+        });
+        btnCancelar.setOnClickListener(v -> dialogFavoritar.dismiss());
+    }
 
     private void pegaExtras(){
         Bundle bundle = getIntent().getExtras();
@@ -104,19 +135,27 @@ public class CarrinhoActivity extends SettingToolbarActivity {
 
     private void setaViews(){
         apostasListaRecycleView = findViewById(R.id.erv_apostas_listas);
-        valorTotalCarrinho = findViewById(R.id.tv_valor_total_carrinho);
+        tvValorTotal = findViewById(R.id.tv_valor_total_carrinho);
         infoValorMinimo = findViewById(R.id.tv_info_valor_minimo);
-        botaoAvancarPagamento = findViewById(R.id.btn_avancar_pagamento);
-        botaoFazerNovaAposta  = findViewById(R.id.btn_nova_aposta);
-        limparCarrinhoLinearLayout = findViewById(R.id.ll_limpar_carrinho);
+        btnAvancaPagamento = findViewById(R.id.btn_avancar_pagamento);
+        btnNovaAposta = findViewById(R.id.btn_nova_aposta);
+        toolbar = findViewById(R.id.toolbar);
+        btnLimpar = findViewById(R.id.ib_excluir);
+        btnFavoritar = findViewById(R.id.ib_favoritar);
 
-        ViewUtils.setMoedaFormatHtml(BigDecimal.ZERO, valorTotalCarrinho);
+
+        ViewUtils.setMoedaFormatHtml(BigDecimal.ZERO, tvValorTotal);
+        btnFavoritar.setVisibility(View.VISIBLE);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.title_activity_carrinho)));
+        setaDialogFavoritar();
     }
     private void setaMetodos(){
-        botaoAvancarPagamento.setOnClickListener(v -> validarCarrinho());
-        botaoFazerNovaAposta.setOnClickListener(v -> clickBotaoFazerNovaAposta());
-        limparCarrinhoLinearLayout.setOnClickListener(v -> clickLimparCarrinhoLinearLayout());
+        btnAvancaPagamento.setOnClickListener(v -> validarCarrinho());
+        btnNovaAposta.setOnClickListener(v -> clickBotaoFazerNovaAposta());
+        btnLimpar.setOnClickListener(v -> clickLimparCarrinhoLinearLayout());
+        btnFavoritar.setOnClickListener(v -> dialogFavoritar.show());
     }
 
 
@@ -152,7 +191,6 @@ public class CarrinhoActivity extends SettingToolbarActivity {
         CarrinhoSingleton.getInstance().setCarrinho(this.carrinho);
     }
 
-
     private void validarCarrinho() {
         ocorrendoValidacao = true;
         DialogUtils.show(CarrinhoActivity.this);
@@ -172,6 +210,33 @@ public class CarrinhoActivity extends SettingToolbarActivity {
             }
         });
     }
+
+    private void favoritarCarrinho(String nome) {
+        DialogUtils.show(CarrinhoActivity.this);
+        ApostaBO_.getInstance_(CarrinhoActivity.this).salvarCarrinhoFavorito(nome, new RequestListener<CarrinhoFavoritoDTOResponse>() {
+            @Override
+            public void onResponse(CarrinhoFavoritoDTOResponse result) {
+                DialogUtils.dismiss();
+                if (result.getRedirect() != null) {
+                    RedirectNetwork.checkRedirectSucesso( result.getRedirect(), CarrinhoActivity.this);
+                }
+                ViewUtils.alertTitleButton(CarrinhoActivity.this,
+                        R.string.label_atencao, getString(R.string.carrinho_fav_lbl_msg),
+                        getString(R.string.ok), dialogInterface -> {
+                                                                    dialogFavoritar.dismiss();
+                                                                    startActivity(new Intent(CarrinhoActivity.this,CarrinhosFavoritosActivity.class));
+                                                                    });
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                DialogUtils.dismiss();
+                RedirectNetwork.checkRedirect(error, CarrinhoActivity.this);
+            }
+        });
+    }
+
+
 
     protected void clickBotaoFazerNovaAposta() {
         setResult(2);
@@ -225,7 +290,7 @@ public class CarrinhoActivity extends SettingToolbarActivity {
         SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
         BigDecimal valorCarrinho = sessaoUsuario.getValorMinimimoAposta() == null ? BigDecimal.ZERO : sessaoUsuario.getValorMinimimoAposta();
         ViewUtils.setMoedaFormatHtml(valorCarrinho, infoValorMinimo, getResources().getString(R.string.label_lembrar_valor_minimo).replace("_", "<br>") + " ");
-        botaoAvancarPagamento.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.avancarFormaPagamento)));
+        btnAvancaPagamento.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.avancarFormaPagamento)));
     }
 
     private void callWebservice() {
@@ -265,9 +330,9 @@ public class CarrinhoActivity extends SettingToolbarActivity {
             }
         }
         if (carrinho.getApostas().size() > 0) {
-            limparCarrinhoLinearLayout.setVisibility(View.VISIBLE);
+            btnLimpar.setVisibility(View.VISIBLE);
         } else {
-            limparCarrinhoLinearLayout.setVisibility(View.GONE);
+            btnLimpar.setVisibility(View.GONE);
         }
         apostasListaRecycleView.setLayoutManager(new LinearLayoutManager(this));
         apostasListaRecycleView.setAdapter(new CarrinhoApostasListViewAdapter(this, (ArrayList<IdentificaoDeUmaApostaDas8Modalidades>) listIdentificaoDeUmaApostaDas8Modalidades, this, animacao));
@@ -280,7 +345,7 @@ public class CarrinhoActivity extends SettingToolbarActivity {
         for (IdentificaoDeUmaApostaDas8Modalidades aposta : carrinho.getApostas()) {
             valorTotalCarrinho = valorTotalCarrinho.add(aposta.getValor());
         }
-        ViewUtils.setMoedaFormatHtml(valorTotalCarrinho, this.valorTotalCarrinho);
+        ViewUtils.setMoedaFormatHtml(valorTotalCarrinho, this.tvValorTotal);
         carrinho.setValorTotal(valorTotalCarrinho);
     }
 }

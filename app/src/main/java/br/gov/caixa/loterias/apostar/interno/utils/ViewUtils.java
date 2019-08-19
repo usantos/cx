@@ -37,6 +37,7 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -194,6 +195,22 @@ public class ViewUtils {
         TextView textView = dialog.findViewById(android.R.id.message);
         textView.setTypeface(getFontFutura(context));
         return dialog;
+    }
+
+    public static Dialog alertEditText(Context context){
+        final EditText editText = new EditText(context);
+        AlertDialog dialog = new AlertDialog.Builder(context)
+                .setTitle("Titulo")
+                .setMessage("Message next?")
+                .setView(editText)
+                .setPositiveButton("OK", (dialog1, which) -> {
+                    String task = String.valueOf(editText.getText());
+
+                })
+                .setNegativeButton("Cancel", null)
+                .create();
+        return dialog;
+
     }
 
     public static Dialog alertTitulo(Context context, int titulo, String mensagem, DialogInterface.OnDismissListener listener) {
