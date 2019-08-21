@@ -24,6 +24,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.EscudoEquipeEspo
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IncluirSurpresinhaDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.InformacaoPagamentoDTO;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ListCarrinhoFavoritoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.MesAnoDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RapidaoDTO;
@@ -45,6 +46,17 @@ public class ApostaBO extends BaseBO {
 
     public void salvarCarrinhoFavorito(final String nomeCarrinho,
                                        final String idCompra,
+                                       final RequestListener<CarrinhoFavoritoDTOResponse> listener) {
+        salvarCarrinhoFavorito(nomeCarrinho,idCompra,true,listener);
+    }
+
+    public void salvarCarrinhoFavorito(final String nomeCarrinho,
+                                       final RequestListener<CarrinhoFavoritoDTOResponse> listener) {
+        salvarCarrinhoFavorito(nomeCarrinho,null,true, listener);
+    }
+
+    public void salvarCarrinhoFavorito(final String nomeCarrinho,
+                                       final String idCompra,
                                        final Boolean mantemSurpresinhas,
                                        final RequestListener<CarrinhoFavoritoDTOResponse> listener) {
         String url;
@@ -54,7 +66,7 @@ public class ApostaBO extends BaseBO {
 
         Map<String, String> params = new HashMap<>();
         params.put("nome", nomeCarrinho);
-        params.put("manterSurpresinhas",mantemSurpresinhas.toString());
+        params.put("manterSurpresinhas", mantemSurpresinhas.toString());
 
         if(idCompra != null){
             url = ServerMethods.CARRINHO_FAVORITO_SALVAR_COMPRA.replace("{idCompra}", idCompra);
@@ -72,19 +84,18 @@ public class ApostaBO extends BaseBO {
         silceConnection.request(request);
     }
 
+    public void buscaCarrinhosFavoritos(RequestListener<ListCarrinhoFavoritoDTO> listener){
+        LinkedHashMap<String, String> headers = new LinkedHashMap<>();
+        headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
 
+        final GsonRequest request = silceConnection.buildGetRequest(ServerMethods.CARRINHO_FAVORITO_BUSCAR_CARRINHOS, new LinkedHashMap<>(), ListCarrinhoFavoritoDTO.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(), headers);
 
-
-    public void salvarCarrinhoFavorito(final String nomeCarrinho,
-                                       final String idCompra,
-                                               final RequestListener<CarrinhoFavoritoDTOResponse> listener) {
-        salvarCarrinhoFavorito(nomeCarrinho,idCompra,true,listener);
+        request.setErrorListener(interceptError(request, headers, listener));
+        silceConnection.request(request);
     }
 
-    public void salvarCarrinhoFavorito(final String nomeCarrinho,
-                                       final RequestListener<CarrinhoFavoritoDTOResponse> listener) {
-        salvarCarrinhoFavorito(nomeCarrinho,null,true, listener);
-    }
 
     public void completaJogo(final int quantidadeTotalNumeros,
                              final List<Integer> numerosMarcados,

@@ -95,4 +95,8 @@
     <color name="white_6">#66ffffff</color>
     <color name="green_6">#66ffffff</color>
 
+    <color name="azul_card">#035FA9</color>
+    <color name="verde_card">#51B7AB</color>
+
+
 </resources>

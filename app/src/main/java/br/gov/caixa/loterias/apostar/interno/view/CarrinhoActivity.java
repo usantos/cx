@@ -228,7 +228,6 @@ public class CarrinhoActivity extends AppCompatActivity {
                         R.string.label_atencao, getString(R.string.carrinho_fav_lbl_msg),
                         getString(R.string.ok), dialogInterface -> {
                                                    dialogFavoritar.dismiss();
-                                                   mandaParaCarrinhosFavoritos();
                                                   }
                                            );
             }
