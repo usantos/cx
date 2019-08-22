@@ -188,6 +188,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:16.0.6'
     implementation 'com.crashlytics.sdk.android:crashlytics:2.9.9'
 
+    //Segmented Control
+    implementation 'info.hoang8f:android-segmented:1.0.6'
 
     // testImplementation deps
     testImplementation 'junit:junit:4.12'
@@ -201,6 +203,7 @@ dependencies {
 
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestUtil 'com.android.support.test:orchestrator:1.0.2'
+
 }
 
 sonarqube {

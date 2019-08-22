@@ -3,6 +3,7 @@
     xmlns:tols="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:minHeight="30dp"
     android:background="@color/transparente">
 
@@ -22,8 +23,8 @@
         tols:layout_constraintStart_toStartOf="parent"
         tols:layout_constraintTop_toTopOf="parent" />
 
-    <ImageButton
-        android:id="@+id/ib_excluir_carrinho"
+    <ImageView
+        android:id="@+id/iv_teimosinha"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:background="@color/transparente"
@@ -61,7 +62,7 @@
         android:autoSizeTextType="uniform"
         android:lines="1"
         android:textAlignment="textEnd"
-        android:text="R$ 30,00"
+        tools:text="R$ 30,00"
         android:textColor="@color/branco"
         android:textSize="14dp"
         tols:layout_constraintBottom_toBottomOf="parent"

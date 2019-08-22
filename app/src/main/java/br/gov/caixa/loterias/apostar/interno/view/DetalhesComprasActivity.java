@@ -222,6 +222,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         });
         btnCancelar.setOnClickListener(v -> dialogFavoritar.dismiss());
         dialogFavoritar.setOnDismissListener(dialogInterface -> {
+            etCarrinho.setText("");
             dialogFavoritar.findViewById(R.id.ck_manter_surpresinhas).setVisibility(View.GONE);
             dialogFavoritar.findViewById(R.id.tv_manter_surpresinhas).setVisibility(View.GONE);
         });

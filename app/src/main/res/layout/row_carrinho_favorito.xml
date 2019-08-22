@@ -33,7 +33,7 @@
 
         <TextView
             android:id="@+id/tv_valor_total_carrinho"
-            android:layout_width="100dp"
+            android:layout_width="70dp"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:autoSizeMaxTextSize="14dp"
@@ -42,6 +42,7 @@
             android:autoSizeTextType="uniform"
             android:lines="1"
             android:text="R$ 30,00"
+            android:visibility="invisible"
             android:textColor="@color/branco"
             android:textSize="14dp"
             tols:layout_constraintBottom_toBottomOf="@id/gl_fim_card"
@@ -50,10 +51,12 @@
 
         <ImageButton
             android:id="@+id/ib_excluir_carrinho"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="40dp"
+            android:layout_height="70dp"
             android:background="@color/transparente"
             android:src="@drawable/ic_x"
+            android:padding="10dp"
+            android:scaleType="fitCenter"
             tols:layout_constraintBottom_toBottomOf="@id/gl_fim_card"
             tols:layout_constraintEnd_toStartOf="@id/ib_lupa_detalhes"
             tols:layout_constraintStart_toEndOf="@id/tv_valor_total_carrinho"
@@ -61,10 +64,12 @@
 
         <ImageButton
             android:id="@+id/ib_lupa_detalhes"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="40dp"
+            android:layout_height="70dp"
             android:background="@color/transparente"
-            android:src="@drawable/ic_lupa"
+            android:scaleType="fitCenter"
+            android:padding="10dp"
+            android:src="@drawable/ic_lupa_carrinho_fav"
             tols:layout_constraintBottom_toBottomOf="@id/gl_fim_card"
             tols:layout_constraintEnd_toStartOf="@id/ib_transformar_carrinho"
             tols:layout_constraintStart_toEndOf="@id/ib_excluir_carrinho"
@@ -72,11 +77,12 @@
 
         <ImageButton
             android:id="@+id/ib_transformar_carrinho"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginRight="20dp"
+            android:layout_width="40dp"
+            android:layout_height="70dp"
             android:background="@color/transparente"
             android:scaleType="fitCenter"
+            android:padding="10dp"
+            android:layout_marginRight="10dp"
             android:src="@drawable/icon_carrinho"
             android:tint="@color/branco"
             tols:layout_constraintBottom_toBottomOf="@id/gl_fim_card"

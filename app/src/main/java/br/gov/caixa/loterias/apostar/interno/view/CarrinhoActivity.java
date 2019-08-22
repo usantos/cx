@@ -52,6 +52,7 @@ public class CarrinhoActivity extends AppCompatActivity {
     private ExpandableHeightRecyclerView apostasListaRecycleView;
     private ConstraintLayout clCarrinhosFavoritos;
     private TextView tvValorTotal, infoValorMinimo;
+    private EditText etCarrinho;
     private Button btnAvancaPagamento, btnNovaAposta;
     private ImageButton btnLimpar, btnFavoritar;
     private CarrinhoDTO carrinho;
@@ -113,7 +114,7 @@ public class CarrinhoActivity extends AppCompatActivity {
         TextView tituloDialog = dialogFavoritar.findViewById(R.id.tv_titulo);
         tituloDialog.setText("Carrinho Favorito");
 
-        EditText etCarrinho = dialogFavoritar.findViewById(R.id.et_carrinho);
+        etCarrinho = dialogFavoritar.findViewById(R.id.et_carrinho);
 
         Button btnOk = dialogFavoritar.findViewById(R.id.btn_ok);
         Button btnCancelar = dialogFavoritar.findViewById(R.id.btn_cancelar);
@@ -123,6 +124,9 @@ public class CarrinhoActivity extends AppCompatActivity {
             if(text != null && !text.isEmpty()){
                 favoritarCarrinho(text);
             }
+        });
+        dialogFavoritar.setOnDismissListener(dialogInterface -> {
+            etCarrinho.setText("");
         });
         btnCancelar.setOnClickListener(v -> dialogFavoritar.dismiss());
     }

@@ -63,6 +63,7 @@ public class ListaComprasActivity extends AppCompatActivity {
     private  RecyclerView recyclerViewCompras;
     private ProgressBar progressLoadingMore;
     private NestedScrollView scrollViewContentViewCompras;
+    private EditText etCarrinho;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,7 +102,7 @@ public class ListaComprasActivity extends AppCompatActivity {
         TextView tituloDialog = dialogFavoritar.findViewById(R.id.tv_titulo);
         tituloDialog.setText("Carrinho Favorito");
 
-        EditText etCarrinho = dialogFavoritar.findViewById(R.id.et_carrinho);
+        etCarrinho = dialogFavoritar.findViewById(R.id.et_carrinho);
 
         Button btnOk = dialogFavoritar.findViewById(R.id.btn_ok);
         Button btnCancelar = dialogFavoritar.findViewById(R.id.btn_cancelar);
@@ -117,6 +118,7 @@ public class ListaComprasActivity extends AppCompatActivity {
         });
         btnCancelar.setOnClickListener(v -> dialogFavoritar.dismiss());
         dialogFavoritar.setOnDismissListener(dialogInterface -> {
+            etCarrinho.setText("");
             dialogFavoritar.findViewById(R.id.ck_manter_surpresinhas).setVisibility(View.GONE);
             dialogFavoritar.findViewById(R.id.tv_manter_surpresinhas).setVisibility(View.GONE);
         });

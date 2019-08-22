@@ -1,6 +1,7 @@
 package br.gov.caixa.loterias.apostar.interno.view;
 
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
@@ -15,7 +16,7 @@ import br.gov.caixa.loterias.apostar.interno.utils.DialogUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.CarrinhosFavoritosAdapter;
 
-public class CarrinhosFavoritosActivity extends SettingToolbarActivity {
+public class CarrinhosFavoritosActivity extends AppCompatActivity {
 
     private RecyclerView rvCarrinhosFavoritos;
 
@@ -35,7 +36,10 @@ public class CarrinhosFavoritosActivity extends SettingToolbarActivity {
 
     private void setaViews() {
         rvCarrinhosFavoritos = findViewById(R.id.rv_carrinhos_favoritos);
-        getSupportActionBar().setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(CarrinhosFavoritosActivity.this,getString(R.string.carrinho_fav_titulo)));
+
+        setSupportActionBar(findViewById(R.id.toolbar));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(CarrinhosFavoritosActivity.this, getString(R.string.carrinho_fav_titulo)));
     }
 
     private void setaMetodos() {
@@ -61,10 +65,16 @@ public class CarrinhosFavoritosActivity extends SettingToolbarActivity {
         });
     }
 
-    private void configuraRecyclerView(ListCarrinhoFavoritoDTO result){
+    public void configuraRecyclerView(ListCarrinhoFavoritoDTO result){
         rvCarrinhosFavoritos.setAdapter( new CarrinhosFavoritosAdapter(result.getPayload(),CarrinhosFavoritosActivity.this));
         RecyclerView.LayoutManager layout = new LinearLayoutManager(CarrinhosFavoritosActivity.this, LinearLayoutManager.VERTICAL, false);
         rvCarrinhosFavoritos.setLayoutManager(layout);
     }
-    //private void
+
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
+    }
 }

@@ -24,6 +24,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.EscudoEquipeEspo
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IncluirSurpresinhaDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.InformacaoPagamentoDTO;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ListApostaCarrinhoFavoritoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ListCarrinhoFavoritoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.MesAnoDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeDTOResponse;
@@ -44,11 +45,24 @@ import static org.androidannotations.annotations.EBean.Scope.Singleton;
 @EBean(scope = Singleton)
 public class ApostaBO extends BaseBO {
 
-    public void salvarCarrinhoFavorito(final String nomeCarrinho,
-                                       final String idCompra,
-                                       final RequestListener<CarrinhoFavoritoDTOResponse> listener) {
-        salvarCarrinhoFavorito(nomeCarrinho,idCompra,true,listener);
+    public void deletaCarrinhoFavorito(final String idCarrinho,
+                                       final RequestListener<ListCarrinhoFavoritoDTO> listener) {
+
+        LinkedHashMap<String, String> headers = new LinkedHashMap<>();
+        headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
+
+        String url = ServerMethods.CARRINHO_FAVORITO_DELETAR_CARRINHO.replace("{id}", idCarrinho);
+
+        final GsonRequest request = silceConnection.buildDeleteRequest(url ,
+                new LinkedHashMap<>(),
+                ListCarrinhoFavoritoDTO.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(), headers);
+
+        request.setErrorListener(interceptError(request, headers, listener));
+        silceConnection.request(request);
     }
+
 
     public void salvarCarrinhoFavorito(final String nomeCarrinho,
                                        final RequestListener<CarrinhoFavoritoDTOResponse> listener) {
@@ -89,6 +103,18 @@ public class ApostaBO extends BaseBO {
         headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
 
         final GsonRequest request = silceConnection.buildGetRequest(ServerMethods.CARRINHO_FAVORITO_BUSCAR_CARRINHOS, new LinkedHashMap<>(), ListCarrinhoFavoritoDTO.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(), headers);
+
+        request.setErrorListener(interceptError(request, headers, listener));
+        silceConnection.request(request);
+    }
+
+    public void buscaApostasCarrinhoFavorito(Long idCarrinho,RequestListener<ListApostaCarrinhoFavoritoDTO> listener){
+        LinkedHashMap<String, String> headers = new LinkedHashMap<>();
+        headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
+        String url = ServerMethods.CARRINHO_FAVORITO_BUSCA_APOSTAS.replace("{idCarrinho}", idCarrinho.toString());
+        final GsonRequest request = silceConnection.buildGetRequest(url,  new LinkedHashMap<>(), ListApostaCarrinhoFavoritoDTO.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(), headers);
 
