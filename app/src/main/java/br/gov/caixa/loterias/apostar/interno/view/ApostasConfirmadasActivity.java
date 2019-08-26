@@ -44,6 +44,13 @@ public class ApostasConfirmadasActivity extends AppCompatActivity {
     @AfterViews
     protected void init() {
         setupToolbar();
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
         initApostasFragment();
         setupScrollView();
     }

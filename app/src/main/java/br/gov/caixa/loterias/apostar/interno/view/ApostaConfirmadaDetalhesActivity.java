@@ -134,6 +134,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     private boolean premioPago;
     private ApostaFavoritaDTO apostaFavoritaDTO;
     private ParametroSimulacao parametroSimulacao;
+    private ComprovanteApostaDTO comprovanteParaPdf;
     private boolean isHistorico;
 
     @Click
@@ -273,7 +274,9 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                 @Override
                 public void onResponse(ComprovanteApostaDTOResponse result) {
                     DialogUtils.dismiss();
-                    pdfUtils.createComprovanteApostaPdf(result.getPayload(), ApostaConfirmadaDetalhesActivity.this);
+
+                    comprovanteParaPdf = result.getPayload();
+                    pdfUtils.createComprovanteApostaPdf(comprovanteParaPdf, ApostaConfirmadaDetalhesActivity.this);
                 }
 
                 @Override
@@ -456,13 +459,13 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
         }
     }
 
-    private static void getApostaDetalhePremio(Long apostaId, final Context contextParam) {
+    private static void getApostaDetalhePremio(Long apostaId, final Context contextParam, ComprovanteApostaDTO comprovante) {
         ApostaBO apostaBO = ApostaBO_.getInstance_(contextParam);
         apostaBO.getApostaDetalhePremio(apostaId, new RequestListener<DetalhesPremioDTOResponse>() {
             @Override
             public void onResponse(DetalhesPremioDTOResponse result) {
                 DialogUtils.dismiss();
-                ResultadoApostaConfirmadaActivity_.intent(contextParam).detalhesPremioDTO(result.getPayload()).start();
+                ResultadoApostaConfirmadaActivity_.intent(contextParam).detalhesPremioDTO(result.getPayload()).comprovante(comprovante).start();
             }
 
             @Override
@@ -493,7 +496,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
 
         if (Objects.equals(SituacaoResultadoBilheteEnum.PREMIADA.getValor(), situacao.getValor())||
                 Objects.equals(SituacaoResultadoBilheteEnum.PREMIADA_AINDA_CONCORRENDO.getValor(), situacao.getValor())) {
-            getApostaDetalhePremio(aposta.getId(), this);
+            getApostaDetalhePremio(aposta.getId(), this, comprovanteApostaDTO);
         }
     }
 

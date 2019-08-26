@@ -24,6 +24,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CodigoResgateDTOResponse;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ComprovanteApostaDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.DetalhesPremioDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametroSimulacao;
@@ -56,6 +57,9 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
     private AlertDialog alertDialog;
 
     ModalidadeEnum modalidadeEnum;
+
+    @Extra
+    protected ComprovanteApostaDTO comprovante;
 
     @AfterViews
     protected void init() {
@@ -93,12 +97,16 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
 
     @Click(R.id.lotericaLayout)
     protected void clickLotericaLayout() {
+        apresentaOrientacoesResgate(true);
+    }
+
+    protected void apresentaOrientacoesResgate(Boolean isLoterica) {
         alertDialog = LoadingViewLoterias.show(getContext());
         apostaBO.getApostaGerarCodigoResgate(detalhesPremioDTO.getAposta().getId(), new RequestListener<CodigoResgateDTOResponse>() {
             @Override
             public void onResponse(CodigoResgateDTOResponse result) {
                 alertDialog.dismiss();
-                ResgatePremioLotericaAgenciaActivity_.intent(getContext()).codigoResgateDTO(result.getPayload()).start();
+                ResgatePremioLotericaAgenciaActivity_.intent(getContext()).codigoResgateDTO(result.getPayload()).isLoterica(isLoterica).detalhesPremioDTO(detalhesPremioDTO).comprovante(comprovante).start();
             }
 
             @Override
@@ -108,7 +116,6 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
                 ViewUtils.alertTitleButton(getContext(), R.string.label_atencao, msgError, getContext().getResources().getString( R.string.ok ));
             }
         });
-
     }
 
     @Click(R.id.botaoAposteAgora)
@@ -122,7 +129,7 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
 
     @Click(R.id.agenciaCaixaLayout)
     protected void clickAgenciaCaixaLayout() {
-        ResgatePremioLotericaAgenciaActivity_.intent(this).nsbi(detalhesPremioDTO.getNsbi()).start();
+        apresentaOrientacoesResgate(false);
     }
 
     @Click(R.id.mercadoPagoLayout)

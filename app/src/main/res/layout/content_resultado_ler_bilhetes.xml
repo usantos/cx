@@ -72,7 +72,7 @@
                         android:layout_marginEnd="@dimen/activity_vertical_margin"
                         android:layout_marginStart="@dimen/text_margin_small"
                         android:layout_toEndOf="@+id/enumeradorZeradoUmText"
-                        android:text="@string/label_diriga_agencia_preferencia"
+                        android:text="@string/label_dirigir_para_agencia"
                         android:textColor="@color/cinza"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -187,7 +187,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="2dp"
-                        android:text="@string/label_diriga_agencia_preferencia"
+                        android:text="@string/label_dirigir_para_agencia"
                         android:textColor="@color/cinza"
                         android:textSize="14sp" />
                 </LinearLayout>
