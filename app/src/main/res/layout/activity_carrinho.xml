@@ -53,6 +53,13 @@
                 android:textSize="14.2sp"
                 app:layout_constraintTop_toBottomOf="@id/tv_confirm_aposta" />
 
+            <View
+                android:id="@+id/v_div_bottom"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/cinzaclaro"
+                app:layout_constraintTop_toTopOf="@+id/erv_apostas_listas" />
+
             <br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightRecyclerView
                 android:id="@+id/erv_apostas_listas"
                 style="@style/editTextArialMTTheme"

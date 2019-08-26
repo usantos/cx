@@ -15,11 +15,13 @@ class ServerMethods {
 
      static final String CARRINHO_FAVORITO_VALIDAR_NOME = "/carrinhos-favoritos/validar";
      static final String CARRINHO_FAVORITO_SALVAR = "/carrinhos/salvar-carrinho-favorito";
+     static final String CARRINHO_FAVORITO_TRANSFORMAR = "/carrinhos/incluir-carrinho-favorito/{idCarrinhoFavorito}";
      static final String CARRINHO_FAVORITO_SALVAR_COMPRA = "/compras/{idCompra}/salvar-carrinho-favorito";
      static final String CARRINHO_FAVORITO_BUSCA_APOSTAS = "/carrinhos-favoritos/{idCarrinho}/apostas";
      static final String CARRINHO_FAVORITO_BUSCAR_CARRINHOS = "/carrinhos-favoritos";
      static final String CARRINHO_FAVORITO_DELETAR_CARRINHO = "/carrinhos-favoritos/{id}";
      static final String CARRINHO_FAVORITO_DELETAR_APOSTA = "/carrinhos-favoritos/{id}/apostas/{idAposta}";
+
 
 
 

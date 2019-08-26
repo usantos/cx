@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
@@ -17,7 +18,6 @@ import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostar.interno.R;
@@ -25,13 +25,17 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ApostaCarrinhoFavoritoDTO;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CarrinhoDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CarrinhoFavoritoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ListApostaCarrinhoFavoritoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ListCarrinhoFavoritoDTO;
 import br.gov.caixa.loterias.apostar.interno.utils.DialogUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
+import br.gov.caixa.loterias.apostar.interno.view.CarrinhoActivity;
 import br.gov.caixa.loterias.apostar.interno.view.CarrinhosFavoritosActivity;
 import br.gov.caixa.loterias.apostar.interno.view.DetalhesCarrinhoFavoritoActivity;
+
+import static br.gov.caixa.loterias.apostar.interno.view.DetalhesCarrinhoFavoritoActivity.ID_CARRINHO;
 
 public class CarrinhosFavoritosAdapter extends RecyclerView.Adapter<CarrinhosFavoritosAdapter.CarrinhosFavoritosHolder> {
 
@@ -39,7 +43,7 @@ public class CarrinhosFavoritosAdapter extends RecyclerView.Adapter<CarrinhosFav
     private List<CarrinhoFavoritoDTO> listaCarrinhosFavoritos;
     private Context context;
     private CarrinhosFavoritosActivity activity;
-    private int posicaoAtual;
+    private LinearLayout layoutAtual;
 
     public CarrinhosFavoritosAdapter(List<CarrinhoFavoritoDTO> listaCarrinhosFavoritos, CarrinhosFavoritosActivity activity){
         this.activity = activity;
@@ -47,9 +51,6 @@ public class CarrinhosFavoritosAdapter extends RecyclerView.Adapter<CarrinhosFav
         this.listaCarrinhosFavoritos = listaCarrinhosFavoritos;
     }
 
-    private List<CarrinhoFavoritoDTO> getMock(){
-        return new ArrayList<>();
-    }
     @NonNull
     @Override
     public CarrinhosFavoritosHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -81,15 +82,29 @@ public class CarrinhosFavoritosAdapter extends RecyclerView.Adapter<CarrinhosFav
         return listaCarrinhosFavoritos.size();
     }
 
-    private void configViewsAposta(List<ApostaCarrinhoFavoritoDTO> listaApostas, LinearLayout layout, ConstraintLayout card){
+    public void preencheLayoutApostas(List<ApostaCarrinhoFavoritoDTO> listaApostas, LinearLayout layout){
         if(layout.findViewById(R.id.tv_nome_modalidade) == null){
             for (ApostaCarrinhoFavoritoDTO aposta:listaApostas) {
                 layout.addView(configViewAposta(aposta));
-
             }
         }
+    }
+
+    public void recarregaCelula(List<ApostaCarrinhoFavoritoDTO> listaApostas, LinearLayout layout){
+        layout.removeAllViews();
+        preencheLayoutApostas(listaApostas,layout);
+    }
+
+    public LinearLayout getLayoutAtual() {
+        return layoutAtual;
+    }
+
+    private void configViewsAposta(List<ApostaCarrinhoFavoritoDTO> listaApostas, LinearLayout layout, ConstraintLayout card){
+        preencheLayoutApostas(listaApostas,layout);
         configuraAnimacao(layout,card);
     }
+
+
 
     private void configuraAnimacao(LinearLayout layoutDetalhes,ConstraintLayout clCard){
         if(layoutDetalhes.getVisibility() == View.GONE){
@@ -137,11 +152,33 @@ public class CarrinhosFavoritosAdapter extends RecyclerView.Adapter<CarrinhosFav
     }
 
     private void transformaCarrinho(){
+        ViewUtils.alertTitleButtonYesOrNotListener(context, context.getResources().getString(R.string.carrinho_fav_deseja_transformar), (dialogInterface, i) -> {
 
+            DialogUtils.show(context);
+            ApostaBO_.getInstance_(context).tranformarCarrinho(idCarrinhoAtual, new RequestListener<CarrinhoDTOResponse>() {
+                @Override
+                public void onResponse(CarrinhoDTOResponse result) {
+                    DialogUtils.dismiss();
+                    if (result.getRedirect() != null) {
+                        RedirectNetwork.checkRedirectSucesso(result.getRedirect(), activity);
+                    }
+                    activity.startActivity(new Intent(activity, CarrinhoActivity.class));
+                }
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    DialogUtils.dismiss();
+                    RedirectNetwork.checkRedirect(error, activity);
+                }
+            });
+        });
     }
 
-    private void detalhesCarrinho(){
-        activity.startActivity(new Intent(activity, DetalhesCarrinhoFavoritoActivity.class));
+    private void detalhesCarrinho(LinearLayout layoutDetalhes){
+        this.layoutAtual = layoutDetalhes;
+        Bundle args = new Bundle();
+        args.putLong(ID_CARRINHO,idCarrinhoAtual);
+        activity.startActivityForResult(new Intent(activity, DetalhesCarrinhoFavoritoActivity.class).putExtras(args),activity.RESPOSTAS_APOSTAS_CODIGO);
     }
 
     private void buscaApostas(LinearLayout layout, ConstraintLayout card){
@@ -176,7 +213,6 @@ public class CarrinhosFavoritosAdapter extends RecyclerView.Adapter<CarrinhosFav
                     }
                     listaCarrinhosFavoritos = result.getPayload();
                     activity.configuraRecyclerView(result);
-                    //notifyDataSetChanged();
                 }
 
                 @Override
@@ -208,12 +244,12 @@ public class CarrinhosFavoritosAdapter extends RecyclerView.Adapter<CarrinhosFav
             clCard.setOnClickListener(this);
             ibExcluir.setOnClickListener(this);
             ibDetalhes.setOnClickListener(this);
+            ibTransformar.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
             idCarrinhoAtual = listaCarrinhosFavoritos.get(getAdapterPosition()).getId();
-            posicaoAtual = getAdapterPosition();
             switch (view.getId()){
                 case R.id.tv_nome_carrinho:
                     break;
@@ -223,7 +259,7 @@ public class CarrinhosFavoritosAdapter extends RecyclerView.Adapter<CarrinhosFav
                     excluirCarrinho(idCarrinhoAtual);
                     break;
                 case R.id.ib_lupa_detalhes:
-                    detalhesCarrinho();
+                    detalhesCarrinho(layoutDetalhes);
                     break;
                 case R.id.ib_transformar_carrinho:
                     transformaCarrinho();

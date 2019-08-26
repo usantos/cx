@@ -12,6 +12,10 @@
 
 
 package br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto;
+
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
@@ -28,12 +32,43 @@ import io.swagger.annotations.ApiModelProperty;
 /**
  * ListApostaCarrinhoFavoritoDTO
  */
-public class ListApostaCarrinhoFavoritoDTO {
+public class ListApostaCarrinhoFavoritoDTO implements Parcelable {
   @SerializedName("codigo")
   private String codigo = null;
 
   @SerializedName("mensagem")
   private String mensagem = null;
+
+  protected ListApostaCarrinhoFavoritoDTO(Parcel in) {
+    codigo = in.readString();
+    mensagem = in.readString();
+    versao = in.readString();
+  }
+
+  public static final Creator<ListApostaCarrinhoFavoritoDTO> CREATOR = new Creator<ListApostaCarrinhoFavoritoDTO>() {
+    @Override
+    public ListApostaCarrinhoFavoritoDTO createFromParcel(Parcel in) {
+      return new ListApostaCarrinhoFavoritoDTO(in);
+    }
+
+    @Override
+    public ListApostaCarrinhoFavoritoDTO[] newArray(int size) {
+      return new ListApostaCarrinhoFavoritoDTO[size];
+    }
+  };
+
+  @Override
+  public int describeContents() {
+    return 0;
+  }
+
+  @Override
+  public void writeToParcel(Parcel parcel, int i) {
+    parcel.writeString(codigo);
+    parcel.writeString(mensagem);
+    parcel.writeString(versao);
+  }
+
 
   /**
    * Tipo da mensagem. 1&#x3D;Mensagem de usuário, 2&#x3D;Mensagem de sistema, 3&#x3D; Erro de validação

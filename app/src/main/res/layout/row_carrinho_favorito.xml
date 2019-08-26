@@ -59,7 +59,6 @@
             android:scaleType="fitCenter"
             tols:layout_constraintBottom_toBottomOf="@id/gl_fim_card"
             tols:layout_constraintEnd_toStartOf="@id/ib_lupa_detalhes"
-            tols:layout_constraintStart_toEndOf="@id/tv_valor_total_carrinho"
             tols:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
@@ -72,7 +71,6 @@
             android:src="@drawable/ic_lupa_carrinho_fav"
             tols:layout_constraintBottom_toBottomOf="@id/gl_fim_card"
             tols:layout_constraintEnd_toStartOf="@id/ib_transformar_carrinho"
-            tols:layout_constraintStart_toEndOf="@id/ib_excluir_carrinho"
             tols:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton

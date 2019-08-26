@@ -1,16 +1,24 @@
 package br.gov.caixa.loterias.apostar.interno.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.TextView;
 
 import com.android.volley.VolleyError;
+
+import org.parceler.Parcels;
+
+import java.util.List;
 
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ApostaCarrinhoFavoritoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ListCarrinhoFavoritoDTO;
 import br.gov.caixa.loterias.apostar.interno.utils.DialogUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
@@ -19,6 +27,13 @@ import br.gov.caixa.loterias.apostar.interno.view.adapter.CarrinhosFavoritosAdap
 public class CarrinhosFavoritosActivity extends AppCompatActivity {
 
     private RecyclerView rvCarrinhosFavoritos;
+    private TextView tvSemCarrinhos;
+    private CarrinhosFavoritosAdapter adapter;
+    public final static int RESPOSTAS_APOSTAS_CODIGO = 1;
+    public final static int RESPOSTA_EXCLUIU_CARRINHO = 600;
+    public final static int RESPOSTA_EXCLUIU_APOSTAS = 300;
+    public final static String RESPOSTA_APOSTAS = "RESPOSTA_APOSTAS";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,10 +46,10 @@ public class CarrinhosFavoritosActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        buscaCarrinhosFavoritos();
     }
 
     private void setaViews() {
+        tvSemCarrinhos = findViewById(R.id.tv_sem_carrinhos);
         rvCarrinhosFavoritos = findViewById(R.id.rv_carrinhos_favoritos);
 
         setSupportActionBar(findViewById(R.id.toolbar));
@@ -43,6 +58,7 @@ public class CarrinhosFavoritosActivity extends AppCompatActivity {
     }
 
     private void setaMetodos() {
+        buscaCarrinhosFavoritos();
     }
 
     private void buscaCarrinhosFavoritos() {
@@ -66,15 +82,42 @@ public class CarrinhosFavoritosActivity extends AppCompatActivity {
     }
 
     public void configuraRecyclerView(ListCarrinhoFavoritoDTO result){
-        rvCarrinhosFavoritos.setAdapter( new CarrinhosFavoritosAdapter(result.getPayload(),CarrinhosFavoritosActivity.this));
-        RecyclerView.LayoutManager layout = new LinearLayoutManager(CarrinhosFavoritosActivity.this, LinearLayoutManager.VERTICAL, false);
-        rvCarrinhosFavoritos.setLayoutManager(layout);
+        if(result.getPayload().size() > 0){
+            rvCarrinhosFavoritos.setVisibility(View.VISIBLE);
+            tvSemCarrinhos.setVisibility(View.GONE);
+            adapter = new CarrinhosFavoritosAdapter(result.getPayload(),CarrinhosFavoritosActivity.this);
+            rvCarrinhosFavoritos.setAdapter(adapter);
+            RecyclerView.LayoutManager layout = new LinearLayoutManager(CarrinhosFavoritosActivity.this, LinearLayoutManager.VERTICAL, false);
+            rvCarrinhosFavoritos.setLayoutManager(layout);
+        }else {
+            rvCarrinhosFavoritos.setVisibility(View.GONE);
+            tvSemCarrinhos.setVisibility(View.VISIBLE);
+        }
+
     }
 
+    protected void onActivityResult (int requestCode, int resultCode, Intent data) {
+           if(requestCode == RESPOSTAS_APOSTAS_CODIGO) {
+                switch (resultCode){
+                    case RESPOSTA_EXCLUIU_CARRINHO:
+                        buscaCarrinhosFavoritos();
+                        break;
+                    case RESPOSTA_EXCLUIU_APOSTAS:
+                        Bundle bundle = data.getExtras();
+                        if (bundle != null) {
+                            List<ApostaCarrinhoFavoritoDTO> resposta = Parcels.unwrap(bundle.getParcelable(RESPOSTA_APOSTAS));
+                            adapter.recarregaCelula(resposta, adapter.getLayoutAtual());
+                            //rvCarrinhosFavoritos.setAdapter(adapter);
+                        }
+                        break;
+                }
+        }
+    }
 
     @Override
     public boolean onSupportNavigateUp() {
         finish();
         return true;
     }
+
 }

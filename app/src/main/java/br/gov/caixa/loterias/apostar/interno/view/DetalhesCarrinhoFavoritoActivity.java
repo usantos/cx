@@ -1,25 +1,44 @@
 package br.gov.caixa.loterias.apostar.interno.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.android.volley.VolleyError;
+
+import org.parceler.Parcels;
+
 import br.gov.caixa.loterias.apostar.interno.R;
+import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO_;
+import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
+import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ListApostaCarrinhoFavoritoDTO;
+import br.gov.caixa.loterias.apostar.interno.utils.DialogUtils;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.DetalhesApostasCarrinhoFavoritoAdapter;
+
+import static br.gov.caixa.loterias.apostar.interno.view.CarrinhosFavoritosActivity.RESPOSTA_APOSTAS;
+import static br.gov.caixa.loterias.apostar.interno.view.CarrinhosFavoritosActivity.RESPOSTA_EXCLUIU_APOSTAS;
 
 public class DetalhesCarrinhoFavoritoActivity extends SettingToolbarActivity {
 
+    public static String ID_CARRINHO = "ID_CARRINHO";
+
     private RecyclerView rvApostas;
+    private ListApostaCarrinhoFavoritoDTO listApostaResponse;
+    private Long idCarrinho;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalhes_carrinho_favorito);
+        pegaExtras();
         setaViews();
         setaMetodos();
     }
 
     private void setaMetodos(){
-        configuraRecyclerView();
+        buscaApostas();
     }
 
     private void setaViews(){
@@ -28,10 +47,51 @@ public class DetalhesCarrinhoFavoritoActivity extends SettingToolbarActivity {
         setTitle(getString(R.string.title_activity_favoritas));
     }
 
-    public void configuraRecyclerView(){
-        rvApostas.setAdapter( new DetalhesApostasCarrinhoFavoritoAdapter());
+    private void pegaExtras() {
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            idCarrinho = bundle.getLong(ID_CARRINHO);
+        }
+    }
+
+    public void setListApostaResponse(ListApostaCarrinhoFavoritoDTO listApostaResponse) {
+        this.listApostaResponse = listApostaResponse;
+    }
+
+    private void buscaApostas(){
+        DialogUtils.show(this);
+        ApostaBO_.getInstance_(this).buscaApostasCarrinhoFavorito(idCarrinho ,new RequestListener<ListApostaCarrinhoFavoritoDTO>() {
+            @Override
+            public void onResponse(ListApostaCarrinhoFavoritoDTO result) {
+                DialogUtils.dismiss();
+                if (result.getRedirect() != null) {
+                    RedirectNetwork.checkRedirectSucesso(result.getRedirect(), DetalhesCarrinhoFavoritoActivity.this);
+                }
+                listApostaResponse = result;
+                configuraRecyclerView(result);
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                DialogUtils.dismiss();
+                RedirectNetwork.checkRedirect(error, DetalhesCarrinhoFavoritoActivity.this);
+            }
+        });
+    }
+
+    public void configuraRecyclerView(ListApostaCarrinhoFavoritoDTO listApostaResponse){
+        rvApostas.setAdapter( new DetalhesApostasCarrinhoFavoritoAdapter(idCarrinho, listApostaResponse,this));
         RecyclerView.LayoutManager layout = new LinearLayoutManager(DetalhesCarrinhoFavoritoActivity.this, LinearLayoutManager.VERTICAL, false);
         rvApostas.setLayoutManager(layout);
     }
 
+    @Override
+    public void onBackPressed() {
+        Bundle args = new Bundle();
+        args.putParcelable(RESPOSTA_APOSTAS, Parcels.wrap(listApostaResponse.getPayload()));
+        Intent it = new Intent();
+        it.putExtras(args);
+        setResult(RESPOSTA_EXCLUIU_APOSTAS, it);
+        super.onBackPressed();
+    }
 }

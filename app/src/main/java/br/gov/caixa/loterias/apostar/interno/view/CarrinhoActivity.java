@@ -33,6 +33,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CarrinhoDTORespo
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CarrinhoFavoritoDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResourceResponse;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.Bin;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostar.interno.model.dao.DBLoteriasCrud;
 import br.gov.caixa.loterias.apostar.interno.utils.DialogUtils;
@@ -122,7 +123,7 @@ public class CarrinhoActivity extends AppCompatActivity {
         btnOk.setOnClickListener(v -> {
             String text  = etCarrinho.getText().toString();
             if(text != null && !text.isEmpty()){
-                favoritarCarrinho(text);
+                validarCarrinhoFavorito(text);
             }
         });
         dialogFavoritar.setOnDismissListener(dialogInterface -> {
@@ -152,7 +153,6 @@ public class CarrinhoActivity extends AppCompatActivity {
 
 
         ViewUtils.setMoedaFormatHtml(BigDecimal.ZERO, tvValorTotal);
-        btnFavoritar.setVisibility(View.VISIBLE);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.title_activity_carrinho)));
@@ -217,6 +217,31 @@ public class CarrinhoActivity extends AppCompatActivity {
                 RedirectNetwork.checkRedirect(error, CarrinhoActivity.this);
             }
         });
+    }
+
+    private void validarCarrinhoFavorito(String nome){
+        DialogUtils.show(CarrinhoActivity.this);
+        ApostaBO_.getInstance_(CarrinhoActivity.this).validarCarrinhoFavorito(nome, new RequestListener<CarrinhoFavoritoDTOResponse>() {
+            @Override
+            public void onResponse(CarrinhoFavoritoDTOResponse result) {
+                DialogUtils.dismiss();
+                if (result.getRedirect() != null) {
+                    RedirectNetwork.checkRedirectSucesso( result.getRedirect(), CarrinhoActivity.this);
+                }
+                favoritarCarrinho(nome);
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                DialogUtils.dismiss();
+                ViewUtils.alertTitleButtonYesOrNotListener(
+                        CarrinhoActivity.this,
+                                Bin.fromBytes(error.networkResponse.data).toUtf8(),
+                                (dialogInterface, i) ->  favoritarCarrinho(nome)
+                        );
+            }
+        });
+
     }
 
     private void favoritarCarrinho(String nome) {
@@ -341,8 +366,10 @@ public class CarrinhoActivity extends AppCompatActivity {
         }
         if (carrinho.getApostas().size() > 0) {
             btnLimpar.setVisibility(View.VISIBLE);
+            btnFavoritar.setVisibility(View.VISIBLE);
         } else {
             btnLimpar.setVisibility(View.GONE);
+            btnFavoritar.setVisibility(View.GONE);
         }
         apostasListaRecycleView.setLayoutManager(new LinearLayoutManager(this));
         apostasListaRecycleView.setAdapter(new CarrinhoApostasListViewAdapter(this, (ArrayList<IdentificaoDeUmaApostaDas8Modalidades>) listIdentificaoDeUmaApostaDas8Modalidades, this, animacao));
