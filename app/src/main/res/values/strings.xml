@@ -478,4 +478,23 @@
     <string name="resultados_numeros_sorteados">Números sorteados:</string>
     <string name="resultados_placeholder_toolbar">Nº do concurso</string>
     <string name="resultados_validacao_concurso">O concurso mais atual é o de nº %s</string>
+
+    <!-- Carrinhos Favoritos -->
+    <string name="carrinho_fav_btn">Carrinhos\nfavoritos</string>
+    <string name="carrinho_fav_titulo">_Carrinhos_ Favoritos</string>
+    <string name="carrinho_fav_lbl_msg">Carrinho salvo com sucesso.</string>
+    <string name="carrinho_fav_manter_surp">Manter apostas como\nsurpresinhas</string>
+    <string name="carrinho_fav_subtitulo">Aqui estão todos os seus carrinho favoritos.</string>
+    <string name="carrinho_fav_lbl_desc">Você pode excluir, detalhar e transformar no seu carrinho atual.</string>
+
+    <string name="carrinho_fav_det_subtitulo">Apostas do carrinho favorito escolhido</string>
+    <string name="carrinho_fav_det_desc">Nesta área estão todas as suas apostas da sorte.\nÉ só escolher e apostar. Boa sorte!</string>
+    <string name="carrinho_fav_vazio">Você ainda não possui carrinhos favoritos.</string>
+    <string name="carrinho_fav_deseja_excluir">Deseja realmente excluir este carrinho favorito?</string>
+    <string name="carrinho_fav_deseja_excluir_aposta">Deseja realmente excluir esta aposta?</string>
+    <string name="carrinho_fav_deseja_transformar">Esse carrinho favorito irá sobrescrever seu carrinho oficial, quer continuar?</string>
+    <string name="carrinho_fav_incluir_carrinho">Incluir no carrinho</string>
+    <string name="carrinho_fav_segmented_desc">Existem 2 concursos abertos para a {modalidade}.\nDeseja incluir no carrinho qual concurso?</string>
+
+
 </resources>

@@ -1,6 +1,8 @@
 package br.gov.caixa.loterias.apostar.interno.view;
 
 
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorSet;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -48,7 +50,6 @@ import br.gov.caixa.loterias.apostar.interno.view.fragment.ResultadoGenericoFrag
 import br.gov.caixa.loterias.apostar.interno.view.fragment.ResultadoLotecaFragment;
 import br.gov.caixa.loterias.apostar.interno.view.fragment.ResultadoLotogolFragment;
 import br.gov.caixa.loterias.apostar.interno.view.fragment.ResultadoTimemaniaDiaDeSorteFragment;
-
 import static br.gov.caixa.loterias.apostar.interno.SelecaoModalidadesResultados.MODALIDADE;
 
 public class VisualizarResultadosActivity extends AppCompatActivity {
@@ -328,8 +329,11 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
     }
 
     private void configuraRetornoRequisicao(ResultadoConcursoDTOResponse response){
+
         if(concursoAtual == null){
             concursoAtual = response.getPayload().getConcurso().getNumero();
+        } else {
+            configAnimacao();
         }
         if(concursoAlvo == null){
             concursoAlvo = concursoAtual;
@@ -362,7 +366,19 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
             tituloModalidade.setText(txtModalidade);
         }
         setButtons();
-        setTitlePorConcurso(concursoAlvo); }
+        setTitlePorConcurso(concursoAlvo);
+    }
+
+    private void configAnimacao(){
+        AnimatorSet mSetRightOut = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.out_animation);
+        AnimatorSet mSetLeftIn = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.in_animation);
+        mSetRightOut.setTarget(scrollResultado);
+        mSetLeftIn.setTarget(scrollResultado);
+        //mSetRightOut.start();
+        mSetLeftIn.start();
+
+
+    }
 
     private void adicionarPremiados(List<PremiacaoConcursoDTO> listaPremiados){
         for (PremiacaoConcursoDTO premiacaoConcurso :  listaPremiados){
@@ -447,7 +463,7 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
         it.putExtra(TRAPEZIO,resourceTrapezio);
         it.putExtra(CONCURSO_ATUAL,concursoAtual);
         startActivity(it);
-        this.overridePendingTransition(R.anim.mpsdk_fade_in, R.anim.mpsdk_fade_out);
+        this.overridePendingTransition(0, 0);
         finish();
     }
 

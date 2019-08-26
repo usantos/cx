@@ -14,6 +14,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.AgrupadorApostaC
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.AgrupadorDTOApostaDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ApostaFavoritaDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CarrinhoDTOResponse;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CarrinhoFavoritoDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CodigoResgateDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ComprovanteApostaDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.DTOEnumIntegerResponse;
@@ -23,6 +24,8 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.EscudoEquipeEspo
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IncluirSurpresinhaDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.InformacaoPagamentoDTO;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ListApostaCarrinhoFavoritoDTO;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ListCarrinhoFavoritoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.MesAnoDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RapidaoDTO;
@@ -41,6 +44,140 @@ import static org.androidannotations.annotations.EBean.Scope.Singleton;
 
 @EBean(scope = Singleton)
 public class ApostaBO extends BaseBO {
+
+    public void validarCarrinhoFavorito(String nomeCarrinho, RequestListener<CarrinhoFavoritoDTOResponse> listener){
+
+        LinkedHashMap<String, String> headers = new LinkedHashMap<>();
+        headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
+
+        LinkedHashMap<String, String> params = new LinkedHashMap<>();
+        params.put("nome", nomeCarrinho);
+
+        final GsonRequest request = silceConnection.buildPostRequest( ServerMethods.CARRINHO_FAVORITO_VALIDAR_NOME, new LinkedHashMap<>(),
+                params, CarrinhoFavoritoDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(), headers);
+
+        request.setErrorListener(interceptError(request, headers, listener));
+        silceConnection.request(request);
+    }
+
+    public void tranformarCarrinho(Long idCarrinhoFavorito, Integer opcaoSelecionada,RequestListener<CarrinhoDTOResponse> listener){
+            LinkedHashMap<String, String> headers = new LinkedHashMap<>();
+            headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
+
+            String url = ServerMethods.CARRINHO_FAVORITO_TRANSFORMAR.replace("{idCarrinhoFavorito}", idCarrinhoFavorito.toString());
+
+            LinkedHashMap<String, String> params = new LinkedHashMap<>();
+            params.put("incluirEspecial", opcaoSelecionada.toString());
+
+                final GsonRequest request = silceConnection.buildPostRequest(url, new LinkedHashMap<>(),
+                        params, CarrinhoDTOResponse.class,
+                    listener.getSilceListener(),
+                    listener.getErrorListener(), headers);
+
+            request.setErrorListener(interceptError(request, headers, listener));
+            silceConnection.request(request);
+    }
+
+
+
+    public void deletaApostaCarrinhoFavorito(final String idCarrinho,
+                                             final String idAposta,
+                                             final RequestListener<ListApostaCarrinhoFavoritoDTO> listener) {
+
+        LinkedHashMap<String, String> headers = new LinkedHashMap<>();
+        headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
+
+        String url = ServerMethods.CARRINHO_FAVORITO_DELETAR_APOSTA.replace("{id}", idCarrinho);
+               url = url.replace("{idAposta}",idAposta);
+
+        final GsonRequest request = silceConnection.buildDeleteRequest(url ,
+                new LinkedHashMap<>(),
+                ListApostaCarrinhoFavoritoDTO.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(), headers);
+
+        request.setErrorListener(interceptError(request, headers, listener));
+        silceConnection.request(request);
+    }
+
+    public void deletaCarrinhoFavorito(final String idCarrinho,
+                                       final RequestListener<ListCarrinhoFavoritoDTO> listener) {
+
+        LinkedHashMap<String, String> headers = new LinkedHashMap<>();
+        headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
+
+        String url = ServerMethods.CARRINHO_FAVORITO_DELETAR_CARRINHO.replace("{id}", idCarrinho);
+
+        final GsonRequest request = silceConnection.buildDeleteRequest(url ,
+                new LinkedHashMap<>(),
+                ListCarrinhoFavoritoDTO.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(), headers);
+
+        request.setErrorListener(interceptError(request, headers, listener));
+        silceConnection.request(request);
+    }
+
+
+    public void salvarCarrinhoFavorito(final String nomeCarrinho,
+                                       final RequestListener<CarrinhoFavoritoDTOResponse> listener) {
+        salvarCarrinhoFavorito(nomeCarrinho,null,true, listener);
+    }
+
+    public void salvarCarrinhoFavorito(final String nomeCarrinho,
+                                       final String idCompra,
+                                       final Boolean mantemSurpresinhas,
+                                       final RequestListener<CarrinhoFavoritoDTOResponse> listener) {
+        String url;
+
+        LinkedHashMap<String, String> headers = new LinkedHashMap<>();
+        headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
+
+        Map<String, String> params = new HashMap<>();
+        params.put("nome", nomeCarrinho);
+        params.put("manterSurpresinhas", mantemSurpresinhas.toString());
+
+        if(idCompra != null){
+            url = ServerMethods.CARRINHO_FAVORITO_SALVAR_COMPRA.replace("{idCompra}", idCompra);
+        } else {
+            url = ServerMethods.CARRINHO_FAVORITO_SALVAR;
+        }
+
+
+        final GsonRequest request = silceConnection.buildPostRequest(url, new LinkedHashMap<>(),
+                params, CarrinhoFavoritoDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(), headers);
+
+        request.setErrorListener(interceptError(request, headers, listener));
+        silceConnection.request(request);
+    }
+
+    public void buscaCarrinhosFavoritos(RequestListener<ListCarrinhoFavoritoDTO> listener){
+        LinkedHashMap<String, String> headers = new LinkedHashMap<>();
+        headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
+
+        final GsonRequest request = silceConnection.buildGetRequest(ServerMethods.CARRINHO_FAVORITO_BUSCAR_CARRINHOS, new LinkedHashMap<>(), ListCarrinhoFavoritoDTO.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(), headers);
+
+        request.setErrorListener(interceptError(request, headers, listener));
+        silceConnection.request(request);
+    }
+
+    public void buscaApostasCarrinhoFavorito(Long idCarrinho,RequestListener<ListApostaCarrinhoFavoritoDTO> listener){
+        LinkedHashMap<String, String> headers = new LinkedHashMap<>();
+        headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
+        String url = ServerMethods.CARRINHO_FAVORITO_BUSCA_APOSTAS.replace("{idCarrinho}", idCarrinho.toString());
+        final GsonRequest request = silceConnection.buildGetRequest(url,  new LinkedHashMap<>(), ListApostaCarrinhoFavoritoDTO.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(), headers);
+
+        request.setErrorListener(interceptError(request, headers, listener));
+        silceConnection.request(request);
+    }
 
     public void completaJogo(final int quantidadeTotalNumeros,
                              final List<Integer> numerosMarcados,
