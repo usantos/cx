@@ -25,6 +25,7 @@ import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO_;
+import br.gov.caixa.loterias.apostar.interno.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
@@ -105,6 +106,14 @@ public class CarrinhoActivity extends AppCompatActivity {
             lerCarrinhoLocal(true);
         }else{
             atualizaLayout(true);
+        }
+        if(!DadosUsuarioBO.checarUsuarioLogado(this)){
+            btnFavoritar.setVisibility(View.GONE);
+        }else {
+            if(carrinho!= null && carrinho.getApostas()!= null && carrinho.getApostas().size() > 0){
+                btnFavoritar.setVisibility(View.VISIBLE);
+
+            }
         }
     }
 
@@ -366,7 +375,9 @@ public class CarrinhoActivity extends AppCompatActivity {
         }
         if (carrinho.getApostas().size() > 0) {
             btnLimpar.setVisibility(View.VISIBLE);
-            btnFavoritar.setVisibility(View.VISIBLE);
+            if(DadosUsuarioBO.checarUsuarioLogado(this)){
+                btnFavoritar.setVisibility(View.VISIBLE);
+            }
         } else {
             btnLimpar.setVisibility(View.GONE);
             btnFavoritar.setVisibility(View.GONE);

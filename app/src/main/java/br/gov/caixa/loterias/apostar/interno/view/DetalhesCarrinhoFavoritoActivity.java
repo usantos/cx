@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MenuItem;
 
 import com.android.volley.VolleyError;
 
@@ -43,7 +44,6 @@ public class DetalhesCarrinhoFavoritoActivity extends SettingToolbarActivity {
 
     private void setaViews(){
         rvApostas = findViewById(R.id.rv_apostas);
-
         setTitle(getString(R.string.title_activity_favoritas));
     }
 
@@ -85,13 +85,30 @@ public class DetalhesCarrinhoFavoritoActivity extends SettingToolbarActivity {
         rvApostas.setLayoutManager(layout);
     }
 
-    @Override
-    public void onBackPressed() {
+    private void setaResult(){
         Bundle args = new Bundle();
         args.putParcelable(RESPOSTA_APOSTAS, Parcels.wrap(listApostaResponse.getPayload()));
         Intent it = new Intent();
         it.putExtras(args);
         setResult(RESPOSTA_EXCLUIU_APOSTAS, it);
+    }
+
+    @Override
+    public void onBackPressed() {
+        setaResult();
         super.onBackPressed();
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                setaResult();
+                finish();
+                break;
+        }
+        return true;
+    }
+
+
 }

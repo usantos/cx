@@ -2,6 +2,7 @@ package br.gov.caixa.loterias.apostar.interno.view.adapter;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,8 +13,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -21,6 +24,7 @@ import com.android.volley.VolleyError;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostar.interno.R;
+import br.gov.caixa.loterias.apostar.interno.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
@@ -29,21 +33,28 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CarrinhoDTORespo
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CarrinhoFavoritoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ListApostaCarrinhoFavoritoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ListCarrinhoFavoritoDTO;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeEnum;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostar.interno.utils.DialogUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.CarrinhoActivity;
 import br.gov.caixa.loterias.apostar.interno.view.CarrinhosFavoritosActivity;
 import br.gov.caixa.loterias.apostar.interno.view.DetalhesCarrinhoFavoritoActivity;
+import info.hoang8f.android.segmented.SegmentedGroup;
 
 import static br.gov.caixa.loterias.apostar.interno.view.DetalhesCarrinhoFavoritoActivity.ID_CARRINHO;
 
 public class CarrinhosFavoritosAdapter extends RecyclerView.Adapter<CarrinhosFavoritosAdapter.CarrinhosFavoritosHolder> {
 
+    private static int AMBAS = 0;
     private Long idCarrinhoAtual;
     private List<CarrinhoFavoritoDTO> listaCarrinhosFavoritos;
+    private List<ApostaCarrinhoFavoritoDTO> listaApostasCarrinho;
     private Context context;
     private CarrinhosFavoritosActivity activity;
     private LinearLayout layoutAtual;
+    private Dialog dialogSegmented;
+    private String modalidadeNormal, modalidadeEspecial;
 
     public CarrinhosFavoritosAdapter(List<CarrinhoFavoritoDTO> listaCarrinhosFavoritos, CarrinhosFavoritosActivity activity){
         this.activity = activity;
@@ -152,27 +163,91 @@ public class CarrinhosFavoritosAdapter extends RecyclerView.Adapter<CarrinhosFav
     }
 
     private void transformaCarrinho(){
-        ViewUtils.alertTitleButtonYesOrNotListener(context, context.getResources().getString(R.string.carrinho_fav_deseja_transformar), (dialogInterface, i) -> {
+        buscaApostas(null,null, false);
+    }
 
-            DialogUtils.show(context);
-            ApostaBO_.getInstance_(context).tranformarCarrinho(idCarrinhoAtual, new RequestListener<CarrinhoDTOResponse>() {
-                @Override
-                public void onResponse(CarrinhoDTOResponse result) {
-                    DialogUtils.dismiss();
-                    if (result.getRedirect() != null) {
-                        RedirectNetwork.checkRedirectSucesso(result.getRedirect(), activity);
+    private boolean temApostaEspecial(){
+        int countModalidade;
+        List<ParametroSimulacao> parametros = SessaoUsuario.getInstance().getParametrosSimulacao().getParametros();
+        if(listaApostasCarrinho != null){
+            for (ApostaCarrinhoFavoritoDTO aposta: listaApostasCarrinho) {
+                countModalidade = 0;
+                for (int param = 0; param < parametros.size()-1; param++){
+                    ModalidadeEnum modalidade = parametros.get(param).getParametroJogo().getConcurso().getModalidade();
+                    if(ModalidadeEnum.fromModalidadeDTO(aposta.getModalidade()) == modalidade){
+                        countModalidade++;
                     }
-                    activity.startActivity(new Intent(activity, CarrinhoActivity.class));
                 }
+                if(countModalidade >= 2){
+                    modalidadeNormal = aposta.getModalidade().getDescricao();
+                    modalidadeEspecial = aposta.getModalidade().getDescricaoEspecial();
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    DialogUtils.dismiss();
-                    RedirectNetwork.checkRedirect(error, activity);
+
+    private void setaDialogSegmentedControl() {
+        dialogSegmented = new Dialog(activity);
+        dialogSegmented.setContentView(R.layout.custom_dialog_segmented_control);
+
+        TextView tituloDialog = dialogSegmented.findViewById(R.id.tv_titulo);
+        TextView descricaoDialog = dialogSegmented.findViewById(R.id.tv_descricao);
+
+        SegmentedGroup sgOpcoes = dialogSegmented.findViewById(R.id.sg_opcoes);
+
+        RadioButton opcao1 = dialogSegmented.findViewById(R.id.rb_1);
+        RadioButton opcao2 = dialogSegmented.findViewById(R.id.rb_2);
+        RadioButton opcao3 = dialogSegmented.findViewById(R.id.rb_3);
+        Button btnOk = dialogSegmented.findViewById(R.id.btn_ok);
+        Button btnCancelar = dialogSegmented.findViewById(R.id.btn_cancelar);
+
+        String descricao = activity.getString(R.string.carrinho_fav_segmented_desc);
+        descricao = descricao.replace("{modalidade}", modalidadeNormal);
+        descricaoDialog.setText(descricao);
+
+        sgOpcoes.check(R.id.rb_1);
+        opcao1.setText("Ambos");
+
+        opcao2.setText(modalidadeNormal);
+        opcao3.setText(modalidadeEspecial);
+        tituloDialog.setText("Carrinho Favorito");
+
+        btnOk.setOnClickListener(v -> {
+            int opcaoSelecionada = sgOpcoes.indexOfChild(dialogSegmented.findViewById(sgOpcoes.getCheckedRadioButtonId()));
+            chamaTransformarCarrinho(opcaoSelecionada);
+        });
+
+        btnCancelar.setOnClickListener(v -> dialogSegmented.dismiss());
+    }
+
+    private void chamaTransformarCarrinho(int opcaoSelecionada){
+        ViewUtils.alertTitleButtonYesOrNotListener(context, context.getResources().getString(R.string.carrinho_fav_deseja_transformar), (dialogInterface, i) -> {
+        DialogUtils.show(context);
+        ApostaBO_.getInstance_(context).tranformarCarrinho(idCarrinhoAtual, opcaoSelecionada,new RequestListener<CarrinhoDTOResponse>() {
+            @Override
+            public void onResponse(CarrinhoDTOResponse result) {
+                DialogUtils.dismiss();
+                if (result.getRedirect() != null) {
+                    RedirectNetwork.checkRedirectSucesso(result.getRedirect(), activity);
                 }
-            });
+                if(dialogSegmented.isShowing()){
+                    dialogSegmented.dismiss();
+                }
+                activity.startActivity(new Intent(activity, CarrinhoActivity.class));
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                DialogUtils.dismiss();
+                RedirectNetwork.checkRedirect(error, activity);
+            }
+        });
         });
     }
+
 
     private void detalhesCarrinho(LinearLayout layoutDetalhes){
         this.layoutAtual = layoutDetalhes;
@@ -181,7 +256,7 @@ public class CarrinhosFavoritosAdapter extends RecyclerView.Adapter<CarrinhosFav
         activity.startActivityForResult(new Intent(activity, DetalhesCarrinhoFavoritoActivity.class).putExtras(args),activity.RESPOSTAS_APOSTAS_CODIGO);
     }
 
-    private void buscaApostas(LinearLayout layout, ConstraintLayout card){
+    private void buscaApostas(LinearLayout layout, ConstraintLayout card, boolean configLayout){
         DialogUtils.show(context);
         ApostaBO_.getInstance_(context).buscaApostasCarrinhoFavorito(idCarrinhoAtual ,new RequestListener<ListApostaCarrinhoFavoritoDTO>() {
             @Override
@@ -190,7 +265,17 @@ public class CarrinhosFavoritosAdapter extends RecyclerView.Adapter<CarrinhosFav
                 if (result.getRedirect() != null) {
                     RedirectNetwork.checkRedirectSucesso(result.getRedirect(), activity);
                 }
-                configViewsAposta(result.getPayload(), layout, card);
+                if (configLayout){
+                    configViewsAposta(result.getPayload(), layout, card);
+                } else {
+                    listaApostasCarrinho = result.getPayload();
+                    if(temApostaEspecial()){
+                        setaDialogSegmentedControl();
+                        dialogSegmented.show();
+                    }else {
+                        chamaTransformarCarrinho(AMBAS);
+                    }
+                }
             }
 
             @Override
@@ -265,7 +350,7 @@ public class CarrinhosFavoritosAdapter extends RecyclerView.Adapter<CarrinhosFav
                     transformaCarrinho();
                     break;
                 case R.id.cl_card_carrinho_favorito:
-                    buscaApostas(layoutDetalhes,clCard);
+                    buscaApostas(layoutDetalhes,clCard,true);
                     break;
                     default:
                         break;

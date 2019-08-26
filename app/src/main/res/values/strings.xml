@@ -490,6 +490,8 @@
     <string name="carrinho_fav_deseja_excluir">Deseja realmente excluir este carrinho favorito?</string>
     <string name="carrinho_fav_deseja_excluir_aposta">Deseja realmente excluir esta aposta?</string>
     <string name="carrinho_fav_deseja_transformar">Esse carrinho favorito irá sobrescrever seu carrinho oficial, quer continuar?</string>
+    <string name="carrinho_fav_incluir_carrinho">Incluir no carrinho</string>
+    <string name="carrinho_fav_segmented_desc">Existem 2 concursos abertos para a {modalidade}.\nDeseja incluir no carrinho qual concurso?</string>
 
 
 </resources>

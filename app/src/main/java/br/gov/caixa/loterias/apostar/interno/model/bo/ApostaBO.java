@@ -62,14 +62,17 @@ public class ApostaBO extends BaseBO {
         silceConnection.request(request);
     }
 
-    public void tranformarCarrinho(Long idCarrinhoFavorito, RequestListener<CarrinhoDTOResponse> listener){
+    public void tranformarCarrinho(Long idCarrinhoFavorito, Integer opcaoSelecionada,RequestListener<CarrinhoDTOResponse> listener){
             LinkedHashMap<String, String> headers = new LinkedHashMap<>();
             headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
 
             String url = ServerMethods.CARRINHO_FAVORITO_TRANSFORMAR.replace("{idCarrinhoFavorito}", idCarrinhoFavorito.toString());
 
+            LinkedHashMap<String, String> params = new LinkedHashMap<>();
+            params.put("incluirEspecial", opcaoSelecionada.toString());
+
                 final GsonRequest request = silceConnection.buildPostRequest(url, new LinkedHashMap<>(),
-                        new HashMap<>(), CarrinhoDTOResponse.class,
+                        params, CarrinhoDTOResponse.class,
                     listener.getSilceListener(),
                     listener.getErrorListener(), headers);
 
