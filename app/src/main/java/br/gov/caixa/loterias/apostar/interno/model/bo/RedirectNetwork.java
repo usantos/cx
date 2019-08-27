@@ -19,6 +19,7 @@ import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.AppIndisponivelActivity;
 import br.gov.caixa.loterias.apostar.interno.view.CadastrarActivity_;
 import br.gov.caixa.loterias.apostar.interno.view.CarrinhoActivity;
+import br.gov.caixa.loterias.apostar.interno.view.CarrinhosFavoritosActivity;
 import br.gov.caixa.loterias.apostar.interno.view.PrincipalActivity_;
 import br.gov.caixa.loterias.apostar.interno.view.TermosUsoActivity;
 
@@ -145,7 +146,10 @@ public class  RedirectNetwork {
                         }
                         return;
                     case CARRINHO:
-                        activity.startActivityForResult(new Intent(activity, CarrinhoActivity.class), 1);
+                        activity.startActivity(new Intent(activity, CarrinhoActivity.class));
+                        return;
+                    case CARRINHOS_FAVORITOS:
+                        activity.startActivity(new Intent(activity, CarrinhosFavoritosActivity.class));
                         return;
                     default:
                         break;

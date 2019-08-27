@@ -25,6 +25,7 @@ public enum RedirectEnum {
     @SerializedName("loteca")LOTECA,
     @SerializedName("aposta")APOSTA,
     @SerializedName("carrinho")CARRINHO,
+    @SerializedName("carrinhos-favoritos")CARRINHOS_FAVORITOS,
     @SerializedName("validar-cpf")VALIDAR_CPF,
     @SerializedName("cadastrar-apostador")CADASTRAR_APOSTADOR,
     @SerializedName("selecionar-loterica")SELECIONAR_LOTERICA,
@@ -87,6 +88,8 @@ public enum RedirectEnum {
                 return RedirectEnum.LOGIN;
             case "indisponibilidade":
                 return RedirectEnum.INDISPONIVEL;
+            case "carrinhos-favoritos":
+                return RedirectEnum.CARRINHOS_FAVORITOS;
             default:
                 return null;
         }

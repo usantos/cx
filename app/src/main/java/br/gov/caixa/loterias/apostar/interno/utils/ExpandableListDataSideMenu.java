@@ -19,6 +19,7 @@ public class ExpandableListDataSideMenu {
         minhaArea.add("Minhas apostas");
         minhaArea.add("Compras");
         minhaArea.add("Favoritas");
+        minhaArea.add("Carrinhos Favoritos");
 
         List<String> Resultados = new ArrayList<>();
         List<String> Rapidao = new ArrayList<>();

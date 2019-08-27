@@ -59,9 +59,9 @@ android {
                 buildConfigField "String", "MP_PAYMENT_URL", "\"https://api.mercadopago.com/v1/payment_methods/installments?\""
                 manifestPlaceholders = [
                         appAuthRedirectScheme: "br.gov.caixa.caixaloterias",
-                        hostName: "br.gov.caixa.caixaloterias",
-                        path: "/oauth2Callback",
-                        scheme: "https"
+                        hostName             : "br.gov.caixa.caixaloterias",
+                        path                 : "/oauth2Callback",
+                        scheme               : "https"
                 ]
             }
             dev {
@@ -81,9 +81,9 @@ android {
                 buildConfigField "String", "MP_PAYMENT_URL", "\"https://api.mercadopago.com/v1/payment_methods/installments?\""
                 manifestPlaceholders = [
                         appAuthRedirectScheme: "br.gov.caixa.caixaloterias",
-                        hostName: "br.gov.caixa.caixaloterias",
-                        path: "/oauth2Callback",
-                        scheme: "https"
+                        hostName             : "br.gov.caixa.caixaloterias",
+                        path                 : "/oauth2Callback",
+                        scheme               : "https"
                 ]
             }
             stubnet {
@@ -104,9 +104,9 @@ android {
                 buildConfigField "String", "MP_PAYMENT_URL", "\"https://api.mercadopago.com/v1/payment_methods/installments?\""
                 manifestPlaceholders = [
                         appAuthRedirectScheme: "br.gov.caixa.caixaloterias",
-                        hostName: "br.gov.caixa.caixaloterias",
-                        path: "/oauth2Callback",
-                        scheme: "https"
+                        hostName             : "br.gov.caixa.caixaloterias",
+                        path                 : "/oauth2Callback",
+                        scheme               : "https"
                 ]
             }
         }
@@ -155,7 +155,7 @@ dependencies {
 
     //Biblioteca para arrastar os itens do Recyclerview
     implementation "com.daimajia.swipelayout:library:1.2.0@aar"
-    
+
     //Serialização de JSON
     implementation 'com.google.code.gson:gson:2.8.5'
 
@@ -188,7 +188,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:16.0.6'
     implementation 'com.crashlytics.sdk.android:crashlytics:2.9.9'
 
-
+    //Segmented Control
+    implementation 'info.hoang8f:android-segmented:1.0.6'
 
     // testImplementation deps
     testImplementation 'junit:junit:4.12'
@@ -202,11 +203,13 @@ dependencies {
 
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestUtil 'com.android.support.test:orchestrator:1.0.2'
+
 }
 
 sonarqube {
     properties {
-        def libraries = project.android.sdkDirectory.getPath() + "/platforms/android-28/android.jar"/* + ", build/intermediates/exploded-aar*//**//*classes.jar"*/
+        def libraries = project.android.sdkDirectory.getPath() + "/platforms/android-28/android.jar"
+/* + ", build/intermediates/exploded-aar*//**//*classes.jar"*/
         property "sonar.sources", "src/main/java"
         property "sonar.binaries", "build/intermediates/classes/debug"
         property "sonar.libraries", libraries
@@ -220,6 +223,3 @@ sonarqube {
     }
 
 }
-
-
-

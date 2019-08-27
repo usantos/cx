@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.DetalhesCarrinhoFavoritoActivity">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:focusableInTouchMode="true"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_subtitulo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:fontFamily="@font/futura_std_bold"
+            android:text="@string/carrinho_fav_det_subtitulo"
+            android:textColor="@color/azulescuro"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_descricao"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:fontFamily="@font/font_family_futura"
+            android:text="@string/carrinho_fav_det_desc"
+            app:layout_constraintTop_toBottomOf="@id/tv_subtitulo" />
+
+        <View
+            android:id="@+id/v_div_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/cinzaclaro"
+            app:layout_constraintTop_toTopOf="@id/rv_apostas" />
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_apostas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:nestedScrollingEnabled="false"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_descricao" />
+    </android.support.constraint.ConstraintLayout>
+</android.support.v4.widget.NestedScrollView>

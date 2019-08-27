@@ -33,21 +33,17 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ComprovanteApostaDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ComprovanteApostaDTOResponse;
-import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.DetalhesHistoricoPremioDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.DetalhesHistoricoPremioDTOResponse;
-import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.DetalhesPremioDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.DetalhesPremioDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.MesAnoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.MesAnoDTOResponse;
-import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResultadoConcursoDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOApostaDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOHistoricoApostaDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.SituacaoResultadoBilheteEnum;
 import br.gov.caixa.loterias.apostar.interno.utils.AppUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.DialogUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
-import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostar.interno.view.ApostaConfirmadaDetalhesActivity_;
 import br.gov.caixa.loterias.apostar.interno.view.ApostasConfirmadasActivity;
@@ -98,7 +94,7 @@ public class ApostasConfirmadasFragment extends Fragment implements ApostasConfi
     public void onResume() {
         super.onResume();
 
-        if (firstTime) {
+        if (firstTime || page == null) {
             FirebaseManager.registraEvento(getContext() ,"ENTROU_GERENCIAR_APOSTAS");
 
             if (getActivity() != null) {

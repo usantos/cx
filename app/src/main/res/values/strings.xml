@@ -280,7 +280,7 @@
     <string name="label_agencia_caixa">Agência Caixa</string>
     <string name="label_mercado_pago">Mercado Pago</string>
     <string name="label_premio_pago">Prêmio Pago</string>
-    <string name="label_diriga_agencia_preferencia">Dirija-se à agência de sua preferência</string>
+    <string name="label_emitir_comprovante">Emita o seu comprovante da aposta </string>
     <string name="label_diriga_loterica_preferencia">Dirija-se à lotérica de sua preferência</string>
     <string name="label_apresente_recibo_documento_identificacao_originais">Apresente seu recibo de aposta e seu documento de identificação originais</string>
     <string name="label_apresente_recibo_aposta">Apresente seu recibo de aposta</string>
@@ -310,8 +310,10 @@
 
     <!-- Agência Resgate Prêmio -->
     <string name="label_agencia_minusculo">agência</string>
-    <string name="label_informe_codigo_aposta">Informe o código da aposta</string>
-    <string name="label_apresente_documento_identificacao_original">Apresente seu documento de identificação original</string>
+    <string name="label_dirigir_para_agencia">Dirija-se a uma agência de sua preferência</string>
+    <string name="label_apresente_documento_identificacao_original">Apresente seus documentos pessoais (RG, CPF, Comprovante de Endereço)</string>
+    <string name="label_gerar_pdf">Gerar PDF</string>
+    <string name="label_resgatar_premio_loterica">Você quer resgatar seu prêmio nas Casas Lotéricas? <u>Clique Aqui</u></string>
 
     <!--Mock-->
     <string name="title_activity_restrito_dezoito_anos">RestritoDezoitoAnosActivity</string>
@@ -367,6 +369,7 @@
     <string name="termos_nao_aceitos">Para continuar é necessário o aceite do termo.</string>
     <string name="MA021">E-mail inválido.</string>
     <string name="label_agencia_maiuscula">Agência</string>
+    <string name="label_agencia_bold">_Agência_</string>
     <string name="key_usuario_logado">usuariologado</string>
     <string name="label_time_sorteado_espaco">Time sorteado&#160;</string>
     <string name="label_time_coracao_dois_pontos_time">Time do cora\u00e7\u00e3o: %s</string>
@@ -475,4 +478,23 @@
     <string name="resultados_numeros_sorteados">Números sorteados:</string>
     <string name="resultados_placeholder_toolbar">Nº do concurso</string>
     <string name="resultados_validacao_concurso">O concurso mais atual é o de nº %s</string>
+
+    <!-- Carrinhos Favoritos -->
+    <string name="carrinho_fav_btn">Carrinhos\nfavoritos</string>
+    <string name="carrinho_fav_titulo">_Carrinhos_ Favoritos</string>
+    <string name="carrinho_fav_lbl_msg">Carrinho favorito salvo com sucesso.</string>
+    <string name="carrinho_fav_manter_surp">Manter apostas como\nsurpresinhas</string>
+    <string name="carrinho_fav_subtitulo">Aqui estão todos os seus carrinho favoritos.</string>
+    <string name="carrinho_fav_lbl_desc">Você pode excluir, detalhar e transformar no seu carrinho atual.</string>
+
+    <string name="carrinho_fav_det_subtitulo">Apostas do carrinho favorito escolhido</string>
+    <string name="carrinho_fav_det_desc">Nesta área estão todas as suas apostas da sorte.\nÉ só escolher e apostar. Boa sorte!</string>
+    <string name="carrinho_fav_vazio">Você ainda não possui carrinhos favoritos.</string>
+    <string name="carrinho_fav_deseja_excluir">Deseja realmente excluir este carrinho favorito?</string>
+    <string name="carrinho_fav_deseja_excluir_aposta">Deseja realmente excluir esta aposta?</string>
+    <string name="carrinho_fav_deseja_transformar">Esse carrinho favorito irá sobrescrever seu carrinho oficial, quer continuar?</string>
+    <string name="carrinho_fav_incluir_carrinho">Incluir no carrinho</string>
+    <string name="carrinho_fav_segmented_desc">Existem 2 concursos abertos para a {modalidade}.\nDeseja incluir no carrinho qual concurso?</string>
+
+
 </resources>
