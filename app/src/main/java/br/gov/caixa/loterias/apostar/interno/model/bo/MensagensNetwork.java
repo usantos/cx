@@ -14,6 +14,7 @@ import java.io.UnsupportedEncodingException;
 
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bean.ErrorResponse;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.Bin;
 
 /**
  * Created by cedesbr450 on 08/12/17.
@@ -82,6 +83,16 @@ public class MensagensNetwork {
         }
 
         return errorResponse.getMensagem();
+    }
+
+    public static String getErrorMessage(VolleyError error){
+        try{
+            String errorBody = Bin.fromBytes(error.networkResponse.data).toUtf8();
+            return new Gson().fromJson(errorBody, ErrorResponse.class).getMensagem();
+        } catch (Exception e){
+            return "";
+        }
+
     }
 
     public static boolean isUnauthorizedError(VolleyError error){

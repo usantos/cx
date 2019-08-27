@@ -27,6 +27,7 @@ import java.util.List;
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO_;
+import br.gov.caixa.loterias.apostar.interno.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.AgrupadorApostaCompraDTOResponse;
@@ -217,7 +218,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         btnOk.setOnClickListener(v -> {
             String text  = etCarrinho.getText().toString();
             if(text != null && !text.isEmpty() && compraDTO != null && compraDTO.getId() != null){
-                favoritarCarrinho(text, compraDTO.getId());
+                validarCarrinhoFavorito(text,compraDTO.getId());
             }
         });
         btnCancelar.setOnClickListener(v -> dialogFavoritar.dismiss());
@@ -226,6 +227,31 @@ public class DetalhesComprasActivity extends AppCompatActivity {
             dialogFavoritar.findViewById(R.id.ck_manter_surpresinhas).setVisibility(View.GONE);
             dialogFavoritar.findViewById(R.id.tv_manter_surpresinhas).setVisibility(View.GONE);
         });
+    }
+
+    private void validarCarrinhoFavorito(String nome, Long idFavorito){
+        DialogUtils.show(DetalhesComprasActivity.this);
+        ApostaBO_.getInstance_(DetalhesComprasActivity.this).validarCarrinhoFavorito(nome, new RequestListener<CarrinhoFavoritoDTOResponse>() {
+            @Override
+            public void onResponse(CarrinhoFavoritoDTOResponse result) {
+                DialogUtils.dismiss();
+                if (result.getRedirect() != null) {
+                    RedirectNetwork.checkRedirectSucesso( result.getRedirect(), DetalhesComprasActivity.this);
+                }
+                favoritarCarrinho(nome,idFavorito);
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                DialogUtils.dismiss();
+                ViewUtils.alertTitleButtonYesOrNotListener(
+                        DetalhesComprasActivity.this,
+                        MensagensNetwork.getErrorMessage(error),
+                        (dialogInterface, i) ->  favoritarCarrinho(nome,idFavorito)
+                );
+            }
+        });
+
     }
 
     private void favoritarCarrinho(String nome, Long idFavorito) {

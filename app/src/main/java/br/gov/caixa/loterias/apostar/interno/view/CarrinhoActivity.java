@@ -34,7 +34,6 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CarrinhoDTORespo
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CarrinhoFavoritoDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResourceResponse;
-import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.Bin;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostar.interno.model.dao.DBLoteriasCrud;
 import br.gov.caixa.loterias.apostar.interno.utils.DialogUtils;
@@ -245,12 +244,11 @@ public class CarrinhoActivity extends AppCompatActivity {
                 DialogUtils.dismiss();
                 ViewUtils.alertTitleButtonYesOrNotListener(
                         CarrinhoActivity.this,
-                                Bin.fromBytes(error.networkResponse.data).toUtf8(),
+                                MensagensNetwork.getErrorMessage(error),
                                 (dialogInterface, i) ->  favoritarCarrinho(nome)
                         );
             }
         });
-
     }
 
     private void favoritarCarrinho(String nome) {

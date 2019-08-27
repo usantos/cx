@@ -482,7 +482,7 @@
     <!-- Carrinhos Favoritos -->
     <string name="carrinho_fav_btn">Carrinhos\nfavoritos</string>
     <string name="carrinho_fav_titulo">_Carrinhos_ Favoritos</string>
-    <string name="carrinho_fav_lbl_msg">Carrinho salvo com sucesso.</string>
+    <string name="carrinho_fav_lbl_msg">Carrinho favorito salvo com sucesso.</string>
     <string name="carrinho_fav_manter_surp">Manter apostas como\nsurpresinhas</string>
     <string name="carrinho_fav_subtitulo">Aqui estão todos os seus carrinho favoritos.</string>
     <string name="carrinho_fav_lbl_desc">Você pode excluir, detalhar e transformar no seu carrinho atual.</string>
