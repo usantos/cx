@@ -12,6 +12,7 @@ import com.google.zxing.ResultPoint;
 import com.journeyapps.barcodescanner.BarcodeCallback;
 import com.journeyapps.barcodescanner.BarcodeResult;
 import com.journeyapps.barcodescanner.DecoratedBarcodeView;
+import com.journeyapps.barcodescanner.camera.CameraSettings;
 
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -81,6 +82,10 @@ public class LerBilhetesActivity extends AppCompatActivity {
         barcodeScannerView.getViewFinder().setVisibility(View.INVISIBLE);
         barcodeScannerView.getStatusView().setVisibility(View.INVISIBLE);
         barcodeScannerView.decodeContinuous(callback);
+        barcodeScannerView.getBarcodeView().getCameraSettings().setMeteringEnabled(true);
+        barcodeScannerView.getBarcodeView().getCameraSettings().setAutoTorchEnabled(true);
+        barcodeScannerView.getBarcodeView().getCameraSettings().setFocusMode(CameraSettings.FocusMode.AUTO);
+        barcodeScannerView.getBarcodeView().getCameraSettings().setAutoFocusEnabled(true);
 
         buttonDigitarAposta.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.label_digite_aposta_realizada)));
     }
@@ -88,7 +93,6 @@ public class LerBilhetesActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
         barcodeScannerView.resume();
     }
 

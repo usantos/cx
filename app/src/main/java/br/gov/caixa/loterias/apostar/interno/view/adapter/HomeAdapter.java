@@ -208,24 +208,24 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
         holder.setaEsquerdaAcaoRelativeLayout.setOnClickListener( view ->
                 callWebserviceResultadoConcurso(holder.relativeLayoutTopResultados,
-                    holder.linearLayoutResultadosApostas,
-                    ApostaDTO.lowerCaseFromString(data.get(position).getTipoModalidade()),
-                    data.get(position).getConcurso().getNumero()-1,
-                    position,
-                    holder.setaEsquerdaAcaoRelativeLayout,
-                    holder.setaDireitaAcaoRelativeLayout,
-                    false
+                        holder.linearLayoutResultadosApostas,
+                        ApostaDTO.lowerCaseFromString(data.get(position).getTipoModalidade()),
+                        data.get(position).getConcurso().getNumero()-1,
+                        position,
+                        holder.setaEsquerdaAcaoRelativeLayout,
+                        holder.setaDireitaAcaoRelativeLayout,
+                        false
                 ));
 
         holder.setaDireitaAcaoRelativeLayout.setOnClickListener( view ->
                 callWebserviceResultadoConcurso(holder.relativeLayoutTopResultados,
-                    holder.linearLayoutResultadosApostas,
-                    ApostaDTO.lowerCaseFromString(data.get(position).getTipoModalidade()),
-                    data.get(position).getConcurso().getNumero()+1,
-                    position,
-                    holder.setaEsquerdaAcaoRelativeLayout,
-                    holder.setaDireitaAcaoRelativeLayout,
-                    false
+                        holder.linearLayoutResultadosApostas,
+                        ApostaDTO.lowerCaseFromString(data.get(position).getTipoModalidade()),
+                        data.get(position).getConcurso().getNumero()+1,
+                        position,
+                        holder.setaEsquerdaAcaoRelativeLayout,
+                        holder.setaDireitaAcaoRelativeLayout,
+                        false
                 ));
     }
 

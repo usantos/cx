@@ -33,6 +33,7 @@ import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
+import com.yarolegovich.discretescrollview.InfiniteScrollAdapter;
 import com.yarolegovich.discretescrollview.transform.ScaleTransformer;
 
 import org.androidannotations.annotations.AfterViews;
@@ -124,6 +125,8 @@ public class PrincipalActivity extends AppCompatActivity
     private DBLoteriasHelper dbLoteriasHelper;
     private View actionApresentarTrevo, actionSettings;
     private AlertDialog loadViewProgress;
+    private InfiniteScrollAdapter infiniteAdapter;
+    private HomeAdapter homeAdapter;
 
     private boolean realizandoLogin = false;
     private boolean recarregarBuscaParam = false;
@@ -157,19 +160,25 @@ public class PrincipalActivity extends AppCompatActivity
         if (extras!= null) {
             if (extras.containsKey("MODALIDADE_APOSTAR_AGORA")) {
                 ModalidadeEnum modalidade = (ModalidadeEnum) extras.getSerializable("MODALIDADE_APOSTAR_AGORA");
-                int position =  ((HomeAdapter)homeCarousel.getAdapter()).retornaPosicaoPorModalidade(modalidade);
+                int position =  retornaPosicaoPorModalidade(modalidade);
                 EstiloModalidade estilo;
                 if(position != -1){
-                    estilo = new EstiloModalidade(data.get(position).getTipoModalidade());
-                    homeCarousel.scrollToPosition(position);
+                    int posicaoAlvo = infiniteAdapter.getClosestPosition(position);
+                    homeCarousel.smoothScrollToPosition(posicaoAlvo);
                     buttonHomeBet.setTag(position);
-                    buttonHomeBet.setText(ViewUtils.textFuturaAndFuturaBold(this, "_Aposte_\npor " + ViewUtils.getMoedaFormat(modalidadesParaListar.get(position).getParametroJogo().getConcurso().getValorApostaMinima())));
-                    buttonHomeBet.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorClara()));
-                    findViewById(R.id.buttonHomeBet).performClick();
+                    buttonHomeBet.performClick();
                 }
-
             }
         }
+    }
+
+    public int  retornaPosicaoPorModalidade(ModalidadeEnum modalidade){
+        for (int i = 0; i < data.size(); i++) {
+            if (data !=null && data.get(i).getTipoModalidade().equals(modalidade)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     @Override
@@ -205,14 +214,16 @@ public class PrincipalActivity extends AppCompatActivity
 
     private void montarCarrossel() {
         data = montaListaModalidades();
-        homeCarousel.setAdapter(new HomeAdapter(this, this, data, buttonHomeBet));
+        homeAdapter = new HomeAdapter(this, this, data, buttonHomeBet);
+        infiniteAdapter = InfiniteScrollAdapter.wrap(homeAdapter);
+        homeCarousel.setAdapter(infiniteAdapter);
         homeCarousel.addScrollListener(this);
         homeCarousel.addOnItemChangedListener(this);
-        homeCarousel.scrollToPosition(0);
         homeCarousel.setItemTransformer(new ScaleTransformer.Builder()
                 .setMinScale(0.8f)
                 .build());
     }
+
 
     @Override
     protected void onStart() {
@@ -425,7 +436,6 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     private void sairLogin() {
-
         ViewUtils.alertTitleButtonYesOrNotListener(this, getResources().getString(R.string.MA008), (dialog, which) -> {
             if (DadosUsuarioBO.checarUsuarioLogado(PrincipalActivity.this)) {
                 final AlertDialog loadViewProgress = LoadingViewLoterias.show(PrincipalActivity.this);
@@ -474,7 +484,7 @@ public class PrincipalActivity extends AppCompatActivity
 
     @Override
     public void onCurrentItemChanged(@Nullable HomeAdapter.ViewHolder viewHolder, int adapterPosition) {
-        //viewHolder will never be null, because we never remove items from adapter's list
+        adapterPosition  = infiniteAdapter.getRealCurrentPosition();
         if (viewHolder != null) {
             EstiloModalidade estilo = new EstiloModalidade(data.get(adapterPosition).getTipoModalidade());
             buttonHomeBet.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorClara()));
