@@ -150,7 +150,6 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
             @Override
             public void onResponse(CarrinhoDTOResponse response) {
                 DialogUtils.dismiss();
-                //CarrinhoActivity_.intent(ApostaConfirmadaDetalhesActivity.this).carrinho(response.getPayload()).start();
                 Bundle args = new Bundle();
                 args.putParcelable(CARRINHO, Parcels.wrap(response.getPayload()));
                 startActivity(new Intent(ApostaConfirmadaDetalhesActivity.this, CarrinhoActivity.class).putExtras(args));
@@ -164,7 +163,6 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                 DialogUtils.dismiss();
                 if (MensagensNetwork.isUnauthorizedError(error)) {
                     startActivity(new Intent(ApostaConfirmadaDetalhesActivity.this, CarrinhoActivity.class).putExtra(LER_CARRINHO_LOCAL, true));
-                    //CarrinhoActivity_.intent(ApostaConfirmadaDetalhesActivity.this).lerCarrinhoLocal(true).start();
                 } else {
                     RedirectNetwork.checkRedirect( error, ApostaConfirmadaDetalhesActivity.this );
                 }
