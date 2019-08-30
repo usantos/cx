@@ -60,8 +60,9 @@ public final class ListaComprasRecyclerViewAdapter extends RecyclerView.Adapter<
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         if (listaCompras.size() != 0) {
             CompraDTO compra = listaCompras.get(position);
-
-            holder.dataCompra.setText("Data: " + listaCompras.get(position).getDataFinalizacaoCompra());
+            if(listaCompras.get(position).getDataFinalizacaoCompra() != null){
+                holder.dataCompra.setText("Data: " + listaCompras.get(position).getDataFinalizacaoCompra());
+            }
             holder.valorCompra.setText(br.gov.caixa.loterias.apostar.interno.utils.ViewUtils.getMoedaFormat(compra.getValorTotal()));
             final int ordemLista = position + 1;
 
