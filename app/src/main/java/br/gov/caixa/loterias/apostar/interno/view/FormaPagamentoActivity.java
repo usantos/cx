@@ -17,7 +17,6 @@ import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -163,7 +162,7 @@ public class FormaPagamentoActivity extends SettingToolbarActivity implements Fo
     }
 
     @Override
-    public void itemRemoved() {
+    public void itemRemoved(Boolean lastItem) {
         ViewUtils.organizaTabLayout(this, R.id.formaPagamentoMainLayout, R.id.formasPagamentoRecyclerView, R.id.formaPagamentoScrollView);
     }
 

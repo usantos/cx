@@ -88,6 +88,10 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
         final IdentificaoDeUmaApostaDas8Modalidades aposta = apostas.get(position);
         EstiloModalidade estilo = new EstiloModalidade(aposta.getModalidade());
 
+        if(position >= 4){
+            animacao = false;
+        }
+
         final SwipeLayout swipeLayout = (SwipeLayout) holder.itemView;
         swipeLayout.setClickToClose(true);
         swipeLayout.getDragEdgeMap().clear();

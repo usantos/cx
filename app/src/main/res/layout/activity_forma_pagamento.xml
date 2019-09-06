@@ -140,18 +140,6 @@
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent">
-
-            <ImageView
-                android:id="@+id/imageViewPaginacao"
-                android:layout_width="184dp"
-                android:layout_height="12dp"
-                android:layout_marginBottom="20dp"
-                android:contentDescription="@string/imagemCarrinho"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:srcCompat="@drawable/paginacao2" />
-
         </android.support.constraint.ConstraintLayout>
 
         <android.support.v7.widget.RecyclerView

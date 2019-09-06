@@ -17,6 +17,7 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
+import org.parceler.Parcels;
 
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bean.SessaoUsuario;
@@ -38,6 +39,10 @@ import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
 
 @EActivity(R.layout.activity_resultado_aposta_confirmada)
 public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
+
+    public static String DETALHES = "DETALHES";
+    public static String COMPROVANTE = "COMPROVANTE";
+    public static String CODIGO_RESGATE = "CODIGO_RESGATE";
 
     @Bean
     protected ApostaBO apostaBO;
@@ -106,7 +111,16 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
             @Override
             public void onResponse(CodigoResgateDTOResponse result) {
                 alertDialog.dismiss();
-                ResgatePremioLotericaAgenciaActivity_.intent(getContext()).codigoResgateDTO(result.getPayload()).isLoterica(isLoterica).detalhesPremioDTO(detalhesPremioDTO).comprovante(comprovante).start();
+                if(isLoterica){
+                    Intent it = new Intent(ResultadoApostaConfirmadaActivity.this, ResgatePremioLotericaActivity.class);
+                    it.putExtra(DETALHES, Parcels.wrap(detalhesPremioDTO));
+                    it.putExtra(COMPROVANTE, Parcels.wrap(comprovante));
+                    it.putExtra(CODIGO_RESGATE, Parcels.wrap(result.getPayload()));
+                    startActivity(new Intent(it));
+                }else {
+                    ResgatePremioLotericaAgenciaActivity_.intent(getContext()).codigoResgateDTO(result.getPayload()).isLoterica(isLoterica).detalhesPremioDTO(detalhesPremioDTO).comprovante(comprovante).start();
+                }
+
             }
 
             @Override

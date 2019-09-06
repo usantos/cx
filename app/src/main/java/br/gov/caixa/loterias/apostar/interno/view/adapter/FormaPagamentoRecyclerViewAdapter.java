@@ -73,7 +73,7 @@ public class FormaPagamentoRecyclerViewAdapter  extends RecyclerView.Adapter<For
                                 DialogUtils.dismiss();
                                 valoresList.remove(getAdapterPosition());
                                 notifyDataSetChanged();
-                                formaDePagamentoListener.itemRemoved();
+                                formaDePagamentoListener.itemRemoved(false);
                                 selected_position = -1;
                             }
 

@@ -50,6 +50,7 @@ import java.util.List;
 import java.util.Locale;
 
 import br.gov.caixa.loterias.apostar.interno.BuildConfig;
+import br.gov.caixa.loterias.apostar.interno.CartoesActivity;
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.SelecaoModalidadesResultados;
 import br.gov.caixa.loterias.apostar.interno.TutorialRapidaoActivity;
@@ -91,8 +92,9 @@ public class PrincipalActivity extends AppCompatActivity
         implements DiscreteScrollView.ScrollListener<HomeAdapter.ViewHolder>,
         DiscreteScrollView.OnItemChangedListener<HomeAdapter.ViewHolder> {
 
-
+    public static final String MENU_LATERAL = "MENU_LATERAL";
     private static final int ZXING_CAMERA_PERMISSION = 1;
+
     @ViewById
     public DiscreteScrollView homeCarousel;
     @ViewById
@@ -588,6 +590,9 @@ public class PrincipalActivity extends AppCompatActivity
                 break;
             case 5:
                 startActivity(new Intent(PrincipalActivity.this, CarrinhosFavoritosActivity.class));
+                break;
+            case 6:
+                startActivity(new Intent(PrincipalActivity.this, CartoesActivity.class).putExtra(MENU_LATERAL, true));
                 break;
             default:
                 break;

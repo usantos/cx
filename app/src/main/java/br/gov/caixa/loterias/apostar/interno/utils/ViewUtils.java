@@ -28,6 +28,7 @@ import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.AbsoluteSizeSpan;
+import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -507,6 +508,17 @@ public class ViewUtils {
 
         PositionStringBold positionStringBold = positionString(texto);
         SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(texto.replace("_", ""));
+        spannableStringBuilder.setSpan(new CustomTypefaceSpan("", font), positionStringBold.getStart(), positionStringBold.getEnd(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+
+        return spannableStringBuilder;
+    }
+
+    public static SpannableStringBuilder textColor(Context context, String texto,int idCor) {
+        Typeface font = ViewUtils.getFontFuturaBold(context);
+
+        PositionStringBold positionStringBold = positionString(texto);
+        SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(texto.replace("_", ""));
+        spannableStringBuilder.setSpan(new ForegroundColorSpan(context.getResources().getColor(idCor)) , positionStringBold.getStart(), positionStringBold.getEnd(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
         spannableStringBuilder.setSpan(new CustomTypefaceSpan("", font), positionStringBold.getStart(), positionStringBold.getEnd(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
 
         return spannableStringBuilder;
