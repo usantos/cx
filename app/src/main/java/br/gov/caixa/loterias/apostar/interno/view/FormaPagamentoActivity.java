@@ -17,7 +17,6 @@ import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -257,8 +256,7 @@ public class FormaPagamentoActivity extends SettingToolbarActivity implements Fo
                     RedirectNetwork.checkRedirectSucesso( response.getRedirect(), FormaPagamentoActivity.this);
                 }else{
                     FirebaseManager.registraEvento(FormaPagamentoActivity.this ,"EFETUOU_PAGAMENTO_SUCESSO");
-                    Intent activity = new Intent(FormaPagamentoActivity.this, ConfirmacaoPagamentoActivity.class);
-                    startActivity(activity);
+                    startActivity(new Intent(FormaPagamentoActivity.this, ConfirmacaoPagamentoActivity.class));
                 }
             }
 
