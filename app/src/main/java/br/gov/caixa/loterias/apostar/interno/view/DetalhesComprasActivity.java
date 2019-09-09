@@ -126,7 +126,9 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         setaIndicador.setVisibility(View.INVISIBLE);
 
         TextView dataCompra = findViewById(R.id.dataCompraTextView);
-        dataCompra.setText("Data: " + compraDTO.getDataEfetivacaoDebito());
+        if(compraDTO.getDataFinalizacaoCompra() != null){
+            dataCompra.setText("Data: " + compraDTO.getDataFinalizacaoCompra());
+        }
         TextView valorCompra = findViewById(R.id.valorCompra);
         valorCompra.setText(ViewUtils.textFuturaAndFuturaBold(this, this.getString(R.string.label_compra_lista_valor,
                 ViewUtils.getMoedaFormat(compraDTO.getValorTotal()))));

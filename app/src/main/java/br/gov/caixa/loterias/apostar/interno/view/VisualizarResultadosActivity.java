@@ -59,6 +59,10 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
     private static final String COR_CLARA = "COR_CLARA";
     private static final String COR_ESCURA = "COR_ESCURA";
     private static final String TRAPEZIO = "TRAPEZIO";
+    private static final String ANIMACAO = "ANIMACAO";
+    private static final int ANIM_DIR = 1;
+    private static final int ANIM_ESQ = 2;
+    private static final int ANIM_NULL = 3;
 
     private String txtModalidade;
     private Integer concursoAtual;
@@ -66,7 +70,7 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
     private Integer corClara;
     private Integer corEscura;
     private Integer resourceTrapezio;
-
+    private int direcaoAnimacao;
 
     private Toolbar toolbar;
 
@@ -103,13 +107,13 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_visualizar_resultados);
-        getExtras();
-        setViews();
-        setMethods();
+        pegaExtras();
+        setaViews();
+        setaMetodos();
     }
 
 
-    private void setViews() {
+    private void setaViews() {
         toolbar = findViewById(R.id.toolbar);
         tituloModalidade = findViewById(R.id.tv_titulo_modalidade);
         layoutHeader = findViewById(R.id.cl_top_modalidades);
@@ -141,7 +145,7 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
         setTitle("");
 
     }
-    private void setMethods(){
+    private void setaMetodos(){
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         if (txtModalidade != null) {
@@ -171,14 +175,14 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
             {
                 btnProximoConcurso.setEnabled(false);
                 btnConcursoAnterior.setEnabled(false);
-                reestartActivity(proximo);
+                reestartActivity(proximo,ANIM_DIR);
             });
         }
 
         btnConcursoAnterior.setOnClickListener(view -> {
             btnProximoConcurso.setEnabled(false);
             btnConcursoAnterior.setEnabled(false);
-            reestartActivity(anterior);}
+            reestartActivity(anterior,ANIM_ESQ);}
             );
         btnVoltar.setOnClickListener(view -> finish());
         configBtnsPesq();
@@ -224,7 +228,7 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
         if(etPesquisar.getText().length() > 0 && concursoAtual != null){
             if(Integer.valueOf( etPesquisar.getText().toString()) <= concursoAtual){
                 etPesquisar.setVisibility(View.GONE);
-                reestartActivity(etPesquisar.getText().toString());
+                reestartActivity(etPesquisar.getText().toString(),ANIM_NULL);
             }else {
                 ViewUtils.alert(this,getString(R.string.resultados_validacao_concurso,String.valueOf(concursoAtual)));
             }
@@ -333,7 +337,7 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
         if(concursoAtual == null){
             concursoAtual = response.getPayload().getConcurso().getNumero();
         } else {
-            configAnimacao();
+            configAnimacao(direcaoAnimacao);
         }
         if(concursoAlvo == null){
             concursoAlvo = concursoAtual;
@@ -369,15 +373,22 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
         setTitlePorConcurso(concursoAlvo);
     }
 
-    private void configAnimacao(){
-        AnimatorSet mSetRightOut = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.out_animation);
-        AnimatorSet mSetLeftIn = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.in_animation);
-        mSetRightOut.setTarget(scrollResultado);
-        mSetLeftIn.setTarget(scrollResultado);
-        //mSetRightOut.start();
-        mSetLeftIn.start();
+    private void configAnimacao(int ladoAnim){
+        if(ladoAnim != ANIM_NULL){
+            AnimatorSet animIn, animOut;
 
-
+            if(ladoAnim == ANIM_ESQ){
+                animOut = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.esq_out_anim);
+                animIn = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.esq_in_anim);
+            }else {
+                animOut = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.dir_out_anim);
+                animIn = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.dir_in_anim);
+            }
+            animOut.setTarget(scrollResultado);
+            animIn.setTarget(scrollResultado);
+            animIn.start();
+            animOut.start();
+        }
     }
 
     private void adicionarPremiados(List<PremiacaoConcursoDTO> listaPremiados){
@@ -439,7 +450,7 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
         setTitle(getString(R.string.resultados_titulo, String.valueOf(concurso)));
     }
 
-    private void getExtras() {
+    private void pegaExtras() {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             txtModalidade = bundle.getString(MODALIDADE);
@@ -449,12 +460,13 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
                 corClara = bundle.getInt(COR_CLARA);
                 corEscura =  bundle.getInt(COR_ESCURA);
                 resourceTrapezio =  bundle.getInt(TRAPEZIO);
+                direcaoAnimacao = bundle.getInt(ANIMACAO);
             }
 
         }
     }
 
-    private void reestartActivity(String concurso){
+    private void reestartActivity(String concurso, int direcaoAnimacao){
         Intent it = new Intent(VisualizarResultadosActivity.this,VisualizarResultadosActivity.class);
         it.putExtra(CONCURSO_ALVO,concurso);
         it.putExtra(MODALIDADE, txtModalidade);
@@ -462,6 +474,7 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
         it.putExtra(COR_ESCURA,corEscura);
         it.putExtra(TRAPEZIO,resourceTrapezio);
         it.putExtra(CONCURSO_ATUAL,concursoAtual);
+        it.putExtra(ANIMACAO,direcaoAnimacao);
         startActivity(it);
         this.overridePendingTransition(0, 0);
         finish();

@@ -312,7 +312,6 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
             @Override
             public void onResponse(CarrinhoDTOResponse response) {
                 DialogUtils.dismiss();
-                //CarrinhoActivity_.intent(SimularApostaActivity.this).carrinho().start();
                 Bundle args = new Bundle();
                 args.putParcelable(CARRINHO, Parcels.wrap(response.getPayload()));
                 startActivity(new Intent(SimularApostaActivity.this, CarrinhoActivity.class).putExtras(args));
@@ -325,9 +324,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
             public void onErrorResponse(VolleyError error) {
                 DialogUtils.dismiss();
                 if (MensagensNetwork.isUnauthorizedError(error)) {
-                    //CarrinhoActivity_.intent(SimularApostaActivity.this).lerCarrinhoLocal(true).start();
                     startActivity(new Intent(SimularApostaActivity.this, CarrinhoActivity.class).putExtra(LER_CARRINHO_LOCAL, true));
-
                 } else {
                     RedirectNetwork.checkRedirect( error, SimularApostaActivity.this );
                 }

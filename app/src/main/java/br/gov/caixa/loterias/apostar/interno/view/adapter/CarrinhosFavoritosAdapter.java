@@ -226,7 +226,7 @@ public class CarrinhosFavoritosAdapter extends RecyclerView.Adapter<CarrinhosFav
     private void chamaTransformarCarrinho(int opcaoSelecionada){
         ViewUtils.alertTitleButtonYesOrNotListener(context, context.getResources().getString(R.string.carrinho_fav_deseja_transformar), (dialogInterface, i) -> {
         DialogUtils.show(context);
-        ApostaBO_.getInstance_(context).tranformarCarrinho(idCarrinhoAtual, opcaoSelecionada,new RequestListener<CarrinhoDTOResponse>() {
+        ApostaBO_.getInstance_(context).transformarCarrinho(idCarrinhoAtual, opcaoSelecionada,new RequestListener<CarrinhoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoDTOResponse result) {
                 DialogUtils.dismiss();

@@ -19,11 +19,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import br.gov.caixa.loterias.apostar.interno.R;
-import br.gov.caixa.loterias.apostar.interno.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
+import br.gov.caixa.loterias.apostar.interno.model.bo.keycloak.KeycloakBO_;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.InformacaoPagamentoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RetornoPadraoDTO;
 import br.gov.caixa.loterias.apostar.interno.utils.ValidacaoUtils;
@@ -74,8 +74,8 @@ public class JogosConfirmadosPremioMercadoPagoActivity extends AppCompatActivity
             idAposta = b.getLong( "idAposta" );
         }
 
-
-        emailPremioMercadoPagoEditText.setText( SessaoUsuario.getInstance().getEmail() );
+        emailPremioMercadoPagoEditText.setText(KeycloakBO_.getInstance_(this).getFromToken("email"));
+        emailPremioMercadoPagoEditText.setSelection(emailPremioMercadoPagoEditText.getText().length());
 
         resgatarPremioButton.setOnClickListener(view -> {
             if (!ValidacaoUtils.validarEmail( emailPremioMercadoPagoEditText.getText().toString() )) {
