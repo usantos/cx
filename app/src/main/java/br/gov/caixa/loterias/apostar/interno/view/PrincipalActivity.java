@@ -377,7 +377,7 @@ public class PrincipalActivity extends AppCompatActivity
         relativeContentPrincipal.setEnabled(false);
         actionApresentarTrevo.setEnabled(false);
         atalhoRapidoLoterias.setVisibility(View.VISIBLE);
-        EstiloModalidade estilo = new EstiloModalidade(data.get(homeCarousel.getCurrentItem()).getTipoModalidade());
+        EstiloModalidade estilo = new EstiloModalidade(data.get(infiniteAdapter.getRealCurrentPosition()).getTipoModalidade());
         AnimacoesAcessoRapido animacoesAcessoRapido = new AnimacoesAcessoRapido(
                 v,
                 relativeContentPrincipal,
@@ -402,7 +402,7 @@ public class PrincipalActivity extends AppCompatActivity
     private void AnimacaoFecharMenuRapido(View v) {
         relativeContentPrincipal.setEnabled(true);
         actionApresentarTrevo.setEnabled(false);
-        EstiloModalidade estilo = new EstiloModalidade(data.get(homeCarousel.getCurrentItem()).getTipoModalidade());
+        EstiloModalidade estilo = new EstiloModalidade(data.get(infiniteAdapter.getRealCurrentPosition()).getTipoModalidade());
         AnimacoesAcessoRapido animacoesAcessoRapido = new AnimacoesAcessoRapido(
                 v,
                 relativeContentPrincipal,

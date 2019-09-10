@@ -233,7 +233,7 @@ public class CarrinhosFavoritosAdapter extends RecyclerView.Adapter<CarrinhosFav
                 if (result.getRedirect() != null) {
                     RedirectNetwork.checkRedirectSucesso(result.getRedirect(), activity);
                 }
-                if(dialogSegmented.isShowing()){
+                if(dialogSegmented != null && dialogSegmented.isShowing()){
                     dialogSegmented.dismiss();
                 }
                 activity.startActivity(new Intent(activity, CarrinhoActivity.class));

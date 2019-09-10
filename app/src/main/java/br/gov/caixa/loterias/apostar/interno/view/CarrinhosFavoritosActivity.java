@@ -40,12 +40,12 @@ public class CarrinhosFavoritosActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_carrinhos_favoritos);
         setaViews();
-        setaMetodos();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        setaMetodos();
     }
 
     private void setaViews() {

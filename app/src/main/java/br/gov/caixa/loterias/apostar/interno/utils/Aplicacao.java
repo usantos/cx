@@ -96,8 +96,10 @@ class ActivityLifecycleCallbacks implements Application.ActivityLifecycleCallbac
     }
 
     public void atualizaBuscaParametros(Activity activity) {
+        if(!activity.isDestroyed()) {
+            loadViewProgress = LoadingViewLoterias.show(activity);
+        }
 
-        loadViewProgress = LoadingViewLoterias.show(activity);
         if (activity.getClass().toString().equalsIgnoreCase(SplashScreenActivity.class.toString())) {
             loadViewProgress.dismiss();
         }
