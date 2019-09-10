@@ -2,16 +2,12 @@ package br.gov.caixa.loterias.apostar.interno.model.bo;
 
 import android.content.Context;
 import android.net.Uri;
-import android.support.annotation.Nullable;
 
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
 
-import net.openid.appauth.AuthorizationException;
 import net.openid.appauth.AuthorizationService;
 import net.openid.appauth.AuthorizationServiceConfiguration;
 import net.openid.appauth.TokenRequest;
-import net.openid.appauth.TokenResponse;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.Bean;
@@ -72,23 +68,26 @@ public class BaseBO {
                         TokenRequest tokenRequest = tokenBuilder.build();
 
                         authorizationService.performTokenRequest(tokenRequest, (response, ex) -> {
-                            if (response.accessToken == null || response.refreshToken == null) {
-                                listener.onErrorResponse(error);
-                            } else {
-                                KeycloakBO_.getInstance_(context).setAccessToken(response.accessToken);
-                                KeycloakBO_.getInstance_(context).setRefreshToken(response.refreshToken);
-
-                                if (keycloakBO.getAccessToken() != null) {
-                                    //Atualiza o token com os headers
-                                    headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
-                                    request.setHeaders(headers);
-                                    //Refaz a conexão
-                                    silceConnection.request(request);
-                                } else {
+                            if (response != null) {
+                                if (response.accessToken == null || response.refreshToken == null) {
                                     listener.onErrorResponse(error);
-                                }
-                            }
+                                } else {
+                                    KeycloakBO_.getInstance_(context).setAccessToken(response.accessToken);
+                                    KeycloakBO_.getInstance_(context).setRefreshToken(response.refreshToken);
 
+                                    if (keycloakBO.getAccessToken() != null) {
+                                        //Atualiza o token com os headers
+                                        headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
+                                        request.setHeaders(headers);
+                                        //Refaz a conexão
+                                        silceConnection.request(request);
+                                    } else {
+                                        listener.onErrorResponse(error);
+                                    }
+                                }
+                            }else {
+                                listener.onErrorResponse(error);
+                            }
                         });
                     });
                 } else{

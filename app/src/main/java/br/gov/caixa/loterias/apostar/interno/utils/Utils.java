@@ -1,15 +1,13 @@
 package br.gov.caixa.loterias.apostar.interno.utils;
 
+import android.content.Context;
+import android.os.Build;
 import android.os.Handler;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.util.Base64;
-import android.util.Log;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-
-import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Random;
@@ -50,7 +48,7 @@ public class Utils {
         }
     }
 
-    private static String getJson(String strEncoded) throws UnsupportedEncodingException{
+    private static String getJson(String strEncoded) throws UnsupportedEncodingException {
         byte[] decodedBytes = Base64.decode(strEncoded, Base64.URL_SAFE);
         return new String(decodedBytes, "UTF-8");
     }
@@ -60,5 +58,17 @@ public class Utils {
             random = new Random();
         }
         return random;
+    }
+
+    public static void vibra(){
+        Context context = Aplicacao.application.getApplicationContext();
+        Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+        // Vibrate for 500 milliseconds
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            v.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
+        } else {
+            //deprecated in API 26
+            v.vibrate(500);
+        }
     }
 }

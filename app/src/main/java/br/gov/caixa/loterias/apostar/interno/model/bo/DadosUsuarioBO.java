@@ -34,7 +34,8 @@ import static org.androidannotations.annotations.EBean.Scope.Singleton;
 public class DadosUsuarioBO extends BaseBO {
 
     private static final String USUARIO_KEY = "USUARIO_KEY";
-        private final static String RAPIDAO_KEY = "RAPIDAO_KEY";
+    private final static String RAPIDAO_KEY = "RAPIDAO_KEY";
+    private final static String LOGIN_SUCESSO = "LOGIN_SUCESSO";
 
     private static final String NOME = "NOME";
     private static final String CPF = "CPF";

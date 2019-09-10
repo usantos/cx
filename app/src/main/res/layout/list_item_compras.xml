@@ -67,6 +67,15 @@
                     android:fontFamily="@font/arialmt"
                     android:textSize="14.2sp"
                     tools:text="Conc. 2587" />
+
+                <TextView
+                    android:id="@+id/tv_teimosinhas"
+                    android:layout_marginTop="30dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/arialmt"
+                    android:textSize="12.2sp"
+                    tools:text="1 Teimosinha" />
             </LinearLayout>
 
             <LinearLayout
@@ -75,15 +84,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.7"
                 android:orientation="vertical">
-                <!--<TextView-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:textColor="@color/branco"-->
-                <!--android:fontFamily="@font/arialmt"-->
-                <!--android:textSize="14.2sp"-->
-                <!--android:id="@+id/SeusNumerosListaComprasTextView"-->
-                <!--android:text="01 - 02 - 03 - 04 - 05 - 06"/>-->
-
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
@@ -104,9 +104,7 @@
             android:layout_weight="1"
             android:fontFamily="@font/arialmt"
             android:textSize="14.2sp"
-            tools:text="Confirmada"
-
-            />
+            tools:text="Confirmada" />
 
         <Button
             android:id="@+id/VejaOsResultadosListaComprasButton"

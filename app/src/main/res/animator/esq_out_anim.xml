@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android">
+    <objectAnimator
+        android:valueFrom="-270"
+        android:valueTo="-360"
+        android:propertyName="rotationY"
+        android:startOffset="@integer/mpsdk_card_flip_time_half"
+        android:duration="@integer/mpsdk_card_flip_time_half" />
+</set>

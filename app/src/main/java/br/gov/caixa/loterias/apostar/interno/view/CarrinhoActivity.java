@@ -21,6 +21,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.gov.caixa.loterias.apostar.interno.CartoesActivity;
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO;
@@ -93,7 +94,6 @@ public class CarrinhoActivity extends AppCompatActivity {
         finish();
         return true;
     }
-
 
     private void lerCarrinho() {
         if(getIntent().getComponent().getClassName().equals(CarrinhoActivity.class.getName())){
@@ -216,7 +216,7 @@ public class CarrinhoActivity extends AppCompatActivity {
                 ocorrendoValidacao = false;
                 DialogUtils.dismiss();
                 CarrinhoSingleton.getInstance().setCarrinho(carrinho);
-                startActivity(new Intent(CarrinhoActivity.this, FormaPagamentoActivity.class));
+                startActivity(new Intent(CarrinhoActivity.this, CartoesActivity.class));
             }
 
             @Override

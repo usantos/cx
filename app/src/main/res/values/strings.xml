@@ -302,12 +302,6 @@
     <string name="label_otimo_novo_nome_sua_aposta">Ótimo! o novo nome da sua aposta é</string>
     <string name="texto_futura_bold">_%s_</string>
 
-    <!-- Loterica Resgate Prêmio -->
-    <string name="label_loterica_minusculo">lotérica</string>
-    <string name="label_diriga_unidade_loterica_preferencia">Dirija-se à unidade lotérica de sua preferência</string>
-    <string name="label_apresente_qr_code_acima">Apresente o QR Code acima</string>
-    <string name="label_digite_cpf">Digite seu CPF</string>
-
     <!-- Agência Resgate Prêmio -->
     <string name="label_agencia_minusculo">agência</string>
     <string name="label_dirigir_para_agencia">Dirija-se a uma agência de sua preferência</string>
@@ -486,7 +480,6 @@
     <string name="carrinho_fav_manter_surp">Manter apostas como\nsurpresinhas</string>
     <string name="carrinho_fav_subtitulo">Aqui estão todos os seus carrinho favoritos.</string>
     <string name="carrinho_fav_lbl_desc">Você pode excluir, detalhar e transformar no seu carrinho atual.</string>
-
     <string name="carrinho_fav_det_subtitulo">Apostas do carrinho favorito escolhido</string>
     <string name="carrinho_fav_det_desc">Nesta área estão todas as suas apostas da sorte.\nÉ só escolher e apostar. Boa sorte!</string>
     <string name="carrinho_fav_vazio">Você ainda não possui carrinhos favoritos.</string>
@@ -496,5 +489,28 @@
     <string name="carrinho_fav_incluir_carrinho">Incluir no carrinho</string>
     <string name="carrinho_fav_segmented_desc">Existem 2 concursos abertos para a {modalidade}.\nDeseja incluir no carrinho qual concurso?</string>
 
+    <!-- Meus Cartões -->
+    <string name="cartoes_titulo_menu_lat">Cartões</string>
+    <string name="cartoes_titulo">Pagamento</string>
+    <string name="cartoes_subt_menu_lat">Cartões cadastrados</string>
+    <string name="cartoes_desc_menu_lat">Confira aqui sua lista de cartões salvos</string>
+    <string name="cartoes_subt">Seus Cartões</string>
+    <string name="cartoes_desc">Escolha um cartão e cruze os dedos</string>
+    <string name="cartoes_ir_rapidao_tutorial">Você ainda não possui cartões,que tal conhecer o _Rapidão_ e já cadastrar um?</string>
+    <string name="so_bora">Só bora!</string>
+    <string name="cartoes_ir_rapidao">Você não tem nenhum cartao, bora pro _Rapidão_?</string>
+    <string name="partiu">Partiu!</string>
 
+    <!-- Resgate Lotérica -->
+    <string name="rsgt_lt_btn_gerar">Gerar\nnovamente</string>
+    <string name="rsgt_lt_msg_qr_valido">O QR Code é válido por {tempo} minutos\nacompanhe o contador:</string>
+    <string name="rsgt_lt_msg_qr_invalido">O QR Code expirou</string>
+    <string name="rsgt_lt_msg_info_3">Aproveite seu _prêmio_!</string>
+
+    <!-- Loterica Resgate Prêmio -->
+    <string name="label_loterica_minusculo">lotérica</string>
+    <string name="label_diriga_unidade_loterica_preferencia">Escolha uma Lotérica mais próxima</string>
+    <string name="label_apresente_qr_code_acima">Mostre o QR Code ao atendente</string>
+    <string name="label_aproveite_premio">Aproveite seu prêmio</string>
+    <string name="label_digite_cpf">Digite seu CPF</string>
 </resources>

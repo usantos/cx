@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.util.Base64;
 import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
@@ -15,6 +16,10 @@ import android.webkit.WebView;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.EBean;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.nio.charset.Charset;
 
 import br.gov.caixa.loterias.apostar.interno.BuildConfig;
 import br.gov.caixa.loterias.apostar.interno.model.bo.DadosUsuarioBO;
@@ -78,6 +83,22 @@ public class KeycloakBO {
             cookieSyncMngr.stopSync();
             cookieSyncMngr.sync();
         }
+    }
+
+    public String getFromToken(String attr){
+        String separar[] =  getAccessToken().split("\\.");
+        String tokenCorpo = separar[1];
+        byte bytes[] = Base64.decode(tokenCorpo, Base64.URL_SAFE);
+        tokenCorpo = new String(bytes, Charset.forName("UTF-8"));
+        JSONObject jsonObject;
+        String attrBuscado = "";
+        try {
+            jsonObject = new JSONObject(tokenCorpo);
+            attrBuscado = jsonObject.getString(attr);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return attrBuscado;
     }
 
     public interface OnRefreshAccess{
