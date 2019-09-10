@@ -2,6 +2,7 @@ package br.gov.caixa.loterias.apostar.interno.view;
 
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -205,7 +206,7 @@ public class PrincipalActivity extends AppCompatActivity
 
     private void listenerSair() {
         viewSair.setOnClickListener((View v) -> {
-            sairLogin();
+            sairLogin(this);
         });
     }
 
@@ -437,7 +438,8 @@ public class PrincipalActivity extends AppCompatActivity
         }
     }
 
-    private void sairLogin() {
+    private void sairLogin(Activity activity) {
+
         ViewUtils.alertTitleButtonYesOrNotListener(this, getResources().getString(R.string.MA008), (dialog, which) -> {
             if (DadosUsuarioBO.checarUsuarioLogado(PrincipalActivity.this)) {
                 final AlertDialog loadViewProgress = LoadingViewLoterias.show(PrincipalActivity.this);
@@ -448,7 +450,7 @@ public class PrincipalActivity extends AppCompatActivity
                     public void onResponse(NetworkResponse response) {
                         FirebaseManager.registraEvento(PrincipalActivity.this ,"EFETUOU_LOGOUT_SUCESSO");
 
-                        AcessoBO_.getInstance_(PrincipalActivity.this).iniciarLogoutSSO();
+                        AcessoBO_.getInstance_(PrincipalActivity.this).iniciarLogoutSSO(activity);
                         LoginSP.loginRealizado(false);
                         realizandoLogin = true;
                         loadViewProgress.dismiss();
