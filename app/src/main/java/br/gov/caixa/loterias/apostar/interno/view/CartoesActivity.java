@@ -1,4 +1,4 @@
-package br.gov.caixa.loterias.apostar.interno;
+package br.gov.caixa.loterias.apostar.interno.view;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -35,6 +35,8 @@ import org.json.JSONObject;
 
 import java.util.List;
 
+import br.gov.caixa.loterias.apostar.interno.BuildConfig;
+import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bean.MeioPagamento;
 import br.gov.caixa.loterias.apostar.interno.model.bean.ParametrosPagamento;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO;
@@ -50,9 +52,6 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.CarrinhoSi
 import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostar.interno.utils.MercadoPagoUtil;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
-import br.gov.caixa.loterias.apostar.interno.view.ConfirmacaoPagamentoActivity;
-import br.gov.caixa.loterias.apostar.interno.view.ListaRapidaoActivity;
-import br.gov.caixa.loterias.apostar.interno.view.NovaFormaPagamentoActivity;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.CartoesRecyclerViewAdapter;
 import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
 import br.gov.caixa.loterias.apostar.interno.view.listener.FormaDePagamentoListener;
@@ -298,7 +297,7 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
         loadViewProgress = LoadingViewLoterias.show(this);
         MercadoPago mMercadoPago = new MercadoPago.Builder()
                 .setContext(this)
-                .setPublicKey( BuildConfig.PUBLIC_KEY_MP )
+                .setPublicKey(BuildConfig.PUBLIC_KEY_MP)
                 .build();
         mMercadoPago.createToken(savedCardToken, new Callback<Token>() {
             @Override

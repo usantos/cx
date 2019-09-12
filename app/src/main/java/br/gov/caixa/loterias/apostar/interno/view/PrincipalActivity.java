@@ -51,10 +51,7 @@ import java.util.List;
 import java.util.Locale;
 
 import br.gov.caixa.loterias.apostar.interno.BuildConfig;
-import br.gov.caixa.loterias.apostar.interno.CartoesActivity;
 import br.gov.caixa.loterias.apostar.interno.R;
-import br.gov.caixa.loterias.apostar.interno.SelecaoModalidadesResultados;
-import br.gov.caixa.loterias.apostar.interno.TutorialRapidaoActivity;
 import br.gov.caixa.loterias.apostar.interno.model.bean.DadosUsuarioToken;
 import br.gov.caixa.loterias.apostar.interno.model.bean.Modalidade;
 import br.gov.caixa.loterias.apostar.interno.model.bean.SessaoUsuario;

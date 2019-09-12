@@ -50,7 +50,7 @@ import br.gov.caixa.loterias.apostar.interno.view.fragment.ResultadoGenericoFrag
 import br.gov.caixa.loterias.apostar.interno.view.fragment.ResultadoLotecaFragment;
 import br.gov.caixa.loterias.apostar.interno.view.fragment.ResultadoLotogolFragment;
 import br.gov.caixa.loterias.apostar.interno.view.fragment.ResultadoTimemaniaDiaDeSorteFragment;
-import static br.gov.caixa.loterias.apostar.interno.SelecaoModalidadesResultados.MODALIDADE;
+import static br.gov.caixa.loterias.apostar.interno.view.SelecaoModalidadesResultados.MODALIDADE;
 
 public class VisualizarResultadosActivity extends AppCompatActivity {
 
@@ -211,7 +211,7 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
 
         etPesquisar.setOnEditorActionListener(
                 (v, actionId, event) -> {
-                    if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    if (actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_NEXT) {
                         configuraPesquisa();
                     }
                     return true;
