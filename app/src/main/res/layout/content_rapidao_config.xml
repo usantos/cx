@@ -279,7 +279,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingHorizontal="16dp"
-                    android:text="Quais apostas você quer no rapidão?"
+                    android:text="Quais modalidades você quer no rapidão?"
                     android:textColor="@color/azulFormNovoTipoPagamento"
                     android:textSize="14.2sp"
                     android:textStyle="bold" />
