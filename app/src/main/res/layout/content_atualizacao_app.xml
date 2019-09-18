@@ -30,15 +30,16 @@
         android:background="@color/linhaDivisa"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/guidelineDezoitoAnos"/>
+        app:layout_constraintTop_toBottomOf="@+id/guidelineDezoitoAnos" />
 
     <Button
+        android:id="@+id/atualizarButton"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="16dp"
         android:layout_marginHorizontal="16dp"
         android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         android:background="@color/amarelo"
         android:fontFamily="@font/futura_std_bold"
         android:text="@string/title_atualizar"
@@ -47,8 +48,7 @@
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:id="@+id/atualizarButton"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textViewTextoRestrito"
@@ -71,9 +71,9 @@
         android:id="@+id/txtVersaoAtualizacao"
         android:layout_width="100dp"
         android:layout_height="17dp"
-        android:layout_marginBottom="80dp"
-        android:layout_marginEnd="196dp"
         android:layout_marginStart="170dp"
+        android:layout_marginEnd="196dp"
+        android:layout_marginBottom="80dp"
         android:fontFamily="@font/font_family_futura"
         android:text="v 1.0.0"
         android:textAlignment="center"
@@ -87,6 +87,5 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.5"
-        />
+        app:layout_constraintGuide_percent="0.5" />
 </android.support.constraint.ConstraintLayout>
