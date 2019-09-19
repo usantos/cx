@@ -8,7 +8,8 @@
     android:fitsSystemWindows="true"
     >
 
-    <include layout="@layout/app_bar_degrade_with_icon"/>
+    <include layout="@layout/app_bar_degrade_with_icon" />
+
     <include layout="@layout/content_app_indisponivel" />
 
 </android.support.constraint.ConstraintLayout>

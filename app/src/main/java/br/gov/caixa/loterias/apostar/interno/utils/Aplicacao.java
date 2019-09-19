@@ -96,18 +96,18 @@ class ActivityLifecycleCallbacks implements Application.ActivityLifecycleCallbac
     }
 
     public void atualizaBuscaParametros(Activity activity) {
-        if(!activity.isDestroyed()) {
+        if(activity != null && !activity.isDestroyed()) {
             loadViewProgress = LoadingViewLoterias.show(activity);
+            if (activity.getClass().toString().equalsIgnoreCase(SplashScreenActivity.class.toString())) {
+                loadViewProgress.dismiss();
+            }
         }
 
-        if (activity.getClass().toString().equalsIgnoreCase(SplashScreenActivity.class.toString())) {
-            loadViewProgress.dismiss();
-        }
         final DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(Aplicacao.application.getApplicationContext());
         dadosCorporativosBO.parametrosSimulacao(new RequestListener<ParametrosSimulacaoResponse>() {
             @Override
             public void onResponse(ParametrosSimulacaoResponse response) {
-                if(!activity.isDestroyed()){
+                if(activity != null && !activity.isDestroyed()){
                     loadViewProgress.dismiss();
                 }
                 if (response.getPayload().getParametros().isEmpty()) {
@@ -124,7 +124,7 @@ class ActivityLifecycleCallbacks implements Application.ActivityLifecycleCallbac
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                if(!activity.isDestroyed()){
+                if(activity != null && !activity.isDestroyed()){
                     loadViewProgress.dismiss();
                 }
                 RedirectNetwork.checkRedirect(error, activity);
