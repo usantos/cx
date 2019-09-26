@@ -51,6 +51,7 @@ import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO_;
+import br.gov.caixa.loterias.apostar.interno.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.data.CompletaJogoRsp;
@@ -531,6 +532,9 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
                 salvarApostaLayout.setOnClickListener(null);
 
                 salvarApostaLayout.findViewById(R.id.btnSalvarAposta).setOnClickListener(this);
+                if(!DadosUsuarioBO.checarUsuarioLogado(getActivity())){
+                    RedirectNetwork.connectKeycloak(getActivity());
+                }
             }
             break;
 

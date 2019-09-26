@@ -5,7 +5,6 @@ import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -18,6 +17,8 @@ import org.androidannotations.annotations.ViewById;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostar.interno.R;
+import br.gov.caixa.loterias.apostar.interno.model.bo.DadosUsuarioBO;
+import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ApostaFavoritaDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametroJogoDTO;
@@ -134,7 +135,9 @@ public class MesesFragment extends Fragment {
             parentActivity.getSalvarApostaLayout().setVisibility(View.VISIBLE);
             tamanhoBotaoSalvarAposta(parentActivity.getSalvarApostaLayout().getLayoutParams(), 64);
             parentActivity.getSalvarApostaLayout().setOnClickListener(v -> {
-
+                if(!DadosUsuarioBO.checarUsuarioLogado(getActivity())){
+                    RedirectNetwork.connectKeycloak(getActivity());
+                }
                 tamanhoBotaoSalvarAposta(parentActivity.getSalvarApostaLayout().getLayoutParams(), 140);
                 parentActivity.getSalvarApostaLayout().setOnClickListener(null);
             });

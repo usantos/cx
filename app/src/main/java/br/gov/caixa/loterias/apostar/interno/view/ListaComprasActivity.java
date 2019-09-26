@@ -108,6 +108,7 @@ public class ListaComprasActivity extends AppCompatActivity {
     }
 
     private void callWebServiceCompras(){
+        offsetItem = 0;
         isMaisCompras = true;
         bloquearRequestScroll = false;
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);

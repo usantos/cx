@@ -62,6 +62,7 @@ public class KeycloakBO {
     public void limparSessao(Activity activity){
         DadosUsuarioBO.updateUsuarioLogado( activity, false );
         accessToken = null;
+        refreshToken = null;
         clearCookies(activity);
         WebView webView = new WebView(activity);
         webView.clearCache(true);

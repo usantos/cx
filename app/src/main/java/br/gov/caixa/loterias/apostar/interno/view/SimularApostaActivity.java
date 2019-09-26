@@ -445,15 +445,15 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                ViewUtils.alertTitleButton(SimularApostaActivity.this, R.string.label_atencao,
-                        MensagensNetwork.setMensagem(error, SimularApostaActivity.this),
-                        "Ok",dialog -> {
-                            salvarAposta(apostaFavorita);
-                        });
+                DialogUtils.dismiss();
+                RedirectNetwork.checkRedirect(error, SimularApostaActivity.this);
             }
         });
     }
     private void salvarAposta(ApostaFavoritaDTO aposta){
+        if(!DialogUtils.isShow()){
+            DialogUtils.show(this);
+        }
         dadosCorporativosBO.salvarApostaFavorita(aposta, new RequestListener<NetworkResponse>() {
             @Override
             public void onResponse(NetworkResponse response) {
