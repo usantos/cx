@@ -69,6 +69,7 @@ public class AcessoBO extends BaseBO {
         AuthorizationRequest authorizationRequest = builder.build();
         LoginSP.loginRealizado(false);
         Intent intent = new Intent(activity, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(activity, authorizationRequest.hashCode(), intent, 0);
 
