@@ -27,6 +27,7 @@
         <activity
             android:name=".view.CartoesActivity"
             android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustNothing"
             android:screenOrientation="portrait"/>
         <activity
             android:name=".view.DetalhesCarrinhoFavoritoActivity"
