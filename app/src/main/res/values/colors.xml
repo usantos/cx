@@ -15,6 +15,7 @@
     <color name="cinzaclaro">#eff5f6</color>
     <color name="cinzaescuro">#4e596b</color>
     <color name="cinza_button">#a5aab6</color>
+    <color name="cinza_total">#929ea0</color>
     <color name="verdeazul">#54bbab</color>
     <color name="amarelo">#feb21e</color>
     <color name="verdesenaclaro">#60a96b</color>
@@ -93,5 +94,9 @@
     <color name="black">#000000</color>
     <color name="white_6">#66ffffff</color>
     <color name="green_6">#66ffffff</color>
+
+    <color name="azul_card">#035FA9</color>
+    <color name="verde_card">#51B7AB</color>
+
 
 </resources>

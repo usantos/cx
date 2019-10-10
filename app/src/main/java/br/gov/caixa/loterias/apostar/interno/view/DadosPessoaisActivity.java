@@ -468,7 +468,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
             public void onResponse(UnidadeFederacaoDTOResponse response) {
                 listUf = response.getPayload();
                 for (UnidadeFederacaoDTO item : listUf){
-                    if (item.getId() == apostadorDTO.getMunicipioId().getIdUF()){
+                    if (item.getId().equals(apostadorDTO.getMunicipioId().getIdUF())){
                         editTextUFContent.setText( item.getNome() );
                     }
                 }
@@ -480,7 +480,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
                         municipioDTOList = response.getPayload();
 
                         for (MunicipioDTO item : municipioDTOList){
-                            if (item.getId().getNumero() == apostadorDTO.getMunicipioId().getNumero()){
+                            if (item.getId().getNumero().equals(apostadorDTO.getMunicipioId().getNumero())){
                                 editTextMunicipioContent.setText( item.getNome() );
                             }
                         }

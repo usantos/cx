@@ -7,9 +7,12 @@
     tools:context="br.gov.caixa.loterias.apostar.interno.view.ResgatePremioLotericaAgenciaActivity">
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:id="@+id/linearLayout"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
 
@@ -29,6 +32,27 @@
                 android:textSize="16sp"
                 android:textStyle="bold"
                 tools:text="tipo de resgate" />
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/duploResgateRelativeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:background="@color/cinza"
+            android:gravity="center_vertical"
+            android:paddingStart="@dimen/activity_vertical_margin"
+            android:paddingEnd="16dp">
+
+            <TextView
+                android:id="@+id/duploResgateText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textColor="@color/branco"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                tools:text="@string/label_resgatar_premio_loterica" />
         </RelativeLayout>
 
         <ScrollView
@@ -161,5 +185,22 @@
         </ScrollView>
 
     </LinearLayout>
+
+    <Button
+        android:id="@+id/buttonGerarPDF"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="50dp"
+        android:text="@string/label_gerar_pdf"
+        android:textAllCaps="false"
+        android:textStyle="bold"
+        android:textColor="@color/verdeazul"
+        android:background="@drawable/button_white_with_green_border"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
 </android.support.constraint.ConstraintLayout>

@@ -14,6 +14,8 @@ import java.io.UnsupportedEncodingException;
 
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bean.ErrorResponse;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.Bin;
+import br.gov.caixa.loterias.apostar.interno.utils.Aplicacao;
 
 /**
  * Created by cedesbr450 on 08/12/17.
@@ -60,13 +62,8 @@ public class MensagensNetwork {
             }
         }
 
-        if (errorResponse != null){
-            if (errorResponse.getMensagem() != null) {
-                errorResponse.setMensagem( context.getString( R.string.sistema_indisponivel ) );
-            }
-        } else {
+        if (errorResponse == null){
             errorResponse = new ErrorResponse();
-            errorResponse.setMensagem( context.getString( R.string.sistema_indisponivel ) );
         }
 
         switch (response.statusCode){
@@ -80,11 +77,23 @@ public class MensagensNetwork {
                 errorResponse.setMensagem(  context.getString(R.string.erro_500) );
                 break;
             default:
-                errorResponse.setMensagem(  context.getString(R.string.erro_500) );
+                if(errorResponse.getMensagem().isEmpty()){
+                    errorResponse.setMensagem(  context.getString(R.string.erro_500) );
+                }
             break;
         }
 
         return errorResponse.getMensagem();
+    }
+
+    public static String getErrorMessage(VolleyError error){
+        try{
+            String errorBody = Bin.fromBytes(error.networkResponse.data).toUtf8();
+            return new Gson().fromJson(errorBody, ErrorResponse.class).getMensagem();
+        } catch (Exception e){
+            return  Aplicacao.application.getApplicationContext().getString(R.string.erro_500);
+        }
+
     }
 
     public static boolean isUnauthorizedError(VolleyError error){

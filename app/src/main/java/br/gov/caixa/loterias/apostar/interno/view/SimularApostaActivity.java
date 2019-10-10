@@ -38,6 +38,7 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
+import org.parceler.Parcels;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -74,6 +75,8 @@ import br.gov.caixa.loterias.apostar.interno.view.fragment.SurpresinhaFragment.S
 import br.gov.caixa.loterias.apostar.interno.view.fragment.SurpresinhaFragment_;
 import br.gov.caixa.loterias.apostar.interno.view.listener.CartelaFragmentListener;
 
+import static br.gov.caixa.loterias.apostar.interno.view.CarrinhoActivity.CARRINHO;
+import static br.gov.caixa.loterias.apostar.interno.view.CarrinhoActivity.LER_CARRINHO_LOCAL;
 import static java.lang.String.format;
 
 @EActivity(R.layout.activity_simular_aposta)
@@ -133,6 +136,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
     private Bundle bundle;
     private ParametroMesDeSorte mesDeSorteCartela;
     private ParametroMesDeSorte mesDeSorteSurpresinha;
+    private final DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(this);
 
     //mocks
     public int qtdDezenasPossiveisSelecionado;
@@ -308,7 +312,9 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
             @Override
             public void onResponse(CarrinhoDTOResponse response) {
                 DialogUtils.dismiss();
-                CarrinhoActivity_.intent(SimularApostaActivity.this).carrinho(response.getPayload()).start();
+                Bundle args = new Bundle();
+                args.putParcelable(CARRINHO, Parcels.wrap(response.getPayload()));
+                startActivity(new Intent(SimularApostaActivity.this, CarrinhoActivity.class).putExtras(args));
                 if (response.getRedirect() != null){
                     RedirectNetwork.checkRedirectSucesso( response.getRedirect(), SimularApostaActivity.this);
                 }
@@ -318,7 +324,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
             public void onErrorResponse(VolleyError error) {
                 DialogUtils.dismiss();
                 if (MensagensNetwork.isUnauthorizedError(error)) {
-                    CarrinhoActivity_.intent(SimularApostaActivity.this).lerCarrinhoLocal(true).start();
+                    startActivity(new Intent(SimularApostaActivity.this, CarrinhoActivity.class).putExtra(LER_CARRINHO_LOCAL, true));
                 } else {
                     RedirectNetwork.checkRedirect( error, SimularApostaActivity.this );
                 }
@@ -418,62 +424,68 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         return flagApostaSalva;
     }
 
-    public void salvarAposta(final ApostaFavoritaDTO aposta, String nomeAposta, List<Integer> dezenasSelecionadas) {
-        final DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(this);
+    public void salvarAposta(final ApostaFavoritaDTO apostaFavorita, String nomeAposta, List<Integer> dezenasSelecionadas) {
+
         DialogUtils.show(this);
 
         DTOEnumInteger modalidade = new DTOEnumInteger();
         modalidade.setDescricao(parametroSimulacao.getConcurso().getModalidadeDetalhada().getDescricao());
         modalidade.setValor(parametroSimulacao.getConcurso().getModalidadeDetalhada().getValor());
-        aposta.setModalidade(modalidade);
+        apostaFavorita.setModalidade(modalidade);
 
-        aposta.setNome(nomeAposta);
-        aposta.setNumerosSelecionados(dezenasSelecionadas);
-        aposta.setId(Constantes.ZERO_LONG);
+        apostaFavorita.setNome(nomeAposta);
+        apostaFavorita.setNumerosSelecionados(dezenasSelecionadas);
+        apostaFavorita.setId(Constantes.ZERO_LONG);
 
-        dadosCorporativosBO.validarApostaFavorita(aposta, new RequestListener<NetworkResponse>() {
+        dadosCorporativosBO.validarApostaFavorita(apostaFavorita, new RequestListener<NetworkResponse>() {
             @Override
             public void onResponse(NetworkResponse response) {
-                dadosCorporativosBO.salvarApostaFavorita(aposta, new RequestListener<NetworkResponse>() {
-                    @Override
-                    public void onResponse(NetworkResponse response) {
-                        FirebaseManager.registraEvento(SimularApostaActivity.this ,"EFETUOU_ADICAO_APOSTA_FAVORITA_SUCESSO");
+                salvarAposta(apostaFavorita);
+            }
 
-                        DialogUtils.dismiss();
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                ViewUtils.alertTitleButton(SimularApostaActivity.this, R.string.label_atencao,
+                        MensagensNetwork.setMensagem(error, SimularApostaActivity.this),
+                        "Ok",dialog -> {
+                            salvarAposta(apostaFavorita);
+                        });
+            }
+        });
+    }
+    private void salvarAposta(ApostaFavoritaDTO aposta){
+        dadosCorporativosBO.salvarApostaFavorita(aposta, new RequestListener<NetworkResponse>() {
+            @Override
+            public void onResponse(NetworkResponse response) {
+                FirebaseManager.registraEvento(SimularApostaActivity.this ,"EFETUOU_ADICAO_APOSTA_FAVORITA_SUCESSO");
 
-                        RelativeLayout salvarApostaLayout = getSalvarApostaLayout();
+                DialogUtils.dismiss();
 
-                        salvarApostaLayout.setBackgroundResource(R.color.verdeazul);
-                        ViewGroup.LayoutParams relativelayoutParams = salvarApostaLayout.getLayoutParams();
+                RelativeLayout salvarApostaLayout = getSalvarApostaLayout();
 
-                        final float scale = getResources().getDisplayMetrics().density;
-                        relativelayoutParams.height = (int) (64 * scale + 0.5f);
+                salvarApostaLayout.setBackgroundResource(R.color.verdeazul);
+                ViewGroup.LayoutParams relativelayoutParams = salvarApostaLayout.getLayoutParams();
 
-                        salvarApostaLayout.setLayoutParams(relativelayoutParams);
+                final float scale = getResources().getDisplayMetrics().density;
+                relativelayoutParams.height = (int) (64 * scale + 0.5f);
 
-                        TextView tituloSalvarAposta = getTextoSalveEstaAposta();
-                        tituloSalvarAposta.setText(R.string.label_aposta_salva_carinha);
-                        tituloSalvarAposta.setGravity(Gravity.CENTER);
+                salvarApostaLayout.setLayoutParams(relativelayoutParams);
 
-                        ImageView starSalvarApostaImageView = getIconStarSalvar();
-                        starSalvarApostaImageView.setBackgroundResource(R.drawable.icon_favoritado);
+                TextView tituloSalvarAposta = getTextoSalveEstaAposta();
+                tituloSalvarAposta.setText(R.string.label_aposta_salva_carinha);
+                tituloSalvarAposta.setGravity(Gravity.CENTER);
 
-                        flagApostaSalva = true;
-                    }
+                ImageView starSalvarApostaImageView = getIconStarSalvar();
+                starSalvarApostaImageView.setBackgroundResource(R.drawable.icon_favoritado);
 
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        DialogUtils.dismiss();
-                        RedirectNetwork.checkRedirect(error, SimularApostaActivity.this);
-
-                    }
-                });
+                flagApostaSalva = true;
             }
 
             @Override
             public void onErrorResponse(VolleyError error) {
                 DialogUtils.dismiss();
                 RedirectNetwork.checkRedirect(error, SimularApostaActivity.this);
+
             }
         });
     }

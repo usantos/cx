@@ -100,6 +100,31 @@ public enum ModalidadeEnum implements Serializable {
         return "";
     }
 
+    public static ModalidadeEnum fromModalidadeDTO(ModalidadeDTO modalidade) {
+        switch (modalidade.getValor()) {
+            case 2:
+                return ModalidadeEnum.MEGA_SENA;
+            case 3:
+                return ModalidadeEnum.QUINA;
+            case 8:
+                return ModalidadeEnum.LOTOFACIL;
+            case 11:
+                return ModalidadeEnum.DIA_DE_SORTE;
+            case 14:
+                return ModalidadeEnum.LOTOGOL;
+            case 16:
+                return ModalidadeEnum.LOTOMANIA;
+            case 18:
+                return ModalidadeEnum.DUPLA_SENA;
+            case 19:
+                return ModalidadeEnum.LOTECA;
+            case 20:
+                return ModalidadeEnum.TIMEMANIA;
+
+        }
+        return null;
+    }
+
 
     public static ModalidadeEnum fromInteger( Integer valor) {
         switch (valor) {

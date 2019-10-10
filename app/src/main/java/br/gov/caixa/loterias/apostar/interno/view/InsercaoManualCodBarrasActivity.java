@@ -56,7 +56,7 @@ public class InsercaoManualCodBarrasActivity extends AppCompatActivity {
         editTextNumeroBilhete.addTextChangedListener(textWatcher);
         editTextNumeroBilhete.setFilters(new InputFilter[]{inputFilter});
         buttonContinuarInsercaoManualBilhetes.setOnClickListener(v -> {
-            if("".equals(editTextNumeroBilhete.getText())){
+            if(editTextNumeroBilhete.getText().toString().trim().length() == 0){
                 Toast.makeText(InsercaoManualCodBarrasActivity.this, "Informe o código do bilhete!", Toast.LENGTH_SHORT).show();
             }else{
                 try {

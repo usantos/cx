@@ -18,7 +18,6 @@ import java.util.Locale;
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
-import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.DetalheApostaConfirmadaLotecaAdapter;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.DetalheApostaConfirmadaLotogolAdapter;
 import br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightRecyclerView;
@@ -55,7 +54,7 @@ public class ApostaConfirmadaPartidaFragment extends Fragment {
         if (StringUtils.isEmpty(aposta.getHoraEfetivacao())) {
             dataHoraTextView.setText(aposta.getDataEfetivacao());
         } else {
-            dataHoraTextView.setText(ViewUtils.getDateAndHour(aposta.getDataEfetivacao(), aposta.getHoraEfetivacao()));
+            dataHoraTextView.setText(aposta.getDataEfetivacao() + " - " + aposta.getHoraEfetivacao());
         }
         statusApostaTextView.setText(aposta.getSituacao().getDescricao());
 

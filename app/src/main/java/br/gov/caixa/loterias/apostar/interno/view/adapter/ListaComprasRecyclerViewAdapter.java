@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -28,10 +29,12 @@ public final class ListaComprasRecyclerViewAdapter extends RecyclerView.Adapter<
 
     private final Context context;
     private final List<CompraDTO> listaCompras;
+    private final OnFavoritarClickListener listener;
 
-    public ListaComprasRecyclerViewAdapter(final Context context, final List<CompraDTO> listaCompras) {
+    public ListaComprasRecyclerViewAdapter(final Context context, final List<CompraDTO> listaCompras, OnFavoritarClickListener listener) {
         this.context = context;
         this.listaCompras = listaCompras;
+        this.listener = listener;
     }
 
     @Override
@@ -57,8 +60,9 @@ public final class ListaComprasRecyclerViewAdapter extends RecyclerView.Adapter<
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         if (listaCompras.size() != 0) {
             CompraDTO compra = listaCompras.get(position);
-
-            holder.dataCompra.setText("Data: " + listaCompras.get(position).getDataFinalizacaoCompra());
+            if(listaCompras.get(position).getDataFinalizacaoCompra() != null){
+                holder.dataCompra.setText("Data: " + listaCompras.get(position).getDataFinalizacaoCompra());
+            }
             holder.valorCompra.setText(br.gov.caixa.loterias.apostar.interno.utils.ViewUtils.getMoedaFormat(compra.getValorTotal()));
             final int ordemLista = position + 1;
 
@@ -76,6 +80,12 @@ public final class ListaComprasRecyclerViewAdapter extends RecyclerView.Adapter<
                 activity.putExtra("ordem", ordemLista);
                 context.startActivity(activity);
             });
+
+            holder.ibFavoritar.setOnClickListener( v -> {
+                if(listener != null){
+                    listener.onItemClick(listaCompras.get(position));
+                }
+            });
         }
     }
 
@@ -92,13 +102,18 @@ public final class ListaComprasRecyclerViewAdapter extends RecyclerView.Adapter<
         protected TextView dataCompra;
         protected TextView valorCompra;
         protected TextView itemCompraOrdemTextView;
+        protected ImageButton ibFavoritar;
 
         public ViewHolder(final View itemView) {
             super(itemView);
             dataCompra = itemView.findViewById(R.id.dataCompraTextView);
             valorCompra = itemView.findViewById(R.id.valorCompra);
             itemCompraOrdemTextView = itemView.findViewById(R.id.situacaoCompraTextView);
+            ibFavoritar = itemView.findViewById(R.id.ib_favoritar);
         }
-    }
 
+    }
+    public interface OnFavoritarClickListener{
+        void onItemClick(CompraDTO compra);
+    }
 }

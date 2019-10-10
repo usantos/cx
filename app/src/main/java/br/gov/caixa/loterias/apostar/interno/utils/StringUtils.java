@@ -1,9 +1,11 @@
 package br.gov.caixa.loterias.apostar.interno.utils;
 
+import java.util.Locale;
+
 public class StringUtils {
 
     public static String capitalizer(String texto){
-        texto = texto.toLowerCase();
+        texto = texto.toLowerCase(new Locale("pt", "BR"));
         StringBuilder stringBuilder = new StringBuilder();
         char caracteres[] = texto.toCharArray();
         boolean primeiroCaracter = true;

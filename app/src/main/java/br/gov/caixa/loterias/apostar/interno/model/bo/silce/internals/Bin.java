@@ -27,10 +27,6 @@ public class Bin {
         return new String(data, CHARSET_UTF8);
     }
 
-    public String toUtf16() {
-        return new String(data, CHARSET_UTF8);
-    }
-
     public String toIso8859_1() {
         return new String(data, CHARSET_ISO_8859_1);
     }
@@ -46,10 +42,6 @@ public class Bin {
 
     public static Bin fromUtf8(String data) {
         return new Bin(data.getBytes(CHARSET_UTF8));
-    }
-
-    public static Bin fromUtf16(String data) {
-        return new Bin(data.getBytes(CHARSET_UTF16));
     }
 
     public static Bin fromIso8859_1(String data) {

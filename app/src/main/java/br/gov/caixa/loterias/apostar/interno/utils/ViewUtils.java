@@ -28,6 +28,7 @@ import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.AbsoluteSizeSpan;
+import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -37,6 +38,7 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -196,6 +198,22 @@ public class ViewUtils {
         return dialog;
     }
 
+    public static Dialog alertEditText(Context context){
+        final EditText editText = new EditText(context);
+        AlertDialog dialog = new AlertDialog.Builder(context)
+                .setTitle("Titulo")
+                .setMessage("Message next?")
+                .setView(editText)
+                .setPositiveButton("OK", (dialog1, which) -> {
+                    String task = String.valueOf(editText.getText());
+
+                })
+                .setNegativeButton("Cancel", null)
+                .create();
+        return dialog;
+
+    }
+
     public static Dialog alertTitulo(Context context, int titulo, String mensagem, DialogInterface.OnDismissListener listener) {
         Dialog dialog = ViewUtils.dialogo(context, titulo, mensagem)
                 .setCancelable(false)
@@ -240,6 +258,20 @@ public class ViewUtils {
                 .setCancelable(false)
                 .setNegativeButton (R.string.label_nao, (dialogInterface, i) -> dialogInterface.dismiss())
                 .setPositiveButton(R.string.label_sim, listener)
+                .show();
+
+        DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
+        TextView textMessageView = dialog.findViewById(android.R.id.message);
+        textTitleView.setTypeface(getFontFuturaBold(context));
+        textMessageView.setTypeface(getFontFutura(context));
+        return dialog;
+    }
+
+    public static Dialog alertTitleCustomPositiveListener(Context context,String negativeTitle, String positiveTitle, String message, DialogInterface.OnClickListener listener) {
+        Dialog dialog = ViewUtils.dialogo(context, R.string.label_atencao, message)
+                .setCancelable(false)
+                .setNegativeButton (negativeTitle, (dialogInterface, i) -> dialogInterface.dismiss())
+                .setPositiveButton(positiveTitle, listener)
                 .show();
 
         DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
@@ -481,6 +513,17 @@ public class ViewUtils {
         return spannableStringBuilder;
     }
 
+    public static SpannableStringBuilder textColor(Context context, String texto,int idCor) {
+        Typeface font = ViewUtils.getFontFuturaBold(context);
+
+        PositionStringBold positionStringBold = positionString(texto);
+        SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(texto.replace("_", ""));
+        spannableStringBuilder.setSpan(new ForegroundColorSpan(context.getResources().getColor(idCor)) , positionStringBold.getStart(), positionStringBold.getEnd(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+        spannableStringBuilder.setSpan(new CustomTypefaceSpan("", font), positionStringBold.getStart(), positionStringBold.getEnd(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+
+        return spannableStringBuilder;
+    }
+
     public static SpannableStringBuilder textFuturaAndFuturaBoldTitle(Context context, String texto) {
         SpannableStringBuilder spannableStringBuilder = textFuturaAndFuturaBold(context, texto);
         spannableStringBuilder.setSpan(new AbsoluteSizeSpan(16, true), 0, texto.replace("_", "").length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -600,14 +643,22 @@ public class ViewUtils {
         if(param != null){
             ModalidadeDTO modalidadeDetalhada = param.getParametroJogo().getConcurso().getModalidadeDetalhada();
             return aposta.getTipoConcurso().getDescricao().equalsIgnoreCase("ESPECIAL") ?
-                    modalidadeDetalhada.getDescricaoEspecial().toLowerCase() :
-                    modalidadeDetalhada.getDescricao().toLowerCase();
+                    modalidadeDetalhada.getDescricaoEspecial().toLowerCase(new Locale("pt", "BR")):
+                    modalidadeDetalhada.getDescricao().toLowerCase(new Locale("pt", "BR"));
         }
         return "";
     }
 
     public static Integer getConcursoAtualPorAposta(IdentificaoDeUmaApostaDas8Modalidades aposta) {
         ParametroSimulacao param = getParametroSimulacao(SessaoUsuario.getInstance(),aposta.getModalidade());
+        if(param != null) {
+            return param.getParametroJogo().getConcurso().getNumero();
+        }
+        return -1;
+    }
+
+    public static Integer getConcursoAtualPorModalidade(String modalidade) {
+        ParametroSimulacao param = getParametroSimulacao(SessaoUsuario.getInstance(),ModalidadeEnum.toString(modalidade));
         if(param != null) {
             return param.getParametroJogo().getConcurso().getNumero();
         }

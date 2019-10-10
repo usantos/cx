@@ -61,7 +61,7 @@ public class ApostaConfirmadaNumeroDetalhesPremioPago extends Fragment {
         if (StringUtils.isEmpty(aposta.getHoraEfetivacao())) {
             dataApostaTxt.setText(aposta.getDataEfetivacao());
         } else {
-            dataApostaTxt.setText(ViewUtils.getDateAndHour(aposta.getDataEfetivacao(), aposta.getHoraEfetivacao()));
+            dataApostaTxt.setText(aposta.getDataEfetivacao() + " - " + aposta.getHoraEfetivacao());
         }
 
         estilo = new EstiloModalidade(aposta.getModalidade());

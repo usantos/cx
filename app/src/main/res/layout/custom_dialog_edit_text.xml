@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cl_modal"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/branco">
+
+    <View
+        android:id="@+id/vw_topo"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@drawable/gradiente_titulo_caixa"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_titulo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="17dp"
+        android:textColor="@color/branco"
+        android:textSize="15.8sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/vw_topo"
+        app:layout_constraintTop_toTopOf="@+id/vw_topo"
+        tools:text="Titulo" />
+
+    <EditText
+        android:id="@+id/et_carrinho"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginRight="20dp"
+        android:hint="Nome do carrinho favorito"
+        android:maxLength="30"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/vw_topo" />
+
+    <CheckBox
+        android:id="@+id/ck_manter_surpresinhas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:buttonTint="@color/verdeazul"
+        android:layout_marginTop="10dp"
+        android:checked="true"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@id/et_carrinho"
+        app:layout_constraintTop_toBottomOf="@id/et_carrinho"
+        app:layout_constraintBottom_toTopOf="@id/cl_divisao"/>
+
+    <TextView
+        android:id="@+id/tv_manter_surpresinhas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/carrinho_fav_manter_surp"
+        android:textColor="@color/azulescuro"
+        android:textSize="15sp"
+        android:visibility="gone"
+        app:layout_constraintStart_toEndOf="@+id/ck_manter_surpresinhas"
+        app:layout_constraintTop_toBottomOf="@id/et_carrinho"
+        app:layout_constraintBottom_toTopOf="@id/cl_divisao"
+        />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/cl_divisao"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/et_carrinho"
+        android:background="@color/cinza2"
+        app:layout_constraintTop_toBottomOf="@id/ck_manter_surpresinhas" />
+
+    <Button
+        android:id="@+id/btn_cancelar"
+        android:layout_width="100dp"
+        android:layout_height="55dp"
+        android:background="@color/branco"
+        android:gravity="center"
+        android:text="@string/cancelar"
+        android:textAllCaps="false"
+        android:textColor="@color/cinzaescuro"
+        android:textSize="15.8sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cl_divisao" />
+
+    <Button
+        android:id="@+id/btn_ok"
+        android:layout_width="100dp"
+        android:layout_height="55dp"
+        android:background="@color/branco"
+        android:gravity="center"
+        android:text="@string/title_salvar"
+        android:textAllCaps="false"
+        android:textColor="@color/verdeazul"
+        android:textSize="15.8sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cl_divisao" />
+</android.support.constraint.ConstraintLayout>

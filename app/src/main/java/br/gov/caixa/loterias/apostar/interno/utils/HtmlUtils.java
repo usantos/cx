@@ -78,9 +78,6 @@ public class HtmlUtils {
         String dataSorteio = DateUtils.getDateToString(
                 DateUtils.stringToDate(comprovanteApostaDTO.getDataSorteio(), DateUtils.PATTERN_DD_MMM_YYYY)
                 , DateUtils.PATTERN_DDMM_YYYY);
-        String hora = DateUtils.getDateToString(
-                DateUtils.stringToDate(comprovanteApostaDTO.getAposta().getHoraEfetivacao(), DateUtils.PATTERN_HH_MM_SS)
-                , DateUtils.PATTERN_HH_MM);
 
         String html = getContentOfFile(FILE_PATH_COMPROVANTE_CABECALHO_RODAPE, context);
         html = ViewUtils.replaceNullable(html, HEADER_TITLE_APP_TXT, context.getString(R.string.app_name));
@@ -88,7 +85,7 @@ public class HtmlUtils {
         html = ViewUtils.replaceNullable(html, BASE_64_LOGO, getBase64Logo(context));
         html = ViewUtils.replaceNullable(html, HEADER_COLUNA1_LINHA1_VALOR, comprovanteApostaDTO.getAposta().getDataEfetivacao());
         html = ViewUtils.replaceNullable(html, HEADER_COLUNA2_LINHA1_VALOR, String.valueOf(comprovanteApostaDTO.getAposta().getConcursoAlvo()));
-        html = ViewUtils.replaceNullable(html, HEADER_COLUNA1_LINHA2_VALOR, hora);
+        html = ViewUtils.replaceNullable(html, HEADER_COLUNA1_LINHA2_VALOR, comprovanteApostaDTO.getAposta().getHoraEfetivacao());
         html = ViewUtils.replaceNullable(html, HEADER_COLUNA2_LINHA2_TEXTO, context.getString(R.string.label_data_sorteio));
         html = ViewUtils.replaceNullable(html, HEADER_COLUNA2_LINHA2_VALOR, dataSorteio);
         html = ViewUtils.replaceNullable(html, HEADER_COLUNA1_LINHA3_VALOR, modadlidade);

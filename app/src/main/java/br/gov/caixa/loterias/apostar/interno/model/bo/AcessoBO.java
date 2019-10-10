@@ -2,7 +2,6 @@ package br.gov.caixa.loterias.apostar.interno.model.bo;
 
 import android.app.Activity;
 import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 
@@ -19,7 +18,7 @@ import br.gov.caixa.loterias.apostar.interno.BuildConfig;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.VersionResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.GsonRequest;
 import br.gov.caixa.loterias.apostar.interno.model.sp.LoginSP;
-import br.gov.caixa.loterias.apostar.interno.utils.Aplicacao;
+import br.gov.caixa.loterias.apostar.interno.view.LoginActivity;
 import br.gov.caixa.loterias.apostar.interno.view.TokenActivity;
 
 import static org.androidannotations.annotations.EBean.Scope.Singleton;
@@ -54,30 +53,29 @@ public class AcessoBO extends BaseBO {
         }
     }
 
-    public void iniciarLogoutSSO(){
-        Context context = Aplicacao.application.getApplicationContext();
-        if(context != null) {
-            AuthorizationServiceConfiguration authorizationServiceConfiguration = new AuthorizationServiceConfiguration(
-                    Uri.parse(BuildConfig.URL_SSO_LOGOUT),
-                    Uri.parse(BuildConfig.URL_SSO_TOKEN)
-            );
+    public void iniciarLogoutSSO(Activity activity){
+        AuthorizationServiceConfiguration authorizationServiceConfiguration = new AuthorizationServiceConfiguration(
+                Uri.parse(BuildConfig.URL_SSO_LOGOUT),
+                Uri.parse(BuildConfig.URL_SSO_TOKEN)
+        );
 
-            AuthorizationRequest.Builder builder = new AuthorizationRequest.Builder(
-                    authorizationServiceConfiguration,
-                    BuildConfig.SSO_CLIENT_ID,
-                    ResponseTypeValues.CODE,
-                    Uri.parse(BuildConfig.SSO_REDIRECT)
-            );
+        AuthorizationRequest.Builder builder = new AuthorizationRequest.Builder(
+                authorizationServiceConfiguration,
+                BuildConfig.SSO_CLIENT_ID,
+                ResponseTypeValues.CODE,
+                Uri.parse(BuildConfig.SSO_REDIRECT)
+        );
 
-            AuthorizationRequest authorizationRequest = builder.build();
-            Intent intent = new Intent(context, TokenActivity.class);
-            PendingIntent pendingIntent = PendingIntent.getActivity(context, authorizationRequest.hashCode(), intent, 0);
+        AuthorizationRequest authorizationRequest = builder.build();
+        LoginSP.loginRealizado(false);
+        Intent intent = new Intent(activity, LoginActivity.class);
 
-            AuthorizationService authorizationService = new AuthorizationService(context);
-            authorizationService.performAuthorizationRequest(authorizationRequest, pendingIntent);
+        PendingIntent pendingIntent = PendingIntent.getActivity(activity, authorizationRequest.hashCode(), intent, 0);
 
-            LoginSP.loginRealizado(false);
-        }
+        AuthorizationService authorizationService = new AuthorizationService(activity);
+        authorizationService.performAuthorizationRequest(authorizationRequest, pendingIntent);
+
+        DadosUsuarioBO.limparRegistros();
     }
 
     public void getVerificaVersao(String versao, final RequestListener<VersionResponse> listener) {

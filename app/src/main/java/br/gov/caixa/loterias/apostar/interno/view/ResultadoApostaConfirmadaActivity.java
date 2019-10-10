@@ -6,6 +6,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.android.volley.VolleyError;
@@ -16,6 +17,7 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
+import org.parceler.Parcels;
 
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bean.SessaoUsuario;
@@ -23,9 +25,11 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CodigoResgateDTOResponse;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ComprovanteApostaDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.DetalhesPremioDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametroSimulacao;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.TipoPagamentoDTO;
 import br.gov.caixa.loterias.apostar.interno.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.FaixaPremiacaoAdapter;
@@ -35,6 +39,10 @@ import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
 
 @EActivity(R.layout.activity_resultado_aposta_confirmada)
 public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
+
+    public static String DETALHES = "DETALHES";
+    public static String COMPROVANTE = "COMPROVANTE";
+    public static String CODIGO_RESGATE = "CODIGO_RESGATE";
 
     @Bean
     protected ApostaBO apostaBO;
@@ -54,6 +62,9 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
     private AlertDialog alertDialog;
 
     ModalidadeEnum modalidadeEnum;
+
+    @Extra
+    protected ComprovanteApostaDTO comprovante;
 
     @AfterViews
     protected void init() {
@@ -86,16 +97,30 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
             }
         }
         createListPremiacao();
+        trataFormasDeResgate();
     }
 
     @Click(R.id.lotericaLayout)
     protected void clickLotericaLayout() {
+        apresentaOrientacoesResgate(true);
+    }
+
+    protected void apresentaOrientacoesResgate(Boolean isLoterica) {
         alertDialog = LoadingViewLoterias.show(getContext());
         apostaBO.getApostaGerarCodigoResgate(detalhesPremioDTO.getAposta().getId(), new RequestListener<CodigoResgateDTOResponse>() {
             @Override
             public void onResponse(CodigoResgateDTOResponse result) {
                 alertDialog.dismiss();
-                ResgatePremioLotericaAgenciaActivity_.intent(getContext()).codigoResgateDTO(result.getPayload()).start();
+                if(isLoterica){
+                    Intent it = new Intent(ResultadoApostaConfirmadaActivity.this, ResgatePremioLotericaActivity.class);
+                    it.putExtra(DETALHES, Parcels.wrap(detalhesPremioDTO));
+                    it.putExtra(COMPROVANTE, Parcels.wrap(comprovante));
+                    it.putExtra(CODIGO_RESGATE, Parcels.wrap(result.getPayload()));
+                    startActivity(new Intent(it));
+                }else {
+                    ResgatePremioLotericaAgenciaActivity_.intent(getContext()).codigoResgateDTO(result.getPayload()).isLoterica(isLoterica).detalhesPremioDTO(detalhesPremioDTO).comprovante(comprovante).start();
+                }
+
             }
 
             @Override
@@ -105,7 +130,6 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
                 ViewUtils.alertTitleButton(getContext(), R.string.label_atencao, msgError, getContext().getResources().getString( R.string.ok ));
             }
         });
-
     }
 
     @Click(R.id.botaoAposteAgora)
@@ -119,7 +143,7 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
 
     @Click(R.id.agenciaCaixaLayout)
     protected void clickAgenciaCaixaLayout() {
-        ResgatePremioLotericaAgenciaActivity_.intent(this).nsbi(detalhesPremioDTO.getNsbi()).start();
+        apresentaOrientacoesResgate(false);
     }
 
     @Click(R.id.mercadoPagoLayout)
@@ -128,6 +152,22 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
         intent.putExtra( "valorPremio", ViewUtils.getMoedaFormat(detalhesPremioDTO.getPremio().getValorLiquido()) );
         intent.putExtra( "idAposta", detalhesPremioDTO.getAposta().getId() );
         startActivity( intent );
+    }
+
+    private void trataFormasDeResgate() {
+        for (TipoPagamentoDTO meioPagamento: detalhesPremioDTO.getMeiosResgate()) {
+            switch (meioPagamento.getCanal()) {
+                case SIGEL:
+                    agenciaCaixaLayout.setVisibility(View.VISIBLE);
+                    break;
+                case SILCE:
+                    mercadoPagoLayout.setVisibility(View.VISIBLE);
+                    break;
+                case SISPL:
+                    lotericaLayout.setVisibility(View.VISIBLE);
+                    break;
+            }
+        }
     }
 
     private void createListPremiacao() {

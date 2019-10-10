@@ -2,6 +2,7 @@ package br.gov.caixa.loterias.apostar.interno.view;
 
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -33,6 +34,7 @@ import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
+import com.yarolegovich.discretescrollview.InfiniteScrollAdapter;
 import com.yarolegovich.discretescrollview.transform.ScaleTransformer;
 
 import org.androidannotations.annotations.AfterViews;
@@ -46,9 +48,12 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import br.gov.caixa.loterias.apostar.interno.BuildConfig;
+import br.gov.caixa.loterias.apostar.interno.CartoesActivity;
 import br.gov.caixa.loterias.apostar.interno.R;
+import br.gov.caixa.loterias.apostar.interno.SelecaoModalidadesResultados;
 import br.gov.caixa.loterias.apostar.interno.TutorialRapidaoActivity;
 import br.gov.caixa.loterias.apostar.interno.model.bean.DadosUsuarioToken;
 import br.gov.caixa.loterias.apostar.interno.model.bean.Modalidade;
@@ -88,8 +93,9 @@ public class PrincipalActivity extends AppCompatActivity
         implements DiscreteScrollView.ScrollListener<HomeAdapter.ViewHolder>,
         DiscreteScrollView.OnItemChangedListener<HomeAdapter.ViewHolder> {
 
-
+    public static final String MENU_LATERAL = "MENU_LATERAL";
     private static final int ZXING_CAMERA_PERMISSION = 1;
+
     @ViewById
     public DiscreteScrollView homeCarousel;
     @ViewById
@@ -122,6 +128,8 @@ public class PrincipalActivity extends AppCompatActivity
     private DBLoteriasHelper dbLoteriasHelper;
     private View actionApresentarTrevo, actionSettings;
     private AlertDialog loadViewProgress;
+    private InfiniteScrollAdapter infiniteAdapter;
+    private HomeAdapter homeAdapter;
 
     private boolean realizandoLogin = false;
     private boolean recarregarBuscaParam = false;
@@ -155,25 +163,31 @@ public class PrincipalActivity extends AppCompatActivity
         if (extras!= null) {
             if (extras.containsKey("MODALIDADE_APOSTAR_AGORA")) {
                 ModalidadeEnum modalidade = (ModalidadeEnum) extras.getSerializable("MODALIDADE_APOSTAR_AGORA");
-                int position =  ((HomeAdapter)homeCarousel.getAdapter()).retornaPosicaoPorModalidade(modalidade);
+                int position =  retornaPosicaoPorModalidade(modalidade);
                 EstiloModalidade estilo;
                 if(position != -1){
-                    estilo = new EstiloModalidade(data.get(position).getTipoModalidade());
-                    homeCarousel.scrollToPosition(position);
+                    int posicaoAlvo = infiniteAdapter.getClosestPosition(position);
+                    homeCarousel.smoothScrollToPosition(posicaoAlvo);
                     buttonHomeBet.setTag(position);
-                    buttonHomeBet.setText(ViewUtils.textFuturaAndFuturaBold(this, "_Aposte_\npor " + ViewUtils.getMoedaFormat(modalidadesParaListar.get(position).getParametroJogo().getConcurso().getValorApostaMinima())));
-                    buttonHomeBet.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorClara()));
-                    findViewById(R.id.buttonHomeBet).performClick();
+                    buttonHomeBet.performClick();
                 }
-
             }
         }
+    }
+
+    public int  retornaPosicaoPorModalidade(ModalidadeEnum modalidade){
+        for (int i = 0; i < data.size(); i++) {
+            if (data !=null && data.get(i).getTipoModalidade().equals(modalidade)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        String separarNome[] = DadosUsuarioBO.obterNome().toLowerCase().split(" ");
+        String separarNome[] = DadosUsuarioBO.obterNome().toLowerCase(new Locale("pt", "BR")).split(" ");
         String nomeUsuario = StringUtils.capitalizer(separarNome[0]+" "+separarNome[separarNome.length - 1]);
 
         if(!" ".equals(nomeUsuario)) {
@@ -192,7 +206,7 @@ public class PrincipalActivity extends AppCompatActivity
 
     private void listenerSair() {
         viewSair.setOnClickListener((View v) -> {
-            sairLogin();
+            sairLogin(this);
         });
     }
 
@@ -203,14 +217,16 @@ public class PrincipalActivity extends AppCompatActivity
 
     private void montarCarrossel() {
         data = montaListaModalidades();
-        homeCarousel.setAdapter(new HomeAdapter(this, this, data, buttonHomeBet));
+        homeAdapter = new HomeAdapter(this, this, data, buttonHomeBet);
+        infiniteAdapter = InfiniteScrollAdapter.wrap(homeAdapter);
+        homeCarousel.setAdapter(infiniteAdapter);
         homeCarousel.addScrollListener(this);
         homeCarousel.addOnItemChangedListener(this);
-        homeCarousel.scrollToPosition(0);
         homeCarousel.setItemTransformer(new ScaleTransformer.Builder()
                 .setMinScale(0.8f)
                 .build());
     }
+
 
     @Override
     protected void onStart() {
@@ -321,7 +337,7 @@ public class PrincipalActivity extends AppCompatActivity
 
         tituloLerBilhetes.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.label_ler_bilhestes_bold)));
         textoRepassados.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.label_repassados_boas_causas_bold)));
-        AnimacaoCalculoRepassesSociais.start(valorRepassesPrincipal, 0, 0, repassesSociais);
+        AnimacaoCalculoRepassesSociais.start(valorRepassesPrincipal, 0, repassesSociais);
     }
 
     private void toolbarListener() {
@@ -361,7 +377,7 @@ public class PrincipalActivity extends AppCompatActivity
         relativeContentPrincipal.setEnabled(false);
         actionApresentarTrevo.setEnabled(false);
         atalhoRapidoLoterias.setVisibility(View.VISIBLE);
-        EstiloModalidade estilo = new EstiloModalidade(data.get(homeCarousel.getCurrentItem()).getTipoModalidade());
+        EstiloModalidade estilo = new EstiloModalidade(data.get(infiniteAdapter.getRealCurrentPosition()).getTipoModalidade());
         AnimacoesAcessoRapido animacoesAcessoRapido = new AnimacoesAcessoRapido(
                 v,
                 relativeContentPrincipal,
@@ -386,7 +402,7 @@ public class PrincipalActivity extends AppCompatActivity
     private void AnimacaoFecharMenuRapido(View v) {
         relativeContentPrincipal.setEnabled(true);
         actionApresentarTrevo.setEnabled(false);
-        EstiloModalidade estilo = new EstiloModalidade(data.get(homeCarousel.getCurrentItem()).getTipoModalidade());
+        EstiloModalidade estilo = new EstiloModalidade(data.get(infiniteAdapter.getRealCurrentPosition()).getTipoModalidade());
         AnimacoesAcessoRapido animacoesAcessoRapido = new AnimacoesAcessoRapido(
                 v,
                 relativeContentPrincipal,
@@ -422,7 +438,7 @@ public class PrincipalActivity extends AppCompatActivity
         }
     }
 
-    private void sairLogin() {
+    private void sairLogin(Activity activity) {
 
         ViewUtils.alertTitleButtonYesOrNotListener(this, getResources().getString(R.string.MA008), (dialog, which) -> {
             if (DadosUsuarioBO.checarUsuarioLogado(PrincipalActivity.this)) {
@@ -434,7 +450,7 @@ public class PrincipalActivity extends AppCompatActivity
                     public void onResponse(NetworkResponse response) {
                         FirebaseManager.registraEvento(PrincipalActivity.this ,"EFETUOU_LOGOUT_SUCESSO");
 
-                        AcessoBO_.getInstance_(PrincipalActivity.this).iniciarLogoutSSO();
+                        AcessoBO_.getInstance_(PrincipalActivity.this).iniciarLogoutSSO(activity);
                         LoginSP.loginRealizado(false);
                         realizandoLogin = true;
                         loadViewProgress.dismiss();
@@ -472,7 +488,7 @@ public class PrincipalActivity extends AppCompatActivity
 
     @Override
     public void onCurrentItemChanged(@Nullable HomeAdapter.ViewHolder viewHolder, int adapterPosition) {
-        //viewHolder will never be null, because we never remove items from adapter's list
+        adapterPosition  = infiniteAdapter.getRealCurrentPosition();
         if (viewHolder != null) {
             EstiloModalidade estilo = new EstiloModalidade(data.get(adapterPosition).getTipoModalidade());
             buttonHomeBet.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorClara()));
@@ -506,7 +522,7 @@ public class PrincipalActivity extends AppCompatActivity
 
     @Click(R.id.relativeLayoutCarrinho)
     protected void clickRelativeLayoutCarrinho() {
-        CarrinhoActivity_.intent(PrincipalActivity.this).start();
+        startActivity(new Intent(PrincipalActivity.this, CarrinhoActivity.class));
     }
 
     @Click(R.id.relativeLayoutContentFavoritas)
@@ -536,18 +552,24 @@ public class PrincipalActivity extends AppCompatActivity
         if (groupPosition != 0) {
             drawerLayout.closeDrawer(Gravity.START, false);
         }
-        if (groupPosition == 1) {
-            redirecionaRapidao();
-        } else if (groupPosition == 3) {
-            startActivity(new Intent(PrincipalActivity.this, RepassesSociaisActivity.class));
-        } else if (groupPosition == 2) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-                    != PackageManager.PERMISSION_GRANTED) {
+        switch (groupPosition) {
+            case 1: startActivity(new Intent(PrincipalActivity.this, SelecaoModalidadesResultados.class));
+                break;
+            case 2: redirecionaRapidao();
+                break;
+
+            case 3: if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.CAMERA}, ZXING_CAMERA_PERMISSION);
             } else {
                 startActivity(new Intent(PrincipalActivity.this, LerBilhetesActivity.class));
             }
+                break;
+            case 4: startActivity(new Intent(PrincipalActivity.this, RepassesSociaisActivity.class));
+                break;
+
+            default:
+                break;
         }
     }
 
@@ -567,6 +589,12 @@ public class PrincipalActivity extends AppCompatActivity
                 break;
             case 4:
                 startActivity(new Intent(PrincipalActivity.this, FavoritasActivity.class));
+                break;
+            case 5:
+                startActivity(new Intent(PrincipalActivity.this, CarrinhosFavoritosActivity.class));
+                break;
+            case 6:
+                startActivity(new Intent(PrincipalActivity.this, CartoesActivity.class).putExtra(MENU_LATERAL, true));
                 break;
             default:
                 break;

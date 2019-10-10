@@ -1,5 +1,6 @@
 package br.gov.caixa.loterias.apostar.interno.view;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -10,7 +11,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -22,11 +27,14 @@ import java.util.List;
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO_;
+import br.gov.caixa.loterias.apostar.interno.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.AgrupadorApostaCompraDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ApostaDTO;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CarrinhoFavoritoDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CompraDTO;
+import br.gov.caixa.loterias.apostar.interno.utils.DialogUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.ListaComprasDetalhesAdapter;
@@ -34,15 +42,22 @@ import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
 
 public class DetalhesComprasActivity extends AppCompatActivity {
 
-    CompraDTO compraDTO;
-    List<ApostaDTO> listaAposta = new ArrayList<>();
+    private CompraDTO compraDTO;
+    private List<ApostaDTO> listaAposta = new ArrayList<>();
     private ArrayList<String> tiposApostas = new ArrayList<>();
+    private Dialog dialogFavoritar;
+
+    private Boolean mantemSurpresinhas = true;
     int ordemCompra;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalhes_compras);
+        setaViews();
+    }
+
+    private void setaViews(){
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -55,7 +70,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
 
         criarCabecalho();
         callWebService();
-
+        setaDialogFavoritar();
     }
 
     @Override
@@ -104,12 +119,16 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
+
     private void criarCabecalho() {
         FrameLayout setaIndicador = findViewById(R.id.setaComprasGroup);
         setaIndicador.setVisibility(View.INVISIBLE);
 
         TextView dataCompra = findViewById(R.id.dataCompraTextView);
-        dataCompra.setText("Data: " + compraDTO.getDataEfetivacaoDebito());
+        if(compraDTO.getDataFinalizacaoCompra() != null){
+            dataCompra.setText("Data: " + compraDTO.getDataFinalizacaoCompra());
+        }
         TextView valorCompra = findViewById(R.id.valorCompra);
         valorCompra.setText(ViewUtils.textFuturaAndFuturaBold(this, this.getString(R.string.label_compra_lista_valor,
                 ViewUtils.getMoedaFormat(compraDTO.getValorTotal()))));
@@ -117,6 +136,10 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         TextView situacaoCompraTextView = findViewById(R.id.situacaoCompraTextView);
         situacaoCompraTextView.setText(ViewUtils.textFuturaAndFuturaBold(this, this.getString(R.string.label_compra_lista_situacao,
                 compraDTO.getSituacao().getDescricao())));
+        ImageButton ibFavoritar = findViewById(R.id.ib_favoritar);
+        ibFavoritar.setOnClickListener(v -> {
+                    configuraVisibilidadeMantSurpresinha(listaAposta);
+                });
     }
 
     private void abrirTermosUso() {
@@ -161,6 +184,99 @@ public class DetalhesComprasActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 loadViewProgress.dismiss();
                 montarLayout();
+                RedirectNetwork.checkRedirect(error, DetalhesComprasActivity.this);
+            }
+        });
+    }
+
+    private void configuraVisibilidadeMantSurpresinha(List<ApostaDTO> apostas){
+        dialogFavoritar.findViewById(R.id.ck_manter_surpresinhas).setVisibility(View.GONE);
+        dialogFavoritar.findViewById(R.id.tv_manter_surpresinhas).setVisibility(View.GONE);
+        for (ApostaDTO aposta: apostas) {
+            if(aposta.getIndicadorSurpresinha().getValor() == 2){
+                dialogFavoritar.findViewById(R.id.ck_manter_surpresinhas).setVisibility(View.VISIBLE);
+                dialogFavoritar.findViewById(R.id.tv_manter_surpresinhas).setVisibility(View.VISIBLE);
+                break;
+            }
+        }
+        dialogFavoritar.show();
+    }
+
+    private void setaDialogFavoritar() {
+        dialogFavoritar = new Dialog(this);
+        dialogFavoritar.setContentView(R.layout.custom_dialog_edit_text);
+
+        TextView tituloDialog = dialogFavoritar.findViewById(R.id.tv_titulo);
+        tituloDialog.setText("Carrinho Favorito");
+
+        EditText etCarrinho = dialogFavoritar.findViewById(R.id.et_carrinho);
+
+        Button btnOk = dialogFavoritar.findViewById(R.id.btn_ok);
+        Button btnCancelar = dialogFavoritar.findViewById(R.id.btn_cancelar);
+
+        CheckBox ckManterSurpresinha = dialogFavoritar.findViewById(R.id.ck_manter_surpresinhas);
+        ckManterSurpresinha.setOnCheckedChangeListener((compoundButton, b) -> mantemSurpresinhas = b);
+
+        btnOk.setOnClickListener(v -> {
+            String text  = etCarrinho.getText().toString();
+            if(text != null && !text.isEmpty() && compraDTO != null && compraDTO.getId() != null){
+                validarCarrinhoFavorito(text,compraDTO.getId());
+            }
+        });
+        btnCancelar.setOnClickListener(v -> dialogFavoritar.dismiss());
+        dialogFavoritar.setOnDismissListener(dialogInterface -> {
+            etCarrinho.setText("");
+            dialogFavoritar.findViewById(R.id.ck_manter_surpresinhas).setVisibility(View.GONE);
+            dialogFavoritar.findViewById(R.id.tv_manter_surpresinhas).setVisibility(View.GONE);
+        });
+    }
+
+    private void validarCarrinhoFavorito(String nome, Long idFavorito){
+        DialogUtils.show(DetalhesComprasActivity.this);
+        ApostaBO_.getInstance_(DetalhesComprasActivity.this).validarCarrinhoFavorito(nome, new RequestListener<CarrinhoFavoritoDTOResponse>() {
+            @Override
+            public void onResponse(CarrinhoFavoritoDTOResponse result) {
+                DialogUtils.dismiss();
+                if (result.getRedirect() != null) {
+                    RedirectNetwork.checkRedirectSucesso( result.getRedirect(), DetalhesComprasActivity.this);
+                }
+                favoritarCarrinho(nome,idFavorito);
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                DialogUtils.dismiss();
+                ViewUtils.alertTitleButtonYesOrNotListener(
+                        DetalhesComprasActivity.this,
+                        MensagensNetwork.getErrorMessage(error),
+                        (dialogInterface, i) ->  favoritarCarrinho(nome,idFavorito)
+                );
+            }
+        });
+
+    }
+
+    private void favoritarCarrinho(String nome, Long idFavorito) {
+        DialogUtils.show(DetalhesComprasActivity.this);
+        ApostaBO_.getInstance_(DetalhesComprasActivity.this).salvarCarrinhoFavorito(nome,idFavorito.toString(),mantemSurpresinhas, new RequestListener<CarrinhoFavoritoDTOResponse>() {
+            @Override
+            public void onResponse(CarrinhoFavoritoDTOResponse result) {
+                DialogUtils.dismiss();
+                if (result.getRedirect() != null) {
+                    RedirectNetwork.checkRedirectSucesso( result.getRedirect(), DetalhesComprasActivity.this);
+                }
+                ViewUtils.alertTitleButton(DetalhesComprasActivity.this,
+                        R.string.label_atencao, getString(R.string.carrinho_fav_lbl_msg),
+                        getString(R.string.ok), dialogInterface -> {
+                            dialogFavoritar.dismiss();
+                            startActivity(new Intent(DetalhesComprasActivity.this,CarrinhosFavoritosActivity.class));
+                        }
+                );
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                DialogUtils.dismiss();
                 RedirectNetwork.checkRedirect(error, DetalhesComprasActivity.this);
             }
         });

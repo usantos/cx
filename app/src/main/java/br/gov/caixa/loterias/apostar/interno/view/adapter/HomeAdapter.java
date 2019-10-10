@@ -84,7 +84,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         estilo = new EstiloModalidade(data.get(position).getTipoModalidade());
 
         if (data.get(position).getConcurso().getTipoConcurso().toString().equals("ESPECIAL")){
-            holder.game.setText(data.get(position).getConcurso().getModalidadeDetalhada().getDescricaoEspecial().toLowerCase());
+            holder.game.setText(data.get(position).getConcurso().getModalidadeDetalhada().getDescricaoEspecial().toLowerCase(new Locale("pt", "BR")));
         }else{
             holder.game.setText(ModalidadeEnum.fromString(data.get(position).getTipoModalidade()));
         }
@@ -208,24 +208,24 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
         holder.setaEsquerdaAcaoRelativeLayout.setOnClickListener( view ->
                 callWebserviceResultadoConcurso(holder.relativeLayoutTopResultados,
-                    holder.linearLayoutResultadosApostas,
-                    ApostaDTO.lowerCaseFromString(data.get(position).getTipoModalidade()),
-                    data.get(position).getConcurso().getNumero()-1,
-                    position,
-                    holder.setaEsquerdaAcaoRelativeLayout,
-                    holder.setaDireitaAcaoRelativeLayout,
-                    false
+                        holder.linearLayoutResultadosApostas,
+                        ApostaDTO.lowerCaseFromString(data.get(position).getTipoModalidade()),
+                        data.get(position).getConcurso().getNumero()-1,
+                        position,
+                        holder.setaEsquerdaAcaoRelativeLayout,
+                        holder.setaDireitaAcaoRelativeLayout,
+                        false
                 ));
 
         holder.setaDireitaAcaoRelativeLayout.setOnClickListener( view ->
                 callWebserviceResultadoConcurso(holder.relativeLayoutTopResultados,
-                    holder.linearLayoutResultadosApostas,
-                    ApostaDTO.lowerCaseFromString(data.get(position).getTipoModalidade()),
-                    data.get(position).getConcurso().getNumero()+1,
-                    position,
-                    holder.setaEsquerdaAcaoRelativeLayout,
-                    holder.setaDireitaAcaoRelativeLayout,
-                    false
+                        holder.linearLayoutResultadosApostas,
+                        ApostaDTO.lowerCaseFromString(data.get(position).getTipoModalidade()),
+                        data.get(position).getConcurso().getNumero()+1,
+                        position,
+                        holder.setaEsquerdaAcaoRelativeLayout,
+                        holder.setaDireitaAcaoRelativeLayout,
+                        false
                 ));
     }
 

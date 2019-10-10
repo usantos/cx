@@ -47,6 +47,7 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
         this.apostas = apostas;
         this.parentActivity = parentActivity;
         this.animacao = animacao;
+        this.setHasStableIds(true);
     }
 
 
@@ -86,6 +87,10 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
     public void onBindViewHolder(ApostaHolder holder, final int position) {
         final IdentificaoDeUmaApostaDas8Modalidades aposta = apostas.get(position);
         EstiloModalidade estilo = new EstiloModalidade(aposta.getModalidade());
+
+        if(position >= 4){
+            animacao = false;
+        }
 
         final SwipeLayout swipeLayout = (SwipeLayout) holder.itemView;
         swipeLayout.setClickToClose(true);
@@ -180,7 +185,7 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
             }
         } else {
             for (Integer num : aposta.getNumerosSelecionados()) {
-                if (num == (aposta.getNumerosSelecionados().get(aposta.getNumerosSelecionados().size() - 1))) {
+                if (num.equals(aposta.getNumerosSelecionados().get(aposta.getNumerosSelecionados().size() - 1))) {
                     numeroStr.append(String.format("%02d", num));
                 } else {
                     numeroStr.append(String.format("%02d - ", num));

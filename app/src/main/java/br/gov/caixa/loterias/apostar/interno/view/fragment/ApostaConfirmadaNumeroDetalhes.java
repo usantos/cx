@@ -20,7 +20,6 @@ import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostar.interno.utils.AppUtils;
-import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.DezenasAdapter;
 
 /**
@@ -49,10 +48,8 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
     @AfterViews
     protected void init() {
         concursoTxt.setText(String.format(Locale.getDefault(), "%d", aposta.getConcursoInicial()));
-        if(StringUtils.isEmpty(aposta.getHoraEfetivacao())){
-            dataApostaTxt.setText(ViewUtils.getDateAndHour(aposta.getDataEfetivacao(), "21:20"));
-        }else{
-            dataApostaTxt.setText(ViewUtils.getDateAndHour(aposta.getDataEfetivacao(), aposta.getHoraEfetivacao()));
+        if(!StringUtils.isEmpty(aposta.getHoraEfetivacao())){
+            dataApostaTxt.setText(aposta.getDataEfetivacao() + " - " + aposta.getHoraEfetivacao());
         }
         resultTxt.setText(aposta.getSituacao().getDescricao());
 

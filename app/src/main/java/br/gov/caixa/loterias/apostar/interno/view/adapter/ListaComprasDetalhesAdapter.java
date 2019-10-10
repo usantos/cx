@@ -50,6 +50,8 @@ public class ListaComprasDetalhesAdapter extends RecyclerView.Adapter<ListaCompr
         EstiloModalidade estilo = new EstiloModalidade(listaAposta.get(position).getModalidade());
         mContext.setTheme(estilo.getThemeId());
         int colorText = mContext.getResources().getColor(estilo.getMenuItemColor());
+        int qtdTeimosinhas = listaAposta.get(position).getQuantidadeTeimosinhas();
+        String teimosinhasTxt = qtdTeimosinhas + (qtdTeimosinhas > 1 ? " Teimosinhas" : " Teimosinha");
 
         holder.tipoPremioListaComprasTextView.setText(ViewUtils.textFuturaAndFuturaBold(mContext,
                 mContext.getString(R.string.texto_futura_bold, ApostaDTO.fromStringModalidade(listaAposta.get(position).getModalidade()))));
@@ -67,6 +69,10 @@ public class ListaComprasDetalhesAdapter extends RecyclerView.Adapter<ListaCompr
         holder.topListItemComprasLinearLayout.setBackgroundColor(mContext.getResources().getColor(estilo.getCorClara()));
         holder.bottomListItemComprasLinearLayout.setBackgroundColor(mContext.getResources().getColor(estilo.getCorEscura()));
         holder.seusNumerosItemListaComprasTextView.setTextColor(colorText);
+        if(qtdTeimosinhas > 0){
+            holder.tvTeimosinhas.setText(teimosinhasTxt);
+            holder.tvTeimosinhas.setTextColor(colorText);
+        }
 
         View child = null;
         switch (listaAposta.get(position).getModalidade()) {
@@ -113,6 +119,7 @@ public class ListaComprasDetalhesAdapter extends RecyclerView.Adapter<ListaCompr
         private LinearLayout bottomListItemComprasLinearLayout;
         private TextView seusNumerosItemListaComprasTextView;
         private LinearLayout itemComprasContentModalideLinearLayout;
+        private TextView tvTeimosinhas;
 
         ListaCompraHolder(View itemView) {
             super(itemView);
@@ -124,6 +131,7 @@ public class ListaComprasDetalhesAdapter extends RecyclerView.Adapter<ListaCompr
             bottomListItemComprasLinearLayout = itemView.findViewById(R.id.bottomListItemComprasLinearLayout);
             seusNumerosItemListaComprasTextView = itemView.findViewById(R.id.seusNumerosItemListaComprasTextView);
             itemComprasContentModalideLinearLayout = itemView.findViewById(R.id.itemComprasContentModalideLinearLayout);
+            tvTeimosinhas = itemView.findViewById(R.id.tv_teimosinhas);
         }
     }
 }

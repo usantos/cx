@@ -8,10 +8,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
@@ -28,11 +26,6 @@ import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.ViewById;
 
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.text.NumberFormat;
-import java.text.ParseException;
-import java.text.ParsePosition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -488,7 +481,7 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
                     break;
             }
             if (tipoAposta != null) {
-                tipoAposta.setTitulo(tipoAposta.getTitulo().toLowerCase());
+                tipoAposta.setTitulo(tipoAposta.getTitulo().toLowerCase(new Locale("pt", "BR")));
                 tipoApostaLista.add(tipoAposta);
             }
         }

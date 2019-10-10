@@ -12,27 +12,52 @@
 
 package br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-import org.parceler.Parcel;
+import com.google.gson.annotations.SerializedName;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel(description = "")
-@Parcel
-public class ModalidadeDTO {
+public class ModalidadeDTO implements Parcelable {
 
     @SerializedName("valor")
-    @Expose(serialize = true, deserialize = true)
     protected Integer valor = null;
     @SerializedName("descricao")
-    @Expose(serialize = true, deserialize = true)
     protected String descricao = null;
     @SerializedName("descricaoEspecial")
-    @Expose(serialize = true, deserialize = true)
     protected String descricaoEspecial = null;
+
+    public ModalidadeDTO() {
+        valor = null;
+        descricao = null;
+        descricaoEspecial = null;
+    }
+
+
+    protected ModalidadeDTO(Parcel in) {
+        if (in.readByte() == 0) {
+            valor = null;
+        } else {
+            valor = in.readInt();
+        }
+        descricao = in.readString();
+        descricaoEspecial = in.readString();
+    }
+
+    public static final Creator<ModalidadeDTO> CREATOR = new Creator<ModalidadeDTO>() {
+        @Override
+        public ModalidadeDTO createFromParcel(Parcel in) {
+            return new ModalidadeDTO(in);
+        }
+
+        @Override
+        public ModalidadeDTO[] newArray(int size) {
+            return new ModalidadeDTO[size];
+        }
+    };
 
     /**
      * Identificação da modalidade
@@ -103,5 +128,22 @@ public class ModalidadeDTO {
                 "  descricaoEspecial: " + descricaoEspecial + "\n" +
                 "}\n";
         return sb;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        if (valor == null) {
+            parcel.writeByte((byte) 0);
+        } else {
+            parcel.writeByte((byte) 1);
+            parcel.writeInt(valor);
+        }
+        parcel.writeString(descricao);
+        parcel.writeString(descricaoEspecial);
     }
 }

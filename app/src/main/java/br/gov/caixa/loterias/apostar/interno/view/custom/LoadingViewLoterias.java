@@ -45,8 +45,6 @@ public class LoadingViewLoterias {
                 .create();
         dialog.show();
 
-
-
         return dialog;
     }
 }

@@ -19,6 +19,8 @@ import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.AppIndisponivelActivity;
 import br.gov.caixa.loterias.apostar.interno.view.CadastrarActivity_;
 import br.gov.caixa.loterias.apostar.interno.view.CarrinhoActivity;
+import br.gov.caixa.loterias.apostar.interno.view.CarrinhosFavoritosActivity;
+import br.gov.caixa.loterias.apostar.interno.view.PrincipalActivity_;
 import br.gov.caixa.loterias.apostar.interno.view.TermosUsoActivity;
 
 
@@ -144,7 +146,10 @@ public class  RedirectNetwork {
                         }
                         return;
                     case CARRINHO:
-                        activity.startActivityForResult(new Intent(activity, CarrinhoActivity.class), 1);
+                        activity.startActivity(new Intent(activity, CarrinhoActivity.class));
+                        return;
+                    case CARRINHOS_FAVORITOS:
+                        activity.startActivity(new Intent(activity, CarrinhosFavoritosActivity.class));
                         return;
                     default:
                         break;
@@ -155,24 +160,40 @@ public class  RedirectNetwork {
                         connectKeycloak(activity);
                         return;
                     case 400:
-                        ViewUtils.alertTitleButton(activity, R.string.label_atencao, MensagensNetwork.setMensagem(error, activity), "Ok",dialog -> {});
+                        treatNegotialErros(errorResponse, error, activity);
                         return;
-                        default:
-                            if (errorResponse.getCodigo() != null &&  errorResponse.getCodigo().equals( "018003" )){
-                                ViewUtils.alertTitleButtonYesOrNotListener(activity, errorResponse.getMensagem(), (dialog, which) -> {
-                                    Uri webpage = Uri.parse("https://www.mercadopago.com.br/registration-mp?mode=mp");
-                                    Intent intentAc = new Intent(Intent.ACTION_VIEW, webpage);
-                                    if (intentAc.resolveActivity(activity.getPackageManager()) != null) {
-                                        activity.startActivity(intentAc);
-                                    }
-                                });
-                            }else{
-                                ViewUtils.alertTitleButton(activity, R.string.label_atencao, MensagensNetwork.setMensagem(error, activity), "Ok", dialogInterface -> activity.onBackPressed());
-                            }
-                            break;
+                    default:
+                        if (errorResponse.getCodigo() != null &&  errorResponse.getCodigo().equals( "018003" )){
+                            ViewUtils.alertTitleButtonYesOrNotListener(activity, errorResponse.getMensagem(), (dialog, which) -> {
+                                Uri webpage = Uri.parse("https://www.mercadopago.com.br/registration-mp?mode=mp");
+                                Intent intentAc = new Intent(Intent.ACTION_VIEW, webpage);
+                                if (intentAc.resolveActivity(activity.getPackageManager()) != null) {
+                                    activity.startActivity(intentAc);
+                                }
+                            });
+                        }else{
+                            ViewUtils.alertTitleButton(activity, R.string.label_atencao, MensagensNetwork.setMensagem(error, activity), "Ok", dialogInterface -> activity.onBackPressed());
+                        }
+                        break;
                 }
             }
         }
+    }
+
+    public static void treatNegotialErros(ErrorResponse error, VolleyError volleyError, Activity activity) {
+         switch (error.getCodigo()) {
+             case "011010": case "011011": case "011012":
+                 ViewUtils.alertTitleCustomPositiveListener(activity,"Ok", "Apostar mais",
+                         MensagensNetwork.setMensagem(volleyError, activity), (dialog, which) -> {
+                             PrincipalActivity_.intent(activity).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP).start();
+                         });
+                 break;
+
+                 default:
+                     ViewUtils.alertTitleButton(activity, R.string.label_atencao, MensagensNetwork.setMensagem(volleyError, activity), "Ok",dialog -> {});
+                     break;
+
+         }
     }
 
     public static void checkRedirectSucesso(RedirectEnum redirect, Activity activity){

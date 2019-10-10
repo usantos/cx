@@ -19,6 +19,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.gov.caixa.loterias.apostar.interno.CartoesActivity;
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO_;
@@ -155,7 +156,7 @@ public class ListaRapidaoActivity extends AppCompatActivity {
             @Override
             public void onResponse(ResourceResponse result) {
                 DialogUtils.dismiss();
-                startActivity(new Intent(ListaRapidaoActivity.this, FormaPagamentoActivity.class));
+                startActivity(new Intent(ListaRapidaoActivity.this, CartoesActivity.class));
             }
 
             @Override
