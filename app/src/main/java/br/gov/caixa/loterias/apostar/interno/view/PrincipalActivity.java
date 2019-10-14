@@ -75,6 +75,7 @@ import br.gov.caixa.loterias.apostar.interno.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostar.interno.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostar.interno.utils.ExpandableListDataSideMenu;
 import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
+import br.gov.caixa.loterias.apostar.interno.utils.RateUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.StringUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.Utils;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
@@ -147,6 +148,7 @@ public class PrincipalActivity extends AppCompatActivity
         listenerSair();
         callWebservice();
         iniciarBancoLocal();
+        RateUtils.avaliarAplicativo(this);
     }
 
     @Override

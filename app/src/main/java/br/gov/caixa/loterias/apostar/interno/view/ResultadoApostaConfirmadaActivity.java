@@ -31,6 +31,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.TipoPagamentoDTO;
 import br.gov.caixa.loterias.apostar.interno.utils.EstiloModalidade;
+import br.gov.caixa.loterias.apostar.interno.utils.RateUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.FaixaPremiacaoAdapter;
 import br.gov.caixa.loterias.apostar.interno.view.custom.ContentResultadoPremiado;
@@ -98,6 +99,7 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
         }
         createListPremiacao();
         trataFormasDeResgate();
+        RateUtils.avaliarAplicativo(this, true);
     }
 
     @Click(R.id.lotericaLayout)

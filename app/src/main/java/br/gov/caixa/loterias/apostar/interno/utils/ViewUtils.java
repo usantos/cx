@@ -176,6 +176,12 @@ public class ViewUtils {
                 .setMessage(mensagem);
     }
 
+    public static AlertDialog.Builder dialogo(Context context, String titulo, String mensagem) {
+        return new AlertDialog.Builder(context, R.style.MyAlertDialogStyle)
+                .setTitle(titulo)
+                .setMessage(mensagem);
+    }
+
     public static Dialog alert(Context context, String mensagem) {
         return alert(context, mensagem, null);
     }
@@ -278,6 +284,20 @@ public class ViewUtils {
         TextView textMessageView = dialog.findViewById(android.R.id.message);
         textTitleView.setTypeface(getFontFuturaBold(context));
         textMessageView.setTypeface(getFontFutura(context));
+        return dialog;
+    }
+
+    public static Dialog alertTitleCustomPositiveListener(Context context,String title,String negativeButton, String positiveButton, String message, DialogInterface.OnClickListener listener) {
+        Dialog dialog = ViewUtils.dialogo(context, title, message)
+                                 .setCancelable(false)
+                                 .setNegativeButton (negativeButton, (dialogInterface, i) -> dialogInterface.dismiss())
+                                 .setPositiveButton(positiveButton, listener)
+                                 .create();
+
+        /*DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
+        TextView textMessageView = dialog.findViewById(android.R.id.message);
+        textTitleView.setTypeface(getFontFuturaBold(context));
+        textMessageView.setTypeface(getFontFutura(context));*/
         return dialog;
     }
 
