@@ -9,11 +9,8 @@ import com.android.volley.VolleyError;
 import com.crashlytics.android.Crashlytics;
 
 import br.gov.caixa.loterias.apostar.interno.BuildConfig;
-import br.gov.caixa.loterias.apostar.interno.model.bo.AcessoBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.AcessoBO_;
-import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
-import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.MesAnoDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.VersionResponse;
 import br.gov.caixa.loterias.apostar.interno.model.sp.LoginSP;
 import io.fabric.sdk.android.Fabric;
@@ -35,11 +32,11 @@ public class SplashScreenActivity extends AppCompatActivity {
             @Override
             public void onResponse(VersionResponse response) {
                 if (!response.getPayload()) {
-                    startActivity(new Intent(SplashScreenActivity.this, AtualizacaoActivity.class));
+                    startActivity(new Intent(SplashScreenActivity.this, ConfiguracaoRapidaoActivity.class));
                 } else {
                     new Handler().postDelayed(() -> {
                         LoginSP.limpar();
-                        startActivity(new Intent(SplashScreenActivity.this, IntroducaoActivity.class));
+                        startActivity(new Intent(SplashScreenActivity.this, ConfiguracaoRapidaoActivity.class));
                         finish();
                     }, SPLASH_TIME);
                 }
@@ -47,7 +44,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                startActivityForResult(new Intent(SplashScreenActivity.this, AppIndisponivelActivity.class), 1);
+                startActivityForResult(new Intent(SplashScreenActivity.this, ConfiguracaoRapidaoActivity .class), 1);
             }
         });
     }
