@@ -11,6 +11,7 @@ import br.gov.caixa.loterias.apostar.interno.R;
 
 public class RateUtils {
 
+	private static final String QTD_COMPRAS_SUCESSO = "QTD_COMPRAS_SUCESSO";
 	private static final String VERSAO_APP = "VERSAO_APP";
 	private static final String CONT_AVALIACAO = "CONT_AVALIACAO";
 	private static final String CONT_ABRIU_AVALIACAO = "CONT_ABRIU_AVALIACAO";
@@ -19,6 +20,15 @@ public class RateUtils {
 	private static final int QTD_NULA = -1;
 
 	private static Dialog dialogAvaliar;
+
+	public static void avaliarAplicativo(Activity activity, int qtdCompras){
+		dialogAvaliar = getDialog(activity);
+
+		if(getQtdCompras() % 3 == 0 && getContAbriuAvaliacao() < QTD_AVALIACOES_MAXIMAS){
+			setContAbriuAvaliacao(getContAbriuAvaliacao() + 1);
+			showDialog();
+		}
+	}
 
 	public static void avaliarAplicativo(Activity activity, Boolean mostrarPopup){
 		dialogAvaliar = getDialog(activity);
@@ -51,6 +61,7 @@ public class RateUtils {
 	private static void showDialog(){
 		new Handler().postDelayed(() -> dialogAvaliar.show(), 2000);
 	}
+
 	private static void redirecionaParaLoja(Activity activity){
 		final String appPackageName = activity.getPackageName();
 		try {
@@ -63,6 +74,7 @@ public class RateUtils {
 	private static void iniciaDadosLocais(){
 		setCont(1);
 		setContAbriuAvaliacao(0);
+		setQtdCompras(0);
 		setVersaoApp(BuildConfig.VERSION_NAME);
 	}
 
@@ -112,5 +124,14 @@ public class RateUtils {
 
 	private static int getCont() {
 		return SharedPreferencesUtils.getValorInt(CONT_AVALIACAO, QTD_NULA);
+	}
+
+	//Compras
+	public static void setQtdCompras(int qtdCompras) {
+		 SharedPreferencesUtils.setValor(QTD_COMPRAS_SUCESSO,qtdCompras);
+	}
+
+	public static int getQtdCompras() {
+		return SharedPreferencesUtils.getValorInt(QTD_COMPRAS_SUCESSO, 0);
 	}
 }

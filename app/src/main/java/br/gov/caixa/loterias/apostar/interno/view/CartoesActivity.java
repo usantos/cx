@@ -51,6 +51,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RetornoPadraoDTO
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostar.interno.utils.MercadoPagoUtil;
+import br.gov.caixa.loterias.apostar.interno.utils.RateUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.CartoesRecyclerViewAdapter;
 import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
@@ -328,6 +329,7 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
                     RedirectNetwork.checkRedirectSucesso( response.getRedirect(), CartoesActivity.this);
                 }else{
                     FirebaseManager.registraEvento(CartoesActivity.this ,"EFETUOU_PAGAMENTO_SUCESSO");
+                    RateUtils.setQtdCompras(RateUtils.getQtdCompras() + 1);
                     Intent activity = new Intent(CartoesActivity.this, ConfirmacaoPagamentoActivity.class);
                     startActivity(activity);
                 }
