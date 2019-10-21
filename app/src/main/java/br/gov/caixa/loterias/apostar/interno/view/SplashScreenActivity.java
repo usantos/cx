@@ -17,7 +17,9 @@ import io.fabric.sdk.android.Fabric;
 
 public class SplashScreenActivity extends AppCompatActivity {
 
-    public static final int SPLASH_TIME = 2000;
+    //public static final int SPLASH_TIME = 2000;
+    public static final int SPLASH_TIME = 0;
+    //alterar depois
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

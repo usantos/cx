@@ -3,10 +3,7 @@
  <item
      android:state_selected="false"
      android:drawable="@drawable/btn_rounded_green_outlined" />
-
  <item
      android:state_selected="true"
      android:drawable="@drawable/btn_rounded_green_filled" />
-
-
 </selector>
