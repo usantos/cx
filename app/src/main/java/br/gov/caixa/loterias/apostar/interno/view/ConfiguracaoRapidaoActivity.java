@@ -5,11 +5,22 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
+import com.android.volley.VolleyError;
+
 import br.gov.caixa.loterias.apostar.interno.R;
+import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO;
+import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO_;
+import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
+import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RapidaoDTOResponse;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.RapidaoConfigSingleton;
+import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
+import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
 import me.relex.circleindicator.CircleIndicator;
 
 public class ConfiguracaoRapidaoActivity extends AppCompatActivity {
@@ -23,8 +34,13 @@ public class ConfiguracaoRapidaoActivity extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_configuracao_rapidao);
-		setViews();
-		setMethods();
+
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		callWebservice();
 	}
 
 	private void setupToolbar(){
@@ -68,6 +84,27 @@ public class ConfiguracaoRapidaoActivity extends AppCompatActivity {
 	public boolean onSupportNavigateUp() {
 		finish();
 		return true;
+	}
+
+	private void callWebservice() {
+		AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
+		ApostaBO apostaBO = ApostaBO_.getInstance_(ConfiguracaoRapidaoActivity.this);
+
+		apostaBO.getRapidoes(new RequestListener<RapidaoDTOResponse>() {
+			@Override
+			public void onResponse(final RapidaoDTOResponse response) {
+				loadViewProgress.dismiss();
+				RapidaoConfigSingleton.getInstance().setRapidaoConfig(response.getPayload());
+				setViews();
+				setMethods();
+			}
+
+			@Override
+			public void onErrorResponse(VolleyError error) {
+				loadViewProgress.dismiss();
+				RedirectNetwork.checkRedirect(error, ConfiguracaoRapidaoActivity.this);
+			}
+		});
 	}
 
 

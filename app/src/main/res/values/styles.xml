@@ -242,8 +242,7 @@
 
     <style name="AppTheme.Picker" parent="Theme.AppCompat.Light.NoActionBar" >
         <item name="android:textColorPrimary">@color/verde_card</item>
-        <item name="android:textSize">20sp</item>
-        <item name="android:maxItemsPerRow">5</item>
+        <item name="android:textSize">18sp</item>
         <item name="android:fontFamily">@font/futura_std_bold</item>
         <item name="colorControlNormal">@color/transparente</item>
     </style>

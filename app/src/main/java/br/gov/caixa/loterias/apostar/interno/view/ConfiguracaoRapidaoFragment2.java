@@ -25,6 +25,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostar.interno.R;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.RapidaoConfigSingleton;
 import br.gov.caixa.loterias.apostar.interno.utils.CustomTypefaceSpan;
 import br.gov.caixa.loterias.apostar.interno.utils.SafeFlexboxLayoutManager;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
@@ -57,8 +58,17 @@ public class ConfiguracaoRapidaoFragment2 extends Fragment {
 
 		setaViews(view);
 		setaMetodos();
+		refletePremioMinimoNoPicker();
 
 		return view;
+	}
+
+	private void refletePremioMinimoNoPicker() {
+		Integer rowPremio = RapidaoConfigSingleton.getInstance().getRapidaoConfig().getValorMinimoPremioPrincipal().intValue() / 1000000;
+
+		numberPicker.setValue(rowPremio);
+
+		atualizaSugestoes();
 	}
 
 	private void setaViews(View view){
@@ -77,7 +87,6 @@ public class ConfiguracaoRapidaoFragment2 extends Fragment {
 
 		//adapter
 		modalidadesAdapter = new SugestoesPremioMinimoAdapter(getContext(),listaSugestoes);
-		modalidadesAdapter.setSelectedPosition(0);
 		rvSugestoes.setAdapter(modalidadesAdapter);
 
 		//layout manager
