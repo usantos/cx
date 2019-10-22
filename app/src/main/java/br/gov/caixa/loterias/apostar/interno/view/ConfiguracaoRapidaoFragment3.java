@@ -84,7 +84,7 @@ public class ConfiguracaoRapidaoFragment3 extends Fragment implements View.OnCli
 		configuraTextoBotao(BTN_3,MAXIMO, limiteDiario);
 
 		if(valorSelecionadoMin == valorSelecionadoMax ){ //levar em consideracao o que estiver sido selecionado
-			valorSelecionadoMax = valorSelecionadoMin == valorSelecionadoMax ? valorSelecionadoMin + 5 : valorSelecionadoMax;
+			//valorSelecionadoMax = valorSelecionadoMin == valorSelecionadoMax ? valorSelecionadoMin + 5 : valorSelecionadoMax;
 		}
 
 		tvValorMaximo.setText("R$" + valorSelecionadoMax);
@@ -94,16 +94,18 @@ public class ConfiguracaoRapidaoFragment3 extends Fragment implements View.OnCli
 	private void configuraBotoes(){
 		limpaSelecaoBotoes();
 		//Configura mínimo
-		if(valorSelecionadoMin * 3 < limiteDiario){
-			configuraVisibilidadeBotao(BTN_1,MINIMO,true);
-			configuraVisibilidadeBotao(BTN_2,MINIMO,true);
+			if(valorSelecionadoMin * 3 < limiteDiario){
+				configuraVisibilidadeBotao(BTN_1,MINIMO,true);
+				configuraVisibilidadeBotao(BTN_2,MINIMO,true);
 
-		}else {
-			configuraTextoBotao(BTN_1,MINIMO,valorSelecionadoMin);
-			configuraVisibilidadeBotao(BTN_2,MINIMO,false);
-			configuraVisibilidadeBotao(BTN_3,MINIMO,false);
+			}else {
+				if(valorSelecionadoMin == pegaValorBotao(BTN_1,MAXIMO)) {
+					configuraTextoBotao(BTN_1,MINIMO,valorSelecionadoMin);
+					configuraVisibilidadeBotao(BTN_2,MINIMO,false);
+					configuraVisibilidadeBotao(BTN_3,MINIMO,false);
+				}
+			}
 
-		}
 
 		if (valorSelecionadoMin == pegaValorBotao(BTN_1,MINIMO)) {
 			configuraBotaoSelecionado(BTN_1,MINIMO,true);
@@ -117,16 +119,18 @@ public class ConfiguracaoRapidaoFragment3 extends Fragment implements View.OnCli
 
 
 		//Configura máximo
-		if(valorSelecionadoMax * 4 < limiteDiario){
-			configuraVisibilidadeBotao(BTN_1,MAXIMO,true);
-			configuraVisibilidadeBotao(BTN_2,MAXIMO,true);
+		if(valorSelecionadoMin == pegaValorBotao(BTN_1,MAXIMO)){
+			if(valorSelecionadoMax * 4 < limiteDiario){
+				configuraVisibilidadeBotao(BTN_1,MAXIMO,true);
+				configuraVisibilidadeBotao(BTN_2,MAXIMO,true);
 
-		}else {
+			}else {
 
-			configuraTextoBotao(BTN_1,MAXIMO,valorSelecionadoMax);
-			configuraVisibilidadeBotao(BTN_2,MAXIMO,false);
-			configuraVisibilidadeBotao(BTN_3,MAXIMO,false);
+				configuraTextoBotao(BTN_1,MAXIMO,valorSelecionadoMax);
+				configuraVisibilidadeBotao(BTN_2,MAXIMO,false);
+				configuraVisibilidadeBotao(BTN_3,MAXIMO,false);
 
+			}
 		}
 
 		if (valorSelecionadoMax == pegaValorBotao(BTN_1,MAXIMO)) {
@@ -154,21 +158,21 @@ public class ConfiguracaoRapidaoFragment3 extends Fragment implements View.OnCli
 	@Override
 	public void onClick(View view) {
 		switch (view.getId()){
-			case R.id.btn_vl_min_1: valorSelecionadoMin = pegaValorBotao(0,true);
+			case R.id.btn_vl_min_1: valorSelecionadoMin = pegaValorBotao(BTN_1,MINIMO);
 				break;
-			case R.id.btn_vl_min_2: valorSelecionadoMin = pegaValorBotao(1,true);
+			case R.id.btn_vl_min_2: valorSelecionadoMin = pegaValorBotao(BTN_2,MINIMO);
 				break;
-			case R.id.btn_vl_min_3: valorSelecionadoMin = pegaValorBotao(2,true);
+			case R.id.btn_vl_min_3: valorSelecionadoMin = pegaValorBotao(BTN_3,MINIMO);
 				break;
-			case R.id.btn_vl_min_4: configuraPopup(true);
+			case R.id.btn_vl_min_4: configuraPopup(MINIMO);
 				break;
-			case R.id.btn_vl_max_1: valorSelecionadoMax = pegaValorBotao(0,false);
+			case R.id.btn_vl_max_1: valorSelecionadoMax = pegaValorBotao(BTN_1,MAXIMO);
 				break;
-			case R.id.btn_vl_max_2: valorSelecionadoMax = pegaValorBotao(1,false);
+			case R.id.btn_vl_max_2: valorSelecionadoMax = pegaValorBotao(BTN_2,MAXIMO);
 				break;
-			case R.id.btn_vl_max_3: valorSelecionadoMax = pegaValorBotao(2,false);
+			case R.id.btn_vl_max_3: valorSelecionadoMax = pegaValorBotao(BTN_3,MAXIMO);
 				break;
-			case R.id.btn_vl_max_4: configuraPopup(false);
+			case R.id.btn_vl_max_4: configuraPopup(MAXIMO);
 				break;
 		}
 		configuraLogica();
