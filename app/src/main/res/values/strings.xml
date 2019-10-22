@@ -531,5 +531,7 @@
     <string name="conf_rapd_escolha_max_aposta">Escolha  o valor _máximo_ em reais da sua aposta</string>
     <string name="conf_rapd_escolha_min_aposta">Escolha  o valor _mínimo_ em reais da sua aposta</string>
     <string name="conf_rapd_escolha_modalide">Selecione as opções que você quer contemplar no Rapidão.</string>
-
+    <string name="conf_rapd_popup_limite">O limite é de _R$ {limite}_.</string>
+    <string name="conf_rapd_popup_limite_titulo">Valor máximo da aposta</string>
+    <string name="conf_rapd_popup_limite_placeholder">Digite o valor máximo da sua aposta</string>
 </resources>

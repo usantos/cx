@@ -1,13 +1,16 @@
 package br.gov.caixa.loterias.apostar.interno.view;
 
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -17,11 +20,12 @@ public class ConfiguracaoRapidaoFragment3 extends Fragment implements View.OnCli
 	private TextView tvValorMinimo, tvValorMaximo;
 	private int limiteDiario = 500, valorSelecionadoMin = 30, valorSelecionadoMax = 90;
 	private ArrayList<Button>  botoesMinimos = new ArrayList<>(),
-								botoesMaximos = new ArrayList<>();
+							   botoesMaximos = new ArrayList<>();
+
 	private static final int BTN_1 = 0, BTN_2 = 1, BTN_3 = 2, BTN_4 = 3;
 	private static final Boolean MINIMO = true, MAXIMO = false;
 
-
+	private Dialog dialogLimite;
 
 	public ConfiguracaoRapidaoFragment3() {
 	}
@@ -144,6 +148,43 @@ public class ConfiguracaoRapidaoFragment3 extends Fragment implements View.OnCli
 		}
  	}
 
+
+	private void configuraPopup(Boolean isMin) {
+		dialogLimite = new Dialog(getActivity());
+		dialogLimite.setContentView(R.layout.custom_dialog_valor_aposta);
+
+		TextView tituloDialog = dialogLimite.findViewById(R.id.tv_titulo);
+		TextView valorLimite = dialogLimite.findViewById(R.id.tv_valor_limite);
+
+		EditText etLimite = dialogLimite.findViewById(R.id.et_valor_aposta);
+		Button      btnOk       = dialogLimite.findViewById(R.id.btn_ok);
+		Button      btnCancelar = dialogLimite.findViewById(R.id.btn_cancelar);
+
+		String descricao = getActivity().getString(R.string.conf_rapd_popup_limite);
+		descricao = descricao.replace("{limite}",String.valueOf(limiteDiario));
+		valorLimite.setText(descricao);
+
+		tituloDialog.setText("Carrinho Favorito");
+
+		btnOk.setOnClickListener(v -> {
+			if(etLimite.getText().length() >= 2) {
+				if(isMin){
+					valorSelecionadoMin = Integer.valueOf(etLimite.getText().toString());
+				} else{
+					valorSelecionadoMax = Integer.valueOf(etLimite.getText().toString());
+				}
+				dialogLimite.dismiss();
+				configuraLogica();
+			}else {
+				Toast.makeText(getActivity(),"Insira algum dígito",Toast.LENGTH_SHORT);
+			}
+
+		});
+
+		btnCancelar.setOnClickListener(v -> dialogLimite.dismiss());
+		dialogLimite.show();
+	}
+
 	private void limpaSelecaoBotoes(){
 		for (Button btn: botoesMinimos) {
 			btn.setSelected(false);
@@ -206,7 +247,4 @@ public class ConfiguracaoRapidaoFragment3 extends Fragment implements View.OnCli
 		return Integer.valueOf(pegaBotaoPorIndex(index, isMin).getText().toString());
 	}
 
-	private void configuraPopup(Boolean isMin){
-
-	}
 }

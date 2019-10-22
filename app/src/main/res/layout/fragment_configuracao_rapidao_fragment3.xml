@@ -45,8 +45,8 @@
 
         <Button
             android:id="@+id/btn_vl_max_1"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_margin="10dp"
             android:textStyle="bold"
             android:textColor="@drawable/btn_text_color"
@@ -55,8 +55,8 @@
 
         <Button
             android:id="@+id/btn_vl_max_2"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_margin="10dp"
             android:textStyle="bold"
             android:textColor="@drawable/btn_text_color"
@@ -65,8 +65,8 @@
 
         <Button
             android:id="@+id/btn_vl_max_3"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_margin="10dp"
             android:textStyle="bold"
             android:textColor="@drawable/btn_text_color"
@@ -75,8 +75,8 @@
 
         <Button
             android:id="@+id/btn_vl_max_4"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_margin="10dp"
             android:textStyle="bold"
             android:textColor="@drawable/btn_text_color"
@@ -159,8 +159,8 @@
 
         <Button
             android:id="@+id/btn_vl_min_1"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_margin="10dp"
             android:textStyle="bold"
             android:textColor="@drawable/btn_text_color"
@@ -169,8 +169,8 @@
 
         <Button
             android:id="@+id/btn_vl_min_2"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_margin="10dp"
             android:textStyle="bold"
             android:textColor="@drawable/btn_text_color"
@@ -179,8 +179,8 @@
 
         <Button
             android:id="@+id/btn_vl_min_3"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_margin="10dp"
             android:textStyle="bold"
             android:textColor="@drawable/btn_text_color"
@@ -189,8 +189,8 @@
 
         <Button
             android:id="@+id/btn_vl_min_4"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_margin="10dp"
             android:textStyle="bold"
             android:textColor="@drawable/btn_text_color"
