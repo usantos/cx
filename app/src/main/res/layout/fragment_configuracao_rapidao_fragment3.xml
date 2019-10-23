@@ -17,7 +17,7 @@
             android:id="@+id/tv_pm_titulo_max"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:text="@string/conf_rapd_valor_max_aposta"
             android:textColor="@color/verde_card"
             android:textSize="20sp"
@@ -30,7 +30,7 @@
             android:id="@+id/tv_pm_desc_max"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:gravity="center"
             android:paddingLeft="50dp"
             android:paddingRight="50dp"
@@ -121,7 +121,7 @@
             android:id="@+id/v_div_1"
             android:layout_width="150dp"
             android:layout_height="1dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="20dp"
             android:background="@color/cinzaclaro"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -131,7 +131,7 @@
             android:id="@+id/tv_pm_titulo_min"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
             android:text="@string/conf_rapd_valor_min_aposta"
             android:textColor="@color/verde_card"
             android:textSize="20sp"
@@ -144,7 +144,7 @@
             android:id="@+id/tv_pm_desc_min"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:gravity="center"
             android:paddingLeft="50dp"
             android:paddingRight="50dp"
@@ -231,5 +231,4 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_val_selec_desc_min" />
     </android.support.constraint.ConstraintLayout>
-
 </android.support.constraint.ConstraintLayout>
