@@ -34,7 +34,6 @@ public class ConfiguracaoRapidaoActivity extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_configuracao_rapidao);
-
 	}
 
 	@Override
@@ -109,7 +108,7 @@ public class ConfiguracaoRapidaoActivity extends AppCompatActivity {
 
 
 	public static class RapidaoPagerAdapter extends FragmentPagerAdapter {
-		private static int NUM_ITEMS = 3;
+		private static int NUM_ITEMS = 4;
 
 		public RapidaoPagerAdapter(FragmentManager fragmentManager) {
 			super(fragmentManager);
@@ -129,6 +128,8 @@ public class ConfiguracaoRapidaoActivity extends AppCompatActivity {
 					return ConfiguracaoRapidaoFragment2.newInstance();
 				case 2:
 					return ConfiguracaoRapidaoFragment3.newInstance();
+				case 3:
+					return ConfiguracaoRapidaoFragment4.newInstance();
 				default:
 					return null;
 			}

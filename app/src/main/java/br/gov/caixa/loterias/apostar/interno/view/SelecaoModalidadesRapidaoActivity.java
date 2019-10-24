@@ -128,9 +128,9 @@ public class SelecaoModalidadesRapidaoActivity extends AppCompatActivity {
 
 
         ExpandableHeightGridView gridViewTiposAposta = findViewById(R.id.gridviewTiposApostasRapidaoSelecionar);
-        TiposApostasMultiplaSelecaoAdapter tiposApostasAdapter = new TiposApostasMultiplaSelecaoAdapter(this, this, tiposAposta);
-        gridViewTiposAposta.setAdapter(tiposApostasAdapter);
-        gridViewTiposAposta.setExpanded(true);
+//        TiposApostasMultiplaSelecaoAdapter tiposApostasAdapter = new TiposApostasMultiplaSelecaoAdapter(this, this, tiposAposta);
+//        gridViewTiposAposta.setAdapter(tiposApostasAdapter);
+//        gridViewTiposAposta.setExpanded(true);
     }
 
     public void mudarLayoutBotaoSalvar(Boolean ativo) {
