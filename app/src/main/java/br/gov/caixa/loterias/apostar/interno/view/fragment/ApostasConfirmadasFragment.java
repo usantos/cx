@@ -46,7 +46,7 @@ import br.gov.caixa.loterias.apostar.interno.utils.DialogUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostar.interno.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostar.interno.view.ApostaConfirmadaDetalhesActivity_;
-import br.gov.caixa.loterias.apostar.interno.view.ApostasConfirmadasActivity;
+import br.gov.caixa.loterias.apostar.interno.controllers.ApostasConfirmadasActivity;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.ApostasConfirmadasAdapter;
 import br.gov.caixa.loterias.apostar.interno.view.custom.MonthYearPickerDialog;
 import br.gov.caixa.loterias.apostar.interno.view.custom.MonthYearPickerDialog_;

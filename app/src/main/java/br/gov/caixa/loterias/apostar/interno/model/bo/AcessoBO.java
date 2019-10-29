@@ -17,8 +17,8 @@ import java.util.LinkedHashMap;
 import br.gov.caixa.loterias.apostar.interno.BuildConfig;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.VersionResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.GsonRequest;
-import br.gov.caixa.loterias.apostar.interno.view.LoginActivity;
-import br.gov.caixa.loterias.apostar.interno.view.TokenActivity;
+import br.gov.caixa.loterias.apostar.interno.controllers.LoginActivity;
+import br.gov.caixa.loterias.apostar.interno.controllers.TokenActivity;
 
 import static org.androidannotations.annotations.EBean.Scope.Singleton;
 

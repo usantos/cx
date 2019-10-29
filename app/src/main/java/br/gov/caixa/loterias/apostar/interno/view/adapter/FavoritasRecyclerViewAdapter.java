@@ -44,7 +44,7 @@ import br.gov.caixa.loterias.apostar.interno.utils.DialogUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
-import br.gov.caixa.loterias.apostar.interno.view.FavoritasActivity;
+import br.gov.caixa.loterias.apostar.interno.controllers.FavoritasActivity;
 import br.gov.caixa.loterias.apostar.interno.view.custom.AdicionarCarrinhoFavoritasView;
 import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
 

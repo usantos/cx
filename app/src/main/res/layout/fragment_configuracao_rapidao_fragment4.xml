@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".view.ConfiguracaoRapidaoFragment4">
+    tools:context=".view.fragment.ConfiguracaoRapidaoFragment4">
 
     <ScrollView
         android:id="@+id/sv_modalidades_rapidao_config"

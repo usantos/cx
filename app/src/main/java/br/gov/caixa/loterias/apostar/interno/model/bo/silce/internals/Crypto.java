@@ -2,8 +2,6 @@ package br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals;
 
 import android.os.Build;
 
-import com.android.volley.VolleyError;
-
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
@@ -12,19 +10,12 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
-import org.apache.commons.codec.binary.Base64;
-
 import java.security.InvalidKeyException;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
-
-import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
-import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
-import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResultadoConsultaBilheteDTOResponse;
-import br.gov.caixa.loterias.apostar.interno.view.PrincipalActivity;
 
 import static br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.Bin.FLAGS_BASE64;
 import static java.nio.charset.StandardCharsets.UTF_8;

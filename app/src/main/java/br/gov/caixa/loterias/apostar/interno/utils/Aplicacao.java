@@ -23,10 +23,10 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametrosSimulacao;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametrosSimulacaoResponse;
-import br.gov.caixa.loterias.apostar.interno.view.AppIndisponivelActivity;
-import br.gov.caixa.loterias.apostar.interno.view.CarrinhoActivity;
+import br.gov.caixa.loterias.apostar.interno.controllers.AppIndisponivelActivity;
+import br.gov.caixa.loterias.apostar.interno.controllers.CarrinhoActivity;
 import br.gov.caixa.loterias.apostar.interno.view.PrincipalActivity_;
-import br.gov.caixa.loterias.apostar.interno.view.SplashScreenActivity;
+import br.gov.caixa.loterias.apostar.interno.controllers.SplashScreenActivity;
 import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
 
 public class Aplicacao extends MultiDexApplication {

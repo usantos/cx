@@ -19,7 +19,7 @@ import java.util.List;
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bean.NumerosSelecionadosRapidao;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
-import br.gov.caixa.loterias.apostar.interno.view.NumerosRapidaoActivity;
+import br.gov.caixa.loterias.apostar.interno.controllers.NumerosRapidaoActivity;
 
 
 public class NumeroSelecionadoRapidaoAdapter extends BaseAdapter {

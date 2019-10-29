@@ -20,51 +20,51 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.ConfiguracaoRapidaoActivity"
+        <activity android:name=".controllers.ConfiguracaoRapidaoActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-            android:name=".view.ResgatePremioLotericaActivity"
+            android:name=".controllers.ResgatePremioLotericaActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".view.CartoesActivity"
+            android:name=".controllers.CartoesActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing" />
         <activity
-            android:name=".view.DetalhesCarrinhoFavoritoActivity"
+            android:name=".controllers.DetalhesCarrinhoFavoritoActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.CarrinhosFavoritosActivity"
+            android:name=".controllers.CarrinhosFavoritosActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".view.SelecaoModalidadesResultados"
+            android:name=".controllers.SelecaoModalidadesResultados"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".view.VisualizarResultadosActivity"
+            android:name=".controllers.VisualizarResultadosActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing" />
         <activity
-            android:name=".view.TutorialRapidaoActivity"
+            android:name=".controllers.TutorialRapidaoActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".view.AppIndisponivelActivity"
+            android:name=".controllers.AppIndisponivelActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".view.AtualizacaoActivity"
+            android:name=".controllers.AtualizacaoActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:screenOrientation="portrait"
-                android:value=".view.SplashScreenActivity" />
+                android:value=".controllers.SplashScreenActivity" />
         </activity>
 
         <provider
@@ -78,7 +78,7 @@
         </provider>
 
         <activity
-            android:name=".view.SplashScreenActivity"
+            android:name=".controllers.SplashScreenActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
@@ -89,12 +89,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.IntroducaoActivity"
+            android:name=".controllers.IntroducaoActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".view.LoginActivity"
+            android:name=".controllers.LoginActivity"
             android:configChanges="orientation"
             android:label="@string/title_activity_login"
             android:screenOrientation="portrait"
@@ -102,7 +102,7 @@
         <activity
             android:name=".view.CadastrarActivity_"
             android:configChanges="orientation"
-            android:parentActivityName=".view.IntroducaoActivity"
+            android:parentActivityName=".controllers.IntroducaoActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
@@ -122,27 +122,27 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".view.ConfirmadoInclusaoCarrinhoActivity"
+            android:name=".controllers.ConfirmadoInclusaoCarrinhoActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.CarrinhoActivity"
+            android:name=".controllers.CarrinhoActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".view.FormaPagamentoActivity"
+            android:name=".controllers.FormaPagamentoActivity"
             android:configChanges="orientation"
             android:label="@string/title_activity_forma_pagamento"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.ConfirmacaoPagamentoActivity"
+            android:name=".controllers.ConfirmacaoPagamentoActivity"
             android:configChanges="orientation"
             android:label="@string/title_activity_confirmacao_pagamento"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".view.NovaFormaPagamentoActivity"
+            android:name=".controllers.NovaFormaPagamentoActivity"
             android:configChanges="orientation"
             android:label="@string/title_activity_forma_pagamento"
             android:screenOrientation="portrait" />
@@ -152,74 +152,74 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.BrancoActionBar" />
         <activity
-            android:name=".view.TermosUsoActivity"
+            android:name=".controllers.TermosUsoActivity"
             android:label="@string/title_activity_termos_uso"
-            android:parentActivityName=".view.PrincipalActivity"
+            android:parentActivityName=".controllers.PrincipalActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar" />
         <activity
-            android:name=".view.RepassesSociaisActivity"
+            android:name=".controllers.RepassesSociaisActivity"
             android:label="@string/title_activity_repasses_sociais"
-            android:parentActivityName=".view.PrincipalActivity"
+            android:parentActivityName=".controllers.PrincipalActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar" />
         <activity
-            android:name=".view.ListaRapidaoActivity"
+            android:name=".controllers.ListaRapidaoActivity"
             android:label="@string/title_activity_lista_rapidao"
-            android:parentActivityName=".view.PrincipalActivity"
+            android:parentActivityName=".controllers.PrincipalActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".view.PrincipalActivity" />
+                android:value=".controllers.PrincipalActivity" />
         </activity>
         <activity
             android:name=".view.RapidaoConfigActivity_"
             android:label="@string/title_activity_lista_rapidao"
-            android:parentActivityName=".view.ListaRapidaoActivity"
+            android:parentActivityName=".controllers.ListaRapidaoActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize|adjustPan">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".view.ListaRapidaoActivity" />
+                android:value=".controllers.ListaRapidaoActivity" />
         </activity>
         <activity
-            android:name=".view.SelecaoModalidadesRapidaoActivity"
+            android:name=".controllers.SelecaoModalidadesRapidaoActivity"
             android:label="@string/title_activity_lista_rapidao"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar" />
         <activity
-            android:name=".view.NumerosRapidaoActivity"
+            android:name=".controllers.NumerosRapidaoActivity"
             android:label="@string/title_activity_lista_rapidao"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar" />
         <activity
-            android:name=".view.AjudaActivity"
-            android:parentActivityName=".view.SimularApostaActivity"
+            android:name=".controllers.AjudaActivity"
+            android:parentActivityName=".controllers.SimularApostaActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".view.SimularApostaActivity" />
+                android:value=".controllers.SimularApostaActivity" />
         </activity>
         <activity
-            android:name=".view.FavoritasActivity"
+            android:name=".controllers.FavoritasActivity"
             android:label="@string/title_activity_favoritas"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".view.ListaComprasActivity"
+            android:name=".controllers.ListaComprasActivity"
             android:label="@string/title_activity_lista_compras"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar" />
         <activity
-            android:name=".view.LerBilhetesActivity"
+            android:name=".controllers.LerBilhetesActivity"
             android:screenOrientation="landscape"
             android:theme="@style/AppFullScreenTheme" />
         <activity
-            android:name=".view.LerBilhetesEscolhaJogoActivity"
+            android:name=".controllers.LerBilhetesEscolhaJogoActivity"
             android:label="@string/title_activity_ler_bilhetes_escolha_jogo"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar" />
@@ -229,12 +229,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar" />
         <activity
-            android:name=".view.DetalhesComprasActivity"
+            android:name=".controllers.DetalhesComprasActivity"
             android:label="@string/title_activity_detalhes_compras"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar" />
         <activity
-            android:name=".view.InsercaoManualCodBarrasActivity"
+            android:name=".controllers.InsercaoManualCodBarrasActivity"
             android:label=""
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar" />
@@ -244,27 +244,27 @@
         <activity
             android:name=".view.ApostasConfirmadasActivity_"
             android:label="@string/title_activity_minhas_apostas"
-            android:parentActivityName=".view.PrincipalActivity"
+            android:parentActivityName=".controllers.PrincipalActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:screenOrientation="portrait"
-                android:value=".view.PrincipalActivity" />
+                android:value=".controllers.PrincipalActivity" />
         </activity>
         <activity
-            android:name=".view.JogosConfirmadosPremioActivity"
+            android:name=".controllers.JogosConfirmadosPremioActivity"
             android:label="@string/title_activity_resultado_ler_bilhetes"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar" />
         <activity
-            android:name=".view.JogosConfirmadosPremioMercadoPagoActivity"
+            android:name=".controllers.JogosConfirmadosPremioMercadoPagoActivity"
             android:label="@string/title_activity_resultado_ler_bilhetes"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".view.RestritoDezoitoAnosActivity"
+            android:name=".controllers.RestritoDezoitoAnosActivity"
             android:label="@string/title_activity_termos_uso"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar" />
@@ -277,27 +277,27 @@
             android:screenOrientation="portrait" />
         <activity android:name=".view.ResgatePremioLotericaAgenciaActivity_" />
         <activity
-            android:name=".view.DadosPessoaisActivity"
+            android:name=".controllers.DadosPessoaisActivity"
             android:label="@string/title_activity_dados_pessoais"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".view.DadosPessoaisConfirmacaoActivity"
+            android:name=".controllers.DadosPessoaisConfirmacaoActivity"
             android:label="@string/title_activity_dados_pessoais"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar" />
         <activity
-            android:name=".view.CadastrarConfirmacao"
+            android:name=".controllers.CadastrarConfirmacaoActivity"
             android:label="@string/title_activity_toolbar"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar" />
         <activity
-            android:name=".view.AlterarDadosLoginCaixaActivity"
+            android:name=".controllers.AlterarDadosLoginCaixaActivity"
             android:label="@string/title_activity_alterar_dados_login_caixa"
             android:theme="@style/AppTheme.DegradeActionBar" />
         <activity
-            android:name=".view.TokenActivity"
+            android:name=".controllers.TokenActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -313,7 +313,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.RapidaoApostaFavoritasSelecaoActivity"
+            android:name=".controllers.RapidaoApostaFavoritasSelecaoActivity"
             android:label="@string/title_activity_lista_rapidao"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar"

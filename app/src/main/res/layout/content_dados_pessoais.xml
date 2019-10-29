@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="br.gov.caixa.loterias.apostar.interno.view.DadosPessoaisActivity"
+    tools:context="br.gov.caixa.loterias.apostar.interno.controllers.DadosPessoaisActivity"
     tools:showIn="@layout/activity_dados_pessoais"
     android:orientation="vertical"
     >

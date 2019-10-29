@@ -75,7 +75,7 @@ import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostar.interno.utils.Utils;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.helper.AdicionarApostaCarrinhoHelper;
-import br.gov.caixa.loterias.apostar.interno.view.SimularApostaActivity;
+import br.gov.caixa.loterias.apostar.interno.controllers.SimularApostaActivity;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.LotecaAdapter;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.LotogolAdapter;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.TimeCoracaoAdapter;

@@ -45,8 +45,8 @@ import br.gov.caixa.loterias.apostar.interno.utils.Constantes;
 import br.gov.caixa.loterias.apostar.interno.utils.DialogUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
-import br.gov.caixa.loterias.apostar.interno.view.ConfirmadoInclusaoCarrinhoActivity;
-import br.gov.caixa.loterias.apostar.interno.view.SimularApostaActivity;
+import br.gov.caixa.loterias.apostar.interno.controllers.ConfirmadoInclusaoCarrinhoActivity;
+import br.gov.caixa.loterias.apostar.interno.controllers.SimularApostaActivity;
 
 /**
  * Created by joafilho on 10/04/2018.

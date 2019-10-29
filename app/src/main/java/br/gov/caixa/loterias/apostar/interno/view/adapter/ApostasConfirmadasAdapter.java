@@ -22,7 +22,7 @@ import br.gov.caixa.loterias.apostar.interno.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.helper.ConferirResultadoHandler;
 import br.gov.caixa.loterias.apostar.interno.utils.helper.ConferirResultadoHelper;
-import br.gov.caixa.loterias.apostar.interno.view.ApostasConfirmadasActivity;
+import br.gov.caixa.loterias.apostar.interno.controllers.ApostasConfirmadasActivity;
 
 /**
  * Created by pmotta on 15/03/2018.

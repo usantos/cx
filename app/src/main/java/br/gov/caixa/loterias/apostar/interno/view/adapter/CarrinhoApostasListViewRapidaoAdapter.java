@@ -24,7 +24,7 @@ package br.gov.caixa.loterias.apostar.interno.view.adapter;
         import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeEnum;
         import br.gov.caixa.loterias.apostar.interno.utils.EstiloModalidade;
         import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
-        import br.gov.caixa.loterias.apostar.interno.view.ListaRapidaoActivity;
+        import br.gov.caixa.loterias.apostar.interno.controllers.ListaRapidaoActivity;
 
 public class CarrinhoApostasListViewRapidaoAdapter extends RecyclerView.Adapter<CarrinhoApostasListViewRapidaoAdapter.ApostaHolder> {
     private Context context;

@@ -21,7 +21,6 @@ import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bean.TipoAposta;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.RapidaoConfigSingleton;
-import br.gov.caixa.loterias.apostar.interno.view.SelecaoModalidadesRapidaoActivity;
 
 
 public class TiposApostasMultiplaSelecaoAdapter extends BaseAdapter {
