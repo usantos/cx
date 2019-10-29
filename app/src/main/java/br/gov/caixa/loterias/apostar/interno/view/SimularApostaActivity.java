@@ -75,6 +75,7 @@ import br.gov.caixa.loterias.apostar.interno.view.fragment.SurpresinhaFragment.S
 import br.gov.caixa.loterias.apostar.interno.view.fragment.SurpresinhaFragment_;
 import br.gov.caixa.loterias.apostar.interno.view.listener.CartelaFragmentListener;
 
+import static br.gov.caixa.loterias.apostar.interno.utils.Utils.isErroNegocial;
 import static br.gov.caixa.loterias.apostar.interno.view.CarrinhoActivity.CARRINHO;
 import static br.gov.caixa.loterias.apostar.interno.view.CarrinhoActivity.LER_CARRINHO_LOCAL;
 import static java.lang.String.format;
@@ -446,7 +447,19 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
             @Override
             public void onErrorResponse(VolleyError error) {
                 DialogUtils.dismiss();
-                RedirectNetwork.checkRedirect(error, SimularApostaActivity.this);
+                DialogUtils.dismiss();
+                if(isErroNegocial(error)){
+                    ViewUtils.alertTitleButtonYesOrNotListener(
+                            SimularApostaActivity.this,
+                            MensagensNetwork.getErrorMessage(error),
+                            (dialogInterface, i) ->
+                                    salvarAposta(apostaFavorita)
+
+                                                              );
+                } else {
+                    RedirectNetwork.checkRedirect(error, SimularApostaActivity.this);
+                }
+
             }
         });
     }

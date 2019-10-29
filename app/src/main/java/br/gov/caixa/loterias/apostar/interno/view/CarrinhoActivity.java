@@ -44,6 +44,8 @@ import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.CarrinhoApostasListViewAdapter;
 import br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightRecyclerView;
 
+import static br.gov.caixa.loterias.apostar.interno.utils.Utils.isErroNegocial;
+
 
 public class CarrinhoActivity extends AppCompatActivity {
 
@@ -280,11 +282,16 @@ public class CarrinhoActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 DialogUtils.dismiss();
-                ViewUtils.alertTitleButtonYesOrNotListener(
-                        CarrinhoActivity.this,
-                                MensagensNetwork.getErrorMessage(error),
-                                (dialogInterface, i) ->  favoritarCarrinho(nome)
-                        );
+                if(isErroNegocial(error)){
+                    ViewUtils.alertTitleButtonYesOrNotListener(
+                            CarrinhoActivity.this,
+                            MensagensNetwork.getErrorMessage(error),
+                            (dialogInterface, i) ->
+                                    favoritarCarrinho(nome)
+                                                              );
+                } else {
+                    RedirectNetwork.checkRedirect(error, CarrinhoActivity.this);
+                }
             }
         });
     }
