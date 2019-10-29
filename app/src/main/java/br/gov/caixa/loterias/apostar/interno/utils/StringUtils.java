@@ -23,4 +23,7 @@ public class StringUtils {
         return stringBuilder.toString();
     }
 
+    public static String formatDouble(Double valor){
+        return String.format("%.2f", valor);
+    }
 }
