@@ -1,17 +1,23 @@
 package br.gov.caixa.loterias.apostar.interno.utils;
 
+import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Handler;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.util.Base64;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.google.gson.Gson;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Random;
 
+import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bean.DadosUsuarioToken;
 
 /**
@@ -69,6 +75,18 @@ public class Utils {
         } else {
             //deprecated in API 26
             v.vibrate(500);
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public static void setStatusBarGradiant(Activity activity) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window   window     = activity.getWindow();
+            Drawable background = activity.getResources().getDrawable(R.drawable.gradiente_titulo_caixa);
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(activity.getResources().getColor(android.R.color.transparent));
+            window.setNavigationBarColor(activity.getResources().getColor(android.R.color.transparent));
+            window.setBackgroundDrawable(background);
         }
     }
 }

@@ -17,7 +17,6 @@ import java.util.LinkedHashMap;
 import br.gov.caixa.loterias.apostar.interno.BuildConfig;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.VersionResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.GsonRequest;
-import br.gov.caixa.loterias.apostar.interno.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostar.interno.view.LoginActivity;
 import br.gov.caixa.loterias.apostar.interno.view.TokenActivity;
 
@@ -67,8 +66,8 @@ public class AcessoBO extends BaseBO {
         );
 
         AuthorizationRequest authorizationRequest = builder.build();
-        LoginSP.loginRealizado(false);
         Intent intent = new Intent(activity, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(activity, authorizationRequest.hashCode(), intent, 0);
 

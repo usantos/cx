@@ -50,8 +50,9 @@ public class ApostaBO extends BaseBO {
     private LinkedHashMap<String, String> getHeader(){
         if(header == null){
             this.header = new LinkedHashMap<>();
-            this.header.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
         }
+        this.header.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
+
         return header;
     }
 
@@ -585,13 +586,13 @@ public class ApostaBO extends BaseBO {
     }
 
     //COMPRAS
-    public void getCompras(final int mes, final int ano, final int offset, final RequestListener<ResultadoPesquisaPaginadaDTOCompraDTOResponse> listener) {
+    public void getCompras(final int mes, final int ano, final int offset, final int size,  final RequestListener<ResultadoPesquisaPaginadaDTOCompraDTOResponse> listener) {
         LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
 
         queryParams.put("mes", String.valueOf(mes));
         queryParams.put("ano", String.valueOf(ano));
         queryParams.put("offset", String.valueOf(offset));
-        queryParams.put("size", String.valueOf("5"));
+        queryParams.put("size", String.valueOf(size));
 
         final GsonRequest request = silceConnection.buildGetRequest(ServerMethods.COMPRAS_PATH,
                                                                     queryParams,

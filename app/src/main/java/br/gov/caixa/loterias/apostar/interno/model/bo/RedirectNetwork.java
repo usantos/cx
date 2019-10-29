@@ -216,7 +216,7 @@ public class  RedirectNetwork {
     }
 
     //TODO: LOGIN - Trocando
-    private static void connectKeycloak(final Activity activity) {
+    public static void connectKeycloak(final Activity activity) {
         if(AppUtils.isNetworkAvailable(activity)){
             AcessoBO_.getInstance_(activity).iniciarLoginSSO(activity);
         }else{

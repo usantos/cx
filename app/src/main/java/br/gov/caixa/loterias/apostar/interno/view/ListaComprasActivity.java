@@ -47,7 +47,7 @@ import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
 
 public class ListaComprasActivity extends AppCompatActivity {
 
-
+    private static final int PAGE_SIZE = 10;
 
     private List<MesAnoDTO> listaMesAnoDTO;
     private List<CompraDTO> listaComprasDto;
@@ -78,6 +78,60 @@ public class ListaComprasActivity extends AppCompatActivity {
         super.onResume();
 
         callWebServiceMesCompras();
+    }
+
+    private void callWebServiceMesCompras(){
+
+        final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
+        final ApostaBO apostaBO = ApostaBO_.getInstance_(ListaComprasActivity.this);
+
+        apostaBO.getMesesCompras(new RequestListener<MesAnoDTOResponse>() {
+            @Override
+            public void onResponse(MesAnoDTOResponse response) {
+                loadViewProgress.dismiss();
+                listaMesAnoDTO = response.getPayload();
+
+                addSpinner();
+                mes = listaMesAnoDTO.get(0).getMes().getValor().intValue();
+                ano = listaMesAnoDTO.get(0).getAno().intValue();
+
+                callWebServiceCompras();
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                loadViewProgress.dismiss();
+                RedirectNetwork.checkRedirect( error, ListaComprasActivity.this );
+
+            }
+        });
+    }
+
+    private void callWebServiceCompras(){
+        offsetItem = 0;
+        isMaisCompras = true;
+        bloquearRequestScroll = false;
+        final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
+        final ApostaBO apostaBO = ApostaBO_.getInstance_(ListaComprasActivity.this);
+
+        apostaBO.getCompras(mes, ano, offsetItem, PAGE_SIZE ,new RequestListener<ResultadoPesquisaPaginadaDTOCompraDTOResponse>() {
+            @Override
+            public void onResponse(ResultadoPesquisaPaginadaDTOCompraDTOResponse response) {
+                loadViewProgress.dismiss();
+                listaComprasDto = response.getPayload().getLista();
+                offsetItem = PAGE_SIZE;
+                initRecyclerView();
+                if (response.getRedirect() != null){
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), ListaComprasActivity.this);
+                }
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                loadViewProgress.dismiss();
+                RedirectNetwork.checkRedirect( error, ListaComprasActivity.this );
+            }
+        });
     }
 
     private void setaViews(){
@@ -227,60 +281,7 @@ public class ListaComprasActivity extends AppCompatActivity {
         startActivity(activity);
     }
 
-    private void callWebServiceCompras(){
-        offsetItem = 0;
-        isMaisCompras = true;
-        bloquearRequestScroll = false;
-        final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
-        final ApostaBO apostaBO = ApostaBO_.getInstance_(ListaComprasActivity.this);
 
-        apostaBO.getCompras(mes, ano, offsetItem ,new RequestListener<ResultadoPesquisaPaginadaDTOCompraDTOResponse>() {
-            @Override
-            public void onResponse(ResultadoPesquisaPaginadaDTOCompraDTOResponse response) {
-                loadViewProgress.dismiss();
-                listaComprasDto = response.getPayload().getLista();
-                offsetItem = 5;
-                initRecyclerView();
-                if (response.getRedirect() != null){
-                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), ListaComprasActivity.this);
-                }
-            }
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                loadViewProgress.dismiss();
-                RedirectNetwork.checkRedirect( error, ListaComprasActivity.this );
-            }
-        });
-    }
-
-
-    private void callWebServiceMesCompras(){
-
-        final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
-        final ApostaBO apostaBO = ApostaBO_.getInstance_(ListaComprasActivity.this);
-
-        apostaBO.getMesesCompras(new RequestListener<MesAnoDTOResponse>() {
-            @Override
-            public void onResponse(MesAnoDTOResponse response) {
-                loadViewProgress.dismiss();
-                listaMesAnoDTO = response.getPayload();
-
-                addSpinner();
-                mes = listaMesAnoDTO.get(0).getMes().getValor().intValue();
-                ano = listaMesAnoDTO.get(0).getAno().intValue();
-
-                callWebServiceCompras();
-            }
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                loadViewProgress.dismiss();
-                RedirectNetwork.checkRedirect( error, ListaComprasActivity.this );
-
-            }
-        });
-    }
 
     private void addSpinner(){
         Spinner selecaoMesSpinner;
@@ -377,7 +378,7 @@ public class ListaComprasActivity extends AppCompatActivity {
         final ApostaBO apostaBO = ApostaBO_.getInstance_(ListaComprasActivity.this);
         progressLoadingMore.setVisibility(View.VISIBLE);
 
-        apostaBO.getCompras(mes, ano, offsetItem, new RequestListener<ResultadoPesquisaPaginadaDTOCompraDTOResponse>() {
+        apostaBO.getCompras(mes, ano, offsetItem, PAGE_SIZE, new RequestListener<ResultadoPesquisaPaginadaDTOCompraDTOResponse>() {
             @Override
             public void onResponse(ResultadoPesquisaPaginadaDTOCompraDTOResponse response) {
                 progressLoadingMore.setVisibility(View.GONE);
@@ -386,7 +387,7 @@ public class ListaComprasActivity extends AppCompatActivity {
                 }else{
                     listaComprasDto.addAll(response.getPayload().getLista());
                     listaComprasRecyclerViewAdapter.notifyDataSetChanged();
-                    offsetItem = offsetItem +5;
+                    offsetItem = offsetItem + PAGE_SIZE;
                 }
                 bloquearRequestScroll = false;
                 if (response.getRedirect() != null){

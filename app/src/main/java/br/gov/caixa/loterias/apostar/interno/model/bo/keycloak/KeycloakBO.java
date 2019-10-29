@@ -27,7 +27,6 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.DadosUsuarioBO;
 @EBean(scope = EBean.Scope.Singleton)
 public class KeycloakBO {
     private static final String TAG = KeycloakBO.class.getName();
-    private static final String SERVER_URL = BuildConfig.URL_SSO;
 
     private String accessToken;
     private String refreshToken;
@@ -62,6 +61,7 @@ public class KeycloakBO {
     public void limparSessao(Activity activity){
         DadosUsuarioBO.updateUsuarioLogado( activity, false );
         accessToken = null;
+        refreshToken = null;
         clearCookies(activity);
         WebView webView = new WebView(activity);
         webView.clearCache(true);
@@ -103,11 +103,6 @@ public class KeycloakBO {
 
     public interface OnRefreshAccess{
         void onRefreshAccess();
-    }
-
-    public interface OnLogin{
-        void onSuccess(String token);
-        void onFailure(Exception e);
     }
 
     private static class RefreshAccessTask extends AsyncTask<Void, Void, String>{

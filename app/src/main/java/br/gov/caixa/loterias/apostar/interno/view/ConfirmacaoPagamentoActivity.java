@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.widget.Button;
 
 import br.gov.caixa.loterias.apostar.interno.R;
+import br.gov.caixa.loterias.apostar.interno.utils.RateUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 
 public class ConfirmacaoPagamentoActivity extends SettingToolbarActivity {
@@ -18,6 +19,7 @@ public class ConfirmacaoPagamentoActivity extends SettingToolbarActivity {
         setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.title_activity_confirmacao_pagamento)));
 
         configuraBotoes();
+        RateUtils.avaliarAplicativo(this,RateUtils.getQtdCompras());
     }
 
     @Override

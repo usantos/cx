@@ -13,7 +13,6 @@ import android.widget.TextView;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostar.interno.R;
-import br.gov.caixa.loterias.apostar.interno.SelecaoModalidadesResultados;
 import br.gov.caixa.loterias.apostar.interno.model.bean.TipoAposta;
 
 public class VisualizarModalidadesAdapter extends BaseAdapter {

@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 
@@ -26,11 +28,16 @@ public class AppIndisponivelActivity extends AppCompatActivity {
     private Button buttonTentarNovamente;
     private Boolean isBuscaParametro;
     private AlertDialog loadViewProgress;
+    private TextView txtVersion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_app_indisponivel);
+
+        txtVersion = findViewById(R.id.txtVersao);
+
+        txtVersion.setText( TextUtils.concat( "v" ,BuildConfig.VERSION_NAME));
 
         isBuscaParametro = getIntent().getBooleanExtra("IS_BUSCA_PARAM", false);
 

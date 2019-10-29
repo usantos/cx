@@ -1,4 +1,4 @@
-package br.gov.caixa.loterias.apostar.interno;
+package br.gov.caixa.loterias.apostar.interno.view;
 
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
@@ -11,6 +11,7 @@ import com.android.volley.VolleyError;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bean.TipoAposta;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO_;
@@ -19,7 +20,6 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeEnumSelecaoModalidades;
-import br.gov.caixa.loterias.apostar.interno.view.VisualizarResultadosActivity;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.VisualizarModalidadesAdapter;
 import br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightGridView;
 import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;

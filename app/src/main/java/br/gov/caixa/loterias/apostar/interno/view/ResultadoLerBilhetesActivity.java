@@ -37,6 +37,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResultadoConsult
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResultadoConsultaBilheteDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.SituacaoResultadoBilheteEnum;
 import br.gov.caixa.loterias.apostar.interno.utils.EstiloModalidade;
+import br.gov.caixa.loterias.apostar.interno.utils.RateUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.FaixaPremiacaoAdapter;
 import br.gov.caixa.loterias.apostar.interno.view.custom.ContentResultadoPremiado;
@@ -127,6 +128,7 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
                 resultadoConsultaBilheteDTO = response.getPayload();
                 if (Objects.equals(resultadoConsultaBilheteDTO.getSituacao().getValor(), SituacaoResultadoBilheteEnum.PREMIADA.getValor())) {
                     atualizarLayoutPremiado();
+                    RateUtils.avaliarAplicativo(ResultadoLerBilhetesActivity.this, true);
                 } else {
                     atualizarLayoutNaoPremiado();
                 }

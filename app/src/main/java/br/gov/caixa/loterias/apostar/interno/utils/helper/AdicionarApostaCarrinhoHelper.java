@@ -179,8 +179,11 @@ public class AdicionarApostaCarrinhoHelper {
         Boolean espelho = false;
 
         if(aposta instanceof IdentificaoDeUmaApostaDas8Modalidades){
-            valor = ((IdentificaoDeUmaApostaDas8Modalidades)aposta).getValor();
-            espelho = ((IdentificaoDeUmaApostaDas8Modalidades)aposta).getGerarApostaEspelho();
+            IdentificaoDeUmaApostaDas8Modalidades apostaDas8Modalidades = (IdentificaoDeUmaApostaDas8Modalidades) aposta;
+            if(apostaDas8Modalidades != null){
+                valor = apostaDas8Modalidades.getValor() != null ? apostaDas8Modalidades.getValor(): valor;
+                espelho = apostaDas8Modalidades.getGerarApostaEspelho()!= null ? apostaDas8Modalidades.getGerarApostaEspelho(): espelho;
+            }
         }else if(aposta instanceof IncluirSurpresinhaDTO){
             valor = ((IncluirSurpresinhaDTO)aposta).getValor();
         }

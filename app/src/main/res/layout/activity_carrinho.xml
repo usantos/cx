@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/carrinhoScrollView"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:descendantFocusability="blocksDescendants">
 
     <include layout="@layout/app_bar_degrade_pesquisa" />
 
@@ -67,8 +68,20 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:nestedScrollingEnabled="false"
-                android:paddingBottom="170dp"
                 app:layout_constraintTop_toBottomOf="@id/tv_info_valor_minimo" />
+
+            <ProgressBar
+                android:id="@+id/pb_loading"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                app:layout_constraintTop_toBottomOf="@id/erv_apostas_listas"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="170dp"
+                app:layout_constraintTop_toBottomOf="@id/pb_loading"/>
+
         </android.support.constraint.ConstraintLayout>
     </ScrollView>
 

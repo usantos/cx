@@ -37,8 +37,9 @@ public class DadosCorporativosBO extends BaseBO{
     private LinkedHashMap<String, String> getHeader(){
         if(header == null){
             this.header = new LinkedHashMap<>();
-            this.header.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
         }
+        this.header.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
+
         return header;
     }
 

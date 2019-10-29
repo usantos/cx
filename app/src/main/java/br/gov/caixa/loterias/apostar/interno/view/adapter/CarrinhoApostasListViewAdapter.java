@@ -204,6 +204,7 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
     private void deletarAposta(final IdentificaoDeUmaApostaDas8Modalidades aposta) {
 
         ViewUtils.alertTitleButtonYesOrNotListener(context, context.getResources().getString(R.string.MA010), (dialogInterface, i) -> {
+            int posDeletado = apostas.indexOf(aposta);
             ApostaBO apostaBO = ApostaBO_.getInstance_(parentActivity);
             final Dialog loadViewProgress = LoadingViewLoterias.show(parentActivity);
             apostaBO.deleteApostaCarrinho(aposta.getId().toString(), new RequestListener<CarrinhoDTOResponse>() {
@@ -212,7 +213,7 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
                     loadViewProgress.dismiss();
                     parentActivity.setCarrinho(response.getPayload());
                     deletarApostaBaseLocal(aposta, Boolean.FALSE);
-                    parentActivity.atualizaLayout(Boolean.FALSE);
+                    parentActivity.deletaAposta(posDeletado, aposta);
                     if (response.getRedirect() != null) {
                         RedirectNetwork.checkRedirectSucesso(response.getRedirect(), parentActivity);
                     }
@@ -226,6 +227,7 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
 
                     } else {
                         deletarApostaBaseLocal(aposta, Boolean.TRUE);
+                        parentActivity.deletaAposta(posDeletado, aposta);
                     }
                 }
             });
