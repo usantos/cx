@@ -25,7 +25,6 @@ import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.Crypto;
 import br.gov.caixa.loterias.apostar.interno.utils.MaskEditUtil;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
-import br.gov.caixa.loterias.apostar.interno.view.ResultadoLerBilhetesActivity_;
 
 public class InsercaoManualCodBarrasActivity extends AppCompatActivity {
 

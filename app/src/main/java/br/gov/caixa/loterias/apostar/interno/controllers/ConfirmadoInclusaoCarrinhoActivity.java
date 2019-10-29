@@ -39,7 +39,6 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametroJogoDTO
 import br.gov.caixa.loterias.apostar.interno.utils.DialogUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
-import br.gov.caixa.loterias.apostar.interno.view.PrincipalActivity_;
 
 import static br.gov.caixa.loterias.apostar.interno.controllers.CarrinhoActivity.CARRINHO;
 import static br.gov.caixa.loterias.apostar.interno.controllers.CarrinhoActivity.LER_CARRINHO_LOCAL;

@@ -25,7 +25,7 @@ import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 
 public class ConfiguracaoRapidaoFragment3 extends Fragment implements View.OnClickListener{
 	private TextView tvValorMinimo, tvValorMaximo, tvValorMaximoDesc, tvValorMinimoDesc;
-	private Double limiteDiario = 500d,valorMinimo = 30d, valorSelecionadoMin = 30d, valorSelecionadoMax = 0d;
+	private Double limiteDiario = 500d,valorMinimo = 30d, valorSelecionadoMin = 30d, valorSelecionadoMax = 35d;
 	private ArrayList<Button>  botoesMinimos = new ArrayList<>(),
 							   botoesMaximos = new ArrayList<>();
 
@@ -99,6 +99,7 @@ public class ConfiguracaoRapidaoFragment3 extends Fragment implements View.OnCli
 			configuraDiferencaMinMax(isMin);
 			configuraValoresBotoes();
 		}
+		configuraValoresSelecionados();
 	}
 
 	private void configuraDiferencaMinMax(Boolean isMin){
@@ -122,10 +123,8 @@ public class ConfiguracaoRapidaoFragment3 extends Fragment implements View.OnCli
 
 	private void configuraBotoes(Boolean isMin){
 		limpaSelecaoBotoes();
-
-
 		int btnMinSelecionado =  pegaBotaoSelecionado(MINIMO);
-		//Configura máximo
+
 		if (valorSelecionadoMin * 4 > limiteDiario) {
 			configuraDiferencaMinMax(isMin);
 			//valorSelecionadoMax = valorSelecionadoMin >= valorSelecionadoMax ? valorSelecionadoMin + 5 : valorSelecionadoMax;
@@ -214,12 +213,20 @@ public class ConfiguracaoRapidaoFragment3 extends Fragment implements View.OnCli
 
 					if(isMin){
 						valorSelecionadoMin = valor;
+						configuraValoresBotoes();
 						configuraLogica(MINIMO);
 					} else{
-						//criar logica para verificar se o valor maximo é maior que min + 5
-						//		NAO esta refletindo quando o usuario coloca o valor na mao apos ir ate o fim dos contadores
-						valorSelecionadoMax = valor;
-						configuraLogica(MAXIMO);
+						if(valor > valorMinimo + 5){
+							valorSelecionadoMax = valor;
+							configuraValoresBotoes();
+							configuraLogica(MAXIMO);
+						} else {
+							valorSelecionadoMax = valorMinimo + 5;
+							valorSelecionadoMin = valorMinimo;
+							mostraMsgValorAjustado();
+							configuraValoresBotoes();
+							configuraLogica(MINIMO);
+						}
 					}
 					dialogLimite.dismiss();
 				} else {
@@ -299,6 +306,19 @@ public class ConfiguracaoRapidaoFragment3 extends Fragment implements View.OnCli
 						StringUtils.formatDouble(valorMinimo) +
 						" e R$ " +
 						StringUtils.formatDouble(limiteDiario),
+				getString(R.string.ok)
+								  ).show();
+	}
+
+	private void mostraMsgValorAjustado(){
+		ViewUtils.alertTitleButton(
+				getActivity(),
+				R.string.ops,
+				"O valor escolhido tem que ser um pouco maior que o valor mínimo do carrinho, para isso já ajustamos o máximo para R$ " +
+						StringUtils.formatDouble(valorSelecionadoMax) +
+						" e o mínimo para R$ " +
+						StringUtils.formatDouble(valorSelecionadoMin)+
+						" assim tudo vai funcionar perfeitamente.",
 				getString(R.string.ok)
 								  ).show();
 	}

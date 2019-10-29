@@ -71,8 +71,6 @@ import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostar.interno.utils.helper.ConferirResultadoHandler;
 import br.gov.caixa.loterias.apostar.interno.utils.helper.ConferirResultadoHelper;
-import br.gov.caixa.loterias.apostar.interno.view.ResultadoApostaConfirmadaActivity_;
-import br.gov.caixa.loterias.apostar.interno.view.SimularApostaActivity_;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.ApostasConfirmadasAdapter;
 import br.gov.caixa.loterias.apostar.interno.view.fragment.ApostaConfirmadaNumeroDetalhesPremioPago_;
 import br.gov.caixa.loterias.apostar.interno.view.fragment.ApostaConfirmadaNumeroDetalhes_;

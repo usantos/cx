@@ -79,8 +79,6 @@ import br.gov.caixa.loterias.apostar.interno.utils.RateUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.StringUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.Utils;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
-import br.gov.caixa.loterias.apostar.interno.view.ApostasConfirmadasActivity_;
-import br.gov.caixa.loterias.apostar.interno.view.SimularApostaActivity_;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.HomeAdapter;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.SideMenuExpandleAdapter;
 import br.gov.caixa.loterias.apostar.interno.view.animation.AnimacaoCalculoRepassesSociais;

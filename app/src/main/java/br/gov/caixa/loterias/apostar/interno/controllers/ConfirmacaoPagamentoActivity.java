@@ -7,7 +7,6 @@ import android.widget.Button;
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.utils.RateUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
-import br.gov.caixa.loterias.apostar.interno.view.PrincipalActivity_;
 
 public class ConfirmacaoPagamentoActivity extends SettingToolbarActivity {
 

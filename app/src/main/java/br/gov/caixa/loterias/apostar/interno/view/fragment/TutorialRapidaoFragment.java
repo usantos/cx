@@ -12,9 +12,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import br.gov.caixa.loterias.apostar.interno.R;
-import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.controllers.ListaRapidaoActivity;
-import br.gov.caixa.loterias.apostar.interno.view.RapidaoConfigActivity_;
+import br.gov.caixa.loterias.apostar.interno.controllers.RapidaoConfigActivity_;
+import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 
 public class TutorialRapidaoFragment extends Fragment {
 

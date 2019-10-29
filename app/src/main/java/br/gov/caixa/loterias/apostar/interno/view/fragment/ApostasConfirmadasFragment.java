@@ -25,6 +25,8 @@ import java.util.Locale;
 import java.util.Objects;
 
 import br.gov.caixa.loterias.apostar.interno.R;
+import br.gov.caixa.loterias.apostar.interno.controllers.ApostaConfirmadaDetalhesActivity_;
+import br.gov.caixa.loterias.apostar.interno.controllers.ApostasConfirmadasActivity;
 import br.gov.caixa.loterias.apostar.interno.model.bean.ApostaPageRequest;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.MensagensNetwork;
@@ -45,8 +47,6 @@ import br.gov.caixa.loterias.apostar.interno.utils.AppUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.DialogUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostar.interno.utils.helper.AdicionarApostaCarrinhoHelper;
-import br.gov.caixa.loterias.apostar.interno.view.ApostaConfirmadaDetalhesActivity_;
-import br.gov.caixa.loterias.apostar.interno.controllers.ApostasConfirmadasActivity;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.ApostasConfirmadasAdapter;
 import br.gov.caixa.loterias.apostar.interno.view.custom.MonthYearPickerDialog;
 import br.gov.caixa.loterias.apostar.interno.view.custom.MonthYearPickerDialog_;

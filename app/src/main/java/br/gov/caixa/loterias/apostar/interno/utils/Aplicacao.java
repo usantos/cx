@@ -15,6 +15,10 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import br.gov.caixa.loterias.apostar.interno.controllers.AppIndisponivelActivity;
+import br.gov.caixa.loterias.apostar.interno.controllers.CarrinhoActivity;
+import br.gov.caixa.loterias.apostar.interno.controllers.PrincipalActivity_;
+import br.gov.caixa.loterias.apostar.interno.controllers.SplashScreenActivity;
 import br.gov.caixa.loterias.apostar.interno.model.bean.DadosUsuarioToken;
 import br.gov.caixa.loterias.apostar.interno.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostar.interno.model.bo.DadosCorporativosBO;
@@ -23,10 +27,6 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametrosSimulacao;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametrosSimulacaoResponse;
-import br.gov.caixa.loterias.apostar.interno.controllers.AppIndisponivelActivity;
-import br.gov.caixa.loterias.apostar.interno.controllers.CarrinhoActivity;
-import br.gov.caixa.loterias.apostar.interno.view.PrincipalActivity_;
-import br.gov.caixa.loterias.apostar.interno.controllers.SplashScreenActivity;
 import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
 
 public class Aplicacao extends MultiDexApplication {

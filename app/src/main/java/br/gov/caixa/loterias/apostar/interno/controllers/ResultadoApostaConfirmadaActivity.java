@@ -33,8 +33,6 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.TipoPagamentoDTO
 import br.gov.caixa.loterias.apostar.interno.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostar.interno.utils.RateUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
-import br.gov.caixa.loterias.apostar.interno.view.PrincipalActivity_;
-import br.gov.caixa.loterias.apostar.interno.view.ResgatePremioLotericaAgenciaActivity_;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.FaixaPremiacaoAdapter;
 import br.gov.caixa.loterias.apostar.interno.view.custom.ContentResultadoPremiado;
 import br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightRecyclerView;

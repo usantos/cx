@@ -8,7 +8,6 @@ import android.widget.TextView;
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.utils.Utils;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
-import br.gov.caixa.loterias.apostar.interno.view.PrincipalActivity_;
 
 public class CadastrarConfirmacaoActivity extends AppCompatActivity {
 

@@ -100,23 +100,23 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".view.CadastrarActivity_"
+            android:name=".controllers.CadastrarActivity_"
             android:configChanges="orientation"
             android:parentActivityName=".controllers.IntroducaoActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".view.CadastrarPasso2Activity_"
+            android:name=".controllers.CadastrarPasso2Activity_"
             android:configChanges="orientation"
-            android:parentActivityName=".view.CadastrarActivity_"
+            android:parentActivityName=".controllers.CadastrarActivity_"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:screenOrientation="portrait"
-                android:value=".view.CadastrarActivity_" />
+                android:value=".controllers.CadastrarActivity_" />
         </activity>
         <activity
-            android:name=".view.SimularApostaActivity_"
+            android:name=".controllers.SimularApostaActivity_"
             android:configChanges="orientation"
             android:label="@string/title_activity_home"
             android:screenOrientation="portrait"
@@ -147,7 +147,7 @@
             android:label="@string/title_activity_forma_pagamento"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.PrincipalActivity_"
+            android:name=".controllers.PrincipalActivity_"
             android:label=""
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.BrancoActionBar" />
@@ -174,7 +174,7 @@
                 android:value=".controllers.PrincipalActivity" />
         </activity>
         <activity
-            android:name=".view.RapidaoConfigActivity_"
+            android:name=".controllers.RapidaoConfigActivity_"
             android:label="@string/title_activity_lista_rapidao"
             android:parentActivityName=".controllers.ListaRapidaoActivity"
             android:screenOrientation="portrait"
@@ -224,7 +224,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar" />
         <activity
-            android:name=".view.ResultadoLerBilhetesActivity_"
+            android:name=".controllers.ResultadoLerBilhetesActivity_"
             android:label="@string/title_activity_resultado_ler_bilhetes"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar" />
@@ -239,10 +239,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar" />
         <activity
-            android:name=".view.DetalheDuvidaActivity_"
+            android:name=".controllers.DetalheDuvidaActivity_"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.ApostasConfirmadasActivity_"
+            android:name=".controllers.ApostasConfirmadasActivity_"
             android:label="@string/title_activity_minhas_apostas"
             android:parentActivityName=".controllers.PrincipalActivity"
             android:screenOrientation="portrait"
@@ -269,13 +269,13 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar" />
         <activity
-            android:name=".view.ApostaConfirmadaDetalhesActivity_"
+            android:name=".controllers.ApostaConfirmadaDetalhesActivity_"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.ResultadoApostaConfirmadaActivity_"
+            android:name=".controllers.ResultadoApostaConfirmadaActivity_"
             android:label="@string/title_activity_resultado_ler_bilhetes"
             android:screenOrientation="portrait" />
-        <activity android:name=".view.ResgatePremioLotericaAgenciaActivity_" />
+        <activity android:name=".controllers.ResgatePremioLotericaAgenciaActivity_" />
         <activity
             android:name=".controllers.DadosPessoaisActivity"
             android:label="@string/title_activity_dados_pessoais"
@@ -320,7 +320,7 @@
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize|adjustPan">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".view.RapidaoConfigActivity_" />
+                android:value=".controllers.RapidaoConfigActivity_" />
         </activity>
     </application>
 
