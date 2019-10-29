@@ -44,7 +44,6 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.ViewById;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -250,10 +249,6 @@ public class PrincipalActivity extends AppCompatActivity
             public void onResponse(ParametrosSimulacaoResponse response) {
                 loadViewProgress.dismiss();
                 FirebaseManager.registraEvento(PrincipalActivity.this ,"ENTROU_LISTA_MODALIDADES");
-
-                if(response.getPayload().getValorLimiteDiario() == null){
-                    response.getPayload().setValorLimiteDiario(BigDecimal.ZERO);
-                }
 
                 modalidadesParaListar = response.getPayload().getParametros();
                 if (modalidadesParaListar == null || modalidadesParaListar.isEmpty()) {

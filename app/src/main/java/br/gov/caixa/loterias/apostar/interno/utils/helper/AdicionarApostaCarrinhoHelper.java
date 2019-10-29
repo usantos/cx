@@ -151,10 +151,9 @@ public class AdicionarApostaCarrinhoHelper {
 
     private static void checarLimiteDiario
             (final ApostaBO apostaBO, final IdentificaoDeUmaApostaDas8Modalidades aposta, final CarrinhoDTO carrinhoDTO) {
-        if (SessaoUsuario.getInstance().getParametrosSimulacao().getValorLimiteDiario()
-                .compareTo(carrinhoDTO.getValorTotal()
-                        .add(IdentificaoDeUmaApostaDas8Modalidades.getValorApostaPorPrognostico(aposta)))
-                < 0) {
+         BigDecimal limiteDiario = SessaoUsuario.getInstance().getParametrosSimulacao().getValorLimiteDiario();
+        BigDecimal valorCarrinho = carrinhoDTO.getValorTotal().add(IdentificaoDeUmaApostaDas8Modalidades.getValorApostaPorPrognostico(aposta));
+        if (valorCarrinho.compareTo(limiteDiario) == 1) {
             DialogUtils.dismiss();
             ViewUtils.alertTitleButtonYesOrNotListener(context, context.getResources().getString(R.string.MA014), (dialog, which) -> checarApostasRepetidas(apostaBO, aposta, carrinhoDTO));
         } else {

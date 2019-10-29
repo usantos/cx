@@ -259,6 +259,7 @@ public class CarrinhoActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 DialogUtils.dismiss();
+                ocorrendoValidacao = false;
                 RedirectNetwork.checkRedirect(error, CarrinhoActivity.this);
             }
         });

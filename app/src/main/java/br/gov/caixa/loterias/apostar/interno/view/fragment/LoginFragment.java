@@ -13,12 +13,10 @@ import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostar.interno.BuildConfig;
 import br.gov.caixa.loterias.apostar.interno.R;
-import br.gov.caixa.loterias.apostar.interno.model.bean.RetornoListaCarrinho;
 import br.gov.caixa.loterias.apostar.interno.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostar.interno.model.bo.AcessoBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.AcessoBO_;
@@ -27,7 +25,6 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.DadosUsuarioBO_;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.keycloak.KeycloakBO_;
-import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.UsuarioLogadoResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.CarrinhoSingleton;
@@ -110,7 +107,9 @@ public class LoginFragment extends Fragment {
                 loadViewProgress.dismiss();
                 if (response.getRedirect() == null) {
                     SessaoUsuario.getInstance().setValorMaximoAposta(response.getPayload().getLimiteDiario());
-
+                    if(response.getPayload().getLimiteDiario() != null){
+                        SessaoUsuario.getInstance().getParametrosSimulacao().setValorLimiteDiario(response.getPayload().getLimiteDiario());
+                    }
                     crud.deleteAll();
                     CarrinhoSingleton.getInstance().setCarrinho(null);
                     CarrinhoSingleton.getInstance().setCarrinho(response.getPayload().getCarrinho());

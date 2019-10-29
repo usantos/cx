@@ -19,7 +19,6 @@ import com.daimajia.swipe.SwipeLayout;
 
 import org.apache.commons.lang.StringUtils;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -131,8 +130,6 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
         holder.exluirRelativeLayoutFavoritos.setOnClickListener(v -> deleteFavoritaCallWebservice(position));
 
         holder.editarRelativeLayoutAddCarrinho.setOnClickListener(view -> {
-            SessaoUsuario.getInstance().getParametrosSimulacao().setQuantidadeMaximaApostasCarrinho(3);
-            SessaoUsuario.getInstance().getParametrosSimulacao().setValorLimiteDiario(new BigDecimal("8"));
             adicionarApostaCarrinhoRequest(ApostaBO_.getInstance_(activity), listaApostaFavorita.get(position));
         });
 

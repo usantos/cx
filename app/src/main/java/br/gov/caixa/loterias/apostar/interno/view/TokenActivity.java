@@ -11,7 +11,6 @@ import com.android.volley.VolleyError;
 import net.openid.appauth.AuthorizationException;
 import net.openid.appauth.AuthorizationResponse;
 import net.openid.appauth.AuthorizationService;
-import net.openid.appauth.TokenResponse;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostar.interno.R;
-import br.gov.caixa.loterias.apostar.interno.model.bean.RetornoListaCarrinho;
 import br.gov.caixa.loterias.apostar.interno.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostar.interno.model.bo.AcessoBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.AcessoBO_;
@@ -29,7 +27,6 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.DadosUsuarioBO_;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.keycloak.KeycloakBO_;
-import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.UsuarioLogadoResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.CarrinhoSingleton;
@@ -49,6 +46,7 @@ public class TokenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_token);
         loadViewProgress = LoadingViewLoterias.show(this);
+        atualizaLimiteDiario();
         try {
             AuthorizationResponse authorizationResponse = AuthorizationResponse.fromIntent(getIntent());
             AuthorizationException authorizationException = AuthorizationException.fromIntent(getIntent());
@@ -57,6 +55,7 @@ public class TokenActivity extends AppCompatActivity {
                 authorizationService.performTokenRequest(authorizationResponse.createTokenExchangeRequest(), (response, ex) -> {
                     if (response != null) {
                         if (response.accessToken == null || response.refreshToken == null) {
+                            atualizaLimiteDiario();
                             AcessoBO_.getInstance_(TokenActivity.this).iniciarLoginSSO(TokenActivity.this);
                         } else {
                             if (!"".equals(response.accessToken) && !"".equals(response.refreshToken)) {
@@ -104,6 +103,10 @@ public class TokenActivity extends AppCompatActivity {
                                 public void onResponse(UsuarioLogadoResponse response) {
                                     if (response.getRedirect() == null) {
                                         SessaoUsuario.getInstance().setValorMaximoAposta(response.getPayload().getLimiteDiario());
+                                        if(response!= null && response.getPayload() != null && response.getPayload().getLimiteDiario() != null){
+                                            SessaoUsuario.getInstance().getParametrosSimulacao().setValorLimiteDiario(response.getPayload().getLimiteDiario());
+                                        }
+                                        SessaoUsuario.getInstance().getParametrosSimulacao().setValorLimiteDiario(response.getPayload().getLimiteDiario());
                                         CarrinhoSingleton.getInstance().setCarrinho(response.getPayload().getCarrinho());
                                         crud.deleteAll();
                                         finish();
@@ -134,5 +137,24 @@ public class TokenActivity extends AppCompatActivity {
             loadViewProgress.dismiss();
         }
         super.finish();
+    }
+
+    private void atualizaLimiteDiario(){
+        final DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_(TokenActivity.this);
+
+        List<IdentificaoDeUmaApostaDas8Modalidades> listApostas = new ArrayList<>();
+        dadosUsuarioBO.postVerificarCadastro(listApostas, new RequestListener<UsuarioLogadoResponse>() {
+
+            @Override
+            public void onResponse(UsuarioLogadoResponse response) {
+                if(response!= null && response.getPayload() != null && response.getPayload().getLimiteDiario() != null){
+                    SessaoUsuario.getInstance().getParametrosSimulacao().setValorLimiteDiario(response.getPayload().getLimiteDiario());
+                }
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        });
     }
 }
