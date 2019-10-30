@@ -70,11 +70,7 @@ public class ConfiguracaoRapidaoFragment4 extends Fragment {
 	private void setaViews (View view){
 		scrollModalides = view.findViewById(R.id.sv_modalidades_rapidao_config);
 		gridViewTiposAposta = view.findViewById(R.id.ehgv_grid_modalidades);
-		if(modalidades.size() == 0) {
-			callWebservice();
-		}else {
-			gridViewTipoAposta ();
-		}
+		callWebservice();
 	}
 
 	private void callWebservice() {

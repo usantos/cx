@@ -150,6 +150,7 @@ class ActivityLifecycleCallbacks implements Application.ActivityLifecycleCallbac
             atualizaLayout(activity);
         }
     }
+    
     private void atualizaLayout(Activity activity){
         ArrayList<String> permitidas = new ArrayList<>((Arrays.asList(PrincipalActivity_.class.toString().toUpperCase(), CarrinhoActivity.class.toString().toUpperCase())));
         if(permitidas.contains(activity.getClass().toString().toUpperCase())){
