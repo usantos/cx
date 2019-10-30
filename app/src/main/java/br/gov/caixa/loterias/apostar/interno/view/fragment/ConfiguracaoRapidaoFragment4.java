@@ -39,6 +39,8 @@ public class ConfiguracaoRapidaoFragment4 extends Fragment {
 	List<TipoAposta> tiposApostasSalvas = new ArrayList<>();
 	ScrollView scrollModalides;
 	ExpandableHeightGridView gridViewTiposAposta;
+	private static View view = null;
+
 	public ConfiguracaoRapidaoFragment4() {
 		populaArraysTipoAposta(tiposApostasSalvas, RapidaoConfigSingleton.getInstance().getRapidaoConfig().getModalidades());
 	}
@@ -50,25 +52,29 @@ public class ConfiguracaoRapidaoFragment4 extends Fragment {
 
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+	public View onCreateView (LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_configuracao_rapidao_fragment4, container, false);
-		setaViews(view);
-
+		if(view == null){
+			view = inflater.inflate(R.layout.fragment_configuracao_rapidao_fragment4, container, false);
+			setaViews(view);
+		}
 		return view;
 	}
 
-	private void gridViewTipoAposta() {
+	private void gridViewTipoAposta () {
 		TiposApostasMultiplaSelecaoAdapter tiposApostasAdapter = new TiposApostasMultiplaSelecaoAdapter(getActivity(), tiposAposta);
 		gridViewTiposAposta.setAdapter(tiposApostasAdapter);
 		gridViewTiposAposta.setExpanded(true);
 	}
 
-	private void setaViews(View view){
+	private void setaViews (View view){
 		scrollModalides = view.findViewById(R.id.sv_modalidades_rapidao_config);
 		gridViewTiposAposta = view.findViewById(R.id.ehgv_grid_modalidades);
-
-		callWebservice();
+		if(modalidades.size() == 0) {
+			callWebservice();
+		}else {
+			gridViewTipoAposta ();
+		}
 	}
 
 	private void callWebservice() {

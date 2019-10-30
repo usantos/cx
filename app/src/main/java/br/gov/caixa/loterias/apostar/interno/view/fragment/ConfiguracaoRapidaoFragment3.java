@@ -18,6 +18,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import br.gov.caixa.loterias.apostar.interno.R;
+import br.gov.caixa.loterias.apostar.interno.model.bean.SessaoUsuario;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.RapidaoConfigSingleton;
 import br.gov.caixa.loterias.apostar.interno.utils.CustomTypefaceSpan;
 import br.gov.caixa.loterias.apostar.interno.utils.MoneyTextWatcher;
 import br.gov.caixa.loterias.apostar.interno.utils.StringUtils;
@@ -25,12 +27,14 @@ import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 
 public class ConfiguracaoRapidaoFragment3 extends Fragment implements View.OnClickListener{
 	private TextView tvValorMinimo, tvValorMaximo, tvValorMaximoDesc, tvValorMinimoDesc;
-	private Double limiteDiario = 500d,valorMinimo = 30d, valorSelecionadoMin = 30d, valorSelecionadoMax = 35d;
+	private Double limiteDiario,valorMinimo, valorSelecionadoMin, valorSelecionadoMax;
 	private ArrayList<Button>  botoesMinimos = new ArrayList<>(),
 							   botoesMaximos = new ArrayList<>();
+	private RapidaoConfigSingleton rapidaoConfigSingleton;
 
-	private static final int BTN_1 = 0, BTN_2 = 1, BTN_3 = 2, BTN_4 = 3;
+	private  final int BTN_1 = 0, BTN_2 = 1, BTN_3 = 2, BTN_4 = 3;
 	private static final Boolean MINIMO = true, MAXIMO = false;
+	private static View view = null;
 
 	private Dialog dialogLimite;
 
@@ -44,9 +48,11 @@ public class ConfiguracaoRapidaoFragment3 extends Fragment implements View.OnCli
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_configuracao_rapidao_fragment3, container, false);
-		setaViews(view);
-		setaMetodos();
+		if(view == null){
+			view = inflater.inflate(R.layout.fragment_configuracao_rapidao_fragment3, container, false);
+			setaViews(view);
+			setaMetodos();
+		}
 		return view;
 	}
 
@@ -60,6 +66,7 @@ public class ConfiguracaoRapidaoFragment3 extends Fragment implements View.OnCli
 		botoesMaximos.add(view.findViewById(R.id.btn_vl_max_2));
 		botoesMaximos.add(view.findViewById(R.id.btn_vl_max_3));
 		botoesMaximos.add(view.findViewById(R.id.btn_vl_max_4));
+
 
 		tvValorMinimo  = view.findViewById(R.id.tv_val_selec_min);
 		tvValorMaximo  = view.findViewById(R.id.tv_val_selec_max);
@@ -80,8 +87,18 @@ public class ConfiguracaoRapidaoFragment3 extends Fragment implements View.OnCli
 	}
 
 	private void setaMetodos(){
+		inicializaValores();
 		configuraLogica();
 		configuraClicks();
+	}
+
+	private void inicializaValores(){
+		SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
+		rapidaoConfigSingleton = RapidaoConfigSingleton.getInstance();
+		limiteDiario = sessaoUsuario.getValorMaximoAposta().doubleValue();
+		valorMinimo = sessaoUsuario.getValorMinimimoAposta() == null ? 0d : sessaoUsuario.getValorMinimimoAposta().doubleValue();
+		valorSelecionadoMin = rapidaoConfigSingleton.getRapidaoConfig().getValorMinimo().doubleValue();
+		valorSelecionadoMax = rapidaoConfigSingleton.getRapidaoConfig().getValorMaximo().doubleValue();
 	}
 
 	private void configuraLogica(){
@@ -260,14 +277,19 @@ public class ConfiguracaoRapidaoFragment3 extends Fragment implements View.OnCli
 		int cont, indiceFinal = -1, tamLista;
 		Button btnAtual;
 		tamLista = isMin ? botoesMinimos.size() : botoesMaximos.size();
+		try {
 
-		for (cont = 0; cont < tamLista - 1; cont++) {
-			btnAtual = pegaBotaoPorIndex(cont,isMin);
-			if(valorSelecionado.equals(Double.valueOf(btnAtual.getText().toString()))) {
-				indiceFinal = cont;
+
+			for (cont = 0; cont < tamLista - 1; cont++) {
+				btnAtual = pegaBotaoPorIndex(cont, isMin);
+				if (valorSelecionado.equals(Double.valueOf(btnAtual.getText().toString()))) {
+					indiceFinal = cont;
+				}
 			}
+			return indiceFinal;
+		} catch (Exception e){
+			return indiceFinal;
 		}
-		return indiceFinal;
 	}
 
 	private void configuraTextoBotao(int index, Boolean isMin, String texto){
@@ -295,7 +317,12 @@ public class ConfiguracaoRapidaoFragment3 extends Fragment implements View.OnCli
 	}
 
 	private Double pegaValorBotao(int index, Boolean isMin){
-		return Double.valueOf(pegaBotaoPorIndex(index, isMin).getText().toString());
+		try{
+			return Double.valueOf(pegaBotaoPorIndex(index, isMin).getText().toString());
+		}catch (Exception e){
+			return new Double(0);
+		}
+
 	}
 
 	private void mostraMsgValorIncorreto(){
@@ -386,4 +413,10 @@ public class ConfiguracaoRapidaoFragment3 extends Fragment implements View.OnCli
 		}
 	}
 
+	@Override
+	public void onDestroy() {
+		valorSelecionadoMin = rapidaoConfigSingleton.getRapidaoConfig().getValorMinimo().doubleValue();
+		valorSelecionadoMax = rapidaoConfigSingleton.getRapidaoConfig().getValorMaximo().doubleValue();
+		super.onDestroy();
+	}
 }

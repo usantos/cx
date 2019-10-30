@@ -55,7 +55,7 @@
                 android:layout_height="60dp"
                 android:layout_margin="10dp"
                 android:background="@drawable/btn_estilo_valores_rapidao"
-                android:text="130"
+                tools:text="130"
                 android:textColor="@drawable/btn_text_color"
                 android:textStyle="bold" />
 
@@ -65,7 +65,7 @@
                 android:layout_height="60dp"
                 android:layout_margin="10dp"
                 android:background="@drawable/btn_estilo_valores_rapidao"
-                android:text="160"
+                tools:text="160"
                 android:textColor="@drawable/btn_text_color"
                 android:textStyle="bold" />
 
@@ -75,7 +75,7 @@
                 android:layout_height="60dp"
                 android:layout_margin="10dp"
                 android:background="@drawable/btn_estilo_valores_rapidao"
-                android:text="180"
+                tools:text="180"
                 android:textColor="@drawable/btn_text_color"
                 android:textStyle="bold" />
 
@@ -169,7 +169,7 @@
                 android:layout_height="60dp"
                 android:layout_margin="10dp"
                 android:background="@drawable/btn_estilo_valores_rapidao"
-                android:text="130"
+                tools:text="130"
                 android:textColor="@drawable/btn_text_color"
                 android:textStyle="bold" />
 
@@ -179,7 +179,7 @@
                 android:layout_height="60dp"
                 android:layout_margin="10dp"
                 android:background="@drawable/btn_estilo_valores_rapidao"
-                android:text="160"
+                tools:text="160"
                 android:textColor="@drawable/btn_text_color"
                 android:textStyle="bold" />
 
@@ -189,7 +189,7 @@
                 android:layout_height="60dp"
                 android:layout_margin="10dp"
                 android:background="@drawable/btn_estilo_valores_rapidao"
-                android:text="180"
+                tools:text="180"
                 android:textColor="@drawable/btn_text_color"
                 android:textStyle="bold" />
 

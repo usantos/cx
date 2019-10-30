@@ -43,6 +43,7 @@ public class ConfiguracaoRapidaoFragment2 extends Fragment {
 	private Boolean temValorConfigurado = false;
 	private SugestoesPremioMinimoAdapter modalidadesAdapter;
 	private TextView tvPmDesc;
+	private static View view = null;
 
 	public ConfiguracaoRapidaoFragment2() { }
 
@@ -54,12 +55,12 @@ public class ConfiguracaoRapidaoFragment2 extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_configuracao_rapidao_fragment2, container, false);
-
-		setaViews(view);
-		setaMetodos();
-		refletePremioMinimoNoPicker();
-
+		if (view == null) {
+			view = inflater.inflate(R.layout.fragment_configuracao_rapidao_fragment2, container, false);
+			setaViews(view);
+			setaMetodos();
+			refletePremioMinimoNoPicker();
+		}
 		return view;
 	}
 
