@@ -28,6 +28,7 @@ public final class FavoritasRapidaoRecyclerAdapter extends RecyclerView.Adapter<
     private FavoritasRapidaoRecyclerAdapter.Favorito favorito;
     boolean isConfigFavoritasList = false;
 
+
     public FavoritasRapidaoRecyclerAdapter(final Activity activity, final Context context, final List<ApostaFavoritaDTO> listaApostaFavorita, final List<ApostaFavoritaDTO> listaApostasSelecionadas, boolean isConfigFavoritasList) {
         this.context = context;
         this.listaApostaFavorita = listaApostaFavorita;
