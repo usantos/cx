@@ -24,6 +24,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeEnumSelecaoModalidades;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RapidaoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.RapidaoConfigSingleton;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.TiposApostasMultiplaSelecaoAdapter;
 import br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightGridView;
@@ -40,9 +41,10 @@ public class ConfiguracaoRapidaoFragment4 extends Fragment {
 	ScrollView scrollModalides;
 	ExpandableHeightGridView gridViewTiposAposta;
 	private static View view = null;
+	private RapidaoDTO rapidaoConfig = RapidaoConfigSingleton.getInstance().getRapidaoConfig();
 
 	public ConfiguracaoRapidaoFragment4() {
-		populaArraysTipoAposta(tiposApostasSalvas, RapidaoConfigSingleton.getInstance().getRapidaoConfig().getModalidades());
+		populaArraysTipoAposta(tiposApostasSalvas,rapidaoConfig.getModalidades());
 	}
 
 	public static ConfiguracaoRapidaoFragment4 newInstance() {

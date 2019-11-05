@@ -53,9 +53,8 @@ public class ConfiguracaoRapidaoFragment7 extends Fragment {
 		if (view == null) {
 			view = inflater.inflate(R.layout.fragment_configuracao_rapidao_fragment7, container, false);
 			setaViews(view);
-			setaMetodos();
 		}
-
+		setaMetodos();
 		return view;
 	}
 

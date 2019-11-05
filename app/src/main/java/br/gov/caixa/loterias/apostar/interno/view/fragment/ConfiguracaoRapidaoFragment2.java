@@ -20,6 +20,7 @@ import com.google.android.flexbox.FlexWrap;
 import com.google.android.flexbox.JustifyContent;
 import com.mercadopago.listeners.RecyclerItemClickListener;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -59,8 +60,8 @@ public class ConfiguracaoRapidaoFragment2 extends Fragment {
 			view = inflater.inflate(R.layout.fragment_configuracao_rapidao_fragment2, container, false);
 			setaViews(view);
 			setaMetodos();
-			refletePremioMinimoNoPicker();
 		}
+		refletePremioMinimoNoPicker();
 		return view;
 	}
 
@@ -111,6 +112,8 @@ public class ConfiguracaoRapidaoFragment2 extends Fragment {
 			modalidadesAdapter.setSelectedPosition(position);
 			modalidadesAdapter.notifyDataSetChanged();
 			numberPicker.setValue(pegaIndiceDoPicker(position));
+			RapidaoConfigSingleton.getInstance().getRapidaoConfig().setValorMinimoPremioPrincipal(new BigDecimal(numberPicker.getValue() * 1000000));
+
 		}));
 
 		numberPicker.setOnValueChangedListener((numberPicker, oldVal, newVal) -> {
@@ -141,6 +144,7 @@ public class ConfiguracaoRapidaoFragment2 extends Fragment {
 				default:modalidadesAdapter.setSelectedPosition(-1);
 		}
 		modalidadesAdapter.notifyDataSetChanged();
+		RapidaoConfigSingleton.getInstance().getRapidaoConfig().setValorMinimoPremioPrincipal(new BigDecimal(numberPicker.getValue() * 1000000));
 	}
 
 	private int pegaIndiceDoPicker(int position){

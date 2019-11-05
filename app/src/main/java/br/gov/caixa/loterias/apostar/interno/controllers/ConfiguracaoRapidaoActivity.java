@@ -28,17 +28,21 @@ import br.gov.caixa.loterias.apostar.interno.view.fragment.ConfiguracaoRapidaoFr
 import br.gov.caixa.loterias.apostar.interno.view.fragment.ConfiguracaoRapidaoFragment5;
 import br.gov.caixa.loterias.apostar.interno.view.fragment.ConfiguracaoRapidaoFragment6;
 import br.gov.caixa.loterias.apostar.interno.view.fragment.ConfiguracaoRapidaoFragment7;
+import br.gov.caixa.loterias.apostar.interno.view.fragment.ConfiguracaoRapidaoFragment8;
 import me.relex.circleindicator.CircleIndicator;
 
 public class ConfiguracaoRapidaoActivity extends AppCompatActivity {
 
 	private CircleIndicator circleIndicator;
-	private ViewPager viewPager;
+	private static ViewPager viewPager;
 	FragmentPagerAdapter adapterViewPager;
 	private Toolbar toolbar;
 	private static ConfiguracaoRapidaoFragment5 frag5;
 	private static ConfiguracaoRapidaoFragment6 frag6;
+	private static ConfiguracaoRapidaoFragment8 frag8;
 	private static int scrollState;
+	public  static final int FRAG_BEM_VINDO = 0, FRAG_PREMIO_MIN = 1, FRAG_VALOR_MIN_MAX = 2, FRAG_MODALIDADES = 3,
+							 FRAG_NUM_OBRG = 4, FRAG_NUM_PROIB = 5, FRAG_APOSTAS_FAV = 6, FRAG_CONFIG = 7;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -84,12 +88,14 @@ public class ConfiguracaoRapidaoActivity extends AppCompatActivity {
 			public void onPageScrollStateChanged(int state) {
 				scrollState = state;
 				if(state == RecyclerView.SCROLL_STATE_IDLE){
-					if(viewPager.getCurrentItem() == 4){
-						frag5.setaMetodos();
-					} else if (viewPager.getCurrentItem() == 5){
-						frag6.setaMetodos();
+					switch (viewPager.getCurrentItem()){
+						case FRAG_NUM_OBRG: frag5.setaMetodos();
+							break;
+						case FRAG_NUM_PROIB: frag6.setaMetodos();
+							break;
+						case FRAG_CONFIG: frag8.setaMetodos();
+							break;
 					}
-
 				}
 			}
 		});
@@ -123,8 +129,13 @@ public class ConfiguracaoRapidaoActivity extends AppCompatActivity {
 	}
 
 
+	public static void scrollToFragment(int posicao){
+		viewPager.setCurrentItem(posicao, true);
+	}
+
+
 	public static class RapidaoPagerAdapter extends FragmentPagerAdapter {
-		private static int NUM_ITEMS = 7;
+		private static int NUM_ITEMS = 8;
 
 		public RapidaoPagerAdapter(FragmentManager fragmentManager) {
 			super(fragmentManager);
@@ -138,20 +149,22 @@ public class ConfiguracaoRapidaoActivity extends AppCompatActivity {
 		@Override
 		public Fragment getItem(int position) {
 			switch (position) {
-				case 0:
+				case FRAG_BEM_VINDO:
 					return ConfiguracaoRapidaoFragment1.newInstance();
-				case 1:
+				case FRAG_PREMIO_MIN:
 					return ConfiguracaoRapidaoFragment2.newInstance();
-				case 2:
+				case FRAG_VALOR_MIN_MAX:
 					return ConfiguracaoRapidaoFragment3.newInstance();
-				case 3:
+				case FRAG_MODALIDADES:
 					return ConfiguracaoRapidaoFragment4.newInstance();
-				case 4:
+				case FRAG_NUM_OBRG:
 					return frag5 = ConfiguracaoRapidaoFragment5.newInstance();
-				case 5:
+				case FRAG_NUM_PROIB:
 					return frag6 = ConfiguracaoRapidaoFragment6.newInstance();
-				case 6:
+				case FRAG_APOSTAS_FAV:
 					return ConfiguracaoRapidaoFragment7.newInstance();
+				case FRAG_CONFIG:
+					return frag8 = ConfiguracaoRapidaoFragment8.newInstance();
 				default:
 					return null;
 			}
@@ -161,6 +174,5 @@ public class ConfiguracaoRapidaoActivity extends AppCompatActivity {
 		public CharSequence getPageTitle(int position) {
 			return "Page " + position;
 		}
-
 	}
 }

@@ -198,67 +198,63 @@ public class ConfiguracaoRapidaoFragment3 extends Fragment implements View.OnCli
 
 
 	private void configuraPopup(Boolean isMin) {
+		dialogLimite = new Dialog(getActivity());
+		dialogLimite.setContentView(R.layout.custom_dialog_valor_aposta);
 
-		if(dialogLimite == null){
+		TextView tituloDialog = dialogLimite.findViewById(R.id.tv_titulo);
+		TextView valorLimite  = dialogLimite.findViewById(R.id.tv_valor_limite);
 
-			dialogLimite = new Dialog(getActivity());
-			dialogLimite.setContentView(R.layout.custom_dialog_valor_aposta);
+		EditText etLimite = dialogLimite.findViewById(R.id.et_valor_aposta);
+		etLimite.addTextChangedListener(new MoneyTextWatcher(etLimite));
+		Button btnOk       = dialogLimite.findViewById(R.id.btn_ok);
+		Button btnCancelar = dialogLimite.findViewById(R.id.btn_cancelar);
 
-			TextView tituloDialog = dialogLimite.findViewById(R.id.tv_titulo);
-			TextView valorLimite = dialogLimite.findViewById(R.id.tv_valor_limite);
-
-			EditText etLimite = dialogLimite.findViewById(R.id.et_valor_aposta);
-			etLimite.addTextChangedListener(new MoneyTextWatcher(etLimite));
-			Button      btnOk       = dialogLimite.findViewById(R.id.btn_ok);
-			Button      btnCancelar = dialogLimite.findViewById(R.id.btn_cancelar);
-
-			String descricao = getString(R.string.conf_rapd_popup_limite_max).replace("{limite_max}",StringUtils.formatDouble(limiteDiario));
+		String descricao = getString(R.string.conf_rapd_popup_limite_max).replace("{limite_max}", StringUtils.formatDouble(limiteDiario));
 
 
-			if(isMin){
-				tituloDialog.setText(getResources().getString(R.string.conf_rapd_popup_limite_titulo_min));
-				etLimite.setHint(R.string.conf_rapd_popup_limite_placeholder_min);
-				valorLimite.setText(pegaMinMaxTexto(valorMinimo,limiteDiario));
-			} else {
-				tituloDialog.setText(getResources().getString(R.string.conf_rapd_popup_limite_titulo_max));
-				etLimite.setHint(R.string.conf_rapd_popup_limite_placeholder_max);
-				valorLimite.setText(ViewUtils.textColor(getActivity(),descricao,R.color.verde_card));
+		if (isMin) {
+			tituloDialog.setText(getResources().getString(R.string.conf_rapd_popup_limite_titulo_min));
+			etLimite.setHint(R.string.conf_rapd_popup_limite_placeholder_min);
+			valorLimite.setText(pegaMinMaxTexto(valorMinimo, limiteDiario));
+		} else {
+			tituloDialog.setText(getResources().getString(R.string.conf_rapd_popup_limite_titulo_max));
+			etLimite.setHint(R.string.conf_rapd_popup_limite_placeholder_max);
+			valorLimite.setText(ViewUtils.textColor(getActivity(), descricao, R.color.verde_card));
 
-			}
+		}
 
-			btnOk.setOnClickListener(v -> {
-				if(etLimite.getText().length() > 0){
-					Double valor =  Double.valueOf(MoneyTextWatcher.formatPriceSave(etLimite.getText().toString()));
-					if(valor >= valorMinimo && valor <= limiteDiario) {
+		btnOk.setOnClickListener(v -> {
+			if (etLimite.getText().length() > 0) {
+				Double valor = Double.valueOf(MoneyTextWatcher.formatPriceSave(etLimite.getText().toString()));
+				if (valor >= valorMinimo && valor <= limiteDiario) {
 
-						if(isMin){
-							setaValorMinimo(valor);
+					if (isMin) {
+						setaValorMinimo(valor);
+						configuraValoresBotoes();
+						configuraLogica(MINIMO);
+					} else {
+						if (valor > valorMinimo + 5) {
+							setaValorMaximo(valor);
+							configuraValoresBotoes();
+							configuraLogica(MAXIMO);
+						} else {
+							setaValorMaximo(valorMinimo + 5);
+							setaValorMinimo(valorMinimo);
+							mostraMsgValorAjustado();
 							configuraValoresBotoes();
 							configuraLogica(MINIMO);
-						} else{
-							if(valor > valorMinimo + 5){
-								setaValorMaximo(valor);
-								configuraValoresBotoes();
-								configuraLogica(MAXIMO);
-							} else {
-								setaValorMaximo(valorMinimo + 5);
-								setaValorMinimo(valorMinimo);
-								mostraMsgValorAjustado();
-								configuraValoresBotoes();
-								configuraLogica(MINIMO);
-							}
 						}
-						dialogLimite.dismiss();
-					} else {
-						mostraMsgValorIncorreto();
 					}
+					dialogLimite.dismiss();
 				} else {
 					mostraMsgValorIncorreto();
 				}
-			});
+			} else {
+				mostraMsgValorIncorreto();
+			}
+		});
 
-			btnCancelar.setOnClickListener(v -> dialogLimite.dismiss());
-		}
+		btnCancelar.setOnClickListener(v -> dialogLimite.dismiss());
 		dialogLimite.show();
 	}
 

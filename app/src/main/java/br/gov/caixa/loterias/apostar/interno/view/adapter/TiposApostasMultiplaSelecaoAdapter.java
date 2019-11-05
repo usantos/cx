@@ -101,11 +101,13 @@ public class TiposApostasMultiplaSelecaoAdapter extends BaseAdapter {
     private List<ModalidadeDTO> convertTipoApostaParaModalidades() {
         List<ModalidadeDTO> modalidades = new ArrayList<>();
         for (TipoAposta tipoAposta: tiposAposta) {
-            ModalidadeDTO modalidade = new ModalidadeDTO();
-            modalidade.setDescricao(tipoAposta.getTitulo());
-            modalidade.setDescricaoEspecial(tipoAposta.getDescricaoEspecial());
-            modalidade.setValor(tipoAposta.getValor());
-            modalidades.add(modalidade);
+            if(tipoAposta.getSelect()){
+                ModalidadeDTO modalidade = new ModalidadeDTO();
+                modalidade.setDescricao(tipoAposta.getTitulo());
+                modalidade.setDescricaoEspecial(tipoAposta.getDescricaoEspecial());
+                modalidade.setValor(tipoAposta.getValor());
+                modalidades.add(modalidade);
+            }
         }
         return modalidades;
     }

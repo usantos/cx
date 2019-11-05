@@ -541,6 +541,8 @@
     <string name="conf_rapd_obrigatorios_titulo">Números obrigatórios</string>
     <string name="conf_rapd_proibidos_desc">Selecione os números que não deverão aparecer.</string>
     <string name="conf_rapd_proibidos_titulo">Números proibidos</string>
+    <string name="conf_rapd_resumo">Resumo</string>
+    <string name="conf_rapd_verifique_opcoes">Verifique e confirme suas opções de Rapidão.</string>
 
     <string name="ops">Ops!</string>
 </resources>
