@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import br.gov.caixa.loterias.apostar.interno.R;
@@ -36,7 +37,7 @@ public class ConfiguracaoRapidaoFragment3 extends Fragment implements View.OnCli
 	private static final Boolean MINIMO = true, MAXIMO = false;
 	private static View view = null;
 
-	private Dialog dialogLimite;
+	private Dialog dialogLimite = null;
 
 	public ConfiguracaoRapidaoFragment3() { }
 
@@ -48,7 +49,7 @@ public class ConfiguracaoRapidaoFragment3 extends Fragment implements View.OnCli
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
-		if(view == null){
+ 		if(view == null){
 			view = inflater.inflate(R.layout.fragment_configuracao_rapidao_fragment3, container, false);
 			setaViews(view);
 			setaMetodos();
@@ -96,9 +97,10 @@ public class ConfiguracaoRapidaoFragment3 extends Fragment implements View.OnCli
 		SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
 		rapidaoConfigSingleton = RapidaoConfigSingleton.getInstance();
 		limiteDiario = sessaoUsuario.getValorMaximoAposta().doubleValue();
-		valorMinimo = sessaoUsuario.getValorMinimimoAposta() == null ? 0d : sessaoUsuario.getValorMinimimoAposta().doubleValue();
-		valorSelecionadoMin = rapidaoConfigSingleton.getRapidaoConfig().getValorMinimo().doubleValue();
-		valorSelecionadoMax = rapidaoConfigSingleton.getRapidaoConfig().getValorMaximo().doubleValue();
+		valorMinimo = (sessaoUsuario.getParametrosSimulacao() == null ||
+						sessaoUsuario.getParametrosSimulacao().getValorMinimoCarrinho() == null) ? 0d :
+						sessaoUsuario.getParametrosSimulacao().getValorMinimoCarrinho().doubleValue();
+		atualizaValoresSingleton();
 	}
 
 	private void configuraLogica(){
@@ -121,9 +123,9 @@ public class ConfiguracaoRapidaoFragment3 extends Fragment implements View.OnCli
 
 	private void configuraDiferencaMinMax(Boolean isMin){
 		if(isMin){
-			valorSelecionadoMax = valorSelecionadoMin >= valorSelecionadoMax ? valorSelecionadoMin + 5 : valorSelecionadoMax;
+			setaValorMaximo(valorSelecionadoMin >= valorSelecionadoMax ? valorSelecionadoMin + 5 : valorSelecionadoMax);
 		}else{
-			valorSelecionadoMin = valorSelecionadoMax <= valorSelecionadoMin ? valorSelecionadoMax - 5 : valorSelecionadoMin;
+			setaValorMinimo(valorSelecionadoMax <= valorSelecionadoMin ? valorSelecionadoMax - 5 : valorSelecionadoMin);
 		}
 
 	}
@@ -144,8 +146,6 @@ public class ConfiguracaoRapidaoFragment3 extends Fragment implements View.OnCli
 
 		if (valorSelecionadoMin * 4 > limiteDiario) {
 			configuraDiferencaMinMax(isMin);
-			//valorSelecionadoMax = valorSelecionadoMin >= valorSelecionadoMax ? valorSelecionadoMin + 5 : valorSelecionadoMax;
-
 			configuraVisibilidadeBotao(BTN_2,MAXIMO,false);
 			configuraVisibilidadeBotao(BTN_1,MAXIMO,false);
 
@@ -198,63 +198,67 @@ public class ConfiguracaoRapidaoFragment3 extends Fragment implements View.OnCli
 
 
 	private void configuraPopup(Boolean isMin) {
-		dialogLimite = new Dialog(getActivity());
-		dialogLimite.setContentView(R.layout.custom_dialog_valor_aposta);
 
-		TextView tituloDialog = dialogLimite.findViewById(R.id.tv_titulo);
-		TextView valorLimite = dialogLimite.findViewById(R.id.tv_valor_limite);
+		if(dialogLimite == null){
 
-		EditText etLimite = dialogLimite.findViewById(R.id.et_valor_aposta);
-		etLimite.addTextChangedListener(new MoneyTextWatcher(etLimite));
-		Button      btnOk       = dialogLimite.findViewById(R.id.btn_ok);
-		Button      btnCancelar = dialogLimite.findViewById(R.id.btn_cancelar);
+			dialogLimite = new Dialog(getActivity());
+			dialogLimite.setContentView(R.layout.custom_dialog_valor_aposta);
 
-		String descricao = getString(R.string.conf_rapd_popup_limite_max).replace("{limite_max}",StringUtils.formatDouble(limiteDiario));
+			TextView tituloDialog = dialogLimite.findViewById(R.id.tv_titulo);
+			TextView valorLimite = dialogLimite.findViewById(R.id.tv_valor_limite);
+
+			EditText etLimite = dialogLimite.findViewById(R.id.et_valor_aposta);
+			etLimite.addTextChangedListener(new MoneyTextWatcher(etLimite));
+			Button      btnOk       = dialogLimite.findViewById(R.id.btn_ok);
+			Button      btnCancelar = dialogLimite.findViewById(R.id.btn_cancelar);
+
+			String descricao = getString(R.string.conf_rapd_popup_limite_max).replace("{limite_max}",StringUtils.formatDouble(limiteDiario));
 
 
-		if(isMin){
-			tituloDialog.setText(getResources().getString(R.string.conf_rapd_popup_limite_titulo_min));
-			etLimite.setHint(R.string.conf_rapd_popup_limite_placeholder_min);
-			valorLimite.setText(pegaMinMaxTexto(valorMinimo,limiteDiario));
-		} else {
-			tituloDialog.setText(getResources().getString(R.string.conf_rapd_popup_limite_titulo_max));
-			etLimite.setHint(R.string.conf_rapd_popup_limite_placeholder_max);
-			valorLimite.setText(ViewUtils.textColor(getActivity(),descricao,R.color.verde_card));
+			if(isMin){
+				tituloDialog.setText(getResources().getString(R.string.conf_rapd_popup_limite_titulo_min));
+				etLimite.setHint(R.string.conf_rapd_popup_limite_placeholder_min);
+				valorLimite.setText(pegaMinMaxTexto(valorMinimo,limiteDiario));
+			} else {
+				tituloDialog.setText(getResources().getString(R.string.conf_rapd_popup_limite_titulo_max));
+				etLimite.setHint(R.string.conf_rapd_popup_limite_placeholder_max);
+				valorLimite.setText(ViewUtils.textColor(getActivity(),descricao,R.color.verde_card));
 
-		}
+			}
 
-		btnOk.setOnClickListener(v -> {
-			if(etLimite.getText().length() > 0){
-				Double valor =  Double.valueOf(MoneyTextWatcher.formatPriceSave(etLimite.getText().toString()));
-				if(valor >= valorMinimo && valor <= limiteDiario) {
+			btnOk.setOnClickListener(v -> {
+				if(etLimite.getText().length() > 0){
+					Double valor =  Double.valueOf(MoneyTextWatcher.formatPriceSave(etLimite.getText().toString()));
+					if(valor >= valorMinimo && valor <= limiteDiario) {
 
-					if(isMin){
-						valorSelecionadoMin = valor;
-						configuraValoresBotoes();
-						configuraLogica(MINIMO);
-					} else{
-						if(valor > valorMinimo + 5){
-							valorSelecionadoMax = valor;
-							configuraValoresBotoes();
-							configuraLogica(MAXIMO);
-						} else {
-							valorSelecionadoMax = valorMinimo + 5;
-							valorSelecionadoMin = valorMinimo;
-							mostraMsgValorAjustado();
+						if(isMin){
+							setaValorMinimo(valor);
 							configuraValoresBotoes();
 							configuraLogica(MINIMO);
+						} else{
+							if(valor > valorMinimo + 5){
+								setaValorMaximo(valor);
+								configuraValoresBotoes();
+								configuraLogica(MAXIMO);
+							} else {
+								setaValorMaximo(valorMinimo + 5);
+								setaValorMinimo(valorMinimo);
+								mostraMsgValorAjustado();
+								configuraValoresBotoes();
+								configuraLogica(MINIMO);
+							}
 						}
+						dialogLimite.dismiss();
+					} else {
+						mostraMsgValorIncorreto();
 					}
-					dialogLimite.dismiss();
 				} else {
 					mostraMsgValorIncorreto();
 				}
-			} else {
-				mostraMsgValorIncorreto();
-			}
-		});
+			});
 
-		btnCancelar.setOnClickListener(v -> dialogLimite.dismiss());
+			btnCancelar.setOnClickListener(v -> dialogLimite.dismiss());
+		}
 		dialogLimite.show();
 	}
 
@@ -388,24 +392,24 @@ public class ConfiguracaoRapidaoFragment3 extends Fragment implements View.OnCli
 	public void onClick(View view) {
 		int botaoMinSelecionado = -1;
 		switch (view.getId()){
-			case R.id.btn_vl_min_1: valorSelecionadoMin = pegaValorBotao(BTN_1,MINIMO);
+			case R.id.btn_vl_min_1: setaValorMinimo(pegaValorBotao(BTN_1,MINIMO));
 				configuraLogica(MINIMO);
 				break;
-			case R.id.btn_vl_min_2: valorSelecionadoMin = pegaValorBotao(BTN_2,MINIMO);
+			case R.id.btn_vl_min_2: setaValorMinimo(pegaValorBotao(BTN_2,MINIMO));
 				configuraLogica(MINIMO);
 				break;
-			case R.id.btn_vl_min_3: valorSelecionadoMin = pegaValorBotao(BTN_3,MINIMO);
+			case R.id.btn_vl_min_3: setaValorMinimo(pegaValorBotao(BTN_3,MINIMO));
 				configuraLogica(MINIMO);
 				break;
 			case R.id.btn_vl_min_4: configuraPopup(MINIMO);
 				break;
-			case R.id.btn_vl_max_1: valorSelecionadoMax = pegaValorBotao(BTN_1,MAXIMO);
+			case R.id.btn_vl_max_1: setaValorMaximo(pegaValorBotao(BTN_1,MAXIMO));
 				configuraLogica(MAXIMO);
 				break;
-			case R.id.btn_vl_max_2: valorSelecionadoMax = pegaValorBotao(BTN_2,MAXIMO);
+			case R.id.btn_vl_max_2: setaValorMaximo(pegaValorBotao(BTN_2,MAXIMO));
 				configuraLogica(MAXIMO);
 				break;
-			case R.id.btn_vl_max_3: valorSelecionadoMax = pegaValorBotao(BTN_3,MAXIMO);
+			case R.id.btn_vl_max_3: setaValorMaximo(pegaValorBotao(BTN_3,MAXIMO));
 				configuraLogica(MAXIMO);
 				break;
 			case R.id.btn_vl_max_4: configuraPopup(MAXIMO);
@@ -413,10 +417,24 @@ public class ConfiguracaoRapidaoFragment3 extends Fragment implements View.OnCli
 		}
 	}
 
+	private void setaValorMaximo(Double valorMax){
+		valorSelecionadoMax = valorMax;
+		rapidaoConfigSingleton.getRapidaoConfig().setValorMaximo(new BigDecimal(valorMax));
+	}
+
+	private void setaValorMinimo(Double valorMin){
+		valorSelecionadoMin = valorMin;
+		rapidaoConfigSingleton.getRapidaoConfig().setValorMinimo(new BigDecimal(valorMin));
+	}
+
 	@Override
 	public void onDestroy() {
+		atualizaValoresSingleton();
+		super.onDestroy();
+	}
+
+	private void atualizaValoresSingleton(){
 		valorSelecionadoMin = rapidaoConfigSingleton.getRapidaoConfig().getValorMinimo().doubleValue();
 		valorSelecionadoMax = rapidaoConfigSingleton.getRapidaoConfig().getValorMaximo().doubleValue();
-		super.onDestroy();
 	}
 }

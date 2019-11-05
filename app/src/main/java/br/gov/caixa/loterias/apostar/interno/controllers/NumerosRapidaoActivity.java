@@ -26,7 +26,7 @@ import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.NumeroSelecionadoRapidaoAdapter;
 import br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightGridView;
 
-public class NumerosRapidaoActivity extends AppCompatActivity {
+public class NumerosRapidaoActivity extends AppCompatActivity implements NumeroSelecionadoRapidaoAdapter.NumeroSelecionadoListener{
     NumerosSelecionadosRapidao[] listaNumerosSelecionadosRapidao;
     List<Integer> numerosLista = new ArrayList<>();
     List<Integer> listaNumerosContrariosRapidao = new ArrayList<>();
@@ -112,7 +112,12 @@ public class NumerosRapidaoActivity extends AppCompatActivity {
     }
 
     private void reloadGridView(){
-        NumeroSelecionadoRapidaoAdapter numerosSlcRapidaoAdapter = new NumeroSelecionadoRapidaoAdapter(this, this, listaNumerosSelecionadosRapidao, isTipoNrObrigatorios, listaNumerosContrariosRapidao);
+        NumeroSelecionadoRapidaoAdapter numerosSlcRapidaoAdapter = new NumeroSelecionadoRapidaoAdapter(this,
+                                                                                                       this,
+                                                                                                       listaNumerosSelecionadosRapidao,
+                                                                                                       isTipoNrObrigatorios,
+                                                                                                       listaNumerosContrariosRapidao,
+                                                                                                       this);
         gridViewNumerosRapidaoSlc.setAdapter(numerosSlcRapidaoAdapter);
         gridViewNumerosRapidaoSlc.setExpanded(true);
         mudarLayoutBotaoLimparSelecao(false);
@@ -176,7 +181,12 @@ public class NumerosRapidaoActivity extends AppCompatActivity {
         }
 
 
-        NumeroSelecionadoRapidaoAdapter numerosSlcRapidaoAdapter = new NumeroSelecionadoRapidaoAdapter(this, this, listaNumerosSelecionadosRapidao, isTipoNrObrigatorios, listaNumerosContrariosRapidao);
+        NumeroSelecionadoRapidaoAdapter numerosSlcRapidaoAdapter = new NumeroSelecionadoRapidaoAdapter(this,
+                                                                                                       this,
+                                                                                                       listaNumerosSelecionadosRapidao,
+                                                                                                       isTipoNrObrigatorios,
+                                                                                                       listaNumerosContrariosRapidao,
+                                                                                                       this);
         gridViewNumerosRapidaoSlc.setAdapter(numerosSlcRapidaoAdapter);
         gridViewNumerosRapidaoSlc.setExpanded(true);
 

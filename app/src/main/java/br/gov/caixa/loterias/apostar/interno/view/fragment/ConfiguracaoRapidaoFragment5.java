@@ -1,6 +1,5 @@
 package br.gov.caixa.loterias.apostar.interno.view.fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -14,26 +13,27 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bean.NumerosSelecionadosRapidao;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.RapidaoConfigSingleton;
+import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
+import br.gov.caixa.loterias.apostar.interno.view.adapter.NumeroSelecionadoRapidaoAdapter;
 import br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightGridView;
 
-public class ConfiguracaoRapidaoFragment5 extends Fragment {
+public class ConfiguracaoRapidaoFragment5 extends Fragment implements NumeroSelecionadoRapidaoAdapter.NumeroSelecionadoListener{
 
-    NumerosSelecionadosRapidao[] listaNumerosSelecionadosRapidao;
-    List<Integer> numerosLista = new ArrayList<>();
-    List<Integer> listaNumerosContrariosRapidao = new ArrayList<>();
-    Button salvarNumerosApostaRapidaoSelecao;
-    Button limparButtonRapidaoSelecionados;
-    TextView titleNumerosRapidaoObrigatorios;
-    TextView textoSelecaoNumerosRapidao;
-    ExpandableHeightGridView gridViewNumerosRapidaoSlc;
-    Boolean isTipoNrObrigatorios;
+    private static View view = null;
+    private static NumerosSelecionadosRapidao[] listaNumerosSelecionadosRapidao;
+    private static List<Integer> numerosLista = new ArrayList<>();
+    private static List<Integer> listaNumerosProibidos = new ArrayList<>();
+    private static Button btnLimpaNumeros;
+    private static TextView tvTitulo;
+    private static TextView tvDescricao;
+    private static ExpandableHeightGridView gridNumeros;
+    private RapidaoConfigSingleton rapidaoConfigSingleton;
 
     public ConfiguracaoRapidaoFragment5() { }
 
     public static ConfiguracaoRapidaoFragment5 newInstance() {
-        ConfiguracaoRapidaoFragment5 fragment = new ConfiguracaoRapidaoFragment5();
-
-        return fragment;
+        return  new ConfiguracaoRapidaoFragment5();
     }
 
     @Override
@@ -44,17 +44,98 @@ public class ConfiguracaoRapidaoFragment5 extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_configuracao_rapidao_fragment5, container, false);
+        if (view == null) {
+            view = inflater.inflate(R.layout.fragment_configuracao_rapidao_fragment5, container, false);
+            setaViews(view);
+            setaClicks();
+            setaMetodos();
+        }
+
+        return view;
+    }
+
+    private void setaViews (View view) {
+        gridNumeros = view.findViewById(R.id.ehgv_grid_numeros);
+        tvDescricao = view.findViewById(R.id.tv_descricao);
+        tvTitulo = view.findViewById(R.id.tv_titulo);
+        btnLimpaNumeros = view.findViewById(R.id.btn_limpar_selecao);
+    }
+
+    private void setaClicks(){
+
+        btnLimpaNumeros.setOnClickListener(view -> {
+            for (NumerosSelecionadosRapidao numero : listaNumerosSelecionadosRapidao){
+                numero.setSelecionado(false);
+            }
+            reloadGridView();
+        });
+    }
+
+    private List<Integer> getNumerosSelecionados(){
+
+        List<Integer> numSelecionados = new ArrayList<>();
+        for (NumerosSelecionadosRapidao num: listaNumerosSelecionadosRapidao) {
+            if (num.getSelecionado() == true) {
+                numSelecionados.add(num.getNumero());
+            }
+        }
+        return  numSelecionados;
+    }
+
+    public void setaMetodos(){
+        rapidaoConfigSingleton = RapidaoConfigSingleton.getInstance();
+
+        listaNumerosProibidos = rapidaoConfigSingleton.getRapidaoConfig().getPrognosticosProibidos();
+        numerosLista = rapidaoConfigSingleton.getRapidaoConfig().getPrognosticosObrigatorios();
+
+        FirebaseManager.registraEvento(getActivity(),"ENTROU_SELECIONA_NUMEROS_OBRIGATORIOS_CONFIG_RAPIDAO");
+        tvTitulo.setText(getString(R.string.conf_rapd_obrigatorios_titulo));
+        tvDescricao.setText(getString(R.string.conf_rapd_obrigatorios_desc));
+
+        gridViewNumeros();
+    }
+
+    private void reloadGridView(){
+        NumeroSelecionadoRapidaoAdapter numerosSlcRapidaoAdapter = new NumeroSelecionadoRapidaoAdapter(getActivity(),
+                                                                                                       getActivity(),
+                                                                                                       listaNumerosSelecionadosRapidao,
+                                                                                                       true,
+                                                                                                       listaNumerosProibidos,
+                                                                                                       this);
+        gridNumeros.setAdapter(numerosSlcRapidaoAdapter);
+        gridNumeros.setExpanded(true);
+        mudarLayoutBotaoLimparSelecao(false);
+    }
+
+    private void gridViewNumeros(){
+        listaNumerosSelecionadosRapidao = new NumerosSelecionadosRapidao[100];
+        for (int i =0 ; i<100; i++){
+            NumerosSelecionadosRapidao numeSel = new NumerosSelecionadosRapidao(i+1, false);
+            for(Integer numerosalvo : numerosLista){
+                if(numerosalvo == i+1){
+                    numeSel.setSelecionado(true);
+                }
+            }
+            listaNumerosSelecionadosRapidao[i] = numeSel;
+        }
+
+        NumeroSelecionadoRapidaoAdapter numerosSlcRapidaoAdapter = new NumeroSelecionadoRapidaoAdapter(getActivity(),
+                                                                                                       getActivity(),
+                                                                                                       listaNumerosSelecionadosRapidao,
+                                                                                                       true,
+                                                                                                       listaNumerosProibidos,
+                                                                                                       this);
+        gridNumeros.setAdapter(numerosSlcRapidaoAdapter);
+        gridNumeros.setExpanded(true);
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
+    public void mudarLayoutBotaoLimparSelecao(Boolean visible) {
+        if (visible) {
+            btnLimpaNumeros.setVisibility(View.VISIBLE);
+        }else {
+            btnLimpaNumeros.setVisibility(View.GONE);
+        }
+        rapidaoConfigSingleton.getRapidaoConfig().setPrognosticosObrigatorios(getNumerosSelecionados());
     }
 }

@@ -21,6 +21,9 @@ public class SessaoUsuario {
 
 
     public ParametrosSimulacao getParametrosSimulacao() {
+        if(parametrosSimulacao == null){
+            parametrosSimulacao = new ParametrosSimulacao();
+        }
         return parametrosSimulacao;
     }
 

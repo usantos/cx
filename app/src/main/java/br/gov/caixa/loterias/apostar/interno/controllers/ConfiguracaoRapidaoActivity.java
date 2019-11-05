@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
 import com.android.volley.VolleyError;
@@ -19,11 +20,14 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RapidaoDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.RapidaoConfigSingleton;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
+import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
 import br.gov.caixa.loterias.apostar.interno.view.fragment.ConfiguracaoRapidaoFragment1;
 import br.gov.caixa.loterias.apostar.interno.view.fragment.ConfiguracaoRapidaoFragment2;
 import br.gov.caixa.loterias.apostar.interno.view.fragment.ConfiguracaoRapidaoFragment3;
 import br.gov.caixa.loterias.apostar.interno.view.fragment.ConfiguracaoRapidaoFragment4;
-import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
+import br.gov.caixa.loterias.apostar.interno.view.fragment.ConfiguracaoRapidaoFragment5;
+import br.gov.caixa.loterias.apostar.interno.view.fragment.ConfiguracaoRapidaoFragment6;
+import br.gov.caixa.loterias.apostar.interno.view.fragment.ConfiguracaoRapidaoFragment7;
 import me.relex.circleindicator.CircleIndicator;
 
 public class ConfiguracaoRapidaoActivity extends AppCompatActivity {
@@ -32,6 +36,9 @@ public class ConfiguracaoRapidaoActivity extends AppCompatActivity {
 	private ViewPager viewPager;
 	FragmentPagerAdapter adapterViewPager;
 	private Toolbar toolbar;
+	private static ConfiguracaoRapidaoFragment5 frag5;
+	private static ConfiguracaoRapidaoFragment6 frag6;
+	private static int scrollState;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -70,14 +77,20 @@ public class ConfiguracaoRapidaoActivity extends AppCompatActivity {
 
 			@Override
 			public void onPageSelected(int position) {
-			/*	if(viewPager.getCurrentItem() == 2){
-					DadosUsuarioBO.updateTutorialRapidao(true);
-				}*/
+
 			}
 
 			@Override
 			public void onPageScrollStateChanged(int state) {
+				scrollState = state;
+				if(state == RecyclerView.SCROLL_STATE_IDLE){
+					if(viewPager.getCurrentItem() == 4){
+						frag5.setaMetodos();
+					} else if (viewPager.getCurrentItem() == 5){
+						frag6.setaMetodos();
+					}
 
+				}
 			}
 		});
 	}
@@ -111,7 +124,7 @@ public class ConfiguracaoRapidaoActivity extends AppCompatActivity {
 
 
 	public static class RapidaoPagerAdapter extends FragmentPagerAdapter {
-		private static int NUM_ITEMS = 4;
+		private static int NUM_ITEMS = 7;
 
 		public RapidaoPagerAdapter(FragmentManager fragmentManager) {
 			super(fragmentManager);
@@ -133,6 +146,12 @@ public class ConfiguracaoRapidaoActivity extends AppCompatActivity {
 					return ConfiguracaoRapidaoFragment3.newInstance();
 				case 3:
 					return ConfiguracaoRapidaoFragment4.newInstance();
+				case 4:
+					return frag5 = ConfiguracaoRapidaoFragment5.newInstance();
+				case 5:
+					return frag6 = ConfiguracaoRapidaoFragment6.newInstance();
+				case 6:
+					return ConfiguracaoRapidaoFragment7.newInstance();
 				default:
 					return null;
 			}
