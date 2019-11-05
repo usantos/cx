@@ -30,6 +30,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.keycloak.KeycloakBO_;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.UsuarioLogadoResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.CarrinhoSingleton;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.UltimaNotificacaoSingleton;
 import br.gov.caixa.loterias.apostar.interno.model.dao.DBLoteriasCrud;
 import br.gov.caixa.loterias.apostar.interno.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostar.interno.utils.AppUtils;
@@ -111,6 +112,7 @@ public class LoginFragment extends Fragment {
                     crud.deleteAll();
                     CarrinhoSingleton.getInstance().setCarrinho(null);
                     CarrinhoSingleton.getInstance().setCarrinho(response.getPayload().getCarrinho());
+                    UltimaNotificacaoSingleton.getInstance().setUltimaNoficacao(response.getPayload().getUltimaNotificacao());
 
                     PrincipalActivity_.intent(getActivity()).start();
                     getActivity().finish();

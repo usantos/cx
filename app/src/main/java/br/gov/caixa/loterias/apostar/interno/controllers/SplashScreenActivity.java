@@ -34,11 +34,11 @@ public class SplashScreenActivity extends AppCompatActivity {
             @Override
             public void onResponse(VersionResponse response) {
                 if (!response.getPayload()) {
-                    startActivity(new Intent(SplashScreenActivity.this, ConfiguracaoRapidaoActivity.class));
+                    startActivity(new Intent(SplashScreenActivity.this, AtualizacaoActivity.class));
                 } else {
                     new Handler().postDelayed(() -> {
                         LoginSP.limpar();
-                        startActivity(new Intent(SplashScreenActivity.this, ConfiguracaoRapidaoActivity.class));
+                        startActivity(new Intent(SplashScreenActivity.this, IntroducaoActivity.class));
                         finish();
                     }, SPLASH_TIME);
                 }
@@ -46,7 +46,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                startActivityForResult(new Intent(SplashScreenActivity.this, ConfiguracaoRapidaoActivity.class), 1);
+                startActivityForResult(new Intent(SplashScreenActivity.this, AppIndisponivelActivity.class), 1);
             }
         });
     }

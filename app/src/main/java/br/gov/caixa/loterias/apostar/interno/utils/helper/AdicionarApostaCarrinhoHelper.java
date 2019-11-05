@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Locale;
 
 import br.gov.caixa.loterias.apostar.interno.R;
+import br.gov.caixa.loterias.apostar.interno.controllers.CarrinhoActivity;
 import br.gov.caixa.loterias.apostar.interno.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO_;
@@ -70,6 +71,16 @@ public class AdicionarApostaCarrinhoHelper {
         DialogUtils.show(context);
         if (aposta != null) {
             postAdicionarApostaCarrinho(apostaBO);
+        }
+    }
+
+    public static void incluirApostaCarrinhoMinhasApostas(Context contextParam, Object objectAposta) {
+        context = contextParam;
+        ApostaBO apostaBO = ApostaBO_.getInstance_(context);
+        aposta = getApostaPreenchida(objectAposta);
+        DialogUtils.show(context);
+        if (aposta != null) {
+            postAdicionarApostaCarrinhoMinhasApostas(apostaBO);
         }
     }
 
@@ -140,6 +151,23 @@ public class AdicionarApostaCarrinhoHelper {
                 FirebaseManager.registraEvento(context ,"ENTROU_ADICAO_APOSTA_CARRINHO_ONLINE");
 
                 telaConfirmarCarrinho(aposta.getModalidade(), aposta);
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                onError(error);
+            }
+        });
+    }
+
+    private static void postAdicionarApostaCarrinhoMinhasApostas(ApostaBO apostaBO) {
+        apostaBO.adicionarApostaNoCarrinho(aposta, new RequestListener<AgrupadorDTOApostaDTOResponse>() {
+            @Override
+            public void onResponse(AgrupadorDTOApostaDTOResponse result) {
+                DialogUtils.dismiss();
+                FirebaseManager.registraEvento(context ,"ENTROU_ADICAO_APOSTA_CARRINHO_ONLINE");
+
+                context.startActivity(new Intent(context, CarrinhoActivity.class));
             }
 
             @Override

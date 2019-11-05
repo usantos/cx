@@ -29,6 +29,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.keycloak.KeycloakBO_;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.UsuarioLogadoResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.CarrinhoSingleton;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.UltimaNotificacaoSingleton;
 import br.gov.caixa.loterias.apostar.interno.model.dao.DBLoteriasCrud;
 import br.gov.caixa.loterias.apostar.interno.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
@@ -101,6 +102,8 @@ public class TokenActivity extends AppCompatActivity {
                                     if (response.getRedirect() == null) {
                                         SessaoUsuario.getInstance().setValorMaximoAposta(response.getPayload().getLimiteDiario());
                                         CarrinhoSingleton.getInstance().setCarrinho(response.getPayload().getCarrinho());
+                                        UltimaNotificacaoSingleton.getInstance().setUltimaNoficacao(response.getPayload().getUltimaNotificacao());
+
                                         crud.deleteAll();
                                         finish();
                                     } else {

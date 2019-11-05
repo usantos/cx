@@ -185,7 +185,6 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
             @Override
             public void success(Token token) {
 //                Log.d("token", token.getId());
-                alertDialog.dismiss();
                 callWebServicePayment_method(token.getId());
             }
 
@@ -262,6 +261,8 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
                 Toast.makeText(getApplicationContext(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
             }
         }, volleyError -> {
+            alertDialog.dismiss();
+
             Log.d("volleyError", "volleyError: " + volleyError.toString());
             if(Bin.fromBytes(volleyError.networkResponse.data).toUtf8().contains("not_found")){
                 ViewUtils.alert(NovaFormaPagamentoActivity.this, getString(R.string.mercado_pago_numero_cartao_Incorreto));

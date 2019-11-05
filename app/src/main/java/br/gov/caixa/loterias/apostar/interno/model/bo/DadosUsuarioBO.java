@@ -20,8 +20,10 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CadastrarApostad
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CadastrarApostadorDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ListCartaoDTOResponse;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RetornoPadraoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.UsuarioLogadoResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.GsonRequest;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.UltimaNotificacaoSingleton;
 import br.gov.caixa.loterias.apostar.interno.utils.Aplicacao;
 
 import static org.androidannotations.annotations.EBean.Scope.Singleton;
@@ -237,6 +239,23 @@ public class DadosUsuarioBO extends BaseBO {
         autenticacaoDTO.setApostas(listaApostas);
         final GsonRequest request = silceConnection.buildPostRequest(ServerMethods.USUARIOS_VERIFICAR_CADASTRO_PATH, new LinkedHashMap<>(),
                 autenticacaoDTO, UsuarioLogadoResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(), headers);
+
+        request.setErrorListener(interceptError(request, headers, listener));
+        silceConnection.request(request);
+    }
+
+    public void putLerNotificacao(final RequestListener<RetornoPadraoDTO> listener) {
+        LinkedHashMap<String, String> headers = new LinkedHashMap<>();
+        headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
+
+
+
+        final GsonRequest request = silceConnection.buildPutRequest(
+                ServerMethods.LER_NOTIFICACAO.replace("{idNotificacao}", UltimaNotificacaoSingleton.getInstance().getUltimaNoficacao().getId().toString()),
+                new LinkedHashMap<>(),
+                null, RetornoPadraoDTO.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(), headers);
 

@@ -26,7 +26,7 @@ import java.util.Objects;
 
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.controllers.ApostaConfirmadaDetalhesActivity_;
-import br.gov.caixa.loterias.apostar.interno.controllers.ApostasConfirmadasActivity;
+import br.gov.caixa.loterias.apostar.interno.controllers.MinhasApostasActivity;
 import br.gov.caixa.loterias.apostar.interno.model.bean.ApostaPageRequest;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.MensagensNetwork;
@@ -57,7 +57,7 @@ import br.gov.caixa.loterias.apostar.interno.view.custom.MonthYearPickerDialog_;
  */
 
 @EFragment(R.layout.fragment_apostas_confirmadas)
-public class ApostasConfirmadasFragment extends Fragment implements ApostasConfirmadasActivity.OnScrollReachBottomListener {
+public class ApostasConfirmadasFragment extends Fragment implements MinhasApostasActivity.OnScrollReachBottomListener {
 
     private static final String MONTH_YEAR_DIALOG = "MonthYearPickerDialog";
     private static final int PAGE_SIZE = 30;
@@ -232,7 +232,7 @@ public class ApostasConfirmadasFragment extends Fragment implements ApostasConfi
                     clearItemDecorations();
                     apostasConfirmadasRecyclerView.addItemDecoration(divider);
                 }
-                adapter = new ApostasConfirmadasAdapter(((ApostasConfirmadasActivity)getActivity()), getActivity(), apostasList, isHistorico);
+                adapter = new ApostasConfirmadasAdapter(((MinhasApostasActivity)getActivity()), getActivity(), apostasList, isHistorico);
                 adapter.setOnApostasConfirmadasListener(new ApostasConfirmadasAdapter.OnApostasConfirmadasListener() {
                     @Override
                     public void onEmptyCellClick() {
@@ -241,7 +241,7 @@ public class ApostasConfirmadasFragment extends Fragment implements ApostasConfi
 
                     @Override
                     public void onReload(ApostaDTO apostaDTO) {
-                        AdicionarApostaCarrinhoHelper.incluirApostaCarrinho(getActivity(), apostaDTO);
+                        AdicionarApostaCarrinhoHelper.incluirApostaCarrinhoMinhasApostas(getActivity(), apostaDTO);
                     }
 
                     @Override

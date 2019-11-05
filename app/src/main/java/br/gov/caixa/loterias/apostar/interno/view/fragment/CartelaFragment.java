@@ -1139,6 +1139,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         }
         atualizaValorApostaLoteca();
         atualizaStatusBotaoFinalizar();
+        verificaSeMostraBotaoLimparAposta();
     }
 
     private void limparPartidadasSelecionasLoteca(boolean desativado) {

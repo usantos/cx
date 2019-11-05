@@ -35,6 +35,17 @@ public class UsuarioLogado {
     private String primeiroNome = null;
     @SerializedName("limiteDiario")
     private BigDecimal limiteDiario = null;
+    @SerializedName("ultimaNotificacao")
+    private NotificacaoDTO ultimaNotificacao = null;
+
+    public NotificacaoDTO getUltimaNotificacao() {
+        return ultimaNotificacao;
+    }
+
+    public void setUltimaNotificacao(NotificacaoDTO ultimaNotificacao) {
+        this.ultimaNotificacao = ultimaNotificacao;
+    }
+
     /**
      **/
     @ApiModelProperty(value = "")
