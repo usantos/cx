@@ -2,13 +2,19 @@ package br.gov.caixa.loterias.apostar.interno.controllers;
 
 
 import android.Manifest;
+import android.animation.Animator;
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -21,11 +27,13 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -69,12 +77,15 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametroSimulac
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametrosSimulacaoResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RepassometroDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RepassometroDTOResponse;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RetornoPadraoDTO;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.UltimaNotificacaoSingleton;
 import br.gov.caixa.loterias.apostar.interno.model.dao.DBLoteriasHelper;
 import br.gov.caixa.loterias.apostar.interno.model.sp.CarrinhoSP;
 import br.gov.caixa.loterias.apostar.interno.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostar.interno.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostar.interno.utils.ExpandableListDataSideMenu;
 import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
+import br.gov.caixa.loterias.apostar.interno.utils.OnSwipeTouchListener;
 import br.gov.caixa.loterias.apostar.interno.utils.RateUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.StringUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.Utils;
@@ -94,6 +105,8 @@ public class PrincipalActivity extends AppCompatActivity
     public static final String MENU_LATERAL = "MENU_LATERAL";
     private static final int ZXING_CAMERA_PERMISSION = 1;
 
+    @ViewById
+    public AppBarLayout navigationBarListaModalidade;
     @ViewById
     public DiscreteScrollView homeCarousel;
     @ViewById
@@ -120,6 +133,9 @@ public class PrincipalActivity extends AppCompatActivity
     @Bean
     protected ApostaBO apostaBO;
 
+    @Bean
+    protected DadosUsuarioBO dadosUsuarioBO;
+
     private List<Modalidade> data;
     private List<ParametroSimulacao> modalidadesParaListar;
     private RepassometroDTO repassesSociais;
@@ -128,14 +144,15 @@ public class PrincipalActivity extends AppCompatActivity
     private AlertDialog loadViewProgress;
     private InfiniteScrollAdapter infiniteAdapter;
     private HomeAdapter homeAdapter;
-
+    private View viewNotification;
+    private PopupWindow popupNotification;
+    private AnimatorSet anim;
     private boolean realizandoLogin = false;
     private boolean recarregarBuscaParam = false;
 
     @AfterViews
     public void init() {
         setSupportActionBar(toolbar);
-
 
         txtVersaoMenu.setText(BuildConfig.VERSION_NAME);
 
@@ -298,6 +315,78 @@ public class PrincipalActivity extends AppCompatActivity
         montarCarrossel();
 
         callRepassesSociais();
+
+        if (UltimaNotificacaoSingleton.getInstance().getUltimaNoficacao() != null) {
+            trataPopupDeNotificacao();
+        }
+    }
+
+    private void trataPopupDeNotificacao() {
+        LayoutInflater li = LayoutInflater.from(PrincipalActivity.this);
+        viewNotification = li.inflate(R.layout.popup_notificacao, null);
+        TextView tituloNotificacao = viewNotification.findViewById(R.id.tituloPopup);
+        TextView corpoNotificacao = viewNotification.findViewById(R.id.corpoPopup);
+
+        tituloNotificacao.setText(UltimaNotificacaoSingleton.getInstance().getUltimaNoficacao().getTitulo());
+        corpoNotificacao.setText(UltimaNotificacaoSingleton.getInstance().getUltimaNoficacao().getConteudo());
+
+        viewNotification.setOnTouchListener(new OnSwipeTouchListener(PrincipalActivity.this){
+            @Override
+            public void onSwipeTop() {
+                anim = (AnimatorSet) AnimatorInflater.loadAnimator(PrincipalActivity.this, R.animator.swipe_top_anim);
+                anim.setTarget(viewNotification);
+                anim.start();
+                removePopup();
+            }
+            @Override
+            public void onSwipeRight() {
+                anim = (AnimatorSet) AnimatorInflater.loadAnimator(PrincipalActivity.this, R.animator.swipe_left_anim);
+                anim.setTarget(viewNotification);
+                anim.start();
+                removePopup();
+            }
+            @Override
+            public void onSwipeLeft() {
+                anim = (AnimatorSet) AnimatorInflater.loadAnimator(PrincipalActivity.this, R.animator.swipe_right_anim);
+                anim.setTarget(viewNotification);
+                anim.start();
+                removePopup();
+            }
+        });
+
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                anim = (AnimatorSet) AnimatorInflater.loadAnimator(PrincipalActivity.this, R.animator.swipe_top_anim);
+                anim.setTarget(viewNotification);
+                anim.start();
+                removePopup();
+            }
+        }, 10000);
+
+        popupNotification = new PopupWindow(viewNotification, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        popupNotification.showAtLocation(navigationBarListaModalidade, Gravity.TOP, 0, 0);
+    }
+
+    private void removePopup() {
+        anim.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                popupNotification.dismiss();
+                dadosUsuarioBO.putLerNotificacao(new RequestListener<RetornoPadraoDTO>() {
+                    @Override
+                    public void onResponse(RetornoPadraoDTO result) {
+                        UltimaNotificacaoSingleton.getInstance().setUltimaNoficacao(null);
+                    }
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        RedirectNetwork.checkRedirect(error, PrincipalActivity.this);
+                    }
+                });
+            }
+        });
     }
 
     private void callRepassesSociais() {
@@ -544,7 +633,7 @@ public class PrincipalActivity extends AppCompatActivity
 
     @Click(R.id.apostasConfirmadasBtn)
     protected void clickApostasConfirmadasBtn() {
-        ApostasConfirmadasActivity_.intent(PrincipalActivity.this).start();
+        MinhasApostasActivity_.intent(PrincipalActivity.this).start();
     }
 
     private void AbrirMenusGroup(int groupPosition) {
@@ -581,7 +670,7 @@ public class PrincipalActivity extends AppCompatActivity
                 startActivity(new Intent(PrincipalActivity.this, AlterarDadosLoginCaixaActivity.class));
                 break;
             case 2:
-                startActivity(new Intent(PrincipalActivity.this, ApostasConfirmadasActivity_.class));
+                startActivity(new Intent(PrincipalActivity.this, MinhasApostasActivity_.class));
                 break;
             case 3:
                 startActivity(new Intent(PrincipalActivity.this, ListaComprasActivity.class));

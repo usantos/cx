@@ -21,12 +21,12 @@ import br.gov.caixa.loterias.apostar.interno.view.fragment.ApostasConfirmadasFra
 
 /**
  * Created by pmotta on 13/03/2018.
- * Class ApostasConfirmadasActivity
+ * Class MinhasApostasActivity
  */
 
 @OptionsMenu(R.menu.menu_apostas_confirmadas)
 @EActivity(R.layout.activity_apostas_confirmadas)
-public class ApostasConfirmadasActivity extends AppCompatActivity {
+public class MinhasApostasActivity extends AppCompatActivity {
 
     private static final String CONFIRMADAS_FRAGMENT = "ConfirmadasFragment";
     private static final String HISTORICO_FRAGMENT = "HistoricoFragment";

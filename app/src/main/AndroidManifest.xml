@@ -242,7 +242,7 @@
             android:name=".controllers.DetalheDuvidaActivity_"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".controllers.ApostasConfirmadasActivity_"
+            android:name=".controllers.MinhasApostasActivity_"
             android:label="@string/title_activity_minhas_apostas"
             android:parentActivityName=".controllers.PrincipalActivity"
             android:screenOrientation="portrait"
