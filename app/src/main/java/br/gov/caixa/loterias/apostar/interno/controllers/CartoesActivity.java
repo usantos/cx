@@ -188,7 +188,7 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
             if (DadosUsuarioBO.checarTutorialRapidao()) {
                 startActivity(new Intent(CartoesActivity.this, ListaRapidaoActivity.class));
             } else {
-                startActivity(new Intent(CartoesActivity.this, TutorialRapidaoActivity.class));
+                startActivity(new Intent(CartoesActivity.this, ConfiguracaoRapidaoActivity.class));
             }
         });
     }

@@ -626,7 +626,7 @@ public class PrincipalActivity extends AppCompatActivity
         if (DadosUsuarioBO.checarTutorialRapidao()){
             startActivity(new Intent(PrincipalActivity.this, ListaRapidaoActivity.class));
         }else {
-            startActivity(new Intent(PrincipalActivity.this, TutorialRapidaoActivity.class));
+            startActivity(new Intent(PrincipalActivity.this, ConfiguracaoRapidaoActivity.class));
         }
     }
 

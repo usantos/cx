@@ -17,9 +17,7 @@ import io.fabric.sdk.android.Fabric;
 
 public class SplashScreenActivity extends AppCompatActivity {
 
-    //public static final int SPLASH_TIME = 2000;
-    public static final int SPLASH_TIME = 0;
-    //alterar depois
+    public static final int SPLASH_TIME = 2000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,11 +32,11 @@ public class SplashScreenActivity extends AppCompatActivity {
             @Override
             public void onResponse(VersionResponse response) {
                 if (!response.getPayload()) {
-                    startActivity(new Intent(SplashScreenActivity.this, ConfiguracaoRapidaoActivity.class));
+                    startActivity(new Intent(SplashScreenActivity.this, AtualizacaoActivity.class));
                 } else {
                     new Handler().postDelayed(() -> {
                         LoginSP.limpar();
-                        startActivity(new Intent(SplashScreenActivity.this, ConfiguracaoRapidaoActivity.class));
+                        startActivity(new Intent(SplashScreenActivity.this, IntroducaoActivity.class));
                         finish();
                     }, SPLASH_TIME);
                 }
@@ -46,7 +44,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                startActivityForResult(new Intent(SplashScreenActivity.this, ConfiguracaoRapidaoActivity.class), 1);
+                startActivityForResult(new Intent(SplashScreenActivity.this, AppIndisponivelActivity.class), 1);
             }
         });
     }

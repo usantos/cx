@@ -31,8 +31,6 @@ public class CarrinhoApostasListViewRapidaoAdapter extends RecyclerView.Adapter<
     private ArrayList<IdentificaoDeUmaApostaDas8Modalidades> apostas;
     private ListaRapidaoActivity parentActivity;
 
-//    AJEITAR Carrinho rapidao nao esta mostrando detalhes ao arrasta para o lado.
-
     private OnCarrinhoApostasRapidaoListener onCarrinhoApostasRapidaoListener;
 
     public CarrinhoApostasListViewRapidaoAdapter(ListaRapidaoActivity parentActivity,

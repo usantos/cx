@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".controllers.ConfiguracaoRapidaoActivity">
 
-    <include layout="@layout/app_bar_degrade" />
+    <include layout="@layout/app_bar_degrade_pesquisa" />
 
     <android.support.constraint.Guideline
         android:id="@+id/gl_toolbar"

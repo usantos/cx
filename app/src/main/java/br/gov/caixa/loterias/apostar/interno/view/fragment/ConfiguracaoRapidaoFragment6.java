@@ -21,7 +21,7 @@ import br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightGridVie
 
 public class ConfiguracaoRapidaoFragment6 extends Fragment implements NumeroSelecionadoRapidaoAdapter.NumeroSelecionadoListener{
 
-	private static View view = null;
+	private View view = null;
 	private static NumerosSelecionadosRapidao[] listaNumerosSelecionadosRapidao;
 	private static List<Integer> numerosLista = new ArrayList<>();
 	private static List<Integer> listaNumerosProibidos = new ArrayList<>();

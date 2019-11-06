@@ -29,7 +29,7 @@ import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
 
 public class ConfiguracaoRapidaoFragment7 extends Fragment {
 
-	private static View view = null;
+	private View view = null;
 	protected RecyclerView recycleApostasFavoritasRapidao;
 	private List<ApostaFavoritaDTO> apostaFavoritaLista = new ArrayList<>();
 	private ArrayList<ApostaFavoritaDTO> apostasFavoritaListaSelecionadas = new ArrayList<>();

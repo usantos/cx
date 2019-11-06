@@ -8,9 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -40,6 +40,7 @@ public class ListaRapidaoActivity extends AppCompatActivity {
     private ExpandableHeightRecyclerView recyclerView;
     public List<IdentificaoDeUmaApostaDas8Modalidades> apostas;
     private TextView valorTotalCarrinhoRapidao;
+    private ImageButton btnConfiguracao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,11 +53,15 @@ public class ListaRapidaoActivity extends AppCompatActivity {
         configuraActivityCarrinho();
 
         recyclerView = findViewById(R.id.apostasListaRecycleViewRapidao);
+        btnConfiguracao = findViewById(R.id.ib_configuracao_rpd);
 
-        valorTotalCarrinhoRapidao = findViewById(R.id.valorTotalCarrinhoRapidao);
+        valorTotalCarrinhoRapidao = findViewById(R.id.tv_valor_total_carrinho);
         FirebaseManager.registraEvento(ListaRapidaoActivity.this ,"ENTROU_LISTA_APOSTAS_RAPIDAO");
 
         ViewUtils.organizaTabLayout(this, R.id.carrinhoRapidaoMainLayout, R.id.apostasListaRecycleViewRapidao, R.id.carrinhoRapidaoScrollView);
+
+        btnConfiguracao.setVisibility(View.VISIBLE);
+        btnConfiguracao.setOnClickListener(view -> startActivity(new Intent(ListaRapidaoActivity.this, ConfiguracaoRapidaoActivity.class)));
     }
 
     @Override
@@ -80,50 +85,7 @@ public class ListaRapidaoActivity extends AppCompatActivity {
         return true;
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.rapidao, menu);
 
-        return true;
-    }
-
-    // Mudando o texto dos MenuItem de acordo com os dados
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        if (id == R.id.action_duvida) {
-            abrirTermosUso();
-            return true;
-        }
-        if (id == R.id.action_config_rapidao) {
-            abrirConfigRapidao();
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void abrirTermosUso(){
-        Intent activity = new Intent(ListaRapidaoActivity.this, TermosUsoActivity.class);
-        startActivity(activity);
-    }
-
-    private void abrirConfigRapidao() {
-        RapidaoConfigActivity_.intent(this).startForResult(1);
-    }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -243,6 +205,6 @@ public class ListaRapidaoActivity extends AppCompatActivity {
             valorTotal = valorTotal.add(aposta.getValor());
         }
 
-        valorTotalCarrinhoRapidao.setText("Total: "+ ViewUtils.getMoedaFormat(valorTotal));
+        valorTotalCarrinhoRapidao.setText(ViewUtils.getMoedaFormat(valorTotal));
     }
 }

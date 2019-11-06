@@ -35,7 +35,7 @@ public class ConfiguracaoRapidaoFragment3 extends Fragment implements View.OnCli
 
 	private  final int BTN_1 = 0, BTN_2 = 1, BTN_3 = 2, BTN_4 = 3;
 	private static final Boolean MINIMO = true, MAXIMO = false;
-	private static View view = null;
+	private View view = null;
 
 	private Dialog dialogLimite = null;
 

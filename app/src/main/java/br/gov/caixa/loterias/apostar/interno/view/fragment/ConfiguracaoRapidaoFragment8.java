@@ -32,7 +32,7 @@ import br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightGridVie
 
 public class ConfiguracaoRapidaoFragment8 extends Fragment implements View.OnClickListener {
 
-	private static View view = null;
+	private View view = null;
 	private RapidaoDTO rapidaoConfig;
 	private TextView tvValorMinimo, tvValorMaximo, tvPremioMinimo;
 	private ImageButton ibEditApostaMin,ibEditApostaMax,ibEditPremioMin,

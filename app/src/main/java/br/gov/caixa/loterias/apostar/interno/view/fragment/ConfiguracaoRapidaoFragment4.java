@@ -40,7 +40,7 @@ public class ConfiguracaoRapidaoFragment4 extends Fragment {
 	List<TipoAposta> tiposApostasSalvas = new ArrayList<>();
 	ScrollView scrollModalides;
 	ExpandableHeightGridView gridViewTiposAposta;
-	private static View view = null;
+	private View view = null;
 	private RapidaoDTO rapidaoConfig = RapidaoConfigSingleton.getInstance().getRapidaoConfig();
 
 	public ConfiguracaoRapidaoFragment4() {

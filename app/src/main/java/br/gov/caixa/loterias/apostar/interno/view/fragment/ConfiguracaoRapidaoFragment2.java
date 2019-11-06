@@ -44,7 +44,7 @@ public class ConfiguracaoRapidaoFragment2 extends Fragment {
 	private Boolean temValorConfigurado = false;
 	private SugestoesPremioMinimoAdapter modalidadesAdapter;
 	private TextView tvPmDesc;
-	private static View view = null;
+	private  View view = null;
 
 	public ConfiguracaoRapidaoFragment2() { }
 
