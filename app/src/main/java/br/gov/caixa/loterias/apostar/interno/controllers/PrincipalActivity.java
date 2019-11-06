@@ -149,6 +149,7 @@ public class PrincipalActivity extends AppCompatActivity
     private AnimatorSet anim;
     private boolean realizandoLogin = false;
     private boolean recarregarBuscaParam = false;
+    private Handler handlerDelayNotificacao;
 
     @AfterViews
     public void init() {
@@ -354,8 +355,8 @@ public class PrincipalActivity extends AppCompatActivity
             }
         });
 
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
+        handlerDelayNotificacao = new Handler();
+        handlerDelayNotificacao.postDelayed(new Runnable() {
             @Override
             public void run() {
                 anim = (AnimatorSet) AnimatorInflater.loadAnimator(PrincipalActivity.this, R.animator.swipe_top_anim);
@@ -370,6 +371,7 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     private void removePopup() {
+        handlerDelayNotificacao.removeCallbacksAndMessages(null);
         anim.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
