@@ -60,6 +60,8 @@ public class ConfiguracaoRapidaoFragment6 extends Fragment implements NumeroSele
 		tvDescricao = view.findViewById(R.id.tv_descricao);
 		tvTitulo = view.findViewById(R.id.tv_titulo);
 		btnLimpaNumeros = view.findViewById(R.id.btn_limpar_selecao);
+
+		btnLimpaNumeros.setVisibility(View.GONE);
 	}
 
 	private void setaClicks(){

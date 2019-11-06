@@ -14,12 +14,17 @@ import android.widget.Button;
 
 import com.android.volley.VolleyError;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+
 import br.gov.caixa.loterias.apostar.interno.R;
+import br.gov.caixa.loterias.apostar.interno.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostar.interno.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RapidaoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RapidaoDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.RapidaoConfigSingleton;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
@@ -40,6 +45,7 @@ public class ConfiguracaoRapidaoActivity extends AppCompatActivity {
 	private static ViewPager viewPager;
 	private FragmentPagerAdapter adapterViewPager;
 	private Toolbar toolbar;
+	private RapidaoDTO rapidao;
 	private static ConfiguracaoRapidaoFragment5 frag5;
 	private static ConfiguracaoRapidaoFragment6 frag6;
 	private static ConfiguracaoRapidaoFragment8 frag8;
@@ -130,7 +136,7 @@ public class ConfiguracaoRapidaoActivity extends AppCompatActivity {
 			@Override
 			public void onResponse(final RapidaoDTOResponse response) {
 				loadViewProgress.dismiss();
-				RapidaoConfigSingleton.getInstance().setRapidaoConfig(response.getPayload());
+				processarRegistro(response);
 				setViews();
 				setMethods();
 			}
@@ -143,14 +149,31 @@ public class ConfiguracaoRapidaoActivity extends AppCompatActivity {
 		});
 	}
 
-	private void configuraLogicaTutorial(){
-		if(DadosUsuarioBO.checarTutorialRapidao()){
-			viewPager.setCurrentItem(FRAG_CONFIG);
-			btnSalvar.setVisibility(View.VISIBLE);
-		} else {
-			//tutorial
+	private void processarRegistro(RapidaoDTOResponse response) {
+		 rapidao = response.getPayload();
+		if (rapidao.getValorMaximo() == null) {
+			rapidao.setValorMaximo(SessaoUsuario.getInstance().parametrosSimulacao.getValorLimiteDiario());
+		}
+		if (rapidao.getValorMinimo() == null) {
+			rapidao.setValorMinimo(SessaoUsuario.getInstance().parametrosSimulacao.getValorMinimoCarrinho());
+		}
+		if (rapidao.getPrognosticosObrigatorios() == null) {
+			rapidao.setPrognosticosObrigatorios(new ArrayList<>());
+		}
+		if (rapidao.getPrognosticosProibidos() == null) {
+			rapidao.setPrognosticosProibidos(new ArrayList<>());
+		}
+		if (rapidao.getValorMinimoPremioPrincipal() == null) {
+			rapidao.setValorMinimoPremioPrincipal(new BigDecimal("0.0"));
+		}
+		if (rapidao.getApostasFavoritas() == null) {
+			rapidao.setApostasFavoritas(new ArrayList<>());
 		}
 
+		if (rapidao.getModalidades() == null) {
+			rapidao.setModalidades(new ArrayList<>());
+		}
+		RapidaoConfigSingleton.getInstance().setRapidaoConfig(rapidao);
 	}
 
 	public static void scrollToFragment(int posicao){

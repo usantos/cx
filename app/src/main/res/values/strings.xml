@@ -535,11 +535,11 @@
     <string name="conf_rapd_popup_limite_max">O limite é de _R$ {limite_max}_.</string>
     <string name="conf_rapd_popup_limite_titulo_max">Valor máximo da aposta</string>
     <string name="conf_rapd_popup_limite_titulo_min">Valor mínimo da aposta</string>
-    <string name="conf_rapd_popup_limite_placeholder_min">Digite o valor máximo</string>
-    <string name="conf_rapd_popup_limite_placeholder_max">Digite o valor mínimo</string>
-    <string name="conf_rapd_obrigatorios_desc">Selecione os números que deverão aparecer.</string>
+    <string name="conf_rapd_popup_limite_placeholder_max">Digite o valor máximo</string>
+    <string name="conf_rapd_popup_limite_placeholder_min">Digite o valor mínimo</string>
+    <string name="conf_rapd_obrigatorios_desc">Selecione os números que deverão aparecer em suas apostas.</string>
     <string name="conf_rapd_obrigatorios_titulo">Números obrigatórios</string>
-    <string name="conf_rapd_proibidos_desc">Selecione os números que não deverão aparecer.</string>
+    <string name="conf_rapd_proibidos_desc">Selecione os números que não deverão aparecer em suas apostas.</string>
     <string name="conf_rapd_proibidos_titulo">Números proibidos</string>
     <string name="conf_rapd_resumo">Resumo</string>
     <string name="conf_rapd_verifique_opcoes">Verifique e confirme suas opções de Rapidão.</string>

@@ -211,8 +211,8 @@ public class ConfiguracaoRapidaoFragment2 extends Fragment {
 		String   normal2 = " irá escolher apenas concursos com premiação ";
 		String   bold1   = "maior";
 		String   normal3 = " ou ";
-		String   bold2   = "menor";
-		String   normal4 =" ou igual ao valor selecionado.";
+		String   bold2   = "igual";
+		String   normal4 = " ao valor selecionado.";
 
 		String    finalString  = normal1+amarelo+normal2+bold1+normal3+bold2+normal4;
 		Spannable sb           = new SpannableString(finalString);

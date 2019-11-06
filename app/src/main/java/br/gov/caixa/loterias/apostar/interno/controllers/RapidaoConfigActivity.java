@@ -117,8 +117,7 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
     }
 
     @Override
-    public void onProgressChanged(SeekBar seekBar, int progress,
-                                  boolean fromUser) {
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
         int valorMinAposta = (int) Math.floor(valorMinApostaCarrinho.doubleValue());
         int progressSet = progress;
