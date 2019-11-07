@@ -116,6 +116,7 @@ public class ConfiguracaoRapidaoFragment5 extends Fragment implements NumeroSele
             for(Integer numerosalvo : numerosLista){
                 if(numerosalvo == i+1){
                     numeSel.setSelecionado(true);
+                    btnLimpaNumeros.setVisibility(View.VISIBLE);
                 }
             }
             listaNumerosSelecionadosRapidao[i] = numeSel;
