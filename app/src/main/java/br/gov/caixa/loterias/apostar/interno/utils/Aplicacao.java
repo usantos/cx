@@ -14,6 +14,10 @@ import com.android.volley.VolleyError;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import br.gov.caixa.loterias.apostar.interno.controllers.AppIndisponivelActivity;
+import br.gov.caixa.loterias.apostar.interno.controllers.CarrinhoActivity;
+import br.gov.caixa.loterias.apostar.interno.controllers.PrincipalActivity_;
+import br.gov.caixa.loterias.apostar.interno.controllers.SplashScreenActivity;
 import br.gov.caixa.loterias.apostar.interno.model.bean.DadosUsuarioToken;
 import br.gov.caixa.loterias.apostar.interno.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostar.interno.model.bo.DadosCorporativosBO;
@@ -22,10 +26,6 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametrosSimulacao;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametrosSimulacaoResponse;
-import br.gov.caixa.loterias.apostar.interno.view.AppIndisponivelActivity;
-import br.gov.caixa.loterias.apostar.interno.view.CarrinhoActivity;
-import br.gov.caixa.loterias.apostar.interno.view.PrincipalActivity_;
-import br.gov.caixa.loterias.apostar.interno.view.SplashScreenActivity;
 import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
 
 public class Aplicacao extends MultiDexApplication {
@@ -147,6 +147,7 @@ class ActivityLifecycleCallbacks implements Application.ActivityLifecycleCallbac
                 atualizaLayout(activity);
         }
     }
+    
     private void atualizaLayout(Activity activity){
         ArrayList<String> permitidas = new ArrayList<>((Arrays.asList(PrincipalActivity_.class.toString().toUpperCase(), CarrinhoActivity.class.toString().toUpperCase())));
         if(permitidas.contains(activity.getClass().toString().toUpperCase())){

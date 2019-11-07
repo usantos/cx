@@ -12,16 +12,17 @@ import com.google.gson.Gson;
 import java.io.UnsupportedEncodingException;
 
 import br.gov.caixa.loterias.apostar.interno.R;
+import br.gov.caixa.loterias.apostar.interno.controllers.AppIndisponivelActivity;
+import br.gov.caixa.loterias.apostar.interno.controllers.CadastrarActivity_;
+import br.gov.caixa.loterias.apostar.interno.controllers.CarrinhoActivity;
+import br.gov.caixa.loterias.apostar.interno.controllers.CarrinhosFavoritosActivity;
+import br.gov.caixa.loterias.apostar.interno.controllers.PrincipalActivity_;
+import br.gov.caixa.loterias.apostar.interno.controllers.TermosUsoActivity;
 import br.gov.caixa.loterias.apostar.interno.model.bean.ErrorResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RedirectEnum;
 import br.gov.caixa.loterias.apostar.interno.utils.AppUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
-import br.gov.caixa.loterias.apostar.interno.view.AppIndisponivelActivity;
-import br.gov.caixa.loterias.apostar.interno.view.CadastrarActivity_;
-import br.gov.caixa.loterias.apostar.interno.view.CarrinhoActivity;
-import br.gov.caixa.loterias.apostar.interno.view.CarrinhosFavoritosActivity;
-import br.gov.caixa.loterias.apostar.interno.view.PrincipalActivity_;
-import br.gov.caixa.loterias.apostar.interno.view.TermosUsoActivity;
+
 
 
 /**

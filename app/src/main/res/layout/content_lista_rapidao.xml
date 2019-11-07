@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="br.gov.caixa.loterias.apostar.interno.view.ListaRapidaoActivity"
+    tools:context="br.gov.caixa.loterias.apostar.interno.controllers.ListaRapidaoActivity"
     tools:showIn="@layout/activity_lista_rapidao">
 
     <ScrollView
@@ -65,68 +65,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
+                android:paddingBottom="120dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/infoPacoteRapidao" />
-
-            <RelativeLayout
-                android:id="@+id/relativeLayoutRapidao"
-                android:layout_width="0dp"
-                android:layout_height="56dp"
-                android:background="@color/colorAccent"
-                app:layout_constraintBottom_toTopOf="@+id/relativeLayout2"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/apostasListaRecycleViewRapidao">
-
-                <TextView
-                    android:id="@+id/valorTotalCarrinhoRapidao"
-                    style="@style/editTextArialMTTheme"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="36dp"
-                    android:layout_marginRight="36dp"
-                    android:text="R$ 0,00"
-                    android:textColor="@color/branco"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-
-                <!--<TextView-->
-                <!--android:id="@+id/textoLimparCarrinhoRapidao"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_centerVertical="true"-->
-                <!--android:layout_marginLeft="6dp"-->
-                <!--android:layout_marginStart="6dp"-->
-                <!--android:layout_toEndOf="@+id/imagemLixeiraCarrinhoRapidao"-->
-                <!--android:layout_toRightOf="@+id/imagemLixeiraCarrinhoRapidao"-->
-                <!--android:text="@string/limparCarrinho"-->
-                <!--android:textColor="@color/amareloQueimado"-->
-                <!--android:textSize="14sp"-->
-                <!--android:textStyle="bold" />-->
-
-                <!--<ImageView-->
-                <!--android:id="@+id/imagemLixeiraCarrinhoRapidao"-->
-                <!--android:layout_width="20dp"-->
-                <!--android:layout_height="20dp"-->
-                <!--android:layout_centerVertical="true"-->
-                <!--android:layout_marginLeft="14dp"-->
-                <!--android:layout_marginStart="14dp"-->
-                <!--app:srcCompat="@drawable/close" />-->
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/relativeLayout2"
-                android:layout_width="match_parent"
-                android:layout_height="120dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/relativeLayoutRapidao">
-
-            </RelativeLayout>
 
         </android.support.constraint.ConstraintLayout>
 
@@ -173,6 +115,47 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent">
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/cl_total"
+            android:layout_width="80dp"
+            android:layout_marginRight="10dp"
+            android:layout_height="match_parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <TextView
+                android:id="@+id/tv_valor_total_carrinho"
+                style="@style/FuturaStdBold"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:textAlignment="center"
+                android:textColor="@color/cinza_total"
+                android:textSize="16sp"
+                app:autoSizeMaxTextSize="16dp"
+                app:autoSizeMinTextSize="8sp"
+                app:autoSizeStepGranularity="2sp"
+                app:autoSizeTextType="uniform"
+                app:layout_constraintBottom_toTopOf="@id/tv_total"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="R$100,00" />
+
+            <TextView
+                android:id="@+id/tv_total"
+                style="@style/ArialMT"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/transparente"
+                android:text="@string/total"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textColor="@color/azulescuro"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_valor_total_carrinho" />
+        </android.support.constraint.ConstraintLayout>
     </android.support.constraint.ConstraintLayout>
 
 

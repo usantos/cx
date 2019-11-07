@@ -24,7 +24,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametroMesDeSorte;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
-import br.gov.caixa.loterias.apostar.interno.view.SimularApostaActivity;
+import br.gov.caixa.loterias.apostar.interno.controllers.SimularApostaActivity;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.MesesAdapter;
 import br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightGridView;
 import br.gov.caixa.loterias.apostar.interno.view.custom.ItemRetanguloTextView;

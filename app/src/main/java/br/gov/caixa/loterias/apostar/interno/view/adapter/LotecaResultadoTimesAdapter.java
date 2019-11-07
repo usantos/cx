@@ -60,7 +60,4 @@ public class LotecaResultadoTimesAdapter extends RecyclerView.Adapter<LotecaResu
             partidaRow = (PartidaViewLotecaResultado) itemView;
         }
     }
-
-
-
 }

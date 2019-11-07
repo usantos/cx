@@ -13,8 +13,8 @@ import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
 
 import br.gov.caixa.loterias.apostar.interno.R;
+import br.gov.caixa.loterias.apostar.interno.controllers.DetalheDuvidaActivity_;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ListSecaoDTO;
-import br.gov.caixa.loterias.apostar.interno.view.DetalheDuvidaActivity_;
 
 /**
  * Created by joafilho on 15/02/2018.

@@ -48,26 +48,26 @@ public enum ModalidadeEnumSelecaoModalidades {
 
 
     public static ModalidadeEnumSelecaoModalidades toString(String modalidade) {
-        switch (modalidade) {
-            case "Quina":
+        switch (modalidade.toLowerCase()) {
+            case "quina":
                 return ModalidadeEnumSelecaoModalidades.QUINA;
-            case "Loteca":
+            case "loteca":
                 return ModalidadeEnumSelecaoModalidades.LOTECA;
-            case "Lotogol":
+            case "lotogol":
                 return ModalidadeEnumSelecaoModalidades.LOTOGOL;
-            case "Lotofácil":
+            case "lotofácil":
                 return ModalidadeEnumSelecaoModalidades.LOTOFACIL;
-            case "Lotomania":
+            case "lotomania":
                 return ModalidadeEnumSelecaoModalidades.LOTOMANIA;
-            case "Mega-Sena":
+            case "mega-sena":
                 return ModalidadeEnumSelecaoModalidades.MEGA_SENA;
-            case "Timemania":
+            case "timemania":
                 return ModalidadeEnumSelecaoModalidades.TIMEMANIA;
-            case "Dupla Sena":
+            case "dupla sena":
                 return ModalidadeEnumSelecaoModalidades.DUPLA_SENA;
-            case "Federal":
+            case "federal":
                 return ModalidadeEnumSelecaoModalidades.FEDERAL;
-            case "Dia de Sorte":
+            case "dia de sorte":
                 return ModalidadeEnumSelecaoModalidades.DIA_DE_SORTE;
             default:
                 return null;

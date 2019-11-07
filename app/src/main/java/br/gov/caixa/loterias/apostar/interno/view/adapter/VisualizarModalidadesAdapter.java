@@ -79,7 +79,6 @@ public class VisualizarModalidadesAdapter extends BaseAdapter {
         void onItemClick(TipoAposta item);
     }
 
-
 }
 
 

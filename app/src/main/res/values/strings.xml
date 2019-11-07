@@ -280,7 +280,8 @@
     <string name="label_agencia_caixa">Agência Caixa</string>
     <string name="label_mercado_pago">Mercado Pago</string>
     <string name="label_premio_pago">Prêmio Pago</string>
-    <string name="label_emitir_comprovante">Emita o seu comprovante da aposta </string>
+    <string name="label_emitir_comprovante">Emita o seu comprovante da aposta
+</string>
     <string name="label_diriga_loterica_preferencia">Dirija-se à lotérica de sua preferência</string>
     <string name="label_apresente_recibo_documento_identificacao_originais">Apresente seu recibo de aposta e seu documento de identificação originais</string>
     <string name="label_apresente_recibo_aposta">Apresente seu recibo de aposta</string>
@@ -519,4 +520,29 @@
     <string name="aval_desc">O que tem achado do nosso app? Tá curtindo?\nQue tal nos deixar uma avaliação? Ficaremos ultra felizes.</string>
     <string name="aval_positivo">Só se for agora!</string>
     <string name="aval_negativo">Humm, deixa pra depois.</string>
+
+    <!-- Nova Configuração do Rapidão-->
+    <string name="conf_rapd_selecione_limites">Selecione os limites da sua compra e suas modalidades favoritas.</string>
+    <string name="conf_rapd_titulo_bold">_Rapidão_</string>
+    <string name="conf_rapd_premio_minimo">Prêmio mínimo</string>
+    <string name="conf_rapd_nossas_sugestoes">Nossas sugestões:</string>
+    <string name="conf_rapd_valor_max_aposta">Valor máximo da aposta</string>
+    <string name="conf_rapd_valor_min_aposta">Valor mínimo da aposta</string>
+    <string name="conf_rapd_escolha_max_aposta">Escolha  o valor _máximo_ em reais da sua aposta</string>
+    <string name="conf_rapd_escolha_min_aposta">Escolha  o valor _mínimo_ em reais da sua aposta</string>
+    <string name="conf_rapd_escolha_modalide">Selecione as opções que você quer contemplar no Rapidão.</string>
+    <string name="conf_rapd_popup_limite_min">Mínimo de _R$ {limite_min}_ e máximo de _R$ {limite_max}_.</string>
+    <string name="conf_rapd_popup_limite_max">O limite é de _R$ {limite_max}_.</string>
+    <string name="conf_rapd_popup_limite_titulo_max">Valor máximo da aposta</string>
+    <string name="conf_rapd_popup_limite_titulo_min">Valor mínimo da aposta</string>
+    <string name="conf_rapd_popup_limite_placeholder_max">Digite o valor máximo</string>
+    <string name="conf_rapd_popup_limite_placeholder_min">Digite o valor mínimo</string>
+    <string name="conf_rapd_obrigatorios_desc">Selecione os números que deverão aparecer em suas apostas.</string>
+    <string name="conf_rapd_obrigatorios_titulo">Números obrigatórios</string>
+    <string name="conf_rapd_proibidos_desc">Selecione os números que não deverão aparecer em suas apostas.</string>
+    <string name="conf_rapd_proibidos_titulo">Números proibidos</string>
+    <string name="conf_rapd_resumo">Resumo</string>
+    <string name="conf_rapd_verifique_opcoes">Verifique e confirme suas opções de Rapidão.</string>
+
+    <string name="ops">Ops!</string>
 </resources>

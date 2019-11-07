@@ -17,6 +17,8 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostar.interno.BuildConfig;
 import br.gov.caixa.loterias.apostar.interno.R;
+import br.gov.caixa.loterias.apostar.interno.controllers.CadastrarActivity_;
+import br.gov.caixa.loterias.apostar.interno.controllers.PrincipalActivity_;
 import br.gov.caixa.loterias.apostar.interno.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostar.interno.model.bo.AcessoBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.AcessoBO_;
@@ -28,13 +30,12 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.keycloak.KeycloakBO_;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.UsuarioLogadoResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.CarrinhoSingleton;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.UltimaNotificacaoSingleton;
 import br.gov.caixa.loterias.apostar.interno.model.dao.DBLoteriasCrud;
 import br.gov.caixa.loterias.apostar.interno.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostar.interno.utils.AppUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
-import br.gov.caixa.loterias.apostar.interno.view.CadastrarActivity_;
-import br.gov.caixa.loterias.apostar.interno.view.PrincipalActivity_;
 import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
 
 
@@ -113,6 +114,7 @@ public class LoginFragment extends Fragment {
                     crud.deleteAll();
                     CarrinhoSingleton.getInstance().setCarrinho(null);
                     CarrinhoSingleton.getInstance().setCarrinho(response.getPayload().getCarrinho());
+                    UltimaNotificacaoSingleton.getInstance().setUltimaNoficacao(response.getPayload().getUltimaNotificacao());
 
                     PrincipalActivity_.intent(getActivity()).start();
                     getActivity().finish();

@@ -4,34 +4,31 @@
 
 package br.gov.caixa.loterias.apostar.interno.view.adapter;
 
-        import android.content.Context;
-        import android.support.v4.content.ContextCompat;
-        import android.support.v7.widget.RecyclerView;
-        import android.view.LayoutInflater;
-        import android.view.View;
-        import android.view.ViewGroup;
-        import android.widget.LinearLayout;
-        import android.widget.TextView;
+import android.content.Context;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
-        import com.daimajia.swipe.SwipeLayout;
+import com.daimajia.swipe.SwipeLayout;
 
-        import java.util.ArrayList;
-        import java.util.Locale;
+import java.util.ArrayList;
+import java.util.Locale;
 
-        import br.gov.caixa.loterias.apostar.interno.R;
-        import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
-
-        import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeEnum;
-        import br.gov.caixa.loterias.apostar.interno.utils.EstiloModalidade;
-        import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
-        import br.gov.caixa.loterias.apostar.interno.view.ListaRapidaoActivity;
+import br.gov.caixa.loterias.apostar.interno.R;
+import br.gov.caixa.loterias.apostar.interno.controllers.ListaRapidaoActivity;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeEnum;
+import br.gov.caixa.loterias.apostar.interno.utils.EstiloModalidade;
+import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 
 public class CarrinhoApostasListViewRapidaoAdapter extends RecyclerView.Adapter<CarrinhoApostasListViewRapidaoAdapter.ApostaHolder> {
     private Context context;
     private ArrayList<IdentificaoDeUmaApostaDas8Modalidades> apostas;
     private ListaRapidaoActivity parentActivity;
-
-//    AJEITAR Carrinho rapidao nao esta mostrando detalhes ao arrasta para o lado.
 
     private OnCarrinhoApostasRapidaoListener onCarrinhoApostasRapidaoListener;
 
@@ -69,7 +66,7 @@ public class CarrinhoApostasListViewRapidaoAdapter extends RecyclerView.Adapter<
 
     @Override
     public CarrinhoApostasListViewRapidaoAdapter.ApostaHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.row_apostas_list_view, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.row_apostas_list_view_rapidao, parent, false);
 
         return  new ApostaHolder(view);
     }
@@ -92,9 +89,8 @@ public class CarrinhoApostasListViewRapidaoAdapter extends RecyclerView.Adapter<
         holder.textViewNumeroConcurso.setTextColor(ContextCompat.getColor(context, estilo.getCorClara()));
         holder.valorAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorEscura()));
         holder.textViewTipoAposta.setText(ViewUtils.capitalized(ModalidadeEnum.fromString(apostas.get(position).getModalidade())));
-        holder.textViewNumeroConcurso.setText( context.getString(R.string.label_aposta_concurso, apostas.get( position ).getConcursoAlvo()));
+        holder.textViewNumeroConcurso.setText(context.getString(R.string.label_aposta_concurso, apostas.get( position ).getConcursoAlvo()));
         holder.dadosApostaCarrinho.setBackgroundResource(estilo.getCorEscura());
-
 
         TextView quantidadeApostadas = holder.dadosApostaCarrinho.findViewById(R.id.quantidadeApostadas);
         TextView quantidadeSorteios = holder.dadosApostaCarrinho.findViewById(R.id.quantidadeSorteios);
@@ -132,7 +128,7 @@ public class CarrinhoApostasListViewRapidaoAdapter extends RecyclerView.Adapter<
         }
 
 
-        holder.itemView.findViewById(R.id.excluirApostaCarrinhoLayout).setOnClickListener(view -> onCarrinhoApostasRapidaoListener.onRemove( apostas.get( position ) ));
+        //holder.itemView.findViewById(R.id.excluirApostaCarrinhoLayout).setOnClickListener(view -> onCarrinhoApostasRapidaoListener.onRemove( apostas.get( position ) ));
 
         StringBuilder numeroStr = new StringBuilder();
         if (apostas.get(position).getIndicadorSurpresinha().getValor() == 2) {

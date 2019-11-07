@@ -65,9 +65,9 @@ public class SilceConnection {
                                            Class<T> responseDataClass,
                                            Response.Listener<T> listener,
                                            Response.ErrorListener errorListener, Map<String, String> headers) {
+
         String url = fillUrlWithQueryParams(path, queryParams);
-        GsonRequest request = new GsonRequest<String, T>(GET, url, responseDataClass,
-                headers, listener, errorListener);
+        GsonRequest request = new GsonRequest<String, T>(GET, url, responseDataClass, headers, listener, errorListener);
         request.setRetryPolicy(createRetryPolicy());
         Log.i(TAG_REQUEST, getPath(path, queryParams));
         return request;
@@ -77,10 +77,9 @@ public class SilceConnection {
                                                    REQ body, Class<RSP> responseDataClass,
                                                    Response.Listener<RSP> listener,
                                                    Response.ErrorListener errorListener, Map<String, String> headers) {
+
         String url = fillUrlWithQueryParams(path, queryParams);
-        GsonRequest request = new GsonRequest<>(POST, url,
-                prepareBody(body), responseDataClass,
-                headers, listener, errorListener);
+        GsonRequest request = new GsonRequest<>(POST, url, prepareBody(body), responseDataClass, headers, listener, errorListener);
 
         request.setRetryPolicy(createRetryPolicy());
         Log.i(TAG_REQUEST, getPath(path, queryParams));
@@ -91,10 +90,10 @@ public class SilceConnection {
                                                   REQ body, Class<RSP> responseDataClass,
                                                   Response.Listener<RSP> listener,
                                                   Response.ErrorListener errorListener, Map<String, String> headers) {
+
         String url = fillUrlWithQueryParams(path, queryParams);
-        GsonRequest request = new GsonRequest<>(PUT, url,
-                prepareBody(body), responseDataClass,
-                headers, listener, errorListener);
+        GsonRequest request = new GsonRequest<>(PUT, url, prepareBody(body), responseDataClass, headers, listener, errorListener);
+
         request.setRetryPolicy(createRetryPolicy());
         Log.i(TAG_REQUEST, getPath(path, queryParams));
         return request;
@@ -104,9 +103,9 @@ public class SilceConnection {
                                               Class<T> responseDataClass,
                                               Response.Listener<T> listener,
                                               Response.ErrorListener errorListener, Map<String, String> headers) {
+
         String url = fillUrlWithQueryParams(path, queryParams);
-        GsonRequest request = new GsonRequest<String, T>(DELETE, url, responseDataClass,
-                headers, listener, errorListener);
+        GsonRequest request = new GsonRequest<String, T>(DELETE, url, responseDataClass, headers, listener, errorListener);
         request.setRetryPolicy(createRetryPolicy());
         Log.i(TAG_REQUEST, url);
         return request;

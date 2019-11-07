@@ -24,7 +24,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bean.Modalidade;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.PremiacaoConcursoDTO;
 import br.gov.caixa.loterias.apostar.interno.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
-import br.gov.caixa.loterias.apostar.interno.view.PrincipalActivity;
+import br.gov.caixa.loterias.apostar.interno.controllers.PrincipalActivity;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.LotogolResultadoTimesAdapter;
 
 /**

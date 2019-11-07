@@ -21,7 +21,7 @@ import java.util.List;
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CompraDTO;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
-import br.gov.caixa.loterias.apostar.interno.view.DetalhesComprasActivity;
+import br.gov.caixa.loterias.apostar.interno.controllers.DetalhesComprasActivity;
 
 
 public final class ListaComprasRecyclerViewAdapter extends RecyclerView.Adapter<ListaComprasRecyclerViewAdapter.ViewHolder> {
