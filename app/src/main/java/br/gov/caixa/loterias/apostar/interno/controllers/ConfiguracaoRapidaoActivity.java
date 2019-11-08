@@ -1,5 +1,6 @@
 package br.gov.caixa.loterias.apostar.interno.controllers;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -230,8 +231,13 @@ public class ConfiguracaoRapidaoActivity extends AppCompatActivity {
 			 @Override
 			 public void onResponse(RapidaoDTOResponse result) {
 				 loadViewProgress.dismiss();
-				 DadosUsuarioBO.updateTutorialRapidao(true);
-				 finish();
+				 if(!DadosUsuarioBO.checarTutorialRapidao()) {
+					 DadosUsuarioBO.updateTutorialRapidao(true);
+					 startActivity(new Intent(ConfiguracaoRapidaoActivity.this,ListaRapidaoActivity.class));
+					 finish();
+				 }else {
+					 finish();
+				 }
 			 }
 
 			 @Override
