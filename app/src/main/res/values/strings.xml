@@ -518,8 +518,8 @@
     <!-- Avaliar Aplicativo -->
     <string name="aval_titulo">Ei, tudo Jóia?</string>
     <string name="aval_desc">O que você tem achado do nosso app? \nQue tal nos deixar uma avaliação? Ficaremos felizes.</string>
-    <string name="aval_positivo">Só se for agora!</string>
-    <string name="aval_negativo">Humm, deixa pra depois.</string>
+    <string name="aval_positivo">Agora</string>
+    <string name="aval_negativo">Deixar para depois</string>
 
     <!-- Nova Configuração do Rapidão-->
     <string name="conf_rapd_selecione_limites">Selecione os limites da sua compra e suas modalidades favoritas.</string>
