@@ -77,15 +77,11 @@ public class LerBilhetesActivity extends AppCompatActivity {
             startActivity(activity);
         });
 
-
         barcodeScannerView = findViewById(R.id.DecoratedBarcodeViewBilhetes);
         barcodeScannerView.getViewFinder().setVisibility(View.INVISIBLE);
         barcodeScannerView.getStatusView().setVisibility(View.INVISIBLE);
+        barcodeScannerView.getBarcodeView().getCameraSettings().setFocusMode(CameraSettings.FocusMode.CONTINUOUS);
         barcodeScannerView.decodeContinuous(callback);
-        barcodeScannerView.getBarcodeView().getCameraSettings().setMeteringEnabled(true);
-        barcodeScannerView.getBarcodeView().getCameraSettings().setAutoTorchEnabled(true);
-        barcodeScannerView.getBarcodeView().getCameraSettings().setFocusMode(CameraSettings.FocusMode.AUTO);
-        barcodeScannerView.getBarcodeView().getCameraSettings().setAutoFocusEnabled(true);
 
         buttonDigitarAposta.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.label_digite_aposta_realizada)));
     }
