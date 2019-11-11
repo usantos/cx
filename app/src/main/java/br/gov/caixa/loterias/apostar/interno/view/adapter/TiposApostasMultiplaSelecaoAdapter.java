@@ -14,24 +14,24 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bean.TipoAposta;
-import br.gov.caixa.loterias.apostar.interno.view.SelecaoModalidadesRapidaoActivity;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeDTO;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.RapidaoConfigSingleton;
 
 
 public class TiposApostasMultiplaSelecaoAdapter extends BaseAdapter {
 
     private final Context mContext;
     private final List<TipoAposta> tiposAposta;
-    private final SelecaoModalidadesRapidaoActivity parentActivity;
 
     // 1
-    public TiposApostasMultiplaSelecaoAdapter(SelecaoModalidadesRapidaoActivity parentActivity, Context context, List<TipoAposta> tiposAposta) {
+    public TiposApostasMultiplaSelecaoAdapter(Context context, List<TipoAposta> tiposAposta) {
         this.mContext = context;
         this.tiposAposta = tiposAposta;
-        this.parentActivity = parentActivity;
     }
 
     // 2
@@ -55,8 +55,6 @@ public class TiposApostasMultiplaSelecaoAdapter extends BaseAdapter {
     // 5
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-
-
         if (convertView == null) {
             final LayoutInflater layoutInflater = LayoutInflater.from(mContext);
             convertView = layoutInflater.inflate(R.layout.linearlayout_tipos_apostas, null);
@@ -64,10 +62,9 @@ public class TiposApostasMultiplaSelecaoAdapter extends BaseAdapter {
 
         final TipoAposta tipoAposta = tiposAposta.get(position);
         final ImageView imageViewTipoAPosta = convertView.findViewById(R.id.imageviewTrevoTipoAposta);
-
         final LinearLayout linearLayoutTipoAposta = convertView.findViewById(R.id.LinearLayoutContentTiposAposta);
-
         final TextView tituloTipoAposta = convertView.findViewById(R.id.tituloTipoApostaTextView);
+
         tituloTipoAposta.setText(tipoAposta.getTitulo());
 
         if (tipoAposta.getSelect()){
@@ -95,19 +92,23 @@ public class TiposApostasMultiplaSelecaoAdapter extends BaseAdapter {
                 tituloTipoAposta.setTextColor(ContextCompat.getColor(mContext, R.color.branco));
             }
 
-            for (TipoAposta item : tiposAposta) {
-                if (item.getSelect()) {
-                    parentActivity.mudarLayoutBotaoSalvar(true);
-                    return;
-                }
-            }
-            parentActivity.mudarLayoutBotaoSalvar(false);
-
+            RapidaoConfigSingleton.getInstance().getRapidaoConfig().setModalidades(convertTipoApostaParaModalidades());
         });
-
 
         return convertView;
     }
 
-
+    private List<ModalidadeDTO> convertTipoApostaParaModalidades() {
+        List<ModalidadeDTO> modalidades = new ArrayList<>();
+        for (TipoAposta tipoAposta: tiposAposta) {
+            if(tipoAposta.getSelect()){
+                ModalidadeDTO modalidade = new ModalidadeDTO();
+                modalidade.setDescricao(tipoAposta.getTitulo());
+                modalidade.setDescricaoEspecial(tipoAposta.getDescricaoEspecial());
+                modalidade.setValor(tipoAposta.getValor());
+                modalidades.add(modalidade);
+            }
+        }
+        return modalidades;
+    }
 }

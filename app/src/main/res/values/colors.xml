@@ -97,6 +97,7 @@
 
     <color name="azul_card">#035FA9</color>
     <color name="verde_card">#51B7AB</color>
+    <color name="cinza_card">#F0F5F6</color>
 
 
 </resources>

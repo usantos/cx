@@ -83,6 +83,7 @@ class ServerMethods {
 
 
      static final String USUARIOS_PATH = "/usuarios";
+     static final String LER_NOTIFICACAO = "historico-notificacoes/{idNotificacao}/visualiza";
 
 
      static final String USUARIOS_VERIFICAR_CADASTRO_PATH = "/usuarios/verificar-cadastro";

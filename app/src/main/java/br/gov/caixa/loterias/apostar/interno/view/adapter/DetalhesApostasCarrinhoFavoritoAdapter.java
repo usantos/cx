@@ -25,9 +25,9 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostar.interno.utils.DialogUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
-import br.gov.caixa.loterias.apostar.interno.view.DetalhesCarrinhoFavoritoActivity;
+import br.gov.caixa.loterias.apostar.interno.controllers.DetalhesCarrinhoFavoritoActivity;
 
-import static br.gov.caixa.loterias.apostar.interno.view.CarrinhosFavoritosActivity.RESPOSTA_EXCLUIU_CARRINHO;
+import static br.gov.caixa.loterias.apostar.interno.controllers.CarrinhosFavoritosActivity.RESPOSTA_EXCLUIU_CARRINHO;
 
 public class DetalhesApostasCarrinhoFavoritoAdapter extends RecyclerView.Adapter<DetalhesApostasCarrinhoFavoritoAdapter.DetalheViewHolder> {
 

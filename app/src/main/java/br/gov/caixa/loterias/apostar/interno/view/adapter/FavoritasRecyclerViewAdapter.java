@@ -19,7 +19,6 @@ import com.daimajia.swipe.SwipeLayout;
 
 import org.apache.commons.lang.StringUtils;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -44,7 +43,7 @@ import br.gov.caixa.loterias.apostar.interno.utils.DialogUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
-import br.gov.caixa.loterias.apostar.interno.view.FavoritasActivity;
+import br.gov.caixa.loterias.apostar.interno.controllers.FavoritasActivity;
 import br.gov.caixa.loterias.apostar.interno.view.custom.AdicionarCarrinhoFavoritasView;
 import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
 
@@ -131,8 +130,6 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
         holder.exluirRelativeLayoutFavoritos.setOnClickListener(v -> deleteFavoritaCallWebservice(position));
 
         holder.editarRelativeLayoutAddCarrinho.setOnClickListener(view -> {
-            SessaoUsuario.getInstance().getParametrosSimulacao().setQuantidadeMaximaApostasCarrinho(3);
-            SessaoUsuario.getInstance().getParametrosSimulacao().setValorLimiteDiario(new BigDecimal("8"));
             adicionarApostaCarrinhoRequest(ApostaBO_.getInstance_(activity), listaApostaFavorita.get(position));
         });
 

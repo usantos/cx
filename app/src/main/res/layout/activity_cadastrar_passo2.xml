@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="br.gov.caixa.loterias.apostar.interno.view.CadastrarPasso2Activity">
+    tools:context="br.gov.caixa.loterias.apostar.interno.controllers.CadastrarPasso2Activity">
 
     <ScrollView
         android:layout_width="match_parent"

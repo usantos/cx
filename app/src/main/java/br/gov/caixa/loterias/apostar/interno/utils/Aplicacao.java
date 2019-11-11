@@ -11,10 +11,13 @@ import android.support.v7.app.AlertDialog;
 
 import com.android.volley.VolleyError;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import br.gov.caixa.loterias.apostar.interno.controllers.AppIndisponivelActivity;
+import br.gov.caixa.loterias.apostar.interno.controllers.CarrinhoActivity;
+import br.gov.caixa.loterias.apostar.interno.controllers.PrincipalActivity_;
+import br.gov.caixa.loterias.apostar.interno.controllers.SplashScreenActivity;
 import br.gov.caixa.loterias.apostar.interno.model.bean.DadosUsuarioToken;
 import br.gov.caixa.loterias.apostar.interno.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostar.interno.model.bo.DadosCorporativosBO;
@@ -23,10 +26,6 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametrosSimulacao;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametrosSimulacaoResponse;
-import br.gov.caixa.loterias.apostar.interno.view.AppIndisponivelActivity;
-import br.gov.caixa.loterias.apostar.interno.view.CarrinhoActivity;
-import br.gov.caixa.loterias.apostar.interno.view.PrincipalActivity_;
-import br.gov.caixa.loterias.apostar.interno.view.SplashScreenActivity;
 import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
 
 public class Aplicacao extends MultiDexApplication {
@@ -115,9 +114,6 @@ class ActivityLifecycleCallbacks implements Application.ActivityLifecycleCallbac
                     appIndis.putExtra("IS_BUSCA_PARAM", true);
                     activity.startActivityForResult(appIndis, 1);
                 } else {
-                    if (response.getPayload().getValorLimiteDiario() == null) {
-                        response.getPayload().setValorLimiteDiario(BigDecimal.ZERO);
-                    }
                     parametroSimulacaoSuccess(response, activity);
                 }
             }
@@ -136,20 +132,22 @@ class ActivityLifecycleCallbacks implements Application.ActivityLifecycleCallbac
         SessaoUsuario sessaoUser = SessaoUsuario.getInstance();
         ParametrosSimulacao oldParams = sessaoUser.getParametrosSimulacao();
         ParametrosSimulacao newParams = response.getPayload();
-        if (oldParams != null && newParams != null) {
-            try {
-                DadosUsuarioToken dadosUsuarioToken = Utils.decodedToken(sessaoUser.getToken());
-                sessaoUser.setEmail(dadosUsuarioToken.getEmail());
-                sessaoUser.setNome(dadosUsuarioToken.getName());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            sessaoUser.setValorMinimimoAposta(response.getPayload().getValorMinimoCarrinho());
-            sessaoUser.setValorMaximoAposta(response.getPayload().getValorLimiteDiario());
-            sessaoUser.setParametrosSimulacao(response.getPayload());
-            atualizaLayout(activity);
+
+        if ( oldParams == null || (newParams != null && oldParams!= null && !newParams.equals(oldParams))) {
+                try {
+                    DadosUsuarioToken dadosUsuarioToken = Utils.decodedToken(sessaoUser.getToken());
+                    sessaoUser.setEmail(dadosUsuarioToken.getEmail());
+                    sessaoUser.setNome(dadosUsuarioToken.getName());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                sessaoUser.setValorMinimimoAposta(response.getPayload().getValorMinimoCarrinho());
+                sessaoUser.setValorMaximoAposta(response.getPayload().getValorLimiteDiario());
+                sessaoUser.setParametrosSimulacao(response.getPayload());
+                atualizaLayout(activity);
         }
     }
+    
     private void atualizaLayout(Activity activity){
         ArrayList<String> permitidas = new ArrayList<>((Arrays.asList(PrincipalActivity_.class.toString().toUpperCase(), CarrinhoActivity.class.toString().toUpperCase())));
         if(permitidas.contains(activity.getClass().toString().toUpperCase())){

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="br.gov.caixa.loterias.apostar.interno.view.JogosConfirmadosPremioActivity"
+    tools:context="br.gov.caixa.loterias.apostar.interno.controllers.JogosConfirmadosPremioActivity"
     tools:showIn="@layout/activity_jogos_confirmados_premio"
     android:background="@color/branco">
     <android.support.v4.widget.NestedScrollView

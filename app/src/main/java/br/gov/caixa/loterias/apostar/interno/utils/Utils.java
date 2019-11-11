@@ -12,6 +12,7 @@ import android.util.Base64;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 
 import java.io.UnsupportedEncodingException;
@@ -87,6 +88,14 @@ public class Utils {
             window.setStatusBarColor(activity.getResources().getColor(android.R.color.transparent));
             window.setNavigationBarColor(activity.getResources().getColor(android.R.color.transparent));
             window.setBackgroundDrawable(background);
+        }
+    }
+
+    public static boolean isErroNegocial(VolleyError erro){
+        if(erro!= null && erro.networkResponse != null){
+            return erro.networkResponse.statusCode == 400;
+        }else {
+            return false;
         }
     }
 }

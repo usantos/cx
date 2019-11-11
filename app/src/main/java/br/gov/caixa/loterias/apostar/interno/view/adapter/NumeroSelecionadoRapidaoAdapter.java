@@ -4,6 +4,7 @@ package br.gov.caixa.loterias.apostar.interno.view.adapter;
  * Created by cedesbr450 on 21/12/17.
  */
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
@@ -19,23 +20,29 @@ import java.util.List;
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bean.NumerosSelecionadosRapidao;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
-import br.gov.caixa.loterias.apostar.interno.view.NumerosRapidaoActivity;
 
 
 public class NumeroSelecionadoRapidaoAdapter extends BaseAdapter {
 
     private final Context mContext;
     private final NumerosSelecionadosRapidao[] numerosSelecionadosRapidao;
-    private final NumerosRapidaoActivity parentActivity;
+    private final Activity parentActivity;
     private final Boolean isObrigatorio;
     private List<Integer> listaNumerosContrariosRapidao = new ArrayList<>();
+    private NumeroSelecionadoListener listener;
     // 1
-    public NumeroSelecionadoRapidaoAdapter(NumerosRapidaoActivity parentActivity, Context context, NumerosSelecionadosRapidao[] numerosSelecionadosRapidao, Boolean isObrigatorio, List<Integer> listaNumerosContrariosRapidao) {
+    public NumeroSelecionadoRapidaoAdapter(Activity parentActivity,
+                                           Context context,
+                                           NumerosSelecionadosRapidao[] numerosSelecionadosRapidao,
+                                           Boolean isObrigatorio,
+                                           List<Integer> listaNumerosContrariosRapidao,
+                                           NumeroSelecionadoListener listener) {
         this.parentActivity = parentActivity;
         this.mContext = context;
         this.numerosSelecionadosRapidao = numerosSelecionadosRapidao;
         this.isObrigatorio = isObrigatorio;
         this.listaNumerosContrariosRapidao = listaNumerosContrariosRapidao;
+        this.listener = listener;
     }
 
     // 2
@@ -96,8 +103,6 @@ public class NumeroSelecionadoRapidaoAdapter extends BaseAdapter {
             }
         }
 
-
-
         convertView.setOnClickListener(v -> {
             for(Integer item : listaNumerosContrariosRapidao){
                 if (item == numerosSelecionadosRapidao[position].getNumero()){
@@ -129,13 +134,16 @@ public class NumeroSelecionadoRapidaoAdapter extends BaseAdapter {
 
             for (NumerosSelecionadosRapidao item : numerosSelecionadosRapidao) {
                 if (item.getSelecionado()) {
-                    parentActivity.mudarLayoutBotaoLimparSelecao(true);
+                    listener.mudarLayoutBotaoLimparSelecao(true);
                     return;
                 }
             }
-            parentActivity.mudarLayoutBotaoLimparSelecao(false);
+            listener.mudarLayoutBotaoLimparSelecao(false);
         });
         return convertView;
     }
 
+    public interface NumeroSelecionadoListener{
+        void mudarLayoutBotaoLimparSelecao(Boolean visible);
+    }
 }

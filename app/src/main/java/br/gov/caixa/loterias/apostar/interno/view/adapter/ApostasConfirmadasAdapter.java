@@ -16,13 +16,13 @@ import java.util.List;
 import java.util.Locale;
 
 import br.gov.caixa.loterias.apostar.interno.R;
+import br.gov.caixa.loterias.apostar.interno.controllers.MinhasApostasActivity;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.DTOEnumLong;
 import br.gov.caixa.loterias.apostar.interno.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.helper.ConferirResultadoHandler;
 import br.gov.caixa.loterias.apostar.interno.utils.helper.ConferirResultadoHelper;
-import br.gov.caixa.loterias.apostar.interno.view.ApostasConfirmadasActivity;
 
 /**
  * Created by pmotta on 15/03/2018.
@@ -34,13 +34,13 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostasConfi
     private final List<ApostaDTO> list;
     private boolean isHistorico;
     private OnApostasConfirmadasListener onApostasConfirmadasListener;
-    private ApostasConfirmadasActivity parentActivity;
+    private MinhasApostasActivity parentActivity;
 
-    public ApostasConfirmadasAdapter(ApostasConfirmadasActivity parentActivity, Context context, List<ApostaDTO> list, boolean isHistorico) {
+    public ApostasConfirmadasAdapter(MinhasApostasActivity parentActivity, Context context, List<ApostaDTO> list, boolean isHistorico) {
         this(parentActivity, context, list, null, isHistorico);
     }
 
-    public ApostasConfirmadasAdapter(ApostasConfirmadasActivity parentActivity, Context context, List<ApostaDTO> list, OnApostasConfirmadasListener listener, boolean isHistorico) {
+    public ApostasConfirmadasAdapter(MinhasApostasActivity parentActivity, Context context, List<ApostaDTO> list, OnApostasConfirmadasListener listener, boolean isHistorico) {
         this.list = list;
         this.context = context;
         this.onApostasConfirmadasListener = listener;

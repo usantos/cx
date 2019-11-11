@@ -14,7 +14,7 @@
         android:background="@color/branco"
         android:focusableInTouchMode="true"
         android:minHeight="@dimen/activity_vertical_margin"
-        tools:context="br.gov.caixa.loterias.apostar.interno.view.FormaPagamentoActivity">
+        tools:context="br.gov.caixa.loterias.apostar.interno.controllers.FormaPagamentoActivity">
 
         <TextView
             android:id="@+id/textoInfoSelecioneFormaPagamento"

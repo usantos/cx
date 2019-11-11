@@ -37,12 +37,12 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostar.interno.utils.DialogUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
-import br.gov.caixa.loterias.apostar.interno.view.CarrinhoActivity;
-import br.gov.caixa.loterias.apostar.interno.view.CarrinhosFavoritosActivity;
-import br.gov.caixa.loterias.apostar.interno.view.DetalhesCarrinhoFavoritoActivity;
+import br.gov.caixa.loterias.apostar.interno.controllers.CarrinhoActivity;
+import br.gov.caixa.loterias.apostar.interno.controllers.CarrinhosFavoritosActivity;
+import br.gov.caixa.loterias.apostar.interno.controllers.DetalhesCarrinhoFavoritoActivity;
 import info.hoang8f.android.segmented.SegmentedGroup;
 
-import static br.gov.caixa.loterias.apostar.interno.view.DetalhesCarrinhoFavoritoActivity.ID_CARRINHO;
+import static br.gov.caixa.loterias.apostar.interno.controllers.DetalhesCarrinhoFavoritoActivity.ID_CARRINHO;
 
 public class CarrinhosFavoritosAdapter extends RecyclerView.Adapter<CarrinhosFavoritosAdapter.CarrinhosFavoritosHolder> {
 

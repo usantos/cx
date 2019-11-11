@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="br.gov.caixa.loterias.apostar.interno.view.AlterarDadosLoginCaixaActivity"
+    tools:context="br.gov.caixa.loterias.apostar.interno.controllers.AlterarDadosLoginCaixaActivity"
     tools:showIn="@layout/activity_alterar_dados_login_caixa">
     <WebView
         android:layout_width="match_parent"

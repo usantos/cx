@@ -18,7 +18,7 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bean.TipoAposta;
-import br.gov.caixa.loterias.apostar.interno.view.LerBilhetesEscolhaJogoActivity;
+import br.gov.caixa.loterias.apostar.interno.controllers.LerBilhetesEscolhaJogoActivity;
 
 
 public class TiposApostasConferirApostaAdapter extends BaseAdapter {

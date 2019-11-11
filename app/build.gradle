@@ -15,7 +15,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 21101101
-        versionName "1.0.15"
+        versionName "1.0.17"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -190,6 +190,9 @@ dependencies {
 
     //Segmented Control
     implementation 'info.hoang8f:android-segmented:1.0.6'
+
+    //Flexbox
+    implementation 'com.google.android:flexbox:1.0.0'
 
     // testImplementation deps
     testImplementation 'junit:junit:4.12'

@@ -1,6 +1,5 @@
 package br.gov.caixa.loterias.apostar.interno.view.fragment;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,8 +12,8 @@ import android.widget.TextView;
 
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
-import br.gov.caixa.loterias.apostar.interno.view.IntroducaoActivity;
-import br.gov.caixa.loterias.apostar.interno.view.RestritoDezoitoAnosActivity;
+import br.gov.caixa.loterias.apostar.interno.controllers.IntroducaoActivity;
+import br.gov.caixa.loterias.apostar.interno.controllers.RestritoDezoitoAnosActivity;
 
 /**
  * A simple {@link Fragment} subclass.
