@@ -84,17 +84,22 @@
     <string name="title_activity_login">Login</string>
     <string name="erro_401">Não autorizado</string>
     <string name="erro_408">Tempo de resposta esgotou</string>
-    <string name="erro_500">Não foi possível concluir essa operação. Por favor, tente novamente.</string>
+    <string name="erro_500">Ocorreu um erro inesperado, mas não se preocupe, já estamos trabalhando nisso. Quer nos ajudar reportando o problema?</string>
     <string name="seminternet">Sem conexão com a internet.</string>
-    <!--<string name="sistema_indisponivel">Não foi possível concluir esta operação. Por favor, tente novamente.</string>-->
+    <string name="erro_mail_provider">Não há nenhum aplicativo de e-mail instalado!</string>
     <string name="sistema_indisponivel">O Tempo de conexão expirou.</string>
     <string name="btn_finalizar">Finalizar</string>
     <string name="declaracao_termo_uso_politica_privacidade">Declaro ter lido e concordado com o</string>
     <string name="termo_de_uso_underline"><u>termos de uso</u>.</string>
     <string name="CEP">CEP</string>
     <string name="codigo_loterica">Código Lotérica</string>
-    <string name="enviando_email">Enviando e-mail usando:"</string>
+    <string name="enviando_email">Enviar e-mail usando:"</string>
     <string name="label_lembrar_valor_minimo">Lembre-se que o valor mínimo do total_de compras nesse aplicativo</string>
+
+    <!-- email-->
+    <string name="email_padrao">CEDESBR456@caixa.gov.br</string>
+    <string name="email_assunto">[APP Loterias] - Erro de serviço</string>
+    <string name="quero">Quero</string>
 
     <!-- Messages-->
 
