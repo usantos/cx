@@ -111,7 +111,7 @@ public class BaseBO {
     private void registraErro(VolleyError error, GsonRequest request){
         ErrorResponse   errorResponse = transformaErroEmErrorResponse(error);
         NetworkResponse response      = error.networkResponse;
-        if(response.statusCode == 500){
+        if(response != null && response.statusCode == 500){
             FirebaseManager.registraErro(context,errorResponse.getCodigo(),getEndpoint(request));
         }
     }
@@ -125,7 +125,7 @@ public class BaseBO {
         ErrorResponse errorResponse = new ErrorResponse();
         Gson          gsonResponse  = new Gson();
         String        body;
-        if(error.networkResponse.data != null) {
+        if(error != null && error.networkResponse != null && error.networkResponse.data != null) {
             try {
                 body = new String(error.networkResponse.data,"UTF-8");
                 errorResponse = gsonResponse.fromJson(body, ErrorResponse.class);
