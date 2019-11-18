@@ -90,6 +90,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
     private float mAccelCurrent; // current acceleration including gravity
     private float mAccelLast; // last acceleration including gravity
     private boolean isNumerosAleatoriosShake = false;
+    private BigDecimal valorEmReais = BigDecimal.ZERO;
 
     private final SensorEventListener mSensorListener = new SensorEventListener() {
 
@@ -901,20 +902,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
     }
 
     public void atualizaStatusBotaoFinalizar() {
-
-        if (isTipoLoteca) {
-            int duplo = Integer.parseInt(parentActivity.getLabelValueDuplasLoteca().getText().toString());
-            int triplo = Integer.parseInt(parentActivity.getLabelValueTriplasLoteca().getText().toString());
-
-            if (partidasSelecionadas.size() == parametroJogo.getPartidas().size() && (duplo > 0 || triplo > 0)) {
-                botaoFinalizar.setVisibility(View.VISIBLE);
-                atualizarBotaoFinalizarAdicionarCarrinho();
-            } else {
-                botaoFinalizar.setVisibility(View.INVISIBLE);
-                botaoFinalizar.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.cinza));
-                botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(parentActivity, getString(R.string.label_selecionar_times_aleatoriamente)));
-            }
-        } else if (isTipoLotogol) {
+        if (isTipoLotogol) {
             if (partidasSelecionadas.size() < parametroJogo.getPartidas().size()) {
                 botaoFinalizar.setVisibility(View.INVISIBLE);
                 botaoFinalizar.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.cinza));
@@ -938,6 +926,27 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
             }
         } else {
             atualizarAdicionarCarinhoCompletarCartela();
+        }
+    }
+
+    private void atualizaStatusBotaoFinalizarLoteca(Boolean mostrarBotao){
+        if (isTipoLoteca) {
+            int duplo = Integer.parseInt(parentActivity.getLabelValueDuplasLoteca().getText().toString());
+            int triplo = Integer.parseInt(parentActivity.getLabelValueTriplasLoteca().getText().toString());
+
+            if (partidasSelecionadas.size() == parametroJogo.getPartidas().size() && (duplo > 0 || triplo > 0)) {
+                if(mostrarBotao){
+                    botaoFinalizar.setVisibility(View.VISIBLE);
+                    atualizarBotaoFinalizarAdicionarCarrinho();
+                }else {
+                    botaoFinalizar.setVisibility(View.INVISIBLE);
+                }
+
+            } else {
+                botaoFinalizar.setVisibility(View.INVISIBLE);
+                botaoFinalizar.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.cinza));
+                botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(parentActivity, getString(R.string.label_selecionar_times_aleatoriamente)));
+            }
         }
     }
 
@@ -1055,7 +1064,12 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
                 verificaSeMostraSalvarApostaView();
                 verificaSeMostraBotaoLimparAposta();
-                atualizaStatusBotaoFinalizar();
+                if(isTipoLoteca){
+                    atualizaStatusBotaoFinalizarLoteca(false);
+                } else {
+                    atualizaStatusBotaoFinalizar();
+                }
+
                 simularDezenasAdapter.notifyDataSetChanged();
             });
         } else {
@@ -1115,6 +1129,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
     @Override
     public void clickEquipeLoteca(ParametroPartida parametroPartida) {
+        BigDecimal ultimoValor = valorEmReais;
         if (parametroPartida.isSelecionado()) {
             if (parametroPartida.getQtdItensSelecionados() == 1) {
                 parentActivity.setLabelValueSimplesLoteca(String.valueOf(Integer.parseInt(parentActivity.getLabelValueSimplesLoteca().getText().toString()) + 1));
@@ -1137,8 +1152,8 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
             parentActivity.setLabelValueSimplesLoteca(String.valueOf(Integer.parseInt(parentActivity.getLabelValueSimplesLoteca().getText().toString()) - 1));
             partidasSelecionadas.remove(parametroPartida);
         }
-        atualizaValorApostaLoteca();
-        atualizaStatusBotaoFinalizar();
+        Boolean mostraBotao =  atualizaValorApostaLoteca();
+        atualizaStatusBotaoFinalizarLoteca(mostraBotao);
         verificaSeMostraBotaoLimparAposta();
     }
 
@@ -1299,9 +1314,8 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         equipeDTO2.setNome(partida.getEquipe2().getNome());
     }
 
-    private void atualizaValorApostaLoteca() {
-        BigDecimal valorEmReais = BigDecimal.ZERO;
-
+    private boolean atualizaValorApostaLoteca() {
+        Boolean mostraBotao = false;
         Integer duplos = Integer.parseInt(parentActivity.getLabelValueDuplasLoteca().getText().toString());
         Integer triplos = Integer.parseInt(parentActivity.getLabelValueTriplasLoteca().getText().toString());
 
@@ -1309,16 +1323,17 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
             for (ParametroValorApostaDTO parametroValorApostaDTO : parametroJogo.getValoresAposta()) {
                 if (parametroValorApostaDTO.getQuantidadeDuplos().equals(duplos) && parametroValorApostaDTO.getQuantidadeTriplos().equals(triplos)) {
                     valorEmReais = parametroValorApostaDTO.getValor();
+                    mostraBotao =  true;
                     break;
                 }
             }
-
         } else {
             valorEmReais = parametroJogo.getValorApostaMinima();
         }
 
         ViewUtils.setMoedaFormatHtml(valorEmReais, valorAposta);
         valorTotalAposta = valorEmReais;
+        return mostraBotao;
     }
 
     private void editeAposta() {
