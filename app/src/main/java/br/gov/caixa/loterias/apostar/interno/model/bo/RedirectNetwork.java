@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
+import android.text.Html;
 import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
@@ -231,7 +232,7 @@ public class  RedirectNetwork {
         }
     }
 
-    public static void trataErro500(Activity activity,ErrorResponse error){
+    public static void trataErro500(Activity activity, ErrorResponse error){
         ViewUtils.alertTitleCustomPositiveListener(
                 activity,
                 activity.getString(R.string.ops),
@@ -242,27 +243,27 @@ public class  RedirectNetwork {
     }
 
     private static void enviaEmail(Activity activity, ErrorResponse error) {
-        Intent intent = new Intent(Intent.ACTION_SENDTO);
-        String uriText =
-                "mailto:"+activity.getString(R.string.email_padrao)+
-                        "?subject=" + Uri.encode(activity.getString(R.string.email_assunto)) +
-                        "&body=" + Uri.encode(formataEmail(error));
 
-        intent.setData(Uri.parse(uriText));
-
+        final Intent shareIntent = new Intent(Intent.ACTION_SENDTO);
+        shareIntent.setData(Uri.parse( "mailto:"));
+        shareIntent.putExtra(Intent.EXTRA_EMAIL,new String[] {activity.getString(R.string.email_padrao)});
+        shareIntent.putExtra(Intent.EXTRA_SUBJECT,activity.getString(R.string.email_assunto));
+        shareIntent.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(formataEmail(error)));
         try {
-            activity.startActivity(Intent.createChooser(intent, activity.getString(R.string.enviando_email)));
+            activity.startActivity(Intent.createChooser(shareIntent, activity.getString(R.string.enviando_email)));
         } catch (android.content.ActivityNotFoundException ex) {
             Toast.makeText(activity, activity.getResources().getString(R.string.erro_mail_provider), Toast.LENGTH_SHORT).show();
         }
     }
 
-    private static String formataEmail(ErrorResponse error){
-        return "<p><b>Versão do app:</b> "+BuildConfig.VERSION_NAME+"</p>"+
-                "<p><b>Versão do SDK:</b> "+Build.VERSION.SDK_INT+" ("+Build.VERSION.RELEASE+")"+"</p>"+
-                "<p><b>Marca:</b> "+Build.BRAND+"</p>"+
-                "<p><b>Modelo:</b> "+Build.MODEL+"</p>"+
-                "<p><b>Plataforma:</b> Android</p>"+
-                "<p><b>Código de erro:</b> "+error.getCodigo()+"</p>";
+    private static String formataEmail(ErrorResponse error) {
+        return new StringBuilder()
+                .append("Versão do app: "+BuildConfig.VERSION_NAME+"<br/>")
+                .append("Versão do SDK: "+Build.VERSION.SDK_INT+" ("+Build.VERSION.RELEASE+")<br/>")
+                .append("Marca: "+Build.BRAND+"<br/>")
+                .append("Modelo: "+Build.MODEL+"<br/>")
+                .append("Plataforma: Android<br/>")
+                .append("Código de erro: "+error.getCodigo()+"<br/>")
+                .toString();
     }
 }
