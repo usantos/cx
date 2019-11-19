@@ -17,8 +17,10 @@ import com.android.volley.VolleyError;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostar.interno.R;
+import br.gov.caixa.loterias.apostar.interno.controllers.CartoesActivity;
 import br.gov.caixa.loterias.apostar.interno.model.bo.DadosUsuarioBO_;
 import br.gov.caixa.loterias.apostar.interno.model.bo.MensagensNetwork;
+import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ListCartaoDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RetornoCartao;
@@ -105,6 +107,9 @@ public class CartoesRecyclerViewAdapter extends RecyclerView.Adapter<CartoesRecy
                             public void onResponse(ListCartaoDTOResponse result) {
                                 FirebaseManager.registraEvento(context, "EFETUOU_EXCLUSAO_FORMA_DE_PAGAMENTO_SUCESSO");
                                 DialogUtils.dismiss();
+                                if(result != null && result.getRedirect() != null){
+                                    RedirectNetwork.checkRedirectSucesso(result.getRedirect(), ((CartoesActivity)context));
+                                }
                                 valoresList.remove(getAdapterPosition());
                                 notifyDataSetChanged();
                                 formaDePagamentoListener.itemRemoved(getItemCount() == 0);
@@ -113,7 +118,7 @@ public class CartoesRecyclerViewAdapter extends RecyclerView.Adapter<CartoesRecy
 
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                onError(error);
+                                RedirectNetwork.checkRedirect(error, ((CartoesActivity)context));
                             }
                         });
                     });

@@ -180,7 +180,7 @@ public class  RedirectNetwork {
                                 }
                             });
                         }else{
-                            ViewUtils.alertTitleButton(activity, R.string.label_atencao, MensagensNetwork.setMensagem(error, activity), "Ok", dialogInterface -> activity.onBackPressed());
+                            ViewUtils.alertTitleButton(activity, R.string.label_atencao, MensagensNetwork.setMensagem(error, activity), "Ok", dialogInterface -> {});
                         }
                         break;
                 }

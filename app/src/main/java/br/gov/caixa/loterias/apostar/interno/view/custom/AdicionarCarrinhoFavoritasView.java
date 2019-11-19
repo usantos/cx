@@ -193,6 +193,9 @@ public class AdicionarCarrinhoFavoritasView extends DialogFragment implements Vi
             @Override
             public void onResponse(CarrinhoDTOResponse response) {
                 loadViewProgress.dismiss();
+                if (response.getRedirect() != null){
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), getActivity());
+                }
                 dismiss();
                 ViewUtils.alert( getContext(), getContext().getResources().getString( R.string.label_aposta_salva_carinha ) );
             }
@@ -200,13 +203,11 @@ public class AdicionarCarrinhoFavoritasView extends DialogFragment implements Vi
             @Override
             public void onErrorResponse(VolleyError error) {
                 loadViewProgress.dismiss();
-                RedirectNetwork.checkRedirect( error, getActivity() );
+                RedirectNetwork.checkRedirect(error, getActivity());
 
             }
         });
     }
-
-
 }
 
 
