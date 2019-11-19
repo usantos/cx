@@ -326,14 +326,15 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 loadViewProgress.dismiss();
-                setButtons();
                 RedirectNetwork.checkRedirect(error,VisualizarResultadosActivity.this);
+                concursoAtual = null;
+                concursoAlvo = null;
+                getResultadoModalidade(ApostaDTO.lowerCaseFromString(ModalidadeEnum.toString(txtModalidade)),"");
             }
         });
     }
 
     private void configuraRetornoRequisicao(ResultadoConcursoDTOResponse response){
-
         if(concursoAtual == null){
             concursoAtual = response.getPayload().getConcurso().getNumero();
         } else {
