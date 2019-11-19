@@ -49,10 +49,6 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing" />
         <activity
-            android:name=".controllers.TutorialRapidaoActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".controllers.AppIndisponivelActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -130,11 +126,6 @@
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".controllers.FormaPagamentoActivity"
-            android:configChanges="orientation"
-            android:label="@string/title_activity_forma_pagamento"
-            android:screenOrientation="portrait" />
         <activity
             android:name=".controllers.ConfirmacaoPagamentoActivity"
             android:configChanges="orientation"
