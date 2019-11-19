@@ -91,6 +91,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
     private float mAccelLast; // last acceleration including gravity
     private boolean isNumerosAleatoriosShake = false;
     private BigDecimal valorEmReais = BigDecimal.ZERO;
+    private LotecaAdapter lotecaAdapter;
 
     private final SensorEventListener mSensorListener = new SensorEventListener() {
 
@@ -1091,7 +1092,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
     }
 
     private void configurarTimesLoteca() {
-        LotecaAdapter lotecaAdapter = new LotecaAdapter(parametroJogo.getPartidas(), this);
+        lotecaAdapter = new LotecaAdapter(parametroJogo.getPartidas(), this);
         recyclerViewPartida.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerViewPartida.setAdapter(lotecaAdapter);
         recyclerViewPartida.setExpanded(true);
@@ -1165,13 +1166,13 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
             partida.setSelecionado(desativado);
             partida.setQtdItensSelecionadosAnterior(0);
             partida.setQtdItensSelecionados(0);
-            parentActivity.zerarApostasLoteca();
         }
-        partidasSelecionadas.clear();
-        recyclerViewPartida.setExpanded(true);
         recyclerViewPartida.getAdapter().notifyDataSetChanged();
-        verificaSeMostraSalvarApostaView();
+        parentActivity.zerarApostasLoteca();
+        partidasSelecionadas.clear();
+        ocutarSalvarAposta();
         atualizaValorApostaLoteca();
+        botaoFinalizar.setVisibility(View.INVISIBLE);
     }
 
     private void limparPartidasSelecionadasLotogol(boolean desativado) {
