@@ -465,7 +465,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
         }
     }
 
-    private static void getApostaDetalhePremio(Long apostaId, final Context contextParam, ComprovanteApostaDTO comprovante) {
+    private void getApostaDetalhePremio(Long apostaId, final Context contextParam, ComprovanteApostaDTO comprovante) {
         ApostaBO apostaBO = ApostaBO_.getInstance_(contextParam);
         apostaBO.getApostaDetalhePremio(apostaId, new RequestListener<DetalhesPremioDTOResponse>() {
             @Override
@@ -476,22 +476,14 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                DialogUtils.dismiss();
-                onError(error, contextParam);
+                onError(error);
             }
         });
     }
 
-    private static void onError(VolleyError error, Context contextParam) {
-        DialogUtils.dismiss();
-        String msgError = MensagensNetwork.setMensagem(error, contextParam);
-        ViewUtils.alert(contextParam, msgError);
-    }
-
     private void onError(VolleyError error) {
         DialogUtils.dismiss();
-        String msgError = MensagensNetwork.setMensagem(error, this);
-        ViewUtils.alert(this, msgError);
+        RedirectNetwork.checkRedirect(error,ApostaConfirmadaDetalhesActivity.this);
     }
 
     @Override
@@ -510,7 +502,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     public void handle(ApostasConfirmadasAdapter.ViewHolder holder, DTOEnumLong situacao) { }
 
     @Override
-    public void handleError(ApostasConfirmadasAdapter.ViewHolder holder) {
-
+    public void handleError(ApostasConfirmadasAdapter.ViewHolder holder, VolleyError error) {
+        RedirectNetwork.checkRedirect(error, ApostaConfirmadaDetalhesActivity.this);
     }
 }

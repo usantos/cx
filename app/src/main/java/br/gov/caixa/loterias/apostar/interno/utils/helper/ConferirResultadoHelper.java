@@ -87,7 +87,7 @@ public class ConferirResultadoHelper  {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                onErrorWithoutAlert(holder);
+                onErrorWithoutAlert(holder, error);
             }
         });
     }
@@ -97,7 +97,7 @@ public class ConferirResultadoHelper  {
         RedirectNetwork.checkRedirect(error,activity);
     }
 
-    private static void onErrorWithoutAlert(ApostasConfirmadasAdapter.ViewHolder holder) {
-        conferirResultadoHandler.handleError(holder);
+    private static void onErrorWithoutAlert(ApostasConfirmadasAdapter.ViewHolder holder, VolleyError error) {
+        conferirResultadoHandler.handleError(holder, error);
     }
 }
