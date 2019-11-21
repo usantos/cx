@@ -106,12 +106,12 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
             if (mAccel > 10 && mAccel < 16) {
                 if (!isNumerosAleatoriosShake) {
-                    isNumerosAleatoriosShake = true;
+                    /*isNumerosAleatoriosShake = true;
                     botaoLimparAposta.performClick();
-                    preencheNumerosAleatorios();
+                    preencheNumerosAleatorios();*/
                 }
             }
-            System.out.println(mAccel);
+            //System.out.println(mAccel);
         }
 
         public void onAccuracyChanged(Sensor sensor, int accuracy) {
