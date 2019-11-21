@@ -6,13 +6,12 @@ import com.android.volley.VolleyError;
 
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO_;
-import br.gov.caixa.loterias.apostar.interno.model.bo.MensagensNetwork;
+import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.DTOEnumIntegerResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.DTOEnumLong;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.SituacaoResultadoBilheteEnum;
 import br.gov.caixa.loterias.apostar.interno.utils.DialogUtils;
-import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.ApostasConfirmadasAdapter;
 
 public class ConferirResultadoHelper  {
@@ -93,11 +92,9 @@ public class ConferirResultadoHelper  {
         });
     }
 
-    private static void onError(VolleyError error, Activity contextParam) {
+    private static void onError(VolleyError error, Activity activity) {
         DialogUtils.dismiss();
-        String msgError = MensagensNetwork.setMensagem(error, contextParam);
-
-        ViewUtils.alert(contextParam, msgError);
+        RedirectNetwork.checkRedirect(error,activity);
     }
 
     private static void onErrorWithoutAlert(ApostasConfirmadasAdapter.ViewHolder holder) {

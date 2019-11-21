@@ -293,10 +293,8 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         activity.putExtra("tipoAposta", tipoJogo);
 
         if (isFragmentCartela()) {
-
             activity.putExtra("valorAposta", cartelaFragment.valorTotalAposta);
         } else {
-
             activity.putExtra("valorAposta", surpresinhaFragment.getValorTotalAposta());
         }
         activity.putExtra("modalidade", (new Gson()).toJson(parametroSimulacao));
