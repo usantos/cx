@@ -1,21 +1,21 @@
 package br.gov.caixa.loterias.apostar.interno.view.custom;
 
 import android.animation.ValueAnimator;
-import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.NumberPicker;
-import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO_;
@@ -142,7 +142,6 @@ public class AdicionarCarrinhoFavoritasView extends DialogFragment implements Vi
             dismiss();
         }
         if (view.getId() == R.id.adicionarCarrinhoFavoritosButton){
-            Toast.makeText( getContext(), "teste", Toast.LENGTH_LONG );
             Integer tipoConcurso = 2;
             if (arrayConcursos.get( picker_tipo_concurso.getValue() ).getParametroJogo().getConcurso().getTipoConcurso() == TipoConcursoEnum.NORMAL){
                 tipoConcurso = 1;
