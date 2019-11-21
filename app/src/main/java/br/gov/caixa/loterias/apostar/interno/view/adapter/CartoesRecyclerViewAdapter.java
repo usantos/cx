@@ -19,7 +19,6 @@ import java.util.List;
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.controllers.CartoesActivity;
 import br.gov.caixa.loterias.apostar.interno.model.bo.DadosUsuarioBO_;
-import br.gov.caixa.loterias.apostar.interno.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ListCartaoDTOResponse;
@@ -118,6 +117,7 @@ public class CartoesRecyclerViewAdapter extends RecyclerView.Adapter<CartoesRecy
 
                             @Override
                             public void onErrorResponse(VolleyError error) {
+                                DialogUtils.dismiss();
                                 RedirectNetwork.checkRedirect(error, ((CartoesActivity)context));
                             }
                         });
@@ -156,11 +156,5 @@ public class CartoesRecyclerViewAdapter extends RecyclerView.Adapter<CartoesRecy
                 return R.drawable.cartao_visa;
 
         }
-    }
-
-    private void onError(VolleyError error) {
-        DialogUtils.dismiss();
-        String msgError = MensagensNetwork.setMensagem(error, context);
-        ViewUtils.alert(context, msgError);
     }
 }
