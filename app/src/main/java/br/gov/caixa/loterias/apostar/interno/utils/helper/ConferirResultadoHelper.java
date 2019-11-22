@@ -30,11 +30,13 @@ public class ConferirResultadoHelper  {
             @Override
             public void onResponse(DTOEnumIntegerResponse result) {
                 long codigoResultado = result.getPayload().getValor().longValue();
-
                 if(!(codigoResultado == SituacaoResultadoBilheteEnum.PREMIADA_AINDA_CONCORRENDO.getValor() || codigoResultado == SituacaoResultadoBilheteEnum.PREMIADA.getValor())){
                     DialogUtils.dismiss();
                 }
-
+                if (result.getRedirect() != null){
+                    DialogUtils.dismiss();
+                    RedirectNetwork.checkRedirectSucesso( result.getRedirect(), contextParam);
+                }
 
                 final DTOEnumLong resultCheckFinal = new DTOEnumLong();
                 resultCheckFinal.setValor(codigoResultado);
@@ -58,6 +60,9 @@ public class ConferirResultadoHelper  {
             @Override
             public void onResponse(DTOEnumIntegerResponse result) {
                 DialogUtils.dismiss();
+                if (result.getRedirect() != null){
+                    RedirectNetwork.checkRedirectSucesso( result.getRedirect(), contextParam);
+                }
 
                 final DTOEnumLong resultCheckFinal = new DTOEnumLong();
                 resultCheckFinal.setValor(result.getPayload().getValor().longValue());
@@ -78,6 +83,9 @@ public class ConferirResultadoHelper  {
         apostaBO.getApostaConferir(apostaId, new RequestListener<DTOEnumIntegerResponse>() {
             @Override
             public void onResponse(DTOEnumIntegerResponse result) {
+                if (result.getRedirect() != null){
+                    RedirectNetwork.checkRedirectSucesso( result.getRedirect(), contextParam);
+                }
                 final DTOEnumLong resultCheckFinal = new DTOEnumLong();
                 resultCheckFinal.setValor(result.getPayload().getValor().longValue());
                 resultCheckFinal.setDescricao(result.getPayload().getDescricao());
