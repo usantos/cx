@@ -150,12 +150,13 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
             @Override
             public void onResponse(CarrinhoDTOResponse response) {
                 DialogUtils.dismiss();
-                Bundle args = new Bundle();
-                args.putParcelable(CARRINHO, Parcels.wrap(response.getPayload()));
-                startActivity(new Intent(ApostaConfirmadaDetalhesActivity.this, CarrinhoActivity.class).putExtras(args));
                 if (response.getRedirect() != null){
                     RedirectNetwork.checkRedirectSucesso( response.getRedirect(), ApostaConfirmadaDetalhesActivity.this);
                 }
+                Bundle args = new Bundle();
+                args.putParcelable(CARRINHO, Parcels.wrap(response.getPayload()));
+                startActivity(new Intent(ApostaConfirmadaDetalhesActivity.this, CarrinhoActivity.class).putExtras(args));
+
             }
 
             @Override
@@ -471,6 +472,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
             @Override
             public void onResponse(DetalhesPremioDTOResponse result) {
                 DialogUtils.dismiss();
+
                 ResultadoApostaConfirmadaActivity_.intent(contextParam).detalhesPremioDTO(result.getPayload()).comprovante(comprovante).start();
             }
 
