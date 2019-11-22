@@ -394,6 +394,7 @@
     <string name="title_atualizar">Atualizar</string>
 
     <string name="label_app_indisponivel">O aplicativo está temporariamente indisponível. Tente novamente mais tarde.</string>
+    <string name="nao_concluiu_operacao">Não foi possível concluir esta operação. Por favor, tente novamente.</string>
     <string name="title_tente_novamente">Tentar novamente</string>
 
 

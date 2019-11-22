@@ -147,7 +147,7 @@ public class  RedirectNetwork {
                         if (activity.getClass() != AppIndisponivelActivity.class) {
                             activity.startActivityForResult(new Intent(activity, AppIndisponivelActivity.class), 1);
                         } else {
-                            trataErro500(activity,errorResponse);
+                            ViewUtils.alertTitleButton(activity, R.string.label_atencao, activity.getResources().getString(R.string.nao_concluiu_operacao), "Ok", dialogInterface ->{});
                         }
                         return;
                     case CARRINHO:
