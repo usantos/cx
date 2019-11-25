@@ -3,6 +3,7 @@ package br.gov.caixa.loterias.apostar.interno.utils;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import java.text.DateFormat;
 import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.ParsePosition;
@@ -89,5 +90,10 @@ public class DateUtils {
         return dt.format(date);
     }
 
+    public static String getDateTime() {
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        Date       date       = new Date();
+        return dateFormat.format(date);
+    }
 
 }

@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
+import android.text.Html;
+import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
@@ -11,6 +14,7 @@ import com.google.gson.Gson;
 
 import java.io.UnsupportedEncodingException;
 
+import br.gov.caixa.loterias.apostar.interno.BuildConfig;
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.controllers.AppIndisponivelActivity;
 import br.gov.caixa.loterias.apostar.interno.controllers.CadastrarActivity_;
@@ -143,7 +147,7 @@ public class  RedirectNetwork {
                         if (activity.getClass() != AppIndisponivelActivity.class) {
                             activity.startActivityForResult(new Intent(activity, AppIndisponivelActivity.class), 1);
                         } else {
-                            ViewUtils.alertTitleButton(activity, R.string.label_atencao, activity.getResources().getString(R.string.erro_500), "Ok", dialogInterface -> activity.onBackPressed());
+                            ViewUtils.alertTitleButton(activity, R.string.label_atencao, activity.getResources().getString(R.string.nao_concluiu_operacao), "Ok", dialogInterface ->{});
                         }
                         return;
                     case CARRINHO:
@@ -163,6 +167,9 @@ public class  RedirectNetwork {
                     case 400:
                         treatNegotialErros(errorResponse, error, activity);
                         return;
+                    case 500:
+                        trataErro500(activity,errorResponse);
+                        return;
                     default:
                         if (errorResponse.getCodigo() != null &&  errorResponse.getCodigo().equals( "018003" )){
                             ViewUtils.alertTitleButtonYesOrNotListener(activity, errorResponse.getMensagem(), (dialog, which) -> {
@@ -173,7 +180,7 @@ public class  RedirectNetwork {
                                 }
                             });
                         }else{
-                            ViewUtils.alertTitleButton(activity, R.string.label_atencao, MensagensNetwork.setMensagem(error, activity), "Ok", dialogInterface -> activity.onBackPressed());
+                            ViewUtils.alertTitleButton(activity, R.string.label_atencao, MensagensNetwork.setMensagem(error, activity), "Ok", dialogInterface -> {});
                         }
                         break;
                 }
@@ -225,5 +232,38 @@ public class  RedirectNetwork {
         }
     }
 
+    public static void trataErro500(Activity activity, ErrorResponse error){
+        ViewUtils.alertTitleCustomPositiveListener(
+                activity,
+                activity.getString(R.string.ops),
+                activity.getString(R.string.label_nao),
+                activity.getString(R.string.quero),
+                activity.getResources().getString( R.string.erro_500),
+                (dialog1, which1) -> enviaEmail(activity,error)).show();
+    }
 
+    private static void enviaEmail(Activity activity, ErrorResponse error) {
+
+        final Intent shareIntent = new Intent(Intent.ACTION_SENDTO);
+        shareIntent.setData(Uri.parse( "mailto:"));
+        shareIntent.putExtra(Intent.EXTRA_EMAIL,new String[] {activity.getString(R.string.email_padrao)});
+        shareIntent.putExtra(Intent.EXTRA_SUBJECT,activity.getString(R.string.email_assunto));
+        shareIntent.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(formataEmail(error)));
+        try {
+            activity.startActivity(Intent.createChooser(shareIntent, activity.getString(R.string.enviando_email)));
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(activity, activity.getResources().getString(R.string.erro_mail_provider), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private static String formataEmail(ErrorResponse error) {
+        return new StringBuilder()
+                .append("Versão do app: "+BuildConfig.VERSION_NAME+"<br/>")
+                .append("Versão do SDK: "+Build.VERSION.SDK_INT+" ("+Build.VERSION.RELEASE+")<br/>")
+                .append("Marca: "+Build.BRAND+"<br/>")
+                .append("Modelo: "+Build.MODEL+"<br/>")
+                .append("Plataforma: Android<br/>")
+                .append("Código de erro: "+error.getCodigo()+"<br/>")
+                .toString();
+    }
 }

@@ -204,9 +204,9 @@ public class AdicionarApostaCarrinhoHelper {
     private static void telaConfirmarCarrinho(ModalidadeEnum modalidadeEnum,  Object aposta) {
         BigDecimal valor = BigDecimal.ZERO;
         Boolean espelho = false;
-
+        IdentificaoDeUmaApostaDas8Modalidades apostaDas8Modalidades = null;
         if(aposta instanceof IdentificaoDeUmaApostaDas8Modalidades){
-            IdentificaoDeUmaApostaDas8Modalidades apostaDas8Modalidades = (IdentificaoDeUmaApostaDas8Modalidades) aposta;
+            apostaDas8Modalidades = (IdentificaoDeUmaApostaDas8Modalidades) aposta;
             if(apostaDas8Modalidades != null){
                 valor = apostaDas8Modalidades.getValor() != null ? apostaDas8Modalidades.getValor(): valor;
                 espelho = apostaDas8Modalidades.getGerarApostaEspelho()!= null ? apostaDas8Modalidades.getGerarApostaEspelho(): espelho;
@@ -222,7 +222,7 @@ public class AdicionarApostaCarrinhoHelper {
         Intent activity = new Intent(context, ConfirmadoInclusaoCarrinhoActivity.class);
         activity.putExtra("tipoAposta", modalidadeEnum);
         activity.putExtra("valorAposta", valor);
-        activity.putExtra("modalidade", (new Gson()).toJson(ViewUtils.getParametroSimulacao(SessaoUsuario.getInstance(), modalidadeEnum).getParametroJogo()));
+        activity.putExtra("modalidade", (new Gson()).toJson(ViewUtils.getParametroSimulacao(SessaoUsuario.getInstance(), modalidadeEnum, apostaDas8Modalidades).getParametroJogo()));
         context.startActivity(activity);
         if(context instanceof SimularApostaActivity){
             ((SimularApostaActivity)context).zerarApostas();
@@ -237,6 +237,7 @@ public class AdicionarApostaCarrinhoHelper {
 
         boolean isTipoLotogol = CollectionUtils.isNotEmpty(aposta.getPartidasLotogol());
         boolean isTipoLoteca = CollectionUtils.isNotEmpty(aposta.getPartidasLoteca());
+        
 
         //TODO Verificar os parametros que indicam aposta igual
         if (crud.existIdentificaoDeUmaApostaDas8Modalidades(aposta) && (!isTipoLotogol && !isTipoLoteca)) {

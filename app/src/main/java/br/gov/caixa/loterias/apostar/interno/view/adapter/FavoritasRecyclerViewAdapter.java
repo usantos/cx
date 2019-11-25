@@ -216,6 +216,9 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
             public void onResponse(RetornoPadraoDTO response) {
                 FirebaseManager.registraEvento(context ,"EFETUOU_EXCLUSAO_FAVORITO");
                 loadViewProgress.dismiss();
+                if (response.getRedirect() != null){
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), activity);
+                }
                 removeAt(position);
             }
 
@@ -233,6 +236,9 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
             public void onResponse(CarrinhoDTOResponse response) {
                 FirebaseManager.registraEvento(context ,"EFETUOU_INCLUSAO_FAVORITO_NO_CARRINHO");
                 DialogUtils.dismiss();
+                if (response.getRedirect() != null){
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), activity);
+                }
                 ViewUtils.alert(context, context.getResources().getString(R.string.label_aposta_salva_carinha));
             }
 
@@ -253,13 +259,16 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
         apostaBO.postApostasFavoritas(apostaFavoritaDTO, new RequestListener<RetornoPadraoDTO>() {
             @Override
             public void onResponse(RetornoPadraoDTO response) {
+                loadViewProgress.dismiss();
                 FirebaseManager.registraEvento(context ,"EFETUOU_TROCA_DO_NOME_DA_APOSTA_FAVORITA");
+                if (response.getRedirect() != null){
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), activity);
+                }
                 apostaFavoritaDTO.setOpenSwipeLayout(true);
                 apostaFavoritaDTO.setNome(holder.editTextNomeDaAposta.getText().toString());
                 holder.tituloNomeApostaFavorita.setText(" | " + holder.editTextNomeDaAposta.getText().toString());
                 holder.nomeApostaSalvoTextView.setText("\"" + holder.editTextNomeDaAposta.getText().toString() + "\"");
                 holder.editTextNomeDaAposta.setText("");
-                loadViewProgress.dismiss();
                 holder.linearLayoutLayoutContentAlterarFavoritasSalvo.setVisibility(View.VISIBLE);
                 holder.relativeLayoutContentAlterarFavoritasEditar.setVisibility(View.GONE);
             }
@@ -327,6 +336,9 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
         apostaBO.buscaCarrinho(new RequestListener<CarrinhoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoDTOResponse response) {
+                if (response.getRedirect() != null){
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), activity);
+                }
                 final CarrinhoDTO carrinhoDTO = response.getPayload();
 
                 checarLimiteDiario(apostaBO, apostaFavoritaDTO, carrinhoDTO);

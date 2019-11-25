@@ -59,7 +59,7 @@ public class RateUtils {
 	}
 
 	private static void showDialog(){
-		new Handler().postDelayed(() -> dialogAvaliar.show(), 2000);
+		new Handler().postDelayed(() -> dialogAvaliar.show(), 500);
 	}
 
 	private static void redirecionaParaLoja(Activity activity){

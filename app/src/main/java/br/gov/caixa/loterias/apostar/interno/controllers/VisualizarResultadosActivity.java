@@ -6,13 +6,13 @@ import android.animation.AnimatorSet;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -33,7 +33,6 @@ import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bean.Modalidade;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO_;
-import br.gov.caixa.loterias.apostar.interno.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ApostaDTO;
@@ -50,6 +49,7 @@ import br.gov.caixa.loterias.apostar.interno.view.fragment.ResultadoGenericoFrag
 import br.gov.caixa.loterias.apostar.interno.view.fragment.ResultadoLotecaFragment;
 import br.gov.caixa.loterias.apostar.interno.view.fragment.ResultadoLotogolFragment;
 import br.gov.caixa.loterias.apostar.interno.view.fragment.ResultadoTimemaniaDiaDeSorteFragment;
+
 import static br.gov.caixa.loterias.apostar.interno.controllers.SelecaoModalidadesResultados.MODALIDADE;
 
 public class VisualizarResultadosActivity extends AppCompatActivity {
@@ -326,14 +326,15 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 loadViewProgress.dismiss();
-                setButtons();
-                ViewUtils.alertTitleButton(VisualizarResultadosActivity.this, R.string.label_atencao, MensagensNetwork.setMensagem(error, VisualizarResultadosActivity.this), "Ok", dialogInterface ->{});
+                RedirectNetwork.checkRedirect(error,VisualizarResultadosActivity.this);
+                concursoAtual = null;
+                concursoAlvo = null;
+                getResultadoModalidade(ApostaDTO.lowerCaseFromString(ModalidadeEnum.toString(txtModalidade)),"");
             }
         });
     }
 
     private void configuraRetornoRequisicao(ResultadoConcursoDTOResponse response){
-
         if(concursoAtual == null){
             concursoAtual = response.getPayload().getConcurso().getNumero();
         } else {

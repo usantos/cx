@@ -6,13 +6,12 @@ import com.android.volley.VolleyError;
 
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO_;
-import br.gov.caixa.loterias.apostar.interno.model.bo.MensagensNetwork;
+import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.DTOEnumIntegerResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.DTOEnumLong;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.SituacaoResultadoBilheteEnum;
 import br.gov.caixa.loterias.apostar.interno.utils.DialogUtils;
-import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.ApostasConfirmadasAdapter;
 
 public class ConferirResultadoHelper  {
@@ -31,11 +30,13 @@ public class ConferirResultadoHelper  {
             @Override
             public void onResponse(DTOEnumIntegerResponse result) {
                 long codigoResultado = result.getPayload().getValor().longValue();
-
                 if(!(codigoResultado == SituacaoResultadoBilheteEnum.PREMIADA_AINDA_CONCORRENDO.getValor() || codigoResultado == SituacaoResultadoBilheteEnum.PREMIADA.getValor())){
                     DialogUtils.dismiss();
                 }
-
+                if (result.getRedirect() != null){
+                    DialogUtils.dismiss();
+                    RedirectNetwork.checkRedirectSucesso( result.getRedirect(), contextParam);
+                }
 
                 final DTOEnumLong resultCheckFinal = new DTOEnumLong();
                 resultCheckFinal.setValor(codigoResultado);
@@ -59,6 +60,9 @@ public class ConferirResultadoHelper  {
             @Override
             public void onResponse(DTOEnumIntegerResponse result) {
                 DialogUtils.dismiss();
+                if (result.getRedirect() != null){
+                    RedirectNetwork.checkRedirectSucesso( result.getRedirect(), contextParam);
+                }
 
                 final DTOEnumLong resultCheckFinal = new DTOEnumLong();
                 resultCheckFinal.setValor(result.getPayload().getValor().longValue());
@@ -79,6 +83,9 @@ public class ConferirResultadoHelper  {
         apostaBO.getApostaConferir(apostaId, new RequestListener<DTOEnumIntegerResponse>() {
             @Override
             public void onResponse(DTOEnumIntegerResponse result) {
+                if (result.getRedirect() != null){
+                    RedirectNetwork.checkRedirectSucesso( result.getRedirect(), contextParam);
+                }
                 final DTOEnumLong resultCheckFinal = new DTOEnumLong();
                 resultCheckFinal.setValor(result.getPayload().getValor().longValue());
                 resultCheckFinal.setDescricao(result.getPayload().getDescricao());
@@ -88,19 +95,17 @@ public class ConferirResultadoHelper  {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                onErrorWithoutAlert(holder);
+                onErrorWithoutAlert(holder, error);
             }
         });
     }
 
-    private static void onError(VolleyError error, Activity contextParam) {
+    private static void onError(VolleyError error, Activity activity) {
         DialogUtils.dismiss();
-        String msgError = MensagensNetwork.setMensagem(error, contextParam);
-
-        ViewUtils.alert(contextParam, msgError);
+        RedirectNetwork.checkRedirect(error,activity);
     }
 
-    private static void onErrorWithoutAlert(ApostasConfirmadasAdapter.ViewHolder holder) {
-        conferirResultadoHandler.handleError(holder);
+    private static void onErrorWithoutAlert(ApostasConfirmadasAdapter.ViewHolder holder, VolleyError error) {
+        conferirResultadoHandler.handleError(holder, error);
     }
 }

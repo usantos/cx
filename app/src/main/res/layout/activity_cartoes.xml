@@ -27,8 +27,7 @@
             android:layout_height="match_parent"
             android:background="@color/branco"
             android:focusableInTouchMode="true"
-            android:minHeight="@dimen/activity_vertical_margin"
-            tools:context="br.gov.caixa.loterias.apostar.interno.controllers.FormaPagamentoActivity">
+            android:minHeight="@dimen/activity_vertical_margin">
 
             <TextView
                 android:id="@+id/tv_subtitulo"
