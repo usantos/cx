@@ -60,7 +60,7 @@ public class ModalidadeSorteioLotecaResultadoView extends LinearLayout implement
 
         EstiloModalidade estilo = new EstiloModalidade(modalidade.getTipoModalidade());
         tracoViewDivisoriaResultado.setBackground(getContext().getResources().getDrawable(estilo.getCorClara()));
-        adicionarPremiados(modalidade.getResultadoConcursoDTO().getPremiacoesPrimeiroSorteio());
+        adicionarPremiados(modalidade.getResultadoConcursoDTO().getPremiacoesPrimeiroSorteio(), modalidade);
 
         LotecaResultadoTimesAdapter lotecaResultadoTimesAdapter;
         lotecaResultadoTimesAdapter = new LotecaResultadoTimesAdapter(getContext(), modalidade.getResultadoConcursoDTO().getPartidasLoteca(), modalidade.getTipoModalidade());
@@ -103,12 +103,16 @@ public class ModalidadeSorteioLotecaResultadoView extends LinearLayout implement
         this.linearlayoutPremiadosListaText = premiadosListaText;
     }
 
-    private void adicionarPremiados(List<PremiacaoConcursoDTO> listaPremiados){
+    private void adicionarPremiados(List<PremiacaoConcursoDTO> listaPremiados, Modalidade modalidade){
         for (PremiacaoConcursoDTO premiacaoConcurso :  listaPremiados){
             TextView title1 = new TextView(getContext());
-            title1.setText(premiacaoConcurso.getDescricao());
+            String faixa  = modalidade.getNome().isEmpty() ?
+                    premiacaoConcurso.getDescricao() :
+                    PartidaViewDetalhesResultado.obterMapFaixa(modalidade).get(premiacaoConcurso.getDescricao());
+            title1.setText(faixa);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
 
             layoutParams.setMargins(0, 18, 0, 0);
             title1.setLayoutParams(layoutParams);

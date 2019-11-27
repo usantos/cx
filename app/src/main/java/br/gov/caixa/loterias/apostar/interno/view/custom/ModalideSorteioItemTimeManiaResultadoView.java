@@ -76,7 +76,7 @@ public class ModalideSorteioItemTimeManiaResultadoView extends LinearLayout {
             this.textTimeCoracao.setText(modalidade.getResultadoConcursoDTO().getPremiacaoTimeDoCoracao().getEquipe().getNome());
         }
         this.tracoViewDivisoriaResultado.setBackground(getContext().getResources().getDrawable(estilo.getCorClara()));
-        adicionarPremiados(modalidade.getResultadoConcursoDTO().getPremiacoesPrimeiroSorteio());
+        adicionarPremiados(modalidade.getResultadoConcursoDTO().getPremiacoesPrimeiroSorteio(),modalidade);
         NumerosResultadosAdapter numerosResultadosAdapter;
         int numberOfColumns = 3;
         if (modalidade.getResultadoConcursoDTO().getNumerosSorteadosPrimeiroSorteio().size() > 6) {
@@ -121,10 +121,13 @@ public class ModalideSorteioItemTimeManiaResultadoView extends LinearLayout {
         this.linearlayoutPremiadosListaText = premiadosListaText;
     }
 
-    private void adicionarPremiados(List<PremiacaoConcursoDTO> listaPremiados) {
+    private void adicionarPremiados(List<PremiacaoConcursoDTO> listaPremiados, Modalidade modalidade) {
         for (PremiacaoConcursoDTO premiacaoConcurso : listaPremiados) {
             TextView title1 = new TextView(getContext());
-            title1.setText(premiacaoConcurso.getDescricao());
+            String faixa  = modalidade.getNome().isEmpty() ?
+                    premiacaoConcurso.getDescricao() :
+                    PartidaViewDetalhesResultado.obterMapFaixa(modalidade).get(premiacaoConcurso.getDescricao());
+            title1.setText(faixa);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 

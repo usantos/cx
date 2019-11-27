@@ -14,6 +14,7 @@ import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
 
 import java.math.BigDecimal;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostar.interno.R;
@@ -53,7 +54,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
             title1.setTextAppearance(getContext(), R.style.fontForTitleTopoPremiados);
             this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title1);
 
-            adicionarPremiados(modalidade.getResultadoConcursoDTO().getPremiacoesPrimeiroSorteio());
+            adicionarPremiados(modalidade.getResultadoConcursoDTO().getPremiacoesPrimeiroSorteio(), modalidade);
 
             TextView titleGanhadores = new TextView(getContext());
             titleGanhadores.setText(ViewUtils.textFuturaAndFuturaBold(getContext(), getResources().getString(R.string.label_ganhadores_regiao_bold)));
@@ -78,7 +79,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
             title1.setTextAppearance(getContext(), R.style.fontForTitleTopoPremiados);
             this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title1);
 
-            adicionarPremiados(modalidade.getResultadoConcursoDTO().getPremiacoesPrimeiroSorteio());
+            adicionarPremiados(modalidade.getResultadoConcursoDTO().getPremiacoesPrimeiroSorteio(), modalidade);
 
             TextView title2 = new TextView(getContext());
             title2.setText(ViewUtils.textFuturaAndFuturaBold(getContext(), getResources().getString(R.string.label_premiacao_segundo_sorteio_bold)));
@@ -91,7 +92,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
             this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title2);
 
             if(modalidade.getResultadoConcursoDTO().getPremiacoesSegundoSorteio() != null){
-                adicionarPremiados(modalidade.getResultadoConcursoDTO().getPremiacoesSegundoSorteio());
+                adicionarPremiados(modalidade.getResultadoConcursoDTO().getPremiacoesSegundoSorteio(),modalidade);
             }
 
             TextView title3 = new TextView(getContext());
@@ -247,10 +248,80 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
         });
     }
 
-    private void adicionarPremiados(List<PremiacaoConcursoDTO> listaPremiados) {
+    public static LinkedHashMap<String,String> obterMapFaixa(Modalidade  modalidade){
+        LinkedHashMap<String,String> mapFaixa = new LinkedHashMap<>();
+        String modalidadeTratada = modalidade.getNome()
+                                             .toUpperCase()
+                                             .replace(" ", "")
+                                             .replace("_", "")
+                                             .replace("-", "");
+        switch (modalidadeTratada ){
+            case "DIADESORTE":
+                mapFaixa.put("0001","7 números acertados");
+                mapFaixa.put("0002","6 números acertados");
+                mapFaixa.put("0003","5 números acertados");
+                mapFaixa.put("0004","4 números acertados");
+                break;
+            case "DUPLASENA":
+                mapFaixa.put("0001","Sena - 6 números acertados");
+                mapFaixa.put("0002","Quina - 5 números acertados");
+                mapFaixa.put("0003","Quadra - 4 números acertados");
+                mapFaixa.put("0004","Terno - 3 números acertados");
+                break;
+            case "LOTECA":
+                mapFaixa.put("0001","1º (14 acertos)");
+                mapFaixa.put("0002","2º (13 acertos)");
+                break;
+            case "LOTOFACIL":
+            case "LOTOFÁCIL":
+                mapFaixa.put("0001","15 acertos");
+                mapFaixa.put("0002","14 acertos");
+                mapFaixa.put("0003","13 acertos");
+                mapFaixa.put("0004","12 acertos");
+                mapFaixa.put("0005","11 acertos");
+                break;
+            case "LOTOGOL":
+                mapFaixa.put("0001","1º (5 acertos)");
+                mapFaixa.put("0002","2º (4 acertos)");
+                mapFaixa.put("0003","3º (3 acertos)");
+                break;
+            case "LOTOMANIA":
+                mapFaixa.put("0001","20 números acertados");
+                mapFaixa.put("0002","19 números acertados");
+                mapFaixa.put("0003","18 números acertados");
+                mapFaixa.put("0004","17 números acertados");
+                mapFaixa.put("0005","16 números acertados");
+                mapFaixa.put("0006","15 números acertados");
+                break;
+            case "MEGASENA":
+                mapFaixa.put("0001","Sena - 6 números acertados");
+                mapFaixa.put("0002","Quina - 5 números acertados");
+                mapFaixa.put("0003","Quadra - 4 números acertados");
+                break;
+            case "QUINA":
+                mapFaixa.put("0001","Quina - 5 números acertados");
+                mapFaixa.put("0002","Quadra - 4 números acertados");
+                mapFaixa.put("0003","Terno - 3 números acertados");
+                mapFaixa.put("0004","Duque - 2 números acertados");
+                break;
+            case "TIMEMANIA":
+                mapFaixa.put("0001","7 números acertados");
+                mapFaixa.put("0002","6 números acertados");
+                mapFaixa.put("0003","5 números acertados");
+                mapFaixa.put("0004","4 números acertados");
+                mapFaixa.put("0003","3 números acertados");
+                break;
+        }
+        return mapFaixa;
+    }
+
+    private void adicionarPremiados(List<PremiacaoConcursoDTO> listaPremiados, Modalidade modalidade) {
         for (PremiacaoConcursoDTO premiacaoConcurso : listaPremiados) {
             TextView title1 = new TextView(getContext());
-            title1.setText(premiacaoConcurso.getDescricao());
+            String faixa  = modalidade.getDescricao().isEmpty() ?
+                    premiacaoConcurso.getDescricao() :
+                    obterMapFaixa(modalidade).get(premiacaoConcurso.getDescricao());
+            title1.setText(faixa);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
