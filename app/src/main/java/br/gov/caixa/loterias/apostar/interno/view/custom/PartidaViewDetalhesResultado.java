@@ -317,7 +317,11 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
 
     private void adicionarPremiados(List<PremiacaoConcursoDTO> listaPremiados, Modalidade modalidade) {
         for (PremiacaoConcursoDTO premiacaoConcurso : listaPremiados) {
+
             TextView title1 = new TextView(getContext());
+            TextView title2 = new TextView(getContext());
+            TextView title3 = new TextView(getContext());
+
             String faixa  = modalidade.getDescricao().isEmpty() ?
                     premiacaoConcurso.getDescricao() :
                     obterMapFaixa(modalidade).get(premiacaoConcurso.getDescricao());
@@ -330,13 +334,14 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
             title1.setTextAppearance(getContext(), R.style.fontForTitle1Premiados);
             this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title1);
 
-            TextView title2 = new TextView(getContext());
+
             if (premiacaoConcurso.getQuantidadeGanhadores() > 1) {
                 title2.setText(getResources().getString(R.string.label_apostas_ganhadoras, premiacaoConcurso.getQuantidadeGanhadores()));
             } else if (premiacaoConcurso.getQuantidadeGanhadores() == 1) {
                 title2.setText(getResources().getString(R.string.label_aposta_ganhadora, premiacaoConcurso.getQuantidadeGanhadores()));
             } else {
                 title2.setText(R.string.label_nao_houve_acertador);
+                title3.setVisibility(View.GONE);
             }
 
             LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(
@@ -346,7 +351,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
             title2.setTextAppearance(getContext(), R.style.fontForTitle2Premiados);
             this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title2);
 
-            TextView title3 = new TextView(getContext());
+
             title3.setText(ViewUtils.getMoedaFormat(premiacaoConcurso.getValor()));
             LinearLayout.LayoutParams layoutParams3 = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
