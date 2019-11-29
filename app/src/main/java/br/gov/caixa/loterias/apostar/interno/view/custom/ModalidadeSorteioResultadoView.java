@@ -31,14 +31,6 @@ public class ModalidadeSorteioResultadoView extends ScrollView {
     @ViewById
     protected TextView numeroeDataConcursoResultadoMegaSena;
 
-    public LinearLayout getContentResultadoItem() {
-        return contentResultadoItem;
-    }
-
-    public void setContentResultadoItem(LinearLayout contentResultadoItem) {
-        this.contentResultadoItem = contentResultadoItem;
-    }
-
     @ViewById
     protected LinearLayout contentResultadoItem;
 
@@ -73,24 +65,6 @@ public class ModalidadeSorteioResultadoView extends ScrollView {
 
     public ModalidadeSorteioResultadoView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-    }
-
-
-    public ScrollView getScrollResultados() {
-        return scrollResultados;
-    }
-
-    public void setScrollResultados(ScrollView scrollResultados) {
-        this.scrollResultados = scrollResultados;
-    }
-
-
-    public TextView getNumeroeDataConcursoResultadoMegaSena() {
-        return numeroeDataConcursoResultadoMegaSena;
-    }
-
-    public void setNumeroeDataConcursoResultadoMegaSena(TextView numeroeDataConcursoResultadoMegaSena) {
-        this.numeroeDataConcursoResultadoMegaSena = numeroeDataConcursoResultadoMegaSena;
     }
 
     private void setContentResultadoPorModalidade(Modalidade modalidade) {

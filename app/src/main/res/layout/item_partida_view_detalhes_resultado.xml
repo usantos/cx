@@ -11,22 +11,6 @@
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:orientation="vertical">
-
     </LinearLayout>
-
-    <Button
-        android:id="@+id/voltarButton"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="20dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="26dp"
-        android:background="@drawable/button_border"
-        android:fontFamily="@font/futura_std_bold"
-        android:textAllCaps="false"
-        android:textColor="@color/branco"
-        android:textSize="14.2sp" />
 
 </LinearLayout>

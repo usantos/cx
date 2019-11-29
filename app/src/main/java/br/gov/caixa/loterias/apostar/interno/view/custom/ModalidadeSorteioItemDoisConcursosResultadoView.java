@@ -6,21 +6,15 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
 
-import java.util.List;
-
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bean.Modalidade;
-import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.PremiacaoConcursoDTO;
 import br.gov.caixa.loterias.apostar.interno.utils.EstiloModalidade;
-import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.NumerosResultadosAdapter;
 
 /**
@@ -39,9 +33,6 @@ public class ModalidadeSorteioItemDoisConcursosResultadoView extends LinearLayou
 
     @ViewById
     protected View tracoViewDivisoriaResultado;
-
-    @ViewById
-    protected Button vejaDetalhesButton;
 
     @ViewById
     protected PartidaViewDetalhesResultado partidaViewDetalhesResultadoView;
@@ -68,14 +59,7 @@ public class ModalidadeSorteioItemDoisConcursosResultadoView extends LinearLayou
         numerosResultadosAdapter = new NumerosResultadosAdapter(getContext(), modalidade.getResultadoConcursoDTO().getNumerosSorteadosSegundoSorteio(), modalidade.getTipoModalidade());
         this.recyclerNumerosResultadoSegundoSorteio.setAdapter(numerosResultadosAdapter);
 
-        adicionarPremiados(modalidade.getResultadoConcursoDTO().getPremiacoesPrimeiroSorteio(), modalidade.getResultadoConcursoDTO().getPremiacoesSegundoSorteio(), modalidade);
-
-        this.vejaDetalhesButton.setText(ViewUtils.textFuturaAndFuturaBold(getContext(), "Veja mais _detalhes_"));
-
-
         this.partidaViewDetalhesResultadoView.setLayout(modalidade);
-        this.vejaDetalhesButton.setOnClickListener(view -> partidaViewDetalhesResultadoView.mostrarDetalhes(true, item_resultado_content_view, partidaViewDetalhesResultadoView));
-        this.partidaViewDetalhesResultadoView.getVoltarButton().setOnClickListener(view -> partidaViewDetalhesResultadoView.mostrarDetalhes(false, item_resultado_content_view, partidaViewDetalhesResultadoView));
     }
 
     public ModalidadeSorteioItemDoisConcursosResultadoView(Context context) {
@@ -90,96 +74,4 @@ public class ModalidadeSorteioItemDoisConcursosResultadoView extends LinearLayou
         super(context, attrs, defStyleAttr);
     }
 
-    public RecyclerView getRecyclerNumerosResultado() {
-        return recyclerNumerosResultado;
-    }
-
-    public void setRecyclerNumerosResultado(RecyclerView recyclerNumerosResultado) {
-        this.recyclerNumerosResultado = recyclerNumerosResultado;
-    }
-
-    public LinearLayout getLinearlayoutPremiadosListaText() {
-        return linearlayoutPremiadosListaText;
-    }
-
-    public void setLinearlayoutPremiadosListaText(LinearLayout premiadosListaText) {
-        this.linearlayoutPremiadosListaText = premiadosListaText;
-    }
-
-    private void adicionarPremiados(List<PremiacaoConcursoDTO> listaPremiados, List<PremiacaoConcursoDTO> listaPremiadosSegundoConcurso, Modalidade modalidade){
-        TextView premiadosTextview1 = new TextView(getContext());
-        premiadosTextview1.setText(ViewUtils.textFuturaAndFuturaBold(getContext(), getResources().getString(R.string.label_premiados_primeiro_sorteio_bold)));
-        LinearLayout.LayoutParams layoutParamsPremiadosTextview1 = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-
-        premiadosTextview1.setLayoutParams(layoutParamsPremiadosTextview1);
-        premiadosTextview1.setTextAppearance(getContext(), R.style.fontForTitleTopoPremiados);
-        this.linearlayoutPremiadosListaText.addView(premiadosTextview1);
-
-
-        for (PremiacaoConcursoDTO premiacaoConcurso :  listaPremiados){
-            TextView title1 = new TextView(getContext());
-            LinearLayout.LayoutParams layoutParamstitle1 = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            String faixa  = modalidade.getNome().isEmpty() ?
-                    premiacaoConcurso.getDescricao() :
-                    PartidaViewDetalhesResultado.obterMapFaixa(modalidade).get(premiacaoConcurso.getDescricao());
-            title1.setText(faixa);
-            layoutParamstitle1.setMargins(0, 18, 0, 0);
-            title1.setLayoutParams(layoutParamstitle1);
-            title1.setTextAppearance(getContext(), R.style.fontForTitle1Premiados);
-            this.linearlayoutPremiadosListaText.addView(title1);
-
-            TextView title2 = new TextView(getContext());
-            LinearLayout.LayoutParams layoutParamstitle2 = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            if (premiacaoConcurso.getQuantidadeGanhadores()>1){
-                title2.setText(getResources().getString(R.string.label_numero_ganhadores, premiacaoConcurso.getQuantidadeGanhadores()));
-            }else{
-                title2.setText(getResources().getString(R.string.label_numero_ganhador, premiacaoConcurso.getQuantidadeGanhadores()));
-            }
-            title2.setLayoutParams(layoutParamstitle2);
-            title2.setTextAppearance(getContext(), R.style.fontForTitle2Premiados);
-            this.linearlayoutPremiadosListaText.addView(title2);
-        }
-
-
-        TextView premiadosTextview2= new TextView(getContext());
-        premiadosTextview2.setText(ViewUtils.textFuturaAndFuturaBold(getContext(), getResources().getString(R.string.label_premiados_segundo_sorteio_bold)));
-        LinearLayout.LayoutParams layoutParamspremiadosTextview2 = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        layoutParamspremiadosTextview2.setMargins(0, 20, 0, 0);
-        premiadosTextview2.setLayoutParams(layoutParamspremiadosTextview2);
-        premiadosTextview2.setTextAppearance(getContext(), R.style.fontForTitleTopoPremiados);
-        this.linearlayoutPremiadosListaText.addView(premiadosTextview2);
-
-        if (listaPremiadosSegundoConcurso != null) {
-            for (PremiacaoConcursoDTO premiacaoConcurso :  listaPremiadosSegundoConcurso){
-                TextView title1Segundo = new TextView(getContext());
-                title1Segundo.setText(premiacaoConcurso.getDescricao());
-                String faixa  = modalidade.getNome().isEmpty() ?
-                        premiacaoConcurso.getDescricao() :
-                        PartidaViewDetalhesResultado.obterMapFaixa(modalidade).get(premiacaoConcurso.getDescricao());
-                title1Segundo.setText(faixa);
-                LinearLayout.LayoutParams layoutParamtitle1Segundo = new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                layoutParamtitle1Segundo.setMargins(0, 18, 0, 0);
-                title1Segundo.setLayoutParams(layoutParamtitle1Segundo);
-                title1Segundo.setTextAppearance(getContext(), R.style.fontForTitle1Premiados);
-                this.linearlayoutPremiadosListaText.addView(title1Segundo);
-
-                TextView title2Segundo = new TextView(getContext());
-                if (premiacaoConcurso.getQuantidadeGanhadores()>1){
-                    title2Segundo.setText(getResources().getString(R.string.label_numero_ganhadores, premiacaoConcurso.getQuantidadeGanhadores()));
-                }else{
-                    title2Segundo.setText(getResources().getString(R.string.label_numero_ganhador, premiacaoConcurso.getQuantidadeGanhadores()));
-                }
-                LinearLayout.LayoutParams layoutParamtitle2Segundo = new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                title2Segundo.setLayoutParams(layoutParamtitle2Segundo);
-                title2Segundo.setTextAppearance(getContext(), R.style.fontForTitle2Premiados);
-                this.linearlayoutPremiadosListaText.addView(title2Segundo);
-            }
-        }
-    }
 }

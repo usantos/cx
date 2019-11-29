@@ -5,7 +5,6 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -31,16 +30,12 @@ import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 @EViewGroup(R.layout.item_partida_view_detalhes_resultado)
 public class PartidaViewDetalhesResultado extends LinearLayout {
 
-    @ViewById
-    protected Button voltarButton;
 
     @ViewById
     LinearLayout contentResuldadoDetalhesPremiacaoLinearLayout;
 
     @AfterViews
-    protected void init() {
-
-    }
+    protected void init() {}
 
     public void setLayout(Modalidade modalidade) {
         if (modalidade.getTipoModalidade() != ModalidadeEnum.DUPLA_SENA) {
@@ -49,7 +44,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-            layoutParams.setMargins(0, 18, 0, 0);
+            layoutParams.setMargins(0, 20, 0, 0);
             title1.setLayoutParams(layoutParams);
             title1.setTextAppearance(getContext(), R.style.fontForTitleTopoPremiados);
             this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title1);
@@ -61,38 +56,58 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
             LinearLayout.LayoutParams layoutParamsGanhadores = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-            layoutParamsGanhadores.setMargins(0, 18, 0, 0);
+            layoutParamsGanhadores.setMargins(0, 20, 0, 0);
             titleGanhadores.setLayoutParams(layoutParamsGanhadores);
             titleGanhadores.setTextAppearance(getContext(), R.style.fontForTitleTopoPremiados);
-            this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(titleGanhadores);
-
-            adicionarGanhadoresRegiao(modalidade.getResultadoConcursoDTO().getGanhadoresPrimeiroSorteio());
-
+            if(modalidade!= null &&
+                    modalidade.getResultadoConcursoDTO() != null &&
+                    modalidade.getResultadoConcursoDTO().getGanhadoresPrimeiroSorteio() != null &&
+                    modalidade.getResultadoConcursoDTO().getGanhadoresPrimeiroSorteio().size() > 0){
+                this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(titleGanhadores);
+                adicionarGanhadoresRegiao(modalidade.getResultadoConcursoDTO().getGanhadoresPrimeiroSorteio());
+            }
         } else {
             TextView title1 = new TextView(getContext());
             title1.setText(ViewUtils.textFuturaAndFuturaBold(getContext(), getResources().getString(R.string.label_premiacao_primeiro_sorteio_bold)));
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-            layoutParams.setMargins(0, 18, 0, 0);
+            TextView title4 = new TextView(getContext());
+            title4.setText(ViewUtils.textFuturaAndFuturaBold(getContext(), getResources().getString(R.string.label_ganhadores_regiao_segundo_sorteio_bold)));
+            LinearLayout.LayoutParams layoutParams4 = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+            layoutParams4.setMargins(0, 20, 0, 0);
+            title4.setLayoutParams(layoutParams4);
+            title4.setTextAppearance(getContext(), R.style.fontForTitleTopoPremiados);
+
+
+            layoutParams.setMargins(0, 20, 0, 0);
             title1.setLayoutParams(layoutParams);
             title1.setTextAppearance(getContext(), R.style.fontForTitleTopoPremiados);
             this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title1);
+            List<PremiacaoConcursoDTO> premiadosPrimeiro = modalidade.getResultadoConcursoDTO().getPremiacoesPrimeiroSorteio();
+            List<PremiacaoConcursoDTO> premiadosSegundo = modalidade.getResultadoConcursoDTO().getPremiacoesSegundoSorteio();
+            //List<PremiacaoConcursoDTO> listaPremiados = modalidade.getResultadoConcursoDTO().getPremiacoesPrimeiroSorteio();
+            //int n = listaPremiados.size();
 
-            adicionarPremiados(modalidade.getResultadoConcursoDTO().getPremiacoesPrimeiroSorteio(), modalidade);
+            //List<PremiacaoConcursoDTO> premiadosPrimeiro  = listaPremiados.subList(0,(n + 1)/2);
+            //List<PremiacaoConcursoDTO> premiadosSegundo = listaPremiados.subList(((n + 1)/2), n);
+
+            adicionarPremiados(premiadosPrimeiro, modalidade);
 
             TextView title2 = new TextView(getContext());
             title2.setText(ViewUtils.textFuturaAndFuturaBold(getContext(), getResources().getString(R.string.label_premiacao_segundo_sorteio_bold)));
             LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-            layoutParams2.setMargins(0, 18, 0, 0);
+            layoutParams2.setMargins(0, 20, 0, 0);
             title2.setLayoutParams(layoutParams2);
             title2.setTextAppearance(getContext(), R.style.fontForTitleTopoPremiados);
-            this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title2);
 
-            if(modalidade.getResultadoConcursoDTO().getPremiacoesSegundoSorteio() != null){
-                adicionarPremiados(modalidade.getResultadoConcursoDTO().getPremiacoesSegundoSorteio(),modalidade);
+            if(premiadosSegundo != null){
+                this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title2);
+                adicionarPremiados(premiadosSegundo ,modalidade);
             }
 
             TextView title3 = new TextView(getContext());
@@ -100,31 +115,27 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
             LinearLayout.LayoutParams layoutParams3 = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-            layoutParams3.setMargins(0, 18, 0, 0);
+            layoutParams3.setMargins(0, 20, 0, 0);
             title3.setLayoutParams(layoutParams3);
             title3.setTextAppearance(getContext(), R.style.fontForTitleTopoPremiados);
-            this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title3);
 
-            adicionarGanhadoresRegiao(modalidade.getResultadoConcursoDTO().getGanhadoresPrimeiroSorteio());
-
-
-            TextView title4 = new TextView(getContext());
-            title4.setText(ViewUtils.textFuturaAndFuturaBold(getContext(), getResources().getString(R.string.label_ganhadores_regiao_segundo_sorteio_bold)));
-            LinearLayout.LayoutParams layoutParams4 = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-
-            layoutParams4.setMargins(0, 18, 0, 0);
-            title4.setLayoutParams(layoutParams4);
-            title4.setTextAppearance(getContext(), R.style.fontForTitleTopoPremiados);
-            this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title4);
-            if(modalidade.getResultadoConcursoDTO().getGanhadoresSegundoSorteio() != null){
-                adicionarGanhadoresRegiao(modalidade.getResultadoConcursoDTO().getGanhadoresSegundoSorteio());
+            if(modalidade!= null &&
+                    modalidade.getResultadoConcursoDTO() != null &&
+                    modalidade.getResultadoConcursoDTO().getGanhadoresPrimeiroSorteio() != null &&
+                    modalidade.getResultadoConcursoDTO().getGanhadoresPrimeiroSorteio().size() > 0){
+                this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title3);
+                adicionarGanhadoresRegiao(modalidade.getResultadoConcursoDTO().getGanhadoresPrimeiroSorteio());
             }
 
+            if(modalidade!= null &&
+                    modalidade.getResultadoConcursoDTO() != null &&
+                    modalidade.getResultadoConcursoDTO().getGanhadoresSegundoSorteio() != null &&
+                    modalidade.getResultadoConcursoDTO().getGanhadoresSegundoSorteio().size() > 0){
+                this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title4);
+                adicionarGanhadoresRegiao(modalidade.getResultadoConcursoDTO().getGanhadoresSegundoSorteio());
+            }
         }
         adicionarArrecadacaoTotal(modalidade.getResultadoConcursoDTO().getArrecadacaoTotal());
-
-        voltarButton.setText(ViewUtils.textFuturaAndFuturaBold(getContext(), getResources().getString(R.string.label_voltar_bold)));
     }
 
     public PartidaViewDetalhesResultado(Context context) {
@@ -145,14 +156,6 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
         } else {
             animacaoFadeOutDetalhes(partidaViewDetalhesResultadoView, item_resultado_content_view);
         }
-    }
-
-    public Button getVoltarButton() {
-        return voltarButton;
-    }
-
-    public void setVoltarButton(Button voltarButton) {
-        this.voltarButton = voltarButton;
     }
 
     private void animacaoFadeInDetalhes(View view) {
@@ -261,12 +264,17 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
                 mapFaixa.put("0002","6 números acertados");
                 mapFaixa.put("0003","5 números acertados");
                 mapFaixa.put("0004","4 números acertados");
+                mapFaixa.put("0005","Mês da Sorte\n"+ modalidade.getResultadoConcursoDTO().getPremiacaoMesDeSorte().getMesDeSorte().getNome());
                 break;
             case "DUPLASENA":
                 mapFaixa.put("0001","Sena - 6 números acertados");
                 mapFaixa.put("0002","Quina - 5 números acertados");
                 mapFaixa.put("0003","Quadra - 4 números acertados");
                 mapFaixa.put("0004","Terno - 3 números acertados");
+                mapFaixa.put("0005","Sena - 6 números acertados");
+                mapFaixa.put("0006","Quina - 5 números acertados");
+                mapFaixa.put("0007","Quadra - 4 números acertados");
+                mapFaixa.put("0008","Terno - 3 números acertados");
                 break;
             case "LOTECA":
                 mapFaixa.put("0001","1º (14 acertos)");
@@ -292,6 +300,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
                 mapFaixa.put("0004","17 números acertados");
                 mapFaixa.put("0005","16 números acertados");
                 mapFaixa.put("0006","15 números acertados");
+                mapFaixa.put("0007","0 acertos");
                 break;
             case "MEGASENA":
                 mapFaixa.put("0001","Sena - 6 números acertados");
@@ -309,7 +318,8 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
                 mapFaixa.put("0002","6 números acertados");
                 mapFaixa.put("0003","5 números acertados");
                 mapFaixa.put("0004","4 números acertados");
-                mapFaixa.put("0003","3 números acertados");
+                mapFaixa.put("0005","3 números acertados");
+                mapFaixa.put("0006","Time do Coração\n"+ modalidade.getResultadoConcursoDTO().getPremiacaoTimeDoCoracao().getEquipe().getNome());
                 break;
         }
         return mapFaixa;
@@ -322,9 +332,8 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
             TextView title2 = new TextView(getContext());
             TextView title3 = new TextView(getContext());
 
-            String faixa  = modalidade.getDescricao().isEmpty() ?
-                    premiacaoConcurso.getDescricao() :
-                    obterMapFaixa(modalidade).get(premiacaoConcurso.getDescricao());
+            String faixa  = obterMapFaixa(modalidade).get(premiacaoConcurso.getDescricao());
+
             title1.setText(faixa);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -352,7 +361,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
             this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title2);
 
 
-            title3.setText(ViewUtils.getMoedaFormat(premiacaoConcurso.getValor()));
+            title3.setText("Prêmio: "+ViewUtils.getMoedaFormat(premiacaoConcurso.getValor()));
             LinearLayout.LayoutParams layoutParams3 = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
@@ -368,7 +377,10 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
         if (listaGanhadores != null) {
             for (GanhadoresPorRegiaoDTO ganhadoresPorRegiaoDTO : listaGanhadores) {
                 TextView title1 = new TextView(getContext());
-                title1.setText(getResources().getString(R.string.label_texto_barra_texto, ganhadoresPorRegiaoDTO.getMunicipioSorteio().getNome(), ganhadoresPorRegiaoDTO.getUfSorteio().getSigla()));
+                title1.setText(getResources().getString(R.string.label_texto_barra_texto,
+                                                        ganhadoresPorRegiaoDTO.getMunicipioSorteio().getNome(),
+                                                        ganhadoresPorRegiaoDTO.getUfSorteio().getSigla())
+                              );
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
