@@ -25,7 +25,6 @@ import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bo.DadosCorporativosBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.DadosCorporativosBO_;
 import br.gov.caixa.loterias.apostar.interno.model.bo.DadosUsuarioBO;
-import br.gov.caixa.loterias.apostar.interno.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ListSecaoDTO;
@@ -56,6 +55,16 @@ public class TermosUsoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(DialogUtils.isShow()){
+            DialogUtils.dismiss();
+        }
         setViews();
         setListeners();
         getExtras();
@@ -64,6 +73,7 @@ public class TermosUsoActivity extends AppCompatActivity {
         listenerDuvidas();
         checaAceiteTermoEConfiguraTela();
     }
+
     private  void getExtras(){
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
@@ -126,7 +136,7 @@ public class TermosUsoActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         DialogUtils.dismiss();
-                        ViewUtils.alertTitleButton(TermosUsoActivity.this, R.string.label_atencao, MensagensNetwork.setMensagem(error, getApplicationContext()), getApplicationContext().getResources().getString( R.string.ok ));
+                        RedirectNetwork.checkRedirect(error,TermosUsoActivity.this);
                     }
                 });
             }else {
@@ -169,7 +179,7 @@ public class TermosUsoActivity extends AppCompatActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == 1) {
             setViews();
 
@@ -202,13 +212,13 @@ public class TermosUsoActivity extends AppCompatActivity {
         dadosCorporativosBO.termo(new RequestListener<TermoDeUsoDTOResponse>() {
             @Override
             public void onResponse(TermoDeUsoDTOResponse response) {
+                DialogUtils.dismiss();
                 if (response.getRedirect() != null){
                     RedirectNetwork.checkRedirectSucesso( response.getRedirect(), TermosUsoActivity.this);
                 }
 
                 termoHtml = response.getPayload().getConteudo();
                 webViewConteudo.loadData(termoHtml, "text/html; charset=UTF-8", "UTF-8");
-                DialogUtils.dismiss();
                 selectTermoUso();
                 FirebaseManager.registraEvento(TermosUsoActivity.this ,"ENTROU_TERMOS_DE_USO");
             }
@@ -271,11 +281,11 @@ public class TermosUsoActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(ResourceResponse result) {
+                DialogUtils.dismiss();
                 isTermoAceito = Boolean.TRUE;
                 scrollViewTermoAceite.setPadding(0, 0, 0, 0);
                 getSupportActionBar().setDisplayHomeAsUpEnabled(isTermoAceito);
                 footerAceiteTermo.setVisibility(View.GONE);
-                DialogUtils.dismiss();
                 if (openAjuda == true) {
                     duvidasButton.performClick();
                 }else{
@@ -317,11 +327,10 @@ public class TermosUsoActivity extends AppCompatActivity {
             dadosCorporativosBO.secaoDuvidas(new RequestListener<ListSecaoDTOResponse>() {
                 @Override
                 public void onResponse(ListSecaoDTOResponse response) {
+                    DialogUtils.dismiss();
                     if (response.getRedirect() != null){
                         RedirectNetwork.checkRedirectSucesso( response.getRedirect(), TermosUsoActivity.this);
                     }
-
-                    DialogUtils.dismiss();
                     secaoDuvidas = response.getPayload();
                     createRecyclerView();
                     FirebaseManager.registraEvento(TermosUsoActivity.this ,"ENTROU_DUVIDAS");
