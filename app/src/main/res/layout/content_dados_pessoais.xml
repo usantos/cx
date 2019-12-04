@@ -14,33 +14,11 @@
         android:layout_height="match_parent"
         android:layout_marginBottom="106dp"
         android:layout_marginHorizontal="16dp"
-        android:id="@+id/scrollViewDadosPessoais"
-        >
+        android:id="@+id/scrollViewDadosPessoais">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="O jeito mais fácil para apostar"
-                android:textColor="@color/colorAccent"
-                android:fontFamily="@font/futura_std_bold"
-                android:textSize="14sp"
-                android:layout_marginTop="40dp"
-                />
-            
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="19dp"
-                android:lines="2"
-                android:text="O seu pacote de apostas prontas para serem
-adquiridas em um toque"
-                android:textColor="@color/cinza"
-                android:textSize="14sp"
-                android:fontFamily="@font/arialmt"/>
+            android:orientation="vertical">
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/editTextCpf"
