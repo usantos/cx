@@ -250,7 +250,9 @@
     <string name="label_ganhadores_regiao_segundo_sorteio_bold">_Ganhadores por regi\u00e3o - 2º sorteio_</string>
     <string name="label_nao_foi_dessa_vez">Não premiado ou ainda não apurado</string>
     <string name="label_pode_comemorar">Pode comemorar,</string>
-    <string name="label_voce_foi_premiado">você foi premiado!</string>
+    <string name="label_voce_foi_premiado">você foi premiado com \n {ValorPremio}</string>
+    <string name="label_voce_foi_premiado_exclamacao">você foi premiado!</string>
+    <string name="label_estimativa_de_premio">Estimativa de prêmio</string>
     <string name="label_limite_diario">Limite diário</string>
     <string name="label_abertura_aposta">Abertura da aposta</string>
     <string name="label_premio">Prêmio</string>

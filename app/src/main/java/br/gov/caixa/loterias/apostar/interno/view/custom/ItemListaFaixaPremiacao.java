@@ -1,6 +1,7 @@
 package br.gov.caixa.loterias.apostar.interno.view.custom;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
@@ -33,10 +34,22 @@ public class ItemListaFaixaPremiacao extends LinearLayout {
     }
 
     public void setLayout(FaixaPremiadaDTO faixaPremiadaDTO) {
+
         concursoTextView.setText(String.format(Locale.getDefault(), "%d", faixaPremiadaDTO.getId()));
+
+        concursoTextView.setTextColor( Color.WHITE);
+
         faixaPremiacaoTextView.setText(faixaPremiadaDTO.getNome());
+
+        faixaPremiacaoTextView.setTextColor( Color.WHITE);
+
         sorteioTextView.setText(String.format(Locale.getDefault(), "%d", faixaPremiadaDTO.getSorteio()));
+
+        sorteioTextView.setTextColor( Color.WHITE);
+
         premiacaoTextView.setText(ViewUtils.getMoedaFormat(faixaPremiadaDTO.getValorLiquido()));
+
+        premiacaoTextView.setTextColor( Color.WHITE);
     }
 
     public ItemListaFaixaPremiacao(Context context) {
