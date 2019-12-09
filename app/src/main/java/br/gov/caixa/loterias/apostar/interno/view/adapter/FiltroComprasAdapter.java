@@ -91,8 +91,8 @@ public class FiltroComprasAdapter extends BaseExpandableListAdapter {
 				case MODALIDADES:
 					if(viewModalidades == null) {
 						viewModalidades = layoutInflater.inflate(R.layout.list_item_modalidades, null);
-						if (gridModalidades == null && convertView.findViewById(R.id.ehgv_grid_modalidades) != null) {
-							setGridModalidades(convertView.findViewById(R.id.ehgv_grid_modalidades));
+						if (gridModalidades == null && viewModalidades.findViewById(R.id.ehgv_grid_modalidades) != null) {
+							setGridModalidades(viewModalidades.findViewById(R.id.ehgv_grid_modalidades));
 							gridModalidades.setAdapter(getAdapterModalidades());
 							gridModalidades.setExpanded(true);
 						}
