@@ -6,21 +6,15 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
 
-import java.util.List;
-
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bean.Modalidade;
-import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.PremiacaoConcursoDTO;
 import br.gov.caixa.loterias.apostar.interno.utils.EstiloModalidade;
-import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.NumerosResultadosAdapter;
 
 /**
@@ -35,13 +29,10 @@ public class ModalidadeSorteioItemUmConcursoResultadoView extends LinearLayout {
     protected RecyclerView recyclerNumerosResultado;
 
     @ViewById
-    protected LinearLayout linearlayoutPremiadosListaText, item_resultado_content_view;
+    protected LinearLayout  item_resultado_content_view;
 
     @ViewById
     protected View tracoViewDivisoriaResultado;
-
-    @ViewById
-    protected Button vejaDetalhesButton;
 
     @ViewById
     protected PartidaViewDetalhesResultado partidaViewDetalhesResultadoView;
@@ -57,7 +48,6 @@ public class ModalidadeSorteioItemUmConcursoResultadoView extends LinearLayout {
         EstiloModalidade estilo = new EstiloModalidade(modalidade.getTipoModalidade());
         tracoViewDivisoriaResultado.setBackground(getContext().getResources().getDrawable(estilo.getCorClara()));
 
-        adicionarPremiados(modalidade.getResultadoConcursoDTO().getPremiacoesPrimeiroSorteio());
         NumerosResultadosAdapter numerosResultadosAdapter;
         int numberOfColumns = 3;
         if (modalidade.getResultadoConcursoDTO().getNumerosSorteadosPrimeiroSorteio().size()>6){
@@ -67,11 +57,7 @@ public class ModalidadeSorteioItemUmConcursoResultadoView extends LinearLayout {
         numerosResultadosAdapter = new NumerosResultadosAdapter(getContext(), modalidade.getResultadoConcursoDTO().getNumerosSorteadosPrimeiroSorteio(), modalidade.getTipoModalidade());
         this.recyclerNumerosResultado.setAdapter(numerosResultadosAdapter);
 
-        this.vejaDetalhesButton.setText(ViewUtils.textFuturaAndFuturaBold(getContext(), "Veja mais _detalhes_"));
-
         this.partidaViewDetalhesResultadoView.setLayout(modalidade);
-        this.vejaDetalhesButton.setOnClickListener(view -> partidaViewDetalhesResultadoView.mostrarDetalhes(true, item_resultado_content_view, partidaViewDetalhesResultadoView));
-        this.partidaViewDetalhesResultadoView.getVoltarButton().setOnClickListener(view -> partidaViewDetalhesResultadoView.mostrarDetalhes(false, item_resultado_content_view, partidaViewDetalhesResultadoView));
 
     }
 
@@ -85,50 +71,6 @@ public class ModalidadeSorteioItemUmConcursoResultadoView extends LinearLayout {
 
     public ModalidadeSorteioItemUmConcursoResultadoView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-    }
-
-    public RecyclerView getRecyclerNumerosResultado() {
-        return recyclerNumerosResultado;
-    }
-
-    public void setRecyclerNumerosResultado(RecyclerView recyclerNumerosResultado) {
-        this.recyclerNumerosResultado = recyclerNumerosResultado;
-    }
-
-    public LinearLayout getLinearlayoutPremiadosListaText() {
-        return linearlayoutPremiadosListaText;
-    }
-
-    public void setLinearlayoutPremiadosListaText(LinearLayout premiadosListaText) {
-        this.linearlayoutPremiadosListaText = premiadosListaText;
-    }
-
-    private void adicionarPremiados(List<PremiacaoConcursoDTO> listaPremiados){
-        for (PremiacaoConcursoDTO premiacaoConcurso :  listaPremiados){
-            TextView title1 = new TextView(getContext());
-            title1.setText(premiacaoConcurso.getDescricao());
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-
-            layoutParams.setMargins(0, 18, 0, 0);
-            title1.setLayoutParams(layoutParams);
-            title1.setTextAppearance(getContext(), R.style.fontForTitle1Premiados);
-            this.linearlayoutPremiadosListaText.addView(title1);
-
-            TextView title2 = new TextView(getContext());
-            if (premiacaoConcurso.getQuantidadeGanhadores()>1){
-                title2.setText(getResources().getString(R.string.label_numero_ganhadores, premiacaoConcurso.getQuantidadeGanhadores()));
-            }else{
-                title2.setText(getResources().getString(R.string.label_numero_ganhador, premiacaoConcurso.getQuantidadeGanhadores()));
-            }
-
-            LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-
-            title2.setLayoutParams(layoutParams2);
-            title2.setTextAppearance(getContext(), R.style.fontForTitle2Premiados);
-            this.linearlayoutPremiadosListaText.addView(title2);
-        }
     }
 
 }

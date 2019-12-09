@@ -25,7 +25,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
             android:fontFamily="@font/arialmt"
-            android:text="Compra 001"
+            tools:text="Situação: Em processamento"
+            android:maxWidth="150dp"
             android:textColor="@color/cinza"
             android:textSize="14.2sp" />
 
