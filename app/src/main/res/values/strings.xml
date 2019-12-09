@@ -551,4 +551,7 @@
     <string name="conf_rapd_verifique_opcoes">Verifique e confirme suas opções de Rapidão.</string>
 
     <string name="ops">Ops!</string>
+
+    <!-- Filtros -->
+    <string name="titulo_dialog_filtro_comprar">Filtro de Compras</string>
 </resources>

@@ -27,7 +27,7 @@
                 android:layout_below="@id/textViewTituloCadastrar3"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_marginTop="40dp">
+                android:layout_marginTop="40dp" >
 
                 <com.github.pinball83.maskededittext.MaskedEditText
                     android:id="@+id/editTextCpfContent"
@@ -39,7 +39,6 @@
                     app:notMaskedSymbol="*"
                     android:enabled="false"
                     android:alpha="0.3"/>
-
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout

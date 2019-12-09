@@ -8,12 +8,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -22,6 +22,7 @@ import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostar.interno.R;
@@ -34,50 +35,86 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.AgrupadorApostaC
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CarrinhoFavoritoDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CompraDTO;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeDTO;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.utils.DialogUtils;
+import br.gov.caixa.loterias.apostar.interno.utils.ExpandableListDataFiltro;
 import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
+import br.gov.caixa.loterias.apostar.interno.utils.Tupla;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
+import br.gov.caixa.loterias.apostar.interno.view.adapter.FiltroComprasAdapter;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.ListaComprasDetalhesAdapter;
 import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
 
 public class DetalhesComprasActivity extends AppCompatActivity {
 
     private CompraDTO compraDTO;
-    private List<ApostaDTO> listaAposta = new ArrayList<>();
+    private ArrayList<ApostaDTO> listaAposta = new ArrayList<>();
+    private ArrayList<ApostaDTO> listaFiltrada = new ArrayList<>();;
     private ArrayList<String> tiposApostas = new ArrayList<>();
-    private Dialog dialogFavoritar;
-
+    private Dialog dialogFavoritar, dialogFiltrar;
+    private ExpandableListView listViewFiltro;
+    private ListaComprasDetalhesAdapter listaComprasDetalhesAdapter;
+    private FiltroComprasAdapter expandableListAdapter;
+    private EditText etCarrinho;
+    private ImageButton btnFiltro, btnDuvidas;
+    private RecyclerView recyclerDetalhesApostas;
     private Boolean mantemSurpresinhas = true;
     int ordemCompra;
+    int contFiltrosUtilizados;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalhes_compras);
         setaViews();
+        pegaExtras();
+        setaMetodos();
     }
 
     private void setaViews(){
+        btnFiltro = findViewById(R.id.ib_filtrar);
+        btnDuvidas = findViewById(R.id.ib_duvidas);
+        recyclerDetalhesApostas = findViewById(R.id.gridviewDetalhesCompras);
+
+        btnFiltro.setVisibility(View.VISIBLE);
+        btnDuvidas.setVisibility(View.VISIBLE);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.texto_futura_bold, getString(R.string.title_activity_detalhes_compras))));
+    }
 
 
-        String compraDTOJson = getIntent().getExtras().getString("CompraDTO");
-        ordemCompra = getIntent().getExtras().getInt("ordem");
-        compraDTO = new Gson().fromJson(compraDTOJson, CompraDTO.class);
+    private void setaMetodos(){
+        btnFiltro.setOnClickListener(view -> {
+            dialogFiltrar.show();
+        });
+        btnDuvidas.setOnClickListener(view -> {
+            abrirTermosUso();
+        });
 
         criarCabecalho();
-        callWebService();
+        buscaDetalhesCompras();
         setaDialogFavoritar();
+        buscaModalidades();
+    }
+
+    private void pegaExtras(){
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            String compraDTOJson = bundle.getString("CompraDTO");
+            ordemCompra = bundle.getInt("ordem");
+            compraDTO = new Gson().fromJson(compraDTOJson, CompraDTO.class);
+        }
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == 1) {
-            callWebService();
+            buscaDetalhesCompras();
         }
     }
 
@@ -86,39 +123,6 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         finish();
         return true;
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.settings, menu);
-
-        return true;
-    }
-
-    // Mudando o texto dos MenuItem de acordo com os dados
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        if (id == R.id.action_settings) {
-            abrirTermosUso();
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
 
 
     private void criarCabecalho() {
@@ -148,15 +152,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
     }
 
 
-    private void montarLayout() {
-        RecyclerView listView = findViewById(R.id.gridviewDetalhesCompras);
-        listView.setLayoutManager(new LinearLayoutManager(this));
-        ListaComprasDetalhesAdapter listaAdapter = new ListaComprasDetalhesAdapter(this, this, listaAposta);
-        listView.setAdapter(listaAdapter);
-
-    }
-
-    private void callWebService() {
+    private void buscaDetalhesCompras() {
 
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
         final ApostaBO apostaBO = ApostaBO_.getInstance_(DetalhesComprasActivity.this);
@@ -167,14 +163,14 @@ public class DetalhesComprasActivity extends AppCompatActivity {
                 loadViewProgress.dismiss();
                 FirebaseManager.registraEvento(DetalhesComprasActivity.this ,"ENTROU_COMPRAS_DETALHE");
 
-                listaAposta = response.getPayload().getApostas();
+                listaAposta = (ArrayList<ApostaDTO>) response.getPayload().getApostas();
 
                 tiposApostas = new ArrayList<>();
                 for(ApostaDTO aposta : listaAposta){
                     tiposApostas.add(aposta.getModalidade().toString());
                 }
 
-                montarLayout();
+                configuraAdapter(listaAposta);
                 if (response.getRedirect() != null) {
                     RedirectNetwork.checkRedirectSucesso(response.getRedirect(), DetalhesComprasActivity.this);
                 }
@@ -183,7 +179,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 loadViewProgress.dismiss();
-                montarLayout();
+                configuraAdapter(listaAposta);
                 RedirectNetwork.checkRedirect(error, DetalhesComprasActivity.this);
             }
         });
@@ -193,7 +189,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         dialogFavoritar.findViewById(R.id.ck_manter_surpresinhas).setVisibility(View.GONE);
         dialogFavoritar.findViewById(R.id.tv_manter_surpresinhas).setVisibility(View.GONE);
         for (ApostaDTO aposta: apostas) {
-            if(aposta.getIndicadorSurpresinha().getValor() == 2){
+            if(aposta.getIndicadorSurpresinha().getValor() == 2) {
                 dialogFavoritar.findViewById(R.id.ck_manter_surpresinhas).setVisibility(View.VISIBLE);
                 dialogFavoritar.findViewById(R.id.tv_manter_surpresinhas).setVisibility(View.VISIBLE);
                 break;
@@ -229,6 +225,82 @@ public class DetalhesComprasActivity extends AppCompatActivity {
             dialogFavoritar.findViewById(R.id.ck_manter_surpresinhas).setVisibility(View.GONE);
             dialogFavoritar.findViewById(R.id.tv_manter_surpresinhas).setVisibility(View.GONE);
         });
+    }
+
+    private void setaDialogFiltrar(List<ModalidadeDTO> modalidades) {
+        dialogFiltrar = new Dialog(this);
+        dialogFiltrar.setContentView(R.layout.dialog_filtro_compras);
+        listViewFiltro = dialogFiltrar.findViewById(R.id.elv_filtros);
+        Button btnOk = dialogFiltrar.findViewById(R.id.btn_ok);
+        Button btnCancelar = dialogFiltrar.findViewById(R.id.btn_cancelar);
+
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(dialogFiltrar.getWindow().getAttributes());
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+
+        btnOk.setOnClickListener(v -> filtrarDados());
+        btnCancelar.setOnClickListener(v -> dialogFiltrar.dismiss());
+        dialogFiltrar.getWindow().setAttributes(lp);
+
+        final List<String>                  expandableListTitle;
+        final HashMap<String, List<String>> expandableListDetail;
+
+        listViewFiltro.setGroupIndicator(null);
+        expandableListDetail = ExpandableListDataFiltro.getData();
+        expandableListTitle = new ArrayList<>(expandableListDetail.keySet());
+        expandableListAdapter = new FiltroComprasAdapter(this, expandableListTitle, expandableListDetail,modalidades,DetalhesComprasActivity.this);
+        listViewFiltro.setAdapter(expandableListAdapter);
+        listViewFiltro.setOnGroupExpandListener(groupPosition ->{});
+        //AbrirMenusGroup(groupPosition));
+
+        listViewFiltro.setOnChildClickListener((parent, v, groupPosition, childPosition, id) -> {
+            //AbrirMenusItens(childPosition);
+            return false;
+        });
+    }
+
+    private void configuraAdapter(List<ApostaDTO>  listaAposta) {
+        if(listaAposta != null){
+            recyclerDetalhesApostas.setLayoutManager(new LinearLayoutManager(this));
+            listaComprasDetalhesAdapter = new ListaComprasDetalhesAdapter(this, this, listaAposta);
+            recyclerDetalhesApostas.setAdapter(listaComprasDetalhesAdapter);
+        }
+    }
+
+    private void filtrarDados(){
+        if(listaAposta != null){
+            listaFiltrada = (ArrayList<ApostaDTO>) listaAposta.clone();
+            Tupla<List<ApostaDTO>,Boolean> tuplaConcurso = new Tupla<>(new ArrayList<>(),false);
+            Tupla<List<ApostaDTO>,Boolean> tuplaModalidade = new Tupla<>(new ArrayList<>(),false);
+            Tupla<List<ApostaDTO>,Boolean> tuplaSituacao = new Tupla<>(new ArrayList<>(),false);
+            int contFiltros                              = 0;
+            if(expandableListAdapter != null){
+                tuplaConcurso = expandableListAdapter.getApostasFiltradasConcurso(listaAposta);
+                tuplaSituacao = expandableListAdapter.getApostasFiltradasSituacao(listaAposta);
+                tuplaModalidade = expandableListAdapter.getApostasFiltradasModalidade(listaAposta);
+
+                if(tuplaConcurso.y){
+                    contFiltros++;
+                    listaFiltrada.retainAll(tuplaConcurso.x);
+                }
+                if(tuplaSituacao.y){
+                    contFiltros++;
+                    listaFiltrada.retainAll(tuplaSituacao.x);
+                }
+                if(tuplaModalidade.y){
+                    contFiltros++;
+                    listaFiltrada.retainAll(tuplaModalidade.x);
+                }
+            }
+            contFiltrosUtilizados = contFiltros;
+
+            if(contFiltros == 0){
+                configuraAdapter(listaAposta);
+            } else {
+                configuraAdapter(listaFiltrada);
+            }
+        }
+        dialogFiltrar.dismiss();
     }
 
     private void validarCarrinhoFavorito(String nome, Long idFavorito){
@@ -282,4 +354,25 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         });
     }
 
+    private void buscaModalidades() {
+        DialogUtils.show(DetalhesComprasActivity.this);
+        ApostaBO_.getInstance_(DetalhesComprasActivity.this).getModalidades(new RequestListener<ModalidadeDTOResponse>() {
+            @Override
+            public void onResponse(ModalidadeDTOResponse response) {
+                DialogUtils.dismiss();
+                if (response.getRedirect() != null) {
+                    RedirectNetwork.checkRedirectSucesso(response.getRedirect(), DetalhesComprasActivity.this);
+                }
+                if(response.getPayload() != null){
+                    setaDialogFiltrar(response.getPayload());
+                }
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                DialogUtils.dismiss();
+                RedirectNetwork.checkRedirect(error, DetalhesComprasActivity.this);
+            }
+        });
+    }
 }

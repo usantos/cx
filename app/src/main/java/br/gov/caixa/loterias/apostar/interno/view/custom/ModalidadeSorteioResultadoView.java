@@ -24,16 +24,13 @@ import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 @EViewGroup(R.layout.item_resultado)
 public class ModalidadeSorteioResultadoView extends ScrollView {
 
-
     private Modalidade modalidade;
-
 
     @ViewById
     protected TextView numeroeDataConcursoResultadoMegaSena;
 
     @ViewById
     protected LinearLayout contentResultadoItem;
-
 
     @ViewById
     protected ScrollView scrollResultados;

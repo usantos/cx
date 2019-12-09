@@ -96,7 +96,8 @@ public class ConfiguracaoRapidaoFragment3 extends Fragment implements View.OnCli
 	private void inicializaValores(){
 		SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
 		rapidaoConfigSingleton = RapidaoConfigSingleton.getInstance();
-		limiteDiario = sessaoUsuario.getValorMaximoAposta().doubleValue();
+		limiteDiario = (sessaoUsuario == null || sessaoUsuario.getValorMaximoAposta() == null) ? 0d :
+						sessaoUsuario.getValorMaximoAposta().doubleValue();
 		valorMinimo = (sessaoUsuario.getParametrosSimulacao() == null ||
 						sessaoUsuario.getParametrosSimulacao().getValorMinimoCarrinho() == null) ? 0d :
 						sessaoUsuario.getParametrosSimulacao().getValorMinimoCarrinho().doubleValue();
