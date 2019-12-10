@@ -60,6 +60,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
     private ImageButton btnFiltro, btnDuvidas;
     private RecyclerView recyclerDetalhesApostas;
     private Boolean mantemSurpresinhas = true;
+    private TextView tvBadge;
     int ordemCompra;
     int contFiltrosUtilizados;
 
@@ -76,6 +77,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         btnFiltro = findViewById(R.id.ib_filtrar);
         btnDuvidas = findViewById(R.id.ib_duvidas);
         recyclerDetalhesApostas = findViewById(R.id.gridviewDetalhesCompras);
+        tvBadge = findViewById(R.id.tv_badge);
 
         btnFiltro.setVisibility(View.VISIBLE);
         btnDuvidas.setVisibility(View.VISIBLE);
@@ -233,6 +235,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         listViewFiltro = dialogFiltrar.findViewById(R.id.elv_filtros);
         Button btnOk = dialogFiltrar.findViewById(R.id.btn_ok);
         Button btnCancelar = dialogFiltrar.findViewById(R.id.btn_cancelar);
+        ImageButton btnLimpar = dialogFiltrar.findViewById(R.id.ib_filtro_limpar);
 
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
         lp.copyFrom(dialogFiltrar.getWindow().getAttributes());
@@ -250,12 +253,12 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         expandableListTitle = new ArrayList<>(expandableListDetail.keySet());
         expandableListAdapter = new FiltroComprasAdapter(this, expandableListTitle, expandableListDetail,modalidades,DetalhesComprasActivity.this);
         listViewFiltro.setAdapter(expandableListAdapter);
-        listViewFiltro.setOnGroupExpandListener(groupPosition ->{});
-        //AbrirMenusGroup(groupPosition));
-
-        listViewFiltro.setOnChildClickListener((parent, v, groupPosition, childPosition, id) -> {
-            //AbrirMenusItens(childPosition);
-            return false;
+        btnLimpar.setOnClickListener(v -> {
+            expandableListAdapter.limpaFiltros();
+            dialogFiltrar.dismiss();
+            tvBadge.setText(String.valueOf(0));
+            tvBadge.setVisibility(View.GONE);
+            configuraAdapter(listaAposta);
         });
     }
 
@@ -270,10 +273,10 @@ public class DetalhesComprasActivity extends AppCompatActivity {
     private void filtrarDados(){
         if(listaAposta != null){
             listaFiltrada = (ArrayList<ApostaDTO>) listaAposta.clone();
-            Tupla<List<ApostaDTO>,Boolean> tuplaConcurso = new Tupla<>(new ArrayList<>(),false);
-            Tupla<List<ApostaDTO>,Boolean> tuplaModalidade = new Tupla<>(new ArrayList<>(),false);
-            Tupla<List<ApostaDTO>,Boolean> tuplaSituacao = new Tupla<>(new ArrayList<>(),false);
-            int contFiltros                              = 0;
+            Tupla<List<ApostaDTO>,Boolean> tuplaConcurso;
+            Tupla<List<ApostaDTO>,Boolean> tuplaModalidade;
+            Tupla<List<ApostaDTO>,Boolean> tuplaSituacao;
+            int contFiltros = 0;
             if(expandableListAdapter != null){
                 tuplaConcurso = expandableListAdapter.getApostasFiltradasConcurso(listaAposta);
                 tuplaSituacao = expandableListAdapter.getApostasFiltradasSituacao(listaAposta);
@@ -292,13 +295,16 @@ public class DetalhesComprasActivity extends AppCompatActivity {
                     listaFiltrada.retainAll(tuplaModalidade.x);
                 }
             }
-            contFiltrosUtilizados = contFiltros;
 
+            tvBadge.setText(String.valueOf(contFiltros));
             if(contFiltros == 0){
+                tvBadge.setVisibility(View.GONE);
                 configuraAdapter(listaAposta);
             } else {
+                tvBadge.setVisibility(View.VISIBLE);
                 configuraAdapter(listaFiltrada);
             }
+
         }
         dialogFiltrar.dismiss();
     }

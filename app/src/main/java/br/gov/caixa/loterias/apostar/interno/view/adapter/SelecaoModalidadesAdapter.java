@@ -107,6 +107,14 @@ public class SelecaoModalidadesAdapter extends BaseAdapter {
 		}
 		return modalidades;
 	}
+
+	public void limpaSelecaoModalidades(){
+		if(tiposAposta != null){
+			for (TipoAposta aposta:tiposAposta) {
+				aposta.setSelect(false);
+			}
+		}
+	}
 }
 
 

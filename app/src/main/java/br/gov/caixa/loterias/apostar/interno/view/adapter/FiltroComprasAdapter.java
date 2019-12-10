@@ -13,8 +13,8 @@ import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -24,6 +24,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeEnumSelecaoModalidades;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.SituacoesApostaEnum;
 import br.gov.caixa.loterias.apostar.interno.utils.Tupla;
 import br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightGridView;
 
@@ -35,7 +36,7 @@ public class FiltroComprasAdapter extends BaseExpandableListAdapter {
 
 	private Context context;
 	private List<String> expandableListTitle;
-	private ArrayList<String> situacoes = new ArrayList<>(Arrays.asList("Todas", "Conferidas","Nao Conferidas","Pagas", "Não Premiadas","Prescritas"));
+	private LinkedHashMap<Integer,String> situacoes = SituacoesApostaEnum.getSituacoes();
 	private HashMap<String, List<String>> expandableListDetail;
 	private NumberPicker npSituacao;
 	private ExpandableHeightGridView gridModalidades;
@@ -48,6 +49,7 @@ public class FiltroComprasAdapter extends BaseExpandableListAdapter {
 	private View viewModalidades;
 	private View viewSituacao;
 	private View viewConcurso;
+	private int numeroSituacaoSelecionada = SituacoesApostaEnum.TODAS;
 
 	public FiltroComprasAdapter(Context context, List<String> expandableListTitle,
 								HashMap<String, List<String>> expandableListDetail, List<ModalidadeDTO>  modalidades, Activity activity) {
@@ -106,7 +108,8 @@ public class FiltroComprasAdapter extends BaseExpandableListAdapter {
 							setNpSituacao(viewSituacao.findViewById(R.id.np_situacao_aposta));
 							npSituacao.setMinValue(1);
 							npSituacao.setMaxValue(situacoes.size());
-							npSituacao.setDisplayedValues(situacoes.toArray(new String[situacoes.size()]));
+							npSituacao.setDisplayedValues(situacoes.values().toArray(new String[situacoes.size()]));
+							npSituacao.setOnValueChangedListener(new ListenerSituacao());
 						}
 					}
 					convertView = viewSituacao;
@@ -125,6 +128,13 @@ public class FiltroComprasAdapter extends BaseExpandableListAdapter {
 		return convertView;
 	}
 
+	private class ListenerSituacao implements NumberPicker.OnValueChangeListener {
+		@Override
+		public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+			 numeroSituacaoSelecionada = newVal;
+		}
+	}
+
 	private void configuraAdapter() {
 		populaArraysTipoAposta(getTiposAposta(), getModalidades());
 		if (getTiposAposta() != null || getTiposAposta().size() > 0) {
@@ -141,7 +151,6 @@ public class FiltroComprasAdapter extends BaseExpandableListAdapter {
 
 	public Tupla<List<ApostaDTO>,Boolean>  getApostasFiltradasConcurso(List<ApostaDTO>  listaAposta){
 		List<ApostaDTO> listaFiltrada = new ArrayList<>();
-		Tupla<List<ApostaDTO>,Boolean> retorno;
 		Boolean incrementaContador = false;
 
 		if(getEtNumConcurso() != null &&
@@ -162,7 +171,6 @@ public class FiltroComprasAdapter extends BaseExpandableListAdapter {
 
 	public Tupla<List<ApostaDTO>,Boolean> getApostasFiltradasModalidade(List<ApostaDTO>  listaAposta){
 		List<ApostaDTO> listaFiltrada = new ArrayList<>();
-		Tupla<List<ApostaDTO>,Boolean> retorno;
 		Boolean incrementaContador = false;
 
 		if(getAdapterModalidades() != null) {
@@ -179,23 +187,34 @@ public class FiltroComprasAdapter extends BaseExpandableListAdapter {
 
 	public Tupla<List<ApostaDTO>,Boolean> getApostasFiltradasSituacao(List<ApostaDTO>  listaAposta){
 		List<ApostaDTO> listaFiltrada = new ArrayList<>();
-		Tupla<List<ApostaDTO>,Boolean> retorno;
 		Boolean incrementaContador = false;
 
-		if(getEtNumConcurso() != null &&
-				getEtNumConcurso().getText() != null &&
-				getEtNumConcurso().getText().toString() != null &&
-				!getEtNumConcurso().getText().toString().isEmpty()) {
-			int numConcurso = Integer.valueOf(getEtNumConcurso().getText().toString());
-			for (ApostaDTO aposta:listaAposta) {
-				if(aposta.getConcursoAlvo().equals(new Integer(numConcurso))){
-					//listaFiltrada.add(aposta);
-					//incrementaContador = true;
+		if(getNpSituacao() != null) {
+			int situacao = numeroSituacaoSelecionada;
+			String situacaoSelecionada = situacoes.get(situacao).toLowerCase();
+			if(!situacaoSelecionada.equals(situacoes.get(SituacoesApostaEnum.TODAS).toLowerCase())){
+				for (ApostaDTO aposta:listaAposta) {
+					if(situacaoSelecionada.equals(aposta.getSituacao().getDescricao().toLowerCase())){
+						listaFiltrada.add(aposta);
+					}
 				}
-
+				incrementaContador = true;
 			}
 		}
 		return new Tupla<>(listaFiltrada,incrementaContador);
+	}
+
+	public void limpaFiltros(){
+		if(getNpSituacao() != null){
+			getNpSituacao().setValue(SituacoesApostaEnum.TODAS);
+		}
+		if(getAdapterModalidades()!= null){
+			getAdapterModalidades().limpaSelecaoModalidades();
+		}
+		if(getEtNumConcurso()!= null){
+			getEtNumConcurso().setText("");
+			getEtNumConcurso().clearFocus();
+		}
 	}
 
 	private void populaArraysTipoAposta(List<TipoAposta> array, List<ModalidadeDTO> modalidades) {
