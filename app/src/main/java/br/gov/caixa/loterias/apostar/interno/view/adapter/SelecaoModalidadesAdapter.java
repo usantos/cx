@@ -22,21 +22,12 @@ public class SelecaoModalidadesAdapter extends BaseAdapter {
 
 	private final Context mContext;
 	private final List<TipoAposta> tiposAposta;
-	private  Boolean isUnicaSelecao, isModalidadeSelecionada;
-
-	public SelecaoModalidadesAdapter(Context context, List<TipoAposta> tiposAposta) {
-		this.mContext = context;
-		this.tiposAposta = tiposAposta;
-		this.isUnicaSelecao = false;
-		this.isModalidadeSelecionada = false;
-	}
+	private Boolean isUnicaSelecao;
 
 	public SelecaoModalidadesAdapter(Context context, List<TipoAposta> tiposAposta, Boolean isUnicaSelecao) {
 		this.mContext = context;
 		this.tiposAposta = tiposAposta;
 		this.isUnicaSelecao = isUnicaSelecao;
-		this.isModalidadeSelecionada = false;
-
 	}
 
 	@Override
@@ -68,11 +59,11 @@ public class SelecaoModalidadesAdapter extends BaseAdapter {
 
 		tituloTipoAposta.setText(tipoAposta.getTitulo());
 
-		if (tipoAposta.getSelect()){
+		if (tipoAposta.getSelect()) {
 			imageViewTipoAPosta.setImageResource(R.drawable.trevo);
 			linearLayoutTipoAposta.setBackgroundColor(ContextCompat.getColor(mContext, tipoAposta.getCorBackground()));
 			tituloTipoAposta.setTextColor(ContextCompat.getColor(mContext, R.color.branco));
-		}else{
+		} else {
 			imageViewTipoAPosta.setImageResource(tipoAposta.getImagemTrevo());
 			linearLayoutTipoAposta.setBackgroundColor(ContextCompat.getColor(mContext, R.color.branco));
 			linearLayoutTipoAposta.setBackground(ContextCompat.getDrawable(mContext, R.drawable.custom_border_cinza));
@@ -81,35 +72,31 @@ public class SelecaoModalidadesAdapter extends BaseAdapter {
 
 		convertView.setOnClickListener(v -> {
 
-			if (tiposAposta.get(position).getSelect()){
-				if(isUnicaSelecao){
-					isModalidadeSelecionada = false;
-				}
+			if (tiposAposta.get(position).getSelect()) {
 				tiposAposta.get(position).setSelect(false);
 				imageViewTipoAPosta.setImageResource(tipoAposta.getImagemTrevo());
 				linearLayoutTipoAposta.setBackgroundColor(ContextCompat.getColor(mContext, R.color.branco));
-				linearLayoutTipoAposta.setBackground(ContextCompat.getDrawable(mContext,R.drawable.custom_border_cinza));
+				linearLayoutTipoAposta.setBackground(ContextCompat.getDrawable(mContext, R.drawable.custom_border_cinza));
 				tituloTipoAposta.setTextColor(ContextCompat.getColor(mContext, R.color.cinzatextoselecionado));
-			}else{
-					if(!isModalidadeSelecionada){
-						if(isUnicaSelecao){
-							isModalidadeSelecionada = true;
-						}
-						tiposAposta.get(position).setSelect(true);
-						imageViewTipoAPosta.setImageResource(R.drawable.trevo);
-						linearLayoutTipoAposta.setBackgroundColor(ContextCompat.getColor(mContext, tipoAposta.getCorBackground()));
-						tituloTipoAposta.setTextColor(ContextCompat.getColor(mContext, R.color.branco));
-					}
+			} else {
+				if (isUnicaSelecao) {
+					limpaSelecaoModalidades();
 				}
+				tiposAposta.get(position).setSelect(true);
+				imageViewTipoAPosta.setImageResource(R.drawable.trevo);
+				linearLayoutTipoAposta.setBackgroundColor(ContextCompat.getColor(mContext, tipoAposta.getCorBackground()));
+				tituloTipoAposta.setTextColor(ContextCompat.getColor(mContext, R.color.branco));
 
+			}
 		});
 
 		return convertView;
 	}
+
 	public List<ModalidadeEnum> getModalidadesEnumSelecionadas() {
 		List<ModalidadeEnum> modalidadesEnum = new ArrayList<>();
-		List<ModalidadeDTO> modalidades = getModalidadesSelecionadas();
-		for (ModalidadeDTO modalidade: modalidades) {
+		List<ModalidadeDTO>  modalidades     = getModalidadesSelecionadas();
+		for (ModalidadeDTO modalidade : modalidades) {
 			modalidadesEnum.add(ModalidadeEnum.fromModalidadeDTO(modalidade));
 		}
 		return modalidadesEnum;
@@ -117,8 +104,8 @@ public class SelecaoModalidadesAdapter extends BaseAdapter {
 
 	public List<ModalidadeDTO> getModalidadesSelecionadas() {
 		List<ModalidadeDTO> modalidades = new ArrayList<>();
-		for (TipoAposta tipoAposta: tiposAposta) {
-			if(tipoAposta.getSelect()){
+		for (TipoAposta tipoAposta : tiposAposta) {
+			if (tipoAposta.getSelect()) {
 				ModalidadeDTO modalidade = new ModalidadeDTO();
 				modalidade.setDescricao(tipoAposta.getTitulo());
 				modalidade.setDescricaoEspecial(tipoAposta.getDescricaoEspecial());
@@ -129,12 +116,13 @@ public class SelecaoModalidadesAdapter extends BaseAdapter {
 		return modalidades;
 	}
 
-	public void limpaSelecaoModalidades(){
-		if(tiposAposta != null){
-			for (TipoAposta aposta:tiposAposta) {
+	public void limpaSelecaoModalidades() {
+		if (tiposAposta != null) {
+			for (TipoAposta aposta : tiposAposta) {
 				aposta.setSelect(false);
 			}
 		}
+		notifyDataSetChanged();
 	}
 }
 

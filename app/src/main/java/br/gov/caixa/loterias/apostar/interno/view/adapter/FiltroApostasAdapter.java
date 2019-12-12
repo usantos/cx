@@ -206,7 +206,7 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 		if(getAdapterModalidades() != null) {
 			List<ModalidadeEnum> modalidades = getAdapterModalidades().getModalidadesEnumSelecionadas();
 			for (ApostaDTO aposta:listaAposta) {
-				if(modalidades.contains(aposta.getModalidade()) ){
+				if(modalidades.contains(aposta.getModalidade())){
 					listaFiltrada.add(aposta);
 					incrementaContador = true;
 				}
