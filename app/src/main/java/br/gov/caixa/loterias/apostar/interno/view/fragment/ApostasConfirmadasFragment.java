@@ -96,6 +96,9 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
     @Override
     public void onResume() {
         super.onResume();
+        if(DialogUtils.isShow()){
+            DialogUtils.dismiss();
+        }
 
         if (firstTime || page == null) {
             FirebaseManager.registraEvento(getContext() ,"ENTROU_GERENCIAR_APOSTAS");
@@ -131,7 +134,9 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
 
             pd.show(getActivity().getSupportFragmentManager(), MONTH_YEAR_DIALOG);
             pd.setListener((datePicker, year, month, day) -> {
-                page = new ApostaPageRequest(PAGE_SIZE);
+                if(page == null){
+                    page = new ApostaPageRequest(PAGE_SIZE);
+                }
                 page.setAno(year);
                 page.setMes(month + 1);
                 page.setOffset(0);
@@ -366,7 +371,9 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
             int mes = mesAno.getMes().getValor().intValue();
             int ano = mesAno.getAno().intValue();
 
-            page = new ApostaPageRequest(PAGE_SIZE);
+            if(page == null){
+                page = new ApostaPageRequest(PAGE_SIZE);
+            }
             page.setAno(ano);
             page.setMes(mes);
             page.setOffset(0);
@@ -405,7 +412,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
 
             String dateStr = new SimpleDateFormat("MMMM yyyy", Locale.getDefault())
                     .format(cal.getTime().getTime());
-            dateResultTxt.setText(AppUtils.capitalizeFirstChar(dateStr));
+            dateResultTxt.setText(AppUtils.capitalizeFirstChar(dateStr.replace(" "," de ")));
         } else {
             //TODO: validar mensagem de erro.
             dateResultTxt.setText("Nenhuma aposta disponível.");
