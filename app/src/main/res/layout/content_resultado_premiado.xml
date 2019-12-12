@@ -89,9 +89,9 @@
                 android:id="@+id/listaFaixaPremiacaoLinearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="22dp"
                 android:layout_marginStart="19dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginEnd="22dp"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -107,6 +107,7 @@
                         android:layout_gravity="bottom"
                         android:layout_weight="0.24"
                         android:text="@string/label_concurso"
+                        android:gravity="center"
                         android:textColor="@color/branco"
                         android:textSize="14sp" />
 
@@ -115,6 +116,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.27"
                         android:text="@string/label_faixa_premiacao"
+                        android:gravity="center"
                         android:textColor="@color/branco"
                         android:textSize="14sp" />
 
@@ -124,6 +126,7 @@
                         android:layout_gravity="bottom"
                         android:layout_weight="0.24"
                         android:text="@string/label_sorteio_case"
+                        android:gravity="center"
                         android:textColor="@color/branco"
                         android:textSize="14sp" />
 
@@ -133,6 +136,7 @@
                         android:layout_gravity="bottom"
                         android:layout_weight="0.25"
                         android:text="@string/label_premiacao"
+                        android:gravity="center"
                         android:textColor="@color/branco"
                         android:textSize="14sp" />
                 </LinearLayout>
@@ -141,12 +145,12 @@
                     android:id="@+id/listaFaixaPremiacaoExpandableHeightRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="29dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="15dp"
                     android:clickable="false"
                     android:nestedScrollingEnabled="false" />
             </LinearLayout>
         </LinearLayout>
-
     </LinearLayout>
 
     <LinearLayout
@@ -154,19 +158,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/branco"
+
         android:orientation="vertical"
         tools:visibility="visible">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
             android:gravity="center">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="5dp"
                 android:text="@string/label_concurso_atual"
                 android:textColor="@color/cinza"
                 android:textSize="14.2sp"
@@ -202,6 +207,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
+                    android:layout_marginTop="5dp"
                     android:textAlignment="textStart"
                     android:textColor="@color/cinza" />
 
@@ -215,6 +221,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="78dp"
+                    android:layout_marginRight="16dp"
                     android:layout_weight="0.5"
                     android:orientation="vertical">
 
@@ -235,13 +242,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textAlignment="textStart"
+                        android:layout_marginTop="5dp"
                         android:textColor="@color/cinza"
                         android:textSize="14.2sp" />
 
                     <Button
                         android:id="@+id/botaoAposteAgora"
-                        android:layout_width="120dp"
-                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_marginTop="17dp"
                         android:background="@drawable/button_white_with_border_disabled"
                         android:backgroundTint="#3A485B"

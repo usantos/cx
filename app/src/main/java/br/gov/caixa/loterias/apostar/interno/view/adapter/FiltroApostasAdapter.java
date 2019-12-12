@@ -215,7 +215,7 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 			}
 		}
 		return new Tupla<>(listaFiltrada,incrementaContador);
-	} 
+	}
 
 	//TODO DESACOPLAR
 	public Tupla<List<ApostaDTO>,Boolean> getApostasFiltradasSituacao(List<ApostaDTO>  listaAposta){
