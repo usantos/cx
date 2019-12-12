@@ -205,15 +205,17 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 
 		if(getAdapterModalidades() != null) {
 			List<ModalidadeEnum> modalidades = getAdapterModalidades().getModalidadesEnumSelecionadas();
-			for (ApostaDTO aposta:listaAposta) {
-				if(modalidades.contains(aposta.getModalidade())){
-					listaFiltrada.add(aposta);
-					incrementaContador = true;
+			if(modalidades.size() > 0){
+				for (ApostaDTO aposta:listaAposta) {
+					if(modalidades.contains(aposta.getModalidade())){
+						listaFiltrada.add(aposta);
+					}
 				}
+				incrementaContador = true;
 			}
 		}
 		return new Tupla<>(listaFiltrada,incrementaContador);
-	}
+	} 
 
 	//TODO DESACOPLAR
 	public Tupla<List<ApostaDTO>,Boolean> getApostasFiltradasSituacao(List<ApostaDTO>  listaAposta){
