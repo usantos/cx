@@ -22,10 +22,21 @@ public class SelecaoModalidadesAdapter extends BaseAdapter {
 
 	private final Context mContext;
 	private final List<TipoAposta> tiposAposta;
+	private  Boolean isUnicaSelecao, isModalidadeSelecionada;
 
 	public SelecaoModalidadesAdapter(Context context, List<TipoAposta> tiposAposta) {
 		this.mContext = context;
 		this.tiposAposta = tiposAposta;
+		this.isUnicaSelecao = false;
+		this.isModalidadeSelecionada = false;
+	}
+
+	public SelecaoModalidadesAdapter(Context context, List<TipoAposta> tiposAposta, Boolean isUnicaSelecao) {
+		this.mContext = context;
+		this.tiposAposta = tiposAposta;
+		this.isUnicaSelecao = isUnicaSelecao;
+		this.isModalidadeSelecionada = false;
+
 	}
 
 	@Override
@@ -69,18 +80,28 @@ public class SelecaoModalidadesAdapter extends BaseAdapter {
 		}
 
 		convertView.setOnClickListener(v -> {
+
 			if (tiposAposta.get(position).getSelect()){
+				if(isUnicaSelecao){
+					isModalidadeSelecionada = false;
+				}
 				tiposAposta.get(position).setSelect(false);
 				imageViewTipoAPosta.setImageResource(tipoAposta.getImagemTrevo());
 				linearLayoutTipoAposta.setBackgroundColor(ContextCompat.getColor(mContext, R.color.branco));
 				linearLayoutTipoAposta.setBackground(ContextCompat.getDrawable(mContext,R.drawable.custom_border_cinza));
 				tituloTipoAposta.setTextColor(ContextCompat.getColor(mContext, R.color.cinzatextoselecionado));
 			}else{
-				tiposAposta.get(position).setSelect(true);
-				imageViewTipoAPosta.setImageResource(R.drawable.trevo);
-				linearLayoutTipoAposta.setBackgroundColor(ContextCompat.getColor(mContext, tipoAposta.getCorBackground()));
-				tituloTipoAposta.setTextColor(ContextCompat.getColor(mContext, R.color.branco));
-			}
+					if(!isModalidadeSelecionada){
+						if(isUnicaSelecao){
+							isModalidadeSelecionada = true;
+						}
+						tiposAposta.get(position).setSelect(true);
+						imageViewTipoAPosta.setImageResource(R.drawable.trevo);
+						linearLayoutTipoAposta.setBackgroundColor(ContextCompat.getColor(mContext, tipoAposta.getCorBackground()));
+						tituloTipoAposta.setTextColor(ContextCompat.getColor(mContext, R.color.branco));
+					}
+				}
+
 		});
 
 		return convertView;

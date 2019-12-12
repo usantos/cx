@@ -28,15 +28,16 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.SituacoesApostaE
 import br.gov.caixa.loterias.apostar.interno.utils.Tupla;
 import br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightGridView;
 
-public class FiltroComprasAdapter extends BaseExpandableListAdapter {
+public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 
 	public static final int MODALIDADES = 0;
 	public static final int SITUACAO = 1;
 	public static final int CONCURSO = 2;
 
+
 	private Context context;
 	private List<String> expandableListTitle;
-	private LinkedHashMap<Integer,String> situacoes = SituacoesApostaEnum.getSituacoes();
+	private LinkedHashMap<Integer,String> situacoes;
 	private HashMap<String, List<String>> expandableListDetail;
 	private NumberPicker npSituacao;
 	private ExpandableHeightGridView gridModalidades;
@@ -50,12 +51,18 @@ public class FiltroComprasAdapter extends BaseExpandableListAdapter {
 	private View viewSituacao;
 	private View viewConcurso;
 	private int numeroSituacaoSelecionada = SituacoesApostaEnum.TODAS;
+	private Boolean isUnicaSelecao = false;
 
-	public FiltroComprasAdapter(Context context, List<String> expandableListTitle,
-								HashMap<String, List<String>> expandableListDetail, List<ModalidadeDTO>  modalidades, Activity activity) {
+	public FiltroApostasAdapter(Context context, List<String> expandableListTitle,
+								HashMap<String, List<String>> expandableListDetail,
+								List<ModalidadeDTO>  modalidades, Activity activity,
+								Boolean isUnicaSelecao,
+								LinkedHashMap<Integer,String> situacoes) {
 		this.context = context;
 		this.expandableListTitle = expandableListTitle;
 		this.expandableListDetail = expandableListDetail;
+		this.isUnicaSelecao = isUnicaSelecao;
+		this.situacoes = situacoes;
 		this.setModalidades(modalidades);
 		this.setActivity(activity);
 		configuraAdapter();
@@ -145,10 +152,33 @@ public class FiltroComprasAdapter extends BaseExpandableListAdapter {
 					}
 				}
 			}
-			setAdapterModalidades(new SelecaoModalidadesAdapter(getActivity(), getTiposAposta()));
+			setAdapterModalidades(new SelecaoModalidadesAdapter(getActivity(), getTiposAposta(),isUnicaSelecao));
 		}
 	}
 
+	public int getContadorBadge(){
+		int contBadge = 0;
+		if (getAdapterModalidades() != null) {
+			if(getAdapterModalidades().getModalidadesSelecionadas().size() > 0){
+				contBadge++;
+			}
+		}
+		if (getNpSituacao() != null) {
+			if(getNpSituacao().getValue() != 1){
+				contBadge++;
+			}
+		}
+		if (getEtNumConcurso() != null) {
+			if(getEtNumConcurso().getText() != null &&
+					getEtNumConcurso().getText().toString() != null &&
+					!getEtNumConcurso().getText().toString().isEmpty()) {
+				contBadge++;
+			}
+		}
+		return contBadge;
+	}
+
+	//TODO DESACOPLAR E COLOCAR INTERFACES
 	public Tupla<List<ApostaDTO>,Boolean>  getApostasFiltradasConcurso(List<ApostaDTO>  listaAposta){
 		List<ApostaDTO> listaFiltrada = new ArrayList<>();
 		Boolean incrementaContador = false;
@@ -168,7 +198,7 @@ public class FiltroComprasAdapter extends BaseExpandableListAdapter {
 		}
 		return new Tupla<>(listaFiltrada,incrementaContador);
 	}
-
+	//TODO DESACOPLAR
 	public Tupla<List<ApostaDTO>,Boolean> getApostasFiltradasModalidade(List<ApostaDTO>  listaAposta){
 		List<ApostaDTO> listaFiltrada = new ArrayList<>();
 		Boolean incrementaContador = false;
@@ -185,6 +215,7 @@ public class FiltroComprasAdapter extends BaseExpandableListAdapter {
 		return new Tupla<>(listaFiltrada,incrementaContador);
 	}
 
+	//TODO DESACOPLAR
 	public Tupla<List<ApostaDTO>,Boolean> getApostasFiltradasSituacao(List<ApostaDTO>  listaAposta){
 		List<ApostaDTO> listaFiltrada = new ArrayList<>();
 		Boolean incrementaContador = false;
@@ -192,9 +223,9 @@ public class FiltroComprasAdapter extends BaseExpandableListAdapter {
 		if(getNpSituacao() != null) {
 			int situacao = numeroSituacaoSelecionada;
 			String situacaoSelecionada = situacoes.get(situacao).toLowerCase();
-			if(!situacaoSelecionada.equals(situacoes.get(SituacoesApostaEnum.TODAS).toLowerCase())){
+			if(!situacaoSelecionada.equals(situacoes.get(SituacoesApostaEnum.TODAS).toLowerCase())) {
 				for (ApostaDTO aposta:listaAposta) {
-					if(situacaoSelecionada.equals(aposta.getSituacao().getDescricao().toLowerCase())){
+					if(situacaoSelecionada.equals(aposta.getSituacao().getDescricao().toLowerCase())) {
 						listaFiltrada.add(aposta);
 					}
 				}
@@ -206,6 +237,7 @@ public class FiltroComprasAdapter extends BaseExpandableListAdapter {
 
 	public void limpaFiltros(){
 		if(getNpSituacao() != null){
+			numeroSituacaoSelecionada = 1;
 			getNpSituacao().setValue(SituacoesApostaEnum.TODAS);
 		}
 		if(getAdapterModalidades()!= null){

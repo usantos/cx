@@ -5,7 +5,7 @@ package br.gov.caixa.loterias.apostar.interno.model.bean;
  */
 
 public class ApostaPageRequest {
-    private int mes, ano, offset, size;
+    private int mes, ano, offset, size, situacao,modalidade;
 
     public ApostaPageRequest(int size){
         this.size = size;
@@ -41,5 +41,19 @@ public class ApostaPageRequest {
 
     public void setSize(int size) {
         this.size = size;
+    }
+
+    public int getSituacao() { return situacao; }
+
+    public void setSituacao(int situacao) {
+        this.situacao = situacao;
+    }
+
+    public int getModalidade() {
+        return modalidade;
+    }
+
+    public void setModalidade(int modalidade) {
+        this.modalidade = modalidade;
     }
 }

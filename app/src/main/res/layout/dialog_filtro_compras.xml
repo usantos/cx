@@ -19,7 +19,7 @@
             android:layout_height="56dp"
             android:layout_marginLeft="10dp"
             android:gravity="center_vertical"
-            android:text="@string/titulo_dialog_filtro_comprar"
+            android:text="@string/titulo_dialog_filtro_apostas"
             android:textColor="@color/branco"
             android:textSize="16sp"
             android:textStyle="bold"

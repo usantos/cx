@@ -555,5 +555,5 @@
     <string name="ops">Ops!</string>
 
     <!-- Filtros -->
-    <string name="titulo_dialog_filtro_comprar">Filtro de Compras</string>
+    <string name="titulo_dialog_filtro_apostas">Filtro de Apostas</string>
 </resources>

@@ -37,12 +37,13 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CarrinhoFavorito
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CompraDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeDTOResponse;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.SituacoesApostaEnum;
 import br.gov.caixa.loterias.apostar.interno.utils.DialogUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.ExpandableListDataFiltro;
 import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostar.interno.utils.Tupla;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
-import br.gov.caixa.loterias.apostar.interno.view.adapter.FiltroComprasAdapter;
+import br.gov.caixa.loterias.apostar.interno.view.adapter.FiltroApostasAdapter;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.ListaComprasDetalhesAdapter;
 import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
 
@@ -55,14 +56,13 @@ public class DetalhesComprasActivity extends AppCompatActivity {
     private Dialog dialogFavoritar, dialogFiltrar;
     private ExpandableListView listViewFiltro;
     private ListaComprasDetalhesAdapter listaComprasDetalhesAdapter;
-    private FiltroComprasAdapter expandableListAdapter;
+    private FiltroApostasAdapter filtroAdapter;
     private EditText etCarrinho;
     private ImageButton btnFiltro, btnDuvidas;
     private RecyclerView recyclerDetalhesApostas;
     private Boolean mantemSurpresinhas = true;
     private TextView tvBadge;
     int ordemCompra;
-    int contFiltrosUtilizados;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,7 +126,6 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         return true;
     }
 
-
     private void criarCabecalho() {
         FrameLayout setaIndicador = findViewById(R.id.setaComprasGroup);
         setaIndicador.setVisibility(View.INVISIBLE);
@@ -152,7 +151,6 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         Intent activity = new Intent(this, TermosUsoActivity.class);
         startActivity(activity);
     }
-
 
     private void buscaDetalhesCompras() {
 
@@ -251,10 +249,16 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         listViewFiltro.setGroupIndicator(null);
         expandableListDetail = ExpandableListDataFiltro.getData();
         expandableListTitle = new ArrayList<>(expandableListDetail.keySet());
-        expandableListAdapter = new FiltroComprasAdapter(this, expandableListTitle, expandableListDetail,modalidades,DetalhesComprasActivity.this);
-        listViewFiltro.setAdapter(expandableListAdapter);
+        filtroAdapter = new FiltroApostasAdapter(this,
+                                                 expandableListTitle,
+                                                 expandableListDetail,
+                                                 modalidades,
+                                                 DetalhesComprasActivity.this,
+                                                 false,
+                                                 SituacoesApostaEnum.getSituacoes());
+        listViewFiltro.setAdapter(filtroAdapter);
         btnLimpar.setOnClickListener(v -> {
-            expandableListAdapter.limpaFiltros();
+            filtroAdapter.limpaFiltros();
             dialogFiltrar.dismiss();
             tvBadge.setText(String.valueOf(0));
             tvBadge.setVisibility(View.GONE);
@@ -270,17 +274,17 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         }
     }
 
-    private void filtrarDados(){
-        if(listaAposta != null){
+    private void filtrarDados() {
+        if (listaAposta != null) {
             listaFiltrada = (ArrayList<ApostaDTO>) listaAposta.clone();
             Tupla<List<ApostaDTO>,Boolean> tuplaConcurso;
             Tupla<List<ApostaDTO>,Boolean> tuplaModalidade;
             Tupla<List<ApostaDTO>,Boolean> tuplaSituacao;
             int contFiltros = 0;
-            if(expandableListAdapter != null){
-                tuplaConcurso = expandableListAdapter.getApostasFiltradasConcurso(listaAposta);
-                tuplaSituacao = expandableListAdapter.getApostasFiltradasSituacao(listaAposta);
-                tuplaModalidade = expandableListAdapter.getApostasFiltradasModalidade(listaAposta);
+            if(filtroAdapter != null){
+                tuplaConcurso = filtroAdapter.getApostasFiltradasConcurso(listaAposta);
+                tuplaSituacao = filtroAdapter.getApostasFiltradasSituacao(listaAposta);
+                tuplaModalidade = filtroAdapter.getApostasFiltradasModalidade(listaAposta);
 
                 if(tuplaConcurso.y){
                     contFiltros++;
@@ -331,12 +335,11 @@ public class DetalhesComprasActivity extends AppCompatActivity {
                 );
             }
         });
-
     }
 
     private void favoritarCarrinho(String nome, Long idFavorito) {
         DialogUtils.show(DetalhesComprasActivity.this);
-        ApostaBO_.getInstance_(DetalhesComprasActivity.this).salvarCarrinhoFavorito(nome,idFavorito.toString(),mantemSurpresinhas, new RequestListener<CarrinhoFavoritoDTOResponse>() {
+        ApostaBO_.getInstance_(DetalhesComprasActivity.this).salvarCarrinhoFavorito(nome,idFavorito.toString(), mantemSurpresinhas, new RequestListener<CarrinhoFavoritoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoFavoritoDTOResponse result) {
                 DialogUtils.dismiss();
