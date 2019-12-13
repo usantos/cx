@@ -29,10 +29,13 @@ import java.util.Objects;
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO;
+import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametroSimulacao;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResultadoConcursoDTO;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResultadoConcursoDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResultadoConsultaBilheteDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResultadoConsultaBilheteDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.SituacaoResultadoBilheteEnum;
@@ -177,12 +180,10 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
 
         if (parametroSimulacao != null) {
             if (parametroSimulacao.getProximoConcurso() != null) {
-                contentResultadoPremiado.getProximoSorteioTextView().setText(ViewUtils.getDateAndHour(parametroSimulacao.getProximoConcurso().getConcurso().getDataAbertura()));
-
-                contentResultadoPremiado.getValorEstimativaConcursoAtualTextView().setText(ViewUtils.getMoedaFormat(parametroSimulacao.getProximoConcurso().getConcurso().getEstimativa() ));
+                contentResultadoPremiado.getProximoSorteioTextView().setText(ViewUtils.getDateAndHour(parametroSimulacao.getParametroJogo().getConcurso().getDataAbertura()));
+                contentResultadoPremiado.getValorEstimativaConcursoAtualTextView().setText(ViewUtils.getMoedaFormat(parametroSimulacao.getParametroJogo().getConcurso().getEstimativa() ));
             }
         }
-
     }
 
     @Click(R.id.botaoAposteAgora)
@@ -227,4 +228,37 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
         listaFaixaPremiacaoExpandableHeightRecyclerView.setExpanded(Boolean.TRUE);
         listaFaixaPremiacaoExpandableHeightRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
+
+    private void buscaUltimoConcurso(final String modalidade) {
+
+        final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
+        final ApostaBO apostaBO = ApostaBO_.getInstance_(this);
+
+        apostaBO.getResultadoModalidade(modalidade, new RequestListener<ResultadoConcursoDTOResponse>() {
+            @Override
+            public void onResponse(ResultadoConcursoDTOResponse response) {
+                loadViewProgress.dismiss();
+                if (response.getRedirect() != null){
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), ResultadoLerBilhetesActivity.this);
+                }
+                configuraDadosProximoConcurso(response.getPayload());
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                loadViewProgress.dismiss();
+                RedirectNetwork.checkRedirect(error, ResultadoLerBilhetesActivity.this);
+            }
+        });
+    }
+    private void configuraDadosProximoConcurso(ResultadoConcursoDTO ultimoConcurso){
+        if(ultimoConcurso!= null && ultimoConcurso.getProximoConcurso() != null){
+            contentResultadoPremiado.getProximoSorteioTextView().setText(ViewUtils.getDateAndHour(ultimoConcurso.getProximoConcurso().getDataAbertura()));
+            contentResultadoPremiado.getValorEstimativaConcursoAtualTextView().setText(ViewUtils.getMoedaFormat(ultimoConcurso.getProximoConcurso().getEstimativa()));
+        } else {
+            contentResultadoPremiado.getProximoSorteioTextView().setVisibility(View.GONE);
+            contentResultadoPremiado.getValorEstimativaConcursoAtualTextView().setVisibility(View.GONE);
+        }
+    }
+
 }
