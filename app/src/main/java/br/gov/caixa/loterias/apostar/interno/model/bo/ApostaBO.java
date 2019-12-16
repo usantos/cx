@@ -38,6 +38,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResultadoPesquis
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOCompraDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOHistoricoApostaDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RetornoPadraoDTO;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.SituacoesApostaFiltroEnum;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.GsonRequest;
 
 import static org.androidannotations.annotations.EBean.Scope.Singleton;
@@ -208,7 +209,7 @@ public class ApostaBO extends BaseBO {
         if(page.getSituacao() != 0){
             queryParams.put("situacao", String.valueOf(page.getSituacao()));
         } else {
-            queryParams.put("situacao", "1");
+            queryParams.put("situacao", String.valueOf(SituacoesApostaFiltroEnum.TODAS));
         }
         if(page.getModalidade() != 0){
             queryParams.put("modalidade", String.valueOf(page.getModalidade()));
@@ -233,7 +234,7 @@ public class ApostaBO extends BaseBO {
         queryParams.put("ano", String.valueOf(page.getAno()));
         queryParams.put("offset", String.valueOf(page.getOffset()));
         queryParams.put("size", String.valueOf(page.getSize()));
-        queryParams.put("situacao", "1");
+        queryParams.put("situacao", String.valueOf(SituacoesApostaFiltroEnum.TODAS));
 
 //        queryParams.put("idsApostas", idsApostas);
 //        queryParams.put("modalidade", modalidade);
