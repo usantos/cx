@@ -48,6 +48,7 @@ import br.gov.caixa.loterias.apostar.interno.utils.DialogUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostar.interno.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.ApostasConfirmadasAdapter;
+import br.gov.caixa.loterias.apostar.interno.view.adapter.FiltroApostasAdapter;
 import br.gov.caixa.loterias.apostar.interno.view.custom.MonthYearPickerDialog;
 import br.gov.caixa.loterias.apostar.interno.view.custom.MonthYearPickerDialog_;
 
@@ -77,6 +78,8 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
     @FragmentArg
     protected boolean isHistorico;
 
+    protected FiltroApostasAdapter filtroAdapter;
+
     private List<MesAnoDTO> mesesAnosDisponiveis;
     private boolean hasMoreItems;
     private boolean isLoading;
@@ -93,6 +96,9 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
     @Override
     public void onResume() {
         super.onResume();
+        if(DialogUtils.isShow()){
+            DialogUtils.dismiss();
+        }
 
         if (firstTime || page == null) {
             FirebaseManager.registraEvento(getContext() ,"ENTROU_GERENCIAR_APOSTAS");
@@ -128,7 +134,9 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
 
             pd.show(getActivity().getSupportFragmentManager(), MONTH_YEAR_DIALOG);
             pd.setListener((datePicker, year, month, day) -> {
-                page = new ApostaPageRequest(PAGE_SIZE);
+                if(page == null){
+                    page = new ApostaPageRequest(PAGE_SIZE);
+                }
                 page.setAno(year);
                 page.setMes(month + 1);
                 page.setOffset(0);
@@ -190,6 +198,25 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
         }
     }
 
+    public void filtraDados(){
+        page.setModalidade(0);
+        page.setSituacao(0);
+        if(!isHistorico){
+            if(filtroAdapter != null){
+                if(filtroAdapter.getNpSituacao() != null) {
+                    page.setSituacao(filtroAdapter.getNpSituacao().getValue());
+                }
+                if(filtroAdapter.getAdapterModalidades() != null){
+                    if(filtroAdapter.getAdapterModalidades().getModalidadesSelecionadas().size() > 0){
+                        page.setModalidade(filtroAdapter.getAdapterModalidades().getModalidadesSelecionadas().get(0).getValor());
+                    }
+                }
+                page.setOffset(0);
+                reloadingEntireList = true;
+                requestApostasConfirmadas();
+            }
+        }
+    }
     private void clearItemDecorations() {
         while (apostasConfirmadasRecyclerView.getItemDecorationCount() != 0) {
             apostasConfirmadasRecyclerView.removeItemDecorationAt(0);
@@ -344,7 +371,9 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
             int mes = mesAno.getMes().getValor().intValue();
             int ano = mesAno.getAno().intValue();
 
-            page = new ApostaPageRequest(PAGE_SIZE);
+            if(page == null){
+                page = new ApostaPageRequest(PAGE_SIZE);
+            }
             page.setAno(ano);
             page.setMes(mes);
             page.setOffset(0);
@@ -383,7 +412,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
 
             String dateStr = new SimpleDateFormat("MMMM yyyy", Locale.getDefault())
                     .format(cal.getTime().getTime());
-            dateResultTxt.setText(AppUtils.capitalizeFirstChar(dateStr));
+            dateResultTxt.setText(AppUtils.capitalizeFirstChar(dateStr.replace(" "," de ")));
         } else {
             //TODO: validar mensagem de erro.
             dateResultTxt.setText("Nenhuma aposta disponível.");
@@ -397,5 +426,9 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
             apostasLoading.setVisibility(View.GONE);
             RedirectNetwork.checkRedirect(error, getActivity());
         }
+    }
+
+    public void setFiltroAdapter(FiltroApostasAdapter adapter){
+        this.filtroAdapter = adapter;
     }
 }

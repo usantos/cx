@@ -38,6 +38,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResultadoPesquis
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOCompraDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOHistoricoApostaDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RetornoPadraoDTO;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.SituacoesApostaFiltroEnum;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.GsonRequest;
 
 import static org.androidannotations.annotations.EBean.Scope.Singleton;
@@ -205,11 +206,17 @@ public class ApostaBO extends BaseBO {
         queryParams.put("ano", String.valueOf(page.getAno()));
         queryParams.put("offset", String.valueOf(page.getOffset()));
         queryParams.put("size", String.valueOf(page.getSize()));
+        if(page.getSituacao() != 0){
+            queryParams.put("situacao", String.valueOf(page.getSituacao()));
+        } else {
+            queryParams.put("situacao", String.valueOf(SituacoesApostaFiltroEnum.TODAS));
+        }
+        if(page.getModalidade() != 0){
+            queryParams.put("modalidade", String.valueOf(page.getModalidade()));
+        }
+        //queryParams.put("situacao", String.valueOf(page.getSituacao()));
 
-        //TODO: pegar situação dinamicamente
-        queryParams.put("situacao", "1");
-//        queryParams.put("idsApostas", idsApostas);
-//        queryParams.put("modalidade", "0");
+        //        queryParams.put("idsApostas", idsApostas);
 
         final GsonRequest request = silceConnection.buildGetRequest(ServerMethods.APOSTAS_CONFIRMADAS_PATH,
                                                                     queryParams,
@@ -227,11 +234,8 @@ public class ApostaBO extends BaseBO {
         queryParams.put("ano", String.valueOf(page.getAno()));
         queryParams.put("offset", String.valueOf(page.getOffset()));
         queryParams.put("size", String.valueOf(page.getSize()));
+        queryParams.put("situacao", String.valueOf(SituacoesApostaFiltroEnum.TODAS));
 
-        //TODO: pegar situação dinamicamente
-        queryParams.put("situacao", "1");
-
-        //TODO: utilizar paginação
 //        queryParams.put("idsApostas", idsApostas);
 //        queryParams.put("modalidade", modalidade);
 

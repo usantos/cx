@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:theme="@style/AppTheme.AppBarOverlay"
     android:background="@drawable/background_gradient_verde">
 
@@ -30,6 +31,18 @@
         android:textColorHint="@color/mpsdk_darker_gray"
         android:textSize="14sp"
         android:background="@drawable/rounded_edittext"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone"/>
+
+    <ImageButton
+        android:id="@+id/ib_duvidas"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:backgroundTint="@color/transparente"
+        android:src="@drawable/icon_duvida2"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:visibility="gone"/>
 
@@ -69,6 +82,39 @@
         app:layout_constraintEnd_toStartOf="@+id/ib_favoritar"
         app:layout_constraintTop_toTopOf="parent"
         android:visibility="gone"/>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/ib_duvidas"
+        app:layout_constraintTop_toTopOf="parent">
+        <ImageButton
+            android:id="@+id/ib_filtrar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/transparente"
+            android:tint="@color/branco"
+            android:src="@drawable/ic_funil"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="gone"/>
+        <TextView
+            android:id="@+id/tv_badge"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_margin="6dp"
+            android:background="@drawable/btn_circulo_verde_filled"
+            android:backgroundTint="@color/mpsdk_color_red_error"
+            tools:text="1"
+            android:textSize="8sp"
+            android:textColor="@color/branco"
+            android:gravity="center"
+            app:layout_constraintLeft_toLeftOf="@id/ib_filtrar"
+            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="gone"/>
+    </android.support.constraint.ConstraintLayout>
 
     <Button
         android:id="@+id/btn_salvar_rpd"

@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:id="@+id/item_resultado_content_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="40dp">
 
         <TextView
             android:layout_width="match_parent"
@@ -61,23 +62,10 @@
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/vejaDetalhesButton"
-            android:layout_width="246dp"
-            android:layout_height="56dp"
-            android:layout_marginBottom="20dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="18dp"
-            android:background="@drawable/button_border"
-            android:textAllCaps="false"
-            android:textColor="@color/branco" />
+        <br.gov.caixa.loterias.apostar.interno.view.custom.PartidaViewDetalhesResultado_
+            android:id="@+id/partidaViewDetalhesResultadoView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </LinearLayout>
-
-    <br.gov.caixa.loterias.apostar.interno.view.custom.PartidaViewDetalhesResultado_
-        android:id="@+id/partidaViewDetalhesResultadoView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone" />
 
 </RelativeLayout>

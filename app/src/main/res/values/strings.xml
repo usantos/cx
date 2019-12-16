@@ -182,7 +182,7 @@
 
     <string name="label_nao_possivel_selecionar_quantidade_numeros_superior_limite_modalidade_loterica">Não é possível selecionar quantidade de números superior ao limite para modalidade Lotérica.</string>
     <string name="label_aposta_salva_carinha">Aposta salva :)</string>
-    <string name="label_sem_teimosinha">sem teimosinha</string>
+    <string name="label_sem_teimosinha">Teimosinha</string>
     <string name="label_salve_esta_aposta_carinha">Salve esta aposta :)</string>
     <string name="label_aposta_espelho">Aposta espelho</string>
     <string name="label_aposte_agora">Aposte agora</string>
@@ -250,7 +250,9 @@
     <string name="label_ganhadores_regiao_segundo_sorteio_bold">_Ganhadores por regi\u00e3o - 2º sorteio_</string>
     <string name="label_nao_foi_dessa_vez">Não premiado ou ainda não apurado</string>
     <string name="label_pode_comemorar">Pode comemorar,</string>
-    <string name="label_voce_foi_premiado">você foi premiado!</string>
+    <string name="label_voce_foi_premiado">você foi premiado com \n {ValorPremio}</string>
+    <string name="label_voce_foi_premiado_exclamacao">você foi premiado!</string>
+    <string name="label_estimativa_de_premio">Estimativa de prêmio</string>
     <string name="label_limite_diario">Limite diário</string>
     <string name="label_abertura_aposta">Abertura da aposta</string>
     <string name="label_premio">Prêmio</string>
@@ -381,7 +383,7 @@
     <string name="label_domingo">Domingo</string>
     <string name="label_resultados">Resultados</string>
     <string name="label_acumulou_exclamacao">ACUMULOU!</string>
-    <string name="label_nao_houve_acertador">N\u00e3o houve acertador!</string>
+    <string name="label_nao_houve_acertador">sem ganhadores</string>
     <string name="label_mes_sorte_dois_pontos_mes">M\u00eas de sorte: %s</string>
     <string name="label_mes_sorteado">M\u00eas de sorte&#160;</string>
     <string name="label_zero">0 (zero)</string>
@@ -551,4 +553,7 @@
     <string name="conf_rapd_verifique_opcoes">Verifique e confirme suas opções de Rapidão.</string>
 
     <string name="ops">Ops!</string>
+
+    <!-- Filtros -->
+    <string name="titulo_dialog_filtro_apostas">Filtro de Apostas</string>
 </resources>

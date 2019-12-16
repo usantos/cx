@@ -467,8 +467,7 @@ public class AdicionarApostaCarrinhoHelper {
                 telaConfirmarCarrinho(aposta.getModalidade(), aposta);
             }
         } else {
-            String msgError = MensagensNetwork.setMensagem(error, context);
-            ViewUtils.alert(context, msgError);
+            RedirectNetwork.checkRedirect(error, (Activity) context);
         }
     }
 }

@@ -1,20 +1,23 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
     android:fitsSystemWindows="true"
-    tools:context="br.gov.caixa.loterias.apostar.interno.controllers.DetalhesComprasActivity">
+    android:layout_height="match_parent">
 
-    <include
-        android:id="@+id/app_bar_degrade"
-        layout="@layout/app_bar_degrade" />
+    <include layout="@layout/app_bar_degrade_pesquisa" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/gl_toolbar"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="?attr/actionBarSize" />
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/app_bar_degrade">
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gl_toolbar">
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -31,5 +34,4 @@
                 android:layout_below="@+id/list_group_compras" />
         </RelativeLayout>
     </android.support.v4.widget.NestedScrollView>
-
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>
