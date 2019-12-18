@@ -32,6 +32,10 @@ public final class NumerosResultadosAdapter extends RecyclerView.Adapter<Numeros
         this.context = context;
         this.numeroslista = numeroslista;
         this.modalidade = modalidade;
+        if(numeroslista != null){
+            Collections.sort(this.numeroslista);
+
+        }
     }
 
     @Override

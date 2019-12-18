@@ -382,6 +382,7 @@
     <string name="label_voltar_bold">_Voltar_</string>
     <string name="label_domingo">Domingo</string>
     <string name="label_resultados">Resultados</string>
+    <string name="label_ultimo_resultado">Último resultado</string>
     <string name="label_acumulou_exclamacao">ACUMULOU!</string>
     <string name="label_nao_houve_acertador">sem ganhadores</string>
     <string name="label_mes_sorte_dois_pontos_mes">M\u00eas de sorte: %s</string>
