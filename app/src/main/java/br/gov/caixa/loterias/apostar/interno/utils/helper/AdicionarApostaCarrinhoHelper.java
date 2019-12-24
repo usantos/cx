@@ -205,6 +205,7 @@ public class AdicionarApostaCarrinhoHelper {
         BigDecimal valor = BigDecimal.ZERO;
         Boolean espelho = false;
         IdentificaoDeUmaApostaDas8Modalidades apostaDas8Modalidades = null;
+        IncluirSurpresinhaDTO incluirSurpresinhaDTO = null;
         if(aposta instanceof IdentificaoDeUmaApostaDas8Modalidades){
             apostaDas8Modalidades = (IdentificaoDeUmaApostaDas8Modalidades) aposta;
             if(apostaDas8Modalidades != null){
@@ -213,6 +214,7 @@ public class AdicionarApostaCarrinhoHelper {
             }
         }else if(aposta instanceof IncluirSurpresinhaDTO){
             valor = ((IncluirSurpresinhaDTO)aposta).getValor();
+            incluirSurpresinhaDTO = (IncluirSurpresinhaDTO) aposta;
         }
 
         if(modalidadeEnum == ModalidadeEnum.LOTOMANIA && espelho){
@@ -222,7 +224,15 @@ public class AdicionarApostaCarrinhoHelper {
         Intent activity = new Intent(context, ConfirmadoInclusaoCarrinhoActivity.class);
         activity.putExtra("tipoAposta", modalidadeEnum);
         activity.putExtra("valorAposta", valor);
-        activity.putExtra("modalidade", (new Gson()).toJson(ViewUtils.getParametroSimulacao(SessaoUsuario.getInstance(), modalidadeEnum, apostaDas8Modalidades).getParametroJogo()));
+        if(apostaDas8Modalidades != null){
+            activity.putExtra("modalidade", (new Gson()).toJson(ViewUtils.getParametroSimulacao(SessaoUsuario.getInstance(), modalidadeEnum, apostaDas8Modalidades).getParametroJogo()));
+        } else {
+            if(incluirSurpresinhaDTO != null){
+                activity.putExtra("modalidade", (new Gson()).toJson(ViewUtils.getParametroSimulacao(SessaoUsuario.getInstance(), modalidadeEnum, incluirSurpresinhaDTO).getParametroJogo()));
+
+            }
+        }
+
         context.startActivity(activity);
         if(context instanceof SimularApostaActivity){
             ((SimularApostaActivity)context).zerarApostas();
