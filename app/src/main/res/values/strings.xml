@@ -286,7 +286,7 @@
     <string name="label_loterica">Lotérica</string>
     <string name="label_agencia_caixa">Agência Caixa</string>
     <string name="label_mercado_pago">Mercado Pago</string>
-    <string name="label_premio_pago">Prêmio Pago</string>
+    <string name="label_premio_pago">O prêmio deste bilhete já foi pago. Parabéns :)</string>
     <string name="label_emitir_comprovante">Emita o seu comprovante da aposta
 </string>
     <string name="label_diriga_loterica_preferencia">Dirija-se à lotérica de sua preferência</string>
