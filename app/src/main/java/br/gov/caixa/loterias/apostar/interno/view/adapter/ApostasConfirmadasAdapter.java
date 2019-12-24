@@ -1,8 +1,10 @@
 package br.gov.caixa.loterias.apostar.interno.view.adapter;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +39,7 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostasConfi
     private boolean isHistorico;
     private OnApostasConfirmadasListener onApostasConfirmadasListener;
     private MinhasApostasActivity parentActivity;
+    //private AnimatorSet scaleIn, scaleOut;
 
     public ApostasConfirmadasAdapter(MinhasApostasActivity parentActivity, Context context, List<ApostaDTO> list, boolean isHistorico) {
         this(parentActivity, context, list, null, isHistorico);
@@ -72,13 +75,8 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostasConfi
 
             int color = ContextCompat.getColor(context, estiloModalidade.getCorEscura());
 
-            holder.color = color;
-            holder.stripe.setBackgroundColor(color);
-            holder.modalidadeTxt.setTextColor(color);
-            holder.modalidadeTxt.setText(ViewUtils.getNomeModalidadePorAposta(aposta));
-            holder.situacaoTxt.setTextColor(color);
             String descricaoStatus = "";
-            if (aposta.getSituacao().getValor() == 4){
+            if (aposta.getSituacao().getValor() == 4) {
                 descricaoStatus = "Conferindo resultado.";
                 holder.situacaoTxt.setTextColor(ContextCompat.getColor(context, R.color.azulescuroapostafavorita));
                 holder.progressBarSituacao.setVisibility(View.VISIBLE);
@@ -86,7 +84,22 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostasConfi
             } else {
                 descricaoStatus = aposta.getSituacao().getDescricao();
             }
+
+
+            holder.color = color;
+            holder.stripe.setBackgroundColor(color);
+            holder.modalidadeTxt.setTextColor(color);
+            holder.modalidadeTxt.setText(ViewUtils.getNomeModalidadePorAposta(aposta));
+            holder.situacaoTxt.setTextColor(color);
             holder.situacaoTxt.setText("situação: " + descricaoStatus.toLowerCase(new Locale("pt", "BR")));
+
+
+            if (aposta.getSituacao().getValor() != 100) {
+                holder.situacaoTxt.setTypeface(null, Typeface.NORMAL);
+                holder.situacaoTxt.setAllCaps(false);
+                holder.situacaoTxt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+                //holder.modalidadeTxt.setTypeface(null, Typeface.NORMAL);
+            }
 
             int teimosinhas = aposta.getQuantidadeTeimosinhas() != null ? aposta.getQuantidadeTeimosinhas() : 0;
             if (teimosinhas > 0) {
@@ -100,6 +113,24 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostasConfi
         }
     }
 
+    /*private void animaTvSituacao(ViewHolder holder){
+        scaleIn = (AnimatorSet) AnimatorInflater.loadAnimator(context, R.animator.scale_in_anim);
+        scaleOut = (AnimatorSet) AnimatorInflater.loadAnimator(context  , R.animator.scale_out_anim);
+        scaleIn.setTarget(holder.situacaoTxt);
+        scaleOut.setTarget(holder.situacaoTxt);
+
+        new CountDownTimer(TimeUnit.MINUTES.toMillis(100000), 1000) {
+            public void onTick(long millisegs) {
+                scaleIn.start();
+                scaleOut.start();
+            }
+
+            public void onFinish() {
+                scaleIn.start();
+            }
+        }.start();
+    }*/
+
     private void conferirResultado (ApostaDTO aposta, ViewHolder holder) {
         ConferirResultadoHelper.conferirResultadoHandler = this;
         ConferirResultadoHelper.conferirResultadoWithoutLoading(holder, aposta.getId(), parentActivity);
@@ -107,11 +138,19 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostasConfi
 
     @Override
     public void handle(ViewHolder holder, DTOEnumLong situacao) {
-        holder.situacaoTxt.setText("situação: " + situacao.getDescricao().toLowerCase(new Locale("pt", "BR")));
-
         holder.stripe.setBackgroundColor(holder.color);
         holder.modalidadeTxt.setTextColor(holder.color);
         holder.situacaoTxt.setTextColor(holder.color);
+
+        if (situacao.getDescricao().equalsIgnoreCase("Premiada")) {
+            holder.situacaoTxt.setTypeface(null, Typeface.BOLD);
+            holder.situacaoTxt.setAllCaps(true);
+            holder.situacaoTxt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+            //holder.modalidadeTxt.setTypeface(null, Typeface.BOLD);
+            holder.situacaoTxt.setText(ViewUtils.textFuturaAndFuturaBold(context,"situação: _" + situacao.getDescricao().toLowerCase(new Locale("pt", "BR")) + "_"));
+        } else {
+            holder.situacaoTxt.setText("situação: " + situacao.getDescricao().toLowerCase(new Locale("pt", "BR")));
+        }
 
         holder.progressBarSituacao.setVisibility(View.INVISIBLE);
     }
