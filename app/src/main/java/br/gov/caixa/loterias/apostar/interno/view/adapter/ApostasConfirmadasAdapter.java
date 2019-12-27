@@ -96,7 +96,6 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostasConfi
 
             if (aposta.getSituacao().getValor() != 100) {
                 holder.situacaoTxt.setTypeface(null, Typeface.NORMAL);
-                holder.situacaoTxt.setAllCaps(false);
                 holder.situacaoTxt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
                 //holder.modalidadeTxt.setTypeface(null, Typeface.NORMAL);
             }
@@ -144,9 +143,7 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostasConfi
 
         if (situacao.getDescricao().equalsIgnoreCase("Premiada")) {
             holder.situacaoTxt.setTypeface(null, Typeface.BOLD);
-            holder.situacaoTxt.setAllCaps(true);
             holder.situacaoTxt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
-            //holder.modalidadeTxt.setTypeface(null, Typeface.BOLD);
             holder.situacaoTxt.setText(ViewUtils.textFuturaAndFuturaBold(context,"situação: _" + situacao.getDescricao().toLowerCase(new Locale("pt", "BR")) + "_"));
         } else {
             holder.situacaoTxt.setText("situação: " + situacao.getDescricao().toLowerCase(new Locale("pt", "BR")));
