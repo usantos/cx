@@ -35,6 +35,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.AgrupadorApostaC
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CarrinhoFavoritoDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CompraDTO;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IndicadorSurpresinha;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.SituacoesApostaEnum;
@@ -189,7 +190,8 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         dialogFavoritar.findViewById(R.id.ck_manter_surpresinhas).setVisibility(View.GONE);
         dialogFavoritar.findViewById(R.id.tv_manter_surpresinhas).setVisibility(View.GONE);
         for (ApostaDTO aposta: apostas) {
-            if(aposta.getIndicadorSurpresinha().getValor() == 2) {
+            if  (   aposta.getIndicadorSurpresinha().getValor() == IndicadorSurpresinha.SURPRESINHA ||
+                    aposta.getIndicadorSurpresinha().getValor() == IndicadorSurpresinha.SURPRESINHA_NUMERICA) {
                 dialogFavoritar.findViewById(R.id.ck_manter_surpresinhas).setVisibility(View.VISIBLE);
                 dialogFavoritar.findViewById(R.id.tv_manter_surpresinhas).setVisibility(View.VISIBLE);
                 break;

@@ -61,6 +61,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.DTOEnumInteger;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.Dezena;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.EquipeDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IndicadorSurpresinha;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametroEquipe;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametroJogoDTO;
@@ -433,7 +434,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
         aposta.setNumerosSelecionados(dezenasSelecionadas);
 
         DTOEnumInteger indicadorSurpresinha = new DTOEnumInteger();
-        indicadorSurpresinha.setValor(1);
+        indicadorSurpresinha.setValor(IndicadorSurpresinha.NAO_SURPRESINHA);
         indicadorSurpresinha.setDescricao("");
 
         aposta.setIndicadorSurpresinha(indicadorSurpresinha);

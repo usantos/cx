@@ -35,6 +35,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.DTOEnumCharacter
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.DTOEnumInteger;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IncluirSurpresinhaDTO;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IndicadorSurpresinha;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametroSimulacao;
@@ -335,7 +336,7 @@ public class AdicionarApostaCarrinhoHelper {
             aposta.setNumerosSelecionados(apostaDTO.getNumerosSelecionados());
 
             DTOEnumInteger indicadorSurpresinha = new DTOEnumInteger();
-            indicadorSurpresinha.setValor(1);
+            indicadorSurpresinha.setValor(IndicadorSurpresinha.NAO_SURPRESINHA);
             indicadorSurpresinha.setDescricao("");
 
             aposta.setIndicadorSurpresinha(indicadorSurpresinha);
