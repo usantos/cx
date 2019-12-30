@@ -182,7 +182,7 @@ public class AdicionarApostaCarrinhoHelper {
             (final ApostaBO apostaBO, final IdentificaoDeUmaApostaDas8Modalidades aposta, final CarrinhoDTO carrinhoDTO) {
          BigDecimal limiteDiario = SessaoUsuario.getInstance().getParametrosSimulacao().getValorLimiteDiario();
         BigDecimal valorCarrinho = carrinhoDTO.getValorTotal().add(IdentificaoDeUmaApostaDas8Modalidades.getValorApostaPorPrognostico(aposta));
-        if (valorCarrinho.compareTo(limiteDiario) == 1) {
+        if (valorCarrinho != null && limiteDiario != null && valorCarrinho.compareTo(limiteDiario) == 1) {
             DialogUtils.dismiss();
             ViewUtils.alertTitleButtonYesOrNotListener(context, context.getResources().getString(R.string.MA014), (dialog, which) -> checarApostasRepetidas(apostaBO, aposta, carrinhoDTO));
         } else {
