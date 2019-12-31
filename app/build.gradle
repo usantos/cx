@@ -15,8 +15,8 @@ android {
         minSdkVersion 21
         targetSdkVersion 28
         //version code = minSdkVersion + versionName(sem pontuação) + versão interna
-        versionCode 2110201
-        versionName "1.0.20"
+        versionCode 2110211
+        versionName "1.0.21"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -38,7 +38,7 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         flavorDimensions 'default'
@@ -174,7 +174,7 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:3.7.0'
 
     //Biblioteca de scanner de código de barras
-    implementation 'com.journeyapps:zxing-android-embedded:3.5.0'
+    implementation 'com.journeyapps:zxing-android-embedded:3.3.0'
     implementation 'commons-lang:commons-lang:2.6'
 
     //QRCode gerador

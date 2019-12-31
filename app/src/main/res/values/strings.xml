@@ -286,9 +286,8 @@
     <string name="label_loterica">Lotérica</string>
     <string name="label_agencia_caixa">Agência Caixa</string>
     <string name="label_mercado_pago">Mercado Pago</string>
-    <string name="label_premio_pago">Prêmio Pago</string>
-    <string name="label_emitir_comprovante">Emita o seu comprovante da aposta
-</string>
+    <string name="label_premio_pago">O prêmio deste bilhete já foi pago. Parabéns :)</string>
+    <string name="label_emitir_comprovante">Emita o seu comprovante da aposta</string>
     <string name="label_diriga_loterica_preferencia">Dirija-se à lotérica de sua preferência</string>
     <string name="label_apresente_recibo_documento_identificacao_originais">Apresente seu recibo de aposta e seu documento de identificação originais</string>
     <string name="label_apresente_recibo_aposta">Apresente seu recibo de aposta</string>
@@ -382,6 +381,7 @@
     <string name="label_voltar_bold">_Voltar_</string>
     <string name="label_domingo">Domingo</string>
     <string name="label_resultados">Resultados</string>
+    <string name="label_ultimo_resultado">Último resultado</string>
     <string name="label_acumulou_exclamacao">ACUMULOU!</string>
     <string name="label_nao_houve_acertador">sem ganhadores</string>
     <string name="label_mes_sorte_dois_pontos_mes">M\u00eas de sorte: %s</string>

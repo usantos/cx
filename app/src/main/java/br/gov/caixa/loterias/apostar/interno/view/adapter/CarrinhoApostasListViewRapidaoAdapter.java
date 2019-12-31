@@ -21,6 +21,7 @@ import java.util.Locale;
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.controllers.ListaRapidaoActivity;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IndicadorSurpresinha;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostar.interno.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
@@ -116,36 +117,60 @@ public class CarrinhoApostasListViewRapidaoAdapter extends RecyclerView.Adapter<
 
         quantidadeApostadas.setText(String.format( Locale.getDefault(), "%d %s", quantidadeNumeros, quantidadeApostadasString));
         quantidadeSorteios.setText(String.format(Locale.getDefault(), "%d %s", quantidadeTeimosinhas, quantidadeSorteiosString));
+        if(apostas != null && apostas.get(position) != null && apostas.get(position).getModalidade() != null){
+            if (ModalidadeEnum.TIMEMANIA == apostas.get(position).getModalidade()) {
+                layoutTimeCoracao.setVisibility(View.VISIBLE);
+                    if (apostas.get(position).getIndicadorSurpresinha() != null &&
+                            apostas.get(position).getIndicadorSurpresinha().getValor() != null) {
 
-        if (ModalidadeEnum.TIMEMANIA == apostas.get(position).getModalidade()) {
-            layoutTimeCoracao.setVisibility(View.VISIBLE);
-            textViewTimeCoracao.setText(apostas.get(position).getTimeDoCoracao().getNome());
-        } else if (ModalidadeEnum.DIA_DE_SORTE == apostas.get(position).getModalidade()) {
-            layoutTimeCoracao.setVisibility(View.VISIBLE);
-            labelTimeCoracao.setText(R.string.label_mes_sorte);
-            textViewTimeCoracao.setText(apostas.get(position).getMesDeSorte() != null && apostas.get(position).getMesDeSorte().getNome() != null
-                    ? apostas.get(position).getMesDeSorte().getNome() : context.getString(R.string.label_tres_interrogacoes));
+                            textViewTimeCoracao.setText(apostas.get(position).getTimeDoCoracao().getNome());
+                            if (apostas.get(position).getIndicadorSurpresinha().getValor() == IndicadorSurpresinha.SURPRESINHA) {
+                                textViewTimeCoracao.setText(context.getString(R.string.label_tres_interrogacoes));
+                            }
+                    }
+                }
+            } else if (ModalidadeEnum.DIA_DE_SORTE == apostas.get(position).getModalidade()) {
+                layoutTimeCoracao.setVisibility(View.VISIBLE);
+                labelTimeCoracao.setText(R.string.label_mes_sorte);
+                textViewTimeCoracao.setText(apostas.get(position).getMesDeSorte() != null && apostas.get(position).getMesDeSorte().getNome() != null
+                                                    ? apostas.get(position).getMesDeSorte().getNome() : context.getString(R.string.label_tres_interrogacoes));
         }
+
+
 
 
         //holder.itemView.findViewById(R.id.excluirApostaCarrinhoLayout).setOnClickListener(view -> onCarrinhoApostasRapidaoListener.onRemove( apostas.get( position ) ));
 
         StringBuilder numeroStr = new StringBuilder();
-        if (apostas.get(position).getIndicadorSurpresinha().getValor() == 2) {
-            for (int i = 0; i < apostas.get(position).getQuantidadeNumeros(); i++) {
-                if (i == apostas.get(position).getQuantidadeNumeros() - 1) {
-                    numeroStr.append("XX");
-                }else {
-                    numeroStr.append("XX - ");
-                }
-            }
-        } else {
-            for (Integer num: apostas.get(position).getNumerosSelecionados()) {
-                if (num.equals(apostas.get(position).getNumerosSelecionados().get(apostas.get(position).getNumerosSelecionados().size() - 1))) {
-                    numeroStr.append(String.format("%02d", num));
-                }else {
-                    numeroStr.append(String.format("%02d - ", num));
-                }
+
+        if (    apostas != null &&
+                apostas.get(position) != null &&
+                apostas.get(position).getIndicadorSurpresinha() != null &&
+                apostas.get(position).getIndicadorSurpresinha().getValor() != null) {
+
+            switch (apostas.get(position).getIndicadorSurpresinha().getValor()) {
+                case IndicadorSurpresinha.NAO_SURPRESINHA:
+                    for (Integer num : apostas.get(position).getNumerosSelecionados()) {
+                        if (num.equals(apostas.get(position).getNumerosSelecionados().get(apostas.get(position).getNumerosSelecionados().size() - 1))) {
+                            numeroStr.append(String.format("%02d", num));
+                        } else {
+                            numeroStr.append(String.format("%02d - ", num));
+                        }
+                    }
+                    break;
+                case IndicadorSurpresinha.SURPRESINHA:
+                case IndicadorSurpresinha.SURPRESINHA_NUMERICA:
+                    for (int i = 0; i < apostas.get(position).getQuantidadeNumeros(); i++) {
+                        if (i == apostas.get(position).getQuantidadeNumeros() - 1) {
+                            numeroStr.append("XX");
+                        } else {
+                            numeroStr.append("XX - ");
+                        }
+                    }
+                    break;
+
+                    default:
+                    break;
             }
         }
 

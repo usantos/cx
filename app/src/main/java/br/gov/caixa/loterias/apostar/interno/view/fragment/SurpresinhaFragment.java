@@ -33,9 +33,11 @@ import java.util.Locale;
 import java.util.Random;
 
 import br.gov.caixa.loterias.apostar.interno.R;
+import br.gov.caixa.loterias.apostar.interno.controllers.SimularApostaActivity;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.DTOEnumCharacter;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.DTOEnumInteger;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IncluirSurpresinhaDTO;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IndicadorSurpresinha;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametroEquipe;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametroJogoDTO;
@@ -46,7 +48,6 @@ import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostar.interno.utils.Utils;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.helper.AdicionarApostaCarrinhoHelper;
-import br.gov.caixa.loterias.apostar.interno.controllers.SimularApostaActivity;
 import br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightGridView;
 
 @EFragment(R.layout.fragment_surpresinha)
@@ -259,7 +260,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         aposta.setTipoConcurso(tipoConcurso);
 
         DTOEnumInteger indicadorSurpresinha = new DTOEnumInteger();
-        indicadorSurpresinha.setValor(2);
+        indicadorSurpresinha.setValor(IndicadorSurpresinha.SURPRESINHA);
         indicadorSurpresinha.setDescricao("");
 
         aposta.setIndicadorSurpresinha(indicadorSurpresinha);
@@ -270,15 +271,19 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
 
         aposta.setTimeDoCoracao(equipeSelecionada);
 
-        if (isTipoTimeMania && aposta.getTimeDoCoracao() == null) {
-            Random randomGenerator = Utils.getRandom();
-            aposta.setTimeDoCoracao(parametroJogo.getEquipes().get(randomGenerator.nextInt(parametroJogo.getEquipes().size())));
-            //TODO lógica para sortear time de acordo quantidade de surpresinhas
-//            List<ParametroEquipe> parametroEquipeList = new ArrayList<>();
-//            for (int i = 0; i < qtdSurpresinhas; i++) {
-//                parametroEquipeList.add(parametroJogo.getEquipes().get(randomGenerator.nextInt(parametroJogo.getEquipes().size())));
-//            }
-//            aposta.setListaTimeDoCoracao(parametroEquipeList);
+        if (isTipoTimeMania) {
+            if(aposta.getTimeDoCoracao() == null){
+                Random randomGenerator = Utils.getRandom();
+                aposta.setTimeDoCoracao(parametroJogo.getEquipes().get(randomGenerator.nextInt(parametroJogo.getEquipes().size())));
+                //TODO lógica para sortear time de acordo quantidade de surpresinhas
+                    //            List<ParametroEquipe> parametroEquipeList = new ArrayList<>();
+                    //            for (int i = 0; i < qtdSurpresinhas; i++) {
+                    //                parametroEquipeList.add(parametroJogo.getEquipes().get(randomGenerator.nextInt(parametroJogo.getEquipes().size())));
+                    //            }
+                    //            aposta.setListaTimeDoCoracao(parametroEquipeList);
+            } else {
+                indicadorSurpresinha.setValor(IndicadorSurpresinha.SURPRESINHA_NUMERICA);
+            }
         }
         if (isTipoLotomania) {
             aposta.setGerarEspelho(selcioneEspelhoSurpresinha.isChecked());
