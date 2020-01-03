@@ -329,7 +329,10 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
                 RedirectNetwork.checkRedirect(error,VisualizarResultadosActivity.this);
                 concursoAtual = null;
                 concursoAlvo = null;
-                getResultadoModalidade(ApostaDTO.lowerCaseFromString(ModalidadeEnum.toString(txtModalidade)),"");
+                if(!concurso.isEmpty()){
+                    getResultadoModalidade(ApostaDTO.lowerCaseFromString(ModalidadeEnum.toString(txtModalidade)),"");
+
+                }
             }
         });
     }
