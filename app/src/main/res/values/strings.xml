@@ -117,7 +117,8 @@
     <string name="msg_favor_inserir_nome_aposta">Favor inserir um nome para sua aposta favorita</string>
     <string name="msg_erro_data_invalida"> Data Inválida</string>
 
-    <string name="MN003">Para continuar navegando é necessário aceitar a nova versão do Termo de Uso.</string>
+    <string name="MN003">Para continuar é necessário o aceite do termo.</string>
+    <string name="termo_novo">O termo de Uso foi Atualizado. É necessário aceitar novamente.</string>
     <string name="exclusao_cartao">Deseja realmente excluir essa forma de pagamento?</string>
 
 
