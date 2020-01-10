@@ -78,7 +78,7 @@ public class MensagensNetwork {
                 break;
             default:
                 if(errorResponse.getMensagem().isEmpty()){
-                    errorResponse.setMensagem(  context.getString(R.string.erro_500) );
+                    errorResponse.setMensagem(  context.getString(R.string.nao_concluiu_operacao) );
                 }
             break;
         }
@@ -91,7 +91,7 @@ public class MensagensNetwork {
             String errorBody = Bin.fromBytes(error.networkResponse.data).toUtf8();
             return new Gson().fromJson(errorBody, ErrorResponse.class).getMensagem();
         } catch (Exception e){
-            return  Aplicacao.application.getApplicationContext().getString(R.string.erro_500);
+            return  Aplicacao.application.getApplicationContext().getString(R.string.nao_concluiu_operacao);
         }
 
     }

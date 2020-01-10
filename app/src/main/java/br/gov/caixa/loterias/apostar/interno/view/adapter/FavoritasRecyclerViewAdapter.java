@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Locale;
 
 import br.gov.caixa.loterias.apostar.interno.R;
+import br.gov.caixa.loterias.apostar.interno.controllers.FavoritasActivity;
 import br.gov.caixa.loterias.apostar.interno.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO_;
@@ -39,11 +40,11 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RetornoPadraoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.TipoConcursoEnum;
+import br.gov.caixa.loterias.apostar.interno.utils.AppUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.DialogUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
-import br.gov.caixa.loterias.apostar.interno.controllers.FavoritasActivity;
 import br.gov.caixa.loterias.apostar.interno.view.custom.AdicionarCarrinhoFavoritasView;
 import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
 
@@ -139,6 +140,7 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
                         context.getResources().getString(R.string.MA002) + " nome da aposta",
                         context.getResources().getString(R.string.ok));
             } else {
+                AppUtils.fechaTeclado(activity);
                 alterarFavoritaCallWebservice(listaApostaFavorita.get(position), holder);
             }
         });
@@ -261,9 +263,10 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
             public void onResponse(RetornoPadraoDTO response) {
                 loadViewProgress.dismiss();
                 FirebaseManager.registraEvento(context ,"EFETUOU_TROCA_DO_NOME_DA_APOSTA_FAVORITA");
-                if (response.getRedirect() != null){
+                if (response.getRedirect() != null) {
                     RedirectNetwork.checkRedirectSucesso( response.getRedirect(), activity);
                 }
+
                 apostaFavoritaDTO.setOpenSwipeLayout(true);
                 apostaFavoritaDTO.setNome(holder.editTextNomeDaAposta.getText().toString());
                 holder.tituloNomeApostaFavorita.setText(" | " + holder.editTextNomeDaAposta.getText().toString());

@@ -435,7 +435,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                                     .replace(R.id.fragmentContainer, fragment)
                                     .commit();
                         }catch (Exception e){
-                            ViewUtils.alert(getApplicationContext(), getResources().getString(R.string.erro_500));
+                            ViewUtils.alert(getApplicationContext(), getResources().getString(R.string.nao_concluiu_operacao));
                         }
                     }
 
