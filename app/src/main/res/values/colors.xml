@@ -24,7 +24,7 @@
     <color name="megasenaescuro">#008f5b</color>
     <color name="megasenamedio_transparente">#99009b63</color>
 
-    <color name="diasorteclaro">#E8C31E</color>
+    <color name="diasorteclaro">#E2BE1E</color>
     <color name="diasortemedio">#D2B11B</color>
     <color name="diasorteescuro">#BC9D0E</color>
     <color name="diasortemedio_transparente">#99A0522D</color>
@@ -40,21 +40,21 @@
     <color name="duplasenaescuro">#7d1a3f</color>
     <color name="federalclaro">#005FA1</color>
     <color name="federalescuro">#00528C</color>
-    <color name="lotecaclaro">#f30025</color>
-    <color name="lotecaescuro">#d30220</color>
+    <color name="lotecaclaro">#C80226</color>
+    <color name="lotecaescuro">#9F0220</color>
     <color name="lotogolclaro">#00b7e3</color>
     <color name="lotogolescuro">#009fc5</color>
     <color name="lotogolEscuroToolBar">#00a8de</color>
-    <color name="lotomaniaclaro">#ff9a2f</color>
-    <color name="lotomaniaescuro">#dd8628</color>
+    <color name="lotomaniaclaro">#EC8F39</color>
+    <color name="lotomaniaescuro">#D38127</color>
     <color name="lotomaniamedio">#f58220</color>
     <color name="lotomaniaEscuroToolBar">#f99d1c</color>
-    <color name="lotecaClaroToolbar">#ed1c24</color>
-    <color name="lotecaEscuroToolbar">#d71920</color>
-    <color name="timemaniaclaro">#e1dd00</color>
-    <color name="timemaniamediaescuro">#cfd102</color>
-    <color name="timemaniaescuro">#c0c200</color>
-    <color name="timemaniaClaroToolBar">#e1dd00</color>
+    <color name="lotecaClaroToolbar">#C80226</color>
+    <color name="lotecaEscuroToolbar">#9F0220</color>
+    <color name="timemaniaclaro">#C9C32D</color>
+    <color name="timemaniamediaescuro">#B6B128</color>
+    <color name="timemaniaescuro">#B6B128</color>
+    <color name="timemaniaClaroToolBar">#BEB92A</color>
     <color name="verdesenatrevo">#579a66</color>
     <color name="azulescuro">#3964a4</color>
     <color name="azulTexto">#004c8c</color>
@@ -87,6 +87,7 @@
     <color name="roxoclaro">#b26f9b</color>
     <color name="verdemediotransparente">#66009b63</color>
     <color name="cinzamercadopago">#D7E0E2</color>
+    <color name="verdeclaro">#b2fdbb</color>
 
     <color name="cinzaApostaConfirmada">#d9e3e6</color>
     <color name="white60">#99ffffff</color>

@@ -23,7 +23,7 @@ import br.gov.caixa.loterias.apostar.interno.view.adapter.LotecaAdapter;
 public class PartidaView extends LinearLayout {
 
     @ViewById
-    ItemEquipeView lotecaTimeUm, lotecaEmpate, lotecaTimeDois;
+    public ItemEquipeView lotecaTimeUm, lotecaEmpate, lotecaTimeDois;
 
     private ParametroPartida parametroPartida;
 

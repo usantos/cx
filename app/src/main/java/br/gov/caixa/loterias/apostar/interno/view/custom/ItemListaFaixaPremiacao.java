@@ -33,9 +33,13 @@ public class ItemListaFaixaPremiacao extends LinearLayout {
     }
 
     public void setLayout(FaixaPremiadaDTO faixaPremiadaDTO) {
+
         concursoTextView.setText(String.format(Locale.getDefault(), "%d", faixaPremiadaDTO.getId()));
+
         faixaPremiacaoTextView.setText(faixaPremiadaDTO.getNome());
+
         sorteioTextView.setText(String.format(Locale.getDefault(), "%d", faixaPremiadaDTO.getSorteio()));
+
         premiacaoTextView.setText(ViewUtils.getMoedaFormat(faixaPremiadaDTO.getValorLiquido()));
     }
 

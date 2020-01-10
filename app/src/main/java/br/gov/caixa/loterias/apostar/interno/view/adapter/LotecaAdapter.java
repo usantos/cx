@@ -1,12 +1,15 @@
 package br.gov.caixa.loterias.apostar.interno.view.adapter;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.List;
 
+import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametroPartida;
+import br.gov.caixa.loterias.apostar.interno.utils.Aplicacao;
 import br.gov.caixa.loterias.apostar.interno.view.custom.PartidaView;
 import br.gov.caixa.loterias.apostar.interno.view.custom.PartidaView_;
 
@@ -34,8 +37,16 @@ public class LotecaAdapter extends RecyclerView.Adapter<LotecaAdapter.LotecaHold
 
     @Override
     public void onBindViewHolder(LotecaHolder holder, int position) {
+        Context ctx = Aplicacao.application.getApplicationContext();
         holder.partidaRow.setListener(listener);
         holder.partidaRow.setLayout(listaPartidas.get(position));
+        if(!listaPartidas.get(position).isSelecionado()){
+            holder.partidaRow.lotecaTimeUm.getItemTitle().setTextColor(ctx.getResources().getColor(R.color.cinza));
+            holder.partidaRow.lotecaTimeUm.getItemDescription().setTextColor(ctx.getResources().getColor(R.color.cinza));
+            holder.partidaRow.lotecaTimeDois.getItemTitle().setTextColor(ctx.getResources().getColor(R.color.cinza));
+            holder.partidaRow.lotecaTimeDois.getItemDescription().setTextColor(ctx.getResources().getColor(R.color.cinza));
+            holder.partidaRow.lotecaEmpate.getItemTitle().setTextColor(ctx.getResources().getColor(R.color.cinza));
+        }
     }
 
     @Override

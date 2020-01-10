@@ -6,13 +6,13 @@ import android.animation.AnimatorSet;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -33,7 +33,6 @@ import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bean.Modalidade;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO_;
-import br.gov.caixa.loterias.apostar.interno.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ApostaDTO;
@@ -50,6 +49,7 @@ import br.gov.caixa.loterias.apostar.interno.view.fragment.ResultadoGenericoFrag
 import br.gov.caixa.loterias.apostar.interno.view.fragment.ResultadoLotecaFragment;
 import br.gov.caixa.loterias.apostar.interno.view.fragment.ResultadoLotogolFragment;
 import br.gov.caixa.loterias.apostar.interno.view.fragment.ResultadoTimemaniaDiaDeSorteFragment;
+
 import static br.gov.caixa.loterias.apostar.interno.controllers.SelecaoModalidadesResultados.MODALIDADE;
 
 public class VisualizarResultadosActivity extends AppCompatActivity {
@@ -130,14 +130,14 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
         //txtPremiados = findViewById(R.id.tv_premiados);
         tvNumeroSorteio = findViewById(R.id.tv_numero_sorteio);
         partidaViewDetalhesResultado = findViewById(R.id.pvdr_resultado_partida);
-        btnVoltarInterno = findViewById(R.id.voltarButton);
+        //btnVoltarInterno = findViewById(R.id.voltarButton);
         containerFragment = findViewById(R.id.v_container_fragment);
         ibPesquisar = findViewById(R.id.ib_pesquisar);
         etPesquisar = findViewById(R.id.et_pesquisar);
 
         //txtPremiados.setText(getString(R.string.label_premiados));
         tvNumeroSorteio.setText(getString(R.string.resultados_numeros_sorteados));
-        btnVoltarInterno.setVisibility(View.GONE);
+        //btnVoltarInterno.setVisibility(View.GONE);
         ibPesquisar.setVisibility(View.VISIBLE);
         if(corEscura!= null && corClara !=null && resourceTrapezio!= null){
             setBackground(corClara,corEscura,resourceTrapezio);
@@ -326,14 +326,15 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 loadViewProgress.dismiss();
-                setButtons();
-                ViewUtils.alertTitleButton(VisualizarResultadosActivity.this, R.string.label_atencao, MensagensNetwork.setMensagem(error, VisualizarResultadosActivity.this), "Ok", dialogInterface ->{});
+                RedirectNetwork.checkRedirect(error,VisualizarResultadosActivity.this);
+                concursoAtual = null;
+                concursoAlvo = null;
+                getResultadoModalidade(ApostaDTO.lowerCaseFromString(ModalidadeEnum.toString(txtModalidade)),"");
             }
         });
     }
 
     private void configuraRetornoRequisicao(ResultadoConcursoDTOResponse response){
-
         if(concursoAtual == null){
             concursoAtual = response.getPayload().getConcurso().getNumero();
         } else {
@@ -357,12 +358,6 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
                 concurso.getAberto(),
                 response.getPayload());
 
-
-       /* if(modalidade.getDescricao().equals(ModalidadeEnum.DUPLA_SENA.name())){
-            adicionarPremiados(response.getPayload().getPremiacoesPrimeiroSorteio(),response.getPayload().getPremiacoesSegundoSorteio());
-        }else {
-            adicionarPremiados(response.getPayload().getPremiacoesPrimeiroSorteio());
-        }*/
         partidaViewDetalhesResultado.setLayout(modalidade);
         if(response.getPayload().getConcurso().getTipoConcurso().toString().equalsIgnoreCase("ESPECIAL")){
             tituloModalidade.setText(response.getPayload().getConcurso().getModalidadeDetalhada().getDescricaoEspecial().toLowerCase());

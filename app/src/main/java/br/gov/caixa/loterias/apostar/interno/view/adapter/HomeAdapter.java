@@ -396,7 +396,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             @Override
             public void onResponse(ResultadoConcursoDTOResponse response) {
                 loadViewProgress.dismiss();
-
                 if (response.getRedirect() != null){
                     RedirectNetwork.checkRedirectSucesso( response.getRedirect(), activity);
                 }

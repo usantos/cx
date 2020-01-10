@@ -12,6 +12,8 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.android.volley.VolleyError;
+
 import java.util.List;
 import java.util.Locale;
 
@@ -115,9 +117,8 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostasConfi
     }
 
     @Override
-    public void handleError(ViewHolder holder) {
+    public void handleError(ViewHolder holder, VolleyError error) {
         holder.situacaoTxt.setText("Não foi possível conferir o resultado.");
-
         holder.progressBarSituacao.setVisibility(View.INVISIBLE);
     }
 

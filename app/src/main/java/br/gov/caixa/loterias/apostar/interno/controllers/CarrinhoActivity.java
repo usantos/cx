@@ -84,6 +84,9 @@ public class CarrinhoActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        if(DadosUsuarioBO.checarUsuarioLogado(this)){
+            lerCarrinhoLocal = false;
+        }
         if(ocorrendoValidacao){
             validarCarrinho();
         }

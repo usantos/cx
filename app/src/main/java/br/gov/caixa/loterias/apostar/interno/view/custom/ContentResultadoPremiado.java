@@ -21,10 +21,10 @@ import br.gov.caixa.loterias.apostar.interno.R;
 public class ContentResultadoPremiado extends LinearLayout {
 
     @ViewById
-    protected LinearLayout topoModalidadeResultadoLinearLayout, fundoBackgroundTrapezeResultadoLinearLayout, topo2ModalidadeResultadoLinearLayout, premioGanhoLinearLayout;
+    protected LinearLayout premioInfoLinearLayout,topoModalidadeResultadoLinearLayout, fundoBackgroundTrapezeResultadoLinearLayout, topoResultadoPremioLinearLayout, premioGanhoLinearLayout;
 
     @ViewById
-    protected TextView tituloModalidadeTextView, aberturaApostaResultadoTextView, encerramentoResultadoTextView, proximoSorteioTextView, premioResultadoTextView;
+    protected TextView valorEstimativaConcursoAtualTextView,valorPremioTituloTextView,tituloModalidadeTextView, proximoSorteioTextView;
 
     @ViewById
     protected ExpandableHeightRecyclerView listaFaixaPremiacaoExpandableHeightRecyclerView;
@@ -52,28 +52,24 @@ public class ContentResultadoPremiado extends LinearLayout {
         return fundoBackgroundTrapezeResultadoLinearLayout;
     }
 
-    public LinearLayout getTopo2ModalidadeResultadoLinearLayout() {
-        return topo2ModalidadeResultadoLinearLayout;
+    public LinearLayout getTopoResultadoPremioLinearLayout() {
+        return topoResultadoPremioLinearLayout;
+    }
+
+    public LinearLayout getPremioInfoLinearLayout() {
+        return premioInfoLinearLayout;
     }
 
     public TextView getTituloModalidadeTextView() {
         return tituloModalidadeTextView;
     }
 
-    public TextView getAberturaApostaResultadoTextView() {
-        return aberturaApostaResultadoTextView;
-    }
+    public TextView getValorPremioTituloTextView() { return valorPremioTituloTextView; }
 
-    public TextView getEncerramentoResultadoTextView() {
-        return encerramentoResultadoTextView;
-    }
+    public TextView getValorEstimativaConcursoAtualTextView() { return valorEstimativaConcursoAtualTextView; }
 
     public TextView getProximoSorteioTextView() {
         return proximoSorteioTextView;
-    }
-
-    public TextView getPremioResultadoTextView() {
-        return premioResultadoTextView;
     }
 
     public Button getBotaoAposteAgora(){ return botaoAposteAgora; }

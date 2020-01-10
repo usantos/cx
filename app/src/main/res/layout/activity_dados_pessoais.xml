@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="br.gov.caixa.loterias.apostar.interno.controllers.DadosPessoaisActivity"
-    android:fitsSystemWindows="true"
-    >
+    android:fitsSystemWindows="true">
 
     <include layout="@layout/app_bar_degrade_extend"/>
     <include layout="@layout/content_dados_pessoais" />

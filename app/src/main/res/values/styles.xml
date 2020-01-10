@@ -247,4 +247,11 @@
         <item name="colorControlNormal">@color/transparente</item>
     </style>
 
+    <style name="AppTheme.PickerDark">
+        <item name="android:textColorPrimary">@color/cinza_total</item>
+        <item name="android:textColor">@color/cinza_total</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">@font/font_family_futura</item>
+        <item name="colorControlNormal">@color/cinza_total</item>
+    </style>
 </resources>

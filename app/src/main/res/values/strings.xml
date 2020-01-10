@@ -84,17 +84,22 @@
     <string name="title_activity_login">Login</string>
     <string name="erro_401">Não autorizado</string>
     <string name="erro_408">Tempo de resposta esgotou</string>
-    <string name="erro_500">Não foi possível concluir essa operação. Por favor, tente novamente.</string>
+    <string name="erro_500">Ocorreu um erro inesperado, mas não se preocupe, já estamos trabalhando nisso. Quer nos ajudar reportando o problema?</string>
     <string name="seminternet">Sem conexão com a internet.</string>
-    <!--<string name="sistema_indisponivel">Não foi possível concluir esta operação. Por favor, tente novamente.</string>-->
+    <string name="erro_mail_provider">Não há nenhum aplicativo de e-mail instalado!</string>
     <string name="sistema_indisponivel">O Tempo de conexão expirou.</string>
     <string name="btn_finalizar">Finalizar</string>
     <string name="declaracao_termo_uso_politica_privacidade">Declaro ter lido e concordado com o</string>
     <string name="termo_de_uso_underline"><u>termos de uso</u>.</string>
     <string name="CEP">CEP</string>
     <string name="codigo_loterica">Código Lotérica</string>
-    <string name="enviando_email">Enviando e-mail usando:"</string>
+    <string name="enviando_email">Enviar e-mail usando:"</string>
     <string name="label_lembrar_valor_minimo">Lembre-se que o valor mínimo do total_de compras nesse aplicativo</string>
+
+    <!-- email-->
+    <string name="email_padrao">CEDESBR456@caixa.gov.br</string>
+    <string name="email_assunto">[APP Loterias] - Erro de serviço</string>
+    <string name="quero">Quero</string>
 
     <!-- Messages-->
 
@@ -177,7 +182,7 @@
 
     <string name="label_nao_possivel_selecionar_quantidade_numeros_superior_limite_modalidade_loterica">Não é possível selecionar quantidade de números superior ao limite para modalidade Lotérica.</string>
     <string name="label_aposta_salva_carinha">Aposta salva :)</string>
-    <string name="label_sem_teimosinha">sem teimosinha</string>
+    <string name="label_sem_teimosinha">Teimosinha</string>
     <string name="label_salve_esta_aposta_carinha">Salve esta aposta :)</string>
     <string name="label_aposta_espelho">Aposta espelho</string>
     <string name="label_aposte_agora">Aposte agora</string>
@@ -245,7 +250,9 @@
     <string name="label_ganhadores_regiao_segundo_sorteio_bold">_Ganhadores por regi\u00e3o - 2º sorteio_</string>
     <string name="label_nao_foi_dessa_vez">Não premiado ou ainda não apurado</string>
     <string name="label_pode_comemorar">Pode comemorar,</string>
-    <string name="label_voce_foi_premiado">você foi premiado!</string>
+    <string name="label_voce_foi_premiado">você foi premiado com \n {ValorPremio}</string>
+    <string name="label_voce_foi_premiado_exclamacao">você foi premiado!</string>
+    <string name="label_estimativa_de_premio">Estimativa de prêmio</string>
     <string name="label_limite_diario">Limite diário</string>
     <string name="label_abertura_aposta">Abertura da aposta</string>
     <string name="label_premio">Prêmio</string>
@@ -376,7 +383,7 @@
     <string name="label_domingo">Domingo</string>
     <string name="label_resultados">Resultados</string>
     <string name="label_acumulou_exclamacao">ACUMULOU!</string>
-    <string name="label_nao_houve_acertador">N\u00e3o houve acertador!</string>
+    <string name="label_nao_houve_acertador">sem ganhadores</string>
     <string name="label_mes_sorte_dois_pontos_mes">M\u00eas de sorte: %s</string>
     <string name="label_mes_sorteado">M\u00eas de sorte&#160;</string>
     <string name="label_zero">0 (zero)</string>
@@ -389,6 +396,7 @@
     <string name="title_atualizar">Atualizar</string>
 
     <string name="label_app_indisponivel">O aplicativo está temporariamente indisponível. Tente novamente mais tarde.</string>
+    <string name="nao_concluiu_operacao">Não foi possível concluir esta operação. Por favor, tente novamente.</string>
     <string name="title_tente_novamente">Tentar novamente</string>
 
 
@@ -545,4 +553,7 @@
     <string name="conf_rapd_verifique_opcoes">Verifique e confirme suas opções de Rapidão.</string>
 
     <string name="ops">Ops!</string>
+
+    <!-- Filtros -->
+    <string name="titulo_dialog_filtro_apostas">Filtro de Apostas</string>
 </resources>
