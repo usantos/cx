@@ -557,4 +557,8 @@
 
     <!-- Filtros -->
     <string name="titulo_dialog_filtro_apostas">Filtro de Apostas</string>
+    <string name="modalidades_selecionadas">Modalidades Selecionadas</string>
+    <string name="numeros_obrigatorios">Números obrigatórios</string>
+    <string name="numeros_proibidos">Números proibidos</string>
+    <string name="apostas_favoritas">Apostas favoritas</string>
 </resources>
