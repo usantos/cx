@@ -196,7 +196,6 @@ public class SelecaoModalidadesRapidaoActivity extends AppCompatActivity {
                 case DUPLA_SENA:
                     tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_9, R.color.duplasenaclaro, false, item.getValor(), item.getDescricaoEspecial());
                     break;
-
                 case DIA_DE_SORTE:
                     tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_2, R.color.diasorteclaro, false, item.getValor(), item.getDescricaoEspecial());
                     break;
