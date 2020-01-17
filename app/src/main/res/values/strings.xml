@@ -169,6 +169,7 @@
     <string name="label_lotogol">lotogol</string>
     <string name="label_federal">federal</string>
     <string name="label_dia_de_sorte">dia de sorte</string>
+    <string name="label_super_sete">super sete</string>
     <string name="label_ajuda">ajuda</string>
     <string name="time_surpresa">Time Surpresa</string>
     <string name="escolha_outro_time">Escolher outro time</string>
@@ -182,6 +183,8 @@
     <string name="title_activity_lista_compras">Compras</string>
 
     <string name="label_nao_possivel_selecionar_quantidade_numeros_superior_limite_modalidade_loterica">Não é possível selecionar quantidade de números superior ao limite para modalidade Lotérica.</string>
+    <string name="msg_qtd_max_col_super_sete">A quantidade máxima de números por coluna é {QTD_MAX_POR_COLUNA}</string>
+
     <string name="label_aposta_salva_carinha">Aposta salva :)</string>
     <string name="label_sem_teimosinha">Teimosinha</string>
     <string name="label_salve_esta_aposta_carinha">Salve esta aposta :)</string>

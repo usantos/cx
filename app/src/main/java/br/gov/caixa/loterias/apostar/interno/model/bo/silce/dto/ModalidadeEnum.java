@@ -21,7 +21,7 @@ public enum ModalidadeEnum implements Serializable {
     @SerializedName("MEGA_SENA")MEGA_SENA,
     @SerializedName("QUINA")QUINA,
     @SerializedName("TIMEMANIA")TIMEMANIA,
-    @SerializedName("SUPER_SETE")SUPER_SETE;
+    @SerializedName("SUPER_7")SUPER_SETE;
 
     public static String fromString(ModalidadeEnum modalidade) {
         switch (modalidade) {
