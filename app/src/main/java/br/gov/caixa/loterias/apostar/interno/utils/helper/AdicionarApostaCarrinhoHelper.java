@@ -28,7 +28,6 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.keycloak.KeycloakBO_;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.AgrupadorDTOApostaDTOResponse;
-import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ApostaComMatriz;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CarrinhoDTOResponse;
@@ -58,7 +57,7 @@ import br.gov.caixa.loterias.apostar.interno.controllers.SimularApostaActivity;
 
 public class AdicionarApostaCarrinhoHelper {
     private static Context context;
-    private static ApostaComMatriz aposta;
+    private static IdentificaoDeUmaApostaDas8Modalidades aposta;
 
     /**
      * Conferir resultado de acordo 9.1 CSU07
@@ -86,7 +85,7 @@ public class AdicionarApostaCarrinhoHelper {
         }
     }
 
-    public static void incluirApostaCarrinhoCartela(Context contextParam, ApostaComMatriz objectAposta) {
+    public static void incluirApostaCarrinhoCartela(Context contextParam, IdentificaoDeUmaApostaDas8Modalidades objectAposta) {
         context = contextParam;
         ApostaBO apostaBO = ApostaBO_.getInstance_(context);
         aposta = objectAposta;
@@ -101,7 +100,7 @@ public class AdicionarApostaCarrinhoHelper {
         }
     }
 
-    public static void adicionarApostaCarrinhoRequest(Context contextParam, final ApostaBO apostaBO, ApostaComMatriz identificaoDeUmaApostaDas8Modalidades) {
+    public static void adicionarApostaCarrinhoRequest(Context contextParam, final ApostaBO apostaBO, IdentificaoDeUmaApostaDas8Modalidades identificaoDeUmaApostaDas8Modalidades) {
         context = contextParam;
         aposta = identificaoDeUmaApostaDas8Modalidades;
         apostaBO.buscaCarrinho(new RequestListener<CarrinhoDTOResponse>() {
@@ -181,7 +180,7 @@ public class AdicionarApostaCarrinhoHelper {
     }
 
     private static void checarLimiteDiario
-          (final ApostaBO apostaBO, final ApostaComMatriz aposta, final CarrinhoDTO carrinhoDTO) {
+          (final ApostaBO apostaBO, final IdentificaoDeUmaApostaDas8Modalidades aposta, final CarrinhoDTO carrinhoDTO) {
         DialogUtils.dismiss();
          /*  BigDecimal limiteDiario = SessaoUsuario.getInstance().getParametrosSimulacao().getValorLimiteDiario();
         BigDecimal valorCarrinho = carrinhoDTO.getValorTotal().add(IdentificaoDeUmaApostaDas8Modalidades.getValorApostaPorPrognostico(aposta));
@@ -193,7 +192,7 @@ public class AdicionarApostaCarrinhoHelper {
         }*/
     }
 
-    private static void checarApostasRepetidas(final ApostaBO apostaBO, final ApostaComMatriz aposta, final CarrinhoDTO carrinhoDTO) {
+    private static void checarApostasRepetidas(final ApostaBO apostaBO, final IdentificaoDeUmaApostaDas8Modalidades aposta, final CarrinhoDTO carrinhoDTO) {
         if (false){//(IdentificaoDeUmaApostaDas8Modalidades.checkExisteUmaApostaIgualCarrinho(aposta, carrinhoDTO)) {
             DialogUtils.dismiss();
             ViewUtils.alertTitleButtonYesOrNotListener(context, context.getResources().getString(R.string.MA015), (dialog, which) -> {
@@ -243,7 +242,7 @@ public class AdicionarApostaCarrinhoHelper {
         }
     }
 
-    private static boolean inserirApostaCarrinhoLocal(Context contextParam, IdentificaoDeUmaApostaDas8Modalidades aposta) {
+    private static boolean inserirApostaCarrinhoLocal(Context contextParam, IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta) {
         DBLoteriasCrud crud = new DBLoteriasCrud(contextParam);
         int quantidadeApostaCarrinho = crud.qtdIdentificaoDeUmaApostaDas8Modalidades();
         BigDecimal valorTotalCarrinho = crud.sumValorIdentificaoDeUmaApostaDas8Modalidades();

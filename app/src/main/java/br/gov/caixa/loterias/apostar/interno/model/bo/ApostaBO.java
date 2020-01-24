@@ -16,7 +16,6 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.data.CompletaJogoNov
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.data.CompletaJogoRsp;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.AgrupadorApostaCompraDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.AgrupadorDTOApostaDTOResponse;
-import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ApostaComMatriz;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ApostaFavoritaDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CarrinhoDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CarrinhoFavoritoDTOResponse;
@@ -467,7 +466,7 @@ public class ApostaBO extends BaseBO {
     }
 
     //CARRINHO
-    public void adicionarApostaNoCarrinho(final ApostaComMatriz aposta,
+    public void adicionarApostaNoCarrinho(final IdentificaoDeUmaApostaDas8Modalidades aposta,
                                           final RequestListener<AgrupadorDTOApostaDTOResponse> listener) {
         final GsonRequest request = silceConnection.buildPostRequest(ServerMethods.INCLUIR_APOSTA_CARRINHO_PATH,
                                                                     new LinkedHashMap<>(),

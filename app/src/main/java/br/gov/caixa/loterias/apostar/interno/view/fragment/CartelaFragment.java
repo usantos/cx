@@ -57,7 +57,6 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.data.CompletaJogoNovoRsp;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.data.CompletaJogoRsp;
-import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ApostaComMatriz;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ApostaFavoritaDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.DTOEnumCharacter;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.DTOEnumInteger;
@@ -426,13 +425,72 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 		}
 
 		orderAscDezenas();
-		ApostaComMatriz aposta = getApostaPreenchida();
-		AdicionarApostaCarrinhoHelper.incluirApostaCarrinhoCartela(parentActivity, aposta);
+
+		if(isTipoSuperSete) {
+			IdentificaoDeUmaApostaDas8Modalidades<List<List<Integer>>> aposta = getApostaPreenchidaMatriz();
+			AdicionarApostaCarrinhoHelper.incluirApostaCarrinhoCartela(parentActivity, aposta);
+		} else {
+			IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta = getApostaPreenchida();
+			AdicionarApostaCarrinhoHelper.incluirApostaCarrinhoCartela(parentActivity, aposta);
+		}
 	}
 
-	private ApostaComMatriz getApostaPreenchida() {
+	private IdentificaoDeUmaApostaDas8Modalidades<List<List<Integer>>> getApostaPreenchidaMatriz () {
 
-		ApostaComMatriz aposta = new ApostaComMatriz();
+		IdentificaoDeUmaApostaDas8Modalidades aposta = new IdentificaoDeUmaApostaDas8Modalidades();
+
+		aposta.setId(Constantes.ZERO_LONG);
+		aposta.setModalidade(parametroJogo.getConcurso().getModalidade());
+
+		DTOEnumCharacter tipoConcurso = new DTOEnumCharacter();
+
+		String valorTipoConcurso = parametroJogo.getConcurso().getTipoConcurso() == TipoConcursoEnum.NORMAL ? "1" : "2";
+		tipoConcurso.setValor(valorTipoConcurso);
+		tipoConcurso.setDescricao(parametroJogo.getConcurso().getTipoConcurso().toString());
+		aposta.setTipoConcurso(tipoConcurso);
+		aposta.setPartidasLotogol(null);
+		aposta.setPartidasLoteca(null);
+
+		if(dezenasSelecionadas != null && pegaListaSuperSete().size() > 0){
+			aposta.setNumerosSelecionados(pegaListaSuperSete());
+		}
+
+		DTOEnumInteger indicadorSurpresinha = new DTOEnumInteger();
+		indicadorSurpresinha.setValor(IndicadorSurpresinha.NAO_SURPRESINHA);
+		indicadorSurpresinha.setDescricao("");
+
+		aposta.setIndicadorSurpresinha(indicadorSurpresinha);
+		aposta.setValor(valorTotalAposta);
+		aposta.setConcursoAlvo(parametroJogo.getConcurso().getNumero());
+		aposta.setQuantidadeTeimosinhas(parentActivity.qtdConcursoSelecionado);
+		aposta.setQuantidadeApostas(1);
+		aposta.setEspelho(false);
+		aposta.setGerarEspelho(false);
+
+		aposta.setTimeDoCoracao(equipeSelecionada);
+
+		aposta.setConcursoInicial(0);
+		aposta.setSituacao(null);
+		aposta.setTroca(false);
+
+		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+		Date       date       = new Date();
+
+		DateFormat hourFormat = new SimpleDateFormat("HH:mm:ss", Locale.US);
+		Date       hour       = new Date();
+
+		aposta.setDataEfetivacao(dateFormat.format(date));
+		aposta.setHoraEfetivacao(hourFormat.format(hour));
+		aposta.setVinculoEspelho(Constantes.ZERO_LONG);
+		aposta.setQuantidadeNumeros(dezenasSelecionadas.size());
+		aposta.setSurpresinha(false);
+
+		return aposta;
+	}
+
+	private IdentificaoDeUmaApostaDas8Modalidades getApostaPreenchida() {
+
+		IdentificaoDeUmaApostaDas8Modalidades aposta = new IdentificaoDeUmaApostaDas8Modalidades();
 
 		aposta.setId(Constantes.ZERO_LONG);
 		aposta.setModalidade(parametroJogo.getConcurso().getModalidade());
@@ -449,9 +507,9 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 			aposta.setNumerosSelecionados(dezenasSelecionadas);
 		}
 
-		if(dezenasSelecionadas != null && pegaListaSuperSete().size() > 0){
-			aposta.setNumerosSelecionados(pegaListaSuperSete().get(0));
-		}
+//		if(dezenasSelecionadas != null && pegaListaSuperSete().size() > 0){
+//			aposta.setNumerosSelecionados(pegaListaSuperSete());
+//		}
 
 		DTOEnumInteger indicadorSurpresinha = new DTOEnumInteger();
 		indicadorSurpresinha.setValor(IndicadorSurpresinha.NAO_SURPRESINHA);
@@ -665,7 +723,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 			if (selcioneOutrosNumeros.isChecked()) {
 				// Gera uma nova aposta com os outros 50 números não selecionados
 
-				ApostaComMatriz aposta = getApostaPreenchida();
+				IdentificaoDeUmaApostaDas8Modalidades aposta = getApostaPreenchida();
 
 				aposta.setGerarEspelho(true);
 				aposta.setValor(aposta.getValor().divide(Constantes.DOIS_BIG_DECIMAL));
@@ -1594,7 +1652,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
 	private void editeAposta() {
 		if (parentActivity.getAposta() != null) {
-			IdentificaoDeUmaApostaDas8Modalidades aposta = parentActivity.getAposta();
+			IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta = parentActivity.getAposta();
 			if (CollectionUtils.isNotEmpty(aposta.getNumerosSelecionados())) {
 				dezenasSelecionadas = aposta.getNumerosSelecionados();
 				parentActivity.qtdDezenasPossiveisSelecionado = aposta.getQuantidadeNumeros();

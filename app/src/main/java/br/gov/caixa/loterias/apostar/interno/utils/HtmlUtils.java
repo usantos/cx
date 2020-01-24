@@ -16,6 +16,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.List;
 
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ComprovanteApostaDTO;
@@ -150,7 +151,7 @@ public class HtmlUtils {
         return html;
     }
 
-    private static String getBodyList(IdentificaoDeUmaApostaDas8Modalidades aposta, Context context) {
+    private static String getBodyList(IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta, Context context) {
 
         StringBuilder sbHtmlBodyList = new StringBuilder();
         String htmlBodyList = "";
