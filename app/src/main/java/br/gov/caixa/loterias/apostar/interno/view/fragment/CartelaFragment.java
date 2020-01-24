@@ -48,13 +48,16 @@ import java.util.Locale;
 import java.util.Random;
 
 import br.gov.caixa.loterias.apostar.interno.R;
+import br.gov.caixa.loterias.apostar.interno.controllers.SimularApostaActivity;
 import br.gov.caixa.loterias.apostar.interno.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostar.interno.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.data.CompletaJogoNovoRsp;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.data.CompletaJogoRsp;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ApostaComMatriz;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ApostaFavoritaDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.DTOEnumCharacter;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.DTOEnumInteger;
@@ -76,7 +79,6 @@ import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostar.interno.utils.Utils;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.helper.AdicionarApostaCarrinhoHelper;
-import br.gov.caixa.loterias.apostar.interno.controllers.SimularApostaActivity;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.LotecaAdapter;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.LotogolAdapter;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.SuperSeteAdapter;
@@ -389,7 +391,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 			case LOTOGOL:
 				isTipoLotogol = true;
 				break;
-			case SUPER_SETE:
+			case SUPER_7:
 				isTipoSuperSete = true;
 				break;
 		}
@@ -424,13 +426,13 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 		}
 
 		orderAscDezenas();
-		IdentificaoDeUmaApostaDas8Modalidades aposta = getApostaPreenchida();
+		ApostaComMatriz aposta = getApostaPreenchida();
 		AdicionarApostaCarrinhoHelper.incluirApostaCarrinhoCartela(parentActivity, aposta);
 	}
 
-	private IdentificaoDeUmaApostaDas8Modalidades getApostaPreenchida() {
+	private ApostaComMatriz getApostaPreenchida() {
 
-		IdentificaoDeUmaApostaDas8Modalidades aposta = new IdentificaoDeUmaApostaDas8Modalidades();
+		ApostaComMatriz aposta = new ApostaComMatriz();
 
 		aposta.setId(Constantes.ZERO_LONG);
 		aposta.setModalidade(parametroJogo.getConcurso().getModalidade());
@@ -443,7 +445,13 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 		aposta.setTipoConcurso(tipoConcurso);
 		aposta.setPartidasLotogol(null);
 		aposta.setPartidasLoteca(null);
-		aposta.setNumerosSelecionados(dezenasSelecionadas);
+		if(dezenasSelecionadas != null && dezenasSelecionadas.size() > 0){
+			aposta.setNumerosSelecionados(dezenasSelecionadas);
+		}
+
+		if(dezenasSelecionadas != null && pegaListaSuperSete().size() > 0){
+			aposta.setNumerosSelecionados(pegaListaSuperSete().get(0));
+		}
 
 		DTOEnumInteger indicadorSurpresinha = new DTOEnumInteger();
 		indicadorSurpresinha.setValor(IndicadorSurpresinha.NAO_SURPRESINHA);
@@ -479,8 +487,8 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 			aposta.setMesDeSorte(parentActivity.getMesDeSorteCartela());
 		}
 
-		this.setApostaLoteca(aposta);
-		this.setApostaLotogol(aposta);
+		//this.setApostaLoteca(aposta);
+		//this.setApostaLotogol(aposta);
 
 		return aposta;
 	}
@@ -533,7 +541,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 				limparOpcaoOutrosNumerosLayout();
 
 				verificaSeMostraBotaoLimparAposta();
-				atualizaStatusBotaoFinalizar();
+				atualizaStatusBotaoFinalizar(false);
 			}
 			break;
 
@@ -583,7 +591,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 		timeCoracaoAdapter.notifyDataSetChanged();
 		verificaSeMostraBotaoLimparAposta();
 		verificaSeMostraSalvarApostaView();
-		atualizarAdicionarCarinhoCompletarCartela();
+		atualizarAdicionarCarinhoCompletarCartela(false);
 	}
 
 	private void limparOpcaoOutrosNumerosLayout() {
@@ -639,7 +647,15 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 				adicionarApostaNoCarrinho();
 			}
 		} else {
-			preencheNumerosAleatorios();
+			if(isTipoSuperSete){
+				if(qtdTotalSelecionadosSuperSete == parentActivity.qtdDezenasPossiveisSelecionado){
+					adicionarApostaNoCarrinho();
+				} else {
+					preencheNumerosAleatoriosSuperSete(pegaListaSuperSete());
+				}
+			} else {
+				preencheNumerosAleatorios();
+			}
 		}
 	}
 
@@ -649,7 +665,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 			if (selcioneOutrosNumeros.isChecked()) {
 				// Gera uma nova aposta com os outros 50 números não selecionados
 
-				IdentificaoDeUmaApostaDas8Modalidades aposta = getApostaPreenchida();
+				ApostaComMatriz aposta = getApostaPreenchida();
 
 				aposta.setGerarEspelho(true);
 				aposta.setValor(aposta.getValor().divide(Constantes.DOIS_BIG_DECIMAL));
@@ -700,9 +716,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 						dezenasSelecionadas.clear();
 						dezenasSelecionadas.addAll(response.getPayload());
 						simularDezenasAdapter.notifyDataSetChanged();
-						atualizaStatusBotaoFinalizar();
-						verificaSeMostraBotaoLimparAposta();
-						verificaSeMostraSalvarApostaView();
+						atualizaBotoeslayout();
 						if (response.getRedirect() != null) {
 							RedirectNetwork.checkRedirectSucesso(response.getRedirect(), getActivity());
 						}
@@ -716,6 +730,96 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 					}
 				});
 	}
+
+	private void preencheNumerosAleatoriosSuperSete(ArrayList<ArrayList<Integer>> listaInteiros) {
+		DialogUtils.show(getActivity());
+		ApostaBO apostaBO = ApostaBO_.getInstance_(getActivity());
+		orderAscDezenas();
+
+		apostaBO.completaJogoNovo(parentActivity.qtdDezenasPossiveisSelecionado, listaInteiros,
+								  parametroJogo.getConcurso().getModalidade().name(),
+								  new RequestListener<CompletaJogoNovoRsp>() {
+					@Override
+					public void onResponse(CompletaJogoNovoRsp response) {
+						DialogUtils.dismiss();
+						FirebaseManager.registraEvento(getContext(), "ENTROU_COMPLETAR_COM_NUMEROS_ALEATORIOS");
+						isNumerosAleatoriosShake = false;
+						isEcolhaTimeBtnAtivado = true;
+						if (response.getRedirect() != null) {
+							RedirectNetwork.checkRedirectSucesso(response.getRedirect(), getActivity());
+						}
+						preencheSuperSete(response.getPayload());
+						atualizaBotoeslayout();
+						atualizarBotaoFinalizarAdicionarCarrinho();
+					}
+
+					@Override
+					public void onErrorResponse(VolleyError error) {
+						isNumerosAleatoriosShake = false;
+						DialogUtils.dismiss();
+						RedirectNetwork.checkRedirect(error, getActivity());
+					}
+				});
+	}
+
+	private ArrayList<ArrayList<Integer>>  atualizaSuperSetePrognosticoMaior(ArrayList<ArrayList<Integer>> listaInteiros){
+		if (parentActivity.qtdDezenasPossiveisSelecionado < getQtdTotalSelecionadosSuperSete(listaInteiros)) {
+			qtdTotalSelecionadosSuperSete = 0;
+			listaInteiros = new ArrayList<>();
+			limpaNumerosSuperSete();
+		}
+		return listaInteiros;
+	}
+
+	private int getQtdTotalSelecionadosSuperSete(ArrayList<ArrayList<Integer>> listaInteiros){
+		int qtdTotal = 0;
+		for (ArrayList<Integer> listaSelecionados :listaInteiros) {
+			qtdTotal += listaSelecionados.size();
+		}
+		return qtdTotal;
+	}
+
+	private void preencheSuperSete(List<List<Integer>> numerosSelecionados){
+		int coluna = 0;
+		for (SuperSeteAdapter adapter:listaAdaptersSuperSete) {
+			adapter.dezenasSelecionadas = numerosSelecionados.get(coluna);
+			qtdTotalSelecionadosSuperSete += adapter.dezenasSelecionadas.size();
+			adapter.notifyDataSetChanged();
+			coluna++;
+		}
+	}
+
+	private ArrayList<ArrayList<Integer>> pegaListaSuperSete(){
+		ArrayList<ArrayList<Integer>> listaNumerosSuperSete = new ArrayList<>();
+		for (SuperSeteAdapter adapter:listaAdaptersSuperSete) {
+			listaNumerosSuperSete.add(new ArrayList<>(adapter.dezenasSelecionadas));
+		}
+		return listaNumerosSuperSete;
+	}
+
+
+	private boolean validaSelecaoSuperSete(){
+		//lista de cima igual aos selecionados e no minimo 1 por coluna
+		Boolean mostraSalvar = false;
+		int contColunasComSelecao = 0;
+		ArrayList<ArrayList<Integer>> listaSuperSete = pegaListaSuperSete();
+		for (ArrayList<Integer> listaSelecionados: listaSuperSete) {
+			if(listaSelecionados.size() > 0){
+				contColunasComSelecao++;
+			}
+		}
+		if(contColunasComSelecao == 7){
+			mostraSalvar = true;
+		}
+		return mostraSalvar;
+	}
+
+	private void atualizaBotoeslayout(){
+		atualizaStatusBotaoFinalizar(false);
+		verificaSeMostraBotaoLimparAposta();
+		verificaSeMostraSalvarApostaView();
+	}
+
 
 	private void selecionarDezenasApostaEspelho() {
 		for (Dezena dezena : dezenas) {
@@ -741,7 +845,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 		informeNomeTime = selecioneTimeCoracaoLayout.findViewById(R.id.informe_nome_time);
 		onChangeInformeNomeTime();
 		configurarSelecaoTimeCoracao();
-		atualizaStatusBotaoFinalizar();
+		atualizaStatusBotaoFinalizar(false);
 		verificaSeMostraBotaoLimparAposta();
 		verificaSeMostraSalvarApostaView();
 
@@ -925,6 +1029,12 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 			} else {
 				ocutarSalvarAposta();
 			}
+		} else if (isTipoSuperSete) {
+			if (validaSelecaoSuperSete()) {
+				mostrarSalvarAposta();
+			} else {
+				ocutarSalvarAposta();
+			}
 		} else if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) {
 			mostrarSalvarAposta();
 		} else {
@@ -947,7 +1057,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 		salvarApostaLayout.setOnClickListener(this);
 	}
 
-	public void atualizaStatusBotaoFinalizar() {
+	public void atualizaStatusBotaoFinalizar(Boolean isPickePrognosticos) {
 		if (isTipoLotogol) {
 			if (partidasSelecionadas.size() < parametroJogo.getPartidas().size()) {
 				botaoFinalizar.setVisibility(View.INVISIBLE);
@@ -968,10 +1078,16 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 					botaoFinalizar.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.timemaniaescuro));
 				}
 			} else {
-				atualizarAdicionarCarinhoCompletarCartela();
+				atualizarAdicionarCarinhoCompletarCartela(isPickePrognosticos);
+			}
+		} else if (isTipoSuperSete){
+			if(validaSelecaoSuperSete() && qtdTotalSelecionadosSuperSete == parentActivity.qtdDezenasPossiveisSelecionado){
+				atualizarBotaoFinalizarAdicionarCarrinho();
+			} else {
+				atualizarAdicionarCarinhoCompletarCartela(isPickePrognosticos);
 			}
 		} else {
-			atualizarAdicionarCarinhoCompletarCartela();
+			atualizarAdicionarCarinhoCompletarCartela(isPickePrognosticos);
 		}
 	}
 
@@ -996,7 +1112,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 		}
 	}
 
-	private void atualizarAdicionarCarinhoCompletarCartela() {
+	private void atualizarAdicionarCarinhoCompletarCartela(Boolean isPickerPrognosticos) {
 		if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado || isEscolhaTimeCoracaoSurpresinha) {
 			if (isDiaSorte) {
 				atualizarBotaoFinalizar(R.string.escolhaOmes);
@@ -1021,6 +1137,9 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
 			botaoLimparAposta.setVisibility(View.GONE);
 		} else {
+			if(isTipoSuperSete && isPickerPrognosticos){
+				atualizaSuperSetePrognosticoMaior(pegaListaSuperSete());
+			}
 			atualizarBotaoFinalizarCompletarCartela();
 		}
 	}
@@ -1113,7 +1232,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 				if (isTipoLoteca) {
 					atualizaStatusBotaoFinalizarLoteca(false);
 				} else {
-					atualizaStatusBotaoFinalizar();
+					atualizaStatusBotaoFinalizar(false);
 				}
 
 				simularDezenasAdapter.notifyDataSetChanged();
@@ -1162,13 +1281,13 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 	private void configurarSuperSete() {
 
 		listaAdaptersSuperSete = new ArrayList<>();
-		listaAdaptersSuperSete.add(new SuperSeteAdapter(typeGameColorLight, parentActivity));
-		listaAdaptersSuperSete.add(new SuperSeteAdapter(typeGameColorLight, parentActivity));
-		listaAdaptersSuperSete.add(new SuperSeteAdapter(typeGameColorLight, parentActivity));
-		listaAdaptersSuperSete.add(new SuperSeteAdapter(typeGameColorLight, parentActivity));
-		listaAdaptersSuperSete.add(new SuperSeteAdapter(typeGameColorLight, parentActivity));
-		listaAdaptersSuperSete.add(new SuperSeteAdapter(typeGameColorLight, parentActivity));
-		listaAdaptersSuperSete.add(new SuperSeteAdapter(typeGameColorLight, parentActivity));
+		listaAdaptersSuperSete.add(new SuperSeteAdapter(typeGameColorDark, parentActivity));
+		listaAdaptersSuperSete.add(new SuperSeteAdapter(typeGameColorDark, parentActivity));
+		listaAdaptersSuperSete.add(new SuperSeteAdapter(typeGameColorDark, parentActivity));
+		listaAdaptersSuperSete.add(new SuperSeteAdapter(typeGameColorDark, parentActivity));
+		listaAdaptersSuperSete.add(new SuperSeteAdapter(typeGameColorDark, parentActivity));
+		listaAdaptersSuperSete.add(new SuperSeteAdapter(typeGameColorDark, parentActivity));
+		listaAdaptersSuperSete.add(new SuperSeteAdapter(typeGameColorDark, parentActivity));
 
 		listaGridsSuperSete.get(0).setAdapter(listaAdaptersSuperSete.get(0));
 		listaGridsSuperSete.get(1).setAdapter(listaAdaptersSuperSete.get(1));
@@ -1199,14 +1318,14 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
 				} else {
 					int maxNumerosParaSelecionar = parametroJogo.getQuantidadeMaxima();
-					if (qtdTotalSelecionadosSuperSete== parentActivity.qtdDezenasPossiveisSelecionado) {
+					if (qtdTotalSelecionadosSuperSete == parentActivity.qtdDezenasPossiveisSelecionado) {
 						// VERIFICA SE TEM OPÇÃO DE SELECIONAR MAIS DEZENAS
 						int qtdDezenasPossiveisSelecionadoAtual = parentActivity.qtdDezenasPossiveisSelecionado;
 
 						parentActivity.qtdDezenasPossiveisSelecionado = cartelaFragmentListener.verificaNovoQtdDezenasMax(parentActivity.qtdDezenasPossiveisSelecionado);
 
 						if (qtdDezenasPossiveisSelecionadoAtual < maxNumerosParaSelecionar) {
-							if(listaSelecionados.size() < adapter.QTD_MAX_POR_COLUNA){
+							if (listaSelecionados.size() < adapter.QTD_MAX_POR_COLUNA) {
 								parentActivity.qtdDezenasPossiveisSelecionado += 1;
 								parentActivity.verificaNovoQtdDezenasMax(parentActivity.qtdDezenasPossiveisSelecionado);
 								atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
@@ -1216,7 +1335,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 								listaSelecionados.add(valorSelecionado);
 								qtdTotalSelecionadosSuperSete++;
 							} else {
-								ViewUtils.alert(getActivity(), getString(R.string.msg_qtd_max_col_super_sete).replace("{QTD_MAX_POR_COLUNA}",String.valueOf(adapter.QTD_MAX_POR_COLUNA)));
+								ViewUtils.alert(getActivity(), getString(R.string.msg_qtd_max_col_super_sete));
 							}
 						} else {
 							ViewUtils.alert(getActivity(), getString(R.string.label_nao_possivel_selecionar_quantidade_numeros_superior_limite_modalidade_loterica));
@@ -1226,7 +1345,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 							listaSelecionados.add(valorSelecionado);
 							qtdTotalSelecionadosSuperSete++;
 						}else {
-							ViewUtils.alert(getActivity(), getString(R.string.msg_qtd_max_col_super_sete).replace("{QTD_MAX_POR_COLUNA}",String.valueOf(adapter.QTD_MAX_POR_COLUNA)));
+							ViewUtils.alert(getActivity(), getString(R.string.msg_qtd_max_col_super_sete));
 
 						}
 
@@ -1235,7 +1354,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
 				verificaSeMostraSalvarApostaView();
 				verificaSeMostraBotaoLimparAposta();
-				atualizaStatusBotaoFinalizar();
+				atualizaStatusBotaoFinalizar(false);
 				adapter.notifyDataSetChanged();
 			});
 		}
@@ -1260,7 +1379,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 			timeCoracaoAdapter.notifyDataSetChanged();
 			verificaSeMostraBotaoLimparAposta();
 			verificaSeMostraSalvarApostaView();
-			atualizarAdicionarCarinhoCompletarCartela();
+			atualizarAdicionarCarinhoCompletarCartela(false);
 		});
 	}
 
@@ -1337,7 +1456,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 			partidasSelecionadas.remove(parametroPartida);
 		}
 		verificaSeMostraBotaoLimparAposta();
-		atualizaStatusBotaoFinalizar();
+		atualizaStatusBotaoFinalizar(false);
 		verificaSeMostraSalvarApostaView();
 	}
 
@@ -1485,7 +1604,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 				if (equipeSelecionada != null) {
 					isEcolhaTimeBtnAtivado = Boolean.TRUE;
 				}
-				atualizaStatusBotaoFinalizar();
+				atualizaStatusBotaoFinalizar(false);
 			}
 			ViewUtils.setMoedaFormatHtml(aposta.getValor(), valorAposta);
 		}
@@ -1507,7 +1626,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 			timeCoracaoAdapter.notifyDataSetChanged();
 			verificaSeMostraBotaoLimparAposta();
 			verificaSeMostraSalvarApostaView();
-			atualizarAdicionarCarinhoCompletarCartela();
+			atualizarAdicionarCarinhoCompletarCartela(false);
 		}
 	}
 

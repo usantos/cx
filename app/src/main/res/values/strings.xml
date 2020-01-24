@@ -183,7 +183,7 @@
     <string name="title_activity_lista_compras">Compras</string>
 
     <string name="label_nao_possivel_selecionar_quantidade_numeros_superior_limite_modalidade_loterica">Não é possível selecionar quantidade de números superior ao limite para modalidade Lotérica.</string>
-    <string name="msg_qtd_max_col_super_sete">A quantidade máxima de números por coluna é {QTD_MAX_POR_COLUNA}</string>
+    <string name="msg_qtd_max_col_super_sete">Você só pode selecionar três números por coluna</string>
 
     <string name="label_aposta_salva_carinha">Aposta salva :)</string>
     <string name="label_sem_teimosinha">Teimosinha</string>

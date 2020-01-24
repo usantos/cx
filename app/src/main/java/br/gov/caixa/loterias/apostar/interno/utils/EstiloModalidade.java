@@ -156,7 +156,7 @@ public class EstiloModalidade {
                 trevo = R.drawable.trevo_2;
                 colorTextAlpha6 = R.color.white_6;
                 break;
-            case SUPER_SETE:
+            case SUPER_7:
                 corClara = R.color.superseteclaro;
                 corMedia = R.color.supersetemedio;
                 corEscura = R.color.superseteescuro;

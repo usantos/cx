@@ -21,7 +21,7 @@ public enum ModalidadeEnum implements Serializable {
     @SerializedName("MEGA_SENA")MEGA_SENA,
     @SerializedName("QUINA")QUINA,
     @SerializedName("TIMEMANIA")TIMEMANIA,
-    @SerializedName("SUPER_7")SUPER_SETE;
+    @SerializedName("SUPER_7") SUPER_7;
 
     public static String fromString(ModalidadeEnum modalidade) {
         switch (modalidade) {
@@ -43,7 +43,7 @@ public enum ModalidadeEnum implements Serializable {
                 return "dupla-sena";
             case DIA_DE_SORTE:
                 return "dia de sorte";
-            case SUPER_SETE:
+            case SUPER_7:
                 return "super sete";
 
         }
@@ -74,7 +74,7 @@ public enum ModalidadeEnum implements Serializable {
             case "dupla sena":
                 return ModalidadeEnum.DUPLA_SENA;
             case "super sete":
-                return ModalidadeEnum.SUPER_SETE;
+                return ModalidadeEnum.SUPER_7;
             default:
                 return null;
         }
@@ -100,7 +100,7 @@ public enum ModalidadeEnum implements Serializable {
                 return "Dupla Sena";
             case DIA_DE_SORTE:
                 return "Dia de Sorte";
-            case SUPER_SETE:
+            case SUPER_7:
                 return "Super Sete";
 
         }
@@ -116,7 +116,7 @@ public enum ModalidadeEnum implements Serializable {
             case 8:
                 return ModalidadeEnum.LOTOFACIL;
             case 7:
-                return ModalidadeEnum.SUPER_SETE;
+                return ModalidadeEnum.SUPER_7;
             case 11:
                 return ModalidadeEnum.DIA_DE_SORTE;
             case 14:
@@ -142,7 +142,7 @@ public enum ModalidadeEnum implements Serializable {
             case 3:
                 return ModalidadeEnum.QUINA;
             case 7:
-                return ModalidadeEnum.SUPER_SETE;
+                return ModalidadeEnum.SUPER_7;
             case 8:
                 return ModalidadeEnum.LOTOFACIL;
             case 11:

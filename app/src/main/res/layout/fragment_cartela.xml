@@ -18,21 +18,21 @@
             android:id="@+id/cl_super_sete_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
             android:background="@color/branco"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolBar">
 
             <TextView
                 android:id="@+id/tv_colunas"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:textColor="@color/branco"
                 android:background="@color/superseteclaro"
-                android:text="Colunas"
                 android:fontFamily="@font/futura_std_bold"
                 android:padding="10dp"
+                android:text="Colunas"
+                android:textAlignment="center"
+                android:textColor="@color/branco"
                 android:textSize="16sp"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -40,83 +40,90 @@
                 android:id="@+id/ll_numeros_colunas_super_sete"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                 android:layout_margin="5dp"
+                android:layout_margin="5dp"
                 android:background="@color/branco"
                 android:gravity="center_horizontal"
-                app:layout_constraintTop_toBottomOf="@id/tv_colunas"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/tv_colunas">
+
                 <TextView
                     android:layout_width="35dp"
                     android:layout_height="35dp"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/rounded_text_view_colunas"
+                    android:fontFamily="@font/futura_std_bold"
+                    android:gravity="center"
                     android:text="1"
-                    android:layout_weight="1"
-                    android:layout_margin="5dp"
-                    android:fontFamily="@font/futura_std_bold"
-                    android:textColor="@color/branco"
-                    android:gravity="center"
-                    android:background="@drawable/rounded_text_view_colunas"/>
+                    android:textColor="@color/branco" />
+
                 <TextView
                     android:layout_width="35dp"
                     android:layout_height="35dp"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/rounded_text_view_colunas"
+                    android:fontFamily="@font/futura_std_bold"
+                    android:gravity="center"
+
                     android:text="2"
-                    android:layout_margin="5dp"
-                    android:layout_weight="1"
-                    android:textColor="@color/branco"
-                    android:fontFamily="@font/futura_std_bold"
+                    android:textColor="@color/branco" />
 
-                    android:gravity="center"
-                    android:background="@drawable/rounded_text_view_colunas"/>
                 <TextView
                     android:layout_width="35dp"
                     android:layout_height="35dp"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/rounded_text_view_colunas"
+                    android:fontFamily="@font/futura_std_bold"
+
+                    android:gravity="center"
                     android:text="3"
-                    android:layout_margin="5dp"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/futura_std_bold"
+                    android:textColor="@color/branco" />
 
-                    android:textColor="@color/branco"
-                    android:gravity="center"
-                    android:background="@drawable/rounded_text_view_colunas"/>
                 <TextView
                     android:layout_width="35dp"
                     android:layout_height="35dp"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/rounded_text_view_colunas"
+                    android:fontFamily="@font/futura_std_bold"
+                    android:gravity="center"
                     android:text="4"
-                    android:layout_margin="5dp"
-                    android:layout_weight="1"
-                    android:textColor="@color/branco"
-                    android:fontFamily="@font/futura_std_bold"
-                    android:gravity="center"
-                    android:background="@drawable/rounded_text_view_colunas"/>
+                    android:textColor="@color/branco" />
+
                 <TextView
                     android:layout_width="35dp"
                     android:layout_height="35dp"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/rounded_text_view_colunas"
+                    android:fontFamily="@font/futura_std_bold"
+                    android:gravity="center"
                     android:text="5"
-                    android:layout_margin="5dp"
-                    android:fontFamily="@font/futura_std_bold"
-                    android:layout_weight="1"
-                    android:textColor="@color/branco"
-                    android:gravity="center"
-                    android:background="@drawable/rounded_text_view_colunas"/>
+                    android:textColor="@color/branco" />
+
                 <TextView
                     android:layout_width="35dp"
                     android:layout_height="35dp"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/rounded_text_view_colunas"
+                    android:fontFamily="@font/futura_std_bold"
+                    android:gravity="center"
                     android:text="6"
-                    android:layout_margin="5dp"
-                    android:fontFamily="@font/futura_std_bold"
-                    android:layout_weight="1"
-                    android:textColor="@color/branco"
-                    android:gravity="center"
-                    android:background="@drawable/rounded_text_view_colunas"/>
+                    android:textColor="@color/branco" />
+
                 <TextView
                     android:layout_width="35dp"
                     android:layout_height="35dp"
-                    android:text="7"
                     android:layout_margin="5dp"
-                    android:fontFamily="@font/futura_std_bold"
                     android:layout_weight="1"
-                    android:textColor="@color/branco"
+                    android:background="@drawable/rounded_text_view_colunas"
+                    android:fontFamily="@font/futura_std_bold"
                     android:gravity="center"
-                    android:background="@drawable/rounded_text_view_colunas"/>
+                    android:text="7"
+                    android:textColor="@color/branco" />
             </LinearLayout>
         </android.support.constraint.ConstraintLayout>
 
@@ -127,8 +134,8 @@
         android:id="@+id/cartelaFragmentScrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fillViewport="false"
         android:layout_below="@+id/rl_colunas_super_7"
+        android:fillViewport="false"
         android:orientation="vertical">
 
         <android.support.constraint.ConstraintLayout
@@ -208,29 +215,34 @@
                 <ScrollView
                     android:id="@+id/sv_super_sete"
                     android:layout_width="match_parent"
-                    app:layout_constraintTop_toBottomOf="@+id/layotLabelEscolhaNumeros"
-                    android:visibility="gone"
+                    android:layout_height="wrap_content"
                     android:nestedScrollingEnabled="false"
-                    android:layout_height="wrap_content">
+                    android:visibility="gone"
+                    app:layout_constraintTop_toBottomOf="@+id/layotLabelEscolhaNumeros">
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginRight="5dp"
                         android:layout_marginLeft="5dp"
-                        android:layout_marginBottom="100dp"
                         android:layout_marginTop="50dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginBottom="100dp"
                         android:orientation="horizontal">
+
                         <br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightGridView
                             android:id="@+id/ehgv_super_sete_primeiro"
                             android:layout_width="wrap_content"
                             android:layout_height="600dp"
+                            android:layout_weight="1"
+                            android:alpha="0.5"
+                            android:layout_margin="3dp"
+                            android:background="@color/supersete_claro_transparente"
                             android:columnWidth="50dp"
                             android:gravity="center"
-                            android:layout_weight="1"
-                            android:scrollbars="none"
                             android:isScrollContainer="false"
                             android:numColumns="1"
+                            android:scrollbars="none"
                             android:stretchMode="columnWidth"
                             android:verticalSpacing="10dp" />
 
@@ -238,12 +250,15 @@
                             android:id="@+id/ehgv_super_sete_segundo"
                             android:layout_width="wrap_content"
                             android:layout_height="600dp"
+                            android:layout_weight="1"
+                            android:alpha="0.5"
+                            android:layout_margin="3dp"
+                            android:background="@color/supersete_claro_transparente"
                             android:columnWidth="50dp"
                             android:gravity="center"
-                            android:layout_weight="1"
-                            android:scrollbars="none"
                             android:isScrollContainer="false"
                             android:numColumns="1"
+                            android:scrollbars="none"
                             android:stretchMode="columnWidth"
                             android:verticalSpacing="10dp" />
 
@@ -251,12 +266,15 @@
                             android:id="@+id/ehgv_super_sete_terceiro"
                             android:layout_width="wrap_content"
                             android:layout_height="600dp"
+                            android:layout_weight="1"
+                            android:alpha="0.5"
+                            android:layout_margin="3dp"
+                            android:background="@color/supersete_claro_transparente"
                             android:columnWidth="50dp"
                             android:gravity="center"
-                            android:layout_weight="1"
-                            android:scrollbars="none"
                             android:isScrollContainer="false"
                             android:numColumns="1"
+                            android:scrollbars="none"
                             android:stretchMode="columnWidth"
                             android:verticalSpacing="10dp" />
 
@@ -264,12 +282,15 @@
                             android:id="@+id/ehgv_super_sete_quarto"
                             android:layout_width="wrap_content"
                             android:layout_height="600dp"
+                            android:layout_weight="1"
+                            android:alpha="0.5"
+                            android:layout_margin="3dp"
+                            android:background="@color/supersete_claro_transparente"
                             android:columnWidth="50dp"
                             android:gravity="center"
-                            android:layout_weight="1"
-                            android:scrollbars="none"
                             android:isScrollContainer="false"
                             android:numColumns="1"
+                            android:scrollbars="none"
                             android:stretchMode="columnWidth"
                             android:verticalSpacing="10dp" />
 
@@ -277,12 +298,15 @@
                             android:id="@+id/ehgv_super_sete_quinto"
                             android:layout_width="wrap_content"
                             android:layout_height="600dp"
+                            android:layout_weight="1"
+                            android:alpha="0.5"
+                            android:layout_margin="3dp"
+                            android:background="@color/supersete_claro_transparente"
                             android:columnWidth="50dp"
                             android:gravity="center"
-                            android:scrollbars="none"
-                            android:layout_weight="1"
                             android:isScrollContainer="false"
                             android:numColumns="1"
+                            android:scrollbars="none"
                             android:stretchMode="columnWidth"
                             android:verticalSpacing="10dp" />
 
@@ -290,12 +314,15 @@
                             android:id="@+id/ehgv_super_sete_sexto"
                             android:layout_width="wrap_content"
                             android:layout_height="600dp"
+                            android:layout_weight="1"
+                            android:alpha="0.5"
+                            android:layout_margin="3dp"
+                            android:background="@color/supersete_claro_transparente"
                             android:columnWidth="50dp"
                             android:gravity="center"
-                            android:layout_weight="1"
-                            android:scrollbars="none"
                             android:isScrollContainer="false"
                             android:numColumns="1"
+                            android:scrollbars="none"
                             android:stretchMode="columnWidth"
                             android:verticalSpacing="10dp" />
 
@@ -303,12 +330,15 @@
                             android:id="@+id/ehgv_super_sete_setimo"
                             android:layout_width="wrap_content"
                             android:layout_height="600dp"
+                            android:layout_weight="1"
+                            android:alpha="0.5"
+                            android:layout_margin="3dp"
+                            android:background="@color/supersete_claro_transparente"
                             android:columnWidth="50dp"
                             android:gravity="center"
-                            android:scrollbars="none"
-                            android:layout_weight="1"
                             android:isScrollContainer="false"
                             android:numColumns="1"
+                            android:scrollbars="none"
                             android:stretchMode="columnWidth"
                             android:verticalSpacing="10dp" />
                     </LinearLayout>
@@ -446,8 +476,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
             android:layout_marginTop="15dp"
+            android:layout_marginRight="16dp"
             android:layout_toRightOf="@+id/selcioneOutrosNumeros"
             android:textColor="@color/branco"
             android:textSize="14sp" />

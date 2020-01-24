@@ -2,6 +2,7 @@ package br.gov.caixa.loterias.apostar.interno.model.bo;
 
 class ServerMethods {
      static final String COMPLETA_JOGO_PATH = "/apostas/completar-jogo";
+     static final String COMPLETA_JOGO_NOVO_PATH = "/apostas/completar-jogo/{modalidade}";
      static final String VALIDAR_FAVORITA_PATH = "/apostas-favoritas/validar";
      static final String INCLUIR_FAVORITA_PATH = "/apostas-favoritas";
 

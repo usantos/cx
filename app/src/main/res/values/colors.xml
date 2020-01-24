@@ -26,6 +26,7 @@
     <color name="superseteclaro">#DDE89C   </color>
     <color name="supersetemedio">#a8cf45</color>
     <color name="superseteescuro">#a8cf45</color>
+    <color name="supersete_claro_transparente">#80DDE89C</color>
 
     <color name="diasorteclaro">#E2BE1E</color>
     <color name="diasortemedio">#D2B11B</color>

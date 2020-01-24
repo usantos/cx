@@ -465,7 +465,7 @@ public class ApostaDTO {
                 return "Dupla-Sena";
             case DIA_DE_SORTE:
                 return "Dia de sorte";
-            case SUPER_SETE:
+            case SUPER_7:
                 return "Super Sete";
 //      case FEDERAL:
 //        return "Federal";
@@ -494,7 +494,7 @@ public class ApostaDTO {
                 return "duplasena";
             case DIA_DE_SORTE:
                 return "diadesorte";
-            case SUPER_SETE:
+            case SUPER_7:
                 return "supersete";
 //      case FEDERAL:
 //        return "federal";

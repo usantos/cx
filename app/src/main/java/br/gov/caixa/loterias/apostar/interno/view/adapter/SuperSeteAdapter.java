@@ -97,4 +97,14 @@ public class SuperSeteAdapter extends BaseAdapter {
 			dezenas.add(new Dezena("" + i, Boolean.FALSE));
 		}
 	}
+
+	public int getQtdColunasMaximas(int qtdMaxPrognosticos){
+		int qtdColunasDisponiveis = 1;
+		if (qtdMaxPrognosticos >= 8 && qtdMaxPrognosticos <= 14) {
+			qtdColunasDisponiveis = 2;
+		} else if (qtdMaxPrognosticos >= 15 && qtdMaxPrognosticos <= 21) {
+			qtdColunasDisponiveis = 3;
+		}
+		return qtdColunasDisponiveis;
+	}
 }

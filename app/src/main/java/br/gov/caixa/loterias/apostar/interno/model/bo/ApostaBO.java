@@ -1,7 +1,10 @@
 package br.gov.caixa.loterias.apostar.interno.model.bo;
 
+import com.google.gson.Gson;
+
 import org.androidannotations.annotations.EBean;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -9,9 +12,11 @@ import java.util.Map;
 
 import br.gov.caixa.loterias.apostar.interno.model.bean.ApostaPageRequest;
 import br.gov.caixa.loterias.apostar.interno.model.bean.MeioPagamento;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.data.CompletaJogoNovoRsp;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.data.CompletaJogoRsp;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.AgrupadorApostaCompraDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.AgrupadorDTOApostaDTOResponse;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ApostaComMatriz;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ApostaFavoritaDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CarrinhoDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CarrinhoFavoritoDTOResponse;
@@ -194,6 +199,25 @@ public class ApostaBO extends BaseBO {
         silceConnection.get(ServerMethods.COMPLETA_JOGO_PATH,
                             queryParams,
                             CompletaJogoRsp.class,
+                            listener.getSilceListener(),
+                            listener.getErrorListener(),
+                            new LinkedHashMap<>());
+    }
+
+    public void completaJogoNovo(final int quantidadeTotalNumeros,
+                                 final ArrayList<ArrayList<Integer>> numerosMarcados,
+                                 final String modalidade,
+                                 final RequestListener<CompletaJogoNovoRsp> listener) {
+
+        LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
+        String url = ServerMethods.COMPLETA_JOGO_NOVO_PATH.replace("{modalidade}",modalidade);
+        Gson gsonNumeros = new Gson();
+        queryParams.put("quantidadeTotalNumeros", String.valueOf(quantidadeTotalNumeros));
+        queryParams.put("numerosMarcadosMatriz",gsonNumeros.toJson(numerosMarcados));
+
+        silceConnection.get(url,
+                            queryParams,
+                            CompletaJogoNovoRsp.class,
                             listener.getSilceListener(),
                             listener.getErrorListener(),
                             new LinkedHashMap<>());
@@ -443,7 +467,7 @@ public class ApostaBO extends BaseBO {
     }
 
     //CARRINHO
-    public void adicionarApostaNoCarrinho(final IdentificaoDeUmaApostaDas8Modalidades aposta,
+    public void adicionarApostaNoCarrinho(final ApostaComMatriz aposta,
                                           final RequestListener<AgrupadorDTOApostaDTOResponse> listener) {
         final GsonRequest request = silceConnection.buildPostRequest(ServerMethods.INCLUIR_APOSTA_CARRINHO_PATH,
                                                                     new LinkedHashMap<>(),
