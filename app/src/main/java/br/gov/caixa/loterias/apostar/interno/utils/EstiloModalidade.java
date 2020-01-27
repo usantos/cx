@@ -156,6 +156,21 @@ public class EstiloModalidade {
                 trevo = R.drawable.trevo_2;
                 colorTextAlpha6 = R.color.white_6;
                 break;
+            case SUPER_7:
+                corClara = R.color.superseteclaro;
+                corMedia = R.color.supersetemedio;
+                corEscura = R.color.superseteescuro;
+                imagemCalendario = R.drawable.icon_data_timemania;
+                imagemRelogio = R.drawable.icon_horario_timemania;
+                trevoBackground = R.drawable.background_trapeze_super_sete;
+                themeId = R.style.AppTheme_Modalidade_SuperSete;
+                stringId = R.string.label_super_sete;
+                menuItemColor = R.color.branco;
+                iconValidadeComprovanteColor = R.color.black;
+                iconImpressoraColor = R.color.branco;
+                trevo = R.drawable.trevo_8;
+                colorTextAlpha6 = R.color.white_6;
+                break;
             default: {
                 //MEGASENA
                 corClara = R.color.megasenaclaro;

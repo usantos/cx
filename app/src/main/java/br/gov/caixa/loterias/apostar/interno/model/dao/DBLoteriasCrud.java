@@ -195,7 +195,7 @@ public class DBLoteriasCrud {
      * @param aposta IdentificaoDeUmaApostaDas8Modalidades
      * @return id
      */
-    public Long insertIdentificaoDeUmaApostaDas8Modalidades(IdentificaoDeUmaApostaDas8Modalidades aposta) {
+    public Long insertIdentificaoDeUmaApostaDas8Modalidades(IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta) {
 
         if (aposta != null) {
             this.initDBLoteriasHelper();
@@ -389,7 +389,7 @@ public class DBLoteriasCrud {
      * @param aposta IdentificaoDeUmaApostaDas8Modalidades
      * @return boolean retorno
      */
-    public boolean existIdentificaoDeUmaApostaDas8Modalidades(IdentificaoDeUmaApostaDas8Modalidades aposta) {
+    public boolean existIdentificaoDeUmaApostaDas8Modalidades(IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta) {
 
         boolean retorno = Boolean.FALSE;
 
@@ -1047,7 +1047,7 @@ public class DBLoteriasCrud {
         }
     }
 
-    public void deleteIdentificaoDeUmaApostaDas8Modalidades(IdentificaoDeUmaApostaDas8Modalidades aposta) {
+    public void deleteIdentificaoDeUmaApostaDas8Modalidades(IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta) {
         try {
             if (aposta != null) {
                 //this.deleteLoterica(aposta.getLoterica());

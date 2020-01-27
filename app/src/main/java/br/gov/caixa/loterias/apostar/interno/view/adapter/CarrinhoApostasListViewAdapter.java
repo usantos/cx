@@ -17,6 +17,7 @@ import com.android.volley.VolleyError;
 import com.daimajia.swipe.SwipeLayout;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import br.gov.caixa.loterias.apostar.interno.R;
@@ -184,13 +185,20 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
         if (aposta != null && aposta.getIndicadorSurpresinha() != null && aposta.getIndicadorSurpresinha().getValor() != null) {
             switch (aposta.getIndicadorSurpresinha().getValor()) {
                 case IndicadorSurpresinha.NAO_SURPRESINHA:
-                    for (Integer num : aposta.getNumerosSelecionados()) {
-                        if (num.equals(aposta.getNumerosSelecionados().get(aposta.getNumerosSelecionados().size() - 1))) {
-                            numeroStr.append(String.format("%02d", num));
-                        } else {
-                            numeroStr.append(String.format("%02d - ", num));
+                    if (aposta.getModalidade() == ModalidadeEnum.SUPER_7) {
+
+                    } else {
+                        IdentificaoDeUmaApostaDas8Modalidades<List<Double>> apostaNumerica = aposta;
+
+                        for (Double num : apostaNumerica.getNumerosSelecionados()) {
+                            if (num.equals(apostaNumerica.getNumerosSelecionados().get(apostaNumerica.getNumerosSelecionados().size() - 1))) {
+                                numeroStr.append(String.format("%02d", num.intValue()));
+                            } else {
+                                numeroStr.append(String.format("%02d - ", num.intValue()));
+                            }
                         }
                     }
+
                     break;
                 case IndicadorSurpresinha.SURPRESINHA:
                 case IndicadorSurpresinha.SURPRESINHA_NUMERICA:

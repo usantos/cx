@@ -47,7 +47,7 @@ public class ApostaConfirmadaNumeroDetalhesPremioPago extends Fragment {
     protected RelativeLayout informacaoAdicionalResultadoLayout;
 
     @FragmentArg
-    protected IdentificaoDeUmaApostaDas8Modalidades aposta;
+    protected IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta;
 
     @FragmentArg
     protected ResultadoConcursoDTO resultadoConcursoDTO;

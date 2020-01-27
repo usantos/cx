@@ -16,10 +16,12 @@ import android.widget.TextView;
 import com.daimajia.swipe.SwipeLayout;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.controllers.ListaRapidaoActivity;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IndicadorSurpresinha;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeEnum;
@@ -150,13 +152,20 @@ public class CarrinhoApostasListViewRapidaoAdapter extends RecyclerView.Adapter<
 
             switch (apostas.get(position).getIndicadorSurpresinha().getValor()) {
                 case IndicadorSurpresinha.NAO_SURPRESINHA:
-                    for (Integer num : apostas.get(position).getNumerosSelecionados()) {
-                        if (num.equals(apostas.get(position).getNumerosSelecionados().get(apostas.get(position).getNumerosSelecionados().size() - 1))) {
-                            numeroStr.append(String.format("%02d", num));
-                        } else {
-                            numeroStr.append(String.format("%02d - ", num));
+                    if (apostas.get(position).getModalidade() == ModalidadeEnum.SUPER_7) {
+
+                    } else {
+                        IdentificaoDeUmaApostaDas8Modalidades aposta = (IdentificaoDeUmaApostaDas8Modalidades<List<Integer>>)apostas.get(position);
+                        List<Integer> numerosSelecionados = (List<Integer>)aposta.getNumerosSelecionados();
+                        for (Integer num : numerosSelecionados) {
+                            if (num.equals(numerosSelecionados.get(numerosSelecionados.size() - 1))) {
+                                numeroStr.append(String.format("%02d", num));
+                            } else {
+                                numeroStr.append(String.format("%02d - ", num));
+                            }
                         }
                     }
+
                     break;
                 case IndicadorSurpresinha.SURPRESINHA:
                 case IndicadorSurpresinha.SURPRESINHA_NUMERICA:

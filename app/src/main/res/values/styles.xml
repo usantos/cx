@@ -186,6 +186,12 @@
         <item name="android:windowBackground">@color/diasorteescuro</item>
     </style>
 
+    <style name="AppTheme.Modalidade.SuperSete">
+        <item name="colorPrimaryDark">@color/superseteescuro</item>
+        <item name="colorPrimary">@color/superseteclaro</item>
+        <item name="android:windowBackground">@color/superseteescuro</item>
+    </style>
+
     <style name="AppTheme.Modalidade.Federal">
         <item name="colorPrimaryDark">@color/federalescuro</item>
         <item name="colorPrimary">@color/federalclaro</item>

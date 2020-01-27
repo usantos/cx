@@ -617,6 +617,10 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
                 configuraTipoApostaTela("_dia de sorte_", R.color.diasorteclaro, R.color.diasorteescuro, View.VISIBLE, View.GONE);
                 this.toolBarMenu = R.menu.itens_simular_actionbar_duvida;
                 break;
+            case SUPER_7:
+                configuraTipoApostaTela("_super sete_", R.color.superseteclaro, R.color.superseteescuro, View.VISIBLE, View.GONE);
+                this.toolBarMenu = R.menu.itens_simular_actionbar_duvida;
+                break;
         }
 
         qtdDezenasPossiveisSelecionado = parametroSimulacao.getQuantidadeMinima() != null ? parametroSimulacao.getQuantidadeMinima() : 0;
@@ -681,7 +685,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
 
             if (isFragmentCartela()) {
                 cartelaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
-                cartelaFragment.atualizaStatusBotaoFinalizar();
+                cartelaFragment.atualizaStatusBotaoFinalizar(true);
             } else {
                 if (surpresinhaFragment.getParametroJogo() != null) {
                     surpresinhaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);

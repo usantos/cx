@@ -68,7 +68,7 @@ public class AdicionarApostaCarrinhoHelper {
     public static void incluirApostaCarrinho(Context contextParam, Object objectAposta) {
         context = contextParam;
         ApostaBO apostaBO = ApostaBO_.getInstance_(context);
-        aposta = getApostaPreenchida(objectAposta);
+       // aposta = getApostaPreenchida(objectAposta);
         DialogUtils.show(context);
         if (aposta != null) {
             postAdicionarApostaCarrinho(apostaBO);
@@ -78,7 +78,7 @@ public class AdicionarApostaCarrinhoHelper {
     public static void incluirApostaCarrinhoMinhasApostas(Context contextParam, Object objectAposta) {
         context = contextParam;
         ApostaBO apostaBO = ApostaBO_.getInstance_(context);
-        aposta = getApostaPreenchida(objectAposta);
+        //aposta = getApostaPreenchida(objectAposta);
         DialogUtils.show(context);
         if (aposta != null) {
             postAdicionarApostaCarrinhoMinhasApostas(apostaBO);
@@ -94,7 +94,8 @@ public class AdicionarApostaCarrinhoHelper {
             if (KeycloakBO_.getInstance_(context).getAccessToken() == null || KeycloakBO_.getInstance_(context).getAccessToken().isEmpty()) {
                 postAdicionarApostaCarrinho(apostaBO);
             } else {
-                adicionarApostaCarrinhoRequest(context, apostaBO, aposta);
+                postAdicionarApostaCarrinho(apostaBO);
+                //adicionarApostaCarrinhoRequest(context, apostaBO, aposta);
             }
         }
     }
@@ -179,19 +180,20 @@ public class AdicionarApostaCarrinhoHelper {
     }
 
     private static void checarLimiteDiario
-            (final ApostaBO apostaBO, final IdentificaoDeUmaApostaDas8Modalidades aposta, final CarrinhoDTO carrinhoDTO) {
-         BigDecimal limiteDiario = SessaoUsuario.getInstance().getParametrosSimulacao().getValorLimiteDiario();
+          (final ApostaBO apostaBO, final IdentificaoDeUmaApostaDas8Modalidades aposta, final CarrinhoDTO carrinhoDTO) {
+        DialogUtils.dismiss();
+         /*  BigDecimal limiteDiario = SessaoUsuario.getInstance().getParametrosSimulacao().getValorLimiteDiario();
         BigDecimal valorCarrinho = carrinhoDTO.getValorTotal().add(IdentificaoDeUmaApostaDas8Modalidades.getValorApostaPorPrognostico(aposta));
         if (valorCarrinho != null && limiteDiario != null && valorCarrinho.compareTo(limiteDiario) == 1) {
             DialogUtils.dismiss();
             ViewUtils.alertTitleButtonYesOrNotListener(context, context.getResources().getString(R.string.MA014), (dialog, which) -> checarApostasRepetidas(apostaBO, aposta, carrinhoDTO));
         } else {
             checarApostasRepetidas(apostaBO, aposta, carrinhoDTO);
-        }
+        }*/
     }
 
     private static void checarApostasRepetidas(final ApostaBO apostaBO, final IdentificaoDeUmaApostaDas8Modalidades aposta, final CarrinhoDTO carrinhoDTO) {
-        if (IdentificaoDeUmaApostaDas8Modalidades.checkExisteUmaApostaIgualCarrinho(aposta, carrinhoDTO)) {
+        if (false){//(IdentificaoDeUmaApostaDas8Modalidades.checkExisteUmaApostaIgualCarrinho(aposta, carrinhoDTO)) {
             DialogUtils.dismiss();
             ViewUtils.alertTitleButtonYesOrNotListener(context, context.getResources().getString(R.string.MA015), (dialog, which) -> {
                 DialogUtils.show(context);
@@ -240,7 +242,7 @@ public class AdicionarApostaCarrinhoHelper {
         }
     }
 
-    private static boolean inserirApostaCarrinhoLocal(Context contextParam, IdentificaoDeUmaApostaDas8Modalidades aposta) {
+    private static boolean inserirApostaCarrinhoLocal(Context contextParam, IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta) {
         DBLoteriasCrud crud = new DBLoteriasCrud(contextParam);
         int quantidadeApostaCarrinho = crud.qtdIdentificaoDeUmaApostaDas8Modalidades();
         BigDecimal valorTotalCarrinho = crud.sumValorIdentificaoDeUmaApostaDas8Modalidades();
@@ -474,9 +476,9 @@ public class AdicionarApostaCarrinhoHelper {
     private static void onError(VolleyError error) {
         DialogUtils.dismiss();
         if (MensagensNetwork.isUnauthorizedError(error)) {
-            if (AdicionarApostaCarrinhoHelper.inserirApostaCarrinhoLocal(context, aposta)) {
+          /*  if (AdicionarApostaCarrinhoHelper.inserirApostaCarrinhoLocal(context, aposta)) {
                 telaConfirmarCarrinho(aposta.getModalidade(), aposta);
-            }
+            }*/
         } else {
             RedirectNetwork.checkRedirect(error, (Activity) context);
         }
