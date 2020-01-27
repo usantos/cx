@@ -222,7 +222,7 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="600dp"
                         android:layout_gravity="center"
                         android:layout_marginLeft="5dp"
                         android:layout_marginTop="50dp"
@@ -233,7 +233,7 @@
                         <br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightGridView
                             android:id="@+id/ehgv_super_sete_primeiro"
                             android:layout_width="wrap_content"
-                            android:layout_height="600dp"
+                            android:layout_height="500dp"
                             android:layout_weight="1"
                             android:alpha="0.5"
                             android:layout_margin="3dp"
@@ -249,7 +249,7 @@
                         <br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightGridView
                             android:id="@+id/ehgv_super_sete_segundo"
                             android:layout_width="wrap_content"
-                            android:layout_height="600dp"
+                            android:layout_height="500dp"
                             android:layout_weight="1"
                             android:alpha="0.5"
                             android:layout_margin="3dp"
@@ -265,7 +265,7 @@
                         <br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightGridView
                             android:id="@+id/ehgv_super_sete_terceiro"
                             android:layout_width="wrap_content"
-                            android:layout_height="600dp"
+                            android:layout_height="500dp"
                             android:layout_weight="1"
                             android:alpha="0.5"
                             android:layout_margin="3dp"
@@ -281,7 +281,7 @@
                         <br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightGridView
                             android:id="@+id/ehgv_super_sete_quarto"
                             android:layout_width="wrap_content"
-                            android:layout_height="600dp"
+                            android:layout_height="500dp"
                             android:layout_weight="1"
                             android:alpha="0.5"
                             android:layout_margin="3dp"
@@ -297,7 +297,7 @@
                         <br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightGridView
                             android:id="@+id/ehgv_super_sete_quinto"
                             android:layout_width="wrap_content"
-                            android:layout_height="600dp"
+                            android:layout_height="500dp"
                             android:layout_weight="1"
                             android:alpha="0.5"
                             android:layout_margin="3dp"
@@ -313,7 +313,7 @@
                         <br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightGridView
                             android:id="@+id/ehgv_super_sete_sexto"
                             android:layout_width="wrap_content"
-                            android:layout_height="600dp"
+                            android:layout_height="500dp"
                             android:layout_weight="1"
                             android:alpha="0.5"
                             android:layout_margin="3dp"
@@ -329,7 +329,7 @@
                         <br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightGridView
                             android:id="@+id/ehgv_super_sete_setimo"
                             android:layout_width="wrap_content"
-                            android:layout_height="600dp"
+                            android:layout_height="500dp"
                             android:layout_weight="1"
                             android:alpha="0.5"
                             android:layout_margin="3dp"
