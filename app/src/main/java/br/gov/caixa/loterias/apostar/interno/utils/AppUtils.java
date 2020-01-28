@@ -27,6 +27,14 @@ public class AppUtils {
                 && cm.getActiveNetworkInfo().isConnected();
     }
 
+    public static List<Integer> converteListaInteiros(List<Integer> lista){
+        ArrayList<Integer> listaInteiros = new ArrayList<>();
+        for (Number n : lista) {
+            listaInteiros.add(new Integer( n.intValue()));
+        }
+        return listaInteiros;
+    }
+
     public static void fechaTeclado(Activity activity) {
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);

@@ -19,10 +19,10 @@ import org.parceler.Parcel;
 import org.parceler.ParcelPropertyConverter;
 
 import java.math.BigDecimal;
-import java.util.Collections;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostar.interno.model.bean.SessaoUsuario;
+import br.gov.caixa.loterias.apostar.interno.utils.AppUtils;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -91,6 +91,10 @@ IdentificaoDeUmaApostaDas8Modalidades<T> {
     }
     public void setGerarEspelho(Boolean geraEspelho){
         this.geraEspelho = geraEspelho;
+    }
+
+    public List<Integer> getListaNumerosSelecionados(){
+        return AppUtils.converteListaInteiros((List<Integer>) numerosSelecionados);
     }
 
     /**
@@ -332,7 +336,7 @@ IdentificaoDeUmaApostaDas8Modalidades<T> {
      **/
     @ApiModelProperty(value = "Quantidade de Números de prognósticos da aposta")
     public Integer getQuantidadeNumeros() {
-        return quantidadeNumeros;
+        return quantidadeNumeros != null ? quantidadeNumeros : getListaNumerosSelecionados().size();
     }
 
     public void setQuantidadeNumeros(Integer quantidadeNumeros) {
