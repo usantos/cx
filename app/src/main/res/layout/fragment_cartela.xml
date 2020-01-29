@@ -225,9 +225,8 @@
                         android:layout_height="600dp"
                         android:layout_gravity="center"
                         android:layout_marginLeft="5dp"
-                        android:layout_marginTop="50dp"
                         android:layout_marginRight="5dp"
-                        android:layout_marginBottom="100dp"
+                        android:paddingBottom="200dp"
                         android:orientation="horizontal">
 
                         <br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightGridView
