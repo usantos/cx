@@ -19,6 +19,7 @@ import org.parceler.Parcel;
 import org.parceler.ParcelPropertyConverter;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostar.interno.model.bean.SessaoUsuario;
@@ -94,7 +95,28 @@ IdentificaoDeUmaApostaDas8Modalidades<T> {
     }
 
     public List<Integer> getListaNumerosSelecionados(){
-        return AppUtils.converteListaInteiros((List<Integer>) numerosSelecionados);
+        if(numerosSelecionados != null){
+            return AppUtils.converteListaInteiros((List<Integer>) numerosSelecionados);
+        } else  {
+            return  null;
+        }
+    }
+
+    public ArrayList<ArrayList<Integer>> getMatrizNumerosSelecionados(){
+        return AppUtils.converteMatrizInteiros((List<List<Integer>>) numerosSelecionados);
+    }
+
+    public int  getCountMatrizNumerosSelecionados(){
+        int count = 0;
+        ArrayList<ArrayList<Integer>> matriz = getMatrizNumerosSelecionados();
+        if(matriz != null){
+            for (ArrayList<Integer> coluna: matriz) {
+                for (Integer linha: coluna) {
+                    count++;
+                }
+            }
+        }
+        return count;
     }
 
     /**
@@ -336,7 +358,22 @@ IdentificaoDeUmaApostaDas8Modalidades<T> {
      **/
     @ApiModelProperty(value = "Quantidade de Números de prognósticos da aposta")
     public Integer getQuantidadeNumeros() {
-        return quantidadeNumeros != null ? quantidadeNumeros : getListaNumerosSelecionados().size();
+        if (quantidadeNumeros != null) {
+            return quantidadeNumeros;
+        } else {
+            if (modalidade != null) {
+                if(modalidade == ModalidadeEnum.SUPER_7){
+                    if(getMatrizNumerosSelecionados() != null){
+                        return getMatrizNumerosSelecionados().size();
+                    }
+                } else {
+                    if(getListaNumerosSelecionados() != null){
+                        return getListaNumerosSelecionados().size();
+                    }
+                }
+            }
+            return  -1;
+        }
     }
 
     public void setQuantidadeNumeros(Integer quantidadeNumeros) {

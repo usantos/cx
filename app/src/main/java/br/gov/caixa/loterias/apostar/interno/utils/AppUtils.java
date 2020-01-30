@@ -35,6 +35,15 @@ public class AppUtils {
         return listaInteiros;
     }
 
+    public static ArrayList<ArrayList<Integer>> converteMatrizInteiros(List<List<Integer>> lista){
+        ArrayList<ArrayList<Integer>> listaInteiros = new ArrayList<>();
+        for (List<Integer> coluna : lista) {
+            List<Integer> l = converteListaInteiros(coluna);
+            listaInteiros.add(new ArrayList<>(l));
+        }
+        return listaInteiros;
+    }
+
     public static void fechaTeclado(Activity activity) {
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);

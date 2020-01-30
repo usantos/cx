@@ -545,8 +545,8 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 			aposta.setMesDeSorte(parentActivity.getMesDeSorteCartela());
 		}
 
-		//this.setApostaLoteca(aposta);
-		//this.setApostaLotogol(aposta);
+		this.setApostaLoteca(aposta);
+		this.setApostaLotogol(aposta);
 
 		return aposta;
 	}
@@ -1667,7 +1667,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 		if (parentActivity.getAposta() != null) {
 			IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta = parentActivity.getAposta();
 			if (CollectionUtils.isNotEmpty(aposta.getNumerosSelecionados())) {
-				dezenasSelecionadas = aposta.getNumerosSelecionados();
+				dezenasSelecionadas = aposta.getListaNumerosSelecionados();
 				parentActivity.qtdDezenasPossiveisSelecionado = aposta.getQuantidadeNumeros();
 				parentActivity.qtdConcursoSelecionado = aposta.getQuantidadeTeimosinhas();
 				parentActivity.atualizaTextoBotoesQtdSelecionadas();

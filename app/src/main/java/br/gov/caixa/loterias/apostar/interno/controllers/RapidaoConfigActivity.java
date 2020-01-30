@@ -478,6 +478,9 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
                 case DIA_DE_SORTE:
                     tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo, R.color.diasorteclaro, true, item.getValor(), item.getDescricaoEspecial());
                     break;
+                case SUPER_7:
+                    tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo, R.color.superseteclaro, true, item.getValor(), item.getDescricaoEspecial());
+                    break;
             }
             if (tipoAposta != null) {
                 tipoAposta.setTitulo(tipoAposta.getTitulo().toLowerCase(new Locale("pt", "BR")));
