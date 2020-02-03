@@ -367,7 +367,7 @@ IdentificaoDeUmaApostaDas8Modalidades<T> {
             if (modalidade != null) {
                 if(modalidade == ModalidadeEnum.SUPER_7){
                     if(getMatrizNumerosSelecionados() != null){
-                        return getMatrizNumerosSelecionados().size();
+                        return getCountMatrizNumerosSelecionados();
                     }
                 } else {
                     if(getListaNumerosSelecionados() != null){
