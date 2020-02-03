@@ -1368,7 +1368,6 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 					if(listaSelecionados.size() == adapter.getQtdColunasMaximas(parentActivity.qtdDezenasPossiveisSelecionado)) {
 						listaSelecionados.remove(valorSelecionado);
 						qtdTotalSelecionadosSuperSete--;
-
 						if (qtdTotalSelecionadosSuperSete >= parametroJogo.getQuantidadeMinima()) {
 							parentActivity.qtdDezenasPossiveisSelecionado -= 1;
 							parentActivity.verificaNovoQtdDezenasMax(qtdTotalSelecionadosSuperSete);
@@ -1376,7 +1375,10 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 						}
 						atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
 					} else {
-						ViewUtils.alert(getActivity(), getString(R.string.msg_bloqueio_coluna_super_sete_desmarcar));
+						ViewUtils.alert(getActivity(),
+										getString(R.string.msg_bloqueio_coluna_super_sete_desmarcar).replace(
+												"{qtdColunas}",
+												String.valueOf(listaSelecionados.size())));
 					}
 				} else {
 					int maxNumerosParaSelecionar = parametroJogo.getQuantidadeMaxima();
@@ -1398,7 +1400,10 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 									listaSelecionados.add(valorSelecionado);
 									qtdTotalSelecionadosSuperSete++;
 								} else {
-									ViewUtils.alert(getActivity(), getString(R.string.msg_bloqueio_coluna_super_sete_marcar));
+									ViewUtils.alert(getActivity(),
+													getString(R.string.msg_bloqueio_coluna_super_sete_marcar).replace(
+															"{qtdColunas}",
+															String.valueOf(adapter.getQtdColunasMaximas(parentActivity.qtdDezenasPossiveisSelecionado))));
 								}
 							} else {
 								ViewUtils.alert(getActivity(), getString(R.string.msg_qtd_max_col_super_sete));
@@ -1412,7 +1417,10 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 								listaSelecionados.add(valorSelecionado);
 								qtdTotalSelecionadosSuperSete++;
 							} else {
-								ViewUtils.alert(getActivity(), getString(R.string.msg_bloqueio_coluna_super_sete_marcar));
+								ViewUtils.alert(getActivity(),
+												getString(R.string.msg_bloqueio_coluna_super_sete_marcar).replace(
+														"{qtdColunas}",
+														String.valueOf(adapter.getQtdColunasMaximas(parentActivity.qtdDezenasPossiveisSelecionado))));
 							}
 						} else {
 							ViewUtils.alert(getActivity(), getString(R.string.msg_qtd_max_col_super_sete));

@@ -183,9 +183,9 @@
     <string name="title_activity_lista_compras">Compras</string>
 
     <string name="label_nao_possivel_selecionar_quantidade_numeros_superior_limite_modalidade_loterica">Não é possível selecionar quantidade de números superior ao limite para modalidade Lotérica.</string>
-    <string name="msg_qtd_max_col_super_sete">Você só pode selecionar três números por coluna</string>
-    <string name="msg_bloqueio_coluna_super_sete_marcar">Você precisa selecionar no mínimo um número por coluna para selecionar a próxima coluna</string>
-    <string name="msg_bloqueio_coluna_super_sete_desmarcar">Você precisa selecionar no mínimo um número por coluna para desmarcar a próxima coluna</string>
+    <string name="msg_qtd_max_col_super_sete">Você só pode selecionar 3 números por coluna</string>
+    <string name="msg_bloqueio_coluna_super_sete_marcar">Você precisa selecionar {qtdColunas} número(s) em cada coluna antes de selecionar outro nessa</string>
+    <string name="msg_bloqueio_coluna_super_sete_desmarcar">Você não pode fazer isso, pois nessa coluna é necessário ter selecionado {qtdColunas} número(s)</string>
 
     <string name="label_aposta_salva_carinha">Aposta salva :)</string>
     <string name="label_sem_teimosinha">Teimosinha</string>
