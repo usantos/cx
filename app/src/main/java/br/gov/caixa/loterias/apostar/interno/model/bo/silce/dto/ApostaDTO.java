@@ -202,7 +202,7 @@ public class ApostaDTO {
      **/
     @ApiModelProperty(value = "Quantidade de Teimosinhas relacionadas com a aposta")
     public Integer getQuantidadeTeimosinhas() {
-        return quantidadeTeimosinhas;
+        return quantidadeTeimosinhas == null ? new Integer(0) : quantidadeTeimosinhas;
     }
 
     public void setQuantidadeTeimosinhas(Integer quantidadeTeimosinhas) {
