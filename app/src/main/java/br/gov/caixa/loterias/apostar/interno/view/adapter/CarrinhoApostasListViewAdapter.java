@@ -186,15 +186,24 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
             switch (aposta.getIndicadorSurpresinha().getValor()) {
                 case IndicadorSurpresinha.NAO_SURPRESINHA:
                     if (aposta.getModalidade() == ModalidadeEnum.SUPER_7) {
+                        IdentificaoDeUmaApostaDas8Modalidades<List<List<Integer>>> apostaSuperSete = aposta;
+                        ArrayList<ArrayList<Integer>> listaApostas  = apostaSuperSete.getMatrizNumerosSelecionados();
+                        for (List<Integer> coluna: listaApostas) {
+                            for(Integer linha : coluna) {
+                                numeroStr.append(String.format("%d", linha));
+                            }
+                            numeroStr.append(String.format("/"));
+                        }
 
                     } else {
-                        IdentificaoDeUmaApostaDas8Modalidades<List<Double>> apostaNumerica = aposta;
-
-                        for (Double num : apostaNumerica.getNumerosSelecionados()) {
-                            if (num.equals(apostaNumerica.getNumerosSelecionados().get(apostaNumerica.getNumerosSelecionados().size() - 1))) {
-                                numeroStr.append(String.format("%02d", num.intValue()));
-                            } else {
-                                numeroStr.append(String.format("%02d - ", num.intValue()));
+                        IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> apostaNumerica = aposta;
+                        if (apostaNumerica.getListaNumerosSelecionados() != null) {
+                            for (Integer num : apostaNumerica.getListaNumerosSelecionados()) {
+                                if (num.equals(apostaNumerica.getNumerosSelecionados().get(apostaNumerica.getListaNumerosSelecionados().size() - 1))) {
+                                    numeroStr.append(String.format("%02d", num));
+                                } else {
+                                    numeroStr.append(String.format("%02d - ", num));
+                                }
                             }
                         }
                     }

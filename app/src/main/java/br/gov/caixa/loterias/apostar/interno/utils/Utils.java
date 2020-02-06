@@ -16,6 +16,10 @@ import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 import br.gov.caixa.loterias.apostar.interno.R;
@@ -97,5 +101,12 @@ public class Utils {
         }else {
             return false;
         }
+    }
+
+    public static List<List<Integer>> ordenaMatrizInteiro(List<List<Integer>> matriz) {
+        for (List<Integer> lista: matriz) {
+            Collections.sort(lista);
+        }
+        return matriz;
     }
 }

@@ -6,6 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import org.apache.commons.lang.StringUtils;
 
 import java.math.BigDecimal;
@@ -195,7 +198,7 @@ public class DBLoteriasCrud {
      * @param aposta IdentificaoDeUmaApostaDas8Modalidades
      * @return id
      */
-    public Long insertIdentificaoDeUmaApostaDas8Modalidades(IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta) {
+    public Long insertIdentificaoDeUmaApostaDas8Modalidades(IdentificaoDeUmaApostaDas8Modalidades aposta) {
 
         if (aposta != null) {
             this.initDBLoteriasHelper();
@@ -206,8 +209,10 @@ public class DBLoteriasCrud {
                 String numerosSelecionados = "";
 
                 if (aposta.getNumerosSelecionados() != null) {
-                    for (Integer numeroSelecionado : aposta.getNumerosSelecionados()) {
-                        numerosSelecionados = numerosSelecionados + numeroSelecionado.toString() + "_";
+                    if(aposta.getModalidade().equals(ModalidadeEnum.SUPER_7)){
+                        numerosSelecionados = new Gson().toJson(aposta.getMatrizNumerosSelecionados());
+                    } else {
+                        numerosSelecionados = new Gson().toJson(aposta.getListaNumerosSelecionados());
                     }
                 }
 
@@ -326,17 +331,20 @@ public class DBLoteriasCrud {
                 dtoEnumCharacter.setDescricao(cursor.getString(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_TIPO_CONCURSO_DESCRICAO)));
                 aposta.setTipoConcurso(dtoEnumCharacter);
 
-                List<Integer> numerosSelecionados = new ArrayList<>();
                 String numerosSelecionadosString = cursor.getString(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_NUMEROS_SELECIONADOS));
-
+                // Numeros Selecionados
                 if (StringUtils.isNotEmpty(numerosSelecionadosString)) {
-                    String[] numerosSelecionadosList = numerosSelecionadosString.split("_");
-
-                    for (int i = 0; i < numerosSelecionadosList.length; i++) {
-                        numerosSelecionados.add(Integer.parseInt(numerosSelecionadosList[i]));
+                    Gson gson = new Gson();
+                    if (aposta.getModalidade().equals(ModalidadeEnum.SUPER_7)) {
+                        TypeToken<List<List<Integer>>> token = new TypeToken<List<List<Integer>>>() {};
+                        List<List<Integer>> matrizInteiros = gson.fromJson(numerosSelecionadosString, token.getType());
+                        aposta.setNumerosSelecionados(matrizInteiros);
+                    } else {
+                        TypeToken<List<Integer>> token = new TypeToken<List<Integer>>() {};
+                        List<Integer> listaInteiros = gson.fromJson(numerosSelecionadosString, token.getType());
+                        aposta.setNumerosSelecionados(listaInteiros);
                     }
                 }
-                aposta.setNumerosSelecionados(numerosSelecionados);
 
                 DTOEnumInteger dtoEnumInteger = new DTOEnumInteger();
                 dtoEnumInteger.setValor(cursor.getInt(cursor.getColumnIndexOrThrow(DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.COLUNA_INDICADOR_SURPRESINHA_VALOR)));

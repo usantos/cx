@@ -85,7 +85,7 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
     private void initdezenasRecyclerView() {
 
         if (!aposta.getNumerosSelecionados().isEmpty()) {
-            dezenasRecyclerView.setAdapter(new DezenasAdapter(AppUtils.listIntegerToListString(aposta.getNumerosSelecionados())));
+             dezenasRecyclerView.setAdapter(new DezenasAdapter(AppUtils.listIntegerToListString(aposta.getListaNumerosSelecionados())));
             dezenasRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         }
     }

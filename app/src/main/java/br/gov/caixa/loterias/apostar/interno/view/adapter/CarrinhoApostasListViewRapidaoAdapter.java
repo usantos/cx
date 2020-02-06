@@ -21,7 +21,6 @@ import java.util.Locale;
 
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.controllers.ListaRapidaoActivity;
-import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IndicadorSurpresinha;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeEnum;
@@ -156,12 +155,28 @@ public class CarrinhoApostasListViewRapidaoAdapter extends RecyclerView.Adapter<
 
                     } else {
                         IdentificaoDeUmaApostaDas8Modalidades aposta = (IdentificaoDeUmaApostaDas8Modalidades<List<Integer>>)apostas.get(position);
-                        List<Integer> numerosSelecionados = (List<Integer>)aposta.getNumerosSelecionados();
-                        for (Integer num : numerosSelecionados) {
-                            if (num.equals(numerosSelecionados.get(numerosSelecionados.size() - 1))) {
-                                numeroStr.append(String.format("%02d", num));
+                        if(aposta != null && aposta.getModalidade() != null){
+                            if (aposta.getModalidade() == ModalidadeEnum.SUPER_7) {
+                                IdentificaoDeUmaApostaDas8Modalidades<List<List<Integer>>> apostaSuperSete = aposta;
+                                ArrayList<ArrayList<Integer>> listaApostas  = apostaSuperSete.getMatrizNumerosSelecionados();
+                                for (List<Integer> coluna: listaApostas) {
+                                    for(Integer linha : coluna) {
+                                        numeroStr.append(String.format("%d", linha));
+                                    }
+                                    numeroStr.append(String.format("/"));
+                                }
+
                             } else {
-                                numeroStr.append(String.format("%02d - ", num));
+                                IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> apostaNumerica = aposta;
+                                if (apostaNumerica.getListaNumerosSelecionados() != null) {
+                                    for (Integer num : apostaNumerica.getListaNumerosSelecionados()) {
+                                        if (num.equals(apostaNumerica.getNumerosSelecionados().get(apostaNumerica.getListaNumerosSelecionados().size() - 1))) {
+                                            numeroStr.append(String.format("%02d", num));
+                                        } else {
+                                            numeroStr.append(String.format("%02d - ", num));
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
