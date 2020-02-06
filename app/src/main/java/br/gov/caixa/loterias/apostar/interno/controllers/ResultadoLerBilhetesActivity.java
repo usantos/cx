@@ -23,7 +23,6 @@ import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 
 import java.math.BigDecimal;
-import java.util.Locale;
 import java.util.Objects;
 
 import br.gov.caixa.loterias.apostar.interno.R;
@@ -37,6 +36,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResultadoConcurs
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResultadoConsultaBilheteDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResultadoConsultaBilheteDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.SituacaoResultadoBilheteEnum;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.StatusBilhete;
 import br.gov.caixa.loterias.apostar.interno.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostar.interno.utils.RateUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
@@ -197,17 +197,29 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
     private void atualizarLayoutNaoPremiado() {
         corpoBilhetePremiadoLinearLayout.setVisibility(View.GONE);
         corpoBilheteNaoPremiadoLinearLayout.setVisibility(View.VISIBLE);
-
-        if (Objects.equals(resultadoConsultaBilheteDTO.getSituacao().getValor(), SituacaoResultadoBilheteEnum.PAGA.getValor())) {
-            statusResultadoNaoPremiadTextView.setText(R.string.label_premio_pago);
-            if (resultadoConsultaBilheteDTO != null && resultadoConsultaBilheteDTO.getModalidadeDTO() != null) {
-                modalidadeEnum = ModalidadeEnum.toString(resultadoConsultaBilheteDTO.getModalidadeDTO().getDescricao().toLowerCase(new Locale("pt", "BR")));
-                EstiloModalidade estiloModalidade = new EstiloModalidade(modalidadeEnum);
-                backgroundTopoNaoPremiadoLayout.setBackgroundColor(ContextCompat.getColor(this, estiloModalidade.getCorEscura()));
-            }
-        } else {
-            statusResultadoNaoPremiadTextView.setText(R.string.label_nao_foi_dessa_vez);
+        int status = -1;
+        if(resultadoConsultaBilheteDTO != null &&
+                resultadoConsultaBilheteDTO.getSituacao() != null &&
+                resultadoConsultaBilheteDTO.getSituacao().getValor() != null) {
+            status  = resultadoConsultaBilheteDTO.getSituacao().getValor().intValue();
         }
+        switch (status){
+                case StatusBilhete.PAGA:
+                    statusResultadoNaoPremiadTextView.setText(R.string.label_premio_pago);
+                    /*if (resultadoConsultaBilheteDTO != null && resultadoConsultaBilheteDTO.getModalidadeDTO() != null) {
+                        modalidadeEnum = ModalidadeEnum.toString(resultadoConsultaBilheteDTO.getModalidadeDTO().getDescricao().toLowerCase(new Locale("pt", "BR")));
+                        EstiloModalidade estiloModalidade = new EstiloModalidade(modalidadeEnum);
+                        backgroundTopoNaoPremiadoLayout.setBackgroundColor(ContextCompat.getColor(this, estiloModalidade.getCorEscura()));
+                    }*/
+                    break;
+                case StatusBilhete.PRESCRITA:
+                    statusResultadoNaoPremiadTextView.setText(R.string.label_concurso_prescrito);
+                    break;
+                    default:
+                        statusResultadoNaoPremiadTextView.setText(R.string.label_nao_foi_dessa_vez);
+
+        }
+
         //mensagemNaoPremiadoTextView.setText(resultadoConsultaBilheteDTO.getSituacao().getDescricao());
     }
 

@@ -117,7 +117,9 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
                 page = new ApostaPageRequest(PAGE_SIZE);
                 page.setOffset(0);
             } else {
+                page.setSize(PAGE_SIZE);
                 page.setOffset(0);
+                hasMoreItems = true;
             }
             requestApostasConfirmadas();
         }

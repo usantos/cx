@@ -25,4 +25,7 @@ public enum SituacaoResultadoBilheteEnum {
     public Long getValor() {
         return valor;
     }
+
+    public int getValorInt(){ return valor != null ? valor.intValue() : -1;}
 }
+

@@ -58,6 +58,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ConcursoPremiadoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.FaixaPremiadaDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IncluirSurpresinhaDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametroSimulacao;
@@ -659,7 +660,19 @@ public class ViewUtils {
     }
 
     public static ParametroSimulacao getParametroSimulacao(SessaoUsuario sessaoUsuario, ModalidadeEnum modalidadeEnum, IdentificaoDeUmaApostaDas8Modalidades aposta) {
-        if (sessaoUsuario.getParametrosSimulacao() != null && sessaoUsuario.getParametrosSimulacao().getParametros() != null) {
+        if (sessaoUsuario.getParametrosSimulacao() != null && sessaoUsuario.getParametrosSimulacao().getParametros() != null && aposta != null) {
+            for (ParametroSimulacao parametroSimulacao : sessaoUsuario.getParametrosSimulacao().getParametros()) {
+                if (    parametroSimulacao.getParametroJogo().getConcurso().getModalidade() == modalidadeEnum &&
+                        aposta.getConcursoAlvo().equals(parametroSimulacao.getParametroJogo().getConcurso().getNumero())) {
+                    return parametroSimulacao;
+                }
+            }
+        }
+        return null;
+    }
+
+    public static ParametroSimulacao getParametroSimulacao(SessaoUsuario sessaoUsuario, ModalidadeEnum modalidadeEnum, IncluirSurpresinhaDTO aposta) {
+        if (sessaoUsuario.getParametrosSimulacao() != null && sessaoUsuario.getParametrosSimulacao().getParametros() != null && aposta != null) {
             for (ParametroSimulacao parametroSimulacao : sessaoUsuario.getParametrosSimulacao().getParametros()) {
                 if (    parametroSimulacao.getParametroJogo().getConcurso().getModalidade() == modalidadeEnum &&
                         aposta.getConcursoAlvo().equals(parametroSimulacao.getParametroJogo().getConcurso().getNumero())) {

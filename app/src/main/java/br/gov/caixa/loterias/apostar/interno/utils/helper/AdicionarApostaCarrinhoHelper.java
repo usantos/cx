@@ -35,6 +35,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.DTOEnumCharacter
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.DTOEnumInteger;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IncluirSurpresinhaDTO;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IndicadorSurpresinha;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametroSimulacao;
@@ -181,7 +182,7 @@ public class AdicionarApostaCarrinhoHelper {
             (final ApostaBO apostaBO, final IdentificaoDeUmaApostaDas8Modalidades aposta, final CarrinhoDTO carrinhoDTO) {
          BigDecimal limiteDiario = SessaoUsuario.getInstance().getParametrosSimulacao().getValorLimiteDiario();
         BigDecimal valorCarrinho = carrinhoDTO.getValorTotal().add(IdentificaoDeUmaApostaDas8Modalidades.getValorApostaPorPrognostico(aposta));
-        if (valorCarrinho.compareTo(limiteDiario) == 1) {
+        if (valorCarrinho != null && limiteDiario != null && valorCarrinho.compareTo(limiteDiario) == 1) {
             DialogUtils.dismiss();
             ViewUtils.alertTitleButtonYesOrNotListener(context, context.getResources().getString(R.string.MA014), (dialog, which) -> checarApostasRepetidas(apostaBO, aposta, carrinhoDTO));
         } else {
@@ -205,6 +206,7 @@ public class AdicionarApostaCarrinhoHelper {
         BigDecimal valor = BigDecimal.ZERO;
         Boolean espelho = false;
         IdentificaoDeUmaApostaDas8Modalidades apostaDas8Modalidades = null;
+        IncluirSurpresinhaDTO incluirSurpresinhaDTO = null;
         if(aposta instanceof IdentificaoDeUmaApostaDas8Modalidades){
             apostaDas8Modalidades = (IdentificaoDeUmaApostaDas8Modalidades) aposta;
             if(apostaDas8Modalidades != null){
@@ -213,6 +215,7 @@ public class AdicionarApostaCarrinhoHelper {
             }
         }else if(aposta instanceof IncluirSurpresinhaDTO){
             valor = ((IncluirSurpresinhaDTO)aposta).getValor();
+            incluirSurpresinhaDTO = (IncluirSurpresinhaDTO) aposta;
         }
 
         if(modalidadeEnum == ModalidadeEnum.LOTOMANIA && espelho){
@@ -222,7 +225,15 @@ public class AdicionarApostaCarrinhoHelper {
         Intent activity = new Intent(context, ConfirmadoInclusaoCarrinhoActivity.class);
         activity.putExtra("tipoAposta", modalidadeEnum);
         activity.putExtra("valorAposta", valor);
-        activity.putExtra("modalidade", (new Gson()).toJson(ViewUtils.getParametroSimulacao(SessaoUsuario.getInstance(), modalidadeEnum, apostaDas8Modalidades).getParametroJogo()));
+        if(apostaDas8Modalidades != null){
+            activity.putExtra("modalidade", (new Gson()).toJson(ViewUtils.getParametroSimulacao(SessaoUsuario.getInstance(), modalidadeEnum, apostaDas8Modalidades).getParametroJogo()));
+        } else {
+            if(incluirSurpresinhaDTO != null){
+                activity.putExtra("modalidade", (new Gson()).toJson(ViewUtils.getParametroSimulacao(SessaoUsuario.getInstance(), modalidadeEnum, incluirSurpresinhaDTO).getParametroJogo()));
+
+            }
+        }
+
         context.startActivity(activity);
         if(context instanceof SimularApostaActivity){
             ((SimularApostaActivity)context).zerarApostas();
@@ -325,7 +336,7 @@ public class AdicionarApostaCarrinhoHelper {
             aposta.setNumerosSelecionados(apostaDTO.getNumerosSelecionados());
 
             DTOEnumInteger indicadorSurpresinha = new DTOEnumInteger();
-            indicadorSurpresinha.setValor(1);
+            indicadorSurpresinha.setValor(IndicadorSurpresinha.NAO_SURPRESINHA);
             indicadorSurpresinha.setDescricao("");
 
             aposta.setIndicadorSurpresinha(indicadorSurpresinha);

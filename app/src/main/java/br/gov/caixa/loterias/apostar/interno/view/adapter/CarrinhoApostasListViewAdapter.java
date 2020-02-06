@@ -27,6 +27,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CarrinhoDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IndicadorSurpresinha;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostar.interno.model.dao.DBLoteriasCrud;
 import br.gov.caixa.loterias.apostar.interno.utils.EstiloModalidade;
@@ -167,7 +168,12 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
 
         if (ModalidadeEnum.TIMEMANIA == aposta.getModalidade()) {
             layoutTimeCoracao.setVisibility(View.VISIBLE);
-            textViewTimeCoracao.setText(aposta.getTimeDoCoracao().getNome());
+            if (aposta != null && aposta.getIndicadorSurpresinha() != null && aposta.getIndicadorSurpresinha().getValor() != null) {
+                textViewTimeCoracao.setText(aposta.getTimeDoCoracao().getNome());
+                 if(aposta.getIndicadorSurpresinha().getValor() == IndicadorSurpresinha.SURPRESINHA){
+                    textViewTimeCoracao.setText("???");
+                }
+            }
         } else if (ModalidadeEnum.DIA_DE_SORTE == aposta.getModalidade()) {
             layoutTimeCoracao.setVisibility(View.VISIBLE);
             labelTimeCoracao.setText(R.string.label_mes_sorte);
@@ -175,21 +181,29 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
         }
 
         StringBuilder numeroStr = new StringBuilder();
-        if (aposta.getIndicadorSurpresinha().getValor() == 2) {
-            for (int i = 0; i < aposta.getQuantidadeNumeros(); i++) {
-                if (i == aposta.getQuantidadeNumeros() - 1) {
-                    numeroStr.append("XX");
-                } else {
-                    numeroStr.append("XX - ");
-                }
-            }
-        } else {
-            for (Integer num : aposta.getNumerosSelecionados()) {
-                if (num.equals(aposta.getNumerosSelecionados().get(aposta.getNumerosSelecionados().size() - 1))) {
-                    numeroStr.append(String.format("%02d", num));
-                } else {
-                    numeroStr.append(String.format("%02d - ", num));
-                }
+        if (aposta != null && aposta.getIndicadorSurpresinha() != null && aposta.getIndicadorSurpresinha().getValor() != null) {
+            switch (aposta.getIndicadorSurpresinha().getValor()) {
+                case IndicadorSurpresinha.NAO_SURPRESINHA:
+                    for (Integer num : aposta.getNumerosSelecionados()) {
+                        if (num.equals(aposta.getNumerosSelecionados().get(aposta.getNumerosSelecionados().size() - 1))) {
+                            numeroStr.append(String.format("%02d", num));
+                        } else {
+                            numeroStr.append(String.format("%02d - ", num));
+                        }
+                    }
+                    break;
+                case IndicadorSurpresinha.SURPRESINHA:
+                case IndicadorSurpresinha.SURPRESINHA_NUMERICA:
+                    for (int i = 0; i < aposta.getQuantidadeNumeros(); i++) {
+                        if (i == aposta.getQuantidadeNumeros() - 1) {
+                            numeroStr.append("XX");
+                        } else {
+                            numeroStr.append("XX - ");
+                        }
+                    }
+                    break;
+                    default:
+                        break;
             }
         }
 
