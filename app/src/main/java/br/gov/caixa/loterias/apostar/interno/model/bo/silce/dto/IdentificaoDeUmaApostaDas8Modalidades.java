@@ -361,10 +361,7 @@ IdentificaoDeUmaApostaDas8Modalidades<T> {
      **/
     @ApiModelProperty(value = "Quantidade de Números de prognósticos da aposta")
     public Integer getQuantidadeNumeros() {
-        return quantidadeNumeros == null ? 0 : quantidadeNumeros;
-    }
-    /*public Integer getQuantidadeNumeros() {
-        if (quantidadeNumeros != null) {
+        if (quantidadeNumeros != null && quantidadeNumeros != 0) {
             return quantidadeNumeros;
         } else {
             if (modalidade != null) {
@@ -380,7 +377,7 @@ IdentificaoDeUmaApostaDas8Modalidades<T> {
             }
             return  -1;
         }
-    }*/
+    }
 
     public void setQuantidadeNumeros(Integer quantidadeNumeros) {
         this.quantidadeNumeros = quantidadeNumeros;
