@@ -1,18 +1,13 @@
 package br.gov.caixa.loterias.apostar.interno;
 
-import android.content.Context;
 import android.content.res.Resources;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -20,26 +15,26 @@ import com.google.gson.reflect.TypeToken;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeEnum;
+import br.gov.caixa.loterias.apostar.interno.view.adapter.NumerosSuperSeteAdapter;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.SuperSeteAdapter;
 import br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightGridView;
 
-public class SuperSeteResultadoFragment extends Fragment {
+public class NumerosSuperSeteFragment extends Fragment {
 	private static final String MATRIZ_NUMEROS = "MATRIZ_NUMEROS";
 
 	private String matrizTexto;
 	private  View view = null;
 	private ArrayList<ExpandableHeightGridView> listaGridsSuperSete;
-	private ArrayList<SuperSeteAdapter> listaAdaptersSuperSete;
+	private ArrayList<NumerosSuperSeteAdapter> listaAdaptersSuperSete;
 	private List<List<Integer>> matrizInteiros;
 
-	public SuperSeteResultadoFragment() {
+	public NumerosSuperSeteFragment() {
 
 	}
 
-	public static SuperSeteResultadoFragment newInstance(List<List<Integer>> matrizSelecionada) {
-		SuperSeteResultadoFragment fragment = new SuperSeteResultadoFragment();
-		Bundle                     args     = new Bundle();
+	public static NumerosSuperSeteFragment newInstance(List<List<Integer>> matrizSelecionada) {
+		NumerosSuperSeteFragment fragment = new NumerosSuperSeteFragment();
+		Bundle                   args     = new Bundle();
 		args.putString(MATRIZ_NUMEROS, String.valueOf(matrizSelecionada));
 		fragment.setArguments(args);
 		return fragment;
@@ -93,13 +88,13 @@ public class SuperSeteResultadoFragment extends Fragment {
 
 	private void setaMetodos (){
 		listaAdaptersSuperSete = new ArrayList<>();
-		listaAdaptersSuperSete.add(new SuperSeteAdapter(R.color.superseteescuro, getActivity(),matrizInteiros.get(0)));
-		listaAdaptersSuperSete.add(new SuperSeteAdapter(R.color.superseteescuro, getActivity(),matrizInteiros.get(1)));
-		listaAdaptersSuperSete.add(new SuperSeteAdapter(R.color.superseteescuro, getActivity(),matrizInteiros.get(2)));
-		listaAdaptersSuperSete.add(new SuperSeteAdapter(R.color.superseteescuro, getActivity(),matrizInteiros.get(3)));
-		listaAdaptersSuperSete.add(new SuperSeteAdapter(R.color.superseteescuro, getActivity(),matrizInteiros.get(4)));
-		listaAdaptersSuperSete.add(new SuperSeteAdapter(R.color.superseteescuro, getActivity(),matrizInteiros.get(5)));
-		listaAdaptersSuperSete.add(new SuperSeteAdapter(R.color.superseteescuro, getActivity(),matrizInteiros.get(6)));
+		listaAdaptersSuperSete.add(new NumerosSuperSeteAdapter(R.color.superseteescuro, getActivity(), matrizInteiros.get(0)));
+		listaAdaptersSuperSete.add(new NumerosSuperSeteAdapter(R.color.superseteescuro, getActivity(),matrizInteiros.get(1)));
+		listaAdaptersSuperSete.add(new NumerosSuperSeteAdapter(R.color.superseteescuro, getActivity(),matrizInteiros.get(2)));
+		listaAdaptersSuperSete.add(new NumerosSuperSeteAdapter(R.color.superseteescuro, getActivity(),matrizInteiros.get(3)));
+		listaAdaptersSuperSete.add(new NumerosSuperSeteAdapter(R.color.superseteescuro, getActivity(),matrizInteiros.get(4)));
+		listaAdaptersSuperSete.add(new NumerosSuperSeteAdapter(R.color.superseteescuro, getActivity(),matrizInteiros.get(5)));
+		listaAdaptersSuperSete.add(new NumerosSuperSeteAdapter(R.color.superseteescuro, getActivity(),matrizInteiros.get(6)));
 
 		listaGridsSuperSete.get(0).setAdapter(listaAdaptersSuperSete.get(0));
 		listaGridsSuperSete.get(1).setAdapter(listaAdaptersSuperSete.get(1));

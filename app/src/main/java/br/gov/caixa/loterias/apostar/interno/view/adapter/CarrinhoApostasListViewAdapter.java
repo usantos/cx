@@ -2,19 +2,15 @@ package br.gov.caixa.loterias.apostar.interno.view.adapter;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.res.Resources;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -25,11 +21,10 @@ import com.daimajia.swipe.SwipeLayout;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 
 import br.gov.caixa.loterias.apostar.interno.R;
-import br.gov.caixa.loterias.apostar.interno.SuperSeteResultadoFragment;
+import br.gov.caixa.loterias.apostar.interno.NumerosSuperSeteFragment;
 import br.gov.caixa.loterias.apostar.interno.controllers.CarrinhoActivity;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO_;
@@ -39,7 +34,6 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.CarrinhoDTORespo
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IndicadorSurpresinha;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeEnum;
-import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.dao.DBLoteriasCrud;
 import br.gov.caixa.loterias.apostar.interno.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostar.interno.utils.Utils;
@@ -47,13 +41,12 @@ import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.animation.AnimacaoSwipeList;
 import br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightRecyclerView;
 import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
-import br.gov.caixa.loterias.apostar.interno.view.fragment.ResultadoGenericoFragment;
 
 public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<CarrinhoApostasListViewAdapter.ApostaHolder> {
     private Context context;
     private ArrayList<IdentificaoDeUmaApostaDas8Modalidades> apostas;
     private CarrinhoActivity parentActivity;
-    private SuperSeteResultadoFragment fragment;
+    private NumerosSuperSeteFragment fragment;
     private boolean animacao;
     private static final String TAG = "TAG_CARRINHO";
     private static final AtomicLong TS = new AtomicLong();
@@ -256,7 +249,7 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
         int newContainerId = (int) Utils.getUniqueTimestamp(TS);
         holder.containerFragment.setId(newContainerId);
 
-        SuperSeteResultadoFragment fragment = SuperSeteResultadoFragment.newInstance(aposta.getMatrizNumerosSelecionados());
+        NumerosSuperSeteFragment fragment = NumerosSuperSeteFragment.newInstance(aposta.getMatrizNumerosSelecionados());
         fm.beginTransaction().replace(newContainerId, fragment).commit();
 
     }

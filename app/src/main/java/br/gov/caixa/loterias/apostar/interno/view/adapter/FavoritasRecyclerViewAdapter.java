@@ -1,10 +1,8 @@
 package br.gov.caixa.loterias.apostar.interno.view.adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -29,10 +27,8 @@ import java.util.Locale;
 import java.util.concurrent.atomic.AtomicLong;
 
 import br.gov.caixa.loterias.apostar.interno.R;
-import br.gov.caixa.loterias.apostar.interno.SuperSeteResultadoFragment;
+import br.gov.caixa.loterias.apostar.interno.NumerosSuperSeteFragment;
 import br.gov.caixa.loterias.apostar.interno.controllers.FavoritasActivity;
-import br.gov.caixa.loterias.apostar.interno.model.bean.ApostaFavorita;
-import br.gov.caixa.loterias.apostar.interno.model.bean.Modalidade;
 import br.gov.caixa.loterias.apostar.interno.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO_;
@@ -184,7 +180,7 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
         int newContainerId = (int) Utils.getUniqueTimestamp(TS);
         holder.containerFragment.setId(newContainerId);
 
-        SuperSeteResultadoFragment fragment = SuperSeteResultadoFragment.newInstance(aposta.getMatrizNumerosSelecionados());
+        NumerosSuperSeteFragment fragment = NumerosSuperSeteFragment.newInstance(aposta.getMatrizNumerosSelecionados());
         fm.beginTransaction().replace(newContainerId, fragment).commit();
 
     }
