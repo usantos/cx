@@ -42,6 +42,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.dao.DBLoteriasCrud;
 import br.gov.caixa.loterias.apostar.interno.utils.EstiloModalidade;
+import br.gov.caixa.loterias.apostar.interno.utils.Utils;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.animation.AnimacaoSwipeList;
 import br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightRecyclerView;
@@ -252,7 +253,7 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
             fm.beginTransaction().remove(oldFragment).commit();
         }
 
-        int newContainerId = (int) getUniqueTimestamp();
+        int newContainerId = (int) Utils.getUniqueTimestamp(TS);
         holder.containerFragment.setId(newContainerId);
 
         SuperSeteResultadoFragment fragment = SuperSeteResultadoFragment.newInstance(aposta.getMatrizNumerosSelecionados());
@@ -261,16 +262,6 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
     }
 
 
-    public static long getUniqueTimestamp() {
-        long micros = System.currentTimeMillis() * 1000;
-        for (;;) {
-            long value = TS.get();
-            if (micros <= value)
-                micros = value + 1;
-            if (TS.compareAndSet(value, micros))
-                return micros;
-        }
-    }
     private void deletarAposta(final IdentificaoDeUmaApostaDas8Modalidades aposta) {
 
         ViewUtils.alertTitleButtonYesOrNotListener(context, context.getResources().getString(R.string.MA010), (dialogInterface, i) -> {

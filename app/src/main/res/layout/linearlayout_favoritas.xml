@@ -164,6 +164,16 @@
                     android:textSize="14.2sp"
                     tools:text="01 - 02 - 03 - 04 - 05 - 06 - 10 - 11 - 12 - 20 - 33 - 100" />
 
+                <RelativeLayout
+                    android:id="@+id/rl_container_fragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginEnd="123dp"
+                    android:visibility="gone"
+                    android:layout_below="@id/numerosApostaFavorita"/>
+
                 <LinearLayout
                     android:layout_width="123dp"
                     android:layout_height="wrap_content"

@@ -2,6 +2,9 @@ package br.gov.caixa.loterias.apostar.interno.view.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -23,9 +26,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.atomic.AtomicLong;
 
 import br.gov.caixa.loterias.apostar.interno.R;
+import br.gov.caixa.loterias.apostar.interno.SuperSeteResultadoFragment;
 import br.gov.caixa.loterias.apostar.interno.controllers.FavoritasActivity;
+import br.gov.caixa.loterias.apostar.interno.model.bean.ApostaFavorita;
+import br.gov.caixa.loterias.apostar.interno.model.bean.Modalidade;
 import br.gov.caixa.loterias.apostar.interno.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO_;
@@ -44,6 +51,7 @@ import br.gov.caixa.loterias.apostar.interno.utils.AppUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.DialogUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
+import br.gov.caixa.loterias.apostar.interno.utils.Utils;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.custom.AdicionarCarrinhoFavoritasView;
 import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
@@ -54,12 +62,13 @@ import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
 public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<FavoritasRecyclerViewAdapter.ViewHolder> {
 
     private final Context context;
-    private final Activity activity;
+    private final FavoritasActivity activity;
     private final List<ApostaFavoritaDTO> listaApostaFavorita;
     private ViewTreeObserver.OnGlobalLayoutListener swipeGlobalLayoutListener;
     private ExcluiuTudo excluiuTudo;
+    private static final AtomicLong TS = new AtomicLong();
 
-    public FavoritasRecyclerViewAdapter(final Activity activity, final Context context, final List<ApostaFavoritaDTO> listaApostaFavorita) {
+    public FavoritasRecyclerViewAdapter(final FavoritasActivity activity, final Context context, final List<ApostaFavoritaDTO> listaApostaFavorita) {
         this.context = context;
         this.listaApostaFavorita = listaApostaFavorita;
         this.activity = activity;
@@ -118,13 +127,20 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
         holder.tituloApostaFavorita.setTextColor(context.getResources().getColor(estilo.getCorClara()));
         holder.tituloNomeApostaFavorita.setText(" | " + listaApostaFavorita.get(position).getNome());
         StringBuilder numeroStr = new StringBuilder();
-        for (Integer num : listaApostaFavorita.get(position).getNumerosSelecionados()) {
-            if (num.equals(listaApostaFavorita.get(position).getNumerosSelecionados().get(listaApostaFavorita.get(position).getNumerosSelecionados().size() - 1))) {
-                numeroStr.append(String.format("%02d", num));
-            } else {
-                numeroStr.append(String.format("%02d - ", num));
+        if(listaApostaFavorita.get(position).getModalidade().getValor().intValue() == 7) {
+            configuraFragment(listaApostaFavorita.get(position),holder);
+            holder.containerFragment.setVisibility(View.VISIBLE);
+        } else {
+            List<Integer> numSelecionados = listaApostaFavorita.get(position).getListaNumerosSelecionados();
+            for (Integer num : numSelecionados) {
+                if (num.equals(numSelecionados.get(listaApostaFavorita.get(position).getListaNumerosSelecionados().size() - 1))) {
+                    numeroStr.append(String.format("%02d", num));
+                } else {
+                    numeroStr.append(String.format("%02d - ", num));
+                }
             }
         }
+
         holder.numerosApostaFavorita.setText(numeroStr.toString());
         holder.editarRelativeLayoutFavoritos.setOnClickListener(v -> swipeLayout.open(true));
 
@@ -156,6 +172,23 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
         }
     }
 
+
+    private void configuraFragment(ApostaFavoritaDTO aposta, ViewHolder holder) {
+        FragmentManager fm          = activity.getSupportFragmentManager();
+        int             containerId = holder.containerFragment.getId();
+        Fragment        oldFragment = fm.findFragmentById(containerId);
+        if(oldFragment != null) {
+            fm.beginTransaction().remove(oldFragment).commit();
+        }
+
+        int newContainerId = (int) Utils.getUniqueTimestamp(TS);
+        holder.containerFragment.setId(newContainerId);
+
+        SuperSeteResultadoFragment fragment = SuperSeteResultadoFragment.newInstance(aposta.getMatrizNumerosSelecionados());
+        fm.beginTransaction().replace(newContainerId, fragment).commit();
+
+    }
+
     @Override
     public int getItemCount() {
         return listaApostaFavorita.size();
@@ -173,6 +206,7 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
         protected RelativeLayout editarRelativeLayoutAddCarrinho;
         protected RelativeLayout editarRelativeLayoutFavoritos;
         protected RelativeLayout exluirRelativeLayoutFavoritos;
+        protected RelativeLayout containerFragment;
         protected LinearLayout linearLayoutLayoutContentAlterarFavoritasSalvo;
         protected RelativeLayout relativeLayoutContentAlterarFavoritasEditar;
         protected EditText editTextNomeDaAposta;
@@ -197,6 +231,7 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
             maisInformacoesLayout = itemView.findViewById(R.id.maisInformacoesLayout);
             labelInformacaoText = itemView.findViewById(R.id.labelInformacaoText);
             informacaoText = itemView.findViewById(R.id.informacaoText);
+            containerFragment = itemView.findViewById(R.id.rl_container_fragment);
         }
     }
 

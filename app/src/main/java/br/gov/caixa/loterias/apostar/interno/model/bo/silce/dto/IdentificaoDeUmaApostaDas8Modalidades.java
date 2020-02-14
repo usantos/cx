@@ -637,7 +637,7 @@ IdentificaoDeUmaApostaDas8Modalidades<T> {
                 }
             }*/
         } else {
-            List<Integer> numerosSelecionados = apostaFavoritaDTO.getNumerosSelecionados();
+            List<Integer> numerosSelecionados = apostaFavoritaDTO.getListaNumerosSelecionados();
             Collections.sort( numerosSelecionados );
             for (IdentificaoDeUmaApostaDas8Modalidades item : carrinhoDTO.getApostas()){
                 List<Integer> numerosItem = item.getListaNumerosSelecionados();
@@ -664,7 +664,7 @@ IdentificaoDeUmaApostaDas8Modalidades<T> {
                     }else{
                         List<ParametroValorApostaDTO> parametroValorApostaDTOList = parametroSimulacao.getParametroJogo().getValoresAposta();
                         for (ParametroValorApostaDTO parametroValorApostaDTO : parametroValorApostaDTOList){
-                            if (parametroValorApostaDTO.getNumeroPrognosticos() == apostaFavoritaDTO.getNumerosSelecionados().size()){
+                            if (parametroValorApostaDTO.getNumeroPrognosticos() == apostaFavoritaDTO.getListaNumerosSelecionados().size()){
                                 return parametroValorApostaDTO.getValor();
                             }
                         }

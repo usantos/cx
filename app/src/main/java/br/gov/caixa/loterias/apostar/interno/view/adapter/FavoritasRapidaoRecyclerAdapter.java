@@ -59,8 +59,9 @@ public final class FavoritasRapidaoRecyclerAdapter extends RecyclerView.Adapter<
             holder.setIsRecyclable(false);
 
             StringBuilder numeroStr = new StringBuilder();
-            for (Integer num : listaApostaFavorita.get(position).getNumerosSelecionados()) {
-                if (num.equals(listaApostaFavorita.get(position).getNumerosSelecionados().get(listaApostaFavorita.get(position).getNumerosSelecionados().size() - 1))) {
+            List<Integer> numerosSelecionados = listaApostaFavorita.get(position).getListaNumerosSelecionados();
+            for (Integer num : numerosSelecionados) {
+                if (num.equals(numerosSelecionados.get(numerosSelecionados.size() - 1))) {
                     numeroStr.append(String.format("%02d", num));
                 } else {
                     numeroStr.append(String.format("%02d - ", num));

@@ -14,8 +14,12 @@ package br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.parceler.ParcelPropertyConverter;
+
+import java.util.ArrayList;
 import java.util.List;
 
+import br.gov.caixa.loterias.apostar.interno.utils.AppUtils;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -33,14 +37,15 @@ import io.swagger.annotations.ApiModelProperty;
 
 
 @ApiModel(description = "")
-public class ApostaFavoritaDTO {
+public class ApostaFavoritaDTO<T> {
 
     @SerializedName("modalidade")
     private DTOEnumInteger modalidade = null;
     @SerializedName("nome")
     private String nome = null;
     @SerializedName("numerosSelecionados")
-    private List<Integer> numerosSelecionados = null;
+    @ParcelPropertyConverter(ParcelsWrapperConverter.class)
+    private T numerosSelecionados = null;
     @SerializedName("timeDoCoracao")
     private ParametroEquipe timeDoCoracao = null;
     @SerializedName("mesDeSorte")
@@ -85,11 +90,36 @@ public class ApostaFavoritaDTO {
      * Lista de Prognósticos que compoem a Aposta Favorita
      **/
     @ApiModelProperty(value = "Lista de Prognósticos que compoem a Aposta Favorita")
-    public List<Integer> getNumerosSelecionados() {
+    public T getNumerosSelecionados() {
         return numerosSelecionados;
     }
-    public void setNumerosSelecionados(List<Integer> numerosSelecionados) {
+    public void setNumerosSelecionados(T numerosSelecionados) {
         this.numerosSelecionados = numerosSelecionados;
+    }
+
+    public ArrayList<ArrayList<Integer>> getMatrizNumerosSelecionados(){
+        return AppUtils.converteMatrizInteiros((List<List<Integer>>) numerosSelecionados);
+    }
+
+    public List<Integer> getListaNumerosSelecionados(){
+        if(numerosSelecionados != null){
+            return AppUtils.converteListaInteiros((List<Integer>) numerosSelecionados);
+        } else  {
+            return  null;
+        }
+    }
+
+    public int  getCountMatrizNumerosSelecionados(){
+        int count = 0;
+        ArrayList<ArrayList<Integer>> matriz = getMatrizNumerosSelecionados();
+        if(matriz != null){
+            for (ArrayList<Integer> coluna: matriz) {
+                for (Integer linha: coluna) {
+                    count++;
+                }
+            }
+        }
+        return count;
     }
 
     /**

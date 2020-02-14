@@ -81,7 +81,7 @@ import static br.gov.caixa.loterias.apostar.interno.controllers.CarrinhoActivity
 import static java.lang.String.format;
 
 @EActivity(R.layout.activity_simular_aposta)
-public class SimularApostaActivity extends AppCompatActivity implements OnClickListener, CartelaFragmentListener, SurpresinhaFragmentListener {
+public class SimularApostaActivity<T> extends AppCompatActivity implements OnClickListener, CartelaFragmentListener, SurpresinhaFragmentListener {
 
     private static int RESULT_FINISH = 3;
 
@@ -423,7 +423,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         return flagApostaSalva;
     }
 
-    public void salvarAposta(final ApostaFavoritaDTO apostaFavorita, String nomeAposta, List<Integer> dezenasSelecionadas) {
+    public void salvarAposta(final ApostaFavoritaDTO apostaFavorita, String nomeAposta, T dezenasSelecionadas) {
 
         DialogUtils.show(this);
 

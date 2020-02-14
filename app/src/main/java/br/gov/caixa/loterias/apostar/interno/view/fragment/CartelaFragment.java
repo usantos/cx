@@ -629,7 +629,13 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 					if (isTipoTimemania && equipeSelecionada != null) {
 						aposta.setTimeDoCoracao(equipeSelecionada);
 					}
-					parentActivity.salvarAposta(aposta, nomeAposta.getText().toString(), dezenasSelecionadas);
+
+					if(isTipoSuperSete) {
+						parentActivity.salvarAposta(aposta, nomeAposta.getText().toString(), pegaListaSuperSete());
+					} else {
+						parentActivity.salvarAposta(aposta, nomeAposta.getText().toString(), dezenasSelecionadas);
+
+					}
 				} else {
 					ViewUtils.alert(getActivity(), getString(R.string.msg_favor_inserir_nome_aposta));
 				}
