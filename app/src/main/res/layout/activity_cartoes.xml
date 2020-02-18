@@ -182,7 +182,7 @@
             android:padding="30dp"
             android:textAlignment="center"
             android:textColor="@color/colorAccent"
-            android:textSize="14.2sp"
+            android:textSize="16.2sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
