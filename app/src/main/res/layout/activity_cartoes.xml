@@ -203,6 +203,5 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_ir_rapidao" />
 
-
     </android.support.constraint.ConstraintLayout>
 </android.support.constraint.ConstraintLayout>

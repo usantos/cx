@@ -47,7 +47,7 @@ IdentificaoDeUmaApostaDas8Modalidades<T> {
     protected List<PartidaLotecaDTO> partidasLoteca = null;
     @SerializedName(value = "numerosSelecionados")
     @ParcelPropertyConverter(ParcelsWrapperConverter.class)
-    private T numerosSelecionados = null;
+    public T numerosSelecionados = null;
     @SerializedName("indicadorSurpresinha")
     protected DTOEnumInteger indicadorSurpresinha = null;
     @SerializedName("valor")

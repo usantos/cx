@@ -62,7 +62,6 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
     private final List<ApostaFavoritaDTO> listaApostaFavorita;
     private ViewTreeObserver.OnGlobalLayoutListener swipeGlobalLayoutListener;
     private ExcluiuTudo excluiuTudo;
-    private static final AtomicLong TS = new AtomicLong();
 
     public FavoritasRecyclerViewAdapter(final FavoritasActivity activity, final Context context, final List<ApostaFavoritaDTO> listaApostaFavorita) {
         this.context = context;
@@ -177,7 +176,7 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
             fm.beginTransaction().remove(oldFragment).commit();
         }
 
-        int newContainerId = (int) Utils.getUniqueTimestamp(TS);
+        int newContainerId = (int) Utils.getIdUnico();
         holder.containerFragment.setId(newContainerId);
 
         NumerosSuperSeteFragment fragment = NumerosSuperSeteFragment.newInstance(aposta.getMatrizNumerosSelecionados());

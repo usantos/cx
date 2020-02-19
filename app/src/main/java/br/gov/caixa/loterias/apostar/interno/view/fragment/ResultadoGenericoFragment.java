@@ -56,12 +56,12 @@ public class ResultadoGenericoFragment extends Fragment {
 
         NumerosResultadosAdapter numerosResultadosAdapter;
         int numberOfColumns = 3;
-        if (resultado.getNumerosSorteadosPrimeiroSorteio().size() > 6) {
+        if (resultado.getListaSorteadosPrimeiroSorteio().size() > 6) {
             numberOfColumns = 4;
         }
 
         this.rvNumerosResultado.setLayoutManager(new GridLayoutManager(getActivity(), numberOfColumns));
-        numerosResultadosAdapter = new NumerosResultadosAdapter(getActivity(), resultado.getNumerosSorteadosPrimeiroSorteio(), resultado.getConcurso().getModalidade());
+        numerosResultadosAdapter = new NumerosResultadosAdapter(getActivity(), resultado.getListaSorteadosPrimeiroSorteio(), resultado.getConcurso().getModalidade());
         this.rvNumerosResultado.setAdapter(numerosResultadosAdapter);
     }
 
