@@ -258,6 +258,7 @@ public class CarrinhoActivity extends AppCompatActivity {
                 ocorrendoValidacao = false;
                 DialogUtils.dismiss();
                 CarrinhoSingleton.getInstance().setCarrinho(carrinho);
+                lerCarrinho();
                 startActivity(new Intent(CarrinhoActivity.this, CartoesActivity.class));
             }
 
@@ -427,7 +428,7 @@ public class CarrinhoActivity extends AppCompatActivity {
         int maximoLista = 0;
 
         List<IdentificaoDeUmaApostaDas8Modalidades> apostas = new ArrayList<>();
-        if(carrinho  != null && carrinho.getApostas() != null && carrinho.getApostas().size() > 0) {
+        if(carrinho  != null && carrinho.getApostas() != null && !carrinho.getApostas().isEmpty()) {
             if(offSet > carrinho.getApostas().size()){
                 vLoading.setVisibility(View.GONE);
                 return;
@@ -453,7 +454,11 @@ public class CarrinhoActivity extends AppCompatActivity {
                 vLoading.setVisibility(View.GONE);
             }
 
-            this.offSet += PAGE_SIZE;
+            if (this.offSet < maximoLista && maximoLista < PAGE_SIZE) {
+                this.offSet = maximoLista;
+            } else {
+                this.offSet += PAGE_SIZE;
+            }
         }
         bloqScroll = false;
 
