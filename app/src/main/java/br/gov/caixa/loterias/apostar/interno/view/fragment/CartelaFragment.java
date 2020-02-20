@@ -289,15 +289,12 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 			ttvEscolha.setText(ViewUtils.textFuturaAndFuturaBold(parentActivity, getString(R.string.dia_sorte_escolha_dia)));
 			ttvPagina.setText(R.string.label_numerico_um);
 		}
-		editaAposta();
 		if (!isEscolhaTimeCoracaoSurpresinha) {
-			if(matrizSelecionada == null){
-				configuraListaDezenas(view);
-				matrizSelecionada = null;
-			}
+			configuraListaDezenas(view);
 			verificaSeMostraBotaoLimparAposta();
 			verificaSeMostraSalvarApostaView();
 		}
+		editaAposta();
 
 		ViewUtils.organizaTabLayout(getActivity(), R.id.cartelaFragmentMainLayout, idList, R.id.cartelaFragmentScrollView);
 		((ScrollView) view.findViewById(R.id.cartelaFragmentScrollView)).fullScroll(ScrollView.FOCUS_UP);
@@ -849,6 +846,10 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
 	private void preencheSuperSete(List<List<Integer>> numerosSelecionados) {
 		int coluna = 0;
+		if (matrizSelecionada != null){
+			qtdTotalSelecionadosSuperSete = 0;
+			matrizSelecionada = null;
+		}
 		for (SuperSeteAdapter adapter : listaAdaptersSuperSete) {
 			adapter.dezenasSelecionadas = numerosSelecionados.get(coluna);
 			qtdTotalSelecionadosSuperSete += adapter.dezenasSelecionadas.size();
@@ -1151,6 +1152,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 		} else if (isTipoSuperSete) {
 			if (matrizSelecionada != null) {
 				preencheSuperSete(matrizSelecionada);
+				matrizSelecionada = null;
 				if (validaSelecaoSuperSete() && qtdTotalSelecionadosSuperSete == parentActivity.qtdDezenasPossiveisSelecionado) {
 					atualizarBotaoFinalizarAdicionarCarrinho();
 				} else {
