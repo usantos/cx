@@ -579,13 +579,15 @@ IdentificaoDeUmaApostaDas8Modalidades<T> {
         }
         for (IdentificaoDeUmaApostaDas8Modalidades item : carrinhoDTO.getApostas()){
             if (item.getModalidade() != ModalidadeEnum.SUPER_7) {
-                List<Integer> numerosSelecionados = apostaFavoritaDTO.getListaNumerosSelecionados();
-                Collections.sort(numerosSelecionados);
-                List<Integer> numerosItem = item.getListaNumerosSelecionados();
-                Collections.sort( numerosItem );
-                if (item.getModalidade().equals(apostaFavoritaDTO.getModalidade())
-                        && numerosSelecionados.equals( numerosItem )){
-                    return true;
+                if (item.getModalidade().equals(apostaFavoritaDTO.getModalidade())){
+                    List<Integer> numerosSelecionados = apostaFavoritaDTO.getListaNumerosSelecionados();
+                    Collections.sort(numerosSelecionados);
+                    List<Integer> numerosItem = item.getListaNumerosSelecionados();
+                    Collections.sort(numerosItem);
+
+                    if (numerosSelecionados.equals(numerosItem)) {
+                        return true;
+                    }
                 }
             } else {
                 if (item.getModalidade().equals(apostaFavoritaDTO.getModalidade())) {
@@ -615,8 +617,14 @@ IdentificaoDeUmaApostaDas8Modalidades<T> {
                     }else{
                         List<ParametroValorApostaDTO> parametroValorApostaDTOList = parametroSimulacao.getParametroJogo().getValoresAposta();
                         for (ParametroValorApostaDTO parametroValorApostaDTO : parametroValorApostaDTOList){
-                            if (parametroValorApostaDTO.getNumeroPrognosticos() == apostaFavoritaDTO.getListaNumerosSelecionados().size()){
-                                return parametroValorApostaDTO.getValor();
+                            if(apostaFavoritaDTO.getModalidade().getValor() != 7) {
+                                if (parametroValorApostaDTO.getNumeroPrognosticos() == apostaFavoritaDTO.getListaNumerosSelecionados().size()){
+                                    return parametroValorApostaDTO.getValor();
+                                }
+                            } else  {
+                                if (parametroValorApostaDTO.getNumeroPrognosticos() == apostaFavoritaDTO.getCountMatrizNumerosSelecionados()){
+                                    return parametroValorApostaDTO.getValor();
+                                }
                             }
                         }
                     }
