@@ -34,6 +34,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bean.DadosUsuarioToken;
 public class Utils {
 
     private static Random random;
+    private static final AtomicLong TS = new AtomicLong();
 
     public interface DelayCallback{
         void afterDelay();
@@ -67,7 +68,7 @@ public class Utils {
     }
 
 
-    public static long getUniqueTimestamp(AtomicLong TS) {
+    public static long getIdUnico() {
         long micros = System.currentTimeMillis() * 1000;
         for (;;) {
             long value = TS.get();

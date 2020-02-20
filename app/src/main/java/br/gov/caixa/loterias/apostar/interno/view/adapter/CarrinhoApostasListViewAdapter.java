@@ -49,7 +49,6 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
     private NumerosSuperSeteFragment fragment;
     private boolean animacao;
     private static final String TAG = "TAG_CARRINHO";
-    private static final AtomicLong TS = new AtomicLong();
 
     public CarrinhoApostasListViewAdapter(CarrinhoActivity parentActivity, ArrayList<IdentificaoDeUmaApostaDas8Modalidades> apostas, Context context, boolean animacao) {
         this.context = context;
@@ -246,7 +245,7 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
             fm.beginTransaction().remove(oldFragment).commit();
         }
 
-        int newContainerId = (int) Utils.getUniqueTimestamp(TS);
+        int newContainerId = (int) Utils.getIdUnico();
         holder.containerFragment.setId(newContainerId);
 
         NumerosSuperSeteFragment fragment = NumerosSuperSeteFragment.newInstance(aposta.getMatrizNumerosSelecionados());

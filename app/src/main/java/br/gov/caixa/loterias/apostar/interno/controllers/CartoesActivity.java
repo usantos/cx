@@ -125,7 +125,7 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
     }
 
     private void configuraTelaSemCartao(){
-        if (DadosUsuarioBO.checarTutorialRapidao()){
+        if (!DadosUsuarioBO.checarTutorialRapidao()){
             tvIrRapidao.setText(ViewUtils.textColor(this,getResources().getString(R.string.cartoes_ir_rapidao), R.color.amareloQueimado));
             btnIrRapidao.setText(getString(R.string.partiu));
 
