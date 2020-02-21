@@ -47,7 +47,7 @@ IdentificaoDeUmaApostaDas8Modalidades<T> {
     protected List<PartidaLotecaDTO> partidasLoteca = null;
     @SerializedName(value = "numerosSelecionados")
     @ParcelPropertyConverter(ParcelsWrapperConverter.class)
-    private T numerosSelecionados = null;
+    public T numerosSelecionados = null;
     @SerializedName("indicadorSurpresinha")
     protected DTOEnumInteger indicadorSurpresinha = null;
     @SerializedName("valor")
@@ -361,10 +361,7 @@ IdentificaoDeUmaApostaDas8Modalidades<T> {
      **/
     @ApiModelProperty(value = "Quantidade de Números de prognósticos da aposta")
     public Integer getQuantidadeNumeros() {
-        return quantidadeNumeros == null ? 0 : quantidadeNumeros;
-    }
-    /*public Integer getQuantidadeNumeros() {
-        if (quantidadeNumeros != null) {
+        if (quantidadeNumeros != null && quantidadeNumeros != 0) {
             return quantidadeNumeros;
         } else {
             if (modalidade != null) {
@@ -380,7 +377,7 @@ IdentificaoDeUmaApostaDas8Modalidades<T> {
             }
             return  -1;
         }
-    }*/
+    }
 
     public void setQuantidadeNumeros(Integer quantidadeNumeros) {
         this.quantidadeNumeros = quantidadeNumeros;
@@ -515,33 +512,6 @@ IdentificaoDeUmaApostaDas8Modalidades<T> {
         return sb;
     }
 
-
-    public static IdentificaoDeUmaApostaDas8Modalidades apostaDtoToIdentificaoDeUmaApostaDas8Modalidades(ApostaDTO apostaDTO){
-        IdentificaoDeUmaApostaDas8Modalidades identificaoDeUmaApostaDas8Modalidades = new IdentificaoDeUmaApostaDas8Modalidades();
-        identificaoDeUmaApostaDas8Modalidades.setModalidade( apostaDTO.getModalidade() );
-        identificaoDeUmaApostaDas8Modalidades.setConcursoAlvo( apostaDTO.getConcursoAlvo() );
-        identificaoDeUmaApostaDas8Modalidades.setConcursoInicial( apostaDTO.getConcursoInicial() );
-        identificaoDeUmaApostaDas8Modalidades.setDataEfetivacao( apostaDTO.getDataEfetivacao() );
-        identificaoDeUmaApostaDas8Modalidades.setEspelho( apostaDTO.getEspelho() );
-        identificaoDeUmaApostaDas8Modalidades.setHoraEfetivacao( apostaDTO.getHoraEfetivacao() );
-        identificaoDeUmaApostaDas8Modalidades.setId( apostaDTO.getId() );
-        //identificaoDeUmaApostaDas8Modalidades.setLoterica( apostaDTO.getLoterica() );
-        identificaoDeUmaApostaDas8Modalidades.setTipoConcurso( apostaDTO.getTipoConcurso() );
-        identificaoDeUmaApostaDas8Modalidades.setPartidasLotogol( apostaDTO.getPartidasLotogol() );
-        identificaoDeUmaApostaDas8Modalidades.setPartidasLoteca( apostaDTO.getPartidasLoteca() );
-        identificaoDeUmaApostaDas8Modalidades.setNumerosSelecionados( apostaDTO.getNumerosSelecionados() );
-        identificaoDeUmaApostaDas8Modalidades.setIndicadorSurpresinha( apostaDTO.getIndicadorSurpresinha() );
-        identificaoDeUmaApostaDas8Modalidades.setValor( apostaDTO.getValor() );
-        identificaoDeUmaApostaDas8Modalidades.setQuantidadeTeimosinhas( apostaDTO.getQuantidadeTeimosinhas() );
-        identificaoDeUmaApostaDas8Modalidades.setQuantidadeApostas( apostaDTO.getQuantidadeApostas() );
-        identificaoDeUmaApostaDas8Modalidades.setTimeDoCoracao( apostaDTO.getTimeDoCoracao() );
-        identificaoDeUmaApostaDas8Modalidades.setSituacao( apostaDTO.getSituacao() );
-        identificaoDeUmaApostaDas8Modalidades.setTroca( apostaDTO.getTroca() );
-        identificaoDeUmaApostaDas8Modalidades.setQuantidadeNumeros( apostaDTO.getQuantidadeNumeros() );
-        identificaoDeUmaApostaDas8Modalidades.setMesDeSorte( apostaDTO.getMesDeSorte() );
-        return identificaoDeUmaApostaDas8Modalidades;
-    }
-
     public final static IdentificaoDeUmaApostaDas8Modalidades clone (IdentificaoDeUmaApostaDas8Modalidades aposta){
         IdentificaoDeUmaApostaDas8Modalidades identificaoDeUmaApostaDas8Modalidades = new IdentificaoDeUmaApostaDas8Modalidades();
         identificaoDeUmaApostaDas8Modalidades.setModalidade( aposta.getModalidade() );
@@ -574,84 +544,64 @@ IdentificaoDeUmaApostaDas8Modalidades<T> {
                 identificaoDeUmaApostaDas8Modalidades.getModalidade() == ModalidadeEnum.LOTOGOL){
             return false;
         }
-        if (identificaoDeUmaApostaDas8Modalidades.getModalidade() == ModalidadeEnum.SUPER_7) {
-            List<List<Integer>> matrizSelecionados = identificaoDeUmaApostaDas8Modalidades.getMatrizNumerosSelecionados();
-            matrizSelecionados = Utils.ordenaMatrizInteiro(matrizSelecionados);
-            for (IdentificaoDeUmaApostaDas8Modalidades item : carrinhoDTO.getApostas()){
-                if(item.getModalidade() == ModalidadeEnum.SUPER_7){
-                    List<List<Integer>> matrizItem = item.getMatrizNumerosSelecionados();
-                    matrizItem = Utils.ordenaMatrizInteiro(matrizItem);
-                    if (item.getModalidade() == identificaoDeUmaApostaDas8Modalidades.getModalidade()
-                            && matrizSelecionados.equals( matrizItem )){
-                        return true;
-                    }
-                }
-            }
-        } else {
-            List<Integer> numerosSelecionados = identificaoDeUmaApostaDas8Modalidades.getListaNumerosSelecionados();
-            Collections.sort(numerosSelecionados);
-            for (IdentificaoDeUmaApostaDas8Modalidades item : carrinhoDTO.getApostas()){
-                List<Integer> numerosItem = item.getListaNumerosSelecionados();
-                Collections.sort( numerosItem );
-                if (item.getModalidade() == identificaoDeUmaApostaDas8Modalidades.getModalidade()
-                        && numerosSelecionados.equals( numerosItem )){
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
 
-    public static Boolean checkExisteUmaApostaIgualCarrinhoEmListaApostas(final List<IdentificaoDeUmaApostaDas8Modalidades> listIdentificaoDeUmaApostaDas8Modalidades, final CarrinhoDTO carrinhoDTO){
-        for (IdentificaoDeUmaApostaDas8Modalidades identificaoDeUmaApostaDas8Modalidades : listIdentificaoDeUmaApostaDas8Modalidades){
-            List<Integer> numerosSelecionados = identificaoDeUmaApostaDas8Modalidades.getListaNumerosSelecionados();
-            Collections.sort( numerosSelecionados );
-            if (identificaoDeUmaApostaDas8Modalidades.getModalidade() != ModalidadeEnum.LOTECA && identificaoDeUmaApostaDas8Modalidades.getModalidade() == ModalidadeEnum.LOTOGOL) {
-                for (IdentificaoDeUmaApostaDas8Modalidades item : carrinhoDTO.getApostas()){
+
+        for (IdentificaoDeUmaApostaDas8Modalidades item : carrinhoDTO.getApostas()){
+            if (item.getModalidade() != ModalidadeEnum.SUPER_7) {
+                if (item.getModalidade() == identificaoDeUmaApostaDas8Modalidades.getModalidade()){
                     List<Integer> numerosItem = item.getListaNumerosSelecionados();
                     Collections.sort( numerosItem );
-                    if (item.getModalidade() == identificaoDeUmaApostaDas8Modalidades.getModalidade()
-                            && numerosSelecionados.equals( numerosItem ) ){
+                    List<Integer> numerosSelecionados = identificaoDeUmaApostaDas8Modalidades.getListaNumerosSelecionados();
+                    Collections.sort(numerosSelecionados);
+                    if (numerosSelecionados.equals( numerosItem )){
+                        return true;
+                    }
+                }
+            } else {
+                if (item.getModalidade() == identificaoDeUmaApostaDas8Modalidades.getModalidade()) {
+                    List<List<Integer>> matrizSelecionados = identificaoDeUmaApostaDas8Modalidades.getMatrizNumerosSelecionados();
+                    List<List<Integer>> matrizItem         = item.getMatrizNumerosSelecionados();
+                    matrizSelecionados = Utils.ordenaMatrizInteiro(matrizSelecionados);
+                    matrizItem = Utils.ordenaMatrizInteiro(matrizItem);
+                    if (matrizSelecionados.equals(matrizItem)) {
                         return true;
                     }
                 }
             }
         }
-
         return false;
     }
-
 
     public static Boolean checkExisteUmaApostaIgualCarrinho(final ApostaFavoritaDTO apostaFavoritaDTO, final CarrinhoDTO carrinhoDTO){
         if (ModalidadeEnum.fromInteger(  apostaFavoritaDTO.getModalidade().getValor() ) ==  ModalidadeEnum.LOTECA||
                 ModalidadeEnum.fromInteger(  apostaFavoritaDTO.getModalidade().getValor() ) == ModalidadeEnum.LOTOGOL) {
             return false;
         }
-        if (ModalidadeEnum.fromInteger(apostaFavoritaDTO.getModalidade().getValor()) == ModalidadeEnum.SUPER_7) {
-            /*
-            List<Integer> numerosSelecionados = apostaFavoritaDTO.getNumerosSelecionados();
-            Collections.sort( numerosSelecionados );
-            for (IdentificaoDeUmaApostaDas8Modalidades item : carrinhoDTO.getApostas()){
-                List<Integer> numerosItem = item.getListaNumerosSelecionados();
-                Collections.sort( numerosItem );
-                if (item.getModalidade() == ModalidadeEnum.fromInteger(  apostaFavoritaDTO.getModalidade().getValor() )
-                        && numerosSelecionados.equals( numerosItem )){
-                    return true;
+        for (IdentificaoDeUmaApostaDas8Modalidades item : carrinhoDTO.getApostas()){
+            if (item.getModalidade() != ModalidadeEnum.SUPER_7) {
+                if (item.getModalidade().equals(apostaFavoritaDTO.getModalidade())){
+                    List<Integer> numerosSelecionados = apostaFavoritaDTO.getListaNumerosSelecionados();
+                    Collections.sort(numerosSelecionados);
+                    List<Integer> numerosItem = item.getListaNumerosSelecionados();
+                    Collections.sort(numerosItem);
+
+                    if (numerosSelecionados.equals(numerosItem)) {
+                        return true;
+                    }
                 }
-            }*/
-        } else {
-            List<Integer> numerosSelecionados = apostaFavoritaDTO.getNumerosSelecionados();
-            Collections.sort( numerosSelecionados );
-            for (IdentificaoDeUmaApostaDas8Modalidades item : carrinhoDTO.getApostas()){
-                List<Integer> numerosItem = item.getListaNumerosSelecionados();
-                Collections.sort( numerosItem );
-                if (item.getModalidade() == ModalidadeEnum.fromInteger(  apostaFavoritaDTO.getModalidade().getValor() )
-                        && numerosSelecionados.equals( numerosItem )){
-                    return true;
+            } else {
+                if (item.getModalidade().equals(apostaFavoritaDTO.getModalidade())) {
+                    List<List<Integer>> matrizSelecionados = apostaFavoritaDTO.getMatrizNumerosSelecionados();
+                    List<List<Integer>> matrizItem         = item.getMatrizNumerosSelecionados();
+                    matrizSelecionados = Utils.ordenaMatrizInteiro(matrizSelecionados);
+                    matrizSelecionados = Utils.ordenaMatrizInteiro(matrizSelecionados);
+
+                    if (matrizSelecionados.equals(matrizItem)) {
+                        return true;
+                    }
                 }
             }
         }
-
         return false;
     }
 
@@ -667,8 +617,14 @@ IdentificaoDeUmaApostaDas8Modalidades<T> {
                     }else{
                         List<ParametroValorApostaDTO> parametroValorApostaDTOList = parametroSimulacao.getParametroJogo().getValoresAposta();
                         for (ParametroValorApostaDTO parametroValorApostaDTO : parametroValorApostaDTOList){
-                            if (parametroValorApostaDTO.getNumeroPrognosticos() == apostaFavoritaDTO.getNumerosSelecionados().size()){
-                                return parametroValorApostaDTO.getValor();
+                            if(apostaFavoritaDTO.getModalidade().getValor() != 7) {
+                                if (parametroValorApostaDTO.getNumeroPrognosticos() == apostaFavoritaDTO.getListaNumerosSelecionados().size()){
+                                    return parametroValorApostaDTO.getValor();
+                                }
+                            } else  {
+                                if (parametroValorApostaDTO.getNumeroPrognosticos() == apostaFavoritaDTO.getCountMatrizNumerosSelecionados()){
+                                    return parametroValorApostaDTO.getValor();
+                                }
                             }
                         }
                     }

@@ -15,17 +15,20 @@ package br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto;
 import com.google.gson.annotations.SerializedName;
 
 import org.parceler.Parcel;
+import org.parceler.ParcelPropertyConverter;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
+import br.gov.caixa.loterias.apostar.interno.utils.AppUtils;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel(description = "")
 @Parcel
-public class ResultadoConcursoDTO implements Serializable {
+public class ResultadoConcursoDTO<T> implements Serializable {
 
     @SerializedName("municipioSorteio")
     protected MunicipioDTO municipioSorteio = null;
@@ -40,7 +43,8 @@ public class ResultadoConcursoDTO implements Serializable {
     @SerializedName("acumulou")
     protected Boolean acumulou = null;
     @SerializedName("numerosSorteadosPrimeiroSorteio")
-    protected List<Integer> numerosSorteadosPrimeiroSorteio = null;
+    @ParcelPropertyConverter(ParcelsWrapperConverter.class)
+    protected T numerosSorteadosPrimeiroSorteio = null;
     @SerializedName("numerosSorteadosSegundoSorteio")
     protected List<Integer> numerosSorteadosSegundoSorteio = null;
     @SerializedName("partidasLotogol")
@@ -144,14 +148,25 @@ public class ResultadoConcursoDTO implements Serializable {
      * Números sorteados
      **/
     @ApiModelProperty(value = "Números sorteados")
-    public List<Integer> getNumerosSorteadosPrimeiroSorteio() {
+    public T getNumerosSorteadosPrimeiroSorteio() {
         return numerosSorteadosPrimeiroSorteio;
     }
 
-    public void setNumerosSorteadosPrimeiroSorteio(List<Integer> numerosSorteadosPrimeiroSorteio) {
+    public void setNumerosSorteadosPrimeiroSorteio(T numerosSorteadosPrimeiroSorteio) {
         this.numerosSorteadosPrimeiroSorteio = numerosSorteadosPrimeiroSorteio;
     }
 
+    public List<Integer> getListaSorteadosPrimeiroSorteio(){
+        if(numerosSorteadosPrimeiroSorteio != null){
+            return AppUtils.converteListaInteiros((List<Integer>) numerosSorteadosPrimeiroSorteio);
+        } else  {
+            return  null;
+        }
+    }
+
+    public ArrayList<ArrayList<Integer>> getMatrizNumerosSorteadosPrimeiroSorteio(){
+        return AppUtils.converteMatrizInteiros((List<List<Integer>>) numerosSorteadosPrimeiroSorteio);
+    }
     /**
      * Números sorteados no segundo sorteio, válidos apenas para DuplaSena
      **/

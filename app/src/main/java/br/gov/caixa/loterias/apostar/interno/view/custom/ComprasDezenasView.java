@@ -18,6 +18,7 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ApostaDTO;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostar.interno.utils.AppUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.DezenasAdapter;
@@ -67,9 +68,18 @@ public class ComprasDezenasView extends LinearLayout {
     }
 
     private void initRecyclerView(ApostaDTO aposta) {
-        if (!aposta.getNumerosSelecionados().isEmpty()) {
-            dezenasRecyclerView.setAdapter(new DezenasAdapter(AppUtils.listIntegerToListString(aposta.getNumerosSelecionados())));
-            dezenasRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        if (aposta != null) {
+            if  (aposta.getModalidade() == ModalidadeEnum.SUPER_7) {
+                if (!aposta.getMatrizNumerosSelecionados().isEmpty()) {
+                    dezenasRecyclerView.setAdapter(new DezenasAdapter(AppUtils.listIntegerToListString(aposta.getMatrizNumerosSelecionados())));
+                    dezenasRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                }
+            } else {
+                if (!aposta.getListaNumerosSelecionados().isEmpty()) {
+                    dezenasRecyclerView.setAdapter(new DezenasAdapter(AppUtils.listIntegerToListString(aposta.getListaNumerosSelecionados())));
+                    dezenasRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                }
+            }
         }
     }
 }

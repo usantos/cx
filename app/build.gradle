@@ -15,7 +15,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 28
         //version code = minSdkVersion + versionName(sem pontuação) + versão interna
-        versionCode 2110232
+        versionCode 2110231
         versionName "1.0.23"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -87,7 +87,7 @@ android {
                         scheme               : "https"
                 ]
             }
-            stubnet {
+            hmp {
                 dimension "default"
                 //applicationIdSuffix ".stubnet"
                 buildConfigField "boolean", "CAIXA_NETWORK_STUB", "false"
@@ -96,7 +96,7 @@ android {
                 buildConfigField "String", "SSO_CLIENT_SECRET", "\"b54d171d-03de-41f3-b1b1-64e98672cbb8\""
                 buildConfigField "String", "SSO_CLIENT_ID", "\"cli-mob-lce\""
                 buildConfigField "String", "SSO_REDIRECT", "\"br.gov.caixa.caixaloterias:/oauth2Callback\""
-                buildConfigField "String", "URL_SSO", "\"https://logindes.caixa.gov.br\""
+                buildConfigField "String", "URL_SSO", "\"https://login.hmp.corp.caixa.gov.br\""
                 buildConfigField "String", "URL_ENDPOINT_TOKEN", "\"auth/realms/internet/protocol/openid-connect/token\""
                 buildConfigField "String", "URL_SSO_TOKEN", "URL_SSO+\"/\"+URL_ENDPOINT_TOKEN"
                 buildConfigField "String", "URL_SSO_AUTH", "URL_SSO+\"/auth/realms/internet/protocol/openid-connect/auth\""

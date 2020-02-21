@@ -29,6 +29,9 @@ public class AppUtils {
 
     public static List<Integer> converteListaInteiros(List<Integer> lista){
         ArrayList<Integer> listaInteiros = new ArrayList<>();
+        if(lista.get(0) instanceof Integer){
+            return lista;
+        }
         for (Number n : lista) {
             listaInteiros.add(new Integer( n.intValue()));
         }
@@ -38,8 +41,13 @@ public class AppUtils {
     public static ArrayList<ArrayList<Integer>> converteMatrizInteiros(List<List<Integer>> lista){
         ArrayList<ArrayList<Integer>> listaInteiros = new ArrayList<>();
         for (List<Integer> coluna : lista) {
-            List<Integer> l = converteListaInteiros(coluna);
-            listaInteiros.add(new ArrayList<>(l));
+            if(coluna.get(0) instanceof Integer){
+                listaInteiros.add(new ArrayList<>(coluna));
+            } else {
+                List<Integer> l = converteListaInteiros(coluna);
+                listaInteiros.add(new ArrayList<>(l));
+            }
+
         }
         return listaInteiros;
     }
