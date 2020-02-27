@@ -387,7 +387,7 @@
 
             </LinearLayout>
 
-            <LinearLayout
+            <!--<LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/cinzaclaro" />
@@ -437,7 +437,7 @@
                     android:paddingBottom="100dp"
                     android:verticalSpacing="0dp" />
 
-            </LinearLayout>
+            </LinearLayout> -->
 
         </LinearLayout>
 
