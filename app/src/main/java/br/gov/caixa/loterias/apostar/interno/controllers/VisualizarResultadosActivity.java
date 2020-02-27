@@ -29,6 +29,7 @@ import com.android.volley.VolleyError;
 
 import java.util.List;
 
+import br.gov.caixa.loterias.apostar.interno.NumerosSuperSeteFragment;
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bean.Modalidade;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO;
@@ -44,6 +45,8 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResultadoConcurs
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
 import br.gov.caixa.loterias.apostar.interno.view.custom.PartidaViewDetalhesResultado;
+import br.gov.caixa.loterias.apostar.interno.view.custom.SuperSeteResultadoLayout;
+import br.gov.caixa.loterias.apostar.interno.view.custom.SuperSeteResultadoLayout_;
 import br.gov.caixa.loterias.apostar.interno.view.fragment.ResultadoDuplaSenaFragment;
 import br.gov.caixa.loterias.apostar.interno.view.fragment.ResultadoGenericoFragment;
 import br.gov.caixa.loterias.apostar.interno.view.fragment.ResultadoLotecaFragment;
@@ -75,7 +78,7 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
     private Toolbar toolbar;
 
     private View divisoria;
-    private View containerFragment;
+    private LinearLayout containerFragment;
 
     private TextView tituloModalidade;
     private TextView dataSorteio;
@@ -287,7 +290,16 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
                 configuraResultadoSuperior(response, ResultadoLotogolFragment.newInstance(response));
                 tvNumeroSorteio.setVisibility(View.GONE);
                 break;
+            case SUPER_7:
+                setBackground(R.color.superseteclaro, R.color.superseteescuro, R.drawable.background_trapeze_super_sete);
+                SuperSeteResultadoLayout view7 = SuperSeteResultadoLayout_.build(this);
+                view7.setLayout(response.getMatrizNumerosSorteadosPrimeiroSorteio());
+                containerFragment.addView(view7);
+                tvNumeroSorteio.setVisibility(View.GONE);
+                break;
             default:
+                setBackground(R.color.megasenaclaro, R.color.megasenaescuro, R.drawable.background_trapeze_megasena);
+                configuraResultadoSuperior(response,ResultadoGenericoFragment.newInstance(response));
                 break;
         }
     }
