@@ -16,6 +16,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostar.interno.R;
@@ -42,6 +43,7 @@ public class HtmlUtils {
     private static final String FILE_PATH_COMPROVANTE_LISTA_CORPO_NUMERICO = "htmls/comprovante_lista_corpo_numerico.html";
     private static final String FILE_PATH_COMPROVANTE_LISTA_CORPO_LOTECA = "htmls/comprovante_lista_corpo_loteca.html";
     private static final String FILE_PATH_COMPROVANTE_LISTA_CORPO_LOTOGOL = "htmls/comprovante_lista_corpo_lotogol.html";
+    private static final String FILE_PATH_COMPROVANTE_LISTA_CORPO_SUPER_7 = "htmls/comprovante_lista_corpo_super7.html";
     private static final String FILE_PATH_COMPROVANTE_CORPO_APOSTA = "htmls/comprovante_corpo_aposta.html";
     private static final String FILE_PATH_COMPROVANTE_CORPO_PREMIO = "htmls/comprovante_corpo_premio.html";
     private static final String FILE_PATH_COMPROVANTE_CORPO_PREMIO_HISTORICO = "htmls/comprovante_corpo_premio_historico.html";
@@ -70,6 +72,13 @@ public class HtmlUtils {
     private static final String BODY_COLUNA2_LINHA1_VALOR_PREMIO = "{body_coluna2_linha1_valor}";
     private static final String BODY_COLUNA3_LINHA1_VALOR_PREMIO = "{body_coluna3_linha1_valor}";
     private static final String BODY_COLUNA1_LINHA2_VALOR_PREMIO = "{body_coluna1_linha2_valor}";
+    private static final String SUPER7_COLUNA_1 = "{COLUNA_1}";
+    private static final String SUPER7_COLUNA_2 = "{COLUNA_2}";
+    private static final String SUPER7_COLUNA_3 = "{COLUNA_3}";
+    private static final String SUPER7_COLUNA_4 = "{COLUNA_4}";
+    private static final String SUPER7_COLUNA_5 = "{COLUNA_5}";
+    private static final String SUPER7_COLUNA_6 = "{COLUNA_6}";
+    private static final String SUPER7_COLUNA_7 = "{COLUNA_7}";
 
     private static final String PONTO_MARCADOR = "•";
 
@@ -193,8 +202,21 @@ public class HtmlUtils {
                     htmlBodyList = getContentOfFile(FILE_PATH_COMPROVANTE_LISTA_CORPO_LOTOGOL, context);
                 }
                 return sbHtmlBodyList.toString();
+            case SUPER_7:
+                ArrayList<ArrayList<Integer>> matrizSelecionados = aposta.getMatrizNumerosSelecionados();
+                htmlBodyList = getContentOfFile(FILE_PATH_COMPROVANTE_LISTA_CORPO_SUPER_7, context);
+                htmlBodyList = ViewUtils.replaceNullable(htmlBodyList, SUPER7_COLUNA_1, montaColunasNumericas(matrizSelecionados.get(0)));
+                htmlBodyList = ViewUtils.replaceNullable(htmlBodyList, SUPER7_COLUNA_2, montaColunasNumericas(matrizSelecionados.get(1)));
+                htmlBodyList = ViewUtils.replaceNullable(htmlBodyList, SUPER7_COLUNA_3, montaColunasNumericas(matrizSelecionados.get(2)));
+                htmlBodyList = ViewUtils.replaceNullable(htmlBodyList, SUPER7_COLUNA_4, montaColunasNumericas(matrizSelecionados.get(3)));
+                htmlBodyList = ViewUtils.replaceNullable(htmlBodyList, SUPER7_COLUNA_5, montaColunasNumericas(matrizSelecionados.get(4)));
+                htmlBodyList = ViewUtils.replaceNullable(htmlBodyList, SUPER7_COLUNA_6, montaColunasNumericas(matrizSelecionados.get(5)));
+                htmlBodyList = ViewUtils.replaceNullable(htmlBodyList, SUPER7_COLUNA_7, montaColunasNumericas(matrizSelecionados.get(6)));
+
+                sbHtmlBodyList.append(htmlBodyList);
+                return sbHtmlBodyList.toString();
             default:
-                String numerosSelecionados = aposta.getNumerosSelecionados().toString().replaceAll("[\\[,\\]]", "");
+                String numerosSelecionados = aposta.getListaNumerosSelecionados().toString().replaceAll("[\\[,\\]]", "");
                 htmlBodyList = getContentOfFile(FILE_PATH_COMPROVANTE_LISTA_CORPO_NUMERICO, context);
                 htmlBodyList = ViewUtils.replaceNullable(htmlBodyList, BODY_INFORMACAO_APOSTA, numerosSelecionados);
 
@@ -213,6 +235,17 @@ public class HtmlUtils {
                 return sbHtmlBodyList.toString();
         }
     }
+
+    private static String  montaColunasNumericas(List<Integer> numeros){
+        String string = "";
+        for (Integer num: numeros) {
+            string += String.format(
+                    "<span style=\"color: #64778a; width:22px; height:22px; margin-top: 7px; display: flex; justify-content: center; align-items: center; border-radius: 11px; border: 1px solid #64778a;\">%d</span>",
+                    num);
+        }
+        return string;
+    }
+
 
     private static String getBodyAposta(ComprovanteApostaDTO comprovanteApostaDTO, Context context) {
         String htmlBody = getContentOfFile(FILE_PATH_COMPROVANTE_CORPO_APOSTA, context);
