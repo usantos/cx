@@ -239,7 +239,6 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                         }
                     });
                 }
-
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     onError(error);
@@ -253,7 +252,6 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     @Click
     protected void comprovanteLayout() {
         DialogUtils.show(this);
-
         if (premioPago && isHistorico) {
             apostaBO.getApostaHistoricoComprovante(aposta.getId(), new RequestListener<DetalhesHistoricoPremioDTOResponse>() {
                 @Override
