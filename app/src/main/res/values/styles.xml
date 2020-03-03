@@ -171,7 +171,6 @@
         <item name="android:windowBackground">@color/timemaniaescuro</item>
         <item name="android:textColor">@color/megasenamedio</item>
         <item name="android:textColorSecondary">@color/megasenamedio_transparente</item>
-        <item name="android:theme">@style/TimeManiaToolbar</item>
     </style>
 
     <style name="AppTheme.Modalidade.LotoGol">
@@ -190,6 +189,9 @@
         <item name="colorPrimaryDark">@color/superseteescuro</item>
         <item name="colorPrimary">@color/superseteclaro</item>
         <item name="android:windowBackground">@color/superseteescuro</item>
+        <item name="android:textColor">@color/branco</item>
+        <item name="android:textColorSecondary">@color/branco</item>
+        <item name="android:theme">@style/SuperSeteToolbar</item>
     </style>
 
     <style name="AppTheme.Modalidade.Federal">
@@ -205,6 +207,12 @@
         <item name="actionMenuTextColor">@color/megasenamedio</item>
     </style>
 
+    <style name="SuperSeteToolbar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:textColorPrimary">@color/branco</item>
+        <item name="colorControlNormal">@color/branco</item>
+        <item name="android:textColorSecondary">@color/branco</item>
+        <item name="actionMenuTextColor">@color/branco</item>
+    </style>
 
     <style name="fontForTitle1Premiados">
         <item name="android:textStyle">bold</item>
