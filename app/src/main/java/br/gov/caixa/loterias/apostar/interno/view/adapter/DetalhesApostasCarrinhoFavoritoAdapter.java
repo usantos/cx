@@ -89,18 +89,18 @@ public class DetalhesApostasCarrinhoFavoritoAdapter extends RecyclerView.Adapter
 	}
 
 	private String configuraNumeros(ApostaCarrinhoFavoritoDTO aposta, DetalheViewHolder holder) {
-		StringBuilder numeroStr = new StringBuilder();
-		//Surpresinha
-		if (aposta.getModalidade().getValor().intValue() != 7) {
-			if (aposta.getListaNumerosSelecionados().size() == 0) {
-				for (int i = 0; i < aposta.getQuantidadeNumeros(); i++) {
-					if (i == aposta.getQuantidadeNumeros() - 1) {
-						numeroStr.append("XX");
-					} else {
-						numeroStr.append("XX - ");
-					}
+		StringBuilder numeroStr   = new StringBuilder();
+		Boolean       isSuperSete = aposta.getModalidade().getValor().intValue() == 7;
+		if (aposta.getIndicadorSurpresinha() != ApostaCarrinhoFavoritoDTO.IndicadorSurpresinhaEnum.NAO_SURPRESINHA) {
+			for (int i = 0; i < aposta.getQuantidadeNumeros(); i++) {
+				if (i == aposta.getQuantidadeNumeros() - 1) {
+					numeroStr.append("XX");
+				} else {
+					numeroStr.append("XX - ");
 				}
-			} else {
+			}
+		} else {
+			if (!isSuperSete) {
 				List<Integer> numerosSelecionados = aposta.getListaNumerosSelecionados();
 				for (Integer num : numerosSelecionados) {
 					if (num.equals(numerosSelecionados.get(numerosSelecionados.size() - 1))) {
@@ -109,11 +109,11 @@ public class DetalhesApostasCarrinhoFavoritoAdapter extends RecyclerView.Adapter
 						numeroStr.append(String.format("%02d - ", num));
 					}
 				}
+			} else {
+				configuraFragment(aposta, holder);
+				holder.tvNumeros.setVisibility(View.GONE);
+				holder.containerFragment.setVisibility(View.VISIBLE);
 			}
-		} else {
-			configuraFragment(aposta, holder);
-			holder.tvNumeros.setVisibility(View.GONE);
-			holder.containerFragment.setVisibility(View.VISIBLE);
 		}
 
 		return numeroStr.toString();
