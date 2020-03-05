@@ -22,12 +22,17 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.Dezena;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 
 public class NumerosSuperSeteAdapter extends BaseAdapter {
-	private Context context;
+
+	//region Variables
 	public List<Dezena> dezenas = new ArrayList<>();
-	private int corSuperSete;
 	public List<Integer> dezenasSelecionadas;
 	public ConfiguracaoNumerosSuperSete configuracao;
 
+	private int corSuperSete;
+	private Context context;
+	//endregion
+
+	//region Initialization Methods
 	public NumerosSuperSeteAdapter(int typeGameColorDark, Activity parentActivity, List<Integer> dezenasSelecionadas) {
 		this.dezenasSelecionadas = dezenasSelecionadas;
 		this.context = parentActivity;
@@ -42,7 +47,9 @@ public class NumerosSuperSeteAdapter extends BaseAdapter {
 		this.configuracao = configuracao;
 		preencheNumeros();
 	}
+	//endregion
 
+	//region Layout Configuration Methods
 	@Override
 	public int getCount() {
 		return dezenas.size();
@@ -74,16 +81,16 @@ public class NumerosSuperSeteAdapter extends BaseAdapter {
 		}
 		if (configuracao == null) {
 			shape.setColor(Color.WHITE);
-			shape.setStroke(5, context.getResources().getColor(corSuperSete));
+			shape.setStroke(3, context.getResources().getColor(corSuperSete));
 			textView.setTextColor(ContextCompat.getColor(context, R.color.black));
 		} else {
 			if (dezenas.get(i).isSelected()) {
 				shape.setColor(context.getResources().getColor(configuracao.getCorInteriorCirculo()));
-				shape.setStroke(5, context.getResources().getColor(configuracao.getCorBordaCirculoSelecionado()));
+				shape.setStroke(3, context.getResources().getColor(configuracao.getCorBordaCirculoSelecionado()));
 				textView.setTextColor(context.getResources().getColor(configuracao.getCorTextoCirculoSelecionado()));
 			} else {
 				shape.setColor(context.getResources().getColor(configuracao.getCorInteriorCirculo()));
-				shape.setStroke(5,context.getResources().getColor(configuracao.getCorBordaCirculo()));
+				shape.setStroke(3, context.getResources().getColor(configuracao.getCorBordaCirculo()));
 				textView.setTextColor(context.getResources().getColor(configuracao.getCorTextoCirculo()));
 			}
 		}
@@ -95,10 +102,14 @@ public class NumerosSuperSeteAdapter extends BaseAdapter {
 
 		return textView;
 	}
+	//endregion
 
+	//region Support Methods
 	private void preencheNumeros() {
 		for (Integer marcado : dezenasSelecionadas) {
 			dezenas.add(new Dezena("" + marcado.intValue(), Boolean.FALSE));
 		}
 	}
+	//endregion
+
 }

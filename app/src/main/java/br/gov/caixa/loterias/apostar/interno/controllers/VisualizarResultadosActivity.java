@@ -29,7 +29,6 @@ import com.android.volley.VolleyError;
 
 import java.util.List;
 
-import br.gov.caixa.loterias.apostar.interno.NumerosSuperSeteFragment;
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bean.Modalidade;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO;
@@ -291,7 +290,7 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
                 tvNumeroSorteio.setVisibility(View.GONE);
                 break;
             case SUPER_7:
-                setBackground(R.color.superseteclaro, R.color.superseteescuro, R.drawable.background_trapeze_super_sete);
+                setBackground(R.color.superseteclaro, R.color.supersetemedio, R.drawable.background_trapeze_super_sete);
                 SuperSeteResultadoLayout view7 = SuperSeteResultadoLayout_.build(this);
                 view7.setLayout(response.getMatrizNumerosSorteadosPrimeiroSorteio());
                 containerFragment.addView(view7);

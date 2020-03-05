@@ -186,6 +186,7 @@
     <string name="msg_qtd_max_col_super_sete">Você só pode selecionar 3 números por coluna</string>
     <string name="msg_bloqueio_coluna_super_sete_marcar">Você precisa selecionar {qtdColunas} número(s) em cada coluna antes de selecionar outro nessa</string>
     <string name="msg_bloqueio_coluna_super_sete_desmarcar">Você não pode fazer isso, pois nessa coluna é necessário ter selecionado {qtdColunas} número(s)</string>
+    <string name="colunas">Colunas</string>
 
     <string name="label_aposta_salva_carinha">Aposta salva :)</string>
     <string name="label_sem_teimosinha">Teimosinha</string>
@@ -235,6 +236,7 @@
     <string name="concurso">Concurso</string>
     <string name="data_da_aposta">Data da aposta:</string>
     <string name="seus_numeros">Seus números</string>
+    <string name="sua_aposta">Sua aposta</string>
     <string name="conferir_resultados">Conferir resultados</string>
 
     <string name="carregando">Carregando…</string>

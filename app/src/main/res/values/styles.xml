@@ -186,11 +186,11 @@
     </style>
 
     <style name="AppTheme.Modalidade.SuperSete">
-        <item name="colorPrimaryDark">@color/superseteescuro</item>
+        <item name="colorPrimaryDark">@color/supersetemedio</item>
         <item name="colorPrimary">@color/superseteclaro</item>
-        <item name="android:windowBackground">@color/superseteescuro</item>
-        <item name="android:textColor">@color/branco</item>
-        <item name="android:textColorSecondary">@color/branco</item>
+        <item name="android:windowBackground">@color/supersetemedio</item>
+        <item name="android:textColor">@color/superseteescuro</item>
+        <item name="android:textColorSecondary">@color/superseteescuro</item>
         <item name="android:theme">@style/SuperSeteToolbar</item>
     </style>
 
@@ -208,11 +208,12 @@
     </style>
 
     <style name="SuperSeteToolbar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-        <item name="android:textColorPrimary">@color/branco</item>
-        <item name="colorControlNormal">@color/branco</item>
-        <item name="android:textColorSecondary">@color/branco</item>
-        <item name="actionMenuTextColor">@color/branco</item>
+        <item name="android:textColorPrimary">@color/superseteescuro</item>
+        <item name="colorControlNormal">@color/superseteescuro</item>
+        <item name="android:textColorSecondary">@color/superseteescuro</item>
+        <item name="actionMenuTextColor">@color/superseteescuro</item>
     </style>
+
 
     <style name="fontForTitle1Premiados">
         <item name="android:textStyle">bold</item>
