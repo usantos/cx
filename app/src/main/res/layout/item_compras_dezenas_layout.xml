@@ -11,6 +11,12 @@
         android:layout_height="wrap_content"
         android:nestedScrollingEnabled="false" />
 
+    <RelativeLayout
+        android:id="@+id/rl_container_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
     <LinearLayout
         android:id="@+id/detalheLayout"
         android:layout_width="match_parent"
