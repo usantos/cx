@@ -97,7 +97,7 @@ public class NumerosSuperSeteAdapter extends BaseAdapter {
 		shape.setCornerRadius(sizeItens / 2);
 		textView.setBackground(shape);
 		textView.setText(dezenas.get(i).getValue());
-		textView.setTypeface(ViewUtils.getFontFuturaBold(context));
+		textView.setTypeface(ViewUtils.getFontFutura(context));
 		textView.setGravity(Gravity.CENTER);
 
 		return textView;
