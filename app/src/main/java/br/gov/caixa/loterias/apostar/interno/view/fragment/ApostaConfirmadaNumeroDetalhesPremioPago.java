@@ -125,7 +125,7 @@ public class ApostaConfirmadaNumeroDetalhesPremioPago extends Fragment {
     private void initDezenasRecyclerView() {
 
         if (!aposta.getNumerosSelecionados().isEmpty()) {
-            dezenasRecyclerView.setAdapter(new DezenasResultadoAdapter(listIntegerToListViewBold(aposta.getNumerosSelecionados(), resultadoConcursoDTO.getListaSorteadosPrimeiroSorteio())));
+            dezenasRecyclerView.setAdapter(new DezenasResultadoAdapter(listIntegerToListViewBold(aposta.getListaNumerosSelecionados(), resultadoConcursoDTO.getListaSorteadosPrimeiroSorteio())));
             dezenasRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         }
     }
