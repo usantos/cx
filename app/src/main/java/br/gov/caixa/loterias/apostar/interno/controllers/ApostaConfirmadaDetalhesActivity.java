@@ -398,11 +398,9 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                         .commit();
                 break;
             default:
-                if (premioPago) {
+                if (premioPago && aposta.getQuantidadeTeimosinhas().intValue() == 0) {
                     //ADICIONAR CHAMADA DE RESULTADO
-                    if (detalhesHistoricoPremioDTO != null) {
-                        getResultadoModalidadeConcurso(aposta);
-                    } else if (detalhesPremioDTO != null) {
+                    if (detalhesHistoricoPremioDTO != null || detalhesPremioDTO != null) {
                         getResultadoModalidadeConcurso(aposta);
                     }
                 } else {
