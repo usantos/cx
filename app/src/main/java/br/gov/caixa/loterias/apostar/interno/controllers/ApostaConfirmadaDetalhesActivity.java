@@ -398,7 +398,13 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                         .commit();
                 break;
             default:
-                if (premioPago && aposta.getQuantidadeTeimosinhas().intValue() == 0) {
+                fragment = ApostaConfirmadaNumeroDetalhes_.builder().aposta(aposta).build();
+
+                linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorEscura()));
+                getSupportFragmentManager().beginTransaction()
+                                           .replace(R.id.fragmentContainer, fragment)
+                                           .commit();
+                /*if (premioPago && aposta.getQuantidadeTeimosinhas().intValue() == 0) {
                     //ADICIONAR CHAMADA DE RESULTADO
                     if (detalhesHistoricoPremioDTO != null || detalhesPremioDTO != null) {
                         getResultadoModalidadeConcurso(aposta);
@@ -410,7 +416,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.fragmentContainer, fragment)
                             .commit();
-                }
+                }*/
                 break;
         }
     }
