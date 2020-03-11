@@ -29,7 +29,7 @@ public class NumerosSuperSeteFragment extends Fragment {
 
 	private String matrizTexto;
 	private View view = null;
-	private TextView tvCol1, tvCol2, tvCol3, tvCol4, tvCol5, tvCol6, tvCol7;
+	private ArrayList<TextView> arrayColunas;
 	private ArrayList<ExpandableHeightGridView> listaGridsSuperSete;
 	private ArrayList<NumerosSuperSeteAdapter> listaAdaptersSuperSete;
 	private List<List<Integer>> matrizInteiros;
@@ -80,29 +80,19 @@ public class NumerosSuperSeteFragment extends Fragment {
 	private void setaViews(View view){
 		if(configuracao != null){
 			Context ctx = Aplicacao.application.getApplicationContext();
-			tvCol1 = view.findViewById(R.id.tv_col_1);
-			tvCol2 = view.findViewById(R.id.tv_col_2);
-			tvCol3 = view.findViewById(R.id.tv_col_3);
-			tvCol4 = view.findViewById(R.id.tv_col_4);
-			tvCol5 = view.findViewById(R.id.tv_col_5);
-			tvCol6 = view.findViewById(R.id.tv_col_6);
-			tvCol7 = view.findViewById(R.id.tv_col_7);
+			arrayColunas = new ArrayList<>();
+			arrayColunas.add(view.findViewById(R.id.tv_col_1));
+			arrayColunas.add(view.findViewById(R.id.tv_col_2));
+			arrayColunas.add(view.findViewById(R.id.tv_col_3));
+			arrayColunas.add(view.findViewById(R.id.tv_col_4));
+			arrayColunas.add(view.findViewById(R.id.tv_col_5));
+			arrayColunas.add(view.findViewById(R.id.tv_col_6));
+			arrayColunas.add(view.findViewById(R.id.tv_col_7));
 
-			tvCol1.setTextColor(configuracao.getTextoQuadrado());
-			tvCol2.setTextColor(configuracao.getTextoQuadrado());
-			tvCol3.setTextColor(configuracao.getTextoQuadrado());
-			tvCol4.setTextColor(configuracao.getTextoQuadrado());
-			tvCol5.setTextColor(configuracao.getTextoQuadrado());
-			tvCol6.setTextColor(configuracao.getTextoQuadrado());
-			tvCol7.setTextColor(configuracao.getTextoQuadrado());
-
-			tvCol1.setBackgroundTintList(ContextCompat.getColorStateList(ctx, configuracao.getCorInteriorQuadrado()));
-			tvCol2.setBackgroundTintList(ContextCompat.getColorStateList(ctx, configuracao.getCorInteriorQuadrado()));
-			tvCol3.setBackgroundTintList(ContextCompat.getColorStateList(ctx, configuracao.getCorInteriorQuadrado()));
-			tvCol4.setBackgroundTintList(ContextCompat.getColorStateList(ctx, configuracao.getCorInteriorQuadrado()));
-			tvCol5.setBackgroundTintList(ContextCompat.getColorStateList(ctx, configuracao.getCorInteriorQuadrado()));
-			tvCol6.setBackgroundTintList(ContextCompat.getColorStateList(ctx, configuracao.getCorInteriorQuadrado()));
-			tvCol7.setBackgroundTintList(ContextCompat.getColorStateList(ctx, configuracao.getCorInteriorQuadrado()));
+			for (TextView coluna: arrayColunas ) {
+				coluna.setTextColor(configuracao.getTextoQuadrado());
+				coluna.setBackgroundTintList(ContextCompat.getColorStateList(ctx, configuracao.getCorInteriorQuadrado()));
+			}
 		}
 
 		listaGridsSuperSete = new ArrayList<>();
@@ -132,31 +122,18 @@ public class NumerosSuperSeteFragment extends Fragment {
 	private void setaMetodos (){
 		listaAdaptersSuperSete = new ArrayList<>();
 		if (configuracao == null){
-			listaAdaptersSuperSete.add(new NumerosSuperSeteAdapter(R.color.supersetemedio, getActivity(), matrizInteiros.get(0)));
-			listaAdaptersSuperSete.add(new NumerosSuperSeteAdapter(R.color.supersetemedio, getActivity(), matrizInteiros.get(1)));
-			listaAdaptersSuperSete.add(new NumerosSuperSeteAdapter(R.color.supersetemedio, getActivity(), matrizInteiros.get(2)));
-			listaAdaptersSuperSete.add(new NumerosSuperSeteAdapter(R.color.supersetemedio, getActivity(), matrizInteiros.get(3)));
-			listaAdaptersSuperSete.add(new NumerosSuperSeteAdapter(R.color.supersetemedio, getActivity(), matrizInteiros.get(4)));
-			listaAdaptersSuperSete.add(new NumerosSuperSeteAdapter(R.color.supersetemedio, getActivity(), matrizInteiros.get(5)));
-			listaAdaptersSuperSete.add(new NumerosSuperSeteAdapter(R.color.supersetemedio, getActivity(), matrizInteiros.get(6)));
+			for (List<Integer> lista: matrizInteiros) {
+				listaAdaptersSuperSete.add(new NumerosSuperSeteAdapter(R.color.supersetemedio, getActivity(), lista));
+			}
 		} else {
-			listaAdaptersSuperSete.add(new NumerosSuperSeteAdapter(configuracao, getActivity(), matrizInteiros.get(0)));
-			listaAdaptersSuperSete.add(new NumerosSuperSeteAdapter(configuracao, getActivity(),matrizInteiros.get(1)));
-			listaAdaptersSuperSete.add(new NumerosSuperSeteAdapter(configuracao, getActivity(),matrizInteiros.get(2)));
-			listaAdaptersSuperSete.add(new NumerosSuperSeteAdapter(configuracao, getActivity(),matrizInteiros.get(3)));
-			listaAdaptersSuperSete.add(new NumerosSuperSeteAdapter(configuracao, getActivity(),matrizInteiros.get(4)));
-			listaAdaptersSuperSete.add(new NumerosSuperSeteAdapter(configuracao, getActivity(),matrizInteiros.get(5)));
-			listaAdaptersSuperSete.add(new NumerosSuperSeteAdapter(configuracao, getActivity(),matrizInteiros.get(6)));
+			for (List<Integer> lista: matrizInteiros) {
+				listaAdaptersSuperSete.add(new NumerosSuperSeteAdapter(configuracao, getActivity(), lista));
+			}
 		}
 
-		listaGridsSuperSete.get(0).setAdapter(listaAdaptersSuperSete.get(0));
-		listaGridsSuperSete.get(1).setAdapter(listaAdaptersSuperSete.get(1));
-		listaGridsSuperSete.get(2).setAdapter(listaAdaptersSuperSete.get(2));
-		listaGridsSuperSete.get(3).setAdapter(listaAdaptersSuperSete.get(3));
-		listaGridsSuperSete.get(4).setAdapter(listaAdaptersSuperSete.get(4));
-		listaGridsSuperSete.get(5).setAdapter(listaAdaptersSuperSete.get(5));
-		listaGridsSuperSete.get(6).setAdapter(listaAdaptersSuperSete.get(6));
-
+		for(int i = 0; i < listaAdaptersSuperSete.size(); i++) {
+			listaGridsSuperSete.get(i).setAdapter(listaAdaptersSuperSete.get(i));
+		}
 	}
 
 	private int getQtdItensMaiorColuna(List<List<Integer>> matriz){
