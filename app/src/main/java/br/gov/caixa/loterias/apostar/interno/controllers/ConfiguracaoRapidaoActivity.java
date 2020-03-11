@@ -52,7 +52,7 @@ public class ConfiguracaoRapidaoActivity extends AppCompatActivity {
 	private static ConfiguracaoRapidaoFragment8 frag8;
 	private static int scrollState;
 	public  static final int FRAG_BEM_VINDO = 0, FRAG_PREMIO_MIN = 1, FRAG_VALOR_MIN_MAX = 2, FRAG_MODALIDADES = 3,
-							 FRAG_NUM_OBRG = 4,  FRAG_NUM_PROIB = 5,  FRAG_APOSTAS_FAV = 6,   FRAG_CONFIG = 7;
+							 FRAG_NUM_OBRG = 4,  FRAG_NUM_PROIB = 5,  FRAG_CONFIG = 6;//FRAG_APOSTAS_FAV = 6,   FRAG_CONFIG = 7;
 	private Button btnSalvar;
 	private AlertDialog loadViewProgress;
 	private ApostaBO apostaBO;
@@ -183,7 +183,7 @@ public class ConfiguracaoRapidaoActivity extends AppCompatActivity {
 
 
 	public static class RapidaoPagerAdapter extends FragmentPagerAdapter {
-		private static int NUM_ITEMS = 8;
+		private static int NUM_ITEMS = 7;
 
 		public RapidaoPagerAdapter(FragmentManager fragmentManager) {
 			super(fragmentManager);
@@ -209,8 +209,8 @@ public class ConfiguracaoRapidaoActivity extends AppCompatActivity {
 					return frag5 = ConfiguracaoRapidaoFragment5.newInstance();
 				case FRAG_NUM_PROIB:
 					return frag6 = ConfiguracaoRapidaoFragment6.newInstance();
-				case FRAG_APOSTAS_FAV:
-					return ConfiguracaoRapidaoFragment7.newInstance();
+				/*case FRAG_APOSTAS_FAV:
+					return ConfiguracaoRapidaoFragment7.newInstance();*/
 				case FRAG_CONFIG:
 					return frag8 = ConfiguracaoRapidaoFragment8.newInstance();
 				default:

@@ -1434,7 +1434,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 						}
 					} else {
 						if (listaSelecionados.size() < adapter.QTD_MAX_POR_COLUNA) {
-							if (listaSelecionados.size() < adapter.getQtdColunasMaximas(parentActivity.qtdDezenasPossiveisSelecionado  + 1)) {
+							if (listaSelecionados.size() < adapter.getQtdColunasMaximas(parentActivity.qtdDezenasPossiveisSelecionado)) {
 								listaSelecionados.add(valorSelecionado);
 								qtdTotalSelecionadosSuperSete++;
 							} else {

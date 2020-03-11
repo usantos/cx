@@ -158,8 +158,8 @@ public class EstiloModalidade {
                 break;
             case SUPER_7:
                 corClara = R.color.superseteclaro;
-                corMedia = R.color.supersetemedio;
-                corEscura = R.color.superseteescuro;
+                corMedia = R.color.superseteescuro;
+                corEscura = R.color.supersetemedio;
                 imagemCalendario = R.drawable.icon_data_timemania;
                 imagemRelogio = R.drawable.icon_horario_timemania;
                 trevoBackground = R.drawable.background_trapeze_super_sete;

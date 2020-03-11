@@ -29,11 +29,13 @@ public class AppUtils {
 
     public static List<Integer> converteListaInteiros(List<Integer> lista){
         ArrayList<Integer> listaInteiros = new ArrayList<>();
-        if(lista.get(0) instanceof Integer){
-            return lista;
-        }
-        for (Number n : lista) {
-            listaInteiros.add(new Integer( n.intValue()));
+        if (lista != null && lista.size() > 0) {
+            if(lista.get(0) instanceof Integer){
+                return lista;
+            }
+            for (Number n : lista) {
+                listaInteiros.add(new Integer( n.intValue()));
+            }
         }
         return listaInteiros;
     }

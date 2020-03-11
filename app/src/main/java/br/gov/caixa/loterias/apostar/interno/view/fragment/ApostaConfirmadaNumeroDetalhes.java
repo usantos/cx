@@ -43,7 +43,8 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 	protected ApostaBO apostaBO;
 
 	@ViewById
-	protected TextView concursoTxt, quantidadeApostadasTxt, dataApostaTxt, resultTxt, modalidadeTxt, apostaTrocaTxt, informacaoAdicionalTxt, labelInformacaoAdicionalTxt;
+	protected TextView concursoTxt, quantidadeApostadasTxt, dataApostaTxt, resultTxt, modalidadeTxt, seusNumerosTxt,
+					   apostaTrocaTxt, informacaoAdicionalTxt, labelInformacaoAdicionalTxt, tv_colunas, tv_sua_aposta;
 
 	@ViewById
 	protected RelativeLayout informacaoAdicionalLayout, rl_container_fragment;
@@ -91,7 +92,6 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 	}
 
 	private void initdezenasRecyclerView() {
-
 		if (!aposta.getNumerosSelecionados().isEmpty()) {
 			if (aposta.getModalidade() == ModalidadeEnum.SUPER_7) {
 				dezenasRecyclerView.setVisibility(View.GONE);
@@ -113,10 +113,23 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 
 		int newContainerId = (int) Utils.getIdUnico();
 		rl_container_fragment.setId(newContainerId);
-		NumerosSuperSeteFragment fragment = NumerosSuperSeteFragment.newInstance(aposta.getMatrizNumerosSelecionados());
+		NumerosSuperSeteFragment fragment = NumerosSuperSeteFragment.newInstance(aposta.getMatrizNumerosSelecionados(), configuraEstiloSuperSete());
 		fm.beginTransaction().replace(newContainerId, fragment).commit();
 		rl_container_fragment.setVisibility(View.VISIBLE);
+		tv_colunas.setVisibility(View.VISIBLE);
+		tv_sua_aposta.setVisibility(View.VISIBLE);
+		seusNumerosTxt.setVisibility(View.GONE);
 	}
 
-
+	private ConfiguracaoNumerosSuperSete configuraEstiloSuperSete() {
+		return new ConfiguracaoNumerosSuperSete(R.color.branco,
+												R.color.branco,
+												R.color.black,
+												R.color.black,
+												R.color.supersetemedio,
+												R.color.supersetemedio,
+												R.color.supersetemedio,
+												R.color.superseteescuro,
+												R.color.supersetemedio);
+	}
 }

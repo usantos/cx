@@ -36,10 +36,10 @@ public class ConfiguracaoRapidaoFragment8 extends Fragment implements View.OnCli
 	private RapidaoDTO rapidaoConfig;
 	private TextView tvValorMinimo, tvValorMaximo, tvPremioMinimo;
 	private ImageButton ibEditApostaMin,ibEditApostaMax,ibEditPremioMin,
-			ibEditModalidades,ibEditNumerosObrigatorios,ibEditNumerosProibidos,ibEditApostasFavoritas;
+			ibEditModalidades,ibEditNumerosObrigatorios,ibEditNumerosProibidos;//ibEditApostasFavoritas;
 	private BigDecimal valorMinApostaCarrinho, valorMaxApostaCarrinho, valorPremioMinimo;
 	private ExpandableHeightGridView gridModalidades, gridObrigatorios, gridProibidos;
-	private RecyclerView rvApostasFavoritas;
+	//private RecyclerView rvApostasFavoritas;
 
 
 	public static ConfiguracaoRapidaoFragment8 newInstance() {
@@ -68,7 +68,7 @@ public class ConfiguracaoRapidaoFragment8 extends Fragment implements View.OnCli
 		ibEditModalidades.setOnClickListener(this);
 		ibEditNumerosObrigatorios.setOnClickListener(this);
 		ibEditNumerosProibidos.setOnClickListener(this);
-		ibEditApostasFavoritas.setOnClickListener(this);
+		//ibEditApostasFavoritas.setOnClickListener(this);
 	}
 
 	private void setaViews (View view) {
@@ -83,13 +83,13 @@ public class ConfiguracaoRapidaoFragment8 extends Fragment implements View.OnCli
 		ibEditModalidades = view.findViewById(R.id.ib_editar_modalidades);
 		ibEditNumerosObrigatorios = view.findViewById(R.id.ib_editar_numeros_obrigatorios);
 		ibEditNumerosProibidos = view.findViewById(R.id.ib_editar_numeros_proibidos);
-		ibEditApostasFavoritas = view.findViewById(R.id.ib_editar_apostas_favoritas);
+		//ibEditApostasFavoritas = view.findViewById(R.id.ib_editar_apostas_favoritas);
 
 
 		gridModalidades = view.findViewById(R.id.ehgv_modalidades);
 		gridObrigatorios = view.findViewById(R.id.ehgv_numeros_obrigatorios);
 		gridProibidos = view.findViewById(R.id.ehgv_numeros_proibidos);
-		rvApostasFavoritas = view.findViewById(R.id.rv_apostas_favoritas);
+		//rvApostasFavoritas = view.findViewById(R.id.rv_apostas_favoritas);
 
 	}
 
@@ -127,7 +127,7 @@ public class ConfiguracaoRapidaoFragment8 extends Fragment implements View.OnCli
 		gridProibidos.setExpanded(true);
 
 
-		FavoritasRapidaoRecyclerAdapter apostaFavoritaAdapter = new FavoritasRapidaoRecyclerAdapter(getActivity(),
+		/*FavoritasRapidaoRecyclerAdapter apostaFavoritaAdapter = new FavoritasRapidaoRecyclerAdapter(getActivity(),
 																									getActivity(),
 																									rapidaoConfig.getApostasFavoritas(),
 																									null,
@@ -135,7 +135,7 @@ public class ConfiguracaoRapidaoFragment8 extends Fragment implements View.OnCli
 		LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
 		rvApostasFavoritas.setHasFixedSize(true);
 		rvApostasFavoritas.setAdapter(apostaFavoritaAdapter);
-		rvApostasFavoritas.setLayoutManager(layoutManager);
+		rvApostasFavoritas.setLayoutManager(layoutManager);*/
 
 
 	}
@@ -159,9 +159,9 @@ public class ConfiguracaoRapidaoFragment8 extends Fragment implements View.OnCli
 			case R.id.ib_editar_numeros_proibidos:
 				ConfiguracaoRapidaoActivity.scrollToFragment(ConfiguracaoRapidaoActivity.FRAG_NUM_PROIB);
 				break;
-			case R.id.ib_editar_apostas_favoritas:
+			/*case R.id.ib_editar_apostas_favoritas:
 				ConfiguracaoRapidaoActivity.scrollToFragment(ConfiguracaoRapidaoActivity.FRAG_APOSTAS_FAV);
-				break;
+				break;*/
 		}
 	}
 

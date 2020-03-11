@@ -15,6 +15,7 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bean.Modalidade;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostar.interno.utils.EstiloModalidade;
 
 @EViewGroup(R.layout.item_resultado_supersete)
@@ -48,6 +49,19 @@ public class SuperSeteResultadoLayout extends LinearLayout {
 
 		this.partidaViewDetalhesResultadoView.setLayout(modalidade);
 
+	}
+
+	public void setLayout(List<List<Integer>> matrizResultado) {
+
+		tracoViewDivisoriaResultado.setVisibility(View.GONE);
+
+		tv_numero_1.setText(matrizResultado.get(0).get(0).toString());
+		tv_numero_2.setText(matrizResultado.get(1).get(0).toString());
+		tv_numero_3.setText(matrizResultado.get(2).get(0).toString());
+		tv_numero_4.setText(matrizResultado.get(3).get(0).toString());
+		tv_numero_5.setText(matrizResultado.get(4).get(0).toString());
+		tv_numero_6.setText(matrizResultado.get(5).get(0).toString());
+		tv_numero_7.setText(matrizResultado.get(6).get(0).toString());
 	}
 
 

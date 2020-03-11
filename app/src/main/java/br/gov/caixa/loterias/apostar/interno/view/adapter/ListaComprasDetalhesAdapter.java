@@ -13,6 +13,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostar.interno.R;
+import br.gov.caixa.loterias.apostar.interno.controllers.DetalhesComprasActivity;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostar.interno.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
@@ -28,10 +29,10 @@ import br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightRecycle
 public class ListaComprasDetalhesAdapter extends RecyclerView.Adapter<ListaComprasDetalhesAdapter.ListaCompraHolder> {
 
     private final Context mContext;
-    private final Activity activity;
+    private final DetalhesComprasActivity activity;
     private List<ApostaDTO> listaAposta;
 
-    public ListaComprasDetalhesAdapter(Activity activity, Context context, List<ApostaDTO> listaAposta) {
+    public ListaComprasDetalhesAdapter(DetalhesComprasActivity activity, Context context, List<ApostaDTO> listaAposta) {
         this.mContext = context;
         this.activity = activity;
         this.listaAposta = listaAposta;
@@ -96,7 +97,7 @@ public class ListaComprasDetalhesAdapter extends RecyclerView.Adapter<ListaCompr
                 break;
             default:
                 holder.seusNumerosItemListaComprasTextView.setText(R.string.seus_numeros);
-                child = ComprasDezenasView_.build(mContext);
+                child = ComprasDezenasView_.build(activity);
                 ((ComprasDezenasView)child).setLayout(listaAposta.get(position));
                 break;
         }

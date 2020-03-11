@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.atomic.AtomicLong;
 
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.NumerosSuperSeteFragment;
@@ -139,7 +138,7 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
         holder.numerosApostaFavorita.setText(numeroStr.toString());
         holder.editarRelativeLayoutFavoritos.setOnClickListener(v -> swipeLayout.open(true));
 
-        holder.exluirRelativeLayoutFavoritos.setOnClickListener(v -> deleteFavoritaCallWebservice(position));
+        holder.excluirRelativeLayoutFavoritos.setOnClickListener(v -> deleteFavoritaCallWebservice(position));
 
         holder.editarRelativeLayoutAddCarrinho.setOnClickListener(view -> {
             adicionarApostaCarrinhoRequest(ApostaBO_.getInstance_(activity), listaApostaFavorita.get(position));
@@ -200,7 +199,7 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
         protected TextView nomeApostaSalvoTextView;
         protected RelativeLayout editarRelativeLayoutAddCarrinho;
         protected RelativeLayout editarRelativeLayoutFavoritos;
-        protected RelativeLayout exluirRelativeLayoutFavoritos;
+        protected RelativeLayout excluirRelativeLayoutFavoritos;
         protected RelativeLayout containerFragment;
         protected LinearLayout linearLayoutLayoutContentAlterarFavoritasSalvo;
         protected RelativeLayout relativeLayoutContentAlterarFavoritasEditar;
@@ -218,7 +217,7 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
             nomeApostaSalvoTextView = itemView.findViewById(R.id.nomeApostaSalvoTextView);
             editarRelativeLayoutAddCarrinho = itemView.findViewById(R.id.editarRelativeLayoutAddCarrinho);
             editarRelativeLayoutFavoritos = itemView.findViewById(R.id.editarRelativeLayoutFavoritos);
-            exluirRelativeLayoutFavoritos = itemView.findViewById(R.id.exluirRelativeLayoutFavoritos);
+            excluirRelativeLayoutFavoritos = itemView.findViewById(R.id.excluirRelativeLayoutFavoritos);
             linearLayoutLayoutContentAlterarFavoritasSalvo = itemView.findViewById(R.id.linearLayoutLayoutContentAlterarFavoritasSalvo);
             relativeLayoutContentAlterarFavoritasEditar = itemView.findViewById(R.id.relativeLayoutContentAlterarFavoritasEditar);
             editTextNomeDaAposta = itemView.findViewById(R.id.editTextNomeDaAposta);

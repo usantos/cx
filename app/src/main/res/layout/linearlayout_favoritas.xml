@@ -214,14 +214,14 @@
                     </RelativeLayout>
 
                     <RelativeLayout
-                        android:id="@+id/exluirRelativeLayoutFavoritos"
+                        android:id="@+id/excluirRelativeLayoutFavoritos"
                         android:layout_width="30dp"
                         android:layout_marginRight="5dp"
                         android:layout_height="30dp"
                         android:clickable="true">
 
                         <Button
-                            android:id="@+id/exluirButtonFavoritos"
+                            android:id="@+id/excluirButtonFavoritos"
                             android:layout_width="21dp"
                             android:layout_height="21dp"
                             android:layout_centerInParent="true"

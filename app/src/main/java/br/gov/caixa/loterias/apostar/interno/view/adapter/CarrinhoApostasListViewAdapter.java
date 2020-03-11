@@ -113,7 +113,7 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
         holder.textViewNumeroConcurso.setTextColor(ContextCompat.getColor(context, estilo.getCorClara()));
         holder.valorAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorEscura()));
         holder.textViewTipoAposta.setText(ViewUtils.capitalized(ModalidadeEnum.fromString(aposta.getModalidade())));
-        holder.textViewNumeroConcurso.setText(context.getString(R.string.label_aposta_concurso, aposta.getConcursoAlvo()));
+        holder.textViewNumeroConcurso.setText(context.getString(R.string.label_aposta_concurso, ViewUtils.getConcursoAtualPorAposta(aposta)));
         holder.dadosApostaCarrinho.setBackgroundResource(estilo.getCorEscura());
 
         TextView quantidadeApostadas = holder.dadosApostaCarrinho.findViewById(R.id.quantidadeApostadas);
@@ -199,7 +199,7 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
                         holder.tvNumeroConcursoNovo.setVisibility(View.VISIBLE);
                         holder.textViewNumeroConcurso.setVisibility(View.GONE);
                         holder.tvNumeroConcursoNovo.setTextColor(ContextCompat.getColor(context, estilo.getCorClara()));
-                        holder.tvNumeroConcursoNovo.setText(context.getString(R.string.label_aposta_concurso, aposta.getConcursoAlvo()));
+                        holder.tvNumeroConcursoNovo.setText(context.getString(R.string.label_aposta_concurso, ViewUtils.getConcursoAtualPorAposta(aposta)));
                     } else {
                         IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> apostaNumerica = aposta;
                         if (apostaNumerica.getListaNumerosSelecionados() != null) {
