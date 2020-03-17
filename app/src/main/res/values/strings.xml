@@ -567,4 +567,8 @@
     <string name="numeros_obrigatorios">Números obrigatórios</string>
     <string name="numeros_proibidos">Números proibidos</string>
     <string name="apostas_favoritas">Apostas favoritas</string>
+    <string name="resgatar">Resgatar</string>
+    <string name="excelente">Excelente</string>
+    <string name="confirmar_email">Para receber seu prêmio, por favor confirme seu email:</string>
+    <string name="premio_disponivel">Em breve seu prêmio estará disponível em sua conta no mercado pago</string>
 </resources>
