@@ -52,6 +52,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostar.interno.model.bo.DadosCorporativosBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.DadosCorporativosBO_;
+import br.gov.caixa.loterias.apostar.interno.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
@@ -75,9 +76,9 @@ import br.gov.caixa.loterias.apostar.interno.view.fragment.SurpresinhaFragment.S
 import br.gov.caixa.loterias.apostar.interno.view.fragment.SurpresinhaFragment_;
 import br.gov.caixa.loterias.apostar.interno.view.listener.CartelaFragmentListener;
 
-import static br.gov.caixa.loterias.apostar.interno.utils.Utils.isErroNegocial;
 import static br.gov.caixa.loterias.apostar.interno.controllers.CarrinhoActivity.CARRINHO;
 import static br.gov.caixa.loterias.apostar.interno.controllers.CarrinhoActivity.LER_CARRINHO_LOCAL;
+import static br.gov.caixa.loterias.apostar.interno.utils.Utils.isErroNegocial;
 import static java.lang.String.format;
 
 @EActivity(R.layout.activity_simular_aposta)
@@ -151,6 +152,9 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         zerarApostas();
         if(aposta != null){
             mesDeSorteCartela = aposta.getMesDeSorte();
+        }
+        if (tipoJogo == ModalidadeEnum.SUPER_7 && !DadosUsuarioBO.checarTutorialSuperSete()) {
+            startActivity(new Intent(this,TutorialSuperSeteActivity.class));
         }
     }
 

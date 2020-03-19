@@ -571,4 +571,12 @@
     <string name="excelente">Excelente</string>
     <string name="confirmar_email">Para receber seu prêmio, por favor confirme seu email:</string>
     <string name="premio_disponivel">Em breve seu prêmio estará disponível em sua conta no mercado pago</string>
+
+    <!-- Tutorial SuperSete -->
+    <string name="como_jogar">Como jogar</string>
+    <string name="bem_vindo_super_sete">Bem vindo ao  \n_Super Sete_</string>
+    <string name="jogo_simples">Jogue marcando _1_ número em\ncada uma das 7 colunas.</string>
+    <string name="como_apostar">Veja como Apostar</string>
+    <string name="pular">Pular</string>
+
 </resources>

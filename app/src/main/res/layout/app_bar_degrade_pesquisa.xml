@@ -131,6 +131,21 @@
         app:layout_constraintTop_toTopOf="parent"
         android:visibility="gone"/>
 
+    <Button
+        android:id="@+id/btn_pular_s7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/transparente"
+        android:textColor="@color/branco"
+        android:text="@string/pular"
+        android:fontFamily="@font/font_family_futura"
+        android:textSize="16sp"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/ib_favoritar"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone"/>
+
     <ImageButton
         android:id="@+id/ib_configuracao_rpd"
         android:layout_width="wrap_content"

@@ -10,7 +10,6 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.PorterDuff;
-import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -24,29 +23,24 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DialogTitle;
 import android.text.Html;
 import android.text.Spannable;
-import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
-import android.text.style.StyleSpan;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
-import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -69,12 +63,9 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.PremioDTO;
 
 public class ViewUtils {
 
-    private static Toast toast;
-
     private static Typeface fontFutura = null;
     private static Typeface fontFuturaBold = null;
     private static Typeface fontAriallMT = null;
-
 
 
     public static Typeface getFontFutura(Context context) {
@@ -103,12 +94,6 @@ public class ViewUtils {
     }
 
 
-    private static int convertSpToPixels(float sp, Context context) {
-        int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp, context.getResources().getDisplayMetrics());
-
-        return px;
-    }
-
     public static void configuraStatusBarGradientLayout(Context context, Window window) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Drawable background = context.getResources().getDrawable(R.drawable.navigation_gradient);
@@ -117,17 +102,6 @@ public class ViewUtils {
             window.setStatusBarColor(ColorUtils.setAlphaComponent(Color.BLACK, 77));
             window.setBackgroundDrawable(background);
         }
-    }
-
-    public static SpannableString configuraButtonText(Context context, String texto, int posicaoTrocaStyle) {
-        SpannableString spannableString = new SpannableString(texto);
-        spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0, posicaoTrocaStyle, 0);
-        spannableString.setSpan(new AbsoluteSizeSpan(convertSpToPixels(17.7f, context)), 0, posicaoTrocaStyle, 0);
-
-        spannableString.setSpan(new StyleSpan(Typeface.NORMAL), posicaoTrocaStyle + 1, spannableString.length(), 0);
-        spannableString.setSpan(new AbsoluteSizeSpan(convertSpToPixels(14.2f, context)), posicaoTrocaStyle + 1, spannableString.length(), 0);
-
-        return spannableString;
     }
 
     public static void abrirUrl(Context context, String url) {
@@ -157,13 +131,6 @@ public class ViewUtils {
         return result;
     }
 
-    public static void toast(Context context, String text, int length) {
-        if (toast != null) {
-            toast.cancel();
-        }
-        toast = Toast.makeText(context, text, length);
-        toast.show();
-    }
 
     public static AlertDialog.Builder dialogo(Context context, String mensagem) {
         return new AlertDialog.Builder(context, R.style.MyAlertDialogStyle)
@@ -290,11 +257,6 @@ public class ViewUtils {
                                  .setNegativeButton (negativeButton, (dialogInterface, i) -> dialogInterface.dismiss())
                                  .setPositiveButton(positiveButton, listener)
                                  .create();
-
-        /*DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
-        TextView textMessageView = dialog.findViewById(android.R.id.message);
-        textTitleView.setTypeface(getFontFuturaBold(context));
-        textMessageView.setTypeface(getFontFutura(context));*/
         return dialog;
     }
 
@@ -309,56 +271,6 @@ public class ViewUtils {
         textTitleView.setTypeface(getFontFuturaBold(context));
         textMessageView.setTypeface(getFontFutura(context));
         return dialog;
-    }
-
-    public static ViewTreeObserver.OnGlobalLayoutListener setKeyboardListener(final Activity activity, final KeyboardListener listener) {
-
-        DisplayMetrics dm = new DisplayMetrics();
-        activity.getWindowManager().getDefaultDisplay().getMetrics(dm);
-        final float density = dm.density;
-
-        final View rootView = activity.getWindow().getDecorView().findViewById(android.R.id.content).getRootView();
-
-        ViewTreeObserver.OnGlobalLayoutListener layoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
-
-            int previousHeightDiff = 0;
-
-            @Override
-            public void onGlobalLayout() {
-                Rect r = new Rect();
-                //r will be populated with the coordinates of your view that area still visible.
-                rootView.getWindowVisibleDisplayFrame(r);
-
-                // cache properties for later use
-                int rootViewHeight = rootView.getRootView().getHeight();
-                int resultBottom = r.bottom;
-
-                // calculate screen height differently for android versions >= 21: Lollipop 5.x, Marshmallow 6.x
-                //http://stackoverflow.com/a/29257533/3642890 beware of nexus 5
-                int screenHeight;
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    Display display = activity.getWindowManager().getDefaultDisplay();
-                    Point size = new Point();
-                    display.getSize(size);
-                    screenHeight = size.y;
-                } else {
-                    screenHeight = rootViewHeight;
-                }
-
-                int heightDiff = screenHeight - resultBottom;
-
-                int pixelHeightDiff = (int) (heightDiff / density);
-                if (pixelHeightDiff > 100 && pixelHeightDiff != previousHeightDiff) { // if more than 100 pixels, its probably a keyboard...
-                    listener.abriu();
-                } else if (pixelHeightDiff != previousHeightDiff && (previousHeightDiff - pixelHeightDiff) > 100) {
-                    listener.fechou();
-                }
-                previousHeightDiff = pixelHeightDiff;
-            }
-        };
-        rootView.getViewTreeObserver().addOnGlobalLayoutListener(layoutListener);
-        return layoutListener;
     }
 
     public static String getMoedaFormat(BigDecimal valor) {
@@ -396,22 +308,6 @@ public class ViewUtils {
         valorTextView.setText(fromHtml(complemento + valorFormatoMoedaArray[0] + "<strong> " + valorFormatoMoedaArray[1] + "</strong>"));
     }
 
-    public static int monthDiff(Calendar startCalendar, Calendar endCalendar) {
-        int diffYear = endCalendar.get(Calendar.YEAR) - startCalendar.get(Calendar.YEAR);
-        return diffYear * 12 + endCalendar.get(Calendar.MONTH) - startCalendar.get(Calendar.MONTH);
-    }
-
-    public static boolean compareCalendarsMonths(Calendar cal1, Calendar cal2) {
-        return cal1.get(Calendar.MONTH) == cal2.get(Calendar.MONTH)
-                && cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR);
-    }
-
-    public static boolean compareCalendarDay(Calendar cal1, Calendar cal2) {
-        return cal1.get(Calendar.DAY_OF_MONTH) == cal2.get(Calendar.DAY_OF_MONTH)
-                && cal1.get(Calendar.MONTH) == cal2.get(Calendar.MONTH)
-                && cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR);
-    }
-
     /**
      * Para ativar as fontes bold com o Calligraphy
      *
@@ -428,22 +324,6 @@ public class ViewUtils {
             }
 
             tv.setTypeface(tv.getTypeface(), Typeface.BOLD);
-        }
-    }
-
-    public static void setFontFuturaBold(Context context, TextView... textViews) {
-        if (textViews == null || textViews.length == 0) {
-            return;
-        }
-
-        Typeface typeface = ViewUtils.getFontFuturaBold(context);
-
-        for (TextView tv : textViews) {
-            if (tv == null) {
-                continue;
-            }
-
-            tv.setTypeface(typeface);
         }
     }
 
@@ -484,14 +364,6 @@ public class ViewUtils {
     }
 
     // Metodos relacionados a caso o conteudo da tela seja inferior o ao height do dispositivo, mantenha a tab no bottom da tela
-
-    public static Point getAppUsableScreenSize(Context context) {
-        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        Display display = windowManager.getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        return size;
-    }
 
     public static Point getRealScreenSize(Context context) {
         WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
@@ -567,20 +439,6 @@ public class ViewUtils {
     public static int setDisplayMetric(int valor, Context context) {
 
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, valor, context.getResources().getDisplayMetrics());
-    }
-
-    /**
-     * Método que retorna data e hora no formato dd/MM/yyyy - HHhMM
-     *
-     * @param date String
-     * @param hour String
-     * @return String
-     */
-    public static String getDateAndHour(String date, String hour) {
-
-        String[] hHMMSS = hour.split(":");
-
-        return String.format("%s - %sh%s", date, hHMMSS[0], hHMMSS[1]);
     }
 
     /**
@@ -707,13 +565,6 @@ public class ViewUtils {
     }
 
     public static int getSmallSizeQrCode(Context context) {
-
-//        Point point = getAppUsableScreenSize(context);
-//        int width = point.x;
-//        int height = point.y;
-//        int smallerDimension = width < height ? width : height;
-//        smallerDimension = smallerDimension * 3 / 4;
-
         return ViewUtils.setDisplayMetric( 105, context );
     }
 
@@ -750,10 +601,6 @@ public class ViewUtils {
         byte[] byteArray = stream.toByteArray();
 
         return byteArray;
-    }
-
-    public interface AnimationEndListener {
-        void onAnimationEnd();
     }
 
     public interface KeyboardListener {
