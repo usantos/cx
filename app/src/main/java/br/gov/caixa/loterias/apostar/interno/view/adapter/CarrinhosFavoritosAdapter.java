@@ -104,27 +104,25 @@ public class CarrinhosFavoritosAdapter extends RecyclerView.Adapter<CarrinhosFav
 
 	//region Network Methods
 	private void chamaTransformarCarrinho(int opcaoSelecionada) {
-		ViewUtils.alertTitleButtonYesOrNotListener(context, context.getResources().getString(R.string.carrinho_fav_deseja_transformar), (dialogInterface, i) -> {
-			DialogUtils.show(context);
-			ApostaBO_.getInstance_(context).transformarCarrinho(idCarrinhoAtual, opcaoSelecionada, new RequestListener<CarrinhoDTOResponse>() {
-				@Override
-				public void onResponse(CarrinhoDTOResponse result) {
-					DialogUtils.dismiss();
-					if (result.getRedirect() != null) {
-						RedirectNetwork.checkRedirectSucesso(result.getRedirect(), activity);
-					}
-					if (dialogSegmented != null && dialogSegmented.isShowing()) {
-						dialogSegmented.dismiss();
-					}
-					activity.startActivity(new Intent(activity, CarrinhoActivity.class));
+		DialogUtils.show(context);
+		ApostaBO_.getInstance_(context).transformarCarrinho(idCarrinhoAtual, opcaoSelecionada, new RequestListener<CarrinhoDTOResponse>() {
+			@Override
+			public void onResponse(CarrinhoDTOResponse result) {
+				DialogUtils.dismiss();
+				if (result.getRedirect() != null) {
+					RedirectNetwork.checkRedirectSucesso(result.getRedirect(), activity);
 				}
+				if (dialogSegmented != null && dialogSegmented.isShowing()) {
+					dialogSegmented.dismiss();
+				}
+				activity.startActivity(new Intent(activity, CarrinhoActivity.class));
+			}
 
-				@Override
-				public void onErrorResponse(VolleyError error) {
-					DialogUtils.dismiss();
-					RedirectNetwork.checkRedirect(error, activity);
-				}
-			});
+			@Override
+			public void onErrorResponse(VolleyError error) {
+				DialogUtils.dismiss();
+				RedirectNetwork.checkRedirect(error, activity);
+			}
 		});
 	}
 

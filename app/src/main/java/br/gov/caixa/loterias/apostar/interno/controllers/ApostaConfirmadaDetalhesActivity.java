@@ -143,6 +143,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     private ParametroSimulacao parametroSimulacao;
     private ComprovanteApostaDTO comprovanteParaPdf;
     private boolean isHistorico;
+    private int RESGATOU_MP = 2000;
 
     @Click
     protected void carrinhoApostasBtn() {
@@ -458,6 +459,13 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == RESGATOU_MP && resultCode == RESULT_OK){
+            finish();
+        }
+    }
+
     private void disableButtonEditar() {
         editarTxt.setTextColor(getResources().getColor(R.color.cinza_button));
     }
@@ -478,7 +486,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
             public void onResponse(DetalhesPremioDTOResponse result) {
                 DialogUtils.dismiss();
 
-                ResultadoApostaConfirmadaActivity_.intent(contextParam).detalhesPremioDTO(result.getPayload()).comprovante(comprovante).start();
+                ResultadoApostaConfirmadaActivity_.intent(contextParam).detalhesPremioDTO(result.getPayload()).comprovante(comprovante).startForResult(RESGATOU_MP);
             }
 
             @Override
