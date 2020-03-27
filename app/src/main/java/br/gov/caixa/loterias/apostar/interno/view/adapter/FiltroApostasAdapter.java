@@ -276,6 +276,15 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 				case DIA_DE_SORTE:
 					tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_2, R.color.diasorteclaro, false, item.getValor(), item.getDescricaoEspecial());
 					break;
+				case SUPER_SETE:
+					tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_8, R.color.superseteclaro, false, item.getValor(), item.getDescricaoEspecial());
+					break;
+				case LOTOGOL:
+					tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_lotogol, R.color.lotogolclaro, false, item.getValor(), item.getDescricaoEspecial());
+					break;
+				case LOTECA:
+					tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_loteca, R.color.lotecaclaro, false, item.getValor(), item.getDescricaoEspecial());
+					break;
 				default:
 					break;
 			}

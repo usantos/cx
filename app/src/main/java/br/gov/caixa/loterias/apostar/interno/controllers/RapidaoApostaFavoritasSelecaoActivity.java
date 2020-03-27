@@ -146,6 +146,7 @@ public class RapidaoApostaFavoritasSelecaoActivity extends AppCompatActivity {
                     @Override
                     public void onIncluso(ApostaFavoritaDTO aposta) {
                         boolean duplicado = false;
+
                         for (ApostaFavoritaDTO apostasFavoritaListaSelecionada : apostasFavoritaListaSelecionadas) {
                             if (apostasFavoritaListaSelecionada.getId().compareTo(aposta.getId()) == 0) {
                                 duplicado = true;

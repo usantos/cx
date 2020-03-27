@@ -19,33 +19,8 @@ public enum ModalidadeEnumSelecaoModalidades {
     @SerializedName("Quina")QUINA,
     @SerializedName("Timemania")TIMEMANIA,
     @SerializedName("Federal")FEDERAL,
-    @SerializedName("Dia de Sorte")DIA_DE_SORTE;
-
-    public static String fromString(ModalidadeEnumSelecaoModalidades modalidade) {
-        switch (modalidade) {
-            case QUINA:
-                return "quina";
-            case LOTECA:
-                return "loteca";
-            case LOTOGOL:
-                return "lotogol";
-            case LOTOFACIL:
-                return "lotofácil";
-            case LOTOMANIA:
-                return "lotomania";
-            case MEGA_SENA:
-                return "mega-sena";
-            case TIMEMANIA:
-                return "timemania";
-            case DUPLA_SENA:
-                return "dupla-sena";
-            case FEDERAL:
-                return "federal";
-
-        }
-        return "";
-    }
-
+    @SerializedName("Dia de Sorte")DIA_DE_SORTE,
+    @SerializedName("Super Sete")SUPER_SETE;
 
     public static ModalidadeEnumSelecaoModalidades toString(String modalidade) {
         switch (modalidade.toLowerCase()) {
@@ -69,6 +44,8 @@ public enum ModalidadeEnumSelecaoModalidades {
                 return ModalidadeEnumSelecaoModalidades.FEDERAL;
             case "dia de sorte":
                 return ModalidadeEnumSelecaoModalidades.DIA_DE_SORTE;
+            case "super sete":
+                return ModalidadeEnumSelecaoModalidades.SUPER_SETE;
             default:
                 return null;
         }

@@ -53,7 +53,7 @@ public class AppIndisponivelActivity extends AppCompatActivity {
                     public void onResponse(ParametrosSimulacaoResponse response) {
                         if (response.getPayload().getParametros().isEmpty()) {
                             loadViewProgress.dismiss();
-                            ViewUtils.alert(AppIndisponivelActivity.this, AppIndisponivelActivity.this.getString(R.string.erro_500));
+                            ViewUtils.alert(AppIndisponivelActivity.this, AppIndisponivelActivity.this.getString(R.string.nao_concluiu_operacao));
                         } else {
                             loadViewProgress.dismiss();
                             finish();

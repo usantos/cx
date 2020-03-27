@@ -100,7 +100,12 @@ public class  RedirectNetwork {
 
     private static void  verificaRedirectTermo(Activity activity){
         if (!activity.getClass().equals(TermosUsoActivity.class)) {
-            activity.startActivityForResult(new Intent(activity, TermosUsoActivity.class), 1);
+            ViewUtils.alertTitleButtonYesListener(activity,
+                                                  activity.getResources().getString(R.string.termo_novo),
+                                                  (dialogInterface, i) -> activity.startActivityForResult(
+                                                          new Intent(activity, TermosUsoActivity.class),
+                                                          1)
+                                                 );
         }
     }
 

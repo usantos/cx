@@ -17,6 +17,7 @@ import com.android.volley.VolleyError;
 import com.daimajia.swipe.SwipeLayout;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import br.gov.caixa.loterias.apostar.interno.R;
@@ -184,13 +185,29 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
         if (aposta != null && aposta.getIndicadorSurpresinha() != null && aposta.getIndicadorSurpresinha().getValor() != null) {
             switch (aposta.getIndicadorSurpresinha().getValor()) {
                 case IndicadorSurpresinha.NAO_SURPRESINHA:
-                    for (Integer num : aposta.getNumerosSelecionados()) {
-                        if (num.equals(aposta.getNumerosSelecionados().get(aposta.getNumerosSelecionados().size() - 1))) {
-                            numeroStr.append(String.format("%02d", num));
-                        } else {
-                            numeroStr.append(String.format("%02d - ", num));
+                    if (aposta.getModalidade() == ModalidadeEnum.SUPER_7) {
+                        IdentificaoDeUmaApostaDas8Modalidades<List<List<Integer>>> apostaSuperSete = aposta;
+                        ArrayList<ArrayList<Integer>> listaApostas  = apostaSuperSete.getMatrizNumerosSelecionados();
+                        for (List<Integer> coluna: listaApostas) {
+                            for(Integer linha : coluna) {
+                                numeroStr.append(String.format("%d", linha));
+                            }
+                            numeroStr.append(String.format("/"));
+                        }
+
+                    } else {
+                        IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> apostaNumerica = aposta;
+                        if (apostaNumerica.getListaNumerosSelecionados() != null) {
+                            for (Integer num : apostaNumerica.getListaNumerosSelecionados()) {
+                                if (num.equals(apostaNumerica.getNumerosSelecionados().get(apostaNumerica.getListaNumerosSelecionados().size() - 1))) {
+                                    numeroStr.append(String.format("%02d", num));
+                                } else {
+                                    numeroStr.append(String.format("%02d - ", num));
+                                }
+                            }
                         }
                     }
+
                     break;
                 case IndicadorSurpresinha.SURPRESINHA:
                 case IndicadorSurpresinha.SURPRESINHA_NUMERICA:

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.support.v4.app.ActivityCompat;
+import android.view.inputmethod.InputMethodManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,28 @@ public class AppUtils {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isAvailable()
                 && cm.getActiveNetworkInfo().isConnected();
+    }
+
+    public static List<Integer> converteListaInteiros(List<Integer> lista){
+        ArrayList<Integer> listaInteiros = new ArrayList<>();
+        for (Number n : lista) {
+            listaInteiros.add(new Integer( n.intValue()));
+        }
+        return listaInteiros;
+    }
+
+    public static ArrayList<ArrayList<Integer>> converteMatrizInteiros(List<List<Integer>> lista){
+        ArrayList<ArrayList<Integer>> listaInteiros = new ArrayList<>();
+        for (List<Integer> coluna : lista) {
+            List<Integer> l = converteListaInteiros(coluna);
+            listaInteiros.add(new ArrayList<>(l));
+        }
+        return listaInteiros;
+    }
+
+    public static void fechaTeclado(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }
 
     public static void requestFingerprintPermission(Activity activity, int requestCode) {

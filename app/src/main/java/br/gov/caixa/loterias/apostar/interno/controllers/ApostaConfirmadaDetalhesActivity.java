@@ -35,6 +35,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.parceler.Parcels;
 
+import java.util.List;
 import java.util.Objects;
 
 import br.gov.caixa.loterias.apostar.interno.R;
@@ -134,7 +135,9 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     protected EditText nomeApostaEditTxt;
 
     private EstiloModalidade estilo;
-    private IdentificaoDeUmaApostaDas8Modalidades aposta;
+    private IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta;
+    private IdentificaoDeUmaApostaDas8Modalidades<List<List<Integer>>> apostaMatriz;
+
     private boolean premioPago;
     private ApostaFavoritaDTO apostaFavoritaDTO;
     private ParametroSimulacao parametroSimulacao;
@@ -435,7 +438,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                                     .replace(R.id.fragmentContainer, fragment)
                                     .commit();
                         }catch (Exception e){
-                            ViewUtils.alert(getApplicationContext(), getResources().getString(R.string.erro_500));
+                            ViewUtils.alert(getApplicationContext(), getResources().getString(R.string.nao_concluiu_operacao));
                         }
                     }
 

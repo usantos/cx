@@ -14,6 +14,7 @@ import org.androidannotations.annotations.FragmentArg;
 import org.androidannotations.annotations.ViewById;
 import org.apache.commons.lang.StringUtils;
 
+import java.util.List;
 import java.util.Locale;
 
 import br.gov.caixa.loterias.apostar.interno.R;
@@ -43,7 +44,7 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
     protected RecyclerView dezenasRecyclerView;
 
     @FragmentArg
-    protected IdentificaoDeUmaApostaDas8Modalidades aposta;
+    protected IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta;
 
     @AfterViews
     protected void init() {
@@ -84,7 +85,7 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
     private void initdezenasRecyclerView() {
 
         if (!aposta.getNumerosSelecionados().isEmpty()) {
-            dezenasRecyclerView.setAdapter(new DezenasAdapter(AppUtils.listIntegerToListString(aposta.getNumerosSelecionados())));
+             dezenasRecyclerView.setAdapter(new DezenasAdapter(AppUtils.listIntegerToListString(aposta.getListaNumerosSelecionados())));
             dezenasRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         }
     }

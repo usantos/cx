@@ -16,6 +16,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.List;
 
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ComprovanteApostaDTO;
@@ -84,7 +85,7 @@ public class HtmlUtils {
         html = ViewUtils.replaceNullable(html, HEADER_TIPO_COMPROVANTE_TXT, context.getString(R.string.label_comprovante_aposta, modadlidade));
         html = ViewUtils.replaceNullable(html, BASE_64_LOGO, getBase64Logo(context));
         html = ViewUtils.replaceNullable(html, HEADER_COLUNA1_LINHA1_VALOR, comprovanteApostaDTO.getAposta().getDataEfetivacao());
-        html = ViewUtils.replaceNullable(html, HEADER_COLUNA2_LINHA1_VALOR, String.valueOf(comprovanteApostaDTO.getAposta().getConcursoAlvo()));
+        html = ViewUtils.replaceNullable(html, HEADER_COLUNA2_LINHA1_VALOR, String.valueOf(comprovanteApostaDTO.getAposta().getConcursoInicial()));
         html = ViewUtils.replaceNullable(html, HEADER_COLUNA1_LINHA2_VALOR, comprovanteApostaDTO.getAposta().getHoraEfetivacao());
         html = ViewUtils.replaceNullable(html, HEADER_COLUNA2_LINHA2_TEXTO, context.getString(R.string.label_data_sorteio));
         html = ViewUtils.replaceNullable(html, HEADER_COLUNA2_LINHA2_VALOR, dataSorteio);
@@ -110,7 +111,7 @@ public class HtmlUtils {
         html = ViewUtils.replaceNullable(html, HEADER_TIPO_COMPROVANTE_TXT, context.getString(R.string.label_comprovante_premio, modadlidade));
         html = ViewUtils.replaceNullable(html, BASE_64_LOGO, getBase64Logo(context));
         html = ViewUtils.replaceNullable(html, HEADER_COLUNA1_LINHA1_VALOR, detalhesHistoricoPremioDTO.getAposta().getDataEfetivacao());
-        html = ViewUtils.replaceNullable(html, HEADER_COLUNA2_LINHA1_VALOR, String.valueOf(detalhesHistoricoPremioDTO.getAposta().getConcursoAlvo()));
+        html = ViewUtils.replaceNullable(html, HEADER_COLUNA2_LINHA1_VALOR, String.valueOf(detalhesHistoricoPremioDTO.getAposta().getConcursoInicial()));
         html = ViewUtils.replaceNullable(html, HEADER_COLUNA1_LINHA2_VALOR, detalhesHistoricoPremioDTO.getAposta().getHoraEfetivacao());
         html = ViewUtils.replaceNullable(html, HEADER_COLUNA2_LINHA2_TEXTO, context.getString(R.string.label_local_pagamento));
         html = ViewUtils.replaceNullable(html, HEADER_COLUNA2_LINHA2_VALOR, detalhesHistoricoPremioDTO.getPremioDTO().getLocalPagamento());
@@ -136,7 +137,7 @@ public class HtmlUtils {
         html = ViewUtils.replaceNullable(html, HEADER_TIPO_COMPROVANTE_TXT, context.getString(R.string.label_comprovante_premio, modadlidade));
         html = ViewUtils.replaceNullable(html, BASE_64_LOGO, getBase64Logo(context));
         html = ViewUtils.replaceNullable(html, HEADER_COLUNA1_LINHA1_VALOR, detalhesPremioDTO.getAposta().getDataEfetivacao());
-        html = ViewUtils.replaceNullable(html, HEADER_COLUNA2_LINHA1_VALOR, String.valueOf(detalhesPremioDTO.getAposta().getConcursoAlvo()));
+        html = ViewUtils.replaceNullable(html, HEADER_COLUNA2_LINHA1_VALOR, String.valueOf(detalhesPremioDTO.getAposta().getConcursoInicial()));
         html = ViewUtils.replaceNullable(html, HEADER_COLUNA1_LINHA2_VALOR, hora);
         html = ViewUtils.replaceNullable(html, HEADER_COLUNA2_LINHA2_TEXTO, context.getString(R.string.label_local_pagamento));
         html = ViewUtils.replaceNullable(html, HEADER_COLUNA2_LINHA2_VALOR, detalhesPremioDTO.getPremio().getLocalPagamento());
@@ -150,7 +151,7 @@ public class HtmlUtils {
         return html;
     }
 
-    private static String getBodyList(IdentificaoDeUmaApostaDas8Modalidades aposta, Context context) {
+    private static String getBodyList(IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta, Context context) {
 
         StringBuilder sbHtmlBodyList = new StringBuilder();
         String htmlBodyList = "";

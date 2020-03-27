@@ -38,7 +38,6 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -205,22 +204,6 @@ public class ViewUtils {
         return dialog;
     }
 
-    public static Dialog alertEditText(Context context){
-        final EditText editText = new EditText(context);
-        AlertDialog dialog = new AlertDialog.Builder(context)
-                .setTitle("Titulo")
-                .setMessage("Message next?")
-                .setView(editText)
-                .setPositiveButton("OK", (dialog1, which) -> {
-                    String task = String.valueOf(editText.getText());
-
-                })
-                .setNegativeButton("Cancel", null)
-                .create();
-        return dialog;
-
-    }
-
     public static Dialog alertTitulo(Context context, int titulo, String mensagem, DialogInterface.OnDismissListener listener) {
         Dialog dialog = ViewUtils.dialogo(context, titulo, mensagem)
                 .setCancelable(false)
@@ -266,6 +249,19 @@ public class ViewUtils {
                 .setNegativeButton (R.string.label_nao, (dialogInterface, i) -> dialogInterface.dismiss())
                 .setPositiveButton(R.string.label_sim, listener)
                 .show();
+
+        DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
+        TextView textMessageView = dialog.findViewById(android.R.id.message);
+        textTitleView.setTypeface(getFontFuturaBold(context));
+        textMessageView.setTypeface(getFontFutura(context));
+        return dialog;
+    }
+
+    public static Dialog alertTitleButtonYesListener(Context context, String message, DialogInterface.OnClickListener listener) {
+        Dialog dialog = ViewUtils.dialogo(context, R.string.label_atencao, message)
+                                 .setCancelable(false)
+                                 .setPositiveButton(R.string.ok, listener)
+                                 .show();
 
         DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
         TextView textMessageView = dialog.findViewById(android.R.id.message);

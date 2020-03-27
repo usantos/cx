@@ -12,14 +12,15 @@
 
 package br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto;
 
-import java.math.BigDecimal;
-import java.util.*;
-
-import io.swagger.annotations.*;
-
 import com.google.gson.annotations.SerializedName;
 
 import org.parceler.Parcel;
+
+import java.math.BigDecimal;
+import java.util.List;
+
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel(description = "")
 @Parcel
@@ -201,7 +202,7 @@ public class ApostaDTO {
      **/
     @ApiModelProperty(value = "Quantidade de Teimosinhas relacionadas com a aposta")
     public Integer getQuantidadeTeimosinhas() {
-        return quantidadeTeimosinhas;
+        return quantidadeTeimosinhas == null ? new Integer(0) : quantidadeTeimosinhas;
     }
 
     public void setQuantidadeTeimosinhas(Integer quantidadeTeimosinhas) {
@@ -464,39 +465,13 @@ public class ApostaDTO {
                 return "Dupla-Sena";
             case DIA_DE_SORTE:
                 return "Dia de sorte";
+            case SUPER_7:
+                return "Super Sete";
 //      case FEDERAL:
 //        return "Federal";
 
         }
         return "";
-    }
-
-
-    public static ModalidadeEnum toStringModalidade(String modalidade) {
-        switch (modalidade) {
-            case "Quina":
-                return ModalidadeEnum.QUINA;
-            case "Loteca":
-                return ModalidadeEnum.LOTECA;
-            case "Lotogol":
-                return ModalidadeEnum.LOTOGOL;
-            case "Lotofácil":
-                return ModalidadeEnum.LOTOFACIL;
-            case "Lotomania":
-                return ModalidadeEnum.LOTOMANIA;
-            case "Mega-Sena":
-                return ModalidadeEnum.MEGA_SENA;
-            case "Timemania":
-                return ModalidadeEnum.TIMEMANIA;
-            case "Dupla-Sena":
-                return ModalidadeEnum.DUPLA_SENA;
-            case "DIA_DE_SORTE":
-                return ModalidadeEnum.DIA_DE_SORTE;
-//      case "Federal":
-//        return ModalidadeEnum.FEDERAL;
-            default:
-                return null;
-        }
     }
 
     public static String lowerCaseFromString(ModalidadeEnum modalidade) {
@@ -519,6 +494,8 @@ public class ApostaDTO {
                 return "duplasena";
             case DIA_DE_SORTE:
                 return "diadesorte";
+            case SUPER_7:
+                return "supersete";
 //      case FEDERAL:
 //        return "federal";
 

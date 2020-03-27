@@ -240,7 +240,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingLeft="16dp"
-                        android:text="Modalidades Selecionadads"
+                        android:text="@string/modalidades_selecionadas"
                         android:textColor="@color/azulFormNovoTipoPagamento"
                         android:textSize="14.2sp"
                         android:textStyle="bold" />
@@ -297,7 +297,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:paddingLeft="16dp"
-                        android:text="Números obrigatórios"
+                        android:text="@string/numeros_obrigatorios"
                         android:textColor="@color/azulFormNovoTipoPagamento"
                         android:textSize="14.2sp"
                         android:textStyle="bold" />
@@ -354,7 +354,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:paddingLeft="16dp"
-                        android:text="Números proibidos"
+                        android:text="@string/numeros_proibidos"
                         android:textColor="@color/azulFormNovoTipoPagamento"
                         android:textSize="14.2sp"
                         android:textStyle="bold" />
@@ -409,7 +409,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:paddingLeft="16dp"
-                        android:text="Apostas favoritas"
+                        android:text="@string/apostas_favoritas"
                         android:textColor="@color/azulFormNovoTipoPagamento"
                         android:textSize="14.2sp"
                         android:textStyle="bold" />
