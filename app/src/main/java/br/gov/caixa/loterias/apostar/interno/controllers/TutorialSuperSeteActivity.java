@@ -12,112 +12,130 @@ import android.widget.Button;
 
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.view.fragment.TutorialSuperSete1Fragment;
+import br.gov.caixa.loterias.apostar.interno.view.fragment.TutorialSuperSete2Fragment;
+import br.gov.caixa.loterias.apostar.interno.view.fragment.TutorialSuperSete3Fragment;
 import me.relex.circleindicator.CircleIndicator;
 
 public class TutorialSuperSeteActivity extends AppCompatActivity {
 
-	//region Constants
-	public  static final int FRAG_APOSTA_SIMPLES = 0, FRAG_APOSTA_MULTIPLA = 1, FRAG_CONFIRMAR = 2;
-	//endregion
+    //region Constants
+    public static final int FRAG_APOSTA_SIMPLES = 0, FRAG_APOSTA_MULTIPLA = 1, FRAG_CONFIRMAR = 2;
+    //endregion
 
-	//region Layout Variables
-	private Toolbar toolbar;
-	private ViewPager viewPager;
-	private CircleIndicator circleIndicator;
-	private Button btnPular;
-	//endregion
+    //region Layout Variables
+    private Toolbar toolbar;
+    private ViewPager viewPager;
+    private CircleIndicator circleIndicator;
+    private Button btnPular, btnAvancar;
+    //endregion
 
-	//region Variables
-	private SuperSetePagerAdapter adapterViewPager;
-	//endregion
+    //region Variables
+    private SuperSetePagerAdapter adapterViewPager;
+    //endregion
 
-	//region Life Cicle
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_tutorial_super_sete);
-		pegaExtras();
-		setaViews();
-		setaMetodos();
-	}
+    //region Life Cicle
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_tutorial_super_sete);
+        pegaExtras();
+        setaViews();
+        setaMetodos();
+    }
 
-	@Override
-	public boolean onSupportNavigateUp() {
-		finish();
-		return true;
-	}
-	//endregion
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
+    }
+    //endregion
 
-	//region Initialization Methods
-	private void pegaExtras() {
-		Bundle bundle = getIntent().getExtras();
-		if (bundle != null) {
-		}
-	}
+    //region Initialization Methods
+    private void pegaExtras() {
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+        }
+    }
 
-	private void setaViews() {
-		toolbar = findViewById(R.id.toolbar);
-		viewPager = findViewById(R.id.vp_super_sete);
-		circleIndicator = findViewById(R.id.ci_super_sete);
-		btnPular = findViewById(R.id.btn_pular_s7);
+    private void setaViews() {
+        toolbar = findViewById(R.id.toolbar);
+        viewPager = findViewById(R.id.vp_super_sete);
+        circleIndicator = findViewById(R.id.ci_super_sete);
+        btnPular = findViewById(R.id.btn_pular_s7);
+        btnAvancar = findViewById(R.id.btn_aposta);
 
-		btnPular.setVisibility(View.VISIBLE);
-		setaToolbar();
-	}
-
-
-	private void setaToolbar(){
-		setSupportActionBar(toolbar);
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		setTitle(getString(R.string.como_jogar));
-		toolbar.setBackgroundColor(getResources().getColor(R.color.supersetemedio));
-	}
+        btnPular.setVisibility(View.VISIBLE);
+        setaToolbar();
+    }
 
 
-	private void setaMetodos() {
-		adapterViewPager = new SuperSetePagerAdapter(getSupportFragmentManager());
-		viewPager.setAdapter(adapterViewPager);
-		circleIndicator.setViewPager(viewPager);
-	}
-	//endregion
+    private void setaToolbar() {
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setTitle(getString(R.string.como_jogar));
+        toolbar.setBackgroundColor(getResources().getColor(R.color.supersetemedio));
+    }
 
-	//region Layout Configuration Methods
-	public static class SuperSetePagerAdapter extends FragmentPagerAdapter {
-		private static int NUM_ITEMS = 3;
 
-		public SuperSetePagerAdapter(FragmentManager fragmentManager) {
-			super(fragmentManager);
-		}
+    private void setaMetodos() {
+        adapterViewPager = new SuperSetePagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(adapterViewPager);
+        circleIndicator.setViewPager(viewPager);
 
-		@Override
-		public int getCount() {
-			return NUM_ITEMS;
-		}
+        btnPular.setOnClickListener(view -> finish());
+        btnAvancar.setOnClickListener(view -> {
+            switch (viewPager.getCurrentItem()) {
+                case FRAG_APOSTA_SIMPLES:
+                    viewPager.setCurrentItem(FRAG_APOSTA_MULTIPLA);
+                    break;
+                case FRAG_APOSTA_MULTIPLA:
+                    viewPager.setCurrentItem(FRAG_CONFIRMAR);
+                    break;
+                case FRAG_CONFIRMAR:
+                    finish();
+                    break;
+            }
+        });
+    }
+    //endregion
 
-		@Override
-		public Fragment getItem(int position) {
-			switch (position) {
-				case FRAG_APOSTA_SIMPLES:
-					return TutorialSuperSete1Fragment.newInstance();
-				case FRAG_APOSTA_MULTIPLA:
-					return TutorialSuperSete1Fragment.newInstance();
-				case FRAG_CONFIRMAR:
-					return TutorialSuperSete1Fragment.newInstance();
-				default:
-					return null;
-			}
-		}
+    //region Layout Configuration Methods
+    public static class SuperSetePagerAdapter extends FragmentPagerAdapter {
+        private static int NUM_ITEMS = 3;
 
-		@Override
-		public CharSequence getPageTitle(int position) {
-			return "Page " + position;
-		}
-	}
-	//endregion
+        public SuperSetePagerAdapter(FragmentManager fragmentManager) {
+            super(fragmentManager);
+        }
 
-	//region Support Methods
+        @Override
+        public int getCount() {
+            return NUM_ITEMS;
+        }
 
-	//endregion
+        @Override
+        public Fragment getItem(int position) {
+            switch (position) {
+                case FRAG_APOSTA_SIMPLES:
+                    return TutorialSuperSete1Fragment.newInstance();
+                case FRAG_APOSTA_MULTIPLA:
+                    return TutorialSuperSete2Fragment.newInstance();
+                case FRAG_CONFIRMAR:
+                    return TutorialSuperSete3Fragment.newInstance();
+                default:
+                    return null;
+            }
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return "Page " + position;
+        }
+    }
+    //endregion
+
+    //region Support Methods
+
+    //endregion
 
 
 }

@@ -578,5 +578,11 @@
     <string name="jogo_simples">Jogue marcando _1_ número em\ncada uma das 7 colunas.</string>
     <string name="como_apostar">Veja como Apostar</string>
     <string name="pular">Pular</string>
+    <string name="apostas_combinadas">Apostas combinadas</string>
+    <string name="apostas_combinadas_desc">Você pode escolher mais números por coluna fazendo apostas combinadas.</string>
+    <string name="pronto">Pronto  :)</string>
+    <string name="confirmar_carrinho">Agora você só precisa confirmar o seu carrinho de apostas e selecionar a opção _Avançar para forma de pagamento_.</string>
+    <string name="aumente_suas_chances">Aumente suas chances de ganhar apostando agora mesmo!</string>
+    <string name="avancar">Avançar</string>
 
 </resources>

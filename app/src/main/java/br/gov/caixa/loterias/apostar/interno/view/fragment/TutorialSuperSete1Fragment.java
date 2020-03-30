@@ -2,6 +2,7 @@ package br.gov.caixa.loterias.apostar.interno.view.fragment;
 
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,14 +11,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
-
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 
 public class TutorialSuperSete1Fragment extends Fragment {
-	//region Constants
-	//endregion
 
 	//region Layout Variables
 	private View view;
@@ -38,6 +35,11 @@ public class TutorialSuperSete1Fragment extends Fragment {
 		return view;
 	}
 
+	@Override
+	public void onResume() {
+		configuraGif();
+		super.onResume();
+	}
 	//endregion
 
 	//region Initialization Methods
@@ -55,19 +57,12 @@ public class TutorialSuperSete1Fragment extends Fragment {
 
 		tvBemVindo.setText(ViewUtils.textColor(getActivity(),getResources().getString(R.string.bem_vindo_super_sete),R.color.supersetemedio));
 		tvJogoSimples.setText(ViewUtils.textFuturaAndFuturaBold(getActivity(),getString(R.string.jogo_simples)));
-
-		GlideDrawableImageViewTarget imageViewTarget = new GlideDrawableImageViewTarget(viewGif);
-		Glide.with(getActivity()).load(R.drawable.super7_passo1).into(imageViewTarget);
 	}
 
-	//endregion
-
-	//region Network Methods
-	//endregion
-
-	//region Layout Configuration Methods
-	//endregion
-
-	//region Support Methods
+	private void configuraGif() {
+		Glide.with(getActivity())
+				.load(R.drawable.super7_passo1)
+				.into(viewGif);
+	}
 	//endregion
 }
