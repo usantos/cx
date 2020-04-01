@@ -207,7 +207,7 @@
             android:layout_centerHorizontal="true"
             android:background="@color/verdeazul"
             android:fontFamily="@font/futura_std_bold"
-            android:text="Atualizar"
+            android:text="@string/atualizar"
             android:textAllCaps="false"
             android:textColor="@color/branco"
             android:textSize="17.7sp"

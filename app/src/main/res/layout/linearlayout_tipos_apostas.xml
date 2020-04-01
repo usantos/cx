@@ -31,7 +31,7 @@
             android:textAlignment="center"
             android:textSize="15sp"
             android:textStyle="bold"
-            tools:text="dia de sorte" />
+            tools:text="@string/placeholder_dia_de_sorte" />
 
     </LinearLayout>
 

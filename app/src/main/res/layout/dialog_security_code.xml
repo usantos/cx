@@ -23,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:hint="CVV"
+            android:hint="@string/cvv"
             android:inputType="textPassword"
             android:maxLength="3"
             android:textSize="12dp" />

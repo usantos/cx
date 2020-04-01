@@ -34,7 +34,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginRight="17dp"
                 android:gravity="start"
-                android:text="O seu pacote de apostas prontas para serem adquiridas em um toque"
+                android:text="@string/o_seu_pacote_de_apostas_prontas_para_serem_adquiridas_em_um_toque"
                 android:textAlignment="textStart"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"

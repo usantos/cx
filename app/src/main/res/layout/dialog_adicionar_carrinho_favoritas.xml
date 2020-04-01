@@ -26,7 +26,7 @@
                 android:layout_marginTop="30dp"
                 android:fontFamily="@font/futura_std_bold"
                 android:lineSpacingExtra="5dp"
-                android:text="Selecione as opções e clique em adicionar"
+                android:text="@string/selecione_as_op_es_e_clique_em_adicionar"
                 android:textAlignment="center"
                 android:textColor="@color/verdeazul" />
 
@@ -38,7 +38,7 @@
                 android:layout_marginTop="20dp"
                 android:background="@drawable/button_border_azul"
                 android:fontFamily="@font/futura_std_bold"
-                android:text="Selecione o tipo de concurso"
+                android:text="@string/selecione_o_tipo_de_concurso"
                 android:textAllCaps="false"
                 android:textColor="@color/textColorToolbar"
                 android:textSize="14dp" />
@@ -60,7 +60,7 @@
                 android:layout_marginTop="20dp"
                 android:background="@drawable/button_border_azul"
                 android:fontFamily="@font/futura_std_bold"
-                android:text="Selecione a qtd. de teimosinhas"
+                android:text="@string/selecione_a_qtd_de_teimosinhas"
                 android:textAllCaps="false"
                 android:textColor="@color/textColorToolbar"
                 android:textSize="14dp"
@@ -97,7 +97,7 @@
                 android:layout_marginHorizontal="5dp"
                 android:background="@color/verdeazul"
                 android:fontFamily="@font/futura_std_bold"
-                android:text="Cancelar"
+                android:text="@string/cancelar"
                 android:textAllCaps="false"
                 android:textColor="@color/branco" />
         </FrameLayout>
@@ -114,7 +114,7 @@
                 android:layout_marginHorizontal="5dp"
                 android:background="@color/verdeazul"
                 android:fontFamily="@font/futura_std_bold"
-                android:text="Adicionar no carrinho"
+                android:text="@string/adicionar_no_carrinho"
                 android:textAllCaps="false"
                 android:textColor="@color/branco" />
         </FrameLayout>

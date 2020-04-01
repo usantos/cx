@@ -9,5 +9,5 @@
     android:fontFamily="@font/arialmt"
     android:textSize="14.2sp"
     android:id="@+id/SeusNumerosListaComprasTextView"
-    android:text="01 - 02 - 03 - 04 - 05 - 06"/>
+    android:text="@string/placeholder_prognosticos"/>
 </LinearLayout>

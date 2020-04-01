@@ -10,19 +10,19 @@
         android:textColor="@color/megasenamedio"
         android:textSize="14.2sp"
         android:id="@+id/SeusNumerosListaComprasTextView"
-        android:text="01 - 02 - 03 - 04 - 05 - 06"/>
+        android:text="@string/placeholder_prognosticos"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="Time do coração"
+        android:text="@string/time_do_cora_o"
         android:textSize="12sp"
         android:fontFamily="@font/arialmt"
         android:textColor="@color/megasenamedio"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="FLAMENGO"
+        android:text="@string/placeholder_flamengo"
         android:textSize="12sp"
         android:fontFamily="@font/arialmt"
         android:textStyle="bold"
