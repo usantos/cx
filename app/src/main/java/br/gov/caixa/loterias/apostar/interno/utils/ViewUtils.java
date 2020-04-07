@@ -367,7 +367,7 @@ public class ViewUtils {
         }
         Locale ptBrLocale = new Locale("pt", "BR");
         NumberFormat nf = NumberFormat.getCurrencyInstance(ptBrLocale);
-        return nf.format(valor).replace("R$", "R$");
+        return " " + nf.format(valor).replace("R$", "R$");
     }
 
     public static void setMoedaFormatHtml(BigDecimal valor, TextView valorTextView) {

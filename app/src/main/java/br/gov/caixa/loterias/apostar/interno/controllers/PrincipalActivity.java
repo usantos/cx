@@ -568,7 +568,8 @@ public class PrincipalActivity extends AppCompatActivity
             EstiloModalidade estilo = new EstiloModalidade(data.get(adapterPosition).getTipoModalidade());
             buttonHomeBet.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorClara()));
             buttonHomeBet.setTag(adapterPosition);
-            buttonHomeBet.setText(ViewUtils.textFuturaAndFuturaBold(this, getResources().getString(R.string.aposte_por) + ViewUtils.getMoedaFormat(modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima())));
+            buttonHomeBet.setText(ViewUtils.textFuturaAndFuturaBold(this, getResources().getString(R.string.aposte_por) +
+                    ViewUtils.getMoedaFormat(modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima())));
         }
     }
 

@@ -815,7 +815,7 @@
     <string name="evento_entrou_menu_trevo">ENTROU_MENU_TREVO</string>
     <string name="evento_logout_sucesso">EFETUOU_LOGOUT_SUCESSO</string>
     <string name="evento_logout_offline_sucesso">EFETUOU_LOGOUT_OFFLINE_SUCESSO</string>
-    <string name="aposte_por">_Aposte_ por</string>
+    <string name="aposte_por">_Aposte_\npor</string>
     <string name="evento_entrou_simular_aposta_modalidade">ENTROU_SIMULAR_APOSTA</string>
     <string name="extra_apostas_favoritas">apostasFavoritas</string>
     <string name="extra_apostas_salvas">apostasSalvas</string>
