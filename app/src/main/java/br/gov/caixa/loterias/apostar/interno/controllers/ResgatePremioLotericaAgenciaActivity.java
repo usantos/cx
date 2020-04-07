@@ -83,7 +83,6 @@ public class ResgatePremioLotericaAgenciaActivity extends SettingToolbarActivity
                 try {
                     generateQrCode();
                 } catch (WriterException e) {
-                    Log.e("TAG_RESGATE", e.toString());
                     e.printStackTrace();
                 }
             }

@@ -21,8 +21,8 @@ public class CadastrarConfirmacaoActivity extends AppCompatActivity {
 
         TextView tituloConfirmacaoCadastroTextView = findViewById( R.id.tituloConfirmacaoCadastroTextView );
         TextView subtituloConfirmaCadastroTextView = findViewById( R.id.subtituloConfirmaCadastroTextView );
-        tituloConfirmacaoCadastroTextView.setText( ViewUtils.textFuturaAndFuturaBold( this, "_Excelente_!\nSeu cadastro foi realizado\ncom sucesso!" ) );
-        subtituloConfirmaCadastroTextView.setText( "Aguarde apenas um instante enquanto\nte redirecionamos para suas apostas :)" );
+        tituloConfirmacaoCadastroTextView.setText( ViewUtils.textFuturaAndFuturaBold( this, getResources().getString(R.string.sucesso_cadastro) ) );
+        subtituloConfirmaCadastroTextView.setText( getResources().getString(R.string.aguarde_redirecionamento) );
 
         Utils.delay(3, () -> {
             PrincipalActivity_.intent(CadastrarConfirmacaoActivity.this).start();

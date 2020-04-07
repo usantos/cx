@@ -154,7 +154,7 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
                         .findViewById(R.id.cvvCardNumberEditText);
                 alertDialogBuilder
                         .setCancelable(false)
-                        .setPositiveButton("Confirmar",
+                        .setPositiveButton(getResources().getString(R.string.confirmar),
                                 (DialogInterface dialog, int which) -> {
                                     if (userInput.getText().toString().length() == 3){
                                         String cardId = adapter.valoresList.get(adapter.selected_position).getIdCartao().toString();
@@ -167,7 +167,7 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
                                         );
                                     }
                                 })
-                        .setNegativeButton("Cancelar",
+                        .setNegativeButton(getResources().getString(R.string.cancelar),
                                 (DialogInterface dialog, int which) -> {
                                     dialog.cancel();
                                 });
@@ -232,7 +232,7 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
         dadosUsuarioBO.cartoes(new RequestListener<ListCartaoDTOResponse>() {
             @Override
             public void onResponse(ListCartaoDTOResponse response) {
-                FirebaseManager.registraEvento(CartoesActivity.this ,"ENTROU_FORMAS_DE_PAGAMENTO");
+                FirebaseManager.registraEvento(CartoesActivity.this ,getResources().getString(R.string.evento_entrou_formas_pagamento));
                 loadViewProgress.dismiss();
                 if (response.getRedirect() != null){
                     RedirectNetwork.checkRedirectSucesso( response.getRedirect(), CartoesActivity.this);
@@ -317,7 +317,7 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
 
 
     private void callWebserviceRegistraAposta(String tokenPagamento, String payment_method_id) {
-        ParametrosPagamento parametroPagamento = new ParametrosPagamento( tokenPagamento, "true", payment_method_id, "false" );
+        ParametrosPagamento parametroPagamento = new ParametrosPagamento( tokenPagamento, getResources().getString(R.string.string_true), payment_method_id, getResources().getString(R.string.string_false) );
         MeioPagamento meioPagamento = new MeioPagamento(1, parametroPagamento);
 
         ApostaBO apostaBO = ApostaBO_.getInstance_(CartoesActivity.this);
@@ -328,7 +328,7 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
                 if (response.getRedirect() != null){
                     RedirectNetwork.checkRedirectSucesso( response.getRedirect(), CartoesActivity.this);
                 }else{
-                    FirebaseManager.registraEvento(CartoesActivity.this ,"EFETUOU_PAGAMENTO_SUCESSO");
+                    FirebaseManager.registraEvento(CartoesActivity.this ,getResources().getString(R.string.evento_pagamento_sucesso));
                     RateUtils.setQtdCompras(RateUtils.getQtdCompras() + 1);
                     Intent activity = new Intent(CartoesActivity.this, ConfirmacaoPagamentoActivity.class);
                     startActivity(activity);
@@ -345,25 +345,25 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
 
     private void callWebServicePayment_method(final String token){
         String bin = adapter.valoresList.get( adapter.selected_position ).getPrimeirosDigitos();
-        String url = BuildConfig.MP_PAYMENT_URL+"bin="+ bin +"&public_key="+ BuildConfig.PUBLIC_KEY_MP;
+        String url = BuildConfig.MP_PAYMENT_URL+getResources().getString(R.string.bin)+ bin +getResources().getString(R.string.public_key)+ BuildConfig.PUBLIC_KEY_MP;
         StringRequest request = new StringRequest( Request.Method.GET, url, response -> {
-            Log.d("Response: ", response.toString());
+            Log.d(getResources().getString(R.string.response_dois_pontos), response.toString());
             try {
                 //Do it with this it will work
                 JSONArray jsonArray = new JSONArray(response);
                 JSONObject responseObj = new JSONObject();
                 responseObj = jsonArray.getJSONObject(0);
-                String payment_method_id = responseObj.getString("payment_method_id");
-                String thumbnail = (responseObj.getJSONObject("issuer")).getString( "thumbnail" );
+                String payment_method_id = responseObj.getString(getResources().getString(R.string.payment_method_id));
+                String thumbnail = (responseObj.getJSONObject(getResources().getString(R.string.issuer))).getString( getResources().getString(R.string.thumbnail) );
                 callWebserviceRegistraAposta(token, payment_method_id);
 
             } catch (JSONException e) {
                 e.printStackTrace();
-                Toast.makeText(getApplicationContext(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_dois_pontos) + e.getMessage(), Toast.LENGTH_LONG).show();
             }
         }, volleyError -> {
             loadViewProgress.dismiss();
-            Log.d("volleyError", "volleyError: "+ volleyError.toString());
+            Log.d(getResources().getString(R.string.volleyError), getResources().getString(R.string.volleyError_dois_pontos)+ volleyError.toString());
         });
 
         RequestQueue rQueue = Volley.newRequestQueue(CartoesActivity.this);

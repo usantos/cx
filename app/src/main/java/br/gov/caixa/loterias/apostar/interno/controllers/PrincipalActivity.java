@@ -177,10 +177,9 @@ public class PrincipalActivity extends AppCompatActivity
     private void abrirModalidadeAposteAgora(Intent intent){
         Bundle extras = intent.getExtras();
         if (extras!= null) {
-            if (extras.containsKey("MODALIDADE_APOSTAR_AGORA")) {
-                ModalidadeEnum modalidade = (ModalidadeEnum) extras.getSerializable("MODALIDADE_APOSTAR_AGORA");
+            if (extras.containsKey(getResources().getString(R.string.extra_modalidade_apostar_agora))) {
+                ModalidadeEnum modalidade = (ModalidadeEnum) extras.getSerializable(getResources().getString(R.string.extra_modalidade_apostar_agora));
                 int position =  retornaPosicaoPorModalidade(modalidade);
-                EstiloModalidade estilo;
                 if(position != -1){
                     int posicaoAlvo = infiniteAdapter.getClosestPosition(position);
                     homeCarousel.smoothScrollToPosition(posicaoAlvo);
@@ -203,15 +202,15 @@ public class PrincipalActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        String separarNome[] = DadosUsuarioBO.obterNome().toLowerCase(new Locale("pt", "BR")).split(" ");
-        String nomeUsuario = StringUtils.capitalizer(separarNome[0]+" "+separarNome[separarNome.length - 1]);
+        String separarNome[] = DadosUsuarioBO.obterNome().toLowerCase(new Locale(getResources().getString(R.string.pt), getResources().getString(R.string.br))).split(getResources().getString(R.string.espaco_em_branco));
+        String nomeUsuario = StringUtils.capitalizer(separarNome[0]+getResources().getString(R.string.espaco_em_branco)+separarNome[separarNome.length - 1]);
 
         if(!" ".equals(nomeUsuario)) {
-            String texto = "Olá, _%_!";
-            texto = texto.replace("%", nomeUsuario);
+            String texto = getResources().getString(R.string.ola_usuario);
+            texto = texto.replace(getResources().getString(R.string.percent), nomeUsuario);
             nav_user.setText(ViewUtils.textFuturaAndFuturaBold(this, texto));
         }else {
-            nav_user.setText("Olá, seja bem-vindo ao\n App Loterias.");
+            nav_user.setText(getResources().getString(R.string.bem_vindo_ao_app));
         }
 
         if (recarregarBuscaParam) {
@@ -266,13 +265,13 @@ public class PrincipalActivity extends AppCompatActivity
             @Override
             public void onResponse(ParametrosSimulacaoResponse response) {
                 loadViewProgress.dismiss();
-                FirebaseManager.registraEvento(PrincipalActivity.this ,"ENTROU_LISTA_MODALIDADES");
+                FirebaseManager.registraEvento(PrincipalActivity.this ,getResources().getString(R.string.evento_entrou_lista_modalidades));
 
                 modalidadesParaListar = response.getPayload().getParametros();
                 if (modalidadesParaListar == null || modalidadesParaListar.isEmpty()) {
                     recarregarBuscaParam = true;
                     Intent appIndis = new Intent(PrincipalActivity.this, AppIndisponivelActivity.class);
-                    appIndis.putExtra("IS_BUSCA_PARAM", true);
+                    appIndis.putExtra(getResources().getString(R.string.extra_is_busca_param), true);
 
                     startActivityForResult(appIndis, 1);
                 }
@@ -285,7 +284,7 @@ public class PrincipalActivity extends AppCompatActivity
                 recarregarBuscaParam = true;
                 loadViewProgress.dismiss();
                 Intent appIndis = new Intent(PrincipalActivity.this, AppIndisponivelActivity.class);
-                appIndis.putExtra("IS_BUSCA_PARAM", true);
+                appIndis.putExtra(getResources().getString(R.string.extra_is_busca_param), true);
 
                 startActivityForResult(appIndis, 1);
             }
@@ -305,7 +304,7 @@ public class PrincipalActivity extends AppCompatActivity
         sessaoUser.setValorMaximoAposta(response.getPayload().getValorLimiteDiario());
         sessaoUser.setParametrosSimulacao(response.getPayload());
 
-        textViewHomeMinimumPurchaseValue.setText(String.format("valor mínimo da compra: %s", ViewUtils.getMoedaFormat(response.getPayload().getValorMinimoCarrinho())));
+        textViewHomeMinimumPurchaseValue.setText(String.format(getResources().getString(R.string.valor_minimo_compra), ViewUtils.getMoedaFormat(response.getPayload().getValorMinimoCarrinho())));
 
         montaListaModalidades();
         montarCarrossel();
@@ -409,7 +408,7 @@ public class PrincipalActivity extends AppCompatActivity
         for (ParametroSimulacao parametro : modalidadesParaListar) {
             if (parametro.getParametroJogo().getConcurso().getModalidade() != null) {
                 listaModalidades.add(new Modalidade(parametro.getParametroJogo().getConcurso().getModalidadeDetalhada().getDescricao(),
-                        parametro.getParametroJogo().getConcurso().getValorApostaMinima(), "", "", parametro.getParametroJogo().getConcurso().getModalidade(),
+                        parametro.getParametroJogo().getConcurso().getValorApostaMinima(), getResources().getString(R.string.string_vazia), getResources().getString(R.string.string_vazia), parametro.getParametroJogo().getConcurso().getModalidade(),
                         parametro.getParametroJogo().getConcurso(), false, null));
             }
         }
@@ -418,7 +417,7 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     private void layoutTrevoAcessoRapido() {
-        valorRepassesPrincipal.setText("0");
+        valorRepassesPrincipal.setText(getResources().getString(R.string.zero));
 
         tituloLerBilhetes.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.label_ler_bilhestes_bold)));
         textoRepassados.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.label_repassados_boas_causas_bold)));
@@ -457,7 +456,7 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     private void AnimacaoAbrirMenuRapido(View v) {
-        FirebaseManager.registraEvento(PrincipalActivity.this ,"ENTROU_MENU_TREVO");
+        FirebaseManager.registraEvento(PrincipalActivity.this ,getResources().getString(R.string.evento_entrou_menu_trevo));
 
         relativeContentPrincipal.setEnabled(false);
         actionApresentarTrevo.setEnabled(false);
@@ -533,7 +532,7 @@ public class PrincipalActivity extends AppCompatActivity
                 dadosUsuarioBO.sair(new RequestListener<NetworkResponse>() {
                     @Override
                     public void onResponse(NetworkResponse response) {
-                        FirebaseManager.registraEvento(PrincipalActivity.this ,"EFETUOU_LOGOUT_SUCESSO");
+                        FirebaseManager.registraEvento(PrincipalActivity.this ,getResources().getString(R.string.evento_logout_sucesso));
 
                         AcessoBO_.getInstance_(PrincipalActivity.this).iniciarLogoutSSO(activity);
                         LoginSP.loginRealizado(false);
@@ -548,7 +547,7 @@ public class PrincipalActivity extends AppCompatActivity
                     }
                 });
             } else {
-                FirebaseManager.registraEvento(PrincipalActivity.this ,"EFETUOU_LOGOUT_OFFLINE_SUCESSO");
+                FirebaseManager.registraEvento(PrincipalActivity.this ,getResources().getString(R.string.evento_logout_offline_sucesso));
                 startActivity(new Intent(PrincipalActivity.this, LoginActivity.class));
                 finish();
             }
@@ -560,16 +559,7 @@ public class PrincipalActivity extends AppCompatActivity
             float currentPosition,
             int currentIndex, int newIndex,
             @Nullable HomeAdapter.ViewHolder currentHolder,
-            @Nullable HomeAdapter.ViewHolder newCurrent) {
-
-        if (currentHolder != null && newCurrent != null) {
-            float position = Math.abs(currentPosition);
-            Log.d("position", "position: " + position);
-            Log.d("currentIndex", "currentIndex: " + currentIndex);
-            Log.d("newIndex", "newIndex: " + newIndex);
-        }
-
-    }
+            @Nullable HomeAdapter.ViewHolder newCurrent) { }
 
     @Override
     public void onCurrentItemChanged(@Nullable HomeAdapter.ViewHolder viewHolder, int adapterPosition) {
@@ -578,17 +568,17 @@ public class PrincipalActivity extends AppCompatActivity
             EstiloModalidade estilo = new EstiloModalidade(data.get(adapterPosition).getTipoModalidade());
             buttonHomeBet.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorClara()));
             buttonHomeBet.setTag(adapterPosition);
-            buttonHomeBet.setText(ViewUtils.textFuturaAndFuturaBold(this, "_Aposte_\npor " + ViewUtils.getMoedaFormat(modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima())));
+            buttonHomeBet.setText(ViewUtils.textFuturaAndFuturaBold(this, getResources().getString(R.string.aposte_por) + ViewUtils.getMoedaFormat(modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima())));
         }
     }
 
     @Click(R.id.buttonHomeBet)
     protected void clickButtonHomeBet() {
-        FirebaseManager.registraEvento(PrincipalActivity.this ,"ENTROU_SIMULAR_APOSTA" + modalidadesParaListar.get(Integer.parseInt(buttonHomeBet.getTag().toString())).getParametroJogo().getConcurso().getModalidade());
+        FirebaseManager.registraEvento(PrincipalActivity.this ,getResources().getString(R.string.evento_entrou_simular_aposta_modalidade) + modalidadesParaListar.get(Integer.parseInt(buttonHomeBet.getTag().toString())).getParametroJogo().getConcurso().getModalidade());
 
         Intent activity = new Intent(PrincipalActivity.this, SimularApostaActivity_.class);
-        activity.putExtra("tipoAposta", modalidadesParaListar.get(Integer.parseInt(buttonHomeBet.getTag().toString())).getParametroJogo().getConcurso().getModalidade());
-        activity.putExtra("modalidade", (new Gson()).toJson(modalidadesParaListar.get(Integer.parseInt(buttonHomeBet.getTag().toString())).getParametroJogo()));
+        activity.putExtra(getString(R.string.extra_tipo_aposta), modalidadesParaListar.get(Integer.parseInt(buttonHomeBet.getTag().toString())).getParametroJogo().getConcurso().getModalidade());
+        activity.putExtra(getString(R.string.extra_modalidade), (new Gson()).toJson(modalidadesParaListar.get(Integer.parseInt(buttonHomeBet.getTag().toString())).getParametroJogo()));
         startActivity(activity);
     }
 

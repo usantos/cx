@@ -150,7 +150,7 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         if (txtModalidade != null) {
             if(concursoAtual == null){
-                getResultadoModalidade(ApostaDTO.lowerCaseFromString(ModalidadeEnum.toString(txtModalidade)),"");
+                getResultadoModalidade(ApostaDTO.lowerCaseFromString(ModalidadeEnum.toString(txtModalidade)),getResources().getString(R.string.string_vazia));
             }else {
                 getResultadoModalidade(ApostaDTO.lowerCaseFromString(ModalidadeEnum.toString(txtModalidade)),concursoAlvo.toString());
             }
@@ -330,7 +330,7 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
                 concursoAtual = null;
                 concursoAlvo = null;
                 if(!concurso.isEmpty()){
-                    getResultadoModalidade(ApostaDTO.lowerCaseFromString(ModalidadeEnum.toString(txtModalidade)),"");
+                    getResultadoModalidade(ApostaDTO.lowerCaseFromString(ModalidadeEnum.toString(txtModalidade)),getResources().getString(R.string.string_vazia));
 
                 }
             }
@@ -362,7 +362,7 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
                 response.getPayload());
 
         partidaViewDetalhesResultado.setLayout(modalidade);
-        if(response.getPayload().getConcurso().getTipoConcurso().toString().equalsIgnoreCase("ESPECIAL")){
+        if(response.getPayload().getConcurso().getTipoConcurso().toString().equalsIgnoreCase(getResources().getString(R.string.especial_maiusculo))){
             tituloModalidade.setText(response.getPayload().getConcurso().getModalidadeDetalhada().getDescricaoEspecial().toLowerCase());
         }else {
             tituloModalidade.setText(txtModalidade);

@@ -64,7 +64,7 @@ public class RepassesSociaisActivity extends SettingToolbarActivity {
             @Override
             public void onResponse(RepassometroDTOResponse response) {
                 loadViewProgress.dismiss();
-                FirebaseManager.registraEvento(RepassesSociaisActivity.this ,"ENTROU_REPASSOMETRO");
+                FirebaseManager.registraEvento(RepassesSociaisActivity.this ,getResources().getString(R.string.evento_entrou_repassometro));
                 repasseOBj = response.getPayload();
                 setLayout();
                 if (response.getRedirect() != null){
@@ -83,12 +83,12 @@ public class RepassesSociaisActivity extends SettingToolbarActivity {
     private void setLayout(){
 
         TextView ttvTituloAno = findViewById(R.id.ttvTituloAno);
-        String texto = "Em " + Calendar.getInstance().get(Calendar.YEAR)+ ", as Loterias já destinaram";
+        String texto = getResources().getString(R.string.em_espaco) + Calendar.getInstance().get(Calendar.YEAR)+ getResources().getString(R.string.ja_destinaram);
         ttvTituloAno.setText(texto);
 
-        String htmlTextViewRepasseQuadro1 = "<html>Para cada <br><strong><font color=\"#ff7f00\">R$1,00</font></strong><br>apostados nas<br>loterias federais</html>";
-        String htmlTextViewRepasseQuadro2 = "<html><strong><font color=\"#345ca5\">R$0,48*</font></strong><br>são destinados<br>a programas sociais</html>";
-        String htmlTextButtonAposte = "_Aposte_\ne ajude ainda mais";
+        String htmlTextViewRepasseQuadro1 = getResources().getString(R.string.html_repasse_1);
+        String htmlTextViewRepasseQuadro2 = getResources().getString(R.string.html_repasse_2);
+        String htmlTextButtonAposte = getResources().getString(R.string.aposte_e_ajude);
         TextView textViewRepasseQuadro1 = findViewById(R.id.textViewRepasseQuadro1);
         TextView textViewRepasseQuadro2 = findViewById(R.id.textViewRepasseQuadro2);
         TextView valorRepasses = findViewById(R.id.valorRepassesSociais);
@@ -150,20 +150,20 @@ public class RepassesSociaisActivity extends SettingToolbarActivity {
 
         BigInteger valorArredondado = valor.toBigInteger();
         String strValor = valorArredondado.toString();
-        String[] parts = strValor.split("");
+        String[] parts = strValor.split(getResources().getString(R.string.string_vazia));
         int countParts = parts.length;
         if (countParts == 5 || countParts == 6 || countParts == 7){
-            valores[0] = valorArredondado.divide(BigInteger.valueOf(1000)).toString() + "," + parts[1+valorArredondado.divide(BigInteger.valueOf(1000)).toString().length()];
-            valores[1] = "mil reais";
+            valores[0] = valorArredondado.divide(BigInteger.valueOf(1000)).toString() + getResources().getString(R.string.virgula) + parts[1+valorArredondado.divide(BigInteger.valueOf(1000)).toString().length()];
+            valores[1] = getResources().getString(R.string.mil_reais);
         }else if (countParts == 8 || countParts == 9 || countParts == 10) {
-            valores[0] = valorArredondado.divide(BigInteger.valueOf(1000000)).toString() + "," + parts[1+valorArredondado.divide(BigInteger.valueOf(1000000)).toString().length()];
-            valores[1] = "milhões de reais";
+            valores[0] = valorArredondado.divide(BigInteger.valueOf(1000000)).toString() +  getResources().getString(R.string.virgula) + parts[1+valorArredondado.divide(BigInteger.valueOf(1000000)).toString().length()];
+            valores[1] = getResources().getString(R.string.milhoes_de_reais);
         }else if (countParts == 11 || countParts == 12 || countParts == 13) {
-            valores[0] = valorArredondado.divide(BigInteger.valueOf(1000000000)).toString() + "," + parts[1+valorArredondado.divide(BigInteger.valueOf(1000000000)).toString().length()];
-            valores[1] = "bilhões de reais";
+            valores[0] = valorArredondado.divide(BigInteger.valueOf(1000000000)).toString() + getResources().getString(R.string.virgula) + parts[1+valorArredondado.divide(BigInteger.valueOf(1000000000)).toString().length()];
+            valores[1] = getResources().getString(R.string.bilhoes_de_reais);
         }else{
             valores[0] = strValor;
-            valores[1] = "reais";
+            valores[1] = getResources().getString(R.string.reais);
         }
         return valores;
     }

@@ -57,7 +57,7 @@ public class InsercaoManualCodBarrasActivity extends AppCompatActivity {
         editTextNumeroBilhete.setFilters(new InputFilter[]{inputFilter});
         buttonContinuarInsercaoManualBilhetes.setOnClickListener(v -> {
             if(editTextNumeroBilhete.getText().toString().trim().length() == 0){
-                Toast.makeText(InsercaoManualCodBarrasActivity.this, "Informe o código do bilhete!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(InsercaoManualCodBarrasActivity.this, getResources().getString(R.string.informe_codigo_bilhete), Toast.LENGTH_SHORT).show();
             }else{
                 try {
                     String code = Crypto.cripfyBarcode(removerMascara(editTextNumeroBilhete));
@@ -125,7 +125,7 @@ public class InsercaoManualCodBarrasActivity extends AppCompatActivity {
     }
 
     private String removerMascara(EditText maskedEditText){
-        return maskedEditText.getText().toString().replaceAll("-", "");
+        return maskedEditText.getText().toString().replaceAll(getResources().getString(R.string.traco), getResources().getString(R.string.string_vazia));
     }
 
     private TextWatcher textWatcher = new TextWatcher() {
@@ -154,6 +154,4 @@ public class InsercaoManualCodBarrasActivity extends AppCompatActivity {
             }
         }
     };
-
-
 }
