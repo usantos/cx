@@ -822,7 +822,6 @@
     <string name="extra_tipos_apostas">tiposAposta</string>
     <string name="evento_entrou_lista_modalidade_config_rapidao">ENTROU_LISTA_MODALIDADE_CONFIG_RAPIDAO</string>
     <string name="evento_entrou_lista_favoritas_config_rapidao">ENTROU_LISTA_FAVORITAS_CONFIG_RAPIDAO</string>
-    <string name="extra_numeros_proibidos">numerosProibidos</string>
     <string name="evento_entrou_configuracoes_rapidao">ENTROU_CONFIGURACOES_RAPIDAO</string>
     <string name="zero_milhao">0 milhão</string>
     <string name="evento_efetuou_configuracoes_rapidao_sucesso">EFETUOU_CONFIGURACOES_RAPIDAO_SUCESSO</string>
@@ -846,15 +845,12 @@
     <string name="evento_entrou_validacao_dezoito_anos">ENTROU_VALIDACAO_DEZOITO_ANOS</string>
     <string name="app_para_maior_de_18">O uso do aplicativo é restrito a maiores de _18 anos._</string>
     <string name="chave_valor_premio_chave">{ValorPremio}</string>
-    <string name="extra_modalidade_apostar_agora">MODALIDADE_APOSTAR_AGORA</string>
     <string name="extra_valor_premio">valorPremio</string>
     <string name="extra_id_aposta">idAposta</string>
-    <string name="extra_modalidade_apostar_agora">MODALIDADE_APOSTAR_AGORA</string>
     <string name="extra_tipos_aposta">tiposAposta</string>
     <string name="percent_d_numeros">%d números</string>
     <string name="percent_d_concurso">%d concurso</string>
     <string name="extra_valor_aposta">valorAposta</string>
-    <string name="extra_modalidade">modalidade</string>
     <string name="extra_equipe_selecionada">equipeSelecionada</string>
     <string name="evento_efetuou_adicao_aposta_favorita_sucesso">EFETUOU_ADICAO_APOSTA_FAVORITA_SUCESSO</string>
     <string name="espaco_numeros_por_espaco">números por</string>
