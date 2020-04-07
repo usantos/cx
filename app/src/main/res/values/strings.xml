@@ -733,7 +733,7 @@
     <string name="evento_limpou_carrinho_offline">LIMPOU_CARRINHO_DE_APOSTAS_LOCAL</string>
     <string name="underline">_</string>
     <string name="quebra_html"><![CDATA[<br>]]></string>
-    <string name="espaco_em_branco" />
+    <string name="espaco_em_branco">" "</string>
     <string name="evento_entrou_carrinho_online">ENTROU_CARRINHO_DE_APOSTAS_ONLINE</string>
     <string name="confirmar">Confirmar</string>
     <string name="evento_entrou_formas_pagamento">ENTROU_FORMAS_DE_PAGAMENTO</string>
