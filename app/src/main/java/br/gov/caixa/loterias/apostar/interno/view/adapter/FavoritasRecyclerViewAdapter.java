@@ -84,6 +84,8 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
         swipeLayout.getDragEdgeMap().clear();
         swipeLayout.addDrag(SwipeLayout.DragEdge.Left, swipeLayout.findViewById(R.id.dadosApostaCarrinho));
         swipeLayout.setDragEdge(SwipeLayout.DragEdge.Left);
+        //Retirando swipe
+        swipeLayout.setSwipeEnabled(false);
         swipeLayout.addSwipeListener(new SimpleSwipeListener() {
             @Override
             public void onStartOpen(SwipeLayout layout) {
@@ -126,7 +128,8 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
             }
         }
         holder.numerosApostaFavorita.setText(numeroStr.toString());
-        holder.editarRelativeLayoutFavoritos.setOnClickListener(v -> swipeLayout.open(true));
+        //Retirando swipe
+        //holder.editarRelativeLayoutFavoritos.setOnClickListener(v -> swipeLayout.open(true));
 
         holder.exluirRelativeLayoutFavoritos.setOnClickListener(v -> deleteFavoritaCallWebservice(position));
 
