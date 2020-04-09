@@ -53,10 +53,9 @@ public class CartoesRecyclerViewAdapter extends RecyclerView.Adapter<CartoesRecy
     public void onBindViewHolder(CartoesRecyclerViewAdapter.CartaoHolder holder, int position) {
         RetornoCartao cartao = valoresList.get(position);
 
-        holder.tvNumCartao.setText("**** **** **** " + cartao.getUltimosDigitos());
-        holder.tvDataVenc.setText("Venc.: " + cartao.getMesValidade() + "/" + cartao.getAnoValidade());
+        holder.tvNumCartao.setText(context.getResources().getString(R.string.mascara_cartao_sem_ultimos_digitos) + cartao.getUltimosDigitos());
+        holder.tvDataVenc.setText(context.getResources().getString(R.string.venc_ponto_dois_pontos) + cartao.getMesValidade() + context.getResources().getString(R.string.barra)  + cartao.getAnoValidade());
         holder.ivBandeira.setImageDrawable(context.getDrawable(getBandeira(cartao.getNomeMetodoPagamento())));
-        //holder.textBandeiraCartao.setText(ViewUtils.capitalized(cartao.getNomeMetodoPagamento()));
         if(!flagVeioMenu){
             if (selected_position == position){
                 holder.itemView.setBackgroundResource(R.color.cinzaclaro);
@@ -104,7 +103,7 @@ public class CartoesRecyclerViewAdapter extends RecyclerView.Adapter<CartoesRecy
                         DadosUsuarioBO_.getInstance_(context).deleteCartao(valoresList.get(getAdapterPosition()).getIdCartao(), new RequestListener<ListCartaoDTOResponse>() {
                             @Override
                             public void onResponse(ListCartaoDTOResponse result) {
-                                FirebaseManager.registraEvento(context, "EFETUOU_EXCLUSAO_FORMA_DE_PAGAMENTO_SUCESSO");
+                                FirebaseManager.registraEvento(context, context.getResources().getString(R.string.evento_efetuou_exclusao_forma_pagamento_sucesso));
                                 DialogUtils.dismiss();
                                 if(result != null && result.getRedirect() != null){
                                     RedirectNetwork.checkRedirectSucesso(result.getRedirect(), ((CartoesActivity)context));

@@ -153,8 +153,7 @@ public class CarrinhosFavoritosAdapter extends RecyclerView.Adapter<CarrinhosFav
 
         View v = inflater.inflate(R.layout.row_aposta_carrinho_favorito,null);
             ((TextView)v.findViewById(R.id.tv_nome_modalidade)).setText(aposta.getModalidade().getDescricao());
-            ((TextView)v.findViewById(R.id.tv_qtd_numeros)).setText(aposta.getQuantidadeNumeros()+ " números");
-            //((TextView)v.findViewById(R.id.tv_valor_total_carrinho)).setText("R$10.00");
+            ((TextView)v.findViewById(R.id.tv_qtd_numeros)).setText(aposta.getQuantidadeNumeros()+ context.getResources().getString(R.string.espaco_numeros));
         if(aposta.getQuantidadeTeimosinhas() > 0){
             (v.findViewById(R.id.iv_teimosinha)).setVisibility(View.VISIBLE);
         }
@@ -205,15 +204,15 @@ public class CarrinhosFavoritosAdapter extends RecyclerView.Adapter<CarrinhosFav
         Button btnCancelar = dialogSegmented.findViewById(R.id.btn_cancelar);
 
         String descricao = activity.getString(R.string.carrinho_fav_segmented_desc);
-        descricao = descricao.replace("{modalidade}", modalidadeNormal);
+        descricao = descricao.replace(context.getResources().getString(R.string.chave_modalidade_chave), modalidadeNormal);
         descricaoDialog.setText(descricao);
 
         sgOpcoes.check(R.id.rb_1);
-        opcao1.setText("Ambos");
+        opcao1.setText(context.getResources().getString(R.string.ambos));
 
         opcao2.setText(modalidadeNormal);
         opcao3.setText(modalidadeEspecial);
-        tituloDialog.setText("Carrinho Favorito");
+        tituloDialog.setText(context.getResources().getString(R.string.carrinho_favorito_titulo));
 
         btnOk.setOnClickListener(v -> {
             int opcaoSelecionada = sgOpcoes.indexOfChild(dialogSegmented.findViewById(sgOpcoes.getCheckedRadioButtonId()));
@@ -247,7 +246,6 @@ public class CarrinhosFavoritosAdapter extends RecyclerView.Adapter<CarrinhosFav
         });
         });
     }
-
 
     private void detalhesCarrinho(LinearLayout layoutDetalhes){
         this.layoutAtual = layoutDetalhes;

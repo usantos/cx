@@ -59,5 +59,3 @@ public class DetalheDuvidaAdapter extends RecyclerView.Adapter<DetalheDuvidaAdap
         }
     }
 }
-
-

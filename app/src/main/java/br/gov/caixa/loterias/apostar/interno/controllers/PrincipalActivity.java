@@ -569,6 +569,7 @@ public class PrincipalActivity extends AppCompatActivity
             buttonHomeBet.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorClara()));
             buttonHomeBet.setTag(adapterPosition);
             buttonHomeBet.setText(ViewUtils.textFuturaAndFuturaBold(this, getResources().getString(R.string.aposte_por) +
+                            getResources().getString(R.string.espaco_em_branco) +
                     ViewUtils.getMoedaFormat(modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima())));
         }
     }
