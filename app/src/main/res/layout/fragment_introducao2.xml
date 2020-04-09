@@ -33,7 +33,7 @@ tools:context="br.gov.caixa.loterias.apostar.interno.view.fragment.Introducao2Fr
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/imageViewTelefone"
         android:layout_marginTop="19dp"
-        android:text="Novas funcionalidades "
+        android:text="@string/novas_funcionalidades"
         android:textColor="@color/branco"
         android:textSize="18sp" />
 
@@ -43,7 +43,7 @@ tools:context="br.gov.caixa.loterias.apostar.interno.view.fragment.Introducao2Fr
         android:layout_width="172dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="Suas apostas ainda mais fáceis e muito mais rápidas."
+        android:text="@string/suas_apostas_ainda_mais_f_ceis_e_muito_mais_r_pidas"
         android:textAlignment="center"
         android:textColor="@color/branco"
         android:textSize="12sp"

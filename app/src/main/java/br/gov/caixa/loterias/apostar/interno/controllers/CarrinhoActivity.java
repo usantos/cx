@@ -113,7 +113,7 @@ public class CarrinhoActivity extends AppCompatActivity {
             carrinho = null;
         }
         if(lerCarrinhoLocal){
-            FirebaseManager.registraEvento(CarrinhoActivity.this ,"ENTROU_CARRINHO_DE_APOSTAS_OFFLINE");
+            FirebaseManager.registraEvento(CarrinhoActivity.this ,getResources().getString(R.string.evento_carrinho_offline));
             lerCarrinhoLocal(true);
         }else{
             atualizaLayout(offSet);
@@ -340,7 +340,7 @@ public class CarrinhoActivity extends AppCompatActivity {
             apostaBO.limparCarrinho(new RequestListener<CarrinhoDTOResponse>() {
                 @Override
                 public void onResponse(CarrinhoDTOResponse result) {
-                    FirebaseManager.registraEvento(CarrinhoActivity.this ,"LIMPOU_CARRINHO_DE_APOSTAS_ONLINE");
+                    FirebaseManager.registraEvento(CarrinhoActivity.this ,getResources().getString(R.string.evento_limpou_carrinho_online));
                     DialogUtils.dismiss();
                     if (result.getRedirect() != null){
                         RedirectNetwork.checkRedirectSucesso( result.getRedirect(), CarrinhoActivity.this);
@@ -363,7 +363,7 @@ public class CarrinhoActivity extends AppCompatActivity {
     }
 
     private void deleteCarrinhoLocal() {
-        FirebaseManager.registraEvento(CarrinhoActivity.this ,"LIMPOU_CARRINHO_DE_APOSTAS_LOCAL");
+        FirebaseManager.registraEvento(CarrinhoActivity.this ,getResources().getString(R.string.evento_limpou_carrinho_offline));
         DBLoteriasCrud crud = new DBLoteriasCrud(getApplicationContext());
         crud.deleteAll();
         limparCarrinhoAtualizarTela();
@@ -387,7 +387,7 @@ public class CarrinhoActivity extends AppCompatActivity {
     private void montarLayout() {
         SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
         BigDecimal valorCarrinho = sessaoUsuario.getValorMinimimoAposta() == null ? BigDecimal.ZERO : sessaoUsuario.getValorMinimimoAposta();
-        ViewUtils.setMoedaFormatHtml(valorCarrinho, infoValorMinimo, getResources().getString(R.string.label_lembrar_valor_minimo).replace("_", "<br>") + " ");
+        ViewUtils.setMoedaFormatHtml(valorCarrinho, infoValorMinimo, getResources().getString(R.string.label_lembrar_valor_minimo).replace(getResources().getString(R.string.underline), getResources().getString(R.string.quebra_html)) + getResources().getString(R.string.espaco_em_branco));
         btnAvancaPagamento.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.avancarFormaPagamento)));
     }
 
@@ -401,7 +401,7 @@ public class CarrinhoActivity extends AppCompatActivity {
             public void onResponse(CarrinhoDTOResponse response) {
                 vLoading.setVisibility(View.GONE);
                 DialogUtils.dismiss();
-                FirebaseManager.registraEvento(CarrinhoActivity.this ,"ENTROU_CARRINHO_DE_APOSTAS_ONLINE");
+                FirebaseManager.registraEvento(CarrinhoActivity.this ,getResources().getString(R.string.evento_entrou_carrinho_online));
                 if (response.getRedirect() != null){
                     RedirectNetwork.checkRedirectSucesso( response.getRedirect(), CarrinhoActivity.this);
                 }

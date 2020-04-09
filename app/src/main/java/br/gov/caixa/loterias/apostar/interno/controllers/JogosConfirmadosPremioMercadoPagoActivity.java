@@ -62,19 +62,19 @@ public class JogosConfirmadosPremioMercadoPagoActivity extends AppCompatActivity
         contentConfirmadoLinearLayout = findViewById( R.id.contentConfirmadoLinearLayout );
 
 
-        textoTituloPremioConfirmado.setText( "Em breve seu prêmio estará disponível\n em sua conta no mercado pago" );
-        textoPremioConfirmado.setText( "Um email foi enviado para\n"+ emailPremioMercadoPagoEditText.getText().toString() + "\n\n\ncom todas as informações e passo-a-passo para o recebimento de seu prêmio" );
+        textoTituloPremioConfirmado.setText( getResources().getString(R.string.premio_disponivel_em_breve_mp) );
+        textoPremioConfirmado.setText( getResources().getString(R.string.email_enviado_para)+ emailPremioMercadoPagoEditText.getText().toString() + getResources().getString(R.string.com_o_passo_a_passo) );
 
 
         Bundle b = getIntent().getExtras();
         String valorPremio = ""; // or other values
         if(b != null) {
-            valorPremio = b.getString( "valorPremio" );
+            valorPremio = b.getString( getResources().getString(R.string.valor_premio) );
             valorPremioTextView.setText( valorPremio );
-            idAposta = b.getLong( "idAposta" );
+            idAposta = b.getLong( getResources().getString(R.string.id_aposta) );
         }
 
-        emailPremioMercadoPagoEditText.setText(KeycloakBO_.getInstance_(this).getFromToken("email"));
+        emailPremioMercadoPagoEditText.setText(KeycloakBO_.getInstance_(this).getFromToken(getResources().getString(R.string.email_minusculo)));
         emailPremioMercadoPagoEditText.setSelection(emailPremioMercadoPagoEditText.getText().length());
 
         resgatarPremioButton.setOnClickListener(view -> {
@@ -146,9 +146,9 @@ public class JogosConfirmadosPremioMercadoPagoActivity extends AppCompatActivity
 
     private void callWebserviceResgatarPremio() {
         InformacaoPagamentoDTO informacaoPagamentoDTO = new InformacaoPagamentoDTO();
-        informacaoPagamentoDTO.setMeioPagamento( new Long( "1" ) );
+        informacaoPagamentoDTO.setMeioPagamento( new Long( getResources().getString(R.string.um) ) );
         Map<String, String> mapPagamento = new HashMap<>();
-        mapPagamento.put("EMAIL", emailPremioMercadoPagoEditText.getText().toString());
+        mapPagamento.put(getResources().getString(R.string.email_maiusculo), emailPremioMercadoPagoEditText.getText().toString());
         informacaoPagamentoDTO.setParametrosPagamento( mapPagamento );
 
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
@@ -164,7 +164,7 @@ public class JogosConfirmadosPremioMercadoPagoActivity extends AppCompatActivity
                 contentConfirmadoLinearLayout.setVisibility( View.VISIBLE );
                 resgatarPremioButton.setVisibility( View.GONE );
                 voltarPremioButton.setVisibility( View.VISIBLE );
-                textoPremioConfirmado.setText( "Um email foi enviado para\n"+ emailPremioMercadoPagoEditText.getText().toString() + "\n\n\ncom todas as informações e passo-a-passo para o recebimento de seu prêmio" );
+                textoPremioConfirmado.setText( getResources().getString(R.string.email_enviado_para)+ emailPremioMercadoPagoEditText.getText().toString() + getResources().getString(R.string.informacoes_recebimento) );
             }
 
             @Override

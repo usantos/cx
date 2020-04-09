@@ -85,7 +85,7 @@
                 android:layout_height="60dp"
                 android:layout_margin="10dp"
                 android:background="@drawable/btn_estilo_valores_rapidao"
-                android:text="..."
+                android:text="@string/tres_pontos"
                 android:textColor="@drawable/btn_text_color"
                 android:textStyle="bold" />
 
@@ -97,7 +97,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:gravity="center"
-            android:text="Valor selecionado:"
+            android:text="@string/valor_selecionado"
             android:textSize="15sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -109,7 +109,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:gravity="center"
-            android:text="R$130,00"
+            android:text="@string/r_130_00"
             android:textColor="@color/amareloQueimado"
             android:textSize="15sp"
             android:textStyle="bold"
@@ -199,7 +199,7 @@
                 android:layout_height="60dp"
                 android:layout_margin="10dp"
                 android:background="@drawable/btn_estilo_valores_rapidao"
-                android:text="..."
+                android:text="@string/tres_pontos"
                 android:textColor="@drawable/btn_text_color"
                 android:textStyle="bold" />
 
@@ -211,7 +211,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:gravity="center"
-            android:text="Valor selecionado:"
+            android:text="@string/valor_selecionado"
             android:textSize="15sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -223,7 +223,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:gravity="center"
-            android:text="R$130,00"
+            android:text="@string/r_130_00"
             android:textColor="@color/amareloQueimado"
             android:textSize="15sp"
             android:textStyle="bold"

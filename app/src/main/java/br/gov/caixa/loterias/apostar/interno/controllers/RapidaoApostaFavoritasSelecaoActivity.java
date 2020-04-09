@@ -54,7 +54,7 @@ public class RapidaoApostaFavoritasSelecaoActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        String arrayApostas =  getIntent().getExtras().getString("apostasFavoritas");
+        String arrayApostas =  getIntent().getExtras().getString(getResources().getString(R.string.extra_apostas_favoritas));
         apostasFavoritaListaSelecionadas = new Gson().fromJson(arrayApostas, new TypeToken<ArrayList<ApostaFavoritaDTO>>(){}.getType());
 
         progressLoadingMore = findViewById(R.id.favoritas_loading_more_rapidao);
@@ -76,7 +76,7 @@ public class RapidaoApostaFavoritasSelecaoActivity extends AppCompatActivity {
             Intent intent = new Intent();
 
             String arrayNumeros = new Gson().toJson(apostasFavoritaListaSelecionadas);
-            intent.putExtra("apostasSalvas", arrayNumeros);
+            intent.putExtra(getResources().getString(R.string.extra_apostas_salvas), arrayNumeros);
             setResult(RESULT_OK, intent);
             finish();
         });

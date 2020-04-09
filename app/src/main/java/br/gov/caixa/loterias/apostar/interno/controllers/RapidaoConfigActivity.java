@@ -111,9 +111,9 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
         setValue = true;
 
 
-        tituloValorValorMinimoAposta.setLocale(new Locale("pt", "BR"));
-        tituloValorValorMaximoAposta.setLocale(new Locale("pt", "BR"));
-        tituloValorPremiumMinimum.setLocale(new Locale("pt", "BR"));
+        tituloValorValorMinimoAposta.setLocale(new Locale(getResources().getString(R.string.pt), getResources().getString(R.string.br)));
+        tituloValorValorMaximoAposta.setLocale(new Locale(getResources().getString(R.string.pt), getResources().getString(R.string.br)));
+        tituloValorPremiumMinimum.setLocale(new Locale(getResources().getString(R.string.pt), getResources().getString(R.string.br)));
     }
 
     @Override
@@ -184,25 +184,25 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == RESULT_OK && requestCode == 5) {
-            String arrayAsString = data.getExtras().getString("tiposAposta");
+            String arrayAsString = data.getExtras().getString(getResources().getString(R.string.extra_tipos_apostas));
             tipoApostaLista = Arrays.asList(new Gson().fromJson(arrayAsString, TipoAposta[].class));
             gridViewTipoAposta();
         }
 
         if (resultCode == RESULT_OK && requestCode == 6) {
-            String arrayAsString = data.getExtras().getString("numerosRapidao");
+            String arrayAsString = data.getExtras().getString(getResources().getString(R.string.extra_numeros_rapidao));
             listaNumerosObrigatorios = Arrays.asList(new Gson().fromJson(arrayAsString, Integer[].class));
             gridViewNumerosObrigatorios();
         }
 
         if (resultCode == RESULT_OK && requestCode == 7) {
-            String arrayAsString = data.getExtras().getString("numerosRapidao");
+            String arrayAsString = data.getExtras().getString(getResources().getString(R.string.extra_numeros_rapidao));
             listaNumerosProibidos = Arrays.asList(new Gson().fromJson(arrayAsString, Integer[].class));
             gridViewNumerosProibidos();
         }
 
          if (resultCode == RESULT_OK && requestCode == 8) {
-            String arrayAsString = data.getExtras().getString("apostasSalvas");
+            String arrayAsString = data.getExtras().getString(getResources().getString(R.string.extra_apostas_salvas));
             apostaFavoritaConfiguradasLista = new ArrayList<>(Arrays.asList(new Gson().fromJson(arrayAsString, ApostaFavoritaDTO[].class)));
             rapidao.setApostasFavoritas(apostaFavoritaConfiguradasLista);
             gridViewApostaFavorita();
@@ -256,22 +256,14 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
 
         gridviewTiposApostasRapidao.setOnItemClickListener((parent, v, position, id) -> {
             if (position == tipoApostaArrayList.size()) {
-                FirebaseManager.registraEvento(RapidaoConfigActivity.this ,"ENTROU_LISTA_MODALIDADE_CONFIG_RAPIDAO");
+                FirebaseManager.registraEvento(RapidaoConfigActivity.this ,getResources().getString(R.string.evento_entrou_lista_modalidade_config_rapidao));
                 Intent activity = new Intent(RapidaoConfigActivity.this, SelecaoModalidadesRapidaoActivity.class);
                 String arrayAsString = new Gson().toJson(tipoApostaLista);
-                activity.putExtra("tiposAposta", arrayAsString);
+                activity.putExtra(getResources().getString(R.string.extra_tipos_apostas), arrayAsString);
                 startActivityForResult(activity, 5);
             }
         });
     }
-
-    public String treatValorPremium(BigDecimal premium) {
-        if ((premium.divide(new BigDecimal(1000000))).compareTo(new BigDecimal(1.0)) == 0) {
-            return "1 milhão";
-        } else
-            return premium.divide(new BigDecimal(1000000)) + " milhões";
-    }
-
 
     private void gridViewNumerosObrigatorios() {
         NumerosRapidaoAdapter numerosRapidaoAdapter = new NumerosRapidaoAdapter(this, listaNumerosObrigatorios, true);
@@ -281,10 +273,10 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
         btnAddRemoverNumsObrigatorios.setOnClickListener( (View v) -> {
             Intent activity = new Intent(RapidaoConfigActivity.this, NumerosRapidaoActivity.class);
             String arrayAsString = new Gson().toJson(listaNumerosObrigatorios);
-            activity.putExtra("numerosobrigatorios", arrayAsString);
+            activity.putExtra(getResources().getString(R.string.extra_numeros_obrigatorios), arrayAsString);
             arrayAsString = new Gson().toJson(listaNumerosProibidos);
-            activity.putExtra("numerosContrarios", arrayAsString);
-            activity.putExtra("isTipoNrObrigatorios", true);
+            activity.putExtra(getResources().getString(R.string.extra_numeros_contrarios), arrayAsString);
+            activity.putExtra(getResources().getString(R.string.extra_is_tipo_nr_obrigatorios), true);
             startActivityForResult(activity, 6);
         });
 
@@ -296,13 +288,13 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
         gridviewNumerosProibidosRapidao.setExpanded(true);
 
         btnAddRemoverNumsProibidos.setOnClickListener( (View v) -> {
-            FirebaseManager.registraEvento(RapidaoConfigActivity.this ,"ENTROU_LISTA_FAVORITAS_CONFIG_RAPIDAO");
+            FirebaseManager.registraEvento(RapidaoConfigActivity.this ,getResources().getString(R.string.evento_entrou_lista_favoritas_config_rapidao));
             Intent activity = new Intent(RapidaoConfigActivity.this, NumerosRapidaoActivity.class);
             String arrayAsString = new Gson().toJson(listaNumerosProibidos);
-            activity.putExtra("numerosProibidos", arrayAsString);
+            activity.putExtra(getResources().getString(R.string.extra_numeros_proibidos), arrayAsString);
             arrayAsString = new Gson().toJson(listaNumerosObrigatorios);
-            activity.putExtra("numerosContrarios", arrayAsString);
-            activity.putExtra("isTipoNrObrigatorios", false);
+            activity.putExtra(getResources().getString(R.string.extra_numeros_contrarios), arrayAsString);
+            activity.putExtra(getResources().getString(R.string.extra_is_tipo_nr_obrigatorios), false);
             startActivityForResult(activity, 7);
         });
     }
@@ -324,7 +316,7 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
         btnAddRemoverApostasFav.setOnClickListener((View v) -> {
             Intent activity = new Intent(RapidaoConfigActivity.this, RapidaoApostaFavoritasSelecaoActivity.class);
             String arrayAsString = new Gson().toJson(rapidao.getApostasFavoritas());
-            activity.putExtra("apostasFavoritas", arrayAsString);
+            activity.putExtra(getResources().getString(R.string.extra_apostas_favoritas), arrayAsString);
 
             startActivityForResult(activity, 8);
         });
@@ -347,7 +339,7 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
             public void onResponse(final RapidaoDTOResponse response) {
                 loadViewProgress.dismiss();
                 rapidao = response.getPayload();
-                FirebaseManager.registraEvento(RapidaoConfigActivity.this ,"ENTROU_CONFIGURACOES_RAPIDAO");
+                FirebaseManager.registraEvento(RapidaoConfigActivity.this ,getResources().getString(R.string.evento_entrou_configuracoes_rapidao));
                 processarRegistro(response);
             }
 
@@ -368,7 +360,7 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
             rapidao.setValorMinimo(SessaoUsuario.getInstance().parametrosSimulacao.getValorMinimoCarrinho());
         }
         if (rapidao.getValorMinimoPremioPrincipal() == null) {
-            rapidao.setValorMinimoPremioPrincipal(new BigDecimal("0.0"));
+            rapidao.setValorMinimoPremioPrincipal(new BigDecimal(getResources().getString(R.string.zero_ponto_zero)));
         }
         if (rapidao.getApostasFavoritas() == null) {
             rapidao.setApostasFavoritas(new ArrayList<>());
@@ -423,7 +415,7 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
         }
 
         tituloValorPremiumMinimum.setText(ViewUtils.getMoedaFormat(bigDecimal));
-        tituloValorMinimoPremiumMiminum.setText("0 milhão");
+        tituloValorMinimoPremiumMiminum.setText(getResources().getString(R.string.zero_milhao));
 
         seekBarPremiumMimimun.setOnSeekBarChangeListener(this);
         seekBarPremiumMimimun.setMax(100);
@@ -483,7 +475,7 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
                     break;
             }
             if (tipoAposta != null) {
-                tipoAposta.setTitulo(tipoAposta.getTitulo().toLowerCase(new Locale("pt", "BR")));
+                tipoAposta.setTitulo(tipoAposta.getTitulo().toLowerCase(new Locale(getResources().getString(R.string.pt), getResources().getString(R.string.br))));
                 tipoApostaLista.add(tipoAposta);
             }
         }
@@ -515,7 +507,7 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
             @Override
             public void onResponse(RapidaoDTOResponse response) {
                 loadViewProgress.dismiss();
-                FirebaseManager.registraEvento(RapidaoConfigActivity.this ,"EFETUOU_CONFIGURACOES_RAPIDAO_SUCESSO");
+                FirebaseManager.registraEvento(RapidaoConfigActivity.this ,getResources().getString(R.string.evento_efetuou_configuracoes_rapidao_sucesso));
                 Intent intent = new Intent();
                 setResult(RESULT_OK, intent);
                 finish();
@@ -543,11 +535,11 @@ public class RapidaoConfigActivity extends AppCompatActivity implements SeekBar.
 
         @Override
         public void afterTextChanged(Editable s) {
-            String valorSetado = s.toString().replaceAll("\\s","");
-            valorSetado = valorSetado.replace("R$", "");
-            valorSetado = valorSetado.replace("$", "");
-            valorSetado = valorSetado.replace(".", "");
-            valorSetado = valorSetado.replace(",", ".");
+            String valorSetado = s.toString().replaceAll(getResources().getString(R.string.barra_barra_s),getResources().getString(R.string.string_vazia));
+            valorSetado = valorSetado.replace(getResources().getString(R.string.r_cifrao), getResources().getString(R.string.string_vazia));
+            valorSetado = valorSetado.replace(getResources().getString(R.string.cifrao), getResources().getString(R.string.string_vazia));
+            valorSetado = valorSetado.replace(getResources().getString(R.string.ponto), getResources().getString(R.string.string_vazia));
+            valorSetado = valorSetado.replace(getResources().getString(R.string.virgula), getResources().getString(R.string.ponto));
 
             BigDecimal valorSetadoBigDecimal = new BigDecimal(valorSetado);
 

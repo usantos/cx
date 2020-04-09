@@ -246,7 +246,7 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 			getAdapterModalidades().limpaSelecaoModalidades();
 		}
 		if(getEtNumConcurso()!= null){
-			getEtNumConcurso().setText("");
+			getEtNumConcurso().setText(context.getResources().getString(R.string.string_vazia));
 			getEtNumConcurso().clearFocus();
 		}
 	}

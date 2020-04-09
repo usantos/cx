@@ -77,7 +77,7 @@ public class TermosUsoActivity extends AppCompatActivity {
     private  void getExtras(){
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            openAjuda = bundle.getBoolean("ajuda");
+            openAjuda = bundle.getBoolean(getResources().getString(R.string.extra_ajuda));
         }
     }
 
@@ -102,7 +102,7 @@ public class TermosUsoActivity extends AppCompatActivity {
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                if (url.startsWith("mailto:")) {
+                if (url.startsWith(getResources().getString(R.string.mailto_dois_pontos))) {
                     Intent intent = new Intent(Intent.ACTION_SENDTO);
                     intent.setData(Uri.parse(url));
                     startActivity(Intent.createChooser(intent, getString(R.string.enviando_email)));
@@ -185,7 +185,7 @@ public class TermosUsoActivity extends AppCompatActivity {
 
             Bundle bundle = getIntent().getExtras();
             if (bundle != null) {
-                openAjuda = bundle.getBoolean("ajuda");
+                openAjuda = bundle.getBoolean(getResources().getString(R.string.extra_ajuda));
             }
 
             listenerTermosUso();
@@ -218,9 +218,9 @@ public class TermosUsoActivity extends AppCompatActivity {
                 }
 
                 termoHtml = response.getPayload().getConteudo();
-                webViewConteudo.loadData(termoHtml, "text/html; charset=UTF-8", "UTF-8");
+                webViewConteudo.loadData(termoHtml, getResources().getString(R.string.text_html_charset_utf_8), getResources().getString(R.string.utf_8));
                 selectTermoUso();
-                FirebaseManager.registraEvento(TermosUsoActivity.this ,"ENTROU_TERMOS_DE_USO");
+                FirebaseManager.registraEvento(TermosUsoActivity.this ,getResources().getString(R.string.evento_entrou_termos_de_uso));
             }
 
             @Override
@@ -246,7 +246,7 @@ public class TermosUsoActivity extends AppCompatActivity {
     private void selectTermoUso() {
         termosUsoButton.setChecked(Boolean.TRUE);
         relativeLayouTermoAceite.setVisibility(View.VISIBLE);
-        webViewConteudo.loadData(termoHtml, "text/html; charset=UTF-8", "UTF-8");
+        webViewConteudo.loadData(termoHtml, getResources().getString(R.string.text_html_charset_utf_8), getResources().getString(R.string.utf_8));
         unSelectDuvidas();
     }
 
@@ -333,7 +333,7 @@ public class TermosUsoActivity extends AppCompatActivity {
                     }
                     secaoDuvidas = response.getPayload();
                     createRecyclerView();
-                    FirebaseManager.registraEvento(TermosUsoActivity.this ,"ENTROU_DUVIDAS");
+                    FirebaseManager.registraEvento(TermosUsoActivity.this ,getResources().getString(R.string.evento_entrou_duvidas));
                 }
 
                 @Override

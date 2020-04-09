@@ -83,7 +83,7 @@
         android:layout_marginEnd="196dp"
         android:layout_marginStart="170dp"
         android:fontFamily="@font/font_family_futura"
-        android:text="v 1.0.0"
+        android:text="@string/placeholder_versao"
         android:textAlignment="center"
         android:textColor="#58B7A6"
         app:layout_constraintBottom_toBottomOf="parent"

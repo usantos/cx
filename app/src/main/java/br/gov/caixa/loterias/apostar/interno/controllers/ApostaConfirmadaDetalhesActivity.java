@@ -189,8 +189,8 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     protected void editarApostaBtn() {
         if (CollectionUtils.isNotEmpty(aposta.getNumerosSelecionados())) {
             SimularApostaActivity_.intent(this).aposta(aposta)
-                    .extra("tipoAposta", aposta.getModalidade())
-                    .extra("modalidade", (new Gson()).toJson(parametroSimulacao.getParametroJogo()))
+                    .extra(getResources().getString(R.string.extra_tipo_aposta), aposta.getModalidade())
+                    .extra(getResources().getString(R.string.extra_modalidade), (new Gson()).toJson(parametroSimulacao.getParametroJogo()))
                     .start();
         }
     }
@@ -300,7 +300,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FirebaseManager.registraEvento(this ,"ENTROU_GERENCIAR_APOSTAS_DETALHE");
+        FirebaseManager.registraEvento(this ,getResources().getString(R.string.evento_gerenciar_apostas_detalhes));
 
         if (comprovanteApostaDTO != null) {
             premioPago = false;

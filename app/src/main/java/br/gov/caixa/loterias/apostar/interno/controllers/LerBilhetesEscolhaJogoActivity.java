@@ -141,7 +141,7 @@ public class LerBilhetesEscolhaJogoActivity extends AppCompatActivity {
             public void onResponse(ModalidadeDTOResponse response) {
                 loadViewProgress.dismiss();
                 modalidades = response.getPayload();
-                Log.d("Response", response.getPayload().toString());
+                Log.d(getResources().getString(R.string.response), response.getPayload().toString());
 
                 atualizarLayout();
                 if (response.getRedirect() != null){

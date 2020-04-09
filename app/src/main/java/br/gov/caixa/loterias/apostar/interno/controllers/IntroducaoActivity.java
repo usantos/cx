@@ -32,7 +32,7 @@ public class IntroducaoActivity extends AppCompatActivity {
             startActivity(new Intent(IntroducaoActivity.this, LoginActivity.class));
             finish();
         }
-        FirebaseManager.registraEvento(IntroducaoActivity.this  ,"ENTROU_TOUR_TELA1");
+        FirebaseManager.registraEvento(IntroducaoActivity.this  , getResources().getString(R.string.evento_entrou_tour_tela_1));
 
         adapterViewPager = new MyPagerAdapter(getSupportFragmentManager());
         vpPager = findViewById(R.id.vpPager);
@@ -49,14 +49,14 @@ public class IntroducaoActivity extends AppCompatActivity {
             public void onPageSelected(int position) {
                 switch (position) {
                     case 1: {
-                        FirebaseManager.registraEvento(IntroducaoActivity.this ,"ENTROU_TOUR_TELA2");
+                        FirebaseManager.registraEvento(IntroducaoActivity.this ,getResources().getString(R.string.evento_entrou_tour_tela_2));
                     }
                     case 2: {
-                        FirebaseManager.registraEvento(IntroducaoActivity.this ,"ENTROU_TOUR_TELA3");
+                        FirebaseManager.registraEvento(IntroducaoActivity.this ,getResources().getString(R.string.evento_entrou_tour_tela_3));
                     }
                     case 3: {
                         if (!pulouTour) {
-                            FirebaseManager.registraEvento(IntroducaoActivity.this ,"ENTROU_TOUR_TELA4");
+                            FirebaseManager.registraEvento(IntroducaoActivity.this ,getResources().getString(R.string.evento_entrou_tour_tela_4));
                         }
                     }
                 }
@@ -117,7 +117,7 @@ public class IntroducaoActivity extends AppCompatActivity {
     }
 
     public void pularIntroducao(){
-        FirebaseManager.registraEvento(IntroducaoActivity.this ,"PULOU_TOUR");
+        FirebaseManager.registraEvento(IntroducaoActivity.this ,getResources().getString(R.string.evento_pulou_tour));
         pulouTour = true;
         vpPager.setCurrentItem(3, true);
     }

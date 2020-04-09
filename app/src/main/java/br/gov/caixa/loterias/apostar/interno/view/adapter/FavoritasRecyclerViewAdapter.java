@@ -113,16 +113,16 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
 
         swipeLayout.getViewTreeObserver().addOnGlobalLayoutListener(swipeGlobalLayoutListener);
 
-        EstiloModalidade estilo = new EstiloModalidade(ModalidadeEnum.toString(listaApostaFavorita.get(position).getModalidade().getDescricao().toLowerCase(new Locale("pt", "BR"))));
+        EstiloModalidade estilo = new EstiloModalidade(ModalidadeEnum.toString(listaApostaFavorita.get(position).getModalidade().getDescricao().toLowerCase(new Locale(context.getResources().getString(R.string.pt), context.getResources().getString(R.string.br)))));
         holder.tituloApostaFavorita.setText(listaApostaFavorita.get(position).getModalidade().getDescricao());
         holder.tituloApostaFavorita.setTextColor(context.getResources().getColor(estilo.getCorClara()));
-        holder.tituloNomeApostaFavorita.setText(" | " + listaApostaFavorita.get(position).getNome());
+        holder.tituloNomeApostaFavorita.setText(context.getResources().getString(R.string.espaco_barra_reta_espaco) + listaApostaFavorita.get(position).getNome());
         StringBuilder numeroStr = new StringBuilder();
         for (Integer num : listaApostaFavorita.get(position).getNumerosSelecionados()) {
             if (num.equals(listaApostaFavorita.get(position).getNumerosSelecionados().get(listaApostaFavorita.get(position).getNumerosSelecionados().size() - 1))) {
-                numeroStr.append(String.format("%02d", num));
+                numeroStr.append(String.format(context.getResources().getString(R.string.percent_zero_dois_d), num));
             } else {
-                numeroStr.append(String.format("%02d - ", num));
+                numeroStr.append(String.format(context.getResources().getString(R.string.percent_zero_dois_d_traco), num));
             }
         }
         holder.numerosApostaFavorita.setText(numeroStr.toString());
@@ -135,9 +135,9 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
         });
 
         holder.layoutSalvarNomeAposta.setOnClickListener(v -> {
-            if (holder.editTextNomeDaAposta.getText().toString().equals("")) {
+            if (holder.editTextNomeDaAposta.getText().toString().equals(context.getResources().getString(R.string.string_vazia))) {
                 ViewUtils.alertTitleButton(context, R.string.label_atencao,
-                        context.getResources().getString(R.string.MA002) + " nome da aposta",
+                        context.getResources().getString(R.string.MA002) + context.getResources().getString(R.string.espaco_nome_da_aposta),
                         context.getResources().getString(R.string.ok));
             } else {
                 AppUtils.fechaTeclado(activity);
@@ -213,10 +213,10 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(activity);
         final ApostaBO apostaBO = ApostaBO_.getInstance_(activity);
 
-        apostaBO.deleteApostasFavoritas(listaApostaFavorita.get(position).getId() + "", new RequestListener<RetornoPadraoDTO>() {
+        apostaBO.deleteApostasFavoritas(listaApostaFavorita.get(position).getId() + context.getResources().getString(R.string.string_vazia), new RequestListener<RetornoPadraoDTO>() {
             @Override
             public void onResponse(RetornoPadraoDTO response) {
-                FirebaseManager.registraEvento(context ,"EFETUOU_EXCLUSAO_FAVORITO");
+                FirebaseManager.registraEvento(context ,context.getResources().getString(R.string.evento_efetuou_exclusao_favorito));
                 loadViewProgress.dismiss();
                 if (response.getRedirect() != null){
                     RedirectNetwork.checkRedirectSucesso( response.getRedirect(), activity);
@@ -236,7 +236,7 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
         apostaBO.postIncluirApostaFavoritaCarrinho(idApostaFavorita, valorTipoConcurso, qtdTeimosinhas, new RequestListener<CarrinhoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoDTOResponse response) {
-                FirebaseManager.registraEvento(context ,"EFETUOU_INCLUSAO_FAVORITO_NO_CARRINHO");
+                FirebaseManager.registraEvento(context ,context.getResources().getString(R.string.evento_efetuou_inclusao_favorito_no_carrinho));
                 DialogUtils.dismiss();
                 if (response.getRedirect() != null){
                     RedirectNetwork.checkRedirectSucesso( response.getRedirect(), activity);
@@ -262,16 +262,16 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
             @Override
             public void onResponse(RetornoPadraoDTO response) {
                 loadViewProgress.dismiss();
-                FirebaseManager.registraEvento(context ,"EFETUOU_TROCA_DO_NOME_DA_APOSTA_FAVORITA");
+                FirebaseManager.registraEvento(context ,context.getResources().getString(R.string.evento_efetuou_troca_do_nome_da_aposta_favorita));
                 if (response.getRedirect() != null) {
                     RedirectNetwork.checkRedirectSucesso( response.getRedirect(), activity);
                 }
 
                 apostaFavoritaDTO.setOpenSwipeLayout(true);
                 apostaFavoritaDTO.setNome(holder.editTextNomeDaAposta.getText().toString());
-                holder.tituloNomeApostaFavorita.setText(" | " + holder.editTextNomeDaAposta.getText().toString());
-                holder.nomeApostaSalvoTextView.setText("\"" + holder.editTextNomeDaAposta.getText().toString() + "\"");
-                holder.editTextNomeDaAposta.setText("");
+                holder.tituloNomeApostaFavorita.setText(context.getResources().getString(R.string.espaco_barra_reta_espaco) + holder.editTextNomeDaAposta.getText().toString());
+                holder.nomeApostaSalvoTextView.setText(context.getResources().getString(R.string.barrra_aspas) + holder.editTextNomeDaAposta.getText().toString() + context.getResources().getString(R.string.barrra_aspas));
+                holder.editTextNomeDaAposta.setText(context.getResources().getString(R.string.string_vazia));
                 holder.linearLayoutLayoutContentAlterarFavoritasSalvo.setVisibility(View.VISIBLE);
                 holder.relativeLayoutContentAlterarFavoritasEditar.setVisibility(View.GONE);
             }
@@ -331,7 +331,7 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
         AdicionarCarrinhoFavoritasView adicionarCarrinhoFavoritasView = AdicionarCarrinhoFavoritasView.newInstance();
         adicionarCarrinhoFavoritasView.arrayConcursos = arrayConcursos;
         adicionarCarrinhoFavoritasView.idApostaFavorita = idApostaFavorita;
-        adicionarCarrinhoFavoritasView.show(fm, "adicionarCarrinhoFavoritasView");
+        adicionarCarrinhoFavoritasView.show(fm, context.getResources().getString(R.string.adicionar_carrinho_favoritas_view));
     }
 
     private void adicionarApostaCarrinhoRequest(final ApostaBO apostaBO, final ApostaFavoritaDTO apostaFavoritaDTO) {

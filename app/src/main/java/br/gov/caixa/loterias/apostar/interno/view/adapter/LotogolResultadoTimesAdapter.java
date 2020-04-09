@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
+import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.PartidaLotogolDTO;
 import br.gov.caixa.loterias.apostar.interno.view.custom.PartidaViewLotogolResultado;
@@ -39,7 +40,7 @@ public class LotogolResultadoTimesAdapter extends RecyclerView.Adapter<LotogolRe
     @Override
     public void onBindViewHolder(LotogolHolder holder, int position) {
         holder.partidaRow.setLayout(partidalotogolLista.get(position));
-        holder.partidaRow.getPaginaResultadoLotogolText().setText(position+1 + " de " + partidalotogolLista.size());
+        holder.partidaRow.getPaginaResultadoLotogolText().setText(position + 1 +  context.getResources().getString(R.string.espaco_de_espaco) + partidalotogolLista.size());
     }
 
     @Override
@@ -61,8 +62,4 @@ public class LotogolResultadoTimesAdapter extends RecyclerView.Adapter<LotogolRe
             partidaRow = (PartidaViewLotogolResultado) itemView;
         }
     }
-
-
-
 }
-

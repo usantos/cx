@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="59dp"
-            android:text="Dados pessoais" />
+            android:text="@string/dados_pessoais" />
     </LinearLayout>
 
     <View

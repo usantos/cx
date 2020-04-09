@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="60dp"
+    xmlns:tools="http://schemas.android.com/tools"
     android:gravity="center_vertical">
 
     <TextView
@@ -11,6 +12,6 @@
         android:fontFamily="@font/arialmt"
         android:textSize="15.8sp"
         android:layout_marginLeft="15dp"
-        android:text="aaaa"
+        tools:text="@string/placeholder_prognosticos"
         android:textColor="@drawable/text_selector_list_pop_up" />
 </LinearLayout>

@@ -116,8 +116,8 @@ public class CarrinhoApostasListViewRapidaoAdapter extends RecyclerView.Adapter<
             quantidadeSorteiosString = context.getString(R.string.label_sorteio);
         }
 
-        quantidadeApostadas.setText(String.format( Locale.getDefault(), "%d %s", quantidadeNumeros, quantidadeApostadasString));
-        quantidadeSorteios.setText(String.format(Locale.getDefault(), "%d %s", quantidadeTeimosinhas, quantidadeSorteiosString));
+        quantidadeApostadas.setText(String.format( Locale.getDefault(), context.getResources().getString(R.string.percent_d_percent_s), quantidadeNumeros, quantidadeApostadasString));
+        quantidadeSorteios.setText(String.format(Locale.getDefault(), context.getResources().getString(R.string.percent_d_percent_s), quantidadeTeimosinhas, quantidadeSorteiosString));
         if(apostas != null && apostas.get(position) != null && apostas.get(position).getModalidade() != null){
             if (ModalidadeEnum.TIMEMANIA == apostas.get(position).getModalidade()) {
                 layoutTimeCoracao.setVisibility(View.VISIBLE);
@@ -161,9 +161,9 @@ public class CarrinhoApostasListViewRapidaoAdapter extends RecyclerView.Adapter<
                                 ArrayList<ArrayList<Integer>> listaApostas  = apostaSuperSete.getMatrizNumerosSelecionados();
                                 for (List<Integer> coluna: listaApostas) {
                                     for(Integer linha : coluna) {
-                                        numeroStr.append(String.format("%d", linha));
+                                        numeroStr.append(String.format(context.getResources().getString(R.string.percent_d), linha));
                                     }
-                                    numeroStr.append(String.format("/"));
+                                    numeroStr.append(String.format(context.getResources().getString(R.string.barra)));
                                 }
 
                             } else {
@@ -171,9 +171,9 @@ public class CarrinhoApostasListViewRapidaoAdapter extends RecyclerView.Adapter<
                                 if (apostaNumerica.getListaNumerosSelecionados() != null) {
                                     for (Integer num : apostaNumerica.getListaNumerosSelecionados()) {
                                         if (num.equals(apostaNumerica.getNumerosSelecionados().get(apostaNumerica.getListaNumerosSelecionados().size() - 1))) {
-                                            numeroStr.append(String.format("%02d", num));
+                                            numeroStr.append(String.format(context.getResources().getString(R.string.percent_zero_dois_d), num));
                                         } else {
-                                            numeroStr.append(String.format("%02d - ", num));
+                                            numeroStr.append(String.format(context.getResources().getString(R.string.percent_zero_dois_d_traco), num));
                                         }
                                     }
                                 }
@@ -186,9 +186,9 @@ public class CarrinhoApostasListViewRapidaoAdapter extends RecyclerView.Adapter<
                 case IndicadorSurpresinha.SURPRESINHA_NUMERICA:
                     for (int i = 0; i < apostas.get(position).getQuantidadeNumeros(); i++) {
                         if (i == apostas.get(position).getQuantidadeNumeros() - 1) {
-                            numeroStr.append("XX");
+                            numeroStr.append(context.getResources().getString(R.string.x_x));
                         } else {
-                            numeroStr.append("XX - ");
+                            numeroStr.append(context.getResources().getString(R.string.x_x_traco));
                         }
                     }
                     break;

@@ -6,7 +6,7 @@
     <item
         android:id="@+id/action_apresentar_trevo"
         android:icon="@drawable/icon_trevo_toolbar"
-        android:title="Apresentar trevo"
+        android:title="@string/apresentar_trevo"
         app:showAsAction="ifRoom"/>
     <item
         android:id="@+id/action_settings"
