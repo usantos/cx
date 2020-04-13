@@ -75,7 +75,7 @@ public class NumeroSelecionadoRapidaoAdapter extends BaseAdapter {
 
         final NumerosSelecionadosRapidao numeroRapidao = numerosSelecionadosRapidao[position];
         final TextView tituloTipoAposta = convertView.findViewById(R.id.tituloNumeroRapidao);
-        tituloTipoAposta.setText("" + numeroRapidao.getNumero());
+        tituloTipoAposta.setText(mContext.getResources().getString(R.string.string_vazia) + numeroRapidao.getNumero());
         final LinearLayout linearLayoutNumerosRapidao = convertView.findViewById(R.id.LinearLayoutContentNumerosRapidao);
         if (numeroRapidao.getSelecionado()) {
             linearLayoutNumerosRapidao.setBackground(ContextCompat.getDrawable(mContext, R.drawable.circle_numeros_obrigatorios));

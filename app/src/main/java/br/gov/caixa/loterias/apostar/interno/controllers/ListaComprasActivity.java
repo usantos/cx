@@ -139,7 +139,7 @@ public class ListaComprasActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         TextView textBottomInformacaoTextView = findViewById(R.id.textBottomInformacaoTextView);
-        textBottomInformacaoTextView.setText("Compras mais antigas\npodem ser consultadas no site");
+        textBottomInformacaoTextView.setText(getResources().getString(R.string.compras_mais_antigas));
         setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.texto_futura_bold, getString(R.string.title_activity_lista_compras))));
         scrollViewContentViewCompras = findViewById(R.id.scrollViewContentViewCompras);
 
@@ -147,7 +147,7 @@ public class ListaComprasActivity extends AppCompatActivity {
         recyclerViewCompras = findViewById(R.id.recyclerCompras);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        FirebaseManager.registraEvento(this ,"ENTROU_LISTA_COMPRAS");
+        FirebaseManager.registraEvento(this ,getResources().getString(R.string.evento_entrou_lista_compras));
         setaDialogFavoritar();
     }
 
@@ -156,7 +156,7 @@ public class ListaComprasActivity extends AppCompatActivity {
         dialogFavoritar.setContentView(R.layout.custom_dialog_edit_text);
 
         TextView tituloDialog = dialogFavoritar.findViewById(R.id.tv_titulo);
-        tituloDialog.setText("Carrinho Favorito");
+        tituloDialog.setText(getResources().getString(R.string.carrinho_favorito));
 
         etCarrinho = dialogFavoritar.findViewById(R.id.et_carrinho);
 
@@ -289,7 +289,7 @@ public class ListaComprasActivity extends AppCompatActivity {
         selecaoMesSpinner = findViewById(R.id.SelecaoMesSpinner);
         List<String> list = new ArrayList<>();
         for(MesAnoDTO item : listaMesAnoDTO){
-            list.add(item.getMes().getDescricao() + " de " + item.getAno());
+            list.add(item.getMes().getDescricao() + getResources().getString(R.string.de_espacado) + item.getAno());
         }
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, list);
 

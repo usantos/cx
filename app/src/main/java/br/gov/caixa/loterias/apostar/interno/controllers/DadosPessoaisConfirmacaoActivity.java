@@ -22,8 +22,8 @@ public class DadosPessoaisConfirmacaoActivity extends AppCompatActivity {
 
         TextView tituloConfirmacaoCadastroTextView = findViewById( R.id.tituloConfirmacaoCadastroTextView );
         TextView subtituloConfirmaCadastroTextView = findViewById( R.id.subtituloConfirmaCadastroTextView );
-        tituloConfirmacaoCadastroTextView.setText( ViewUtils.textFuturaAndFuturaBold( this, "_Seu cadastro_ foi atualizado\ncom sucesso." ) );
-        subtituloConfirmaCadastroTextView.setText( "Aguarde apenas um instante enquanto\nte redirecionamos para a tela inicial.\n:)" );
+        tituloConfirmacaoCadastroTextView.setText( ViewUtils.textFuturaAndFuturaBold( this, getResources().getString(R.string.cadastro_atualizado) ) );
+        subtituloConfirmaCadastroTextView.setText( getResources().getString(R.string.aguarde_redirecionamento_tela_inicial) );
 
         Utils.delay(3, () -> finish());
     }

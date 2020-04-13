@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="203dp"
         android:layout_marginTop="17dp"
-        android:text="loteca"
+        android:text="@string/loteca"
         android:textColor="@color/branco"
         android:textSize="20sp"
         android:textStyle="bold" />

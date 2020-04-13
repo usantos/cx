@@ -59,7 +59,7 @@
         android:layout_marginBottom="8dp"
         android:fontFamily="@font/arialmt"
         android:gravity="end"
-        android:text="R$ 4,50"
+        android:text="@string/r_4_50"
         android:textColor="@color/cinza"
         android:textSize="14.2sp"
         app:layout_constraintBottom_toBottomOf="parent"

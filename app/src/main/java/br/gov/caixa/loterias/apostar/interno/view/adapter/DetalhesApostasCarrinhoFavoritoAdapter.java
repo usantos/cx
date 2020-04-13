@@ -65,7 +65,7 @@ public class DetalhesApostasCarrinhoFavoritoAdapter extends RecyclerView.Adapter
 
         }
 
-        if(apostaAtual.getModalidade().getDescricao().equalsIgnoreCase("dia de sorte")) {
+        if(apostaAtual.getModalidade().getDescricao().equalsIgnoreCase(activity.getResources().getString(R.string.dia_de_sorte))) {
             holder.tvMesDaSorte.setText(apostaAtual.getMesDeSorte().getNome());
             holder.tvMesDaSorte.setVisibility(View.VISIBLE);
             holder.tvMesDaSorte.setTextColor(ContextCompat.getColor(activity, estilo.getCorClara()));
@@ -78,17 +78,17 @@ public class DetalhesApostasCarrinhoFavoritoAdapter extends RecyclerView.Adapter
         if (aposta.getNumerosSelecionados().size() == 0) {
             for (int i = 0; i < aposta.getQuantidadeNumeros(); i++) {
                 if (i == aposta.getQuantidadeNumeros() - 1) {
-                    numeroStr.append("XX");
+                    numeroStr.append(activity.getResources().getString(R.string.x_x));
                 } else {
-                    numeroStr.append("XX - ");
+                    numeroStr.append(activity.getResources().getString(R.string.x_x_traco));
                 }
             }
         } else {
             for (Integer num : aposta.getNumerosSelecionados()) {
                 if (num.equals(aposta.getNumerosSelecionados().get(aposta.getNumerosSelecionados().size() - 1))) {
-                    numeroStr.append(String.format("%02d", num));
+                    numeroStr.append(String.format(activity.getResources().getString(R.string.percent_zero_dois_d), num));
                 } else {
-                    numeroStr.append(String.format("%02d - ", num));
+                    numeroStr.append(String.format(activity.getResources().getString(R.string.percent_zero_dois_d_traco), num));
                 }
             }
         }

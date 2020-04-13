@@ -60,7 +60,7 @@ public class FavoritasActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        FirebaseManager.registraEvento(this ,"ENTROU_LISTA_FAVORITOS");
+        FirebaseManager.registraEvento(this ,getResources().getString(R.string.evento_entrou_lista_favoritos));
     }
 
     @Override
@@ -119,8 +119,8 @@ public class FavoritasActivity extends AppCompatActivity {
     private void atualizaLayout(){
         TextView tituloFavoritas = findViewById(R.id.tituloFavoritas);
         TextView subTituloFavoritas = findViewById(R.id.subTituloFavoritas);
-        tituloFavoritas.setText("Os seus números da sorte\nno mesmo lugar");
-        subTituloFavoritas.setText("Nesta área estão todas as suas apostas da sorte.\nÉ só escolher e apostar. Boa Sorte!");
+        tituloFavoritas.setText(getResources().getString(R.string.numeros_da_sorte_no_mesmo_lugar));
+        subTituloFavoritas.setText(getResources().getString(R.string.nesta_area_estao_todas_suas_apostas));
 
     }
 

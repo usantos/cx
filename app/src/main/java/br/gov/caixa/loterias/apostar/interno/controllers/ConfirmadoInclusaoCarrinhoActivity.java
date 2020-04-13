@@ -45,24 +45,14 @@ import static br.gov.caixa.loterias.apostar.interno.controllers.CarrinhoActivity
 
 public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implements OnClickListener {
 
-    private boolean isLotecaOrLotogol;
-    private static int RESULT_FINISH = 3;
     public ParametroJogoDTO parametroSimulacao;
-
-    public ParametroJogoDTO getParametroSimulacao() {
-        return parametroSimulacao;
-    }
-
-    public void setParametroSimulacao(ParametroJogoDTO parametroSimulacao) {
-        this.parametroSimulacao = parametroSimulacao;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirmado_inclusao_carrinho);
 
-        parametroSimulacao = new Gson().fromJson(getIntent().getStringExtra("modalidade"), ParametroJogoDTO.class);
+        parametroSimulacao = new Gson().fromJson(getIntent().getStringExtra(getResources().getString(R.string.modalidade)), ParametroJogoDTO.class);
         ((TextView) findViewById(R.id.txtVoltarAoInicio)).setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.btn_title_voltarAoInicio)));
 
         invalidateOptionsMenu();
@@ -77,10 +67,8 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
     }
 
     private void configuraActivityIncluidoApostaCarrinho() {
-        ModalidadeEnum tipoJogo = (ModalidadeEnum) getIntent().getSerializableExtra("tipoAposta");
-        BigDecimal valorAposta = (BigDecimal) getIntent().getSerializableExtra("valorAposta");
-
-        isLotecaOrLotogol = ((tipoJogo == ModalidadeEnum.LOTECA) || (tipoJogo == ModalidadeEnum.LOTOGOL));
+        ModalidadeEnum tipoJogo = (ModalidadeEnum) getIntent().getSerializableExtra(getResources().getString(R.string.tipoAposta));
+        BigDecimal valorAposta = (BigDecimal) getIntent().getSerializableExtra(getResources().getString(R.string.valorAposta));
 
         TextView valorApostaText = findViewById(R.id.valorApostaConfirmacao);
         valorApostaText.setText(ViewUtils.getMoedaFormat(valorAposta));
@@ -88,7 +76,7 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
         SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
         String valorCarrinho = ViewUtils.getMoedaFormat(sessaoUsuario.getValorMinimimoAposta() == null ? BigDecimal.ZERO : sessaoUsuario.getValorMinimimoAposta());
         TextView textObservacaoConfirmacao = findViewById(R.id.textObservacaoConfirmacao);
-        textObservacaoConfirmacao.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.infoValorMinimoCarrinho) + " _" + valorCarrinho + "_"));
+        textObservacaoConfirmacao.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.infoValorMinimoCarrinho) + getResources().getString(R.string.underline_com_espaco) + valorCarrinho + getResources().getString(R.string.underline)));
 
         configuraLayoutTela(tipoJogo);
 
@@ -97,17 +85,15 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
             getSupportActionBar().setElevation(0);
         }
 
-//        findViewById(R.id.botaoNovaAposta).setOnClickListener(this);
         findViewById(R.id.confirmarInclusaoApostaLayoutCarrinhoApostas).setOnClickListener(this);
         findViewById(R.id.botaoLinearLayoutVoltarPrincipal).setOnClickListener(this);
-//        findViewById(R.id.confirmarInclusaoApostaLayoutCarrinhoApostas).setOnClickListener(this);
 
     }
 
     private void configuraLayoutTela(ModalidadeEnum modalidadeEnum) {
         EstiloModalidade estilo = new EstiloModalidade(modalidadeEnum);
 
-        setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, "_" + ModalidadeEnum.fromString(modalidadeEnum) + "_"));
+        setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getResources().getString(R.string.underline) + ModalidadeEnum.fromString(modalidadeEnum) + getResources().getString(R.string.underline)));
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(ContextCompat.getColor(this, estilo.getCorEscura()));
@@ -118,26 +104,6 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
         GradientDrawable gd = new GradientDrawable();
         gd.setColor(ContextCompat.getColor(this, estilo.getCorClara()));
         gd.setStroke(2, Color.WHITE);
-
-//        Button botaoNovaAposta = (Button) findViewById(R.id.botaoNovaAposta);
-//
-//        Button botaoVerCarrinhoAposta = (Button) findViewById(R.id.botaoVerCarrinhoAposta);
-//        Button botaoAdicionarCompletarCartela = (Button) findViewById(R.id.botaoAdicionarCompletarCartela);
-
-        LinearLayout botaoLinearLayoutVoltarPrincipal = findViewById(R.id.botaoLinearLayoutVoltarPrincipal);
-
-//        if (isLotecaOrLotogol) {
-//            botaoNovaAposta.setVisibility(View.INVISIBLE);
-//            botaoVerCarrinhoAposta.setVisibility(View.INVISIBLE);
-//            botaoAdicionarCompletarCartela.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.confirmacaoPagamentoBotaoVoltarInicio)));
-//            botaoAdicionarCompletarCartela.setBackgroundColor(getResources().getColor(R.color.cinza));
-//            botaoAdicionarCompletarCartela.setOnClickListener(this);
-//        } else {
-//            botaoNovaAposta.setBackground(gd);
-//            botaoVerCarrinhoAposta.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.verCarrinho)));
-//            botaoAdicionarCompletarCartela.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.adicionarAoCarrinho)));
-//        }
-
     }
 
     // Mudando o texto dos MenuItem de acordo com os dados
@@ -159,16 +125,16 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
         getMenuInflater().inflate(R.menu.itens_simular_actionbar_termos, menu);
 
         MenuItem concursoAtual = menu.findItem(R.id.concursoAtual);
-        ((TextView) concursoAtual.getActionView().findViewById(R.id.item_titulo)).setText("Concurso");
+        ((TextView) concursoAtual.getActionView().findViewById(R.id.item_titulo)).setText(getString(R.string.concurso));
         ((TextView) concursoAtual.getActionView().findViewById(R.id.item_descricao)).setText(parametroSimulacao.getConcurso().getNumero().toString());
 
-        SimpleDateFormat formatterDateFinal = new SimpleDateFormat("dd/MM");
-        DateFormat formatterDate = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        SimpleDateFormat formatterDateFinal = new SimpleDateFormat(getResources().getString(R.string.dd_mm));
+        DateFormat formatterDate = new SimpleDateFormat(getResources().getString(R.string.dd_mm_yyyy_hh_mm_ss));
         MenuItem dataSorteio = menu.findItem(R.id.sorteioAtual);
 
         try {
             Date dataFormatada = formatterDate.parse(parametroSimulacao.getConcurso().getDataHoraSorteio());
-            ((TextView) dataSorteio.getActionView().findViewById(R.id.item_titulo)).setText("Sorteio");
+            ((TextView) dataSorteio.getActionView().findViewById(R.id.item_titulo)).setText(getResources().getString(R.string.sorteio));
             ((TextView) dataSorteio.getActionView().findViewById(R.id.item_descricao)).setText(formatterDateFinal.format(dataFormatada));
         } catch (Exception e) {
             e.printStackTrace();
@@ -198,7 +164,7 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
 
     private void abrirTermos() {
         Intent activity = new Intent(ConfirmadoInclusaoCarrinhoActivity.this, TermosUsoActivity.class);
-        activity.putExtra("ajuda", true);
+        activity.putExtra(getResources().getString(R.string.ajuda), true);
         startActivity(activity);
     }
 

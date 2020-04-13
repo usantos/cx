@@ -83,8 +83,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         estilo = new EstiloModalidade(data.get(position).getTipoModalidade());
 
-        if (data.get(position).getConcurso().getTipoConcurso().toString().equals("ESPECIAL")){
-            holder.game.setText(data.get(position).getConcurso().getModalidadeDetalhada().getDescricaoEspecial().toLowerCase(new Locale("pt", "BR")));
+        if (data.get(position).getConcurso().getTipoConcurso().toString().equals(context.getResources().getString(R.string.especial_maiusculo))){
+            holder.game.setText(data.get(position).getConcurso().getModalidadeDetalhada().getDescricaoEspecial().toLowerCase(new Locale(context.getResources().getString(R.string.pt), context.getResources().getString(R.string.br))));
         }else{
             holder.game.setText(ModalidadeEnum.fromString(data.get(position).getTipoModalidade()));
         }
@@ -115,8 +115,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         DateFormat formatterDay;
         DateFormat formatterMonth;
 
-        DateFormat formatterDate = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-        Locale BRAZIL = new Locale("pt","BR");
+        DateFormat formatterDate = new SimpleDateFormat(context.getResources().getString(R.string.dd_mm_yyyy_hh_mm_ss));
+        Locale BRAZIL = new Locale(context.getResources().getString(R.string.pt),context.getResources().getString(R.string.br));
         formatterDay = SimpleDateFormat.getDateInstance(DateFormat.FULL, BRAZIL);
         formatterMonth = SimpleDateFormat.getDateInstance(DateFormat.MEDIUM, BRAZIL);
 
@@ -134,16 +134,17 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                 data.get(position).getTipoModalidade() == ModalidadeEnum.LOTOGOL) {
             holder.textViewSorteioOuEncerramento.setText(R.string.label_encerramento);
 
-            String[] split = formatterDay.format(dataFechamentoSorteio).split(",");
-            String[] splitMedium = formatterMonth.format(dataFechamentoSorteio).split(" ");
+            String[] split = formatterDay.format(dataFechamentoSorteio).split(context.getResources().getString(R.string.virgula));
+            String[] splitMedium = formatterMonth.format(dataFechamentoSorteio).split(context.getResources().getString(R.string.espaco_em_branco));
 
-            holder.dataSorteio.setText(ViewUtils.capitalized(split[0]) + ", " + splitMedium[0] + " de " + splitMedium[2]);
+            holder.dataSorteio.setText(ViewUtils.capitalized(split[0]) + context.getResources().getString(R.string.virgula_espaco) + splitMedium[0] + context.getResources().getString(R.string.espaco_de_espaco) + splitMedium[2]);
         } else {
             holder.textViewSorteioOuEncerramento.setText(R.string.label_sorteio_case);
 
-            String[] split = formatterDay.format(dataSorteioFormatada).split(",");
-            String[] splitDataFormatadaSilce = data.get(position).getConcurso().getDataSorteio().split(" ");
-            holder.dataSorteio.setText(ViewUtils.capitalized(split[0]) + ", " + splitDataFormatadaSilce[0] + " de " + splitDataFormatadaSilce[1]);
+            String[] split = formatterDay.format(dataSorteioFormatada).split(context.getResources().getString(R.string.virgula_espaco));
+            String[] splitDataFormatadaSilce = data.get(position).getConcurso().getDataSorteio().split(context.getResources().getString(R.string.espaco_em_branco));
+            //holder.dataSorteio.setText(ViewUtils.capitalized(split[0]) + context.getResources().getString(R.string.virgula_espaco)+ splitDataFormatadaSilce[0] + context.getResources().getString(R.string.espaco_de_espaco) + splitDataFormatadaSilce[1]);
+            holder.dataSorteio.setText(ViewUtils.capitalized(split[0]));
         }
 
         Map mapComDiferencaDeDatas = computeDiff(new Date(), dataFechamentoSorteio);
@@ -230,7 +231,9 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     }
 
     private SpannableStringBuilder retornaStringConcursoSemEstimativa(String numConcurso, int corModalidadeInt) {
-        final SpannableStringBuilder sb = new SpannableStringBuilder("Concurso \n\n" + numConcurso + "\n\nainda sem estimativa de prêmio.");
+        final SpannableStringBuilder sb = new SpannableStringBuilder(context.getResources().getString(R.string.concurso_barra_n_barra_n) +
+                numConcurso +
+                context.getResources().getString(R.string.barra_n_barra_n_ainda_sem_estimativa_de_premio));
 
         final ForegroundColorSpan corModalidade = new ForegroundColorSpan(ContextCompat.getColor(context, corModalidadeInt));
         final ForegroundColorSpan corTexto = new ForegroundColorSpan(ContextCompat.getColor(context,R.color.cinzaescuro));
@@ -254,24 +257,24 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     private String retornaStringDias(Long dia) {
         if (dia > 0) {
             if (dia == 1) {
-                return String.format(Locale.getDefault(), "%d dia", dia);
+                return String.format(Locale.getDefault(), context.getResources().getString(R.string.percent_d_dia), dia);
             }
-            return String.format(Locale.getDefault(), "%d dias", dia);
+            return String.format(Locale.getDefault(), context.getResources().getString(R.string.percent_d_dias), dia);
         }
-        return "";
+        return context.getResources().getString(R.string.string_vazia);
     }
 
     private String retornaStringHoras(Long dia, Long hora) {
-        String string = "";
-        string = dia > 0 ? " e " : "";
+        String string;
+        string = dia > 0 ? context.getResources().getString(R.string.espaco_e_espaco) : context.getResources().getString(R.string.string_vazia);
 
         if (hora > 0){
             if (hora == 1) {
-                return string + String.format(Locale.getDefault(), "%d hora", hora);
+                return string + String.format(Locale.getDefault(), context.getResources().getString(R.string.percent_d_hora), hora);
             }
-            return string + String.format(Locale.getDefault(), "%d horas", hora);
+            return string + String.format(Locale.getDefault(), context.getResources().getString(R.string.percent_d_horas), hora);
         }
-        return "";
+        return context.getResources().getString(R.string.string_vazia);
     }
 
     private Map<TimeUnit,Long> computeDiff(Date date1, Date date2) {
@@ -428,5 +431,4 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         view.setLayout(data.get(position));
         linearLayoutResultadosApostas.addView(view);
     }
-
 }

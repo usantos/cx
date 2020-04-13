@@ -11,7 +11,7 @@
         <TextView
             android:layout_width="60dp"
             android:layout_height="wrap_content"
-            android:text="Coluna"
+            android:text="@string/coluna"
             android:fontFamily="@font/arialmt"
             android:textStyle="bold"
             android:textSize="12dp"
@@ -19,7 +19,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Time"
+            android:text="@string/time"
             android:fontFamily="@font/arialmt"
             android:textStyle="bold"
             android:textSize="12dp"

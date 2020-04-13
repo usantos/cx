@@ -61,7 +61,7 @@ public final class ListaComprasRecyclerViewAdapter extends RecyclerView.Adapter<
         if (listaCompras.size() != 0) {
             CompraDTO compra = listaCompras.get(position);
             if(listaCompras.get(position).getDataFinalizacaoCompra() != null){
-                holder.dataCompra.setText("Data: " + listaCompras.get(position).getDataFinalizacaoCompra());
+                holder.dataCompra.setText(context.getResources().getString(R.string.data_dois_pontos_espaco) + listaCompras.get(position).getDataFinalizacaoCompra());
             }
             holder.valorCompra.setText(br.gov.caixa.loterias.apostar.interno.utils.ViewUtils.getMoedaFormat(compra.getValorTotal()));
             final int ordemLista = position + 1;
@@ -76,8 +76,8 @@ public final class ListaComprasRecyclerViewAdapter extends RecyclerView.Adapter<
 
                 Intent activity = new Intent(context, DetalhesComprasActivity.class);
                 String arrayAsString = new Gson().toJson(listaCompras.get(position));
-                activity.putExtra("CompraDTO", arrayAsString);
-                activity.putExtra("ordem", ordemLista);
+                activity.putExtra(context.getResources().getString(R.string.extra_compra_dto), arrayAsString);
+                activity.putExtra(context.getResources().getString(R.string.extra_ordem), ordemLista);
                 context.startActivity(activity);
             });
 

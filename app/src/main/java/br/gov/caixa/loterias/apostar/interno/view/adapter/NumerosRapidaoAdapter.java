@@ -62,7 +62,7 @@ public class NumerosRapidaoAdapter extends BaseAdapter {
 
             final int numeroRapidao = numeroslista.get(position);
             final TextView tituloTipoAposta = convertView.findViewById(R.id.tituloNumeroRapidao);
-            tituloTipoAposta.setText(numeroRapidao < 10 ? "0" + numeroRapidao : "" + numeroRapidao);
+            tituloTipoAposta.setText(numeroRapidao < 10 ? mContext.getResources().getString(R.string.zero) + numeroRapidao : mContext.getResources().getString(R.string.string_vazia) + numeroRapidao);
             if (isObrigatorio != true) {
                 final LinearLayout linearLayoutNumerosRapidao = convertView.findViewById(R.id.LinearLayoutContentNumerosRapidao);
                 linearLayoutNumerosRapidao.setBackground(ContextCompat.getDrawable(mContext, R.drawable.circle_numeros_proibidos));

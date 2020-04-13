@@ -22,7 +22,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Números obrigatórios"
+                    android:text="@string/n_meros_obrigat_rios"
                     android:textStyle="bold"
                     android:textSize="18sp"
                     android:textAlignment="center"
@@ -38,7 +38,7 @@
                     <TextView
                         android:layout_width="220dp"
                         android:layout_height="wrap_content"
-                        android:text="Selecione os números que deverão aparecer em suas apostas."
+                        android:text="@string/selecione_os_n_meros_que_dever_o_aparecer_em_suas_apostas"
                         android:textSize="14sp"
                         android:textColor="@color/cinza"
                         android:layout_centerHorizontal="true"
@@ -85,7 +85,7 @@
                 <Button
                     android:layout_width="184dp"
                     android:layout_height="56dp"
-                    android:text="Limpar seleção"
+                    android:text="@string/limpar_sele_o"
                     android:textAllCaps="false"
                     android:textColor="@color/cinza"
                     android:textSize="14.2sp"
@@ -102,7 +102,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="30dp"
                 android:background="@color/verdeazul"
-                android:text="Salvar"
+                android:text="@string/salvar"
                 android:textAllCaps="false"
                 android:textColor="@color/branco"
                 android:textSize="17.7sp"

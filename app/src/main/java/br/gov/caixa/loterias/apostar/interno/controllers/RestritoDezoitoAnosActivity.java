@@ -17,14 +17,14 @@ public class RestritoDezoitoAnosActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FirebaseManager.registraEvento(this ,"ENTROU_VALIDACAO_DEZOITO_ANOS");
+        FirebaseManager.registraEvento(this ,getResources().getString(R.string.evento_entrou_validacao_dezoito_anos));
 
         setContentView(R.layout.activity_restrito_dezoito_anos);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         TextView textViewTextoRestrito = findViewById(R.id.textViewTextoRestrito);
-        textViewTextoRestrito.setText(ViewUtils.textFuturaAndFuturaBold(this, " O uso do aplicativo é restrito a\nmaiores de _18 anos._"));
+        textViewTextoRestrito.setText(ViewUtils.textFuturaAndFuturaBold(this, getResources().getString(R.string.app_para_maior_de_18)));
 
         Button buttonDigitarAposta = findViewById(R.id.entendiButton);
         buttonDigitarAposta.setOnClickListener(v -> {

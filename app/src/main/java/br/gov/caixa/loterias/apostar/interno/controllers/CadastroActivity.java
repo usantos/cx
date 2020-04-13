@@ -38,13 +38,13 @@ import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
 
 public class CadastroActivity extends AppCompatActivity {
 
-    private EditText editTextUFContent, editTextMunicipioContent, editTextBairroContent;
-    private List<String> listUFString, listMunicipios, listBairros;
+    private EditText editTextUFContent, editTextMunicipioContent;
+    private List<String> listUFString, listMunicipios;
     private List<MunicipioDTO> municipioDTOList;
     protected List<UnidadeFederacaoDTO> listUf;
-    protected String ufSelect = "";
-    protected String municipioSelect = "";
-    protected String bairroSelected = "";
+    protected String ufSelect = getResources().getString(R.string.string_vazia);
+    protected String municipioSelect = getResources().getString(R.string.string_vazia);
+    protected String bairroSelected = getResources().getString(R.string.string_vazia);
     protected static CadastrarApostadorDTO cadastrarApostadorDTO;
     private boolean isMunicipioUsuario;
     protected MunicipioIdDTO municipioIdDTOLoteria;
@@ -143,7 +143,7 @@ public class CadastroActivity extends AppCompatActivity {
 
         final ListView listViewItens = dialog.findViewById(R.id.listaItensDialog);
         TextView tituloDialog = dialog.findViewById(R.id.tituloDialogCustom);
-        tituloDialog.setText("UF");
+        tituloDialog.setText(getResources().getString(R.string.uf));
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(CadastroActivity.this,
                 R.layout.item_text_popup, R.id.textList, listUFString);
@@ -170,7 +170,7 @@ public class CadastroActivity extends AppCompatActivity {
         });
 
         dialogButtonCancelar.setOnClickListener(v -> {
-            ufSelect = "";
+            ufSelect = getResources().getString(R.string.string_vazia);
             dialog.dismiss();
         });
 
@@ -228,9 +228,9 @@ public class CadastroActivity extends AppCompatActivity {
     public void showDialog() {
         if (myDialog == null) {
             myDialog = new AlertDialog.Builder(this)
-                    .setTitle("Atenção")
-                    .setMessage("Selecione primeiro a UF, assim nossa precisão de municípios será incrível.")
-                    .setPositiveButton("OK", (dialog, which) -> myDialog.dismiss())
+                    .setTitle(getResources().getString(R.string.label_atencao))
+                    .setMessage(getResources().getString(R.string.selecione_primeiro_uf))
+                    .setPositiveButton(getResources().getString(R.string.ok), (dialog, which) -> myDialog.dismiss())
                     .create();
         }
         myDialog.show();
@@ -245,7 +245,7 @@ public class CadastroActivity extends AppCompatActivity {
 
         final ListView listViewItens = dialog.findViewById(R.id.listaItensDialog);
         TextView tituloDialog = dialog.findViewById(R.id.tituloDialogCustom);
-        tituloDialog.setText("Cidade");
+        tituloDialog.setText(getString(R.string.cidade));
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(CadastroActivity.this,
                 R.layout.item_text_popup, R.id.textList, listMunicipios);
@@ -287,7 +287,7 @@ public class CadastroActivity extends AppCompatActivity {
         });
 
         dialogButtonCancelar.setOnClickListener(v -> {
-            municipioSelect = "";
+            municipioSelect = getResources().getString(R.string.string_vazia);
             dialog.dismiss();
         });
 

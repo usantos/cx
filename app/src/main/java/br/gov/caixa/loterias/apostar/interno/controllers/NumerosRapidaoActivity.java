@@ -49,29 +49,29 @@ public class NumerosRapidaoActivity extends AppCompatActivity implements NumeroS
         titleNumerosRapidaoObrigatorios  = findViewById(R.id.titleNumerosRapidao);
         textoSelecaoNumerosRapidao  = findViewById(R.id.textoSelecaoNumerosRapidao);
 
-        isTipoNrObrigatorios =  getIntent().getExtras().getBoolean("isTipoNrObrigatorios");
+        isTipoNrObrigatorios =  getIntent().getExtras().getBoolean(getResources().getString(R.string.extra_is_tipo_nr_obrigatorios));
 
-        String arrayContrarios =  getIntent().getExtras().getString("numerosContrarios");
+        String arrayContrarios =  getIntent().getExtras().getString(getResources().getString(R.string.extra_numeros_contrarios));
         listaNumerosContrariosRapidao = Arrays.asList(new Gson().fromJson(arrayContrarios, Integer[].class));
 
         if(isTipoNrObrigatorios == true){
-            FirebaseManager.registraEvento(this ,"ENTROU_SELECIONA_NUMEROS_OBRIGATORIOS_CONFIG_RAPIDAO");
+            FirebaseManager.registraEvento(this ,getResources().getString(R.string.evento_seleciona_numeros_obrigatorios_config_rapidao));
 
             List<Integer> numerosObrigadoriosSalvos = new ArrayList<>();
-            String arrayObrigarios =  getIntent().getExtras().getString("numerosobrigatorios");
+            String arrayObrigarios =  getIntent().getExtras().getString(getResources().getString(R.string.extra_numeros_obrigatorios));
             numerosObrigadoriosSalvos = Arrays.asList(new Gson().fromJson(arrayObrigarios, Integer[].class));
             numerosLista = numerosObrigadoriosSalvos;
             gridViewNumerosRapidaoSlc = findViewById(R.id.gridviewNumerosRapidaoSelecao);
 
         }else{
-            FirebaseManager.registraEvento(this ,"ENTROU_SELECIONA_NUMEROS_PROIBIDOS_CONFIG_RAPIDAO");
+            FirebaseManager.registraEvento(this ,getResources().getString(R.string.evento_entrou_seleciona_numeros_proibidos_config_rapidao));
 
             List<Integer> numerosProibidosSalvos = new ArrayList<>();
-            String arrayProibidos =  getIntent().getExtras().getString("numerosProibidos");
+            String arrayProibidos =  getIntent().getExtras().getString(getResources().getString(R.string.extra_numeros_proibidos));
             numerosProibidosSalvos = Arrays.asList(new Gson().fromJson(arrayProibidos, Integer[].class));
             numerosLista = numerosProibidosSalvos;
-            titleNumerosRapidaoObrigatorios.setText("Números proíbidos");
-            textoSelecaoNumerosRapidao.setText("Selecione os números que não deverão aparecer em suas apostas.");
+            titleNumerosRapidaoObrigatorios.setText(getResources().getString(R.string.numeros_proibidos));
+            textoSelecaoNumerosRapidao.setText(getResources().getString(R.string.numeros_nao_devem_aparecer));
             titleNumerosRapidaoObrigatorios.setTextColor(ContextCompat.getColor(this, R.color.vermelhoBilhetes));
             salvarNumerosApostaRapidaoSelecao.setBackgroundColor(ContextCompat.getColor(this, R.color.vermelhoBilhetes));
             gridViewNumerosRapidaoSlc = findViewById(R.id.gridviewNumerosRapidaoSelecao);
@@ -89,7 +89,7 @@ public class NumerosRapidaoActivity extends AppCompatActivity implements NumeroS
                 }
             }
             String arrayNumeros = new Gson().toJson(salvarNumero);
-            intent.putExtra("numerosRapidao", arrayNumeros);
+            intent.putExtra(getResources().getString(R.string.extra_numeros_rapidao), arrayNumeros);
             setResult(RESULT_OK, intent);
             finish();
         });
