@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
                 android:layout_marginLeft="17dp"
-                android:text="Os seus números da sorte no mesmo lugar"
+                android:text="@string/os_seus_n_meros_da_sorte_no_mesmo_lugar"
                 android:textSize="14.2sp"
                 android:fontFamily="@font/futura_std_bold"
                 android:textColor="@color/colorAccent"/>
@@ -31,7 +31,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/subTituloFavoritas"
-                android:text="Nesta área estão todas as suas apostas da sorte. É só escolher e apostar. Boa Sorte!"
+                android:text="@string/nesta_rea_est_o_todas_as_suas_apostas_da_sorte_s_escolher_e_apostar_boa_sorte"
                 android:textSize="14.2sp"
                 android:fontFamily="@font/arialmt"
                 android:textColor="@color/cinza"

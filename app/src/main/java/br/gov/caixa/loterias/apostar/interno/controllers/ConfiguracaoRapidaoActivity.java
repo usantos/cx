@@ -165,7 +165,7 @@ public class ConfiguracaoRapidaoActivity extends AppCompatActivity {
 			rapidao.setPrognosticosProibidos(new ArrayList<>());
 		}
 		if (rapidao.getValorMinimoPremioPrincipal() == null) {
-			rapidao.setValorMinimoPremioPrincipal(new BigDecimal("0.0"));
+			rapidao.setValorMinimoPremioPrincipal(new BigDecimal(getResources().getString(R.string.zero_ponto_zero)));
 		}
 		if (rapidao.getApostasFavoritas() == null) {
 			rapidao.setApostasFavoritas(new ArrayList<>());

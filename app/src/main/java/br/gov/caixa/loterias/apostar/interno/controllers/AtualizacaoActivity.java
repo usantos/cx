@@ -25,11 +25,11 @@ public class AtualizacaoActivity extends AppCompatActivity {
 
         textAtualizacaoVersao = findViewById(R.id.txtVersaoAtualizacao );
 
-        textAtualizacaoVersao.setText( TextUtils.concat( "v" ,BuildConfig.VERSION_NAME) );
+        textAtualizacaoVersao.setText( TextUtils.concat( getResources().getString(R.string.v) ,BuildConfig.VERSION_NAME) );
 
         buttonAtualizar = findViewById(R.id.atualizarButton);
         buttonAtualizar.setOnClickListener(view -> {
-            String url = BuildConfig.FLAVOR.equals("prd") ? "http://www.caixa.gov.br/atendimento/aplicativos/Documents/aplicativo-loterias-online.apk" : "https://loja.mobilidade.caixa.gov.br/applicationcenter/installers.html";
+            String url = BuildConfig.FLAVOR.equals(getResources().getString(R.string.flavor_prd)) ? getResources().getString(R.string.endereco_apk_caixa) : getResources().getString(R.string.endereco_mobilidade_instalador);
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
             startActivity(browserIntent);
         });

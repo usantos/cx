@@ -134,11 +134,11 @@ public class AjudaActivity extends AppCompatActivity {
     }
 
     private void carregarCampos() {
-        textConcurso.setText("Nº 1456");
-        textAbertura.setText("10/04 | 18h00");
-        textProximoSorteio.setText("09/12");
-        textEncerramento.setText("11/04 | 15h50");
-        titleTextScroll.setText(getString(R.string.label_regras_jogo));
-        textScroll.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit.\n\nAenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet.\n\nProin gravida dolor sit amet lacus accumsan et viverra justo commodo.\n\nProin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet.\n\nProin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget.");
+        textConcurso.setText(getResources().getString(R.string.placeholder_numero_conc));
+        textAbertura.setText(getResources().getString(R.string.placeholder_data_hora_concurso));
+        textProximoSorteio.setText(getResources().getString(R.string.placeholder_proximo_sorteio));
+        textEncerramento.setText(getResources().getString(R.string.placeholder_data_encerramento));
+        titleTextScroll.setText(getResources().getString(R.string.label_regras_jogo));
+        textScroll.setText(getResources().getString(R.string.placeholder_lorem_ipsum));
     }
 }

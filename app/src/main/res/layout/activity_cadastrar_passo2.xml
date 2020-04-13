@@ -43,7 +43,7 @@
                 android:layout_below="@id/imageViewIcoPasso2"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="20dp"
-                android:text="Precisamos que você informe\numa lotérica de sua preferência."
+                android:text="@string/precisamos_que_voc_informe_numa_lot_rica_de_sua_prefer_ncia"
                 android:textColor="@color/verdeazul"
                 android:textSize="18sp" />
 
@@ -171,7 +171,7 @@
                                 android:drawableRight="@drawable/combo"
                                 android:ems="10"
                                 android:focusableInTouchMode="false"
-                                android:hint="Cidade"
+                                android:hint="@string/cidade"
                                 android:inputType="textPersonName"
                                 android:textColor="@color/cinza" />
                         </android.support.design.widget.TextInputLayout>
@@ -194,7 +194,7 @@
                             android:drawableRight="@drawable/combo"
                             android:ems="10"
                             android:focusableInTouchMode="false"
-                            android:hint="Bairro"
+                            android:hint="@string/bairro"
                             android:inputType="textPersonName"
                             android:textColor="@color/cinza" />
                     </android.support.design.widget.TextInputLayout>

@@ -1,6 +1,5 @@
 package br.gov.caixa.loterias.apostar.interno.controllers;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AlertDialog;
@@ -99,7 +98,7 @@ public class CadastrarActivity extends CadastroActivity {
     }
 
     private void loadFields() {
-        textViewTituloCadastrar2.setText(ViewUtils.textFuturaAndFuturaBold(this,"Que bom ver _você por aqui_ :)"));
+        textViewTituloCadastrar2.setText(ViewUtils.textFuturaAndFuturaBold(this,getResources().getString(R.string.bom_ver_voce)));
     }
 
     public void addUFSpinner() {
@@ -180,31 +179,13 @@ public class CadastrarActivity extends CadastroActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                String cep = editable.toString().replace("-", "").trim();
+                String cep = editable.toString().replace(getResources().getString(R.string.traco), getResources().getString(R.string.string_vazia)).trim();
                 if (cep.length() == 8) {
                     buscarBairroPorCep(cep);
                 }
             }
         });
 
-    }
-
-    public Dialog onCreateDialogSingleChoice(List<String> listString, String TituloAlert) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(TituloAlert)
-                .setSingleChoiceItems(listString.toArray(new String[listString.size()]), 0, (dialog, which) -> {
-// TODO Auto-generated method stub
-
-                })
-
-                .setPositiveButton("OK", (dialog, id) -> {
-
-                })
-                .setNegativeButton("Cancelar", (dialog, id) -> {
-
-                });
-
-        return builder.create();
     }
 
     private boolean validarCamposObrigatorios() {
@@ -214,26 +195,26 @@ public class CadastrarActivity extends CadastroActivity {
             ViewUtils.alertTitulo(CadastrarActivity.this, R.string.label_atencao, this.getResources().getString( R.string.termos_nao_aceitos ));
             return false;
         }
-        String campos = "";
+        String campos = getResources().getString(R.string.string_vazia);
 
         if (StringUtils.isEmpty(AppUtils.removeMasckCPF(editTextCpfContent.getText().toString()))) {
-            campos += "\nCPF";
+            campos += getResources().getString(R.string.barra_n) + getResources().getString(R.string.cpf);
         }
         if (StringUtils.isEmpty(editTextNomeContent.getText().toString())) {
-            campos += "\nNome";
+            campos += getResources().getString(R.string.barra_n) + getResources().getString(R.string.nome);
         }
 
-        if (StringUtils.isEmpty(editTextCepContent.getText().toString().replace("-", "").trim())) {
-            campos += "\n" + getResources().getString(R.string.CEP);
+        if (StringUtils.isEmpty(editTextCepContent.getText().toString().replace(getResources().getString(R.string.traco), getResources().getString(R.string.string_vazia)).trim())) {
+            campos += getResources().getString(R.string.barra_n) + getResources().getString(R.string.CEP);
         }
         if (StringUtils.isEmpty(editTextUFContent.getText().toString())) {
-            campos += "\nUF";
+            campos += getResources().getString(R.string.barra_n) + getResources().getString(R.string.uf);
         }
         if (StringUtils.isEmpty(editTextMunicipioContent.getText().toString())) {
-            campos += "\nMunicípio";
+            campos += getResources().getString(R.string.barra_n) + getResources().getString(R.string.municipio);
         }
         if (StringUtils.isEmpty(editTextEmailContent.getText().toString())) {
-            campos += "\nE-mail";
+            campos += getResources().getString(R.string.barra_n) + getResources().getString(R.string.email);
         }
 
         CadastrarApostadorDTO.SexoEnum sexoEnum;

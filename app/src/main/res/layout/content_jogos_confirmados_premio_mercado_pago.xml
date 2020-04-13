@@ -90,7 +90,7 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="40dp"
                     android:fontFamily="@font/arialmt"
-                    android:text="@string/confirmar_email"
+                    android:text="@string/para_receber_seu_pr_mio_npor_favor_confirme_seu_email"
                     android:textColor="@color/cinza"
                     android:textSize="14.2dp" />
 
@@ -105,7 +105,7 @@
                         android:id="@+id/emailPremioMercadoPagoEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="E-mail"
+                        android:hint="@string/e_mail"
                         android:textColor="@color/cinza"
                         android:textColorHint="@color/azulFormNovoTipoPagamento"
                         android:textSize="16sp" />
@@ -129,7 +129,7 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="40dp"
                     android:fontFamily="@font/arialmt"
-                    android:text="@string/premio_disponivel"
+                    android:text="@string/em_breve_seu_pr_mio_estar_dispon_vel_em_sua_conta_no_mercado_pago"
                     android:textAlignment="center"
                     android:textColor="@color/cinza"
                     android:textSize="14dp"
@@ -145,7 +145,7 @@
                     android:textAlignment="center"
                     android:textColor="@color/cinza"
                     android:textSize="14dp"
-                    tools:text="Um email foi enviado para dmalva@monumenta.com.br com todas as informações e passo-a-passo para o recebimento de seu prêmio" />
+                    tools:text="@string/um_email_foi_enviado_para_dmalva_monumenta_com_br_com_todas_as_informa_es_e_passo_a_passo_para_o_recebimento_de_seu_pr_mio" />
 
             </LinearLayout>
 
@@ -181,7 +181,7 @@
                     android:layout_centerHorizontal="true"
                     android:background="@color/verdeazul"
                     android:fontFamily="@font/futura_std_bold"
-                    android:text="@string/title_voltar"
+                    android:text="@string/voltar"
                     android:textAllCaps="false"
                     android:textColor="@color/branco"
                     android:textSize="17.7sp"

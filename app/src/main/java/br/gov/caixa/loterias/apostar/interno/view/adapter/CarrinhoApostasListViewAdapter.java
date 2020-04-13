@@ -58,7 +58,6 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
         this.setHasStableIds(true);
     }
 
-
     static class ApostaHolder extends RecyclerView.ViewHolder {
         final TextView textViewTipoAposta;
         final TextView numerosAposta;
@@ -123,8 +122,8 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
         TextView labelTimeCoracao = holder.dadosApostaCarrinho.findViewById(R.id.labelTimeCoracaoTxt);
         TextView textViewTimeCoracao = holder.dadosApostaCarrinho.findViewById(R.id.textViewTimeCoracao);
 
-        String quantidadeApostadasString = "";
-        String quantidadeSorteiosString = "";
+        String quantidadeApostadasString;
+        String quantidadeSorteiosString;
 
         int quantidadeNumeros = aposta.getQuantidadeNumeros() != null ? aposta.getQuantidadeNumeros() : 0;
         int quantidadeTeimosinhas = aposta.getQuantidadeTeimosinhas() == null || aposta.getQuantidadeTeimosinhas() == 0 ? 1 : aposta.getQuantidadeTeimosinhas();
@@ -141,8 +140,8 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
             quantidadeSorteiosString = context.getString(R.string.label_sorteio);
         }
 
-        quantidadeApostadas.setText(String.format(Locale.getDefault(), "%d %s", quantidadeNumeros, quantidadeApostadasString));
-        quantidadeSorteios.setText(String.format(Locale.getDefault(), "%d %s", quantidadeTeimosinhas, quantidadeSorteiosString));
+        quantidadeApostadas.setText(String.format(Locale.getDefault(), context.getResources().getString(R.string.percent_d_percent_s), quantidadeNumeros, quantidadeApostadasString));
+        quantidadeSorteios.setText(String.format(Locale.getDefault(), context.getResources().getString(R.string.percent_d_percent_s), quantidadeTeimosinhas, quantidadeSorteiosString));
 
         if (aposta.getEspelho()) {
             buttonApostaEspelho.setVisibility(View.VISIBLE);
@@ -181,7 +180,7 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
             if (aposta != null && aposta.getIndicadorSurpresinha() != null && aposta.getIndicadorSurpresinha().getValor() != null) {
                 textViewTimeCoracao.setText(aposta.getTimeDoCoracao().getNome());
                  if(aposta.getIndicadorSurpresinha().getValor() == IndicadorSurpresinha.SURPRESINHA){
-                    textViewTimeCoracao.setText("???");
+                    textViewTimeCoracao.setText(context.getResources().getString(R.string.tres_interrogacoes));
                 }
             }
         } else if (ModalidadeEnum.DIA_DE_SORTE == aposta.getModalidade()) {
@@ -205,9 +204,9 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
                         if (apostaNumerica.getListaNumerosSelecionados() != null) {
                             for (Integer num : apostaNumerica.getListaNumerosSelecionados()) {
                                 if (num.equals(apostaNumerica.getNumerosSelecionados().get(apostaNumerica.getListaNumerosSelecionados().size() - 1))) {
-                                    numeroStr.append(String.format("%02d", num));
+                                    numeroStr.append(String.format(context.getResources().getString(R.string.percent_zero_dois_d), num));
                                 } else {
-                                    numeroStr.append(String.format("%02d - ", num));
+                                    numeroStr.append(String.format(context.getResources().getString(R.string.percent_zero_dois_d_traco), num));
                                 }
                             }
                         }
@@ -218,9 +217,9 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
                 case IndicadorSurpresinha.SURPRESINHA_NUMERICA:
                     for (int i = 0; i < aposta.getQuantidadeNumeros(); i++) {
                         if (i == aposta.getQuantidadeNumeros() - 1) {
-                            numeroStr.append("XX");
+                            numeroStr.append(context.getResources().getString(R.string.x_x));
                         } else {
-                            numeroStr.append("XX - ");
+                            numeroStr.append(context.getResources().getString(R.string.x_x_traco));
                         }
                     }
                     break;
@@ -299,6 +298,4 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
             parentActivity.lerCarrinhoLocal(Boolean.FALSE);
         }
     }
-
-
 }

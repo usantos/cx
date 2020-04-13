@@ -32,170 +32,147 @@ import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
 
 public class JogosConfirmadosPremioMercadoPagoActivity extends AppCompatActivity {
 
-	//region Layout Variables
-	private EditText emailPremioMercadoPagoEditText;
-	private TextView valorPremioTextView;
-	private Button resgatarPremioButton, voltarPremioButton;
-	private TextView textoTituloPremioConfirmado, textoPremioConfirmado;
-	private LinearLayout contentTopoConfirmarLinearLayout, contentTopoConfirmadoLinearLayout, contentConfirmarLinearLayout, contentConfirmadoLinearLayout;
-	//endregion
+    EditText emailPremioMercadoPagoEditText;
+    TextView valorPremioTextView;
+    Long idAposta;
+    Button resgatarPremioButton, voltarPremioButton;
+    TextView textoTituloPremioConfirmado, textoPremioConfirmado;
+    LinearLayout contentTopoConfirmarLinearLayout, contentTopoConfirmadoLinearLayout, contentConfirmarLinearLayout, contentConfirmadoLinearLayout;
 
-	//region Variables
-	private Long idAposta;
-	private String valorPremio;
-	//endregion
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_jogos_confirmados_premio_mercado_pago);
+        setTitle( ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.title_activity_resultado_ler_bilhetes)));
 
-	//region Life Cicle
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_jogos_confirmados_premio_mercado_pago);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-		pegaExtras();
-		setaViews();
-		setaMetodos();
-	}
+        emailPremioMercadoPagoEditText = findViewById( R.id.emailPremioMercadoPagoEditText );
+        textoTituloPremioConfirmado = findViewById( R.id.textoTituloPremioConfirmado );
+        textoPremioConfirmado = findViewById( R.id.textoPremioConfirmado );
+        valorPremioTextView = findViewById( R.id.valorPremioTextView );
+        resgatarPremioButton = findViewById( R.id.resgatarPremioButton );
+        voltarPremioButton = findViewById( R.id.voltarPremioButton );
 
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		super.onCreateOptionsMenu(menu);
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.settings, menu);
-
-		return true;
-	}
-
-	// Mudando o texto dos MenuItem de acordo com os dados
-	@Override
-	public boolean onPrepareOptionsMenu(Menu menu) {
-		super.onPrepareOptionsMenu(menu);
-
-		return true;
-	}
-
-	//endregion
-
-	//region Initialization Methods
-	private void pegaExtras() {
-		Bundle extras = getIntent().getExtras();
-		if (extras != null) {
-			valorPremio = extras.getString("valorPremio") == null ? "" : extras.getString("valorPremio");
-			idAposta = extras.getLong("idAposta");
-		}
-
-	}
-
-	private void setaViews() {
-		emailPremioMercadoPagoEditText = findViewById(R.id.emailPremioMercadoPagoEditText);
-		textoTituloPremioConfirmado = findViewById(R.id.textoTituloPremioConfirmado);
-		textoPremioConfirmado = findViewById(R.id.textoPremioConfirmado);
-		valorPremioTextView = findViewById(R.id.valorPremioTextView);
-		resgatarPremioButton = findViewById(R.id.resgatarPremioButton);
-		voltarPremioButton = findViewById(R.id.voltarPremioButton);
-
-		contentTopoConfirmarLinearLayout = findViewById(R.id.contentTopoConfirmarLinearLayout);
-		contentTopoConfirmadoLinearLayout = findViewById(R.id.contentTopoConfirmadoLinearLayout);
-		contentConfirmarLinearLayout = findViewById(R.id.contentConfirmarLinearLayout);
-		contentConfirmadoLinearLayout = findViewById(R.id.contentConfirmadoLinearLayout);
-
-		textoTituloPremioConfirmado.setText("Em breve seu prêmio estará disponível\n em sua conta no mercado pago");
-		textoPremioConfirmado.setText("Um email foi enviado para\n" + emailPremioMercadoPagoEditText.getText().toString() + "\n\n\ncom todas as informações e passo-a-passo para o recebimento de seu prêmio");
+        contentTopoConfirmarLinearLayout = findViewById( R.id.contentTopoConfirmarLinearLayout );
+        contentTopoConfirmadoLinearLayout = findViewById( R.id.contentTopoConfirmadoLinearLayout );
+        contentConfirmarLinearLayout = findViewById( R.id.contentConfirmarLinearLayout );
+        contentConfirmadoLinearLayout = findViewById( R.id.contentConfirmadoLinearLayout );
 
 
-		emailPremioMercadoPagoEditText.setText(KeycloakBO_.getInstance_(this).getFromToken("email"));
-		emailPremioMercadoPagoEditText.setSelection(emailPremioMercadoPagoEditText.getText().length());
-
-		valorPremioTextView.setText(valorPremio);
-
-		setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.title_activity_resultado_ler_bilhetes)));
-
-		Toolbar toolbar = findViewById(R.id.toolbar);
-		setSupportActionBar(toolbar);
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        textoTituloPremioConfirmado.setText( getResources().getString(R.string.premio_disponivel_em_breve_mp) );
+        textoPremioConfirmado.setText( getResources().getString(R.string.email_enviado_para)+ emailPremioMercadoPagoEditText.getText().toString() + getResources().getString(R.string.com_o_passo_a_passo) );
 
 
-	}
+        Bundle b = getIntent().getExtras();
+        String valorPremio = ""; // or other values
+        if(b != null) {
+            valorPremio = b.getString( getResources().getString(R.string.valor_premio) );
+            valorPremioTextView.setText( valorPremio );
+            idAposta = b.getLong( getResources().getString(R.string.id_aposta) );
+        }
 
-	private void setaMetodos() {
-		resgatarPremioButton.setOnClickListener(view -> {
-			if (!ValidacaoUtils.validarEmail(emailPremioMercadoPagoEditText.getText().toString())) {
-				ViewUtils.alertTitleButton(JogosConfirmadosPremioMercadoPagoActivity.this,
-										   R.string.label_atencao,
-										   getResources().getString(R.string.MA021),
-										   getResources().getString(R.string.ok));
-				return;
-			}
-			callWebserviceResgatarPremio();
-		});
+        emailPremioMercadoPagoEditText.setText(KeycloakBO_.getInstance_(this).getFromToken(getResources().getString(R.string.email_minusculo)));
+        emailPremioMercadoPagoEditText.setSelection(emailPremioMercadoPagoEditText.getText().length());
 
-		voltarPremioButton.setOnClickListener(view -> finish());
-	}
-	//endregion
+        resgatarPremioButton.setOnClickListener(view -> {
+            if (!ValidacaoUtils.validarEmail( emailPremioMercadoPagoEditText.getText().toString() )) {
+                ViewUtils.alertTitleButton( JogosConfirmadosPremioMercadoPagoActivity.this,
+                        R.string.label_atencao,
+                        getResources().getString( R.string.MA021 ),
+                        getResources().getString( R.string.ok ) );
+                return;
+            }
+            callWebserviceResgatarPremio();
+        });
 
-	//region Network Methods
-	private void callWebserviceResgatarPremio() {
-		InformacaoPagamentoDTO informacaoPagamentoDTO = new InformacaoPagamentoDTO();
-		informacaoPagamentoDTO.setMeioPagamento(new Long("1"));
-		Map<String, String> mapPagamento = new HashMap<>();
-		mapPagamento.put("EMAIL", emailPremioMercadoPagoEditText.getText().toString());
-		informacaoPagamentoDTO.setParametrosPagamento(mapPagamento);
+        voltarPremioButton.setOnClickListener(view -> finish());
+    }
 
-		final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
 
-		ApostaBO apostaBO = ApostaBO_.getInstance_(JogosConfirmadosPremioMercadoPagoActivity.this);
-		apostaBO.postResgatarAposta(idAposta, informacaoPagamentoDTO, new RequestListener<RetornoPadraoDTO>() {
-			@Override
-			public void onResponse(RetornoPadraoDTO response) {
-				loadViewProgress.dismiss();
-				setResult(RESULT_OK);
-				configuraSucessoResgate();
-			}
+        return true;
+    }
 
-			@Override
-			public void onErrorResponse(VolleyError error) {
-				loadViewProgress.dismiss();
-				RedirectNetwork.checkRedirect(error, JogosConfirmadosPremioMercadoPagoActivity.this);
-			}
-		});
-	}
-	//endregion
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.settings, menu);
 
-	//region Layout Configuration Methods
-	private void configuraSucessoResgate(){
-		contentTopoConfirmarLinearLayout.setVisibility(View.GONE);
-		contentTopoConfirmadoLinearLayout.setVisibility(View.VISIBLE);
-		contentConfirmarLinearLayout.setVisibility(View.GONE);
-		contentConfirmadoLinearLayout.setVisibility(View.VISIBLE);
-		resgatarPremioButton.setVisibility(View.GONE);
-		voltarPremioButton.setVisibility(View.VISIBLE);
-		textoPremioConfirmado.setText("Um email foi enviado para\n" + emailPremioMercadoPagoEditText.getText().toString() + "\n\n\ncom todas as informações e passo-a-passo para o recebimento de seu prêmio");
-	}
-	//endregion
+        return true;
+    }
 
-	//region Support Methods
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			abrirTermosUso();
-			return true;
-		}
+    // Mudando o texto dos MenuItem de acordo com os dados
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
 
-		return super.onOptionsItemSelected(item);
-	}
+        return true;
+    }
 
-	@Override
-	public boolean onSupportNavigateUp() {
-		finish();
-		return true;
-	}
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+            abrirTermosUso();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == 1) {
+            callWebserviceResgatarPremio();
+        }
+    }
 
 
-	private void abrirTermosUso() {
-		Intent activity = new Intent(JogosConfirmadosPremioMercadoPagoActivity.this, TermosUsoActivity.class);
-		startActivity(activity);
-	}
-	//endregion
+    private void abrirTermosUso(){
+        Intent activity = new Intent(JogosConfirmadosPremioMercadoPagoActivity.this, TermosUsoActivity.class);
+        startActivity(activity);
+    }
+
+
+    private void callWebserviceResgatarPremio() {
+        InformacaoPagamentoDTO informacaoPagamentoDTO = new InformacaoPagamentoDTO();
+        informacaoPagamentoDTO.setMeioPagamento( new Long( getResources().getString(R.string.um) ) );
+        Map<String, String> mapPagamento = new HashMap<>();
+        mapPagamento.put(getResources().getString(R.string.email_maiusculo), emailPremioMercadoPagoEditText.getText().toString());
+        informacaoPagamentoDTO.setParametrosPagamento( mapPagamento );
+
+        final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
+
+        ApostaBO apostaBO = ApostaBO_.getInstance_(JogosConfirmadosPremioMercadoPagoActivity.this);
+        apostaBO.postResgatarAposta(idAposta, informacaoPagamentoDTO, new RequestListener<RetornoPadraoDTO>() {
+            @Override
+            public void onResponse(RetornoPadraoDTO response) {
+                loadViewProgress.dismiss();
+                contentTopoConfirmarLinearLayout.setVisibility( View.GONE );
+                contentTopoConfirmadoLinearLayout.setVisibility( View.VISIBLE );
+                contentConfirmarLinearLayout.setVisibility( View.GONE );
+                contentConfirmadoLinearLayout.setVisibility( View.VISIBLE );
+                resgatarPremioButton.setVisibility( View.GONE );
+                voltarPremioButton.setVisibility( View.VISIBLE );
+                textoPremioConfirmado.setText( getResources().getString(R.string.email_enviado_para)+ emailPremioMercadoPagoEditText.getText().toString() + getResources().getString(R.string.informacoes_recebimento) );
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                loadViewProgress.dismiss();
+                RedirectNetwork.checkRedirect( error, JogosConfirmadosPremioMercadoPagoActivity.this );
+            }
+        });
+    }
 
 }

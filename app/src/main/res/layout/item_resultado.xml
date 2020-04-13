@@ -13,7 +13,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Nº 2584 | 17/07/2016"
+            android:text="@string/placeholder_concurso_data"
             android:id="@+id/numeroeDataConcursoResultadoMegaSena"
             android:layout_gravity="center_horizontal"
             android:textColor="@color/branco"

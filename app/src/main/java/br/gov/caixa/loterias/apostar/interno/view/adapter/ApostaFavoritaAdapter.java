@@ -64,27 +64,28 @@ public class ApostaFavoritaAdapter extends BaseAdapter {
 
         final TextView tituloApostaFavorira = convertView.findViewById( R.id.tituloApostaFavorira );
         tituloApostaFavorira.setText( aposta.getModalidade().getDescricao() );
-        EstiloModalidade estilo = new EstiloModalidade(ModalidadeEnum.toString(favoritosSalvos.get(position).getModalidade().getDescricao().toLowerCase(new Locale("pt", "BR"))));
+        EstiloModalidade estilo = new EstiloModalidade(ModalidadeEnum.toString(favoritosSalvos.get(position).getModalidade().getDescricao().toLowerCase(new Locale(mContext.getResources().getString(R.string.pt), mContext.getResources().getString(R.string.br)))));
         tituloApostaFavorira.setText(favoritosSalvos.get(position).getModalidade().getDescricao());
         tituloApostaFavorira.setTextColor(parent.getResources().getColor(estilo.getCorClara()));
 
         final TextView numerosApostaFavorita = convertView.findViewById( R.id.numerosApostaFavorita );
         StringBuilder numeroStr = new StringBuilder();
+
         List<Integer> numerosSelecionados =  aposta.getListaNumerosSelecionados();
         for (Integer num : numerosSelecionados) {
             if (num.equals(numerosSelecionados.get(numerosSelecionados.size() - 1 ))) {
-                numeroStr.append(String.format("%02d", num));
+                numeroStr.append(String.format(mContext.getResources().getString(R.string.percent_zero_dois_d), num));
             } else {
-                numeroStr.append(String.format("%02d - ", num));
+                numeroStr.append(String.format(mContext.getResources().getString(R.string.percent_zero_dois_d_traco), num));
             }
         }
 
         if (ModalidadeEnum.fromInteger(aposta.getModalidade().getValor()) == ModalidadeEnum.TIMEMANIA) {
-            numeroStr.append("\nTime do coração: ").append(aposta.getTimeDoCoracao().getNome());
+            numeroStr.append(mContext.getResources().getString(R.string.barra_n_time_do_coracao_dois_pontos_espaco)).append(aposta.getTimeDoCoracao().getNome());
         }
 
         if (ModalidadeEnum.fromInteger(aposta.getModalidade().getValor()) == ModalidadeEnum.DIA_DE_SORTE) {
-            numeroStr.append("\nMês de sorte: ").append(aposta.getMesDeSorte().getNome());
+            numeroStr.append(mContext.getResources().getString(R.string.barra_n_mes_da_sorte_dois_pontos)).append(aposta.getMesDeSorte().getNome());
         }
 
         numerosApostaFavorita.setText(numeroStr.toString());

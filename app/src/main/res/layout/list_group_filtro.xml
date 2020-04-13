@@ -22,7 +22,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:fontFamily="@font/futura_std_bold"
-                android:text="Minha área"
+                android:text="@string/minha_rea"
                 android:textColor="@color/cinza"
                 android:textSize="16sp" />
         </LinearLayout>

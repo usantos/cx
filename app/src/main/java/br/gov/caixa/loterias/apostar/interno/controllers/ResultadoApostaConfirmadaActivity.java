@@ -89,7 +89,7 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
         contentResultadoPremiado.getTituloModalidadeTextView().setText(ModalidadeEnum.fromString(detalhesPremioDTO.getAposta().getModalidade()));
 
         if (detalhesPremioDTO.getPremio().getValorLiquido() != null && !(BigDecimal.ZERO.compareTo(detalhesPremioDTO.getPremio().getValorLiquido()) == 0)) {
-            contentResultadoPremiado.getValorPremioTituloTextView().setText( getResources().getString(R.string.label_voce_foi_premiado).replace("{ValorPremio}", ViewUtils.getMoedaFormat(detalhesPremioDTO.getPremio().getValorLiquido())));
+            contentResultadoPremiado.getValorPremioTituloTextView().setText( getResources().getString(R.string.label_voce_foi_premiado).replace(getResources().getString(R.string.chave_valor_premio_chave), ViewUtils.getMoedaFormat(detalhesPremioDTO.getPremio().getValorLiquido())));
         }
         else {
             contentResultadoPremiado.getValorPremioTituloTextView().setText(R.string.label_voce_foi_premiado_exclamacao);
@@ -157,7 +157,7 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
 
         Intent it = new Intent(ResultadoApostaConfirmadaActivity.this, PrincipalActivity_.class);
         it.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |  Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        it.putExtra("MODALIDADE_APOSTAR_AGORA", modalidadeEnum);
+        it.putExtra(getResources().getString(R.string.extra_modalidade_apostar_agora), modalidadeEnum);
         startActivity(it);
     }
 
@@ -169,8 +169,8 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
     @Click(R.id.mercadoPagoLayout)
     protected void clickMercadoPagoLayout() {
         Intent intent = new Intent( ResultadoApostaConfirmadaActivity.this, JogosConfirmadosPremioMercadoPagoActivity.class);
-        intent.putExtra( "valorPremio", ViewUtils.getMoedaFormat(detalhesPremioDTO.getPremio().getValorLiquido()) );
-        intent.putExtra( "idAposta", detalhesPremioDTO.getAposta().getId() );
+        intent.putExtra( getResources().getString(R.string.extra_valor_premio), ViewUtils.getMoedaFormat(detalhesPremioDTO.getPremio().getValorLiquido()) );
+        intent.putExtra( getResources().getString(R.string.extra_id_aposta), detalhesPremioDTO.getAposta().getId() );
         startActivityForResult(intent,RESGATOU_MERCADO_PAGO);
     }
 

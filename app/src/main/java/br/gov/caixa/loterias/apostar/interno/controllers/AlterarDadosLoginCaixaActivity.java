@@ -32,12 +32,12 @@ public class AlterarDadosLoginCaixaActivity extends AppCompatActivity {
 
         if(AppUtils.isNetworkAvailable( this )){
             String stringBuilder = BuildConfig.URL_SSO_ACCOUNT +
-                    "?referrer=" +
+                    getResources().getString(R.string.referrer) +
                     BuildConfig.SSO_CLIENT_ID +
-                    "&referrer_uri=http%3A%2F%2Fdf7390sr029.corp.caixa.gov.br%3A8280%2Fsilce-web%2F%3Fredirect_fragment%3D%252Fhome";
+                    getResources().getString(R.string.referrer_uri);
 
             paginaAlterarDadosWebView.loadUrl(stringBuilder);
-            FirebaseManager.registraEvento(this ,"ENTROU_ALTERAR_DADOS_CAIXA");
+            FirebaseManager.registraEvento(this ,getResources().getString(R.string.event_alterar_dados_caixa));
         }else{
             loadViewProgresas.hide();
             ViewUtils.alertTitulo( this, R.string.label_atencao, getResources().getString( R.string.seminternet ) );

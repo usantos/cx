@@ -167,7 +167,7 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
             informacoesPremioZeradoLayout.setVisibility(View.GONE);
             informacoesPremioLayout.setVisibility(View.VISIBLE);
 
-            contentResultadoPremiado.getValorPremioTituloTextView().setText( getResources().getString(R.string.label_voce_foi_premiado).replace("{ValorPremio}", ViewUtils.getMoedaFormat(resultadoConsultaBilheteDTO.getPremioDTO().getValorLiquido())));
+            contentResultadoPremiado.getValorPremioTituloTextView().setText( getResources().getString(R.string.label_voce_foi_premiado).replace(getResources().getString(R.string.chave_valor_premio_chave), ViewUtils.getMoedaFormat(resultadoConsultaBilheteDTO.getPremioDTO().getValorLiquido())));
 
             contentResultadoPremiado.getPremioGanhoLinearLayout().setVisibility(View.VISIBLE);
             createListPremiacao();
@@ -188,7 +188,7 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
     protected void clickBotaoAposteAgora() {
         Intent it = new Intent(ResultadoLerBilhetesActivity.this, PrincipalActivity_.class);
         it.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |  Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        it.putExtra("MODALIDADE_APOSTAR_AGORA", modalidadeEnum);
+        it.putExtra(getResources().getString(R.string.extra_modalidade_apostar_agora), modalidadeEnum);
         startActivity(it);
 
     }
@@ -238,15 +238,4 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
         listaFaixaPremiacaoExpandableHeightRecyclerView.setExpanded(Boolean.TRUE);
         listaFaixaPremiacaoExpandableHeightRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
-
-    private void configuraDadosProximoConcurso(ResultadoConcursoDTO ultimoConcurso){
-        if(ultimoConcurso!= null && ultimoConcurso.getProximoConcurso() != null){
-            contentResultadoPremiado.getProximoSorteioTextView().setText(ViewUtils.getDateAndHour(ultimoConcurso.getProximoConcurso().getDataAbertura()));
-            contentResultadoPremiado.getValorEstimativaConcursoAtualTextView().setText(ViewUtils.getMoedaFormat(ultimoConcurso.getProximoConcurso().getEstimativa()));
-        } else {
-            contentResultadoPremiado.getProximoSorteioTextView().setVisibility(View.GONE);
-            contentResultadoPremiado.getValorEstimativaConcursoAtualTextView().setVisibility(View.GONE);
-        }
-    }
-
 }

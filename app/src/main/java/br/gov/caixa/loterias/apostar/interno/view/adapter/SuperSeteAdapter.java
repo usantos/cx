@@ -16,6 +16,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.Dezena;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 
@@ -90,7 +91,7 @@ public class SuperSeteAdapter extends BaseAdapter {
 	private void preencheDezenas(){
 		dezenasSelecionadas = new ArrayList<>();
 		for (int i = 0; i <= NUMERO_DEZENAS ; i++) {
-			dezenas.add(new Dezena("" + i, Boolean.FALSE));
+			dezenas.add(new Dezena(context.getResources().getString(R.string.string_vazia) + i, Boolean.FALSE));
 		}
 	}
 

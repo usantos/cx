@@ -28,7 +28,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="17dp"
                 android:fontFamily="@font/arialmt"
-                android:text="Dê um novo nome para sua aposta"
+                android:text="@string/d_um_novo_nome_para_sua_aposta"
                 android:textColor="@color/verdeazul"
                 android:textSize="12sp" />
 
@@ -96,7 +96,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
                     android:fontFamily="@font/arialmt"
-                    android:text="&quot;o prêmio é meu!&quot;"
+                    android:text="@string/quot_o_pr_mio_meu_quot"
                     android:textAlignment="center"
                     android:textColor="@color/branco"
                     android:textSize="16sp"
@@ -143,7 +143,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/arialmt"
-                    android:text=" | agora vai"
+                    android:text="@string/agora_vai"
                     android:textColor="@color/cinza"
                     android:textSize="14.2sp"
                     android:textStyle="bold" />
@@ -185,8 +185,8 @@
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_marginRight="5dp"
-
-                        android:clickable="true">
+                        android:visibility="invisible"
+                        android:clickable="false">
 
                         <Button
                             android:id="@+id/editarButtonFavoritos"
@@ -260,7 +260,6 @@
                         tools:text="Fevereiro" />
                 </LinearLayout>
             </RelativeLayout>
-
 
         </LinearLayout>
 

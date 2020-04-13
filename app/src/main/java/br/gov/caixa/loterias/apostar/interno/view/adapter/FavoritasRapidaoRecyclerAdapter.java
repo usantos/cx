@@ -53,20 +53,21 @@ public final class FavoritasRapidaoRecyclerAdapter extends RecyclerView.Adapter<
     @Override
     public void onBindViewHolder(@NonNull FavoritasRapidaoRecyclerAdapter.ViewHolder holder, int position) {
         if (listaApostaFavorita.size() > 0) {
-            EstiloModalidade estilo = new EstiloModalidade(ModalidadeEnum.toString(listaApostaFavorita.get(position).getModalidade().getDescricao().toLowerCase(new Locale("pt", "BR"))));
+            EstiloModalidade estilo = new EstiloModalidade(ModalidadeEnum.toString(listaApostaFavorita.get(position).getModalidade().getDescricao().toLowerCase(new Locale(context.getResources().getString(R.string.pt), context.getResources().getString(R.string.br)))));
             holder.modalidades.setText(listaApostaFavorita.get(position).getModalidade().getDescricao());
             holder.modalidades.setTextColor(context.getResources().getColor(estilo.getCorClara()));
             holder.setIsRecyclable(false);
 
             StringBuilder numeroStr = new StringBuilder();
+
             List<Integer> numerosSelecionados;
             if  (listaApostaFavorita.get(position).getModalidade().getValor() != 7) {
                 numerosSelecionados  = listaApostaFavorita.get(position).getListaNumerosSelecionados();
                 for (Integer num : numerosSelecionados) {
                     if (num.equals(numerosSelecionados.get(numerosSelecionados.size() - 1))) {
-                        numeroStr.append(String.format("%02d", num));
+                        numeroStr.append(String.format(context.getResources().getString(R.string.percent_zero_dois_d), num));
                     } else {
-                        numeroStr.append(String.format("%02d - ", num));
+                        numeroStr.append(String.format(context.getResources().getString(R.string.percent_zero_dois_d_traco), num));
                     }
                 }
             }
@@ -74,11 +75,11 @@ public final class FavoritasRapidaoRecyclerAdapter extends RecyclerView.Adapter<
             final ApostaFavoritaDTO aposta = listaApostaFavorita.get( position );
 
             if (ModalidadeEnum.fromInteger(aposta.getModalidade().getValor()) == ModalidadeEnum.TIMEMANIA) {
-                numeroStr.append("\nTime do coração: ").append(aposta.getTimeDoCoracao().getNome());
+                numeroStr.append(context.getResources().getString(R.string.barra_n_time_do_coracao_dois_pontos)).append(aposta.getTimeDoCoracao().getNome());
             }
 
             if (ModalidadeEnum.fromInteger(aposta.getModalidade().getValor()) == ModalidadeEnum.DIA_DE_SORTE) {
-                numeroStr.append("\nMês de sorte: ").append(aposta.getMesDeSorte().getNome());
+                numeroStr.append(context.getResources().getString(R.string.barra_n_mes_de_sorte_dois_pontos)).append(aposta.getMesDeSorte().getNome());
             }
 
             holder.numerosEDetalhes.setText(numeroStr.toString());

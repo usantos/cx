@@ -49,7 +49,7 @@ public class SelecaoModalidadesRapidaoActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        String arrayAsString = getIntent().getExtras().getString("tiposAposta");
+        String arrayAsString = getIntent().getExtras().getString(getResources().getString(R.string.extra_tipos_aposta));
         tiposApostasSalvas = Arrays.asList(new Gson().fromJson(arrayAsString, TipoAposta[].class));
 
         salvarButtonRapidaoSelecionados = findViewById(R.id.salvarModalidadesApostaRapidaoSelececao);
@@ -58,7 +58,7 @@ public class SelecaoModalidadesRapidaoActivity extends AppCompatActivity {
             Intent intent = new Intent();
 
             String arrayAsString1 = new Gson().toJson(tiposAposta);
-            intent.putExtra("tiposAposta", arrayAsString1);
+            intent.putExtra(getResources().getString(R.string.extra_tipos_aposta), arrayAsString1);
             setResult(RESULT_OK, intent);
             finish();
         });
@@ -203,7 +203,7 @@ public class SelecaoModalidadesRapidaoActivity extends AppCompatActivity {
                         break;
             }
             if (tipoAposta != null) {
-                tipoAposta.setTitulo(tipoAposta.getTitulo().toLowerCase(new Locale("pt", "BR")));
+                tipoAposta.setTitulo(tipoAposta.getTitulo().toLowerCase(new Locale(getResources().getString(R.string.pt), getResources().getString(R.string.br))));
                 tiposAposta.add(tipoAposta);
             }
         }

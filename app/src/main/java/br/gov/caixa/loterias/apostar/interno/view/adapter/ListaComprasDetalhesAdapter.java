@@ -52,7 +52,7 @@ public class ListaComprasDetalhesAdapter extends RecyclerView.Adapter<ListaCompr
         mContext.setTheme(estilo.getThemeId());
         int colorText = mContext.getResources().getColor(estilo.getMenuItemColor());
         int qtdTeimosinhas = listaAposta.get(position).getQuantidadeTeimosinhas();
-        String teimosinhasTxt = qtdTeimosinhas + (qtdTeimosinhas > 1 ? " Teimosinhas" : " Teimosinha");
+        String teimosinhasTxt = qtdTeimosinhas + (qtdTeimosinhas > 1 ? mContext.getResources().getString(R.string.espaco_teimosinhas) : mContext.getResources().getString(R.string.espaco_teimosinha));
 
         holder.tipoPremioListaComprasTextView.setText(ViewUtils.textFuturaAndFuturaBold(mContext,
                 mContext.getString(R.string.texto_futura_bold, ApostaDTO.fromStringModalidade(listaAposta.get(position).getModalidade()))));

@@ -122,7 +122,7 @@
         android:layout_height="wrap_content"
         android:backgroundTint="@color/transparente"
         android:textColor="@color/branco"
-        android:text="Salvar"
+        android:text="@string/salvar"
         android:fontFamily="@font/font_family_futura"
         android:textSize="16sp"
         android:textAllCaps="false"
