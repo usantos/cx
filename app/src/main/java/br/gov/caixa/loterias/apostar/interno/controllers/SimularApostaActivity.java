@@ -615,7 +615,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
                 this.toolBarMenu = R.menu.itens_simular_actionbar_duvida;
                 break;
             case SUPER_7:
-                configuraTipoApostaTela(getResources().getString(R.string.underline_super_sete_underline), R.color.superseteclaro, R.color.superseteescuro, View.VISIBLE, View.GONE);
+                configuraTipoApostaTela(getResources().getString(R.string.underline_super_sete_underline), R.color.superseteclaro, R.color.supersetemedio, View.VISIBLE, View.GONE);
                 this.toolBarMenu = R.menu.itens_simular_actionbar_duvida;
                 break;
         }
