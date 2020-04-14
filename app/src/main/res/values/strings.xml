@@ -789,7 +789,7 @@
     <string name="response">Response</string>
     <string name="compras_mais_antigas">Compras mais antigas podem ser consultadas no site</string>
     <string name="evento_entrou_lista_compras">ENTROU_LISTA_COMPRAS</string>
-    <string name="de_espacado">de</string>
+    <string name="de_espacado">&#160;de&#160;</string>
     <string name="evento_entrou_lista_apostas_rapidao">ENTROU_LISTA_APOSTAS_RAPIDAO</string>
     <string name="evento_entrou_adicao_forma_pagamento">ENTROU_ADICAO_FORMA_DE_PAGAMENTO</string>
     <string name="evento_efetuou_adicao_forma_pagamento_sucesso">EFETUOU_ADICAO_FORMA_DE_PAGAMENTO_SUCESSO</string>
