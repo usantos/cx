@@ -70,8 +70,10 @@ public class ApostaFavoritaAdapter extends BaseAdapter {
 
         final TextView numerosApostaFavorita = convertView.findViewById( R.id.numerosApostaFavorita );
         StringBuilder numeroStr = new StringBuilder();
-        for (Integer num : aposta.getNumerosSelecionados()) {
-            if (num.equals(aposta.getNumerosSelecionados().get( aposta.getNumerosSelecionados().size() - 1 ))) {
+
+        List<Integer> numerosSelecionados =  aposta.getListaNumerosSelecionados();
+        for (Integer num : numerosSelecionados) {
+            if (num.equals(numerosSelecionados.get(numerosSelecionados.size() - 1 ))) {
                 numeroStr.append(String.format(mContext.getResources().getString(R.string.percent_zero_dois_d), num));
             } else {
                 numeroStr.append(String.format(mContext.getResources().getString(R.string.percent_zero_dois_d_traco), num));

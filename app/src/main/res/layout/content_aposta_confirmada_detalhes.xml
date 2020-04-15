@@ -18,12 +18,10 @@
             android:layout_height="wrap_content"
             android:background="?attr/colorPrimary" />
 
-
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/linearLayoutBottom"
-            >
+            android:id="@+id/linearLayoutBottom">
 
             <View
                 android:layout_width="match_parent"

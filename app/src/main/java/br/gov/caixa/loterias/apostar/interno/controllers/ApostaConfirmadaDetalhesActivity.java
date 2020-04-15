@@ -143,6 +143,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     private ParametroSimulacao parametroSimulacao;
     private ComprovanteApostaDTO comprovanteParaPdf;
     private boolean isHistorico;
+    private int RESGATOU_MP = 2000;
 
     @Click
     protected void carrinhoApostasBtn() {
@@ -239,7 +240,6 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                         }
                     });
                 }
-
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     onError(error);
@@ -253,7 +253,6 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     @Click
     protected void comprovanteLayout() {
         DialogUtils.show(this);
-
         if (premioPago && isHistorico) {
             apostaBO.getApostaHistoricoComprovante(aposta.getId(), new RequestListener<DetalhesHistoricoPremioDTOResponse>() {
                 @Override
@@ -400,11 +399,15 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                         .commit();
                 break;
             default:
-                if (premioPago) {
+                fragment = ApostaConfirmadaNumeroDetalhes_.builder().aposta(aposta).build();
+
+                linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorEscura()));
+                getSupportFragmentManager().beginTransaction()
+                                           .replace(R.id.fragmentContainer, fragment)
+                                           .commit();
+                /*if (premioPago && aposta.getQuantidadeTeimosinhas().intValue() == 0) {
                     //ADICIONAR CHAMADA DE RESULTADO
-                    if (detalhesHistoricoPremioDTO != null) {
-                        getResultadoModalidadeConcurso(aposta);
-                    } else if (detalhesPremioDTO != null) {
+                    if (detalhesHistoricoPremioDTO != null || detalhesPremioDTO != null) {
                         getResultadoModalidadeConcurso(aposta);
                     }
                 } else {
@@ -414,7 +417,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.fragmentContainer, fragment)
                             .commit();
-                }
+                }*/
                 break;
         }
     }
@@ -456,6 +459,13 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == RESGATOU_MP && resultCode == RESULT_OK){
+            finish();
+        }
+    }
+
     private void disableButtonEditar() {
         editarTxt.setTextColor(getResources().getColor(R.color.cinza_button));
     }
@@ -476,7 +486,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
             public void onResponse(DetalhesPremioDTOResponse result) {
                 DialogUtils.dismiss();
 
-                ResultadoApostaConfirmadaActivity_.intent(contextParam).detalhesPremioDTO(result.getPayload()).comprovante(comprovante).start();
+                ResultadoApostaConfirmadaActivity_.intent(contextParam).detalhesPremioDTO(result.getPayload()).comprovante(comprovante).startForResult(RESGATOU_MP);
             }
 
             @Override

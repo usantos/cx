@@ -44,6 +44,16 @@
             app:layout_constraintTop_toBottomOf="@id/tv_mes_da_sorte"
             tools:text="@string/placeholder_prognosticos" />
 
+        <RelativeLayout
+            android:id="@+id/rl_container_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="-5dp"
+            android:layout_marginTop="10dp"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_mes_da_sorte"/>
+
         <ImageView
             android:id="@+id/iv_teimosinha"
             android:layout_width="20dp"

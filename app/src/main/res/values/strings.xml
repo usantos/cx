@@ -186,6 +186,7 @@
     <string name="msg_qtd_max_col_super_sete">Você só pode selecionar 3 números por coluna</string>
     <string name="msg_bloqueio_coluna_super_sete_marcar">Você precisa selecionar {qtdColunas} número(s) em cada coluna antes de selecionar outro nessa</string>
     <string name="msg_bloqueio_coluna_super_sete_desmarcar">Você não pode fazer isso, pois nessa coluna é necessário ter selecionado {qtdColunas} número(s)</string>
+    <string name="colunas">Colunas</string>
 
     <string name="label_aposta_salva_carinha">Aposta salva :)</string>
     <string name="label_sem_teimosinha">Teimosinha</string>
@@ -235,6 +236,7 @@
     <string name="concurso">Concurso</string>
     <string name="data_da_aposta">Data da aposta:</string>
     <string name="seus_numeros">Seus números</string>
+    <string name="sua_aposta">Sua aposta</string>
     <string name="conferir_resultados">Conferir resultados</string>
 
     <string name="carregando">Carregando…</string>
@@ -500,7 +502,6 @@
     <string name="carrinho_fav_vazio">Você ainda não possui carrinhos favoritos.</string>
     <string name="carrinho_fav_deseja_excluir">Deseja realmente excluir este carrinho favorito?</string>
     <string name="carrinho_fav_deseja_excluir_aposta">Deseja realmente excluir esta aposta?</string>
-    <string name="carrinho_fav_deseja_transformar">Esse carrinho favorito irá sobrescrever seu carrinho oficial, quer continuar?</string>
     <string name="carrinho_fav_incluir_carrinho">Incluir no carrinho</string>
     <string name="carrinho_fav_segmented_desc">Existem 2 concursos abertos para a {modalidade}.\nDeseja incluir no carrinho qual concurso?</string>
 
@@ -511,7 +512,7 @@
     <string name="cartoes_desc_menu_lat">Confira aqui sua lista de cartões salvos</string>
     <string name="cartoes_subt">Seus Cartões</string>
     <string name="cartoes_desc">Escolha um cartão e cruze os dedos</string>
-    <string name="cartoes_ir_rapidao_tutorial">Você ainda não possui cartões,que tal conhecer o _Rapidão_ e já cadastrar um?</string>
+    <string name="cartoes_ir_rapidao_tutorial">Você ainda não possui cartões, que tal conhecer o _Rapidão_ e já cadastrar um?</string>
     <string name="so_bora">Só bora!</string>
     <string name="cartoes_ir_rapidao">Você não tem nenhum cartao, bora pro _Rapidão_?</string>
     <string name="partiu">Partiu!</string>
@@ -567,6 +568,10 @@
     <string name="numeros_obrigatorios">Números obrigatórios</string>
     <string name="numeros_proibidos">Números proibidos</string>
     <string name="apostas_favoritas">Apostas favoritas</string>
+    <string name="resgatar">Resgatar</string>
+    <string name="excelente">Excelente</string>
+    <string name="confirmar_email">Para receber seu prêmio, por favor confirme seu email:</string>
+    <string name="premio_disponivel">Em breve seu prêmio estará disponível em sua conta no mercado pago</string>
     <string name="placeholder_versao">v1.0.0</string>
     <string name="selecione_os_numeros">Selecione os números que deverão aparecer em suas apostas.</string>
     <string name="limpar_selecao">Limpar seleção</string>
@@ -596,12 +601,10 @@
     <string name="loterica_placeholder">Lotérica QI 25</string>
     <string name="placeholder_endereco">SHIS QI 25 - Lago Sul, Brasília - DF CEP 71660 440 3367-6888</string>
     <string name="pr_mio">Prêmio</string>
-    <string name="excelente">Excelente</string>
     <string name="para_receber_seu_pr_mio_npor_favor_confirme_seu_email">Para receber seu prêmio, por favor confirme seu email:</string>
     <string name="e_mail">E-mail</string>
     <string name="em_breve_seu_pr_mio_estar_dispon_vel_em_sua_conta_no_mercado_pago">Em breve seu prêmio estará disponível em sua conta no mercado pago</string>
     <string name="um_email_foi_enviado_para_dmalva_monumenta_com_br_com_todas_as_informa_es_e_passo_a_passo_para_o_recebimento_de_seu_pr_mio">Um email foi enviado para dmalva@monumenta.com.br com todas as informações e passo-a-passo para o recebimento de seu prêmio</string>
-    <string name="resgatar">Resgatar</string>
     <string name="voltar">Voltar</string>
     <string name="conferir_aposta">Conferir Aposta</string>
     <string name="selecione_a_aposta_realizada">Selecione a aposta realizada:</string>
@@ -649,7 +652,6 @@
     <string name="selecione_a_qtd_de_teimosinhas">Selecione a qtd. de teimosinhas</string>
     <string name="adicionar_no_carrinho">Adicionar no carrinho</string>
     <string name="cvv">CVV</string>
-    <string name="colunas">Colunas</string>
     <string name="_1">1</string>
     <string name="_2">2</string>
     <string name="_3">3</string>
@@ -787,7 +789,7 @@
     <string name="response">Response</string>
     <string name="compras_mais_antigas">Compras mais antigas podem ser consultadas no site</string>
     <string name="evento_entrou_lista_compras">ENTROU_LISTA_COMPRAS</string>
-    <string name="de_espacado">de</string>
+    <string name="de_espacado">&#160;de&#160;</string>
     <string name="evento_entrou_lista_apostas_rapidao">ENTROU_LISTA_APOSTAS_RAPIDAO</string>
     <string name="evento_entrou_adicao_forma_pagamento">ENTROU_ADICAO_FORMA_DE_PAGAMENTO</string>
     <string name="evento_efetuou_adicao_forma_pagamento_sucesso">EFETUOU_ADICAO_FORMA_DE_PAGAMENTO_SUCESSO</string>

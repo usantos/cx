@@ -29,6 +29,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.GsonReques
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.SilceConnection;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.SilceSingleton;
 import br.gov.caixa.loterias.apostar.interno.utils.AppUtils;
+import br.gov.caixa.loterias.apostar.interno.utils.AuthorizationServiceFactory;
 import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
 
 /**
@@ -68,7 +69,7 @@ public class BaseBO {
                                 Uri.parse(BuildConfig.URL_SSO_TOKEN)
                         );
 
-                        AuthorizationService authorizationService = new AuthorizationService(context);
+                        AuthorizationService authorizationService = AuthorizationServiceFactory.getAuthorizationService(context);
                         TokenRequest.Builder tokenBuilder = new TokenRequest.Builder(authorizationServiceConfiguration, BuildConfig.SSO_CLIENT_ID);
                         tokenBuilder.setRefreshToken(keycloakBO.getRefreshToken());
                         tokenBuilder.setGrantType("refresh_token");

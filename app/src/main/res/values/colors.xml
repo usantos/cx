@@ -18,59 +18,70 @@
     <color name="cinza_total">#929ea0</color>
     <color name="verdeazul">#54bbab</color>
     <color name="amarelo">#feb21e</color>
+
     <color name="verdesenaclaro">#60a96b</color>
+    <color name="verdesenatrevo">#579a66</color>
     <color name="megasenaclaro">#00ab67</color>
     <color name="megasenamedio">#009b63</color>
     <color name="megasenaescuro">#008f5b</color>
     <color name="megasenamedio_transparente">#99009b63</color>
-    <color name="superseteclaro">#DDE89C   </color>
+
+    <color name="superseteclaro">#DDE89C</color>
     <color name="supersetemedio">#a8cf45</color>
-    <color name="superseteescuro">#a8cf45</color>
+    <color name="superseteescuro">#084A08</color>
     <color name="supersete_claro_transparente">#80DDE89C</color>
 
     <color name="diasorteclaro">#E2BE1E</color>
     <color name="diasortemedio">#D2B11B</color>
     <color name="diasorteescuro">#BC9D0E</color>
     <color name="diasortemedio_transparente">#99A0522D</color>
-    //verdesenaescuro
+
     <color name="lotofacilclaro">#bd3e96</color>
     <color name="lotofacilmedio">#a53384</color>
     <color name="lotofacilescuro">#9b2b7a</color>
+
     <color name="quinaclaro">#803594</color>
     <color name="quinamedio">#702a82</color>
     <color name="quinaescuro">#642475</color>
+
     <color name="duplasenaclaro">#a62a52</color>
     <color name="duplasenamedio">#90214a</color>
     <color name="duplasenaescuro">#7d1a3f</color>
+
     <color name="federalclaro">#005FA1</color>
     <color name="federalescuro">#00528C</color>
+
     <color name="lotecaclaro">#C80226</color>
     <color name="lotecaescuro">#9F0220</color>
+    <color name="lotecaClaroToolbar">#C80226</color>
+    <color name="lotecaEscuroToolbar">#9F0220</color>
+    <color name="selecaoLotecaResultado">#f9765e</color>
+
     <color name="lotogolclaro">#00b7e3</color>
     <color name="lotogolescuro">#009fc5</color>
     <color name="lotogolEscuroToolBar">#00a8de</color>
+
     <color name="lotomaniaclaro">#EC8F39</color>
     <color name="lotomaniaescuro">#D38127</color>
     <color name="lotomaniamedio">#f58220</color>
     <color name="lotomaniaEscuroToolBar">#f99d1c</color>
-    <color name="lotecaClaroToolbar">#C80226</color>
-    <color name="lotecaEscuroToolbar">#9F0220</color>
+
+
     <color name="timemaniaclaro">#C9C32D</color>
     <color name="timemaniamediaescuro">#B6B128</color>
     <color name="timemaniaescuro">#B6B128</color>
     <color name="timemaniaClaroToolBar">#BEB92A</color>
-    <color name="verdesenatrevo">#579a66</color>
+
+
     <color name="azulescuro">#3964a4</color>
     <color name="azulTexto">#004c8c</color>
     <color name="azulFormNovoTipoPagamento">#005cad</color>
     <color name="pretoLinhaFormNovoTipoPagamento">#3e576d</color>
     <color name="verdeagua">#00bcac</color>
     <color name="laranjacaixa">#f39200</color>
-
     <color name="amareloQueimado">#f9b000</color>
     <color name="transparente50">#64ffffff</color>
     <color name="textColorToolbar">#0164a8</color>
-
     <color name="transparente80">#CCFFFFFF</color>
     <color name="transparenteAzul10">#E6005eab</color>
     <color name="vermelhoBilhetes">#f9765e</color>
@@ -95,7 +106,6 @@
 
     <color name="cinzaApostaConfirmada">#d9e3e6</color>
     <color name="white60">#99ffffff</color>
-    <color name="selecaoLotecaResultado">#f9765e</color>
     <color name="black">#000000</color>
     <color name="white_6">#66ffffff</color>
     <color name="green_6">#66ffffff</color>
@@ -103,6 +113,5 @@
     <color name="azul_card">#035FA9</color>
     <color name="verde_card">#51B7AB</color>
     <color name="cinza_card">#F0F5F6</color>
-
 
 </resources>

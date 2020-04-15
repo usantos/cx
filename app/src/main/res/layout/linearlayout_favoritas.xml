@@ -164,16 +164,27 @@
                     android:textSize="14.2sp"
                     tools:text="01 - 02 - 03 - 04 - 05 - 06 - 10 - 11 - 12 - 20 - 33 - 100" />
 
+                <RelativeLayout
+                    android:id="@+id/rl_container_fragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="12dp"
+                    android:visibility="gone"
+                    android:layout_below="@id/numerosApostaFavorita"/>
+
                 <LinearLayout
-                    android:layout_width="123dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
+                    android:background="@color/transparente"
                     android:orientation="horizontal">
 
                     <RelativeLayout
                         android:id="@+id/editarRelativeLayoutFavoritos"
-                        android:layout_width="41dp"
+                        android:layout_width="30dp"
                         android:layout_height="30dp"
+                        android:layout_marginRight="5dp"
                         android:visibility="invisible"
                         android:clickable="false">
 
@@ -188,7 +199,8 @@
 
                     <RelativeLayout
                         android:id="@+id/editarRelativeLayoutAddCarrinho"
-                        android:layout_width="41dp"
+                        android:layout_width="30dp"
+                        android:layout_marginRight="5dp"
                         android:layout_height="30dp"
                         android:clickable="true">
 
@@ -202,13 +214,14 @@
                     </RelativeLayout>
 
                     <RelativeLayout
-                        android:id="@+id/exluirRelativeLayoutFavoritos"
-                        android:layout_width="41dp"
+                        android:id="@+id/excluirRelativeLayoutFavoritos"
+                        android:layout_width="30dp"
+                        android:layout_marginRight="5dp"
                         android:layout_height="30dp"
                         android:clickable="true">
 
                         <Button
-                            android:id="@+id/exluirButtonFavoritos"
+                            android:id="@+id/excluirButtonFavoritos"
                             android:layout_width="21dp"
                             android:layout_height="21dp"
                             android:layout_centerInParent="true"
@@ -247,7 +260,6 @@
                         tools:text="Fevereiro" />
                 </LinearLayout>
             </RelativeLayout>
-
 
         </LinearLayout>
 

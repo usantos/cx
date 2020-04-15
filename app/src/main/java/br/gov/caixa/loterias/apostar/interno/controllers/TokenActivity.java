@@ -33,6 +33,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.CarrinhoSi
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.UltimaNotificacaoSingleton;
 import br.gov.caixa.loterias.apostar.interno.model.dao.DBLoteriasCrud;
 import br.gov.caixa.loterias.apostar.interno.model.sp.LoginSP;
+import br.gov.caixa.loterias.apostar.interno.utils.AuthorizationServiceFactory;
 import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
 
@@ -45,6 +46,7 @@ public class TokenActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_token);
         loadViewProgress = LoadingViewLoterias.show(this);
         atualizaLimiteDiario();
@@ -52,7 +54,8 @@ public class TokenActivity extends AppCompatActivity {
             AuthorizationResponse authorizationResponse = AuthorizationResponse.fromIntent(getIntent());
             AuthorizationException authorizationException = AuthorizationException.fromIntent(getIntent());
             if (authorizationException == null && authorizationResponse != null) {
-                authorizationService = new AuthorizationService(this);
+
+                authorizationService =  AuthorizationServiceFactory.getAuthorizationService(this);
                 authorizationService.performTokenRequest(authorizationResponse.createTokenExchangeRequest(), (response, ex) -> {
                     if (response != null) {
                         if (response.accessToken == null || response.refreshToken == null) {
@@ -131,7 +134,7 @@ public class TokenActivity extends AppCompatActivity {
             }
         } catch (Exception e) {
             finish();
-        }
+         }
     }
     @Override
     public void finish() {

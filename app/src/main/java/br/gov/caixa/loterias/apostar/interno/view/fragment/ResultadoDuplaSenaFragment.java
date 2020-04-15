@@ -61,12 +61,12 @@ public class ResultadoDuplaSenaFragment extends Fragment {
 
         NumerosResultadosAdapter numerosResultadosAdapter;
         int numberOfColumns = 3;
-        if (resultado.getNumerosSorteadosPrimeiroSorteio().size() > 6) {
+        if (resultado.getListaSorteadosPrimeiroSorteio().size() > 6) {
             numberOfColumns = 4;
         }
 
         this.rvPrimeiroResultado.setLayoutManager(new GridLayoutManager(getContext(), numberOfColumns));
-        numerosResultadosAdapter = new NumerosResultadosAdapter(getContext(), resultado.getNumerosSorteadosPrimeiroSorteio(),resultado.getConcurso().getModalidade());
+        numerosResultadosAdapter = new NumerosResultadosAdapter(getContext(), resultado.getListaSorteadosPrimeiroSorteio(),resultado.getConcurso().getModalidade());
         this.rvPrimeiroResultado.setAdapter(numerosResultadosAdapter);
 
         this.rvSegundoResultado.setLayoutManager(new GridLayoutManager(getContext(), numberOfColumns));

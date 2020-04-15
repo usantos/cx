@@ -191,9 +191,11 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     public int  retornaPosicaoPorModalidade(ModalidadeEnum modalidade){
-        for (int i = 0; i < data.size(); i++) {
-            if (data !=null && data.get(i).getTipoModalidade().equals(modalidade)) {
-                return i;
+        if(data != null){
+            for (int i = 0; i < data.size(); i++) {
+                if (data.get(i).getTipoModalidade().equals(modalidade)) {
+                    return i;
+                }
             }
         }
         return -1;

@@ -81,7 +81,7 @@ import static br.gov.caixa.loterias.apostar.interno.controllers.CarrinhoActivity
 import static java.lang.String.format;
 
 @EActivity(R.layout.activity_simular_aposta)
-public class SimularApostaActivity extends AppCompatActivity implements OnClickListener, CartelaFragmentListener, SurpresinhaFragmentListener {
+public class SimularApostaActivity<T> extends AppCompatActivity implements OnClickListener, CartelaFragmentListener, SurpresinhaFragmentListener {
 
     private static int RESULT_FINISH = 3;
 
@@ -420,7 +420,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
         return flagApostaSalva;
     }
 
-    public void salvarAposta(final ApostaFavoritaDTO apostaFavorita, String nomeAposta, List<Integer> dezenasSelecionadas) {
+    public void salvarAposta(final ApostaFavoritaDTO apostaFavorita, String nomeAposta, T dezenasSelecionadas) {
 
         DialogUtils.show(this);
 
@@ -615,7 +615,7 @@ public class SimularApostaActivity extends AppCompatActivity implements OnClickL
                 this.toolBarMenu = R.menu.itens_simular_actionbar_duvida;
                 break;
             case SUPER_7:
-                configuraTipoApostaTela(getResources().getString(R.string.underline_super_sete_underline), R.color.superseteclaro, R.color.superseteescuro, View.VISIBLE, View.GONE);
+                configuraTipoApostaTela(getResources().getString(R.string.underline_super_sete_underline), R.color.superseteclaro, R.color.supersetemedio, View.VISIBLE, View.GONE);
                 this.toolBarMenu = R.menu.itens_simular_actionbar_duvida;
                 break;
         }

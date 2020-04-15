@@ -46,7 +46,7 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
     public static String DETALHES = "DETALHES";
     public static String COMPROVANTE = "COMPROVANTE";
     public static String CODIGO_RESGATE = "CODIGO_RESGATE";
-
+    public static int RESGATOU_MERCADO_PAGO = 200;
     @Bean
     protected ApostaBO apostaBO;
 
@@ -171,7 +171,15 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
         Intent intent = new Intent( ResultadoApostaConfirmadaActivity.this, JogosConfirmadosPremioMercadoPagoActivity.class);
         intent.putExtra( getResources().getString(R.string.extra_valor_premio), ViewUtils.getMoedaFormat(detalhesPremioDTO.getPremio().getValorLiquido()) );
         intent.putExtra( getResources().getString(R.string.extra_id_aposta), detalhesPremioDTO.getAposta().getId() );
-        startActivity( intent );
+        startActivityForResult(intent,RESGATOU_MERCADO_PAGO);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == RESGATOU_MERCADO_PAGO && resultCode == RESULT_OK){
+            setResult(RESULT_OK);
+            finish();
+        }
     }
 
     private void trataFormasDeResgate() {

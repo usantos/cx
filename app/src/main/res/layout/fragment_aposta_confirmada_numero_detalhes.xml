@@ -173,6 +173,39 @@
             android:text="@string/seus_numeros"
             android:textSize="12sp" />
 
+        <TextView
+            android:id="@+id/tv_sua_aposta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_toEndOf="@id/modalidadeTxt"
+            android:fontFamily="@font/arialmt"
+            android:text="@string/sua_aposta"
+            android:visibility="invisible"
+            android:textSize="12sp" />
+
+        <RelativeLayout
+            android:id="@+id/rl_container_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/seusNumerosTxt"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_alignStart="@id/tv_sua_aposta"
+            android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/tv_colunas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_toStartOf="@id/tv_sua_aposta"
+            android:layout_below="@id/tv_sua_aposta"
+            android:fontFamily="@font/arialmt"
+            android:text="@string/colunas"
+            android:visibility="invisible"
+            android:textSize="12sp" />
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/dezenasRecyclerView"
             android:layout_width="match_parent"
@@ -183,6 +216,4 @@
             android:nestedScrollingEnabled="false" />
 
     </RelativeLayout>
-
-
 </LinearLayout>

@@ -21,6 +21,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bean.DadosUsuarioToken;
@@ -32,6 +34,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bean.DadosUsuarioToken;
 public class Utils {
 
     private static Random random;
+    private static final AtomicLong TS = new AtomicLong();
 
     public interface DelayCallback{
         void afterDelay();
@@ -62,6 +65,18 @@ public class Utils {
     private static String getJson(String strEncoded) throws UnsupportedEncodingException {
         byte[] decodedBytes = Base64.decode(strEncoded, Base64.URL_SAFE);
         return new String(decodedBytes, "UTF-8");
+    }
+
+
+    public static long getIdUnico() {
+        long micros = System.currentTimeMillis() * 1000;
+        for (;;) {
+            long value = TS.get();
+            if (micros <= value)
+                micros = value + 1;
+            if (TS.compareAndSet(value, micros))
+                return micros;
+        }
     }
 
     public static Random getRandom() {
