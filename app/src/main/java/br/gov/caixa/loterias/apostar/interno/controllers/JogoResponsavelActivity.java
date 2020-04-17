@@ -15,7 +15,6 @@ public class JogoResponsavelActivity extends AppCompatActivity {
 
     private TextView tvRegras;
     private RadioButton rbConheca,rbPrincipios,rbApostador;
-    private ImageView ivIndicator1,ivIndicator2,ivIndicator3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,9 +30,6 @@ public class JogoResponsavelActivity extends AppCompatActivity {
         rbConheca = findViewById(R.id.rb_conheca);
         rbApostador = findViewById(R.id.rb_apostador);
         rbPrincipios = findViewById(R.id.rb_principios);
-        ivIndicator1 = findViewById(R.id.iv_indicator_1);
-        ivIndicator2 = findViewById(R.id.iv_indicator_2);
-        ivIndicator3 = findViewById(R.id.iv_indicator_3);
 
 
         tvRegras.setText(ViewUtils.textColor(this,getResources().getString(R.string.jr_aprender_regras),R.color.jr_amarelo));
@@ -44,18 +40,12 @@ public class JogoResponsavelActivity extends AppCompatActivity {
     public void setaMetodos(){
 
         rbConheca.setOnClickListener(view -> {
-            ivIndicator1.setVisibility(View.VISIBLE);
-            ivIndicator2.setVisibility(View.INVISIBLE);
-            ivIndicator3.setVisibility(View.INVISIBLE);
             rbPrincipios.setTypeface(null, Typeface.NORMAL);
             rbConheca.setTypeface(null, Typeface.BOLD);
             rbApostador.setTypeface(null, Typeface.NORMAL);
         });
 
         rbPrincipios.setOnClickListener(view -> {
-            ivIndicator1.setVisibility(View.INVISIBLE);
-            ivIndicator2.setVisibility(View.VISIBLE);
-            ivIndicator3.setVisibility(View.INVISIBLE);
             rbPrincipios.setTypeface(null, Typeface.BOLD);
             rbConheca.setTypeface(null, Typeface.NORMAL);
             rbApostador.setTypeface(null, Typeface.NORMAL);
@@ -63,9 +53,6 @@ public class JogoResponsavelActivity extends AppCompatActivity {
         });
 
         rbApostador.setOnClickListener(view -> {
-            ivIndicator1.setVisibility(View.INVISIBLE);
-            ivIndicator2.setVisibility(View.INVISIBLE);
-            ivIndicator3.setVisibility(View.VISIBLE);
             rbPrincipios.setTypeface(null, Typeface.NORMAL);
             rbConheca.setTypeface(null, Typeface.NORMAL);
             rbApostador.setTypeface(null, Typeface.BOLD);
