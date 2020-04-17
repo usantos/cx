@@ -20,7 +20,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".controllers.JogoResponsavelActivity"></activity>
+        <activity android:name=".controllers.JogoResponsavelActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.JogoResponsavel" />
         <activity
             android:name=".controllers.ConfiguracaoRapidaoActivity"
             android:screenOrientation="portrait"

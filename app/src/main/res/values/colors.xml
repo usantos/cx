@@ -114,4 +114,12 @@
     <color name="verde_card">#51B7AB</color>
     <color name="cinza_card">#F0F5F6</color>
 
+    <!-- Jogo Responsável -->
+    <color name="jr_start">#2F4D8F</color>
+    <color name="jr_end">#233E7B</color>
+    <color name="jr_radio_bg">#DAE8EB</color>
+    <color name="jr_radio_text_selected">#005CA9</color>
+    <color name="jr_radio_text_unselected">#4E5A5D</color>
+    <color name="jr_amarelo">#EAAA28</color>
+
 </resources>

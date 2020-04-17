@@ -24,7 +24,8 @@ public class AnimacoesAcessoRapido {
     private RelativeLayout relativePrincipal;
     private RelativeLayout relativeLayoutContentRapidao;
     private RelativeLayout relativeLayoutContentLerBilhetes;
-    private RelativeLayout relativeLayoutContentFavoritas;
+    //private RelativeLayout relativeLayoutContentFavoritas;
+    private RelativeLayout rlJogoResponsavel;
     private RelativeLayout relativeLayoutContentRepassados;
     private RelativeLayout relativeBlankView;
     private LinearLayout linearAtalhoRapidoLoterias;
@@ -40,6 +41,7 @@ public class AnimacoesAcessoRapido {
                                  RelativeLayout relativeLayoutContentRapidao,
                                  RelativeLayout relativeLayoutContentLerBilhetes,
                                  RelativeLayout relativeLayoutContentFavoritas,
+                                 RelativeLayout rlJogoResponsavel,
                                  RelativeLayout relativeLayoutContentRepassados,
                                  RelativeLayout relativeBlankView,
                                  LinearLayout linearAtalhoRapidoLoterias,
@@ -50,7 +52,8 @@ public class AnimacoesAcessoRapido {
         this.relativePrincipal = relativePrincipal;
         this.relativeLayoutContentRapidao = relativeLayoutContentRapidao;
         this.relativeLayoutContentLerBilhetes = relativeLayoutContentLerBilhetes;
-        this.relativeLayoutContentFavoritas = relativeLayoutContentFavoritas;
+        //this.relativeLayoutContentFavoritas = relativeLayoutContentFavoritas;
+        this.rlJogoResponsavel = rlJogoResponsavel;
         this.relativeLayoutContentRepassados = relativeLayoutContentRepassados;
         this.linearAtalhoRapidoLoterias = linearAtalhoRapidoLoterias;
         this.relativeBlankView = relativeBlankView;
@@ -101,7 +104,8 @@ public class AnimacoesAcessoRapido {
 
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    AnimacaoFadeOutFavoritas();
+                    //AnimacaoFadeOutFavoritas();
+                    AnimacaoFadeOutJr();
                 }
 
                 @Override
@@ -113,7 +117,7 @@ public class AnimacoesAcessoRapido {
     }
 
 
-    private void AnimacaoFadeOutFavoritas(){
+    /*private void AnimacaoFadeOutFavoritas(){
         relativeLayoutContentFavoritas.animate().alpha(1.0f).setDuration(200).setListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {}
@@ -129,7 +133,7 @@ public class AnimacoesAcessoRapido {
             @Override
             public void onAnimationRepeat(Animator animation) {}
         });
-    }
+    }*/
 
     private void AnimacaoFadeOutRepassados(){
         relativeLayoutContentRepassados.animate().alpha(1.0f).setDuration(200).setListener(new Animator.AnimatorListener() {
@@ -160,7 +164,25 @@ public class AnimacoesAcessoRapido {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                AnimacaoFadeInFavoritas();
+                //AnimacaoFadeInFavoritas();
+                AnimacaoFadeInJr();
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {}
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {}
+        });
+    }
+       private void AnimacaoFadeOutJr(){
+           rlJogoResponsavel.animate().alpha(1.0f).setDuration(200).setListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {}
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                AnimacaoFadeOutRepassados();
             }
 
             @Override
@@ -171,9 +193,8 @@ public class AnimacoesAcessoRapido {
         });
     }
 
-
-    private void AnimacaoFadeInFavoritas(){
-        relativeLayoutContentFavoritas.animate().alpha(0.0f).setDuration(200).setListener(new Animator.AnimatorListener() {
+       private void AnimacaoFadeInJr(){
+        rlJogoResponsavel.animate().alpha(0.0f).setDuration(200).setListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {}
 
@@ -189,6 +210,24 @@ public class AnimacoesAcessoRapido {
             public void onAnimationRepeat(Animator animation) {}
         });
     }
+
+    /*private void AnimacaoFadeInFavoritas(){
+        relativeLayoutContentFavoritas.animate().alpha(0.0f).setDuration(200).setListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {}
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                AnimacaoFadeInLerBilhetes();
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {}
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {}
+        });
+    }*/
 
     private void AnimacaoFadeInLerBilhetes(){
         relativeLayoutContentLerBilhetes.animate().alpha(0.0f).setDuration(200).setListener(new Animator.AnimatorListener() {

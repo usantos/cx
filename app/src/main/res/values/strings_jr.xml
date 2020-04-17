@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="jr_titulo">Jogo Responsavel</string>
+    <string name="jr_titulo">Jogo responsável</string>
+    <string name="jr_titulo_maiusculo">Jogo Responsável</string>
+    <string name="jr_aprender_regras">Para o Jogo continuar divertido é preciso _aprender as regras_.</string>
+    <string name="jr_principios">Princípios do Jogo</string>
+    <string name="jr_conheca">Conheça</string>
+    <string name="jr_o_apostador">O apostador</string>
+    <string name="jr_desc_menu_trevo">Prevenção e tratamento aos danos relacionados com jogos.</string>
+
 
 </resources>
