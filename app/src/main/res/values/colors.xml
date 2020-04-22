@@ -121,5 +121,16 @@
     <color name="jr_radio_text_selected">#005CA9</color>
     <color name="jr_radio_text_unselected">#4E5A5D</color>
     <color name="jr_amarelo">#EAAA28</color>
+    <color name="jr_azul_text_title">#0164A8</color>
+    <color name="jr_laranja">#E0611A</color>
+    <color name="jr_email">#F15700</color>
+    <color name="jr_cinza_bg">#EEEEEE</color>
+    <color name="jr_cinza_separator">#E0E0E0</color>
+    <color name="jr_cinza_text">#48586C</color>
+    <color name="jr_cinza_text_claro">#8D989A</color>
+    <color name="jr_nvl_1">#92A4C3</color>
+    <color name="jr_nvl_2">#6C86B1</color>
+    <color name="jr_nvl_3">#4768A0</color>
+    <color name="jr_nvl_4">#2C4F8B</color>
 
 </resources>

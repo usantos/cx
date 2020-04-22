@@ -9,6 +9,15 @@
 
     <include layout="@layout/app_bar_degrade" />
 
+    <ImageView
+        android:layout_width="?attr/actionBarSize"
+        android:layout_height="?attr/actionBarSize"
+        android:src="@drawable/ic_selo_18_top"
+        android:padding="3dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginRight="10dp" />
+
     <android.support.constraint.Guideline
         android:id="@+id/gl_toolbar"
         android:layout_width="0dp"
@@ -81,6 +90,10 @@
                     android:button="@null"
                     android:gravity="center" />
             </RadioGroup>
+            <FrameLayout
+                android:id="@+id/v_container_fragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
         </LinearLayout>
     </ScrollView>
 
