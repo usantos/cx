@@ -15,8 +15,8 @@ android {
         minSdkVersion 21
         targetSdkVersion 28
         //version code = minSdkVersion + versionName(sem pontuação) + versão interna
-        versionCode 2110231
-        versionName "1.0.23"
+        versionCode 2110251
+        versionName "1.0.25"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -173,7 +173,7 @@ dependencies {
     implementation 'commons-codec:commons-codec:1.10'
 
     //Biblioteca de gerenciamento de imagens
-    implementation 'com.github.bumptech.glide:glide:3.7.0'
+    implementation 'com.github.bumptech.glide:glide:4.0.0'
 
     //Biblioteca de scanner de código de barras
     implementation 'com.journeyapps:zxing-android-embedded:3.3.0'

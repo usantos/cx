@@ -38,6 +38,7 @@ public class DadosUsuarioBO extends BaseBO {
     private static final String USUARIO_KEY = "USUARIO_KEY";
     private final static String RAPIDAO_KEY = "RAPIDAO_KEY";
     private final static String LOGIN_SUCESSO = "LOGIN_SUCESSO";
+    private final static String SUPER_SETE_TUTORIAL = "SUPER_SETE_TUTORIAL";
 
     private static final String NOME = "NOME";
     private static final String CPF = "CPF";
@@ -173,6 +174,30 @@ public class DadosUsuarioBO extends BaseBO {
         editor.commit();
 
     }
+
+    public static Boolean checarTutorialSuperSete() {
+        return checarBoolean(SUPER_SETE_TUTORIAL);
+    }
+
+    public static void updateTutorialSuperSete(Boolean status) {
+        updateBoolean(status, SUPER_SETE_TUTORIAL);
+    }
+
+    public static Boolean checarBoolean(String key) {
+        Context context =  Aplicacao.application.getApplicationContext();
+        SharedPreferences sharedPref = context.getSharedPreferences(key,Context.MODE_PRIVATE);
+        Boolean status = sharedPref.getBoolean(key, false);
+        return status;
+    }
+
+    public static void updateBoolean(Boolean status, String key) {
+        Context context =  Aplicacao.application.getApplicationContext();
+        SharedPreferences sharedPref = context.getSharedPreferences(key,Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putBoolean(key, status);
+        editor.commit();
+    }
+
 
     public static void updateUsuarioLogado(Activity activity, Boolean status) {
         SharedPreferences sharedPref = activity.getSharedPreferences(USUARIO_KEY, Context.MODE_PRIVATE);
