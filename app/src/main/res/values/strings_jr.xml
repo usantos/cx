@@ -17,6 +17,7 @@
     <string name="jr_conheca_alem_disso">Além disso, o _Jogo Responsável_ pode ser encarado como as práticas de Responsabilidade Social Corporativa, com orientações segmentadas para a indústria de jogos, loterias e apostas.</string>
     <string name="jr_conheca_label_saiba_mais">Quer obter mais informações ou até mesmo descobrir que tipo de jogador você é?</string>
     <string name="jr_conheca_btn_saiba_mais">Saiba mais</string>
+    <string name="jr_endereco">http://www.caixa.gov.br/jogo-responsavel/Paginas/default.aspx</string>
 
     <!-- Princípios -->
     <string name="jr_principios_tit">PROGRAMA DO JOGO RESPONSÁVEL</string>
@@ -104,10 +105,10 @@
     <string name="jr_bs_scm_tel">Telefones: (21) 2533-0118</string>
 
     <!-- Eventos do Firebase-->
-    <string name="evento_jr_aba_1">ENTROU_JOGO_RESPONSAVEL_ABA_1</string>
-    <string name="evento_jr_aba_2">ENTROU_JOGO_RESPONSAVEL_ABA_2</string>
-    <string name="evento_jr_aba_3">ENTROU_JOGO_RESPONSAVEL_ABA_3</string>
-    <string name="evento_jr_saiba_mais">ENTROU_JOGO_RESPONSAVEL_SAIBA_MAIS</string>
-    <string name="jr_endereco">http://www.caixa.gov.br/jogo-responsavel/Paginas/default.aspx</string>
+    <string name="evento_jr_aba_1">ENTROU_JR_CONHECA</string>
+    <string name="evento_jr_aba_2">ENTROU_JR_PRINCIPIOS</string>
+    <string name="evento_jr_aba_3">ENTROU_JR_APOSTADOR</string>
+    <string name="evento_jr_saiba_mais">ENTROU_JR_SAIBA_MAIS</string>
+    <string name="evento_jr_duvida">ENTROU_JR_DUVIDA</string>
 
 </resources>

@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import br.gov.caixa.loterias.apostar.interno.R;
+import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
 
 
 public class JogoResponsavelApostadorFragment extends Fragment {
@@ -28,7 +29,7 @@ public class JogoResponsavelApostadorFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-       // FirebaseManager.registraEvento(getActivity(), getActivity().getResources().getString(R.string.evento_jr_aba_3));
+        FirebaseManager.registraEvento(getActivity(), getActivity().getResources().getString(R.string.evento_jr_aba_3));
     }
 
 }

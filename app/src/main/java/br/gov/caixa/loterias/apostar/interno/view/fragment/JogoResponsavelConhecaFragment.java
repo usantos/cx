@@ -17,6 +17,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import br.gov.caixa.loterias.apostar.interno.R;
+import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 
 public class JogoResponsavelConhecaFragment extends Fragment {
@@ -54,9 +55,9 @@ public class JogoResponsavelConhecaFragment extends Fragment {
     }
 
     private void setaMetodos(){
-        //  FirebaseManager.registraEvento(getActivity(), getActivity().getResources().getString(R.string.evento_jr_aba_1));
+        FirebaseManager.registraEvento(getActivity(), getActivity().getResources().getString(R.string.evento_jr_aba_1));
         btnSaibaMais.setOnClickListener(view1 -> {
-            //  FirebaseManager.registraEvento(getActivity(), getActivity().getResources().getString(R.string.evento_jr_saiba_mais));
+            FirebaseManager.registraEvento(getActivity(), getActivity().getResources().getString(R.string.evento_jr_saiba_mais));
             Uri uri = Uri.parse(getActivity().getResources().getString(R.string.jr_endereco));
             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
             startActivity(intent);
