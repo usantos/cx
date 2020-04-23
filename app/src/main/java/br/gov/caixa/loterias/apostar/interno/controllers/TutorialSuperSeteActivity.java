@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 
 import br.gov.caixa.loterias.apostar.interno.R;
+import br.gov.caixa.loterias.apostar.interno.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostar.interno.view.fragment.TutorialSuperSete1Fragment;
 import br.gov.caixa.loterias.apostar.interno.view.fragment.TutorialSuperSete2Fragment;
 import br.gov.caixa.loterias.apostar.interno.view.fragment.TutorialSuperSete3Fragment;
@@ -82,7 +83,34 @@ public class TutorialSuperSeteActivity extends AppCompatActivity {
         viewPager.setAdapter(adapterViewPager);
         circleIndicator.setViewPager(viewPager);
 
-        btnPular.setOnClickListener(view -> finish());
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) { }
+
+            @Override
+            public void onPageSelected(int position) {
+                if(FRAG_CONFIRMAR == position){
+                    btnAvancar.setBackgroundColor(getResources().getColor(R.color.supersetemedio));
+                    btnAvancar.setTextColor(getResources().getColor(R.color.branco));
+                    btnAvancar.setText(getResources().getString(R.string.iniciar_aposta));
+                } else {
+                    btnAvancar.setBackground(getResources().getDrawable(R.drawable.button_border_super_sete));
+                    btnAvancar.setTextColor(getResources().getColor(R.color.supersetemedio));
+                    btnAvancar.setText(getResources().getString(R.string.avancar));
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+        btnPular.setOnClickListener(view -> {
+            DadosUsuarioBO.updateTutorialSuperSete(true);
+            finish();
+        });
+
         btnAvancar.setOnClickListener(view -> {
             switch (viewPager.getCurrentItem()) {
                 case FRAG_APOSTA_SIMPLES:
@@ -92,6 +120,7 @@ public class TutorialSuperSeteActivity extends AppCompatActivity {
                     viewPager.setCurrentItem(FRAG_CONFIRMAR);
                     break;
                 case FRAG_CONFIRMAR:
+                    DadosUsuarioBO.updateTutorialSuperSete(true);
                     finish();
                     break;
             }

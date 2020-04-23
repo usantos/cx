@@ -153,7 +153,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         if(aposta != null){
             mesDeSorteCartela = aposta.getMesDeSorte();
         }
-        if (tipoJogo == ModalidadeEnum.MEGA_SENA && !DadosUsuarioBO.checarTutorialSuperSete()) {
+        if (tipoJogo == ModalidadeEnum.SUPER_7 && !DadosUsuarioBO.checarTutorialSuperSete()) {
             startActivity(new Intent(this,TutorialSuperSeteActivity.class));
         }
     }

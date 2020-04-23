@@ -30,6 +30,7 @@
         android:layout_marginBottom="20dp"
         android:elevation="15dp"
         android:text="@string/avancar"
+        android:textStyle="bold"
         android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
         android:textColor="@color/supersetemedio"
         android:background="@drawable/button_border_super_sete"

@@ -185,7 +185,7 @@ public class DadosUsuarioBO extends BaseBO {
 
     public static Boolean checarBoolean(String key) {
         Context context =  Aplicacao.application.getApplicationContext();
-        SharedPreferences sharedPref = context.getSharedPreferences(RAPIDAO_KEY,Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = context.getSharedPreferences(key,Context.MODE_PRIVATE);
         Boolean status = sharedPref.getBoolean(key, false);
         return status;
     }
