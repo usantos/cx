@@ -56,12 +56,28 @@ public class JogoResponsavelPrincipiosFragment extends Fragment {
 
     private void setaDadosCards(){
         titulos = new ArrayList<>();
-        titulos.add(getResources().getString(R.string.jr_conheca_tit_card_1));
-        titulos.add(getResources().getString(R.string.jr_conheca_tit_card_2));
+        titulos.add(getResources().getString(R.string.jr_principios_tit_card_1));
+        titulos.add(getResources().getString(R.string.jr_principios_tit_card_2));
+        titulos.add(getResources().getString(R.string.jr_principios_tit_card_3));
+        titulos.add(getResources().getString(R.string.jr_principios_tit_card_4));
+        titulos.add(getResources().getString(R.string.jr_principios_tit_card_5));
+        titulos.add(getResources().getString(R.string.jr_principios_tit_card_6));
+        titulos.add(getResources().getString(R.string.jr_principios_tit_card_7));
+        titulos.add(getResources().getString(R.string.jr_principios_tit_card_8));
+        titulos.add(getResources().getString(R.string.jr_principios_tit_card_9));
+        titulos.add(getResources().getString(R.string.jr_principios_tit_card_10));
 
         descricoes = new ArrayList<>();
-        descricoes.add(getResources().getString(R.string.jr_conheca_desc_card_1));
-        descricoes.add(getResources().getString(R.string.jr_conheca_desc_card_2));
+        descricoes.add(getResources().getString(R.string.jr_principios_desc_card_1));
+        descricoes.add(getResources().getString(R.string.jr_principios_desc_card_2));
+        descricoes.add(getResources().getString(R.string.jr_principios_desc_card_3));
+        descricoes.add(getResources().getString(R.string.jr_principios_desc_card_4));
+        descricoes.add(getResources().getString(R.string.jr_principios_desc_card_5));
+        descricoes.add(getResources().getString(R.string.jr_principios_desc_card_6));
+        descricoes.add(getResources().getString(R.string.jr_principios_desc_card_7));
+        descricoes.add(getResources().getString(R.string.jr_principios_desc_card_8));
+        descricoes.add(getResources().getString(R.string.jr_principios_desc_card_9));
+        descricoes.add(getResources().getString(R.string.jr_principios_desc_card_10));
 
     }
 

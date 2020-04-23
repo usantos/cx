@@ -57,22 +57,29 @@
     <string name="jr_conheca_desc_card_1">Assegurar o desenvolvimento econômico, fornecendo ao público produtos lotéricos seguros e confiáveis.</string>
     <string name="jr_conheca_tit_card_2">Social</string>
     <string name="jr_conheca_desc_card_2">Angariar fundos para as boas causas e contribuir com os programas sociais do Governo Federal. Prevenir o Jogo Patológico e proteger pessoas vulneráveis como os menores de idade.</string>
-
+    <string name="jr_conheca_tit_card_3">Ambiental</string>
+    <string name="jr_conheca_desc_card_3">Minimizar o impacto ambiental.</string>
     <!-- Cards Princípios -->
-    <string name="jr_principios_tit_card_1">1. </string>
-    <string name="jr_principios_desc_card_1">a</string>
-    <string name="jr_principios_tit_card_2">2. </string>
-    <string name="jr_principios_desc_card_2">a</string>
-    <string name="jr_principios_tit_card_3">3. </string>
-    <string name="jr_principios_desc_card_3">a</string>
-    <string name="jr_principios_tit_card_4">4. </string>
-    <string name="jr_principios_desc_card_4">a</string>
-    <string name="jr_principios_tit_card_5">5. </string>
-    <string name="jr_principios_desc_card_5">a</string>
-    <string name="jr_principios_tit_card_6">6. </string>
-    <string name="jr_principios_desc_card_6">a</string>
-    <string name="jr_principios_tit_card_7">7. </string>
-    <string name="jr_principios_desc_card_7">a</string>
+    <string name="jr_principios_tit_card_1">1. Pesquisa</string>
+    <string name="jr_principios_desc_card_1">Apoiar e divulgar pesquisas relacionadas ao Jogo Responsável sempre em constante atualização.</string>
+    <string name="jr_principios_tit_card_2">2. Empregados</string>
+    <string name="jr_principios_desc_card_2">Capacitar todos os colaboradores seguindo as melhores práticas mundiais.</string>
+    <string name="jr_principios_tit_card_3">3. Revendedores</string>
+    <string name="jr_principios_desc_card_3">Capacitar os revendedores de sua organização de acordo com o Jogo Responsável.</string>
+    <string name="jr_principios_tit_card_4">4. Design</string>
+    <string name="jr_principios_desc_card_4"> Investir em design de jogos voltado exclusivamente para o público adulto.</string>
+    <string name="jr_principios_tit_card_5">5. Jogos Remotos</string>
+    <string name="jr_principios_desc_card_5">Proteger apostadores que usam meios digitais, como tablets, laptops ou smartphones considerando as melhores práticas mundiais.</string>
+    <string name="jr_principios_tit_card_6">6. Comunicação</string>
+    <string name="jr_principios_desc_card_6">Divulgar peças publicitárias, de comunicação ou marketing que falem do jogo consciente.</string>
+    <string name="jr_principios_tit_card_7">7. Educação</string>
+    <string name="jr_principios_desc_card_7">Informar os riscos e danos do vício em jogos.</string>
+    <string name="jr_principios_tit_card_8">8. Orientação</string>
+    <string name="jr_principios_desc_card_8">Oferecer aos jogadores e público, informações sobre tratamentos ao jogo compulsivo.</string>
+    <string name="jr_principios_tit_card_9">9. Identificação</string>
+    <string name="jr_principios_desc_card_9">Identificar grupos de interesses, beneficiados ou não pelo programa de Jogo Responsável para reconhecer a melhor forma de integração desses grupos ao programa.</string>
+    <string name="jr_principios_tit_card_10">10. Avaliação</string>
+    <string name="jr_principios_desc_card_10">Monitorar e avaliar as ações do programa Jogo Responsável de forma contínua considerando indicadores de desempenho.</string>
 
     <!-- Bottom Sheet Ajuda -->
     <string name="jr_bs_titulo">ONDE PROCURAR AJUDA?</string>
@@ -95,10 +102,6 @@
     <string name="jr_bs_scm">Santa Casa de Misericórdia</string>
     <string name="jr_bs_scm_end">Rua Santa Luzia, 206 - Centro - Rio de Janeiro - RJ</string>
     <string name="jr_bs_scm_tel">Telefones: (21) 2533-0118</string>
-    <string name="jr_bs_ja">Jogadores Anônimos</string>
-    <string name="jr_bs_ja_site"><u>www.jogadoresanonimos.org.br</u></string>
-    <string name="jr_bs_vj">Portal: Vira o Jogo</string>
-    <string name="jr_bs_vj_site"><u>viraojogo.org.br/portal/</u></string>
 
     <!-- Eventos do Firebase-->
     <string name="evento_jr_aba_1">ENTROU_JOGO_RESPONSAVEL_ABA_1</string>

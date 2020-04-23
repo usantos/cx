@@ -75,15 +75,17 @@ public class JogoResponsavelConhecaFragment extends Fragment {
         titulos = new ArrayList<>();
         titulos.add(getResources().getString(R.string.jr_conheca_tit_card_1));
         titulos.add(getResources().getString(R.string.jr_conheca_tit_card_2));
+        titulos.add(getResources().getString(R.string.jr_conheca_tit_card_3));
 
         descricoes = new ArrayList<>();
         descricoes.add(getResources().getString(R.string.jr_conheca_desc_card_1));
         descricoes.add(getResources().getString(R.string.jr_conheca_desc_card_2));
+        descricoes.add(getResources().getString(R.string.jr_conheca_desc_card_3));
 
         idsImagens = new ArrayList<>();
         idsImagens.add(R.drawable.ic_money);
         idsImagens.add(R.drawable.ic_people);
-
+        idsImagens.add(R.drawable.ic_nuvem);
     }
 
 }

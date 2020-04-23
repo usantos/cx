@@ -119,5 +119,6 @@ public class JogoResponsavelActivity extends AppCompatActivity {
         finish();
         return true;
     }
+
     //endregion Support Methods
 }

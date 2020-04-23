@@ -8,10 +8,10 @@
     tools:context=".view.fragment.JogoResponsavelApostadorFragment">
 
     <ImageView
-        android:id="@+id/iv_icone_topo"
+        android:id="@+id/iv_icone"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:src="@drawable/ic_apostador"
+        android:src="@drawable/ic_jogador"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_icone_topo"
+        app:layout_constraintTop_toBottomOf="@+id/iv_icone"
         android:layout_marginTop="10dp"
         android:textSize="16sp"
         android:text="@string/jr_apostador_caracteristicas"
