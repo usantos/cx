@@ -48,8 +48,8 @@
         android:layout_width="match_parent"
         android:layout_height="500dp"
         android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@id/tv_descricao"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_descricao">
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/cl_margin"
@@ -65,10 +65,11 @@
                 android:id="@+id/tv_caixa"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:autoLink="phone"
                 android:padding="1dp"
                 android:text="@string/jr_bs_caixa_tel"
-                android:textSize="14sp"
                 android:textColor="@color/jr_cinza_text"
+                android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -78,8 +79,8 @@
                 android:layout_height="wrap_content"
                 android:padding="1dp"
                 android:text="@string/jr_bs_op_7"
-                android:textSize="14sp"
                 android:textColor="@color/jr_cinza_text"
+                android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_caixa" />
 
@@ -89,8 +90,8 @@
                 android:layout_height="wrap_content"
                 android:padding="1dp"
                 android:text="@string/jr_bs_op_3"
-                android:textSize="14sp"
                 android:textColor="@color/jr_cinza_text"
+                android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_caixa_op_7" />
 
@@ -98,8 +99,8 @@
                 android:id="@+id/tv_proamjo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="2dp"
                 android:layout_marginTop="20dp"
+                android:padding="2dp"
                 android:text="@string/jr_bs_proamjo"
                 android:textColor="@color/jr_cinza_text"
                 android:textSize="14sp"
@@ -112,8 +113,8 @@
                 android:layout_height="wrap_content"
                 android:padding="2dp"
                 android:text="@string/jr_bs_proamjo_end"
-                android:textSize="14sp"
                 android:textColor="@color/jr_cinza_text_claro"
+                android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_proamjo" />
 
@@ -121,9 +122,10 @@
                 android:id="@+id/tv_proamjo_tels"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:autoLink="phone"
                 android:padding="2dp"
-                android:textColor="@color/jr_cinza_text"
                 android:text="@string/jr_bs_proamjo_tels"
+                android:textColor="@color/jr_cinza_text"
                 android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_proamjo_end" />
@@ -133,8 +135,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="2dp"
-                android:textColor="@color/jr_email"
                 android:text="@string/jr_bs_proamjo_email"
+                android:textColor="@color/jr_email"
                 android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_proamjo_tels" />
@@ -143,8 +145,8 @@
                 android:id="@+id/tv_avb"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="2dp"
                 android:layout_marginTop="20dp"
+                android:padding="2dp"
                 android:text="@string/jr_bs_avb"
                 android:textColor="@color/jr_cinza_text"
                 android:textSize="14sp"
@@ -158,8 +160,8 @@
                 android:layout_height="wrap_content"
                 android:padding="2dp"
                 android:text="@string/jr_bs_avb_end"
-                android:textSize="14sp"
                 android:textColor="@color/jr_cinza_text_claro"
+                android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_avb" />
 
@@ -167,9 +169,10 @@
                 android:id="@+id/tv_avb_tels"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:autoLink="phone"
                 android:padding="2dp"
-                android:textColor="@color/jr_cinza_text"
                 android:text="@string/jr_bs_avb_tel"
+                android:textColor="@color/jr_cinza_text"
                 android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_avb_end" />
@@ -179,8 +182,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="2dp"
-                android:textColor="@color/jr_email"
                 android:text="@string/jr_bs_avb_email"
+                android:textColor="@color/jr_email"
                 android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_avb_tels" />
@@ -189,8 +192,8 @@
                 android:id="@+id/tv_proad"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="2dp"
                 android:layout_marginTop="20dp"
+                android:padding="2dp"
                 android:text="@string/jr_bs_proad"
                 android:textColor="@color/jr_cinza_text"
                 android:textSize="14sp"
@@ -203,8 +206,8 @@
                 android:layout_height="wrap_content"
                 android:padding="2dp"
                 android:text="@string/jr_bs_proad_end"
-                android:textSize="14sp"
                 android:textColor="@color/jr_cinza_text_claro"
+                android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_proad" />
 
@@ -212,9 +215,10 @@
                 android:id="@+id/tv_proad_tels"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:autoLink="phone"
                 android:padding="2dp"
-                android:textColor="@color/jr_cinza_text"
                 android:text="@string/jr_bs_proad_tels"
+                android:textColor="@color/jr_cinza_text"
                 android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_proad_end" />
@@ -224,8 +228,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="2dp"
-                android:textColor="@color/jr_email"
                 android:text="@string/jr_bs_proad_email"
+                android:textColor="@color/jr_email"
                 android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_proad_tels" />
@@ -234,12 +238,12 @@
                 android:id="@+id/tv_scm"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="2dp"
-                android:textStyle="bold"
                 android:layout_marginTop="20dp"
+                android:padding="2dp"
                 android:text="@string/jr_bs_scm"
                 android:textColor="@color/jr_cinza_text"
                 android:textSize="14sp"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_proad_email" />
 
@@ -249,8 +253,8 @@
                 android:layout_height="wrap_content"
                 android:padding="2dp"
                 android:text="@string/jr_bs_scm_end"
-                android:textSize="14sp"
                 android:textColor="@color/jr_cinza_text_claro"
+                android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_scm" />
 
@@ -258,9 +262,10 @@
                 android:id="@+id/tv_scm_tels"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:autoLink="phone"
                 android:padding="2dp"
-                android:textColor="@color/jr_cinza_text"
                 android:text="@string/jr_bs_scm_tel"
+                android:textColor="@color/jr_cinza_text"
                 android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_scm_end" />
