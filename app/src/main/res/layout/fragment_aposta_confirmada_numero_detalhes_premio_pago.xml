@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="br.gov.caixa.loterias.apostar.interno.view.fragment.ApostaConfirmadaNumeroDetalhesPremioPago">
+    tools:context="br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaNumeroDetalhesPremioPago">
 
     <RelativeLayout
         android:layout_width="match_parent"

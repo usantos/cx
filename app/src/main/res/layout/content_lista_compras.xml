@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="br.gov.caixa.loterias.apostar.interno.controllers.ListaComprasActivity"
+    tools:context="br.gov.caixa.loterias.apostas.controllers.ListaComprasActivity"
     tools:showIn="@layout/activity_lista_compras">
 
     <android.support.v4.widget.NestedScrollView

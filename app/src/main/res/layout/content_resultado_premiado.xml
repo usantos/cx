@@ -141,7 +141,7 @@
                         android:textSize="14sp" />
                 </LinearLayout>
 
-                <br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightRecyclerView
+                <br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView
                     android:id="@+id/listaFaixaPremiacaoExpandableHeightRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

@@ -1,4 +1,4 @@
-//package br.gov.caixa.loterias.apostar.interno.utils;
+//package br.gov.caixa.loterias.apostar.utils;
 
 /**
  * Created by Fabio Vieira on 10/01/2018.
