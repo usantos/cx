@@ -1,0 +1,96 @@
+package br.gov.caixa.loterias.apostar.interno.view.fragment;
+
+
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import br.gov.caixa.loterias.apostar.interno.R;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeEnum;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResultadoConcursoDTO;
+import br.gov.caixa.loterias.apostar.interno.view.adapter.NumerosResultadosAdapter;
+
+import static br.gov.caixa.loterias.apostar.interno.view.fragment.ResultadoGenericoFragment.RESULTADO_DTO;
+
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class ResultadoTimemaniaDiaDeSorteFragment extends Fragment {
+
+    private ResultadoConcursoDTO resultado;
+    RecyclerView rvNumerosResultado;
+    ImageView ivTimeCoracao;
+    TextView tvTitulo;
+    TextView tvDescricao;
+
+    public ResultadoTimemaniaDiaDeSorteFragment() {
+    }
+
+    public static ResultadoTimemaniaDiaDeSorteFragment newInstance(ResultadoConcursoDTO resultado) {
+        ResultadoTimemaniaDiaDeSorteFragment fragment = new ResultadoTimemaniaDiaDeSorteFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(RESULTADO_DTO, resultado);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_resultado_timemania, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+
+        rvNumerosResultado = view.findViewById(R.id.rv_numeros_resultado);
+        ivTimeCoracao = view.findViewById(R.id.iv_time_coracao);
+        tvTitulo = view.findViewById(R.id.tv_titulo);
+        tvDescricao = view.findViewById(R.id.tv_descricao);
+
+        if (getArguments() != null) {
+            resultado = (ResultadoConcursoDTO) getArguments().getSerializable(RESULTADO_DTO);
+            if(resultado != null){
+                configuraResultadoTimeMania(resultado);
+            }
+        }
+    }
+
+    private void configuraResultadoTimeMania(ResultadoConcursoDTO resultado){
+
+        if (resultado.getConcurso().getModalidade() == ModalidadeEnum.DIA_DE_SORTE) {
+            ivTimeCoracao.setVisibility(View.GONE);
+            tvTitulo.setText(R.string.label_mes_desejado);
+            if (resultado.getPremiacaoMesDeSorte() != null
+                    && resultado.getPremiacaoMesDeSorte().getMesDeSorte() != null) {
+                tvDescricao.setText(resultado.getPremiacaoMesDeSorte().getMesDeSorte().getNome());
+            }else{
+                tvDescricao.setText(R.string.label_tres_interrogacoes);
+            }
+        } else {
+            tvDescricao.setText(resultado.getPremiacaoTimeDoCoracao().getEquipe().getNome());
+        }
+
+        NumerosResultadosAdapter numerosResultadosAdapter;
+        int numberOfColumns = 3;
+        if (resultado.getListaSorteadosPrimeiroSorteio().size() > 6) {
+            numberOfColumns = 4;
+        }
+
+        this.rvNumerosResultado.setLayoutManager(new GridLayoutManager(getContext(), numberOfColumns));
+        numerosResultadosAdapter = new NumerosResultadosAdapter(getContext(), resultado.getListaSorteadosPrimeiroSorteio(),resultado.getConcurso().getModalidade());
+        this.rvNumerosResultado.setAdapter(numerosResultadosAdapter);
+
+
+
+    }
+
+}
