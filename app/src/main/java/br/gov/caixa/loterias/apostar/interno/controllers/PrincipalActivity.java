@@ -117,9 +117,10 @@ public class PrincipalActivity extends AppCompatActivity
     @ViewById
     protected TextView textViewHomeCountBetsCart, textViewHomeMinimumPurchaseValue, tituloLerBilhetes, textoRepassados, valorRepassesPrincipal, txtVersaoMenu, nav_user;
     @ViewById
-    protected RelativeLayout relativeContentPrincipal,
-            relativeBlankView, relativeLayoutContentRapidao, relativeLayoutContentLerBilhetes, relativeLayoutContentFavoritas, relativeLayoutContentRepassados,
-            relativeLayoutCarrinho;
+    protected RelativeLayout relativeContentPrincipal,rlJogoResponsavel,
+            relativeBlankView, relativeLayoutContentRapidao,
+            relativeLayoutContentLerBilhetes, relativeLayoutContentFavoritas,
+            relativeLayoutContentRepassados, relativeLayoutCarrinho;
     @ViewById
     protected LinearLayout atalhoRapidoLoterias;
     @ViewById
@@ -470,6 +471,7 @@ public class PrincipalActivity extends AppCompatActivity
                 relativeLayoutContentRapidao,
                 relativeLayoutContentLerBilhetes,
                 relativeLayoutContentFavoritas,
+                rlJogoResponsavel,
                 relativeLayoutContentRepassados,
                 relativeBlankView,
                 atalhoRapidoLoterias,
@@ -495,6 +497,7 @@ public class PrincipalActivity extends AppCompatActivity
                 relativeLayoutContentRapidao,
                 relativeLayoutContentLerBilhetes,
                 relativeLayoutContentFavoritas,
+                rlJogoResponsavel,
                 relativeLayoutContentRepassados,
                 relativeBlankView,
                 atalhoRapidoLoterias,
@@ -599,6 +602,12 @@ public class PrincipalActivity extends AppCompatActivity
         redirecionaRapidao();
     }
 
+    @Click(R.id.rlJogoResponsavel)
+    protected void clickrlJogoResponsavel() {
+        AnimacaoFecharMenuRapido(relativeContentPrincipal);
+        redirecionaJogoResponsavel();
+    }
+
     @Click(R.id.relativeLayoutCarrinho)
     protected void clickRelativeLayoutCarrinho() {
         startActivity(new Intent(PrincipalActivity.this, CarrinhoActivity.class));
@@ -644,7 +653,9 @@ public class PrincipalActivity extends AppCompatActivity
                 startActivity(new Intent(PrincipalActivity.this, LerBilhetesActivity.class));
             }
                 break;
-            case 4: startActivity(new Intent(PrincipalActivity.this, RepassesSociaisActivity.class));
+            case 4: startActivity(new Intent(PrincipalActivity.this, JogoResponsavelActivity.class));
+                break;
+            case 5: startActivity(new Intent(PrincipalActivity.this, RepassesSociaisActivity.class));
                 break;
 
             default:
@@ -709,6 +720,10 @@ public class PrincipalActivity extends AppCompatActivity
             startActivity(new Intent(PrincipalActivity.this, ConfiguracaoRapidaoActivity.class));
         }
     }
+    private void redirecionaJogoResponsavel(){
+        startActivity(new Intent(PrincipalActivity.this, JogoResponsavelActivity.class));
+    }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {

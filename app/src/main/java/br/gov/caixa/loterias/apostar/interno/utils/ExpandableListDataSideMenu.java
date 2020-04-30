@@ -26,11 +26,14 @@ public class ExpandableListDataSideMenu {
         List<String> Rapidao = new ArrayList<>();
         List<String> bilhetes = new ArrayList<>();
         List<String> sociais = new ArrayList<>();
+        List<String> JogoResponsavel = new ArrayList<>();
+
 
         expandableListDetail.put("Minha área", minhaArea);
         expandableListDetail.put("Resultados", Resultados);
         expandableListDetail.put("Rapidão", Rapidao);
         expandableListDetail.put("Ler bilhete", bilhetes);
+        expandableListDetail.put("Jogo Responsável", JogoResponsavel);
         expandableListDetail.put("Repasses sociais", sociais);
         return expandableListDetail;
     }

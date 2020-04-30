@@ -24,8 +24,13 @@
             android:title="@string/title_lerBilhete" />
 
         <item
+            android:id="@+id/nav_jogo_responsavel"
+            android:icon="@drawable/menu6_jogo_responsavel"
+            android:title="@string/jr_titulo" />
+
+        <item
             android:id="@+id/nav_sociais"
-            android:icon="@drawable/menu6_repasses"
+            android:icon="@drawable/menu7_repasses"
             android:title="@string/title_repassesSociais" />
     </group>
 

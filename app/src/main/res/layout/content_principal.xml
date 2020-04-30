@@ -129,11 +129,68 @@
             </RelativeLayout>
         </RelativeLayout>
 
+        <RelativeLayout
+            android:id="@+id/rlJogoResponsavel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:alpha="0.0">
+
+            <RelativeLayout
+                android:layout_width="294dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <RelativeLayout
+                        android:layout_width="199dp"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/tv_titulo_jr"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentTop="true"
+                            android:text="@string/jr_titulo_maiusculo"
+                            android:textColor="@color/jr_radio_text_selected"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_below="@+id/tv_titulo_jr"
+                            android:gravity="right"
+                            android:text="@string/jr_desc_menu_trevo"
+                            android:textColor="@color/cinza"
+                            android:textSize="13sp" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="95dp"
+                        android:layout_height="60dp">
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginStart="20dp"
+                            android:src="@drawable/ic_jr_menu_trevo" />
+                    </RelativeLayout>
+                </LinearLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+
 
         <RelativeLayout
             android:id="@+id/relativeLayoutContentFavoritas"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:alpha="0.0">
 
             <RelativeLayout

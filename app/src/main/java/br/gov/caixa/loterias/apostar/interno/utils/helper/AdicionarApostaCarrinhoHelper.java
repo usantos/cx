@@ -94,7 +94,8 @@ public class AdicionarApostaCarrinhoHelper {
             if (KeycloakBO_.getInstance_(context).getAccessToken() == null || KeycloakBO_.getInstance_(context).getAccessToken().isEmpty()) {
                 postAdicionarApostaCarrinho(apostaBO);
             } else {
-                adicionarApostaCarrinhoRequest(context, apostaBO, aposta);
+                  postAdicionarApostaCarrinho(apostaBO);
+                //adicionarApostaCarrinhoRequest(context, apostaBO, aposta);
             }
         }
     }
