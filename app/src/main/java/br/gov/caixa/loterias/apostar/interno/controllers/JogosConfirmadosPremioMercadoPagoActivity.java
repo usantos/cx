@@ -158,6 +158,7 @@ public class JogosConfirmadosPremioMercadoPagoActivity extends AppCompatActivity
             @Override
             public void onResponse(RetornoPadraoDTO response) {
                 loadViewProgress.dismiss();
+                setResult(RESULT_OK);
                 contentTopoConfirmarLinearLayout.setVisibility( View.GONE );
                 contentTopoConfirmadoLinearLayout.setVisibility( View.VISIBLE );
                 contentConfirmarLinearLayout.setVisibility( View.GONE );
