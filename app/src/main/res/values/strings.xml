@@ -777,8 +777,8 @@
     <string name="teste_xxx">Teste xxx</string>
     <string name="tipo_caixa">tipoCaixa</string>
     <string name="premio_disponivel_em_breve_mp">Em breve seu prêmio estará disponível  em sua conta no mercado pago</string>
-    <string name="email_enviado_para">Um email foi enviado para</string>
-    <string name="com_o_passo_a_passo">com todas as informações e passo-a-passo para o recebimento de seu prêmio</string>
+    <string name="email_enviado_para">Um email foi enviado para&#160;</string>
+    <string name="com_o_passo_a_passo">&#160;com os dados de recebimento de seu prêmio</string>
     <string name="valor_premio">valorPremio</string>
     <string name="id_aposta">idAposta</string>
     <string name="email_minusculo">email</string>
