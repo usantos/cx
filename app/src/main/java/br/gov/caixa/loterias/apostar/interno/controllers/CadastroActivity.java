@@ -42,16 +42,15 @@ public class CadastroActivity extends AppCompatActivity {
     private List<String> listUFString, listMunicipios;
     private List<MunicipioDTO> municipioDTOList;
     protected List<UnidadeFederacaoDTO> listUf;
-    protected String ufSelect = getResources().getString(R.string.string_vazia);
-    protected String municipioSelect = getResources().getString(R.string.string_vazia);
-    protected String bairroSelected = getResources().getString(R.string.string_vazia);
+    protected String ufSelect;
+    protected String municipioSelect;
+    protected String bairroSelected;
     protected static CadastrarApostadorDTO cadastrarApostadorDTO;
     private boolean isMunicipioUsuario;
     protected MunicipioIdDTO municipioIdDTOLoteria;
 
     protected void createToolbar() {
         setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.title_activity_toolbar)));
-
 
         if (getSupportActionBar() != null) {
 
@@ -70,6 +69,9 @@ public class CadastroActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowCustomEnabled(true);
             getSupportActionBar().setBackgroundDrawable(getResources().getDrawable((R.drawable.background_gradient_verde)));
         }
+        ufSelect = getResources().getString(R.string.string_vazia);
+        municipioSelect = getResources().getString(R.string.string_vazia);
+        bairroSelected = getResources().getString(R.string.string_vazia);
     }
 
     @Override
