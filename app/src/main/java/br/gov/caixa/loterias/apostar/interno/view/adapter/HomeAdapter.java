@@ -136,11 +136,12 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                 data.get(position).getTipoModalidade() == ModalidadeEnum.LOTOGOL) {
             holder.textViewSorteioOuEncerramento.setText(R.string.label_encerramento);
 
-            String[] split = formatterDay.format(dataFechamentoSorteio).split(context.getResources().getString(R.string.virgula));
+            String[] split = formatterDay.format(dataFechamentoSorteio).split(context.getResources().getString(R.string.virgula_espaco));
             String[] splitMedium = formatterMonth.format(dataFechamentoSorteio).split(context.getResources().getString(R.string.espaco_em_branco));
             String horaMinSeg = formatterTime.format(dataFechamentoSorteio);
 
-            holder.dataSorteio.setText(ViewUtils.capitalized(split[0]) + context.getResources().getString(R.string.virgula_espaco) + splitMedium[0] + context.getResources().getString(R.string.espaco_de_espaco) + splitMedium[2]+context.getResources().getString(R.string.as_espacado) +horaMinSeg);
+            //holder.dataSorteio.setText(ViewUtils.capitalized(split[0]) + context.getResources().getString(R.string.virgula_espaco) + splitMedium[0] + context.getResources().getString(R.string.espaco_de_espaco) + splitMedium[2]+context.getResources().getString(R.string.as_espacado) +horaMinSeg);
+            holder.dataSorteio.setText(ViewUtils.capitalized(split[0])+context.getResources().getString(R.string.as_espacado) +horaMinSeg);
         } else {
             holder.textViewSorteioOuEncerramento.setText(R.string.label_sorteio_case);
 
