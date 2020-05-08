@@ -165,7 +165,7 @@ public class JogosConfirmadosPremioMercadoPagoActivity extends AppCompatActivity
                 contentConfirmadoLinearLayout.setVisibility( View.VISIBLE );
                 resgatarPremioButton.setVisibility( View.GONE );
                 voltarPremioButton.setVisibility( View.VISIBLE );
-                textoPremioConfirmado.setText( getResources().getString(R.string.email_enviado_para)+ emailPremioMercadoPagoEditText.getText().toString() + getResources().getString(R.string.informacoes_recebimento) );
+                textoPremioConfirmado.setText( getResources().getString(R.string.email_enviado_para)+ emailPremioMercadoPagoEditText.getText().toString() + getResources().getString(R.string.com_o_passo_a_passo) );
             }
 
             @Override
