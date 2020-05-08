@@ -114,11 +114,13 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
         DateFormat formatterDay;
         DateFormat formatterMonth;
+        DateFormat formatterTime;
 
         DateFormat formatterDate = new SimpleDateFormat(context.getResources().getString(R.string.dd_mm_yyyy_hh_mm_ss));
         Locale BRAZIL = new Locale(context.getResources().getString(R.string.pt),context.getResources().getString(R.string.br));
         formatterDay = SimpleDateFormat.getDateInstance(DateFormat.FULL, BRAZIL);
         formatterMonth = SimpleDateFormat.getDateInstance(DateFormat.MEDIUM, BRAZIL);
+        formatterTime = new SimpleDateFormat(context.getResources().getString(R.string.hh_mm_ss));
 
         Date dataSorteioFormatada = null;
         Date dataFechamentoSorteio = null;
@@ -136,15 +138,18 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
             String[] split = formatterDay.format(dataFechamentoSorteio).split(context.getResources().getString(R.string.virgula));
             String[] splitMedium = formatterMonth.format(dataFechamentoSorteio).split(context.getResources().getString(R.string.espaco_em_branco));
+            String horaMinSeg = formatterTime.format(dataFechamentoSorteio);
 
-            holder.dataSorteio.setText(ViewUtils.capitalized(split[0]) + context.getResources().getString(R.string.virgula_espaco) + splitMedium[0] + context.getResources().getString(R.string.espaco_de_espaco) + splitMedium[2]);
+            holder.dataSorteio.setText(ViewUtils.capitalized(split[0]) + context.getResources().getString(R.string.virgula_espaco) + splitMedium[0] + context.getResources().getString(R.string.espaco_de_espaco) + splitMedium[2]+context.getResources().getString(R.string.as_espacado) +horaMinSeg);
         } else {
             holder.textViewSorteioOuEncerramento.setText(R.string.label_sorteio_case);
 
             String[] split = formatterDay.format(dataSorteioFormatada).split(context.getResources().getString(R.string.virgula_espaco));
             String[] splitDataFormatadaSilce = data.get(position).getConcurso().getDataSorteio().split(context.getResources().getString(R.string.espaco_em_branco));
             //holder.dataSorteio.setText(ViewUtils.capitalized(split[0]) + context.getResources().getString(R.string.virgula_espaco)+ splitDataFormatadaSilce[0] + context.getResources().getString(R.string.espaco_de_espaco) + splitDataFormatadaSilce[1]);
-            holder.dataSorteio.setText(ViewUtils.capitalized(split[0]));
+
+            String horaMinSeg = formatterTime.format(dataSorteioFormatada);
+            holder.dataSorteio.setText(ViewUtils.capitalized(split[0])+context.getResources().getString(R.string.as_espacado) +horaMinSeg);
         }
 
         Map mapComDiferencaDeDatas = computeDiff(new Date(), dataFechamentoSorteio);
