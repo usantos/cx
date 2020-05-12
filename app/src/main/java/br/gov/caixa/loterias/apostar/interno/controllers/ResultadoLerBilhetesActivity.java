@@ -178,7 +178,7 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
 
         if (parametroSimulacao != null) {
             if (parametroSimulacao.getProximoConcurso() != null) {
-                contentResultadoPremiado.getProximoSorteioTextView().setText(ViewUtils.getDateAndHour(parametroSimulacao.getParametroJogo().getConcurso().getDataAbertura()));
+                contentResultadoPremiado.getProximoSorteioTextView().setText(ViewUtils.getDateAndHour(parametroSimulacao.getProximoConcurso().getConcurso().getDataAbertura()));
                 contentResultadoPremiado.getValorEstimativaConcursoAtualTextView().setText(ViewUtils.getMoedaFormat(parametroSimulacao.getParametroJogo().getConcurso().getEstimativa() ));
             }
         }
