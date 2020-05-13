@@ -67,6 +67,7 @@ public class CarrinhoActivity extends AppCompatActivity {
     private CarrinhoDTO carrinho;
     private boolean lerCarrinhoLocal = false;
     private boolean ocorrendoValidacao = false;
+    private boolean onResume = false;
     private boolean bloqScroll = false;
     private List<IdentificaoDeUmaApostaDas8Modalidades> listApostas = new ArrayList<>();
     private LinearLayoutManager layoutManager;
@@ -87,7 +88,8 @@ public class CarrinhoActivity extends AppCompatActivity {
         if(DadosUsuarioBO.checarUsuarioLogado(this)){
             lerCarrinhoLocal = false;
         }
-        if(ocorrendoValidacao){
+        if (ocorrendoValidacao && !onResume) {
+            onResume = true;
             validarCarrinho();
         }
         lerCarrinho();
@@ -264,7 +266,9 @@ public class CarrinhoActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 DialogUtils.dismiss();
-                ocorrendoValidacao = false;
+                if (error != null && error.networkResponse != null && error.networkResponse.statusCode != 401) {
+                    ocorrendoValidacao = false;
+                }
                 RedirectNetwork.checkRedirect(error, CarrinhoActivity.this);
             }
         });
