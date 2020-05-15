@@ -3,6 +3,7 @@ package br.gov.caixa.loterias.apostar.interno.controllers;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -56,6 +57,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
     private ArrayList<String> tiposApostas = new ArrayList<>();
     private Dialog dialogFavoritar, dialogFiltrar;
     private ExpandableListView listViewFiltro;
+    private ConstraintLayout listViewCompras;
     private ListaComprasDetalhesAdapter listaComprasDetalhesAdapter;
     private FiltroApostasAdapter filtroAdapter;
     private EditText etCarrinho;
@@ -79,6 +81,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         btnDuvidas = findViewById(R.id.ib_duvidas);
         recyclerDetalhesApostas = findViewById(R.id.gridviewDetalhesCompras);
         tvBadge = findViewById(R.id.tv_badge);
+        listViewCompras = findViewById(R.id.list_group_compras);
 
         btnFiltro.setVisibility(View.VISIBLE);
         btnDuvidas.setVisibility(View.VISIBLE);
@@ -142,7 +145,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         TextView situacaoCompraTextView = findViewById(R.id.situacaoCompraTextView);
         situacaoCompraTextView.setText(ViewUtils.textFuturaAndFuturaBold(this, this.getString(R.string.label_compra_lista_situacao,
                 compraDTO.getSituacao().getDescricao())));
-        ImageButton ibFavoritar = findViewById(R.id.ib_favoritar);
+        ImageButton ibFavoritar = listViewCompras.findViewById(R.id.ib_favoritar);
         ibFavoritar.setOnClickListener(v -> {
                     configuraVisibilidadeMantSurpresinha(listaAposta);
                 });

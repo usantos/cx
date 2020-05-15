@@ -758,6 +758,8 @@
     <string name="underline_com_espaco">&#160;_&#160;</string>
     <string name="dd_mm">dd/MM</string>
     <string name="dd_mm_yyyy_hh_mm_ss">dd/MM/yyyy HH:mm:ss</string>
+    <string name="hh_mm_ss">HH:mm:ss</string>
+    <string name="as_espacado">&#160;ás&#160;</string>
     <string name="sorteio">Sorteio</string>
     <string name="ajuda">ajuda</string>
     <string name="seus_dados_pessoais">Estes são seus dados pessoais. Por favor, mantenha-os sempre atualizados.</string>
@@ -777,14 +779,13 @@
     <string name="teste_xxx">Teste xxx</string>
     <string name="tipo_caixa">tipoCaixa</string>
     <string name="premio_disponivel_em_breve_mp">Em breve seu prêmio estará disponível  em sua conta no mercado pago</string>
-    <string name="email_enviado_para">Um email foi enviado para</string>
-    <string name="com_o_passo_a_passo">com todas as informações e passo-a-passo para o recebimento de seu prêmio</string>
+    <string name="email_enviado_para">Um email foi enviado para&#160;</string>
+    <string name="com_o_passo_a_passo">&#160;com os dados de recebimento do seu prêmio.</string>
     <string name="valor_premio">valorPremio</string>
     <string name="id_aposta">idAposta</string>
     <string name="email_minusculo">email</string>
     <string name="email_maiusculo">EMAIL</string>
     <string name="um">1</string>
-    <string name="informacoes_recebimento">com todas as informações e passo-a-passo para o recebimento de seu prêmio</string>
     <string name="posicione_linha_codigo_barras">Posicione a linha abaixo sobre o código de barras e aguarde a focalização da câmera.</string>
     <string name="response">Response</string>
     <string name="compras_mais_antigas">Compras mais antigas podem ser consultadas no site</string>

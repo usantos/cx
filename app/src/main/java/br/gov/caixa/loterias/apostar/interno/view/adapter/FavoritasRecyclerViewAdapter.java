@@ -128,6 +128,7 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
             configuraFragment(listaApostaFavorita.get(position),holder);
             holder.containerFragment.setVisibility(View.VISIBLE);
         } else {
+            holder.containerFragment.setVisibility(View.GONE);
             List<Integer> numSelecionados = listaApostaFavorita.get(position).getListaNumerosSelecionados();
             for (Integer num : numSelecionados) {
                 if (num.equals(numSelecionados.get(listaApostaFavorita.get(position).getListaNumerosSelecionados().size() - 1))) {

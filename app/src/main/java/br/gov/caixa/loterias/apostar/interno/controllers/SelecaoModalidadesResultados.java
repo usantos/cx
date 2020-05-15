@@ -113,9 +113,9 @@ public class SelecaoModalidadesResultados extends AppCompatActivity {
                 case LOTECA:
                     tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_loteca, R.color.lotecaclaro, false, item.getValor(), item.getDescricaoEspecial());
                     break;
-                default:
+                /*default:
                     tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_megasena, R.color.superseteclaro, false, item.getValor(), item.getDescricaoEspecial());
-                    break;
+                    break;*/
             }
             if (tipoAposta != null) {
                 tipoAposta.setTitulo(tipoAposta.getTitulo().toLowerCase());
