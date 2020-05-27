@@ -1071,6 +1071,9 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 			}
 		}
 		botaoLimparAposta.setVisibility(View.GONE);
+		parentActivity.qtdDezenasPossiveisSelecionado = parametroJogo.getQuantidadeMinima() != null ? parametroJogo.getQuantidadeMinima() : 0;
+		parentActivity.atualizaTextoBotoesQtdSelecionadas();
+
 		qtdTotalSelecionadosSuperSete = 0;
 		//parentActivity.qtdDezenasPossiveisSelecionado = parametroJogo.getQuantidadeMinima();
 		atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);

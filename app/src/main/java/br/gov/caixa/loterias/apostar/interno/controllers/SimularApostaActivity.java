@@ -115,7 +115,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     protected EditText editNomeAposta;
 
     @ViewById
-    protected ImageView imageViewPaginacao, iconStarSalvar;
+    protected ImageView imageViewPaginacao, iconStarSalvar, imageQtdNumerosButton;
 
     @Extra
     protected IdentificaoDeUmaApostaDas8Modalidades aposta;
@@ -153,6 +153,11 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         if(aposta != null){
             mesDeSorteCartela = aposta.getMesDeSorte();
         }
+
+        if (tipoJogo == ModalidadeEnum.SUPER_7) {
+            imageQtdNumerosButton.setVisibility(View.INVISIBLE);
+        }
+
         if (tipoJogo == ModalidadeEnum.SUPER_7 && !DadosUsuarioBO.checarTutorialSuperSete()) {
             startActivity(new Intent(this,TutorialSuperSeteActivity.class));
         }
@@ -169,7 +174,6 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         configuraFragments();
         configuraActivity();
         zerarApostasLoteca();
-
     }
 
     public void zerarApostasLoteca() {
@@ -205,7 +209,9 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
             }
 
             case R.id.qtdNumerosButton: {
-                modalNumeros();
+                if (tipoJogo != ModalidadeEnum.SUPER_7) {
+                    modalNumeros();
+                }
                 break;
             }
 

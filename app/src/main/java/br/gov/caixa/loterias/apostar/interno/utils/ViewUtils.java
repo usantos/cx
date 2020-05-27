@@ -554,6 +554,17 @@ public class ViewUtils {
         return "";
     }
 
+    public static String getNomeModalidadePorAposta(IdentificaoDeUmaApostaDas8Modalidades aposta) {
+        ParametroSimulacao param = getParametroSimulacao(SessaoUsuario.getInstance(),aposta.getModalidade());
+        if(param != null){
+            ModalidadeDTO modalidadeDetalhada = param.getParametroJogo().getConcurso().getModalidadeDetalhada();
+            return aposta.getTipoConcurso().getDescricao().equalsIgnoreCase("ESPECIAL") ?
+                    modalidadeDetalhada.getDescricaoEspecial().toLowerCase(new Locale("pt", "BR")):
+                    modalidadeDetalhada.getDescricao().toLowerCase(new Locale("pt", "BR"));
+        }
+        return "";
+    }
+
     public static Integer getConcursoAtualPorAposta(IdentificaoDeUmaApostaDas8Modalidades aposta) {
         ParametroSimulacao param = getParametroSimulacao(SessaoUsuario.getInstance(),aposta.getModalidade());
         if(param != null) {

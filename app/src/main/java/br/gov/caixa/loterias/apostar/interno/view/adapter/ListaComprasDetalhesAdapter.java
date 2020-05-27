@@ -54,8 +54,15 @@ public class ListaComprasDetalhesAdapter extends RecyclerView.Adapter<ListaCompr
         int qtdTeimosinhas = listaAposta.get(position).getQuantidadeTeimosinhas();
         String teimosinhasTxt = qtdTeimosinhas + (qtdTeimosinhas > 1 ? mContext.getResources().getString(R.string.espaco_teimosinhas) : mContext.getResources().getString(R.string.espaco_teimosinha));
 
-        holder.tipoPremioListaComprasTextView.setText(ViewUtils.textFuturaAndFuturaBold(mContext,
-                mContext.getString(R.string.texto_futura_bold, ApostaDTO.fromStringModalidade(listaAposta.get(position).getModalidade()))));
+        String nomeAposta =  ViewUtils.getNomeModalidadePorAposta(listaAposta.get(position));
+
+        holder.tipoPremioListaComprasTextView
+                .setText(ViewUtils.textFuturaAndFuturaBold(
+                            mContext,
+                            mContext.getString(R.string.texto_futura_bold, nomeAposta)
+                        )
+                );
+
         holder.tipoPremioListaComprasTextView.setTextColor(colorText);
 
         holder.dataConcursoListaComprasTextView.setText(listaAposta.get(position).getDataEfetivacao());
