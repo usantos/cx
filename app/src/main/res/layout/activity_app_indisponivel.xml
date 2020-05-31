@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".controllers.AppIndisponivelActivity"
-    android:fitsSystemWindows="true"
-    >
+    android:fitsSystemWindows="true">
 
     <include layout="@layout/app_bar_degrade_with_icon" />
 

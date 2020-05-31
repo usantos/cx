@@ -13,6 +13,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.AcessoBO_;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.VersionResponse;
 import br.gov.caixa.loterias.apostar.interno.model.sp.LoginSP;
+import br.gov.caixa.loterias.apostar.interno.utils.LocalizacaoUtils;
 import io.fabric.sdk.android.Fabric;
 
 public class SplashScreenActivity extends AppCompatActivity {
@@ -24,7 +25,20 @@ public class SplashScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         Fabric.with(this, new Crashlytics());
-        verificaVersao();
+        trataPermissao();
+    }
+
+    private void trataPermissao() {
+        int statusPermissao = LocalizacaoUtils.checaStatusPermissao(this);
+        if (statusPermissao == LocalizacaoUtils.LOC_NAO_PERMITIDA) {
+            LocalizacaoUtils.solicitaPermissao(this);
+        } else {
+            if (statusPermissao == LocalizacaoUtils.LOC_NO_BRASIL) {
+                verificaVersao();
+            } else {
+                startActivityForResult(new Intent(SplashScreenActivity.this, LocalizacaoActivity.class), 1);
+            }
+        }
     }
 
     public void verificaVersao() {
@@ -50,8 +64,17 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        if (requestCode == LocalizacaoUtils.PERMISSAO_LOCALIZACAO_COD) {
+            if (grantResults.length > 0) {
+                trataPermissao();
+            }
+        }
+    }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == 1) {
             verificaVersao();
         }
