@@ -84,8 +84,8 @@ public class LocalizacaoUtils {
         Location location;
         //melhorar lógica
         do {
-             location = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        } while (location == null)  ;
+          location = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        } while (location == null);
         if (location != null ){
             Geocoder geocoder = new Geocoder(activity, Locale.getDefault());
             try {
