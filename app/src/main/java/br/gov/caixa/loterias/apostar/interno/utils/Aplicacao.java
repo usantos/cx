@@ -16,6 +16,7 @@ import java.util.Arrays;
 
 import br.gov.caixa.loterias.apostar.interno.controllers.AppIndisponivelActivity;
 import br.gov.caixa.loterias.apostar.interno.controllers.CarrinhoActivity;
+import br.gov.caixa.loterias.apostar.interno.controllers.LocalizacaoActivity;
 import br.gov.caixa.loterias.apostar.interno.controllers.PrincipalActivity_;
 import br.gov.caixa.loterias.apostar.interno.controllers.SplashScreenActivity;
 import br.gov.caixa.loterias.apostar.interno.model.bean.DadosUsuarioToken;
@@ -97,7 +98,8 @@ class ActivityLifecycleCallbacks implements Application.ActivityLifecycleCallbac
     public void atualizaBuscaParametros(Activity activity) {
         if(activity != null && !activity.isDestroyed()) {
             loadViewProgress = LoadingViewLoterias.show(activity);
-            if (activity.getClass().toString().equalsIgnoreCase(SplashScreenActivity.class.toString())) {
+            if (activity.getClass().toString().equalsIgnoreCase(SplashScreenActivity.class.toString()) ||
+                    activity.getClass().toString().equalsIgnoreCase(LocalizacaoActivity.class.toString())) {
                 loadViewProgress.dismiss();
             }
         }

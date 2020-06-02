@@ -950,4 +950,16 @@
     <string name="avancar">Avançar</string>
     <string name="iniciar_aposta">Iniciar aposta</string>
 
+    <!-- Restrição de Geolocalização -->
+    <string name="bloq_local_fora_brasil">As apostas de Loterias só podem ser realizadas em território brasileiro.</string>
+    <string name="bloq_local_desativada_msg">Precisamos conferir se você está em território brasileiro.\nHabilite sua localização.</string>
+
+    <string name="bloq_local_brasil">Brasil</string>
+
+    <string name="bloq_local_permitir">Permitir acesso a localização</string>
+    <string name="bloq_local_ir_config">Ir para configurações</string>
+    <string name="bloq_local_erro">Não foi possível recuperar sua localização. Por favor, tente novamente</string>
+    <string name="bloq_local_tente_nvm">Tentar novamente</string>
+
+
 </resources>
