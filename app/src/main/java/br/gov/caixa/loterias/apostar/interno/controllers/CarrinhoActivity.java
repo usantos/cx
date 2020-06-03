@@ -40,7 +40,6 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.CarrinhoSi
 import br.gov.caixa.loterias.apostar.interno.model.dao.DBLoteriasCrud;
 import br.gov.caixa.loterias.apostar.interno.utils.DialogUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
-import br.gov.caixa.loterias.apostar.interno.utils.LocalizacaoUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.CarrinhoApostasListViewAdapter;
 import br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightRecyclerView;
@@ -97,40 +96,12 @@ public class CarrinhoActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
-        if (requestCode == LocalizacaoUtils.PERMISSAO_LOCALIZACAO_COD) {
-            if (grantResults.length > 0) {
-                trataPermissao();
-            }
-        }
-    }
-
-    private void trataPermissao() {
-        int statusPermissao = LocalizacaoUtils.checaStatusPermissao(this);
-        if (statusPermissao == LocalizacaoUtils.LOC_NAO_PERMITIDA) {
-            LocalizacaoUtils.solicitaPermissao(this);
-        } else {
-            switch (statusPermissao) {
-                case LocalizacaoUtils.LOC_NO_BRASIL:
-                    startActivity(new Intent(CarrinhoActivity.this, CartoesActivity.class));
-                    break;
-                case LocalizacaoUtils.LOC_FORA_DO_BRASIL:
-                    ViewUtils.alert(this,getResources().getString(R.string.bloq_local_fora_brasil));
-                    break;
-                default:
-                    startActivityForResult(new Intent(CarrinhoActivity.this, LocalizacaoActivity.class), 1);
-            }
-        }
-    }
-
-    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == 1) {
-            trataPermissao();
+            callWebservice();
         }
     }
-
     @Override
     public boolean onSupportNavigateUp() {
         finish();
@@ -289,8 +260,7 @@ public class CarrinhoActivity extends AppCompatActivity {
                 ocorrendoValidacao = false;
                 DialogUtils.dismiss();
                 CarrinhoSingleton.getInstance().setCarrinho(carrinho);
-                //startActivity(new Intent(CarrinhoActivity.this, CartoesActivity.class));
-                trataPermissao();
+                startActivity(new Intent(CarrinhoActivity.this, CartoesActivity.class));
             }
 
             @Override
