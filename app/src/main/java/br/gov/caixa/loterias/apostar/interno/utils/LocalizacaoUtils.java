@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
+import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
@@ -36,6 +37,8 @@ public class LocalizacaoUtils {
     public static final int LOC_ERRO = 404;
 
     public static final int PERMISSAO_LOCALIZACAO_COD = 400;
+
+    private static Location locationUpdated;
 
     public static int checaStatusPermissao(Activity activity) {
         //Verifica versão mínima para verificação em tempo de execução
@@ -78,14 +81,18 @@ public class LocalizacaoUtils {
 
     @SuppressLint("MissingPermission")
     public static int verificaRegiao(Activity activity){
-        final LocationManager manager = (LocationManager) activity.getSystemService( Context.LOCATION_SERVICE );
-        LocationListener listener = getListener();
-        manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1, 1, listener);
-        Location location;
-        //melhorar lógica
-        do {
-          location = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        } while (location == null);
+        final LocationManager manager  = (LocationManager) activity.getSystemService( Context.LOCATION_SERVICE );
+        String bestProvider;
+        LocationListener      listener = getListener();
+
+        Criteria              criteria = new Criteria();
+        bestProvider = manager.getBestProvider(criteria, false);
+
+        manager.requestLocationUpdates(bestProvider, 1, 1, listener);
+        Location location = getLastLocation(manager, bestProvider);
+        if(location == null) {
+            location = locationUpdated;
+        }
         if (location != null ){
             Geocoder geocoder = new Geocoder(activity, Locale.getDefault());
             try {
@@ -103,6 +110,17 @@ public class LocalizacaoUtils {
             return LOC_ERRO;
         }
 
+    }
+
+    @SuppressLint("MissingPermission")
+    private static Location getLastLocation(LocationManager manager, String provider) {
+        int qtdVerificacoes = 0;
+         Location  location = null;
+        while (qtdVerificacoes <= 20 && location == null) {
+            qtdVerificacoes++;
+            location = manager.getLastKnownLocation(provider);
+        }
+        return location;
     }
 
     public static void intentConfigGps(Activity activity) {
@@ -140,7 +158,7 @@ public class LocalizacaoUtils {
       return  new LocationListener() {
           @Override
           public void onLocationChanged(Location location) {
-
+              locationUpdated = location;
           }
 
           @Override
