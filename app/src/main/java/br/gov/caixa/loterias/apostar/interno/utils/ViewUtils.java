@@ -548,8 +548,8 @@ public class ViewUtils {
         if(param != null){
             ModalidadeDTO modalidadeDetalhada = param.getParametroJogo().getConcurso().getModalidadeDetalhada();
             return aposta.getTipoConcurso().getDescricao().equalsIgnoreCase("ESPECIAL") ?
-                    modalidadeDetalhada.getDescricaoEspecial().toLowerCase(new Locale("pt", "BR")):
-                    modalidadeDetalhada.getDescricao().toLowerCase(new Locale("pt", "BR"));
+                    modalidadeDetalhada.getDescricaoEspecial():
+                    modalidadeDetalhada.getDescricao();
         }
         return "";
     }
@@ -559,8 +559,8 @@ public class ViewUtils {
         if(param != null){
             ModalidadeDTO modalidadeDetalhada = param.getParametroJogo().getConcurso().getModalidadeDetalhada();
             return aposta.getTipoConcurso().getDescricao().equalsIgnoreCase("ESPECIAL") ?
-                    modalidadeDetalhada.getDescricaoEspecial().toLowerCase(new Locale("pt", "BR")):
-                    modalidadeDetalhada.getDescricao().toLowerCase(new Locale("pt", "BR"));
+                    modalidadeDetalhada.getDescricaoEspecial():
+                    modalidadeDetalhada.getDescricao();
         }
         return "";
     }
