@@ -62,12 +62,12 @@ public class RateUtils {
 		new Handler().postDelayed(() -> dialogAvaliar.show(), 500);
 	}
 
-	private static void redirecionaParaLoja(Activity activity){
+	public static void redirecionaParaLoja(Activity activity){
 		final String appPackageName = activity.getPackageName();
 		try {
-			activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+			activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(activity.getResources().getString(R.string.google_url_market) + appPackageName)));
 		} catch (android.content.ActivityNotFoundException anfe) {
-			activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+			activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(activity.getResources().getString(R.string.google_url_playstore) + appPackageName)));
 		}
 	}
 
