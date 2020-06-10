@@ -965,5 +965,8 @@
     <string name="google_url_market">market://details?id=</string>
     <string name="google_url_playstore">https://play.google.com/store/apps/details?id=</string>
 
+    <!-- Popup -->
+    <string name="erro_req">Opa, ocorreu um erro na sua requisição. Por favor, tente novamente dentro de alguns instantes.</string>
+
 
 </resources>
