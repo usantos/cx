@@ -488,7 +488,7 @@
     <string name="resultados_data_sorteio">Data do sorteio: %s</string>
     <string name="resultados_numeros_sorteados">Números sorteados:</string>
     <string name="resultados_placeholder_toolbar">Nº do concurso</string>
-    <string name="resultados_validacao_concurso">O concurso mais atual é o de nº %s</string>
+    <string name="resultados_validacao_concurso">O último concurso apurado é o %s</string>
 
     <!-- Carrinhos Favoritos -->
     <string name="carrinho_fav_btn">Carrinhos\nfavoritos</string>
