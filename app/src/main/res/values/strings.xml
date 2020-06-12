@@ -968,5 +968,7 @@
     <!-- Popup -->
     <string name="erro_req">Opa, ocorreu um erro na sua requisição. Por favor, tente novamente dentro de alguns instantes.</string>
 
+    <!-- Resultado Bilhetes -->
+    <string name="erro_req">Opa, ocorreu um erro na sua requisição. Por favor, tente novamente dentro de alguns instantes.</string>
 
 </resources>
