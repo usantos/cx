@@ -98,7 +98,7 @@ public class LocalizacaoUtils {
             try {
                 List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
                 Address obj = addresses.get(0);
-                if (obj.getCountryName().equalsIgnoreCase(activity.getResources().getString(R.string.bloq_local_brasil))) {
+                if (obj.getCountryCode().equalsIgnoreCase(activity.getResources().getString(R.string.bloq_local_brasil))) {
                     return LOC_NO_BRASIL;
                 } else {
                     return LOC_FORA_DO_BRASIL;
@@ -118,7 +118,17 @@ public class LocalizacaoUtils {
          Location  location = null;
         while (qtdVerificacoes <= 20 && location == null) {
             qtdVerificacoes++;
-            location = manager.getLastKnownLocation(provider);
+            List<String> providers = manager.getProviders(true);
+            for (String providerFor : providers) {
+                Location l = manager.getLastKnownLocation(providerFor);
+                if (l == null) {
+                    continue;
+                }
+                if (location == null || l.getAccuracy() < location.getAccuracy()) {
+                    // Found best last known location: %s", l);
+                    location = l;
+                }
+            }
         }
         return location;
     }
