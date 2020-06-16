@@ -63,7 +63,7 @@ public class LocalizacaoActivity extends AppCompatActivity {
                 break;
             case LocalizacaoUtils.LOC_ERRO:
                 tvMsgGenerica.setText(getResources().getString(R.string.bloq_local_erro));
-                btnGenerico.setText(getResources().getString(R.string.bloq_local_tente_nvm));
+                       btnGenerico.setText(getResources().getString(R.string.bloq_local_tente_nvm));
                 btnGenerico.setOnClickListener(view -> trataPermissao());
                 break;
         }

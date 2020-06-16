@@ -88,8 +88,10 @@ public class LocalizacaoUtils {
         Criteria              criteria = new Criteria();
         bestProvider = manager.getBestProvider(criteria, false);
 
-        manager.requestLocationUpdates(bestProvider, 1, 1, listener);
-        Location location = getLastLocation(manager, bestProvider);
+        manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 10, listener);
+        manager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, 10000, 10, listener);
+        manager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10000, 10, listener);
+        Location location = getLastLocation(manager);
         if(location == null) {
             location = locationUpdated;
         }
@@ -113,9 +115,9 @@ public class LocalizacaoUtils {
     }
 
     @SuppressLint("MissingPermission")
-    private static Location getLastLocation(LocationManager manager, String provider) {
+    private static Location getLastLocation(LocationManager manager) {
         int qtdVerificacoes = 0;
-         Location  location = null;
+        Location  location = null;
         while (qtdVerificacoes <= 20 && location == null) {
             qtdVerificacoes++;
             List<String> providers = manager.getProviders(true);
