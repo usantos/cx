@@ -1,6 +1,11 @@
 package br.gov.caixa.loterias.apostar.interno.controllers;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
@@ -15,12 +20,14 @@ public class LocalizacaoActivity extends AppCompatActivity {
 
     private TextView tvVersao, tvMsgGenerica;
     private Button btnGenerico;
+    public BroadcastReceiver receiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_localizacao);
         setaViews();
+        setaMetodos();
     }
 
     @Override
@@ -35,6 +42,19 @@ public class LocalizacaoActivity extends AppCompatActivity {
         tvMsgGenerica = findViewById(R.id.tv_msg_generica);
 
         tvVersao.setText(TextUtils.concat(getResources().getString(R.string.v), BuildConfig.VERSION_NAME));
+    }
+
+    private void setaMetodos() {
+        receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String action = intent.getAction();
+                if (action.matches("android.location.PROVIDERS_CHANGED")) {
+                    new Handler().postDelayed(() -> trataPermissao(), 1000);
+                }
+            }
+        };
+        registerReceiver(receiver, new IntentFilter("android.location.PROVIDERS_CHANGED"));
     }
 
     private void trataPermissao() {
@@ -63,7 +83,7 @@ public class LocalizacaoActivity extends AppCompatActivity {
                 break;
             case LocalizacaoUtils.LOC_ERRO:
                 tvMsgGenerica.setText(getResources().getString(R.string.bloq_local_erro));
-                       btnGenerico.setText(getResources().getString(R.string.bloq_local_tente_nvm));
+                btnGenerico.setText(getResources().getString(R.string.bloq_local_tente_nvm));
                 btnGenerico.setOnClickListener(view -> trataPermissao());
                 break;
         }
@@ -86,4 +106,10 @@ public class LocalizacaoActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() { }
+
+    @Override
+    protected void onDestroy() {
+        unregisterReceiver(receiver);
+        super.onDestroy();
+    }
 }

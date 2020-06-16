@@ -19,13 +19,16 @@ import io.fabric.sdk.android.Fabric;
 public class SplashScreenActivity extends AppCompatActivity {
 
     public static final int SPLASH_TIME = 2000;
+    public static final int REQ_LOC = 2;
+    private VersionResponse responseVersao;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         Fabric.with(this, new Crashlytics());
-        trataPermissao();
+        verificaVersao();
     }
 
     private void trataPermissao() {
@@ -34,9 +37,9 @@ public class SplashScreenActivity extends AppCompatActivity {
             LocalizacaoUtils.solicitaPermissao(this);
         } else {
             if (statusPermissao == LocalizacaoUtils.LOC_NO_BRASIL) {
-                verificaVersao();
+                trataSucesso(responseVersao);
             } else {
-                startActivityForResult(new Intent(SplashScreenActivity.this, LocalizacaoActivity.class), 1);
+                startActivityForResult(new Intent(SplashScreenActivity.this, LocalizacaoActivity.class), REQ_LOC);
             }
         }
     }
@@ -45,15 +48,8 @@ public class SplashScreenActivity extends AppCompatActivity {
         AcessoBO_.getInstance_(this).getVerificaVersao(BuildConfig.VERSION_NAME, new RequestListener<VersionResponse>() {
             @Override
             public void onResponse(VersionResponse response) {
-                if (!response.getPayload()) {
-                    startActivity(new Intent(SplashScreenActivity.this, AtualizacaoActivity.class));
-                } else {
-                    new Handler().postDelayed(() -> {
-                        LoginSP.limpar();
-                        startActivity(new Intent(SplashScreenActivity.this, IntroducaoActivity.class));
-                        finish();
-                    }, SPLASH_TIME);
-                }
+                responseVersao = response;
+                trataPermissao();
             }
 
             @Override
@@ -61,6 +57,19 @@ public class SplashScreenActivity extends AppCompatActivity {
                 startActivityForResult(new Intent(SplashScreenActivity.this, AppIndisponivelActivity.class), 1);
             }
         });
+    }
+
+
+    private void trataSucesso (VersionResponse response) {
+        if (!response.getPayload()) {
+            startActivity(new Intent(SplashScreenActivity.this, AtualizacaoActivity.class));
+        } else {
+            new Handler().postDelayed(() -> {
+                LoginSP.limpar();
+                startActivity(new Intent(SplashScreenActivity.this, IntroducaoActivity.class));
+                finish();
+            }, SPLASH_TIME);
+        }
     }
 
     @Override
@@ -75,8 +84,8 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK && requestCode == 1) {
-            verificaVersao();
+        if (resultCode == RESULT_OK && requestCode == REQ_LOC) {
+            trataSucesso(responseVersao);
         }
     }
 }
