@@ -86,6 +86,8 @@ public class SplashScreenActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK && requestCode == REQ_LOC) {
             trataSucesso(responseVersao);
+        } else if (resultCode == RESULT_OK && requestCode == 1) {
+            verificaVersao();
         }
     }
 }
