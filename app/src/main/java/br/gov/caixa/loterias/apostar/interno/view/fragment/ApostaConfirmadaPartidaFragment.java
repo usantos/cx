@@ -1,5 +1,6 @@
 package br.gov.caixa.loterias.apostar.interno.view.fragment;
 
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
@@ -13,11 +14,13 @@ import org.androidannotations.annotations.FragmentArg;
 import org.androidannotations.annotations.ViewById;
 import org.apache.commons.lang.StringUtils;
 
+import java.math.BigDecimal;
 import java.util.Locale;
 
 import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
+import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.DetalheApostaConfirmadaLotecaAdapter;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.DetalheApostaConfirmadaLotogolAdapter;
 import br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightRecyclerView;
@@ -38,6 +41,12 @@ public class ApostaConfirmadaPartidaFragment extends Fragment {
     protected TextView concursoCabecalhoTextView, concursoRodaPeTextView, dataHoraTextView, statusApostaTextView;
 
     @ViewById
+    protected TextView tv_val_premio, tv_val_premio_tit;
+
+    @ViewById
+    protected ConstraintLayout cl_premio_pago;
+
+    @ViewById
     protected ExpandableHeightRecyclerView listaPartidasApostadasExpandebleRecyclerView;
 
     @FragmentArg
@@ -45,6 +54,9 @@ public class ApostaConfirmadaPartidaFragment extends Fragment {
 
     @FragmentArg
     protected boolean loteca;
+
+    @FragmentArg
+    protected BigDecimal valorPremio;
 
     @AfterViews
     public void init() {
@@ -58,6 +70,16 @@ public class ApostaConfirmadaPartidaFragment extends Fragment {
         }
         statusApostaTextView.setText(aposta.getSituacao().getDescricao());
 
+        if (valorPremio != null) {
+            tv_val_premio.setVisibility(View.VISIBLE);
+            tv_val_premio_tit.setVisibility(View.VISIBLE);
+            cl_premio_pago.setVisibility(View.VISIBLE);
+            statusApostaTextView.setVisibility(View.GONE);
+            tv_val_premio.setText(ViewUtils.getMoedaFormat(valorPremio));
+        } else {
+            statusApostaTextView.setText(aposta.getSituacao().getDescricao());
+        }
+        
         initList();
     }
 

@@ -287,6 +287,7 @@
     <string name="label_teimosinha">Teimosinha</string>
     <string name="label_aposta_troca">Aposta\nde troca</string>
     <string name="label_validade_premio">Validade do prêmio:</string>
+    <string name="label_numero_bilhete">Número do bilhete:</string>
     <string name="label_noventa_dias">90 dias</string>
     <string name="label_aposta">aposta</string>
     <string name="label_apostas">apostas</string>
@@ -295,6 +296,7 @@
     <string name="label_agencia_caixa">Agência Caixa</string>
     <string name="label_mercado_pago">Mercado Pago</string>
     <string name="label_premio_pago">O prêmio deste bilhete já foi pago. Parabéns :)</string>
+    <string name="tit_premio_pago">Prêmio Pago</string>
     <string name="label_emitir_comprovante">Emita o seu comprovante da aposta</string>
     <string name="label_diriga_loterica_preferencia">Dirija-se à lotérica de sua preferência</string>
     <string name="label_apresente_recibo_documento_identificacao_originais">Apresente seu recibo de aposta e seu documento de identificação originais</string>
@@ -782,6 +784,7 @@
     <string name="email_enviado_para">Um email foi enviado para&#160;</string>
     <string name="com_o_passo_a_passo">&#160;com os dados de recebimento do seu prêmio.</string>
     <string name="valor_premio">valorPremio</string>
+    <string name="val_premio">Valor do prêmio:</string>
     <string name="id_aposta">idAposta</string>
     <string name="email_minusculo">email</string>
     <string name="email_maiusculo">EMAIL</string>

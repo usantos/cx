@@ -35,6 +35,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.parceler.Parcels;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
 
@@ -63,7 +64,6 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametroSimulac
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResultadoConcursoDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.SituacaoResultadoBilheteEnum;
-import br.gov.caixa.loterias.apostar.interno.utils.AppUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.DialogUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
@@ -144,6 +144,54 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     private ComprovanteApostaDTO comprovanteParaPdf;
     private boolean isHistorico;
     private int RESGATOU_MP = 2000;
+
+    private BigDecimal valorPremio;
+    private ComprovanteApostaDTOResponse comprovanteApostaDTOResponse;
+    private DetalhesPremioDTOResponse detalhesPremioDTOResponse;
+    private DetalhesHistoricoPremioDTOResponse detalhesHistoricoPremioDTOResponse;
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        FirebaseManager.registraEvento(this ,getResources().getString(R.string.evento_gerenciar_apostas_detalhes));
+        setaMetodos();
+        setaViews();
+
+    }
+
+    private void setaViews(){
+        estilo = new EstiloModalidade(aposta.getModalidade());
+        setTheme(estilo.getThemeId());
+
+        setTitle(ViewUtils.getNomeModalidadePorAposta(aposta));
+    }
+    private void setaMetodos(){
+        if (comprovanteApostaDTO != null) {
+            premioPago = false;
+            isHistorico = false;
+            aposta = comprovanteApostaDTO.getAposta();
+            valorPremio = null;
+        } else {
+            premioPago = Boolean.TRUE;
+            if (detalhesPremioDTO != null) {
+                aposta = detalhesPremioDTO.getAposta();
+                valorPremio = detalhesPremioDTO.getPremio().getValorLiquido();
+                isHistorico = false;
+            } else {
+                aposta = detalhesHistoricoPremioDTO.getAposta();
+                valorPremio = detalhesHistoricoPremioDTO.getPremioDTO().getValorLiquido();
+                isHistorico = true;
+            }
+        }
+
+        if (Objects.equals(aposta.getSituacao().getValor(), SituacaoResultadoBilheteEnum.EFETIVADA.getValor())) {
+            ConferirResultadoHelper.conferirResultadoHandler = this;
+            ConferirResultadoHelper.conferirResultado(aposta.getId(), this);
+        }
+
+        chamadasParaComprovante();
+    }
+
 
     @Click
     protected void carrinhoApostasBtn() {
@@ -252,13 +300,24 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
 
     @Click
     protected void comprovanteLayout() {
-        DialogUtils.show(this);
+        if (premioPago && isHistorico) {
+            pdfUtils.createComprovanteHistoricoPremioPdf(detalhesHistoricoPremioDTOResponse.getPayload(), ApostaConfirmadaDetalhesActivity.this);
+        } else if (premioPago) {
+            pdfUtils.createComprovantePremioPdf(detalhesPremioDTOResponse.getPayload(), ApostaConfirmadaDetalhesActivity.this);
+        } else {
+            pdfUtils.createComprovanteApostaPdf(comprovanteParaPdf, ApostaConfirmadaDetalhesActivity.this);
+        }
+    }
+    private void chamadasParaComprovante(){
+        if(!DialogUtils.isShow()) {
+            DialogUtils.show(this);
+        }
         if (premioPago && isHistorico) {
             apostaBO.getApostaHistoricoComprovante(aposta.getId(), new RequestListener<DetalhesHistoricoPremioDTOResponse>() {
                 @Override
                 public void onResponse(DetalhesHistoricoPremioDTOResponse result) {
                     DialogUtils.dismiss();
-                    pdfUtils.createComprovanteHistoricoPremioPdf(result.getPayload(), ApostaConfirmadaDetalhesActivity.this);
+                    detalhesHistoricoPremioDTOResponse = result;
                 }
                 @Override
                 public void onErrorResponse(VolleyError error) {
@@ -270,7 +329,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                 @Override
                 public void onResponse(DetalhesPremioDTOResponse result) {
                     DialogUtils.dismiss();
-                    pdfUtils.createComprovantePremioPdf(result.getPayload(), ApostaConfirmadaDetalhesActivity.this);
+                    detalhesPremioDTOResponse = result;
                 }
 
                 @Override
@@ -283,9 +342,8 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                 @Override
                 public void onResponse(ComprovanteApostaDTOResponse result) {
                     DialogUtils.dismiss();
-
+                    comprovanteApostaDTOResponse = result;
                     comprovanteParaPdf = result.getPayload();
-                    pdfUtils.createComprovanteApostaPdf(comprovanteParaPdf, ApostaConfirmadaDetalhesActivity.this);
                 }
 
                 @Override
@@ -294,37 +352,6 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                 }
             });
         }
-    }
-
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        FirebaseManager.registraEvento(this ,getResources().getString(R.string.evento_gerenciar_apostas_detalhes));
-
-        if (comprovanteApostaDTO != null) {
-            premioPago = false;
-            isHistorico = false;
-            aposta = comprovanteApostaDTO.getAposta();
-        } else {
-            premioPago = Boolean.TRUE;
-            if (detalhesPremioDTO != null) {
-                aposta = detalhesPremioDTO.getAposta();
-                isHistorico = false;
-            } else {
-                aposta = detalhesHistoricoPremioDTO.getAposta();
-                isHistorico = true;
-            }
-        }
-
-        if (Objects.equals(aposta.getSituacao().getValor(), SituacaoResultadoBilheteEnum.EFETIVADA.getValor())) {
-            ConferirResultadoHelper.conferirResultadoHandler = this;
-            ConferirResultadoHelper.conferirResultado(aposta.getId(), this);
-        }
-
-        estilo = new EstiloModalidade(aposta.getModalidade());
-        setTheme(estilo.getThemeId());
-
-        setTitle(ViewUtils.getNomeModalidadePorAposta(aposta));
     }
 
     @OptionsMenuItem(R.id.action_duvida)
@@ -383,7 +410,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
         switch (aposta.getModalidade()) {
             case LOTOGOL:
                 disableButtonEditar();
-                fragment = ApostaConfirmadaPartidaFragment_.builder().aposta(aposta).loteca(Boolean.FALSE).build();
+                fragment = ApostaConfirmadaPartidaFragment_.builder().valorPremio(valorPremio).aposta(aposta).loteca(Boolean.FALSE).build();
 
                 linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorEscura()));
                 getSupportFragmentManager().beginTransaction()
@@ -392,7 +419,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                 break;
             case LOTECA:
                 disableButtonEditar();
-                fragment = ApostaConfirmadaPartidaFragment_.builder().aposta(aposta).loteca(Boolean.TRUE).build();
+                fragment = ApostaConfirmadaPartidaFragment_.builder().valorPremio(valorPremio).aposta(aposta).loteca(Boolean.TRUE).build();
 
                 linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorEscura()));
                 getSupportFragmentManager().beginTransaction()
@@ -400,7 +427,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                         .commit();
                 break;
             default:
-                fragment = ApostaConfirmadaNumeroDetalhes_.builder().aposta(aposta).build();
+                fragment = ApostaConfirmadaNumeroDetalhes_.builder().valorPremio(valorPremio).aposta(aposta).build();
 
                 linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorEscura()));
                 getSupportFragmentManager().beginTransaction()

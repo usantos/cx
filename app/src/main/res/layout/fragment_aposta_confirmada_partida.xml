@@ -1,18 +1,71 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="br.gov.caixa.loterias.apostar.interno.view.fragment.ApostaConfirmadaPartidaFragment">
 
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/cl_premio_pago"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="15dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <View
+            android:id="@+id/v_separador_esq"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginRight="20dp"
+            android:background="@color/branco"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tv_premio_pago_tit"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_premio_pago_tit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tit_premio_pago"
+            android:textColor="?android:attr/textColorSecondary"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/v_separador_dir"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginLeft="20dp"
+            android:background="@color/branco"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_premio_pago_tit"
+            app:layout_constraintTop_toTopOf="parent" />
+    </android.support.constraint.ConstraintLayout>
+
     <LinearLayout
         android:id="@+id/apostaConfirmadaLotecaLinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="15dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="15dp"
         android:orientation="horizontal"
-        android:weightSum="1">
+        android:weightSum="1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cl_premio_pago">
 
         <LinearLayout
 
@@ -95,6 +148,26 @@
                         android:textColor="?android:attr/textColorSecondary"
                         android:textSize="12sp"
                         android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_val_premio_tit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/val_premio"
+                        android:textColor="?android:attr/textColorSecondary"
+                        android:textSize="12sp"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/tv_val_premio"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="?android:attr/textColorSecondary"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:visibility="gone"
+                        tools:text="@string/r_0_00" />
+
                 </LinearLayout>
             </LinearLayout>
 
@@ -167,18 +240,18 @@
                 android:id="@+id/listaPartidasApostadasExpandebleRecyclerView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="15dp"
                 android:layout_marginTop="11dp"
+                android:layout_marginEnd="15dp"
                 android:clickable="false"
                 android:nestedScrollingEnabled="false" />
 
             <View
                 android:layout_width="wrap_content"
                 android:layout_height="1dp"
-                android:background="@color/branco"/>
+                android:background="@color/branco" />
 
         </LinearLayout>
 
     </LinearLayout>
 
-</FrameLayout>
+</android.support.constraint.ConstraintLayout>
