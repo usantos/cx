@@ -61,12 +61,12 @@ public class ApostaConfirmadaPartidaFragment extends Fragment {
     @AfterViews
     public void init() {
 
-        concursoCabecalhoTextView.setText(String.format(Locale.getDefault(), "%d", aposta.getConcursoInicial()));
-        concursoRodaPeTextView.setText(String.format(Locale.getDefault(), "%d", aposta.getConcursoInicial()));
+        concursoCabecalhoTextView.setText(String.format(Locale.getDefault(), getResources().getString(R.string.percent_d), aposta.getConcursoInicial()));
+        concursoRodaPeTextView.setText(String.format(Locale.getDefault(), getResources().getString(R.string.percent_d), aposta.getConcursoInicial()));
         if (StringUtils.isEmpty(aposta.getHoraEfetivacao())) {
             dataHoraTextView.setText(aposta.getDataEfetivacao());
         } else {
-            dataHoraTextView.setText(aposta.getDataEfetivacao() + " - " + aposta.getHoraEfetivacao());
+            dataHoraTextView.setText(aposta.getDataEfetivacao() + getResources().getString(R.string.string_vazia) + aposta.getHoraEfetivacao());
         }
         statusApostaTextView.setText(aposta.getSituacao().getDescricao());
 

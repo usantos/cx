@@ -24,6 +24,7 @@
             android:layout_height="1dp"
             android:layout_marginRight="20dp"
             android:background="@color/branco"
+            android:alpha="0.5"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/tv_premio_pago_tit"
             app:layout_constraintStart_toStartOf="parent"
@@ -48,6 +49,7 @@
             android:layout_height="1dp"
             android:layout_marginLeft="20dp"
             android:background="@color/branco"
+            android:alpha="0.5"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/tv_premio_pago_tit"
@@ -116,7 +118,6 @@
                     android:orientation="vertical">
 
                     <TextView
-                        style="@style/ArialMT"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/label_data_aposta"
@@ -125,7 +126,6 @@
 
                     <TextView
                         android:id="@+id/dataHoraTextView"
-                        style="@style/ArialMT"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/label_data_aposta"
@@ -244,11 +244,6 @@
                 android:layout_marginEnd="15dp"
                 android:clickable="false"
                 android:nestedScrollingEnabled="false" />
-
-            <View
-                android:layout_width="wrap_content"
-                android:layout_height="1dp"
-                android:background="@color/branco" />
 
         </LinearLayout>
 

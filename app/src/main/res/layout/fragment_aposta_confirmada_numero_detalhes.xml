@@ -23,6 +23,7 @@
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_marginRight="20dp"
+            android:alpha="0.5"
             android:background="@color/branco"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/tv_premio_pago_tit"
@@ -47,6 +48,7 @@
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_marginLeft="20dp"
+            android:alpha="0.5"
             android:background="@color/branco"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -130,7 +132,7 @@
                 android:layout_alignTop="@+id/dataAposta"
                 android:layout_toEndOf="@id/divider"
                 android:textColor="?android:attr/textColorSecondary"
-                android:textSize="14sp"
+                android:textSize="12sp"
                 android:textStyle="bold"
                 tools:text="Aguardando" />
 
@@ -162,7 +164,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/concursoTxt"
-                android:layout_alignBottom="@id/dividerHorizontal"
+                android:layout_alignBottom="@id/informacaoAdicionalLayout"
                 android:fontFamily="@font/arialmt"
                 android:gravity="bottom"
                 android:text="@string/label_aposta_troca"
@@ -177,6 +179,7 @@
                 android:layout_below="@+id/dataApostaTxt"
                 android:layout_alignStart="@id/quantidadeApostadasTxt"
                 android:layout_marginTop="39dp"
+                android:paddingBottom="16dp"
                 android:visibility="gone"
                 tools:visibility="visible">
 
@@ -209,15 +212,6 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="0dp"
                 android:layout_toEndOf="@id/dataApostaTxt"
-                android:background="?android:textColor" />
-
-            <View
-                android:id="@+id/dividerHorizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="1dp"
-                android:layout_below="@id/informacaoAdicionalLayout"
-                android:layout_alignStart="@id/quantidadeApostadasTxt"
-                android:layout_marginTop="@dimen/activity_vertical_margin"
                 android:background="?android:textColor" />
 
         </RelativeLayout>
@@ -295,5 +289,4 @@
 
         </RelativeLayout>
     </LinearLayout>
-
 </android.support.constraint.ConstraintLayout>

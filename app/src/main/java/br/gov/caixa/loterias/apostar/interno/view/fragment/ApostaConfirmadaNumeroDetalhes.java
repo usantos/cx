@@ -66,9 +66,9 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 
 	@AfterViews
 	protected void init() {
-		concursoTxt.setText(String.format(Locale.getDefault(), "%d", aposta.getConcursoInicial()));
+		concursoTxt.setText(String.format(Locale.getDefault(), getResources().getString(R.string.percent_d), aposta.getConcursoInicial()));
 		if (!StringUtils.isEmpty(aposta.getHoraEfetivacao())) {
-			dataApostaTxt.setText(aposta.getDataEfetivacao() + " - " + aposta.getHoraEfetivacao());
+			dataApostaTxt.setText(aposta.getDataEfetivacao() + getResources().getString(R.string.string_vazia) + aposta.getHoraEfetivacao());
 		}
 
 		if (valorPremio != null) {
