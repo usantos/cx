@@ -1,15 +1,14 @@
 package br.gov.caixa.loterias.apostar.interno.controllers;
 
-import android.content.Intent;
-import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.TextView;
 
 import br.gov.caixa.loterias.apostar.interno.BuildConfig;
 import br.gov.caixa.loterias.apostar.interno.R;
+import br.gov.caixa.loterias.apostar.interno.utils.RateUtils;
 
 public class AtualizacaoActivity extends AppCompatActivity {
 
@@ -29,9 +28,7 @@ public class AtualizacaoActivity extends AppCompatActivity {
 
         buttonAtualizar = findViewById(R.id.atualizarButton);
         buttonAtualizar.setOnClickListener(view -> {
-            String url = BuildConfig.FLAVOR.equals(getResources().getString(R.string.flavor_prd)) ? getResources().getString(R.string.endereco_apk_caixa) : getResources().getString(R.string.endereco_mobilidade_instalador);
-            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-            startActivity(browserIntent);
+            RateUtils.redirecionaParaLoja(this);
         });
     }
 

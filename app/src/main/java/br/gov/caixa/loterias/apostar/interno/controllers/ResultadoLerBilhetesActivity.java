@@ -32,7 +32,6 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametroSimulacao;
-import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResultadoConsultaBilheteDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResultadoConsultaBilheteDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.SituacaoResultadoBilheteEnum;
@@ -204,23 +203,19 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
             status  = resultadoConsultaBilheteDTO.getSituacao().getValor().intValue();
         }
         switch (status){
-                case StatusBilhete.PAGA:
-                    statusResultadoNaoPremiadTextView.setText(R.string.label_premio_pago);
-                    /*if (resultadoConsultaBilheteDTO != null && resultadoConsultaBilheteDTO.getModalidadeDTO() != null) {
-                        modalidadeEnum = ModalidadeEnum.toString(resultadoConsultaBilheteDTO.getModalidadeDTO().getDescricao().toLowerCase(new Locale("pt", "BR")));
-                        EstiloModalidade estiloModalidade = new EstiloModalidade(modalidadeEnum);
-                        backgroundTopoNaoPremiadoLayout.setBackgroundColor(ContextCompat.getColor(this, estiloModalidade.getCorEscura()));
-                    }*/
-                    break;
-                case StatusBilhete.PRESCRITA:
+                case StatusBilhete.PRESCRITO:
                     statusResultadoNaoPremiadTextView.setText(R.string.label_concurso_prescrito);
                     break;
+                case StatusBilhete.PREMIO_PAGO:
+                    statusResultadoNaoPremiadTextView.setText(R.string.label_premio_pago);
+                    break;
+                case StatusBilhete.NAO_PREMIADO:
+                case StatusBilhete.NAO_APURADO:
+                    statusResultadoNaoPremiadTextView.setText(R.string.label_nao_foi_dessa_vez);
+                    break;
                     default:
-                        statusResultadoNaoPremiadTextView.setText(R.string.label_nao_foi_dessa_vez);
-
+                        statusResultadoNaoPremiadTextView.setText(R.string.string_vazia);
         }
-
-        //mensagemNaoPremiadoTextView.setText(resultadoConsultaBilheteDTO.getSituacao().getDescricao());
     }
 
     private void createToolBar() {

@@ -1,11 +1,11 @@
 package br.gov.caixa.loterias.apostar.interno.view.fragment;
 
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -16,6 +16,7 @@ import org.androidannotations.annotations.FragmentArg;
 import org.androidannotations.annotations.ViewById;
 import org.apache.commons.lang.StringUtils;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Locale;
 
@@ -27,9 +28,8 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IdentificaoDeUma
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostar.interno.utils.AppUtils;
 import br.gov.caixa.loterias.apostar.interno.utils.Utils;
-import br.gov.caixa.loterias.apostar.interno.view.adapter.CarrinhoApostasListViewAdapter;
+import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.adapter.DezenasAdapter;
-import br.gov.caixa.loterias.apostar.interno.view.adapter.NumerosSuperSeteAdapter;
 
 /**
  * Created by pmotta on 23/03/2018.
@@ -55,13 +55,32 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 	@FragmentArg
 	protected IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta;
 
+	@ViewById
+	protected TextView tv_val_premio, tv_val_premio_tit;
+
+	@ViewById
+	protected ConstraintLayout cl_premio_pago;
+
+	@FragmentArg
+	protected BigDecimal valorPremio;
+
 	@AfterViews
 	protected void init() {
-		concursoTxt.setText(String.format(Locale.getDefault(), "%d", aposta.getConcursoInicial()));
+		concursoTxt.setText(String.format(Locale.getDefault(), getResources().getString(R.string.percent_d), aposta.getConcursoInicial()));
 		if (!StringUtils.isEmpty(aposta.getHoraEfetivacao())) {
-			dataApostaTxt.setText(aposta.getDataEfetivacao() + " - " + aposta.getHoraEfetivacao());
+			dataApostaTxt.setText(aposta.getDataEfetivacao() + getResources().getString(R.string.string_vazia) + aposta.getHoraEfetivacao());
 		}
-		resultTxt.setText(aposta.getSituacao().getDescricao());
+
+		if (valorPremio != null) {
+			tv_val_premio.setVisibility(View.VISIBLE);
+			tv_val_premio_tit.setVisibility(View.VISIBLE);
+			cl_premio_pago.setVisibility(View.VISIBLE);
+			resultTxt.setVisibility(View.GONE);
+			tv_val_premio.setText(ViewUtils.getMoedaFormat(valorPremio));
+		} else  {
+			resultTxt.setText(aposta.getSituacao().getDescricao());
+
+		}
 
 		if (aposta.getTroca()) {
 			apostaTrocaTxt.setVisibility(View.VISIBLE);
