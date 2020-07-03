@@ -285,28 +285,28 @@ public class DetalhesComprasActivity extends AppCompatActivity {
             Tupla<List<ApostaDTO>,Boolean> tuplaConcurso;
             Tupla<List<ApostaDTO>,Boolean> tuplaModalidade;
             Tupla<List<ApostaDTO>,Boolean> tuplaSituacao;
-            int contFiltros = 0;
+
+            Boolean isAddBadge = false;
             if(filtroAdapter != null){
                 tuplaConcurso = filtroAdapter.getApostasFiltradasConcurso(listaAposta);
                 tuplaSituacao = filtroAdapter.getApostasFiltradasSituacao(listaAposta);
                 tuplaModalidade = filtroAdapter.getApostasFiltradasModalidade(listaAposta);
 
                 if(tuplaConcurso.y){
-                    contFiltros++;
+                    isAddBadge = true;
                     listaFiltrada.retainAll(tuplaConcurso.x);
                 }
                 if(tuplaSituacao.y){
-                    contFiltros++;
+                    isAddBadge = true;
                     listaFiltrada.retainAll(tuplaSituacao.x);
                 }
                 if(tuplaModalidade.y){
-                    contFiltros++;
+                    isAddBadge = true;
                     listaFiltrada.retainAll(tuplaModalidade.x);
                 }
             }
 
-            tvBadge.setText(String.valueOf(contFiltros));
-            if(contFiltros == 0){
+            if(!isAddBadge){
                 tvBadge.setVisibility(View.GONE);
                 configuraAdapter(listaAposta);
             } else {

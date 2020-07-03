@@ -203,6 +203,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
     public void filtraDados(){
         page.setModalidade(0);
         page.setSituacao(0);
+        page.setOrdenarPor(0);
         if(!isHistorico){
             if(filtroAdapter != null){
                 if(filtroAdapter.getNpSituacao() != null) {
@@ -212,6 +213,9 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
                     if(filtroAdapter.getAdapterModalidades().getModalidadesSelecionadas().size() > 0){
                         page.setModalidade(filtroAdapter.getAdapterModalidades().getModalidadesSelecionadas().get(0).getValor());
                     }
+                }
+                if(filtroAdapter.getNpOrdenarPor() != null) {
+                    page.setOrdenarPor(filtroAdapter.getNpOrdenarPor().getValue());
                 }
                 page.setOffset(0);
                 reloadingEntireList = true;
