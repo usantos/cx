@@ -86,13 +86,13 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
             title1.setLayoutParams(layoutParams);
             title1.setTextAppearance(getContext(), R.style.fontForTitleTopoPremiados);
             this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title1);
-            List<PremiacaoConcursoDTO> premiadosPrimeiro = modalidade.getResultadoConcursoDTO().getPremiacoesPrimeiroSorteio();
-            List<PremiacaoConcursoDTO> premiadosSegundo = modalidade.getResultadoConcursoDTO().getPremiacoesSegundoSorteio();
-            //List<PremiacaoConcursoDTO> listaPremiados = modalidade.getResultadoConcursoDTO().getPremiacoesPrimeiroSorteio();
-            //int n = listaPremiados.size();
+            //List<PremiacaoConcursoDTO> premiadosPrimeiro = modalidade.getResultadoConcursoDTO().getPremiacoesPrimeiroSorteio();
+            //List<PremiacaoConcursoDTO> premiadosSegundo = modalidade.getResultadoConcursoDTO().getPremiacoesSegundoSorteio();
+            List<PremiacaoConcursoDTO> listaPremiados = modalidade.getResultadoConcursoDTO().getPremiacoesPrimeiroSorteio();
+            int n = listaPremiados.size();
 
-            //List<PremiacaoConcursoDTO> premiadosPrimeiro  = listaPremiados.subList(0,(n + 1)/2);
-            //List<PremiacaoConcursoDTO> premiadosSegundo = listaPremiados.subList(((n + 1)/2), n);
+            List<PremiacaoConcursoDTO> premiadosPrimeiro  = listaPremiados.subList(0,(n + 1)/2);
+            List<PremiacaoConcursoDTO> premiadosSegundo = listaPremiados.subList(((n + 1)/2), n);
 
             adicionarPremiados(premiadosPrimeiro, modalidade);
 

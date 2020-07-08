@@ -237,6 +237,10 @@ public class ApostaBO extends BaseBO {
         if(page.getModalidade() != 0){
             queryParams.put("modalidade", String.valueOf(page.getModalidade()));
         }
+
+        if(page.getOrdenarPor() != 0) {
+            queryParams.put("ordenacao", String.valueOf(page.getOrdenarPor()));
+        }
         //queryParams.put("situacao", String.valueOf(page.getSituacao()));
 
         //        queryParams.put("idsApostas", idsApostas);
