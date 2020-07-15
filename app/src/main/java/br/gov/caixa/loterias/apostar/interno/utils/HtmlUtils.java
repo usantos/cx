@@ -17,17 +17,21 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostar.interno.R;
+import br.gov.caixa.loterias.apostar.interno.model.bean.Modalidade;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ComprovanteApostaDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ConcursoPremiadoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.DetalhesHistoricoPremioDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.DetalhesPremioDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.EquipeDTO;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.FaixaPremiadaDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.PartidaLotecaDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.PartidaLotogolDTO;
+import br.gov.caixa.loterias.apostar.interno.view.custom.PartidaViewDetalhesResultado;
 
 /**
  * Created by joafilho on 16/04/2018.
@@ -287,34 +291,41 @@ public class HtmlUtils {
     }
 
     private static String getBodyPremioHistorico(DetalhesHistoricoPremioDTO detalhesHistoricoPremioDTO, Context context) {
-        int numeroFaixas = 0;
+        String nomeFaixa = context.getResources().getString(R.string.string_vazia);
+        LinkedHashMap<String,String> listaFaixas = PartidaViewDetalhesResultado.obterMapFaixa(new Modalidade(detalhesHistoricoPremioDTO.getAposta().getModalidade()));
         String htmlBody = getContentOfFile(FILE_PATH_COMPROVANTE_CORPO_PREMIO_HISTORICO, context);
 
         if (detalhesHistoricoPremioDTO.getPremioDTO() != null && CollectionUtils.isNotEmpty(detalhesHistoricoPremioDTO.getPremioDTO().getConcursos())) {
             for (ConcursoPremiadoDTO concursoPremiadoDTO : detalhesHistoricoPremioDTO.getPremioDTO().getConcursos()) {
                 if (CollectionUtils.isNotEmpty(concursoPremiadoDTO.getFaixas())) {
-                    numeroFaixas = numeroFaixas + concursoPremiadoDTO.getFaixas().size();
+                    for (FaixaPremiadaDTO faixa: concursoPremiadoDTO.getFaixas()) {
+                        nomeFaixa = listaFaixas.get(context.getResources().getString(R.string._000) + faixa.getNumero());
+                    }
                 }
             }
         }
-        htmlBody = ViewUtils.replaceNullable(htmlBody, BODY_COLUNA1_LINHA1_VALOR_PREMIO, String.valueOf(numeroFaixas));
+        htmlBody = ViewUtils.replaceNullable(htmlBody, BODY_COLUNA1_LINHA1_VALOR_PREMIO, nomeFaixa);
         htmlBody = ViewUtils.replaceNullable(htmlBody, BODY_COLUNA2_LINHA1_VALOR_PREMIO, ViewUtils.getMoedaFormat(detalhesHistoricoPremioDTO.getAposta().getValor()));
         htmlBody = ViewUtils.replaceNullable(htmlBody, BODY_COLUNA3_LINHA1_VALOR_PREMIO, ViewUtils.getMoedaFormat(detalhesHistoricoPremioDTO.getPremioDTO().getValorLiquido()));
         return htmlBody;
     }
 
     private static String getBodyPremio(DetalhesPremioDTO detalhesPremioDTO, Context context) {
-        int numeroFaixas = 0;
+        String nomeFaixa = context.getResources().getString(R.string.string_vazia);
+        LinkedHashMap<String,String> listaFaixas = PartidaViewDetalhesResultado.obterMapFaixa(new Modalidade(detalhesPremioDTO.getAposta().getModalidade()));
         String htmlBody = getContentOfFile(FILE_PATH_COMPROVANTE_CORPO_PREMIO, context);
 
         if (detalhesPremioDTO.getPremio() != null && CollectionUtils.isNotEmpty(detalhesPremioDTO.getPremio().getConcursos())) {
             for (ConcursoPremiadoDTO concursoPremiadoDTO : detalhesPremioDTO.getPremio().getConcursos()) {
                 if (CollectionUtils.isNotEmpty(concursoPremiadoDTO.getFaixas())) {
-                    numeroFaixas = numeroFaixas + concursoPremiadoDTO.getFaixas().size();
+                    for (FaixaPremiadaDTO faixa: concursoPremiadoDTO.getFaixas()) {
+                        nomeFaixa = listaFaixas.get(context.getResources().getString(R.string._000) + faixa.getNumero());
+                    }
                 }
             }
         }
-        htmlBody = ViewUtils.replaceNullable(htmlBody, BODY_COLUNA1_LINHA1_VALOR_PREMIO, String.valueOf(numeroFaixas));
+
+        htmlBody = ViewUtils.replaceNullable(htmlBody, BODY_COLUNA1_LINHA1_VALOR_PREMIO, nomeFaixa);
         htmlBody = ViewUtils.replaceNullable(htmlBody, BODY_COLUNA2_LINHA1_VALOR_PREMIO, ViewUtils.getMoedaFormat(detalhesPremioDTO.getAposta().getValor()));
         htmlBody = ViewUtils.replaceNullable(htmlBody, BODY_COLUNA3_LINHA1_VALOR_PREMIO, ViewUtils.getMoedaFormat(detalhesPremioDTO.getPremio().getValorLiquido()));
         htmlBody = ViewUtils.replaceNullable(htmlBody, BODY_COLUNA1_LINHA2_VALOR_PREMIO, detalhesPremioDTO.getNsbi());

@@ -341,9 +341,9 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         if (qtdSurpresinhas == 1) {
             btnMenosSurpresinha.setBackgroundColor(ContextCompat.getColor(parentActivity, typeGameColorLight));
         }
-        if (qtdSurpresinhas < parametroJogo.getQuantidadeSurpresinhas()) {
-            qtdSurpresinhas++;
-        }
+
+        qtdSurpresinhas++;
+
         atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
         qtdSurpresinhasSelecionadas.setText(String.format(Locale.getDefault(), "%d", qtdSurpresinhas));
     }

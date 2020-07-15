@@ -692,6 +692,7 @@
     <string name="veja_os_resultados">Veja os resultados</string>
     <string name="n_mero_do_concurso">Número do concurso</string>
     <string name="_00000">00000</string>
+    <string name="_000">000</string>
     <string name="dados_pessoais">Dados pessoais</string>
     <string name="ol">Olá, %!</string>
     <string name="tv">TextView</string>

@@ -30,7 +30,6 @@ import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 @EViewGroup(R.layout.item_partida_view_detalhes_resultado)
 public class PartidaViewDetalhesResultado extends LinearLayout {
 
-
     @ViewById
     LinearLayout contentResuldadoDetalhesPremiacaoLinearLayout;
 
@@ -264,7 +263,9 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
                 mapFaixa.put("0002","6 números acertados");
                 mapFaixa.put("0003","5 números acertados");
                 mapFaixa.put("0004","4 números acertados");
-                mapFaixa.put("0005","Mês da Sorte\n"+ modalidade.getResultadoConcursoDTO().getPremiacaoMesDeSorte().getMesDeSorte().getNome());
+                mapFaixa.put("0005","Mês da Sorte\n"+
+                        (modalidade.getResultadoConcursoDTO() == null ? "":
+                        modalidade.getResultadoConcursoDTO().getPremiacaoMesDeSorte().getMesDeSorte().getNome()));
                 break;
             case "DUPLASENA":
                 mapFaixa.put("0001","Sena - 6 números acertados");
@@ -319,13 +320,15 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
                 mapFaixa.put("0003","5 números acertados");
                 mapFaixa.put("0004","4 números acertados");
                 mapFaixa.put("0005","3 números acertados");
-                mapFaixa.put("0006","Time do Coração\n"+ modalidade.getResultadoConcursoDTO().getPremiacaoTimeDoCoracao().getEquipe().getNome());
+                mapFaixa.put("0006","Time do Coração\n"+
+                        (modalidade.getResultadoConcursoDTO() == null ? "":
+                        modalidade.getResultadoConcursoDTO().getPremiacaoTimeDoCoracao().getEquipe().getNome()));
             case "SUPERSETE":
-                mapFaixa.put("1","7 acertos");
-                mapFaixa.put("2","6 acertos");
-                mapFaixa.put("3","5 acertos");
-                mapFaixa.put("4","4 acertos");
-                mapFaixa.put("5","3 acertos");
+                mapFaixa.put("0001","7 acertos");
+                mapFaixa.put("0002","6 acertos");
+                mapFaixa.put("0003","5 acertos");
+                mapFaixa.put("0004","4 acertos");
+                mapFaixa.put("0005","3 acertos");
                 break;
         }
         return mapFaixa;
