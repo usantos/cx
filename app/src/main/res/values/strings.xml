@@ -459,7 +459,7 @@
     <string name="mercado_pago_ano_invalido">Ano inválido.</string>
     <string name="mercado_pago_email_invalido">Email inválido.</string>
     <string name="mercado_pago_padrao">Não foi possível realizar o pagamento.\nFavor entrar em contato com o Mercado Pago através do site\nwww.mercadopago.com.br.</string>
-    <string name="mercado_pago_digito_verificador_invalido">O CPF vinculado ao e-mail informado deve ser o mesmo CPF cadastrado nas Loterias CAIXA</string>
+    <string name="mercado_pago_digito_verificador_invalido">O CPF vinculado ao e-mail informado deve ser o mesmo CPF cadastrado nas Loterias CAIXA.</string>
     <string name="mercado_pago_digito_verificador_titular_invalido">Revise o seu documento.</string>
     <string name="mercado_pago_digital_invalida">Digital inválida.</string>
     <string name="mercado_pago_tipo_metodo_pagamento_invalido">Tipo de pagamento inválido.</string>
