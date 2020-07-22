@@ -15,6 +15,7 @@ public class MercadoPagoUtil {
     public static final String UNAUTHORIZED_CLIENT = "3010";
     public static final String PAYMENT_METHOD_NOT_FOUND = "3012";
     public static final String INVALID_SECURITY_CODE = "E203";
+    public static final String INVALID_SECURITY_CODE_2 = "3013";
     public static final String SECURITY_CODE_REQUIRED = "3014";
     public static final String INVALID_PAYMENT_METHOD = "3015";
     public static final String INVALID_CARD_NUMBER = "3017";
@@ -24,8 +25,11 @@ public class MercadoPagoUtil {
     public static final String EMPTY_DOCUMENT_NUMBER = "3022";
     public static final String EMPTY_DOCUMENT_TYPE = "3023";
     public static final String INVALID_PAYMENT_TYPE_ID = "3028";
+    public static final String INVALID_SECURITY_CODE_LENGTH = "3032";
     public static final String INVALID_PAYMENT_METHOD_ID = "3029";
+    public static final String INVALID_CARD_EXPIRATION_MONTH_2 = "3030";
     public static final String INVALID_CARD_EXPIRATION_MONTH = "E204";
+    public static final String INVALID_CARD_EXPIRATION_YEAR_2 = "4000";
     public static final String INVALID_CARD_EXPIRATION_YEAR = "E205";
     public static final String INVALID_PAYER_EMAIL = "4050";
     public static final String INVALID_PAYMENT_WITH_ESC = "2107";
@@ -34,8 +38,6 @@ public class MercadoPagoUtil {
     public static final String INVALID_ESC = "E216";
     public static final String INVALID_EXPIRATION_DATE = "301";
     public static final String INVALID_FINGERPRINT = "E217";
-
-
 
     public static String getMessageFromCode(String code){
         Context context = Aplicacao.application.getApplicationContext();
@@ -47,7 +49,10 @@ public class MercadoPagoUtil {
             case INVALID_CARD_HOLDER_NAME : return context.getString(R.string.mercado_pago_nome_titular_invalido);
             case UNAUTHORIZED_CLIENT : return context.getString(R.string.mercado_pago_cliente_nao_autorizado);
             case PAYMENT_METHOD_NOT_FOUND : return context.getString(R.string.mercado_pago_metodo_pagamento_vazio);
-            case INVALID_SECURITY_CODE : return context.getString(R.string.mercado_pago_codigo_seguranca_invalido);
+            case INVALID_SECURITY_CODE :
+            case INVALID_SECURITY_CODE_2:
+            case INVALID_SECURITY_CODE_LENGTH:
+                return context.getString(R.string.mercado_pago_codigo_seguranca_invalido);
             case SECURITY_CODE_REQUIRED : return context.getString(R.string.mercado_pago_codigo_seguranca_vazio);
             case INVALID_PAYMENT_METHOD : return context.getString(R.string.mercado_pago_metodo_pagamento_invalido);
             case INVALID_CARD_NUMBER : return context.getString(R.string.mercado_pago_numero_cartao_Vazio);
@@ -58,8 +63,12 @@ public class MercadoPagoUtil {
             case EMPTY_DOCUMENT_TYPE : return context.getString(R.string.mercado_pago_tipo_vazio);
             case INVALID_PAYMENT_TYPE_ID : return context.getString(R.string.mercado_pago_tipo_metodo_pagamento_invalido);
             case INVALID_PAYMENT_METHOD_ID : return context.getString(R.string.mercado_pago_id_metodo_pagamento_invalido);
-            case INVALID_CARD_EXPIRATION_MONTH : return context.getString(R.string.mercado_pago_mes_invalido);
-            case INVALID_CARD_EXPIRATION_YEAR : return context.getString(R.string.mercado_pago_ano_invalido);
+            case INVALID_CARD_EXPIRATION_MONTH :
+            case INVALID_CARD_EXPIRATION_MONTH_2:
+                return context.getString(R.string.mercado_pago_mes_invalido);
+            case INVALID_CARD_EXPIRATION_YEAR :
+            case INVALID_CARD_EXPIRATION_YEAR_2:
+                return context.getString(R.string.mercado_pago_ano_invalido);
             case INVALID_PAYER_EMAIL : return context.getString(R.string.mercado_pago_email_invalido);
             case INVALID_PAYMENT_WITH_ESC : return context.getString(R.string.mercado_pago_email_invalido);
             case INVALID_IDENTIFICATION_NUMBER : return context.getString(R.string.mercado_pago_digito_verificador_invalido);
