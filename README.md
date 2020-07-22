@@ -25,7 +25,7 @@ O gerenciamento de dependências no iOS é executado através do CocoaPods e 
 
 Podemos fazer o que foi feito de forma relativamente rápida e com qualidade? Se sim, não adicione. É uma biblioteca que trata sobre assuntos de segurança? Chame outros membros da equipe para analisar juntamente contigo. A biblioteca ainda possui commits/releases, ou é uma biblioteca antiga?
 
- # Banco de dados local
+# Banco de dados local
 
 Utilizamos armazenamento local para controlar diversas operações do app, para isso cada SO possui seu formato.
 
