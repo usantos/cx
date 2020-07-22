@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
+import br.gov.caixa.loterias.apostar.interno.R;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.PartidaLotecaDTO;
 import br.gov.caixa.loterias.apostar.interno.view.custom.PartidaViewLotecaResultado;
@@ -38,7 +39,7 @@ public class LotecaResultadoTimesAdapter extends RecyclerView.Adapter<LotecaResu
     @Override
     public void onBindViewHolder(LotecaHolder holder, int position) {
         holder.partidaRow.setLayout(partidalotecaLista.get(position));
-        holder.partidaRow.getPaginaResultadoLotecaText().setText(position+1 + " de " + partidalotecaLista.size());
+        holder.partidaRow.getPaginaResultadoLotecaText().setText(position + 1 + context.getResources().getString(R.string.espaco_de_espaco) + partidalotecaLista.size());
     }
 
     @Override

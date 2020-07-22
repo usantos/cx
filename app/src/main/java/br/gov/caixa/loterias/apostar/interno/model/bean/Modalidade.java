@@ -31,6 +31,10 @@ public class Modalidade {
         this.resultadoConcursoDTO = resultadoConcursoDTO;
 
     }
+    public Modalidade (ModalidadeEnum modalidadeEnum) {
+        this.nome = modalidadeEnum.name();
+
+    }
 
     public void setNome(String nome) {
         this.nome = nome;

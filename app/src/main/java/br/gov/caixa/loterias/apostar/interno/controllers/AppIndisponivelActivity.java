@@ -37,9 +37,9 @@ public class AppIndisponivelActivity extends AppCompatActivity {
 
         txtVersion = findViewById(R.id.txtVersao);
 
-        txtVersion.setText( TextUtils.concat( "v" ,BuildConfig.VERSION_NAME));
+        txtVersion.setText( TextUtils.concat( getResources().getString(R.string.v) ,BuildConfig.VERSION_NAME));
 
-        isBuscaParametro = getIntent().getBooleanExtra("IS_BUSCA_PARAM", false);
+        isBuscaParametro = getIntent().getBooleanExtra(getResources().getString(R.string.extra_is_busca_param), false);
 
         buttonTentarNovamente = findViewById(R.id.tenteNovamenteButton);
         buttonTentarNovamente.setOnClickListener(view -> {

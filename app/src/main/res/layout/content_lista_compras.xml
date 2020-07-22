@@ -25,7 +25,7 @@
                 android:layout_marginHorizontal="17dp"
                 android:layout_marginTop="40dp"
                 android:fontFamily="@font/futura_std_bold"
-                android:text="Acompanhe todas as compras que você já realizou em nosso aplicativo."
+                android:text="@string/acompanhe_todas_as_compras_que_voc_j_realizou_em_nosso_aplicativo"
                 android:textColor="@color/colorAccent"
                 android:textSize="14.2sp" />
 
@@ -41,7 +41,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/arialmt"
-                    android:text="Selecione o mês"
+                    android:text="@string/selecione_o_m_s"
                     android:textColor="@color/azulFormNovoTipoPagamento"
                     android:textSize="12sp" />
 
@@ -91,7 +91,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/arialmt"
             android:paddingTop="10dp"
-            android:text="Compras mais antigas podem ser consultadas no site"
+            android:text="@string/compras_mais_antigas_podem_ser_consultadas_no_site"
             android:textAlignment="center"
             android:textColor="@color/cinza"
             android:textSize="14.2sp" />
@@ -100,7 +100,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/futura_std_bold"
-            android:text="www.loteriasonline.caixa.gov.br"
+            android:text="@string/www_loteriasonline_caixa_gov_br"
             android:textAlignment="center"
             android:textColor="@color/amareloQueimado"
             android:textSize="14.2sp" />

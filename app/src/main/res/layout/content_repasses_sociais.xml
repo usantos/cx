@@ -53,7 +53,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingTop="40dp"
-                        android:text="Em 2017, as Loterias já destinaram"
+                        android:text="@string/em_2017_as_loterias_j_destinaram"
                         android:textAlignment="center"
                         android:textColor="@color/branco"
                         android:textSize="14.2sp"
@@ -74,7 +74,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingTop="18dp"
-                        android:text="para melhorar o país."
+                        android:text="@string/para_melhorar_o_pa_s"
                         android:textAlignment="center"
                         android:textColor="@color/branco"
                         android:textSize="14.2sp"
@@ -96,7 +96,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Para cada \nR$1,00\napostados nas\nloterias federais"
+                                    android:text="@string/para_cada_nr_1_00_napostados_nas_nloterias_federais"
                                     android:textAlignment="center"
                                     android:layout_centerHorizontal="true"
                                     android:layout_centerVertical="true"
@@ -113,7 +113,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="R$0,48*\nsão destinados\na programas sociais"
+                                    android:text="@string/r_0_48_ns_o_destinados_na_programas_sociais"
                                     android:textAlignment="center"
                                     android:layout_centerHorizontal="true"
                                     android:layout_centerVertical="true"
@@ -160,7 +160,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="17dp"
                         android:fontFamily="@font/futura_std_bold"
-                        android:text="Entenda como"
+                        android:text="@string/entenda_como"
                         android:textAlignment="center"
                         android:textColor="@color/colorAccent"
                         android:textSize="18sp" />
@@ -169,7 +169,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/futura_std_book"
-                        android:text="esse dinheiro é distribuído:"
+                        android:text="@string/esse_dinheiro_distribu_do"
                         android:textAlignment="center"
                         android:textColor="@color/colorAccent"
                         android:textSize="18sp" />
@@ -261,7 +261,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="18dp"
                                     android:fontFamily="@font/futura_std_bold"
-                                    android:text="Educação"
+                                    android:text="@string/educa_o"
                                     android:textAlignment="center"
                                     android:textColor="@color/cinza"
                                     android:textSize="12sp" />
@@ -284,7 +284,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="18dp"
                                     android:fontFamily="@font/futura_std_bold"
-                                    android:text="Cultura"
+                                    android:text="@string/cultura"
                                     android:textAlignment="center"
                                     android:textColor="@color/cinza"
                                     android:textSize="12sp" />
@@ -384,7 +384,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="18dp"
                                     android:fontFamily="@font/futura_std_bold"
-                                    android:text="Esporte"
+                                    android:text="@string/esporte"
                                     android:textAlignment="center"
                                     android:textColor="@color/cinza"
                                     android:textSize="12sp" />
@@ -407,7 +407,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="18dp"
                                     android:fontFamily="@font/futura_std_bold"
-                                    android:text="Segurança"
+                                    android:text="@string/seguran_a"
                                     android:textAlignment="center"
                                     android:textColor="@color/cinza"
                                     android:textSize="12sp" />
@@ -508,7 +508,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="18dp"
                                     android:fontFamily="@font/futura_std_bold"
-                                    android:text="Seguridade"
+                                    android:text="@string/seguridade"
                                     android:textAlignment="center"
                                     android:textColor="@color/cinza"
                                     android:textSize="12sp" />
@@ -532,7 +532,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="18dp"
                                     android:fontFamily="@font/futura_std_bold"
-                                    android:text="Outros"
+                                    android:text="@string/outros"
                                     android:textAlignment="center"
                                     android:textColor="@color/cinza"
                                     android:textSize="12sp" />
@@ -571,8 +571,7 @@
                         <TextView
                             android:layout_width="230dp"
                             android:layout_height="wrap_content"
-                            android:text="*o valor inclui a parcela correspondente
-ao imposto de renda sobre os prêmios."
+                            android:text="@string/o_valor_inclui_a_parcela_correspondente_ao_imposto_de_renda_sobre_os_pr_mios"
                             android:textAlignment="center"
                             android:textColor="@color/textColorToolbar"
                             android:gravity="center"
@@ -591,7 +590,7 @@ ao imposto de renda sobre os prêmios."
                         <Button
                             android:layout_width="184dp"
                             android:layout_height="84dp"
-                            android:text="Aposte\ne ajude ainda mais"
+                            android:text="@string/aposte_ne_ajude_ainda_mais"
                             android:layout_centerHorizontal="true"
                             android:background="@color/cinza"
                             android:textColor="@color/branco"

@@ -15,10 +15,11 @@ import org.androidannotations.annotations.EBean;
 import java.util.LinkedHashMap;
 
 import br.gov.caixa.loterias.apostar.interno.BuildConfig;
-import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.VersionResponse;
-import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.GsonRequest;
 import br.gov.caixa.loterias.apostar.interno.controllers.LoginActivity;
 import br.gov.caixa.loterias.apostar.interno.controllers.TokenActivity;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.VersionResponse;
+import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.GsonRequest;
+import br.gov.caixa.loterias.apostar.interno.utils.AuthorizationServiceFactory;
 
 import static org.androidannotations.annotations.EBean.Scope.Singleton;
 
@@ -47,7 +48,7 @@ public class AcessoBO extends BaseBO {
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             PendingIntent pendingIntent = PendingIntent.getActivity(activity, authorizationRequest.hashCode(), intent, 0);
 
-            authorizationService = new AuthorizationService(activity);
+            authorizationService = AuthorizationServiceFactory.getAuthorizationService(activity);
             authorizationService.performAuthorizationRequest(authorizationRequest, pendingIntent);
         }
     }
@@ -71,7 +72,7 @@ public class AcessoBO extends BaseBO {
 
         PendingIntent pendingIntent = PendingIntent.getActivity(activity, authorizationRequest.hashCode(), intent, 0);
 
-        AuthorizationService authorizationService = new AuthorizationService(activity);
+        AuthorizationService authorizationService = AuthorizationServiceFactory.getAuthorizationService(activity);
         authorizationService.performAuthorizationRequest(authorizationRequest, pendingIntent);
 
         DadosUsuarioBO.limparRegistros();

@@ -19,8 +19,7 @@
         android:src="@drawable/duvidas_toolbar_icon"
         android:layout_marginTop="12dp"
         android:layout_marginRight="8dp"
-        android:background="@color/transparente"
-        />
+        android:background="@color/transparente" />
 
     <TextView
         android:id="@+id/textInfoApostas"
@@ -50,8 +49,7 @@
         app:layout_constraintTop_toBottomOf="@id/textTitulo"
         app:layout_constraintBottom_toTopOf="@+id/textInfoApostas"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <ImageView
         android:id="@+id/imageViewSetaParaApostas"
@@ -155,8 +153,6 @@
                 android:layout_height="40dp"
                 android:background="@drawable/icon_apostas"
                 android:layout_centerHorizontal="true"/>
-
-
 
             <TextView
                 android:id="@+id/textInfoCarrinho"

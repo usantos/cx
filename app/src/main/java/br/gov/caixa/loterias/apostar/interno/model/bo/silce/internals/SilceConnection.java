@@ -45,7 +45,7 @@ public class SilceConnection {
             if (req.getHeaders() == null) {
                 req.setHeaders(new HashMap<>());
             }
-            req.getHeaders().put("cookie", "security=true");
+            req.getHeaders().put("cookie", "security=false");
             req.getHeaders().put("Subcanal", "2");
         } catch (Exception e) {
             e.printStackTrace();

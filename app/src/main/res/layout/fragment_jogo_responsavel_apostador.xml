@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="30dp"
+    tools:context=".view.fragment.JogoResponsavelApostadorFragment">
+
+    <ImageView
+        android:id="@+id/iv_icone"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/ic_jogador"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_caracteristicas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_icone"
+        android:layout_marginTop="10dp"
+        android:textSize="16sp"
+        android:text="@string/jr_apostador_caracteristicas"
+        android:padding="10dp"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textColor="@color/jr_azul_text_title" />
+
+    <TextView
+        android:id="@+id/tv_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="@string/jr_apostador_1"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/jr_laranja"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/tv_caracteristicas" />
+
+    <TextView
+        android:id="@+id/tv_caracteristica_1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/jr_apostador_carac_1"
+        android:textSize="15sp"
+        android:paddingBottom="20dp"
+        android:paddingLeft="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tv_1"
+        app:layout_constraintTop_toTopOf="@+id/tv_1" />
+
+    <TextView
+        android:id="@+id/tv_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="@string/jr_apostador_2"
+        android:textColor="@color/jr_laranja"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/tv_caracteristica_1" />
+
+    <TextView
+        android:id="@+id/tv_caracteristica_2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/jr_apostador_carac_2"
+        android:textSize="15sp"
+        android:paddingBottom="20dp"
+        android:paddingLeft="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tv_2"
+        app:layout_constraintTop_toTopOf="@+id/tv_2" />
+
+    <TextView
+        android:id="@+id/tv_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="@string/jr_apostador_3"
+        android:textColor="@color/jr_laranja"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/tv_caracteristica_2" />
+
+    <TextView
+        android:id="@+id/tv_caracteristica_3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/jr_apostador_carac_3"
+        android:textSize="15sp"
+        android:paddingBottom="20dp"
+        android:paddingLeft="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tv_3"
+        app:layout_constraintTop_toTopOf="@+id/tv_3" />
+
+    <TextView
+        android:id="@+id/tv_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="@string/jr_apostador_4"
+        android:textColor="@color/jr_laranja"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/tv_caracteristica_3" />
+
+    <TextView
+        android:id="@+id/tv_caracteristica_4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/jr_apostador_carac_4"
+        android:textSize="15sp"
+        android:paddingBottom="20dp"
+        android:paddingLeft="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tv_4"
+        app:layout_constraintTop_toTopOf="@+id/tv_4" />
+
+    <TextView
+        android:id="@+id/tv_5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="@string/jr_apostador_5"
+        android:textColor="@color/jr_laranja"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/tv_caracteristica_4" />
+
+    <TextView
+        android:id="@+id/tv_caracteristica_5"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/jr_apostador_carac_5"
+        android:textSize="15sp"
+        android:paddingBottom="20dp"
+        android:paddingLeft="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tv_5"
+        app:layout_constraintTop_toTopOf="@+id/tv_5" />
+
+    <TextView
+        android:id="@+id/tv_6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="@string/jr_apostador_6"
+        android:textColor="@color/jr_laranja"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/tv_caracteristica_5" />
+
+    <TextView
+        android:id="@+id/tv_caracteristica_6"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/jr_apostador_carac_6"
+        android:textSize="15sp"
+        android:paddingBottom="20dp"
+        android:paddingLeft="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tv_6"
+        app:layout_constraintTop_toTopOf="@+id/tv_6" />
+
+    <TextView
+        android:id="@+id/tv_7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="@string/jr_apostador_7"
+        android:textColor="@color/jr_laranja"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/tv_caracteristica_6" />
+
+    <TextView
+        android:id="@+id/tv_caracteristica_7"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/jr_apostador_carac_7"
+        android:textSize="15sp"
+        android:paddingBottom="20dp"
+        android:paddingLeft="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tv_7"
+        app:layout_constraintTop_toTopOf="@+id/tv_7" />
+
+    <TextView
+        android:id="@+id/tv_8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="@string/jr_apostador_8"
+        android:textColor="@color/jr_laranja"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/tv_caracteristica_7" />
+
+    <TextView
+        android:id="@+id/tv_caracteristica_8"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/jr_apostador_carac_8"
+        android:textSize="15sp"
+        android:paddingBottom="40dp"
+        android:paddingLeft="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tv_8"
+        app:layout_constraintTop_toTopOf="@+id/tv_8" />
+
+</android.support.constraint.ConstraintLayout>

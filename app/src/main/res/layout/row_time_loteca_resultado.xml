@@ -48,7 +48,7 @@
         android:layout_height="20dp"
         android:layout_marginTop="20dp"
         android:fontFamily="@font/arialmt"
-        android:text="1 de 14"
+        android:text="@string/_1_de_14"
         android:textAlignment="center"
         android:textColor="@color/branco"
         android:textSize="14sp" />

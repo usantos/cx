@@ -32,7 +32,6 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostar.interno.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ParametroSimulacao;
-import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResultadoConsultaBilheteDTO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResultadoConsultaBilheteDTOResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.SituacaoResultadoBilheteEnum;
@@ -167,7 +166,7 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
             informacoesPremioZeradoLayout.setVisibility(View.GONE);
             informacoesPremioLayout.setVisibility(View.VISIBLE);
 
-            contentResultadoPremiado.getValorPremioTituloTextView().setText( getResources().getString(R.string.label_voce_foi_premiado).replace("{ValorPremio}", ViewUtils.getMoedaFormat(resultadoConsultaBilheteDTO.getPremioDTO().getValorLiquido())));
+            contentResultadoPremiado.getValorPremioTituloTextView().setText( getResources().getString(R.string.label_voce_foi_premiado).replace(getResources().getString(R.string.chave_valor_premio_chave), ViewUtils.getMoedaFormat(resultadoConsultaBilheteDTO.getPremioDTO().getValorLiquido())));
 
             contentResultadoPremiado.getPremioGanhoLinearLayout().setVisibility(View.VISIBLE);
             createListPremiacao();
@@ -178,7 +177,7 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
 
         if (parametroSimulacao != null) {
             if (parametroSimulacao.getProximoConcurso() != null) {
-                contentResultadoPremiado.getProximoSorteioTextView().setText(ViewUtils.getDateAndHour(parametroSimulacao.getParametroJogo().getConcurso().getDataAbertura()));
+                contentResultadoPremiado.getProximoSorteioTextView().setText(ViewUtils.getDateAndHour(parametroSimulacao.getProximoConcurso().getConcurso().getDataAbertura()));
                 contentResultadoPremiado.getValorEstimativaConcursoAtualTextView().setText(ViewUtils.getMoedaFormat(parametroSimulacao.getParametroJogo().getConcurso().getEstimativa() ));
             }
         }
@@ -188,7 +187,7 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
     protected void clickBotaoAposteAgora() {
         Intent it = new Intent(ResultadoLerBilhetesActivity.this, PrincipalActivity_.class);
         it.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |  Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        it.putExtra("MODALIDADE_APOSTAR_AGORA", modalidadeEnum);
+        it.putExtra(getResources().getString(R.string.extra_modalidade_apostar_agora), modalidadeEnum);
         startActivity(it);
 
     }
@@ -204,23 +203,19 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
             status  = resultadoConsultaBilheteDTO.getSituacao().getValor().intValue();
         }
         switch (status){
-                case StatusBilhete.PAGA:
-                    statusResultadoNaoPremiadTextView.setText(R.string.label_premio_pago);
-                    /*if (resultadoConsultaBilheteDTO != null && resultadoConsultaBilheteDTO.getModalidadeDTO() != null) {
-                        modalidadeEnum = ModalidadeEnum.toString(resultadoConsultaBilheteDTO.getModalidadeDTO().getDescricao().toLowerCase(new Locale("pt", "BR")));
-                        EstiloModalidade estiloModalidade = new EstiloModalidade(modalidadeEnum);
-                        backgroundTopoNaoPremiadoLayout.setBackgroundColor(ContextCompat.getColor(this, estiloModalidade.getCorEscura()));
-                    }*/
-                    break;
-                case StatusBilhete.PRESCRITA:
+                case StatusBilhete.PRESCRITO:
                     statusResultadoNaoPremiadTextView.setText(R.string.label_concurso_prescrito);
                     break;
+                case StatusBilhete.PREMIO_PAGO:
+                    statusResultadoNaoPremiadTextView.setText(R.string.label_premio_pago);
+                    break;
+                case StatusBilhete.NAO_PREMIADO:
+                case StatusBilhete.NAO_APURADO:
+                    statusResultadoNaoPremiadTextView.setText(R.string.label_nao_foi_dessa_vez);
+                    break;
                     default:
-                        statusResultadoNaoPremiadTextView.setText(R.string.label_nao_foi_dessa_vez);
-
+                        statusResultadoNaoPremiadTextView.setText(R.string.string_vazia);
         }
-
-        //mensagemNaoPremiadoTextView.setText(resultadoConsultaBilheteDTO.getSituacao().getDescricao());
     }
 
     private void createToolBar() {
@@ -238,15 +233,4 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
         listaFaixaPremiacaoExpandableHeightRecyclerView.setExpanded(Boolean.TRUE);
         listaFaixaPremiacaoExpandableHeightRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
-
-    private void configuraDadosProximoConcurso(ResultadoConcursoDTO ultimoConcurso){
-        if(ultimoConcurso!= null && ultimoConcurso.getProximoConcurso() != null){
-            contentResultadoPremiado.getProximoSorteioTextView().setText(ViewUtils.getDateAndHour(ultimoConcurso.getProximoConcurso().getDataAbertura()));
-            contentResultadoPremiado.getValorEstimativaConcursoAtualTextView().setText(ViewUtils.getMoedaFormat(ultimoConcurso.getProximoConcurso().getEstimativa()));
-        } else {
-            contentResultadoPremiado.getProximoSorteioTextView().setVisibility(View.GONE);
-            contentResultadoPremiado.getValorEstimativaConcursoAtualTextView().setVisibility(View.GONE);
-        }
-    }
-
 }

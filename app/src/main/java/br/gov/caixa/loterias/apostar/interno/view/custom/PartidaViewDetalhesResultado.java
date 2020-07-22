@@ -30,7 +30,6 @@ import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 @EViewGroup(R.layout.item_partida_view_detalhes_resultado)
 public class PartidaViewDetalhesResultado extends LinearLayout {
 
-
     @ViewById
     LinearLayout contentResuldadoDetalhesPremiacaoLinearLayout;
 
@@ -86,13 +85,13 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
             title1.setLayoutParams(layoutParams);
             title1.setTextAppearance(getContext(), R.style.fontForTitleTopoPremiados);
             this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title1);
-            List<PremiacaoConcursoDTO> premiadosPrimeiro = modalidade.getResultadoConcursoDTO().getPremiacoesPrimeiroSorteio();
-            List<PremiacaoConcursoDTO> premiadosSegundo = modalidade.getResultadoConcursoDTO().getPremiacoesSegundoSorteio();
-            //List<PremiacaoConcursoDTO> listaPremiados = modalidade.getResultadoConcursoDTO().getPremiacoesPrimeiroSorteio();
-            //int n = listaPremiados.size();
+            //List<PremiacaoConcursoDTO> premiadosPrimeiro = modalidade.getResultadoConcursoDTO().getPremiacoesPrimeiroSorteio();
+            //List<PremiacaoConcursoDTO> premiadosSegundo = modalidade.getResultadoConcursoDTO().getPremiacoesSegundoSorteio();
+            List<PremiacaoConcursoDTO> listaPremiados = modalidade.getResultadoConcursoDTO().getPremiacoesPrimeiroSorteio();
+            int n = listaPremiados.size();
 
-            //List<PremiacaoConcursoDTO> premiadosPrimeiro  = listaPremiados.subList(0,(n + 1)/2);
-            //List<PremiacaoConcursoDTO> premiadosSegundo = listaPremiados.subList(((n + 1)/2), n);
+            List<PremiacaoConcursoDTO> premiadosPrimeiro  = listaPremiados.subList(0,(n + 1)/2);
+            List<PremiacaoConcursoDTO> premiadosSegundo = listaPremiados.subList(((n + 1)/2), n);
 
             adicionarPremiados(premiadosPrimeiro, modalidade);
 
@@ -264,7 +263,9 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
                 mapFaixa.put("0002","6 números acertados");
                 mapFaixa.put("0003","5 números acertados");
                 mapFaixa.put("0004","4 números acertados");
-                mapFaixa.put("0005","Mês da Sorte\n"+ modalidade.getResultadoConcursoDTO().getPremiacaoMesDeSorte().getMesDeSorte().getNome());
+                mapFaixa.put("0005","Mês da Sorte\n"+
+                        (modalidade.getResultadoConcursoDTO() == null ? "":
+                        modalidade.getResultadoConcursoDTO().getPremiacaoMesDeSorte().getMesDeSorte().getNome()));
                 break;
             case "DUPLASENA":
                 mapFaixa.put("0001","Sena - 6 números acertados");
@@ -319,7 +320,15 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
                 mapFaixa.put("0003","5 números acertados");
                 mapFaixa.put("0004","4 números acertados");
                 mapFaixa.put("0005","3 números acertados");
-                mapFaixa.put("0006","Time do Coração\n"+ modalidade.getResultadoConcursoDTO().getPremiacaoTimeDoCoracao().getEquipe().getNome());
+                mapFaixa.put("0006","Time do Coração\n"+
+                        (modalidade.getResultadoConcursoDTO() == null ? "":
+                        modalidade.getResultadoConcursoDTO().getPremiacaoTimeDoCoracao().getEquipe().getNome()));
+            case "SUPERSETE":
+                mapFaixa.put("0001","7 acertos");
+                mapFaixa.put("0002","6 acertos");
+                mapFaixa.put("0003","5 acertos");
+                mapFaixa.put("0004","4 acertos");
+                mapFaixa.put("0005","3 acertos");
                 break;
         }
         return mapFaixa;

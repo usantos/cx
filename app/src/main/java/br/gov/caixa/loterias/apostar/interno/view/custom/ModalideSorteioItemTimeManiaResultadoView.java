@@ -70,11 +70,11 @@ public class ModalideSorteioItemTimeManiaResultadoView extends LinearLayout {
         this.tracoViewDivisoriaResultado.setBackground(getContext().getResources().getDrawable(estilo.getCorClara()));
         NumerosResultadosAdapter numerosResultadosAdapter;
         int numberOfColumns = 3;
-        if (modalidade.getResultadoConcursoDTO().getNumerosSorteadosPrimeiroSorteio().size() > 6) {
+        if (modalidade.getResultadoConcursoDTO().getListaSorteadosPrimeiroSorteio().size() > 6) {
             numberOfColumns = 4;
         }
         this.recyclerNumerosResultado.setLayoutManager(new GridLayoutManager(getContext(), numberOfColumns));
-        numerosResultadosAdapter = new NumerosResultadosAdapter(getContext(), modalidade.getResultadoConcursoDTO().getNumerosSorteadosPrimeiroSorteio(), modalidade.getTipoModalidade());
+        numerosResultadosAdapter = new NumerosResultadosAdapter(getContext(), modalidade.getResultadoConcursoDTO().getListaSorteadosPrimeiroSorteio(), modalidade.getTipoModalidade());
         this.recyclerNumerosResultado.setAdapter(numerosResultadosAdapter);
 
 

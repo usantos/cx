@@ -44,6 +44,8 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ResultadoConcurs
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
 import br.gov.caixa.loterias.apostar.interno.view.custom.PartidaViewDetalhesResultado;
+import br.gov.caixa.loterias.apostar.interno.view.custom.SuperSeteResultadoLayout;
+import br.gov.caixa.loterias.apostar.interno.view.custom.SuperSeteResultadoLayout_;
 import br.gov.caixa.loterias.apostar.interno.view.fragment.ResultadoDuplaSenaFragment;
 import br.gov.caixa.loterias.apostar.interno.view.fragment.ResultadoGenericoFragment;
 import br.gov.caixa.loterias.apostar.interno.view.fragment.ResultadoLotecaFragment;
@@ -75,7 +77,7 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
     private Toolbar toolbar;
 
     private View divisoria;
-    private View containerFragment;
+    private LinearLayout containerFragment;
 
     private TextView tituloModalidade;
     private TextView dataSorteio;
@@ -150,7 +152,7 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         if (txtModalidade != null) {
             if(concursoAtual == null){
-                getResultadoModalidade(ApostaDTO.lowerCaseFromString(ModalidadeEnum.toString(txtModalidade)),"");
+                getResultadoModalidade(ApostaDTO.lowerCaseFromString(ModalidadeEnum.toString(txtModalidade)),getResources().getString(R.string.string_vazia));
             }else {
                 getResultadoModalidade(ApostaDTO.lowerCaseFromString(ModalidadeEnum.toString(txtModalidade)),concursoAlvo.toString());
             }
@@ -287,7 +289,16 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
                 configuraResultadoSuperior(response, ResultadoLotogolFragment.newInstance(response));
                 tvNumeroSorteio.setVisibility(View.GONE);
                 break;
+            case SUPER_7:
+                setBackground(R.color.superseteclaro, R.color.supersetemedio, R.drawable.background_trapeze_super_sete);
+                SuperSeteResultadoLayout view7 = SuperSeteResultadoLayout_.build(this);
+                view7.setLayout(response.getMatrizNumerosSorteadosPrimeiroSorteio());
+                containerFragment.addView(view7);
+                tvNumeroSorteio.setVisibility(View.GONE);
+                break;
             default:
+                setBackground(R.color.megasenaclaro, R.color.megasenaescuro, R.drawable.background_trapeze_megasena);
+                configuraResultadoSuperior(response,ResultadoGenericoFragment.newInstance(response));
                 break;
         }
     }
@@ -330,7 +341,7 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
                 concursoAtual = null;
                 concursoAlvo = null;
                 if(!concurso.isEmpty()){
-                    getResultadoModalidade(ApostaDTO.lowerCaseFromString(ModalidadeEnum.toString(txtModalidade)),"");
+                    getResultadoModalidade(ApostaDTO.lowerCaseFromString(ModalidadeEnum.toString(txtModalidade)),getResources().getString(R.string.string_vazia));
 
                 }
             }
@@ -362,7 +373,7 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
                 response.getPayload());
 
         partidaViewDetalhesResultado.setLayout(modalidade);
-        if(response.getPayload().getConcurso().getTipoConcurso().toString().equalsIgnoreCase("ESPECIAL")){
+        if(response.getPayload().getConcurso().getTipoConcurso().toString().equalsIgnoreCase(getResources().getString(R.string.especial_maiusculo))){
             tituloModalidade.setText(response.getPayload().getConcurso().getModalidadeDetalhada().getDescricaoEspecial().toLowerCase());
         }else {
             tituloModalidade.setText(txtModalidade);

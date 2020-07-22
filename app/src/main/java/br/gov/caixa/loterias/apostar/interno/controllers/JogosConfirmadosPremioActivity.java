@@ -32,7 +32,7 @@ public class JogosConfirmadosPremioActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            tipoCaixa = extras.getBoolean("tipoCaixa");
+            tipoCaixa = extras.getBoolean(getResources().getString(R.string.tipo_caixa));
         }
         montarLayout();
     }
@@ -86,7 +86,7 @@ public class JogosConfirmadosPremioActivity extends AppCompatActivity {
             ImageView qrCodeImage = findViewById(R.id.imagemQrCode);
             LinearLayout lltQrCode = findViewById(R.id.lltQrCode);
             // Initializing the QR Encoder with your value to be encoded, type you required and Dimension
-            QRGEncoder qrgEncoder = new QRGEncoder("Teste xxx", null, QRGContents.Type.TEXT, 105);
+            QRGEncoder qrgEncoder = new QRGEncoder(getResources().getString(R.string.teste_xxx), null, QRGContents.Type.TEXT, 105);
             try {
                 // Getting QR-Code as Bitmap
                 bitmap = qrgEncoder.encodeAsBitmap();

@@ -165,7 +165,7 @@ public class CadastrarPasso2Activity extends CadastroActivity {
 
         this.editTextCEPPasso2Content.setOnEditorActionListener((textView, i, keyEvent) -> {
 
-            String cep = textView.getText().toString().replace("-", "").trim();
+            String cep = textView.getText().toString().replace(getResources().getString(R.string.traco), getResources().getString(R.string.string_vazia)).trim();
 
             if (StringUtils.isNotEmpty(cep) && (keyEvent != null && (keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (i == EditorInfo.IME_ACTION_DONE)) {
                 buscarLoteriasLocalizacaoCep(cep, null);
@@ -234,47 +234,6 @@ public class CadastrarPasso2Activity extends CadastroActivity {
             }
         });
     }
-
-//    private void buscarLoteriasAutomatico() {
-//
-//        final String cep = apostadorDTO.getCep().replace("-", "");
-//        final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
-//        final DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(CadastrarPasso2Activity.this);
-//        dadosCorporativosBO.buscarLotericasCepOrBairroDTO(apostadorDTO.getCep().replace("-", ""), null, new RequestListener<LotericaDTOResponse>() {
-//            @Override
-//            public void onResponse(LotericaDTOResponse response) {
-//                if (response.getPayload() == null || response.getPayload().getLotericas() == null) {
-//                    dadosCorporativosBO.bairros(null, null, null, cep, new RequestListener<BairroDTOResponse>() {
-//                        @Override
-//                        public void onResponse(BairroDTOResponse response) {
-//                            loadViewProgress.dismiss();
-//                            if (response.getPayload() != null && !response.getPayload().isEmpty()) {
-//                                buscarLoteriasLocalizacaoCep(null, response.getPayload().get(0));
-//                            }
-//                            if (response.getRedirect() != null){
-//                                RedirectNetwork.checkRedirectSucesso( response.getRedirect(), CadastrarPasso2Activity.this);
-//                            }
-//                        }
-//
-//                        @Override
-//                        public void onErrorResponse(VolleyError error) {
-//                            loadViewProgress.dismiss();
-//                            ViewUtils.alert(CadastrarPasso2Activity.this, MensagensNetwork.setMensagem(error, CadastrarPasso2Activity.this));
-//                        }
-//                    });
-//                } else {
-//                    loadViewProgress.dismiss();
-//                    popularRadio(response.getPayload().getLotericas());
-//                }
-//            }
-//
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                loadViewProgress.dismiss();
-//                RedirectNetwork.checkRedirect( error, CadastrarPasso2Activity.this );
-//            }
-//        });
-//    }
 
     private void buscarLoteriasLocalizacaoCep(String cep, BairroDTO bairroDTO) {
 
@@ -367,9 +326,9 @@ public class CadastrarPasso2Activity extends CadastroActivity {
     public void showDialogBairro() {
         if (myDialog == null) {
             myDialog = new AlertDialog.Builder(this)
-                    .setTitle("Atenção")
-                    .setMessage("Selecione primeiro o Município, assim nossa precisão de Bairros será incrível.")
-                    .setPositiveButton("OK", (dialog, which) -> myDialog.dismiss())
+                    .setTitle(getResources().getString(R.string.label_atencao))
+                    .setMessage(getResources().getString(R.string.selecione_municipio_primeiro))
+                    .setPositiveButton(getResources().getString(R.string.ok), (dialog, which) -> myDialog.dismiss())
                     .create();
         }
         myDialog.show();
@@ -422,83 +381,4 @@ public class CadastrarPasso2Activity extends CadastroActivity {
 
         dialog.show();
     }
-
-//    private void popularRadio(List<LotericaDTO> listLotericas) {
-//        radioListLoterias.removeAllViews();
-//        apostadorDTO.setLotericaId(null);
-//        if (listLotericas != null) {
-//
-//            for (LotericaDTO lotericaDTO : listLotericas) {
-//                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-//                RadioButton radioButton = new RadioButton(CadastrarPasso2Activity.this);
-//                radioButton.setLayoutParams(params);
-//                radioButton.setButtonDrawable(R.drawable.check_radio_selected);
-//                radioButton.setPadding(20, 20, 0, 10);
-//
-//                String htmlTextBreakLine = "<font color=\"#48586c\" size = \"16\"> " + lotericaDTO.getNomeFantasia() + "</font> <br/> <font color=\"#40a797\" size = \"14\"> Código. " + lotericaDTO.getCodigo() + "</font>";
-//                Spanned stringText = ViewUtils.fromHtml(htmlTextBreakLine);
-//                radioButton.setText(stringText);
-//                radioButton.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-//                radioButton.setTextColor(getResources().getColor(R.color.cinza));
-//                radioButton.setScaleX(0.8f);
-//                radioButton.setScaleY(0.8f);
-//                radioButton.setTag(String.valueOf(lotericaDTO.getId()));
-//                radioButton.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        apostadorDTO.setLotericaId(Long.parseLong(view.getTag().toString()));
-//                    }
-//                });
-//                radioListLoterias.addView(radioButton);
-//            }
-//        }
-//    }
-
-//    private void addListenerFinalizar() {
-//        buttonFinalizarCadastro.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View v) {
-//                if (validarCampos()) {
-//
-//                    final AlertDialog loadViewProgress = LoadingViewLoterias.show(CadastrarPasso2Activity.this);
-//                    DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_(CadastrarPasso2Activity.this);
-//                    dadosUsuarioBO.gravarUsuario(apostadorDTO, new RequestListener<ApostadorDTO>() {
-//                        @Override
-//                        public void onResponse(ApostadorDTO response) {
-//                            loadViewProgress.dismiss();
-//                            PrincipalActivity_.intent(CadastrarPasso2Activity.this).start();
-//                        }
-//
-//                        @Override
-//                        public void onErrorResponse(VolleyError error) {
-//                            loadViewProgress.dismiss();
-//                            ViewUtils.alert(CadastrarPasso2Activity.this, MensagensNetwork.setMensagem(error, CadastrarPasso2Activity.this));
-//                        }
-//                    });
-//
-//                }
-//            }
-//        });
-//    }
-
-//    private boolean validarCampos() {
-//
-//        String campos = "";
-//
-//        if (apostadorDTO.getLotericaId() == null) {
-//            campos += "\nLotérica";
-//        }
-//        if (aceiteTermo.isChecked()) {
-//            apostadorDTO.setAceitaTermosUso(Boolean.TRUE);
-//        } else {
-//            campos += "\nTermo de Uso";
-//        }
-//
-//        if (StringUtils.isEmpty(campos)) {
-//            return true;
-//        } else {
-//
-//            ViewUtils.alertTitulo(CadastrarPasso2Activity.this, R.string.MA002, campos);
-//            return false;
-//        }
-//    }
 }

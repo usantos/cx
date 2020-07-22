@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="17dp"
             android:layout_marginTop="18dp"
-            android:text="Titulo"
+            android:text="@string/titulo"
             android:textColor="@color/branco"
             android:textSize="15.8sp"
             android:textStyle="bold" />

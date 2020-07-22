@@ -2,6 +2,8 @@ package br.gov.caixa.loterias.apostar.interno.view.adapter;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,8 +21,10 @@ import com.daimajia.swipe.SwipeLayout;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.atomic.AtomicLong;
 
 import br.gov.caixa.loterias.apostar.interno.R;
+import br.gov.caixa.loterias.apostar.interno.NumerosSuperSeteFragment;
 import br.gov.caixa.loterias.apostar.interno.controllers.CarrinhoActivity;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostar.interno.model.bo.ApostaBO_;
@@ -32,6 +36,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.IndicadorSurpres
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostar.interno.model.dao.DBLoteriasCrud;
 import br.gov.caixa.loterias.apostar.interno.utils.EstiloModalidade;
+import br.gov.caixa.loterias.apostar.interno.utils.Utils;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 import br.gov.caixa.loterias.apostar.interno.view.animation.AnimacaoSwipeList;
 import br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightRecyclerView;
@@ -41,6 +46,7 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
     private Context context;
     private ArrayList<IdentificaoDeUmaApostaDas8Modalidades> apostas;
     private CarrinhoActivity parentActivity;
+    private NumerosSuperSeteFragment fragment;
     private boolean animacao;
     private static final String TAG = "TAG_CARRINHO";
 
@@ -52,16 +58,16 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
         this.setHasStableIds(true);
     }
 
-
     static class ApostaHolder extends RecyclerView.ViewHolder {
         final TextView textViewTipoAposta;
         final TextView numerosAposta;
         final TextView valorAposta;
         final ExpandableHeightRecyclerView recycleViewDetalheAposta;
+        final RelativeLayout containerFragment;
         final RelativeLayout layoutCabecalhoLoteca;
         final LinearLayout dadosApostaCarrinho;
-        final RelativeLayout dadosCarrinho;
-        final TextView textViewNumeroConcurso;
+        final LinearLayout dadosCarrinho;
+        final TextView textViewNumeroConcurso, tvNumeroConcursoNovo;
 
         ApostaHolder(View view) {
             super(view);
@@ -74,6 +80,8 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
             dadosApostaCarrinho = view.findViewById(R.id.dadosApostaCarrinho);
             dadosCarrinho = view.findViewById(R.id.dadosCarrinho);
             textViewNumeroConcurso = view.findViewById(R.id.numeroConcurso);
+            tvNumeroConcursoNovo = view.findViewById(R.id.tv_numero_concurso_novo);
+            containerFragment = view.findViewById(R.id.rl_container_fragment);
 
         }
     }
@@ -103,8 +111,8 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
         holder.textViewTipoAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorClara()));
         holder.textViewNumeroConcurso.setTextColor(ContextCompat.getColor(context, estilo.getCorClara()));
         holder.valorAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorEscura()));
-        holder.textViewTipoAposta.setText(ViewUtils.capitalized(ModalidadeEnum.fromString(aposta.getModalidade())));
-        holder.textViewNumeroConcurso.setText(context.getString(R.string.label_aposta_concurso, aposta.getConcursoAlvo()));
+        holder.textViewTipoAposta.setText(ViewUtils.getNomeModalidadePorAposta(aposta));
+        holder.textViewNumeroConcurso.setText(context.getString(R.string.label_aposta_concurso, ViewUtils.getConcursoAtualPorAposta(aposta)));
         holder.dadosApostaCarrinho.setBackgroundResource(estilo.getCorEscura());
 
         TextView quantidadeApostadas = holder.dadosApostaCarrinho.findViewById(R.id.quantidadeApostadas);
@@ -114,8 +122,8 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
         TextView labelTimeCoracao = holder.dadosApostaCarrinho.findViewById(R.id.labelTimeCoracaoTxt);
         TextView textViewTimeCoracao = holder.dadosApostaCarrinho.findViewById(R.id.textViewTimeCoracao);
 
-        String quantidadeApostadasString = "";
-        String quantidadeSorteiosString = "";
+        String quantidadeApostadasString;
+        String quantidadeSorteiosString;
 
         int quantidadeNumeros = aposta.getQuantidadeNumeros() != null ? aposta.getQuantidadeNumeros() : 0;
         int quantidadeTeimosinhas = aposta.getQuantidadeTeimosinhas() == null || aposta.getQuantidadeTeimosinhas() == 0 ? 1 : aposta.getQuantidadeTeimosinhas();
@@ -132,8 +140,8 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
             quantidadeSorteiosString = context.getString(R.string.label_sorteio);
         }
 
-        quantidadeApostadas.setText(String.format(Locale.getDefault(), "%d %s", quantidadeNumeros, quantidadeApostadasString));
-        quantidadeSorteios.setText(String.format(Locale.getDefault(), "%d %s", quantidadeTeimosinhas, quantidadeSorteiosString));
+        quantidadeApostadas.setText(String.format(Locale.getDefault(), context.getResources().getString(R.string.percent_d_percent_s), quantidadeNumeros, quantidadeApostadasString));
+        quantidadeSorteios.setText(String.format(Locale.getDefault(), context.getResources().getString(R.string.percent_d_percent_s), quantidadeTeimosinhas, quantidadeSorteiosString));
 
         if (aposta.getEspelho()) {
             buttonApostaEspelho.setVisibility(View.VISIBLE);
@@ -172,7 +180,7 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
             if (aposta != null && aposta.getIndicadorSurpresinha() != null && aposta.getIndicadorSurpresinha().getValor() != null) {
                 textViewTimeCoracao.setText(aposta.getTimeDoCoracao().getNome());
                  if(aposta.getIndicadorSurpresinha().getValor() == IndicadorSurpresinha.SURPRESINHA){
-                    textViewTimeCoracao.setText("???");
+                    textViewTimeCoracao.setText(context.getResources().getString(R.string.tres_interrogacoes));
                 }
             }
         } else if (ModalidadeEnum.DIA_DE_SORTE == aposta.getModalidade()) {
@@ -186,23 +194,19 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
             switch (aposta.getIndicadorSurpresinha().getValor()) {
                 case IndicadorSurpresinha.NAO_SURPRESINHA:
                     if (aposta.getModalidade() == ModalidadeEnum.SUPER_7) {
-                        IdentificaoDeUmaApostaDas8Modalidades<List<List<Integer>>> apostaSuperSete = aposta;
-                        ArrayList<ArrayList<Integer>> listaApostas  = apostaSuperSete.getMatrizNumerosSelecionados();
-                        for (List<Integer> coluna: listaApostas) {
-                            for(Integer linha : coluna) {
-                                numeroStr.append(String.format("%d", linha));
-                            }
-                            numeroStr.append(String.format("/"));
-                        }
-
+                        configuraFragment(aposta,holder);
+                        holder.tvNumeroConcursoNovo.setVisibility(View.VISIBLE);
+                        holder.textViewNumeroConcurso.setVisibility(View.GONE);
+                        holder.tvNumeroConcursoNovo.setTextColor(ContextCompat.getColor(context, estilo.getCorClara()));
+                        holder.tvNumeroConcursoNovo.setText(context.getString(R.string.label_aposta_concurso, ViewUtils.getConcursoAtualPorAposta(aposta)));
                     } else {
                         IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> apostaNumerica = aposta;
                         if (apostaNumerica.getListaNumerosSelecionados() != null) {
                             for (Integer num : apostaNumerica.getListaNumerosSelecionados()) {
                                 if (num.equals(apostaNumerica.getNumerosSelecionados().get(apostaNumerica.getListaNumerosSelecionados().size() - 1))) {
-                                    numeroStr.append(String.format("%02d", num));
+                                    numeroStr.append(String.format(context.getResources().getString(R.string.percent_zero_dois_d), num));
                                 } else {
-                                    numeroStr.append(String.format("%02d - ", num));
+                                    numeroStr.append(String.format(context.getResources().getString(R.string.percent_zero_dois_d_traco), num));
                                 }
                             }
                         }
@@ -213,9 +217,9 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
                 case IndicadorSurpresinha.SURPRESINHA_NUMERICA:
                     for (int i = 0; i < aposta.getQuantidadeNumeros(); i++) {
                         if (i == aposta.getQuantidadeNumeros() - 1) {
-                            numeroStr.append("XX");
+                            numeroStr.append(context.getResources().getString(R.string.x_x));
                         } else {
-                            numeroStr.append("XX - ");
+                            numeroStr.append(context.getResources().getString(R.string.x_x_traco));
                         }
                     }
                     break;
@@ -231,6 +235,23 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
             AnimacaoSwipeList.animacaoSwipeList(context, position, swipeLayout);
         }
     }
+
+    private void configuraFragment(IdentificaoDeUmaApostaDas8Modalidades aposta, ApostaHolder holder) {
+        FragmentManager     fm                  = parentActivity.getSupportFragmentManager();
+        int containerId = holder.containerFragment.getId();
+        Fragment oldFragment = fm.findFragmentById(containerId);
+        if(oldFragment != null) {
+            fm.beginTransaction().remove(oldFragment).commit();
+        }
+
+        int newContainerId = (int) Utils.getIdUnico();
+        holder.containerFragment.setId(newContainerId);
+
+        NumerosSuperSeteFragment fragment = NumerosSuperSeteFragment.newInstance(aposta.getMatrizNumerosSelecionados());
+        fm.beginTransaction().replace(newContainerId, fragment).commit();
+
+    }
+
 
     private void deletarAposta(final IdentificaoDeUmaApostaDas8Modalidades aposta) {
 
@@ -277,6 +298,4 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
             parentActivity.lerCarrinhoLocal(Boolean.FALSE);
         }
     }
-
-
 }

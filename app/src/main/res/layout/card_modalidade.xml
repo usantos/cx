@@ -125,12 +125,17 @@
                         android:id="@+id/textViewCardTitle"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginStart="0dp"
                         android:gravity="center_vertical"
                         android:textColor="@color/branco"
                         android:textSize="18.0sp"
+                        android:lines="1"
+                        android:layout_marginRight="10dp"
+                        android:autoSizeMaxTextSize="18sp"
+                        android:autoSizeMinTextSize="8sp"
+                        android:autoSizeStepGranularity="1sp"
+                        android:autoSizeTextType="uniform"
                         android:textStyle="bold"
-                        tools:text="mega-sena" />
+                        tools:text="@string/mega_sena" />
                 </LinearLayout>
 
                 <RelativeLayout
@@ -142,9 +147,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@color/branco"
-                        android:orientation="vertical"
-
-                        >
+                        android:orientation="vertical">
 
                         <TextView
                             android:id="@+id/textVieCardAcumulatedValue"
@@ -186,7 +189,7 @@
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="30dp"
+                            android:layout_height="wrap_content"
                             android:layout_marginLeft="29dp"
                             android:layout_marginRight="29dp"
                             android:layout_marginTop="5dp"
@@ -201,16 +204,17 @@
                                 android:background="@color/branco"
                                 android:src="@drawable/icon_data_megasena" />
 
-                            <RelativeLayout
+                            <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="30dp"
+                                android:layout_height="wrap_content"
                                 android:layout_marginStart="20dp"
+                                android:orientation="vertical"
                                 android:background="@color/branco">
 
                                 <TextView
                                     android:id="@+id/textViewSorteioOuEncerramento"
                                     android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
+                                    android:layout_height="wrap_content"
                                     android:text="@string/title_sorteio"
                                     android:textColor="@color/cinzaescuro"
                                     android:textSize="13sp" />
@@ -219,25 +223,23 @@
                                     android:id="@+id/textVieCardDrawDate"
                                     style="@style/editTextArialMTTheme"
                                     android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
+                                    android:layout_height="wrap_content"
                                     android:gravity="bottom"
                                     android:textColor="@color/cinzaescuro"
                                     android:textSize="13sp"
                                     android:textStyle="bold"
                                     tools:text="Sábado, 18 de julho" />
-                            </RelativeLayout>
+                            </LinearLayout>
                         </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="30dp"
+                            android:layout_height="wrap_content"
                             android:layout_marginBottom="0dp"
                             android:layout_marginLeft="29dp"
                             android:layout_marginRight="29dp"
                             android:layout_marginTop="5dp"
-                            android:background="@color/branco"
-
-                            >
+                            android:background="@color/branco">
 
                             <ImageView
                                 android:id="@+id/imageWatch"
@@ -247,16 +249,17 @@
                                 android:background="@color/branco"
                                 android:src="@drawable/icon_horario_megasena" />
 
-                            <RelativeLayout
+                            <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="30dp"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
                                 android:layout_marginStart="20dp"
                                 android:background="@color/branco">
 
                                 <TextView
                                     style="@style/editTextArialMTTheme"
                                     android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
+                                    android:layout_height="wrap_content"
                                     android:text="@string/title_apostasEncerram"
                                     android:textColor="@color/cinzaescuro"
                                     android:textSize="13sp" />
@@ -265,15 +268,14 @@
                                     android:id="@+id/textVieCardClosingOfBets"
                                     style="@style/editTextArialMTTheme"
                                     android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
+                                    android:layout_height="wrap_content"
                                     android:gravity="bottom"
                                     android:textColor="@color/cinzaescuro"
                                     android:textSize="13sp"
                                     android:textStyle="bold"
                                     tools:text="0 dias e 0 horas" />
-                            </RelativeLayout>
+                            </LinearLayout>
                         </LinearLayout>
-
 
                     </LinearLayout>
 

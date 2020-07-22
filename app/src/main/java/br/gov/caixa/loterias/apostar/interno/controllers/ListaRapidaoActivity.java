@@ -56,7 +56,7 @@ public class ListaRapidaoActivity extends AppCompatActivity {
         btnConfiguracao = findViewById(R.id.ib_configuracao_rpd);
 
         valorTotalCarrinhoRapidao = findViewById(R.id.tv_valor_total_carrinho);
-        FirebaseManager.registraEvento(ListaRapidaoActivity.this ,"ENTROU_LISTA_APOSTAS_RAPIDAO");
+        FirebaseManager.registraEvento(ListaRapidaoActivity.this ,getResources().getString(R.string.evento_entrou_lista_apostas_rapidao));
 
         ViewUtils.organizaTabLayout(this, R.id.carrinhoRapidaoMainLayout, R.id.apostasListaRecycleViewRapidao, R.id.carrinhoRapidaoScrollView);
 

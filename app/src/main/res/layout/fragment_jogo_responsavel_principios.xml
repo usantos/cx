@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="50dp"
+    android:clipToPadding="false"
+    tools:context=".view.fragment.JogoResponsavelConhecaFragment">
+
+    <View
+        android:id="@+id/v_cinza_top"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/jr_cinza_bg"
+        app:layout_constraintBottom_toTopOf="@id/tv_10_elemen" />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/cl_margin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_margin="30dp">
+
+    <ImageView
+        android:id="@+id/iv_icone_topo"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/ic_principios"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_programa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="@string/jr_principios_tit"
+        android:textColor="@color/jr_azul_text_title"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_icone_topo" />
+
+    <TextView
+        android:id="@+id/tv_cert"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:paddingBottom="20dp"
+        android:text="@string/jr_principios_cert"
+        android:textAlignment="center"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_programa" />
+
+    <View
+        android:id="@+id/v_separador"
+        android:layout_width="50dp"
+        android:layout_height="3dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/cinza_total"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_cert" />
+
+    <TextView
+        android:id="@+id/tv_niveis"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:gravity="center"
+        android:text="@string/jr_principios_niveis"
+        android:textSize="15sp"
+        app:layout_constraintTop_toBottomOf="@+id/v_separador" />
+
+    <TextView
+        android:id="@+id/tv_nvl_1"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="10dp"
+        android:textSize="15sp"
+        android:background="@drawable/corner_jr_top"
+        android:gravity="center_vertical|bottom"
+        android:paddingLeft="20dp"
+        android:text="@string/jr_principios_nvl_1"
+        android:textColor="@color/branco"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/tv_niveis" />
+
+    <TextView
+        android:id="@+id/tv_nvl_1_desc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="35dp"
+        android:paddingBottom="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/jr_nvl_1"
+        android:textSize="15sp"
+        android:gravity="center_vertical|top"
+        android:paddingLeft="20dp"
+        android:text="@string/jr_principios_nvl_1_desc"
+        android:textColor="@color/branco"
+        app:layout_constraintTop_toBottomOf="@+id/tv_nvl_1" />
+
+    <TextView
+        android:id="@+id/tv_nvl_2"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/jr_nvl_2"
+        android:gravity="center_vertical|bottom"
+        android:paddingLeft="20dp"
+        android:text="@string/jr_principios_nvl_2"
+        android:textColor="@color/branco"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/tv_nvl_1_desc" />
+
+    <TextView
+        android:id="@+id/tv_nvl_2_desc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="35dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:paddingBottom="5dp"
+        android:textSize="15sp"
+        android:background="@color/jr_nvl_2"
+        android:gravity="center_vertical|top"
+        android:paddingLeft="20dp"
+        android:text="@string/jr_principios_nvl_2_desc"
+        android:textColor="@color/branco"
+        app:layout_constraintTop_toBottomOf="@+id/tv_nvl_2" />
+
+    <View
+        android:id="@+id/tv_nvl_3_bg"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/jr_nvl_3"
+        android:gravity="center_vertical|bottom"
+        android:paddingLeft="20dp"
+        android:text="@string/jr_principios_nvl_3"
+        android:textColor="@color/branco"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/tv_nvl_2_desc" />
+
+    <TextView
+        android:id="@+id/tv_nvl_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:textSize="15sp"
+        android:background="@color/jr_nvl_3"
+        android:gravity="center_vertical|bottom"
+        android:text="@string/jr_principios_nvl_3"
+        android:textColor="@color/branco"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_nvl_3_bg"
+        app:layout_constraintStart_toStartOf="@id/tv_nvl_3_bg" />
+
+    <TextView
+        android:id="@+id/tv_nvl_caixa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:padding="2dp"
+        android:background="@drawable/rounded_tv_jr"
+        android:gravity="center_vertical|bottom"
+        android:text="@string/jr_principios_nvl_3_caixa"
+        android:textColor="@color/branco"
+        android:textSize="9sp"
+        app:layout_constraintBottom_toBottomOf="@id/tv_nvl_3"
+        app:layout_constraintStart_toEndOf="@id/tv_nvl_3"
+        app:layout_constraintTop_toTopOf="@id/tv_nvl_3" />
+
+
+    <TextView
+        android:id="@+id/tv_nvl_3_desc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="35dp"
+        android:paddingBottom="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/jr_nvl_3"
+        android:gravity="center_vertical|top"
+        android:paddingLeft="20dp"
+        android:text="@string/jr_principios_nvl_3_desc"
+        android:textColor="@color/branco"
+        app:layout_constraintTop_toBottomOf="@+id/tv_nvl_3" />
+
+
+    <TextView
+        android:id="@+id/tv_nvl_4"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:textSize="15sp"
+        android:background="@color/jr_nvl_4"
+        android:gravity="center_vertical|bottom"
+        android:paddingLeft="20dp"
+        android:text="@string/jr_principios_nvl_4"
+        android:textColor="@color/branco"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/tv_nvl_3_desc" />
+
+    <TextView
+        android:id="@+id/tv_nvl_4_desc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="35dp"
+        android:paddingBottom="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:textSize="15sp"
+        android:background="@drawable/corner_jr_bottom"
+        android:gravity="center_vertical|top"
+        android:paddingLeft="20dp"
+        android:text="@string/jr_principios_nvl_4_desc"
+        android:textColor="@color/branco"
+        app:layout_constraintTop_toBottomOf="@+id/tv_nvl_4" />
+    </android.support.constraint.ConstraintLayout>
+
+
+    <TextView
+        android:id="@+id/tv_10_elemen"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/jr_cinza_bg"
+        android:padding="40dp"
+        android:text="@string/jr_principios_10_elemen"
+        android:textAlignment="center"
+        android:textSize="15sp"
+        android:textColor="@color/jr_cinza_text"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cl_margin" />
+
+    <View
+        android:id="@+id/v_cinza_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/jr_cinza_bg"
+        app:layout_constraintTop_toBottomOf="@id/tv_10_elemen" />
+
+    <FrameLayout
+        android:id="@+id/v_container_fragment_cards"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/transparente"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_10_elemen" />
+
+</android.support.constraint.ConstraintLayout>

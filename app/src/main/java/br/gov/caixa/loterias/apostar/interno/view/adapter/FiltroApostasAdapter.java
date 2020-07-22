@@ -30,17 +30,20 @@ import br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightGridVie
 
 public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 
-	public static final int MODALIDADES = 0;
-	public static final int SITUACAO = 1;
-	public static final int CONCURSO = 2;
+    public static final int ORDENAR_POR = 0;
+	public static final int MODALIDADES = 1;
+	public static final int SITUACAO = 2;
+	public static final int CONCURSO = 3;
 
 
 	private Context context;
 	private List<String> expandableListTitle;
 	private LinkedHashMap<Integer,String> situacoes;
+	private String[] opcoesDeOrdenacao = new String[]{"Padrão", "Data Crescente", "Data Decrescente"};
 	private HashMap<String, List<String>> expandableListDetail;
 	private NumberPicker npSituacao;
-	private ExpandableHeightGridView gridModalidades;
+    private NumberPicker npOrdenarPor;
+    private ExpandableHeightGridView gridModalidades;
 	private EditText etNumConcurso;
 	private List<TipoAposta> tiposAposta = new ArrayList<>();
 	private List<ModalidadeDTO> modalidades = new ArrayList<>();
@@ -50,8 +53,12 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 	private View viewModalidades;
 	private View viewSituacao;
 	private View viewConcurso;
-	private int numeroSituacaoSelecionada = SituacoesApostaEnum.TODAS;
-	private Boolean isUnicaSelecao = false;
+    private View viewOrdenarPor;
+
+    private int numeroSituacaoSelecionada = SituacoesApostaEnum.TODAS;
+    private int numeroOrdenarPorSelecionada = 1;
+
+    private Boolean isUnicaSelecao = false;
 
 	public FiltroApostasAdapter(Context context, List<String> expandableListTitle,
 								HashMap<String, List<String>> expandableListDetail,
@@ -94,9 +101,24 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 	@Override
 	public View getChildView(int listPosition, final int expandedListPosition,
 							 boolean isLastChild, View convertView, ViewGroup parent) {
-
+		if (!isUnicaSelecao) {
+			listPosition += 1;
+		}
 		LayoutInflater layoutInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			switch (listPosition) {
+                case ORDENAR_POR:
+                    if (viewOrdenarPor == null) {
+                        viewOrdenarPor = layoutInflater.inflate(R.layout.list_item_ordernar_por_filtro, null);
+                        if (npOrdenarPor == null && viewOrdenarPor.findViewById(R.id.np_ordenar_por) != null) {
+                            setNpOrdenarPor(viewOrdenarPor.findViewById(R.id.np_ordenar_por));
+                            npOrdenarPor.setMinValue(1);
+                            npOrdenarPor.setMaxValue(opcoesDeOrdenacao.length);
+                            npOrdenarPor.setDisplayedValues(opcoesDeOrdenacao);
+                            npOrdenarPor.setOnValueChangedListener(new ListenerOrdenarPor());
+                        }
+                    }
+					convertView = viewOrdenarPor;
+					break;
 				case MODALIDADES:
 					if(viewModalidades == null) {
 						viewModalidades = layoutInflater.inflate(R.layout.list_item_modalidades, null);
@@ -142,6 +164,13 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 		}
 	}
 
+    private class ListenerOrdenarPor implements NumberPicker.OnValueChangeListener {
+        @Override
+        public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+            numeroOrdenarPorSelecionada = newVal;
+        }
+    }
+
 	private void configuraAdapter() {
 		populaArraysTipoAposta(getTiposAposta(), getModalidades());
 		if (getTiposAposta() != null || getTiposAposta().size() > 0) {
@@ -156,26 +185,30 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 		}
 	}
 
-	public int getContadorBadge(){
-		int contBadge = 0;
+	public Boolean isAddBadge(){
 		if (getAdapterModalidades() != null) {
 			if(getAdapterModalidades().getModalidadesSelecionadas().size() > 0){
-				contBadge++;
+				return true;
 			}
 		}
 		if (getNpSituacao() != null) {
 			if(getNpSituacao().getValue() != 1){
-				contBadge++;
+				return true;
 			}
 		}
 		if (getEtNumConcurso() != null) {
 			if(getEtNumConcurso().getText() != null &&
 					getEtNumConcurso().getText().toString() != null &&
 					!getEtNumConcurso().getText().toString().isEmpty()) {
-				contBadge++;
+				return true;
 			}
 		}
-		return contBadge;
+		if (getNpOrdenarPor() != null) {
+			if(getNpOrdenarPor().getValue() != 0) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	//TODO DESACOPLAR E COLOCAR INTERFACES
@@ -246,8 +279,12 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 			getAdapterModalidades().limpaSelecaoModalidades();
 		}
 		if(getEtNumConcurso()!= null){
-			getEtNumConcurso().setText("");
+			getEtNumConcurso().setText(context.getResources().getString(R.string.string_vazia));
 			getEtNumConcurso().clearFocus();
+		}
+		if(getNpOrdenarPor() != null) {
+			numeroOrdenarPorSelecionada = 0;
+			getNpOrdenarPor().setValue(0);
 		}
 	}
 
@@ -295,7 +332,15 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 		}
 	}
 
-	public NumberPicker getNpSituacao() {
+    public NumberPicker getNpOrdenarPor() {
+        return npOrdenarPor;
+    }
+
+    public void setNpOrdenarPor(NumberPicker npOrdenarPor) {
+        this.npOrdenarPor = npOrdenarPor;
+    }
+
+    public NumberPicker getNpSituacao() {
 		return npSituacao;
 	}
 

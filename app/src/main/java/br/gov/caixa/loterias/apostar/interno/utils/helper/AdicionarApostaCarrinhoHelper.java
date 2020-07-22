@@ -94,7 +94,8 @@ public class AdicionarApostaCarrinhoHelper {
             if (KeycloakBO_.getInstance_(context).getAccessToken() == null || KeycloakBO_.getInstance_(context).getAccessToken().isEmpty()) {
                 postAdicionarApostaCarrinho(apostaBO);
             } else {
-                adicionarApostaCarrinhoRequest(context, apostaBO, aposta);
+                  postAdicionarApostaCarrinho(apostaBO);
+                //adicionarApostaCarrinhoRequest(context, apostaBO, aposta);
             }
         }
     }
@@ -334,8 +335,12 @@ public class AdicionarApostaCarrinhoHelper {
             tipoConcurso.setValor(valorTipoConcurso);
             tipoConcurso.setDescricao(parametroSimulacao.getParametroJogo().getConcurso().getTipoConcurso().toString());
             aposta.setTipoConcurso(tipoConcurso);
-            aposta.setNumerosSelecionados(apostaDTO.getNumerosSelecionados());
+            if(apostaDTO.getModalidade() == ModalidadeEnum.SUPER_7){
+                aposta.setNumerosSelecionados(apostaDTO.getMatrizNumerosSelecionados());
+            } else {
+                aposta.setNumerosSelecionados(apostaDTO.getListaNumerosSelecionados());
 
+            }
             DTOEnumInteger indicadorSurpresinha = new DTOEnumInteger();
             indicadorSurpresinha.setValor(IndicadorSurpresinha.NAO_SURPRESINHA);
             indicadorSurpresinha.setDescricao("");

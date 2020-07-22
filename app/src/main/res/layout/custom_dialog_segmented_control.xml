@@ -24,7 +24,7 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/vw_topo"
         app:layout_constraintTop_toTopOf="@+id/vw_topo"
-        tools:text="Titulo" />
+        tools:text="@string/placeholder_titulo" />
 
     <TextView
         android:id="@+id/tv_descricao"
@@ -61,7 +61,7 @@
             android:lines="2"
             android:textSize="12dp"
             android:layout_weight="1"
-            android:text="One"
+            tools:text="@string/placeholder_one"
             android:textColor="@color/branco" />
 
         <RadioButton
@@ -72,7 +72,7 @@
             android:layout_weight="1"
             android:textSize="12dp"
             android:lines="2"
-            android:text="Two" />
+            tools:text="@string/placeholder_two" />
 
         <RadioButton
             android:id="@+id/rb_3"
@@ -82,7 +82,7 @@
             android:lines="2"
             android:textSize="12dp"
             android:layout_weight="1"
-            android:text="tree" />
+            tools:text="@string/placeholder_three" />
 
     </info.hoang8f.android.segmented.SegmentedGroup>
 

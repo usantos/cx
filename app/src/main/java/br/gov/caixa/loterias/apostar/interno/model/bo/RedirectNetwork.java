@@ -20,11 +20,13 @@ import br.gov.caixa.loterias.apostar.interno.controllers.AppIndisponivelActivity
 import br.gov.caixa.loterias.apostar.interno.controllers.CadastrarActivity_;
 import br.gov.caixa.loterias.apostar.interno.controllers.CarrinhoActivity;
 import br.gov.caixa.loterias.apostar.interno.controllers.CarrinhosFavoritosActivity;
+import br.gov.caixa.loterias.apostar.interno.controllers.NovaFormaPagamentoActivity;
 import br.gov.caixa.loterias.apostar.interno.controllers.PrincipalActivity_;
 import br.gov.caixa.loterias.apostar.interno.controllers.TermosUsoActivity;
 import br.gov.caixa.loterias.apostar.interno.model.bean.ErrorResponse;
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.dto.RedirectEnum;
 import br.gov.caixa.loterias.apostar.interno.utils.AppUtils;
+import br.gov.caixa.loterias.apostar.interno.utils.MercadoPagoUtil;
 import br.gov.caixa.loterias.apostar.interno.utils.ViewUtils;
 
 
@@ -238,17 +240,25 @@ public class  RedirectNetwork {
     }
 
     public static void trataErro500(Activity activity, ErrorResponse error){
-        ViewUtils.alertTitleCustomPositiveListener(
+        if (error.getCodigo().equalsIgnoreCase("2067")) {
+            ViewUtils.alert( activity, MercadoPagoUtil.getMessageFromCode("2067"));
+        } else {
+            ViewUtils.alertTitleButton(
+                    activity,
+                    R.string.label_atencao,
+                    activity.getString(R.string.erro_req),
+                    activity.getResources().getString( R.string.ok ) );
+        }
+    }
+
+    private static void enviaEmail(Activity activity, ErrorResponse error) {
+        /*ViewUtils.alertTitleCustomPositiveListener(
                 activity,
                 activity.getString(R.string.ops),
                 activity.getString(R.string.label_nao),
                 activity.getString(R.string.quero),
                 activity.getResources().getString( R.string.erro_500),
-                (dialog1, which1) -> enviaEmail(activity,error)).show();
-    }
-
-    private static void enviaEmail(Activity activity, ErrorResponse error) {
-
+                (dialog1, which1) -> enviaEmail(activity,error)).show();*/
         final Intent shareIntent = new Intent(Intent.ACTION_SENDTO);
         shareIntent.setData(Uri.parse( "mailto:"));
         shareIntent.putExtra(Intent.EXTRA_EMAIL,new String[] {activity.getString(R.string.email_padrao)});

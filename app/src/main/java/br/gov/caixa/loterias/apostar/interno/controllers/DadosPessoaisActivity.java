@@ -56,9 +56,8 @@ public class DadosPessoaisActivity extends AppCompatActivity {
     private List<String> listUFString, listMunicipios, listBairros;
     private List<MunicipioDTO> municipioDTOList;
     protected List<UnidadeFederacaoDTO> listUf;
-    protected String ufSelect = "";
-    protected String municipioSelect = "";
-
+    protected String ufSelect;
+    protected String municipioSelect;
     protected MunicipioIdDTO municipioIdDTOSelect;
 
     ApostadorDTO apostadorDTO;
@@ -68,14 +67,8 @@ public class DadosPessoaisActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_dados_pessoais );
-        Toolbar toolbar = findViewById( R.id.toolbar );
-        TextView subtitleToolbar = findViewById( R.id.subtitleToolbar );
-        setSupportActionBar( toolbar );
-        getSupportActionBar().setDisplayHomeAsUpEnabled( true );
-        setTitle( ViewUtils.textFuturaAndFuturaBoldTitle( this, getTitle().toString() ) );
-        subtitleToolbar.setText( "Estes são seus dados pessoais.\nPor favor, mantenha-os sempre atualizados." );
-        montarLayout();
-        callWebservice();
+        setaViews();
+        setaMetodos();
     }
 
     @Override
@@ -86,7 +79,13 @@ public class DadosPessoaisActivity extends AppCompatActivity {
         }
     }
 
-    private void montarLayout() {
+    @Override
+    protected void onResume() {
+        super.onResume();
+        callWebservice();
+    }
+
+    private void setaViews(){
         editTextCpfContent = findViewById( R.id.editTextCpfContent );
         editTextNomeContent = findViewById( R.id.editTextNomeContent );
         editTextCepContent = findViewById( R.id.editTextCepContent );
@@ -95,14 +94,25 @@ public class DadosPessoaisActivity extends AppCompatActivity {
         editTextEmailContent = findViewById( R.id.editTextEmailContent );
         segmentedButtonSexo = findViewById( R.id.segmentedButtonSexo );
         updateDadosPesoaisButton = findViewById( R.id.updateDadosPesoaisButton );
+        Toolbar toolbar = findViewById( R.id.toolbar );
+        TextView subtitleToolbar = findViewById( R.id.subtitleToolbar );
 
+        ufSelect  = getResources().getString(R.string.string_vazia);
+        municipioSelect = getResources().getString(R.string.string_vazia);
+
+        setSupportActionBar( toolbar );
+        getSupportActionBar().setDisplayHomeAsUpEnabled( true );
+
+        setTitle( ViewUtils.textFuturaAndFuturaBoldTitle( this, getTitle().toString() ) );
+        subtitleToolbar.setText( getResources().getString(R.string.seus_dados_pessoais) );
+    }
+
+    private void setaMetodos() {
         editTextMunicipioContent.setClickable(true);
         editTextMunicipioContent.setOnClickListener(v -> getMunicipios());
 
         editTextUFContent.setClickable(true);
         editTextUFContent.setOnClickListener(v -> getUFS());
-
-
 
         updateDadosPesoaisButton.setOnClickListener(view -> {
             if (validarCamposObrigatorios()){
@@ -122,8 +132,6 @@ public class DadosPessoaisActivity extends AppCompatActivity {
                 updateDadosCadastrais( apostadorAlteracaoDTO );
             }
         });
-
-
     }
 
     private void atualizaLayout() {
@@ -152,7 +160,6 @@ public class DadosPessoaisActivity extends AppCompatActivity {
 
 
     private void callWebservice() {
-
         loadViewProgress = LoadingViewLoterias.show( this );
         final DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_( this );
 
@@ -165,7 +172,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
                 if (response.getRedirect() != null){
                     RedirectNetwork.checkRedirectSucesso( response.getRedirect(), DadosPessoaisActivity.this);
                 }
-                FirebaseManager.registraEvento(DadosPessoaisActivity.this ,"ENTROU_EDITAR_CADASTRO");
+                FirebaseManager.registraEvento(DadosPessoaisActivity.this ,getResources().getString(R.string.evento_entrou_editar_cadastro));
             }
 
             @Override
@@ -203,9 +210,9 @@ public class DadosPessoaisActivity extends AppCompatActivity {
     }
 
     private void getMunicipios() {
-        String idUf = "";
+        String idUf = getResources().getString(R.string.string_vazia);
 
-        if (editTextUFContent.getText().toString().equals( "" )) {
+        if (editTextUFContent.getText().toString().equals( getResources().getString(R.string.string_vazia) )) {
             showDialog();
         } else {
             if (municipioIdDTOSelect == null){
@@ -254,7 +261,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
 
         final ListView listViewItens = dialog.findViewById(R.id.listaItensDialog);
         TextView tituloDialog = dialog.findViewById(R.id.tituloDialogCustom);
-        tituloDialog.setText("UF");
+        tituloDialog.setText(getResources().getString(R.string.uf));
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(DadosPessoaisActivity.this,
                 R.layout.item_text_popup, R.id.textList, listUFString);
@@ -297,9 +304,9 @@ public class DadosPessoaisActivity extends AppCompatActivity {
     public void showDialog() {
         if (myDialog == null) {
             myDialog = new AlertDialog.Builder(this)
-                    .setTitle("Atenção")
-                    .setMessage("Selecione primeiro a UF, assim nossa precisão de municípios será incrível.")
-                    .setPositiveButton("OK", (dialog, which) -> myDialog.dismiss())
+                    .setTitle(getResources().getString(R.string.label_atencao))
+                    .setMessage(getResources().getString(R.string.selecione_primeiro_uf))
+                    .setPositiveButton(getResources().getString(R.string.ok), (dialog, which) -> myDialog.dismiss())
                     .create();
         }
         myDialog.show();
@@ -315,7 +322,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
 
         final ListView listViewItens = dialog.findViewById(R.id.listaItensDialog);
         TextView tituloDialog = dialog.findViewById(R.id.tituloDialogCustom);
-        tituloDialog.setText("Cidade");
+        tituloDialog.setText(getResources().getString(R.string.cidade));
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(DadosPessoaisActivity.this,
                 R.layout.item_text_popup, R.id.textList, listMunicipios);
@@ -365,7 +372,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable editable) {
                 if (editText == editTextCepContent){
-                        String cep = editable.toString().replace( "-", "" ).trim();
+                        String cep = editable.toString().replace( getResources().getString(R.string.traco), getResources().getString(R.string.string_vazia) ).trim();
                         if (cep.length() == 8) {
                             editText.setCompoundDrawablesWithIntrinsicBounds( 0, 0, R.drawable.icon_input_ok, 0 );
                             buscarBairroPorCep( cep );
@@ -416,7 +423,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
         dadosUsuarioBO.putDadosUsuario(apostadorAlteracaoDTO, new RequestListener<CadastrarApostadorDTOResponse>() {
             @Override
             public void onResponse(CadastrarApostadorDTOResponse response) {
-                FirebaseManager.registraEvento(DadosPessoaisActivity.this ,"EFETUOU_EDICAO_CADASTRO_SUCESSO");
+                FirebaseManager.registraEvento(DadosPessoaisActivity.this ,getResources().getString(R.string.evento_edicao_cadastro_sucesso));
 
                 loadViewProgress.dismiss();
                 if (response.getRedirect() != null){
@@ -439,19 +446,19 @@ public class DadosPessoaisActivity extends AppCompatActivity {
         String campos = "";
 
         if (editTextCepContent.getText().toString().replace("-", "").trim().length() < 8) {
-            campos += "\n" + getResources().getString(R.string.CEP);
+            campos += getResources().getString(R.string.barra_n) + getResources().getString(R.string.CEP);
         }
         if (StringUtils.isEmpty(editTextUFContent.getText().toString())) {
-            campos += "\nUF";
+            campos += getResources().getString(R.string.barra_n) + getResources().getString(R.string.uf);
         }
         if (StringUtils.isEmpty(editTextMunicipioContent.getText().toString())) {
-            campos += "\nMunicípio";
+            campos += getResources().getString(R.string.barra_n) + getResources().getString(R.string.municipio);
         }
         if (StringUtils.isEmpty(campos)) {
             return true;
         } else {
 
-            ViewUtils.alertTitulo(DadosPessoaisActivity.this, R.string.label_atencao, this.getResources().getString( R.string.MA002 ) + " " + campos);
+            ViewUtils.alertTitulo(DadosPessoaisActivity.this, R.string.label_atencao, this.getResources().getString( R.string.MA002 ) + getResources().getString(R.string.espaco_em_branco) + campos);
             return false;
         }
     }
@@ -494,9 +501,6 @@ public class DadosPessoaisActivity extends AppCompatActivity {
                         RedirectNetwork.checkRedirect( error, DadosPessoaisActivity.this );
                     }
                 });
-
-
-
             }
 
             @Override

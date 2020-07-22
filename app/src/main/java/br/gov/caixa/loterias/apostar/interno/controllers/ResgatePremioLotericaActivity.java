@@ -94,13 +94,12 @@ public class ResgatePremioLotericaActivity extends AppCompatActivity {
         try {
             generateQrCode();
         } catch (WriterException e) {
-            Log.e("TAG_RESGATE", e.toString());
             e.printStackTrace();
         }
         String textoValido;
         AnimatorSet scaleIn, scaleOut;
 
-        textoValido = getResources().getString(R.string.rsgt_lt_msg_qr_valido).replace("{tempo}",tempoQrCode.toString());
+        textoValido = getResources().getString(R.string.rsgt_lt_msg_qr_valido).replace(getResources().getString(R.string.chave_tempo_chave),tempoQrCode.toString());
 
         scaleIn = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.scale_in_anim);
         scaleOut = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.scale_out_anim);
@@ -115,7 +114,7 @@ public class ResgatePremioLotericaActivity extends AppCompatActivity {
                 long min = TimeUnit.MILLISECONDS.toMinutes(millisegs) % TimeUnit.HOURS.toMinutes(1);
                 long seg = TimeUnit.MILLISECONDS.toSeconds(millisegs) % TimeUnit.MINUTES.toSeconds(1);
                 long minSeg = TimeUnit.MINUTES.toSeconds(min) + seg;
-                String tempo = String.format("%02d:%02d",min,seg);
+                String tempo = String.format(getResources().getString(R.string.mm_ss_percent_d2),min,seg);
                 if(minSeg <= SEG_INICIO_COR){
                     tvTimer.setTextColor(getResources().getColor(R.color.mpsdk_color_red_error));
                 }

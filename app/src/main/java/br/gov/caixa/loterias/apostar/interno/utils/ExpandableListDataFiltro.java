@@ -29,7 +29,10 @@ public class ExpandableListDataFiltro {
 		modalidades.add("modalidades_item");
 		List<String> situacoes = new ArrayList<>();
 		situacoes.add("situacoes_item");
+		List<String> ordenarPorOpcoes = new ArrayList<>();
+		ordenarPorOpcoes.add("ordenar_por_item");
 
+		expandableListDetail.put("Ordenar por", ordenarPorOpcoes);
 		expandableListDetail.put("Modalidades", modalidades);
 		expandableListDetail.put("Situação da aposta", situacoes);
 		return expandableListDetail;

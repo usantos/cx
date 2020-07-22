@@ -33,6 +33,7 @@ import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.CarrinhoSi
 import br.gov.caixa.loterias.apostar.interno.model.bo.silce.internals.UltimaNotificacaoSingleton;
 import br.gov.caixa.loterias.apostar.interno.model.dao.DBLoteriasCrud;
 import br.gov.caixa.loterias.apostar.interno.model.sp.LoginSP;
+import br.gov.caixa.loterias.apostar.interno.utils.AuthorizationServiceFactory;
 import br.gov.caixa.loterias.apostar.interno.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostar.interno.view.custom.LoadingViewLoterias;
 
@@ -45,6 +46,7 @@ public class TokenActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_token);
         loadViewProgress = LoadingViewLoterias.show(this);
         atualizaLimiteDiario();
@@ -52,39 +54,40 @@ public class TokenActivity extends AppCompatActivity {
             AuthorizationResponse authorizationResponse = AuthorizationResponse.fromIntent(getIntent());
             AuthorizationException authorizationException = AuthorizationException.fromIntent(getIntent());
             if (authorizationException == null && authorizationResponse != null) {
-                authorizationService = new AuthorizationService(this);
+
+                authorizationService =  AuthorizationServiceFactory.getAuthorizationService(this);
                 authorizationService.performTokenRequest(authorizationResponse.createTokenExchangeRequest(), (response, ex) -> {
                     if (response != null) {
                         if (response.accessToken == null || response.refreshToken == null) {
                             atualizaLimiteDiario();
                             AcessoBO_.getInstance_(TokenActivity.this).iniciarLoginSSO(TokenActivity.this);
                         } else {
-                            if (!"".equals(response.accessToken) && !"".equals(response.refreshToken)) {
+                            if (!getResources().getString(R.string.string_vazia).equals(response.accessToken) && !getResources().getString(R.string.string_vazia).equals(response.refreshToken)) {
                                 LoginSP.loginRealizado(true);
-                                String separar[] = response.accessToken.split("\\.");
+                                String separar[] = response.accessToken.split(getResources().getString(R.string.barra_barra_ponto));
                                 if (separar.length > 0) {
                                     String tokenCorpo = separar[1];
                                     byte bytes[] = Base64.decode(tokenCorpo, Base64.URL_SAFE);
-                                    tokenCorpo = new String(bytes, Charset.forName("UTF-8"));
+                                    tokenCorpo = new String(bytes, Charset.forName(getResources().getString(R.string.utf_8)));
                                     try {
                                         JSONObject jsonObject = new JSONObject(tokenCorpo);
 
-                                        String cpf = jsonObject.getString("cpf");
+                                        String cpf = jsonObject.getString(getResources().getString(R.string.cpf_minusculo));
                                         if (cpf.length() < 11) {
                                             StringBuilder zeros = new StringBuilder();
                                             int totalIncluirZero = 11 - cpf.length();
                                             for (int contador = 0; contador < totalIncluirZero; contador++) {
-                                                zeros.append("0");
+                                                zeros.append(getResources().getString(R.string.zero));
                                             }
                                             zeros.append(cpf);
                                             cpf = zeros.toString();
                                         }
 
                                         DadosUsuarioBO.salvarCpfUsuario(cpf);
-                                        DadosUsuarioBO.salvarNomeUsuairo(jsonObject.getString("name"));
+                                        DadosUsuarioBO.salvarNomeUsuairo(jsonObject.getString(getResources().getString(R.string.name)));
                                         KeycloakBO_.getInstance_(TokenActivity.this).setAccessToken(response.accessToken);
                                         KeycloakBO_.getInstance_(TokenActivity.this).setRefreshToken(response.refreshToken);
-                                        FirebaseManager.registraEvento(TokenActivity.this ,"EFETUOU_LOGIN_SUCESSO");
+                                        FirebaseManager.registraEvento(TokenActivity.this ,getResources().getString(R.string.evento_efetuou_login_sucesso));
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
@@ -131,7 +134,7 @@ public class TokenActivity extends AppCompatActivity {
             }
         } catch (Exception e) {
             finish();
-        }
+         }
     }
     @Override
     public void finish() {

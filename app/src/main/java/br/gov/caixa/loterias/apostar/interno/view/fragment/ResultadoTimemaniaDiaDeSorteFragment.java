@@ -81,12 +81,12 @@ public class ResultadoTimemaniaDiaDeSorteFragment extends Fragment {
 
         NumerosResultadosAdapter numerosResultadosAdapter;
         int numberOfColumns = 3;
-        if (resultado.getNumerosSorteadosPrimeiroSorteio().size() > 6) {
+        if (resultado.getListaSorteadosPrimeiroSorteio().size() > 6) {
             numberOfColumns = 4;
         }
 
         this.rvNumerosResultado.setLayoutManager(new GridLayoutManager(getContext(), numberOfColumns));
-        numerosResultadosAdapter = new NumerosResultadosAdapter(getContext(), resultado.getNumerosSorteadosPrimeiroSorteio(),resultado.getConcurso().getModalidade());
+        numerosResultadosAdapter = new NumerosResultadosAdapter(getContext(), resultado.getListaSorteadosPrimeiroSorteio(),resultado.getConcurso().getModalidade());
         this.rvNumerosResultado.setAdapter(numerosResultadosAdapter);
 
 
