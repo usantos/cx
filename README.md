@@ -66,23 +66,25 @@ Todo layout está na pasta res como padrão em todos os projetos android e par
 Vamos dividir em boas práticas gerais e boas práticas específicas.
 
 ### Gerais
-• Utilize camel case na definição de métodos e variáveis.
-• Utilize nomes significativos para métodos e variáveis.
-• Evite criar linhas de código muito extensas, separe em outras linhas para facilitar a leitura.
-• Evite criar métodos “ninja" onde o mesmo faz muito mais do que se propôs a fazer.
-• Não sobrecarregue os métodos de início das activity’s nem das controllers (onCreate/init/
+
+* Utilize camel case na definição de métodos e variáveis.
+* Utilize nomes significativos para métodos e variáveis.
+* Evite criar linhas de código muito extensas, separe em outras linhas para facilitar a leitura.
+* Evite criar métodos “ninja" onde o mesmo faz muito mais do que se propôs a fazer.
+* Não sobrecarregue os métodos de início das activity’s nem das controllers (onCreate/init/
 onResume e viewDidLoad/viewWillAppear) evite chamar inúmeras lógicas nesse momento.
-• Evite nomes gigantescos e minúsculos para variáveis, se preciso for, mantenha três letras
+* Evite nomes gigantescos e minúsculos para variáveis, se preciso for, mantenha três letras
 significativas da palavra. Ex: quantidadeDeTeimosinhas poderia ser qtdTeimosinhas a regra é ver se outro programador irá entender logo ao ler a variável, se ficar ambíguo, melhor deixar o nome por completo.
-• Evite aninhamentos extensivos (if dentro de if que tá dentro de outro if e por ai vai).
-• Procure as pastas certas para encaixar suas classes e arquivos.
-• Oriente sempre a equipe de design a desenvolver layouts, pensando nas duas plataformas,
+* Evite aninhamentos extensivos (if dentro de if que tá dentro de outro if e por ai vai).
+* Procure as pastas certas para encaixar suas classes e arquivos.
+* Oriente sempre a equipe de design a desenvolver layouts, pensando nas duas plataformas,
 existem elementos e comportamentos diferentes que devem ser levados em conta.
 
 ### Específicas
-•  Não utilizar Android annotation.
-•  Sempre que puder crie componentes genéricos reutilizáveis (principalmente como
+
+*  Não utilizar Android annotation.
+*  Sempre que puder crie componentes genéricos reutilizáveis (principalmente como
 Fragments).
-•  Repetindo, dê prioridade para ConstraintLayout ao criar layouts.
-•  Utilieze lambda sempre que possível.
-•  Não adicione Strings fixas no XML, utilize o string.xml.
+*  Repetindo, dê prioridade para ConstraintLayout ao criar layouts.
+*  Utilieze lambda sempre que possível.
+*  Não adicione Strings fixas no XML, utilize o string.xml.
