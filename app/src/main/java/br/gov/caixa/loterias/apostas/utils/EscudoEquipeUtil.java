@@ -1,12 +1,12 @@
 package br.gov.caixa.loterias.apostas.utils;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.util.Base64;
 import android.util.Log;
 import android.widget.ImageView;
 
 import com.android.volley.VolleyError;
-import com.bumptech.glide.Glide;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -34,7 +34,8 @@ public class EscudoEquipeUtil {
                     if (StringUtils.isNotEmpty(imagemString) || imagemString != null) {
                         try {
                             byte[] bytes = Base64.decode(imagemString, Base64.DEFAULT);
-                            Glide.with(context).load(bytes).into(imageView);
+                            imageView.setImageBitmap(BitmapFactory.decodeByteArray(bytes, 0, bytes.length));
+                            //Glide.with(context).load(bytes).into(imageView);
                         } catch (Exception exception) {
                             Log.d("error", "Error: ", exception.getCause());
                         }
