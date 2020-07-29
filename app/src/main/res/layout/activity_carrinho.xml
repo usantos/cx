@@ -61,7 +61,7 @@
                 android:background="@color/cinzaclaro"
                 app:layout_constraintTop_toTopOf="@+id/erv_apostas_listas" />
 
-            <br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightRecyclerView
+            <br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView
                 android:id="@+id/erv_apostas_listas"
                 style="@style/editTextArialMTTheme"
                 android:layout_width="match_parent"

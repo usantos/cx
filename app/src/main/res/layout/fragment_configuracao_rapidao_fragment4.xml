@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".view.fragment.ConfiguracaoRapidaoFragment4">
+    tools:context="br.gov.caixa.loterias.apostas.view.fragment.ConfiguracaoRapidaoFragment4">
 
     <ScrollView
         android:id="@+id/sv_modalidades_rapidao_config"
@@ -50,7 +50,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_titulo_modalidade" />
 
-            <br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightGridView
+            <br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView
                 android:id="@+id/ehgv_grid_modalidades"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -11,7 +11,7 @@ android {
     compileSdkVersion 28
     buildToolsVersion '28.0.3'
     defaultConfig {
-        applicationId "br.gov.caixa.loterias.apostar.interno"
+        applicationId "br.gov.caixa.loterias.apostas"
         minSdkVersion 21
         targetSdkVersion 28
         //version code = minSdkVersion + versionName(sem pontuação) + versão interna
@@ -23,16 +23,16 @@ android {
         testOptions {
             execution 'ANDROID_TEST_ORCHESTRATOR'
         }
-        /*
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments = ["resourcePackageName": android.defaultConfig.applicationId]
-            }
-        }
-        */
+
         compileOptions {
             sourceCompatibility JavaVersion.VERSION_1_8
             targetCompatibility JavaVersion.VERSION_1_8
+        }
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["resourcePackageName": "br.gov.caixa.loterias.apostas"]
+            }
         }
     }
     buildTypes {
@@ -190,6 +190,7 @@ dependencies {
 
     implementation 'com.google.firebase:firebase-core:16.0.6'
     implementation 'com.crashlytics.sdk.android:crashlytics:2.9.9'
+    implementation 'com.google.firebase:firebase-analytics:16.0.6'
 
     //Segmented Control
     implementation 'info.hoang8f:android-segmented:1.0.6'

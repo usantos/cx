@@ -8,6 +8,42 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:415314801313:android:7eb985b2fd966ee8eff6e0",
+        "android_client_info": {
+          "package_name": "br.gov.caixa.loterias.apostar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "415314801313-udpvsr92cmonlc9t3d45tv6nvbt9nami.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3rRRAbB_035uYkCH4kUqzepgLAded6L4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "415314801313-udpvsr92cmonlc9t3d45tv6nvbt9nami.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "415314801313-6eps5e9an1rnmgdl0pejst3p2jl7cstb.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "br.gov.caixa.loterias.apostar.interno"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:415314801313:android:27dce0823e7bf26c",
         "android_client_info": {
           "package_name": "br.gov.caixa.loterias.apostar.interno"
@@ -25,15 +61,56 @@
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
+          "other_platform_oauth_client": [
+            {
+              "client_id": "415314801313-udpvsr92cmonlc9t3d45tv6nvbt9nami.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "415314801313-6eps5e9an1rnmgdl0pejst3p2jl7cstb.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "br.gov.caixa.loterias.apostar.interno"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:415314801313:android:22b72908ea6386a7eff6e0",
+        "android_client_info": {
+          "package_name": "br.gov.caixa.loterias.apostas"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "415314801313-udpvsr92cmonlc9t3d45tv6nvbt9nami.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3rRRAbB_035uYkCH4kUqzepgLAded6L4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "415314801313-udpvsr92cmonlc9t3d45tv6nvbt9nami.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "415314801313-6eps5e9an1rnmgdl0pejst3p2jl7cstb.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "br.gov.caixa.loterias.apostar.interno"
+              }
+            }
+          ]
         }
       }
     }

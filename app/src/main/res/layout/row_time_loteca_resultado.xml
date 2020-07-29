@@ -23,19 +23,19 @@
         android:layout_gravity="center_horizontal"
         android:orientation="horizontal">
 
-        <br.gov.caixa.loterias.apostar.interno.view.custom.ItemEquipeViewResultado_
+        <br.gov.caixa.loterias.apostas.view.custom.ItemEquipeViewResultado_
             android:id="@+id/loteca_time_um"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <br.gov.caixa.loterias.apostar.interno.view.custom.ItemEquipeViewResultado_
+        <br.gov.caixa.loterias.apostas.view.custom.ItemEquipeViewResultado_
             android:id="@+id/loteca_empate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
             />
 
-        <br.gov.caixa.loterias.apostar.interno.view.custom.ItemEquipeViewResultado_
+        <br.gov.caixa.loterias.apostas.view.custom.ItemEquipeViewResultado_
             android:id="@+id/loteca_time_dois"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

@@ -206,7 +206,7 @@
                     tools:visibility="visible" />
             </RelativeLayout>
 
-            <br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightRecyclerView
+            <br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView
                 android:id="@+id/recycleViewDetalheAposta"
                 android:layout_width="wrap_content"
                 android:layout_height= "wrap_content"

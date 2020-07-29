@@ -257,7 +257,7 @@
 
                 </LinearLayout>
 
-                <br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightGridView
+                <br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView
                     android:id="@+id/ehgv_modalidades"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -314,7 +314,7 @@
 
                 </LinearLayout>
 
-                <br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightGridView
+                <br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView
                     android:id="@+id/ehgv_numeros_obrigatorios"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -371,7 +371,7 @@
 
                 </LinearLayout>
 
-                <br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightGridView
+                <br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView
                     android:id="@+id/ehgv_numeros_proibidos"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

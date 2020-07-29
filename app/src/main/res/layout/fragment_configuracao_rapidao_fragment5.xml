@@ -45,7 +45,7 @@
                 android:id="@+id/btn_limpar_selecao"
                 android:background="@drawable/custom_border_cinza" />
 
-            <br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightGridView
+            <br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView
                 android:id="@+id/ehgv_grid_numeros"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

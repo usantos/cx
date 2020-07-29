@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="br.gov.caixa.loterias.apostar.interno.controllers.ResultadoLerBilhetesActivity">
+    tools:context="br.gov.caixa.loterias.apostas.controllers.ResultadoLerBilhetesActivity">
 
     <include layout="@layout/app_bar_degrade" />
 
