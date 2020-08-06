@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="br.gov.caixa.loterias.apostar.interno.controllers.CadastrarPasso2Activity">
+    tools:context="br.gov.caixa.loterias.apostas.controllers.CadastrarPasso2Activity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -59,7 +59,7 @@
                 android:textColor="@color/cinza"
                 android:textSize="14sp" />
 
-            <br.gov.caixa.loterias.apostar.interno.utils.segmentedbutton.SegmentedButtonGroup
+            <br.gov.caixa.loterias.apostas.utils.segmentedbutton.SegmentedButtonGroup
                 android:id="@+id/segmentedButtonTipoBuscaLoterica"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
@@ -78,7 +78,7 @@
                 android:textAlignment="center">
 
 
-                <br.gov.caixa.loterias.apostar.interno.utils.segmentedbutton.SegmentedButton
+                <br.gov.caixa.loterias.apostas.utils.segmentedbutton.SegmentedButton
                     android:id="@+id/segmentedButtonLocalizacao"
                     android:layout_width="0dp"
                     android:layout_height="56dp"
@@ -90,7 +90,7 @@
                     app:sb_textColor="@color/verdeazul"
                     app:sb_textColor_onSelection="@color/branco" />
 
-                <br.gov.caixa.loterias.apostar.interno.utils.segmentedbutton.SegmentedButton
+                <br.gov.caixa.loterias.apostas.utils.segmentedbutton.SegmentedButton
                     android:id="@+id/segmentedButtonCEP"
                     android:layout_width="0dp"
                     android:layout_height="56dp"
@@ -102,7 +102,7 @@
                     app:sb_textColor="@color/verdeazul"
                     app:sb_textColor_onSelection="@color/branco" />
 
-                <br.gov.caixa.loterias.apostar.interno.utils.segmentedbutton.SegmentedButton
+                <br.gov.caixa.loterias.apostas.utils.segmentedbutton.SegmentedButton
                     android:id="@+id/segmentedButtonCodigoLoterica"
                     android:layout_width="0dp"
                     android:layout_height="56dp"
@@ -113,7 +113,7 @@
                     app:sb_textColor="@color/verdeazul"
                     app:sb_textColor_onSelection="@color/branco"/>
 
-            </br.gov.caixa.loterias.apostar.interno.utils.segmentedbutton.SegmentedButtonGroup>
+            </br.gov.caixa.loterias.apostas.utils.segmentedbutton.SegmentedButtonGroup>
 
             <LinearLayout
                 android:id="@+id/encontrarLoterica"
@@ -271,7 +271,7 @@
                 android:background="@color/cinzaclaro"
                 android:orientation="horizontal">
 
-                <android.support.v7.widget.AppCompatCheckBox
+                <androidx.appcompat.widget.AppCompatCheckBox
                     android:id="@+id/aceiteTermo"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
@@ -329,4 +329,4 @@
         </RelativeLayout>
     </ScrollView>
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

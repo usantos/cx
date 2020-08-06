@@ -14,7 +14,7 @@
         android:background="@color/cinza"
         android:visibility="gone">
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_super_sete_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -125,7 +125,7 @@
                     android:text="@string/_7"
                     android:textColor="@color/branco" />
             </LinearLayout>
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     </RelativeLayout>
@@ -138,13 +138,13 @@
         android:fillViewport="false"
         android:orientation="vertical">
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cartelaFragmentMainLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/branco">
 
-            <android.support.constraint.ConstraintLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cltGeral"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -195,7 +195,7 @@
                 </LinearLayout>
 
 
-                <br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightGridView
+                <br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView
                     android:id="@+id/listaDezenas"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
@@ -229,7 +229,7 @@
                         android:paddingBottom="200dp"
                         android:orientation="horizontal">
 
-                        <br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightGridView
+                        <br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView
                             android:id="@+id/ehgv_super_sete_primeiro"
                             android:layout_width="wrap_content"
                             android:layout_height="500dp"
@@ -245,7 +245,7 @@
                             android:stretchMode="columnWidth"
                             android:verticalSpacing="10dp" />
 
-                        <br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightGridView
+                        <br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView
                             android:id="@+id/ehgv_super_sete_segundo"
                             android:layout_width="wrap_content"
                             android:layout_height="500dp"
@@ -261,7 +261,7 @@
                             android:stretchMode="columnWidth"
                             android:verticalSpacing="10dp" />
 
-                        <br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightGridView
+                        <br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView
                             android:id="@+id/ehgv_super_sete_terceiro"
                             android:layout_width="wrap_content"
                             android:layout_height="500dp"
@@ -277,7 +277,7 @@
                             android:stretchMode="columnWidth"
                             android:verticalSpacing="10dp" />
 
-                        <br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightGridView
+                        <br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView
                             android:id="@+id/ehgv_super_sete_quarto"
                             android:layout_width="wrap_content"
                             android:layout_height="500dp"
@@ -293,7 +293,7 @@
                             android:stretchMode="columnWidth"
                             android:verticalSpacing="10dp" />
 
-                        <br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightGridView
+                        <br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView
                             android:id="@+id/ehgv_super_sete_quinto"
                             android:layout_width="wrap_content"
                             android:layout_height="500dp"
@@ -309,7 +309,7 @@
                             android:stretchMode="columnWidth"
                             android:verticalSpacing="10dp" />
 
-                        <br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightGridView
+                        <br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView
                             android:id="@+id/ehgv_super_sete_sexto"
                             android:layout_width="wrap_content"
                             android:layout_height="500dp"
@@ -325,7 +325,7 @@
                             android:stretchMode="columnWidth"
                             android:verticalSpacing="10dp" />
 
-                        <br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightGridView
+                        <br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView
                             android:id="@+id/ehgv_super_sete_setimo"
                             android:layout_width="wrap_content"
                             android:layout_height="500dp"
@@ -342,7 +342,7 @@
                             android:verticalSpacing="10dp" />
                     </LinearLayout>
                 </ScrollView>
-            </android.support.constraint.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
                 android:id="@+id/selecioneTimeCoracao"
@@ -374,7 +374,7 @@
                     android:textColor="@color/pretoLinhaFormNovoTipoPagamento"
                     android:textSize="16sp" />
 
-                <br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightGridView
+                <br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView
                     android:id="@+id/gridTimes"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
@@ -436,7 +436,7 @@
                             android:textSize="14sp" />
                     </LinearLayout>
 
-                    <br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightRecyclerView
+                    <br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView
                         android:id="@+id/recyclerViewPartida"
                         android:layout_width="wrap_content"
                         android:layout_height="200dp"
@@ -447,7 +447,7 @@
                         android:paddingBottom="119dp" />
                 </LinearLayout>
             </LinearLayout>
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
     <RelativeLayout
@@ -459,7 +459,7 @@
         android:orientation="horizontal"
         android:visibility="gone">
 
-        <android.support.v7.widget.AppCompatCheckBox
+        <androidx.appcompat.widget.AppCompatCheckBox
             android:id="@+id/selcioneOutrosNumeros"
             android:layout_width="20dp"
             android:layout_height="20dp"

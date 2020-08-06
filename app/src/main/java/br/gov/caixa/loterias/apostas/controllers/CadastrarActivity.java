@@ -1,0 +1,286 @@
+package br.gov.caixa.loterias.apostas.controllers;
+
+import android.content.Intent;
+
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.AppCompatCheckBox;
+import androidx.core.content.res.ResourcesCompat;
+
+import com.android.volley.VolleyError;
+import com.github.pinball83.maskededittext.MaskedEditText;
+
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
+import org.androidannotations.annotations.ViewById;
+import org.apache.commons.lang.StringUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.model.bean.DadosUsuarioToken;
+import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
+import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO_;
+import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
+import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO_;
+import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
+import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
+import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
+import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO;
+import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO_;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostadorDTOResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.BairroDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.BairroDTOResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CadastrarApostadorDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MunicipioIdDTO;
+import br.gov.caixa.loterias.apostas.utils.AppUtils;
+import br.gov.caixa.loterias.apostas.utils.Utils;
+import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.utils.segmentedbutton.SegmentedButtonGroup;
+import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
+
+
+@EActivity(R.layout.activity_cadastrar)
+
+public class CadastrarActivity extends CadastroActivity {
+
+    private static final String FORMATO_YYYYMMDD = "yyyyMMdd";
+
+    @ViewById
+    EditText editTextNomeContent, editTextEmailContent, editTextMunicipioContent, editTextUFContent;
+
+    @ViewById
+    MaskedEditText editTextCpfContent, editTextCepContent;
+
+    @ViewById
+    Button buttonFinalizarCadastro;
+
+    @ViewById
+    SegmentedButtonGroup segmentedButtonSexo;
+
+    @ViewById
+    TextView textViewTituloCadastrar2;
+
+    @Extra
+    List<String> listUFString, listMunicipios;
+
+    @ViewById
+    AppCompatCheckBox aceiteTermo;
+
+    @AfterViews
+    protected void init() {
+        super.createToolbar();
+        loadFields();
+        loadFields();
+        addUFSpinner();
+        if (cadastrarApostadorDTO == null) {
+            cadastrarApostadorDTO = new CadastrarApostadorDTO();
+            cadastrarApostadorDTO.setSexo( CadastrarApostadorDTO.SexoEnum.M );
+            cadastrarApostadorDTO.setMunicipioId(new MunicipioIdDTO());
+            cadastrarApostadorDTO.setAceitaReceberNoticias( false );
+            List<ApostaDTO> apostas = new ArrayList<>();
+            cadastrarApostadorDTO.setApostas(apostas);
+        }
+
+        KeycloakBO keycloakBO = KeycloakBO_.getInstance_( CadastrarActivity.this );
+        String acessToken = keycloakBO.getAccessToken();
+        try {
+            atualizaLayout(Utils.decodedToken( acessToken ));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadFields() {
+        textViewTituloCadastrar2.setText(ViewUtils.textFuturaAndFuturaBold(this,getResources().getString(R.string.bom_ver_voce)));
+    }
+
+    public void addUFSpinner() {
+
+        listUFString = new ArrayList<>();
+        listMunicipios = new ArrayList<>();
+
+        initOnclick();
+        addListenerUF(editTextUFContent, listUFString);
+        addListenerMunicipio(editTextMunicipioContent, listMunicipios, Boolean.TRUE);
+
+        addRightImg(findViewById(R.id.editTextNomeContent));
+        addRightImg(findViewById(R.id.editTextCepContent));
+        addRightImg(findViewById(R.id.editTextCpfContent));
+        addRightImg(findViewById(R.id.editTextEmailContent));
+        addListenerFinalizar();
+
+    }
+
+
+    private void configuraNavigation() {
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
+        getSupportActionBar().setBackgroundDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.navigation_gradient, null));
+    }
+
+    private void addListenerFinalizar() {
+        buttonFinalizarCadastro.setOnClickListener(v -> {
+            if (validarCamposObrigatorios()) {
+
+                final AlertDialog loadViewProgress = LoadingViewLoterias.show(CadastrarActivity.this);
+                DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_(CadastrarActivity.this);
+                dadosUsuarioBO.gravarUsuario(cadastrarApostadorDTO, new RequestListener<ApostadorDTOResponse>() {
+                    @Override
+                    public void onResponse(ApostadorDTOResponse response) {
+                        loadViewProgress.dismiss();
+                         startActivity( new Intent(CadastrarActivity.this, CadastrarConfirmacaoActivity.class ));
+                         CadastrarActivity.this.finish();
+                    }
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        loadViewProgress.dismiss();
+                        ViewUtils.alert(CadastrarActivity.this, MensagensNetwork.setMensagem(error, CadastrarActivity.this));
+                    }
+                });
+
+            }
+        });
+    }
+
+
+    private void initOnclick() {
+
+        this.segmentedButtonSexo.setOnClickedButtonListener(position -> {
+            CadastrarApostadorDTO.SexoEnum sexoEnum;
+            if (position == 0) {
+                sexoEnum = CadastrarApostadorDTO.SexoEnum.M;
+            } else {
+                sexoEnum = CadastrarApostadorDTO.SexoEnum.F;
+            }
+            cadastrarApostadorDTO.setSexo( sexoEnum );
+        });
+
+        this.editTextCepContent.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String cep = editable.toString().replace(getResources().getString(R.string.traco), getResources().getString(R.string.string_vazia)).trim();
+                if (cep.length() == 8) {
+                    buscarBairroPorCep(cep);
+                }
+            }
+        });
+
+    }
+
+    private boolean validarCamposObrigatorios() {
+        if (aceiteTermo.isChecked()) {
+            cadastrarApostadorDTO.setAceitaTermosUso(Boolean.TRUE);
+        } else {
+            ViewUtils.alertTitulo(CadastrarActivity.this, R.string.label_atencao, this.getResources().getString( R.string.termos_nao_aceitos ));
+            return false;
+        }
+        String campos = getResources().getString(R.string.string_vazia);
+
+        if (StringUtils.isEmpty(AppUtils.removeMasckCPF(editTextCpfContent.getText().toString()))) {
+            campos += getResources().getString(R.string.barra_n) + getResources().getString(R.string.cpf);
+        }
+        if (StringUtils.isEmpty(editTextNomeContent.getText().toString())) {
+            campos += getResources().getString(R.string.barra_n) + getResources().getString(R.string.nome);
+        }
+
+        if (StringUtils.isEmpty(editTextCepContent.getText().toString().replace(getResources().getString(R.string.traco), getResources().getString(R.string.string_vazia)).trim())) {
+            campos += getResources().getString(R.string.barra_n) + getResources().getString(R.string.CEP);
+        }
+        if (StringUtils.isEmpty(editTextUFContent.getText().toString())) {
+            campos += getResources().getString(R.string.barra_n) + getResources().getString(R.string.uf);
+        }
+        if (StringUtils.isEmpty(editTextMunicipioContent.getText().toString())) {
+            campos += getResources().getString(R.string.barra_n) + getResources().getString(R.string.municipio);
+        }
+        if (StringUtils.isEmpty(editTextEmailContent.getText().toString())) {
+            campos += getResources().getString(R.string.barra_n) + getResources().getString(R.string.email);
+        }
+
+        CadastrarApostadorDTO.SexoEnum sexoEnum;
+        if (segmentedButtonSexo.getPosition() == 0){
+            sexoEnum = CadastrarApostadorDTO.SexoEnum.M;
+        }else{
+            sexoEnum = CadastrarApostadorDTO.SexoEnum.F;
+        }
+        cadastrarApostadorDTO.setSexo( sexoEnum );
+        cadastrarApostadorDTO.setCep( editTextCepContent.getText().toString() );
+
+        if (StringUtils.isEmpty(campos)) {
+            return true;
+        } else {
+
+            ViewUtils.alertTitulo(CadastrarActivity.this, R.string.label_atencao, this.getResources().getString( R.string.MA002 ) + " " + campos);
+            return false;
+        }
+    }
+
+
+    private void buscarBairroPorCep(String cep) {
+        final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
+        final DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(CadastrarActivity.this);
+        dadosCorporativosBO.bairros(null, null, null, cep, new RequestListener<BairroDTOResponse>() {
+            @Override
+            public void onResponse(BairroDTOResponse response) {
+                loadViewProgress.dismiss();
+                if (response.getPayload() != null && !response.getPayload().isEmpty()) {
+                    BairroDTO bairroDTO = response.getPayload().get(0);
+                    editTextUFContent.setText(bairroDTO.getMunicipio().getUf().getSigla());
+                    editTextMunicipioContent.setText(bairroDTO.getMunicipio().getNome());
+                    cadastrarApostadorDTO.setMunicipioId(bairroDTO.getMunicipio().getId());
+                } else {
+                    limparBuscaPorCep();
+                }
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                loadViewProgress.dismiss();
+                limparBuscaPorCep();
+                RedirectNetwork.checkRedirect( error, CadastrarActivity.this );
+
+            }
+        });
+    }
+
+    private void limparBuscaPorCep() {
+        editTextUFContent.setText("");
+        editTextMunicipioContent.setText("");
+        cadastrarApostadorDTO.setMunicipioId(null);
+    }
+
+
+
+
+    private void atualizaLayout(DadosUsuarioToken dadosUsuarioToken) {
+        editTextCpfContent.setMaskedText( dadosUsuarioToken.getCpf() );
+        editTextNomeContent.setText( dadosUsuarioToken.getName() );
+        editTextEmailContent.setText( dadosUsuarioToken.getEmail() );
+        editTextCpfContent.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
+        editTextNomeContent.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
+        editTextEmailContent.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
+
+    }
+}

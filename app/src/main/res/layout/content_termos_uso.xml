@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/branco"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="br.gov.caixa.loterias.apostar.interno.controllers.TermosUsoActivity"
+    tools:context="br.gov.caixa.loterias.apostas.controllers.TermosUsoActivity"
     tools:showIn="@layout/activity_termos_uso">
 
     <LinearLayout
@@ -100,7 +100,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <android.support.v7.widget.AppCompatCheckBox
+                    <androidx.appcompat.widget.AppCompatCheckBox
                         android:id="@+id/selcioneAceiteTermoUso"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
@@ -148,21 +148,21 @@
             android:layout_height="match_parent"
             android:visibility="gone">
 
-            <android.support.v4.widget.NestedScrollView
+            <androidx.core.widget.NestedScrollView
                 android:id="@+id/duvidasScrollView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightRecyclerView
+                <br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView
                     android:id="@+id/recyclerViewDuvidas"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="22dp"
                     android:clickable="false"
                     android:layout_gravity="center_horizontal"/>
-            </android.support.v4.widget.NestedScrollView>
+            </androidx.core.widget.NestedScrollView>
         </LinearLayout>
 
     </LinearLayout>
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

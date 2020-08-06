@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="br.gov.caixa.loterias.apostar.interno.view.fragment.ApostaConfirmadaNumeroDetalhesPremioPago">
+    tools:context="br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaNumeroDetalhesPremioPago">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -42,7 +42,7 @@
             android:text="@string/label_resultado"
             android:textSize="12sp" />
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.appcompat.widget.RecyclerView
             android:id="@+id/dezenasResultadoRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -144,7 +144,7 @@
             android:text="@string/seus_numeros"
             android:textSize="12sp" />
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.appcompat.widget.RecyclerView
             android:id="@+id/dezenasRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

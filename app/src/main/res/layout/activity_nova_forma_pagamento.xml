@@ -8,11 +8,11 @@
     android:fillViewport="false"
     android:orientation="vertical">
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/branco"
-        tools:context="br.gov.caixa.loterias.apostar.interno.ui.NovaFormaPagamentoActivity">
+        tools:context="br.gov.caixa.loterias.apostas.controllers.NovaFormaPagamentoActivity">
 
         <TextView
             android:id="@+id/textoInfoSelecioneFormaPagamento"
@@ -50,7 +50,7 @@
             android:layout_marginEnd="16dp" />
 
 
-        <!--<android.support.v7.widget.RecyclerView-->
+        <!--<androidx.appcompat.widget.RecyclerView-->
             <!--android:id="@+id/novaFormaPagamentoRecyclerView"-->
             <!--android:layout_width="0dp"-->
             <!--android:layout_height="56dp"-->
@@ -362,7 +362,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/relativeLayoutValorTotal" />
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/viewTabBar"
             android:layout_width="0dp"
             android:layout_height="94dp"
@@ -373,7 +373,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="@+id/botaoAvancarPagamento"
             android:layout_marginTop="42dp">
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

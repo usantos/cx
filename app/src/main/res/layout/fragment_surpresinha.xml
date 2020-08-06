@@ -7,7 +7,7 @@
     android:fillViewport="false"
     android:orientation="vertical">
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/branco">
@@ -44,7 +44,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <br.gov.caixa.loterias.apostar.interno.view.custom.ExpandableHeightGridView
+        <br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView
             android:id="@+id/listaDezenasSurpresinha"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -194,7 +194,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btnMaisSurpresinha">
 
-            <android.support.v7.widget.AppCompatCheckBox
+            <androidx.appcompat.widget.AppCompatCheckBox
                 android:id="@+id/selcioneEspelhoSurpresinha"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
@@ -219,5 +219,5 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

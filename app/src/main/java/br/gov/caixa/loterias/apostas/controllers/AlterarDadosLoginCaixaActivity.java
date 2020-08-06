@@ -1,0 +1,66 @@
+package br.gov.caixa.loterias.apostas.controllers;
+
+import android.os.Bundle;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
+import br.gov.caixa.loterias.apostas.BuildConfig;
+import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.utils.AppUtils;
+import br.gov.caixa.loterias.apostas.utils.FirebaseManager;
+import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
+
+public class AlterarDadosLoginCaixaActivity extends AppCompatActivity {
+    WebView paginaAlterarDadosWebView;
+    AlertDialog loadViewProgresas;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate( savedInstanceState );
+        setContentView( R.layout.activity_alterar_dados_login_caixa );
+        Toolbar toolbar = findViewById( R.id.toolbar );
+        setSupportActionBar( toolbar );
+        loadViewProgresas = LoadingViewLoterias.show(this);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        paginaAlterarDadosWebView = findViewById( R.id.paginaAlterarDadosWebView );
+
+        if(AppUtils.isNetworkAvailable( this )){
+            String stringBuilder = BuildConfig.URL_SSO_ACCOUNT +
+                    getResources().getString(R.string.referrer) +
+                    BuildConfig.SSO_CLIENT_ID +
+                    getResources().getString(R.string.referrer_uri);
+
+            paginaAlterarDadosWebView.loadUrl(stringBuilder);
+            FirebaseManager.registraEvento(this ,getResources().getString(R.string.event_alterar_dados_caixa));
+        }else{
+            loadViewProgresas.hide();
+            ViewUtils.alertTitulo( this, R.string.label_atencao, getResources().getString( R.string.seminternet ) );
+        }
+
+        paginaAlterarDadosWebView.setWebViewClient(new WebViewClient() {
+            public void onPageFinished(WebView view, String url) {
+                loadViewProgresas.hide();
+            }
+        });
+
+    }
+
+    @Override
+    public boolean onSupportNavigateUp(){
+        finish();
+        return true;
+    }
+
+    @Override
+    public void finish() {
+        loadViewProgresas.dismiss();
+        super.finish();
+    }
+}

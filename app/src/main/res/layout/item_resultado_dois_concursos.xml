@@ -20,7 +20,7 @@
             android:textColor="@color/branco"
             android:textSize="15.8sp" />
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.appcompat.widget.RecyclerView
             android:id="@+id/recyclerNumerosResultado"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -37,7 +37,7 @@
             android:textColor="@color/branco"
             android:textSize="15.8sp" />
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.appcompat.widget.RecyclerView
             android:id="@+id/recyclerNumerosResultadoSegundoSorteio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -62,7 +62,7 @@
 
         </LinearLayout>
 
-        <br.gov.caixa.loterias.apostar.interno.view.custom.PartidaViewDetalhesResultado_
+        <br.gov.caixa.loterias.apostas.view.custom.PartidaViewDetalhesResultado_
             android:id="@+id/partidaViewDetalhesResultadoView"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />

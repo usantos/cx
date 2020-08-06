@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="br.gov.caixa.loterias.apostar.interno.controllers.InsercaoManualCodBarrasActivity"
+    tools:context="br.gov.caixa.loterias.apostas.controllers.InsercaoManualCodBarrasActivity"
     tools:showIn="@layout/activity_insercao_manual_cod_barras"
     android:orientation="vertical">
     <TextView

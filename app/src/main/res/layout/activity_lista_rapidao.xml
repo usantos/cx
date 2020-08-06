@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="br.gov.caixa.loterias.apostar.interno.controllers.ListaRapidaoActivity"
+    tools:context="br.gov.caixa.loterias.apostas.controllers.ListaRapidaoActivity"
     android:fitsSystemWindows="true">
 
     <include layout="@layout/app_bar_degrade_pesquisa"/>
