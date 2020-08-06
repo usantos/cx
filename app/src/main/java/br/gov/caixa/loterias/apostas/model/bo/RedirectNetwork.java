@@ -21,6 +21,7 @@ import br.gov.caixa.loterias.apostas.controllers.CadastrarActivity_;
 import br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity;
 import br.gov.caixa.loterias.apostas.controllers.CarrinhosFavoritosActivity;
 import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity_;
+import br.gov.caixa.loterias.apostas.controllers.SplashScreenActivity;
 import br.gov.caixa.loterias.apostas.controllers.TermosUsoActivity;
 import br.gov.caixa.loterias.apostas.model.bean.ErrorResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RedirectEnum;
@@ -38,9 +39,16 @@ public class  RedirectNetwork {
 
     public static void checkRedirect(VolleyError error, final Context context, Activity activity){
 
-        if (error.networkResponse == null){
-            ViewUtils.alert( context, context.getResources().getString( R.string.seminternet ) );
-            return;
+        if (error.networkResponse == null) {
+            if (!AppUtils.isNetworkAvailable(activity)) {
+                if (!activity.getClass().toString().equalsIgnoreCase(SplashScreenActivity.class.toString())) {
+                    ViewUtils.alert(activity, activity.getResources().getString(R.string.seminternet));
+                }
+                return;
+            } else {
+                ViewUtils.alertTitleButton(activity, R.string.label_atencao, MensagensNetwork.setMensagem(error, activity), activity.getResources().getString(R.string.ok));
+                return;
+            }
         }
         NetworkResponse response = error.networkResponse;
 
@@ -112,9 +120,16 @@ public class  RedirectNetwork {
 
     public static void checkRedirect(VolleyError error, final Activity activity){
 
-        if (error.networkResponse == null){
-            ViewUtils.alert( activity, activity.getResources().getString( R.string.seminternet ) );
-            return;
+        if (error.networkResponse == null) {
+            if (!AppUtils.isNetworkAvailable(activity)) {
+                if (!activity.getClass().toString().equalsIgnoreCase(SplashScreenActivity.class.toString())) {
+                    ViewUtils.alert(activity, activity.getResources().getString(R.string.seminternet));
+                }
+                return;
+            } else {
+                ViewUtils.alertTitleButton(activity, R.string.label_atencao, MensagensNetwork.setMensagem(error, activity), activity.getResources().getString(R.string.ok));
+                return;
+            }
         }
         NetworkResponse response = error.networkResponse;
 
