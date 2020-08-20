@@ -20,6 +20,7 @@ import br.gov.caixa.loterias.apostas.controllers.AppIndisponivelActivity;
 import br.gov.caixa.loterias.apostas.controllers.CadastrarActivity_;
 import br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity;
 import br.gov.caixa.loterias.apostas.controllers.CarrinhosFavoritosActivity;
+import br.gov.caixa.loterias.apostas.controllers.JogosConfirmadosPremioMercadoPagoActivity;
 import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity_;
 import br.gov.caixa.loterias.apostas.controllers.SplashScreenActivity;
 import br.gov.caixa.loterias.apostas.controllers.TermosUsoActivity;
@@ -193,13 +194,7 @@ public class  RedirectNetwork {
                         return;
                     default:
                         if (errorResponse.getCodigo() != null &&  errorResponse.getCodigo().equals( "018003" )){
-                            ViewUtils.alertTitleButtonYesOrNotListener(activity, errorResponse.getMensagem(), (dialog, which) -> {
-                                Uri webpage = Uri.parse("https://www.mercadopago.com.br/registration-mp?mode=mp");
-                                Intent intentAc = new Intent(Intent.ACTION_VIEW, webpage);
-                                if (intentAc.resolveActivity(activity.getPackageManager()) != null) {
-                                    activity.startActivity(intentAc);
-                                }
-                            });
+                            enviaRegistrarMp(activity, error);
                         }else{
                             ViewUtils.alertTitleButton(activity, R.string.label_atencao, MensagensNetwork.setMensagem(error, activity), "Ok", dialogInterface -> {});
                         }
@@ -217,7 +212,9 @@ public class  RedirectNetwork {
                              PrincipalActivity_.intent(activity).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP).start();
                          });
                  break;
-
+             case "018003" :
+                 enviaRegistrarMp(activity, volleyError);
+                 break;
                  default:
                      ViewUtils.alertTitleButton(activity, R.string.label_atencao, MensagensNetwork.setMensagem(volleyError, activity), "Ok",dialog -> {});
                      break;
@@ -263,6 +260,16 @@ public class  RedirectNetwork {
                     activity.getString(R.string.erro_req),
                     activity.getResources().getString( R.string.ok ) );
         }
+    }
+
+    private static void enviaRegistrarMp(Activity activity, VolleyError volleyError){
+        ViewUtils.alertTitleButtonYesOrNotListener(
+                activity,
+                MensagensNetwork.setMensagem(volleyError, activity),
+                (dialogInterface, i) -> {
+                    JogosConfirmadosPremioMercadoPagoActivity jcpmpa = ((JogosConfirmadosPremioMercadoPagoActivity)activity);
+                    jcpmpa.redirectMp();
+                });
     }
 
     private static void enviaEmail(Activity activity, ErrorResponse error) {

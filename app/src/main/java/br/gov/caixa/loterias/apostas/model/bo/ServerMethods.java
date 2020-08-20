@@ -96,5 +96,7 @@ class ServerMethods {
 
      static final String APP_VERSAO_ATUALIZACAO_PATH = "app/valida-versao/{versao-app}";
 
+     static final String TOKEN_CADASTRO_MP_PATH = "/usuarios/gerar-token-cadastro-mercado-pago";
+
      private ServerMethods(){}
 }

@@ -1,6 +1,7 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -26,18 +27,20 @@ import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO_;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.InformacaoPagamentoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.StringResponse;
 import br.gov.caixa.loterias.apostas.utils.ValidacaoUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 
 public class JogosConfirmadosPremioMercadoPagoActivity extends AppCompatActivity {
 
-    EditText emailPremioMercadoPagoEditText;
-    TextView valorPremioTextView;
-    Long idAposta;
-    Button resgatarPremioButton, voltarPremioButton;
-    TextView textoTituloPremioConfirmado, textoPremioConfirmado;
-    LinearLayout contentTopoConfirmarLinearLayout, contentTopoConfirmadoLinearLayout, contentConfirmarLinearLayout, contentConfirmadoLinearLayout;
+    private EditText emailPremioMercadoPagoEditText;
+    private TextView valorPremioTextView;
+    private Long idAposta;
+    private Button resgatarPremioButton, voltarPremioButton;
+    private TextView textoTituloPremioConfirmado, textoPremioConfirmado;
+    private LinearLayout contentTopoConfirmarLinearLayout, contentTopoConfirmadoLinearLayout, contentConfirmarLinearLayout, contentConfirmadoLinearLayout;
+    private AlertDialog loadViewProgress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,7 +154,7 @@ public class JogosConfirmadosPremioMercadoPagoActivity extends AppCompatActivity
         mapPagamento.put(getResources().getString(R.string.email_maiusculo), emailPremioMercadoPagoEditText.getText().toString());
         informacaoPagamentoDTO.setParametrosPagamento( mapPagamento );
 
-        final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
+        loadViewProgress = LoadingViewLoterias.show(this);
 
         ApostaBO apostaBO = ApostaBO_.getInstance_(JogosConfirmadosPremioMercadoPagoActivity.this);
         apostaBO.postResgatarAposta(idAposta, informacaoPagamentoDTO, new RequestListener<RetornoPadraoDTO>() {
@@ -174,6 +177,30 @@ public class JogosConfirmadosPremioMercadoPagoActivity extends AppCompatActivity
                 RedirectNetwork.checkRedirect( error, JogosConfirmadosPremioMercadoPagoActivity.this );
             }
         });
+    }
+
+    public void redirectMp(){
+
+        loadViewProgress = LoadingViewLoterias.show(this);
+        ApostaBO apostaBO = ApostaBO_.getInstance_(JogosConfirmadosPremioMercadoPagoActivity.this);
+        apostaBO.getMercadoPagoToken(emailPremioMercadoPagoEditText.getText().toString(), new RequestListener<StringResponse>() {
+            @Override
+            public void onResponse(StringResponse result) {
+                loadViewProgress.dismiss();
+                String token = result.getPayload();
+                token = token.replaceAll("[&\\/\\\\#,+()$~%.'\":*?<>{}]", "");
+                Uri webpage = Uri.parse((getResources().getString(R.string.mp_token_url_redirect)).replace("{token}", token));
+                Intent intentAc = new Intent(Intent.ACTION_VIEW, webpage);
+                    startActivity(intentAc);
+                }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                loadViewProgress.dismiss();
+                RedirectNetwork.checkRedirect( error, JogosConfirmadosPremioMercadoPagoActivity.this );
+            }
+        });
+
     }
 
 }

@@ -972,4 +972,7 @@
     <!-- Popup -->
     <string name="erro_req">Opa, ocorreu um erro na sua requisição. Por favor, tente novamente dentro de alguns instantes.</string>
 
+    <!-- Mercado Pago -->
+    <string name="mp_token_url_redirect">https://registration-br.mercadopago.com/registration-mp?mode=mp&amp;external_registration_token={token}</string>
+
 </resources>

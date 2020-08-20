@@ -106,6 +106,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/e_mail"
+                        android:inputType="textEmailAddress"
                         android:textColor="@color/cinza"
                         android:textColorHint="@color/azulFormNovoTipoPagamento"
                         android:textSize="16sp" />

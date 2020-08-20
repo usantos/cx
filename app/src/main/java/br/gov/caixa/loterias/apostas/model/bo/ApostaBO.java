@@ -43,6 +43,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginad
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOHistoricoApostaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacoesApostaFiltroEnum;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.StringResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.GsonRequest;
 
 import static org.androidannotations.annotations.EBean.Scope.Singleton;
@@ -291,6 +292,24 @@ public class ApostaBO extends BaseBO {
         request.setErrorListener(interceptError(request, getHeader(), listener));
         silceConnection.request(request);
     }
+
+    public void  getMercadoPagoToken(final String email, final RequestListener<StringResponse> listener) {
+        LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
+        queryParams.put("email", email);
+
+        final GsonRequest request = silceConnection.buildGetRequest(ServerMethods.TOKEN_CADASTRO_MP_PATH,
+                                                                    queryParams,
+                                                                    StringResponse.class,
+                                                                    listener.getSilceListener(),
+                                                                    listener.getErrorListener(),
+                                                                    getHeader());
+
+        request.setErrorListener(interceptError(request, getHeader(), listener));
+        silceConnection.request(request);
+    }
+
+
+
 
     public void getDatasApostasConfirmadas(final RequestListener<MesAnoDTOResponse> listener) {
         final GsonRequest request = silceConnection.buildGetRequest(ServerMethods.APOSTAS_MES_ANO_PATH,
