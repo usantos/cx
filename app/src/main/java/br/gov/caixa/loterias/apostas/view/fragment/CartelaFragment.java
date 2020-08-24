@@ -610,10 +610,13 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 				ViewGroup.LayoutParams relativelayoutParams = salvarApostaLayout.getLayoutParams();
 
 				final float scale = parentActivity.getResources().getDisplayMetrics().density;
-				relativelayoutParams.height = (int) (140 * scale + 0.5f);
+				if (relativelayoutParams.height != ((int) (140 * scale + 0.5f))){
+					relativelayoutParams.height = (int) (140 * scale + 0.5f);
+				} else  {
+					relativelayoutParams.height = (int) (64 * scale + 0.5f);
+				}
 
 				salvarApostaLayout.setLayoutParams(relativelayoutParams);
-				salvarApostaLayout.setOnClickListener(null);
 
 				salvarApostaLayout.findViewById(R.id.btnSalvarAposta).setOnClickListener(this);
 				if (!DadosUsuarioBO.checarUsuarioLogado(getActivity())) {

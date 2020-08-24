@@ -56,6 +56,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PremioDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 
 /**
  * Created by lsimas on 05/04/2017.
@@ -566,12 +567,37 @@ public class ViewUtils {
     }
 
     public static Integer getConcursoAtualPorAposta(IdentificaoDeUmaApostaDas8Modalidades aposta) {
-        ParametroSimulacao param = getParametroSimulacao(SessaoUsuario.getInstance(),aposta.getModalidade());
-        if(param != null) {
-            return param.getParametroJogo().getConcurso().getNumero();
+        List<ParametroSimulacao> parametos = getListaParametroSimulacao(SessaoUsuario.getInstance(), aposta.getModalidade());
+        int numConc = 0;
+        if (aposta.getTipoConcurso().getDescricao().equalsIgnoreCase("ESPECIAL")) {
+            for (ParametroSimulacao param :parametos) {
+                if (param.getParametroJogo().getConcurso().getTipoConcurso() == TipoConcursoEnum.ESPECIAL){
+                    numConc = param.getParametroJogo().getConcurso().getNumero();
+                }
+            }
+        } else {
+            for (ParametroSimulacao param :parametos) {
+                if (param.getParametroJogo().getConcurso().getTipoConcurso() == TipoConcursoEnum.NORMAL){
+                    numConc = param.getParametroJogo().getConcurso().getNumero();
+                }
+            }
         }
-        return -1;
+        return numConc;
     }
+
+    public static List<ParametroSimulacao> getListaParametroSimulacao(SessaoUsuario sessaoUsuario, ModalidadeEnum modalidadeEnum) {
+        ArrayList<ParametroSimulacao> parametos = new ArrayList<>();
+        if (sessaoUsuario.getParametrosSimulacao() != null && sessaoUsuario.getParametrosSimulacao().getParametros() != null) {
+            for (ParametroSimulacao parametroSimulacao : sessaoUsuario.getParametrosSimulacao().getParametros()) {
+                if (parametroSimulacao.getParametroJogo().getConcurso().getModalidade() == modalidadeEnum) {
+                    parametos.add(parametroSimulacao);
+                }
+            }
+        }
+        return parametos;
+    }
+
+
 
     public static Integer getConcursoAtualPorModalidade(String modalidade) {
         ParametroSimulacao param = getParametroSimulacao(SessaoUsuario.getInstance(),ModalidadeEnum.toString(modalidade));

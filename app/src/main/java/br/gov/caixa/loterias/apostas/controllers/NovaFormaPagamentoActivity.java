@@ -213,8 +213,8 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 alertDialog.dismiss();
-
-                try {
+                RedirectNetwork.checkRedirect(error, NovaFormaPagamentoActivity.this);
+                /*try {
                     String mensagem = new String(error.networkResponse.data);
                     if (mensagem.contains(getResources().getString(R.string.chave_abrindo))) {
                         JSONObject jsonObject = new JSONObject(mensagem);
@@ -224,7 +224,7 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
                     }
                 } catch (Exception e) {
                     RedirectNetwork.checkRedirect(error, NovaFormaPagamentoActivity.this);
-                }
+                }*/
 
             }
         });

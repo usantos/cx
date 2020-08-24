@@ -207,7 +207,7 @@
                     android:paddingLeft="10dp"
                     android:paddingTop="40dp"
                     android:paddingRight="10dp"
-                    android:paddingBottom="119dp"
+                    android:paddingBottom="250dp"
                     android:stretchMode="columnWidth"
                     android:verticalSpacing="10dp"
                     app:layout_constraintTop_toBottomOf="@+id/layotLabelEscolhaNumeros" />
@@ -226,7 +226,7 @@
                         android:layout_gravity="center"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
-                        android:paddingBottom="200dp"
+                        android:paddingBottom="250dp"
                         android:orientation="horizontal">
 
                         <br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView
