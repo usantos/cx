@@ -20,6 +20,7 @@ import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacaoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.VersionResponse;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
+import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 
@@ -28,21 +29,43 @@ public class AppIndisponivelActivity extends AppCompatActivity {
     private Button buttonTentarNovamente;
     private Boolean isBuscaParametro;
     private AlertDialog loadViewProgress;
-    private TextView txtVersion;
+    private TextView txtVersion, tvMensagem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_app_indisponivel);
 
+        setaViews();
+        pegaExtras();
+        setaMetodos();
+    }
+
+    private void setaViews(){
         txtVersion = findViewById(R.id.txtVersao);
+        tvMensagem = findViewById(R.id.tv_mensagem);
+        buttonTentarNovamente = findViewById(R.id.tenteNovamenteButton);
 
         txtVersion.setText( TextUtils.concat( getResources().getString(R.string.v) ,BuildConfig.VERSION_NAME));
+        atualizaMsg();
+    }
 
+    private void pegaExtras() {
         isBuscaParametro = getIntent().getBooleanExtra(getResources().getString(R.string.extra_is_busca_param), false);
+    }
 
-        buttonTentarNovamente = findViewById(R.id.tenteNovamenteButton);
+    private void atualizaMsg() {
+        if (!AppUtils.isNetworkAvailable(AppIndisponivelActivity.this)) {
+            tvMensagem.setText(getResources().getString(R.string.seminternet));
+        } else {
+            tvMensagem.setText(getResources().getString(R.string.label_app_indisponivel));
+        }
+    }
+
+
+    private void setaMetodos() {
         buttonTentarNovamente.setOnClickListener(view -> {
+            atualizaMsg();
             if (isBuscaParametro) {
                 loadViewProgress = LoadingViewLoterias.show(this);
 

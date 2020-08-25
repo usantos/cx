@@ -51,7 +51,7 @@
         android:id="@+id/tenteNovamenteButton"/>
 
     <TextView
-        android:id="@+id/textViewTextoRestrito"
+        android:id="@+id/tv_mensagem"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
