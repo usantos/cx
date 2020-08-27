@@ -299,7 +299,8 @@
         <activity
             android:name="br.gov.caixa.loterias.apostas.controllers.AlterarDadosLoginCaixaActivity"
             android:label="@string/title_activity_alterar_dados_login_caixa"
-            android:theme="@style/AppTheme.DegradeActionBar" />
+            android:theme="@style/AppTheme.DegradeActionBar"
+            android:hardwareAccelerated="true"/>
         <activity
             android:name="br.gov.caixa.loterias.apostas.controllers.TokenActivity"
             android:screenOrientation="portrait"

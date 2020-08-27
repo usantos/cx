@@ -1,9 +1,11 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -24,23 +26,23 @@ public class AlterarDadosLoginCaixaActivity extends AppCompatActivity {
         setContentView( R.layout.activity_alterar_dados_login_caixa );
         Toolbar toolbar = findViewById( R.id.toolbar );
         setSupportActionBar( toolbar );
-        loadViewProgresas = LoadingViewLoterias.show(this);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        setWebview();
+    }
+
+    private void setWebview() {
         paginaAlterarDadosWebView = findViewById( R.id.paginaAlterarDadosWebView );
+        loadViewProgresas = LoadingViewLoterias.show(this);
 
-        if(AppUtils.isNetworkAvailable( this )){
-            String stringBuilder = BuildConfig.URL_SSO_ACCOUNT +
-                    getResources().getString(R.string.referrer) +
-                    BuildConfig.SSO_CLIENT_ID +
-                    getResources().getString(R.string.referrer_uri);
-
-            paginaAlterarDadosWebView.loadUrl(stringBuilder);
-            FirebaseManager.registraEvento(this ,getResources().getString(R.string.event_alterar_dados_caixa));
-        }else{
-            loadViewProgresas.hide();
-            ViewUtils.alertTitulo( this, R.string.label_atencao, getResources().getString( R.string.seminternet ) );
+        paginaAlterarDadosWebView.getSettings().setJavaScriptEnabled(true);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            paginaAlterarDadosWebView.getSettings().setMixedContentMode(0);
+            paginaAlterarDadosWebView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+        } else if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            paginaAlterarDadosWebView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+        } else {
+            paginaAlterarDadosWebView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         }
 
         paginaAlterarDadosWebView.setWebViewClient(new WebViewClient() {
@@ -49,6 +51,19 @@ public class AlterarDadosLoginCaixaActivity extends AppCompatActivity {
             }
         });
 
+
+        if(AppUtils.isNetworkAvailable(this)){
+            String stringBuilder = BuildConfig.URL_SSO_ACCOUNT +
+                    getResources().getString(R.string.referrer) +
+                    BuildConfig.SSO_CLIENT_ID +
+                    getResources().getString(R.string.referrer_uri);
+
+            paginaAlterarDadosWebView.loadUrl(stringBuilder);
+            FirebaseManager.registraEvento(this , getResources().getString(R.string.event_alterar_dados_caixa));
+        }else{
+            loadViewProgresas.hide();
+            ViewUtils.alertTitulo(this, R.string.label_atencao, getResources().getString(R.string.seminternet));
+        }
     }
 
     @Override

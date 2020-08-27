@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,8 +9,9 @@
     tools:context="br.gov.caixa.loterias.apostas.controllers.AlterarDadosLoginCaixaActivity"
     tools:showIn="@layout/activity_alterar_dados_login_caixa">
     <WebView
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/paginaAlterarDadosWebView"></WebView>
+        android:id="@+id/paginaAlterarDadosWebView"/>
 
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>
