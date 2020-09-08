@@ -60,7 +60,8 @@ public class DateUtils {
 
     @NonNull
     public static SimpleDateFormat getSimpleDateFormat(String paternDate) {
-        return new SimpleDateFormat(paternDate);
+        final Locale myLocale = new Locale("pt", "BR");
+        return new SimpleDateFormat(paternDate, myLocale);
     }
 
     public static Calendar DateToCalendar(Date date){

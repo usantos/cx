@@ -19,9 +19,11 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.Modalidade;
+import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConcursoPremiadoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesHistoricoPremioDTO;
@@ -56,6 +58,8 @@ public class HtmlUtils {
     private static final String BASE_64_LOGO = "{base_64_logo}";
     private static final String HEADER_COLUNA1_LINHA1_VALOR = "{header_coluna1_linha1_valor}";
     private static final String HEADER_COLUNA2_LINHA1_VALOR = "{header_coluna2_linha1_valor}";
+    private static final String HEADER_NOME = "{header_nome}";
+    private static final String HEADER_CPF = "{header_cpf}";
     private static final String HEADER_COLUNA2_LINHA1_TITULO = "{header_coluna2_linha1_titulo}";
     private static final String HEADER_COLUNA1_LINHA2_VALOR = "{header_coluna1_linha2_valor}";
     private static final String HEADER_COLUNA2_LINHA2_TEXTO = "{header_coluna2_linha2_texto}";
@@ -87,6 +91,8 @@ public class HtmlUtils {
     private static final String PONTO_MARCADOR = "•";
 
     public String getComprovanteCabecalhoRodapeAposta(ComprovanteApostaDTO comprovanteApostaDTO, Context context) {
+        String nome = DadosUsuarioBO.obterNome().toLowerCase(new Locale(context.getResources().getString(R.string.pt), context.getResources().getString(R.string.br)));
+        String nomeUsuario = StringUtils.capitalizer(nome);
 
         String modalidade = ViewUtils.getNomeModalidadePorAposta(comprovanteApostaDTO.getAposta());
         String dataSorteio = DateUtils.getDateToString(
@@ -98,6 +104,8 @@ public class HtmlUtils {
         html = ViewUtils.replaceNullable(html, HEADER_TIPO_COMPROVANTE_TXT, context.getString(R.string.label_comprovante_aposta, modalidade));
         html = ViewUtils.replaceNullable(html, BASE_64_LOGO, getBase64Logo(context));
         html = ViewUtils.replaceNullable(html, HEADER_COLUNA1_LINHA1_VALOR, comprovanteApostaDTO.getAposta().getDataEfetivacao());
+        html = ViewUtils.replaceNullable(html, HEADER_NOME, nomeUsuario);
+        html = ViewUtils.replaceNullable(html, HEADER_CPF, DadosUsuarioBO.obterCpf());
         if(comprovanteApostaDTO.getAposta().getQuantidadeTeimosinhas() > 0){
             int concursoFinal = (comprovanteApostaDTO.getAposta().getConcursoInicial() + comprovanteApostaDTO.getAposta().getQuantidadeTeimosinhas()) - 1;
             html = ViewUtils.replaceNullable(html,HEADER_COLUNA2_LINHA1_TITULO,"Concursos");
