@@ -23,6 +23,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.DadosUsuarioToken;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PartidaLotecaDTO;
 
 /**
  * Created by cedesbr450 on 12/04/18.
@@ -120,5 +121,33 @@ public class Utils {
             Collections.sort(lista);
         }
         return matriz;
+    }
+
+    public static Tupla<String,String> getSiglasUf(PartidaLotecaDTO partida){
+        String ufTime1 = "", ufTime2 = "";
+        if(partida != null &&
+                partida.getEquipe1() != null &&
+                partida.getEquipe2() != null) {
+            if (partida.getEquipe1().getSiglaPais() != null ) {
+                if((!partida.getEquipe1().getSiglaPais().equalsIgnoreCase("BRA") && partida.getEquipe1().getUf() == null)||
+						(partida.getEquipe1().getSiglaPais().equalsIgnoreCase("BRA") && partida.getEquipe1().getUf().equalsIgnoreCase("DF"))){
+                    ufTime1 = "/" + partida.getEquipe1().getSiglaPais();
+                } else {
+                    ufTime1 = "/" + partida.getEquipe1().getUf();
+                }
+            }
+
+            if (partida.getEquipe2().getSiglaPais() != null ) {
+                if((!partida.getEquipe2().getSiglaPais().equalsIgnoreCase("BRA") && partida.getEquipe2().getUf() == null)||
+						(partida.getEquipe2().getSiglaPais().equalsIgnoreCase("BRA") && partida.getEquipe2().getUf().equalsIgnoreCase("DF"))){
+                    ufTime2 = "/" + partida.getEquipe2().getSiglaPais();
+                } else {
+                    ufTime2 = "/" + partida.getEquipe2().getUf();
+                }
+
+            }
+        }
+
+        return new Tupla<>(ufTime1,ufTime2);
     }
 }

@@ -106,7 +106,7 @@ public class HtmlUtils {
         html = ViewUtils.replaceNullable(html, HEADER_COLUNA1_LINHA1_VALOR, comprovanteApostaDTO.getAposta().getDataEfetivacao());
         html = ViewUtils.replaceNullable(html, HEADER_NOME, nomeUsuario);
         html = ViewUtils.replaceNullable(html, HEADER_CPF, DadosUsuarioBO.obterCpf());
-        if(comprovanteApostaDTO.getAposta().getQuantidadeTeimosinhas() > 0){
+        if(comprovanteApostaDTO.getAposta().getQuantidadeTeimosinhas()!= null && comprovanteApostaDTO.getAposta().getQuantidadeTeimosinhas() > 0){
             int concursoFinal = (comprovanteApostaDTO.getAposta().getConcursoInicial() + comprovanteApostaDTO.getAposta().getQuantidadeTeimosinhas()) - 1;
             html = ViewUtils.replaceNullable(html,HEADER_COLUNA2_LINHA1_TITULO,"Concursos");
             html = ViewUtils.replaceNullable(html, HEADER_COLUNA2_LINHA1_VALOR, comprovanteApostaDTO.getAposta().getConcursoInicial() +
@@ -211,18 +211,17 @@ public class HtmlUtils {
             case LOTECA:
                 htmlBodyList = getContentOfFile(FILE_PATH_COMPROVANTE_LISTA_CORPO_LOTECA, context);
                 for (PartidaLotecaDTO partidaLotecaDTO : aposta.getPartidasLoteca()) {
+                    Tupla<String, String> tuplaUfs = Utils.getSiglasUf(partidaLotecaDTO);
                     EquipeDTO equipe1 = partidaLotecaDTO.getEquipe1();
                     EquipeDTO equipe2 = partidaLotecaDTO.getEquipe2();
 
                     htmlBodyList = ViewUtils.replaceNullable(htmlBodyList, BODY_PARTIDA1,
-                            context.getString(R.string.label_corpo_equipe, equipe1.getVitoria() ? PONTO_MARCADOR : " ",
-                                    equipe1.getIndicadorSelecao() ? equipe1.getNome() + "/" + equipe1.getSiglaPais() : equipe1.getNome()));
+                            context.getString(R.string.label_corpo_equipe, equipe1.getVitoria() ? PONTO_MARCADOR : " ",partidaLotecaDTO.getEquipe1().getNome() + tuplaUfs.x));
                     htmlBodyList = ViewUtils.replaceNullable(htmlBodyList, BODY_EMPATE,
                             context.getString(R.string.label_corpo_equipe, partidaLotecaDTO.getEmpate() ? PONTO_MARCADOR : " ",
                                     context.getString(R.string.label_empate)));
                     htmlBodyList = ViewUtils.replaceNullable(htmlBodyList, BODY_PARTIDA2,
-                            context.getString(R.string.label_corpo_equipe, equipe2.getVitoria() ? PONTO_MARCADOR : " ",
-                                    equipe2.getIndicadorSelecao() ? equipe2.getNome() + "/" + equipe2.getSiglaPais() : equipe2.getNome()));
+                            context.getString(R.string.label_corpo_equipe, equipe2.getVitoria() ? PONTO_MARCADOR : " ", partidaLotecaDTO.getEquipe2().getNome() + tuplaUfs.y));
 
                     sbHtmlBodyList.append(htmlBodyList);
                     htmlBodyList = getContentOfFile(FILE_PATH_COMPROVANTE_LISTA_CORPO_LOTECA, context);

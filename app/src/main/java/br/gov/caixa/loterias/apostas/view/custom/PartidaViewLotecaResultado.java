@@ -13,6 +13,8 @@ import org.androidannotations.annotations.ViewById;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PartidaLotecaDTO;
 import br.gov.caixa.loterias.apostas.utils.EscudoEquipeUtil;
+import br.gov.caixa.loterias.apostas.utils.Tupla;
+import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
 /**
@@ -38,6 +40,7 @@ public class PartidaViewLotecaResultado extends LinearLayout {
 
 
     public void setLayout(PartidaLotecaDTO parametroPartida) {
+        Tupla<String, String> tuplaUfs = Utils.getSiglasUf(parametroPartida);
 
         if (parametroPartida.getEquipe1().getVitoria()) {
             lotecaTimeUm.getLinearLayoutContentItemLotecaResultado().setBackgroundColor(this.getContext().getResources().getColor(R.color.selecaoLotecaResultado));
@@ -46,7 +49,7 @@ public class PartidaViewLotecaResultado extends LinearLayout {
         EscudoEquipeUtil.setEscudo(this.getContext(), parametroPartida.getEquipe1().getParametroEquipe(), lotecaTimeUm.getItemImage());
 
         lotecaTimeUm.getItemTitle().setText(parametroPartida.getEquipe1().getNome());
-        lotecaTimeUm.getItemDescription().setText(parametroPartida.getEquipe1().getIndicadorSelecao() ? "" : parametroPartida.getEquipe1().getSiglaPais());
+        lotecaTimeUm.getItemDescription().setText(tuplaUfs.x);
 
         if (parametroPartida.getEquipe2().getVitoria()) {
             lotecaTimeDois.getLinearLayoutContentItemLotecaResultado().setBackgroundColor(this.getContext().getResources().getColor(R.color.selecaoLotecaResultado));
@@ -55,7 +58,7 @@ public class PartidaViewLotecaResultado extends LinearLayout {
         lotecaTimeDois.getItemImage().setImageResource(R.drawable.time);
         EscudoEquipeUtil.setEscudo(this.getContext(), parametroPartida.getEquipe2().getParametroEquipe(), lotecaTimeDois.getItemImage());
         lotecaTimeDois.getItemTitle().setText(parametroPartida.getEquipe2().getNome());
-        lotecaTimeDois.getItemDescription().setText(parametroPartida.getEquipe2().getIndicadorSelecao() ? "" : parametroPartida.getEquipe2().getSiglaPais());
+        lotecaTimeDois.getItemDescription().setText(tuplaUfs.y);
 
         if (parametroPartida.getEmpate()) {
             lotecaEmpate.getLinearLayoutContentItemLotecaResultado().setBackgroundColor(this.getContext().getResources().getColor(R.color.selecaoLotecaResultado));

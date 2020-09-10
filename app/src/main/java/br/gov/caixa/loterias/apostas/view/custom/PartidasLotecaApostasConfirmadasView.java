@@ -15,6 +15,8 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.EquipeDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PartidaLotecaDTO;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
+import br.gov.caixa.loterias.apostas.utils.Tupla;
+import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
 /**
@@ -44,26 +46,18 @@ public class PartidasLotecaApostasConfirmadasView extends LinearLayout {
     }
 
     public void setLayout(PartidaLotecaDTO partidaLotecaDTO) {
-        this.setValueApostaEquipeLotecaView(imageApostaPartidaLotecaUm, textApostaPartidaLotecaUm, partidaLotecaDTO.getEquipe1());
-        this.setValueApostaEquipeLotecaView(imageApostaPartidaLotecaDois, textApostaPartidaLotecaDois, partidaLotecaDTO.getEquipe2());
+        Tupla<String, String> tuplaUfs = Utils.getSiglasUf(partidaLotecaDTO);
+        this.setValueApostaEquipeLotecaView(imageApostaPartidaLotecaUm, textApostaPartidaLotecaUm, partidaLotecaDTO.getEquipe1(),partidaLotecaDTO.getEquipe1().getNome() + tuplaUfs.x);
+        this.setValueApostaEquipeLotecaView(imageApostaPartidaLotecaDois, textApostaPartidaLotecaDois, partidaLotecaDTO.getEquipe2(),partidaLotecaDTO.getEquipe2().getNome() + tuplaUfs.y);
 
         EquipeDTO equipeDTOEmpate = new EquipeDTO();
         equipeDTOEmpate.setVitoria(partidaLotecaDTO.getEmpate());
         equipeDTOEmpate.setNome(Constantes.X_STRING);
-        this.setValueApostaEquipeLotecaView(imageApostaPartidaLotecaEmpate, textApostaPartidaLotecaEmpate, equipeDTOEmpate);
+        this.setValueApostaEquipeLotecaView(imageApostaPartidaLotecaEmpate, textApostaPartidaLotecaEmpate, equipeDTOEmpate, equipeDTOEmpate.getNome());
     }
 
-    private void setValueApostaEquipeLotecaView(ImageView imageView, TextView apostaEquipeLotecaView, EquipeDTO equipeDTO) {
-
-        String equipeNome = "";
-
+    private void setValueApostaEquipeLotecaView(ImageView imageView, TextView apostaEquipeLotecaView, EquipeDTO equipeDTO, String equipeNome) {
         imageView.setSelected(equipeDTO.getVitoria());
-
-        if (equipeDTO.getIndicadorSelecao() != null && !equipeDTO.getIndicadorSelecao()) {
-            equipeNome = String.format("%s/%s", equipeDTO.getNome(), equipeDTO.getSiglaPais());
-        } else {
-            equipeNome = equipeDTO.getNome();
-        }
         apostaEquipeLotecaView.setText(equipeNome);
         if (equipeDTO.getVitoria()) {
             apostaEquipeLotecaView.setTypeface(ViewUtils.getFontArialMT(getContext()), Typeface.BOLD);
