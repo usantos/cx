@@ -91,6 +91,14 @@ public class AppUtils {
         return cpf.replaceAll("[.-]", "").trim();
     }
 
+    public static String mascaraCPF(String cpf) {
+        if(cpf != null && cpf.length() == 11){
+            return  cpf.substring(0,3) + "." + cpf.substring(3,6) + "." + cpf.substring(6,9) + "-" + cpf.substring(9,11);
+        } else {
+            return "";
+        }
+    }
+
     public static List<String> listIntegerToListString(List<Integer> lista) {
 
         List<String> lines = new ArrayList<>();

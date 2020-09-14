@@ -551,7 +551,9 @@ public class ViewUtils {
             return aposta.getTipoConcurso().getDescricao().equalsIgnoreCase("ESPECIAL") ?
                     modalidadeDetalhada.getDescricaoEspecial():
                     modalidadeDetalhada.getDescricao();
-        }
+        } /*else {
+            return ModalidadeEnum.fromString(aposta.getModalidade());
+        }*/
         return "";
     }
 
@@ -562,7 +564,9 @@ public class ViewUtils {
             return aposta.getTipoConcurso().getDescricao().equalsIgnoreCase("ESPECIAL") ?
                     modalidadeDetalhada.getDescricaoEspecial():
                     modalidadeDetalhada.getDescricao();
-        }
+        } /*else {
+            return ModalidadeEnum.fromString(aposta.getModalidade());
+        }*/
         return "";
     }
 
