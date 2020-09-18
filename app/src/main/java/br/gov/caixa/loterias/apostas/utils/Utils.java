@@ -24,6 +24,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.DadosUsuarioToken;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.EquipeDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroEquipe;
 
 /**
  * Created by cedesbr450 on 12/04/18.
@@ -129,15 +130,35 @@ public class Utils {
     }
 
     public static String getUfTime(EquipeDTO equipeDTO){
-        String uf =  "/";
+        String uf =  "";
 
-        if (equipeDTO != null && equipeDTO.getSiglaPais() != null ) {
-            if(!equipeDTO.getSiglaPais().equalsIgnoreCase("BRA") ||
-                    (equipeDTO.getSiglaPais().equalsIgnoreCase("BRA") &&
-                            equipeDTO.getUf().equalsIgnoreCase("DF"))){
-                uf += "/" + equipeDTO.getSiglaPais() != null ? equipeDTO.getSiglaPais() : "";
+        if (equipeDTO != null && equipeDTO.getNome() != null && equipeDTO.getIndicadorSelecao() != null) {
+            if(equipeDTO.getIndicadorSelecao() || (equipeDTO.getNome().equalsIgnoreCase("BRASIL"))){
+                uf +=  equipeDTO.getSiglaPais() != null
+                        && !equipeDTO.getSiglaPais().isEmpty() ?
+                        "/" + equipeDTO.getSiglaPais() : "";
             } else {
-                uf += "/" + equipeDTO.getUf() != null ?  equipeDTO.getUf() : "";
+                uf += equipeDTO.getUf() != null
+                        && !equipeDTO.getUf().isEmpty() ?
+                        "/" + equipeDTO.getUf() : "";
+            }
+        }
+
+        return uf;
+    }
+
+    public static String getUfTime(ParametroEquipe equipe){
+        String uf =  "";
+
+        if (equipe != null && equipe.getNome() != null && equipe.getIndicadorSelecao() != null) {
+            if(equipe.getIndicadorSelecao() || (equipe.getNome().equalsIgnoreCase("BRASIL"))){
+                uf +=  equipe.getSiglaPais() != null &&
+                        !equipe.getSiglaPais().isEmpty() ?
+                        "/" + equipe.getSiglaPais() : "";
+            } else {
+                uf += equipe.getUf() != null &&
+                        !equipe.getUf().isEmpty() ?
+                        "/" + equipe.getUf() : "";
             }
         }
 

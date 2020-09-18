@@ -14,6 +14,7 @@ import org.androidannotations.annotations.ViewById;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroPartida;
 import br.gov.caixa.loterias.apostas.utils.EscudoEquipeUtil;
+import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.view.adapter.LotecaAdapter;
 
 /**
@@ -139,13 +140,13 @@ public class PartidaView extends LinearLayout {
         EscudoEquipeUtil.setEscudo(this.getContext(), parametroPartida.getEquipe1(), lotecaTimeUm.getItemImage());
 
         lotecaTimeUm.getItemTitle().setText(parametroPartida.getEquipe1().getNome());
-        lotecaTimeUm.getItemDescription().setText(parametroPartida.getEquipe1().getIndicadorSelecao() ? "" : parametroPartida.getEquipe1().getSiglaPais());
+        lotecaTimeUm.getItemDescription().setText(Utils.getUfTime(parametroPartida.getEquipe1()));
 
         lotecaTimeDois.setSelected(parametroPartida.getEquipe2().isSelecionado());
 //        lotecaTimeDois.getItemImage().setImageResource(R.drawable.time);
         EscudoEquipeUtil.setEscudo(this.getContext(), parametroPartida.getEquipe2(), lotecaTimeDois.getItemImage());
         lotecaTimeDois.getItemTitle().setText(parametroPartida.getEquipe2().getNome());
-        lotecaTimeDois.getItemDescription().setText(parametroPartida.getEquipe2().getIndicadorSelecao() ? "" : parametroPartida.getEquipe2().getSiglaPais());
+        lotecaTimeDois.getItemDescription().setText(Utils.getUfTime(parametroPartida.getEquipe2()));
 
         lotecaEmpate.setSelected(parametroPartida.isEmpate());
 //        lotecaEmpate.getItemImage().setPadding(14,18,14,18);

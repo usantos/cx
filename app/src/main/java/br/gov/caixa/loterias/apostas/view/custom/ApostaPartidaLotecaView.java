@@ -14,6 +14,7 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.EquipeDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PartidaLotecaDTO;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
+import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
 /**
@@ -58,17 +59,7 @@ public class ApostaPartidaLotecaView extends LinearLayout {
     }
 
     private void setValueApostaEquipeLotecaView(ApostaEquipeLotecaView apostaEquipeLotecaView, EquipeDTO equipeDTO) {
-
-        String equipeNome = "";
-
-        apostaEquipeLotecaView.getImageApostaPartidaLoteca().setSelected(equipeDTO.getVitoria());
-
-        if (equipeDTO.getIndicadorSelecao() != null && !equipeDTO.getIndicadorSelecao()) {
-            equipeNome = String.format("%s/%s", equipeDTO.getNome(), equipeDTO.getSiglaPais());
-        } else {
-            equipeNome = equipeDTO.getNome();
-        }
-        apostaEquipeLotecaView.getTextApostaPartidaLoteca().setText(equipeNome);
+        apostaEquipeLotecaView.getTextApostaPartidaLoteca().setText(Utils.getEquipeComUf(equipeDTO));
         if (equipeDTO.getVitoria()) {
             apostaEquipeLotecaView.getTextApostaPartidaLoteca().setTypeface(ViewUtils.getFontArialMT(getContext()), Typeface.BOLD);
         }
