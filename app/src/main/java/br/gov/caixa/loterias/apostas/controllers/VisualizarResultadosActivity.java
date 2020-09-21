@@ -283,6 +283,7 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
                 setBackground(R.color.lotecaclaro, R.color.lotecaescuro, R.drawable.background_trapeze_loteca);
                 configuraResultadoSuperior(response, ResultadoLotecaFragment.newInstance(response));
                 tvNumeroSorteio.setVisibility(View.GONE);
+                dataSorteio.setText(ViewUtils.textFuturaAndFuturaBold(this,getString(R.string.resultados_data_resultado, ("_"+response.getConcurso().getDataSorteio()+"_"))));
                 break;
             case LOTOGOL:
                 setBackground(R.color.lotogolclaro, R.color.lotogolescuro, R.drawable.background_trapeze_lotogol);

@@ -260,7 +260,11 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
 
         try {
             Date dataFormatada = formatterDate.parse(parametroSimulacao.getConcurso().getDataHoraSorteio());
-            ((TextView) dataSorteio.getActionView().findViewById(R.id.item_titulo)).setText(getResources().getString(R.string.sorteio));
+            if(tipoJogo.equals(ModalidadeEnum.LOTECA)) {
+                ((TextView) dataSorteio.getActionView().findViewById(R.id.item_titulo)).setText(getResources().getString(R.string.label_resultado));
+            } else {
+                ((TextView) dataSorteio.getActionView().findViewById(R.id.item_titulo)).setText(getResources().getString(R.string.sorteio));
+            }
             ((TextView) dataSorteio.getActionView().findViewById(R.id.item_descricao)).setText(formatterDateFinal.format(dataFormatada));
         } catch (ParseException e) {
             e.printStackTrace();
