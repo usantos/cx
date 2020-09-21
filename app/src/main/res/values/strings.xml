@@ -934,6 +934,7 @@
     <string name="espaco_e_espaco">&#160;e&#160;</string>
     <string name="percent_d_hora">%d hora</string>
     <string name="percent_d_horas">%d horas</string>
+    <string name="menos_uma_hora">Menos de uma hora</string>
     <string name="espaco_teimosinhas">&#160;Teimosinhas</string>
     <string name="espaco_teimosinha">&#160;Teimosinha</string>
     <string name="extra_compra_dto">CompraDTO</string>

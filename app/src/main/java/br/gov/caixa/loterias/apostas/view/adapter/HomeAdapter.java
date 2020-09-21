@@ -156,7 +156,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         Map mapComDiferencaDeDatas = computeDiff(new Date(), dataFechamentoSorteio);
 
         holder.tempoRestanteParaAposta.setText(retornaStringDias((Long) mapComDiferencaDeDatas.get(TimeUnit.DAYS))
-                +retornaStringHoras((Long) mapComDiferencaDeDatas.get(TimeUnit.DAYS), (Long) mapComDiferencaDeDatas.get(TimeUnit.HOURS)));
+                +retornaStringHoras((Long) mapComDiferencaDeDatas.get(TimeUnit.DAYS), (Long) mapComDiferencaDeDatas.get(TimeUnit.HOURS), activity));
 
         Glide.with(holder.itemView.getContext())
                 .load(estilo.getImagemCalendario())
@@ -270,7 +270,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         return context.getResources().getString(R.string.string_vazia);
     }
 
-    private String retornaStringHoras(Long dia, Long hora) {
+    private String retornaStringHoras(Long dia, Long hora, Activity activity) {
         String string;
         string = dia > 0 ? context.getResources().getString(R.string.espaco_e_espaco) : context.getResources().getString(R.string.string_vazia);
 
@@ -279,6 +279,10 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                 return string + String.format(Locale.getDefault(), context.getResources().getString(R.string.percent_d_hora), hora);
             }
             return string + String.format(Locale.getDefault(), context.getResources().getString(R.string.percent_d_horas), hora);
+        } else {
+            if (dia == 0){
+                return activity.getResources().getString(R.string.menos_uma_hora);
+            }
         }
         return context.getResources().getString(R.string.string_vazia);
     }
