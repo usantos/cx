@@ -52,7 +52,6 @@ import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO_;
-import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
@@ -155,10 +154,10 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         }
 
         if (tipoJogo == ModalidadeEnum.SUPER_7) {
-            imageQtdNumerosButton.setVisibility(View.INVISIBLE);
+            //imageQtdNumerosButton.setVisibility(View.INVISIBLE);
         }
-
-        if (tipoJogo == ModalidadeEnum.SUPER_7 && !DadosUsuarioBO.checarTutorialSuperSete()) {
+        //Tutorial permanente
+        if (tipoJogo == ModalidadeEnum.SUPER_7) { //&& !DadosUsuarioBO.checarTutorialSuperSete()) {
             startActivity(new Intent(this,TutorialSuperSeteActivity.class));
         }
     }
@@ -209,9 +208,9 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
             }
 
             case R.id.qtdNumerosButton: {
-                if (tipoJogo != ModalidadeEnum.SUPER_7) {
+               // if (tipoJogo != ModalidadeEnum.SUPER_7) {
                     modalNumeros();
-                }
+                //}
                 break;
             }
 
