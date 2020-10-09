@@ -765,6 +765,7 @@
     <string name="hh_mm_ss">HH:mm:ss</string>
     <string name="as_espacado">&#160;às&#160;</string>
     <string name="sorteio">Sorteio</string>
+    <string name="resultado">Resultado</string>
     <string name="ajuda">ajuda</string>
     <string name="seus_dados_pessoais">Estes são seus dados pessoais. Por favor, mantenha-os sempre atualizados.</string>
     <string name="evento_entrou_editar_cadastro">ENTROU_EDITAR_CADASTRO</string>

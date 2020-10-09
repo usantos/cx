@@ -133,7 +133,12 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
 
         try {
             Date dataFormatada = formatterDate.parse(parametroSimulacao.getConcurso().getDataHoraSorteio());
-            ((TextView) dataSorteio.getActionView().findViewById(R.id.item_titulo)).setText(getResources().getString(R.string.sorteio));
+            if (parametroSimulacao.getConcurso().getModalidade().toString() == "LOTECA"){
+                ((TextView) dataSorteio.getActionView().findViewById(R.id.item_titulo)).setText(getResources().getString(R.string.resultado));
+            }else{
+                ((TextView) dataSorteio.getActionView().findViewById(R.id.item_titulo)).setText(getResources().getString(R.string.sorteio));
+            }
+
             ((TextView) dataSorteio.getActionView().findViewById(R.id.item_descricao)).setText(formatterDateFinal.format(dataFormatada));
         } catch (Exception e) {
             e.printStackTrace();
