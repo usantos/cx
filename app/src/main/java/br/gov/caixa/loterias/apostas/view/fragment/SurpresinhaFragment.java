@@ -4,9 +4,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.AppCompatCheckBox;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -19,6 +16,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.appcompat.widget.AppCompatCheckBox;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 
 import com.google.gson.Gson;
 

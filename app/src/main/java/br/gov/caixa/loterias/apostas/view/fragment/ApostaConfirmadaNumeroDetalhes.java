@@ -1,13 +1,14 @@
 package br.gov.caixa.loterias.apostas.view.fragment;
 
-import android.support.constraint.ConstraintLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;

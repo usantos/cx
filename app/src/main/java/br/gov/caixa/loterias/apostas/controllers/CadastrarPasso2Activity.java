@@ -2,8 +2,7 @@ package br.gov.caixa.loterias.apostas.controllers;
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.AppCompatCheckBox;
+
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -17,6 +16,9 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.AppCompatCheckBox;
 
 import com.android.volley.VolleyError;
 import com.github.pinball83.maskededittext.MaskedEditText;

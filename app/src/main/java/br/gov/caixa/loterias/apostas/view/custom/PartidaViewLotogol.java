@@ -1,7 +1,6 @@
 package br.gov.caixa.loterias.apostas.view.custom;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
@@ -9,6 +8,8 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
 import org.apache.commons.lang.StringUtils;
+
+import javax.annotation.Nullable;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroPartida;

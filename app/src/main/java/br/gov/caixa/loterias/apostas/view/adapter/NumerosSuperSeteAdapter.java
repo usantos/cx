@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
-import android.support.v4.content.ContextCompat;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -12,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.TextView;
+
+import androidx.core.content.ContextCompat;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/carrinhoScrollView"
@@ -8,7 +8,7 @@
 
     <include layout="@layout/app_bar_degrade_pesquisa" />
 
-    <android.support.constraint.Guideline
+    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/gl_toolbar"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -23,7 +23,7 @@
         app:layout_constraintBottom_toTopOf="@id/cl_tab_bar"
         app:layout_constraintTop_toTopOf="@id/gl_toolbar">
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -82,10 +82,10 @@
                 android:layout_height="170dp"
                 app:layout_constraintTop_toBottomOf="@id/pb_loading"/>
 
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_tab_bar"
         android:layout_width="match_parent"
         android:layout_height="94dp"
@@ -93,7 +93,7 @@
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent">
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_carrinhos_favoritos"
             android:layout_width="80dp"
             android:layout_height="match_parent"
@@ -125,9 +125,9 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/iv_carrinho_fav" />
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_total"
             android:layout_width="80dp"
             android:layout_marginRight="10dp"
@@ -167,9 +167,9 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_valor_total_carrinho" />
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
         android:id="@+id/btn_nova_aposta"
@@ -206,5 +206,5 @@
         app:layout_constraintLeft_toRightOf="@+id/cl_tab_bar"
         app:layout_constraintRight_toLeftOf="@+id/cl_tab_bar" />
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
 

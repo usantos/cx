@@ -1,10 +1,6 @@
 package br.gov.caixa.loterias.apostas.view.adapter;
 
 import android.content.Context;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +9,11 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
 import com.daimajia.swipe.SimpleSwipeListener;
@@ -175,7 +176,7 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
     private void configuraFragment(ApostaFavoritaDTO aposta, ViewHolder holder) {
         FragmentManager fm          = activity.getSupportFragmentManager();
         int             containerId = holder.containerFragment.getId();
-        Fragment        oldFragment = fm.findFragmentById(containerId);
+        Fragment oldFragment = fm.findFragmentById(containerId);
         if(oldFragment != null) {
             fm.beginTransaction().remove(oldFragment).commit();
         }
@@ -361,7 +362,7 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
     }
 
     private void popupAdicionarCarrinhoFavoritas(List<ParametroSimulacao> arrayConcursos, Long idApostaFavorita) {
-        android.support.v4.app.FragmentManager fm = ((FavoritasActivity) context).getSupportFragmentManager();
+        FragmentManager fm = ((FavoritasActivity) context).getSupportFragmentManager();
         AdicionarCarrinhoFavoritasView adicionarCarrinhoFavoritasView = AdicionarCarrinhoFavoritasView.newInstance();
         adicionarCarrinhoFavoritasView.arrayConcursos = arrayConcursos;
         adicionarCarrinhoFavoritasView.idApostaFavorita = idApostaFavorita;

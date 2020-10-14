@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -7,7 +7,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".view.fragment.JogoResponsavelConhecaFragment">
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_margin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -94,7 +94,7 @@
             app:layout_constraintStart_toEndOf="@id/iv_seta_2"
             app:layout_constraintTop_toTopOf="@+id/iv_seta_2" />
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
         android:id="@+id/tv_alem_disso"
@@ -157,4 +157,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_ober_mais_informacoes" />
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

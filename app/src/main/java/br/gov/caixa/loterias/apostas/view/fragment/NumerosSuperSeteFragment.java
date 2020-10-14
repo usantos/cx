@@ -3,14 +3,16 @@ package br.gov.caixa.loterias.apostas.view.fragment;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
+
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;

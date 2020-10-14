@@ -5,8 +5,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
-import android.support.v4.app.ActivityCompat;
 import android.view.inputmethod.InputMethodManager;
+
+import androidx.core.app.ActivityCompat;
 
 import java.util.ArrayList;
 import java.util.List;

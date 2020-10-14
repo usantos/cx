@@ -3,10 +3,11 @@ package br.gov.caixa.loterias.apostas.view.custom;
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.content.Context;
-import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+
+import androidx.appcompat.app.AlertDialog;
 
 import br.gov.caixa.loterias.apostas.R;
 

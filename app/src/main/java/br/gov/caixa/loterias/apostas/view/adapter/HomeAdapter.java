@@ -2,9 +2,7 @@ package br.gov.caixa.loterias.apostas.view.adapter;
 
 import android.app.Activity;
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.RecyclerView;
+
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
@@ -16,6 +14,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;

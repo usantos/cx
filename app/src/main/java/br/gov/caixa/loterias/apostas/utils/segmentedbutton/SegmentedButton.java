@@ -27,12 +27,13 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
-import android.support.v4.content.ContextCompat;
 import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.view.View;
+
+import androidx.core.content.ContextCompat;
 
 import br.gov.caixa.loterias.apostas.R;
 

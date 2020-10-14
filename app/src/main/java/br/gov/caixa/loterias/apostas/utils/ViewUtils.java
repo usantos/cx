@@ -15,12 +15,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
-import android.support.constraint.ConstraintLayout;
-import android.support.constraint.ConstraintSet;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.graphics.ColorUtils;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.DialogTitle;
 import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
@@ -35,6 +29,13 @@ import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.DialogTitle;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.ColorUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.lang.reflect.InvocationTargetException;

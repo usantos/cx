@@ -1,9 +1,10 @@
 package br.gov.caixa.loterias.apostas.utils.segmentedbutton;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
+
+import androidx.annotation.Nullable;
 
 public class BackgroundView extends View {
     public BackgroundView(Context context) {

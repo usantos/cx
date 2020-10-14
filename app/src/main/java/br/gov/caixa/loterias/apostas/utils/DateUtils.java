@@ -1,7 +1,8 @@
 package br.gov.caixa.loterias.apostas.utils;
 
-import android.support.annotation.NonNull;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 import java.text.DateFormat;
 import java.text.DateFormatSymbols;

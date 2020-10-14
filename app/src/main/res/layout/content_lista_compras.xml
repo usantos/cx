@@ -8,7 +8,7 @@
     tools:context="br.gov.caixa.loterias.apostas.controllers.ListaComprasActivity"
     tools:showIn="@layout/activity_lista_compras">
 
-    <android.support.v4.widget.NestedScrollView
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollViewContentViewCompras"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -61,7 +61,7 @@
                 android:layout_marginHorizontal="17dp"
                 android:background="@color/cinzaclaro" />
 
-            <android.support.v7.widget.RecyclerView
+            <androidx.appcompat.widget.RecyclerView
                 android:id="@+id/recyclerCompras"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -76,7 +76,7 @@
                 android:padding="5dp"
                 android:visibility="gone" />
         </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
+    </androidx.core.widget.NestedScrollView>
 
     <LinearLayout
         android:layout_width="match_parent"

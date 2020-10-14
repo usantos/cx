@@ -2,14 +2,15 @@ package br.gov.caixa.loterias.apostas.controllers;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ScrollView;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.android.volley.VolleyError;
 

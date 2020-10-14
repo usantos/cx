@@ -6,7 +6,6 @@ package br.gov.caixa.loterias.apostas.view.adapter;
 
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +13,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.core.content.ContextCompat;
 
 import java.util.ArrayList;
 

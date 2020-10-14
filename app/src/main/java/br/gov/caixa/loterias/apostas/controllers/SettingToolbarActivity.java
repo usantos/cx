@@ -1,10 +1,11 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
 import android.content.Intent;
-import android.support.v4.content.res.ResourcesCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
 
 import br.gov.caixa.loterias.apostas.R;
 

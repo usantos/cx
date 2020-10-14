@@ -3,12 +3,7 @@ package br.gov.caixa.loterias.apostas.controllers;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -18,6 +13,13 @@ import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;

@@ -6,22 +6,20 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.BottomSheetDialogFragment;
-import android.support.v4.app.Fragment;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
-
-/**
- * A simple {@link Fragment} subclass.
- */
 
 
 public class BottomSheetFragment  extends BottomSheetDialogFragment {
@@ -37,7 +35,8 @@ public class BottomSheetFragment  extends BottomSheetDialogFragment {
         return R.style.AppBottomSheetDialogTheme;
     }
 
-    @Nullable @Override public View onCreateView(
+    @Nullable
+    @Override public View onCreateView(
             @NonNull LayoutInflater inflater,
             @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState

@@ -2,11 +2,12 @@ package br.gov.caixa.loterias.apostas.controllers;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
 
@@ -97,7 +98,7 @@ public class CarrinhosFavoritosActivity extends AppCompatActivity {
 			tvSemCarrinhos.setVisibility(View.GONE);
 			adapter = new CarrinhosFavoritosAdapter(result.getPayload(), CarrinhosFavoritosActivity.this);
 			rvCarrinhosFavoritos.setAdapter(adapter);
-			RecyclerView.LayoutManager layout = new LinearLayoutManager(CarrinhosFavoritosActivity.this, LinearLayoutManager.VERTICAL, false);
+			RecyclerView.LayoutManager layout = new LinearLayoutManager(CarrinhosFavoritosActivity.this, RecyclerView.VERTICAL, false);
 			rvCarrinhosFavoritos.setLayoutManager(layout);
 		} else {
 			rvCarrinhosFavoritos.setVisibility(View.GONE);
@@ -108,6 +109,7 @@ public class CarrinhosFavoritosActivity extends AppCompatActivity {
 
 	//region Support Methods
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
 		if (requestCode == RESPOSTAS_APOSTAS_CODIGO) {
 			switch (resultCode) {
 				case RESPOSTA_EXCLUIU_CARRINHO:

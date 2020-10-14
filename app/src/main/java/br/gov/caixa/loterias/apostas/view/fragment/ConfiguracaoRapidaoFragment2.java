@@ -3,8 +3,6 @@ package br.gov.caixa.loterias.apostas.view.fragment;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
@@ -13,6 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.NumberPicker;
 import android.widget.TextView;
+
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.flexbox.AlignItems;
 import com.google.android.flexbox.FlexDirection;

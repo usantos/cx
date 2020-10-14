@@ -6,14 +6,16 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
+
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;

@@ -1,4 +1,4 @@
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -6,7 +6,7 @@
     tools:context="br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaPartidaFragment">
 
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_premio_pago"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -54,7 +54,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/tv_premio_pago_tit"
             app:layout_constraintTop_toTopOf="parent" />
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
         android:id="@+id/apostaConfirmadaLotecaLinearLayout"
@@ -249,4 +249,4 @@
 
     </LinearLayout>
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,15 +2,17 @@ package br.gov.caixa.loterias.apostas.view.fragment;
 
 
 import android.graphics.Typeface;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;

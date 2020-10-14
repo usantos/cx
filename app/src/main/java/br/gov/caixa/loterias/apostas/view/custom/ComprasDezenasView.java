@@ -1,16 +1,17 @@
 package br.gov.caixa.loterias.apostas.view.custom;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
@@ -96,7 +97,7 @@ public class ComprasDezenasView extends LinearLayout {
     private void configuraFragment(ApostaDTO aposta) {
         FragmentManager fm          = activity.getSupportFragmentManager();
         int             containerId = rl_container_fragment.getId();
-        Fragment        oldFragment = fm.findFragmentById(containerId);
+        Fragment oldFragment = fm.findFragmentById(containerId);
         if (oldFragment != null) {
             fm.beginTransaction().remove(oldFragment).commit();
         }

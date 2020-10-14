@@ -1,7 +1,6 @@
 package br.gov.caixa.loterias.apostas.view.custom;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
@@ -15,6 +14,8 @@ import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.annotation.Nullable;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DezenaLotogol;

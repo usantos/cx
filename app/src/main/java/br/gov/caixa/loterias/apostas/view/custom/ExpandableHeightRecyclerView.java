@@ -1,11 +1,13 @@
 package br.gov.caixa.loterias.apostas.view.custom;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.RecyclerView;
+
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by joafilho on 02/01/2018.

@@ -2,12 +2,13 @@ package br.gov.caixa.loterias.apostas.controllers;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.R;

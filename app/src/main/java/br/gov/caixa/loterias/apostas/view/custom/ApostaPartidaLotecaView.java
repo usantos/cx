@@ -2,13 +2,14 @@ package br.gov.caixa.loterias.apostas.view.custom;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
+
+import javax.annotation.Nullable;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.EquipeDTO;

@@ -1,7 +1,8 @@
 package br.gov.caixa.loterias.apostas.utils;
 
 import android.content.Context;
-import android.support.v7.app.AlertDialog;
+
+import androidx.appcompat.app.AlertDialog;
 
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 

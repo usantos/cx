@@ -2,18 +2,20 @@ package br.gov.caixa.loterias.apostas.view.adapter;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
 import com.daimajia.swipe.SwipeLayout;
@@ -236,7 +238,7 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
     }
 
     private void configuraFragment(IdentificaoDeUmaApostaDas8Modalidades aposta, ApostaHolder holder) {
-        FragmentManager     fm                  = parentActivity.getSupportFragmentManager();
+        FragmentManager fm                  = parentActivity.getSupportFragmentManager();
         int containerId = holder.containerFragment.getId();
         Fragment oldFragment = fm.findFragmentById(containerId);
         if(oldFragment != null) {

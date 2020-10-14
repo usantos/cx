@@ -5,9 +5,11 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.multidex.MultiDex;
-import android.support.multidex.MultiDexApplication;
-import android.support.v7.app.AlertDialog;
+
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.multidex.MultiDex;
+import androidx.multidex.MultiDexApplication;
 
 import com.android.volley.VolleyError;
 

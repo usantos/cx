@@ -1,13 +1,15 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
 import android.graphics.Typeface;
+
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.utils.FirebaseManager;
@@ -16,6 +18,7 @@ import br.gov.caixa.loterias.apostas.view.fragment.BottomSheetFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.JogoResponsavelApostadorFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.JogoResponsavelConhecaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.JogoResponsavelPrincipiosFragment;
+
 
 public class JogoResponsavelActivity extends AppCompatActivity {
 

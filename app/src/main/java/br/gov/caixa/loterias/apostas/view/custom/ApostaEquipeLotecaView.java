@@ -1,7 +1,6 @@
 package br.gov.caixa.loterias.apostas.view.custom;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -9,6 +8,8 @@ import android.widget.TextView;
 
 import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
+
+import javax.annotation.Nullable;
 
 import br.gov.caixa.loterias.apostas.R;
 

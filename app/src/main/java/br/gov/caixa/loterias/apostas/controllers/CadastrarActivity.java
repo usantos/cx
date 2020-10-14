@@ -1,14 +1,16 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
 import android.content.Intent;
-import android.support.v4.content.res.ResourcesCompat;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.AppCompatCheckBox;
+
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.AppCompatCheckBox;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.android.volley.VolleyError;
 import com.github.pinball83.maskededittext.MaskedEditText;

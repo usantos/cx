@@ -8,11 +8,6 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.AppCompatCheckBox;
-import android.support.v7.widget.LinearLayoutManager;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -31,6 +26,12 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatCheckBox;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.android.volley.VolleyError;
 

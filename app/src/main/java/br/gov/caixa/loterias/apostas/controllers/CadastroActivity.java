@@ -1,9 +1,7 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
+
 import android.app.Dialog;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -11,6 +9,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.VolleyError;
 import com.github.pinball83.maskededittext.MaskedEditText;

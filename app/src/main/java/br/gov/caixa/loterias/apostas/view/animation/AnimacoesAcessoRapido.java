@@ -5,11 +5,12 @@ import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.TransitionDrawable;
-import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+
+import androidx.core.content.ContextCompat;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;

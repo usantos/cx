@@ -28,9 +28,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.v4.view.animation.FastOutLinearInInterpolator;
-import android.support.v4.view.animation.FastOutSlowInInterpolator;
-import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -49,6 +46,10 @@ import android.view.animation.LinearInterpolator;
 import android.view.animation.OvershootInterpolator;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+
+import androidx.interpolator.view.animation.FastOutLinearInInterpolator;
+import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
+import androidx.interpolator.view.animation.LinearOutSlowInInterpolator;
 
 import java.util.ArrayList;
 
@@ -362,7 +363,7 @@ public class SegmentedButtonGroup extends LinearLayout {
 
     private void initInterpolations() {
         ArrayList<Class> interpolatorList = new ArrayList<Class>() {{
-            add(FastOutSlowInInterpolator.class);
+            add(androidx.interpolator.view.animation.FastOutSlowInInterpolator.class);
             add(BounceInterpolator.class);
             add(LinearInterpolator.class);
             add(DecelerateInterpolator.class);
@@ -371,8 +372,8 @@ public class SegmentedButtonGroup extends LinearLayout {
             add(AccelerateDecelerateInterpolator.class);
             add(AccelerateInterpolator.class);
             add(AnticipateOvershootInterpolator.class);
-            add(FastOutLinearInInterpolator.class);
-            add(LinearOutSlowInInterpolator.class);
+            add(androidx.interpolator.view.animation.FastOutLinearInInterpolator.class);
+            add(androidx.interpolator.view.animation.LinearOutSlowInInterpolator.class);
             add(OvershootInterpolator.class);
         }};
 
