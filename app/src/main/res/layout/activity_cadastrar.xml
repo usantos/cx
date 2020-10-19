@@ -58,7 +58,7 @@
                 style="@style/ArialMT"/>
 
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/editTextCpf"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -79,9 +79,9 @@
                     android:enabled="false"
                     android:alpha="0.3"/>
 
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/editTextNome"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -99,7 +99,7 @@
                     android:inputType="textPersonName"
                     android:enabled="false"
                     android:alpha="0.3"/>
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
 
             <br.gov.caixa.loterias.apostas.utils.segmentedbutton.SegmentedButtonGroup
@@ -145,7 +145,7 @@
             </br.gov.caixa.loterias.apostas.utils.segmentedbutton.SegmentedButtonGroup>
 
 
-            <!--<android.support.design.widget.TextInputLayout-->
+            <!--<com.google.android.material.textfield.TextInputLayout-->
                 <!--android:id="@+id/editTextNomeMae"-->
                 <!--android:layout_width="match_parent"-->
                 <!--android:layout_height="wrap_content"-->
@@ -161,9 +161,9 @@
                     <!--style="@style/editTextRegisterTheme"-->
                     <!--android:inputType="textPersonName"/>-->
 
-            <!--</android.support.design.widget.TextInputLayout>-->
+            <!--</com.google.android.material.textfield.TextInputLayout>-->
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/editTextCEP"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -180,10 +180,10 @@
                     android:inputType="number"
                     app:mask="*****-***"
                     app:notMaskedSymbol="*" />
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/editTextUF"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -200,10 +200,10 @@
                     android:focusableInTouchMode="false"
                     android:hint="@string/title_uf"
                     android:inputType="textPersonName"/>
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/editTextMunicipio"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -220,9 +220,9 @@
                     android:focusableInTouchMode="false"
                     android:hint="@string/label_municipio"
                     android:inputType="textPersonName" />
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/editTextEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -240,7 +240,7 @@
                     android:inputType="textEmailAddress"
                     android:enabled="false"
                     android:alpha="0.3"/>
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
             <!--<Button-->
                 <!--android:id="@+id/buttonContinuarIntroducao"-->

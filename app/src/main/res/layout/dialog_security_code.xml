@@ -12,7 +12,7 @@
         android:textAlignment="center"
         />
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -27,6 +27,6 @@
             android:inputType="textPassword"
             android:maxLength="3"
             android:textSize="12dp" />
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
 </LinearLayout>

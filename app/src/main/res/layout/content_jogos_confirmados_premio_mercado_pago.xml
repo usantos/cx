@@ -94,7 +94,7 @@
                     android:textColor="@color/cinza"
                     android:textSize="14.2dp" />
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/ayout_emailPremioMercadoPagoEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -111,7 +111,7 @@
                         android:textColorHint="@color/azulFormNovoTipoPagamento"
                         android:textSize="16sp" />
 
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>
 
