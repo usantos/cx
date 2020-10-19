@@ -278,7 +278,7 @@
                 android:textSize="12sp"
                 android:visibility="invisible" />
 
-            <androidx.appcompat.widget.RecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/dezenasRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -61,7 +61,7 @@
                 android:layout_marginHorizontal="17dp"
                 android:background="@color/cinzaclaro" />
 
-            <androidx.appcompat.widget.RecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerCompras"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

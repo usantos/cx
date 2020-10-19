@@ -6,7 +6,7 @@
 
     <include layout="@layout/spinner_date"/>
 
-    <androidx.appcompat.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/apostasConfirmadasRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

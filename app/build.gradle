@@ -49,10 +49,10 @@ android {
 
     flavorDimensions 'default'
     productFlavors {
-        prd {
+        newPrd {
             dimension "default"
             buildConfigField "boolean", "CAIXA_NETWORK_STUB", "false"
-            buildConfigField "String", "CAIXA_BASE_URL_SILCE", "\"https://www.loteriasonline.caixa.gov.br/silce-servico-rest/rest/v1/\""
+            buildConfigField "String", "CAIXA_BASE_URL_SILCE", "\"https://mobileloterias.caixa.gov.br/silce-servico-rest/rest/v1/\""
             buildConfigField "String", "PUBLIC_KEY_MP", "\"APP_USR-7cebaf99-f15f-4ef2-a9b4-61d3ca29b279\""
             buildConfigField "String", "SSO_CLIENT_ID", "\"cli-mob-lce\""
             buildConfigField "String", "SSO_REDIRECT", "\"br.gov.caixa.caixaloterias:/oauth2Callback\""
@@ -70,14 +70,14 @@ android {
                     scheme               : "https"
             ]
         }
-        dev {
+        prd {
             dimension "default"
             buildConfigField "boolean", "CAIXA_NETWORK_STUB", "false"
-            buildConfigField "String", "CAIXA_BASE_URL_SILCE", "\"http://simlo.des.caixa/silce-servico-rest/rest/v1/\""
-            buildConfigField "String", "PUBLIC_KEY_MP", "\"TEST-946a3077-5cf1-446c-bab3-e3a266357e9f\""
+            buildConfigField "String", "CAIXA_BASE_URL_SILCE", "\"https://www.loteriasonline.caixa.gov.br/silce-servico-rest/rest/v1/\""
+            buildConfigField "String", "PUBLIC_KEY_MP", "\"APP_USR-7cebaf99-f15f-4ef2-a9b4-61d3ca29b279\""
             buildConfigField "String", "SSO_CLIENT_ID", "\"cli-mob-lce\""
             buildConfigField "String", "SSO_REDIRECT", "\"br.gov.caixa.caixaloterias:/oauth2Callback\""
-            buildConfigField "String", "URL_SSO", "\"https://logindes.caixa.gov.br\""
+            buildConfigField "String", "URL_SSO", "\"https://login.caixa.gov.br\""
             buildConfigField "String", "URL_ENDPOINT_TOKEN", "\"auth/realms/internet/protocol/openid-connect/token\""
             buildConfigField "String", "URL_SSO_TOKEN", "URL_SSO+\"/\"+URL_ENDPOINT_TOKEN"
             buildConfigField "String", "URL_SSO_AUTH", "URL_SSO+\"/auth/realms/internet/protocol/openid-connect/auth\""
