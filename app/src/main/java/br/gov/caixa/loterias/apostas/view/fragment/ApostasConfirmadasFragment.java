@@ -20,6 +20,7 @@ import org.androidannotations.annotations.FragmentArg;
 import org.androidannotations.annotations.ViewById;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -130,7 +131,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
     protected void dateSelectorBtn() {
         if (mesesAnosDisponiveis != null) {
             MonthYearPickerDialog pd = MonthYearPickerDialog_.builder()
-                    .mesesAnos(mesesAnosDisponiveis)
+                    .mesesAnos((ArrayList<MesAnoDTO>) mesesAnosDisponiveis)
                     .mesDefault(page != null ? page.getMes() : null)
                     .anoDefault(page != null ? page.getAno() : null)
                     .build();

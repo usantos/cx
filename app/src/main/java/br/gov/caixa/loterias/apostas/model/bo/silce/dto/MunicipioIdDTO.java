@@ -14,7 +14,7 @@ package br.gov.caixa.loterias.apostas.model.bo.silce.dto;
 
 import com.google.gson.annotations.SerializedName;
 
-import org.parceler.Parcel;
+import java.io.Serializable;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -23,8 +23,7 @@ import io.swagger.annotations.ApiModelProperty;
  * Município
  **/
 @ApiModel(description = "Município")
-@Parcel
-public class MunicipioIdDTO {
+public class MunicipioIdDTO implements Serializable {
 
     @SerializedName("idUF")
     protected Long idUF = null;

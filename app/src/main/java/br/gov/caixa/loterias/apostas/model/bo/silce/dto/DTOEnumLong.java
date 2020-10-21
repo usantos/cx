@@ -14,7 +14,7 @@ package br.gov.caixa.loterias.apostas.model.bo.silce.dto;
 
 import com.google.gson.annotations.SerializedName;
 
-import org.parceler.Parcel;
+import java.io.Serializable;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -23,8 +23,7 @@ import io.swagger.annotations.ApiModelProperty;
  * Esta entidade é utilizada para representar domínios, que tem apenas os atributos chave/valor
  **/
 @ApiModel(description = "Esta entidade é utilizada para representar domínios, que tem apenas os atributos chave/valor")
-@Parcel
-public class DTOEnumLong {
+public class DTOEnumLong implements Serializable {
     @SerializedName("valor")
     protected Long valor = null;
     @SerializedName("descricao")

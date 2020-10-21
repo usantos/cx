@@ -12,17 +12,18 @@
 
 package br.gov.caixa.loterias.apostas.model.bo.silce.dto;
 
-import io.swagger.annotations.*;
 import com.google.gson.annotations.SerializedName;
 
-import org.parceler.Parcel;
+import java.io.Serializable;
+
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * Objeto que contêm valor de um mês gregoriano, de 1 a 12, e a descrição deste mês.
  **/
 @ApiModel(description = "Objeto que contêm valor de um mês gregoriano, de 1 a 12, e a descrição deste mês.")
-@Parcel
-public class MesDTO {
+public class MesDTO implements Serializable {
   
   @SerializedName("descricao")
   protected String descricao = null;

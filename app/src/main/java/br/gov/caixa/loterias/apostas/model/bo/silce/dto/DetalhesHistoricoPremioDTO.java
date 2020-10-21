@@ -2,7 +2,7 @@ package br.gov.caixa.loterias.apostas.model.bo.silce.dto;
 
 import com.google.gson.annotations.SerializedName;
 
-import org.parceler.Parcel;
+import java.io.Serializable;
 
 import io.swagger.annotations.ApiModel;
 
@@ -12,8 +12,7 @@ import io.swagger.annotations.ApiModel;
  */
 
 @ApiModel(description = "")
-@Parcel
-public class DetalhesHistoricoPremioDTO {
+public class DetalhesHistoricoPremioDTO implements Serializable {
     @SerializedName("aposta")
     protected IdentificaoDeUmaApostaDas8Modalidades aposta = null;
     @SerializedName("premio")

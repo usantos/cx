@@ -14,16 +14,14 @@ package br.gov.caixa.loterias.apostas.model.bo.silce.dto;
 
 import com.google.gson.annotations.SerializedName;
 
-import org.parceler.Parcel;
-
+import java.io.Serializable;
 import java.util.List;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel(description = "")
-@Parcel
-public class ResultadoConcursoDTOResponse {
+public class ResultadoConcursoDTOResponse implements Serializable {
 
     @SerializedName("codigo")
     protected String codigo = null;

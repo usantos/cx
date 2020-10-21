@@ -17,12 +17,13 @@ import com.google.gson.annotations.SerializedName;
 
 import org.parceler.Parcel;
 
+import java.io.Serializable;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel(description = "")
-@Parcel
-public class EquipeDTO {
+public class EquipeDTO implements Serializable {
     @SerializedName("placar")
     protected String placar = null;
     @SerializedName("vitoria")

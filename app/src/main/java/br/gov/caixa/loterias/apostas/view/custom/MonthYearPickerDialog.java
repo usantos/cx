@@ -37,7 +37,7 @@ public class MonthYearPickerDialog extends DialogFragment {
     private Calendar cal = Calendar.getInstance();
 
     @FragmentArg
-    protected List<MesAnoDTO> mesesAnos;
+    protected ArrayList<MesAnoDTO> mesesAnos;
 
     @FragmentArg
     protected Integer anoDefault;

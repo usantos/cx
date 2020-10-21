@@ -1,14 +1,12 @@
 package br.gov.caixa.loterias.apostas.model.bo.silce.dto;
 
-import org.parceler.Parcel;
-
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 import io.swagger.annotations.ApiModel;
 
 @ApiModel(description = "")
-@Parcel
-public class PremiacaoMesDeSorteDTO {
+public class PremiacaoMesDeSorteDTO implements Serializable {
 
     protected Integer quantidadeGanhadores;
     protected BigDecimal valor;
