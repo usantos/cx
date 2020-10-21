@@ -15,9 +15,9 @@ package br.gov.caixa.loterias.apostas.model.bo.silce.dto;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import org.parceler.Parcel;
 import org.parceler.ParcelPropertyConverter;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,9 +30,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel(description = "")
-@Parcel
 public class
-IdentificaoDeUmaApostaDas8Modalidades<T> {
+IdentificaoDeUmaApostaDas8Modalidades<T> implements Serializable {
 
 	@SerializedName("id")
 	protected Long id = null;

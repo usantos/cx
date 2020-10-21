@@ -144,6 +144,7 @@ dependencies {
 
     //Serialização em Parcelable
     implementation "org.parceler:parceler-api:1.1.13"
+    annotationProcessor "org.parceler:parceler:1.1.13"
 
     //Android Annotations
     implementation "org.androidannotations:androidannotations-api:$AAVersion"

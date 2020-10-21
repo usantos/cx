@@ -6,7 +6,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
-
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,8 +19,7 @@ import androidx.core.content.ContextCompat;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 
-import org.parceler.Parcels;
-
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -181,7 +179,7 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
                     public void onResponse(CarrinhoDTOResponse response) {
                         DialogUtils.dismiss();
                         Bundle args = new Bundle();
-                        args.putParcelable(CARRINHO, Parcels.wrap(response.getPayload()));
+                        args.putSerializable(CARRINHO, (Serializable) response.getPayload());
                         startActivityForResult(new Intent(ConfirmadoInclusaoCarrinhoActivity.this, CarrinhoActivity.class).putExtras(args),0);
                         if (response.getRedirect() != null){
                             RedirectNetwork.checkRedirectSucesso( response.getRedirect(), ConfirmadoInclusaoCarrinhoActivity.this);

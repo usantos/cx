@@ -18,8 +18,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.android.volley.VolleyError;
 
-import org.parceler.Parcels;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -157,7 +155,7 @@ public class CarrinhoActivity extends AppCompatActivity {
     private void pegaExtras() {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            carrinho = Parcels.unwrap(bundle.getParcelable(CARRINHO));
+            carrinho = (CarrinhoDTO) bundle.getSerializable(CARRINHO);
             lerCarrinhoLocal = bundle.getBoolean(LER_CARRINHO_LOCAL);
         }
     }

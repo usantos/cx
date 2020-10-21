@@ -14,7 +14,6 @@ package br.gov.caixa.loterias.apostas.model.bo.silce.dto;
 
 import com.google.gson.annotations.SerializedName;
 
-import org.parceler.Parcel;
 import org.parceler.ParcelPropertyConverter;
 
 import java.io.Serializable;
@@ -27,7 +26,6 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel(description = "")
-@Parcel
 public class ResultadoConcursoDTO<T> implements Serializable {
 
     @SerializedName("municipioSorteio")
@@ -42,9 +40,6 @@ public class ResultadoConcursoDTO<T> implements Serializable {
     protected BigDecimal acumuladoParaProximoConcurso = null;
     @SerializedName("acumulou")
     protected Boolean acumulou = null;
-    @SerializedName("numerosSorteadosPrimeiroSorteio")
-    @ParcelPropertyConverter(ParcelsWrapperConverter.class)
-    protected T numerosSorteadosPrimeiroSorteio = null;
     @SerializedName("numerosSorteadosSegundoSorteio")
     protected List<Integer> numerosSorteadosSegundoSorteio = null;
     @SerializedName("partidasLotogol")
@@ -73,6 +68,9 @@ public class ResultadoConcursoDTO<T> implements Serializable {
     protected List<GanhadoresPorRegiaoDTO> ganhadoresPrimeiroSorteio = null;
     @SerializedName("ganhadoresSegundoSorteio")
     protected List<GanhadoresPorRegiaoDTO> ganhadoresSegundoSorteio = null;
+    @SerializedName("numerosSorteadosPrimeiroSorteio")
+    @ParcelPropertyConverter(ParcelsWrapperConverter.class)
+    protected T numerosSorteadosPrimeiroSorteio = null;
 
     /**
      **/

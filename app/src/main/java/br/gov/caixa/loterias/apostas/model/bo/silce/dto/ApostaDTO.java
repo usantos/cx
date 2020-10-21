@@ -14,9 +14,9 @@ package br.gov.caixa.loterias.apostas.model.bo.silce.dto;
 
 import com.google.gson.annotations.SerializedName;
 
-import org.parceler.Parcel;
 import org.parceler.ParcelPropertyConverter;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +26,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel(description = "")
-@Parcel
-public class ApostaDTO<T> {
+public class ApostaDTO<T> implements Serializable {
 
     @SerializedName("id")
     protected Long id = null;
@@ -45,9 +44,6 @@ public class ApostaDTO<T> {
     protected List<PartidaLotecaDTO> partidasLoteca = null;
     @SerializedName("legendas")
     protected List<String> legendas = null;
-    @SerializedName(value = "numerosSelecionados")
-    @ParcelPropertyConverter(ParcelsWrapperConverter.class)
-    protected T numerosSelecionados = null;
     @SerializedName("indicadorSurpresinha")
     protected DTOEnumInteger indicadorSurpresinha = null;
     @SerializedName("valor")
@@ -80,7 +76,9 @@ public class ApostaDTO<T> {
     protected Long vinculoEspelho = null;
     @SerializedName("quantidadeNumeros")
     protected Integer quantidadeNumeros = null;
-
+    @SerializedName(value = "numerosSelecionados")
+    @ParcelPropertyConverter(ParcelsWrapperConverter.class)
+    protected T numerosSelecionados = null;
     /**
      * Identificador da Aposta
      **/
