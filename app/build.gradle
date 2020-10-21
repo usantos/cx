@@ -8,12 +8,12 @@ android {
         config {
         }
     }
-    compileSdkVersion 28
+    compileSdkVersion 29
     buildToolsVersion '28.0.3'
     defaultConfig {
         applicationId "br.gov.caixa.loterias.apostas"
         minSdkVersion 21
-        targetSdkVersion 28
+        targetSdkVersion 29
 
         //version code = minSdkVersion + versionName(sem pontuação) + versão interna
         versionCode 2110381
