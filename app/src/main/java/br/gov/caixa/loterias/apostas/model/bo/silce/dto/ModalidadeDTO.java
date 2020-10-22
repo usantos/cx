@@ -17,11 +17,13 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel(description = "")
-public class ModalidadeDTO implements Parcelable {
+public class ModalidadeDTO implements Serializable {
 
     @SerializedName("valor")
     protected Integer valor = null;
@@ -46,18 +48,6 @@ public class ModalidadeDTO implements Parcelable {
         descricao = in.readString();
         descricaoEspecial = in.readString();
     }
-
-    public static final Creator<ModalidadeDTO> CREATOR = new Creator<ModalidadeDTO>() {
-        @Override
-        public ModalidadeDTO createFromParcel(Parcel in) {
-            return new ModalidadeDTO(in);
-        }
-
-        @Override
-        public ModalidadeDTO[] newArray(int size) {
-            return new ModalidadeDTO[size];
-        }
-    };
 
     /**
      * Identificação da modalidade
@@ -128,22 +118,5 @@ public class ModalidadeDTO implements Parcelable {
                 "  descricaoEspecial: " + descricaoEspecial + "\n" +
                 "}\n";
         return sb;
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        if (valor == null) {
-            parcel.writeByte((byte) 0);
-        } else {
-            parcel.writeByte((byte) 1);
-            parcel.writeInt(valor);
-        }
-        parcel.writeString(descricao);
-        parcel.writeString(descricaoEspecial);
     }
 }

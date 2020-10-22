@@ -7,6 +7,7 @@ import com.google.gson.annotations.SerializedName;
 
 import org.parceler.ParcelPropertyConverter;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +17,7 @@ import io.swagger.annotations.ApiModelProperty;
 
 
 @ApiModel(description = "")
-public class ApostaCarrinhoFavoritoDTO<T> implements Parcelable {
+public class ApostaCarrinhoFavoritoDTO<T> implements Serializable {
 
 	@SerializedName("modalidade")
 	private ModalidadeDTO modalidade = null;
@@ -54,47 +55,6 @@ public class ApostaCarrinhoFavoritoDTO<T> implements Parcelable {
 			quantidadeNumeros = null;
 		} else {
 			quantidadeNumeros = in.readInt();
-		}
-	}
-
-	public static final Creator<ApostaCarrinhoFavoritoDTO> CREATOR = new Creator<ApostaCarrinhoFavoritoDTO>() {
-		@Override
-		public ApostaCarrinhoFavoritoDTO createFromParcel(Parcel in) {
-			return new ApostaCarrinhoFavoritoDTO(in);
-		}
-
-		@Override
-		public ApostaCarrinhoFavoritoDTO[] newArray(int size) {
-			return new ApostaCarrinhoFavoritoDTO[size];
-		}
-	};
-
-	@Override
-	public int describeContents() {
-		return 0;
-	}
-
-	@Override
-	public void writeToParcel(Parcel parcel, int i) {
-		parcel.writeParcelable(modalidade, i);
-		if (id == null) {
-			parcel.writeByte((byte) 0);
-		} else {
-			parcel.writeByte((byte) 1);
-			parcel.writeLong(id);
-		}
-		if (quantidadeTeimosinhas == null) {
-			parcel.writeByte((byte) 0);
-		} else {
-			parcel.writeByte((byte) 1);
-			parcel.writeInt(quantidadeTeimosinhas);
-		}
-		parcel.writeByte((byte) (espelho == null ? 0 : espelho ? 1 : 2));
-		if (quantidadeNumeros == null) {
-			parcel.writeByte((byte) 0);
-		} else {
-			parcel.writeByte((byte) 1);
-			parcel.writeInt(quantidadeNumeros);
 		}
 	}
 
