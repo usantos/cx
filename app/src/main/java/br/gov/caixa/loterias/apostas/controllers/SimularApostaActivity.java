@@ -514,7 +514,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
 
     public void mesDeSorteFragment(List<Integer> dezenasSelecionadas, boolean surpresinha) {
         fragmentManager.beginTransaction().replace(R.id.fragmentSimularApostas, MesesFragment_.builder().modalidadeEnum(tipoJogo).
-                parametroJogoDTO(parametroSimulacao).dezenasSelecionadas(dezenasSelecionadas).build()).commit();
+                parametroJogoDTO(parametroSimulacao).dezenasSelecionadas((ArrayList<Integer>) dezenasSelecionadas).build()).commit();
 
         if (surpresinha) {
             simularTelaAposta.setBackgroundResource(R.drawable.icon_seleciona2);

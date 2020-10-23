@@ -19,7 +19,6 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
-import org.parceler.Parcels;
 
 import java.math.BigDecimal;
 
@@ -135,9 +134,9 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
                 alertDialog.dismiss();
                 if(isLoterica){
                     Intent it = new Intent(ResultadoApostaConfirmadaActivity.this, ResgatePremioLotericaActivity.class);
-                    it.putExtra(DETALHES, Parcels.wrap(detalhesPremioDTO));
-                    it.putExtra(COMPROVANTE, Parcels.wrap(comprovante));
-                    it.putExtra(CODIGO_RESGATE, Parcels.wrap(result.getPayload()));
+                    it.putExtra(DETALHES, detalhesPremioDTO);
+                    it.putExtra(COMPROVANTE, comprovante);
+                    it.putExtra(CODIGO_RESGATE, result.getPayload());
                     startActivity(new Intent(it));
                 }else {
                     ResgatePremioLotericaAgenciaActivity_.intent(getContext()).codigoResgateDTO(result.getPayload()).isLoterica(isLoterica).detalhesPremioDTO(detalhesPremioDTO).comprovante(comprovante).start();

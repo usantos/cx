@@ -70,7 +70,7 @@ public class CadastrarActivity extends CadastroActivity {
     TextView textViewTituloCadastrar2;
 
     @Extra
-    List<String> listUFString, listMunicipios;
+    ArrayList<String> listUFString, listMunicipios;
 
     @ViewById
     AppCompatCheckBox aceiteTermo;

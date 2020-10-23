@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
 
-import org.parceler.Parcels;
+import java.io.Serializable;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
@@ -88,7 +88,7 @@ public class DetalhesCarrinhoFavoritoActivity extends SettingToolbarActivity {
 
     private void setaResult(){
         Bundle args = new Bundle();
-        args.putParcelable(RESPOSTA_APOSTAS, Parcels.wrap(listApostaResponse.getPayload()));
+        args.putSerializable(RESPOSTA_APOSTAS, (Serializable) listApostaResponse.getPayload());
         Intent it = new Intent();
         it.putExtras(args);
         setResult(RESPOSTA_EXCLUIU_APOSTAS, it);

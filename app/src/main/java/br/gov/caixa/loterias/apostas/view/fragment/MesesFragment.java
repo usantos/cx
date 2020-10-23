@@ -15,9 +15,10 @@ import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.FragmentArg;
 import org.androidannotations.annotations.ViewById;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.controllers.SimularApostaActivity;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
@@ -25,7 +26,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroMesDeSorte;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
-import br.gov.caixa.loterias.apostas.controllers.SimularApostaActivity;
 import br.gov.caixa.loterias.apostas.view.adapter.MesesAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
 import br.gov.caixa.loterias.apostas.view.custom.ItemRetanguloTextView;
@@ -46,7 +46,7 @@ public class MesesFragment extends Fragment {
     protected ParametroJogoDTO parametroJogoDTO;
 
     @FragmentArg
-    protected List<Integer> dezenasSelecionadas;
+    protected ArrayList<Integer> dezenasSelecionadas;
 
     private ParametroMesDeSorte mesDeSorte;
     private SimularApostaActivity parentActivity;

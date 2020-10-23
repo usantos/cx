@@ -14,8 +14,6 @@ package br.gov.caixa.loterias.apostas.model.bo.silce.dto;
 
 import com.google.gson.annotations.SerializedName;
 
-import org.parceler.ParcelPropertyConverter;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -69,7 +67,6 @@ public class ResultadoConcursoDTO<T> implements Serializable {
     @SerializedName("ganhadoresSegundoSorteio")
     protected List<GanhadoresPorRegiaoDTO> ganhadoresSegundoSorteio = null;
     @SerializedName("numerosSorteadosPrimeiroSorteio")
-    @ParcelPropertyConverter(ParcelsWrapperConverter.class)
     protected T numerosSorteadosPrimeiroSorteio = null;
 
     /**

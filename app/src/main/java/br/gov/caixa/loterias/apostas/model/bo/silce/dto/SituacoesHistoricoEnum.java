@@ -2,7 +2,7 @@ package br.gov.caixa.loterias.apostas.model.bo.silce.dto;
 
 import com.google.gson.annotations.SerializedName;
 
-import org.parceler.Parcel;
+import java.io.Serializable;
 
 import io.swagger.annotations.ApiModel;
 
@@ -11,8 +11,7 @@ import io.swagger.annotations.ApiModel;
  */
 
 @ApiModel(description = "")
-@Parcel
-public enum SituacoesHistoricoEnum {
+public enum SituacoesHistoricoEnum implements Serializable {
     @SerializedName("TODAS")TODAS,
     @SerializedName("CONCURSO_PRESCRITO")CONCURSO_PRESCRITO,
     @SerializedName("PREMIO_PAGO")PREMIO_PAGO;

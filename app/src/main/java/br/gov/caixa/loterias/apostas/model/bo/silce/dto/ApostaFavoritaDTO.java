@@ -14,8 +14,6 @@ package br.gov.caixa.loterias.apostas.model.bo.silce.dto;
 
 import com.google.gson.annotations.SerializedName;
 
-import org.parceler.ParcelPropertyConverter;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,7 +42,6 @@ public class ApostaFavoritaDTO<T> {
     @SerializedName("nome")
     private String nome = null;
     @SerializedName("numerosSelecionados")
-    @ParcelPropertyConverter(ParcelsWrapperConverter.class)
     private T numerosSelecionados = null;
     @SerializedName("timeDoCoracao")
     private ParametroEquipe timeDoCoracao = null;

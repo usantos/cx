@@ -11,8 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
 
-import org.parceler.Parcels;
-
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
@@ -118,7 +116,7 @@ public class CarrinhosFavoritosActivity extends AppCompatActivity {
 				case RESPOSTA_EXCLUIU_APOSTAS:
 					Bundle bundle = data.getExtras();
 					if (bundle != null) {
-						List<ApostaCarrinhoFavoritoDTO> resposta = Parcels.unwrap(bundle.getParcelable(RESPOSTA_APOSTAS));
+						List<ApostaCarrinhoFavoritoDTO> resposta = (List<ApostaCarrinhoFavoritoDTO>) bundle.getSerializable(RESPOSTA_APOSTAS);
 						adapter.recarregaCelula(resposta, adapter.getLayoutAtual());
 						//rvCarrinhosFavoritos.setAdapter(adapter);
 					}

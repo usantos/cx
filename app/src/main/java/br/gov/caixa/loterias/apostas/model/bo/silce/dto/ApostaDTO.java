@@ -14,8 +14,6 @@ package br.gov.caixa.loterias.apostas.model.bo.silce.dto;
 
 import com.google.gson.annotations.SerializedName;
 
-import org.parceler.ParcelPropertyConverter;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -77,7 +75,6 @@ public class ApostaDTO<T> implements Serializable {
     @SerializedName("quantidadeNumeros")
     protected Integer quantidadeNumeros = null;
     @SerializedName(value = "numerosSelecionados")
-    @ParcelPropertyConverter(ParcelsWrapperConverter.class)
     protected T numerosSelecionados = null;
     /**
      * Identificador da Aposta

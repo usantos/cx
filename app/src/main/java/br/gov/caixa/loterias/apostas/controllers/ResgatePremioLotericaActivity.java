@@ -15,8 +15,6 @@ import androidx.appcompat.widget.Toolbar;
 import com.android.volley.VolleyError;
 import com.google.zxing.WriterException;
 
-import org.parceler.Parcels;
-
 import java.util.concurrent.TimeUnit;
 
 import androidmads.library.qrgenearator.QRGContents;
@@ -65,9 +63,9 @@ public class ResgatePremioLotericaActivity extends AppCompatActivity {
     private void pegaExtras(){
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            comprovante = Parcels.unwrap(bundle.getParcelable(COMPROVANTE));
-            detalhesPremioDTO = Parcels.unwrap(bundle.getParcelable(DETALHES));
-            codigoResgateDTO = Parcels.unwrap(bundle.getParcelable(CODIGO_RESGATE));
+            comprovante = (ComprovanteApostaDTO) bundle.getSerializable(COMPROVANTE);
+            detalhesPremioDTO = (DetalhesPremioDTO) bundle.getSerializable(DETALHES);
+            codigoResgateDTO = (CodigoResgateDTO) bundle.getSerializable(CODIGO_RESGATE);
         }
     }
 

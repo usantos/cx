@@ -142,10 +142,6 @@ dependencies {
     //Multidex (necessário quando há mais de 64k métodos)
     implementation 'androidx.multidex:multidex:2.0.0'
 
-    //Serialização em Parcelable
-    implementation "org.parceler:parceler-api:1.1.13"
-    annotationProcessor "org.parceler:parceler:1.1.13"
-
     //Android Annotations
     implementation "org.androidannotations:androidannotations-api:$AAVersion"
     annotationProcessor "org.androidannotations:androidannotations:$AAVersion"

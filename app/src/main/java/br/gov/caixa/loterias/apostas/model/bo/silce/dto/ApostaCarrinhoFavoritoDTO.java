@@ -1,11 +1,8 @@
 package br.gov.caixa.loterias.apostas.model.bo.silce.dto;
 
 import android.os.Parcel;
-import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
-
-import org.parceler.ParcelPropertyConverter;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -22,7 +19,6 @@ public class ApostaCarrinhoFavoritoDTO<T> implements Serializable {
 	@SerializedName("modalidade")
 	private ModalidadeDTO modalidade = null;
 	@SerializedName("numerosSelecionados")
-	@ParcelPropertyConverter(ParcelsWrapperConverter.class)
 	private T numerosSelecionados = null;
 	@SerializedName("timeDoCoracao")
 	private ParametroEquipe timeDoCoracao = null;

@@ -82,7 +82,7 @@ public class CadastrarPasso2Activity extends CadastroActivity {
     MaskedEditText editTextCEPPasso2Content;
 
     @Extra
-    List<String> listUFString, listMunicipios, listBairros;
+    ArrayList<String> listUFString, listMunicipios, listBairros;
 
     private List<DTOEnumInteger> listLoteriasHabilitadas;
     private List<BairroDTO> listBairroDTO;
