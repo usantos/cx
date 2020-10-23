@@ -67,7 +67,7 @@ public class CadastrarActivity extends CadastroActivity {
     SegmentedButtonGroup segmentedButtonSexo;
 
     @ViewById
-    TextView textViewTituloCadastrar2;
+    TextView textViewTituloCadastrar2, termoPolitica;
 
     @Extra
     ArrayList<String> listUFString, listMunicipios;
@@ -157,7 +157,10 @@ public class CadastrarActivity extends CadastroActivity {
 
 
     private void initOnclick() {
-
+        this.termoPolitica.setOnClickListener(v -> {
+            Intent intent = new Intent(CadastrarActivity.this, TermosUsoActivity.class);
+            startActivity(intent.putExtra("IS_CADASTRO",true));
+        });
         this.segmentedButtonSexo.setOnClickedButtonListener(position -> {
             CadastrarApostadorDTO.SexoEnum sexoEnum;
             if (position == 0) {

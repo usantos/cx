@@ -81,7 +81,9 @@ public class  RedirectNetwork {
                     connectKeycloak(activity);
                     return;
                 case CADASTRAR_APOSTADOR:
-                    context.startActivity(new Intent(context, CadastrarActivity_.class));
+                    if (!activity.getClass().getName().equalsIgnoreCase(TermosUsoActivity.class.getName())) {
+                        context.startActivity(new Intent(context, CadastrarActivity_.class));
+                    }
                     return;
                 case INDISPONIVEL:
                     context.startActivity(new Intent(context, AppIndisponivelActivity.class));
@@ -163,7 +165,9 @@ public class  RedirectNetwork {
                         connectKeycloak(activity);
                         return;
                     case CADASTRAR_APOSTADOR:
-                        activity.startActivity(new Intent(activity, CadastrarActivity_.class));
+                        if (!activity.getClass().getName().equalsIgnoreCase(TermosUsoActivity.class.getName())) {
+                            activity.startActivity(new Intent(activity, CadastrarActivity_.class));
+                        }
                         return;
                     case INDISPONIVEL:
                         if (activity.getClass() != AppIndisponivelActivity.class) {
@@ -231,7 +235,9 @@ public class  RedirectNetwork {
                 connectKeycloak(activity);
                 break;
             case CADASTRAR_APOSTADOR:
-                activity.startActivity(new Intent(activity, CadastrarActivity_.class));
+                if (!activity.getClass().getName().equalsIgnoreCase(TermosUsoActivity.class.getName())) {
+                    activity.startActivity(new Intent(activity, CadastrarActivity_.class));
+                }
                 break;
             case INDISPONIVEL:
                 activity.startActivityForResult(new Intent(activity, AppIndisponivelActivity.class), 1);

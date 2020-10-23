@@ -64,20 +64,21 @@
 
         </RadioGroup>
 
-        <RelativeLayout
-            android:id="@+id/relativeLayouTermoAceite"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_termo_aceite"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <ScrollView
                 android:id="@+id/scrollViewTermoAceite"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
                 android:layout_marginBottom="30dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:layout_marginTop="40dp"
-                android:paddingBottom="@dimen/bottom_padding_120">
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/footerAceiteTermo">
 
                 <WebView xmlns:android="http://schemas.android.com/apk/res/android"
                     android:id="@+id/webViewConteudo"
@@ -90,7 +91,7 @@
                 android:id="@+id/footerAceiteTermo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
+                app:layout_constraintBottom_toBottomOf="parent"
                 android:background="@drawable/drawer_linha_divisao_cinza_claro"
                 android:visibility="gone">
 
@@ -140,7 +141,7 @@
                     android:textSize="16sp"
                     android:textStyle="bold" />
             </RelativeLayout>
-        </RelativeLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
             android:id="@+id/layoutDuvidas"
@@ -166,3 +167,4 @@
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+

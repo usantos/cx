@@ -150,9 +150,9 @@ public class CadastrarPasso2Activity extends CadastroActivity {
     }
 
     private void initOnclick() {
-        this.termoPolitica.setOnClickListener(view -> {
-            Intent intent = new Intent(getBaseContext(), TermosUsoActivity.class);
-            startActivity(intent);
+        this.termoPolitica.setOnClickListener(v -> {
+            Intent intent = new Intent(CadastrarPasso2Activity.this, TermosUsoActivity.class);
+            startActivity(intent.putExtra("IS_CADASTRO",true));
         });
 
         this.segmentedButtonTipoBuscaLoterica.setOnClickedButtonListener(position -> {

@@ -17,6 +17,7 @@ import android.widget.ScrollView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.android.volley.VolleyError;
@@ -45,8 +46,9 @@ public class TermosUsoActivity extends AppCompatActivity {
     private Button buttonTermoAceite;
     private WebView webViewConteudo;
     private String termoHtml;
-    private boolean isTermoAceito;
-    private RelativeLayout footerAceiteTermo, relativeLayouTermoAceite;
+    private boolean isTermoAceito, isCadastro;
+    private RelativeLayout footerAceiteTermo;
+    private ConstraintLayout clTermoAceite;
     private ScrollView scrollViewTermoAceite;
     private LinearLayout layoutClickAceiteTermo, layoutDuvidas;
     private AppCompatCheckBox selcioneAceiteTermoUso;
@@ -80,6 +82,7 @@ public class TermosUsoActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             openAjuda = bundle.getBoolean(getResources().getString(R.string.extra_ajuda));
+            isCadastro = bundle.getBoolean("IS_CADASTRO");
         }
     }
 
@@ -171,7 +174,7 @@ public class TermosUsoActivity extends AppCompatActivity {
         scrollViewTermoAceite = findViewById(R.id.scrollViewTermoAceite);
         selcioneAceiteTermoUso = findViewById(R.id.selcioneAceiteTermoUso);
         layoutDuvidas = findViewById(R.id.layoutDuvidas);
-        relativeLayouTermoAceite = findViewById(R.id.relativeLayouTermoAceite);
+        clTermoAceite = findViewById(R.id.cl_termo_aceite);
         recyclerViewDuvidas = findViewById(R.id.recyclerViewDuvidas);
         buttonTermoAceite = findViewById(R.id.buttonTermoAceite);
         layoutClickAceiteTermo = findViewById(R.id.layoutClickAceiteTermo);
@@ -247,13 +250,13 @@ public class TermosUsoActivity extends AppCompatActivity {
 
     private void selectTermoUso() {
         termosUsoButton.setChecked(Boolean.TRUE);
-        relativeLayouTermoAceite.setVisibility(View.VISIBLE);
+        clTermoAceite.setVisibility(View.VISIBLE);
         webViewConteudo.loadData(termoHtml, getResources().getString(R.string.text_html_charset_utf_8), getResources().getString(R.string.utf_8));
         unSelectDuvidas();
     }
 
     private void unSelectTermoUso() {
-        relativeLayouTermoAceite.setVisibility(View.GONE);
+        clTermoAceite.setVisibility(View.GONE);
     }
 
     private void selectPoliticas() {
@@ -298,9 +301,14 @@ public class TermosUsoActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 DialogUtils.dismiss();
-                getTermo();
-                exibeRodapeAceite();
                 RedirectNetwork.checkRedirect(error, TermosUsoActivity.this);
+                getTermo();
+                if(!isCadastro) {
+                    exibeRodapeAceite();
+                } else {
+                    getSupportActionBar().setDisplayHomeAsUpEnabled(isCadastro);
+                    footerAceiteTermo.setVisibility(View.GONE);
+                }
             }
         });
     }
@@ -316,7 +324,7 @@ public class TermosUsoActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (isTermoAceito) {
+        if (isTermoAceito || isCadastro) {
             super.onBackPressed();
         }
     }
