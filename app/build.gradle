@@ -11,6 +11,7 @@ android {
     compileSdkVersion 29
     buildToolsVersion '28.0.3'
     defaultConfig {
+        resValue "string", "app_name", "Loterias"
         applicationId "br.gov.caixa.loterias.apostas"
         minSdkVersion 21
         targetSdkVersion 29
@@ -93,7 +94,8 @@ android {
         }
         hmp {
             dimension "default"
-            //applicationIdSuffix ".stubnet"
+            applicationIdSuffix ".hmp"
+            resValue "string", "app_name", "Loterias_hmp"
             buildConfigField "boolean", "CAIXA_NETWORK_STUB", "false"
             buildConfigField "String", "CAIXA_BASE_URL_SILCE", "\"http://simlo.des.caixa/silce-servico-rest/rest/v1/\""
             buildConfigField "String", "PUBLIC_KEY_MP", "\"TEST-946a3077-5cf1-446c-bab3-e3a266357e9f\""
