@@ -23,9 +23,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.model.bean.DadosUsuarioToken;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
+import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
+import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO_;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
@@ -34,11 +37,13 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoFavoritoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacaoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResourceResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.dao.DBLoteriasCrud;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FirebaseManager;
+import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.CarrinhoApostasListViewAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView;
@@ -84,6 +89,10 @@ public class CarrinhoActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        atualizaParametros();
+    }
+
+    private void postResume(){
         if (DadosUsuarioBO.checarUsuarioLogado(this)) {
             lerCarrinhoLocal = false;
         }
@@ -486,4 +495,42 @@ public class CarrinhoActivity extends AppCompatActivity {
         ViewUtils.setMoedaFormatHtml(valorTotalCarrinho, this.tvValorTotal);
         carrinho.setValorTotal(valorTotalCarrinho);
     }
+    private void atualizaParametros() {
+        DialogUtils.show(this);
+        final DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(CarrinhoActivity.this);
+        dadosCorporativosBO.parametrosSimulacao(new RequestListener<ParametrosSimulacaoResponse>() {
+            @Override
+            public void onResponse(ParametrosSimulacaoResponse response) {
+                DialogUtils.dismiss();
+                if (response.getRedirect() != null) {
+                    RedirectNetwork.checkRedirectSucesso(response.getRedirect(), CarrinhoActivity.this);
+                }
+                paramatroSimulacaoSuccess(response);
+                postResume();
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                DialogUtils.dismiss();
+                RedirectNetwork.checkRedirect(error, CarrinhoActivity.this);
+                postResume();
+            }
+        });
+    }
+
+    private void paramatroSimulacaoSuccess(ParametrosSimulacaoResponse response) {
+        SessaoUsuario sessaoUser = SessaoUsuario.getInstance();
+        try {
+            DadosUsuarioToken dadosUsuarioToken = Utils.decodedToken(sessaoUser.getToken());
+            sessaoUser.setEmail(dadosUsuarioToken.getEmail());
+            sessaoUser.setNome(dadosUsuarioToken.getName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        sessaoUser.setValorMinimimoAposta(response.getPayload().getValorMinimoCarrinho());
+        sessaoUser.setValorMaximoAposta(response.getPayload().getValorLimiteDiario());
+        sessaoUser.setParametrosSimulacao(response.getPayload());
+    }
+
+
 }
