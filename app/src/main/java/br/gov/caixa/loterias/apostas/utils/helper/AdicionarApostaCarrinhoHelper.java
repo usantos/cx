@@ -94,7 +94,7 @@ public class AdicionarApostaCarrinhoHelper {
             if (KeycloakBO_.getInstance_(context).getAccessToken() == null || KeycloakBO_.getInstance_(context).getAccessToken().isEmpty()) {
                 postAdicionarApostaCarrinho(apostaBO);
             } else {
-                  postAdicionarApostaCarrinho(apostaBO);
+                postAdicionarApostaCarrinho(apostaBO);
                 //adicionarApostaCarrinhoRequest(context, apostaBO, aposta);
             }
         }
@@ -180,7 +180,7 @@ public class AdicionarApostaCarrinhoHelper {
     }
 
     private static void checarLimiteDiario
-          (final ApostaBO apostaBO, final IdentificaoDeUmaApostaDas8Modalidades aposta, final CarrinhoDTO carrinhoDTO) {
+            (final ApostaBO apostaBO, final IdentificaoDeUmaApostaDas8Modalidades aposta, final CarrinhoDTO carrinhoDTO) {
         DialogUtils.dismiss();
         BigDecimal limiteDiario = SessaoUsuario.getInstance().getParametrosSimulacao().getValorLimiteDiario();
         BigDecimal valorCarrinho = carrinhoDTO.getValorTotal().add(IdentificaoDeUmaApostaDas8Modalidades.getValorApostaPorPrognostico(aposta));
@@ -250,7 +250,7 @@ public class AdicionarApostaCarrinhoHelper {
 
         boolean isTipoLotogol = CollectionUtils.isNotEmpty(aposta.getPartidasLotogol());
         boolean isTipoLoteca = CollectionUtils.isNotEmpty(aposta.getPartidasLoteca());
-        
+
 
         //TODO Verificar os parametros que indicam aposta igual
         if (crud.existIdentificaoDeUmaApostaDas8Modalidades(aposta) && (!isTipoLotogol && !isTipoLoteca)) {
@@ -277,13 +277,13 @@ public class AdicionarApostaCarrinhoHelper {
                 Long idAposta = crud.insertIdentificaoDeUmaApostaDas8Modalidades(aposta);
 
                 ContentValues cv = new ContentValues();
-                cv.put("vinculo_espelho", idAposta + aposta.getConcursoAlvo());
+                cv.put("vinculo_espelho", idAposta + aposta.getConcursoInicial());
                 crud.update(cv, "_ID="+ idAposta);
 
                 Long idApostaEspelho = crud.insertIdentificaoDeUmaApostaDas8Modalidades(apostaEspelho);
 
                 cv = new ContentValues();
-                cv.put("vinculo_espelho", idAposta + aposta.getConcursoAlvo());
+                cv.put("vinculo_espelho", idAposta + aposta.getConcursoInicial());
                 crud.update(cv, "_ID="+ idApostaEspelho);
             } else {
                 Long id = crud.insertIdentificaoDeUmaApostaDas8Modalidades(aposta);

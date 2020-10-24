@@ -11,6 +11,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -76,7 +77,13 @@ public class PdfConverter implements Runnable {
                 }
             }
         });
-        mWebView.loadData(mHtmlString, "text/HTML", "UTF-8");
+        WebSettings settings = mWebView.getSettings();
+        settings.setDomStorageEnabled(true);
+        runOnUiThread(new Runnable() {
+            public void run() {
+                mWebView.loadDataWithBaseURL("", mHtmlString, "text/HTML", "UTF-8", "");
+            }
+        });
     }
 
     public PrintAttributes getPdfPrintAttrs() {

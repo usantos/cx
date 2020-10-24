@@ -58,17 +58,17 @@ public class ListaComprasDetalhesAdapter extends RecyclerView.Adapter<ListaCompr
 
         holder.tipoPremioListaComprasTextView
                 .setText(ViewUtils.textFuturaAndFuturaBold(
-                            mContext,
-                            mContext.getString(R.string.texto_futura_bold, nomeAposta)
-                        )
-                );
+                        mContext,
+                        mContext.getString(R.string.texto_futura_bold, nomeAposta)
+                                                          )
+                        );
 
         holder.tipoPremioListaComprasTextView.setTextColor(colorText);
 
         holder.dataConcursoListaComprasTextView.setText(listaAposta.get(position).getDataEfetivacao());
         holder.dataConcursoListaComprasTextView.setTextColor(colorText);
 
-        holder.concursoListaComprasTextView.setText(ViewUtils.textFuturaAndFuturaBold(mContext, mContext.getString(R.string.label_aposta_concurso_bold, listaAposta.get(position).getConcursoAlvo())));
+        holder.concursoListaComprasTextView.setText(ViewUtils.textFuturaAndFuturaBold(mContext, mContext.getString(R.string.label_aposta_concurso_bold, listaAposta.get(position).getConcursoInicial())));
         holder.concursoListaComprasTextView.setTextColor(colorText);
 
         holder.statusResultadoApostaListaComprasTextView.setText(listaAposta.get(position).getSituacao().getDescricao());
