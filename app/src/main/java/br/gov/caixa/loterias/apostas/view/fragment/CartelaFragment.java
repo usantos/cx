@@ -850,8 +850,8 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
 	private void preencheSuperSete(List<List<Integer>> numerosSelecionados) {
 		int coluna = 0;
+		qtdTotalSelecionadosSuperSete = 0;
 		if (matrizSelecionada != null){
-			qtdTotalSelecionadosSuperSete = 0;
 			matrizSelecionada = null;
 		}
 		for (SuperSeteAdapter adapter : listaAdaptersSuperSete) {
