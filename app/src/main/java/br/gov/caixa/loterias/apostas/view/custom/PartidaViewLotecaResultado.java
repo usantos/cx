@@ -5,6 +5,8 @@ import android.util.AttributeSet;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
@@ -40,30 +42,38 @@ public class PartidaViewLotecaResultado extends LinearLayout {
 
 
     public void setLayout(PartidaLotecaDTO parametroPartida) {
+        int corVitoria = ContextCompat.getColor(getContext(), R.color.selecaoLotecaResultado);
+        int corPadrao = ContextCompat.getColor(getContext(), R.color.transparente);
+
+        setaCorFundo(lotecaTimeUm,corPadrao);
+        setaCorFundo(lotecaTimeDois,corPadrao);
+        setaCorFundo(lotecaEmpate,corPadrao);
 
         if (parametroPartida.getEquipe1().getVitoria()) {
-            lotecaTimeUm.getLinearLayoutContentItemLotecaResultado().setBackgroundColor(this.getContext().getResources().getColor(R.color.selecaoLotecaResultado));
+            setaCorFundo(lotecaTimeUm,corVitoria);
         }
+        if (parametroPartida.getEquipe2().getVitoria()) {
+            setaCorFundo(lotecaTimeDois,corVitoria);
+        }
+        if (parametroPartida.getEmpate()) {
+            setaCorFundo(lotecaEmpate,corVitoria);
+        }
+
         lotecaTimeUm.getItemImage().setImageResource(R.drawable.time);
         EscudoEquipeUtil.setEscudo(this.getContext(), parametroPartida.getEquipe1().getParametroEquipe(), lotecaTimeUm.getItemImage());
-
         lotecaTimeUm.getItemTitle().setText(parametroPartida.getEquipe1().getNome());
         lotecaTimeUm.getItemDescription().setText(Utils.getUfTime(parametroPartida.getEquipe1()));
 
-        if (parametroPartida.getEquipe2().getVitoria()) {
-            lotecaTimeDois.getLinearLayoutContentItemLotecaResultado().setBackgroundColor(this.getContext().getResources().getColor(R.color.selecaoLotecaResultado));
-        }
-        lotecaTimeDois.setSelected(parametroPartida.getEquipe2().getVitoria());
         lotecaTimeDois.getItemImage().setImageResource(R.drawable.time);
         EscudoEquipeUtil.setEscudo(this.getContext(), parametroPartida.getEquipe2().getParametroEquipe(), lotecaTimeDois.getItemImage());
         lotecaTimeDois.getItemTitle().setText(parametroPartida.getEquipe2().getNome());
         lotecaTimeDois.getItemDescription().setText(Utils.getUfTime(parametroPartida.getEquipe2()));
 
-        if (parametroPartida.getEmpate()) {
-            lotecaEmpate.getLinearLayoutContentItemLotecaResultado().setBackgroundColor(this.getContext().getResources().getColor(R.color.selecaoLotecaResultado));
-        }
         diaSemanaDataPartidaText.setText(ViewUtils.textFuturaAndFuturaBold(getContext(), getResources().getString(R.string.texto_futura_bold, getResources().getString(R.string.label_domingo))));
 
+    }
+    private void setaCorFundo(ItemEquipeViewResultado item, int cor){
+        item.getLinearLayoutContentItemLotecaResultado().setBackgroundColor(cor);
     }
 
     public PartidaViewLotecaResultado(Context context) {

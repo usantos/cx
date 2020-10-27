@@ -133,7 +133,7 @@ public class Utils {
         String uf =  "";
 
         if (equipeDTO != null && equipeDTO.getNome() != null && equipeDTO.getIndicadorSelecao() != null) {
-            if(equipeDTO.getIndicadorSelecao() || (equipeDTO.getNome().equalsIgnoreCase("BRASIL"))){
+            if(!equipeDTO.getSiglaPais().equalsIgnoreCase("BRA") || (equipeDTO.getNome().equalsIgnoreCase("BRASIL"))){
                 uf +=  equipeDTO.getSiglaPais() != null
                         && !equipeDTO.getSiglaPais().isEmpty() ?
                         "/" + equipeDTO.getSiglaPais() : "";
@@ -151,7 +151,7 @@ public class Utils {
         String uf =  "";
 
         if (equipe != null && equipe.getNome() != null && equipe.getIndicadorSelecao() != null) {
-            if(equipe.getIndicadorSelecao() || (equipe.getNome().equalsIgnoreCase("BRASIL"))){
+            if(!equipe.getSiglaPais().equalsIgnoreCase("BRA") || (equipe.getNome().equalsIgnoreCase("BRASIL"))){
                 uf +=  equipe.getSiglaPais() != null &&
                         !equipe.getSiglaPais().isEmpty() ?
                         "/" + equipe.getSiglaPais() : "";
