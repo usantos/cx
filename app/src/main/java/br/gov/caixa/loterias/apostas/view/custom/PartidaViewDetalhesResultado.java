@@ -324,12 +324,20 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
                 mapFaixa.put("0006","Time do Coração\n"+
                         (modalidade.getResultadoConcursoDTO() == null ? "":
                         modalidade.getResultadoConcursoDTO().getPremiacaoTimeDoCoracao().getEquipe().getNome()));
+                break;
             case "SUPERSETE":
                 mapFaixa.put("0001","7 acertos");
                 mapFaixa.put("0002","6 acertos");
                 mapFaixa.put("0003","5 acertos");
                 mapFaixa.put("0004","4 acertos");
                 mapFaixa.put("0005","3 acertos");
+                break;
+            case "SUPER7":
+                mapFaixa.put("1","7 acertos");
+                mapFaixa.put("2","6 acertos");
+                mapFaixa.put("3","5 acertos");
+                mapFaixa.put("4","4 acertos");
+                mapFaixa.put("5","3 acertos");
                 break;
         }
         return mapFaixa;
