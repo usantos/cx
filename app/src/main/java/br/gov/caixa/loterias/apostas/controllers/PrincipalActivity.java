@@ -11,7 +11,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
-
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -73,6 +72,7 @@ import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacaoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RepassometroDTO;
@@ -582,12 +582,18 @@ public class PrincipalActivity extends AppCompatActivity
 
     @Click(R.id.buttonHomeBet)
     protected void clickButtonHomeBet() {
-        FirebaseManager.registraEvento(PrincipalActivity.this ,getResources().getString(R.string.evento_entrou_simular_aposta_modalidade) + modalidadesParaListar.get(Integer.parseInt(buttonHomeBet.getTag().toString())).getParametroJogo().getConcurso().getModalidade());
+        ModalidadeEnum modalidade = modalidadesParaListar.get(Integer.parseInt(buttonHomeBet.getTag().toString())).getParametroJogo().getConcurso().getModalidade();
+        FirebaseManager.registraEvento(PrincipalActivity.this ,getResources().getString(R.string.evento_entrou_simular_aposta_modalidade) + modalidade);
+        ParametroJogoDTO parametroJogo = modalidadesParaListar.get(Integer.parseInt(buttonHomeBet.getTag().toString())).getParametroJogo();
 
         Intent activity = new Intent(PrincipalActivity.this, SimularApostaActivity_.class);
-        activity.putExtra(getString(R.string.extra_tipo_aposta), modalidadesParaListar.get(Integer.parseInt(buttonHomeBet.getTag().toString())).getParametroJogo().getConcurso().getModalidade());
-        activity.putExtra(getString(R.string.extra_modalidade), (new Gson()).toJson(modalidadesParaListar.get(Integer.parseInt(buttonHomeBet.getTag().toString())).getParametroJogo()));
-        startActivity(activity);
+        activity.putExtra(getString(R.string.extra_tipo_aposta), parametroJogo.getConcurso().getModalidade());
+        activity.putExtra(getString(R.string.extra_modalidade), (new Gson()).toJson(parametroJogo));
+        if (modalidade == ModalidadeEnum.LOTECA && !parametroJogo.getConcurso().getAberto()) {
+            ViewUtils.alertTitulo(this,R.string.label_atencao ,getResources().getString(R.string.msg_conc_nao_aberto).replace("{num_concurso}",parametroJogo.getConcurso().getNumero().toString()));
+        } else {
+            startActivity(activity);
+        }
     }
 
     @Click(R.id.relativeLayoutContentRepassados)

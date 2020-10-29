@@ -977,4 +977,7 @@
     <!-- Mercado Pago -->
     <string name="mp_token_url_redirect">https://registration-br.mercadopago.com/registration-mp?mode=mp&amp;external_registration_token={token}</string>
 
+    <!-- Carrossel -->
+    <string name="msg_conc_nao_aberto">Concurso {num_concurso} ainda não aberto para aposta. Tente novamente mais tarde.</string>
+
 </resources>
