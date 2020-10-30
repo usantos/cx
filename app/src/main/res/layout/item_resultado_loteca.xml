@@ -14,7 +14,7 @@
         <com.yarolegovich.discretescrollview.DiscreteScrollView
             android:id="@+id/recyclerPartidasLotecas"
             android:layout_width="match_parent"
-            android:layout_height="183dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="19dp"
             app:dsv_orientation="horizontal" />
