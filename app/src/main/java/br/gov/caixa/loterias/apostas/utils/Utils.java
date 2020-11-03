@@ -132,7 +132,7 @@ public class Utils {
     public static String getUfTime(EquipeDTO equipeDTO){
         String uf =  "";
 
-        if (equipeDTO != null && equipeDTO.getNome() != null && equipeDTO.getIndicadorSelecao() != null) {
+        if (equipeDTO != null && equipeDTO.getNome() != null && equipeDTO.getSiglaPais() != null) {
             if(!equipeDTO.getSiglaPais().equalsIgnoreCase("BRA") || (equipeDTO.getNome().equalsIgnoreCase("BRASIL"))){
                 uf +=  equipeDTO.getSiglaPais() != null
                         && !equipeDTO.getSiglaPais().isEmpty() ?
@@ -150,7 +150,7 @@ public class Utils {
     public static String getUfTime(ParametroEquipe equipe){
         String uf =  "";
 
-        if (equipe != null && equipe.getNome() != null && equipe.getIndicadorSelecao() != null) {
+        if (equipe != null && equipe.getNome() != null && equipe.getSiglaPais() != null) {
             if(!equipe.getSiglaPais().equalsIgnoreCase("BRA") || (equipe.getNome().equalsIgnoreCase("BRASIL"))){
                 uf +=  equipe.getSiglaPais() != null &&
                         !equipe.getSiglaPais().isEmpty() ?
