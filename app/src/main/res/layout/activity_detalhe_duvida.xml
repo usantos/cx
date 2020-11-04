@@ -3,10 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/branco">
-
-    <br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView
-        android:id="@+id/recyclerViewDetalhesDuvida"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clickable="false"/>
+        android:layout_height="wrap_content">
+        <br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView
+            android:id="@+id/recyclerViewDetalhesDuvida"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="false"/>
+    </androidx.core.widget.NestedScrollView>
 </LinearLayout>

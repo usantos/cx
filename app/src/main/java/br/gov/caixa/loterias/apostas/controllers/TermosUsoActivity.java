@@ -59,8 +59,13 @@ public class TermosUsoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
+        setViews();
+        setListeners();
+        getExtras();
+        setWebview();
+        listenerTermosUso();
+        listenerDuvidas();
+        checaAceiteTermoEConfiguraTela();
     }
 
     @Override
@@ -69,13 +74,6 @@ public class TermosUsoActivity extends AppCompatActivity {
         if(DialogUtils.isShow()){
             DialogUtils.dismiss();
         }
-        setViews();
-        setListeners();
-        getExtras();
-        setWebview();
-        listenerTermosUso();
-        listenerDuvidas();
-        checaAceiteTermoEConfiguraTela();
     }
 
     private  void getExtras(){
