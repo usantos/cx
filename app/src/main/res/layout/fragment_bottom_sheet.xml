@@ -96,6 +96,30 @@
                 app:layout_constraintTop_toBottomOf="@id/tv_caixa_op_7" />
 
             <TextView
+                android:id="@+id/tv_caps"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:padding="2dp"
+                android:text="@string/jr_caps_titulo"
+                android:textColor="@color/jr_cinza_text"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_caixa_op_3" />
+
+            <TextView
+                android:id="@+id/tv_caps_site"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="2dp"
+                android:text="@string/jr_caps_site"
+                android:textColor="@color/jr_email"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_caps" />
+
+            <TextView
                 android:id="@+id/tv_proamjo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -105,7 +129,7 @@
                 android:textColor="@color/jr_cinza_text"
                 android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_caixa_op_3" />
+                app:layout_constraintTop_toBottomOf="@id/tv_caps_site" />
 
             <TextView
                 android:id="@+id/tv_proamjo_end"
@@ -269,6 +293,43 @@
                 android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_scm_end" />
+
+            <TextView
+                android:id="@+id/tv_ja"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:padding="2dp"
+                android:text="@string/jr_ja_titulo"
+                android:textColor="@color/jr_cinza_text"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_scm_tels" />
+
+
+            <TextView
+                android:id="@+id/tv_ja_tels"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:autoLink="phone"
+                android:padding="2dp"
+                android:text="@string/jr_ja_tels"
+                android:textColor="@color/jr_cinza_text"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_ja" />
+
+            <TextView
+                android:id="@+id/tv_ja_site"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="2dp"
+                android:text="@string/jr_ja_site"
+                android:textColor="@color/jr_email"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_ja_tels" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

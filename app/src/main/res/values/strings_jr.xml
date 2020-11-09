@@ -84,10 +84,13 @@
 
     <!-- Bottom Sheet Ajuda -->
     <string name="jr_bs_titulo">ONDE PROCURAR AJUDA?</string>
-    <string name="jr_bs_desc">As instituições abaixo dispõem de profissionais especializados para o tratamento de doenças relacionadas aos jogos.</string>
+    <string name="jr_bs_desc">Se você precisa de orientação de profissionais para auxiliar no tratamento de doenças relacionadas aos jogos, relacionamos abaixo os contatos de algumas entidades que podem prestar informações e atendimento. Não deixe de procurar ajuda!</string>
     <string name="jr_bs_caixa_tel">_CAIXA:_ 0800 726 0207</string>
     <string name="jr_bs_op_7">Opção 7 (Loterias)</string>
     <string name="jr_bs_op_3">Opção 3 (Jogo Responsável)</string>
+    <string name="jr_caps_titulo">Centros de Atenção Psicossocial do Ministério da Saúde - CAPS</string>
+    <string name="jr_caps_url">https://sage.saude.gov.br/paineis/planoCrack/lista_caps.php?output=html&amp;%20-</string>
+    <string name="jr_caps_site"><u>Clique aqui e localize uma unidade mais próxima</u></string>
     <string name="jr_bs_proamjo">_PROAMJO_ (Programa Ambulatorial do Jogo Patológico do Hospital das Clínicas do Instituto de Psiquiatria do HCFMUSP)</string>
     <string name="jr_bs_proamjo_end">Rua Dr. Ovídio Pires de Campos, 785 - Cerqueira César - São Paulo - SP</string>
     <string name="jr_bs_proamjo_tels">Telefones: (11) 2661-7805 | (11) 2307-78052</string>
@@ -103,6 +106,10 @@
     <string name="jr_bs_scm">Santa Casa de Misericórdia</string>
     <string name="jr_bs_scm_end">Rua Santa Luzia, 206 - Centro - Rio de Janeiro - RJ</string>
     <string name="jr_bs_scm_tel">Telefones: (21) 2533-0118</string>
+    <string name="jr_ja_titulo">Jogadores Anônimos</string>
+    <string name="jr_ja_tels">Telefones: (21) 99477-1813 | (11)99571-6942</string>
+    <string name="jr_ja_site"><u>www.jogadoresanonimos.com.br</u></string>
+    <string name="jr_ja_url">https://www.jogadoresanonimos.com.br</string>
 
     <!-- Eventos do Firebase-->
     <string name="evento_jr_aba_1">ENTROU_JR_CONHECA</string>

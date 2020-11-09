@@ -1,17 +1,12 @@
 package br.gov.caixa.loterias.apostas.view.fragment;
 
 
-import android.app.Activity;
-import android.content.Intent;
 import android.content.res.Resources;
-import android.net.Uri;
 import android.os.Bundle;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,12 +14,13 @@ import androidx.annotation.Nullable;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
 
 public class BottomSheetFragment  extends BottomSheetDialogFragment {
 
-    private TextView tvCaixa, tvProamjo, tvProamjoEmail, tvAvbEmail, tvProad, tvProadEmail;
+    private TextView tvCaixa, tvProamjo, tvProamjoEmail, tvAvbEmail, tvProad, tvProadEmail, tvCapsSite, tvJaSite;
     private Resources src;
 
     public static BottomSheetFragment  newInstance() {
@@ -40,7 +36,7 @@ public class BottomSheetFragment  extends BottomSheetDialogFragment {
             @NonNull LayoutInflater inflater,
             @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState
-    ) {
+                                      ) {
         final View view = inflater
                 .inflate(R.layout.fragment_bottom_sheet, container, false);
         return view;
@@ -59,6 +55,8 @@ public class BottomSheetFragment  extends BottomSheetDialogFragment {
         tvAvbEmail = view.findViewById(R.id.tv_avb_email);
         tvProad = view.findViewById(R.id.tv_proad);
         tvProadEmail = view.findViewById(R.id.tv_proad_email);
+        tvCapsSite = view.findViewById(R.id.tv_caps_site);
+        tvJaSite = view.findViewById(R.id.tv_ja_site);
 
         src = getActivity().getResources();
         tvCaixa.setText(ViewUtils.textFuturaAndFuturaBold(getActivity(),src.getString(R.string.jr_bs_caixa_tel)));
@@ -69,19 +67,10 @@ public class BottomSheetFragment  extends BottomSheetDialogFragment {
     }
 
     private void setaMetodos() {
-        tvProamjoEmail.setOnClickListener(v-> enviaEmail(getActivity(),src.getString(R.string.jr_bs_proamjo_email)));
-        tvAvbEmail.setOnClickListener(v-> enviaEmail(getActivity(),src.getString(R.string.jr_bs_avb_email)));
-        tvProadEmail.setOnClickListener(v-> enviaEmail(getActivity(),src.getString(R.string.jr_bs_proad_email)));
-    }
-
-    private static void enviaEmail(Activity activity, String email) {
-        final Intent shareIntent = new Intent(Intent.ACTION_SENDTO);
-        shareIntent.setData(Uri.parse( "mailto:"));
-        shareIntent.putExtra(Intent.EXTRA_EMAIL,new String[] {email});
-        try {
-            activity.startActivity(Intent.createChooser(shareIntent, activity.getString(R.string.enviando_email)));
-        } catch (android.content.ActivityNotFoundException ex) {
-            Toast.makeText(activity, activity.getResources().getString(R.string.erro_mail_provider), Toast.LENGTH_SHORT).show();
-        }
+        tvProamjoEmail.setOnClickListener(v-> Utils.enviaEmail(getActivity(),src.getString(R.string.jr_bs_proamjo_email)));
+        tvAvbEmail.setOnClickListener(v->  Utils.enviaEmail(getActivity(),src.getString(R.string.jr_bs_avb_email)));
+        tvProadEmail.setOnClickListener(v->  Utils.enviaEmail(getActivity(),src.getString(R.string.jr_bs_proad_email)));
+        tvCapsSite.setOnClickListener(v-> Utils.abreUrl(getActivity(), R.string.jr_caps_url));
+        tvJaSite.setOnClickListener(v -> Utils.abreUrl(getActivity(), R.string.jr_ja_url));
     }
 }

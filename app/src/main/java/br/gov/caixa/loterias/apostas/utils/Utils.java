@@ -3,7 +3,9 @@ package br.gov.caixa.loterias.apostas.utils;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.os.VibrationEffect;
@@ -11,6 +13,7 @@ import android.os.Vibrator;
 import android.util.Base64;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
@@ -164,4 +167,22 @@ public class Utils {
 
         return uf;
     }
+
+    public static void abreUrl(Activity activity,int str  ){
+        Uri    uri    = Uri.parse(activity.getResources().getString(str));
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        activity.startActivity(intent);
+    }
+
+    public static void enviaEmail(Activity activity, String email) {
+        final Intent shareIntent = new Intent(Intent.ACTION_SENDTO);
+        shareIntent.setData(Uri.parse( "mailto:"));
+        shareIntent.putExtra(Intent.EXTRA_EMAIL,new String[] {email});
+        try {
+            activity.startActivity(Intent.createChooser(shareIntent, activity.getString(R.string.enviando_email)));
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(activity, activity.getResources().getString(R.string.erro_mail_provider), Toast.LENGTH_SHORT).show();
+        }
+    }
+
 }
