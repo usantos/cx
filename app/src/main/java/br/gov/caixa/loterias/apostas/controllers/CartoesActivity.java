@@ -69,9 +69,9 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
     private View itemToolbarSettings;
     private AlertDialog loadViewProgress;
     private Boolean flagEntrouAddCartao = false, flagVeioMenu = false;
-    private Button btnAdicionarCartao, btnAvancarPagamento, btnIrRapidao;
-    private TextView tvSubtitulo, tvDescricao, tvValorTotalCarrinho, tvIrRapidao;
-    private ConstraintLayout clIrRapidao, clTab;
+    private Button btnAdicionarCartao, btnAvancarPagamento;
+    private TextView tvSubtitulo, tvDescricao, tvValorTotalCarrinho, tvSemCartao;
+    private ConstraintLayout clSemCartao, clTab;
     private NestedScrollView scrollCartoes;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,9 +97,8 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
         tvSubtitulo = findViewById(R.id.tv_subtitulo);
         tvDescricao = findViewById(R.id.tv_descricao);
         tvValorTotalCarrinho = findViewById(R.id.tv_valor_total_carrinho);
-        tvIrRapidao = findViewById(R.id.tv_ir_rapidao);
-        btnIrRapidao = findViewById(R.id.btn_ir_rapidao);
-        clIrRapidao = findViewById(R.id.cl_ir_rapidao);
+        tvSemCartao = findViewById(R.id.tv_sem_cartao);
+        clSemCartao = findViewById(R.id.cl_sem_cartao);
         scrollCartoes = findViewById(R.id.nsv_conteudo);
         clTab = findViewById(R.id.cl_tab);
 
@@ -117,7 +116,7 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
             setTitle(getString(R.string.cartoes_titulo));
         }
 
-        configuraTelaSemCartao();
+        tvSemCartao.setText(getResources().getString(R.string.cartoes_sem_cartao));
 
         btnAvancarPagamento.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.apostarAutorizarCobranca)));
         btnAdicionarCartao.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.adicionarFormaPagamento)));
@@ -125,16 +124,7 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
 
     }
 
-    private void configuraTelaSemCartao(){
-        if (!DadosUsuarioBO.checarTutorialRapidao()){
-            tvIrRapidao.setText(ViewUtils.textColor(this,getResources().getString(R.string.cartoes_ir_rapidao), R.color.amareloQueimado));
-            btnIrRapidao.setText(getString(R.string.partiu));
 
-        } else {
-            tvIrRapidao.setText(ViewUtils.textColor(this,getResources().getString(R.string.cartoes_ir_rapidao_tutorial), R.color.amareloQueimado));
-            btnIrRapidao.setText(getString(R.string.so_bora));
-        }
-    }
 
     private void setaMetodos(){
         btnAvancarPagamento.setOnClickListener(view -> {
@@ -184,14 +174,6 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
         });
 
         btnAdicionarCartao.setOnClickListener(view -> startActivity(new Intent(CartoesActivity.this, NovaFormaPagamentoActivity.class)));
-
-        btnIrRapidao.setOnClickListener(V -> {
-            if (DadosUsuarioBO.checarTutorialRapidao()) {
-                startActivity(new Intent(CartoesActivity.this, ListaRapidaoActivity.class));
-            } else {
-                startActivity(new Intent(CartoesActivity.this, ConfiguracaoRapidaoActivity.class));
-            }
-        });
     }
 
 
@@ -275,10 +257,10 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
     private void configuraTelaSemCartoes(Boolean isSemCartoes){
         if(isSemCartoes){
             scrollCartoes.setVisibility(View.GONE);
-            clIrRapidao.setVisibility(View.VISIBLE);
+            clSemCartao.setVisibility(View.VISIBLE);
         }else{
             scrollCartoes.setVisibility(View.VISIBLE);
-            clIrRapidao.setVisibility(View.GONE);
+            clSemCartao.setVisibility(View.GONE);
         }
     }
 

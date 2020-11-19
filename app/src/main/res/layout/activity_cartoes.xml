@@ -168,7 +168,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cl_ir_rapidao"
+        android:id="@+id/cl_sem_cartao"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
@@ -178,7 +178,7 @@
         app:layout_constraintTop_toTopOf="@id/gl_toolbar">
 
         <TextView
-            android:id="@+id/tv_ir_rapidao"
+            android:id="@+id/tv_sem_cartao"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/futura_std_book"
@@ -190,21 +190,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="@string/cartoes_ir_rapidao" />
+            tools:text="@string/cartoes_sem_cartao" />
 
-        <Button
-            android:id="@+id/btn_ir_rapidao"
-            android:layout_width="184dp"
-            android:layout_height="56dp"
-            android:background="@drawable/button_white_with_green_border"
-            android:fontFamily="@font/futura_std_bold"
-            android:text="@string/so_bora"
-            android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
-            android:textColor="@color/verdeazul"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_ir_rapidao" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
