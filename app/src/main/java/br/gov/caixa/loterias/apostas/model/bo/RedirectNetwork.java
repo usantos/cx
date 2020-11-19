@@ -257,7 +257,9 @@ public class  RedirectNetwork {
     }
 
     public static void trataErro500(Activity activity, ErrorResponse error){
-        if (error.getCodigo().equalsIgnoreCase("2067")) {
+        if (error != null &&
+                error.getCodigo() !=null &&
+                error.getCodigo().equalsIgnoreCase("2067")) {
             ViewUtils.alert(activity, MercadoPagoUtil.getMessageFromCode("2067"));
         } else {
             ViewUtils.alertTitleButton(

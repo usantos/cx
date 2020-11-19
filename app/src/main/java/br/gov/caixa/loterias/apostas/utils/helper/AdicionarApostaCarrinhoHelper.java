@@ -20,6 +20,8 @@ import java.util.Locale;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity;
+import br.gov.caixa.loterias.apostas.controllers.ConfirmadoInclusaoCarrinhoActivity;
+import br.gov.caixa.loterias.apostas.controllers.SimularApostaActivity;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
@@ -31,7 +33,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AgrupadorDTOApostaDTORes
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumCharacter;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumInteger;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IncluirSurpresinhaDTO;
@@ -41,14 +42,11 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PartidaLotecaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PartidaLotogolDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostas.model.dao.DBLoteriasCrud;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
-import br.gov.caixa.loterias.apostas.controllers.ConfirmadoInclusaoCarrinhoActivity;
-import br.gov.caixa.loterias.apostas.controllers.SimularApostaActivity;
 
 /**
  * Created by joafilho on 10/04/2018.
@@ -329,12 +327,12 @@ public class AdicionarApostaCarrinhoHelper {
             aposta.setId(Constantes.ZERO_LONG);
             aposta.setModalidade(parametroSimulacao.getParametroJogo().getConcurso().getModalidade());
 
-            DTOEnumCharacter tipoConcurso = new DTOEnumCharacter();
+            /*DTOEnumCharacter tipoConcurso = new DTOEnumCharacter();
 
             String valorTipoConcurso = parametroSimulacao.getParametroJogo().getConcurso().getTipoConcurso() == TipoConcursoEnum.NORMAL ? "1" : "2";
             tipoConcurso.setValor(valorTipoConcurso);
-            tipoConcurso.setDescricao(parametroSimulacao.getParametroJogo().getConcurso().getTipoConcurso().toString());
-            aposta.setTipoConcurso(tipoConcurso);
+            tipoConcurso.setDescricao(parametroSimulacao.getParametroJogo().getConcurso().getTipoConcurso().toString());*/
+            aposta.setTipoConcurso(apostaDTO.getTipoConcurso());
             if(apostaDTO.getModalidade() == ModalidadeEnum.SUPER_7){
                 aposta.setNumerosSelecionados(apostaDTO.getMatrizNumerosSelecionados());
             } else {
@@ -390,12 +388,11 @@ public class AdicionarApostaCarrinhoHelper {
 
             apostaDas8Modalidades.setId(Constantes.ZERO_LONG);
 
-            DTOEnumCharacter tipoConcurso = new DTOEnumCharacter();
-
+            /*DTOEnumCharacter tipoConcurso = new DTOEnumCharacter();
             String valorTipoConcurso = parametroJogo.getConcurso().getTipoConcurso() == TipoConcursoEnum.NORMAL ? "1" : "2";
             tipoConcurso.setValor(valorTipoConcurso);
             tipoConcurso.setDescricao(parametroJogo.getConcurso().getTipoConcurso().toString());
-            apostaDas8Modalidades.setTipoConcurso(tipoConcurso);
+            apostaDas8Modalidades.setTipoConcurso(tipoConcurso);*/
 
             apostaDas8Modalidades.setConcursoAlvo(parametroJogo.getConcurso().getNumero());
             apostaDas8Modalidades.setQuantidadeApostas(1);
