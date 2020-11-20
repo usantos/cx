@@ -3,6 +3,7 @@ package br.gov.caixa.loterias.apostas.controllers;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -37,8 +38,11 @@ import br.gov.caixa.loterias.apostas.model.bean.ParametrosPagamento;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
+import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO_;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListCartaoDTOResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.Bin;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
@@ -52,9 +56,13 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
 
     private EditText editTextNumeroCartaoContent, editTextNomeClienteCartaoContent, editTextCodigoSegurancaContent, editTextMesValidadeCartaoContent, editTextAnoValidadeCartaoContent;
 
+    private TextView textoInfoSelecioneFormaPagamento;
+
     private AlertDialog alertDialog;
 
     private CheckBox checkBoxSalvarCartao;
+
+    private ArrayList<RetornoCartao> listaCartoes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +81,7 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
         editTextMesValidadeCartaoContent = findViewById(R.id.editTextMesValidadeCartaooContent);
         editTextAnoValidadeCartaoContent = findViewById(R.id.editTextAnoValidadeCartaooContent);
         checkBoxSalvarCartao = findViewById(R.id.checkBoxSalvarCartao);
+        textoInfoSelecioneFormaPagamento = findViewById(R.id.textoInfoSelecioneFormaPagamento);
 
         setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.title_activity_forma_pagamento)));
 
@@ -82,6 +91,8 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
         addRightImg(findViewById(R.id.editTextNumeroCartaoContent));
         addRightImg(findViewById(R.id.editTextNomeClienteCartaoContent));
         addRightImg(findViewById(R.id.editTextCodigoSegurancaContent));
+
+        buscaCartoes();
 
     }
 
@@ -263,5 +274,31 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
         rQueue.add(request);
     }
 
+    private void buscaCartoes() {
+        alertDialog = LoadingViewLoterias.show(this);
+
+        DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_(NovaFormaPagamentoActivity.this);
+        dadosUsuarioBO.cartoes(new RequestListener<ListCartaoDTOResponse>() {
+
+            @Override
+            public void onResponse(ListCartaoDTOResponse response) {
+                alertDialog.dismiss();
+                if (response.getRedirect() != null){
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), NovaFormaPagamentoActivity.this);
+                }
+                listaCartoes = (ArrayList<RetornoCartao>) response.getPayload();
+                if (listaCartoes != null && listaCartoes.size() > 0){
+                    textoInfoSelecioneFormaPagamento.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                alertDialog.dismiss();
+                RedirectNetwork.checkRedirect( error, NovaFormaPagamentoActivity.this );
+
+            }
+        });
+    }
 }
 

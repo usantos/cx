@@ -19,47 +19,74 @@ import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel(description = "")
 public class RetornoCartao {
-
     @SerializedName("statusCodeHttp")
     private Integer statusCodeHttp = null;
+
     @SerializedName("retornoErroMercadoPago")
     private RetornoErroMercadoPago retornoErroMercadoPago = null;
+
     @SerializedName("idCartao")
     private Long idCartao = null;
+
     @SerializedName("mesValidade")
     private Long mesValidade = null;
+
     @SerializedName("anoValidade")
     private Long anoValidade = null;
+
     @SerializedName("primeirosDigitos")
     private String primeirosDigitos = null;
+
     @SerializedName("ultimosDigitos")
     private String ultimosDigitos = null;
+
     @SerializedName("tamanhoCodigoSeguranca")
     private Long tamanhoCodigoSeguranca = null;
+
     @SerializedName("nomeMetodoPagamento")
     private String nomeMetodoPagamento = null;
+
     @SerializedName("thumbnail")
     private String thumbnail = null;
+
     @SerializedName("secureThumbnail")
     private String secureThumbnail = null;
+
+    @SerializedName("idMetodoPagamento")
+    private String idMetodoPagamento = null;
+
     @SerializedName("nsuTransacaoMpg")
     private String nsuTransacaoMpg = null;
+
     @SerializedName("message")
     private String message = null;
-    @SerializedName("status")
-    private Integer status = null;
+
     @SerializedName("error")
     private String error = null;
-    @SerializedName("causeCode")
-    private Integer causeCode = null;
+
+    @SerializedName("status")
+    private Integer status = null;
+
     @SerializedName("causeMessage")
     private String causeMessage = null;
-    @SerializedName("codigoErro")
-    private String codigoErro = null;
+
+    @SerializedName("causeCode")
+    private Integer causeCode = null;
+
     @SerializedName("operacaoExecutadaComSucesso")
     private Boolean operacaoExecutadaComSucesso = null;
 
+    @SerializedName("codigoErro")
+    private String codigoErro = null;
+
+    public RetornoCartao statusCodeHttp(Integer statusCodeHttp) {
+        this.statusCodeHttp = statusCodeHttp;
+        return this;
+    }
+
     /**
+     * Get statusCodeHttp
+     * @return statusCodeHttp
      **/
     @ApiModelProperty(value = "")
     public Integer getStatusCodeHttp() {
@@ -70,7 +97,14 @@ public class RetornoCartao {
         this.statusCodeHttp = statusCodeHttp;
     }
 
+    public RetornoCartao retornoErroMercadoPago(RetornoErroMercadoPago retornoErroMercadoPago) {
+        this.retornoErroMercadoPago = retornoErroMercadoPago;
+        return this;
+    }
+
     /**
+     * Get retornoErroMercadoPago
+     * @return retornoErroMercadoPago
      **/
     @ApiModelProperty(value = "")
     public RetornoErroMercadoPago getRetornoErroMercadoPago() {
@@ -81,7 +115,14 @@ public class RetornoCartao {
         this.retornoErroMercadoPago = retornoErroMercadoPago;
     }
 
+    public RetornoCartao idCartao(Long idCartao) {
+        this.idCartao = idCartao;
+        return this;
+    }
+
     /**
+     * Get idCartao
+     * @return idCartao
      **/
     @ApiModelProperty(value = "")
     public Long getIdCartao() {
@@ -92,7 +133,14 @@ public class RetornoCartao {
         this.idCartao = idCartao;
     }
 
+    public RetornoCartao mesValidade(Long mesValidade) {
+        this.mesValidade = mesValidade;
+        return this;
+    }
+
     /**
+     * Get mesValidade
+     * @return mesValidade
      **/
     @ApiModelProperty(value = "")
     public Long getMesValidade() {
@@ -103,7 +151,14 @@ public class RetornoCartao {
         this.mesValidade = mesValidade;
     }
 
+    public RetornoCartao anoValidade(Long anoValidade) {
+        this.anoValidade = anoValidade;
+        return this;
+    }
+
     /**
+     * Get anoValidade
+     * @return anoValidade
      **/
     @ApiModelProperty(value = "")
     public Long getAnoValidade() {
@@ -114,7 +169,14 @@ public class RetornoCartao {
         this.anoValidade = anoValidade;
     }
 
+    public RetornoCartao primeirosDigitos(String primeirosDigitos) {
+        this.primeirosDigitos = primeirosDigitos;
+        return this;
+    }
+
     /**
+     * Get primeirosDigitos
+     * @return primeirosDigitos
      **/
     @ApiModelProperty(value = "")
     public String getPrimeirosDigitos() {
@@ -125,7 +187,14 @@ public class RetornoCartao {
         this.primeirosDigitos = primeirosDigitos;
     }
 
+    public RetornoCartao ultimosDigitos(String ultimosDigitos) {
+        this.ultimosDigitos = ultimosDigitos;
+        return this;
+    }
+
     /**
+     * Get ultimosDigitos
+     * @return ultimosDigitos
      **/
     @ApiModelProperty(value = "")
     public String getUltimosDigitos() {
@@ -136,7 +205,14 @@ public class RetornoCartao {
         this.ultimosDigitos = ultimosDigitos;
     }
 
+    public RetornoCartao tamanhoCodigoSeguranca(Long tamanhoCodigoSeguranca) {
+        this.tamanhoCodigoSeguranca = tamanhoCodigoSeguranca;
+        return this;
+    }
+
     /**
+     * Get tamanhoCodigoSeguranca
+     * @return tamanhoCodigoSeguranca
      **/
     @ApiModelProperty(value = "")
     public Long getTamanhoCodigoSeguranca() {
@@ -147,7 +223,14 @@ public class RetornoCartao {
         this.tamanhoCodigoSeguranca = tamanhoCodigoSeguranca;
     }
 
+    public RetornoCartao nomeMetodoPagamento(String nomeMetodoPagamento) {
+        this.nomeMetodoPagamento = nomeMetodoPagamento;
+        return this;
+    }
+
     /**
+     * Get nomeMetodoPagamento
+     * @return nomeMetodoPagamento
      **/
     @ApiModelProperty(value = "")
     public String getNomeMetodoPagamento() {
@@ -158,7 +241,14 @@ public class RetornoCartao {
         this.nomeMetodoPagamento = nomeMetodoPagamento;
     }
 
+    public RetornoCartao thumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
+        return this;
+    }
+
     /**
+     * Get thumbnail
+     * @return thumbnail
      **/
     @ApiModelProperty(value = "")
     public String getThumbnail() {
@@ -169,7 +259,14 @@ public class RetornoCartao {
         this.thumbnail = thumbnail;
     }
 
+    public RetornoCartao secureThumbnail(String secureThumbnail) {
+        this.secureThumbnail = secureThumbnail;
+        return this;
+    }
+
     /**
+     * Get secureThumbnail
+     * @return secureThumbnail
      **/
     @ApiModelProperty(value = "")
     public String getSecureThumbnail() {
@@ -180,7 +277,32 @@ public class RetornoCartao {
         this.secureThumbnail = secureThumbnail;
     }
 
+    public RetornoCartao idMetodoPagamento(String idMetodoPagamento) {
+        this.idMetodoPagamento = idMetodoPagamento;
+        return this;
+    }
+
     /**
+     * Get idMetodoPagamento
+     * @return idMetodoPagamento
+     **/
+    @ApiModelProperty(value = "")
+    public String getIdMetodoPagamento() {
+        return idMetodoPagamento;
+    }
+
+    public void setIdMetodoPagamento(String idMetodoPagamento) {
+        this.idMetodoPagamento = idMetodoPagamento;
+    }
+
+    public RetornoCartao nsuTransacaoMpg(String nsuTransacaoMpg) {
+        this.nsuTransacaoMpg = nsuTransacaoMpg;
+        return this;
+    }
+
+    /**
+     * Get nsuTransacaoMpg
+     * @return nsuTransacaoMpg
      **/
     @ApiModelProperty(value = "")
     public String getNsuTransacaoMpg() {
@@ -191,163 +313,17 @@ public class RetornoCartao {
         this.nsuTransacaoMpg = nsuTransacaoMpg;
     }
 
+    public RetornoCartao message(String message) {
+        this.message = message;
+        return this;
+    }
+
     /**
+     * Get message
+     * @return message
      **/
     @ApiModelProperty(value = "")
     public String getMessage() {
         return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    /**
-     **/
-    @ApiModelProperty(value = "")
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    /**
-     **/
-    @ApiModelProperty(value = "")
-    public String getError() {
-        return error;
-    }
-
-    public void setError(String error) {
-        this.error = error;
-    }
-
-    /**
-     **/
-    @ApiModelProperty(value = "")
-    public Integer getCauseCode() {
-        return causeCode;
-    }
-
-    public void setCauseCode(Integer causeCode) {
-        this.causeCode = causeCode;
-    }
-
-    /**
-     **/
-    @ApiModelProperty(value = "")
-    public String getCauseMessage() {
-        return causeMessage;
-    }
-
-    public void setCauseMessage(String causeMessage) {
-        this.causeMessage = causeMessage;
-    }
-
-    /**
-     **/
-    @ApiModelProperty(value = "")
-    public String getCodigoErro() {
-        return codigoErro;
-    }
-
-    public void setCodigoErro(String codigoErro) {
-        this.codigoErro = codigoErro;
-    }
-
-    /**
-     **/
-    @ApiModelProperty(value = "")
-    public Boolean getOperacaoExecutadaComSucesso() {
-        return operacaoExecutadaComSucesso;
-    }
-
-    public void setOperacaoExecutadaComSucesso(Boolean operacaoExecutadaComSucesso) {
-        this.operacaoExecutadaComSucesso = operacaoExecutadaComSucesso;
-    }
-
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        RetornoCartao retornoCartao = (RetornoCartao) o;
-        return (this.statusCodeHttp == null ? retornoCartao.statusCodeHttp == null : this.statusCodeHttp.equals(retornoCartao.statusCodeHttp)) &&
-                (this.retornoErroMercadoPago == null ? retornoCartao.retornoErroMercadoPago == null : this.retornoErroMercadoPago.equals(retornoCartao.retornoErroMercadoPago)) &&
-                (this.idCartao == null ? retornoCartao.idCartao == null : this.idCartao.equals(retornoCartao.idCartao)) &&
-                (this.mesValidade == null ? retornoCartao.mesValidade == null : this.mesValidade.equals(retornoCartao.mesValidade)) &&
-                (this.anoValidade == null ? retornoCartao.anoValidade == null : this.anoValidade.equals(retornoCartao.anoValidade)) &&
-                (this.primeirosDigitos == null ? retornoCartao.primeirosDigitos == null : this.primeirosDigitos.equals(retornoCartao.primeirosDigitos)) &&
-                (this.ultimosDigitos == null ? retornoCartao.ultimosDigitos == null : this.ultimosDigitos.equals(retornoCartao.ultimosDigitos)) &&
-                (this.tamanhoCodigoSeguranca == null ? retornoCartao.tamanhoCodigoSeguranca == null : this.tamanhoCodigoSeguranca.equals(retornoCartao.tamanhoCodigoSeguranca)) &&
-                (this.nomeMetodoPagamento == null ? retornoCartao.nomeMetodoPagamento == null : this.nomeMetodoPagamento.equals(retornoCartao.nomeMetodoPagamento)) &&
-                (this.thumbnail == null ? retornoCartao.thumbnail == null : this.thumbnail.equals(retornoCartao.thumbnail)) &&
-                (this.secureThumbnail == null ? retornoCartao.secureThumbnail == null : this.secureThumbnail.equals(retornoCartao.secureThumbnail)) &&
-                (this.nsuTransacaoMpg == null ? retornoCartao.nsuTransacaoMpg == null : this.nsuTransacaoMpg.equals(retornoCartao.nsuTransacaoMpg)) &&
-                (this.message == null ? retornoCartao.message == null : this.message.equals(retornoCartao.message)) &&
-                (this.status == null ? retornoCartao.status == null : this.status.equals(retornoCartao.status)) &&
-                (this.error == null ? retornoCartao.error == null : this.error.equals(retornoCartao.error)) &&
-                (this.causeCode == null ? retornoCartao.causeCode == null : this.causeCode.equals(retornoCartao.causeCode)) &&
-                (this.causeMessage == null ? retornoCartao.causeMessage == null : this.causeMessage.equals(retornoCartao.causeMessage)) &&
-                (this.codigoErro == null ? retornoCartao.codigoErro == null : this.codigoErro.equals(retornoCartao.codigoErro)) &&
-                (this.operacaoExecutadaComSucesso == null ? retornoCartao.operacaoExecutadaComSucesso == null : this.operacaoExecutadaComSucesso.equals(retornoCartao.operacaoExecutadaComSucesso));
-    }
-
-    @Override
-    public int hashCode() {
-        int result = 17;
-        result = 31 * result + (this.statusCodeHttp == null ? 0 : this.statusCodeHttp.hashCode());
-        result = 31 * result + (this.retornoErroMercadoPago == null ? 0 : this.retornoErroMercadoPago.hashCode());
-        result = 31 * result + (this.idCartao == null ? 0 : this.idCartao.hashCode());
-        result = 31 * result + (this.mesValidade == null ? 0 : this.mesValidade.hashCode());
-        result = 31 * result + (this.anoValidade == null ? 0 : this.anoValidade.hashCode());
-        result = 31 * result + (this.primeirosDigitos == null ? 0 : this.primeirosDigitos.hashCode());
-        result = 31 * result + (this.ultimosDigitos == null ? 0 : this.ultimosDigitos.hashCode());
-        result = 31 * result + (this.tamanhoCodigoSeguranca == null ? 0 : this.tamanhoCodigoSeguranca.hashCode());
-        result = 31 * result + (this.nomeMetodoPagamento == null ? 0 : this.nomeMetodoPagamento.hashCode());
-        result = 31 * result + (this.thumbnail == null ? 0 : this.thumbnail.hashCode());
-        result = 31 * result + (this.secureThumbnail == null ? 0 : this.secureThumbnail.hashCode());
-        result = 31 * result + (this.nsuTransacaoMpg == null ? 0 : this.nsuTransacaoMpg.hashCode());
-        result = 31 * result + (this.message == null ? 0 : this.message.hashCode());
-        result = 31 * result + (this.status == null ? 0 : this.status.hashCode());
-        result = 31 * result + (this.error == null ? 0 : this.error.hashCode());
-        result = 31 * result + (this.causeCode == null ? 0 : this.causeCode.hashCode());
-        result = 31 * result + (this.causeMessage == null ? 0 : this.causeMessage.hashCode());
-        result = 31 * result + (this.codigoErro == null ? 0 : this.codigoErro.hashCode());
-        result = 31 * result + (this.operacaoExecutadaComSucesso == null ? 0 : this.operacaoExecutadaComSucesso.hashCode());
-        return result;
-    }
-
-    @Override
-    public String toString() {
-
-        String sb = "class RetornoCartao {\n" +
-                "  statusCodeHttp: " + statusCodeHttp + "\n" +
-                "  retornoErroMercadoPago: " + retornoErroMercadoPago + "\n" +
-                "  idCartao: " + idCartao + "\n" +
-                "  mesValidade: " + mesValidade + "\n" +
-                "  anoValidade: " + anoValidade + "\n" +
-                "  primeirosDigitos: " + primeirosDigitos + "\n" +
-                "  ultimosDigitos: " + ultimosDigitos + "\n" +
-                "  tamanhoCodigoSeguranca: " + tamanhoCodigoSeguranca + "\n" +
-                "  nomeMetodoPagamento: " + nomeMetodoPagamento + "\n" +
-                "  thumbnail: " + thumbnail + "\n" +
-                "  secureThumbnail: " + secureThumbnail + "\n" +
-                "  nsuTransacaoMpg: " + nsuTransacaoMpg + "\n" +
-                "  message: " + message + "\n" +
-                "  status: " + status + "\n" +
-                "  error: " + error + "\n" +
-                "  causeCode: " + causeCode + "\n" +
-                "  causeMessage: " + causeMessage + "\n" +
-                "  codigoErro: " + codigoErro + "\n" +
-                "  operacaoExecutadaComSucesso: " + operacaoExecutadaComSucesso + "\n" +
-                "}\n";
-        return sb;
     }
 }

@@ -56,7 +56,7 @@ public class CartoesRecyclerViewAdapter extends RecyclerView.Adapter<CartoesRecy
 
         holder.tvNumCartao.setText(context.getResources().getString(R.string.mascara_cartao_sem_ultimos_digitos) + cartao.getUltimosDigitos());
         holder.tvDataVenc.setText(context.getResources().getString(R.string.venc_ponto_dois_pontos) + cartao.getMesValidade() + context.getResources().getString(R.string.barra)  + cartao.getAnoValidade());
-        holder.ivBandeira.setImageDrawable(context.getDrawable(getBandeira(cartao.getNomeMetodoPagamento())));
+        holder.ivBandeira.setImageDrawable(context.getDrawable(getBandeira(cartao.getIdMetodoPagamento())));
         if(!flagVeioMenu){
             if (selected_position == position){
                 holder.itemView.setBackgroundResource(R.color.cinzaclaro);
@@ -150,10 +150,8 @@ public class CartoesRecyclerViewAdapter extends RecyclerView.Adapter<CartoesRecy
                 return R.drawable.ic_elo;
             case "amex":
                 return R.drawable.ic_american;
-            /*case "melicard":
-                return R.drawable.cartao_visa;*/
             default:
-                return R.drawable.cartao_visa;
+                return R.drawable.cartao_cvc;
 
         }
     }
