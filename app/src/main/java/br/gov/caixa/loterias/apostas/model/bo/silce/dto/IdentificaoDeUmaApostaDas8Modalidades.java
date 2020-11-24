@@ -20,6 +20,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
@@ -422,65 +423,39 @@ IdentificaoDeUmaApostaDas8Modalidades<T> implements Serializable {
 
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) {
-			return true;
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		IdentificaoDeUmaApostaDas8Modalidades<?> that = (IdentificaoDeUmaApostaDas8Modalidades<?>) o;
+		boolean numerosIguais = false, equals;
+		if(getModalidade().equals(ModalidadeEnum.SUPER_7) && that.getModalidade().equals(ModalidadeEnum.SUPER_7)){
+			numerosIguais = Objects.equals(getMatrizNumerosSelecionados(), that.getMatrizNumerosSelecionados());
+
+		} else {
+			if(!getModalidade().equals(ModalidadeEnum.SUPER_7) && !that.getModalidade().equals(ModalidadeEnum.SUPER_7)){
+				numerosIguais = Objects.equals(getListaNumerosSelecionados(), that.getListaNumerosSelecionados());
+			}
 		}
-		if (o == null || getClass() != o.getClass()) {
-			return false;
+		equals = getModalidade() == that.getModalidade() &&
+				Objects.equals(getTipoConcurso().getValor(), that.getTipoConcurso().getValor()) &&
+				Objects.equals(getPartidasLotogol(), that.getPartidasLotogol()) &&
+				Objects.equals(getPartidasLoteca(), that.getPartidasLoteca()) &&
+				numerosIguais &&
+				Objects.equals(getQuantidadeNumeros(), that.getQuantidadeNumeros());
+
+		if (getModalidade().equals(ModalidadeEnum.TIMEMANIA) && that.getModalidade().equals(ModalidadeEnum.TIMEMANIA)) {
+			return equals && Objects.equals(getTimeDoCoracao(), that.getTimeDoCoracao());
 		}
-		IdentificaoDeUmaApostaDas8Modalidades identificaoDeUmaApostaDas8Modalidades = (IdentificaoDeUmaApostaDas8Modalidades) o;
-		return (this.id == null ? identificaoDeUmaApostaDas8Modalidades.id == null : this.id.equals(identificaoDeUmaApostaDas8Modalidades.id)) &&
-				(this.modalidade == null ? identificaoDeUmaApostaDas8Modalidades.modalidade == null : this.modalidade.equals(identificaoDeUmaApostaDas8Modalidades.modalidade)) &&
-				(this.tipoConcurso == null ? identificaoDeUmaApostaDas8Modalidades.tipoConcurso == null : this.tipoConcurso.equals(identificaoDeUmaApostaDas8Modalidades.tipoConcurso)) &&
-				(this.partidasLotogol == null ? identificaoDeUmaApostaDas8Modalidades.partidasLotogol == null : this.partidasLotogol.equals(identificaoDeUmaApostaDas8Modalidades.partidasLotogol)) &&
-				(this.partidasLoteca == null ? identificaoDeUmaApostaDas8Modalidades.partidasLoteca == null : this.partidasLoteca.equals(identificaoDeUmaApostaDas8Modalidades.partidasLoteca)) &&
-				(this.numerosSelecionados == null ? identificaoDeUmaApostaDas8Modalidades.numerosSelecionados == null : this.numerosSelecionados.equals(identificaoDeUmaApostaDas8Modalidades.numerosSelecionados)) &&
-				(this.indicadorSurpresinha == null ? identificaoDeUmaApostaDas8Modalidades.indicadorSurpresinha == null : this.indicadorSurpresinha.equals(identificaoDeUmaApostaDas8Modalidades.indicadorSurpresinha)) &&
-				(this.valor == null ? identificaoDeUmaApostaDas8Modalidades.valor == null : this.valor.equals(identificaoDeUmaApostaDas8Modalidades.valor)) &&
-				(this.concursoAlvo == null ? identificaoDeUmaApostaDas8Modalidades.concursoAlvo == null : this.concursoAlvo.equals(identificaoDeUmaApostaDas8Modalidades.concursoAlvo)) &&
-				(this.quantidadeTeimosinhas == null ? identificaoDeUmaApostaDas8Modalidades.quantidadeTeimosinhas == null : this.quantidadeTeimosinhas.equals(identificaoDeUmaApostaDas8Modalidades.quantidadeTeimosinhas)) &&
-				(this.quantidadeApostas == null ? identificaoDeUmaApostaDas8Modalidades.quantidadeApostas == null : this.quantidadeApostas.equals(identificaoDeUmaApostaDas8Modalidades.quantidadeApostas)) &&
-				(this.espelho == null ? identificaoDeUmaApostaDas8Modalidades.espelho == null : this.espelho.equals(identificaoDeUmaApostaDas8Modalidades.espelho)) &&
-				(this.geraEspelho == null ? identificaoDeUmaApostaDas8Modalidades.geraEspelho == null : this.geraEspelho.equals(identificaoDeUmaApostaDas8Modalidades.geraEspelho)) &&
-				(this.timeDoCoracao == null ? identificaoDeUmaApostaDas8Modalidades.timeDoCoracao == null : this.timeDoCoracao.equals(identificaoDeUmaApostaDas8Modalidades.timeDoCoracao)) &&
-				(this.concursoInicial == null ? identificaoDeUmaApostaDas8Modalidades.concursoInicial == null : this.concursoInicial.equals(identificaoDeUmaApostaDas8Modalidades.concursoInicial)) &&
-				(this.situacao == null ? identificaoDeUmaApostaDas8Modalidades.situacao == null : this.situacao.equals(identificaoDeUmaApostaDas8Modalidades.situacao)) &&
-				(this.troca == null ? identificaoDeUmaApostaDas8Modalidades.troca == null : this.troca.equals(identificaoDeUmaApostaDas8Modalidades.troca)) &&
-				(this.dataEfetivacao == null ? identificaoDeUmaApostaDas8Modalidades.dataEfetivacao == null : this.dataEfetivacao.equals(identificaoDeUmaApostaDas8Modalidades.dataEfetivacao)) &&
-				(this.horaEfetivacao == null ? identificaoDeUmaApostaDas8Modalidades.horaEfetivacao == null : this.horaEfetivacao.equals(identificaoDeUmaApostaDas8Modalidades.horaEfetivacao)) &&
-				//(this.loterica == null ? identificaoDeUmaApostaDas8Modalidades.loterica == null : this.loterica.equals(identificaoDeUmaApostaDas8Modalidades.loterica)) &&
-				(this.vinculoEspelho == null ? identificaoDeUmaApostaDas8Modalidades.vinculoEspelho == null : this.vinculoEspelho.equals(identificaoDeUmaApostaDas8Modalidades.vinculoEspelho)) &&
-				(this.quantidadeNumeros == null ? identificaoDeUmaApostaDas8Modalidades.quantidadeNumeros == null : this.quantidadeNumeros.equals(identificaoDeUmaApostaDas8Modalidades.quantidadeNumeros)) &&
-				(this.surpresinha == null ? identificaoDeUmaApostaDas8Modalidades.surpresinha == null : this.surpresinha.equals(identificaoDeUmaApostaDas8Modalidades.surpresinha));
+
+		if (getModalidade().equals(ModalidadeEnum.DIA_DE_SORTE) && that.getModalidade().equals(ModalidadeEnum.DIA_DE_SORTE)) {
+			return equals && Objects.equals(getMesDeSorte(), that.getMesDeSorte());
+		}
+		return equals;
+
 	}
 
 	@Override
 	public int hashCode() {
-		int result = 17;
-		result = 31 * result + (this.id == null ? 0 : this.id.hashCode());
-		result = 31 * result + (this.modalidade == null ? 0 : this.modalidade.hashCode());
-		result = 31 * result + (this.tipoConcurso == null ? 0 : this.tipoConcurso.hashCode());
-		result = 31 * result + (this.partidasLotogol == null ? 0 : this.partidasLotogol.hashCode());
-		result = 31 * result + (this.partidasLoteca == null ? 0 : this.partidasLoteca.hashCode());
-		result = 31 * result + (this.numerosSelecionados == null ? 0 : this.numerosSelecionados.hashCode());
-		result = 31 * result + (this.indicadorSurpresinha == null ? 0 : this.indicadorSurpresinha.hashCode());
-		result = 31 * result + (this.valor == null ? 0 : this.valor.hashCode());
-		result = 31 * result + (this.concursoAlvo == null ? 0 : this.concursoAlvo.hashCode());
-		result = 31 * result + (this.quantidadeTeimosinhas == null ? 0 : this.quantidadeTeimosinhas.hashCode());
-		result = 31 * result + (this.quantidadeApostas == null ? 0 : this.quantidadeApostas.hashCode());
-		result = 31 * result + (this.espelho == null ? 0 : this.espelho.hashCode());
-		result = 31 * result + (this.geraEspelho == null ? 0 : this.geraEspelho.hashCode());
-		result = 31 * result + (this.timeDoCoracao == null ? 0 : this.timeDoCoracao.hashCode());
-		result = 31 * result + (this.concursoInicial == null ? 0 : this.concursoInicial.hashCode());
-		result = 31 * result + (this.situacao == null ? 0 : this.situacao.hashCode());
-		result = 31 * result + (this.troca == null ? 0 : this.troca.hashCode());
-		result = 31 * result + (this.dataEfetivacao == null ? 0 : this.dataEfetivacao.hashCode());
-		result = 31 * result + (this.horaEfetivacao == null ? 0 : this.horaEfetivacao.hashCode());
-		//result = 31 * result + (this.loterica == null ? 0 : this.loterica.hashCode());
-		result = 31 * result + (this.vinculoEspelho == null ? 0 : this.vinculoEspelho.hashCode());
-		result = 31 * result + (this.quantidadeNumeros == null ? 0 : this.quantidadeNumeros.hashCode());
-		result = 31 * result + (this.surpresinha == null ? 0 : this.surpresinha.hashCode());
-		return result;
+		return Objects.hash(getModalidade(), getTipoConcurso(), getPartidasLotogol(), getPartidasLoteca(), getNumerosSelecionados(), getValor(), getConcursoAlvo(), getTimeDoCoracao(), getConcursoInicial(), getQuantidadeNumeros(), getMesDeSorte());
 	}
 
 	@Override
@@ -656,6 +631,3 @@ IdentificaoDeUmaApostaDas8Modalidades<T> implements Serializable {
 		return new BigDecimal("0");
 	}
 }
-
-
-
