@@ -184,13 +184,13 @@ public class AdicionarApostaCarrinhoHelper {
         BigDecimal valorCarrinho = carrinhoDTO.getValorTotal().add(IdentificaoDeUmaApostaDas8Modalidades.getValorApostaPorPrognostico(aposta));
         if (valorCarrinho != null && limiteDiario != null && valorCarrinho.compareTo(limiteDiario) == 1) {
             DialogUtils.dismiss();
-            ViewUtils.alertTitleButtonYesOrNotListener(activity, activity.getResources().getString(R.string.MA014), (dialog, which) -> checarApostasRepetidas(apostaBO, aposta));
+            ViewUtils.alertTitleButtonYesOrNotListener(activity, activity.getResources().getString(R.string.MA014), (dialog, which) -> prosseguirInclusaoAposta(activity,aposta,apostaBO));
         } else {
-            checarApostasRepetidas(apostaBO, aposta);
+            prosseguirInclusaoAposta(activity,aposta,apostaBO);
         }
     }
 
-    private static void checarApostasRepetidas(final ApostaBO apostaBO, final IdentificaoDeUmaApostaDas8Modalidades aposta) {
+    /*private static void checarApostasRepetidas(final ApostaBO apostaBO, final IdentificaoDeUmaApostaDas8Modalidades aposta) {
         if (checarApostasRepetidas(activity,aposta)) {
             DialogUtils.dismiss();
             ViewUtils.alertTitleButtonYesOrNotListener(activity, activity.getResources().getString(R.string.MA015), (dialog, which) -> {
@@ -200,7 +200,7 @@ public class AdicionarApostaCarrinhoHelper {
         } else {
             postAdicionarApostaCarrinho(apostaBO);
         }
-    }
+    }*/
     private static void prosseguirInclusaoAposta(Activity activity, IdentificaoDeUmaApostaDas8Modalidades aposta, ApostaBO apostaBO) {
         if(checarApostasRepetidas(activity, aposta)){
             ViewUtils.alertTitleButtonYesOrNotListener(AdicionarApostaCarrinhoHelper.activity, AdicionarApostaCarrinhoHelper.activity.getResources().getString(R.string.MA015), (dialog, which) -> {
@@ -249,26 +249,6 @@ public class AdicionarApostaCarrinhoHelper {
             }
         }
         return false;
-    }
-    private void buscaCarrinho() {
-        final ApostaBO apostaBO = ApostaBO_.getInstance_(activity);
-        DialogUtils.show(activity);
-        apostaBO.buscaCarrinho(new RequestListener<CarrinhoDTOResponse>() {
-            @Override
-            public void onResponse(CarrinhoDTOResponse response) {
-                DialogUtils.dismiss();
-                if (response.getRedirect() != null) {
-                    RedirectNetwork.checkRedirectSucesso(response.getRedirect(), activity);
-                }
-                response.getPayload();
-            }
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                DialogUtils.dismiss();
-                RedirectNetwork.checkRedirect(error, activity);
-            }
-        });
     }
 
 
@@ -320,11 +300,7 @@ public class AdicionarApostaCarrinhoHelper {
         boolean isTipoLoteca = CollectionUtils.isNotEmpty(aposta.getPartidasLoteca());
 
 
-        //TODO Verificar os parametros que indicam aposta igual
-        if (checarApostasRepetidas(activity,aposta)) {
-            ViewUtils.alert(contextParam, contextParam.getString(R.string.MA015));
-            return Boolean.FALSE;
-        } else if (quantidadeApostaCarrinho >= SessaoUsuario.getInstance().getParametrosSimulacao().getQuantidadeMaximaApostasCarrinho()) {
+        if (quantidadeApostaCarrinho >= SessaoUsuario.getInstance().getParametrosSimulacao().getQuantidadeMaximaApostasCarrinho()) {
             ViewUtils.alert(contextParam, contextParam.getString(R.string.MA013));
             return Boolean.FALSE;
         } else {

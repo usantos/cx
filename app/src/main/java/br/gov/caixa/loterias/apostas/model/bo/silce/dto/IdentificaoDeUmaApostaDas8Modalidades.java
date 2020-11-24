@@ -428,11 +428,22 @@ IdentificaoDeUmaApostaDas8Modalidades<T> implements Serializable {
 		IdentificaoDeUmaApostaDas8Modalidades<?> that = (IdentificaoDeUmaApostaDas8Modalidades<?>) o;
 		boolean numerosIguais = false, equals;
 		if(getModalidade().equals(ModalidadeEnum.SUPER_7) && that.getModalidade().equals(ModalidadeEnum.SUPER_7)){
-			numerosIguais = Objects.equals(getMatrizNumerosSelecionados(), that.getMatrizNumerosSelecionados());
-
+			List<List<Integer>> matriz = new ArrayList<>();
+			List<List<Integer>> thatMatriz = new ArrayList<>();
+			matriz.addAll(getMatrizNumerosSelecionados());
+			thatMatriz.addAll(that.getMatrizNumerosSelecionados());
+			if (matriz!= null && thatMatriz != null){
+				matriz = Utils.ordenaMatrizInteiro(matriz);
+				thatMatriz = Utils.ordenaMatrizInteiro(thatMatriz);
+				numerosIguais = Objects.equals(matriz, thatMatriz);
+			}
 		} else {
 			if(!getModalidade().equals(ModalidadeEnum.SUPER_7) && !that.getModalidade().equals(ModalidadeEnum.SUPER_7)){
-				numerosIguais = Objects.equals(getListaNumerosSelecionados(), that.getListaNumerosSelecionados());
+				List<Integer> nums = getListaNumerosSelecionados(),
+						thatNums = that.getListaNumerosSelecionados();
+				Collections.sort(nums);
+				Collections.sort(thatNums);
+				numerosIguais = Objects.equals(nums, thatNums);
 			}
 		}
 		equals = getModalidade() == that.getModalidade() &&
@@ -442,7 +453,7 @@ IdentificaoDeUmaApostaDas8Modalidades<T> implements Serializable {
 				numerosIguais &&
 				Objects.equals(getQuantidadeNumeros(), that.getQuantidadeNumeros());
 
-		if (getModalidade().equals(ModalidadeEnum.TIMEMANIA) && that.getModalidade().equals(ModalidadeEnum.TIMEMANIA)) {
+		if (getModalidade().equals(ModalidadeEnum.TIMEMANIA) && that.getModalidade().equals(ModalidadeEnum.TIMEMANIA)){
 			return equals && Objects.equals(getTimeDoCoracao(), that.getTimeDoCoracao());
 		}
 
