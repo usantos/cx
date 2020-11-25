@@ -439,11 +439,17 @@ IdentificaoDeUmaApostaDas8Modalidades<T> implements Serializable {
 			}
 		} else {
 			if(!getModalidade().equals(ModalidadeEnum.SUPER_7) && !that.getModalidade().equals(ModalidadeEnum.SUPER_7)){
-				List<Integer> nums = getListaNumerosSelecionados(),
-						thatNums = that.getListaNumerosSelecionados();
-				Collections.sort(nums);
-				Collections.sort(thatNums);
-				numerosIguais = Objects.equals(nums, thatNums);
+				if(!getModalidade().equals(ModalidadeEnum.LOTECA)) {
+					List<Integer> nums = getListaNumerosSelecionados(),
+							thatNums = that.getListaNumerosSelecionados();
+					if(nums != null && thatNums!= null) {
+						Collections.sort(nums);
+						Collections.sort(thatNums);
+						numerosIguais = Objects.equals(nums, thatNums);
+					}
+				} else {
+					numerosIguais = true;
+				}
 			}
 		}
 		equals = getModalidade() == that.getModalidade() &&
@@ -459,6 +465,10 @@ IdentificaoDeUmaApostaDas8Modalidades<T> implements Serializable {
 
 		if (getModalidade().equals(ModalidadeEnum.DIA_DE_SORTE) && that.getModalidade().equals(ModalidadeEnum.DIA_DE_SORTE)) {
 			return equals && Objects.equals(getMesDeSorte(), that.getMesDeSorte());
+		}
+
+		if (getModalidade().equals(ModalidadeEnum.LOTECA) && that.getModalidade().equals(ModalidadeEnum.LOTECA)) {
+			return equals && Objects.equals(getPartidasLoteca(), that.getPartidasLoteca());
 		}
 		return equals;
 
