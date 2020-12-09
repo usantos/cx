@@ -228,6 +228,28 @@ public class EquipeDTO implements Serializable {
                 (this.descricaoLonga == null ? equipeDTO.descricaoLonga == null : this.descricaoLonga.equals(equipeDTO.descricaoLonga));
     }
 
+    public boolean customEquals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        EquipeDTO equipeDTO = (EquipeDTO) o;
+        return (this.placar == null ? equipeDTO.placar == null : this.placar.equals(equipeDTO.placar)) &&
+                (this.parametroEquipe == null ? equipeDTO.parametroEquipe == null : this.parametroEquipe.equals(equipeDTO.parametroEquipe)) &&
+                (this.nome == null ? equipeDTO.nome == null : this.nome.equals(equipeDTO.nome)) &&
+                (this.numero == null ? equipeDTO.numero == null : this.numero.equals(equipeDTO.numero)) &&
+                (this.numeroPais == null ? equipeDTO.numeroPais == null : this.numeroPais.equals(equipeDTO.numeroPais)) &&
+                (this.pais == null ? equipeDTO.pais == null : this.pais.equals(equipeDTO.pais)) &&
+                (this.siglaPais == null ? equipeDTO.siglaPais == null : this.siglaPais.equals(equipeDTO.siglaPais)) &&
+                (this.uf == null ? equipeDTO.uf == null : this.uf.equals(equipeDTO.uf)) &&
+                (this.nomeClass == null ? equipeDTO.nomeClass == null : this.nomeClass.equals(equipeDTO.nomeClass)) &&
+                (this.indicadorSelecao == null ? equipeDTO.indicadorSelecao == null : this.indicadorSelecao.equals(equipeDTO.indicadorSelecao)) &&
+                (this.descricaoCurta == null ? equipeDTO.descricaoCurta == null : this.descricaoCurta.equals(equipeDTO.descricaoCurta)) &&
+                (this.descricaoLonga == null ? equipeDTO.descricaoLonga == null : this.descricaoLonga.equals(equipeDTO.descricaoLonga));
+    }
+
     @Override
     public int hashCode() {
         int result = 17;

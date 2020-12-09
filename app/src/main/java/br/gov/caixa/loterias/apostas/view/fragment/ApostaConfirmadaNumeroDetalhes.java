@@ -5,10 +5,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -18,18 +17,20 @@ import org.androidannotations.annotations.ViewById;
 import org.apache.commons.lang.StringUtils;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConfiguracaoNumeros;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConfiguracaoNumerosSuperSete;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
-import br.gov.caixa.loterias.apostas.utils.AppUtils;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
+import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
-import br.gov.caixa.loterias.apostas.view.adapter.DezenasAdapter;
 
 /**
  * Created by pmotta on 23/03/2018.
@@ -39,21 +40,26 @@ import br.gov.caixa.loterias.apostas.view.adapter.DezenasAdapter;
 @EFragment(R.layout.fragment_aposta_confirmada_numero_detalhes)
 public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 
+	List<Integer> numerosSorteadosPrimeiro, numerosSorteadosSegundo;
+	List<List<Integer>> matrizSorteados;
+
 	@Bean
 	protected ApostaBO apostaBO;
 
 	@ViewById
 	protected TextView concursoTxt, quantidadeApostadasTxt, dataApostaTxt, resultTxt, modalidadeTxt, seusNumerosTxt,
-					   apostaTrocaTxt, informacaoAdicionalTxt, labelInformacaoAdicionalTxt, tv_colunas, tv_sua_aposta;
+			apostaTrocaTxt, informacaoAdicionalTxt, labelInformacaoAdicionalTxt, tv_colunas, tv_sua_aposta, tv_resultado,
+			tv_colunas_2, tv_resultado_super_sete, tv_tit_time_mes, tv_time_mes;
 
 	@ViewById
-	protected RelativeLayout informacaoAdicionalLayout, rl_container_fragment;
-
-	@ViewById
-	protected RecyclerView dezenasRecyclerView;
+	protected RelativeLayout informacaoAdicionalLayout, rl_fg_numeros_1, rl_fg_numeros_2 ,rl_container_result_1, rl_container_result_2,
+			rl_time_mes;
 
 	@FragmentArg
 	protected IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta;
+
+	@FragmentArg
+	protected ResultadoConcursoDTO resultadoConcurso;
 
 	@ViewById
 	protected TextView tv_val_premio, tv_val_premio_tit;
@@ -68,7 +74,7 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 	protected void init() {
 		concursoTxt.setText(String.format(Locale.getDefault(), getResources().getString(R.string.percent_d), aposta.getConcursoInicial()));
 		if (!StringUtils.isEmpty(aposta.getHoraEfetivacao())) {
-			dataApostaTxt.setText(aposta.getDataEfetivacao() + getResources().getString(R.string.string_vazia) + aposta.getHoraEfetivacao());
+			dataApostaTxt.setText(aposta.getDataEfetivacao() + getResources().getString(R.string.espaco_em_branco) + aposta.getHoraEfetivacao());
 		}
 
 		if (valorPremio != null) {
@@ -106,46 +112,128 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 			labelInformacaoAdicionalTxt.setText(R.string.label_mes_sorte);
 			informacaoAdicionalTxt.setText(aposta.getMesDeSorte().getNome());
 		}
-
-		initdezenasRecyclerView();
+		configuraNumeros();
 	}
 
-	private void initdezenasRecyclerView() {
+	private void configuraNumeros() {
 		if (!aposta.getNumerosSelecionados().isEmpty()) {
 			if (aposta.getModalidade() == ModalidadeEnum.SUPER_7) {
-				dezenasRecyclerView.setVisibility(View.GONE);
-				configuraFragment(aposta);
+				configuraFragmentSuperSete(aposta);
 			} else {
-				dezenasRecyclerView.setAdapter(new DezenasAdapter(AppUtils.listIntegerToListString(aposta.getListaNumerosSelecionados())));
-				dezenasRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+				configuraFragmentNumeros(aposta);
 			}
 		}
 	}
 
-	private void configuraFragment(IdentificaoDeUmaApostaDas8Modalidades aposta) {
+	private void configuraFragmentNumeros(IdentificaoDeUmaApostaDas8Modalidades aposta) {
 		FragmentManager fm          = getActivity().getSupportFragmentManager();
-		int             containerId = rl_container_fragment.getId();
-		Fragment        oldFragment = fm.findFragmentById(containerId);
-		if (oldFragment != null) {
-			fm.beginTransaction().remove(oldFragment).commit();
+		NumerosFragment fragment,fragResultado;
+		switch (aposta.getModalidade()){
+			case DUPLA_SENA:
+				numerosSorteadosPrimeiro = resultadoConcurso != null ? resultadoConcurso.getListaSorteadosPrimeiroSorteio() : null;
+				numerosSorteadosSegundo = (List<Integer>) resultadoConcurso.getNumerosSorteadosSegundoSorteio();
+				fragment = NumerosFragment.newInstance(aposta.getListaNumerosSelecionados(),numerosSorteadosPrimeiro,configuraEstiloNumeros());
+				break;
+			default:
+				numerosSorteadosPrimeiro = resultadoConcurso != null ? resultadoConcurso.getListaSorteadosPrimeiroSorteio() : null;
+				fragment = NumerosFragment.newInstance(aposta.getListaNumerosSelecionados(),numerosSorteadosPrimeiro,configuraEstiloNumeros());
+				break;
 		}
 
-		int newContainerId = (int) Utils.getIdUnico();
-		rl_container_fragment.setId(newContainerId);
-		NumerosSuperSeteFragment fragment = NumerosSuperSeteFragment.newInstance(aposta.getMatrizNumerosSelecionados(), configuraEstiloSuperSete());
-		fm.beginTransaction().replace(newContainerId, fragment).commit();
-		rl_container_fragment.setVisibility(View.VISIBLE);
+		fm.beginTransaction().replace(R.id.rl_fg_numeros_1, fragment).commit();
+		rl_fg_numeros_1.setVisibility(View.VISIBLE);
+		//frag resultado
+		if(numerosSorteadosPrimeiro != null){
+			Collections.sort(numerosSorteadosPrimeiro);
+			fragResultado = NumerosFragment.newInstance(numerosSorteadosPrimeiro ,numerosSorteadosPrimeiro,configuraEstiloNumeros());
+			fm.beginTransaction().replace(R.id.rl_container_result_1, fragResultado).commit();
+			rl_container_result_1.setVisibility(View.VISIBLE);
+			tv_resultado.setVisibility(View.VISIBLE);
+
+			int corBranco = ContextCompat.getColor(getContext(), R.color.branco);
+			int corTime = ContextCompat.getColor(getContext(), R.color.timemaniaclaro);
+			int corDia = ContextCompat.getColor(getContext(), R.color.diasorteclaro);
+
+
+			if (aposta.getModalidade().equals(ModalidadeEnum.TIMEMANIA)) {
+				String equipe = resultadoConcurso.getPremiacaoTimeDoCoracao().getEquipe().getNome();
+				if (equipe.equalsIgnoreCase(aposta.getTimeDoCoracao().getNome())) {
+					informacaoAdicionalTxt.setTextColor(corTime);
+					labelInformacaoAdicionalTxt.setTextColor(corTime);
+					informacaoAdicionalTxt.setBackgroundColor(corBranco);
+					labelInformacaoAdicionalTxt.setBackgroundColor(corBranco);
+				}
+				tv_time_mes.setText(resultadoConcurso.getPremiacaoTimeDoCoracao().getEquipe().getNome());
+				rl_time_mes.setVisibility(View.VISIBLE);
+			}
+
+			if (aposta.getModalidade().equals(ModalidadeEnum.DIA_DE_SORTE)) {
+				String mesDaSorte = resultadoConcurso.getPremiacaoMesDeSorte().getMesDeSorte().getNome();
+				if (mesDaSorte.equalsIgnoreCase(aposta.getMesDeSorte().getNome())) {
+					informacaoAdicionalTxt.setTextColor(corDia);
+					labelInformacaoAdicionalTxt.setTextColor(corDia);
+					informacaoAdicionalTxt.setBackgroundColor(corBranco);
+					labelInformacaoAdicionalTxt.setBackgroundColor(corBranco);
+				}
+				tv_time_mes.setText(mesDaSorte);
+				tv_tit_time_mes.setText(R.string.label_mes_sorte);
+				tv_time_mes.setTextColor(corDia);
+				tv_tit_time_mes.setTextColor(corDia);
+
+				labelInformacaoAdicionalTxt.setText(R.string.label_mes_sorte);
+				rl_time_mes.setVisibility(View.VISIBLE);
+			}
+		}
+
+		if (numerosSorteadosSegundo != null) {
+			Collections.sort(numerosSorteadosSegundo);
+			fragResultado = NumerosFragment.newInstance(aposta.getListaNumerosSelecionados() ,numerosSorteadosSegundo,configuraEstiloNumeros());
+			fm.beginTransaction().replace(R.id.rl_fg_numeros_2, fragResultado).commit();
+			rl_fg_numeros_2.setVisibility(View.VISIBLE);
+
+			Collections.sort(numerosSorteadosSegundo);
+			fragResultado = NumerosFragment.newInstance(numerosSorteadosSegundo ,numerosSorteadosSegundo,configuraEstiloNumeros());
+			fm.beginTransaction().replace(R.id.rl_container_result_2, fragResultado).commit();
+			rl_container_result_2.setVisibility(View.VISIBLE);
+			tv_resultado.setVisibility(View.VISIBLE);
+		}
+	}
+
+
+
+	private void configuraFragmentSuperSete(IdentificaoDeUmaApostaDas8Modalidades aposta) {
+		FragmentManager fm          = getActivity().getSupportFragmentManager();
+
+		matrizSorteados = resultadoConcurso != null ? resultadoConcurso.getMatrizNumerosSorteadosPrimeiroSorteio() : null;
+
+		NumerosSuperSeteFragment fragment = NumerosSuperSeteFragment.newInstance(aposta.getMatrizNumerosSelecionados(),matrizSorteados,configuraEstiloSuperSete());
+		fm.beginTransaction().replace(R.id.rl_fg_numeros_1, fragment).commit();
+		rl_fg_numeros_1.setVisibility(View.VISIBLE);
 		tv_colunas.setVisibility(View.VISIBLE);
 		tv_sua_aposta.setVisibility(View.VISIBLE);
 		seusNumerosTxt.setVisibility(View.GONE);
+
+		if (matrizSorteados != null) {
+			Utils.ordenaMatrizInteiro(matrizSorteados);
+			NumerosSuperSeteFragment frag = NumerosSuperSeteFragment.newInstance(matrizSorteados,matrizSorteados,configuraEstiloSuperSete());
+			fm.beginTransaction().replace(R.id.rl_container_result_1, frag).commit();
+			rl_container_result_1.setVisibility(View.VISIBLE);
+			tv_resultado_super_sete.setVisibility(View.VISIBLE);
+			tv_colunas_2.setVisibility(View.VISIBLE);
+		}
+	}
+
+	private ConfiguracaoNumeros configuraEstiloNumeros() {
+		EstiloModalidade estilo = new EstiloModalidade(aposta.getModalidade());
+		return new ConfiguracaoNumeros(estilo.getCorEscura(), R.color.branco);
 	}
 
 	private ConfiguracaoNumerosSuperSete configuraEstiloSuperSete() {
-		return new ConfiguracaoNumerosSuperSete(R.color.branco,
+		return new ConfiguracaoNumerosSuperSete(R.color.supersetemedio,
 												R.color.branco,
-												R.color.black,
-												R.color.black,
+												R.color.branco,
 												R.color.supersetemedio,
+												R.color.branco,
 												R.color.supersetemedio,
 												R.color.supersetemedio,
 												R.color.superseteescuro,

@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
@@ -74,7 +75,7 @@ import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostas.utils.helper.ConferirResultadoHandler;
 import br.gov.caixa.loterias.apostas.utils.helper.ConferirResultadoHelper;
 import br.gov.caixa.loterias.apostas.view.adapter.ApostasConfirmadasAdapter;
-import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaNumeroDetalhesPremioPago_;
+import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaNumeroDetalhes_;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaPartidaFragment_;
 
@@ -106,7 +107,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     protected DetalhesPremioDTO detalhesPremioDTO;
 
     @Extra
-    protected ResultadoConcursoDTO resultadoConcursoDTO;
+    protected ResultadoConcursoDTO resultadoConcurso;
 
     @Extra
     protected DetalhesHistoricoPremioDTO detalhesHistoricoPremioDTO;
@@ -166,6 +167,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
 
         setTitle(ViewUtils.getNomeModalidadePorAposta(aposta));
     }
+
     private void setaMetodos(){
         if (comprovanteApostaDTO != null) {
             premioPago = false;
@@ -193,6 +195,81 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
         chamadasParaComprovante();
     }
 
+    @AfterViews
+    protected void init() {
+        setupToolbar();
+
+        SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
+        parametroSimulacao = ViewUtils.getParametroSimulacao(sessaoUsuario, aposta.getModalidade());
+        if (estilo != null) {
+            ViewUtils.setColorDrawable(this, validadePremioImage.getDrawable(), estilo.getIconValidadeComprovanteColor());
+            ViewUtils.setColorDrawable(this, comprovanteImage.getDrawable(), estilo.getIconValidadeComprovanteColor());
+            ViewUtils.setColorDrawable(this, comprovanteImpressaoImage.getDrawable(), estilo.getIconImpressoraColor());
+        }
+        if (premioPago) {
+            if (detalhesPremioDTO != null) {
+                comprovanteText.setText(detalhesPremioDTO.getNsbi());
+            } else {
+                comprovanteText.setText(getString(R.string.label_nsu_pagamento_nsu, String.valueOf(detalhesHistoricoPremioDTO.getPremioDTO().getNsuPagamento())));
+            }
+        } else if (StringUtils.isNotEmpty(comprovanteApostaDTO.getNsbi())) {
+            comprovanteText.setText(comprovanteApostaDTO.getNsbi());
+        } else {
+            comprovanteLayout.setVisibility(View.INVISIBLE);
+        }
+
+        if (CollectionUtils.isEmpty(aposta.getNumerosSelecionados())) {
+            favoriteBtn.setVisibility(View.GONE);
+        }
+
+        getResultadoModalidade(ApostaDTO.lowerCaseFromString(aposta.getModalidade()),aposta.getConcursoAlvo().toString());
+    }
+
+    private void chooseFragmentToPresent() {
+        Fragment fragment = null;
+
+        switch (aposta.getModalidade()) {
+            case LOTOGOL:
+                disableButtonEditar();
+                fragment = ApostaConfirmadaPartidaFragment_.builder().valorPremio(valorPremio).aposta(aposta).loteca(Boolean.FALSE).build();
+
+                linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorEscura()));
+                getSupportFragmentManager().beginTransaction()
+                                           .replace(R.id.fragmentContainer, fragment)
+                                           .commit();
+                break;
+            case LOTECA:
+                disableButtonEditar();
+                fragment = ApostaConfirmadaPartidaFragment_.builder().valorPremio(valorPremio).aposta(aposta).loteca(Boolean.TRUE).build();
+
+                linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorEscura()));
+                getSupportFragmentManager().beginTransaction()
+                                           .replace(R.id.fragmentContainer, fragment)
+                                           .commit();
+                break;
+            default:
+                fragment = ApostaConfirmadaNumeroDetalhes_.builder().valorPremio(valorPremio).aposta(aposta).resultadoConcurso(resultadoConcurso).build();
+
+                linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorEscura()));
+                getSupportFragmentManager().beginTransaction()
+                                           .replace(R.id.fragmentContainer, fragment)
+                                           .commit();
+                /*if (premioPago && aposta.getQuantidadeTeimosinhas().intValue() == 0) {
+                    //ADICIONAR CHAMADA DE RESULTADO
+                    if (detalhesHistoricoPremioDTO != null || detalhesPremioDTO != null) {
+                        getResultadoModalidadeConcurso(aposta);
+                    }
+                } else {
+                    fragment = ApostaConfirmadaNumeroDetalhes_.builder().aposta(aposta).build();
+
+                    linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorEscura()));
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.fragmentContainer, fragment)
+                            .commit();
+                }*/
+                break;
+        }
+    }
 
     @Click
     protected void carrinhoApostasBtn() {
@@ -239,9 +316,9 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     protected void editarApostaBtn() {
         if (CollectionUtils.isNotEmpty(aposta.getNumerosSelecionados())) {
             SimularApostaActivity_.intent(this).aposta(aposta)
-                    .extra(getResources().getString(R.string.extra_tipo_aposta), aposta.getModalidade())
-                    .extra(getResources().getString(R.string.extra_modalidade), (new Gson()).toJson(parametroSimulacao.getParametroJogo()))
-                    .start();
+                                  .extra(getResources().getString(R.string.extra_tipo_aposta), aposta.getModalidade())
+                                  .extra(getResources().getString(R.string.extra_modalidade), (new Gson()).toJson(parametroSimulacao.getParametroJogo()))
+                                  .start();
         }
     }
 
@@ -375,110 +452,31 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
         return true;
     }
 
-    @AfterViews
-    protected void init() {
-        setupToolbar();
 
-        SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
-        parametroSimulacao = ViewUtils.getParametroSimulacao(sessaoUsuario, aposta.getModalidade());
-        if (estilo != null) {
-            ViewUtils.setColorDrawable(this, validadePremioImage.getDrawable(), estilo.getIconValidadeComprovanteColor());
-            ViewUtils.setColorDrawable(this, comprovanteImage.getDrawable(), estilo.getIconValidadeComprovanteColor());
-            ViewUtils.setColorDrawable(this, comprovanteImpressaoImage.getDrawable(), estilo.getIconImpressoraColor());
-        }
-        if (premioPago) {
-            if (detalhesPremioDTO != null) {
-                comprovanteText.setText(detalhesPremioDTO.getNsbi());
-            } else {
-                comprovanteText.setText(getString(R.string.label_nsu_pagamento_nsu, String.valueOf(detalhesHistoricoPremioDTO.getPremioDTO().getNsuPagamento())));
+
+    private void getResultadoModalidade(String txtmodalidade, String concurso) {
+        final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
+        final ApostaBO apostaBO = ApostaBO_.getInstance_(this);
+        apostaBO.getResultadoModalidade(txtmodalidade,String.valueOf(concurso), new RequestListener<ResultadoConcursoDTOResponse>() {
+            @Override
+            public void onResponse(ResultadoConcursoDTOResponse response) {
+                loadViewProgress.dismiss();
+                if (response.getRedirect() != null) {
+                    RedirectNetwork.checkRedirectSucesso(response.getRedirect(), ApostaConfirmadaDetalhesActivity.this);
+                }
+                if(response != null){
+                    resultadoConcurso = response.getPayload();
+                }
+                chooseFragmentToPresent();
             }
-        } else if (StringUtils.isNotEmpty(comprovanteApostaDTO.getNsbi())) {
-            comprovanteText.setText(comprovanteApostaDTO.getNsbi());
-        } else {
-            comprovanteLayout.setVisibility(View.INVISIBLE);
-        }
 
-        if (CollectionUtils.isEmpty(aposta.getNumerosSelecionados())) {
-            favoriteBtn.setVisibility(View.GONE);
-        }
-
-        chooseFragmentToPresent();
-    }
-
-    private void chooseFragmentToPresent() {
-        Fragment fragment = null;
-
-        switch (aposta.getModalidade()) {
-            case LOTOGOL:
-                disableButtonEditar();
-                fragment = ApostaConfirmadaPartidaFragment_.builder().valorPremio(valorPremio).aposta(aposta).loteca(Boolean.FALSE).build();
-
-                linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorEscura()));
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragmentContainer, fragment)
-                        .commit();
-                break;
-            case LOTECA:
-                disableButtonEditar();
-                fragment = ApostaConfirmadaPartidaFragment_.builder().valorPremio(valorPremio).aposta(aposta).loteca(Boolean.TRUE).build();
-
-                linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorEscura()));
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragmentContainer, fragment)
-                        .commit();
-                break;
-            default:
-                fragment = ApostaConfirmadaNumeroDetalhes_.builder().valorPremio(valorPremio).aposta(aposta).build();
-
-                linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorEscura()));
-                getSupportFragmentManager().beginTransaction()
-                                           .replace(R.id.fragmentContainer, fragment)
-                                           .commit();
-                /*if (premioPago && aposta.getQuantidadeTeimosinhas().intValue() == 0) {
-                    //ADICIONAR CHAMADA DE RESULTADO
-                    if (detalhesHistoricoPremioDTO != null || detalhesPremioDTO != null) {
-                        getResultadoModalidadeConcurso(aposta);
-                    }
-                } else {
-                    fragment = ApostaConfirmadaNumeroDetalhes_.builder().aposta(aposta).build();
-
-                    linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorEscura()));
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.fragmentContainer, fragment)
-                            .commit();
-                }*/
-                break;
-        }
-    }
-
-    private void getResultadoModalidadeConcurso
-            (IdentificaoDeUmaApostaDas8Modalidades apostaDTO) {
-        apostaBO.getResultadoModalidade(ApostaDTO.lowerCaseFromString(apostaDTO.getModalidade()), apostaDTO.getConcursoAlvo().toString(),
-                new RequestListener<ResultadoConcursoDTOResponse>() {
-                    @Override
-                    public void onResponse(ResultadoConcursoDTOResponse result) {
-                        try {
-                            DialogUtils.dismiss();
-                            Fragment fragment;
-
-                            resultadoConcursoDTO = result.getPayload();
-
-                            fragment = ApostaConfirmadaNumeroDetalhesPremioPago_.builder().aposta(aposta).resultadoConcursoDTO(resultadoConcursoDTO).build();
-
-                            linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), estilo.getCorEscura()));
-                            getSupportFragmentManager().beginTransaction()
-                                    .replace(R.id.fragmentContainer, fragment)
-                                    .commit();
-                        }catch (Exception e){
-                            ViewUtils.alert(getApplicationContext(), getResources().getString(R.string.nao_concluiu_operacao));
-                        }
-                    }
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        onApostasConfirmadasError(error);
-                    }
-                });
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                loadViewProgress.dismiss();
+                // RedirectNetwork.checkRedirect(error, ApostaConfirmadaDetalhesActivity.this);
+                chooseFragmentToPresent();
+            }
+        });
     }
 
     private void onApostasConfirmadasError(VolleyError error) {

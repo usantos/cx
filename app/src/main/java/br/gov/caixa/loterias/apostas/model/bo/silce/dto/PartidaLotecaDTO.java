@@ -86,6 +86,19 @@ public class PartidaLotecaDTO implements Serializable {
                 (this.empate == null ? partidaLotecaDTO.empate == null : this.empate.equals(partidaLotecaDTO.empate));
     }
 
+    public boolean customEquals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        PartidaLotecaDTO partidaLotecaDTO = (PartidaLotecaDTO) o;
+        return (this.equipe1 == null ? partidaLotecaDTO.equipe1 == null : this.equipe1.customEquals(partidaLotecaDTO.equipe1)) &&
+                (this.equipe2 == null ? partidaLotecaDTO.equipe2 == null : this.equipe2.customEquals(partidaLotecaDTO.equipe2)) &&
+                (this.empate == null ? partidaLotecaDTO.empate == null : this.empate.equals(partidaLotecaDTO.empate));
+    }
+
     @Override
     public int hashCode() {
         int result = 17;

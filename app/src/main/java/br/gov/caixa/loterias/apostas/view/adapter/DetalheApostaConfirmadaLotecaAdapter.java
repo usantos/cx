@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PartidaLotecaDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostas.view.custom.PartidasLotecaApostasConfirmadasView;
 import br.gov.caixa.loterias.apostas.view.custom.PartidasLotecaApostasConfirmadasView_;
 
@@ -18,16 +19,23 @@ import br.gov.caixa.loterias.apostas.view.custom.PartidasLotecaApostasConfirmada
 
 public class DetalheApostaConfirmadaLotecaAdapter extends RecyclerView.Adapter<DetalheApostaConfirmadaLotecaAdapter.ApostaLotecaHolder> {
 
-    private List<PartidaLotecaDTO> listaPartidas;
+    private List<PartidaLotecaDTO> listaPartidas, listaResultados;
 
     public DetalheApostaConfirmadaLotecaAdapter(List<PartidaLotecaDTO> listaPartidas) {
         this.listaPartidas = listaPartidas;
     }
 
+    public DetalheApostaConfirmadaLotecaAdapter(List<PartidaLotecaDTO> listaPartidas, ResultadoConcursoDTO resultado ) {
+        this.listaPartidas = listaPartidas;
+        if (resultado != null && resultado.getPartidasLoteca() != null) {
+            this.listaResultados = resultado.getPartidasLoteca();
+        }
+    }
+
     @Override
     public ApostaLotecaHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        PartidasLotecaApostasConfirmadasView view = PartidasLotecaApostasConfirmadasView_.build(parent.getContext());
+        PartidasLotecaApostasConfirmadasView view = PartidasLotecaApostasConfirmadasView_.build(parent.getContext(), listaResultados);
         RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         view.setLayoutParams(lp);
 

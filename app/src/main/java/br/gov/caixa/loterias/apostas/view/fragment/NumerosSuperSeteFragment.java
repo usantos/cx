@@ -28,14 +28,15 @@ import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
 
 public class NumerosSuperSeteFragment extends Fragment {
 	private static final String MATRIZ_NUMEROS = "MATRIZ_NUMEROS";
+	private static final String MATRIZ_MARCADA = "MATRIZ_MARCADA";
 	private static final String CONFIGURACAO = "CONFIGURACAO";
 
-	private String matrizTexto;
+	private String matrizTexto, matrizTextoMarcados;
 	private View view = null;
 	private ArrayList<TextView> arrayColunas;
 	private ArrayList<ExpandableHeightGridView> listaGridsSuperSete;
 	private ArrayList<NumerosSuperSeteAdapter> listaAdaptersSuperSete;
-	private List<List<Integer>> matrizInteiros;
+	private List<List<Integer>> matrizInteiros, matrizMarcada;
 	private ConfiguracaoNumerosSuperSete configuracao;
 
 	public NumerosSuperSeteFragment() {
@@ -59,14 +60,28 @@ public class NumerosSuperSeteFragment extends Fragment {
 		return fragment;
 	}
 
+	public static NumerosSuperSeteFragment newInstance(List<List<Integer>> matrizSelecionada,List<List<Integer>> matrizMarcada ,ConfiguracaoNumerosSuperSete configuracao) {
+		NumerosSuperSeteFragment fragment = new NumerosSuperSeteFragment();
+		Bundle                   args     = new Bundle();
+		args.putString(MATRIZ_NUMEROS, String.valueOf(matrizSelecionada));
+		args.putString(MATRIZ_MARCADA, String.valueOf(matrizMarcada));
+		args.putSerializable(CONFIGURACAO,configuracao);
+		fragment.setArguments(args);
+		return fragment;
+	}
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		if (getArguments() != null) {
 			matrizTexto = getArguments().getString(MATRIZ_NUMEROS);
+			matrizTextoMarcados = getArguments().getString(MATRIZ_MARCADA);
 			Gson gson = new Gson();
-				TypeToken<List<List<Integer>>> token          = new TypeToken<List<List<Integer>>>() {};
-				matrizInteiros = gson.fromJson(matrizTexto, token.getType());
+			TypeToken<List<List<Integer>>> token          = new TypeToken<List<List<Integer>>>() {};
+			matrizInteiros = gson.fromJson(matrizTexto, token.getType());
+			if(matrizTextoMarcados != null){
+				matrizMarcada = gson.fromJson(matrizTextoMarcados, token.getType());
+			}
 			configuracao = (ConfiguracaoNumerosSuperSete) getArguments().getSerializable(CONFIGURACAO);
 		}
 	}
@@ -74,9 +89,9 @@ public class NumerosSuperSeteFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
-			view = inflater.inflate(R.layout.fragment_super_sete_resultado, container, false);
-			setaViews(view);
-			setaMetodos();
+		view = inflater.inflate(R.layout.fragment_super_sete_resultado, container, false);
+		setaViews(view);
+		setaMetodos();
 		return view;
 	}
 
@@ -113,8 +128,7 @@ public class NumerosSuperSeteFragment extends Fragment {
 		int px = (int) TypedValue.applyDimension(
 				TypedValue.COMPLEX_UNIT_DIP,
 				dip,
-				r.getDisplayMetrics()
-												);
+				r.getDisplayMetrics());
 
 		LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 		param.height = px;
@@ -124,13 +138,16 @@ public class NumerosSuperSeteFragment extends Fragment {
 
 	private void setaMetodos (){
 		listaAdaptersSuperSete = new ArrayList<>();
-		if (configuracao == null){
+		if (configuracao == null) {
 			for (List<Integer> lista: matrizInteiros) {
 				listaAdaptersSuperSete.add(new NumerosSuperSeteAdapter(R.color.supersetemedio, getActivity(), lista));
 			}
 		} else {
+			int cont = 0;
 			for (List<Integer> lista: matrizInteiros) {
-				listaAdaptersSuperSete.add(new NumerosSuperSeteAdapter(configuracao, getActivity(), lista));
+				List<Integer> listaMarcada = matrizMarcada != null ? matrizMarcada.get(cont): null;
+				listaAdaptersSuperSete.add(new NumerosSuperSeteAdapter(configuracao, getActivity(), lista, listaMarcada));
+				cont++;
 			}
 		}
 
@@ -139,7 +156,7 @@ public class NumerosSuperSeteFragment extends Fragment {
 		}
 	}
 
-	private int getQtdItensMaiorColuna(List<List<Integer>> matriz){
+	private int getQtdItensMaiorColuna(List<List<Integer>> matriz) {
 		int maxCol = 1;
 		for (List<Integer> linha:matriz) {
 			if(linha.size() > maxCol){
@@ -148,5 +165,4 @@ public class NumerosSuperSeteFragment extends Fragment {
 		}
 		return maxCol;
 	}
-
 }

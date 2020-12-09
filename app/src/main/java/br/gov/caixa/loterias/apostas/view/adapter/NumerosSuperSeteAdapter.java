@@ -26,7 +26,7 @@ public class NumerosSuperSeteAdapter extends BaseAdapter {
 
 	//region Variables
 	public List<Dezena> dezenas = new ArrayList<>();
-	public List<Integer> dezenasSelecionadas;
+	public List<Integer> dezenasSelecionadas, listaNumerosSelecionados;
 	public ConfiguracaoNumerosSuperSete configuracao;
 
 	private int corSuperSete;
@@ -46,6 +46,14 @@ public class NumerosSuperSeteAdapter extends BaseAdapter {
 		this.dezenasSelecionadas = dezenasSelecionadas;
 		this.context = parentActivity;
 		this.configuracao = configuracao;
+		preencheNumeros();
+	}
+
+	public NumerosSuperSeteAdapter(ConfiguracaoNumerosSuperSete configuracao, Activity parentActivity, List<Integer> dezenasSelecionadas, List<Integer> listaNumerosSelecionados) {
+		this.dezenasSelecionadas = dezenasSelecionadas;
+		this.context = parentActivity;
+		this.configuracao = configuracao;
+		this.listaNumerosSelecionados = listaNumerosSelecionados;
 		preencheNumeros();
 	}
 	//endregion
@@ -86,13 +94,13 @@ public class NumerosSuperSeteAdapter extends BaseAdapter {
 			textView.setTextColor(ContextCompat.getColor(context, R.color.black));
 		} else {
 			if (dezenas.get(i).isSelected()) {
-				shape.setColor(context.getResources().getColor(configuracao.getCorInteriorCirculo()));
-				shape.setStroke(3, context.getResources().getColor(configuracao.getCorBordaCirculoSelecionado()));
-				textView.setTextColor(context.getResources().getColor(configuracao.getCorTextoCirculoSelecionado()));
+				shape.setColor(ContextCompat.getColor(context,configuracao.getCorInteriorSelecionado()));
+				shape.setStroke(3, ContextCompat.getColor(context,configuracao.getCorBordaCirculoSelecionado()));
+				textView.setTextColor(ContextCompat.getColor(context,configuracao.getCorTextoCirculoSelecionado()));
 			} else {
-				shape.setColor(context.getResources().getColor(configuracao.getCorInteriorCirculo()));
-				shape.setStroke(3, context.getResources().getColor(configuracao.getCorBordaCirculo()));
-				textView.setTextColor(context.getResources().getColor(configuracao.getCorTextoCirculo()));
+				shape.setColor(ContextCompat.getColor(context,configuracao.getCorInteriorCirculo()));
+				shape.setStroke(3, ContextCompat.getColor(context,configuracao.getCorBordaCirculo()));
+				textView.setTextColor(ContextCompat.getColor(context,configuracao.getCorTextoCirculo()));
 			}
 		}
 		shape.setCornerRadius(sizeItens / 2);
@@ -108,9 +116,12 @@ public class NumerosSuperSeteAdapter extends BaseAdapter {
 	//region Support Methods
 	private void preencheNumeros() {
 		for (Integer marcado : dezenasSelecionadas) {
-			dezenas.add(new Dezena("" + marcado.intValue(), Boolean.FALSE));
+			boolean contains = listaNumerosSelecionados != null &&
+					listaNumerosSelecionados.contains(marcado);
+			dezenas.add(new Dezena("" + marcado.intValue(), contains));
 		}
 	}
+
 	//endregion
 
 }

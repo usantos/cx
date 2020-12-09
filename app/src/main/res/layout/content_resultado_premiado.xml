@@ -230,7 +230,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:text="@string/label_proximo_sorteio"
+                        android:text="@string/label_encerramento_apostas"
                         android:textAlignment="textStart"
                         android:textColor="@color/cinza"
                         android:textSize="14.2sp"

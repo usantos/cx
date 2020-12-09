@@ -94,6 +94,7 @@
     <string name="codigo_loterica">Código Lotérica</string>
     <string name="enviando_email">Enviar e-mail usando:"</string>
     <string name="label_lembrar_valor_minimo">Lembre-se que o valor mínimo do total_de compras nesse aplicativo</string>
+    <string name="numeros_sorteados">Números sorteados</string>
 
     <!-- email-->
     <string name="email_padrao">CEDESBR456@caixa.gov.br</string>
@@ -157,6 +158,7 @@
     <string name="label_concurso">Concurso</string>
     <string name="label_abertura">Abertura</string>
     <string name="label_proximo_sorteio">Próximo sorteio</string>
+    <string name="label_encerramento_apostas">Encerramento das apostas</string>
     <string name="label_encerramento">Encerramento</string>
     <string name="label_regras_jogo">Regras do jogo</string>
     <string name="label_mega_sena">mega-sena</string>

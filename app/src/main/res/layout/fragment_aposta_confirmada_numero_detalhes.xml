@@ -189,7 +189,8 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/arialmt"
                     android:text="@string/label_time_coracao"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    android:padding="5dp"/>
 
                 <TextView
                     android:id="@+id/informacaoAdicionalTxt"
@@ -199,7 +200,8 @@
                     android:fontFamily="@font/arialmt"
                     android:textSize="12sp"
                     android:textStyle="bold"
-                    tools:text="@string/label_time_coracao" />
+                    tools:text="@string/label_time_coracao"
+                    android:padding="5dp"/>
             </RelativeLayout>
 
             <View
@@ -257,14 +259,50 @@
                 android:textSize="12sp"
                 android:visibility="invisible" />
 
+
             <RelativeLayout
-                android:id="@+id/rl_container_fragment"
+                android:id="@+id/rl_fg_numeros_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/seusNumerosTxt"
                 android:layout_alignStart="@id/tv_sua_aposta"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:visibility="invisible" />
+                android:visibility="gone" />
+
+            <RelativeLayout
+                android:id="@+id/rl_fg_numeros_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rl_fg_numeros_1"
+                android:layout_alignStart="@id/tv_sua_aposta"
+                android:visibility="gone" />
+
+
+            <TextView
+                android:id="@+id/tv_resultado"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rl_fg_numeros_2"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_toEndOf="@id/modalidadeTxt"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:fontFamily="@font/arialmt"
+                android:text="@string/numeros_sorteados"
+                android:textSize="12sp"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/tv_resultado_super_sete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@id/tv_sua_aposta"
+                android:layout_below="@+id/rl_fg_numeros_1"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/arialmt"
+                android:gravity="center"
+                android:text="@string/numeros_sorteados"
+                android:textSize="12sp"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/tv_colunas"
@@ -276,17 +314,75 @@
                 android:fontFamily="@font/arialmt"
                 android:text="@string/colunas"
                 android:textSize="12sp"
-                android:visibility="invisible" />
+                android:visibility="gone" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/dezenasRecyclerView"
+            <TextView
+                android:id="@+id/tv_colunas_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_toStartOf="@+id/rl_container_result_1"
+                android:layout_alignTop="@+id/rl_container_result_1"
+                android:fontFamily="@font/arialmt"
+                android:text="@string/colunas"
+                android:textSize="12sp"
+                android:visibility="gone" />
+
+            <RelativeLayout
+                android:id="@+id/rl_container_result_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/seusNumerosTxt"
-                android:layout_alignStart="@id/seusNumerosTxt"
-                android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:nestedScrollingEnabled="false" />
+                android:layout_below="@id/tv_resultado"
+                android:layout_marginTop="@dimen/text_margin_20"
+                android:layout_alignStart="@id/tv_sua_aposta"
+                android:visibility="gone" />
 
+            <RelativeLayout
+                android:id="@+id/rl_container_result_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rl_container_result_1"
+                android:layout_alignStart="@id/tv_sua_aposta"
+                android:visibility="gone" />
+
+            <RelativeLayout
+                android:id="@+id/rl_time_mes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rl_container_result_1"
+                android:layout_toEndOf="@id/modalidadeTxt"
+                android:layout_marginTop="39dp"
+                android:layout_marginStart="3dp"
+                android:paddingBottom="16dp"
+                android:visibility="gone"
+                tools:visibility="gone"
+                android:padding="5dp" >
+
+                <TextView
+                    android:id="@+id/tv_tit_time_mes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/arialmt"
+                    android:background="@color/branco"
+                    android:textColor="@color/timemaniaclaro"
+                    android:text="@string/label_time_coracao"
+                    android:textSize="12sp"
+                    android:padding="5dp" />
+
+                <TextView
+                    android:id="@+id/tv_time_mes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/tv_tit_time_mes"
+                    android:fontFamily="@font/arialmt"
+                    android:background="@color/branco"
+                    android:textColor="@color/timemaniaclaro"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    tools:text="@string/label_time_coracao"
+                    android:padding="5dp" />
+            </RelativeLayout>
         </RelativeLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
