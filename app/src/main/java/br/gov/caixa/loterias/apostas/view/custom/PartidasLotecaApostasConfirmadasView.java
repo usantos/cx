@@ -73,13 +73,16 @@ public class PartidasLotecaApostasConfirmadasView extends LinearLayout {
     private void setValueApostaEquipeLotecaView(ImageView imageView, TextView apostaEquipeLotecaView, EquipeDTO equipeDTO, String equipeNome, PartidaLotecaDTO partidaLotecaDTO) {
         if (listaResultados != null){
             for (PartidaLotecaDTO partida:listaResultados) {
-                if(partida.customEquals(partidaLotecaDTO) && equipeDTO.getVitoria()){
-                    Drawable unwrappedDrawable = AppCompatResources.getDrawable(getContext(), R.drawable.navegacao_branco);
-                    Drawable wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable);
-                    DrawableCompat.setTint(wrappedDrawable, ContextCompat.getColor(getContext(),R.color.black));
-                    imageView.setBackground(wrappedDrawable);
-                    apostaEquipeLotecaView.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.black));
-                    apostaEquipeLotecaView.setTextColor(ContextCompat.getColor(getContext(),R.color.black));
+                if(partida.customEquals(partidaLotecaDTO)){
+                    if(partida.getEquipe1().equals(equipeDTO) && partida.getEquipe1().getVitoria()){
+                        preencheAcerto(imageView,apostaEquipeLotecaView );
+                    }
+                    if(partida.getEquipe2().equals(equipeDTO) && partida.getEquipe2().getVitoria()){
+                        preencheAcerto(imageView,apostaEquipeLotecaView );
+                    }
+                    if(equipeDTO.getNome().equalsIgnoreCase(Constantes.X_STRING) && partida.getEmpate()){
+                        preencheAcerto(imageView,apostaEquipeLotecaView );
+                    }
                 }
             }
         }
@@ -88,5 +91,14 @@ public class PartidasLotecaApostasConfirmadasView extends LinearLayout {
         if (equipeDTO.getVitoria()) {
             apostaEquipeLotecaView.setTypeface(ViewUtils.getFontArialMT(getContext()), Typeface.BOLD);
         }
+    }
+    private void preencheAcerto(ImageView imageView, TextView apostaEquipeLotecaView){
+        int corLoteca = ContextCompat.getColor(getContext(),R.color.lotecaclaro);
+        Drawable unwrappedDrawable = AppCompatResources.getDrawable(getContext(), R.drawable.navegacao_branco);
+        Drawable wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable);
+        DrawableCompat.setTint(wrappedDrawable,ContextCompat.getColor(getContext(),R.color.branco));
+        imageView.setBackground(wrappedDrawable);
+        apostaEquipeLotecaView.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.branco));
+        apostaEquipeLotecaView.setTextColor(corLoteca);
     }
 }

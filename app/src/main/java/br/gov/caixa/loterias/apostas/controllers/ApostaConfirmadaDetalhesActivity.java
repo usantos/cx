@@ -240,7 +240,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                 break;
             case LOTECA:
                 disableButtonEditar();
-                fragment = ApostaConfirmadaPartidaFragment_.builder().valorPremio(valorPremio).aposta(aposta).loteca(Boolean.TRUE).build();
+                fragment = ApostaConfirmadaPartidaFragment_.builder().valorPremio(valorPremio).aposta(aposta).resultadoConcurso(resultadoConcurso).loteca(Boolean.TRUE).build();
 
                 linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorEscura()));
                 getSupportFragmentManager().beginTransaction()
@@ -254,19 +254,6 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                 getSupportFragmentManager().beginTransaction()
                                            .replace(R.id.fragmentContainer, fragment)
                                            .commit();
-                /*if (premioPago && aposta.getQuantidadeTeimosinhas().intValue() == 0) {
-                    //ADICIONAR CHAMADA DE RESULTADO
-                    if (detalhesHistoricoPremioDTO != null || detalhesPremioDTO != null) {
-                        getResultadoModalidadeConcurso(aposta);
-                    }
-                } else {
-                    fragment = ApostaConfirmadaNumeroDetalhes_.builder().aposta(aposta).build();
-
-                    linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorEscura()));
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.fragmentContainer, fragment)
-                            .commit();
-                }*/
                 break;
         }
     }

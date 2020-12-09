@@ -21,6 +21,7 @@ import java.util.Locale;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.DetalheApostaConfirmadaLotecaAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.DetalheApostaConfirmadaLotogolAdapter;
@@ -54,6 +55,9 @@ public class ApostaConfirmadaPartidaFragment extends Fragment {
     protected IdentificaoDeUmaApostaDas8Modalidades aposta;
 
     @FragmentArg
+    protected ResultadoConcursoDTO resultadoConcurso;
+
+    @FragmentArg
     protected boolean loteca;
 
     @FragmentArg
@@ -80,21 +84,16 @@ public class ApostaConfirmadaPartidaFragment extends Fragment {
         } else {
             statusApostaTextView.setText(aposta.getSituacao().getDescricao());
         }
-        
+
         initList();
     }
-
-//    @Click(R.id.conferirResultadoButton)
-//    protected void conferirResultadoClick() {
-//        ConferirResultadoHelper.conferirResultado(aposta.getId(), getActivity());
-//    }
 
     private void initList() {
 
         if (loteca) {
             cabecalhoLotecaLinearLayout.setVisibility(View.VISIBLE);
             concursoRodapeLinearLayout.setVisibility(View.INVISIBLE);
-            listaPartidasApostadasExpandebleRecyclerView.setAdapter(new DetalheApostaConfirmadaLotecaAdapter(aposta.getPartidasLoteca()));
+            listaPartidasApostadasExpandebleRecyclerView.setAdapter(new DetalheApostaConfirmadaLotecaAdapter(aposta.getPartidasLoteca(),resultadoConcurso));
         } else {
             concursoRodapeLinearLayout.setVisibility(View.INVISIBLE);
             listaPartidasApostadasExpandebleRecyclerView.setAdapter(new DetalheApostaConfirmadaLotogolAdapter(aposta.getPartidasLotogol()));
