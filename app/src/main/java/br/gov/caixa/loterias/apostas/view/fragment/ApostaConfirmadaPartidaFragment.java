@@ -71,7 +71,7 @@ public class ApostaConfirmadaPartidaFragment extends Fragment {
         if (StringUtils.isEmpty(aposta.getHoraEfetivacao())) {
             dataHoraTextView.setText(aposta.getDataEfetivacao());
         } else {
-            dataHoraTextView.setText(aposta.getDataEfetivacao() + getResources().getString(R.string.string_vazia) + aposta.getHoraEfetivacao());
+            dataHoraTextView.setText(aposta.getDataEfetivacao() + getResources().getString(R.string.barra_n) + aposta.getHoraEfetivacao());
         }
         statusApostaTextView.setText(aposta.getSituacao().getDescricao());
 

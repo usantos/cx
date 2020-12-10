@@ -100,64 +100,99 @@
                 android:textSize="12sp"
                 tools:text="4 apostas" />
 
-            <TextView
-                android:id="@+id/dataAposta"
-                android:layout_width="wrap_content"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_data"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginStart="12dp"
                 android:layout_below="@id/quantidadeApostadasTxt"
                 android:layout_alignStart="@id/quantidadeApostadasTxt"
-                android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:fontFamily="@font/arialmt"
-                android:text="@string/data_da_aposta"
-                android:textColor="?android:attr/textColorSecondary"
-                android:textSize="12sp" />
+                android:weightSum="1">
 
-            <TextView
-                android:id="@+id/dataApostaTxt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/dataAposta"
-                android:layout_alignStart="@id/dataAposta"
-                android:layout_alignEnd="@+id/dataAposta"
-                android:layout_marginEnd="2dp"
-                android:textColor="?android:attr/textColorSecondary"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                tools:text="25/08/2016" />
+                <TextView
+                    android:id="@+id/dataAposta"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text="@string/label_data_aposta"
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:textSize="12sp" />
 
-            <TextView
-                android:id="@+id/resultTxt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/dataAposta"
-                android:layout_toEndOf="@id/divider"
-                android:textColor="?android:attr/textColorSecondary"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                tools:text="Aguardando" />
+                <TextView
+                    android:id="@+id/dataApostaTxt"
+                    android:layout_width="wrap_content"
+                    android:maxWidth="300dp"
+                    app:layout_constraintTop_toBottomOf="@+id/dataAposta"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_data_aposta"
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/tv_val_premio_tit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/dataAposta"
-                android:layout_toEndOf="@id/divider"
-                android:text="@string/val_premio"
-                android:textColor="?android:attr/textColorSecondary"
-                android:textSize="12sp"
-                android:visibility="gone" />
+                <View
+                    android:id="@+id/divider"
+                    android:layout_width="1dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="10dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/dataApostaTxt"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/dataApostaTxt"
+                    android:background="?android:textColor" />
 
-            <TextView
-                android:id="@+id/tv_val_premio"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tv_val_premio_tit"
-                android:layout_toEndOf="@id/divider"
-                android:textColor="?android:attr/textColorSecondary"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                android:visibility="gone"
-                tools:text="@string/r_0_00" />
+                <TextView
+                    android:id="@+id/statusApostaTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/divider"
+                    android:text="@string/label_coluna"
+                    android:visibility="gone"
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/resultTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/divider"
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    tools:text="Aguardando" />
+
+                <TextView
+                    android:id="@+id/tv_val_premio_tit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/val_premio"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/divider"
+                    android:layout_marginStart="5dp"
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:textSize="12sp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tv_val_premio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_val_premio_tit"
+                    app:layout_constraintStart_toStartOf="@+id/divider"
+                    android:layout_marginStart="5dp"
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    tools:text="@string/r_0_00" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
                 android:id="@+id/apostaTrocaTxt"
@@ -176,7 +211,7 @@
                 android:id="@+id/informacaoAdicionalLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/dataApostaTxt"
+                android:layout_below="@+id/cl_data"
                 android:layout_alignStart="@id/quantidadeApostadasTxt"
                 android:layout_marginTop="39dp"
                 android:paddingBottom="16dp"
@@ -203,18 +238,6 @@
                     tools:text="@string/label_time_coracao"
                     android:padding="5dp"/>
             </RelativeLayout>
-
-            <View
-                android:id="@+id/divider"
-                android:layout_width="1dp"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@id/dataAposta"
-                android:layout_alignBottom="@id/dataApostaTxt"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="0dp"
-                android:layout_toEndOf="@id/dataApostaTxt"
-                android:background="?android:textColor" />
 
         </RelativeLayout>
 
@@ -300,7 +323,7 @@
                 android:layout_marginTop="5dp"
                 android:fontFamily="@font/arialmt"
                 android:gravity="center"
-                android:text="@string/numeros_sorteados"
+                android:text="@string/seus_numeros"
                 android:textSize="12sp"
                 android:visibility="gone" />
 
