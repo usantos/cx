@@ -278,7 +278,7 @@
                 android:layout_toEndOf="@id/modalidadeTxt"
                 android:fontFamily="@font/arialmt"
                 android:gravity="center"
-                android:text="@string/sua_aposta"
+                android:text="@string/seus_numeros"
                 android:textSize="12sp"
                 android:visibility="invisible" />
 
@@ -323,7 +323,7 @@
                 android:layout_marginTop="5dp"
                 android:fontFamily="@font/arialmt"
                 android:gravity="center"
-                android:text="@string/seus_numeros"
+                android:text="@string/numeros_sorteados"
                 android:textSize="12sp"
                 android:visibility="gone" />
 
