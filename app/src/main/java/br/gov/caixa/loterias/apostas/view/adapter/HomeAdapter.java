@@ -16,6 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -58,7 +59,6 @@ import br.gov.caixa.loterias.apostas.view.custom.ModalidadeSorteioResultadoView_
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
-    private int itemHeight;
     private List<Modalidade> data;
     private EstiloModalidade estilo;
     private Context context;
@@ -83,11 +83,13 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
+        holder.setIsRecyclable(false);
         estilo = new EstiloModalidade(data.get(position).getTipoModalidade());
 
-        if (data.get(position).getConcurso().getTipoConcurso().toString().equals(context.getResources().getString(R.string.especial_maiusculo))){
+        if (data.get(position).getConcurso().getTipoConcurso().toString().equals(context.getResources().getString(R.string.especial_maiusculo))) {
             holder.game.setText(data.get(position).getConcurso().getModalidadeDetalhada().getDescricaoEspecial().toLowerCase(new Locale(context.getResources().getString(R.string.pt), context.getResources().getString(R.string.br))));
-        }else{
+            holder.tvNomeEspeciais.setText(data.get(position).getConcurso().getModalidadeDetalhada().getDescricaoEspecial().toLowerCase(new Locale(context.getResources().getString(R.string.pt), context.getResources().getString(R.string.br))));
+        } else {
             holder.game.setText(ModalidadeEnum.fromString(data.get(position).getTipoModalidade()));
         }
 
@@ -99,12 +101,19 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         holder.titulo.setBackgroundColor(ContextCompat.getColor(context, estilo.getCorClara()));
         holder.valorAcumulado.setTextColor(ContextCompat.getColor(context, estilo.getCorClara()));
 
+        if (data.get(position).getTipoModalidade().equals(ModalidadeEnum.MEGA_SENA) &&
+                data.get(position).getConcurso().getTipoConcurso().toString().equals(context.getResources().getString(R.string.especial_maiusculo))) {
+            holder.titulo.setVisibility(View.GONE);
+            holder.clEspeciais.setVisibility(View.VISIBLE);
+            holder.ivEspeciais.setImageDrawable(context.getDrawable(R.drawable.mega_virada));
+        }
+
         if (data.get(position).getConcurso().getEstimativa().compareTo(BigDecimal.ZERO) != 0) {
-            String  estimativaFormatado = ViewUtils.getMoedaFormat(data.get(position).getConcurso().getEstimativa());
+            String estimativaFormatado = ViewUtils.getMoedaFormat(data.get(position).getConcurso().getEstimativa());
             holder.valorAcumulado.setText(estimativaFormatado);
             holder.valorAcumulado.setTextSize(20);
             holder.premioEstimadoConcurso.setText(ViewUtils.textFuturaAndFuturaBold(context, context.getString(R.string.label_premio_estimado_concurso_numero_bold,
-                    data.get(position).getConcurso().getNumero())));
+                                                                                                               data.get(position).getConcurso().getNumero())));
 
             holder.premioEstimadoConcurso.setVisibility(View.VISIBLE);
         } else {
@@ -119,7 +128,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         DateFormat formatterTime;
 
         DateFormat formatterDate = new SimpleDateFormat(context.getResources().getString(R.string.dd_mm_yyyy_hh_mm_ss));
-        Locale BRAZIL = new Locale(context.getResources().getString(R.string.pt),context.getResources().getString(R.string.br));
+        Locale BRAZIL = new Locale(context.getResources().getString(R.string.pt), context.getResources().getString(R.string.br));
         formatterDay = SimpleDateFormat.getDateInstance(DateFormat.FULL, BRAZIL);
         formatterMonth = SimpleDateFormat.getDateInstance(DateFormat.MEDIUM, BRAZIL);
         formatterTime = new SimpleDateFormat(context.getResources().getString(R.string.hh_mm_ss));
@@ -143,7 +152,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             String horaMinSeg = formatterTime.format(dataFechamentoSorteio);
 
             //holder.dataSorteio.setText(ViewUtils.capitalized(split[0]) + context.getResources().getString(R.string.virgula_espaco) + splitMedium[0] + context.getResources().getString(R.string.espaco_de_espaco) + splitMedium[2]+context.getResources().getString(R.string.as_espacado) +horaMinSeg);
-            holder.dataSorteio.setText(ViewUtils.capitalized(split[0])+context.getResources().getString(R.string.as_espacado) +horaMinSeg);
+            holder.dataSorteio.setText(ViewUtils.capitalized(split[0]) + context.getResources().getString(R.string.as_espacado) + horaMinSeg);
         } else {
             holder.textViewSorteioOuEncerramento.setText(R.string.label_sorteio_case);
 
@@ -152,51 +161,50 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             //holder.dataSorteio.setText(ViewUtils.capitalized(split[0]) + context.getResources().getString(R.string.virgula_espaco)+ splitDataFormatadaSilce[0] + context.getResources().getString(R.string.espaco_de_espaco) + splitDataFormatadaSilce[1]);
 
             String horaMinSeg = formatterTime.format(dataSorteioFormatada);
-            holder.dataSorteio.setText(ViewUtils.capitalized(split[0])+context.getResources().getString(R.string.as_espacado) +horaMinSeg);
+            holder.dataSorteio.setText(ViewUtils.capitalized(split[0]) + context.getResources().getString(R.string.as_espacado) + horaMinSeg);
         }
 
         Map mapComDiferencaDeDatas = computeDiff(new Date(), dataFechamentoSorteio);
 
         holder.tempoRestanteParaAposta.setText(retornaStringDias((Long) mapComDiferencaDeDatas.get(TimeUnit.DAYS))
-                +retornaStringHoras((Long) mapComDiferencaDeDatas.get(TimeUnit.DAYS), (Long) mapComDiferencaDeDatas.get(TimeUnit.HOURS), activity));
+                                                       + retornaStringHoras((Long) mapComDiferencaDeDatas.get(TimeUnit.DAYS), (Long) mapComDiferencaDeDatas.get(TimeUnit.HOURS), activity));
 
         Glide.with(holder.itemView.getContext())
-                .load(estilo.getImagemCalendario())
-                .into(holder.calendario);
+             .load(estilo.getImagemCalendario())
+             .into(holder.calendario);
         Glide.with(holder.itemView.getContext())
-                .load(estilo.getImagemRelogio())
-                .into(holder.relogio);
+             .load(estilo.getImagemRelogio())
+             .into(holder.relogio);
 
         holder.buttonActionResultadosModalidade.setOnClickListener(view -> {
             if (holder.linearLayoutResultadosApostas.getHeight() == 0) {
-                if (data.get(position).getResultadoConcursoDTO() == null){
+                if (data.get(position).getResultadoConcursoDTO() == null) {
                     callWebserviceResultadoConcurso(holder.relativeLayoutTopResultados,
-                            holder.linearLayoutResultadosApostas,
-                            ApostaDTO.lowerCaseFromString(data.get(position).getTipoModalidade()),
-                            data.get(position).getConcurso().getNumero(), position,
-                            holder.setaEsquerdaAcaoRelativeLayout,
-                            holder.setaDireitaAcaoRelativeLayout,
-                            true);
-                }
-                else{
+                                                    holder.linearLayoutResultadosApostas,
+                                                    ApostaDTO.lowerCaseFromString(data.get(position).getTipoModalidade()),
+                                                    data.get(position).getConcurso().getNumero(), position,
+                                                    holder.setaEsquerdaAcaoRelativeLayout,
+                                                    holder.setaDireitaAcaoRelativeLayout,
+                                                    true);
+                } else {
                     AnimacaoAbrirResultados(context,
-                            holder.relativeLayoutTopResultados,
-                            holder.linearLayoutResultadosApostas,
-                            position,
-                            holder.setaEsquerdaAcaoRelativeLayout,
-                            holder.setaDireitaAcaoRelativeLayout);
+                                            holder.relativeLayoutTopResultados,
+                                            holder.linearLayoutResultadosApostas,
+                                            position,
+                                            holder.setaEsquerdaAcaoRelativeLayout,
+                                            holder.setaDireitaAcaoRelativeLayout);
                 }
             } else {
                 data.get(position).setResultadosAberto(false);
                 AnimacaoFecharResultados(context,
-                        holder.relativeLayoutTopResultados,
-                        holder.linearLayoutResultadosApostas,
-                        holder.setaEsquerdaAcaoRelativeLayout,
-                        holder.setaDireitaAcaoRelativeLayout);
+                                         holder.relativeLayoutTopResultados,
+                                         holder.linearLayoutResultadosApostas,
+                                         holder.setaEsquerdaAcaoRelativeLayout,
+                                         holder.setaDireitaAcaoRelativeLayout);
             }
         });
 
-        if(data.get(position).getResultadosAberto()){
+        if (data.get(position).getResultadosAberto()) {
             ViewGroup.LayoutParams layoutParams = holder.linearLayoutResultadosApostas.getLayoutParams();
             layoutParams.height = ViewUtils.getRealScreenSize(context).y - ViewUtils.setDisplayMetric(250, context);
             layoutParams.width = ViewUtils.setDisplayMetric(280, context);
@@ -204,47 +212,47 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
             //holder.setaDireitaAcaoRelativeLayout.setVisibility(View.VISIBLE);
             //holder.setaEsquerdaAcaoRelativeLayout.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             ViewGroup.LayoutParams layoutParams = holder.linearLayoutResultadosApostas.getLayoutParams();
             layoutParams.height = 0;
             holder.linearLayoutResultadosApostas.setLayoutParams(layoutParams);
         }
-        if (data.get(position).getResultadoConcursoDTO() != null){
+        if (data.get(position).getResultadoConcursoDTO() != null) {
             setLayoutResultado(holder.linearLayoutResultadosApostas, position);
-        }else {
+        } else {
             holder.linearLayoutResultadosApostas.removeAllViews();
         }
 
-        holder.setaEsquerdaAcaoRelativeLayout.setOnClickListener( view ->
-                callWebserviceResultadoConcurso(holder.relativeLayoutTopResultados,
-                        holder.linearLayoutResultadosApostas,
-                        ApostaDTO.lowerCaseFromString(data.get(position).getTipoModalidade()),
-                        data.get(position).getConcurso().getNumero()-1,
-                        position,
-                        holder.setaEsquerdaAcaoRelativeLayout,
-                        holder.setaDireitaAcaoRelativeLayout,
-                        false
-                ));
+        holder.setaEsquerdaAcaoRelativeLayout.setOnClickListener(view ->
+                                                                         callWebserviceResultadoConcurso(holder.relativeLayoutTopResultados,
+                                                                                                         holder.linearLayoutResultadosApostas,
+                                                                                                         ApostaDTO.lowerCaseFromString(data.get(position).getTipoModalidade()),
+                                                                                                         data.get(position).getConcurso().getNumero() - 1,
+                                                                                                         position,
+                                                                                                         holder.setaEsquerdaAcaoRelativeLayout,
+                                                                                                         holder.setaDireitaAcaoRelativeLayout,
+                                                                                                         false
+                                                                                                        ));
 
-        holder.setaDireitaAcaoRelativeLayout.setOnClickListener( view ->
-                callWebserviceResultadoConcurso(holder.relativeLayoutTopResultados,
-                        holder.linearLayoutResultadosApostas,
-                        ApostaDTO.lowerCaseFromString(data.get(position).getTipoModalidade()),
-                        data.get(position).getConcurso().getNumero()+1,
-                        position,
-                        holder.setaEsquerdaAcaoRelativeLayout,
-                        holder.setaDireitaAcaoRelativeLayout,
-                        false
-                ));
+        holder.setaDireitaAcaoRelativeLayout.setOnClickListener(view ->
+                                                                        callWebserviceResultadoConcurso(holder.relativeLayoutTopResultados,
+                                                                                                        holder.linearLayoutResultadosApostas,
+                                                                                                        ApostaDTO.lowerCaseFromString(data.get(position).getTipoModalidade()),
+                                                                                                        data.get(position).getConcurso().getNumero() + 1,
+                                                                                                        position,
+                                                                                                        holder.setaEsquerdaAcaoRelativeLayout,
+                                                                                                        holder.setaDireitaAcaoRelativeLayout,
+                                                                                                        false
+                                                                                                       ));
     }
 
     private SpannableStringBuilder retornaStringConcursoSemEstimativa(String numConcurso, int corModalidadeInt) {
         final SpannableStringBuilder sb = new SpannableStringBuilder(context.getResources().getString(R.string.concurso_barra_n_barra_n) +
-                numConcurso +
-                context.getResources().getString(R.string.barra_n_barra_n_ainda_sem_estimativa_de_premio));
+                                                                             numConcurso +
+                                                                             context.getResources().getString(R.string.barra_n_barra_n_ainda_sem_estimativa_de_premio));
 
         final ForegroundColorSpan corModalidade = new ForegroundColorSpan(ContextCompat.getColor(context, corModalidadeInt));
-        final ForegroundColorSpan corTexto = new ForegroundColorSpan(ContextCompat.getColor(context,R.color.cinzaescuro));
+        final ForegroundColorSpan corTexto = new ForegroundColorSpan(ContextCompat.getColor(context, R.color.cinzaescuro));
 
         sb.setSpan(corModalidade, 0, 7, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         sb.setSpan(corTexto, 10, 11 + numConcurso.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
@@ -253,9 +261,9 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         return sb;
     }
 
-    public int retornaPosicaoPorModalidade(ModalidadeEnum modalidade){
+    public int retornaPosicaoPorModalidade(ModalidadeEnum modalidade) {
         for (int i = 0; i < data.size(); i++) {
-            if (data !=null && data.get(i).getTipoModalidade().equals(modalidade)) {
+            if (data != null && data.get(i).getTipoModalidade().equals(modalidade)) {
                 return i;
             }
         }
@@ -276,30 +284,30 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         String string;
         string = dia > 0 ? context.getResources().getString(R.string.espaco_e_espaco) : context.getResources().getString(R.string.string_vazia);
 
-        if (hora > 0){
+        if (hora > 0) {
             if (hora == 1) {
                 return string + String.format(Locale.getDefault(), context.getResources().getString(R.string.percent_d_hora), hora);
             }
             return string + String.format(Locale.getDefault(), context.getResources().getString(R.string.percent_d_horas), hora);
         } else {
-            if (dia == 0){
+            if (dia == 0) {
                 return activity.getResources().getString(R.string.menos_uma_hora);
             }
         }
         return context.getResources().getString(R.string.string_vazia);
     }
 
-    private Map<TimeUnit,Long> computeDiff(Date date1, Date date2) {
+    private Map<TimeUnit, Long> computeDiff(Date date1, Date date2) {
         long diffInMillies = date2.getTime() - date1.getTime();
         List<TimeUnit> units = new ArrayList<>(EnumSet.allOf(TimeUnit.class));
         Collections.reverse(units);
-        Map<TimeUnit,Long> result = new LinkedHashMap<>();
+        Map<TimeUnit, Long> result = new LinkedHashMap<>();
         long milliesRest = diffInMillies;
-        for ( TimeUnit unit : units ) {
-            long diff = unit.convert(milliesRest,TimeUnit.MILLISECONDS);
+        for (TimeUnit unit : units) {
+            long diff = unit.convert(milliesRest, TimeUnit.MILLISECONDS);
             long diffInMilliesForUnit = unit.toMillis(diff);
             milliesRest = milliesRest - diffInMilliesForUnit;
-            result.put(unit,diff);
+            result.put(unit, diff);
         }
         return result;
     }
@@ -315,7 +323,9 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         private ImageView relogio;
         private ImageView calendario;
         private TextView valorAcumulado;
-        private TextView labelAcumulouTextView;
+        private ImageView ivEspeciais;
+        private TextView tvNomeEspeciais;
+        private ConstraintLayout clEspeciais;
         private ImageView trevo;
         private RelativeLayout trevoFundo;
         private TextView premioEstimadoConcurso;
@@ -329,11 +339,11 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         private RelativeLayout setaEsquerdaAcaoRelativeLayout;
 
 
-        public ViewHolder (View itemView) {
+        public ViewHolder(View itemView) {
             super(itemView);
             game = itemView.findViewById(R.id.textViewCardTitle);
             trevo = itemView.findViewById(R.id.trevoImagem);
-            trevoFundo = itemView.findViewById(R.id.RelativeLayoutTrevo) ;
+            trevoFundo = itemView.findViewById(R.id.RelativeLayoutTrevo);
             calendario = itemView.findViewById(R.id.imageCalendar);
             relogio = itemView.findViewById(R.id.imageWatch);
             titulo = itemView.findViewById(R.id.linearLayoutTopModalidades);
@@ -346,8 +356,12 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             buttonActionResultadosModalidade = itemView.findViewById(R.id.buttonActionResultadosModalidade);
             relativeLayoutTopResultados = itemView.findViewById(R.id.relativeLayoutTopResultados);
             linearLayoutResultadosApostas = itemView.findViewById(R.id.linearLayoutResultadosApostas);
+            ivEspeciais = itemView.findViewById(R.id.iv_especiais);
+            tvNomeEspeciais = itemView.findViewById(R.id.tv_nome_especiais);
+            clEspeciais = itemView.findViewById(R.id.cl_especiais);
 
-            setaEsquerdaAcaoRelativeLayout =  itemView.findViewById(R.id.setaEsquerdaAcaoRelativeLayout);
+
+            setaEsquerdaAcaoRelativeLayout = itemView.findViewById(R.id.setaEsquerdaAcaoRelativeLayout);
             setaDireitaAcaoRelativeLayout = itemView.findViewById(R.id.setaDireitaAcaoRelativeLayout);
 
         }
@@ -402,7 +416,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                                                  final RelativeLayout setaEsquerdaAcaoRelativeLayout,
                                                  final RelativeLayout setaDireitaAcaoRelativeLayout,
                                                  final boolean animarView
-    ) {
+                                                ) {
 
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(context);
         final ApostaBO apostaBO = ApostaBO_.getInstance_(context);
@@ -411,21 +425,21 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             @Override
             public void onResponse(ResultadoConcursoDTOResponse response) {
                 loadViewProgress.dismiss();
-                if (response.getRedirect() != null){
-                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), activity);
+                if (response.getRedirect() != null) {
+                    RedirectNetwork.checkRedirectSucesso(response.getRedirect(), activity);
                 }
 
                 data.get(position).setResultadoConcursoDTO(response.getPayload());
-                if (animarView){
+                if (animarView) {
                     AnimacaoAbrirResultados(context,
-                            relativeLayoutTopResultados,
-                            linearLayoutResultadosApostas,
-                            position, setaEsquerdaAcaoRelativeLayout,
-                            setaDireitaAcaoRelativeLayout);
+                                            relativeLayoutTopResultados,
+                                            linearLayoutResultadosApostas,
+                                            position, setaEsquerdaAcaoRelativeLayout,
+                                            setaDireitaAcaoRelativeLayout);
                 }
 
                 setLayoutResultado(linearLayoutResultadosApostas,
-                        position);
+                                   position);
 
             }
 
@@ -437,7 +451,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         });
     }
 
-    private void setLayoutResultado(LinearLayout linearLayoutResultadosApostas, int position){
+    private void setLayoutResultado(LinearLayout linearLayoutResultadosApostas, int position) {
         linearLayoutResultadosApostas.removeAllViews();
         ModalidadeSorteioResultadoView view = ModalidadeSorteioResultadoView_.build(context);
         view.setLayout(data.get(position));
