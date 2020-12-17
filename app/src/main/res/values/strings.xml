@@ -899,7 +899,7 @@
     <string name="percent_zero_dois_d">%02d</string>
     <string name="percent_zero_dois_d_traco">%02d -&#160;</string>
     <string name="barra_n_time_do_coracao_dois_pontos_espaco">\nTime do coração:&#160;</string>
-    <string name="barra_n_mes_da_sorte_dois_pontos">\nMês de sorte:&#160;</string>
+    <string name="barra_n_mes_da_sorte_dois_pontos">\nMês da sorte:&#160;</string>
     <string name="conferindo_resultado_ponto">Conferindo resultado.</string>
     <string name="situacao_dois_pontos_espaco">situação:&#160;</string>
     <string name="premiada_maiusculo">Premiada</string>
@@ -919,7 +919,7 @@
     <string name="evento_efetuou_exclusao_forma_pagamento_sucesso">EFETUOU_EXCLUSAO_FORMA_DE_PAGAMENTO_SUCESSO</string>
     <string name="dia_de_sorte">dia de sorte</string>
     <string name="barra_n_time_do_coracao_dois_pontos">\nTime do coração: </string>
-    <string name="barra_n_mes_de_sorte_dois_pontos">\nMês de sorte: </string>
+    <string name="barra_n_mes_de_sorte_dois_pontos">\nMês da sorte: </string>
     <string name="espaco_barra_reta_espaco">&#160;|&#160;</string>
     <string name="espaco_nome_da_aposta">&#160;nome da aposta</string>
     <string name="evento_efetuou_exclusao_favorito">EFETUOU_EXCLUSAO_FAVORITO</string>
