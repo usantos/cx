@@ -17,6 +17,7 @@ import org.androidannotations.annotations.ViewById;
 import org.apache.commons.lang.StringUtils;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -131,7 +132,8 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 		switch (aposta.getModalidade()){
 			case DUPLA_SENA:
 				numerosSorteadosPrimeiro = resultadoConcurso != null ? resultadoConcurso.getListaSorteadosPrimeiroSorteio() : null;
-				numerosSorteadosSegundo = (List<Integer>) resultadoConcurso.getNumerosSorteadosSegundoSorteio();
+				numerosSorteadosSegundo =  (List<Integer>) (resultadoConcurso != null && resultadoConcurso.getNumerosSorteadosSegundoSorteio() != null  ?
+						resultadoConcurso.getNumerosSorteadosSegundoSorteio() : new ArrayList<>());
 				fragment = NumerosFragment.newInstance(aposta.getListaNumerosSelecionados(),numerosSorteadosPrimeiro,configuraEstiloNumeros());
 				break;
 			default:

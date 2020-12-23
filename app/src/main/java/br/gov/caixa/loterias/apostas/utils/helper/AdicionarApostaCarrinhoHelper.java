@@ -149,7 +149,19 @@ public class AdicionarApostaCarrinhoHelper {
             public void onResponse(AgrupadorDTOApostaDTOResponse result) {
                 DialogUtils.dismiss();
                 FirebaseManager.registraEvento(activity,"ENTROU_ADICAO_APOSTA_CARRINHO_ONLINE");
-                CarrinhoSingleton.getInstance().getCarrinho().getApostas().add(aposta);
+                if (CarrinhoSingleton.getInstance().getCarrinho() != null &&
+                        CarrinhoSingleton.getInstance().getCarrinho().getApostas() != null) {
+                        CarrinhoSingleton.getInstance().getCarrinho().getApostas().add(aposta);
+                } else {
+                    if (CarrinhoSingleton.getInstance().getCarrinho() == null) {
+                        CarrinhoSingleton.getInstance().setCarrinho(new CarrinhoDTO());
+                        CarrinhoSingleton.getInstance().getCarrinho().setValorTotal(new BigDecimal(0));
+                    }
+                    if (CarrinhoSingleton.getInstance().getCarrinho().getApostas() == null) {
+                        CarrinhoSingleton.getInstance().getCarrinho().setApostas(new ArrayList<>());
+                    }
+                    CarrinhoSingleton.getInstance().getCarrinho().getApostas().add(aposta);
+                }
                 telaConfirmarCarrinho(aposta.getModalidade(), aposta);
             }
 
