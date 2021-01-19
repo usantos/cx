@@ -61,6 +61,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesHistoricoPremioD
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
@@ -81,6 +82,7 @@ import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaPartidaFragme
 
 import static br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity.CARRINHO;
 import static br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity.LER_CARRINHO_LOCAL;
+import static br.gov.caixa.loterias.apostas.utils.Utils.isErroNegocial;
 
 /**
  * Created by pmotta on 22/03/2018.
@@ -222,7 +224,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
             favoriteBtn.setVisibility(View.GONE);
         }
 
-        getResultadoModalidade(ApostaDTO.lowerCaseFromString(aposta.getModalidade()),aposta.getConcursoAlvo().toString());
+        getResultadoModalidade(ApostaDTO.lowerCaseFromString(aposta.getModalidade()),aposta.getConcursoInicial().toString());
     }
 
     private void chooseFragmentToPresent() {
@@ -329,38 +331,64 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                 modalidade.setValor(parametroJogo.getConcurso().getModalidadeDetalhada().getValor());
                 apostaFavoritaDTO.setModalidade(modalidade);
             }
+            if (nomeApostaEditTxt != null && nomeApostaEditTxt.getText() != null && nomeApostaEditTxt.getText().toString() != null){
+                if(nomeApostaEditTxt.getText().toString().length() > 25){
+                    apostaFavoritaDTO.setNome(nomeApostaEditTxt.getText().toString().substring(0, 25));
+                } else {
+                    apostaFavoritaDTO.setNome(nomeApostaEditTxt.getText().toString());
+                }
+            } else {
+                apostaFavoritaDTO.setNome("");
+            }
+            if(aposta.getModalidade() == ModalidadeEnum.SUPER_7){
+                apostaFavoritaDTO.setNumerosSelecionados(aposta.getMatrizNumerosSelecionados());
 
-            apostaFavoritaDTO.setNome(nomeApostaEditTxt.getText().toString());
-            apostaFavoritaDTO.setNumerosSelecionados(aposta.getNumerosSelecionados());
+            } else {
+                apostaFavoritaDTO.setNumerosSelecionados(aposta.getListaNumerosSelecionados());
+            }
             apostaFavoritaDTO.setTimeDoCoracao(aposta.getTimeDoCoracao());
             apostaFavoritaDTO.setMesDeSorte(aposta.getMesDeSorte());
 
             dadosCorporativosBO.validarApostaFavorita(apostaFavoritaDTO, new RequestListener<NetworkResponse>() {
                 @Override
                 public void onResponse(NetworkResponse result) {
-                    dadosCorporativosBO.salvarApostaFavorita(apostaFavoritaDTO, new RequestListener<NetworkResponse>() {
-                        @Override
-                        public void onResponse(NetworkResponse result) {
-                            DialogUtils.dismiss();
-                            favoritadoLayout.setVisibility(View.VISIBLE);
-                            layoutnomeApostaLayout.setVisibility(View.GONE);
-                            favoriteBtn.setVisibility(View.INVISIBLE);
-                        }
-
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            onError(error);
-                        }
-                    });
+                    salvarAposta();
                 }
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    onError(error);
+                    DialogUtils.dismiss();
+                    if(isErroNegocial(error)){
+                        ViewUtils.alertTitleButtonYesOrNotListener(
+                                ApostaConfirmadaDetalhesActivity.this,
+                                MensagensNetwork.getErrorMessage(error),
+                                (dialogInterface, i) ->
+                                        salvarAposta());
+                    } else {
+                        RedirectNetwork.checkRedirect(error, ApostaConfirmadaDetalhesActivity.this);
+                    };
                 }
             });
+
         } else {
             ViewUtils.alert(this, getString(R.string.msg_favor_inserir_nome_aposta));
         }
+    }
+
+    private void salvarAposta(){
+        dadosCorporativosBO.salvarApostaFavorita(apostaFavoritaDTO, new RequestListener<NetworkResponse>() {
+            @Override
+            public void onResponse(NetworkResponse result) {
+                DialogUtils.dismiss();
+                favoritadoLayout.setVisibility(View.VISIBLE);
+                layoutnomeApostaLayout.setVisibility(View.GONE);
+                favoriteBtn.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                onError(error);
+            }
+        });
     }
 
     @Click
