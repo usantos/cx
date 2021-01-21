@@ -443,7 +443,15 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         modalidade.setValor(parametroSimulacao.getConcurso().getModalidadeDetalhada().getValor());
         apostaFavorita.setModalidade(modalidade);
 
-        apostaFavorita.setNome(nomeAposta);
+        if (nomeAposta != null){
+            if(nomeAposta.length() > 25){
+                apostaFavorita.setNome(nomeAposta.substring(0, 25));
+            } else {
+                apostaFavorita.setNome(nomeAposta);
+            }
+        } else {
+            apostaFavorita.setNome("");
+        }
         apostaFavorita.setNumerosSelecionados(dezenasSelecionadas);
         apostaFavorita.setId(Constantes.ZERO_LONG);
 

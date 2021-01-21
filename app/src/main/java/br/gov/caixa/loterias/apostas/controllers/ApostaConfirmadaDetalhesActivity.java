@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -136,6 +137,9 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     protected RelativeLayout layoutnomeApostaLayout, favoritadoLayout, favoriteBtn, comprovanteLayout, layoutTextoSalveAposta;
 
     @ViewById
+    protected LinearLayout  ll_adic_fav;
+
+    @ViewById
     protected EditText nomeApostaEditTxt;
 
     private EstiloModalidade estilo;
@@ -225,6 +229,10 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
         }
 
         getResultadoModalidade(ApostaDTO.lowerCaseFromString(aposta.getModalidade()),aposta.getConcursoInicial().toString());
+        if(aposta.getModalidade() == ModalidadeEnum.LOTECA){
+            ll_adic_fav.setVisibility(View.GONE);
+        }
+
     }
 
     private void chooseFragmentToPresent() {
@@ -292,8 +300,27 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
 
     @Click
     protected void favoriteBtn() {
-        layoutnomeApostaLayout.setVisibility(View.VISIBLE);
+        if (layoutnomeApostaLayout.getVisibility() == View.VISIBLE){
+            layoutnomeApostaLayout.setVisibility(View.GONE);
+        } else {
+            layoutnomeApostaLayout.setVisibility(View.VISIBLE);
+        }
+        if(favoritadoLayout.getVisibility() == View.VISIBLE){
+            favoritadoLayout.setVisibility(View.INVISIBLE);
+            layoutnomeApostaLayout.setVisibility(View.VISIBLE);
+        }
+        favoriteBtn.setVisibility(View.VISIBLE);
     }
+
+    @Click
+    protected void favoritadoLayout() {
+        if(favoritadoLayout.getVisibility() == View.VISIBLE){
+            favoritadoLayout.setVisibility(View.INVISIBLE);
+            layoutnomeApostaLayout.setVisibility(View.VISIBLE);
+            favoriteBtn.setVisibility(View.VISIBLE);
+        }
+    }
+
 
     @Click
     protected void layoutTextoSalveAposta() {
