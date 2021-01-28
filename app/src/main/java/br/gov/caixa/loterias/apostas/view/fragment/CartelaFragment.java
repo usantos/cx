@@ -1343,7 +1343,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 	}
 
 	private void configurarTimesLoteca() {
-		lotecaAdapter = new LotecaAdapter(parametroJogo.getPartidas(), this);
+		lotecaAdapter = new LotecaAdapter(parametroJogo, this);
 		recyclerViewPartida.setLayoutManager(new LinearLayoutManager(getActivity()));
 		recyclerViewPartida.setAdapter(lotecaAdapter);
 		recyclerViewPartida.setExpanded(true);

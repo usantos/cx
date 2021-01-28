@@ -13,9 +13,11 @@ import org.androidannotations.annotations.ViewById;
 import javax.annotation.Nullable;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroPartida;
 import br.gov.caixa.loterias.apostas.utils.EscudoEquipeUtil;
 import br.gov.caixa.loterias.apostas.utils.Utils;
+import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.LotecaAdapter;
 
 /**
@@ -28,6 +30,7 @@ public class PartidaView extends LinearLayout {
     public ItemEquipeView lotecaTimeUm, lotecaEmpate, lotecaTimeDois;
 
     private ParametroPartida parametroPartida;
+    private ParametroJogoDTO parametroJogoDTO;
 
     private LotecaAdapter.LocateAdapterListener listener;
 
@@ -40,8 +43,28 @@ public class PartidaView extends LinearLayout {
 
     }
 
+    private boolean verificaAberto(){
+        if (parametroJogoDTO != null &&
+                parametroJogoDTO.getConcurso() != null &&
+                parametroJogoDTO.getConcurso().getAberto() != null &&
+                !parametroJogoDTO.getConcurso().getAberto()) {
+            ViewUtils.alertTitleButton(getContext(),
+                                       R.string.label_atencao ,
+                                       getResources().getString(R.string.msg_conc_nao_aberto).replace("{num_concurso}",
+                                                                                                      parametroJogoDTO.getConcurso().getNumero().toString()),
+                                       getResources().getString(R.string.title_entendi));
+            return false;
+        } else {
+            return true;
+        }
+
+    }
+
     @Click(R.id.loteca_time_um)
     public void clickTimeUm() {
+        if(!verificaAberto()){
+            return;
+        }
         parametroPartida.setQtdItensSelecionadosAnterior(parametroPartida.getQtdItensSelecionados());
         if (lotecaTimeUm.isSelected()) {
             lotecaTimeUm.setSelected(Boolean.FALSE);
@@ -72,6 +95,9 @@ public class PartidaView extends LinearLayout {
 
     @Click(R.id.loteca_time_dois)
     public void clickTimeDois() {
+        if(!verificaAberto()){
+            return;
+        }
         parametroPartida.setQtdItensSelecionadosAnterior(parametroPartida.getQtdItensSelecionados());
         if (lotecaTimeDois.isSelected()) {
             lotecaTimeDois.setSelected(Boolean.FALSE);
@@ -102,6 +128,9 @@ public class PartidaView extends LinearLayout {
 
     @Click(R.id.loteca_empate)
     public void clickEmpate() {
+        if(!verificaAberto()){
+            return;
+        }
         parametroPartida.setQtdItensSelecionadosAnterior(parametroPartida.getQtdItensSelecionados());
         if (lotecaEmpate.isSelected()) {
             lotecaEmpate.setSelected(Boolean.FALSE);
@@ -132,9 +161,10 @@ public class PartidaView extends LinearLayout {
         this.listener = listener;
     }
 
-    public void setLayout(ParametroPartida parametroPartida) {
+    public void setLayout(ParametroPartida parametroPartida, ParametroJogoDTO parametroJogoDTO) {
 
         this.parametroPartida = parametroPartida;
+        this.parametroJogoDTO = parametroJogoDTO;
 
         lotecaTimeUm.setSelected(parametroPartida.getEquipe1().isSelecionado());
 //        lotecaTimeUm.getItemImage().setImageResource(R.drawable.time);

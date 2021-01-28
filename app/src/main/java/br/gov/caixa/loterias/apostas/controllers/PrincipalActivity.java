@@ -589,11 +589,7 @@ public class PrincipalActivity extends AppCompatActivity
         Intent activity = new Intent(PrincipalActivity.this, SimularApostaActivity_.class);
         activity.putExtra(getString(R.string.extra_tipo_aposta), parametroJogo.getConcurso().getModalidade());
         activity.putExtra(getString(R.string.extra_modalidade), (new Gson()).toJson(parametroJogo));
-        if (modalidade == ModalidadeEnum.LOTECA && !parametroJogo.getConcurso().getAberto()) {
-            ViewUtils.alertTitulo(this,R.string.label_atencao ,getResources().getString(R.string.msg_conc_nao_aberto).replace("{num_concurso}",parametroJogo.getConcurso().getNumero().toString()));
-        } else {
-            startActivity(activity);
-        }
+        startActivity(activity);
     }
 
     @Click(R.id.relativeLayoutContentRepassados)
