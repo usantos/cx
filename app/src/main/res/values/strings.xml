@@ -95,6 +95,8 @@
     <string name="enviando_email">Enviar e-mail usando:"</string>
     <string name="label_lembrar_valor_minimo">Lembre-se que o valor mínimo do total_de compras nesse aplicativo</string>
     <string name="numeros_sorteados">Números sorteados</string>
+    <string name="inibir_teimosinha">Estamos aprimorando esta funcionalidade para incluir a conferência de Teimosinhas. Acesse a área Resultados para acompanhar os últimos concursos sorteados.</string>
+    
 
     <!-- email-->
     <string name="email_padrao">CEDESBR456@caixa.gov.br</string>
