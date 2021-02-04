@@ -196,6 +196,8 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
         if (Objects.equals(aposta.getSituacao().getValor(), SituacaoResultadoBilheteEnum.EFETIVADA.getValor())) {
             ConferirResultadoHelper.conferirResultadoHandler = this;
             ConferirResultadoHelper.conferirResultado(aposta.getId(), this);
+        } else {
+            inibirTeim();
         }
 
         chamadasParaComprovante();
@@ -531,8 +533,19 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == RESGATOU_MP && resultCode == RESULT_OK){
+        if (requestCode == RESGATOU_MP && resultCode == RESULT_OK) {
             finish();
+        }
+        if (requestCode == RESGATOU_MP && resultCode == RESULT_FIRST_USER) {
+            inibirTeim();
+        }
+    }
+    private void inibirTeim() {
+        if (aposta.getQuantidadeTeimosinhas() > 0 && !aposta.getSituacao().getDescricao().contains("não apurado")) {
+            ViewUtils.alertTitleButton(this,
+                                       R.string.label_atencao ,
+                                       getResources().getString(R.string.inibir_teimosinha),
+                                       getResources().getString(R.string.title_entendi));
         }
     }
 

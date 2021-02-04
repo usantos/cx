@@ -114,12 +114,6 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 			informacaoAdicionalTxt.setText(aposta.getMesDeSorte().getNome());
 		}
 		configuraNumeros();
-		if (aposta.getQuantidadeTeimosinhas() > 0) {
-			ViewUtils.alertTitleButton(getContext(),
-									   R.string.label_atencao ,
-									   getResources().getString(R.string.inibir_teimosinha),
-									   getResources().getString(R.string.title_entendi));
-		}
 	}
 
 	private void configuraNumeros() {
