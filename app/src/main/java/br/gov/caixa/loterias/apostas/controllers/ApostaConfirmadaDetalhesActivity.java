@@ -594,7 +594,11 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                 Objects.equals(SituacaoResultadoBilheteEnum.PREMIADA_AINDA_CONCORRENDO.getValor(), situacao.getValor())) {
             getApostaDetalhePremio(aposta.getId(), this, comprovanteApostaDTO);
         }
+        if(!situacao.getDescricao().equalsIgnoreCase("Premiada")){
+            inibirTeim();
+        }
     }
+
 
     @Override
     public void handle(ApostasConfirmadasAdapter.ViewHolder holder, DTOEnumLong situacao) { }
