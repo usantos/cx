@@ -541,7 +541,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
         }
     }
     private void inibirTeim() {
-        if (aposta.getQuantidadeTeimosinhas() > 0 && !aposta.getSituacao().getDescricao().contains("não apurado")) {
+        if (aposta.getQuantidadeTeimosinhas() != null && aposta.getQuantidadeTeimosinhas() > 0 && !aposta.getSituacao().getDescricao().contains("não apurado")) {
             ViewUtils.alertTitleButton(this,
                                        R.string.label_atencao ,
                                        getResources().getString(R.string.inibir_teimosinha),
