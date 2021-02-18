@@ -717,6 +717,7 @@
     <string name="event_alterar_dados_caixa">ENTROU_ALTERAR_DADOS_CAIXA</string>
     <string name="extra_tipo_aposta">tipoAposta</string>
     <string name="extra_modalidade">modalidade</string>
+    <string name="extra_especial">especial</string>
     <string name="evento_gerenciar_apostas_detalhes">ENTROU_GERENCIAR_APOSTAS_DETALHE</string>
     <string name="v">v</string>
     <string name="extra_is_busca_param">IS_BUSCA_PARAM</string>

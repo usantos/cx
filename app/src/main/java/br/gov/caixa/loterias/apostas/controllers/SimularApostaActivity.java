@@ -138,6 +138,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     private Bundle bundle;
     private ParametroMesDeSorte mesDeSorteCartela;
     private ParametroMesDeSorte mesDeSorteSurpresinha;
+    private Boolean isEspecial = false;
     private final DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(this);
 
     //mocks
@@ -148,6 +149,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
 
     @AfterViews
     protected void init() {
+        isEspecial =  getIntent().getBooleanExtra(getResources().getString(R.string.extra_especial), false);
         invalidateOptionsMenu();
         zerarApostas();
         if(aposta != null){
@@ -794,6 +796,15 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         }
 
         toolBarSimularAposta.setBackgroundColor(ContextCompat.getColor(this, darkColor));
+        if (isEspecial) {
+            switch (tipoJogo){
+                case DUPLA_SENA:
+                    toolBarSimularAposta.setBackground(getDrawable(R.drawable.rodape_dupla_de_pascoa_inferior));
+                    getSupportActionBar().setBackgroundDrawable(getDrawable(R.drawable.rodape_dupla_de_pascoa_superior));
+                    break;
+                default:
+            }
+        }
         toolBarSimularAposta.setVisibility(visibilityToolBarSimularAposta);
         toolBarLoteca.setVisibility(visibilityToolBarLoteca);
 

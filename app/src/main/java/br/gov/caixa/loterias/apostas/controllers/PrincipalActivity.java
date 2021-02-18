@@ -575,20 +575,22 @@ public class PrincipalActivity extends AppCompatActivity
             buttonHomeBet.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorClara()));
             buttonHomeBet.setTag(adapterPosition);
             buttonHomeBet.setText(ViewUtils.textFuturaAndFuturaBold(this, getResources().getString(R.string.aposte_por) +
-                            getResources().getString(R.string.espaco_em_branco) +
+                    getResources().getString(R.string.espaco_em_branco) +
                     ViewUtils.getMoedaFormat(modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima())));
         }
     }
 
     @Click(R.id.buttonHomeBet)
     protected void clickButtonHomeBet() {
-        ModalidadeEnum modalidade = modalidadesParaListar.get(Integer.parseInt(buttonHomeBet.getTag().toString())).getParametroJogo().getConcurso().getModalidade();
+        int selecionada = Integer.parseInt(buttonHomeBet.getTag().toString());
+        ModalidadeEnum modalidade = modalidadesParaListar.get(selecionada).getParametroJogo().getConcurso().getModalidade();
         FirebaseManager.registraEvento(PrincipalActivity.this ,getResources().getString(R.string.evento_entrou_simular_aposta_modalidade) + modalidade);
-        ParametroJogoDTO parametroJogo = modalidadesParaListar.get(Integer.parseInt(buttonHomeBet.getTag().toString())).getParametroJogo();
+        ParametroJogoDTO parametroJogo = modalidadesParaListar.get(selecionada).getParametroJogo();
 
         Intent activity = new Intent(PrincipalActivity.this, SimularApostaActivity_.class);
         activity.putExtra(getString(R.string.extra_tipo_aposta), parametroJogo.getConcurso().getModalidade());
         activity.putExtra(getString(R.string.extra_modalidade), (new Gson()).toJson(parametroJogo));
+        activity.putExtra(getString(R.string.extra_especial),parametroJogo.getConcurso().getTipoConcurso().toString().equals(getResources().getString(R.string.especial_maiusculo)));
         startActivity(activity);
     }
 
