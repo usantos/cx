@@ -806,14 +806,14 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
                     getSupportActionBar().setBackgroundDrawable(getDrawable(R.drawable.rodape_dupla_de_pascoa_superior));
                     toolBarSimularAposta.setBackground(getDrawable(R.drawable.rodape_dupla_de_pascoa_inferior));
                     break;
-                case LOTOFACIL:
+                /*case LOTOFACIL:
                     getSupportActionBar().setBackgroundDrawable(getDrawable(R.drawable.rodape_lotofacil_da_independencia_superior));
                     toolBarSimularAposta.setBackground(getDrawable(R.drawable.rodape_lotofacil_da_independencia_inferior));
                     break;
                 case QUINA:
                     getSupportActionBar().setBackgroundDrawable(getDrawable(R.drawable.rodape_sao_joao_superior));
                     toolBarSimularAposta.setBackground(getDrawable(R.drawable.rodape_sao_joao_inferior));
-                    break;
+                    break;*/
                 default:
             }
         }
