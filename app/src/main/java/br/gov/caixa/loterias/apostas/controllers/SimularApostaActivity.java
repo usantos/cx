@@ -798,9 +798,21 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         toolBarSimularAposta.setBackgroundColor(ContextCompat.getColor(this, darkColor));
         if (isEspecial) {
             switch (tipoJogo){
+                case MEGA_SENA:
+                    getSupportActionBar().setBackgroundDrawable(getDrawable(R.drawable.rodape_mega_da_virada_superior));
+                    toolBarSimularAposta.setBackground(getDrawable(R.drawable.rodape_mega_da_virada_inferior));
+                    break;
                 case DUPLA_SENA:
-                    toolBarSimularAposta.setBackground(getDrawable(R.drawable.rodape_dupla_de_pascoa_inferior));
                     getSupportActionBar().setBackgroundDrawable(getDrawable(R.drawable.rodape_dupla_de_pascoa_superior));
+                    toolBarSimularAposta.setBackground(getDrawable(R.drawable.rodape_dupla_de_pascoa_inferior));
+                    break;
+                case LOTOFACIL:
+                    getSupportActionBar().setBackgroundDrawable(getDrawable(R.drawable.rodape_lotofacil_da_independencia_superior));
+                    toolBarSimularAposta.setBackground(getDrawable(R.drawable.rodape_lotofacil_da_independencia_inferior));
+                    break;
+                case QUINA:
+                    getSupportActionBar().setBackgroundDrawable(getDrawable(R.drawable.rodape_sao_joao_superior));
+                    toolBarSimularAposta.setBackground(getDrawable(R.drawable.rodape_sao_joao_inferior));
                     break;
                 default:
             }
