@@ -17,8 +17,8 @@ android {
         targetSdkVersion 29
 
         //version code = minSdkVersion + versionName(sem pontuação) + versão interna
-        versionCode 211046001
-        versionName "1.0.46"
+        versionCode 211047001
+        versionName "1.0.47"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -111,6 +111,7 @@ dependencies {
     // versions
     def AAVersion = '4.6.0'
     def supportVersion = '27.1.1'
+    def lottieVersion = '3.6.1';
 
     // implementation deps
     implementation fileTree(include: ['*.jar'], dir: 'libs')
@@ -131,6 +132,9 @@ dependencies {
 
     //Multidex (necessário quando há mais de 64k métodos)
     implementation 'androidx.multidex:multidex:2.0.0'
+
+    //animations
+    implementation "com.airbnb.android:lottie:$lottieVersion"
 
     //Android Annotations
     implementation "org.androidannotations:androidannotations-api:$AAVersion"

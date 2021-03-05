@@ -10,6 +10,7 @@ import com.android.volley.VolleyError;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import br.gov.caixa.loterias.apostas.BuildConfig;
+import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.AcessoBO_;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.VersionResponse;
@@ -27,6 +28,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_splash_screen);
 
         FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
         verificaVersao();
