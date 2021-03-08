@@ -138,22 +138,22 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             holder.premioEstimadoConcurso.setVisibility(View.INVISIBLE);
         }
 
-        DateFormat formatterDay;
-        DateFormat formatterMonth;
+        DateFormat formatterDataBr;
+        DateFormat formatterDia;
         DateFormat formatterTime;
 
         DateFormat formatterDate = new SimpleDateFormat(context.getResources().getString(R.string.dd_mm_yyyy_hh_mm_ss));
         Locale BRAZIL = new Locale(context.getResources().getString(R.string.pt), context.getResources().getString(R.string.br));
-        formatterDay = SimpleDateFormat.getDateInstance(DateFormat.FULL, BRAZIL);
-        formatterMonth = SimpleDateFormat.getDateInstance(DateFormat.MEDIUM, BRAZIL);
+        formatterDataBr = SimpleDateFormat.getDateInstance(DateFormat.SHORT, BRAZIL);
         formatterTime = new SimpleDateFormat(context.getResources().getString(R.string.hh_mm_ss));
-
+        formatterDia = new SimpleDateFormat(context.getResources().getString(R.string.eeee));
         Date dataSorteioFormatada = null;
         Date dataFechamentoSorteio = null;
 
         try {
             dataSorteioFormatada = formatterDate.parse(data.get(position).getConcurso().getDataHoraSorteio());
             dataFechamentoSorteio = formatterDate.parse(data.get(position).getConcurso().getDataFechamento());
+
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -161,23 +161,16 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         if (data.get(position).getTipoModalidade() == ModalidadeEnum.LOTECA ||
                 data.get(position).getTipoModalidade() == ModalidadeEnum.LOTOGOL) {
             holder.textViewSorteioOuEncerramento.setText(R.string.label_encerramento);
-
-            String[] split = formatterDay.format(dataFechamentoSorteio).split(context.getResources().getString(R.string.virgula_espaco));
-            String[] splitMedium = formatterMonth.format(dataFechamentoSorteio).split(context.getResources().getString(R.string.espaco_em_branco));
-            String horaMinSeg = formatterTime.format(dataFechamentoSorteio);
-
-            //holder.dataSorteio.setText(ViewUtils.capitalized(split[0]) + context.getResources().getString(R.string.virgula_espaco) + splitMedium[0] + context.getResources().getString(R.string.espaco_de_espaco) + splitMedium[2]+context.getResources().getString(R.string.as_espacado) +horaMinSeg);
-            holder.dataSorteio.setText(ViewUtils.capitalized(split[0]) + context.getResources().getString(R.string.as_espacado) + horaMinSeg);
         } else {
             holder.textViewSorteioOuEncerramento.setText(R.string.label_sorteio_case);
 
-            String[] split = formatterDay.format(dataSorteioFormatada).split(context.getResources().getString(R.string.virgula_espaco));
-            String[] splitDataFormatadaSilce = data.get(position).getConcurso().getDataSorteio().split(context.getResources().getString(R.string.espaco_em_branco));
-            //holder.dataSorteio.setText(ViewUtils.capitalized(split[0]) + context.getResources().getString(R.string.virgula_espaco)+ splitDataFormatadaSilce[0] + context.getResources().getString(R.string.espaco_de_espaco) + splitDataFormatadaSilce[1]);
-
-            String horaMinSeg = formatterTime.format(dataSorteioFormatada);
-            holder.dataSorteio.setText(ViewUtils.capitalized(split[0]) + context.getResources().getString(R.string.as_espacado) + horaMinSeg);
         }
+        String dmy = formatterDataBr.format(dataSorteioFormatada);
+        String dia_dmy = formatterDia.format(dataSorteioFormatada) + context.getResources().getString(R.string.virgula_espaco)+ dmy;
+        String horaMinSeg = formatterTime.format(dataSorteioFormatada);
+        holder.dataSorteio.setText(ViewUtils.capitalized(dia_dmy) +
+                                           context.getResources().getString(R.string.as_espacado) +
+                                           horaMinSeg);
 
         Map mapComDiferencaDeDatas = computeDiff(new Date(), dataFechamentoSorteio);
 
@@ -366,7 +359,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             premioEstimadoConcurso = itemView.findViewById(R.id.textPremioEstimadoConcurso);
             dataSorteio = itemView.findViewById(R.id.textVieCardDrawDate);
             textViewSorteioOuEncerramento = itemView.findViewById(R.id.textViewSorteioOuEncerramento);
-            tempoRestanteParaAposta = itemView.findViewById(R.id.textVieCardClosingOfBets);
             tempoRestanteParaAposta = itemView.findViewById(R.id.textVieCardClosingOfBets);
             buttonActionResultadosModalidade = itemView.findViewById(R.id.buttonActionResultadosModalidade);
             relativeLayoutTopResultados = itemView.findViewById(R.id.relativeLayoutTopResultados);

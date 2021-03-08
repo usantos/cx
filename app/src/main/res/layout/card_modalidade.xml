@@ -215,24 +215,24 @@
 
                         <View
                             android:layout_width="match_parent"
-                            android:layout_height="2dp"
-                            android:layout_marginLeft="26dp"
-                            android:layout_marginRight="26dp"
+                            android:layout_height="1dp"
+                            android:layout_marginLeft="18dp"
+                            android:layout_marginRight="18dp"
                             android:background="@color/cinza2" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="29dp"
+                            android:layout_marginLeft="19dp"
                             android:layout_marginTop="5dp"
-                            android:layout_marginRight="29dp"
+                            android:layout_marginRight="19dp"
                             android:background="@color/branco"
                             android:orientation="horizontal">
 
                             <ImageView
                                 android:id="@+id/imageCalendar"
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"
                                 android:layout_gravity="center"
                                 android:background="@color/branco"
                                 android:src="@drawable/icon_data_megasena" />
@@ -240,7 +240,7 @@
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="20dp"
+                                android:layout_marginStart="10dp"
                                 android:background="@color/branco"
                                 android:orientation="vertical">
 
@@ -250,7 +250,7 @@
                                     android:layout_height="wrap_content"
                                     android:text="@string/title_sorteio"
                                     android:textColor="@color/cinzaescuro"
-                                    android:textSize="13sp" />
+                                    android:textSize="12sp" />
 
                                 <TextView
                                     android:id="@+id/textVieCardDrawDate"
@@ -259,7 +259,7 @@
                                     android:layout_height="wrap_content"
                                     android:gravity="bottom"
                                     android:textColor="@color/cinzaescuro"
-                                    android:textSize="13sp"
+                                    android:textSize="12sp"
                                     android:textStyle="bold"
                                     tools:text="Sábado, 18 de julho" />
                             </LinearLayout>
@@ -268,16 +268,16 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="29dp"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginRight="29dp"
+                            android:layout_marginLeft="19dp"
+                            android:layout_marginTop="7dp"
+                            android:layout_marginRight="19dp"
                             android:layout_marginBottom="0dp"
                             android:background="@color/branco">
 
                             <ImageView
                                 android:id="@+id/imageWatch"
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"
                                 android:layout_gravity="center"
                                 android:background="@color/branco"
                                 android:src="@drawable/icon_horario_megasena" />
@@ -285,7 +285,7 @@
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="20dp"
+                                android:layout_marginStart="10dp"
                                 android:background="@color/branco"
                                 android:orientation="vertical">
 
@@ -295,7 +295,7 @@
                                     android:layout_height="wrap_content"
                                     android:text="@string/title_apostasEncerram"
                                     android:textColor="@color/cinzaescuro"
-                                    android:textSize="13sp" />
+                                    android:textSize="12sp" />
 
                                 <TextView
                                     android:id="@+id/textVieCardClosingOfBets"
@@ -304,7 +304,7 @@
                                     android:layout_height="wrap_content"
                                     android:gravity="bottom"
                                     android:textColor="@color/cinzaescuro"
-                                    android:textSize="13sp"
+                                    android:textSize="12sp"
                                     android:textStyle="bold"
                                     tools:text="0 dias e 0 horas" />
                             </LinearLayout>
@@ -320,6 +320,5 @@
         </LinearLayout>
 
     </LinearLayout>
-
 
 </androidx.cardview.widget.CardView>
