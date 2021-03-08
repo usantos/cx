@@ -10,7 +10,7 @@
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
         app:lottie_fileName="anim_ja_pensou.json"
-        app:lottie_speed="1.2"
+        app:lottie_speed="1.4"
         app:lottie_loop="true"
         app:lottie_autoPlay="true" />
 </androidx.constraintlayout.widget.ConstraintLayout>

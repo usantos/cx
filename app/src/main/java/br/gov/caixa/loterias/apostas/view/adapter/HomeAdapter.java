@@ -147,6 +147,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         formatterDataBr = SimpleDateFormat.getDateInstance(DateFormat.SHORT, BRAZIL);
         formatterTime = new SimpleDateFormat(context.getResources().getString(R.string.hh_mm_ss));
         formatterDia = new SimpleDateFormat(context.getResources().getString(R.string.eeee));
+        formatterDia =  formatterDia.getDateInstance(DateFormat.FULL ,BRAZIL);
         Date dataSorteioFormatada = null;
         Date dataFechamentoSorteio = null;
 
@@ -166,7 +167,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
         }
         String dmy = formatterDataBr.format(dataSorteioFormatada);
-        String dia_dmy = formatterDia.format(dataSorteioFormatada) + context.getResources().getString(R.string.virgula_espaco)+ dmy;
+        String dataDia[] = formatterDia.format(dataSorteioFormatada).split( context.getResources().getString(R.string.virgula));
+        String dia_dmy = dataDia[0] + context.getResources().getString(R.string.virgula_espaco)+ dmy;
         String horaMinSeg = formatterTime.format(dataSorteioFormatada);
         holder.dataSorteio.setText(ViewUtils.capitalized(dia_dmy) +
                                            context.getResources().getString(R.string.as_espacado) +
