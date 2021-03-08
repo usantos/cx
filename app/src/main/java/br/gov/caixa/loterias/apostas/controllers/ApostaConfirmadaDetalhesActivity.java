@@ -179,15 +179,27 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
             premioPago = false;
             isHistorico = false;
             aposta = comprovanteApostaDTO.getAposta();
+            if (comprovanteApostaDTO.getAposta().getModalidade().equals(ModalidadeEnum.SUPER_7)){
+                apostaMatriz = comprovanteApostaDTO.getAposta();
+                apostaMatriz.setNumerosSelecionados(comprovanteApostaDTO.getAposta().getMatrizNumerosSelecionados());
+            }
             valorPremio = null;
         } else {
             premioPago = Boolean.TRUE;
             if (detalhesPremioDTO != null) {
                 aposta = detalhesPremioDTO.getAposta();
+                if (detalhesPremioDTO.getAposta().getModalidade().equals(ModalidadeEnum.SUPER_7)){
+                    apostaMatriz = detalhesPremioDTO.getAposta();
+                    apostaMatriz.setNumerosSelecionados(detalhesPremioDTO.getAposta().getMatrizNumerosSelecionados());
+                }
                 valorPremio = detalhesPremioDTO.getPremio().getValorLiquido();
                 isHistorico = false;
             } else {
                 aposta = detalhesHistoricoPremioDTO.getAposta();
+                if (detalhesHistoricoPremioDTO.getAposta().getModalidade().equals(ModalidadeEnum.SUPER_7)){
+                    apostaMatriz = detalhesHistoricoPremioDTO.getAposta();
+                    apostaMatriz.setNumerosSelecionados(detalhesHistoricoPremioDTO.getAposta().getMatrizNumerosSelecionados());
+                }
                 valorPremio = detalhesHistoricoPremioDTO.getPremioDTO().getValorLiquido();
                 isHistorico = true;
             }
@@ -342,6 +354,16 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
 
     @Click
     protected void adicionarCarrinhoBtn() {
+        ModalidadeEnum modalidade = (aposta!= null && aposta.getModalidade()!= null) ? aposta.getModalidade(): null;
+        if (modalidade != null && !modalidade.equals(ModalidadeEnum.LOTECA)){
+            if (!modalidade.equals(ModalidadeEnum.SUPER_7)) {
+                aposta.setNumerosSelecionados(aposta.getListaNumerosSelecionados());
+            } else {
+                AdicionarApostaCarrinhoHelper.incluirApostaCarrinho(this, apostaMatriz);
+                return;
+            }
+        }
+
         AdicionarApostaCarrinhoHelper.incluirApostaCarrinho(this, aposta);
     }
 
@@ -598,7 +620,6 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
             inibirTeim();
         }
     }
-
 
     @Override
     public void handle(ApostasConfirmadasAdapter.ViewHolder holder, DTOEnumLong situacao) { }
