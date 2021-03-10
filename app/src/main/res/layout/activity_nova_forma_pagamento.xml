@@ -140,16 +140,6 @@
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/containerNumeroCartao">
 
-                    <Spinner
-                        android:id="@+id/spin_meses"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_marginTop="10dp"
-                        android:backgroundTint="@color/colorAccent"
-                        android:dropDownWidth="50dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/editTextMesValidadeCartao"
                         android:layout_width="match_parent"
@@ -171,7 +161,15 @@
                             android:textColorHint="@color/azulFormNovoTipoPagamento"
                             android:textSize="16sp" />
                     </com.google.android.material.textfield.TextInputLayout>
-
+                    <Spinner
+                        android:id="@+id/spin_meses"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_marginTop="10dp"
+                        android:backgroundTint="@color/colorAccent"
+                        android:dropDownWidth="50dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <RelativeLayout
@@ -381,7 +379,6 @@
         android:background="@color/azulclaro"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"></androidx.constraintlayout.widget.ConstraintLayout>
+        app:layout_constraintHorizontal_bias="1.0"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-
