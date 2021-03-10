@@ -4,9 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -64,6 +67,10 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
 
     private ArrayList<RetornoCartao> listaCartoes;
 
+    private ArrayList<String> listaMeses;
+
+    private Boolean primeiraSelecao = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         ViewUtils.configuraStatusBarGradientLayout(this, getWindow());
@@ -83,6 +90,7 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
         checkBoxSalvarCartao = findViewById(R.id.checkBoxSalvarCartao);
         textoInfoSelecioneFormaPagamento = findViewById(R.id.textoInfoSelecioneFormaPagamento);
 
+
         setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.title_activity_forma_pagamento)));
 
         configuraBotoesListener();
@@ -92,8 +100,33 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
         addRightImg(findViewById(R.id.editTextNomeClienteCartaoContent));
         addRightImg(findViewById(R.id.editTextCodigoSegurancaContent));
 
+        configuraSpin();
         buscaCartoes();
 
+    }
+    private void configuraSpin(){
+        Spinner spinner = findViewById(R.id.spin_meses);
+        listaMeses = new ArrayList<>();
+        for(int x = 1; x <= 12; x++){
+            listaMeses.add(x < 10 ? "0" + x: String.valueOf(x));
+        }
+
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, R.layout.custom_spinner_item, listaMeses);
+
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(dataAdapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (!primeiraSelecao){
+                    editTextMesValidadeCartaoContent.setText("");
+                } else {
+                    editTextMesValidadeCartaoContent.setText(listaMeses.get(i));
+                }
+                primeiraSelecao = true;
+            }
+
+            public void onNothingSelected(AdapterView<?> adapterView) {return;}
+        });
     }
 
     private void recebendoInformacoes() {
@@ -143,12 +176,12 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
         findViewById(R.id.botaoAvancarPagamento).setOnClickListener(view -> {
             if(!camposInvalidos()){
                 CardToken cardToken = new CardToken(editTextNumeroCartaoContent.getText().toString(),
-                        Integer.valueOf(editTextMesValidadeCartaoContent.getText().toString()),
-                        Integer.valueOf(editTextAnoValidadeCartaoContent.getText().toString()),
-                        editTextCodigoSegurancaContent.getText().toString(),
-                        editTextNomeClienteCartaoContent.getText().toString(),
-                        getResources().getString(R.string.cpf),
-                        DadosUsuarioBO.obterCpf());
+                                                    Integer.valueOf(editTextMesValidadeCartaoContent.getText().toString()),
+                                                    Integer.valueOf(editTextAnoValidadeCartaoContent.getText().toString()),
+                                                    editTextCodigoSegurancaContent.getText().toString(),
+                                                    editTextNomeClienteCartaoContent.getText().toString(),
+                                                    getResources().getString(R.string.cpf),
+                                                    DadosUsuarioBO.obterCpf());
 
                 createTokenAsync(cardToken);
             }
@@ -169,8 +202,8 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
         }
         if(invalido){
             ViewUtils.alertTitleButton(NovaFormaPagamentoActivity.this,
-                    R.string.label_atencao,errorMessage,
-                    NovaFormaPagamentoActivity.this.getResources().getString(R.string.ok));
+                                       R.string.label_atencao,errorMessage,
+                                       NovaFormaPagamentoActivity.this.getResources().getString(R.string.ok));
         }
         return invalido;
     }
@@ -185,7 +218,7 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
         mMercadoPago.createToken(cardToken, new Callback<Token>() {
             @Override
             public void success(Token token) {
-//                Log.d("token", token.getId());
+                //                Log.d("token", token.getId());
                 callWebServicePayment_method(token.getId());
             }
 
@@ -301,4 +334,3 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
         });
     }
 }
-
