@@ -7,102 +7,6 @@
     android:background="@color/branco"
     tools:context="br.gov.caixa.loterias.apostas.controllers.NovaFormaPagamentoActivity">
 
-    <Button
-        android:id="@+id/botaoAvancarPagamento"
-        android:layout_width="184dp"
-        android:layout_height="84dp"
-        android:layout_marginBottom="84dp"
-        android:background="@color/verdeazul"
-        android:text="@string/apostarAutorizarCobranca"
-        android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
-        android:textColor="@color/branco"
-        android:textSize="17sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/viewTabBar" />
-
-    <LinearLayout
-        android:id="@+id/containerComboSalvar"
-        android:layout_width="0dp"
-        android:layout_height="80dp"
-        android:background="@color/cinzaclaro"
-        app:layout_constraintBottom_toTopOf="@+id/relativeLayoutValorTotal"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
-
-        <CheckBox
-            android:id="@+id/checkBoxSalvarCartao"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/check_box_selected"
-            android:button="@color/transparente50"
-            android:checked="false"
-            android:textColor="@color/pretoLinhaFormNovoTipoPagamento" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="30dp"
-            android:orientation="vertical">
-
-            <TextView
-                style="@style/editTextArialMTTheme"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/title_salvarCartao"
-                android:textColor="@color/pretoLinhaFormNovoTipoPagamento"
-                android:textSize="16sp" />
-        </LinearLayout>
-    </LinearLayout>
-
-
-    <RelativeLayout
-        android:id="@+id/relativeLayoutValorTotal"
-        android:layout_width="0dp"
-        android:layout_height="56dp"
-        android:layout_marginBottom="5dp"
-        android:background="@color/colorAccent"
-        app:layout_constraintBottom_toTopOf="@id/botaoAvancarPagamento"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
-
-        <TextView
-            android:id="@+id/textoTotal"
-            style="@style/editTextArialMTTheme"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="9dp"
-            android:layout_marginRight="9dp"
-            android:layout_toStartOf="@+id/valorTotalCarrinho"
-            android:layout_toLeftOf="@+id/valorTotalCarrinho"
-            android:text="@string/total"
-            android:textColor="@color/branco"
-            android:textSize="14sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/valorTotalCarrinho"
-            style="@style/editTextArialMTTheme"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="36dp"
-            android:layout_marginRight="36dp"
-            android:textColor="@color/branco"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            tools:text="R$ 00,00" />
-    </RelativeLayout>
-
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -380,5 +284,98 @@
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="1.0"/>
+    <Button
+        android:id="@+id/botaoAvancarPagamento"
+        android:layout_width="184dp"
+        android:layout_height="84dp"
+        android:layout_marginBottom="84dp"
+        android:background="@color/verdeazul"
+        android:text="@string/apostarAutorizarCobranca"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
+        android:textColor="@color/branco"
+        android:textSize="17sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/viewTabBar" />
 
+    <LinearLayout
+        android:id="@+id/containerComboSalvar"
+        android:layout_width="0dp"
+        android:layout_height="80dp"
+        android:background="@color/cinzaclaro"
+        app:layout_constraintBottom_toTopOf="@+id/relativeLayoutValorTotal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+        <CheckBox
+            android:id="@+id/checkBoxSalvarCartao"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/check_box_selected"
+            android:button="@color/transparente50"
+            android:checked="false"
+            android:textColor="@color/pretoLinhaFormNovoTipoPagamento" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="30dp"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/editTextArialMTTheme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/title_salvarCartao"
+                android:textColor="@color/pretoLinhaFormNovoTipoPagamento"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/relativeLayoutValorTotal"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:layout_marginBottom="5dp"
+        android:background="@color/colorAccent"
+        app:layout_constraintBottom_toTopOf="@id/botaoAvancarPagamento"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+        <TextView
+            android:id="@+id/textoTotal"
+            style="@style/editTextArialMTTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="9dp"
+            android:layout_marginRight="9dp"
+            android:layout_toStartOf="@+id/valorTotalCarrinho"
+            android:layout_toLeftOf="@+id/valorTotalCarrinho"
+            android:text="@string/total"
+            android:textColor="@color/branco"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/valorTotalCarrinho"
+            style="@style/editTextArialMTTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="36dp"
+            android:layout_marginRight="36dp"
+            android:textColor="@color/branco"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            tools:text="R$ 00,00" />
+    </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
