@@ -15,7 +15,7 @@ public class ExpandableListDataSideMenu {
 
         List<String> minhaArea = new ArrayList<>();
         minhaArea.add("Dados Pessoais");
-        minhaArea.add("Alterar dados do login Caixa");
+        //minhaArea.add("Alterar dados do login Caixa");
         minhaArea.add("Minhas Apostas");
         minhaArea.add("Compras");
         minhaArea.add("Favoritas");

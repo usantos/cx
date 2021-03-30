@@ -673,22 +673,22 @@ public class PrincipalActivity extends AppCompatActivity
             case 0:
                 startActivity(new Intent(PrincipalActivity.this, DadosPessoaisActivity.class));
                 break;
-            case 1:
+            /*case 1:
                 startActivity(new Intent(PrincipalActivity.this, AlterarDadosLoginCaixaActivity.class));
-                break;
-            case 2:
+                break;*/
+            case 1:
                 startActivity(new Intent(PrincipalActivity.this, MinhasApostasActivity_.class));
                 break;
-            case 3:
+            case 2:
                 startActivity(new Intent(PrincipalActivity.this, ListaComprasActivity.class));
                 break;
-            case 4:
+            case 3:
                 startActivity(new Intent(PrincipalActivity.this, FavoritasActivity.class));
                 break;
-            case 5:
+            case 4:
                 startActivity(new Intent(PrincipalActivity.this, CarrinhosFavoritosActivity.class));
                 break;
-            case 6:
+            case 5:
                 startActivity(new Intent(PrincipalActivity.this, CartoesActivity.class).putExtra(MENU_LATERAL, true));
                 break;
             default:
