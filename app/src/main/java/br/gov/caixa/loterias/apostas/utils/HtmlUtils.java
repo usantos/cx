@@ -167,6 +167,8 @@ public class HtmlUtils {
     }
 
     public String getComprovanteCabecalhoRodapePremio(DetalhesPremioDTO detalhesPremioDTO, Context context) {
+        String nome = DadosUsuarioBO.obterNome().toLowerCase(new Locale(context.getResources().getString(R.string.pt), context.getResources().getString(R.string.br)));
+        String nomeUsuario = StringUtils.capitalizer(nome);
 
         String modalidade = ViewUtils.getNomeModalidadePorAposta(detalhesPremioDTO.getAposta());
         String hora = DateUtils.getDateToString(
@@ -174,6 +176,8 @@ public class HtmlUtils {
                 , DateUtils.PATTERN_HH_MM);
 
         String html = getContentOfFile(FILE_PATH_COMPROVANTE_CABECALHO_RODAPE_PREMIO, context);
+        html = ViewUtils.replaceNullable(html, HEADER_NOME, nomeUsuario);
+        html = ViewUtils.replaceNullable(html, HEADER_CPF, AppUtils.mascaraCPF(DadosUsuarioBO.obterCpf()));
         html = ViewUtils.replaceNullable(html, HEADER_TITLE_APP_TXT, context.getString(R.string.app_name));
         html = ViewUtils.replaceNullable(html, HEADER_TIPO_COMPROVANTE_TXT, context.getString(R.string.label_comprovante_premio, modalidade));
         html = ViewUtils.replaceNullable(html, BASE_64_LOGO, getBase64Logo(context));
