@@ -25,78 +25,113 @@
 </table>
 <hr style="border: 1px solid #f49d00;">
 <table style="width:100%; font-size: 10px; margin-top:30px; height:8%;">
-	<tr style="width:50%;">
-		<td style="font-weight:bold; color:#526377;">
-			Nome
+	<tr>
+		<td style="width:20%; color:#5881C1; font-weight:bold;">
+			Nome:
 		</td>
-		<td style="color:#526377;">
+		<td style="color:#526377; font-weight:bold;">
 			{header_nome}
 		</td>
-		<td style="width:20%;">
+	</tr>
+	<tr>
+		<td style="width:20%; color:#5881C1; font-weight:bold;">
+			CPF:
 		</td>
-		<td style="font-weight:bold; color:#526377;">
-			CPF
-		</td>
-		<td style="color:#526377;">
+		<td style="color:#526377; font-weight:bold;">
 			{header_cpf}
 		</td>
 	</tr>
-	<tr style="width:70%;">
-		<td style="font-weight:bold; color:#526377;">
-			Data
+	<tr>
+		<td style="width:20%; color:#5881C1; font-weight:bold;">
+			Modalidade:
 		</td>
-		<td style="color:#526377;">
-			{header_coluna1_linha1_valor}
+		<td style="color:#526377; font-weight:bold;">
+			{header_coluna1_linha3_valor}
 		</td>
-		<td style="width:10%;">
+	</tr>
+	<tr>
+		<td style="width:20%; color:#5881C1; font-weight:bold;">
+			Concurso:
 		</td>
-		<td style="font-weight:bold; color:#526377;">
-			Concurso
-		</td>
-		<td style="color:#526377;">
+		<td style="color:#526377; font-weight:bold;">
 			{header_coluna2_linha1_valor}
 		</td>
 	</tr>
-	<tr style="width:70%;">
-		<td style="font-weight:bold; color:#526377;">
-			Hora DF
+	<tr>
+		<td style="width:20%; color:#5881C1; font-weight:bold;">
+			Data:
 		</td>
-		<td style="color:#526377;">
+		<td style="color:#526377; font-weight:bold;">
+			{header_coluna1_linha1_valor}
+		</td>
+	</tr>
+	<tr>
+		<td style="width:20%; color:#5881C1; font-weight:bold;">
+			Hora:
+		</td>
+		<td style="color:#526377; font-weight:bold;">
 			{header_coluna1_linha2_valor}
 		</td>
-		<td style="width:10%;">
+	</tr>
+	<tr>
+		<td style="width:20%; color:#5881C1; font-weight:bold;">
+			Valor da aposta
 		</td>
-		<td style="font-weight:bold; color:#526377;">
-			{header_coluna2_linha2_texto}
+		<td style="color:#526377; font-weight:bold;">
+			{body_coluna2_linha1_valor}
 		</td>
-		<td style="color:#526377;">
+	</tr>
+	<tr>
+		<!--Data do sorteio-->
+		<td style="width:20%; color:#5881C1; font-weight:bold;">
+			{header_coluna2_linha2_texto}:
+		</td>
+		<td style="color:#526377; font-weight:bold;">
 			{header_coluna2_linha2_valor}
 		</td>
 	</tr>
-	<tr style="width:70%;">
-		<td style="font-weight:bold; color:#526377;">
-			Modalidade
+	<tr>
+		<!--valor da aposta/ nsu do pagamento-->
+		<td style="width:20%; color:#5881C1; font-weight:bold;">
+			{header_coluna2_linha3_texto}:
 		</td>
-		<td style="color:#526377;">
-			{header_coluna1_linha3_valor}
-		</td>
-		<td style="width:10%;">
-		</td>
-		<td style="font-weight:bold; color:#526377;">
-			{header_coluna2_linha3_texto}
-		</td>
-		<td style="color:#526377;">
+		<td style="color:#526377; font-weight:bold;">
 			{header_coluna2_linha3_valor}
 		</td>
 	</tr>
+	<tr>
+		<td style="width:20%; color:#5881C1; font-weight:bold;">
+			Faixa de premiação:
+		</td>
+		<td style="color:#526377; font-weight:bold;">
+			{body_coluna1_linha1_valor}
+		</td>
+	</tr>
+	<tr>
+		<td style="color:#5881C1; font-weight:bold;">
+			{body_seus_numeros}
+		</td>
+		<td style="color:#526377; font-weight:bold;">
+			{body_lista_itens_aposta}
+		</td>
+	</tr>
 </table>
-<div style="font-size:12px; margin-top:30px; font-weight:bold; color:#0267b2;">
-	{body_titulo}
+<!--<div style="font-size:12px; margin-top:30px; font-weight:bold; color:#0267b2;">
+    {body_titulo}
 </div>
 <div style="font-size: 10px; color:#526377; margin-top: 20px; font-weight:bold;">
-	{body_lista_itens_aposta}
+    {body_lista_itens_aposta}
+</div>-->
+<div style=" width:96%; border: 1px solid #f49d00; float: center;
+					  padding:15px; margin-top:80px; margin-bottom: 50px; font-size: 10px;
+					  color:#526377;">
+	<div style="text-align:center;font-weight:bold;">
+		Valor total líquido dos Prêmios: {body_coluna3_linha1_valor}
+	</div>
 </div>
-{body_conteudo}
+<div style="text-align: center; color: #526377;">
+	{body_coluna1_linha2_valor}
+</div>
 <table style="width:95%; position:absolute; bottom:30px;">
 	<tr style="padding:0px;">
 		<td>
@@ -131,5 +166,4 @@
 	</tr>
 </table>
 </body>
-
 </html>

@@ -49,8 +49,6 @@ public class HtmlUtils {
     private static final String FILE_PATH_COMPROVANTE_LISTA_CORPO_LOTECA = "htmls/comprovante_lista_corpo_loteca.html";
     private static final String FILE_PATH_COMPROVANTE_LISTA_CORPO_LOTOGOL = "htmls/comprovante_lista_corpo_lotogol.html";
     private static final String FILE_PATH_COMPROVANTE_LISTA_CORPO_SUPER_7 = "htmls/comprovante_lista_corpo_super7.html";
-    private static final String FILE_PATH_COMPROVANTE_CORPO_APOSTA = "htmls/comprovante_corpo_aposta.html";
-    private static final String FILE_PATH_COMPROVANTE_CORPO_PREMIO = "htmls/comprovante_corpo_premio.html";
     private static final String FILE_PATH_COMPROVANTE_CORPO_PREMIO_HISTORICO = "htmls/comprovante_corpo_premio_historico.html";
 
     private static final String HEADER_TITLE_APP_TXT = "{header_title_app_txt}";
@@ -80,6 +78,7 @@ public class HtmlUtils {
     private static final String BODY_COLUNA2_LINHA1_VALOR_PREMIO = "{body_coluna2_linha1_valor}";
     private static final String BODY_COLUNA3_LINHA1_VALOR_PREMIO = "{body_coluna3_linha1_valor}";
     private static final String BODY_COLUNA1_LINHA2_VALOR_PREMIO = "{body_coluna1_linha2_valor}";
+    private static final String BODY_SEUS_NUMEROS = "{body_seus_numeros}";
     private static final String SUPER7_COLUNA_1 = "{COLUNA_1}";
     private static final String SUPER7_COLUNA_2 = "{COLUNA_2}";
     private static final String SUPER7_COLUNA_3 = "{COLUNA_3}";
@@ -124,7 +123,21 @@ public class HtmlUtils {
         html = ViewUtils.replaceNullable(html, HEADER_COLUNA2_LINHA3_VALOR, ViewUtils.getMoedaFormat(comprovanteApostaDTO.getAposta().getValor()));
         html = ViewUtils.replaceNullable(html, BODY_TITULO, modalidade);
         html = ViewUtils.replaceNullable(html, BODY_LISTA_ITENS_APOSTA, getBodyList(comprovanteApostaDTO.getAposta(), context));
-        html = ViewUtils.replaceNullable(html, BODY_CONTEUDO, getBodyAposta(comprovanteApostaDTO, context));
+        //html = ViewUtils.replaceNullable(html, BODY_CONTEUDO, getBodyAposta(comprovanteApostaDTO, context));
+        html = ViewUtils.replaceNullable(html, BASE_64_CODIGO_BARRAS_APOSTA, getBarcode(comprovanteApostaDTO.getNsbi()));
+        html = ViewUtils.replaceNullable(html, BODY_CODIGO_NSBI_APOSTA, comprovanteApostaDTO.getNsbi());
+        //TODO - Tratativa Loteca
+        /*if(modalidade!= null){
+            if( modalidade.equalsIgnoreCase("loteca")){
+                //t
+                html = ViewUtils.replaceNullable(html, BODY_SEUS_NUMEROS, "Seus números:");
+            } else {
+                html = ViewUtils.replaceNullable(html, BODY_SEUS_NUMEROS, "Seus números:");
+            }
+        } else {
+            html = ViewUtils.replaceNullable(html, BODY_SEUS_NUMEROS, "Seus números:");
+        }*/
+        html = ViewUtils.replaceNullable(html, BODY_SEUS_NUMEROS, "Seus números:");
 
         return html;
     }
@@ -167,6 +180,18 @@ public class HtmlUtils {
     }
 
     public String getComprovanteCabecalhoRodapePremio(DetalhesPremioDTO detalhesPremioDTO, Context context) {
+        String nomeFaixa = context.getResources().getString(R.string.string_vazia);
+        LinkedHashMap<String,String> listaFaixas = PartidaViewDetalhesResultado.obterMapFaixa(new Modalidade(detalhesPremioDTO.getAposta().getModalidade()));
+
+        if (detalhesPremioDTO.getPremio() != null && CollectionUtils.isNotEmpty(detalhesPremioDTO.getPremio().getConcursos())) {
+            for (ConcursoPremiadoDTO concursoPremiadoDTO : detalhesPremioDTO.getPremio().getConcursos()) {
+                if (CollectionUtils.isNotEmpty(concursoPremiadoDTO.getFaixas())) {
+                    for (FaixaPremiadaDTO faixa: concursoPremiadoDTO.getFaixas()) {
+                        nomeFaixa = listaFaixas.get(context.getResources().getString(R.string._000) + faixa.getNumero());
+                    }
+                }
+            }
+        }
         String nome = DadosUsuarioBO.obterNome().toLowerCase(new Locale(context.getResources().getString(R.string.pt), context.getResources().getString(R.string.br)));
         String nomeUsuario = StringUtils.capitalizer(nome);
 
@@ -200,9 +225,25 @@ public class HtmlUtils {
         html = ViewUtils.replaceNullable(html, HEADER_COLUNA1_LINHA3_VALOR, modalidade);
         html = ViewUtils.replaceNullable(html, HEADER_COLUNA2_LINHA3_TEXTO, context.getString(R.string.label_nsu_pagamento));
         html = ViewUtils.replaceNullable(html, HEADER_COLUNA2_LINHA3_VALOR, String.valueOf(detalhesPremioDTO.getPremio().getNsuPagamento()));
-        html = ViewUtils.replaceNullable(html, BODY_TITULO, modalidade);
+        //html = ViewUtils.replaceNullable(html, BODY_TITULO, modalidade);
         html = ViewUtils.replaceNullable(html, BODY_LISTA_ITENS_APOSTA, getBodyList(detalhesPremioDTO.getAposta(), context));
-        html = ViewUtils.replaceNullable(html, BODY_CONTEUDO, getBodyPremio(detalhesPremioDTO, context));
+        html = ViewUtils.replaceNullable(html, BODY_COLUNA1_LINHA1_VALOR_PREMIO, nomeFaixa);
+        html = ViewUtils.replaceNullable(html, BODY_COLUNA2_LINHA1_VALOR_PREMIO, ViewUtils.getMoedaFormat(detalhesPremioDTO.getAposta().getValor()));
+        html = ViewUtils.replaceNullable(html, BODY_COLUNA1_LINHA2_VALOR_PREMIO, detalhesPremioDTO.getNsbi());
+        html = ViewUtils.replaceNullable(html, BODY_COLUNA3_LINHA1_VALOR_PREMIO, ViewUtils.getMoedaFormat(detalhesPremioDTO.getPremio().getValorLiquido()));
+        //TODO - Tratativa Loteca
+        /*if(modalidade!= null){
+            if( modalidade.equalsIgnoreCase("loteca")){
+                //t
+                html = ViewUtils.replaceNullable(html, BODY_SEUS_NUMEROS, "Seus números:");
+            } else {
+                html = ViewUtils.replaceNullable(html, BODY_SEUS_NUMEROS, "Seus números:");
+            }
+        } else {
+            html = ViewUtils.replaceNullable(html, BODY_SEUS_NUMEROS, "Seus números:");
+        }*/
+        html = ViewUtils.replaceNullable(html, BODY_SEUS_NUMEROS, "Seus números:");
+
 
         return html;
     }
@@ -219,12 +260,12 @@ public class HtmlUtils {
                     EquipeDTO equipe2 = partidaLotecaDTO.getEquipe2();
 
                     htmlBodyList = ViewUtils.replaceNullable(htmlBodyList, BODY_PARTIDA1,
-                            context.getString(R.string.label_corpo_equipe, equipe1.getVitoria() ? PONTO_MARCADOR : " ", Utils.getEquipeComUf(partidaLotecaDTO.getEquipe1())));
+                                                             context.getString(R.string.label_corpo_equipe, equipe1.getVitoria() ? PONTO_MARCADOR : " ", Utils.getEquipeComUf(partidaLotecaDTO.getEquipe1())));
                     htmlBodyList = ViewUtils.replaceNullable(htmlBodyList, BODY_EMPATE,
-                            context.getString(R.string.label_corpo_equipe, partidaLotecaDTO.getEmpate() ? PONTO_MARCADOR : " ",
-                                    context.getString(R.string.label_empate)));
+                                                             context.getString(R.string.label_corpo_equipe, partidaLotecaDTO.getEmpate() ? PONTO_MARCADOR : " ",
+                                                                               context.getString(R.string.label_empate)));
                     htmlBodyList = ViewUtils.replaceNullable(htmlBodyList, BODY_PARTIDA2,
-                            context.getString(R.string.label_corpo_equipe, equipe2.getVitoria() ? PONTO_MARCADOR : " ", Utils.getEquipeComUf(partidaLotecaDTO.getEquipe2())));
+                                                             context.getString(R.string.label_corpo_equipe, equipe2.getVitoria() ? PONTO_MARCADOR : " ", Utils.getEquipeComUf(partidaLotecaDTO.getEquipe2())));
 
                     sbHtmlBodyList.append(htmlBodyList);
                     htmlBodyList = getContentOfFile(FILE_PATH_COMPROVANTE_LISTA_CORPO_LOTECA, context);
@@ -237,11 +278,11 @@ public class HtmlUtils {
                     EquipeDTO equipe2 = partidaLotogolDTO.getEquipe2();
 
                     htmlBodyList = ViewUtils.replaceNullable(htmlBodyList, BODY_PARTIDA1,
-                            context.getString(R.string.label_corpo_equipe, equipe1.getPlacar(),
-                                    equipe1.getIndicadorSelecao() ? equipe1.getNome() + "/" + equipe1.getSiglaPais() : equipe1.getNome()));
+                                                             context.getString(R.string.label_corpo_equipe, equipe1.getPlacar(),
+                                                                               equipe1.getIndicadorSelecao() ? equipe1.getNome() + "/" + equipe1.getSiglaPais() : equipe1.getNome()));
                     htmlBodyList = ViewUtils.replaceNullable(htmlBodyList, BODY_PARTIDA2,
-                            context.getString(R.string.label_corpo_equipe, equipe2.getPlacar(),
-                                    equipe2.getIndicadorSelecao() ? equipe2.getNome() + "/" + equipe2.getSiglaPais() : equipe2.getNome()));
+                                                             context.getString(R.string.label_corpo_equipe, equipe2.getPlacar(),
+                                                                               equipe2.getIndicadorSelecao() ? equipe2.getNome() + "/" + equipe2.getSiglaPais() : equipe2.getNome()));
 
                     sbHtmlBodyList.append(htmlBodyList);
                     htmlBodyList = getContentOfFile(FILE_PATH_COMPROVANTE_LISTA_CORPO_LOTOGOL, context);
@@ -269,12 +310,12 @@ public class HtmlUtils {
                 if (aposta.getTimeDoCoracao() != null) {
                     htmlBodyList = getContentOfFile(FILE_PATH_COMPROVANTE_LISTA_CORPO_NUMERICO, context);
                     htmlBodyList = ViewUtils.replaceNullable(htmlBodyList, BODY_INFORMACAO_APOSTA,
-                            aposta.getTimeDoCoracao().getNome() + "/" + aposta.getTimeDoCoracao().getUf());
+                                                             aposta.getTimeDoCoracao().getNome() + "/" + aposta.getTimeDoCoracao().getUf());
                     sbHtmlBodyList.append(htmlBodyList);
                 } else if (aposta.getMesDeSorte() != null) {
                     htmlBodyList = getContentOfFile(FILE_PATH_COMPROVANTE_LISTA_CORPO_NUMERICO, context);
                     htmlBodyList = ViewUtils.replaceNullable(htmlBodyList, BODY_INFORMACAO_APOSTA,
-                            context.getString(R.string.label_mes_sorte_dois_pontos) + aposta.getMesDeSorte().getNome());
+                                                             context.getString(R.string.label_mes_sorte_dois_pontos) + aposta.getMesDeSorte().getNome());
                     sbHtmlBodyList.append(htmlBodyList);
                 }
                 return sbHtmlBodyList.toString();
@@ -289,15 +330,6 @@ public class HtmlUtils {
                     num);
         }
         return string;
-    }
-
-
-    private static String getBodyAposta(ComprovanteApostaDTO comprovanteApostaDTO, Context context) {
-        String htmlBody = getContentOfFile(FILE_PATH_COMPROVANTE_CORPO_APOSTA, context);
-        htmlBody = ViewUtils.replaceNullable(htmlBody, BASE_64_CODIGO_BARRAS_APOSTA, getBarcode(comprovanteApostaDTO.getNsbi()));
-        htmlBody = ViewUtils.replaceNullable(htmlBody, BODY_CODIGO_NSBI_APOSTA, comprovanteApostaDTO.getNsbi());
-
-        return htmlBody;
     }
 
     private static String getBodyPremioHistorico(DetalhesHistoricoPremioDTO detalhesHistoricoPremioDTO, Context context) {
@@ -319,29 +351,6 @@ public class HtmlUtils {
         htmlBody = ViewUtils.replaceNullable(htmlBody, BODY_COLUNA3_LINHA1_VALOR_PREMIO, ViewUtils.getMoedaFormat(detalhesHistoricoPremioDTO.getPremioDTO().getValorLiquido()));
         return htmlBody;
     }
-
-    private static String getBodyPremio(DetalhesPremioDTO detalhesPremioDTO, Context context) {
-        String nomeFaixa = context.getResources().getString(R.string.string_vazia);
-        LinkedHashMap<String,String> listaFaixas = PartidaViewDetalhesResultado.obterMapFaixa(new Modalidade(detalhesPremioDTO.getAposta().getModalidade()));
-        String htmlBody = getContentOfFile(FILE_PATH_COMPROVANTE_CORPO_PREMIO, context);
-
-        if (detalhesPremioDTO.getPremio() != null && CollectionUtils.isNotEmpty(detalhesPremioDTO.getPremio().getConcursos())) {
-            for (ConcursoPremiadoDTO concursoPremiadoDTO : detalhesPremioDTO.getPremio().getConcursos()) {
-                if (CollectionUtils.isNotEmpty(concursoPremiadoDTO.getFaixas())) {
-                    for (FaixaPremiadaDTO faixa: concursoPremiadoDTO.getFaixas()) {
-                        nomeFaixa = listaFaixas.get(context.getResources().getString(R.string._000) + faixa.getNumero());
-                    }
-                }
-            }
-        }
-
-        htmlBody = ViewUtils.replaceNullable(htmlBody, BODY_COLUNA1_LINHA1_VALOR_PREMIO, nomeFaixa);
-        htmlBody = ViewUtils.replaceNullable(htmlBody, BODY_COLUNA2_LINHA1_VALOR_PREMIO, ViewUtils.getMoedaFormat(detalhesPremioDTO.getAposta().getValor()));
-        htmlBody = ViewUtils.replaceNullable(htmlBody, BODY_COLUNA3_LINHA1_VALOR_PREMIO, ViewUtils.getMoedaFormat(detalhesPremioDTO.getPremio().getValorLiquido()));
-        htmlBody = ViewUtils.replaceNullable(htmlBody, BODY_COLUNA1_LINHA2_VALOR_PREMIO, detalhesPremioDTO.getNsbi());
-        return htmlBody;
-    }
-
 
     private static String getContentOfFile(String filePath, Context context) {
         try {
