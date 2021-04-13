@@ -17,7 +17,6 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-
             <ImageView
                 android:layout_width="177dp"
                 android:layout_height="46dp"
@@ -38,7 +37,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:fontFamily="@font/arialmt"
+                    android:fontFamily="@font/futura_std_book"
                     android:text="@string/label_premio"
                     android:textAlignment="center"
                     android:textColor="@color/cinza"
@@ -89,7 +88,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="40dp"
-                    android:fontFamily="@font/arialmt"
+                    android:fontFamily="@font/futura_std_book"
                     android:text="@string/para_receber_seu_pr_mio_npor_favor_confirme_seu_email"
                     android:textColor="@color/cinza"
                     android:textSize="14.2dp" />
@@ -120,7 +119,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="252dp"
                 android:orientation="vertical"
-                android:gravity="center"
                 android:visibility="gone">
 
                 <TextView
@@ -128,7 +126,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
-                    android:fontFamily="@font/arialmt"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="40dp"
+                    android:fontFamily="@font/futura_std_book"
                     android:text="@string/em_breve_seu_pr_mio_estar_dispon_vel_em_sua_conta_no_mercado_pago"
                     android:textAlignment="center"
                     android:textColor="@color/cinza"
@@ -141,15 +141,14 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
                     android:layout_marginTop="19dp"
-                    android:fontFamily="@font/arialmt"
+                    android:fontFamily="@font/futura_std_book"
                     android:textAlignment="center"
                     android:textColor="@color/cinza"
                     android:textSize="14dp"
                     tools:text="@string/um_email_foi_enviado_para_dmalva_monumenta_com_br_com_todas_as_informa_es_e_passo_a_passo_para_o_recebimento_de_seu_pr_mio" />
-
             </LinearLayout>
 
-            <RelativeLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/comprovanteLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -161,51 +160,38 @@
                     android:id="@+id/comprovanteImage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/activity_horizontal_margin"
-                    android:layout_marginTop="30dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:padding="20dp"
                     android:alpha="0.6"
                     android:src="@drawable/ic_codigo"
                     app:tint="@color/branco" />
 
                 <TextView
                     android:id="@+id/tv_num_bilhete"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_alignTop="@+id/comprovanteImage"
-                    android:layout_alignBottom="@+id/comprovanteImage"
-                    android:layout_toEndOf="@+id/comprovanteImage"
-                    android:layout_marginStart="20dp"
+                    app:layout_constraintStart_toEndOf="@+id/comprovanteImage"
+                    app:layout_constraintEnd_toStartOf="@+id/comprovanteImpressaoImage"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:gravity="center"
                     android:textColor="@color/branco"
-                    android:fontFamily="@font/arialmt"
-                    android:text="@string/label_numero_bilhete"
+                    android:fontFamily="@font/futura_std_bold"
+                    android:text="@string/label_visualizar_comprovante_premio"
                     android:textSize="14sp"
                     android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/comprovanteText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_num_bilhete"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginBottom="30dp"
-                    android:textColor="@color/branco"
-                    android:layout_toEndOf="@+id/comprovanteImage"
-                    android:fontFamily="@font/arialmt"
-                    android:textSize="10sp"
-                    tools:text="62915279BA15976C9D3AE723D22222222222" />
 
                 <ImageView
                     android:id="@+id/comprovanteImpressaoImage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignBottom="@+id/comprovanteImage"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginStart="@dimen/activity_horizontal_margin"
-                    android:layout_marginEnd="15dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:padding="20dp"
                     android:alpha="0.4"
                     android:src="@drawable/ic_icon_imprime_branco" />
-            </RelativeLayout>
-
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"

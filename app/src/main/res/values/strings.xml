@@ -574,7 +574,7 @@
     <string name="numeros_proibidos">Números proibidos</string>
     <string name="apostas_favoritas">Apostas favoritas</string>
     <string name="resgatar">Resgatar</string>
-    <string name="excelente">Excelente</string>
+    <string name="excelente">Excelente :)</string>
     <string name="confirmar_email">Para receber seu prêmio, por favor confirme seu email:</string>
     <string name="premio_disponivel">Em breve seu prêmio estará disponível em sua conta no mercado pago</string>
     <string name="placeholder_versao">v1.0.0</string>
@@ -788,7 +788,8 @@
     <string name="teste_xxx">Teste xxx</string>
     <string name="tipo_caixa">tipoCaixa</string>
     <string name="premio_disponivel_em_breve_mp">Em breve seu prêmio estará disponível  em sua conta no mercado pago</string>
-    <string name="email_enviado_para">Um email foi enviado para&#160;</string>
+    <string name="email_enviado_para">Um e-mail foi enviado para&#160;</string>
+    <string name="label_visualizar_comprovante_premio">Visualizar comprovante de prêmio</string>
     <string name="com_o_passo_a_passo">&#160;com os dados de recebimento do seu prêmio.</string>
     <string name="valor_premio">valorPremio</string>
     <string name="val_premio">Valor do prêmio:</string>

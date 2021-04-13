@@ -9,12 +9,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.android.volley.VolleyError;
 
@@ -44,9 +44,9 @@ public class JogosConfirmadosPremioMercadoPagoActivity extends AppCompatActivity
     private TextView valorPremioTextView;
     private Long idAposta;
     private Button resgatarPremioButton, voltarPremioButton;
-    private TextView textoTituloPremioConfirmado, textoPremioConfirmado, numeroBilhete;
+    private TextView textoTituloPremioConfirmado, textoPremioConfirmado;
     private LinearLayout contentTopoConfirmarLinearLayout, contentTopoConfirmadoLinearLayout, contentConfirmarLinearLayout, contentConfirmadoLinearLayout;
-    private RelativeLayout comprovanteLayout;
+    private ConstraintLayout comprovanteLayout;
     private AlertDialog loadViewProgress;
     private String valorPremio = "";
 
@@ -83,7 +83,6 @@ public class JogosConfirmadosPremioMercadoPagoActivity extends AppCompatActivity
         resgatarPremioButton = findViewById(R.id.resgatarPremioButton);
         voltarPremioButton = findViewById(R.id.voltarPremioButton);
         comprovanteLayout = findViewById(R.id.comprovanteLayout);
-        numeroBilhete = findViewById(R.id.comprovanteText);
 
         contentTopoConfirmarLinearLayout = findViewById(R.id.contentTopoConfirmarLinearLayout);
         contentTopoConfirmadoLinearLayout = findViewById(R.id.contentTopoConfirmadoLinearLayout);
@@ -155,7 +154,6 @@ public class JogosConfirmadosPremioMercadoPagoActivity extends AppCompatActivity
             public void onResponse(DetalhesPremioDTOResponse result) {
                 loadViewProgress.dismiss();
                 detalhesPremioDTO = result.getPayload();
-                numeroBilhete.setText(detalhesPremioDTO.getNsbi());
                 comprovanteLayout.setOnClickListener(view -> PdfUtils.createComprovantePremioPdf(detalhesPremioDTO, JogosConfirmadosPremioMercadoPagoActivity.this));
             }
 
