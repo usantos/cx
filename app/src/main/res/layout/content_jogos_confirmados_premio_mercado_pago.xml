@@ -61,7 +61,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:layout_marginTop="40dp"
-                android:background="@color/verdemusgo"
+                android:background="@drawable/background_gradient_verde"
                 android:orientation="vertical"
                 android:visibility="gone">
 
@@ -120,6 +120,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="252dp"
                 android:orientation="vertical"
+                android:gravity="center"
                 android:visibility="gone">
 
                 <TextView
@@ -127,8 +128,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginTop="40dp"
                     android:fontFamily="@font/arialmt"
                     android:text="@string/em_breve_seu_pr_mio_estar_dispon_vel_em_sua_conta_no_mercado_pago"
                     android:textAlignment="center"
@@ -149,6 +148,64 @@
                     tools:text="@string/um_email_foi_enviado_para_dmalva_monumenta_com_br_com_todas_as_informa_es_e_passo_a_passo_para_o_recebimento_de_seu_pr_mio" />
 
             </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/comprovanteLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/background_gradient_verde"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/comprovanteImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:layout_marginTop="30dp"
+                    android:alpha="0.6"
+                    android:src="@drawable/ic_codigo"
+                    app:tint="@color/branco" />
+
+                <TextView
+                    android:id="@+id/tv_num_bilhete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/comprovanteImage"
+                    android:layout_alignBottom="@+id/comprovanteImage"
+                    android:layout_toEndOf="@+id/comprovanteImage"
+                    android:layout_marginStart="20dp"
+                    android:textColor="@color/branco"
+                    android:fontFamily="@font/arialmt"
+                    android:text="@string/label_numero_bilhete"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/comprovanteText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_num_bilhete"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginBottom="30dp"
+                    android:textColor="@color/branco"
+                    android:layout_toEndOf="@+id/comprovanteImage"
+                    android:fontFamily="@font/arialmt"
+                    android:textSize="10sp"
+                    tools:text="62915279BA15976C9D3AE723D22222222222" />
+
+                <ImageView
+                    android:id="@+id/comprovanteImpressaoImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/comprovanteImage"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:layout_marginEnd="15dp"
+                    android:alpha="0.4"
+                    android:src="@drawable/ic_icon_imprime_branco" />
+            </RelativeLayout>
+
 
             <RelativeLayout
                 android:layout_width="match_parent"
