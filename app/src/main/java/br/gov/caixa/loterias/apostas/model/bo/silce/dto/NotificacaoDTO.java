@@ -14,8 +14,6 @@
 package br.gov.caixa.loterias.apostas.model.bo.silce.dto;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 import io.swagger.annotations.ApiModelProperty;
@@ -31,7 +29,7 @@ public class NotificacaoDTO {
   private String conteudo = null;
 
   @SerializedName("imagem")
-  private List<byte[]> imagem = null;
+  private String imagem = null;
 
   @SerializedName("link")
   private String link = null;
@@ -81,16 +79,13 @@ public class NotificacaoDTO {
     this.conteudo = conteudo;
   }
 
-  public NotificacaoDTO imagem(List<byte[]> imagem) {
+  public NotificacaoDTO imagem(String imagem) {
     this.imagem = imagem;
     return this;
   }
 
-  public NotificacaoDTO addImagemItem(byte[] imagemItem) {
-    if (this.imagem == null) {
-      this.imagem = new ArrayList<byte[]>();
-    }
-    this.imagem.add(imagemItem);
+  public NotificacaoDTO addImagemItem(String imagemItem) {
+    this.imagem = imagemItem;
     return this;
   }
 
@@ -99,11 +94,11 @@ public class NotificacaoDTO {
    * @return imagem
   **/
   @ApiModelProperty(value = "")
-  public List<byte[]> getImagem() {
+  public String getImagem() {
     return imagem;
   }
 
-  public void setImagem(List<byte[]> imagem) {
+  public void setImagem(String imagem) {
     this.imagem = imagem;
   }
 
