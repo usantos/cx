@@ -3,14 +3,12 @@ package br.gov.caixa.loterias.apostas.utils;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.print.PdfConverter;
-
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
 
 import java.io.File;
@@ -32,13 +30,12 @@ public class PdfUtils {
     public static final String ARQUIVO_COMPROV_APOSTA = "Aposta";
     public static final int MY_WRITE_EXTERNAL_STORAGE = 10;
 
-    @Bean
-    protected HtmlUtils htmlUtils;
+
 
     public void createComprovanteApostaPdf(ComprovanteApostaDTO comprovanteApostaDTO, AppCompatActivity activity) {
         if (checkForPermission(activity)) {
             try {
-                String html = htmlUtils.getComprovanteCabecalhoRodapeAposta(comprovanteApostaDTO, activity);
+                String html = HtmlUtils.getComprovanteCabecalhoRodapeAposta(comprovanteApostaDTO, activity);
 
                 // cria a estrutura de diretório
                 File dir = new File(FileUtils.getDownloadsDir(), DIRETORIO_COMPROVANTE);
@@ -53,10 +50,10 @@ public class PdfUtils {
         }
     }
 
-    public void createComprovantePremioPdf(DetalhesPremioDTO detalhesPremioDTO, AppCompatActivity activity) {
+    public static void createComprovantePremioPdf(DetalhesPremioDTO detalhesPremioDTO, AppCompatActivity activity) {
         if (checkForPermission(activity)) {
             try {
-                String html = htmlUtils.getComprovanteCabecalhoRodapePremio(detalhesPremioDTO, activity);
+                String html = HtmlUtils.getComprovanteCabecalhoRodapePremio(detalhesPremioDTO, activity);
 
                 // cria a estrutura de diretório
                 File dir = new File(FileUtils.getDownloadsDir(), DIRETORIO_COMPROVANTE);
@@ -74,7 +71,7 @@ public class PdfUtils {
     public void createComprovanteHistoricoPremioPdf(DetalhesHistoricoPremioDTO detalhesHistoricoPremioDTO, AppCompatActivity activity) {
         if (checkForPermission(activity)) {
             try {
-                String html = htmlUtils.getComprovanteCabecalhoRodapePremioHistorico(detalhesHistoricoPremioDTO, activity);
+                String html = HtmlUtils.getComprovanteCabecalhoRodapePremioHistorico(detalhesHistoricoPremioDTO, activity);
 
                 // cria a estrutura de diretório
                 File dir = new File(FileUtils.getDownloadsDir(), DIRETORIO_COMPROVANTE);
@@ -89,7 +86,7 @@ public class PdfUtils {
         }
     }
 
-    private boolean checkForPermission(AppCompatActivity activity) {
+    private static boolean checkForPermission(AppCompatActivity activity) {
         if (ContextCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_WRITE_EXTERNAL_STORAGE);
         } else {
@@ -98,7 +95,7 @@ public class PdfUtils {
         return false;
     }
 
-    public void createAndOpenPDF(final AppCompatActivity appC, String html, String filePath) throws Exception {
+    public static void createAndOpenPDF(final AppCompatActivity appC, String html, String filePath) throws Exception {
         try {
             final File filePDF = new File(filePath);
             gerarPDF(html, filePDF, appC, () -> FileUtils.openFile(filePDF, "application/pdf", appC));
@@ -108,7 +105,7 @@ public class PdfUtils {
         }
     }
 
-    public void gerarPDF(String html, File filePDF, AppCompatActivity context, PdfConverter.onWriteFinishedCallBack callBack) throws Exception {
+    public static void gerarPDF(String html, File filePDF, AppCompatActivity context, PdfConverter.onWriteFinishedCallBack callBack) throws Exception {
         try {
 
             PdfConverter converter = PdfConverter.getInstance();
