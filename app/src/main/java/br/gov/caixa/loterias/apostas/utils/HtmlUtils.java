@@ -89,7 +89,7 @@ public class HtmlUtils {
 
     private static final String PONTO_MARCADOR = "•";
 
-    public String getComprovanteCabecalhoRodapeAposta(ComprovanteApostaDTO comprovanteApostaDTO, Context context) {
+    public static String getComprovanteCabecalhoRodapeAposta(ComprovanteApostaDTO comprovanteApostaDTO, Context context) {
         String nome = DadosUsuarioBO.obterNome().toLowerCase(new Locale(context.getResources().getString(R.string.pt), context.getResources().getString(R.string.br)));
         String nomeUsuario = StringUtils.capitalizer(nome);
 
@@ -142,7 +142,7 @@ public class HtmlUtils {
         return html;
     }
 
-    public String getComprovanteCabecalhoRodapePremioHistorico(DetalhesHistoricoPremioDTO detalhesHistoricoPremioDTO, Context context) {
+    public static String getComprovanteCabecalhoRodapePremioHistorico(DetalhesHistoricoPremioDTO detalhesHistoricoPremioDTO, Context context) {
 
         String modalidade = ViewUtils.getNomeModalidadePorAposta(detalhesHistoricoPremioDTO.getAposta());
         String hora = DateUtils.getDateToString(
@@ -179,7 +179,7 @@ public class HtmlUtils {
         return html;
     }
 
-    public String getComprovanteCabecalhoRodapePremio(DetalhesPremioDTO detalhesPremioDTO, Context context) {
+    public static String getComprovanteCabecalhoRodapePremio(DetalhesPremioDTO detalhesPremioDTO, Context context) {
         String nomeFaixa = context.getResources().getString(R.string.string_vazia);
         LinkedHashMap<String,String> listaFaixas = PartidaViewDetalhesResultado.obterMapFaixa(new Modalidade(detalhesPremioDTO.getAposta().getModalidade()));
 
