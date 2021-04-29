@@ -1,7 +1,11 @@
 package br.gov.caixa.loterias.apostas.view.fragment;
 
+import android.app.Dialog;
 import android.graphics.drawable.Drawable;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
@@ -42,6 +46,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTORespons
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MesAnoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MesAnoDTOResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MesDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOApostaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOHistoricoApostaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoResultadoBilheteEnum;
@@ -51,8 +56,6 @@ import br.gov.caixa.loterias.apostas.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostas.view.adapter.ApostasConfirmadasAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.FiltroApostasAdapter;
-import br.gov.caixa.loterias.apostas.view.custom.MonthYearPickerDialog;
-import br.gov.caixa.loterias.apostas.view.custom.MonthYearPickerDialog_;
 
 /**
  * Created by pmotta on 16/03/2018.
@@ -62,7 +65,6 @@ import br.gov.caixa.loterias.apostas.view.custom.MonthYearPickerDialog_;
 @EFragment(R.layout.fragment_apostas_confirmadas)
 public class ApostasConfirmadasFragment extends Fragment implements MinhasApostasActivity.OnScrollReachBottomListener {
 
-    private static final String MONTH_YEAR_DIALOG = "MonthYearPickerDialog";
     private static final int PAGE_SIZE = 30;
 
     @Bean
@@ -81,12 +83,16 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
     protected boolean isHistorico;
 
     protected FiltroApostasAdapter filtroAdapter;
+    private Dialog dialogData;
+    private NumberPicker npData;
 
     private List<MesAnoDTO> mesesAnosDisponiveis;
+    private List<String> valoresApresentados;
     private boolean hasMoreItems;
     private boolean isLoading;
     private boolean firstTime = true;
     private boolean reloadingEntireList = false;
+    private int numeroDataSelecionada = 0;
 
     private ApostaPageRequest page;
 
@@ -129,30 +135,50 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
 
     @Click
     protected void dateSelectorBtn() {
-        if (mesesAnosDisponiveis != null) {
-            MonthYearPickerDialog pd = MonthYearPickerDialog_.builder()
-                    .mesesAnos((ArrayList<MesAnoDTO>) mesesAnosDisponiveis)
-                    .mesDefault(page != null ? page.getMes() : null)
-                    .anoDefault(page != null ? page.getAno() : null)
-                    .build();
-
-            pd.show(getActivity().getSupportFragmentManager(), MONTH_YEAR_DIALOG);
-            pd.setListener((datePicker, year, month, day) -> {
-                if(page == null){
-                    page = new ApostaPageRequest(PAGE_SIZE);
-                }
-                page.setAno(year);
-                page.setMes(month + 1);
-                page.setOffset(0);
-
-                hasMoreItems = true;
-//                apostasConfirmadasRecyclerView.setAdapter(null);
-
-                updateResultDate();
-                requestApostasConfirmadas();
-            });
-        }
+        dialogData.show();
     }
+
+    private void setaDialogFiltrar() {
+        dialogData = new Dialog(getContext());
+        dialogData.setContentView(R.layout.dialog_filtro_apostas);
+        npData = dialogData.findViewById(R.id.np_data_aposta);
+        Button btnOk = dialogData.findViewById(R.id.btn_ok);
+        Button btnCancelar = dialogData.findViewById(R.id.btn_cancelar);
+
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(dialogData.getWindow().getAttributes());
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+
+        btnOk.setOnClickListener(v -> filtrarData());
+        btnCancelar.setOnClickListener(v -> dialogData.dismiss());
+        dialogData.getWindow().setAttributes(lp);
+
+
+        npData = dialogData.findViewById(R.id.np_data_aposta);
+        npData.setMinValue(1);
+        npData.setMaxValue(mesesAnosDisponiveis.size());
+        npData.setDisplayedValues(valoresApresentados.toArray(new String[valoresApresentados.size()]));
+        npData.setOnValueChangedListener(new ListenerData());
+
+    }
+
+    private void filtrarData(){
+        MesAnoDTO mesAnoSelecionado =  mesesAnosDisponiveis.get(numeroDataSelecionada);
+        if(page == null){
+            page = new ApostaPageRequest(PAGE_SIZE);
+        }
+        page.setAno(mesAnoSelecionado.getAno().intValue());
+        page.setMes(mesAnoSelecionado.getMes().getValor().intValue());
+
+        page.setOffset(0);
+
+        hasMoreItems = true;
+
+        updateResultDate();
+        requestApostasConfirmadas();
+        dialogData.dismiss();
+    }
+
 
     @Override
     public void onDestroy() {
@@ -165,6 +191,12 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
         if (!isLoading && hasMoreItems) {
             requestApostasConfirmadas();
         }
+    }
+
+    private class ListenerData implements NumberPicker.OnValueChangeListener {
+        @Override
+        public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+            numeroDataSelecionada = newVal - 1; }
     }
 
     private void requestApostasConfirmadas() {
@@ -372,19 +404,24 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
         }
 
         DialogUtils.dismiss();
-        mesesAnosDisponiveis = result.getPayload();
+        mesesAnosDisponiveis = new ArrayList<>();
+        if(!isHistorico){
+            mesesAnosDisponiveis.addAll(getMesesPadrao());
+        }
+        mesesAnosDisponiveis.addAll(result.getPayload());
 
         if (mesesAnosDisponiveis != null && !mesesAnosDisponiveis.isEmpty()) {
             MesAnoDTO mesAno = mesesAnosDisponiveis.get(0);
             int mes = mesAno.getMes().getValor().intValue();
             int ano = mesAno.getAno().intValue();
-
             if(page == null){
                 page = new ApostaPageRequest(PAGE_SIZE);
             }
             page.setAno(ano);
             page.setMes(mes);
             page.setOffset(0);
+            setValoresApresentados(mesesAnosDisponiveis);
+            setaDialogFiltrar();
 
             hasMoreItems = true;
             requestApostasConfirmadas();
@@ -393,11 +430,41 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
             hasMoreItems = false;
         }
 
+
         updateResultDate();
         if (result.getRedirect() != null) {
             RedirectNetwork.checkRedirectSucesso(result.getRedirect(), getActivity());
         }
     }
+
+    private void setValoresApresentados(List<MesAnoDTO> listaMesesAnos){
+        valoresApresentados = new ArrayList<>();
+        for (int contMesAno = 0; contMesAno < listaMesesAnos.size(); contMesAno++) {
+            valoresApresentados.add(getTextoDataSelecionada(contMesAno));
+        }
+    }
+
+    private List<MesAnoDTO> getMesesPadrao(){
+        List<MesAnoDTO> mesesPadrao = new ArrayList<>();
+        mesesPadrao.add(setMesAnoPadroes(90l));
+        mesesPadrao.add(setMesAnoPadroes(30l));
+        return mesesPadrao;
+    }
+
+    private MesAnoDTO setMesAnoPadroes(Long dias){
+        MesAnoDTO mesAno = new MesAnoDTO();
+        mesAno.setAno(0l);
+        mesAno.setMes(setMesPadrao(dias));
+        return mesAno;
+    }
+
+    private MesDTO setMesPadrao(Long dias){
+        MesDTO  mes = new MesDTO();
+        mes.setValor(dias);
+        mes.setDescricao(getString(R.string.ultimos_qtd_dias).replace("{quantidade}",dias.toString()));
+        return mes;
+    }
+
 
     private void onMesesAnosDisponiveisError(VolleyError error) {
         if (getActivity() != null) {
@@ -413,18 +480,31 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
 
     private void updateResultDate() {
         if (page != null) {
-            Calendar cal = Calendar.getInstance();
-            cal.set(Calendar.MONTH, (page.getMes() - 1));
-            cal.set(Calendar.YEAR, page.getAno());
-            cal.set(Calendar.DAY_OF_MONTH, 1);
-
-            String dateStr = new SimpleDateFormat("MMMM yyyy", Locale.getDefault())
-                    .format(cal.getTime().getTime());
-            dateResultTxt.setText(AppUtils.capitalizeFirstChar(dateStr.replace(" "," de ")));
+            dateResultTxt.setText(getTextoDataSelecionada(numeroDataSelecionada));
         } else {
             //TODO: validar mensagem de erro.
             dateResultTxt.setText("Nenhuma aposta disponível.");
         }
+    }
+
+    private String getTextoDataSelecionada(int indice){
+        MesAnoDTO mesAnoSelecionado = mesesAnosDisponiveis.get(indice);
+        if(indice > 1 || isHistorico){
+            return formatMesAno(mesAnoSelecionado.getMes().getValor().intValue(),mesAnoSelecionado.getAno().intValue());
+        } else {
+            return mesAnoSelecionado.getMes().getDescricao();
+        }
+    }
+
+    private String formatMesAno(int mes, int ano) {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.MONTH, mes - 1);
+        cal.set(Calendar.YEAR, ano);
+        cal.set(Calendar.DAY_OF_MONTH, 1);
+
+        String dateStr = new SimpleDateFormat("MMMM yyyy", Locale.getDefault())
+                .format(cal.getTime().getTime());
+        return AppUtils.capitalizeFirstChar(dateStr.replace(" "," de "));
     }
 
     private void onApostasConfirmadasError(VolleyError error) {
