@@ -24,11 +24,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.mercadopago.callbacks.Callback;
-import com.mercadopago.core.MercadoPago;
-import com.mercadopago.model.ApiException;
-import com.mercadopago.model.SavedCardToken;
-import com.mercadopago.model.Token;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -44,6 +39,7 @@ import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO_;
+import br.gov.caixa.loterias.apostas.model.bo.MercadoPagoConnection;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListCartaoDTOResponse;
@@ -51,7 +47,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.utils.FirebaseManager;
-import br.gov.caixa.loterias.apostas.utils.MercadoPagoUtil;
 import br.gov.caixa.loterias.apostas.utils.RateUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.CartoesRecyclerViewAdapter;
@@ -60,7 +55,7 @@ import br.gov.caixa.loterias.apostas.view.listener.FormaDePagamentoListener;
 
 import static br.gov.caixa.loterias.apostas.controllers.PrincipalActivity.MENU_LATERAL;
 
-public class CartoesActivity extends AppCompatActivity implements FormaDePagamentoListener {
+public class CartoesActivity extends AppCompatActivity implements FormaDePagamentoListener, MercadoPagoConnection.MercadoPagoListener {
 
     private RecyclerView rvCartoes;
     private CartoesRecyclerViewAdapter adapter;
@@ -73,6 +68,10 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
     private TextView tvSubtitulo, tvDescricao, tvValorTotalCarrinho, tvSemCartao;
     private ConstraintLayout clSemCartao, clTab;
     private NestedScrollView scrollCartoes;
+    private MercadoPagoConnection.MercadoPagoListener listener;
+    private String requestBody, bin;
+    private EditText userInput;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,6 +79,7 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
         pegaExtras();
         setaViews();
         setaMetodos();
+        listener = this;
     }
 
     private void pegaExtras(){
@@ -141,27 +141,27 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
 
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder( CartoesActivity.this);
                 alertDialogBuilder.setView(promptsView);
-                final EditText userInput = promptsView
+                userInput = promptsView
                         .findViewById(R.id.cvvCardNumberEditText);
                 alertDialogBuilder
                         .setCancelable(false)
                         .setPositiveButton(getResources().getString(R.string.confirmar),
-                                (DialogInterface dialog, int which) -> {
-                                    if (userInput.getText().toString().length() == 3){
-                                        String cardId = adapter.valoresList.get(adapter.selected_position).getIdCartao().toString();
-                                        createToken( cardId,  userInput.getText().toString());
-                                    }else{
-                                        ViewUtils.alertTitleButtonPositiveListener(
-                                                CartoesActivity.this,
-                                                R.string.label_atencao, getResources().getString( R.string.label_informa_cvv ),
-                                                R.string.ok, (dialog1, which1) -> btnAvancarPagamento.performClick()
-                                        );
-                                    }
-                                })
+                                           (DialogInterface dialog, int which) -> {
+                                               if (userInput.getText().toString().length() == 3){
+                                                   preencheDadosPagamento();
+                                                   MercadoPagoConnection.callWebServicePayment_method(bin ,requestBody, this, listener);
+                                               }else{
+                                                   ViewUtils.alertTitleButtonPositiveListener(
+                                                           CartoesActivity.this,
+                                                           R.string.label_atencao, getResources().getString( R.string.label_informa_cvv ),
+                                                           R.string.ok, (dialog1, which1) -> btnAvancarPagamento.performClick()
+                                                                                             );
+                                               }
+                                           })
                         .setNegativeButton(getResources().getString(R.string.cancelar),
-                                (DialogInterface dialog, int which) -> {
-                                    dialog.cancel();
-                                });
+                                           (DialogInterface dialog, int which) -> {
+                                               dialog.cancel();
+                                           });
                 AlertDialog alertDialog = alertDialogBuilder.create();
                 alertDialog.show();
             } else {
@@ -176,6 +176,29 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
         btnAdicionarCartao.setOnClickListener(view -> startActivity(new Intent(CartoesActivity.this, NovaFormaPagamentoActivity.class)));
     }
 
+    private void preencheDadosPagamento(){
+
+        RetornoCartao cartao = adapter.valoresList.get(adapter.selected_position);
+        JSONObject jsonBody = new JSONObject();
+        JSONObject jsonCardHolder = new JSONObject();
+        JSONObject jsonIdentification = new JSONObject();
+        try {
+            jsonIdentification.put("type", "CPF");
+            jsonIdentification.put("number", DadosUsuarioBO.obterCpf());
+            jsonCardHolder.put("identification",jsonIdentification);
+
+            jsonBody.put("card_number",cartao.getPrimeirosDigitos()+cartao.getUltimosDigitos());
+            jsonBody.put("expiration_year",cartao.getAnoValidade());
+            jsonBody.put("expiration_month", cartao.getMesValidade());
+            jsonBody.put("security_code", userInput.getText());
+            jsonBody.put("cardholder", jsonCardHolder);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        bin = cartao.getPrimeirosDigitos();
+        requestBody = jsonBody.toString();
+    }
 
     private void configuraRecycler(){
         adapter = new CartoesRecyclerViewAdapter( listaCartoes,CartoesActivity.this, flagVeioMenu);
@@ -246,7 +269,7 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-       if (requestCode == 600) {
+        if (requestCode == 600) {
             if (listaCartoes == null || listaCartoes.size() == 0){
                 finish();
             }
@@ -275,7 +298,7 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
         }
     }
 
-    private void createToken(String cardId, String securityCode) {
+   /* private void createToken(String cardId, String securityCode) {
         SavedCardToken savedCardToken = new SavedCardToken(cardId, securityCode);
 
         loadViewProgress = LoadingViewLoterias.show(this);
@@ -296,12 +319,13 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
                 ViewUtils.alert(CartoesActivity.this, MercadoPagoUtil.getMessageFromCode(apiException.getCause().get(0).getCode()));
             }
         });
-    }
+    }*/
 
 
     private void callWebserviceRegistraAposta(String tokenPagamento, String payment_method_id) {
         ParametrosPagamento parametroPagamento = new ParametrosPagamento( tokenPagamento, getResources().getString(R.string.string_true), payment_method_id, getResources().getString(R.string.string_false) );
         MeioPagamento meioPagamento = new MeioPagamento(1, parametroPagamento);
+        // loadViewProgress = LoadingViewLoterias.show(this);
 
         ApostaBO apostaBO = ApostaBO_.getInstance_(CartoesActivity.this);
         apostaBO.postRegistrarApostaCarrinho(meioPagamento, new RequestListener<RetornoPadraoDTO>() {
@@ -351,5 +375,10 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
 
         RequestQueue rQueue = Volley.newRequestQueue(CartoesActivity.this);
         rQueue.add(request);
+    }
+
+    @Override
+    public void onSucesso(String cardToken, String payment_method_id) {
+        callWebserviceRegistraAposta(cardToken, payment_method_id);
     }
 }
