@@ -6,12 +6,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-
 import androidx.appcompat.app.AlertDialog;
 import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
 
 import com.android.volley.VolleyError;
+import com.mercadolibre.android.device.sdk.DeviceSDK;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,6 +31,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacaoResponse;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 
+
 public class Aplicacao extends MultiDexApplication {
 
     public static Application application;
@@ -40,6 +41,8 @@ public class Aplicacao extends MultiDexApplication {
         super.onCreate();
         application = this;
         registerActivityLifecycleCallbacks(new br.gov.caixa.loterias.apostas.utils.ActivityLifecycleCallbacks());
+        DeviceSDK.getInstance().execute(this);
+
     }
 
     protected void attachBaseContext(Context base) {

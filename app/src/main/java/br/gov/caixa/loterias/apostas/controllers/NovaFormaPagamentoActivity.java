@@ -12,6 +12,7 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.android.volley.VolleyError;
 import com.github.pinball83.maskededittext.MaskedEditText;
+import com.mercadolibre.android.device.sdk.DeviceSDK;
 import com.mercadopago.model.CardToken;
 
 import org.json.JSONObject;
@@ -159,6 +160,7 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity implement
             jsonBody.put("expiration_month", Integer.valueOf(editTextMesValidadeCartaoContent.getText().toString()));
             jsonBody.put("security_code", editTextCodigoSegurancaContent.getText().toString());
             jsonBody.put("cardholder", jsonCardHolder);
+            jsonBody.put("device", DeviceSDK.getInstance().getInfoAsJsonString());
         }catch (Exception e) {
             e.printStackTrace();
         }

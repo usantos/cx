@@ -180,6 +180,8 @@ dependencies {
     //Mercado Pago
     implementation 'com.mercadopago:sdk:3.8.1'
 
+    implementation 'com.mercadolibre.android.device:sdk:1.0.0'
+
     //Apache commons
     implementation 'org.apache.commons:commons-collections4:4.1'
 

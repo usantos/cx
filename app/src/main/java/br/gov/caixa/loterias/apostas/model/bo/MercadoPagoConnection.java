@@ -46,7 +46,10 @@ public class MercadoPagoConnection {
 
 				String url2 = BuildConfig.MP_CREATE_TOKEN_URL +  ctx.getResources().getString(R.string.public_key) + BuildConfig.PUBLIC_KEY_MP;
 
-				StringRequest stringRequest = new StringRequest(Request.Method.POST, url2, response1 -> Log.i("VOLLEY", response1), error -> Log.e("VOLLEY", error.toString())) {
+				StringRequest stringRequest = new StringRequest(Request.Method.POST, url2, response1 -> Log.i("VOLLEY", response1), error -> {
+					Log.e("VOLLEY", error.toString());
+					DialogUtils.dismiss();
+				}) {
 					@Override
 					public String getBodyContentType() {
 						return "application/json; charset=utf-8";

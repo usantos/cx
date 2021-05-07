@@ -24,6 +24,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.mercadolibre.android.device.sdk.DeviceSDK;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -192,6 +193,7 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
             jsonBody.put("expiration_month", cartao.getMesValidade());
             jsonBody.put("security_code", userInput.getText());
             jsonBody.put("cardholder", jsonCardHolder);
+            jsonBody.put("device", DeviceSDK.getInstance().getInfoAsJsonString());
         }catch (Exception e) {
             e.printStackTrace();
         }
