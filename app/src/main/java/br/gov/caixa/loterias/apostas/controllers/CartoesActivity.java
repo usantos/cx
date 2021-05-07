@@ -187,7 +187,7 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
             jsonIdentification.put("number", DadosUsuarioBO.obterCpf());
             jsonCardHolder.put("identification",jsonIdentification);
 
-            jsonBody.put("card_number",cartao.getPrimeirosDigitos()+cartao.getUltimosDigitos());
+            jsonBody.put("card_id",cartao.getIdCartao());
             jsonBody.put("expiration_year",cartao.getAnoValidade());
             jsonBody.put("expiration_month", cartao.getMesValidade());
             jsonBody.put("security_code", userInput.getText());

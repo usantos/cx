@@ -753,6 +753,7 @@
     <string name="public_key"><![CDATA[&public_key=]]></string>
     <string name="response_dois_pontos">Response:</string>
     <string name="payment_method_id">payment_method_id</string>
+    <string name="card_id">card_id</string>
     <string name="issuer">issuer</string>
     <string name="thumbnail">thumbnail</string>
     <string name="error_dois_pontos">Error:</string>
