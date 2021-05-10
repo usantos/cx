@@ -96,7 +96,7 @@
     <string name="label_lembrar_valor_minimo">Lembre-se que o valor mínimo do total_de compras nesse aplicativo</string>
     <string name="numeros_sorteados">Números sorteados</string>
     <string name="inibir_teimosinha">Estamos aprimorando esta funcionalidade para incluir a conferência de Teimosinhas. Acesse a área Resultados para acompanhar os últimos concursos sorteados.</string>
-    
+
 
     <!-- email-->
     <string name="email_padrao">CEDESBR456@caixa.gov.br</string>
@@ -569,6 +569,10 @@
     <!-- Filtros -->
     <string name="titulo_dialog_filtro_apostas">Filtro de Apostas</string>
     <string name="modalidades_selecionadas">Modalidades Selecionadas</string>
+    <string name="tit_selecione_data">Selecione a data</string>
+    <string name="ultimos_qtd_dias">Últimos {quantidade} dias</string>
+
+
 
     <string name="numeros_obrigatorios">Números obrigatórios</string>
     <string name="numeros_proibidos">Números proibidos</string>
