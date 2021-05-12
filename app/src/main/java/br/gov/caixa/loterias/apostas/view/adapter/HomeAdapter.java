@@ -2,7 +2,6 @@ package br.gov.caixa.loterias.apostas.view.adapter;
 
 import android.app.Activity;
 import android.content.Context;
-
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
@@ -21,7 +20,6 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
-import com.bumptech.glide.Glide;
 
 import java.math.BigDecimal;
 import java.text.DateFormat;
@@ -178,13 +176,9 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
         holder.tempoRestanteParaAposta.setText(retornaStringDias((Long) mapComDiferencaDeDatas.get(TimeUnit.DAYS))
                                                        + retornaStringHoras((Long) mapComDiferencaDeDatas.get(TimeUnit.DAYS), (Long) mapComDiferencaDeDatas.get(TimeUnit.HOURS), activity));
-
-        Glide.with(holder.itemView.getContext())
-             .load(estilo.getImagemCalendario())
-             .into(holder.calendario);
-        Glide.with(holder.itemView.getContext())
-             .load(estilo.getImagemRelogio())
-             .into(holder.relogio);
+        
+        holder.calendario.setImageResource(estilo.getImagemCalendario());
+        holder.relogio.setImageResource(estilo.getImagemRelogio());
 
         holder.buttonActionResultadosModalidade.setOnClickListener(view -> {
             if (holder.linearLayoutResultadosApostas.getHeight() == 0) {
