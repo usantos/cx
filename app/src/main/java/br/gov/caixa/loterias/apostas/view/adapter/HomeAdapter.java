@@ -113,10 +113,10 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                     break;
                 /*case LOTOFACIL:
                     holder.ivEspeciais.setImageDrawable(context.getDrawable(R.drawable.cabecalho_lotofacil_da_independencia));
-                    break;
+                    break;*/
                 case QUINA:
                     holder.ivEspeciais.setImageDrawable(context.getDrawable(R.drawable.cabecalho_sao_joao));
-                    break;*/
+                    break;
                 default:
                     holder.titulo.setVisibility(View.VISIBLE);
                     holder.clEspeciais.setVisibility(View.GONE);
