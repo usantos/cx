@@ -453,8 +453,10 @@
     <RelativeLayout
         android:id="@+id/opcaoOutrosNumerosLayout"
         android:layout_width="match_parent"
-        android:layout_height="74dp"
+        android:minHeight="74dp"
+        android:layout_height="wrap_content"
         android:background="@color/cinza"
+        android:paddingBottom="15dp"
         android:clickable="true"
         android:orientation="horizontal"
         android:visibility="gone">
