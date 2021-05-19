@@ -159,6 +159,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
         npData.setMaxValue(mesesAnosDisponiveis.size());
         npData.setDisplayedValues(valoresApresentados.toArray(new String[valoresApresentados.size()]));
         npData.setOnValueChangedListener(new ListenerData());
+        npData.setWrapSelectorWheel(false);
 
     }
 
