@@ -72,6 +72,7 @@ android {
             buildConfigField "String", "URL_SSO_LOGOUT", "URL_SSO+\"/auth/realms/internet/protocol/openid-connect/logout\""
             buildConfigField "String", "URL_SSO_ACCOUNT", "URL_SSO+\"/auth/realms/internet/account\""
             buildConfigField "String", "MP_PAYMENT_URL", "\"https://api.mercadopago.com/v1/payment_methods/installments?\""
+            buildConfigField "String", "MP_CREATE_TOKEN_URL", "\"https://api.mercadopago.com/v1/card_tokens?\""
             manifestPlaceholders = [
                     appAuthRedirectScheme: "br.gov.caixa.caixaloterias",
                     hostName             : "br.gov.caixa.caixaloterias",
@@ -96,6 +97,7 @@ android {
             buildConfigField "String", "URL_SSO_LOGOUT", "URL_SSO+\"/auth/realms/internet/protocol/openid-connect/logout\""
             buildConfigField "String", "URL_SSO_ACCOUNT", "URL_SSO+\"/auth/realms/internet/account\""
             buildConfigField "String", "MP_PAYMENT_URL", "\"https://api.mercadopago.com/v1/payment_methods/installments?\""
+            buildConfigField "String", "MP_CREATE_TOKEN_URL", "\"https://api.mercadopago.com/v1/card_tokens?\""
             manifestPlaceholders = [
                     appAuthRedirectScheme: "br.gov.caixa.caixaloterias",
                     hostName             : "br.gov.caixa.caixaloterias",
@@ -182,6 +184,8 @@ dependencies {
 
     //Mercado Pago
     implementation 'com.mercadopago:sdk:3.8.1'
+
+    implementation 'com.mercadolibre.android.device:sdk:1.0.0'
 
     //Apache commons
     implementation 'org.apache.commons:commons-collections4:4.1'
