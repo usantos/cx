@@ -139,6 +139,7 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 							npSituacao.setMaxValue(situacoes.size());
 							npSituacao.setDisplayedValues(situacoes.values().toArray(new String[situacoes.size()]));
 							npSituacao.setOnValueChangedListener(new ListenerSituacao());
+							npSituacao.setWrapSelectorWheel(false);
 						}
 					}
 					convertView = viewSituacao;
