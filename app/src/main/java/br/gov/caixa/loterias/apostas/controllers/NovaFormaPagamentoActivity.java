@@ -2,7 +2,6 @@ package br.gov.caixa.loterias.apostas.controllers;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -11,30 +10,19 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.github.pinball83.maskededittext.MaskedEditText;
-import com.mercadopago.callbacks.Callback;
-import com.mercadopago.core.MercadoPago;
-import com.mercadopago.model.ApiException;
+import com.mercadolibre.android.device.sdk.DeviceSDK;
 import com.mercadopago.model.CardToken;
-import com.mercadopago.model.Token;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.MeioPagamento;
 import br.gov.caixa.loterias.apostas.model.bean.ParametrosPagamento;
@@ -42,20 +30,19 @@ import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO_;
+import br.gov.caixa.loterias.apostas.model.bo.MercadoPagoConnection;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListCartaoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.internals.Bin;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostas.utils.MaskEditUtil;
-import br.gov.caixa.loterias.apostas.utils.MercadoPagoUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 
-public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
+public class NovaFormaPagamentoActivity extends SettingToolbarActivity implements MercadoPagoConnection.MercadoPagoListener {
 
     private EditText editTextNumeroCartaoContent, editTextNomeClienteCartaoContent, editTextCodigoSegurancaContent, editTextMesValidadeCartaoContent, editTextAnoValidadeCartaoContent;
 
@@ -71,11 +58,15 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
 
     private Boolean primeiraSelecao = false;
 
+    private MercadoPagoConnection.MercadoPagoListener listener;
+
+    private String requestBody, bin;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         ViewUtils.configuraStatusBarGradientLayout(this, getWindow());
         FirebaseManager.registraEvento(this ,getResources().getString(R.string.evento_entrou_adicao_forma_pagamento));
-
+        listener = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nova_forma_pagamento);
 
@@ -182,10 +173,34 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
                                                     editTextNomeClienteCartaoContent.getText().toString(),
                                                     getResources().getString(R.string.cpf),
                                                     DadosUsuarioBO.obterCpf());
-
-                createTokenAsync(cardToken);
+                preencheDadosPagamento();
+                MercadoPagoConnection.callWebServicePayment_method(bin, requestBody, this, listener);
             }
         });
+    }
+
+    private void preencheDadosPagamento(){
+        JSONObject jsonBody = new JSONObject();
+        JSONObject jsonCardHolder = new JSONObject();
+        JSONObject jsonIdentification = new JSONObject();
+        try {
+            jsonIdentification.put("type", "CPF");
+            jsonIdentification.put("number", DadosUsuarioBO.obterCpf());
+            jsonCardHolder.put("identification",jsonIdentification);
+            jsonCardHolder.put("name",editTextNomeClienteCartaoContent.getText().toString());
+
+            jsonBody.put("card_number", editTextNumeroCartaoContent.getText().toString().replace(getResources().getString(R.string.espaco_em_branco), getResources().getString(R.string.string_vazia)));
+            jsonBody.put("expiration_year",Integer.valueOf(editTextAnoValidadeCartaoContent.getText().toString()));
+            jsonBody.put("expiration_month", Integer.valueOf(editTextMesValidadeCartaoContent.getText().toString()));
+            jsonBody.put("security_code", editTextCodigoSegurancaContent.getText().toString());
+            jsonBody.put("cardholder", jsonCardHolder);
+            jsonBody.put("device", DeviceSDK.getInstance().getInfoAsJsonString());
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        bin = editTextNumeroCartaoContent.getText().toString().replace(getResources().getString(R.string.espaco_em_branco), getResources().getString(R.string.string_vazia)).substring(0, 7);
+        requestBody = jsonBody.toString();
     }
 
     private boolean camposInvalidos(){
@@ -208,28 +223,6 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
         return invalido;
     }
 
-    private void createTokenAsync(CardToken cardToken) {
-        alertDialog = LoadingViewLoterias.show(this);
-        MercadoPago mMercadoPago = new MercadoPago.Builder()
-                .setContext(this)
-                .setPublicKey(BuildConfig.PUBLIC_KEY_MP)
-                .build();
-
-        mMercadoPago.createToken(cardToken, new Callback<Token>() {
-            @Override
-            public void success(Token token) {
-                //                Log.d("token", token.getId());
-                callWebServicePayment_method(token.getId());
-            }
-
-            @Override
-            public void failure(ApiException apiException) {
-                //TODO: Manage API Failure
-                alertDialog.dismiss();
-                ViewUtils.alert(NovaFormaPagamentoActivity.this, MercadoPagoUtil.getMessageFromCode(apiException.getCause().get(0).getCode()));
-            }
-        });
-    }
 
     private void callWebserviceRegistraAposta(String tokenPagamento, String payment_method_id) {
 
@@ -237,6 +230,8 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
         MeioPagamento meioPagamento = new MeioPagamento(1, parametroPagamento);
 
         ApostaBO apostaBO = ApostaBO_.getInstance_(NovaFormaPagamentoActivity.this);
+        //alertDialog = LoadingViewLoterias.show(this);
+
         apostaBO.postRegistrarApostaCarrinho(meioPagamento, new RequestListener<RetornoPadraoDTO>() {
             @Override
             public void onResponse(RetornoPadraoDTO response) {
@@ -259,52 +254,8 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
             public void onErrorResponse(VolleyError error) {
                 alertDialog.dismiss();
                 RedirectNetwork.checkRedirect(error, NovaFormaPagamentoActivity.this);
-                /*try {
-                    String mensagem = new String(error.networkResponse.data);
-                    if (mensagem.contains(getResources().getString(R.string.chave_abrindo))) {
-                        JSONObject jsonObject = new JSONObject(mensagem);
-                        ViewUtils.alert(NovaFormaPagamentoActivity.this, jsonObject.getString(getResources().getString(R.string.mensagem)));
-                    } else {
-                        RedirectNetwork.checkRedirect(error, NovaFormaPagamentoActivity.this);
-                    }
-                } catch (Exception e) {
-                    RedirectNetwork.checkRedirect(error, NovaFormaPagamentoActivity.this);
-                }*/
-
             }
         });
-    }
-
-    private void callWebServicePayment_method(final String token) {
-        String bin = editTextNumeroCartaoContent.getText().toString().substring(0, 7);
-        bin = bin.replace(getResources().getString(R.string.espaco_em_branco), getResources().getString(R.string.string_vazia));
-        String url = BuildConfig.MP_PAYMENT_URL + getResources().getString(R.string.bin) + bin +  getResources().getString(R.string.public_key) + BuildConfig.PUBLIC_KEY_MP;
-        StringRequest request = new StringRequest(Request.Method.GET, url, response -> {
-            Log.d( getResources().getString(R.string.response_dois_pontos), response.toString());
-            try {
-                //Do it with this it will work
-                JSONArray jsonArray = new JSONArray(response);
-                JSONObject responseObj = new JSONObject();
-                responseObj = jsonArray.getJSONObject(0);
-                String payment_method_id = responseObj.getString(getResources().getString(R.string.payment_method_id));
-                String thumbnail = (responseObj.getJSONObject(getResources().getString(R.string.issuer))).getString(getResources().getString(R.string.thumbnail));
-                callWebserviceRegistraAposta(token, payment_method_id);
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-                Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_dois_pontos) + e.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        }, volleyError -> {
-            alertDialog.dismiss();
-
-            Log.d(getResources().getString(R.string.volley_error), getResources().getString(R.string.volleyError_dois_pontos) + volleyError.toString());
-            if(Bin.fromBytes(volleyError.networkResponse.data).toUtf8().contains(getResources().getString(R.string.not_found))){
-                ViewUtils.alert(NovaFormaPagamentoActivity.this, getString(R.string.mercado_pago_numero_cartao_Incorreto));
-            }
-        });
-
-        RequestQueue rQueue = Volley.newRequestQueue(NovaFormaPagamentoActivity.this);
-        rQueue.add(request);
     }
 
     private void buscaCartoes() {
@@ -332,5 +283,11 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity {
 
             }
         });
+    }
+
+
+    @Override
+    public void onSucesso(String cardId, String payment_method_id) {
+        callWebserviceRegistraAposta(cardId , payment_method_id);
     }
 }
