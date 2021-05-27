@@ -148,7 +148,7 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
                         .setCancelable(false)
                         .setPositiveButton(getResources().getString(R.string.confirmar),
                                            (DialogInterface dialog, int which) -> {
-                                               if (userInput.getText().toString().length() == 3){
+                                               if (userInput.getText().toString().length() == 3 || userInput.getText().toString().length() == 4){
                                                    preencheDadosPagamento();
                                                    MercadoPagoConnection.callWebServicePayment_method(bin ,requestBody, this, listener);
                                                }else{
