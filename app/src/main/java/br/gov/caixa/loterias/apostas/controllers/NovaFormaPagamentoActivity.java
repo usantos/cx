@@ -211,7 +211,8 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity implement
                 editTextNumeroCartaoContent.getText().toString().trim().equals(getResources().getString(R.string.string_vazia)) ||
                 editTextCodigoSegurancaContent.getText().toString().trim().equals(getResources().getString(R.string.string_vazia)) ||
                 editTextNomeClienteCartaoContent.getText().toString().trim().equals(getResources().getString(R.string.string_vazia)));
-        if(editTextNumeroCartaoContent.getText().toString().length() < 16){
+        String textNumeroCartao = editTextNumeroCartaoContent.getText().toString().replace(getResources().getString(R.string.espaco_em_branco), getResources().getString(R.string.string_vazia));
+        if(textNumeroCartao.length() < 15){
             invalido =  true ;
             errorMessage = getString(R.string.mercado_pago_numero_cartao_Incorreto);
         }

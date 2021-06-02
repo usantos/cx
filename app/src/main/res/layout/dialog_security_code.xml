@@ -25,7 +25,7 @@
             android:gravity="center"
             android:hint="@string/cvv"
             android:inputType="textPassword"
-            android:maxLength="3"
+            android:maxLength="4"
             android:textSize="12dp" />
     </com.google.android.material.textfield.TextInputLayout>
 

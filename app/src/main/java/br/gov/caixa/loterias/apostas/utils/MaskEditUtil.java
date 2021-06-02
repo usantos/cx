@@ -7,6 +7,9 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
 
+import java.util.Arrays;
+import java.util.List;
+
 
 public class MaskEditUtil {
 
@@ -16,7 +19,7 @@ public class MaskEditUtil {
     public static final String FORMAT_DATE = "##/##/####";
     public static final String FORMAT_NSBI = "####-#################-##";
     public static final String FORMAT_CRED_CARD = "#### #### #### ####";
-
+    public static final String FORMAT_CRED_CARD_AMEX = "#### ###### #####";
 
 
     /**
@@ -30,6 +33,8 @@ public class MaskEditUtil {
         return new TextWatcher() {
             boolean isUpdating;
             String old = "";
+            String maskAuxiliar = mask;
+            private List<String> binsAmex = Arrays.asList("34", "37");
 
             @Override
             public void afterTextChanged(final Editable s) {}
@@ -41,13 +46,22 @@ public class MaskEditUtil {
             public void onTextChanged(final CharSequence s, final int start, final int before, final int count) {
                 final String str = MaskEditUtil.unmask(s.toString());
                 String mascara = "";
+                if (mask.equals(FORMAT_CRED_CARD) || mask.equals(FORMAT_CRED_CARD_AMEX)) {
+                    if (s.length() >= 2) {
+                        if (binsAmex.contains(s.toString().substring(0, 2))) {
+                            maskAuxiliar = FORMAT_CRED_CARD_AMEX;
+                        } else {
+                            maskAuxiliar = FORMAT_CRED_CARD;
+                        }
+                    }
+                }
                 if (isUpdating) {
                     old = str;
                     isUpdating = false;
                     return;
                 }
                 int i = 0;
-                for (final char m : mask.toCharArray()) {
+                for (final char m : maskAuxiliar.toCharArray()) {
                     if (m != '#' && str.length() > old.length()) {
                         mascara += m;
                         continue;

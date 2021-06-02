@@ -148,7 +148,8 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
                         .setCancelable(false)
                         .setPositiveButton(getResources().getString(R.string.confirmar),
                                            (DialogInterface dialog, int which) -> {
-                                               if (userInput.getText().toString().length() == 3){
+                                               int tamanhoCVV = userInput.getText().toString().length();
+                                               if (tamanhoCVV == 3 || tamanhoCVV == 4){
                                                    preencheDadosPagamento();
                                                    MercadoPagoConnection.callWebServicePayment_method(bin ,requestBody, this, listener);
                                                }else{
