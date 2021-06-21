@@ -38,9 +38,11 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.utils.FirebaseManager;
+import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.MaskEditUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
+import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 
 public class NovaFormaPagamentoActivity extends SettingToolbarActivity implements MercadoPagoConnection.MercadoPagoListener {
 
@@ -61,6 +63,9 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity implement
     private MercadoPagoConnection.MercadoPagoListener listener;
 
     private String requestBody, bin;
+
+    //fragments
+    private SomadorCarrinhoFragment somadorCarrinhoFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +98,7 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity implement
 
         configuraSpin();
         buscaCartoes();
+        FragmentUtils.startSomadorCarrinhoFragment(getSupportFragmentManager(), somadorCarrinhoFragment, R.id.id_fg_somador_carrinho,"TELA ADD CARTAO");
 
     }
     private void configuraSpin(){

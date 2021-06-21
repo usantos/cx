@@ -2,7 +2,6 @@ package br.gov.caixa.loterias.apostas.controllers;
 
 import android.content.Intent;
 import android.os.Bundle;
-
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -32,10 +31,12 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResourceResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FirebaseManager;
+import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.CarrinhoApostasListViewRapidaoAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
+import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 
 public class ListaRapidaoActivity extends AppCompatActivity {
 
@@ -43,6 +44,9 @@ public class ListaRapidaoActivity extends AppCompatActivity {
     public List<IdentificaoDeUmaApostaDas8Modalidades> apostas;
     private TextView valorTotalCarrinhoRapidao;
     private ImageButton btnConfiguracao;
+
+    //fragments
+    private SomadorCarrinhoFragment somadorCarrinhoFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +80,7 @@ public class ListaRapidaoActivity extends AppCompatActivity {
     public void atualizaLayout() {
         if (apostas != null) {
             configuraRecyclerViewCarrinhoAposta();
+            FragmentUtils.startSomadorCarrinhoFragment(getSupportFragmentManager(), somadorCarrinhoFragment, R.id.id_fg_somador_carrinho, "TELA CARRINHO RAPIDAO");
         }
         configuraListeners();
     }
