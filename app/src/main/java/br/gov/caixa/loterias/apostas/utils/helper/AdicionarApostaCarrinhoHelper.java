@@ -74,8 +74,8 @@ public class AdicionarApostaCarrinhoHelper {
         ApostaBO apostaBO = ApostaBO_.getInstance_(activity);
         aposta = getApostaPreenchida(objectAposta);
         DialogUtils.show(activity);
-        if (aposta != null) {
-            postAdicionarApostaCarrinho(apostaBO);
+        if (aposta != null && !checarApostasRepetidas(activity, aposta, apostaBO, ApostaOrigem.LISTA_APOSTA)) {
+            postAdicionarApostaCarrinhoMinhasApostas(apostaBO);
         }
     }
 
