@@ -43,6 +43,7 @@ import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO_;
 import br.gov.caixa.loterias.apostas.model.bo.MercadoPagoConnection;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListCartaoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoDTO;
@@ -348,6 +349,7 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
                     RateUtils.setQtdCompras(RateUtils.getQtdCompras() + 1);
                     Intent activity = new Intent(CartoesActivity.this, ConfirmacaoPagamentoActivity.class);
                     startActivity(activity);
+                    CarrinhoSingleton.getInstance().setCarrinho(new CarrinhoDTO());
                 }
             }
 
