@@ -35,9 +35,12 @@ import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
+import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 
 import static br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity.CARRINHO;
 import static br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity.LER_CARRINHO_LOCAL;
@@ -45,6 +48,9 @@ import static br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity.LER_CAR
 public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implements OnClickListener {
 
     public ParametroJogoDTO parametroSimulacao;
+
+    //fragments
+    private SomadorCarrinhoFragment somadorCarrinhoFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +62,7 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
 
         invalidateOptionsMenu();
         configuraActivityIncluidoApostaCarrinho();
+        fragmentSomadorCarrinho();
     }
 
     @Override
@@ -63,6 +70,13 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
         finish();
 
         return true;
+    }
+
+    private void fragmentSomadorCarrinho() {
+        if(somadorCarrinhoFragment == null){
+            somadorCarrinhoFragment = SomadorCarrinhoFragment.newInstance(CarrinhoSingleton.getInstance().getCarrinho(), "TELA CONFIRMACAO INCLUSAO");
+            FragmentUtils.startFragment(getSupportFragmentManager(), R.id.id_fg_somador_carrinho, somadorCarrinhoFragment);
+        }
     }
 
     private void configuraActivityIncluidoApostaCarrinho() {

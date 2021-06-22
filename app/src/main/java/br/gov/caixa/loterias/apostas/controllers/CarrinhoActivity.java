@@ -43,10 +43,12 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.dao.DBLoteriasCrud;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FirebaseManager;
+import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.CarrinhoApostasListViewAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView;
+import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 
 import static br.gov.caixa.loterias.apostas.utils.Utils.isErroNegocial;
 
@@ -76,6 +78,9 @@ public class CarrinhoActivity extends AppCompatActivity {
     private List<IdentificaoDeUmaApostaDas8Modalidades> listApostas = new ArrayList<>();
     private LinearLayoutManager layoutManager;
     private ScrollView svCarrinho;
+
+    //fragments
+    private SomadorCarrinhoFragment somadorCarrinhoFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,12 +132,15 @@ public class CarrinhoActivity extends AppCompatActivity {
         } else {
             atualizaLayout(offSet);
         }
+        handleBtnFavoritar();
+    }
+
+    private void handleBtnFavoritar() {
         if (!DadosUsuarioBO.checarUsuarioLogado(this)) {
             btnFavoritar.setVisibility(View.GONE);
         } else {
             if (carrinho != null && carrinho.getApostas() != null && carrinho.getApostas().size() > 0) {
                 btnFavoritar.setVisibility(View.VISIBLE);
-
             }
         }
     }
@@ -182,13 +190,11 @@ public class CarrinhoActivity extends AppCompatActivity {
         vLoading = findViewById(R.id.pb_loading);
         svCarrinho = findViewById(R.id.sv_carrinho);
 
-
         ViewUtils.setMoedaFormatHtml(BigDecimal.ZERO, tvValorTotal);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.title_activity_carrinho)));
         setaDialogFavoritar();
-
 
     }
 
@@ -237,6 +243,7 @@ public class CarrinhoActivity extends AppCompatActivity {
                 if (carrinho.getApostas() != null) {
                     configuraRecyclerViewCarrinhoAposta(offSet);
                     setValorTotalCarrinho();
+                    fragmentSomadorCarrinho();
                 }
             } else {
                 callWebservice();
@@ -245,6 +252,10 @@ public class CarrinhoActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         montarLayout();
+    }
+
+    private void fragmentSomadorCarrinho() {
+        FragmentUtils.startSomadorCarrinhoFragment(getSupportFragmentManager(), somadorCarrinhoFragment, R.id.id_fg_somador_carrinho,"TELA CARRINHO" );
     }
 
     public void lerCarrinhoLocal(Boolean animacao) {
@@ -488,12 +499,8 @@ public class CarrinhoActivity extends AppCompatActivity {
     }
 
     private void setValorTotalCarrinho() {
-        BigDecimal valorTotalCarrinho = BigDecimal.ZERO;
-        for (IdentificaoDeUmaApostaDas8Modalidades aposta : carrinho.getApostas()) {
-            valorTotalCarrinho = valorTotalCarrinho.add(aposta.getValor());
-        }
-        ViewUtils.setMoedaFormatHtml(valorTotalCarrinho, this.tvValorTotal);
-        carrinho.setValorTotal(valorTotalCarrinho);
+        ViewUtils.setMoedaFormatHtml(carrinho.getValorTotal(), this.tvValorTotal);
+        carrinho.setValorTotal(carrinho.getValorTotal());
     }
     private void atualizaParametros() {
         DialogUtils.show(this);

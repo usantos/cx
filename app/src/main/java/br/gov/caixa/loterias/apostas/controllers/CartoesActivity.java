@@ -43,15 +43,18 @@ import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO_;
 import br.gov.caixa.loterias.apostas.model.bo.MercadoPagoConnection;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListCartaoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.utils.FirebaseManager;
+import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.RateUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.CartoesRecyclerViewAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
+import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 import br.gov.caixa.loterias.apostas.view.listener.FormaDePagamentoListener;
 
 import static br.gov.caixa.loterias.apostas.controllers.PrincipalActivity.MENU_LATERAL;
@@ -72,6 +75,9 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
     private MercadoPagoConnection.MercadoPagoListener listener;
     private String requestBody, bin;
     private EditText userInput;
+
+    //fragments
+    private SomadorCarrinhoFragment somadorCarrinhoFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -223,6 +229,7 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
 
         callWebservice();
         atualizaValorTotal();
+        FragmentUtils.startSomadorCarrinhoFragment(getSupportFragmentManager(), somadorCarrinhoFragment, R.id.id_fg_somador_carrinho, "TELA ESCOLHE CARTAO");
     }
 
     private void atualizaValorTotal() {
@@ -342,6 +349,7 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
                     RateUtils.setQtdCompras(RateUtils.getQtdCompras() + 1);
                     Intent activity = new Intent(CartoesActivity.this, ConfirmacaoPagamentoActivity.class);
                     startActivity(activity);
+                    CarrinhoSingleton.getInstance().setCarrinho(new CarrinhoDTO());
                 }
             }
 
