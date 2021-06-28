@@ -68,9 +68,11 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FirebaseManager;
+import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.fragment.CartelaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.MesesFragment_;
+import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SurpresinhaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SurpresinhaFragment.SurpresinhaFragmentListener;
 import br.gov.caixa.loterias.apostas.view.fragment.SurpresinhaFragment_;
@@ -124,6 +126,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     private FragmentManager fragmentManager;
     private CartelaFragment cartelaFragment;
     private SurpresinhaFragment surpresinhaFragment;
+    private SomadorCarrinhoFragment somadorCarrinhoFragment;
 
     private String dataSorteioAtual;
     private int typeGameColorLight;
@@ -595,6 +598,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         ft.replace(R.id.fragmentSimularApostas, cartelaFragment).commit();
+        FragmentUtils.startSomadorCarrinhoFragment(getSupportFragmentManager(), somadorCarrinhoFragment, R.id.id_fg_somador_carrinho, "TELA SIMULAR APOSTA");
     }
 
     private void configuraActivity() {

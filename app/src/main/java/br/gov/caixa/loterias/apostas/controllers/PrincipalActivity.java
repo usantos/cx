@@ -78,6 +78,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacaoRespo
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RepassometroDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RepassometroDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.UltimaNotificacaoSingleton;
 import br.gov.caixa.loterias.apostas.model.dao.DBLoteriasHelper;
 import br.gov.caixa.loterias.apostas.model.sp.CarrinhoSP;
@@ -85,6 +86,7 @@ import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataSideMenu;
 import br.gov.caixa.loterias.apostas.utils.FirebaseManager;
+import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.OnSwipeTouchListener;
 import br.gov.caixa.loterias.apostas.utils.RateUtils;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
@@ -95,6 +97,7 @@ import br.gov.caixa.loterias.apostas.view.adapter.SideMenuExpandleAdapter;
 import br.gov.caixa.loterias.apostas.view.animation.AnimacaoCalculoRepassesSociais;
 import br.gov.caixa.loterias.apostas.view.animation.AnimacoesAcessoRapido;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
+import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 
 @OptionsMenu(R.menu.principal)
 @EActivity(R.layout.activity_principal)
@@ -136,6 +139,9 @@ public class PrincipalActivity extends AppCompatActivity
 
     @Bean
     protected DadosUsuarioBO dadosUsuarioBO;
+
+    //fragments
+    private SomadorCarrinhoFragment somadorCarrinhoFragment;
 
     private List<Modalidade> data;
     private List<ParametroSimulacao> modalidadesParaListar;
@@ -221,6 +227,16 @@ public class PrincipalActivity extends AppCompatActivity
             callWebservice();
         }
         layoutSideMenu();
+        fragmentSomadorCarrinho();
+    }
+
+    private void fragmentSomadorCarrinho() {
+        if(somadorCarrinhoFragment == null){
+            FragmentUtils.startSomadorCarrinhoFragment(getSupportFragmentManager(), somadorCarrinhoFragment, R.id.id_fg_somador_carrinho,"TELA PRINCIPAL" );
+        }else {
+            somadorCarrinhoFragment.atualizaValorTotal(CarrinhoSingleton.getInstance().getCarrinho());
+        }
+
     }
 
     private void listenerSair() {

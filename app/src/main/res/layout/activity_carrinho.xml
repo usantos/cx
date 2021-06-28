@@ -206,5 +206,12 @@
         app:layout_constraintLeft_toRightOf="@+id/cl_tab_bar"
         app:layout_constraintRight_toLeftOf="@+id/cl_tab_bar" />
 
+    <FrameLayout
+        android:id="@+id/id_fg_somador_carrinho"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/carrinhoScrollView"
+        app:layout_constraintStart_toStartOf="@id/carrinhoScrollView"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 

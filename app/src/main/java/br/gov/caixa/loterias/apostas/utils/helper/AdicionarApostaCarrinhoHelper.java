@@ -9,6 +9,7 @@ import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang.enums.Enum;
 
 import java.math.BigDecimal;
 import java.text.DateFormat;
@@ -73,8 +74,8 @@ public class AdicionarApostaCarrinhoHelper {
         ApostaBO apostaBO = ApostaBO_.getInstance_(activity);
         aposta = getApostaPreenchida(objectAposta);
         DialogUtils.show(activity);
-        if (aposta != null) {
-            postAdicionarApostaCarrinho(apostaBO);
+        if (aposta != null && !checarApostasRepetidas(activity, aposta, apostaBO, ApostaOrigem.LISTA_APOSTA)) {
+            postAdicionarApostaCarrinhoMinhasApostas(apostaBO);
         }
     }
 
@@ -83,7 +84,7 @@ public class AdicionarApostaCarrinhoHelper {
         ApostaBO apostaBO = ApostaBO_.getInstance_(activity);
         aposta = getApostaPreenchida(objectAposta);
         DialogUtils.show(activity);
-        if (aposta != null) {
+        if (aposta != null && !checarApostasRepetidas(activity, aposta, apostaBO, ApostaOrigem.LISTA_APOSTA)) {
             postAdicionarApostaCarrinhoMinhasApostas(apostaBO);
         }
     }
@@ -214,29 +215,12 @@ public class AdicionarApostaCarrinhoHelper {
         }
     }*/
     private static void prosseguirInclusaoAposta(Activity activity, IdentificaoDeUmaApostaDas8Modalidades aposta, ApostaBO apostaBO) {
-        if(checarApostasRepetidas(activity, aposta)){
-            ViewUtils.alertTitleButtonYesOrNotListener(AdicionarApostaCarrinhoHelper.activity, AdicionarApostaCarrinhoHelper.activity.getResources().getString(R.string.MA015), (dialog, which) -> {
-                if (KeycloakBO_.getInstance_(activity).getAccessToken() == null || KeycloakBO_.getInstance_(activity).getAccessToken().isEmpty()) {
-                    postAdicionarApostaCarrinho(apostaBO);
-                } else {
-                    postAdicionarApostaCarrinho(apostaBO);
-                    //adicionarApostaCarrinhoRequest(context, apostaBO, aposta);
-                }
-            },(dialog, which) ->{
-                DialogUtils.dismiss();
-                dialog.dismiss();
-            } );
-        } else {
-            if (KeycloakBO_.getInstance_(activity).getAccessToken() == null || KeycloakBO_.getInstance_(activity).getAccessToken().isEmpty()) {
-                postAdicionarApostaCarrinho(apostaBO);
-            } else {
-                postAdicionarApostaCarrinho(apostaBO);
-            }
+        if(!checarApostasRepetidas(activity, aposta, apostaBO, ApostaOrigem.CARROSEL)){
+            postAdicionarApostaCarrinho(apostaBO);
         }
     }
 
-
-    private static boolean checarApostasRepetidas(Activity activity, IdentificaoDeUmaApostaDas8Modalidades aposta) {
+    private static boolean checarApostasRepetidas(Activity activity, IdentificaoDeUmaApostaDas8Modalidades aposta, ApostaBO apostaBO, ApostaOrigem origem) {
 
         ArrayList<IdentificaoDeUmaApostaDas8Modalidades> apostas = new ArrayList<>();
         if (DadosUsuarioBO.checarUsuarioLogado(activity)) {
@@ -257,10 +241,27 @@ public class AdicionarApostaCarrinhoHelper {
                 aposta.setMesDeSorte(new ParametroMesDeSorte());
             }
             if(ap.equals(aposta)){
+                apresentaModalApostasRepetidas(apostaBO, origem);
                 return true;
             }
         }
         return false;
+    }
+
+    private static void apresentaModalApostasRepetidas(ApostaBO apostaBO, ApostaOrigem origem) {
+        ViewUtils.alertTitleButtonYesOrNotListener(AdicionarApostaCarrinhoHelper.activity, AdicionarApostaCarrinhoHelper.activity.getResources().getString(R.string.MA015), (dialog, which) -> {
+            switch (origem) {
+                case CARROSEL:
+                    postAdicionarApostaCarrinho(apostaBO);
+                    break;
+                case LISTA_APOSTA:
+                    postAdicionarApostaCarrinhoMinhasApostas(apostaBO);
+                    break;
+            }
+        },(dialog, which) ->{
+            DialogUtils.dismiss();
+            dialog.dismiss();
+        } );
     }
 
 
@@ -542,5 +543,9 @@ public class AdicionarApostaCarrinhoHelper {
         } else {
             RedirectNetwork.checkRedirect(error, (Activity) activity);
         }
+    }
+
+    private enum ApostaOrigem {
+        CARROSEL, LISTA_APOSTA;
     }
 }
