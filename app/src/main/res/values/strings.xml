@@ -502,7 +502,7 @@
     <string name="carrinho_fav_titulo">_Carrinhos_ Favoritos</string>
     <string name="carrinho_fav_lbl_msg">Carrinho favorito salvo com sucesso.</string>
     <string name="carrinho_fav_manter_surp">Manter apostas como\nsurpresinhas</string>
-    <string name="carrinho_fav_subtitulo">Aqui estão todos os seus carrinho favoritos.</string>
+    <string name="carrinho_fav_subtitulo">Aqui estão todos os seus carrinhos favoritos.</string>
     <string name="carrinho_fav_lbl_desc">Você pode excluir, detalhar e transformar no seu carrinho atual.</string>
     <string name="carrinho_fav_det_subtitulo">Apostas do carrinho favorito escolhido</string>
     <string name="carrinho_fav_det_desc">Nesta área estão todas as suas apostas da sorte.\nÉ só escolher e apostar. Boa sorte!</string>
