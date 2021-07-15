@@ -5,6 +5,14 @@ import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import br.gov.caixa.loterias.apostas.model.dao.tabela.TabelaEquipe;
+import br.gov.caixa.loterias.apostas.model.dao.tabela.TabelaIdentificaoDeUmaApostaDas8Modalidades;
+import br.gov.caixa.loterias.apostas.model.dao.tabela.TabelaLoterica;
+import br.gov.caixa.loterias.apostas.model.dao.tabela.TabelaMesDeSorte;
+import br.gov.caixa.loterias.apostas.model.dao.tabela.TabelaParametroEquipe;
+import br.gov.caixa.loterias.apostas.model.dao.tabela.TabelaPartidaLoteca;
+import br.gov.caixa.loterias.apostas.model.dao.tabela.TabelaPartidaLotogol;
+
 /**
  * Created by joafilho on 06/02/2018.
  * Class Helper DBLoteriasHelper
@@ -12,7 +20,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DBLoteriasHelper extends SQLiteOpenHelper {
 
-    public static final int DATABASE_VERSION = 2;
+    public static final int DATABASE_VERSION = 3;
     public static final String DATABASE_NAME = "Loterias.db";
 
     public DBLoteriasHelper(Context context) {
@@ -33,6 +41,7 @@ public class DBLoteriasHelper extends SQLiteOpenHelper {
         criarTabela(sqLiteDatabase, DBTabelasLoterias.criarTabelaLotogol());
         criarTabela(sqLiteDatabase, DBTabelasLoterias.criarTabelaLoteca());
         criarTabela(sqLiteDatabase, DBTabelasLoterias.criarTabelaMesDeSorte());
+        criarTabela(sqLiteDatabase, DBTabelasLoterias.criarTabelaCarrinhoFavorito());
     }
 
     @Override
@@ -42,13 +51,13 @@ public class DBLoteriasHelper extends SQLiteOpenHelper {
     }
 
     private void onDelete(SQLiteDatabase sqLiteDatabase) {
-        deletaTabela(sqLiteDatabase, DBTabelasLoterias.deleteTabela(DBTabelasLoterias.DBLoterica.NOME_TABELA));
-        deletaTabela(sqLiteDatabase, DBTabelasLoterias.deleteTabela(DBTabelasLoterias.DBIdentificaoDeUmaApostaDas8Modalidades.NOME_TABELA));
-        deletaTabela(sqLiteDatabase, DBTabelasLoterias.deleteTabela(DBTabelasLoterias.DBEquipe.NOME_TABELA));
-        deletaTabela(sqLiteDatabase, DBTabelasLoterias.deleteTabela(DBTabelasLoterias.DBParametroEquipe.NOME_TABELA));
-        deletaTabela(sqLiteDatabase, DBTabelasLoterias.deleteTabela(DBTabelasLoterias.DBPartidaLotogol.NOME_TABELA));
-        deletaTabela(sqLiteDatabase, DBTabelasLoterias.deleteTabela(DBTabelasLoterias.DBPartidaLoteca.NOME_TABELA));
-        deletaTabela(sqLiteDatabase, DBTabelasLoterias.deleteTabela(DBTabelasLoterias.DBMesDeSorte.NOME_TABELA));
+        deletaTabela(sqLiteDatabase, DBTabelasLoterias.deleteTabela(TabelaLoterica.NOME_TABELA));
+        deletaTabela(sqLiteDatabase, DBTabelasLoterias.deleteTabela(TabelaIdentificaoDeUmaApostaDas8Modalidades.NOME_TABELA));
+        deletaTabela(sqLiteDatabase, DBTabelasLoterias.deleteTabela(TabelaEquipe.NOME_TABELA));
+        deletaTabela(sqLiteDatabase, DBTabelasLoterias.deleteTabela(TabelaParametroEquipe.NOME_TABELA));
+        deletaTabela(sqLiteDatabase, DBTabelasLoterias.deleteTabela(TabelaPartidaLotogol.NOME_TABELA));
+        deletaTabela(sqLiteDatabase, DBTabelasLoterias.deleteTabela(TabelaPartidaLoteca.NOME_TABELA));
+        deletaTabela(sqLiteDatabase, DBTabelasLoterias.deleteTabela(TabelaMesDeSorte.NOME_TABELA));
     }
 
     private void criarTabela(SQLiteDatabase sqLiteDatabase, String tabela) {

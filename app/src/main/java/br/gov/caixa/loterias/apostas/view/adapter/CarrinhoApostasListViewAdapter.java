@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -25,7 +24,6 @@ import java.util.List;
 import java.util.Locale;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.view.fragment.NumerosSuperSeteFragment;
 import br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
@@ -36,12 +34,14 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDa
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IndicadorSurpresinha;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.dao.DBLoteriasCrud;
+import br.gov.caixa.loterias.apostas.model.dao.crud.CarrinhoFavoritoCRUD;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.animation.AnimacaoSwipeList;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
+import br.gov.caixa.loterias.apostas.view.fragment.NumerosSuperSeteFragment;
 
 public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<CarrinhoApostasListViewAdapter.ApostaHolder> {
 	private Context context;
@@ -269,6 +269,7 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
 					parentActivity.setCarrinho(response.getPayload());
 					deletarApostaBaseLocal(aposta, Boolean.FALSE);
 					parentActivity.deletaAposta(posDeletado, aposta);
+					deletaCarrinhoFavorito();
 					if (response.getRedirect() != null) {
 						RedirectNetwork.checkRedirectSucesso(response.getRedirect(), parentActivity);
 					}
@@ -287,6 +288,13 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
 				}
 			});
 		});
+	}
+
+	public void deletaCarrinhoFavorito() {
+		if(this.apostas.size() == 0){
+			CarrinhoFavoritoCRUD crud = new CarrinhoFavoritoCRUD(context);
+			crud.deletaTodos();
+		}
 	}
 
 	@Override

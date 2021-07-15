@@ -48,6 +48,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListCartaoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
+import br.gov.caixa.loterias.apostas.model.dao.crud.CarrinhoFavoritoCRUD;
 import br.gov.caixa.loterias.apostas.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.RateUtils;
@@ -130,8 +131,6 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
 
 
     }
-
-
 
     private void setaMetodos(){
         btnAvancarPagamento.setOnClickListener(view -> {
@@ -350,6 +349,7 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
                     Intent activity = new Intent(CartoesActivity.this, ConfirmacaoPagamentoActivity.class);
                     startActivity(activity);
                     CarrinhoSingleton.getInstance().setCarrinho(new CarrinhoDTO());
+                    limpaCarrinhoFavorito();
                 }
             }
 
@@ -359,6 +359,11 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
                 RedirectNetwork.checkRedirect( error, CartoesActivity.this );
             }
         });
+    }
+
+    private void limpaCarrinhoFavorito() {
+        CarrinhoFavoritoCRUD crud = new CarrinhoFavoritoCRUD(CartoesActivity.this);
+        crud.deletaTodos();
     }
 
     private void callWebServicePayment_method(final String token){

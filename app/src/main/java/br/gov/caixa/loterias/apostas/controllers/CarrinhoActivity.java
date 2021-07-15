@@ -41,6 +41,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacaoRespo
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResourceResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.dao.DBLoteriasCrud;
+import br.gov.caixa.loterias.apostas.model.dao.crud.CarrinhoFavoritoCRUD;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
@@ -369,6 +370,7 @@ public class CarrinhoActivity extends AppCompatActivity {
                         RedirectNetwork.checkRedirectSucesso(result.getRedirect(), CarrinhoActivity.this);
                     }
                     limparCarrinhoAtualizarTela();
+                    limparCarrinhosFavoritos();
                 }
 
                 @Override
@@ -383,6 +385,11 @@ public class CarrinhoActivity extends AppCompatActivity {
             });
         });
 
+    }
+
+    private void limparCarrinhosFavoritos() {
+        CarrinhoFavoritoCRUD crud = new CarrinhoFavoritoCRUD(CarrinhoActivity.this);
+        crud.deletaTodos();
     }
 
     private void deleteCarrinhoLocal() {
@@ -502,6 +509,7 @@ public class CarrinhoActivity extends AppCompatActivity {
         ViewUtils.setMoedaFormatHtml(carrinho.getValorTotal(), this.tvValorTotal);
         carrinho.setValorTotal(carrinho.getValorTotal());
     }
+
     private void atualizaParametros() {
         DialogUtils.show(this);
         final DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(CarrinhoActivity.this);

@@ -25,6 +25,9 @@ import com.android.volley.VolleyError;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity;
+import br.gov.caixa.loterias.apostas.controllers.CarrinhosFavoritosActivity;
+import br.gov.caixa.loterias.apostas.controllers.DetalhesCarrinhoFavoritoActivity;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
@@ -36,11 +39,9 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListApostaCarrinhoFavori
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListCarrinhoFavoritoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
+import br.gov.caixa.loterias.apostas.model.dao.crud.CarrinhoFavoritoCRUD;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
-import br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity;
-import br.gov.caixa.loterias.apostas.controllers.CarrinhosFavoritosActivity;
-import br.gov.caixa.loterias.apostas.controllers.DetalhesCarrinhoFavoritoActivity;
 import info.hoang8f.android.segmented.SegmentedGroup;
 
 import static br.gov.caixa.loterias.apostas.controllers.DetalhesCarrinhoFavoritoActivity.ID_CARRINHO;
@@ -87,6 +88,17 @@ public class CarrinhosFavoritosAdapter extends RecyclerView.Adapter<CarrinhosFav
 		this.listaCarrinhosFavoritos = listaCarrinhosFavoritos;
 	}
 
+	private CarrinhoFavoritoDTO getCarrinhoById(Long id){
+		CarrinhoFavoritoDTO carrinhoFavorito = null;
+		for (CarrinhoFavoritoDTO carrinho : listaCarrinhosFavoritos) {
+			if (carrinho.getId() == id){
+				carrinhoFavorito = carrinho;
+				break;
+			}
+		}
+		return carrinhoFavorito;
+	}
+
 	@Override
 	public long getItemId(int position) {
 		return position;
@@ -109,6 +121,7 @@ public class CarrinhosFavoritosAdapter extends RecyclerView.Adapter<CarrinhosFav
 		ApostaBO_.getInstance_(context).transformarCarrinho(idCarrinhoAtual, opcaoSelecionada, new RequestListener<CarrinhoDTOResponse>() {
 			@Override
 			public void onResponse(CarrinhoDTOResponse result) {
+				salvarCarrinhoFavoritoLocal(idCarrinhoAtual);
 				DialogUtils.dismiss();
 				if (result.getRedirect() != null) {
 					RedirectNetwork.checkRedirectSucesso(result.getRedirect(), activity);
@@ -125,6 +138,11 @@ public class CarrinhosFavoritosAdapter extends RecyclerView.Adapter<CarrinhosFav
 				RedirectNetwork.checkRedirect(error, activity);
 			}
 		});
+	}
+
+	private void salvarCarrinhoFavoritoLocal(Long idCarrinhoAtual) {
+		CarrinhoFavoritoCRUD crud = new CarrinhoFavoritoCRUD(context);
+		crud.inserirCarrinhoFavorito(getCarrinhoById(idCarrinhoAtual));
 	}
 
 	private void buscaApostas(LinearLayout layout, ConstraintLayout card, boolean configLayout) {
@@ -287,7 +305,18 @@ public class CarrinhosFavoritosAdapter extends RecyclerView.Adapter<CarrinhosFav
 
 	//region Support Methods
 	private void transformaCarrinho() {
-		buscaApostas(null, null, false);
+		CarrinhoFavoritoCRUD crud = new CarrinhoFavoritoCRUD(context);
+		if(!crud.existeCarrinho(idCarrinhoAtual)){
+			buscaApostas(null, null, false);
+		}else {
+			ViewUtils.alertTitleCustomPositiveListener(
+					context,
+					context.getString(R.string.cancelar), context.getString(R.string.carrinho_fav_incluir_carrinho),context.getString(R.string.carrinho_favorito_ja_adicionado),
+					(dialogInterface, i) ->
+							buscaApostas(null, null, false)
+													  );
+		}
+
 	}
 
 	private boolean temApostaEspecial() {
