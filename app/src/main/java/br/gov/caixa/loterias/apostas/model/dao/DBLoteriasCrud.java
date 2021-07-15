@@ -26,6 +26,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroEquipe;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroMesDeSorte;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PartidaLotecaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PartidaLotogolDTO;
+import br.gov.caixa.loterias.apostas.model.dao.tabela.TabelaCarrinhoFavorito;
 import br.gov.caixa.loterias.apostas.model.dao.tabela.TabelaEquipe;
 import br.gov.caixa.loterias.apostas.model.dao.tabela.TabelaIdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.dao.tabela.TabelaLoterica;
@@ -1163,6 +1164,7 @@ public class DBLoteriasCrud {
             db.delete(TabelaPartidaLotogol.NOME_TABELA, null, null);
             db.delete(TabelaPartidaLoteca.NOME_TABELA, null, null);
             db.delete(TabelaMesDeSorte.NOME_TABELA, null, null);
+            db.delete(TabelaCarrinhoFavorito.NOME_TABELA, null, null);
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
         } finally {

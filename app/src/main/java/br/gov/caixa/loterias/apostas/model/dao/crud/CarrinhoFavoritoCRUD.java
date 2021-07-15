@@ -96,16 +96,34 @@ public class CarrinhoFavoritoCRUD extends DBLoteriasCRUD {
 	}
 
 	/**
-	 * Método responsável por deletar um carrinho repetido na base
+	 * Método responsável por deletar um carrinho favorito na base
 	 *
 	 * @param carrinhoFavorito CarrinhoFavoritoDTO
 	 * @return void
 	 */
-	public void deleteCarrinhoFavorito(CarrinhoFavoritoDTO carrinhoFavorito) {
+	public void deletaCarrinhoFavorito(CarrinhoFavoritoDTO carrinhoFavorito) {
 		try {
 			if (carrinhoFavorito != null) {
 
 			}
+		} catch (Exception e) {
+			Log.e(TAG, e.getMessage());
+		} finally {
+			this.closeDBLoteriasHelper();
+		}
+	}
+
+	/**
+	 * Método responsável por deletar todos os carrinhos favoritos na base
+	 *
+	 * @param
+	 * @return void
+	 */
+	public void deletaTodos(){
+		this.initDBLoteriasHelper();
+		try {
+			setDb(getDbLoteriasHelper().getWritableDatabase());
+			getDb().delete(TabelaCarrinhoFavorito.NOME_TABELA, null, null);
 		} catch (Exception e) {
 			Log.e(TAG, e.getMessage());
 		} finally {
