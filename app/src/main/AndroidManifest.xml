@@ -13,6 +13,19 @@
 
     <uses-feature android:name="android.hardware.camera" />
 
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="https" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <!-- If you don't know the MIME type in advance, set "mimeType" to "*/*". -->
+            <data android:mimeType="*/*" />
+        </intent>
+    </queries>
+
     <application
         android:name="br.gov.caixa.loterias.apostas.utils.Aplicacao"
         android:allowBackup="true"
