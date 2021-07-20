@@ -278,9 +278,9 @@ public class FileUtils {
 
     }
 
-    public static File getDownloadsDir() throws Exception {
+    public static File getDownloadsDir(Context context) throws Exception {
         try {
-            File file = new File(Environment.getExternalStoragePublicDirectory(
+            File file = new File(context.getExternalFilesDir(
                     Environment.DIRECTORY_DOWNLOADS), DOWNLOAD_FOLDERNAME);
             if (!file.mkdirs()) {
                 Log.e(LOG_TAG, "Diretório não criado");

@@ -38,7 +38,7 @@ public class PdfUtils {
                 String html = HtmlUtils.getComprovanteCabecalhoRodapeAposta(comprovanteApostaDTO, activity);
 
                 // cria a estrutura de diretório
-                File dir = new File(FileUtils.getDownloadsDir(), DIRETORIO_COMPROVANTE);
+                File dir = new File(FileUtils.getDownloadsDir(activity), DIRETORIO_COMPROVANTE);
                 dir.mkdirs();
 
                 String pathArquivo = dir + "/" + ARQUIVO_COMPROV_APOSTA + ".pdf";
@@ -56,7 +56,7 @@ public class PdfUtils {
                 String html = HtmlUtils.getComprovanteCabecalhoRodapePremio(detalhesPremioDTO, activity);
 
                 // cria a estrutura de diretório
-                File dir = new File(FileUtils.getDownloadsDir(), DIRETORIO_COMPROVANTE);
+                File dir = new File(FileUtils.getDownloadsDir(activity), DIRETORIO_COMPROVANTE);
                 dir.mkdirs();
 
                 String pathArquivo = dir + "/" + ARQUIVO_COMPROV_PREMIO + ".pdf";
@@ -74,7 +74,7 @@ public class PdfUtils {
                 String html = HtmlUtils.getComprovanteCabecalhoRodapePremioHistorico(detalhesHistoricoPremioDTO, activity);
 
                 // cria a estrutura de diretório
-                File dir = new File(FileUtils.getDownloadsDir(), DIRETORIO_COMPROVANTE);
+                File dir = new File(FileUtils.getDownloadsDir(activity), DIRETORIO_COMPROVANTE);
                 dir.mkdirs();
 
                 String pathArquivo = dir + "/" + ARQUIVO_COMPROV_PREMIO + ".pdf";

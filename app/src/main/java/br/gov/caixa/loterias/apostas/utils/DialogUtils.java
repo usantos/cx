@@ -16,6 +16,9 @@ public class DialogUtils {
     private static AlertDialog alertDialog;
 
     public static void show(Context contextParam) {
+        if(alertDialog != null){
+            alertDialog.dismiss();
+        }
         alertDialog = LoadingViewLoterias.show(contextParam);
     }
 
