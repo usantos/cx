@@ -24,12 +24,14 @@ import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.Bin;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
+import br.gov.caixa.loterias.apostas.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
 public class MercadoPagoConnection {
 
 	public interface MercadoPagoListener {
 		void onSucesso(String cardId, String payment_method_id);
+		void onTokenFailure(String codErro);
 	}
 
 	public static void callWebServicePayment_method(final String bin , String jsonObject, Context ctx, MercadoPagoListener listener) {
@@ -49,6 +51,25 @@ public class MercadoPagoConnection {
 				StringRequest stringRequest = new StringRequest(Request.Method.POST, url2, response1 -> Log.i("VOLLEY", response1), error -> {
 					Log.e("VOLLEY", error.toString());
 					DialogUtils.dismiss();
+
+					String codErro = "";
+					if(error.networkResponse != null && error.networkResponse.data != null){
+						NetworkResponse erroResponse = error.networkResponse;
+						String          stringJson            = new String(erroResponse.data);
+						try {
+							JSONObject obj = new JSONObject(stringJson);
+							obj.getJSONArray("cause");
+							JSONArray array = obj.getJSONArray("cause");
+							JSONObject jobj = (JSONObject) array.get(0);
+							codErro = (String) jobj.get("code");
+						} catch (JSONException e) {
+							e.printStackTrace();
+							FirebaseManager.registraErro(ctx, codErro, "MP_"+url2);
+							listener.onTokenFailure(codErro);
+						}
+					}
+					FirebaseManager.registraErro(ctx, codErro, "MP_"+url2);
+					listener.onTokenFailure(codErro);
 				}) {
 					@Override
 					public String getBodyContentType() {

@@ -40,6 +40,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.MaskEditUtil;
+import br.gov.caixa.loterias.apostas.utils.MercadoPagoUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
@@ -296,5 +297,12 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity implement
     @Override
     public void onSucesso(String cardId, String payment_method_id) {
         callWebserviceRegistraAposta(cardId , payment_method_id);
+    }
+
+    @Override
+    public void onTokenFailure(String codErro) {
+        String msg = MercadoPagoUtil.getMessageFromCode(codErro);
+
+        ViewUtils.alertTitulo(NovaFormaPagamentoActivity.this, R.string.label_atencao,msg);
     }
 }

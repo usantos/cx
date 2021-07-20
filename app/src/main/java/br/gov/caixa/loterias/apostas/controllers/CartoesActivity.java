@@ -3,13 +3,11 @@ package br.gov.caixa.loterias.apostas.controllers;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,20 +17,13 @@ import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.mercadolibre.android.device.sdk.DeviceSDK;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
 
-import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.MeioPagamento;
 import br.gov.caixa.loterias.apostas.model.bean.ParametrosPagamento;
@@ -49,12 +40,13 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.dao.crud.CarrinhoFavoritoCRUD;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
+import br.gov.caixa.loterias.apostas.utils.MercadoPagoUtil;
 import br.gov.caixa.loterias.apostas.utils.RateUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.CartoesRecyclerViewAdapter;
-import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 import br.gov.caixa.loterias.apostas.view.listener.FormaDePagamentoListener;
 
@@ -67,7 +59,6 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
     private Toolbar toolbar;
     private List<RetornoCartao> listaCartoes = null;
     private View itemToolbarSettings;
-    private AlertDialog loadViewProgress;
     private Boolean flagEntrouAddCartao = false, flagVeioMenu = false;
     private Button btnAdicionarCartao, btnAvancarPagamento;
     private TextView tvSubtitulo, tvDescricao, tvValorTotalCarrinho, tvSemCartao;
@@ -156,6 +147,7 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
                                                int tamanhoCVV = userInput.getText().toString().length();
                                                if (tamanhoCVV == 3 || tamanhoCVV == 4){
                                                    preencheDadosPagamento();
+                                                   dialog.dismiss();
                                                    MercadoPagoConnection.callWebServicePayment_method(bin ,requestBody, this, listener);
                                                }else{
                                                    ViewUtils.alertTitleButtonPositiveListener(
@@ -241,14 +233,13 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
     }
 
     private void callWebservice() {
-        loadViewProgress = LoadingViewLoterias.show(this);
+        DialogUtils.show(this);
 
         DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_(CartoesActivity.this);
         dadosUsuarioBO.cartoes(new RequestListener<ListCartaoDTOResponse>() {
             @Override
             public void onResponse(ListCartaoDTOResponse response) {
                 FirebaseManager.registraEvento(CartoesActivity.this ,getResources().getString(R.string.evento_entrou_formas_pagamento));
-                loadViewProgress.dismiss();
                 if (response.getRedirect() != null){
                     RedirectNetwork.checkRedirectSucesso( response.getRedirect(), CartoesActivity.this);
                 }
@@ -266,13 +257,13 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
                         configuraTelaSemCartoes(true);
                     }
                 }
+                DialogUtils.dismiss();
             }
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                loadViewProgress.dismiss();
                 RedirectNetwork.checkRedirect( error, CartoesActivity.this );
-
+                DialogUtils.dismiss();
             }
         });
     }
@@ -307,30 +298,6 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
         }
     }
 
-   /* private void createToken(String cardId, String securityCode) {
-        SavedCardToken savedCardToken = new SavedCardToken(cardId, securityCode);
-
-        loadViewProgress = LoadingViewLoterias.show(this);
-        MercadoPago mMercadoPago = new MercadoPago.Builder()
-                .setContext(this)
-                .setPublicKey(BuildConfig.PUBLIC_KEY_MP)
-                .build();
-        mMercadoPago.createToken(savedCardToken, new Callback<Token>() {
-            @Override
-            public void success(Token token) {
-                callWebServicePayment_method(token.getId());
-            }
-
-            @Override
-            public void failure(ApiException apiException) {
-                //TODO: Manage API Failure
-                loadViewProgress.dismiss();
-                ViewUtils.alert(CartoesActivity.this, MercadoPagoUtil.getMessageFromCode(apiException.getCause().get(0).getCode()));
-            }
-        });
-    }*/
-
-
     private void callWebserviceRegistraAposta(String tokenPagamento, String payment_method_id) {
         ParametrosPagamento parametroPagamento = new ParametrosPagamento( tokenPagamento, getResources().getString(R.string.string_true), payment_method_id, getResources().getString(R.string.string_false) );
         MeioPagamento meioPagamento = new MeioPagamento(1, parametroPagamento);
@@ -340,7 +307,6 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
         apostaBO.postRegistrarApostaCarrinho(meioPagamento, new RequestListener<RetornoPadraoDTO>() {
             @Override
             public void onResponse(RetornoPadraoDTO response) {
-                loadViewProgress.dismiss();
                 if (response.getRedirect() != null){
                     RedirectNetwork.checkRedirectSucesso( response.getRedirect(), CartoesActivity.this);
                 }else{
@@ -351,12 +317,13 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
                     CarrinhoSingleton.getInstance().setCarrinho(new CarrinhoDTO());
                     limpaCarrinhoFavorito();
                 }
+                DialogUtils.dismiss();
             }
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                loadViewProgress.dismiss();
                 RedirectNetwork.checkRedirect( error, CartoesActivity.this );
+                DialogUtils.dismiss();
             }
         });
     }
@@ -366,35 +333,15 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
         crud.deletaTodos();
     }
 
-    private void callWebServicePayment_method(final String token){
-        String bin = adapter.valoresList.get( adapter.selected_position ).getPrimeirosDigitos();
-        String url = BuildConfig.MP_PAYMENT_URL+getResources().getString(R.string.bin)+ bin +getResources().getString(R.string.public_key)+ BuildConfig.PUBLIC_KEY_MP;
-        StringRequest request = new StringRequest( Request.Method.GET, url, response -> {
-            Log.d(getResources().getString(R.string.response_dois_pontos), response.toString());
-            try {
-                //Do it with this it will work
-                JSONArray jsonArray = new JSONArray(response);
-                JSONObject responseObj = new JSONObject();
-                responseObj = jsonArray.getJSONObject(0);
-                String payment_method_id = responseObj.getString(getResources().getString(R.string.payment_method_id));
-                String thumbnail = (responseObj.getJSONObject(getResources().getString(R.string.issuer))).getString( getResources().getString(R.string.thumbnail) );
-                callWebserviceRegistraAposta(token, payment_method_id);
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-                Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_dois_pontos) + e.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        }, volleyError -> {
-            loadViewProgress.dismiss();
-            Log.d(getResources().getString(R.string.volleyError), getResources().getString(R.string.volleyError_dois_pontos)+ volleyError.toString());
-        });
-
-        RequestQueue rQueue = Volley.newRequestQueue(CartoesActivity.this);
-        rQueue.add(request);
-    }
-
     @Override
     public void onSucesso(String cardToken, String payment_method_id) {
         callWebserviceRegistraAposta(cardToken, payment_method_id);
+    }
+
+    @Override
+    public void onTokenFailure(String codErro) {
+        String msg = MercadoPagoUtil.getMessageFromCode(codErro);
+
+        ViewUtils.alertTitulo(CartoesActivity.this, R.string.label_atencao, msg);
     }
 }
