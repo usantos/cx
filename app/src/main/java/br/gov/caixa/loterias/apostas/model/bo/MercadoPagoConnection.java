@@ -8,6 +8,7 @@ import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.StringRequest;
@@ -22,20 +23,17 @@ import java.io.UnsupportedEncodingException;
 
 import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.model.bo.silce.internals.Bin;
-import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FirebaseManager;
-import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
 public class MercadoPagoConnection {
 
 	public interface MercadoPagoListener {
 		void onSucesso(String cardId, String payment_method_id);
 		void onTokenFailure(String codErro);
+		void onPaymentFailure(VolleyError error);
 	}
 
 	public static void callWebServicePayment_method(final String bin , String jsonObject, Context ctx, MercadoPagoListener listener) {
-		DialogUtils.show(ctx);
 		String	url = BuildConfig.MP_PAYMENT_URL + ctx.getResources().getString(R.string.bin) + bin +  ctx.getResources().getString(R.string.public_key) + BuildConfig.PUBLIC_KEY_MP;
 
 		StringRequest request = new StringRequest(Request.Method.GET, url, response -> {
@@ -48,9 +46,10 @@ public class MercadoPagoConnection {
 
 				String url2 = BuildConfig.MP_CREATE_TOKEN_URL +  ctx.getResources().getString(R.string.public_key) + BuildConfig.PUBLIC_KEY_MP;
 
-				StringRequest stringRequest = new StringRequest(Request.Method.POST, url2, response1 -> Log.i("VOLLEY", response1), error -> {
+				StringRequest stringRequest = new StringRequest(Request.Method.POST, url2,
+																response1 -> Log.i("VOLLEY", response1),
+																error -> {
 					Log.e("VOLLEY", error.toString());
-					DialogUtils.dismiss();
 
 					String codErro = "";
 					if(error.networkResponse != null && error.networkResponse.data != null){
@@ -97,7 +96,7 @@ public class MercadoPagoConnection {
 								e.printStackTrace();
 							}
 							CardTokenResponse cardResponse = new Gson().fromJson(body, CardTokenResponse.class);
-							DialogUtils.dismiss();
+
 							listener.onSucesso(cardResponse.getId(),payment_method_id);
 
 						}
@@ -106,14 +105,12 @@ public class MercadoPagoConnection {
 				};
 				rQueue.add(stringRequest);
 			} catch (JSONException e) {
-				DialogUtils.dismiss();
+				listener.onTokenFailure("");
 				e.printStackTrace();
 			}
 		}, volleyError -> {
-			DialogUtils.dismiss();
-			if(Bin.fromBytes(volleyError.networkResponse.data).toUtf8().contains(ctx.getResources().getString(R.string.not_found))){
-				ViewUtils.alert(ctx,Bin.fromBytes(volleyError.networkResponse.data).toUtf8().toString());
-			}
+			FirebaseManager.registraErro(ctx, String.valueOf(volleyError.networkResponse.statusCode), "MP_" + url);
+			listener.onPaymentFailure(volleyError);
 		});
 
 		RequestQueue rQueue = Volley.newRequestQueue(ctx);

@@ -38,6 +38,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListCartaoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.Bin;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.dao.crud.CarrinhoFavoritoCRUD;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
@@ -147,7 +148,7 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
                                                int tamanhoCVV = userInput.getText().toString().length();
                                                if (tamanhoCVV == 3 || tamanhoCVV == 4){
                                                    preencheDadosPagamento();
-                                                   dialog.dismiss();
+                                                   showLoading();
                                                    MercadoPagoConnection.callWebServicePayment_method(bin ,requestBody, this, listener);
                                                }else{
                                                    ViewUtils.alertTitleButtonPositiveListener(
@@ -233,7 +234,7 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
     }
 
     private void callWebservice() {
-        DialogUtils.show(this);
+       showLoading();
 
         DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_(CartoesActivity.this);
         dadosUsuarioBO.cartoes(new RequestListener<ListCartaoDTOResponse>() {
@@ -267,6 +268,7 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
             }
         });
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 600) {
@@ -299,9 +301,12 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
     }
 
     private void callWebserviceRegistraAposta(String tokenPagamento, String payment_method_id) {
+        if(!DialogUtils.isShow()){
+            showLoading();
+        }
+
         ParametrosPagamento parametroPagamento = new ParametrosPagamento( tokenPagamento, getResources().getString(R.string.string_true), payment_method_id, getResources().getString(R.string.string_false) );
         MeioPagamento meioPagamento = new MeioPagamento(1, parametroPagamento);
-        // loadViewProgress = LoadingViewLoterias.show(this);
 
         ApostaBO apostaBO = ApostaBO_.getInstance_(CartoesActivity.this);
         apostaBO.postRegistrarApostaCarrinho(meioPagamento, new RequestListener<RetornoPadraoDTO>() {
@@ -333,6 +338,15 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
         crud.deletaTodos();
     }
 
+    private void showLoading(){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                DialogUtils.show(CartoesActivity.this);
+            }
+        });
+    }
+
     @Override
     public void onSucesso(String cardToken, String payment_method_id) {
         callWebserviceRegistraAposta(cardToken, payment_method_id);
@@ -340,8 +354,21 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
 
     @Override
     public void onTokenFailure(String codErro) {
-        String msg = MercadoPagoUtil.getMessageFromCode(codErro);
+        DialogUtils.dismiss();
 
+        String msg = MercadoPagoUtil.getMessageFromCode(codErro);
         ViewUtils.alertTitulo(CartoesActivity.this, R.string.label_atencao, msg);
+    }
+
+    @Override
+    public void onPaymentFailure(VolleyError error) {
+        DialogUtils.dismiss();
+
+        if(Bin.fromBytes(error.networkResponse.data).toUtf8().contains(CartoesActivity.this.getResources().getString(R.string.not_found))){
+            ViewUtils.alert(CartoesActivity.this, Bin.fromBytes(error.networkResponse.data).toUtf8().toString());
+        }else {
+            ViewUtils.alertTitulo(CartoesActivity.this, R.string.label_atencao, MercadoPagoUtil.getMessageFromCode(""));
+        }
+
     }
 }

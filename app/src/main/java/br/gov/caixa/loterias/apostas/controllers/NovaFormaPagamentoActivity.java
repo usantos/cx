@@ -11,8 +11,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AlertDialog;
-
 import com.android.volley.VolleyError;
 import com.github.pinball83.maskededittext.MaskedEditText;
 import com.mercadolibre.android.device.sdk.DeviceSDK;
@@ -36,13 +34,14 @@ import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListCartaoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.Bin;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.MaskEditUtil;
 import br.gov.caixa.loterias.apostas.utils.MercadoPagoUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
-import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 
 public class NovaFormaPagamentoActivity extends SettingToolbarActivity implements MercadoPagoConnection.MercadoPagoListener {
@@ -50,8 +49,6 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity implement
     private EditText editTextNumeroCartaoContent, editTextNomeClienteCartaoContent, editTextCodigoSegurancaContent, editTextMesValidadeCartaoContent, editTextAnoValidadeCartaoContent;
 
     private TextView textoInfoSelecioneFormaPagamento;
-
-    private AlertDialog alertDialog;
 
     private CheckBox checkBoxSalvarCartao;
 
@@ -173,6 +170,7 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity implement
 
         findViewById(R.id.botaoAvancarPagamento).setOnClickListener(view -> {
             if(!camposInvalidos()){
+                showLoading();
                 CardToken cardToken = new CardToken(editTextNumeroCartaoContent.getText().toString(),
                                                     Integer.valueOf(editTextMesValidadeCartaoContent.getText().toString()),
                                                     Integer.valueOf(editTextAnoValidadeCartaoContent.getText().toString()),
@@ -233,6 +231,9 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity implement
 
 
     private void callWebserviceRegistraAposta(String tokenPagamento, String payment_method_id) {
+        if(!DialogUtils.isShow()){
+            showLoading();
+        }
 
         ParametrosPagamento parametroPagamento = new ParametrosPagamento(tokenPagamento, String.valueOf(checkBoxSalvarCartao.isChecked()), payment_method_id);
         MeioPagamento meioPagamento = new MeioPagamento(1, parametroPagamento);
@@ -243,8 +244,7 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity implement
         apostaBO.postRegistrarApostaCarrinho(meioPagamento, new RequestListener<RetornoPadraoDTO>() {
             @Override
             public void onResponse(RetornoPadraoDTO response) {
-                alertDialog.dismiss();
-
+                DialogUtils.dismiss();
                 if (checkBoxSalvarCartao.isChecked()) {
                     FirebaseManager.registraEvento(NovaFormaPagamentoActivity.this ,getResources().getString(R.string.evento_efetuou_adicao_forma_pagamento_sucesso));
                 }
@@ -260,21 +260,21 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity implement
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                alertDialog.dismiss();
+                DialogUtils.dismiss();
                 RedirectNetwork.checkRedirect(error, NovaFormaPagamentoActivity.this);
             }
         });
     }
 
     private void buscaCartoes() {
-        alertDialog = LoadingViewLoterias.show(this);
+        showLoading();
 
         DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_(NovaFormaPagamentoActivity.this);
         dadosUsuarioBO.cartoes(new RequestListener<ListCartaoDTOResponse>() {
 
             @Override
             public void onResponse(ListCartaoDTOResponse response) {
-                alertDialog.dismiss();
+                DialogUtils.dismiss();
                 if (response.getRedirect() != null){
                     RedirectNetwork.checkRedirectSucesso( response.getRedirect(), NovaFormaPagamentoActivity.this);
                 }
@@ -286,9 +286,18 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity implement
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                alertDialog.dismiss();
+                DialogUtils.dismiss();
                 RedirectNetwork.checkRedirect( error, NovaFormaPagamentoActivity.this );
 
+            }
+        });
+    }
+
+    private void showLoading(){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                DialogUtils.show(NovaFormaPagamentoActivity.this);
             }
         });
     }
@@ -301,8 +310,20 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity implement
 
     @Override
     public void onTokenFailure(String codErro) {
+        DialogUtils.dismiss();
         String msg = MercadoPagoUtil.getMessageFromCode(codErro);
 
         ViewUtils.alertTitulo(NovaFormaPagamentoActivity.this, R.string.label_atencao,msg);
+    }
+
+    @Override
+    public void onPaymentFailure(VolleyError error) {
+        DialogUtils.dismiss();
+
+        if(Bin.fromBytes(error.networkResponse.data).toUtf8().contains(NovaFormaPagamentoActivity.this.getResources().getString(R.string.not_found))){
+            ViewUtils.alert(NovaFormaPagamentoActivity.this, Bin.fromBytes(error.networkResponse.data).toUtf8().toString());
+        }else {
+            ViewUtils.alertTitulo(NovaFormaPagamentoActivity.this, R.string.label_atencao, MercadoPagoUtil.getMessageFromCode(""));
+        }
     }
 }
