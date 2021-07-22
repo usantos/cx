@@ -59,7 +59,9 @@ public class DBLoteriasCrud {
 
     private void closeDBLoteriasHelper() {
         if (this.dbLoteriasHelper != null) {
-            this.db.close();
+            if(this.db != null){
+                this.db.close();
+            }
             this.dbLoteriasHelper.close();
 
             this.db = null;
