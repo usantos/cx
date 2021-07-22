@@ -113,7 +113,7 @@ public class ListaRapidaoActivity extends AppCompatActivity {
         ((Button) findViewById(R.id.botaoAvancarPagamentoRapidao)).setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.avancarFormaPagamento)));
 
 
-        findViewById(R.id.botaoFazerNovaApostaRapidao).setOnClickListener(view -> callWebservice(1));
+        findViewById(R.id.botaoFazerNovaApostaRapidao).setOnClickListener(view -> callWebservice(0));
 
 
         findViewById(R.id.botaoAvancarPagamentoRapidao).setOnClickListener(view -> validarCarrinho());
