@@ -40,7 +40,9 @@ public class AnimacaoCalculoRepassesSociais {
         if (repassesSociais.getArrecadacaoAcumulada() != null) {
             arrecadacaoAcumulada = repassesSociais.getArrecadacaoAcumulada().doubleValue() * 0.48;
         }
-        calculo = arrecadacaoAcumulada + ((repassesSociais.getArrecadacaoUltimaSemana().doubleValue() * 0.48) / 604800.0) * seconds;
+        if(repassesSociais.getArrecadacaoUltimaSemana() != null) {
+            calculo = arrecadacaoAcumulada + ((repassesSociais.getArrecadacaoUltimaSemana().doubleValue() * 0.48) / 604800.0) * seconds;
+        }
         oldValue = oldValue == 0 ? arrecadacaoAcumulada * 0.48 : oldValue;
 
         final double calculoFinal = calculo;
