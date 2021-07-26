@@ -17,8 +17,8 @@ android {
         targetSdkVersion 30
 
         //version code = minSdkVersion + versionName(sem pontuação) + versão interna
-        versionCode 211054001
-        versionName "1.0.54"
+        versionCode 211055001
+        versionName "1.0.55"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 

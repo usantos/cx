@@ -160,9 +160,6 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
             mesDeSorteCartela = aposta.getMesDeSorte();
         }
 
-        if (tipoJogo == ModalidadeEnum.SUPER_7) {
-            imageQtdNumerosButton.setVisibility(View.INVISIBLE);
-        }
         //Tutorial permanente
         if (tipoJogo == ModalidadeEnum.SUPER_7 && !DadosUsuarioBO.checarTutorialSuperSete()) {
             startActivity(new Intent(this,TutorialSuperSeteActivity.class));
@@ -215,9 +212,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
             }
 
             case R.id.qtdNumerosButton: {
-                if (tipoJogo != ModalidadeEnum.SUPER_7) {
-                    modalNumeros();
-                }
+                modalNumeros();
                 break;
             }
 
