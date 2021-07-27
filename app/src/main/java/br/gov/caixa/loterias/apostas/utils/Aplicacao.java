@@ -15,6 +15,7 @@ import com.mercadolibre.android.device.sdk.DeviceSDK;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 
 import br.gov.caixa.loterias.apostas.controllers.AppIndisponivelActivity;
 import br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity;
@@ -61,7 +62,7 @@ class ActivityLifecycleCallbacks implements Application.ActivityLifecycleCallbac
     @Override
     public void onActivityStarted(Activity activity) {
         if (numStarted == 0) {
-            if(!isRecreated) {
+            if(!isRecreated && SessaoUsuarioUtil.precisaAtualizar()) {
                 atualizaBuscaParametros(activity);
             }
         }
@@ -145,6 +146,7 @@ class ActivityLifecycleCallbacks implements Application.ActivityLifecycleCallbac
                     DadosUsuarioToken dadosUsuarioToken = Utils.decodedToken(sessaoUser.getToken());
                     sessaoUser.setEmail(dadosUsuarioToken.getEmail());
                     sessaoUser.setNome(dadosUsuarioToken.getName());
+                    sessaoUser.setDataUltimaRequisicao(new Date());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

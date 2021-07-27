@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -52,7 +53,9 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.ViewById;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -83,12 +86,14 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.UltimaNotificacaoS
 import br.gov.caixa.loterias.apostas.model.dao.DBLoteriasHelper;
 import br.gov.caixa.loterias.apostas.model.sp.CarrinhoSP;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataSideMenu;
 import br.gov.caixa.loterias.apostas.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.OnSwipeTouchListener;
 import br.gov.caixa.loterias.apostas.utils.RateUtils;
+import br.gov.caixa.loterias.apostas.utils.SessaoUsuarioUtil;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -155,7 +160,6 @@ public class PrincipalActivity extends AppCompatActivity
     private PopupWindow popupNotification;
     private AnimatorSet anim;
     private boolean realizandoLogin = false;
-    private boolean recarregarBuscaParam = false;
     private Handler handlerDelayNotificacao;
 
     @AfterViews
@@ -171,7 +175,7 @@ public class PrincipalActivity extends AppCompatActivity
         toolbarListener();
         layoutSideMenu();
         listenerSair();
-        callWebservice();
+        //callWebservice();
         iniciarBancoLocal();
         RateUtils.avaliarAplicativo(this);
     }
@@ -223,9 +227,8 @@ public class PrincipalActivity extends AppCompatActivity
             nav_user.setText(getResources().getString(R.string.bem_vindo_ao_app));
         }
 
-        if (recarregarBuscaParam) {
-            callWebservice();
-        }
+        callWebservice();
+
         layoutSideMenu();
         fragmentSomadorCarrinho();
     }
@@ -279,52 +282,48 @@ public class PrincipalActivity extends AppCompatActivity
         loadViewProgress
                 = LoadingViewLoterias.show(this);
 
-        final DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(PrincipalActivity.this);
+        if(SessaoUsuarioUtil.precisaAtualizar()){
+            final DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(PrincipalActivity.this);
 
-        dadosCorporativosBO.parametrosSimulacao(new RequestListener<ParametrosSimulacaoResponse>() {
-            @Override
-            public void onResponse(ParametrosSimulacaoResponse response) {
-                loadViewProgress.dismiss();
-                FirebaseManager.registraEvento(PrincipalActivity.this ,getResources().getString(R.string.evento_entrou_lista_modalidades));
+            dadosCorporativosBO.parametrosSimulacao(new RequestListener<ParametrosSimulacaoResponse>() {
+                @Override
+                public void onResponse(ParametrosSimulacaoResponse response) {
+                    loadViewProgress.dismiss();
+                    FirebaseManager.registraEvento(PrincipalActivity.this ,getResources().getString(R.string.evento_entrou_lista_modalidades));
 
-                modalidadesParaListar = response.getPayload().getParametros();
-                if (modalidadesParaListar == null || modalidadesParaListar.isEmpty()) {
-                    recarregarBuscaParam = true;
+                    modalidadesParaListar = response.getPayload().getParametros();
+                    if (modalidadesParaListar == null || modalidadesParaListar.isEmpty()) {
+                        Intent appIndis = new Intent(PrincipalActivity.this, AppIndisponivelActivity.class);
+                        appIndis.putExtra(getResources().getString(R.string.extra_is_busca_param), true);
+
+                        startActivityForResult(appIndis, 1);
+                    }
+
+                    SessaoUsuarioUtil.atualizaParametrosSingleton(response);
+                    paramatroSimulacaoSuccess();
+                }
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    loadViewProgress.dismiss();
                     Intent appIndis = new Intent(PrincipalActivity.this, AppIndisponivelActivity.class);
                     appIndis.putExtra(getResources().getString(R.string.extra_is_busca_param), true);
 
                     startActivityForResult(appIndis, 1);
                 }
+            });
+        }else {
+            modalidadesParaListar = SessaoUsuario.getInstance().getParametrosSimulacao().getParametros();
+            paramatroSimulacaoSuccess();
+            loadViewProgress.dismiss();
+        }
 
-                paramatroSimulacaoSuccess(response);
-            }
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                recarregarBuscaParam = true;
-                loadViewProgress.dismiss();
-                Intent appIndis = new Intent(PrincipalActivity.this, AppIndisponivelActivity.class);
-                appIndis.putExtra(getResources().getString(R.string.extra_is_busca_param), true);
-
-                startActivityForResult(appIndis, 1);
-            }
-        });
     }
 
-    private void paramatroSimulacaoSuccess(ParametrosSimulacaoResponse response) {
-        SessaoUsuario sessaoUser = SessaoUsuario.getInstance();
-        try {
-            DadosUsuarioToken dadosUsuarioToken = Utils.decodedToken(sessaoUser.getToken());
-            sessaoUser.setEmail(dadosUsuarioToken.getEmail());
-            sessaoUser.setNome(dadosUsuarioToken.getName());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        sessaoUser.setValorMinimimoAposta(response.getPayload().getValorMinimoCarrinho());
-        sessaoUser.setValorMaximoAposta(response.getPayload().getValorLimiteDiario());
-        sessaoUser.setParametrosSimulacao(response.getPayload());
+    private void paramatroSimulacaoSuccess() {
 
-        textViewHomeMinimumPurchaseValue.setText(String.format(getResources().getString(R.string.valor_minimo_compra), ViewUtils.getMoedaFormat(response.getPayload().getValorMinimoCarrinho())));
+        BigDecimal valorMinimoCarrinho = SessaoUsuario.getInstance().getParametrosSimulacao().getValorMinimoCarrinho();
+        textViewHomeMinimumPurchaseValue.setText(String.format(getResources().getString(R.string.valor_minimo_compra), ViewUtils.getMoedaFormat(valorMinimoCarrinho)));
 
         montaListaModalidades();
         montarCarrossel();
@@ -741,6 +740,7 @@ public class PrincipalActivity extends AppCompatActivity
             startActivity(new Intent(PrincipalActivity.this, ConfiguracaoRapidaoActivity.class));
         }
     }
+
     private void redirecionaJogoResponsavel(){
         startActivity(new Intent(PrincipalActivity.this, JogoResponsavelActivity.class));
     }

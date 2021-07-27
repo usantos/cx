@@ -2,7 +2,6 @@ package br.gov.caixa.loterias.apostas.controllers;
 
 import android.content.Intent;
 import android.os.Bundle;
-
 import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.TextView;
@@ -23,6 +22,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacaoRespo
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.VersionResponse;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
+import br.gov.caixa.loterias.apostas.utils.SessaoUsuarioUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 
@@ -80,6 +80,7 @@ public class AppIndisponivelActivity extends AppCompatActivity {
                             loadViewProgress.dismiss();
                             ViewUtils.alert(AppIndisponivelActivity.this, AppIndisponivelActivity.this.getString(R.string.nao_concluiu_operacao));
                         } else {
+                            SessaoUsuarioUtil.atualizaParametrosSingleton(response);
                             loadViewProgress.dismiss();
                             finish();
                         }
