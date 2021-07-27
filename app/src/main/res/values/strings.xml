@@ -486,6 +486,27 @@
     <string name="mercado_pago_numero_documento_vazio">O número do documento está vazio.</string>
     <string name="mercado_pago_tipo_vazio">O tipo está vazio.</string>
     <string name="mercado_pago_data_expiracao_invalida">Data de expiração inválida.</string>
+    <string name="mercado_pago_digite_numero_cartao">Digite o número do seu cartão.</string>
+    <string name="mercado_pago_escolha_mes">Escolha um mês.</string>
+    <string name="mercado_pago_escolha_ano">Escolha um ano.</string>
+    <string name="mercado_pago_informe_documento">Informe seu documento.</string>
+    <string name="mercado_pago_informe_banco_emissor">Informe seu banco emissor.</string>
+    <string name="mercado_pago_digite_nome_sobrenome">Digite o nome e sobrenome.</string>
+    <string name="mercado_pago_digite_codigo_seguranca">Digite o código de segurança.</string>
+    <string name="mercado_pago_erro_numero_cartao_digite_novamente">Há algo de errado com esse número do cartão. Digite novamente.</string>
+    <string name="mercado_pago_confira_cod_seguranca">Confira o código de segurança.</string>
+    <string name="mercado_pago_digite_nome_valido">Por favor, digite um nome válido.</string>
+    <string name="mercado_pago_confira_documento">Confira seu documento.</string>
+    <string name="mercado_pago_confira_data">Confira a data.</string>
+    <string name="mercado_pago_sem_pagamento_usuarios_outro_pais">Não pode efetuar pagamentos a usuários de outros países.</string>
+    <string name="mercado_pago_escolha_outro_cartao_ou_forma_pagamento">Escolha outro cartão ou outra forma de pagamento.</string>
+    <string name="mercado_pago_nao_conseguimos_processar_pagamento">Não conseguimos processar seu pagamento.</string>
+    <string name="mercado_pago_nao_processamos_o_pagamento_escolha_outro_cartao_forma_pagamento">Não processamos pagamentos para o valor selecionado. Escolha outro cartão ou outra forma de pagamento.</string>
+    <string name="mercado_pago_usuario_teste_real">Uma das partes com a qual está tentando realizar o pagamento é um usuário de teste e a outra é um usuário real.</string>
+    <string name="mercado_pago_nao_pode_efetuar_pagamento">Você não pode efetuar pagamentos.</string>
+    <string name="mercado_pago_meio_pagamento_nao_disponivel">O meio de pagamento não está disponível nesse momento. Escolha outro cartão ou outra forma de pagamento.</string>
+    <string name="mercado_pago_realizaou_pagamento_similar">Você realizou um pagamento similar há poucos instantes. Tente novamente em alguns minutos.</string>
+    <string name="mercado_pago_erro_default">Não foi possível realizar a operação. Entre em contato com o meio de pagamento pelo endereço www.mercadopago.com.br/ajuda</string>
 
     <!-- Resultados -->
     <string name="resultados_selecione_opcoes">Selecione a modalidade para\n ver os seus resultados</string>
