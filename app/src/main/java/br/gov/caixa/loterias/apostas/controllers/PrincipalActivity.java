@@ -328,8 +328,6 @@ public class PrincipalActivity extends AppCompatActivity
         montaListaModalidades();
         montarCarrossel();
 
-        callRepassesSociais();
-
         if (UltimaNotificacaoSingleton.getInstance().getUltimaNoficacao() != null) {
             trataPopupDeNotificacao();
         }
@@ -405,19 +403,31 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     private void callRepassesSociais() {
+        DialogUtils.show(PrincipalActivity.this);
         final DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(PrincipalActivity.this);
         dadosCorporativosBO.repasses(new RequestListener<RepassometroDTOResponse>() {
             @Override
             public void onResponse(RepassometroDTOResponse response) {
                 repassesSociais = response.getPayload();
                 layoutTrevoAcessoRapido();
+                DialogUtils.dismiss();
+                showMenu();
             }
 
             @Override
             public void onErrorResponse(VolleyError error) {
+                DialogUtils.dismiss();
                 ViewUtils.alert(PrincipalActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
             }
         });
+    }
+
+    private void showMenu() {
+        if (relativeContentPrincipal.isEnabled()) {
+            AnimacaoAbrirMenuRapido(actionApresentarTrevo);
+        } else {
+            AnimacaoFecharMenuRapido(actionApresentarTrevo);
+        }
     }
 
     private List<Modalidade> montaListaModalidades
@@ -454,10 +464,10 @@ public class PrincipalActivity extends AppCompatActivity
                     toolbar.removeOnLayoutChangeListener(this);
                     actionApresentarTrevo.setOnClickListener(view -> {
                         if (modalidadesParaListar != null && modalidadesParaListar.size() > 0) {
-                            if (relativeContentPrincipal.isEnabled()) {
-                                AnimacaoAbrirMenuRapido(actionApresentarTrevo);
-                            } else {
-                                AnimacaoFecharMenuRapido(actionApresentarTrevo);
+                            if(repassesSociais == null){
+                                callRepassesSociais();
+                            }else {
+                                showMenu();
                             }
                         }
                     });
