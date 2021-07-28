@@ -11,7 +11,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -55,14 +54,12 @@ import org.androidannotations.annotations.ViewById;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
 import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.model.bean.DadosUsuarioToken;
 import br.gov.caixa.loterias.apostas.model.bean.Modalidade;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.AcessoBO_;
@@ -95,7 +92,6 @@ import br.gov.caixa.loterias.apostas.utils.OnSwipeTouchListener;
 import br.gov.caixa.loterias.apostas.utils.RateUtils;
 import br.gov.caixa.loterias.apostas.utils.SessaoUsuarioUtil;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
-import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.HomeAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.SideMenuExpandleAdapter;
@@ -153,7 +149,6 @@ public class PrincipalActivity extends AppCompatActivity
     private RepassometroDTO repassesSociais;
     private DBLoteriasHelper dbLoteriasHelper;
     private View actionApresentarTrevo, actionSettings;
-    private AlertDialog loadViewProgress;
     private InfiniteScrollAdapter infiniteAdapter;
     private HomeAdapter homeAdapter;
     private View viewNotification;
@@ -279,8 +274,7 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     private void callWebservice() {
-        loadViewProgress
-                = LoadingViewLoterias.show(this);
+        DialogUtils.show(PrincipalActivity.this);
 
         if(SessaoUsuarioUtil.precisaAtualizar()){
             final DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(PrincipalActivity.this);
@@ -288,7 +282,7 @@ public class PrincipalActivity extends AppCompatActivity
             dadosCorporativosBO.parametrosSimulacao(new RequestListener<ParametrosSimulacaoResponse>() {
                 @Override
                 public void onResponse(ParametrosSimulacaoResponse response) {
-                    loadViewProgress.dismiss();
+                    DialogUtils.dismiss();
                     FirebaseManager.registraEvento(PrincipalActivity.this ,getResources().getString(R.string.evento_entrou_lista_modalidades));
 
                     modalidadesParaListar = response.getPayload().getParametros();
@@ -305,7 +299,7 @@ public class PrincipalActivity extends AppCompatActivity
 
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    loadViewProgress.dismiss();
+                    DialogUtils.dismiss();
                     Intent appIndis = new Intent(PrincipalActivity.this, AppIndisponivelActivity.class);
                     appIndis.putExtra(getResources().getString(R.string.extra_is_busca_param), true);
 
@@ -315,7 +309,7 @@ public class PrincipalActivity extends AppCompatActivity
         }else {
             modalidadesParaListar = SessaoUsuario.getInstance().getParametrosSimulacao().getParametros();
             paramatroSimulacaoSuccess();
-            loadViewProgress.dismiss();
+            DialogUtils.dismiss();
         }
 
     }
@@ -770,16 +764,10 @@ public class PrincipalActivity extends AppCompatActivity
         }
     }
 
-    private void dismissProgressDialog() {
-        if (loadViewProgress != null && loadViewProgress.isShowing()) {
-            loadViewProgress.dismiss();
-        }
-    }
-
     @Override
     protected void onDestroy() {
         dbLoteriasHelper.close();
-        dismissProgressDialog();
+        DialogUtils.dismiss();
         super.onDestroy();
     }
 
