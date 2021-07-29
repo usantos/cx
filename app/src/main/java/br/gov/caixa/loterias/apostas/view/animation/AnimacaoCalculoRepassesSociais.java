@@ -28,7 +28,9 @@ public class AnimacaoCalculoRepassesSociais {
         SimpleDateFormat simpleDate = new SimpleDateFormat("dd/MM/yyyy");
         double oldValue ;
         try {
-            dataBase  = simpleDate.parse(repassesSociais.getDataBase());
+            if(repassesSociais.getDataBase() != null && !repassesSociais.getDataBase().isEmpty()){
+                dataBase  = simpleDate.parse(repassesSociais.getDataBase());
+            }
         } catch (ParseException e) {
             Log.e("ERRO_ACRS", e.toString());
         }
