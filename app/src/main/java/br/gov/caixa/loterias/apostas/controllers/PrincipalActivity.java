@@ -156,6 +156,7 @@ public class PrincipalActivity extends AppCompatActivity
     private AnimatorSet anim;
     private boolean realizandoLogin = false;
     private Handler handlerDelayNotificacao;
+    private boolean precisaBuscarRepasses = true;
 
     @AfterViews
     public void init() {
@@ -458,7 +459,8 @@ public class PrincipalActivity extends AppCompatActivity
                     toolbar.removeOnLayoutChangeListener(this);
                     actionApresentarTrevo.setOnClickListener(view -> {
                         if (modalidadesParaListar != null && modalidadesParaListar.size() > 0) {
-                            if(repassesSociais == null){
+                            if(precisaBuscarRepasses){
+                                precisaBuscarRepasses = false;
                                 callRepassesSociais();
                             }else {
                                 showMenu();
