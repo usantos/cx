@@ -98,4 +98,8 @@ public class DateUtils {
         return dateFormat.format(date);
     }
 
+    public static long getDiffSeconds(Date date){
+        return (new Date().getTime() - date.getTime())/1000;
+    }
+
 }

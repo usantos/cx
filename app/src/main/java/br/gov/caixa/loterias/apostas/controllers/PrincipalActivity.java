@@ -52,6 +52,7 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.ViewById;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -59,7 +60,6 @@ import java.util.Locale;
 
 import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.model.bean.DadosUsuarioToken;
 import br.gov.caixa.loterias.apostas.model.bean.Modalidade;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.AcessoBO_;
@@ -83,14 +83,15 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.UltimaNotificacaoS
 import br.gov.caixa.loterias.apostas.model.dao.DBLoteriasHelper;
 import br.gov.caixa.loterias.apostas.model.sp.CarrinhoSP;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataSideMenu;
 import br.gov.caixa.loterias.apostas.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.OnSwipeTouchListener;
 import br.gov.caixa.loterias.apostas.utils.RateUtils;
+import br.gov.caixa.loterias.apostas.utils.SessaoUsuarioUtil;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
-import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.HomeAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.SideMenuExpandleAdapter;
@@ -148,15 +149,14 @@ public class PrincipalActivity extends AppCompatActivity
     private RepassometroDTO repassesSociais;
     private DBLoteriasHelper dbLoteriasHelper;
     private View actionApresentarTrevo, actionSettings;
-    private AlertDialog loadViewProgress;
     private InfiniteScrollAdapter infiniteAdapter;
     private HomeAdapter homeAdapter;
     private View viewNotification;
     private PopupWindow popupNotification;
     private AnimatorSet anim;
     private boolean realizandoLogin = false;
-    private boolean recarregarBuscaParam = false;
     private Handler handlerDelayNotificacao;
+    private boolean precisaBuscarRepasses = true;
 
     @AfterViews
     public void init() {
@@ -171,7 +171,7 @@ public class PrincipalActivity extends AppCompatActivity
         toolbarListener();
         layoutSideMenu();
         listenerSair();
-        callWebservice();
+        //callWebservice();
         iniciarBancoLocal();
         RateUtils.avaliarAplicativo(this);
     }
@@ -223,9 +223,8 @@ public class PrincipalActivity extends AppCompatActivity
             nav_user.setText(getResources().getString(R.string.bem_vindo_ao_app));
         }
 
-        if (recarregarBuscaParam) {
-            callWebservice();
-        }
+        callWebservice();
+
         layoutSideMenu();
         fragmentSomadorCarrinho();
     }
@@ -276,60 +275,53 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     private void callWebservice() {
-        loadViewProgress
-                = LoadingViewLoterias.show(this);
+        DialogUtils.show(PrincipalActivity.this);
 
-        final DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(PrincipalActivity.this);
+        if(SessaoUsuarioUtil.precisaAtualizar()){
+            final DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(PrincipalActivity.this);
 
-        dadosCorporativosBO.parametrosSimulacao(new RequestListener<ParametrosSimulacaoResponse>() {
-            @Override
-            public void onResponse(ParametrosSimulacaoResponse response) {
-                loadViewProgress.dismiss();
-                FirebaseManager.registraEvento(PrincipalActivity.this ,getResources().getString(R.string.evento_entrou_lista_modalidades));
+            dadosCorporativosBO.parametrosSimulacao(new RequestListener<ParametrosSimulacaoResponse>() {
+                @Override
+                public void onResponse(ParametrosSimulacaoResponse response) {
+                    DialogUtils.dismiss();
+                    FirebaseManager.registraEvento(PrincipalActivity.this ,getResources().getString(R.string.evento_entrou_lista_modalidades));
 
-                modalidadesParaListar = response.getPayload().getParametros();
-                if (modalidadesParaListar == null || modalidadesParaListar.isEmpty()) {
-                    recarregarBuscaParam = true;
+                    modalidadesParaListar = response.getPayload().getParametros();
+                    if (modalidadesParaListar == null || modalidadesParaListar.isEmpty()) {
+                        Intent appIndis = new Intent(PrincipalActivity.this, AppIndisponivelActivity.class);
+                        appIndis.putExtra(getResources().getString(R.string.extra_is_busca_param), true);
+
+                        startActivityForResult(appIndis, 1);
+                    }
+
+                    SessaoUsuarioUtil.atualizaParametrosSingleton(response);
+                    paramatroSimulacaoSuccess();
+                }
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    DialogUtils.dismiss();
                     Intent appIndis = new Intent(PrincipalActivity.this, AppIndisponivelActivity.class);
                     appIndis.putExtra(getResources().getString(R.string.extra_is_busca_param), true);
 
                     startActivityForResult(appIndis, 1);
                 }
+            });
+        }else {
+            modalidadesParaListar = SessaoUsuario.getInstance().getParametrosSimulacao().getParametros();
+            paramatroSimulacaoSuccess();
+            DialogUtils.dismiss();
+        }
 
-                paramatroSimulacaoSuccess(response);
-            }
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                recarregarBuscaParam = true;
-                loadViewProgress.dismiss();
-                Intent appIndis = new Intent(PrincipalActivity.this, AppIndisponivelActivity.class);
-                appIndis.putExtra(getResources().getString(R.string.extra_is_busca_param), true);
-
-                startActivityForResult(appIndis, 1);
-            }
-        });
     }
 
-    private void paramatroSimulacaoSuccess(ParametrosSimulacaoResponse response) {
-        SessaoUsuario sessaoUser = SessaoUsuario.getInstance();
-        try {
-            DadosUsuarioToken dadosUsuarioToken = Utils.decodedToken(sessaoUser.getToken());
-            sessaoUser.setEmail(dadosUsuarioToken.getEmail());
-            sessaoUser.setNome(dadosUsuarioToken.getName());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        sessaoUser.setValorMinimimoAposta(response.getPayload().getValorMinimoCarrinho());
-        sessaoUser.setValorMaximoAposta(response.getPayload().getValorLimiteDiario());
-        sessaoUser.setParametrosSimulacao(response.getPayload());
+    private void paramatroSimulacaoSuccess() {
 
-        textViewHomeMinimumPurchaseValue.setText(String.format(getResources().getString(R.string.valor_minimo_compra), ViewUtils.getMoedaFormat(response.getPayload().getValorMinimoCarrinho())));
+        BigDecimal valorMinimoCarrinho = SessaoUsuario.getInstance().getParametrosSimulacao().getValorMinimoCarrinho();
+        textViewHomeMinimumPurchaseValue.setText(String.format(getResources().getString(R.string.valor_minimo_compra), ViewUtils.getMoedaFormat(valorMinimoCarrinho)));
 
         montaListaModalidades();
         montarCarrossel();
-
-        callRepassesSociais();
 
         if (UltimaNotificacaoSingleton.getInstance().getUltimaNoficacao() != null) {
             trataPopupDeNotificacao();
@@ -406,12 +398,15 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     private void callRepassesSociais() {
+        DialogUtils.show(PrincipalActivity.this);
         final DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(PrincipalActivity.this);
         dadosCorporativosBO.repasses(new RequestListener<RepassometroDTOResponse>() {
             @Override
             public void onResponse(RepassometroDTOResponse response) {
                 repassesSociais = response.getPayload();
                 layoutTrevoAcessoRapido();
+                DialogUtils.dismiss();
+                showMenu();
             }
 
             @Override
@@ -419,6 +414,14 @@ public class PrincipalActivity extends AppCompatActivity
                 findViewById(R.id.relativeLayoutContentRepassados).setVisibility(View.INVISIBLE);
             }
         });
+    }
+
+    private void showMenu() {
+        if (relativeContentPrincipal.isEnabled()) {
+            AnimacaoAbrirMenuRapido(actionApresentarTrevo);
+        } else {
+            AnimacaoFecharMenuRapido(actionApresentarTrevo);
+        }
     }
 
     private List<Modalidade> montaListaModalidades
@@ -455,10 +458,11 @@ public class PrincipalActivity extends AppCompatActivity
                     toolbar.removeOnLayoutChangeListener(this);
                     actionApresentarTrevo.setOnClickListener(view -> {
                         if (modalidadesParaListar != null && modalidadesParaListar.size() > 0) {
-                            if (relativeContentPrincipal.isEnabled()) {
-                                AnimacaoAbrirMenuRapido(actionApresentarTrevo);
-                            } else {
-                                AnimacaoFecharMenuRapido(actionApresentarTrevo);
+                            if(precisaBuscarRepasses){
+                                precisaBuscarRepasses = false;
+                                callRepassesSociais();
+                            }else {
+                                showMenu();
                             }
                         }
                     });
@@ -741,6 +745,7 @@ public class PrincipalActivity extends AppCompatActivity
             startActivity(new Intent(PrincipalActivity.this, ConfiguracaoRapidaoActivity.class));
         }
     }
+
     private void redirecionaJogoResponsavel(){
         startActivity(new Intent(PrincipalActivity.this, JogoResponsavelActivity.class));
     }
@@ -760,16 +765,10 @@ public class PrincipalActivity extends AppCompatActivity
         }
     }
 
-    private void dismissProgressDialog() {
-        if (loadViewProgress != null && loadViewProgress.isShowing()) {
-            loadViewProgress.dismiss();
-        }
-    }
-
     @Override
     protected void onDestroy() {
         dbLoteriasHelper.close();
-        dismissProgressDialog();
+        DialogUtils.dismiss();
         super.onDestroy();
     }
 
