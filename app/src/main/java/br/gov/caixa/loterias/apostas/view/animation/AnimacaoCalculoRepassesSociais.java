@@ -28,7 +28,9 @@ public class AnimacaoCalculoRepassesSociais {
         SimpleDateFormat simpleDate = new SimpleDateFormat("dd/MM/yyyy");
         double oldValue ;
         try {
-            dataBase  = simpleDate.parse(repassesSociais.getDataBase());
+            if(repassesSociais.getDataBase() != null && !repassesSociais.getDataBase().isEmpty()){
+                dataBase  = simpleDate.parse(repassesSociais.getDataBase());
+            }
         } catch (ParseException e) {
             Log.e("ERRO_ACRS", e.toString());
         }
@@ -40,7 +42,9 @@ public class AnimacaoCalculoRepassesSociais {
         if (repassesSociais.getArrecadacaoAcumulada() != null) {
             arrecadacaoAcumulada = repassesSociais.getArrecadacaoAcumulada().doubleValue() * 0.48;
         }
-        calculo = arrecadacaoAcumulada + ((repassesSociais.getArrecadacaoUltimaSemana().doubleValue() * 0.48) / 604800.0) * seconds;
+        if(repassesSociais.getArrecadacaoUltimaSemana() != null) {
+            calculo = arrecadacaoAcumulada + ((repassesSociais.getArrecadacaoUltimaSemana().doubleValue() * 0.48) / 604800.0) * seconds;
+        }
         oldValue = oldValue == 0 ? arrecadacaoAcumulada * 0.48 : oldValue;
 
         final double calculoFinal = calculo;

@@ -411,8 +411,7 @@ public class PrincipalActivity extends AppCompatActivity
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                DialogUtils.dismiss();
-                ViewUtils.alert(PrincipalActivity.this, MensagensNetwork.setMensagem(error, getApplicationContext()));
+                findViewById(R.id.relativeLayoutContentRepassados).setVisibility(View.INVISIBLE);
             }
         });
     }
