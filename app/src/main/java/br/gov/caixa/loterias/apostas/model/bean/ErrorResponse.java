@@ -8,15 +8,17 @@ public class ErrorResponse {
     private String mensagem;
     private String redirect;
     private String codigo;
+    private String tipo;
 
     public ErrorResponse(){
 
     }
 
-    public ErrorResponse(String mensagem, String redirect, String codigo){
+    public ErrorResponse(String mensagem, String redirect, String codigo, String tipo){
         this.mensagem = mensagem;
         this.redirect = redirect;
         this.codigo = codigo;
+        this.tipo = tipo;
     }
 
     public String getMensagem() {
@@ -43,4 +45,7 @@ public class ErrorResponse {
         this.codigo = codigo;
     }
 
+    public String getTipo() { return tipo; }
+
+    public void setTipo(String tipo) { this.tipo = tipo; }
 }
