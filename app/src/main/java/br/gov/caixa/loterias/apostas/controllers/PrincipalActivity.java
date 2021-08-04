@@ -35,6 +35,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.Lifecycle;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
@@ -68,7 +69,6 @@ import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO_;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO_;
-import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
@@ -157,6 +157,7 @@ public class PrincipalActivity extends AppCompatActivity
     private boolean realizandoLogin = false;
     private Handler handlerDelayNotificacao;
     private boolean precisaBuscarRepasses = true;
+    private static int contRegressivo = 1;
 
     @AfterViews
     public void init() {
@@ -261,7 +262,6 @@ public class PrincipalActivity extends AppCompatActivity
                 .build());
     }
 
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -323,8 +323,21 @@ public class PrincipalActivity extends AppCompatActivity
         montaListaModalidades();
         montarCarrossel();
 
+        trataPopupDeNotificacaoHandler();
+    }
+
+    private void trataPopupDeNotificacaoHandler() {
         if (UltimaNotificacaoSingleton.getInstance().getUltimaNoficacao() != null) {
-            trataPopupDeNotificacao();
+            if(getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)){
+                trataPopupDeNotificacao();
+            } else {
+                if(contRegressivo <= 3) {
+                    new Handler().postDelayed(() -> {
+                        contRegressivo++;
+                        trataPopupDeNotificacaoHandler();
+                        }, 3000);
+                }
+            }
         }
     }
 
@@ -340,40 +353,30 @@ public class PrincipalActivity extends AppCompatActivity
         viewNotification.setOnTouchListener(new OnSwipeTouchListener(PrincipalActivity.this){
             @Override
             public void onSwipeTop() {
-                anim = (AnimatorSet) AnimatorInflater.loadAnimator(PrincipalActivity.this, R.animator.swipe_top_anim);
-                anim.setTarget(viewNotification);
-                anim.start();
-                removePopup();
+                startAndRemoveAnim(R.animator.swipe_top_anim);
             }
             @Override
             public void onSwipeRight() {
-                anim = (AnimatorSet) AnimatorInflater.loadAnimator(PrincipalActivity.this, R.animator.swipe_left_anim);
-                anim.setTarget(viewNotification);
-                anim.start();
-                removePopup();
+                startAndRemoveAnim(R.animator.swipe_left_anim);
             }
             @Override
             public void onSwipeLeft() {
-                anim = (AnimatorSet) AnimatorInflater.loadAnimator(PrincipalActivity.this, R.animator.swipe_right_anim);
-                anim.setTarget(viewNotification);
-                anim.start();
-                removePopup();
+                startAndRemoveAnim(R.animator.swipe_right_anim);
             }
         });
 
         handlerDelayNotificacao = new Handler();
-        handlerDelayNotificacao.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                anim = (AnimatorSet) AnimatorInflater.loadAnimator(PrincipalActivity.this, R.animator.swipe_top_anim);
-                anim.setTarget(viewNotification);
-                anim.start();
-                removePopup();
-            }
-        }, 10000);
+        handlerDelayNotificacao.postDelayed(() -> startAndRemoveAnim(R.animator.swipe_top_anim), 10000);
 
         popupNotification = new PopupWindow(viewNotification, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         popupNotification.showAtLocation(navigationBarListaModalidade, Gravity.TOP, 0, 0);
+    }
+
+    private void startAndRemoveAnim(int swipe_anim) {
+        anim = (AnimatorSet) AnimatorInflater.loadAnimator(PrincipalActivity.this, swipe_anim);
+        anim.setTarget(viewNotification);
+        anim.start();
+        removePopup();
     }
 
     private void removePopup() {
