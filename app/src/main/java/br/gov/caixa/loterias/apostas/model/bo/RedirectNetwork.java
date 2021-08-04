@@ -27,6 +27,7 @@ import br.gov.caixa.loterias.apostas.controllers.TermosUsoActivity;
 import br.gov.caixa.loterias.apostas.model.bean.ErrorResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RedirectEnum;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
+import br.gov.caixa.loterias.apostas.utils.DateUtils;
 import br.gov.caixa.loterias.apostas.utils.MercadoPagoUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
@@ -199,8 +200,8 @@ public class  RedirectNetwork {
                     default:
                         if (errorResponse.getCodigo() != null &&  errorResponse.getCodigo().equals( "018003" )){
                             enviaRegistrarMp(activity, error);
-                        }else{
-                            ViewUtils.alertTitleButton(activity, R.string.label_atencao, MensagensNetwork.setMensagem(error, activity), "Ok", dialogInterface -> {});
+                        } else {
+                            apresentaAlerta(activity, montarMensgem(activity, MensagensNetwork.setMensagem(error, activity), errorResponse.getCodigo()));
                         }
                         break;
                 }
@@ -257,17 +258,38 @@ public class  RedirectNetwork {
     }
 
     public static void trataErro500(Activity activity, ErrorResponse error){
-        if (error != null &&
-                error.getCodigo() !=null &&
-                error.getCodigo().equalsIgnoreCase("2067")) {
-            ViewUtils.alert(activity, MercadoPagoUtil.getMessageFromCode("2067"));
+        if (error != null) {
+            if (error.getCodigo() != null && error.getCodigo().equalsIgnoreCase("2067")) {
+                ViewUtils.alert(activity, MercadoPagoUtil.getMessageFromCode("2067"));
+            } else if (error.getTipo() != null && error.getTipo().equalsIgnoreCase("1")) {
+                apresentaAlerta(activity, montarMensgem(activity, error.getMensagem(), error.getCodigo()));
+            } else {
+                apresentaAlerta(activity, montarMensgem(activity, null, error.getCodigo()));
+            }
         } else {
-            ViewUtils.alertTitleButton(
-                    activity,
-                    R.string.label_atencao,
-                    activity.getString(R.string.erro_req),
-                    activity.getResources().getString( R.string.ok ) );
+            apresentaAlerta(activity, montarMensgem(activity, null, null));
         }
+
+    }
+
+    private static String montarMensgem(Activity activity, String mensagem, String codError) {
+        String mensagemCompleta = activity.getString(R.string.erro_req) + "\n\n";
+        if (mensagem != null) {
+            mensagemCompleta = mensagem + "\n\n";
+        }
+        if (codError != null) {
+            mensagemCompleta += codError + "\n";
+        }
+        mensagemCompleta += DateUtils.getDateTime();
+        return mensagemCompleta;
+    }
+
+    private static void apresentaAlerta(Activity activity, String mensagem) {
+        ViewUtils.alertTitleButton(
+                activity,
+                R.string.label_atencao,
+                mensagem,
+                activity.getResources().getString( R.string.ok ) );
     }
 
     private static void enviaRegistrarMp(Activity activity, VolleyError volleyError){
