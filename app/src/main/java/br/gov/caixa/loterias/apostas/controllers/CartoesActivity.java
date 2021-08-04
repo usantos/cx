@@ -353,22 +353,19 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
     }
 
     @Override
-    public void onTokenFailure(String codErro) {
+    public void onTokenFailure(String msgError) {
         DialogUtils.dismiss();
-
-        String msg = MercadoPagoUtil.getMessageFromCode(codErro);
-        ViewUtils.alertTitulo(CartoesActivity.this, R.string.label_atencao, msg);
+        apresentaModal(msgError);
     }
 
     @Override
-    public void onPaymentFailure(VolleyError error) {
+    public void onPaymentFailure(String msgError) {
         DialogUtils.dismiss();
+        apresentaModal(msgError);
+    }
 
-        if(Bin.fromBytes(error.networkResponse.data).toUtf8().contains(CartoesActivity.this.getResources().getString(R.string.not_found))){
-            ViewUtils.alert(CartoesActivity.this, Bin.fromBytes(error.networkResponse.data).toUtf8().toString());
-        }else {
-            ViewUtils.alertTitulo(CartoesActivity.this, R.string.label_atencao, MercadoPagoUtil.getMessageFromCode(""));
-        }
-
+    private void apresentaModal(String msg) {
+        ViewUtils.alertTitleButton(CartoesActivity.this, R.string.label_atencao, msg,
+                CartoesActivity.this.getResources().getString( R.string.ok ) );
     }
 }
