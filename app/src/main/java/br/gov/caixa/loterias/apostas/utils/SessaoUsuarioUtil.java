@@ -21,7 +21,7 @@ public class SessaoUsuarioUtil {
 		sessaoUser.setValorMinimimoAposta(parametros.getPayload().getValorMinimoCarrinho());
 		sessaoUser.setValorMaximoAposta(parametros.getPayload().getValorLimiteDiario());
 		sessaoUser.setParametrosSimulacao(parametros.getPayload());
-
+		SessaoUsuario.getInstance().setPrecisaMontarCarrossel(true);
 	}
 
 	public static boolean precisaAtualizar() {

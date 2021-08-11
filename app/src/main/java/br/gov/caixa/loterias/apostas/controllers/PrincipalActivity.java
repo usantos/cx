@@ -175,6 +175,7 @@ public class PrincipalActivity extends AppCompatActivity
         //callWebservice();
         iniciarBancoLocal();
         RateUtils.avaliarAplicativo(this);
+        SessaoUsuario.getInstance().setPrecisaMontarCarrossel(true);
     }
 
     @Override
@@ -260,6 +261,8 @@ public class PrincipalActivity extends AppCompatActivity
         homeCarousel.setItemTransformer(new ScaleTransformer.Builder()
                 .setMinScale(0.8f)
                 .build());
+
+        SessaoUsuario.getInstance().setPrecisaMontarCarrossel(false);
     }
 
     @Override
@@ -307,9 +310,11 @@ public class PrincipalActivity extends AppCompatActivity
                     startActivityForResult(appIndis, 1);
                 }
             });
-        }else {
+        }else if(SessaoUsuario.getInstance().isPrecisaMontarCarrossel()){
             modalidadesParaListar = SessaoUsuario.getInstance().getParametrosSimulacao().getParametros();
             paramatroSimulacaoSuccess();
+            DialogUtils.dismiss();
+        }else {
             DialogUtils.dismiss();
         }
 
@@ -320,7 +325,6 @@ public class PrincipalActivity extends AppCompatActivity
         BigDecimal valorMinimoCarrinho = SessaoUsuario.getInstance().getParametrosSimulacao().getValorMinimoCarrinho();
         textViewHomeMinimumPurchaseValue.setText(String.format(getResources().getString(R.string.valor_minimo_compra), ViewUtils.getMoedaFormat(valorMinimoCarrinho)));
 
-        montaListaModalidades();
         montarCarrossel();
 
         trataPopupDeNotificacaoHandler();
@@ -427,8 +431,7 @@ public class PrincipalActivity extends AppCompatActivity
         }
     }
 
-    private List<Modalidade> montaListaModalidades
-            () {
+    private List<Modalidade> montaListaModalidades() {
         List<Modalidade> listaModalidades = new ArrayList<>();
 
         for (ParametroSimulacao parametro : modalidadesParaListar) {

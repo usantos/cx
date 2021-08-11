@@ -321,7 +321,12 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         return data.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public void setModalidades(List<Modalidade> data) {
+        this.data = data;
+        notifyDataSetChanged();
+    }
+
+	public static class ViewHolder extends RecyclerView.ViewHolder {
         private View titulo;
         private TextView game;
         private ImageView relogio;

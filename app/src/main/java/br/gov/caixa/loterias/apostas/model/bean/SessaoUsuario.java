@@ -19,6 +19,7 @@ public class SessaoUsuario {
     private String token;
     private String nome;
     private String email;
+    private boolean precisaMontarCarrossel = true;
 
     private Date dataUltimaRequisicao;
     public static int SECONDS = 180;
@@ -95,5 +96,13 @@ public class SessaoUsuario {
 
     public void setDataUltimaRequisicao(Date dataUltimaRequisicao) {
         this.dataUltimaRequisicao = dataUltimaRequisicao;
+    }
+
+    public boolean isPrecisaMontarCarrossel() {
+        return precisaMontarCarrossel;
+    }
+
+    public void setPrecisaMontarCarrossel(boolean precisaMontarCarrossel) {
+        this.precisaMontarCarrossel = precisaMontarCarrossel;
     }
 }
