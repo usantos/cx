@@ -23,14 +23,18 @@ import java.io.UnsupportedEncodingException;
 
 import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.controllers.NovaFormaPagamentoActivity;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.Bin;
+import br.gov.caixa.loterias.apostas.utils.DateUtils;
 import br.gov.caixa.loterias.apostas.utils.FirebaseManager;
+import br.gov.caixa.loterias.apostas.utils.MercadoPagoUtil;
 
 public class MercadoPagoConnection {
 
 	public interface MercadoPagoListener {
 		void onSucesso(String cardId, String payment_method_id);
-		void onTokenFailure(String codErro);
-		void onPaymentFailure(VolleyError error);
+		void onTokenFailure(String msgError);
+		void onPaymentFailure(String msgError);
 	}
 
 	public static void callWebServicePayment_method(final String bin , String jsonObject, Context ctx, MercadoPagoListener listener) {
@@ -64,11 +68,11 @@ public class MercadoPagoConnection {
 						} catch (JSONException e) {
 							e.printStackTrace();
 							FirebaseManager.registraErro(ctx, codErro, "MP_"+url2);
-							listener.onTokenFailure(codErro);
+							listener.onTokenFailure(montarMensagem(codErro));
 						}
 					}
 					FirebaseManager.registraErro(ctx, codErro, "MP_"+url2);
-					listener.onTokenFailure(codErro);
+					listener.onTokenFailure(montarMensagem(codErro));
 				}) {
 					@Override
 					public String getBodyContentType() {
@@ -105,15 +109,31 @@ public class MercadoPagoConnection {
 				};
 				rQueue.add(stringRequest);
 			} catch (JSONException e) {
-				listener.onTokenFailure("");
+				listener.onTokenFailure(montarMensagem(""));
 				e.printStackTrace();
 			}
 		}, volleyError -> {
 			FirebaseManager.registraErro(ctx, String.valueOf(volleyError.networkResponse.statusCode), "MP_" + url);
-			listener.onPaymentFailure(volleyError);
+			String msg;
+			if(Bin.fromBytes(volleyError.networkResponse.data).toUtf8().contains(ctx.getResources().getString(R.string.not_found))){
+				msg = montarMensagem("MP_PAYMENT_METHOD_NOT_FOUND");
+			}else {
+				msg = montarMensagem("");
+			}
+			listener.onPaymentFailure(msg);
 		});
 
 		RequestQueue rQueue = Volley.newRequestQueue(ctx);
 		rQueue.add(request);
+	}
+
+	private static String montarMensagem (String codError) {
+		String codErrorString = codError == null ? "" : codError;
+		String mensagemCompleta = MercadoPagoUtil.getMessageFromCode(codErrorString) + "\n\n";
+		if (codError != null && codError != "MP_PAYMENT_METHOD_NOT_FOUND") {
+			mensagemCompleta += codErrorString + "\n";
+		}
+		mensagemCompleta += DateUtils.getDateTime();
+		return mensagemCompleta;
 	}
 }

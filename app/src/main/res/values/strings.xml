@@ -507,6 +507,7 @@
     <string name="mercado_pago_meio_pagamento_nao_disponivel">O meio de pagamento não está disponível nesse momento. Escolha outro cartão ou outra forma de pagamento.</string>
     <string name="mercado_pago_realizaou_pagamento_similar">Você realizou um pagamento similar há poucos instantes. Tente novamente em alguns minutos.</string>
     <string name="mercado_pago_erro_default">Não foi possível realizar a operação. Entre em contato com o meio de pagamento pelo endereço www.mercadopago.com.br/ajuda</string>
+    <string name="mercado_pago_erro_payment_not_found">Meio de pagamento não encontrado. Revise o número do seu cartão.</string>
 
     <!-- Resultados -->
     <string name="resultados_selecione_opcoes">Selecione a modalidade para\n ver os seus resultados</string>

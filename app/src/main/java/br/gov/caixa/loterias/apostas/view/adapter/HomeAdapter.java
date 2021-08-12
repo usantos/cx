@@ -109,9 +109,9 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                 case DUPLA_SENA:
                     holder.ivEspeciais.setImageDrawable(context.getDrawable(R.drawable.cabecalho_superior_dupla_de_pascoa));
                     break;
-                /*case LOTOFACIL:
+                case LOTOFACIL:
                     holder.ivEspeciais.setImageDrawable(context.getDrawable(R.drawable.cabecalho_lotofacil_da_independencia));
-                    break;*/
+                    break;
                 case QUINA:
                     holder.ivEspeciais.setImageDrawable(context.getDrawable(R.drawable.cabecalho_sao_joao));
                     break;
@@ -321,7 +321,12 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         return data.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public void setModalidades(List<Modalidade> data) {
+        this.data = data;
+        notifyDataSetChanged();
+    }
+
+	public static class ViewHolder extends RecyclerView.ViewHolder {
         private View titulo;
         private TextView game;
         private ImageView relogio;

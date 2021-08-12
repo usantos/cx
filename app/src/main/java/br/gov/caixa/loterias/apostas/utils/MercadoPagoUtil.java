@@ -65,6 +65,7 @@ public class MercadoPagoUtil {
     public static final String  PRE_INVALID_NOT_PERMISSION = "160";
     public static final String  PRE_INVALID_UNAVALIABLE_PAYMENT_METHOD = "204";
     public static final String  PRE_INVALID_MAIL_MP = "801";
+    public static final String  PRE_INVALID_PAYMENT_METHOD = "MP_PAYMENT_METHOD_NOT_FOUND";
 
 
     public static String getMessageFromCode(String code){
@@ -152,6 +153,8 @@ public class MercadoPagoUtil {
             return context.getString(R.string.mercado_pago_meio_pagamento_nao_disponivel);
             case PRE_INVALID_MAIL_MP:
             return context.getString(R.string.mercado_pago_realizaou_pagamento_similar);
+            case PRE_INVALID_PAYMENT_METHOD:
+            return context.getString(R.string.mercado_pago_erro_payment_not_found);
             default:
                 return context.getString(R.string.mercado_pago_erro_default);
         }

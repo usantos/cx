@@ -2,7 +2,6 @@ package br.gov.caixa.loterias.apostas.view.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import com.android.volley.VolleyError;
@@ -36,14 +34,12 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.UltimaNotificacaoS
 import br.gov.caixa.loterias.apostas.model.dao.DBLoteriasCrud;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
-import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 
 
 public class LoginFragment extends Fragment {
-
-    private AlertDialog loadViewProgress;
 
     Button buttonLogin;
     TextView txtVersao;
@@ -93,13 +89,19 @@ public class LoginFragment extends Fragment {
     public void onStart() {
         super.onStart();
         if(LoginSP.isLoginRealizado()) {
-            verificarCadastroWebservice();
+            if(SessaoUsuario.getInstance().getParametrosSimulacao().getValorLimiteDiario() == null){
+                verificarCadastroWebservice();
+            }else {
+                PrincipalActivity_.intent(getActivity()).start();
+                getActivity().finish();
+            }
+
         }
     }
 
 
     private void verificarCadastroWebservice() {
-        loadViewProgress = LoadingViewLoterias.show(getContext());
+        DialogUtils.show(getContext());
         final DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_(getContext());
         DBLoteriasCrud crud = new DBLoteriasCrud(getContext());
         List<IdentificaoDeUmaApostaDas8Modalidades> listApostas = crud.readAllIdentificaoDeUmaApostaDas8Modalidades();
@@ -107,14 +109,13 @@ public class LoginFragment extends Fragment {
 
             @Override
             public void onResponse(UsuarioLogadoResponse response) {
-                loadViewProgress.dismiss();
+                DialogUtils.dismiss();
                 if (response.getRedirect() == null) {
                     SessaoUsuario.getInstance().setValorMaximoAposta(response.getPayload().getLimiteDiario());
                     if(response.getPayload().getLimiteDiario() != null){
                         SessaoUsuario.getInstance().getParametrosSimulacao().setValorLimiteDiario(response.getPayload().getLimiteDiario());
                     }
                     crud.deleteAll();
-                    CarrinhoSingleton.getInstance().setCarrinho(null);
                     CarrinhoSingleton.getInstance().setCarrinho(response.getPayload().getCarrinho());
                     UltimaNotificacaoSingleton.getInstance().setUltimaNoficacao(response.getPayload().getUltimaNotificacao());
 
@@ -127,7 +128,7 @@ public class LoginFragment extends Fragment {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                loadViewProgress.dismiss();
+                DialogUtils.dismiss();
                 RedirectNetwork.checkRedirect(error, getActivity());
             }
         });

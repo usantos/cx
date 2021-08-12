@@ -309,21 +309,19 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity implement
     }
 
     @Override
-    public void onTokenFailure(String codErro) {
+    public void onTokenFailure(String msgError) {
         DialogUtils.dismiss();
-        String msg = MercadoPagoUtil.getMessageFromCode(codErro);
-
-        ViewUtils.alertTitulo(NovaFormaPagamentoActivity.this, R.string.label_atencao,msg);
+        apresentaModal(msgError);
     }
 
     @Override
-    public void onPaymentFailure(VolleyError error) {
+    public void onPaymentFailure(String msgError) {
         DialogUtils.dismiss();
+        apresentaModal(msgError);
+    }
 
-        if(Bin.fromBytes(error.networkResponse.data).toUtf8().contains(NovaFormaPagamentoActivity.this.getResources().getString(R.string.not_found))){
-            ViewUtils.alert(NovaFormaPagamentoActivity.this, Bin.fromBytes(error.networkResponse.data).toUtf8().toString());
-        }else {
-            ViewUtils.alertTitulo(NovaFormaPagamentoActivity.this, R.string.label_atencao, MercadoPagoUtil.getMessageFromCode(""));
-        }
+    private void apresentaModal(String msg) {
+        ViewUtils.alertTitleButton(NovaFormaPagamentoActivity.this, R.string.label_atencao, msg,
+                NovaFormaPagamentoActivity.this.getResources().getString( R.string.ok ) );
     }
 }
