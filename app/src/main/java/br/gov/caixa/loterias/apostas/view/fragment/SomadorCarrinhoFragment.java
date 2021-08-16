@@ -1,5 +1,6 @@
 package br.gov.caixa.loterias.apostas.view.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -42,6 +43,8 @@ public class SomadorCarrinhoFragment extends Fragment {
 	private String TAG;
 	private boolean carregouDoServico;
 
+	private Context context;
+
 	public SomadorCarrinhoFragment() {
 		// Required empty public constructor
 	}
@@ -65,6 +68,7 @@ public class SomadorCarrinhoFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		context = getContext();
 		if (getArguments() != null) {
 			TAG = getArguments().getString(ARG_TELA);
 			carrinho = (CarrinhoDTO) getArguments().getSerializable(ARG_CARRINHO);
@@ -109,10 +113,10 @@ public class SomadorCarrinhoFragment extends Fragment {
 		apostaBO.buscaCarrinho(new RequestListener<CarrinhoDTOResponse>() {
 			@Override
 			public void onResponse(CarrinhoDTOResponse response) {
-				FirebaseManager.registraEvento(getContext(), getContext().getResources().getString(R.string.evento_entrou_carrinho_online));
+				FirebaseManager.registraEvento(context, context.getResources().getString(R.string.evento_entrou_carrinho_online));
 				carrinho = response.getPayload();
 				List<IdentificaoDeUmaApostaDas8Modalidades> apostasLocal = getApostasLocal();
-				if(apostasLocal.size() >  0){
+				if(apostasLocal != null && apostasLocal.size() >  0){
 					carrinho.getApostas().addAll(apostasLocal);
 				}
 				atualizaValorTotal(carrinho);
