@@ -95,7 +95,7 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity implement
         addRightImg(findViewById(R.id.editTextCodigoSegurancaContent));
 
         configuraSpin();
-        buscaCartoes();
+        apresentaTextCartoes();
         FragmentUtils.startSomadorCarrinhoFragment(getSupportFragmentManager(), somadorCarrinhoFragment, R.id.id_fg_somador_carrinho,"TELA ADD CARTAO");
 
     }
@@ -266,31 +266,12 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity implement
         });
     }
 
-    private void buscaCartoes() {
-        showLoading();
-
-        DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_(NovaFormaPagamentoActivity.this);
-        dadosUsuarioBO.cartoes(new RequestListener<ListCartaoDTOResponse>() {
-
-            @Override
-            public void onResponse(ListCartaoDTOResponse response) {
-                DialogUtils.dismiss();
-                if (response.getRedirect() != null){
-                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), NovaFormaPagamentoActivity.this);
-                }
-                listaCartoes = (ArrayList<RetornoCartao>) response.getPayload();
-                if (listaCartoes != null && listaCartoes.size() > 0){
-                    textoInfoSelecioneFormaPagamento.setVisibility(View.GONE);
-                }
-            }
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                DialogUtils.dismiss();
-                RedirectNetwork.checkRedirect( error, NovaFormaPagamentoActivity.this );
-
-            }
-        });
+    private void apresentaTextCartoes() {
+        Bundle bundle = getIntent().getExtras();
+        Boolean isPossiuCartao = bundle.getBoolean(getResources().getString(R.string.textoInfoSelecioneFormaPagamento));
+        if (isPossiuCartao) {
+            textoInfoSelecioneFormaPagamento.setVisibility(View.GONE);
+        }
     }
 
     private void showLoading(){
