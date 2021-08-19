@@ -1013,5 +1013,6 @@
     <!-- Carrossel -->
     <string name="msg_conc_nao_aberto">Concurso {num_concurso} ainda não aberto para aposta. Tente novamente mais tarde.</string>
     <string name="carrinho_favorito_ja_adicionado">Este carrinho favorito foi adicionado recentemente ao carrinho de compras. Deseja continuar?</string>
+    <string name="valor_atual_do_carrinho">Valor atual do carrinho</string>
 
 </resources>
