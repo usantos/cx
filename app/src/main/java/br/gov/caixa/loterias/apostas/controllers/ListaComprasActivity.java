@@ -94,10 +94,6 @@ public class ListaComprasActivity extends AppCompatActivity {
                 listaMesAnoDTO = response.getPayload();
 
                 addSpinner();
-                mes = listaMesAnoDTO.get(0).getMes().getValor().intValue();
-                ano = listaMesAnoDTO.get(0).getAno().intValue();
-
-                callWebServiceCompras();
             }
 
             @Override
