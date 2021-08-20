@@ -37,7 +37,7 @@ public class SomadorCarrinhoFragment extends Fragment {
 	public static final String ARG_TELA = "ARG_TELA";
 
 	private  View view;
-	private TextView tvValorTotal;
+	private TextView tvValorTotal, tvQtdApostas;
 
 	private CarrinhoDTO carrinho;
 	private String TAG;
@@ -85,6 +85,7 @@ public class SomadorCarrinhoFragment extends Fragment {
 							 Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.fragment_somador_carrinho, container, false);
 		tvValorTotal = view.findViewById(R.id.tv_valor_total);
+		tvQtdApostas = view.findViewById(R.id.tv_quantidade_apostas);
 		return view;
 	}
 
@@ -140,6 +141,9 @@ public class SomadorCarrinhoFragment extends Fragment {
 		if(carrinho != null && tvValorTotal != null) {
 			ViewUtils.setMoedaFormatHtml(carrinho.getValorTotal(), tvValorTotal);
 			Log.d("SOMADOR CARRINHO " + TAG + " -----", tvValorTotal.getText().toString());
+		}
+		if(carrinho != null && tvQtdApostas != null) {
+			tvQtdApostas.setText(String.valueOf(carrinho.getApostas().size()));
 		}
 	}
 }
