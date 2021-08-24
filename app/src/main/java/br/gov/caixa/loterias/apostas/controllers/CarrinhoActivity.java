@@ -226,11 +226,11 @@ public class CarrinhoActivity extends AppCompatActivity {
         });
     }
 
-    public void deletaAposta(int pos, IdentificaoDeUmaApostaDas8Modalidades aposta) {
+    public void deletaAposta(int position, IdentificaoDeUmaApostaDas8Modalidades aposta) {
         if (listApostas != null) {
             synchronized (rvListaApostas) {
-                listApostas.remove(aposta);
-                rvListaApostas.getAdapter().notifyItemRemoved(pos);
+                listApostas.remove(position);
+                rvListaApostas.getAdapter().notifyItemRemoved(position);
                 offSet--;
                 setValorTotalCarrinho();
                 configuraBotoesSuperiores();
