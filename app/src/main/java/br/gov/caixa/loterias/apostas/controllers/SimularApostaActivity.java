@@ -93,7 +93,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     protected DrawerLayout drawerLayout;
 
     @ViewById
-    protected ConstraintLayout toolBarLoteca;
+    protected ConstraintLayout toolBarLoteca, simularApostaLayoutCarrinhoApostas;
 
     @ViewById
     protected Button simularTelaAposta, surpresinhaTela, qtdNumerosButton, qtdConcursosButton, botaoLimparAposta, botaoAdicionarCompletarCartela, botaoCarrinho;
@@ -103,13 +103,13 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
 
     @ViewById
     protected TextView labelValueSimplesLoteca, labelValueDuplasLoteca, labelValueTriplasLoteca, textoDeNomeInfo, textoSalveEstaAposta, valorApostaCartela, textInfoValorAposta, textViewCarrinhoCartelaCount,
-            textInfoCarrinho;
+            textInfoCarrinho, circuloQuantidade, valorAtualCarrinho;
 
     @ViewById
     protected LinearLayout toolBarSimularAposta;
 
     @ViewById
-    protected RelativeLayout salvarApostaLayout, carrinhoApostas, simularApostaLayoutCarrinhoApostas, viewTabBar;
+    protected RelativeLayout salvarApostaLayout, carrinhoApostas, viewTabBar;
 
     @ViewById
     protected ImageButton btnSalvarAposta;
@@ -423,7 +423,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         return iconStarSalvar;
     }
 
-    public RelativeLayout getSimularApostaLayoutCarrinhoApostas() {
+    public ConstraintLayout getSimularApostaLayoutCarrinhoApostas() {
         return simularApostaLayoutCarrinhoApostas;
     }
 
@@ -594,7 +594,15 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         ft.replace(R.id.fragmentSimularApostas, cartelaFragment).commit();
-        FragmentUtils.startSomadorCarrinhoFragment(getSupportFragmentManager(), somadorCarrinhoFragment, R.id.id_fg_somador_carrinho, "TELA SIMULAR APOSTA");
+        somadorCarrinhoFragment = FragmentUtils.startSomadorCarrinhoFragment(getSupportFragmentManager(), somadorCarrinhoFragment, R.id.id_fg_somador_carrinho, "TELA SIMULAR APOSTA");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        ViewUtils.setMoedaFormatHtml(somadorCarrinhoFragment.getValorTotal(), valorAtualCarrinho);
+        circuloQuantidade.setText(String.valueOf(somadorCarrinhoFragment.getQuantidadeApostas()));
     }
 
     private void configuraActivity() {

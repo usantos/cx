@@ -420,44 +420,44 @@
             android:visibility="invisible"
             app:srcCompat="@drawable/paginacao1" />
 
-        <RelativeLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/simularApostaLayoutCarrinhoApostas"
             android:layout_width="match_parent"
             android:layout_height="74dp"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="13dp"
-            android:layout_marginTop="8dp"
             android:layout_toEndOf="@+id/imageViewPaginacao">
 
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true">
 
-                <Button
-                    android:id="@+id/botaoCarrinho"
-                    android:layout_width="34dp"
-                    android:layout_height="40dp"
-                    android:background="@drawable/icon_carrinho"
-                    android:layout_centerHorizontal="true"
-                    android:clickable="false" />
+            <Button
+                android:id="@+id/botaoCarrinho"
+                android:layout_width="34dp"
+                android:layout_height="40dp"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/icon_carrinho"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:clickable="false" />
 
-                <TextView
-                    android:id="@+id/textViewCarrinhoCartelaCount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="13dp"
-                    android:layout_marginEnd="25dp"
-                    android:background="@drawable/rounded_textview"
-                    android:clickable="false"
-                    android:gravity="center"
-                    android:outlineProvider="none"
-                    android:text="@string/zero"
-                    android:textColor="@color/branco"
-                    android:textSize="12sp"
-                    android:translationZ="2dp"
-                    android:visibility="invisible" />
-            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/circuloQuantidade"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/ic_shape_oval"
+                android:backgroundTint="#FDAB01"
+                android:gravity="center"
+                android:text="0"
+                android:textSize="8sp"
+                android:textStyle="bold"
+                android:translationZ="2dp"
+                android:layout_toEndOf="@+id/botaoCarrinho"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/botaoCarrinho"
+                app:layout_constraintEnd_toEndOf="@+id/botaoCarrinho"
+                />
 
             <TextView
                 android:id="@+id/textInfoCarrinho"
@@ -465,13 +465,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
                 android:clickable="false"
                 android:text="@string/carrinhoDeApostas"
                 android:textAlignment="center"
                 android:textColor="@color/azulescuro"
-                android:layout_centerHorizontal="true"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/botaoCarrinho"
                 android:textSize="12sp" />
-        </RelativeLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </RelativeLayout>
 
     <Button
@@ -488,12 +491,36 @@
         app:layout_constraintLeft_toRightOf="@+id/viewTabBar"
         app:layout_constraintRight_toLeftOf="@+id/viewTabBar" />
 
+
+    <TextView
+        android:id="@+id/tv_valor_atual_carrinho"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/valor_atual_do_carrinho"
+        android:layout_marginTop="8dp"
+        android:textColor="#3964A4"
+        app:layout_constraintTop_toBottomOf="@+id/botaoAdicionarCompletarCartela"
+        app:layout_constraintStart_toStartOf="@+id/botaoAdicionarCompletarCartela"
+        app:layout_constraintEnd_toEndOf="@+id/botaoAdicionarCompletarCartela"/>
+
+    <TextView
+        android:id="@+id/valorAtualCarrinho"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="R$ 00,00"
+        android:textStyle="bold"
+        android:textColor="#3964A4"
+        app:layout_constraintTop_toBottomOf="@+id/tv_valor_atual_carrinho"
+        app:layout_constraintStart_toStartOf="@+id/tv_valor_atual_carrinho"
+        app:layout_constraintEnd_toEndOf="@+id/tv_valor_atual_carrinho"/>
+
     <FrameLayout
         android:id="@+id/id_fg_somador_carrinho"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:visibility="invisible"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

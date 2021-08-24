@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 
 import com.android.volley.VolleyError;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
@@ -146,4 +147,19 @@ public class SomadorCarrinhoFragment extends Fragment {
 			tvQtdApostas.setText(String.valueOf(carrinho.getApostas().size()));
 		}
 	}
+
+	public int getQuantidadeApostas(){
+		if(carrinho != null && carrinho.getApostas() != null){
+			return carrinho.getApostas().size();
+		}
+		return 0;
+	}
+
+	public BigDecimal getValorTotal(){
+		if (carrinho != null){
+			return carrinho.getValorTotal();
+		}
+		return BigDecimal.ZERO;
+	}
+	
 }
