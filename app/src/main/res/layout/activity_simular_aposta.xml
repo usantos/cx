@@ -311,7 +311,6 @@
                     android:textSize="16sp" />
             </RelativeLayout>
 
-
             <TextView
                 android:id="@+id/textoDeNomeInfo"
                 android:layout_width="wrap_content"
@@ -367,7 +366,6 @@
         app:layout_constraintBottom_toTopOf="@+id/botaoAdicionarCompletarCartela"
         app:layout_constraintLeft_toRightOf="@+id/viewTabBar"
         app:layout_constraintRight_toLeftOf="@+id/viewTabBar" />
-
 
     <RelativeLayout
         android:id="@+id/viewTabBar"
@@ -428,7 +426,6 @@
             android:layout_marginBottom="13dp"
             android:layout_toEndOf="@+id/imageViewPaginacao">
 
-
             <Button
                 android:id="@+id/botaoCarrinho"
                 android:layout_width="34dp"
@@ -439,7 +436,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:clickable="false" />
-
 
             <TextView
                 android:id="@+id/circuloQuantidade"
@@ -453,11 +449,9 @@
                 android:textSize="8sp"
                 android:textStyle="bold"
                 android:translationZ="2dp"
-                android:layout_toEndOf="@+id/botaoCarrinho"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/botaoCarrinho"
                 app:layout_constraintEnd_toEndOf="@+id/botaoCarrinho"
-                />
+                app:layout_constraintStart_toEndOf="@+id/botaoCarrinho"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/textInfoCarrinho"
@@ -470,6 +464,7 @@
                 android:text="@string/carrinhoDeApostas"
                 android:textAlignment="center"
                 android:textColor="@color/azulescuro"
+                android:layout_marginTop="4dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/botaoCarrinho"
@@ -490,7 +485,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/viewTabBar"
         app:layout_constraintRight_toLeftOf="@+id/viewTabBar" />
-
 
     <TextView
         android:id="@+id/tv_valor_atual_carrinho"
