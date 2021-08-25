@@ -146,6 +146,15 @@ public class SomadorCarrinhoFragment extends Fragment {
 		if(carrinho != null && tvQtdApostas != null) {
 			tvQtdApostas.setText(String.valueOf(carrinho.getApostas().size()));
 		}
+		showFragmentSomadorCarrinho(carrinho);
+	}
+
+	void showFragmentSomadorCarrinho(CarrinhoDTO carrinho){
+		if (carrinho != null && carrinho.getValorTotal().compareTo(BigDecimal.ZERO) == 1){
+			view.setVisibility(View.VISIBLE);
+		}else {
+			view.setVisibility(View.INVISIBLE);
+		}
 	}
 
 	public int getQuantidadeApostas(){

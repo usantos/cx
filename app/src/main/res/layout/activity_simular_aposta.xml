@@ -448,6 +448,7 @@
                 android:text="0"
                 android:textSize="8sp"
                 android:textStyle="bold"
+                android:visibility="invisible"
                 android:translationZ="2dp"
                 app:layout_constraintEnd_toEndOf="@+id/botaoCarrinho"
                 app:layout_constraintStart_toEndOf="@+id/botaoCarrinho"
@@ -493,6 +494,7 @@
         android:text="@string/valor_atual_do_carrinho"
         android:layout_marginTop="8dp"
         android:textColor="#3964A4"
+        android:visibility="invisible"
         app:layout_constraintTop_toBottomOf="@+id/botaoAdicionarCompletarCartela"
         app:layout_constraintStart_toStartOf="@+id/botaoAdicionarCompletarCartela"
         app:layout_constraintEnd_toEndOf="@+id/botaoAdicionarCompletarCartela"/>
@@ -503,6 +505,7 @@
         android:layout_height="wrap_content"
         android:text="R$ 00,00"
         android:textStyle="bold"
+        android:visibility="invisible"
         android:textColor="#3964A4"
         app:layout_constraintTop_toBottomOf="@+id/tv_valor_atual_carrinho"
         app:layout_constraintStart_toStartOf="@+id/tv_valor_atual_carrinho"
