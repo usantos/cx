@@ -259,35 +259,48 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
 	private void deletarAposta(final IdentificaoDeUmaApostaDas8Modalidades aposta) {
 
 		ViewUtils.alertTitleButtonYesOrNotListener(context, context.getResources().getString(R.string.MA010), (dialogInterface, i) -> {
-			int          posDeletado      = apostas.indexOf(aposta);
-			ApostaBO     apostaBO         = ApostaBO_.getInstance_(parentActivity);
-			final Dialog loadViewProgress = LoadingViewLoterias.show(parentActivity);
-			apostaBO.deleteApostaCarrinho(aposta.getId().toString(), new RequestListener<CarrinhoDTOResponse>() {
-				@Override
-				public void onResponse(CarrinhoDTOResponse response) {
-					loadViewProgress.dismiss();
-					parentActivity.setCarrinho(response.getPayload());
-					deletarApostaBaseLocal(aposta, Boolean.FALSE);
-					parentActivity.deletaAposta(posDeletado, aposta);
-					deletaCarrinhoFavorito();
-					if (response.getRedirect() != null) {
-						RedirectNetwork.checkRedirectSucesso(response.getRedirect(), parentActivity);
+			int          positionAposta      = getPositionAposta(aposta);
+			if(positionAposta >= 0) {
+				ApostaBO     apostaBO         = ApostaBO_.getInstance_(parentActivity);
+				final Dialog loadViewProgress = LoadingViewLoterias.show(parentActivity);
+				apostaBO.deleteApostaCarrinho(aposta.getId().toString(), new RequestListener<CarrinhoDTOResponse>() {
+					@Override
+					public void onResponse(CarrinhoDTOResponse response) {
+						loadViewProgress.dismiss();
+						parentActivity.setCarrinho(response.getPayload());
+						deletarApostaBaseLocal(aposta, Boolean.FALSE);
+						parentActivity.deletaAposta(positionAposta, aposta);
+						deletaCarrinhoFavorito();
+						if (response.getRedirect() != null) {
+							RedirectNetwork.checkRedirectSucesso(response.getRedirect(), parentActivity);
+						}
 					}
-				}
 
-				@Override
-				public void onErrorResponse(VolleyError error) {
-					loadViewProgress.dismiss();
-					if (error.networkResponse != null && error.networkResponse.statusCode != 401) {
-						RedirectNetwork.checkRedirect(error, parentActivity);
+					@Override
+					public void onErrorResponse(VolleyError error) {
+						loadViewProgress.dismiss();
+						if (error.networkResponse != null && error.networkResponse.statusCode != 401) {
+							RedirectNetwork.checkRedirect(error, parentActivity);
 
-					} else {
-						deletarApostaBaseLocal(aposta, Boolean.TRUE);
-						parentActivity.deletaAposta(posDeletado, aposta);
+						} else {
+							deletarApostaBaseLocal(aposta, Boolean.TRUE);
+							parentActivity.deletaAposta(positionAposta, aposta);
+						}
 					}
-				}
-			});
+				});
+			}
 		});
+	}
+
+	private int getPositionAposta(IdentificaoDeUmaApostaDas8Modalidades aposta) {
+		int position = -1;
+		for (int i = 0; i <= apostas.size() - 1; i++){
+			if (apostas.get(i).getId() == aposta.getId()){
+				position = i;
+				break;
+			}
+		}
+		return position;
 	}
 
 	public void deletaCarrinhoFavorito() {

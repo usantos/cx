@@ -68,6 +68,7 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
     private MercadoPagoConnection.MercadoPagoListener listener;
     private String requestBody, bin;
     private EditText userInput;
+    private Boolean isPossiuCartao = false;
 
     //fragments
     private SomadorCarrinhoFragment somadorCarrinhoFragment;
@@ -173,7 +174,18 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
             }
         });
 
-        btnAdicionarCartao.setOnClickListener(view -> startActivity(new Intent(CartoesActivity.this, NovaFormaPagamentoActivity.class)));
+        btnAdicionarCartao.setOnClickListener(view -> {
+            Intent intent = getIntentForNovaFormaPagamento();
+            startActivity(intent);
+        });
+    }
+
+    private Intent getIntentForNovaFormaPagamento() {
+        Intent intent = new Intent(CartoesActivity.this, NovaFormaPagamentoActivity.class);
+        Bundle args = new Bundle();
+        args.putBoolean(getResources().getString(R.string.textoInfoSelecioneFormaPagamento), isPossiuCartao);
+        intent.putExtras(args);
+        return intent;
     }
 
     private void preencheDadosPagamento(){
@@ -246,12 +258,14 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
                 }
                 listaCartoes = response.getPayload();
                 if (listaCartoes != null && listaCartoes.size() > 0) {
+                    isPossiuCartao = true;
                     configuraRecycler();
                     configuraTelaSemCartoes(false);
                 }else {
+                    isPossiuCartao = false;
                     if (!flagVeioMenu) {
                         if (!flagEntrouAddCartao) {
-                            startActivityForResult(new Intent(CartoesActivity.this, NovaFormaPagamentoActivity.class), 600);
+                            startActivityForResult(getIntentForNovaFormaPagamento(), 600);
                             flagEntrouAddCartao = true;
                         }
                     } else {
@@ -295,7 +309,7 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
             if(flagVeioMenu){
                 recreate();
             }else {
-                startActivityForResult(new Intent(CartoesActivity.this, NovaFormaPagamentoActivity.class), 600);
+                startActivityForResult(getIntentForNovaFormaPagamento(), 600);
             }
         }
     }

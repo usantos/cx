@@ -16,10 +16,10 @@ public class DialogUtils {
     private static AlertDialog alertDialog;
 
     public static void show(Context contextParam) {
-        if(alertDialog != null){
-            alertDialog.dismiss();
+        if(!isShow()){
+            alertDialog = LoadingViewLoterias.show(contextParam);
         }
-        alertDialog = LoadingViewLoterias.show(contextParam);
+
     }
 
     public static boolean isShow(){
@@ -30,7 +30,7 @@ public class DialogUtils {
     }
 
     public static void dismiss() {
-        if (alertDialog != null) {
+        if (alertDialog != null && isShow()) {
             alertDialog.dismiss();
             alertDialog = null;
         }
