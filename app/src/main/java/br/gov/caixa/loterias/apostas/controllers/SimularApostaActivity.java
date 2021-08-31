@@ -103,7 +103,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
 
     @ViewById
     protected TextView labelValueSimplesLoteca, labelValueDuplasLoteca, labelValueTriplasLoteca, textoDeNomeInfo, textoSalveEstaAposta, valorApostaCartela, textInfoValorAposta, textViewCarrinhoCartelaCount,
-            textInfoCarrinho, circuloQuantidade, valorAtualCarrinho;
+            textInfoCarrinho, tvQuantidadeApostas, valorAtualCarrinho;
 
     @ViewById
     protected LinearLayout toolBarSimularAposta;
@@ -602,7 +602,12 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         super.onResume();
 
         ViewUtils.setMoedaFormatHtml(somadorCarrinhoFragment.getValorTotal(), valorAtualCarrinho);
-        circuloQuantidade.setText(String.valueOf(somadorCarrinhoFragment.getQuantidadeApostas()));
+        int quantidadeApostas = somadorCarrinhoFragment.getQuantidadeApostas();
+        if(quantidadeApostas > 999){
+            tvQuantidadeApostas.setText(R.string.mais_999);
+        }else {
+            tvQuantidadeApostas.setText(String.valueOf(quantidadeApostas));
+        }
     }
 
     private void configuraActivity() {

@@ -46,8 +46,8 @@
 
     <ImageView
         android:id="@+id/circulo_quantidade"
-        android:layout_width="12dp"
-        android:layout_height="12dp"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
         android:background="@drawable/ic_shape_oval"
         android:backgroundTint="#FDAB01"
         android:layout_marginTop="6dp"
@@ -55,13 +55,12 @@
         app:layout_constraintStart_toEndOf="@+id/iv_carrinho"
         app:layout_constraintTop_toTopOf="parent"/>
 
-
     <TextView
         android:id="@+id/tv_quantidade_apostas"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:text="0"
-        android:textSize="7sp"
+        android:textSize="8sp"
         android:textStyle="bold"
         android:fontFamily="@font/font_family_futura"
         android:lineHeight="10dp"

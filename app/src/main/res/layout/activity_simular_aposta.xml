@@ -437,26 +437,41 @@
                 app:layout_constraintTop_toTopOf="parent"
                 android:clickable="false" />
 
-            <TextView
+            <ImageView
                 android:id="@+id/circuloQuantidade"
-                android:layout_width="12dp"
-                android:layout_height="12dp"
-                android:layout_marginTop="6dp"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
                 android:background="@drawable/ic_shape_oval"
                 android:backgroundTint="#FDAB01"
-                android:gravity="center"
-                android:text="0"
-                android:textSize="8sp"
-                android:textStyle="bold"
-                android:visibility="invisible"
+                android:layout_marginTop="6dp"
                 android:translationZ="2dp"
                 app:layout_constraintEnd_toEndOf="@+id/botaoCarrinho"
                 app:layout_constraintStart_toEndOf="@+id/botaoCarrinho"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <TextView
+                android:id="@+id/tvQuantidadeApostas"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:translationZ="2dp"
+                android:paddingEnd="1dp"
+                android:paddingStart="1dp"
+                android:text="0"
+                android:textSize="8sp"
+                android:padding="1dp"
+                android:textStyle="bold"
+                android:fontFamily="@font/font_family_futura"
+                android:lineHeight="10dp"
+                app:layout_constraintTop_toTopOf="@id/circuloQuantidade"
+                app:layout_constraintStart_toStartOf="@id/circuloQuantidade"
+                app:layout_constraintBottom_toBottomOf="@id/circuloQuantidade"
+                app:layout_constraintEnd_toEndOf="@id/circuloQuantidade"
+                />
 
             <TextView
                 android:id="@+id/textInfoCarrinho"
                 style="@style/ArialMT"
+                android:translationZ="3dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
@@ -493,8 +508,6 @@
         android:layout_height="wrap_content"
         android:text="@string/valor_atual_do_carrinho"
         android:layout_marginTop="8dp"
-        android:textColor="#3964A4"
-        android:visibility="invisible"
         app:layout_constraintTop_toBottomOf="@+id/botaoAdicionarCompletarCartela"
         app:layout_constraintStart_toStartOf="@+id/botaoAdicionarCompletarCartela"
         app:layout_constraintEnd_toEndOf="@+id/botaoAdicionarCompletarCartela"/>
@@ -505,7 +518,6 @@
         android:layout_height="wrap_content"
         android:text="R$ 00,00"
         android:textStyle="bold"
-        android:visibility="invisible"
         android:textColor="#3964A4"
         app:layout_constraintTop_toBottomOf="@+id/tv_valor_atual_carrinho"
         app:layout_constraintStart_toStartOf="@+id/tv_valor_atual_carrinho"
