@@ -58,6 +58,7 @@ import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumInteger;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
@@ -78,6 +79,7 @@ import br.gov.caixa.loterias.apostas.view.fragment.SurpresinhaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SurpresinhaFragment.SurpresinhaFragmentListener;
 import br.gov.caixa.loterias.apostas.view.fragment.SurpresinhaFragment_;
 import br.gov.caixa.loterias.apostas.view.listener.CartelaFragmentListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnSomadorListener;
 
 import static br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity.CARRINHO;
 import static br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity.LER_CARRINHO_LOCAL;
@@ -85,7 +87,7 @@ import static br.gov.caixa.loterias.apostas.utils.Utils.isErroNegocial;
 import static java.lang.String.format;
 
 @EActivity(R.layout.activity_simular_aposta)
-public class SimularApostaActivity<T> extends AppCompatActivity implements OnClickListener, CartelaFragmentListener, SurpresinhaFragmentListener {
+public class SimularApostaActivity<T> extends AppCompatActivity implements OnClickListener, CartelaFragmentListener, SurpresinhaFragmentListener, OnSomadorListener {
 
     private static int RESULT_FINISH = 3;
 
@@ -597,19 +599,6 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         somadorCarrinhoFragment = FragmentUtils.startSomadorCarrinhoFragment(getSupportFragmentManager(), somadorCarrinhoFragment, R.id.id_fg_somador_carrinho, "TELA SIMULAR APOSTA");
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        ViewUtils.setMoedaFormatHtml(somadorCarrinhoFragment.getValorTotal(), valorAtualCarrinho);
-        int quantidadeApostas = somadorCarrinhoFragment.getQuantidadeApostas();
-        if(quantidadeApostas > 999){
-            tvQuantidadeApostas.setText(R.string.mais_999);
-        }else {
-            tvQuantidadeApostas.setText(String.valueOf(quantidadeApostas));
-        }
-    }
-
     private void configuraActivity() {
 
         tipoJogo = (ModalidadeEnum) getIntent().getSerializableExtra(getResources().getString(R.string.tipoAposta));
@@ -737,8 +726,6 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         return fragmentManager.findFragmentById(R.id.fragmentSimularApostas) instanceof CartelaFragment;
     }
 
-
-
     private void modalTeimosinhas() {
         FirebaseManager.registraEvento(this ,getResources().getString(R.string.evento_entrou_popup_teimosinha));
 
@@ -855,5 +842,12 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         Intent activity = new Intent(SimularApostaActivity.this, TermosUsoActivity.class);
         activity.putExtra(getResources().getString(R.string.extra_ajuda), true);
         startActivity(activity);
+    }
+
+    @Override
+    public void atualizaDados(CarrinhoDTO carrinho) {
+
+        ViewUtils.setMoedaFormatHtml(carrinho.getValorTotal(), valorAtualCarrinho);
+        tvQuantidadeApostas.setText(String.valueOf(carrinho.getApostas().size()));
     }
 }

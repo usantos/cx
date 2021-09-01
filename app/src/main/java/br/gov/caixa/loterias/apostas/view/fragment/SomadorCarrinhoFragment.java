@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.android.volley.VolleyError;
@@ -27,6 +28,7 @@ import br.gov.caixa.loterias.apostas.model.dao.DBLoteriasCrud;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.view.listener.OnSomadorListener;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -45,6 +47,7 @@ public class SomadorCarrinhoFragment extends Fragment {
 	private boolean carregouDoServico;
 
 	private Context context;
+	private OnSomadorListener listener;
 
 	public SomadorCarrinhoFragment() {
 		// Required empty public constructor
@@ -64,6 +67,16 @@ public class SomadorCarrinhoFragment extends Fragment {
 		args.putSerializable(ARG_CARRINHO, carrinho);
 		fragment.setArguments(args);
 		return fragment;
+	}
+
+	@Override
+	public void onAttach(@NonNull Context context) {
+		super.onAttach(context);
+		try {
+			listener = (OnSomadorListener) context;
+		}catch (Exception e){
+			
+		}
 	}
 
 	@Override
@@ -151,6 +164,9 @@ public class SomadorCarrinhoFragment extends Fragment {
 			}
 		}
 		showFragmentSomadorCarrinho(carrinho);
+		if (listener != null){
+			listener.atualizaDados(carrinho);
+		}
 	}
 
 	void showFragmentSomadorCarrinho(CarrinhoDTO carrinho){

@@ -389,6 +389,7 @@ public class CarrinhoActivity extends AppCompatActivity {
         DBLoteriasCrud crud = new DBLoteriasCrud(getApplicationContext());
         crud.deleteAll();
         limparCarrinhoAtualizarTela();
+        setValorTotalCarrinho();
     }
 
     private void limparCarrinhoAtualizarTela() {
