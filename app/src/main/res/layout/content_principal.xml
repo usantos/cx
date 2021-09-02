@@ -312,7 +312,6 @@
             app:dsv_orientation="horizontal" />
     </RelativeLayout>
 
-
     <TextView
         android:id="@+id/textViewHomeMinimumPurchaseValue"
         style="@style/editTextArialMTTheme"
@@ -324,6 +323,7 @@
         android:textSize="10sp"
         tools:text="valor mínimo da compra: R$0,00"
         android:layout_alignParentBottom="true"
+        android:visibility="invisible"
         android:paddingBottom="44dp"/>
 
 
