@@ -75,7 +75,7 @@ public class SomadorCarrinhoFragment extends Fragment {
 		try {
 			listener = (OnSomadorListener) context;
 		}catch (Exception e){
-			
+
 		}
 	}
 
@@ -157,10 +157,14 @@ public class SomadorCarrinhoFragment extends Fragment {
 			Log.d("SOMADOR CARRINHO " + TAG + " -----", tvValorTotal.getText().toString());
 		}
 		if(carrinho != null && tvQtdApostas != null) {
-			if (carrinho.getApostas().size() <= 999) {
-				tvQtdApostas.setText(String.valueOf(carrinho.getApostas().size()));
+			if(carrinho.getApostas() != null) {
+				if (carrinho.getApostas().size() <= 999) {
+					tvQtdApostas.setText(String.valueOf(carrinho.getApostas().size()));
+				} else {
+					tvQtdApostas.setText(R.string.mais_999);
+				}
 			}else {
-				tvQtdApostas.setText(R.string.mais_999);
+				tvQtdApostas.setText(R.string.zero);
 			}
 		}
 		showFragmentSomadorCarrinho(carrinho);

@@ -848,10 +848,14 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     public void atualizaDados(CarrinhoDTO carrinho) {
 
         ViewUtils.setMoedaFormatHtml(carrinho.getValorTotal(), valorAtualCarrinho);
-        if(carrinho.getApostas().size() <= 999) {
-            tvQuantidadeApostas.setText(String.valueOf(carrinho.getApostas().size()));
+        if (carrinho != null && carrinho.getApostas() != null) {
+            if (carrinho.getApostas().size() <= 999) {
+                tvQuantidadeApostas.setText(String.valueOf(carrinho.getApostas().size()));
+            } else {
+                tvQuantidadeApostas.setText(R.string.mais_999);
+            }
         }else {
-            tvQuantidadeApostas.setText(R.string.mais_999);
+            tvQuantidadeApostas.setText(R.string.zero);
         }
     }
 }
