@@ -322,6 +322,9 @@
     <string name="label_sucesso">Sucesso</string>
     <string name="label_otimo_novo_nome_sua_aposta">Ótimo! o novo nome da sua aposta é</string>
     <string name="texto_futura_bold">_%s_</string>
+    <string name="label_pre_pagamento">O Valor total da sua compra é de {valorCompra}. Confirma?</string>
+    <string name="label_verificar_valor_carrinho">Antes de finalizar sua compra, verifique o valor total e as apostas contidas no seu carrinho.</string>
+
 
     <!-- Agência Resgate Prêmio -->
     <string name="label_agencia_minusculo">agência</string>

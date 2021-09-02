@@ -62,6 +62,8 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity implement
 
     private String requestBody, bin;
 
+    private TextView valorTotalCarrinho;
+
     //fragments
     private SomadorCarrinhoFragment somadorCarrinhoFragment;
 
@@ -127,7 +129,7 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity implement
     private void recebendoInformacoes() {
         try {
             String valor = ViewUtils.getMoedaFormat(CarrinhoSingleton.getInstance().getCarrinho().getValorTotal());
-            TextView valorTotalCarrinho = findViewById(R.id.valorTotalCarrinho);
+            valorTotalCarrinho = findViewById(R.id.valorTotalCarrinho);
             valorTotalCarrinho.setText(valor);
         } catch (Exception e) {
             e.printStackTrace();
@@ -271,7 +273,20 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity implement
         Boolean isPossiuCartao = bundle.getBoolean(getResources().getString(R.string.textoInfoSelecioneFormaPagamento));
         if (isPossiuCartao) {
             textoInfoSelecioneFormaPagamento.setVisibility(View.GONE);
+        } else {
+            apresentaAlertaPreCompra();
         }
+    }
+
+    private void apresentaAlertaPreCompra() {
+        ViewUtils.alertTitleButtonYesOrNotListener(NovaFormaPagamentoActivity.this,
+                NovaFormaPagamentoActivity.this.getResources().getString(R.string.label_pre_pagamento).replace("{valorCompra}", valorTotalCarrinho.getText()),
+                (dialog, which) -> {
+                    DialogUtils.dismiss();
+                    dialog.dismiss();
+                },(dialog, which) -> {
+                    finish();
+                } );
     }
 
     private void showLoading(){
