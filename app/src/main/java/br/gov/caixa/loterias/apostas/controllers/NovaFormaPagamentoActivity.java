@@ -279,14 +279,12 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity implement
     }
 
     private void apresentaAlertaPreCompra() {
-        ViewUtils.alertTitleButtonYesOrNotListener(NovaFormaPagamentoActivity.this,
-                NovaFormaPagamentoActivity.this.getResources().getString(R.string.label_pre_pagamento).replace("{valorCompra}", valorTotalCarrinho.getText()),
-                (dialog, which) -> {
-                    DialogUtils.dismiss();
-                    dialog.dismiss();
-                },(dialog, which) -> {
-                    finish();
-                } );
+        ViewUtils.alertTitleCustomPositiveListener(NovaFormaPagamentoActivity.this, "Cancelar", "Confirmar", NovaFormaPagamentoActivity.this.getResources().getString(R.string.label_pre_pagamento).replace("{valorCompra}", valorTotalCarrinho.getText()), (dialog, which) -> {
+            DialogUtils.dismiss();
+            dialog.dismiss();
+        },(dialog, which) -> {
+            finish();
+        } );
     }
 
     private void showLoading(){

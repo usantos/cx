@@ -288,9 +288,7 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
     }
 
     private void apresentaAlertaPreCompra() {
-        ViewUtils.alertTitleButtonYesOrNotListener(CartoesActivity.this,
-                CartoesActivity.this.getResources().getString(R.string.label_pre_pagamento).replace("{valorCompra}", tvValorTotalCarrinho.getText()),
-                (dialog, which) -> {
+        ViewUtils.alertTitleCustomPositiveListener(CartoesActivity.this, "Cancelar", "Confirmar", CartoesActivity.this.getResources().getString(R.string.label_pre_pagamento).replace("{valorCompra}", tvValorTotalCarrinho.getText()), (dialog, which) -> {
             DialogUtils.dismiss();
             dialog.dismiss();
         },(dialog, which) -> {
