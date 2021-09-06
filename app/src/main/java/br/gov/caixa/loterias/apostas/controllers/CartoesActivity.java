@@ -288,12 +288,14 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
     }
 
     private void apresentaAlertaPreCompra() {
-        ViewUtils.alertTitleCustomPositiveListener(CartoesActivity.this, "Cancelar", "Confirmar", CartoesActivity.this.getResources().getString(R.string.label_pre_pagamento).replace("{valorCompra}", tvValorTotalCarrinho.getText()), (dialog, which) -> {
-            DialogUtils.dismiss();
-            dialog.dismiss();
-        },(dialog, which) -> {
-            finish();
-        } );
+        if (!flagVeioMenu) {
+            ViewUtils.alertTitleCustomPositiveListener(CartoesActivity.this, "Cancelar", "Confirmar", CartoesActivity.this.getResources().getString(R.string.label_pre_pagamento).replace("{valorCompra}", tvValorTotalCarrinho.getText()), (dialog, which) -> {
+                DialogUtils.dismiss();
+                dialog.dismiss();
+            },(dialog, which) -> {
+                finish();
+            } );
+        }
     }
 
     @Override
