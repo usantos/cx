@@ -93,7 +93,16 @@ public class CarrinhoActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        limparCarrinhoInicial();
         atualizaParametros();
+    }
+
+    private void limparCarrinhoInicial() {
+        offSet = 0;
+        synchronized (rvListaApostas) {
+            listApostas.removeAll(listApostas);
+            rvListaApostas.getAdapter().notifyDataSetChanged();
+        }
     }
 
     private void postResume(){
@@ -102,7 +111,8 @@ public class CarrinhoActivity extends AppCompatActivity {
         }
         if (ocorrendoValidacao && !onResume) {
             onResume = true;
-            validarCarrinho();
+            ViewUtils.alertTitleButton(CarrinhoActivity.this, R.string.label_atencao, CarrinhoActivity.this.getResources().getString( R.string.label_verificar_valor_carrinho ),
+                    CarrinhoActivity.this.getResources().getString( R.string.ok ) );
         }
         lerCarrinho();
     }
