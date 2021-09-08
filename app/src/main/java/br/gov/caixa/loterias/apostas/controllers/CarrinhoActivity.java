@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.android.volley.VolleyError;
@@ -65,8 +64,7 @@ public class CarrinhoActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private Dialog dialogFavoritar;
     private ExpandableHeightRecyclerView rvListaApostas;
-    private ConstraintLayout clCarrinhosFavoritos;
-    private TextView tvValorTotal, infoValorMinimo;
+    private TextView infoValorMinimo;
     protected View vLoading;
     private EditText etCarrinho;
     private Button btnAvancaPagamento, btnNovaAposta;
@@ -180,18 +178,15 @@ public class CarrinhoActivity extends AppCompatActivity {
 
     private void setaViews() {
         rvListaApostas = findViewById(R.id.erv_apostas_listas);
-        tvValorTotal = findViewById(R.id.tv_valor_total_carrinho);
         infoValorMinimo = findViewById(R.id.tv_info_valor_minimo);
         btnAvancaPagamento = findViewById(R.id.btn_avancar_pagamento);
         btnNovaAposta = findViewById(R.id.btn_nova_aposta);
         toolbar = findViewById(R.id.toolbar);
         btnLimpar = findViewById(R.id.ib_excluir);
         btnFavoritar = findViewById(R.id.ib_favoritar);
-        clCarrinhosFavoritos = findViewById(R.id.cl_carrinhos_favoritos);
         vLoading = findViewById(R.id.pb_loading);
         svCarrinho = findViewById(R.id.sv_carrinho);
 
-        ViewUtils.setMoedaFormatHtml(BigDecimal.ZERO, tvValorTotal);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.title_activity_carrinho)));
@@ -204,7 +199,6 @@ public class CarrinhoActivity extends AppCompatActivity {
         btnNovaAposta.setOnClickListener(v -> clickBotaoFazerNovaAposta());
         btnLimpar.setOnClickListener(v -> clickLimparCarrinhoLinearLayout());
         btnFavoritar.setOnClickListener(v -> dialogFavoritar.show());
-        clCarrinhosFavoritos.setOnClickListener(v -> mandaParaCarrinhosFavoritos());
 
         layoutManager = new LinearLayoutManager(this);
         rvListaApostas.setLayoutManager(layoutManager);
@@ -243,7 +237,6 @@ public class CarrinhoActivity extends AppCompatActivity {
             if (carrinho != null) {
                 if (carrinho.getApostas() != null) {
                     configuraRecyclerViewCarrinhoAposta(offSet);
-                    setValorTotalCarrinho();
                     fragmentSomadorCarrinho();
                 }
             } else {
@@ -256,7 +249,9 @@ public class CarrinhoActivity extends AppCompatActivity {
     }
 
     private void fragmentSomadorCarrinho() {
-        FragmentUtils.startSomadorCarrinhoFragment(getSupportFragmentManager(), somadorCarrinhoFragment, R.id.id_fg_somador_carrinho,"TELA CARRINHO" );
+        if(somadorCarrinhoFragment == null) {
+           somadorCarrinhoFragment = FragmentUtils.startSomadorCarrinhoFragment(getSupportFragmentManager(), somadorCarrinhoFragment, R.id.id_fg_somador_carrinho, "TELA CARRINHO");
+        }
     }
 
     public void lerCarrinhoLocal(Boolean animacao) {
@@ -348,10 +343,6 @@ public class CarrinhoActivity extends AppCompatActivity {
         });
     }
 
-    private void mandaParaCarrinhosFavoritos() {
-        startActivity(new Intent(CarrinhoActivity.this, CarrinhosFavoritosActivity.class));
-    }
-
     protected void clickBotaoFazerNovaAposta() {
         setResult(2);
         finish();
@@ -371,6 +362,7 @@ public class CarrinhoActivity extends AppCompatActivity {
                     }
                     limparCarrinhoAtualizarTela();
                     limparCarrinhosFavoritos();
+                    setValorTotalCarrinho();
                 }
 
                 @Override
@@ -397,6 +389,7 @@ public class CarrinhoActivity extends AppCompatActivity {
         DBLoteriasCrud crud = new DBLoteriasCrud(getApplicationContext());
         crud.deleteAll();
         limparCarrinhoAtualizarTela();
+        setValorTotalCarrinho();
     }
 
     private void limparCarrinhoAtualizarTela() {
@@ -506,8 +499,11 @@ public class CarrinhoActivity extends AppCompatActivity {
     }
 
     private void setValorTotalCarrinho() {
-        ViewUtils.setMoedaFormatHtml(carrinho.getValorTotal(), this.tvValorTotal);
         carrinho.setValorTotal(carrinho.getValorTotal());
+        if(somadorCarrinhoFragment == null){
+            somadorCarrinhoFragment = FragmentUtils.startSomadorCarrinhoFragment(getSupportFragmentManager(), somadorCarrinhoFragment, R.id.id_fg_somador_carrinho, "TELA CARRINHO");
+        }
+        somadorCarrinhoFragment.atualizaValorTotal(carrinho);
     }
 
     private void atualizaParametros() {
