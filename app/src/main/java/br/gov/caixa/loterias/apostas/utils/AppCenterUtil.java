@@ -6,6 +6,7 @@ import com.microsoft.appcenter.analytics.Analytics;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -42,7 +43,12 @@ public final class AppCenterUtil {
             e.printStackTrace();
         }
 
-        Analytics.trackEvent(evento + "_" + DadosUsuarioBO.obterCpf() + "_" + new Date(), properties, Flags.CRITICAL);
+        Analytics.trackEvent(evento + "_" + DadosUsuarioBO.obterCpf() + "_" + getDate(), properties, Flags.CRITICAL);
+    }
+
+    private static String getDate() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+        return simpleDateFormat.format(new Date());
     }
 
 
