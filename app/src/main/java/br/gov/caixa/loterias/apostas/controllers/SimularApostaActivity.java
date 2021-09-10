@@ -58,6 +58,7 @@ import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumInteger;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
@@ -78,6 +79,7 @@ import br.gov.caixa.loterias.apostas.view.fragment.SurpresinhaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SurpresinhaFragment.SurpresinhaFragmentListener;
 import br.gov.caixa.loterias.apostas.view.fragment.SurpresinhaFragment_;
 import br.gov.caixa.loterias.apostas.view.listener.CartelaFragmentListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnSomadorListener;
 
 import static br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity.CARRINHO;
 import static br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity.LER_CARRINHO_LOCAL;
@@ -85,7 +87,7 @@ import static br.gov.caixa.loterias.apostas.utils.Utils.isErroNegocial;
 import static java.lang.String.format;
 
 @EActivity(R.layout.activity_simular_aposta)
-public class SimularApostaActivity<T> extends AppCompatActivity implements OnClickListener, CartelaFragmentListener, SurpresinhaFragmentListener {
+public class SimularApostaActivity<T> extends AppCompatActivity implements OnClickListener, CartelaFragmentListener, SurpresinhaFragmentListener, OnSomadorListener {
 
     private static int RESULT_FINISH = 3;
 
@@ -93,7 +95,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     protected DrawerLayout drawerLayout;
 
     @ViewById
-    protected ConstraintLayout toolBarLoteca;
+    protected ConstraintLayout toolBarLoteca, simularApostaLayoutCarrinhoApostas;
 
     @ViewById
     protected Button simularTelaAposta, surpresinhaTela, qtdNumerosButton, qtdConcursosButton, botaoLimparAposta, botaoAdicionarCompletarCartela, botaoCarrinho;
@@ -103,13 +105,13 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
 
     @ViewById
     protected TextView labelValueSimplesLoteca, labelValueDuplasLoteca, labelValueTriplasLoteca, textoDeNomeInfo, textoSalveEstaAposta, valorApostaCartela, textInfoValorAposta, textViewCarrinhoCartelaCount,
-            textInfoCarrinho;
+            textInfoCarrinho, tvQuantidadeApostas, valorAtualCarrinho;
 
     @ViewById
     protected LinearLayout toolBarSimularAposta;
 
     @ViewById
-    protected RelativeLayout salvarApostaLayout, carrinhoApostas, simularApostaLayoutCarrinhoApostas, viewTabBar;
+    protected RelativeLayout salvarApostaLayout, carrinhoApostas, viewTabBar;
 
     @ViewById
     protected ImageButton btnSalvarAposta;
@@ -423,7 +425,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         return iconStarSalvar;
     }
 
-    public RelativeLayout getSimularApostaLayoutCarrinhoApostas() {
+    public ConstraintLayout getSimularApostaLayoutCarrinhoApostas() {
         return simularApostaLayoutCarrinhoApostas;
     }
 
@@ -594,7 +596,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         ft.replace(R.id.fragmentSimularApostas, cartelaFragment).commit();
-        FragmentUtils.startSomadorCarrinhoFragment(getSupportFragmentManager(), somadorCarrinhoFragment, R.id.id_fg_somador_carrinho, "TELA SIMULAR APOSTA");
+        somadorCarrinhoFragment = FragmentUtils.startSomadorCarrinhoFragment(getSupportFragmentManager(), somadorCarrinhoFragment, R.id.id_fg_somador_carrinho, "TELA SIMULAR APOSTA");
     }
 
     private void configuraActivity() {
@@ -724,8 +726,6 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         return fragmentManager.findFragmentById(R.id.fragmentSimularApostas) instanceof CartelaFragment;
     }
 
-
-
     private void modalTeimosinhas() {
         FirebaseManager.registraEvento(this ,getResources().getString(R.string.evento_entrou_popup_teimosinha));
 
@@ -842,5 +842,20 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         Intent activity = new Intent(SimularApostaActivity.this, TermosUsoActivity.class);
         activity.putExtra(getResources().getString(R.string.extra_ajuda), true);
         startActivity(activity);
+    }
+
+    @Override
+    public void atualizaDados(CarrinhoDTO carrinho) {
+
+        ViewUtils.setMoedaFormatHtml(carrinho.getValorTotal(), valorAtualCarrinho);
+        if (carrinho != null && carrinho.getApostas() != null) {
+            if (carrinho.getApostas().size() <= 999) {
+                tvQuantidadeApostas.setText(String.valueOf(carrinho.getApostas().size()));
+            } else {
+                tvQuantidadeApostas.setText(R.string.mais_999);
+            }
+        }else {
+            tvQuantidadeApostas.setText(R.string.zero);
+        }
     }
 }
