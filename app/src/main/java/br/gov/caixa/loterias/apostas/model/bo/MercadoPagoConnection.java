@@ -23,7 +23,6 @@ import java.io.UnsupportedEncodingException;
 
 import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.controllers.NovaFormaPagamentoActivity;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.Bin;
 import br.gov.caixa.loterias.apostas.utils.DateUtils;
 import br.gov.caixa.loterias.apostas.utils.FirebaseManager;
@@ -48,83 +47,98 @@ public class MercadoPagoConnection {
 				responseObj = jsonArray.getJSONObject(0);
 				String payment_method_id = responseObj.getString(ctx.getResources().getString(R.string.payment_method_id));
 
-				String url2 = BuildConfig.MP_CREATE_TOKEN_URL +  ctx.getResources().getString(R.string.public_key) + BuildConfig.PUBLIC_KEY_MP;
 
-				StringRequest stringRequest = new StringRequest(Request.Method.POST, url2,
-																response1 -> Log.i("VOLLEY", response1),
-																error -> {
-					Log.e("VOLLEY", error.toString());
 
-					String codErro = "";
-					if(error.networkResponse != null && error.networkResponse.data != null){
-						NetworkResponse erroResponse = error.networkResponse;
-						String          stringJson            = new String(erroResponse.data);
-						try {
-							JSONObject obj = new JSONObject(stringJson);
-							obj.getJSONArray("cause");
-							JSONArray array = obj.getJSONArray("cause");
-							JSONObject jobj = (JSONObject) array.get(0);
-							codErro = (String) jobj.get("code");
-						} catch (JSONException e) {
-							e.printStackTrace();
-							FirebaseManager.registraErro(ctx, codErro, "MP_"+url2);
-							listener.onTokenFailure(montarMensagem(codErro));
-						}
-					}
-					FirebaseManager.registraErro(ctx, codErro, "MP_"+url2);
-					listener.onTokenFailure(montarMensagem(codErro));
-				}) {
-					@Override
-					public String getBodyContentType() {
-						return "application/json; charset=utf-8";
-					}
-
-					@Override
-					public byte[] getBody() throws AuthFailureError {
-						try {
-							return jsonObject == null ? null : jsonObject.getBytes("utf-8");
-						} catch (UnsupportedEncodingException uee) {
-							VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", jsonObject, "utf-8");
-							return null;
-						}
-					}
-
-					@Override
-					protected Response<String> parseNetworkResponse(NetworkResponse response) {
-						String responseString = "";
-						if (response != null) {
-							String body = null;
-							try {
-								body = new String(response.data,"UTF-8");
-							} catch (UnsupportedEncodingException e) {
-								e.printStackTrace();
-							}
-							CardTokenResponse cardResponse = new Gson().fromJson(body, CardTokenResponse.class);
-
-							listener.onSucesso(cardResponse.getId(),payment_method_id);
-
-						}
-						return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
-					}
-				};
-				rQueue.add(stringRequest);
+				callWebServiceCreateToken(jsonObject, ctx, listener, rQueue, payment_method_id);
 			} catch (JSONException e) {
 				listener.onTokenFailure(montarMensagem(""));
 				e.printStackTrace();
 			}
 		}, volleyError -> {
-			FirebaseManager.registraErro(ctx, String.valueOf(volleyError.networkResponse.statusCode), "MP_" + url);
-			String msg;
-			if(Bin.fromBytes(volleyError.networkResponse.data).toUtf8().contains(ctx.getResources().getString(R.string.not_found))){
-				msg = montarMensagem("MP_PAYMENT_METHOD_NOT_FOUND");
-			}else {
-				msg = montarMensagem("");
-			}
-			listener.onPaymentFailure(msg);
+			onErroPayment(ctx, listener, url, volleyError);
 		});
 
 		RequestQueue rQueue = Volley.newRequestQueue(ctx);
 		rQueue.add(request);
+	}
+
+	private static void callWebServiceCreateToken(String jsonObject, Context ctx, MercadoPagoListener listener, RequestQueue rQueue, String payment_method_id) {
+		String url2 = BuildConfig.MP_CREATE_TOKEN_URL +  ctx.getResources().getString(R.string.public_key) + BuildConfig.PUBLIC_KEY_MP;
+
+		StringRequest stringRequest = new StringRequest(Request.Method.POST, url2,
+														response1 -> Log.i("VOLLEY", response1),
+														error -> {
+															onErroCreateToken(error, ctx, url2, listener);
+														}) {
+			@Override
+			public String getBodyContentType() {
+				return "application/json; charset=utf-8";
+			}
+
+			@Override
+			public byte[] getBody() throws AuthFailureError {
+				try {
+					return jsonObject == null ? null : jsonObject.getBytes("utf-8");
+				} catch (UnsupportedEncodingException uee) {
+					VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", jsonObject, "utf-8");
+					return null;
+				}
+			}
+
+			@Override
+			protected Response<String> parseNetworkResponse(NetworkResponse response) {
+				String responseString = "";
+				if (response != null) {
+					String body = null;
+					try {
+						body = new String(response.data,"UTF-8");
+						Log.d("'", "'");
+					} catch (UnsupportedEncodingException e) {
+						e.printStackTrace();
+					}
+					CardTokenResponse cardResponse = new Gson().fromJson(body, CardTokenResponse.class);
+
+					listener.onSucesso(cardResponse.getId(),payment_method_id);
+
+				}
+				return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
+			}
+		};
+		rQueue.add(stringRequest);
+	}
+
+	private static void onErroPayment(Context ctx, MercadoPagoListener listener, String url, VolleyError volleyError) {
+		FirebaseManager.registraErro(ctx, String.valueOf(volleyError.networkResponse.statusCode), "MP_" + url);
+		String msg;
+		if(Bin.fromBytes(volleyError.networkResponse.data).toUtf8().contains(ctx.getResources().getString(R.string.not_found))){
+			msg = montarMensagem("MP_PAYMENT_METHOD_NOT_FOUND");
+		}else {
+			msg = montarMensagem("");
+		}
+		listener.onPaymentFailure(msg);
+	}
+
+	private static void onErroCreateToken(VolleyError error, Context ctx, String url2, MercadoPagoListener listener) {
+		Log.e("VOLLEY", error.toString());
+
+		String codErro = "";
+		if(error.networkResponse != null && error.networkResponse.data != null){
+			NetworkResponse erroResponse = error.networkResponse;
+			String          stringJson   = new String(erroResponse.data);
+			try {
+				JSONObject obj = new JSONObject(stringJson);
+				obj.getJSONArray("cause");
+				JSONArray  array = obj.getJSONArray("cause");
+				JSONObject jobj  = (JSONObject) array.get(0);
+				codErro = (String) jobj.get("code");
+			} catch (JSONException e) {
+				e.printStackTrace();
+				FirebaseManager.registraErro(ctx, codErro, "MP_"+url2);
+				listener.onTokenFailure(montarMensagem(codErro));
+			}
+		}
+		FirebaseManager.registraErro(ctx, codErro, "MP_"+url2);
+		listener.onTokenFailure(montarMensagem(codErro));
 	}
 
 	private static String montarMensagem (String codError) {

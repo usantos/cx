@@ -8,6 +8,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.VolleyError;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.microsoft.appcenter.AppCenter;
+import com.microsoft.appcenter.analytics.Analytics;
+import com.microsoft.appcenter.crashes.Crashes;
 
 import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.R;
@@ -29,6 +32,8 @@ public class SplashScreenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
+        
+        AppCenter.start(getApplication(), BuildConfig.APP_CENTER_KEY, Analytics.class, Crashes.class);
 
         FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
         verificaVersao();

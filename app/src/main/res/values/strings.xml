@@ -1016,4 +1016,9 @@
     <string name="msg_conc_nao_aberto">Concurso {num_concurso} ainda não aberto para aposta. Tente novamente mais tarde.</string>
     <string name="carrinho_favorito_ja_adicionado">Este carrinho favorito foi adicionado recentemente ao carrinho de compras. Deseja continuar?</string>
 
+    <!-- App Center -->
+    <string name="app_center_mp_sem_cartao">DEVICE_MP</string>
+    <string name="app_center_mp_cartao_salvo">DEVICE_MP_SAVE</string>
+
+
 </resources>

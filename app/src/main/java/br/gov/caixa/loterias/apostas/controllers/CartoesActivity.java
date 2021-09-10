@@ -38,13 +38,12 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListCartaoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.internals.Bin;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.dao.crud.CarrinhoFavoritoCRUD;
+import br.gov.caixa.loterias.apostas.utils.AppCenterUtil;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
-import br.gov.caixa.loterias.apostas.utils.MercadoPagoUtil;
 import br.gov.caixa.loterias.apostas.utils.RateUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.CartoesRecyclerViewAdapter;
@@ -150,6 +149,7 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
                                                if (tamanhoCVV == 3 || tamanhoCVV == 4){
                                                    preencheDadosPagamento();
                                                    showLoading();
+                                                   AppCenterUtil.registraEvento(getResources().getString(R.string.app_center_mp_cartao_salvo), requestBody);
                                                    MercadoPagoConnection.callWebServicePayment_method(bin ,requestBody, this, listener);
                                                }else{
                                                    ViewUtils.alertTitleButtonPositiveListener(

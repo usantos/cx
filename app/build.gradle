@@ -73,6 +73,7 @@ android {
             buildConfigField "String", "URL_SSO_ACCOUNT", "URL_SSO+\"/auth/realms/internet/account\""
             buildConfigField "String", "MP_PAYMENT_URL", "\"https://api.mercadopago.com/v1/payment_methods/installments?\""
             buildConfigField "String", "MP_CREATE_TOKEN_URL", "\"https://api.mercadopago.com/v1/card_tokens?\""
+            buildConfigField "String", "APP_CENTER_KEY", "\"a4640b29-34da-4726-9224-b48a68e920d9\""
             manifestPlaceholders = [
                     appAuthRedirectScheme: "br.gov.caixa.caixaloterias",
                     hostName             : "br.gov.caixa.caixaloterias",
@@ -98,6 +99,7 @@ android {
             buildConfigField "String", "URL_SSO_ACCOUNT", "URL_SSO+\"/auth/realms/internet/account\""
             buildConfigField "String", "MP_PAYMENT_URL", "\"https://api.mercadopago.com/v1/payment_methods/installments?\""
             buildConfigField "String", "MP_CREATE_TOKEN_URL", "\"https://api.mercadopago.com/v1/card_tokens?\""
+            buildConfigField "String", "APP_CENTER_KEY", "\"dcb5815f-9f49-4a88-818f-053e3a005e20\""
             manifestPlaceholders = [
                     appAuthRedirectScheme: "br.gov.caixa.caixaloterias",
                     hostName             : "br.gov.caixa.caixaloterias",
@@ -114,6 +116,7 @@ dependencies {
     def AAVersion = '4.6.0'
     def supportVersion = '27.1.1'
     def lottieVersion = '3.6.1';
+    def appCenterSdkVersion = '4.1.0'
 
     // implementation deps
     implementation fileTree(include: ['*.jar'], dir: 'libs')
@@ -199,6 +202,10 @@ dependencies {
 
     //Flexbox
     implementation 'com.google.android:flexbox:1.0.0'
+
+    //AppCenter
+    implementation "com.microsoft.appcenter:appcenter-analytics:${appCenterSdkVersion}"
+    implementation "com.microsoft.appcenter:appcenter-crashes:${appCenterSdkVersion}"
 
     // testImplementation deps
     testImplementation 'junit:junit:4.12'
