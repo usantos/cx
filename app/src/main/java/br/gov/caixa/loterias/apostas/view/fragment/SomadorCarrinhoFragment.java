@@ -8,10 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.android.volley.VolleyError;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
@@ -26,6 +28,7 @@ import br.gov.caixa.loterias.apostas.model.dao.DBLoteriasCrud;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.view.listener.OnSomadorListener;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -37,13 +40,14 @@ public class SomadorCarrinhoFragment extends Fragment {
 	public static final String ARG_TELA = "ARG_TELA";
 
 	private  View view;
-	private TextView tvValorTotal;
+	private TextView tvValorTotal, tvQtdApostas;
 
 	private CarrinhoDTO carrinho;
 	private String TAG;
 	private boolean carregouDoServico;
 
 	private Context context;
+	private OnSomadorListener listener;
 
 	public SomadorCarrinhoFragment() {
 		// Required empty public constructor
@@ -66,6 +70,16 @@ public class SomadorCarrinhoFragment extends Fragment {
 	}
 
 	@Override
+	public void onAttach(@NonNull Context context) {
+		super.onAttach(context);
+		try {
+			listener = (OnSomadorListener) context;
+		}catch (Exception e){
+
+		}
+	}
+
+	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		context = getContext();
@@ -85,6 +99,7 @@ public class SomadorCarrinhoFragment extends Fragment {
 							 Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.fragment_somador_carrinho, container, false);
 		tvValorTotal = view.findViewById(R.id.tv_valor_total);
+		tvQtdApostas = view.findViewById(R.id.tv_quantidade_apostas);
 		return view;
 	}
 
@@ -141,5 +156,43 @@ public class SomadorCarrinhoFragment extends Fragment {
 			ViewUtils.setMoedaFormatHtml(carrinho.getValorTotal(), tvValorTotal);
 			Log.d("SOMADOR CARRINHO " + TAG + " -----", tvValorTotal.getText().toString());
 		}
+		if(carrinho != null && tvQtdApostas != null) {
+			if(carrinho.getApostas() != null) {
+				if (carrinho.getApostas().size() <= 999) {
+					tvQtdApostas.setText(String.valueOf(carrinho.getApostas().size()));
+				} else {
+					tvQtdApostas.setText(R.string.mais_999);
+				}
+			}else {
+				tvQtdApostas.setText(R.string.zero);
+			}
+		}
+		showFragmentSomadorCarrinho(carrinho);
+		if (listener != null){
+			listener.atualizaDados(carrinho);
+		}
 	}
+
+	void showFragmentSomadorCarrinho(CarrinhoDTO carrinho){
+		if (carrinho != null && carrinho.getValorTotal().compareTo(BigDecimal.ZERO) == 1){
+			view.setVisibility(View.VISIBLE);
+		}else {
+			view.setVisibility(View.INVISIBLE);
+		}
+	}
+
+	public int getQuantidadeApostas(){
+		if(carrinho != null && carrinho.getApostas() != null){
+			return carrinho.getApostas().size();
+		}
+		return 0;
+	}
+
+	public BigDecimal getValorTotal(){
+		if (carrinho != null){
+			return carrinho.getValorTotal();
+		}
+		return BigDecimal.ZERO;
+	}
+	
 }

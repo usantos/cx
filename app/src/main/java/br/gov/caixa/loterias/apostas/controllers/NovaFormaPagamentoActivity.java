@@ -27,20 +27,17 @@ import br.gov.caixa.loterias.apostas.model.bean.ParametrosPagamento;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
-import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO_;
 import br.gov.caixa.loterias.apostas.model.bo.MercadoPagoConnection;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListCartaoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.internals.Bin;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
+import br.gov.caixa.loterias.apostas.utils.AppCenterUtil;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.MaskEditUtil;
-import br.gov.caixa.loterias.apostas.utils.MercadoPagoUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 
@@ -61,6 +58,8 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity implement
     private MercadoPagoConnection.MercadoPagoListener listener;
 
     private String requestBody, bin;
+
+    private TextView valorTotalCarrinho;
 
     //fragments
     private SomadorCarrinhoFragment somadorCarrinhoFragment;
@@ -127,7 +126,7 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity implement
     private void recebendoInformacoes() {
         try {
             String valor = ViewUtils.getMoedaFormat(CarrinhoSingleton.getInstance().getCarrinho().getValorTotal());
-            TextView valorTotalCarrinho = findViewById(R.id.valorTotalCarrinho);
+            valorTotalCarrinho = findViewById(R.id.valorTotalCarrinho);
             valorTotalCarrinho.setText(valor);
         } catch (Exception e) {
             e.printStackTrace();
@@ -179,6 +178,7 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity implement
                                                     getResources().getString(R.string.cpf),
                                                     DadosUsuarioBO.obterCpf());
                 preencheDadosPagamento();
+                AppCenterUtil.registraEvento(getResources().getString(R.string.app_center_mp_sem_cartao), requestBody);
                 MercadoPagoConnection.callWebServicePayment_method(bin, requestBody, this, listener);
             }
         });
@@ -271,7 +271,18 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity implement
         Boolean isPossiuCartao = bundle.getBoolean(getResources().getString(R.string.textoInfoSelecioneFormaPagamento));
         if (isPossiuCartao) {
             textoInfoSelecioneFormaPagamento.setVisibility(View.GONE);
+        } else {
+            apresentaAlertaPreCompra();
         }
+    }
+
+    private void apresentaAlertaPreCompra() {
+        ViewUtils.alertTitleCustomPositiveListener(NovaFormaPagamentoActivity.this, "Cancelar", "Confirmar", NovaFormaPagamentoActivity.this.getResources().getString(R.string.label_pre_pagamento).replace("{valorCompra}", valorTotalCarrinho.getText()), (dialog, which) -> {
+            DialogUtils.dismiss();
+            dialog.dismiss();
+        },(dialog, which) -> {
+            finish();
+        } );
     }
 
     private void showLoading(){

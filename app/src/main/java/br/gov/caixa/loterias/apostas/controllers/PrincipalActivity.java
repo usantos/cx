@@ -81,7 +81,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.UltimaNotificacaoSingleton;
 import br.gov.caixa.loterias.apostas.model.dao.DBLoteriasHelper;
-import br.gov.caixa.loterias.apostas.model.sp.CarrinhoSP;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
@@ -120,12 +119,12 @@ public class PrincipalActivity extends AppCompatActivity
     @ViewById
     protected Button buttonHomeBet;
     @ViewById
-    protected TextView textViewHomeCountBetsCart, textViewHomeMinimumPurchaseValue, tituloLerBilhetes, textoRepassados, valorRepassesPrincipal, txtVersaoMenu, nav_user;
+    protected TextView textViewHomeMinimumPurchaseValue, tituloLerBilhetes, textoRepassados, valorRepassesPrincipal, txtVersaoMenu, nav_user;
     @ViewById
     protected RelativeLayout relativeContentPrincipal,rlJogoResponsavel,
             relativeBlankView, relativeLayoutContentRapidao,
             relativeLayoutContentLerBilhetes, relativeLayoutContentFavoritas,
-            relativeLayoutContentRepassados, relativeLayoutCarrinho;
+            relativeLayoutContentRepassados;
     @ViewById
     protected LinearLayout atalhoRapidoLoterias;
     @ViewById
@@ -268,7 +267,6 @@ public class PrincipalActivity extends AppCompatActivity
     @Override
     protected void onStart() {
         super.onStart();
-        textViewHomeCountBetsCart.setText(CarrinhoSP.obterQuantidadeApostas());
         if(realizandoLogin){
             DadosUsuarioBO.updateUsuarioLogado(PrincipalActivity.this, false);
             DadosUsuarioBO.limparRegistros();
@@ -639,8 +637,8 @@ public class PrincipalActivity extends AppCompatActivity
         redirecionaJogoResponsavel();
     }
 
-    @Click(R.id.relativeLayoutCarrinho)
-    protected void clickRelativeLayoutCarrinho() {
+    @Click(R.id.id_fg_somador_carrinho)
+    protected void vaiProCarrinho() {
         startActivity(new Intent(PrincipalActivity.this, CarrinhoActivity.class));
     }
 
@@ -660,11 +658,6 @@ public class PrincipalActivity extends AppCompatActivity
             AnimacaoFecharMenuRapido(relativeContentPrincipal);
             startActivity(new Intent(PrincipalActivity.this, LerBilhetesActivity.class));
         }
-    }
-
-    @Click(R.id.apostasConfirmadasBtn)
-    protected void clickApostasConfirmadasBtn() {
-        MinhasApostasActivity_.intent(PrincipalActivity.this).start();
     }
 
     private void AbrirMenusGroup(int groupPosition) {

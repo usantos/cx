@@ -16,11 +16,12 @@ public class FragmentUtils {
 		fragmentTransaction.commit();
 	}
 
-	public static void startSomadorCarrinhoFragment(FragmentManager fm,SomadorCarrinhoFragment fragment, int id, String TAG) {
+	public static SomadorCarrinhoFragment startSomadorCarrinhoFragment(FragmentManager fm,SomadorCarrinhoFragment fragment, int id, String TAG) {
 		if(fragment == null){
 			fragment = SomadorCarrinhoFragment.newInstance(CarrinhoSingleton.getInstance().getCarrinho(), TAG);
 			FragmentUtils.startFragment(fm, id, fragment);
 		}
+		return fragment;
 
 	}
 }

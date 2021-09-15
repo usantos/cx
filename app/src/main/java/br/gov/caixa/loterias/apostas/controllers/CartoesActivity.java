@@ -38,15 +38,15 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListCartaoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.internals.Bin;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.dao.crud.CarrinhoFavoritoCRUD;
+import br.gov.caixa.loterias.apostas.utils.AppCenterUtil;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
-import br.gov.caixa.loterias.apostas.utils.MercadoPagoUtil;
 import br.gov.caixa.loterias.apostas.utils.RateUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostas.view.adapter.CartoesRecyclerViewAdapter;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 import br.gov.caixa.loterias.apostas.view.listener.FormaDePagamentoListener;
@@ -81,6 +81,10 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
         setaViews();
         setaMetodos();
         listener = this;
+
+        callWebservice();
+        atualizaValorTotal();
+        FragmentUtils.startSomadorCarrinhoFragment(getSupportFragmentManager(), somadorCarrinhoFragment, R.id.id_fg_somador_carrinho, "TELA ESCOLHE CARTAO");
     }
 
     private void pegaExtras(){
@@ -150,6 +154,7 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
                                                if (tamanhoCVV == 3 || tamanhoCVV == 4){
                                                    preencheDadosPagamento();
                                                    showLoading();
+                                                   AppCenterUtil.registraEvento(getResources().getString(R.string.app_center_mp_cartao_salvo), requestBody);
                                                    MercadoPagoConnection.callWebServicePayment_method(bin ,requestBody, this, listener);
                                                }else{
                                                    ViewUtils.alertTitleButtonPositiveListener(
@@ -230,10 +235,6 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
     @Override
     protected void onResume() {
         super.onResume();
-
-        callWebservice();
-        atualizaValorTotal();
-        FragmentUtils.startSomadorCarrinhoFragment(getSupportFragmentManager(), somadorCarrinhoFragment, R.id.id_fg_somador_carrinho, "TELA ESCOLHE CARTAO");
     }
 
     private void atualizaValorTotal() {
@@ -261,6 +262,9 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
                     isPossiuCartao = true;
                     configuraRecycler();
                     configuraTelaSemCartoes(false);
+
+                    apresentaAlertaPreCompra();
+
                 }else {
                     isPossiuCartao = false;
                     if (!flagVeioMenu) {
@@ -281,6 +285,17 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
                 DialogUtils.dismiss();
             }
         });
+    }
+
+    private void apresentaAlertaPreCompra() {
+        if (!flagVeioMenu) {
+            ViewUtils.alertTitleCustomPositiveListener(CartoesActivity.this, "Cancelar", "Confirmar", CartoesActivity.this.getResources().getString(R.string.label_pre_pagamento).replace("{valorCompra}", tvValorTotalCarrinho.getText()), (dialog, which) -> {
+                DialogUtils.dismiss();
+                dialog.dismiss();
+            },(dialog, which) -> {
+                finish();
+            } );
+        }
     }
 
     @Override
