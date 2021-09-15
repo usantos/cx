@@ -45,7 +45,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
-import br.gov.caixa.loterias.apostas.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
@@ -91,7 +90,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
 
     @AfterViews
     protected void init() {
-        FirebaseManager.registraEvento(getContext() ,"ENTROU_SURPRESINHA");
+        AppCenterManager.registraEvento("ENTROU_SURPRESINHA");
 
         parentActivity = ((SimularApostaActivity) getActivity());
         if (parentActivity != null) {

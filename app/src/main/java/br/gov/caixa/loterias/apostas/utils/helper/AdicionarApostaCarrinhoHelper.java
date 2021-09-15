@@ -9,7 +9,6 @@ import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang.enums.Enum;
 
 import java.math.BigDecimal;
 import java.text.DateFormat;
@@ -30,7 +29,6 @@ import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
-import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO_;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AgrupadorDTOApostaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
@@ -51,7 +49,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.dao.DBLoteriasCrud;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
-import br.gov.caixa.loterias.apostas.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
 /**
@@ -149,7 +146,7 @@ public class AdicionarApostaCarrinhoHelper {
             @Override
             public void onResponse(AgrupadorDTOApostaDTOResponse result) {
                 DialogUtils.dismiss();
-                FirebaseManager.registraEvento(activity,"ENTROU_ADICAO_APOSTA_CARRINHO_ONLINE");
+                AppCenterManager.registraEvento("ENTROU_ADICAO_APOSTA_CARRINHO_ONLINE");
                 if (CarrinhoSingleton.getInstance().getCarrinho() != null &&
                         CarrinhoSingleton.getInstance().getCarrinho().getApostas() != null) {
                         CarrinhoSingleton.getInstance().getCarrinho().getApostas().add(aposta);
@@ -178,7 +175,7 @@ public class AdicionarApostaCarrinhoHelper {
             @Override
             public void onResponse(AgrupadorDTOApostaDTOResponse result) {
                 DialogUtils.dismiss();
-                FirebaseManager.registraEvento(activity,"ENTROU_ADICAO_APOSTA_CARRINHO_ONLINE");
+                AppCenterManager.registraEvento("ENTROU_ADICAO_APOSTA_CARRINHO_ONLINE");
                 CarrinhoSingleton.getInstance().getCarrinho().getApostas().add(aposta);
                 activity.startActivity(new Intent(activity, CarrinhoActivity.class));
             }
@@ -355,7 +352,7 @@ public class AdicionarApostaCarrinhoHelper {
                     }
                 }
             }
-            FirebaseManager.registraEvento(activity,"ENTROU_ADICAO_APOSTA_CARRINHO_OFFLINE");
+            AppCenterManager.registraEvento("ENTROU_ADICAO_APOSTA_CARRINHO_OFFLINE");
 
 
             return Boolean.TRUE;

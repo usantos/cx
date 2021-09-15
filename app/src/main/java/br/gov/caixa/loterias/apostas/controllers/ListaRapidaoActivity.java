@@ -30,7 +30,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDa
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResourceResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
-import br.gov.caixa.loterias.apostas.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.CarrinhoApostasListViewRapidaoAdapter;
@@ -62,7 +61,7 @@ public class ListaRapidaoActivity extends AppCompatActivity {
         btnConfiguracao = findViewById(R.id.ib_configuracao_rpd);
 
         valorTotalCarrinhoRapidao = findViewById(R.id.tv_valor_total_carrinho);
-        FirebaseManager.registraEvento(ListaRapidaoActivity.this ,getResources().getString(R.string.evento_entrou_lista_apostas_rapidao));
+        AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_lista_apostas_rapidao));
 
         ViewUtils.organizaTabLayout(this, R.id.carrinhoRapidaoMainLayout, R.id.apostasListaRecycleViewRapidao, R.id.carrinhoRapidaoScrollView);
 
@@ -186,7 +185,7 @@ public class ListaRapidaoActivity extends AppCompatActivity {
             @Override
             public void onResponse(CarrinhoDTOResponse response) {
                 loadViewProgress.dismiss();
-                FirebaseManager.registraEvento(ListaRapidaoActivity.this ,"GEROU_LISTA_APOSTAS_RAPIDAO");
+                AppCenterManager.registraEvento("GEROU_LISTA_APOSTAS_RAPIDAO");
 
                 CarrinhoSingleton.getInstance().setCarrinho(response.getPayload());
                 apostas = null;

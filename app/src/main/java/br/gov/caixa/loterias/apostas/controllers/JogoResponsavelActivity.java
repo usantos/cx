@@ -1,7 +1,6 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
 import android.graphics.Typeface;
-
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -12,7 +11,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.fragment.BottomSheetFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.JogoResponsavelApostadorFragment;
@@ -76,7 +74,7 @@ public class JogoResponsavelActivity extends AppCompatActivity {
         });
 
         ivDuvidas.setOnClickListener(view -> {
-            FirebaseManager.registraEvento(this, getResources().getString(R.string.evento_jr_duvida));
+            AppCenterManager.registraEvento( getResources().getString(R.string.evento_jr_duvida));
             setaBottomSheet();
         });
 

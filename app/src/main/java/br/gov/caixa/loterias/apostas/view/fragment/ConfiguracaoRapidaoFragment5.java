@@ -15,7 +15,6 @@ import java.util.List;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.NumerosSelecionadosRapidao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.RapidaoConfigSingleton;
-import br.gov.caixa.loterias.apostas.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostas.view.adapter.NumeroSelecionadoRapidaoAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
 
@@ -91,7 +90,7 @@ public class ConfiguracaoRapidaoFragment5 extends Fragment implements NumeroSele
         listaNumerosProibidos = rapidaoConfigSingleton.getRapidaoConfig().getPrognosticosProibidos();
         numerosLista = rapidaoConfigSingleton.getRapidaoConfig().getPrognosticosObrigatorios();
 
-        FirebaseManager.registraEvento(getActivity(),"ENTROU_SELECIONA_NUMEROS_OBRIGATORIOS_CONFIG_RAPIDAO");
+        AppCenterManager.registraEvento("ENTROU_SELECIONA_NUMEROS_OBRIGATORIOS_CONFIG_RAPIDAO");
         tvTitulo.setText(getString(R.string.conf_rapd_obrigatorios_titulo));
         tvDescricao.setText(getString(R.string.conf_rapd_obrigatorios_desc));
 

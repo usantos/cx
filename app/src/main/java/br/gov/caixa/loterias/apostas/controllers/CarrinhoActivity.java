@@ -41,8 +41,8 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResourceResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.dao.DBLoteriasCrud;
 import br.gov.caixa.loterias.apostas.model.dao.crud.CarrinhoFavoritoCRUD;
+import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
-import br.gov.caixa.loterias.apostas.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.SessaoUsuarioUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -136,7 +136,7 @@ public class CarrinhoActivity extends AppCompatActivity {
             carrinho = null;
         }
         if (lerCarrinhoLocal) {
-            FirebaseManager.registraEvento(CarrinhoActivity.this, getResources().getString(R.string.evento_carrinho_offline));
+            AppCenterManager.registraEvento( getResources().getString(R.string.evento_carrinho_offline));
             lerCarrinhoLocal(true);
         } else {
             atualizaLayout(offSet);
@@ -365,7 +365,7 @@ public class CarrinhoActivity extends AppCompatActivity {
             apostaBO.limparCarrinho(new RequestListener<CarrinhoDTOResponse>() {
                 @Override
                 public void onResponse(CarrinhoDTOResponse result) {
-                    FirebaseManager.registraEvento(CarrinhoActivity.this, getResources().getString(R.string.evento_limpou_carrinho_online));
+                    AppCenterManager.registraEvento(getResources().getString(R.string.evento_limpou_carrinho_online));
                     DialogUtils.dismiss();
                     if (result.getRedirect() != null) {
                         RedirectNetwork.checkRedirectSucesso(result.getRedirect(), CarrinhoActivity.this);
@@ -395,7 +395,7 @@ public class CarrinhoActivity extends AppCompatActivity {
     }
 
     private void deleteCarrinhoLocal() {
-        FirebaseManager.registraEvento(CarrinhoActivity.this, getResources().getString(R.string.evento_limpou_carrinho_offline));
+        AppCenterManager.registraEvento( getResources().getString(R.string.evento_limpou_carrinho_offline));
         DBLoteriasCrud crud = new DBLoteriasCrud(getApplicationContext());
         crud.deleteAll();
         limparCarrinhoAtualizarTela();
@@ -434,7 +434,7 @@ public class CarrinhoActivity extends AppCompatActivity {
             public void onResponse(CarrinhoDTOResponse response) {
                 vLoading.setVisibility(View.GONE);
                 DialogUtils.dismiss();
-                FirebaseManager.registraEvento(CarrinhoActivity.this, getResources().getString(R.string.evento_entrou_carrinho_online));
+                AppCenterManager.registraEvento( getResources().getString(R.string.evento_entrou_carrinho_online));
                 if (response.getRedirect() != null) {
                     RedirectNetwork.checkRedirectSucesso(response.getRedirect(), CarrinhoActivity.this);
                 }

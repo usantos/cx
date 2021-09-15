@@ -2,7 +2,6 @@ package br.gov.caixa.loterias.apostas.view.fragment;
 
 
 import android.os.Bundle;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.utils.FirebaseManager;
 
 
 
@@ -33,7 +31,7 @@ public class JogoResponsavelApostadorFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        FirebaseManager.registraEvento(getActivity(), getActivity().getResources().getString(R.string.evento_jr_aba_3));
+        AppCenterManager.registraEvento( getActivity().getResources().getString(R.string.evento_jr_aba_3));
     }
 
 }

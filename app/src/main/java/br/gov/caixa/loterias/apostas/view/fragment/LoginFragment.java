@@ -35,7 +35,6 @@ import br.gov.caixa.loterias.apostas.model.dao.DBLoteriasCrud;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
-import br.gov.caixa.loterias.apostas.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
 
@@ -58,7 +57,7 @@ public class LoginFragment extends Fragment {
 
         Button buttonAposte = v.findViewById(R.id.buttonAposteAgora);
         buttonAposte.setOnClickListener(v1 -> {
-            FirebaseManager.registraEvento(getContext() ,"ENTROU_OPCAO_DEGUSTAR");
+            AppCenterManager.registraEvento("ENTROU_OPCAO_DEGUSTAR");
             KeycloakBO_.getInstance_(getActivity()).limparSessao(getActivity());
 
             DadosUsuarioBO.updateFecharIntroducao(getActivity(), true);
@@ -71,7 +70,7 @@ public class LoginFragment extends Fragment {
         txtVersao.setText("v. "+ BuildConfig.VERSION_NAME);
 
         buttonLogin.setOnClickListener(v12 -> {
-            FirebaseManager.registraEvento(getContext() ,"ENTROU_LOGIN");
+            AppCenterManager.registraEvento("ENTROU_LOGIN");
 
             DadosUsuarioBO.updateFecharIntroducao(getActivity(), true);
             connectKeycloak();

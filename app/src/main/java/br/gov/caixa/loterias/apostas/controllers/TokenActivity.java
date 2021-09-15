@@ -35,7 +35,6 @@ import br.gov.caixa.loterias.apostas.model.dao.DBLoteriasCrud;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.utils.AuthorizationServiceFactory;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
-import br.gov.caixa.loterias.apostas.utils.FirebaseManager;
 
 public class TokenActivity extends AppCompatActivity {
 
@@ -132,7 +131,7 @@ public class TokenActivity extends AppCompatActivity {
             DadosUsuarioBO.salvarNomeUsuairo(jsonObject.getString(getResources().getString(R.string.name)));
             KeycloakBO_.getInstance_(TokenActivity.this).setAccessToken(response.accessToken);
             KeycloakBO_.getInstance_(TokenActivity.this).setRefreshToken(response.refreshToken);
-            FirebaseManager.registraEvento(TokenActivity.this , getResources().getString(R.string.evento_efetuou_login_sucesso));
+            AppCenterManager.registraEvento(getResources().getString(R.string.evento_efetuou_login_sucesso));
         } catch (JSONException e) {
             e.printStackTrace();
         }

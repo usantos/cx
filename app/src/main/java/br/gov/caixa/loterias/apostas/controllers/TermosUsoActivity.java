@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -35,7 +34,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListSecaoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResourceResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TermoDeUsoDTOResponse;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
-import br.gov.caixa.loterias.apostas.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.ItemDuvidaAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView;
@@ -223,7 +221,7 @@ public class TermosUsoActivity extends AppCompatActivity {
                 termoHtml = response.getPayload().getConteudo();
                 webViewConteudo.loadData(termoHtml, getResources().getString(R.string.text_html_charset_utf_8), getResources().getString(R.string.utf_8));
                 selectTermoUso();
-                FirebaseManager.registraEvento(TermosUsoActivity.this ,getResources().getString(R.string.evento_entrou_termos_de_uso));
+                AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_termos_de_uso));
             }
 
             @Override
@@ -341,7 +339,7 @@ public class TermosUsoActivity extends AppCompatActivity {
                     }
                     secaoDuvidas = response.getPayload();
                     createRecyclerView();
-                    FirebaseManager.registraEvento(TermosUsoActivity.this ,getResources().getString(R.string.evento_entrou_duvidas));
+                    AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_duvidas));
                 }
 
                 @Override
