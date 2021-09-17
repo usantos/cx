@@ -644,8 +644,6 @@
     <string name="selecione_a_aposta_realizada">Selecione a aposta realizada:</string>
     <string name="acompanhe_todas_as_compras_que_voc_j_realizou_em_nosso_aplicativo">Acompanhe todas as compras que você já realizou em nosso aplicativo.</string>
     <string name="selecione_o_m_s">Selecione o mês</string>
-    <string name="compras_mais_antigas_podem_ser_consultadas_no_site">Compras mais antigas podem ser consultadas no site</string>
-    <string name="www_loteriasonline_caixa_gov_br">www.loteriasonline.caixa.gov.br</string>
     <string name="o_seu_pacote_de_apostas_prontas_para_serem_adquiridas_em_um_toque">O seu pacote de apostas prontas para serem adquiridas em um toque</string>
     <string name="n_meros_obrigat_rios">Números obrigatórios</string>
     <string name="selecione_os_n_meros_que_dever_o_aparecer_em_suas_apostas">Selecione os números que deverão aparecer em suas apostas.</string>
@@ -829,7 +827,6 @@
     <string name="um">1</string>
     <string name="posicione_linha_codigo_barras">Posicione a linha abaixo sobre o código de barras e aguarde a focalização da câmera.</string>
     <string name="response">Response</string>
-    <string name="compras_mais_antigas">Compras mais antigas podem ser consultadas no site</string>
     <string name="evento_entrou_lista_compras">ENTROU_LISTA_COMPRAS</string>
     <string name="de_espacado">&#160;de&#160;</string>
     <string name="evento_entrou_lista_apostas_rapidao">ENTROU_LISTA_APOSTAS_RAPIDAO</string>
