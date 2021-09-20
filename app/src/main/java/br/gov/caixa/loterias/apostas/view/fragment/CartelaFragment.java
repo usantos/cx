@@ -73,6 +73,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PartidaLotecaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PartidaLotogolDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
+import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.Utils;
@@ -779,7 +780,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 					public void onResponse(CompletaJogoRsp response) {
 						DialogUtils.dismiss();
 						isNumerosAleatoriosShake = false;
-						AppCenterManager.registraEvento( "ENTROU_COMPLETAR_COM_NUMEROS_ALEATORIOS");
+						AppCenterManager.registraEvento("ENTROU_COMPLETAR_COM_NUMEROS_ALEATORIOS");
 						isEcolhaTimeBtnAtivado = true;
 						dezenasSelecionadas.clear();
 						dezenasSelecionadas.addAll(response.getPayload());

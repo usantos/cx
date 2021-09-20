@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.fragment.BottomSheetFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.JogoResponsavelApostadorFragment;
@@ -74,7 +75,7 @@ public class JogoResponsavelActivity extends AppCompatActivity {
         });
 
         ivDuvidas.setOnClickListener(view -> {
-            AppCenterManager.registraEvento( getResources().getString(R.string.evento_jr_duvida));
+            AppCenterManager.registraEvento(getResources().getString(R.string.evento_jr_duvida));
             setaBottomSheet();
         });
 

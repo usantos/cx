@@ -24,6 +24,7 @@ import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListCartaoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
+import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.listener.FormaDePagamentoListener;
@@ -103,7 +104,7 @@ public class CartoesRecyclerViewAdapter extends RecyclerView.Adapter<CartoesRecy
                         DadosUsuarioBO_.getInstance_(context).deleteCartao(valoresList.get(getAdapterPosition()).getIdCartao(), new RequestListener<ListCartaoDTOResponse>() {
                             @Override
                             public void onResponse(ListCartaoDTOResponse result) {
-                                AppCenterManager.registraEvento( context.getResources().getString(R.string.evento_efetuou_exclusao_forma_pagamento_sucesso));
+                                AppCenterManager.registraEvento(context.getResources().getString(R.string.evento_efetuou_exclusao_forma_pagamento_sucesso));
                                 DialogUtils.dismiss();
                                 if(result != null && result.getRedirect() != null){
                                     RedirectNetwork.checkRedirectSucesso(result.getRedirect(), ((CartoesActivity)context));

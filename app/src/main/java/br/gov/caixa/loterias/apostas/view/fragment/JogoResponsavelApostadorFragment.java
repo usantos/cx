@@ -11,8 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import br.gov.caixa.loterias.apostas.R;
-
-
+import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 
 
 public class JogoResponsavelApostadorFragment extends Fragment {
@@ -31,7 +30,7 @@ public class JogoResponsavelApostadorFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        AppCenterManager.registraEvento( getActivity().getResources().getString(R.string.evento_jr_aba_3));
+        AppCenterManager.registraEvento(getActivity().getResources().getString(R.string.evento_jr_aba_3));
     }
 
 }
