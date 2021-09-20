@@ -28,6 +28,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.Bin;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.GsonRequest;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.SilceConnection;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.SilceSingleton;
+import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.AuthorizationServiceFactory;
 
@@ -112,7 +113,7 @@ public class BaseBO {
         ErrorResponse   errorResponse = transformaErroEmErrorResponse(error);
         NetworkResponse response      = error.networkResponse;
         if(response != null && response.statusCode == 500){
-           AppCenterManager.registraErro(errorResponse.getCodigo(),getEndpoint(request));
+           AppCenterManager.registraErro(errorResponse.getCodigo(), getEndpoint(request));
         }
     }
 

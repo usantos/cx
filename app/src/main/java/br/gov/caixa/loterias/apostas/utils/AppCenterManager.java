@@ -22,7 +22,9 @@ public final class AppCenterManager {
     }
 
     public static void registraErro(String codigoErro, String endpoint) {
-
+        Map<String, String> propeties = new HashMap();
+        propeties.put("CODIGOERROO + ENDPOINT", codigoErro + "-" + endpoint);
+        Analytics.trackEvent("ERRO_WEBSERVICE", propeties, Flags.CRITICAL);
     }
 
     public static void registraEventoDeviceMP(String evento, String jsonString) {
