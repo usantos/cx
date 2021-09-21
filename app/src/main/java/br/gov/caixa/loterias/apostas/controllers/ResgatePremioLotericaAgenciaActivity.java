@@ -1,5 +1,6 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
+import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -68,23 +69,12 @@ public class ResgatePremioLotericaAgenciaActivity extends SettingToolbarActivity
 
     private void atualizaLayout(Boolean isLoterica) {
         if (isLoterica) {
-            setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.title_activity_resultado_ler_bilhetes)));
+            Intent it = new Intent(ResgatePremioLotericaAgenciaActivity.this, ResgatePremioLotericaActivity.class);
+            it.putExtra("DETALHES", detalhesPremioDTO);
+            it.putExtra("COMPROVANTE", comprovante);
+            it.putExtra("CODIGO_RESGATE", codigoResgateDTO);
+            startActivity(new Intent(it));
 
-            categoriaLayout.setVisibility(View.VISIBLE);
-            categoriaText.setText(R.string.label_loterica_minusculo);
-            buttonGerarPDF.setVisibility(View.GONE);
-            duploResgateRelativeLayout.setVisibility(View.GONE);
-            informacaoTopicoUmText.setText(R.string.label_diriga_unidade_loterica_preferencia);
-            informacaoTopicoDoisText.setText(R.string.label_apresente_qr_code_acima);
-            informacaoTopicoTresText.setText(R.string.label_digite_cpf);
-
-            if (StringUtils.isNotEmpty(codigoResgateDTO.getQrCode())) {
-                try {
-                    generateQrCode();
-                } catch (WriterException e) {
-                    e.printStackTrace();
-                }
-            }
         } else {
             setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.label_agencia_bold)));
 
@@ -111,11 +101,5 @@ public class ResgatePremioLotericaAgenciaActivity extends SettingToolbarActivity
         duploResgateRelativeLayout.setOnClickListener(view -> {
             atualizaLayout(true);
         });
-    }
-
-    private void generateQrCode() throws WriterException {
-        QRGEncoder qrgEncoder = new QRGEncoder(codigoResgateDTO.getQrCode(), null, QRGContents.Type.TEXT, ViewUtils.getSmallSizeQrCode(this));
-        qrCodeApostaImage.setImageBitmap(qrgEncoder.encodeAsBitmap());
-        qrCodeApostaImage.setVisibility(View.VISIBLE);
     }
 }
