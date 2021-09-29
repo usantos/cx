@@ -27,6 +27,7 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
+import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
@@ -279,12 +280,11 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
 					@Override
 					public void onErrorResponse(VolleyError error) {
 						loadViewProgress.dismiss();
-						if (error.networkResponse != null && error.networkResponse.statusCode != 401) {
-							RedirectNetwork.checkRedirect(error, parentActivity);
-
-						} else {
+						if (MensagensNetwork.isUnauthorizedError(error)) {
 							deletarApostaBaseLocal(aposta, Boolean.TRUE);
 							parentActivity.deletaAposta(positionAposta, aposta);
+						}else {
+							RedirectNetwork.checkRedirect(error, parentActivity);
 						}
 					}
 				});

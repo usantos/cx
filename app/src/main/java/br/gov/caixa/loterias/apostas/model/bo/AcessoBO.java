@@ -89,6 +89,6 @@ public class AcessoBO extends BaseBO {
                 listener.getErrorListener(), headers);
 
         request.setErrorListener(interceptError(request, headers, listener));
-        silceConnection.request(request);
+        silceConnection.request(request, listener);
     }
 }

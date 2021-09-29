@@ -51,7 +51,7 @@ public class DadosCorporativosBO extends BaseBO{
                             UnidadeFederacaoDTOResponse.class,
                             listener.getSilceListener(),
                             listener.getErrorListener(),
-                            new LinkedHashMap<>());
+                            new LinkedHashMap<>(), listener);
     }
 
     public void municipios(String idUf, final RequestListener<MunicipioDTOResponse> listener) {
@@ -62,7 +62,7 @@ public class DadosCorporativosBO extends BaseBO{
                             MunicipioDTOResponse.class,
                             listener.getSilceListener(),
                             listener.getErrorListener(),
-                            new LinkedHashMap<>());
+                            new LinkedHashMap<>(), listener);
     }
 
     public void bairros(String idUf, String numeroCidade,
@@ -88,7 +88,7 @@ public class DadosCorporativosBO extends BaseBO{
                             BairroDTOResponse.class,
                             listener.getSilceListener(),
                             listener.getErrorListener(),
-                            new LinkedHashMap<>());
+                            new LinkedHashMap<>(), listener);
     }
 
     public void termo(final RequestListener<TermoDeUsoDTOResponse> listener) {
@@ -97,7 +97,7 @@ public class DadosCorporativosBO extends BaseBO{
                             TermoDeUsoDTOResponse.class,
                             listener.getSilceListener(),
                             listener.getErrorListener(),
-                            new LinkedHashMap<>());
+                            new LinkedHashMap<>(), listener);
     }
 
     public void repasses(final RequestListener<RepassometroDTOResponse> listener) {
@@ -106,7 +106,7 @@ public class DadosCorporativosBO extends BaseBO{
                             RepassometroDTOResponse.class,
                             listener.getSilceListener(),
                             listener.getErrorListener(),
-                            new LinkedHashMap<>());
+                            new LinkedHashMap<>(), listener);
     }
 
     public void parametrosSimulacao(final RequestListener<ParametrosSimulacaoResponse> listener) {
@@ -118,14 +118,14 @@ public class DadosCorporativosBO extends BaseBO{
                                                                     listener.getErrorListener(),
                                                                     getHeader());
             request.setErrorListener(interceptError(request, getHeader(), listener));
-            silceConnection.request(request);
+            silceConnection.request(request, listener);
         }else{
             silceConnection.get(ServerMethods.PARAM_SIMULACAO_PATH,
                                 new LinkedHashMap<>(),
                                 ParametrosSimulacaoResponse.class,
                                 listener.getSilceListener(),
                                 listener.getErrorListener(),
-                                getHeader());
+                                getHeader(), listener);
         }
     }
 
@@ -138,7 +138,7 @@ public class DadosCorporativosBO extends BaseBO{
                                                                 listener.getErrorListener(),
                                                                 getHeader());
         request.setErrorListener(interceptError(request, getHeader(), listener));
-        silceConnection.request(request);
+        silceConnection.request(request, listener);
     }
 
     public void salvarApostaFavorita(final ApostaFavoritaDTO aposta,
@@ -150,7 +150,7 @@ public class DadosCorporativosBO extends BaseBO{
                                                                 listener.getErrorListener(),
                                                                 getHeader());
         request.setErrorListener(interceptError(request, getHeader(), listener));
-        silceConnection.request(request);
+        silceConnection.request(request, listener);
     }
 
     public void buscarLotericasHabilitadas(final RequestListener<ListDTOEnumIntegerResponse> listener) {
@@ -159,7 +159,7 @@ public class DadosCorporativosBO extends BaseBO{
                             ListDTOEnumIntegerResponse.class,
                             listener.getSilceListener(),
                             listener.getErrorListener(),
-                            new LinkedHashMap<>());
+                            new LinkedHashMap<>(), listener);
     }
 
     public void buscarLotericasCepOrBairroDTO(String cep,
@@ -183,7 +183,7 @@ public class DadosCorporativosBO extends BaseBO{
                             LotericaDTOResponse.class,
                             listener.getSilceListener(),
                             listener.getErrorListener(),
-                            new LinkedHashMap<>());
+                            new LinkedHashMap<>(), listener);
     }
 
     public void buscarLoteriasCodigoCompleto(String codigoCompleto, final RequestListener<LotericaCodigoWrapperResponse> listener) {
@@ -195,7 +195,7 @@ public class DadosCorporativosBO extends BaseBO{
                             LotericaCodigoWrapperResponse.class,
                             listener.getSilceListener(),
                             listener.getErrorListener(),
-                            new LinkedHashMap<>());
+                            new LinkedHashMap<>(), listener);
     }
 
     public void validaTermoAceito(final RequestListener<ResourceResponse> listener) {
@@ -206,7 +206,7 @@ public class DadosCorporativosBO extends BaseBO{
                                                                     listener.getErrorListener(),
                                                                     getHeader());
         request.setErrorListener(interceptError(request, getHeader(), listener));
-        silceConnection.request(request);
+        silceConnection.request(request, listener);
     }
 
     public void aceiteTermo(final RequestListener<ResourceResponse> listener) {
@@ -218,7 +218,7 @@ public class DadosCorporativosBO extends BaseBO{
                                                                 listener.getErrorListener(),
                                                                 getHeader());
         request.setErrorListener(interceptError(request, getHeader(), listener));
-        silceConnection.request(request);
+        silceConnection.request(request, listener);
     }
 
     public void secaoDuvidas(final RequestListener<ListSecaoDTOResponse> listener) {
@@ -229,7 +229,7 @@ public class DadosCorporativosBO extends BaseBO{
                                                                 listener.getErrorListener(),
                                                                 new LinkedHashMap<>());
         request.setErrorListener(interceptError(request, new LinkedHashMap<>(), listener));
-        silceConnection.request(request);
+        silceConnection.request(request, listener);
     }
 
     public void duvidasPerguntasRespostas(Integer secao, final RequestListener<ListSecaoDTOResponse> listener) {
@@ -243,6 +243,6 @@ public class DadosCorporativosBO extends BaseBO{
                                                                 listener.getErrorListener(),
                                                                 getHeader());
         request.setErrorListener(interceptError(request, getHeader(), listener));
-        silceConnection.request(request);
+        silceConnection.request(request, listener);
     }
 }
