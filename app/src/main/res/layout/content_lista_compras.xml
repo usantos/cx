@@ -11,8 +11,7 @@
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollViewContentViewCompras"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="73dp">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -77,32 +76,4 @@
                 android:visibility="gone" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="73dp"
-        android:layout_alignParentBottom="true"
-        android:background="@color/branco"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/textBottomInformacaoTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/arialmt"
-            android:paddingTop="10dp"
-            android:text="@string/compras_mais_antigas_podem_ser_consultadas_no_site"
-            android:textAlignment="center"
-            android:textColor="@color/cinza"
-            android:textSize="14.2sp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/futura_std_bold"
-            android:text="@string/www_loteriasonline_caixa_gov_br"
-            android:textAlignment="center"
-            android:textColor="@color/amareloQueimado"
-            android:textSize="14.2sp" />
-    </LinearLayout>
 </RelativeLayout>

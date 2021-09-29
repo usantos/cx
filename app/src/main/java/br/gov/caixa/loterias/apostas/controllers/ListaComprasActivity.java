@@ -135,8 +135,6 @@ public class ListaComprasActivity extends AppCompatActivity {
     private void setaViews(){
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        TextView textBottomInformacaoTextView = findViewById(R.id.textBottomInformacaoTextView);
-        textBottomInformacaoTextView.setText(getResources().getString(R.string.compras_mais_antigas));
         setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.texto_futura_bold, getString(R.string.title_activity_lista_compras))));
         scrollViewContentViewCompras = findViewById(R.id.scrollViewContentViewCompras);
 
