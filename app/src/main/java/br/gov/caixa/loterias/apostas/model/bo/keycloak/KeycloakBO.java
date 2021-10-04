@@ -109,7 +109,7 @@ public class KeycloakBO {
         if (getAccessToken() != null) {
             Long exp = Long.parseLong(getExpToken());
             Long tsLong = System.currentTimeMillis()/1000;
-            return (exp - tsLong) < 0;
+            return (exp - tsLong) < 30;
         }
         return false;
     }
