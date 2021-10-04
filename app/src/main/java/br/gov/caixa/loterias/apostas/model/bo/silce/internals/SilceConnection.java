@@ -78,6 +78,8 @@ public class SilceConnection {
             @Override
             public void successRefresh() {
                 try {
+                    KeycloakBO keycloakBO = KeycloakBO_.getInstance_(Aplicacao.application.getApplicationContext());
+                    req.getHeaders().put("Authorization", "Bearer " + keycloakBO.getAccessToken());
                     req.getHeaders().put("cookie", "security=false");
                     req.getHeaders().put("Subcanal", "3");
                 } catch (Exception e) {
