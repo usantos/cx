@@ -13,11 +13,21 @@ import java.util.Map;
 
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 
-public final class AppCenterUtil {
+public final class AppCenterManager {
     private static final int MAX_VALUE = 120;
     private static final int MAX_LINES = 20;
 
-    public static void registraEvento(String evento, String jsonString) {
+    public static void registraEvento(String title) {
+        Analytics.trackEvent(title);
+    }
+
+    public static void registraErro(String codigoErro, String endpoint) {
+        Map<String, String> propeties = new HashMap();
+        propeties.put("CODIGOERROO + ENDPOINT", codigoErro + "-" + endpoint);
+        Analytics.trackEvent("ERRO_WEBSERVICE", propeties, Flags.CRITICAL);
+    }
+
+    public static void registraEventoDeviceMP(String evento, String jsonString) {
         Map<String, String> properties = new HashMap<>();
         try {
             JSONObject          jsonObject = new JSONObject(jsonString);

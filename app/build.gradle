@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
-apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: 'org.sonarqube'
 
 android {
@@ -17,8 +16,8 @@ android {
         targetSdkVersion 30
 
         //version code = minSdkVersion + versionName(sem pontuação) + versão interna
-        versionCode 211059001
-        versionName "1.0.59"
+        versionCode 211060001
+        versionName "1.0.60"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -193,9 +192,6 @@ dependencies {
     //Apache commons
     implementation 'org.apache.commons:commons-collections4:4.1'
 
-    //Crashlytics
-    implementation 'com.google.firebase:firebase-crashlytics:17.2.2'
-    implementation 'com.google.firebase:firebase-analytics:17.6.0'
 
     //Segmented Control
     implementation 'info.hoang8f:android-segmented:1.0.6'

@@ -26,7 +26,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDa
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.dao.DBLoteriasCrud;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
-import br.gov.caixa.loterias.apostas.utils.FirebaseManager;
+import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.listener.OnSomadorListener;
 
@@ -128,7 +128,7 @@ public class SomadorCarrinhoFragment extends Fragment {
 		apostaBO.buscaCarrinho(new RequestListener<CarrinhoDTOResponse>() {
 			@Override
 			public void onResponse(CarrinhoDTOResponse response) {
-				FirebaseManager.registraEvento(context, context.getResources().getString(R.string.evento_entrou_carrinho_online));
+				AppCenterManager.registraEvento(context.getResources().getString(R.string.evento_entrou_carrinho_online));
 				carrinho = response.getPayload();
 				List<IdentificaoDeUmaApostaDas8Modalidades> apostasLocal = getApostasLocal();
 				if(apostasLocal != null && apostasLocal.size() >  0){

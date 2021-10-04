@@ -28,9 +28,9 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.Bin;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.GsonRequest;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.SilceConnection;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.SilceSingleton;
+import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.AuthorizationServiceFactory;
-import br.gov.caixa.loterias.apostas.utils.FirebaseManager;
 
 /**
  * Created by pmotta on 21/03/2018.
@@ -113,7 +113,7 @@ public class BaseBO {
         ErrorResponse   errorResponse = transformaErroEmErrorResponse(error);
         NetworkResponse response      = error.networkResponse;
         if(response != null && response.statusCode == 500){
-            FirebaseManager.registraErro(context,errorResponse.getCodigo(),getEndpoint(request));
+           AppCenterManager.registraErro(errorResponse.getCodigo(), getEndpoint(request));
         }
     }
 

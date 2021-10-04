@@ -3,7 +3,6 @@ package br.gov.caixa.loterias.apostas.controllers;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -42,9 +41,9 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IndicadorSurpresinha;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacoesApostaEnum;
+import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataFiltro;
-import br.gov.caixa.loterias.apostas.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostas.utils.Tupla;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.FiltroApostasAdapter;
@@ -167,7 +166,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
             @Override
             public void onResponse(AgrupadorApostaCompraDTOResponse response) {
                 loadViewProgress.dismiss();
-                FirebaseManager.registraEvento(DetalhesComprasActivity.this ,"ENTROU_COMPRAS_DETALHE");
+                AppCenterManager.registraEvento("ENTROU_COMPRAS_DETALHE");
 
                 listaAposta = (ArrayList<ApostaDTO>) response.getPayload().getApostas();
 

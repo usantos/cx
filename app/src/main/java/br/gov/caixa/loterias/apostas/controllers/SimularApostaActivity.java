@@ -67,9 +67,9 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroEquipe;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroMesDeSorte;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
+import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
-import br.gov.caixa.loterias.apostas.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.fragment.CartelaFragment;
@@ -490,7 +490,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         dadosCorporativosBO.salvarApostaFavorita(aposta, new RequestListener<NetworkResponse>() {
             @Override
             public void onResponse(NetworkResponse response) {
-                FirebaseManager.registraEvento(SimularApostaActivity.this ,getResources().getString(R.string.evento_efetuou_adicao_aposta_favorita_sucesso));
+                AppCenterManager.registraEvento(getResources().getString(R.string.evento_efetuou_adicao_aposta_favorita_sucesso));
 
                 DialogUtils.dismiss();
 
@@ -681,7 +681,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     }
 
     private void modalNumeros() {
-        FirebaseManager.registraEvento(this ,getResources().getString(R.string.evento_entrou_selecao_prognosticos));
+        AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_selecao_prognosticos));
 
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.custom_dialog_list_view);
@@ -727,7 +727,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     }
 
     private void modalTeimosinhas() {
-        FirebaseManager.registraEvento(this ,getResources().getString(R.string.evento_entrou_popup_teimosinha));
+        AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_popup_teimosinha));
 
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.custom_dialog_list_view);
