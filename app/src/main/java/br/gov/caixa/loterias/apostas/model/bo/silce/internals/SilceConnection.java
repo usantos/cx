@@ -1,5 +1,7 @@
 package br.gov.caixa.loterias.apostas.model.bo.silce.internals;
 
+import android.app.Application;
+import android.content.Context;
 import android.util.Log;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -14,6 +16,13 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+
+import br.gov.caixa.loterias.apostas.model.bo.BaseBO;
+import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
+import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO;
+import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO_;
+import br.gov.caixa.loterias.apostas.model.bo.listener.OnRefreshTokenListener;
+import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 
 import static com.android.volley.Request.Method.DELETE;
 import static com.android.volley.Request.Method.GET;
@@ -40,18 +49,51 @@ public class SilceConnection {
         }
     }
 
-    public void request(GsonRequest req) {
+    public <T> void request(GsonRequest req, final RequestListener<T> listenerService) {
+        boolean precisaRefreshToken = false;
         try {
+            KeycloakBO keycloakBO = KeycloakBO_.getInstance_(Aplicacao.application.getApplicationContext());
             if (req.getHeaders() == null) {
                 req.setHeaders(new HashMap<>());
+            } else if (req.getHeaders().get("Authorization") != null && keycloakBO.isPrecisaRefreshToken()) {
+                precisaRefreshToken = true;
+                keycloakBO.realizaRefreshToken(onRefreshTokenListener(req, listenerService));
             }
-            req.getHeaders().put("cookie", "security=false");
-            req.getHeaders().put("Subcanal", "3");
+            if (!precisaRefreshToken) {
+                req.getHeaders().put("cookie", "security=false");
+                req.getHeaders().put("Subcanal", "3");
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
-        requestQueue.add(req);
-        requestQueue.getCache().clear();
+        if (!precisaRefreshToken) {
+            requestQueue.add(req);
+            requestQueue.getCache().clear();
+        }
+    }
+
+    private <T> OnRefreshTokenListener onRefreshTokenListener(GsonRequest req, final RequestListener<T> listenerService) {
+        return new OnRefreshTokenListener() {
+            @Override
+            public void successRefresh() {
+                try {
+                    KeycloakBO keycloakBO = KeycloakBO_.getInstance_(Aplicacao.application.getApplicationContext());
+                    req.getHeaders().put("Authorization", "Bearer " + keycloakBO.getAccessToken());
+                    req.getHeaders().put("cookie", "security=false");
+                    req.getHeaders().put("Subcanal", "3");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                requestQueue.add(req);
+                requestQueue.getCache().clear();
+            }
+
+            @Override
+            public void errorRefresh(VolleyError volleyError) {
+                listenerService.onErrorResponse(volleyError);
+            }
+        };
     }
 
     private RetryPolicy createRetryPolicy() {
@@ -114,15 +156,15 @@ public class SilceConnection {
     public <T> void get(String path, Map<String, String> queryParams,
                         Class<T> responseDataClass,
                         Response.Listener<T> listener,
-                        Response.ErrorListener errorListener, Map<String, String> headers) {
-        request(buildGetRequest(path, queryParams, responseDataClass, listener, errorListener, headers));
+                        Response.ErrorListener errorListener, Map<String, String> headers, final RequestListener<T> listenerService) {
+        request(buildGetRequest(path, queryParams, responseDataClass, listener, errorListener, headers), listenerService);
     }
 
-    public <REQ, RSP> void post(String path, Map<String, String> queryParams,
+    public <REQ, RSP, T> void post(String path, Map<String, String> queryParams,
                                 REQ body, Class<RSP> responseDataClass,
                                 Response.Listener<RSP> listener,
-                                Response.ErrorListener errorListener, LinkedHashMap<String, String> headers) {
-        request(buildPostRequest(path, queryParams, body, responseDataClass, listener, errorListener, headers));
+                                Response.ErrorListener errorListener, LinkedHashMap<String, String> headers, final RequestListener<T> listenerService) {
+        request(buildPostRequest(path, queryParams, body, responseDataClass, listener, errorListener, headers), listenerService);
     }
 
     public RequestQueue getRequestQueue() {

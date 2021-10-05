@@ -1,5 +1,9 @@
 package br.gov.caixa.loterias.apostas.model.bo;
 
+import android.util.Log;
+
+import com.android.volley.NetworkResponse;
+import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 
 import org.androidannotations.annotations.EBean;
@@ -74,7 +78,7 @@ public class ApostaBO extends BaseBO {
                                                                      listener.getErrorListener(),
                                                                      getHeader());
         request.setErrorListener(interceptError(request, getHeader(), listener));
-        silceConnection.request(request);
+        silceConnection.request(request, listener);
     }
 
     public void transformarCarrinho(Long idCarrinhoFavorito, Integer opcaoSelecionada, RequestListener<CarrinhoDTOResponse> listener){
@@ -90,7 +94,7 @@ public class ApostaBO extends BaseBO {
                                                                      listener.getErrorListener(),
                                                                      getHeader());
         request.setErrorListener(interceptError(request, getHeader(), listener));
-        silceConnection.request(request);
+        silceConnection.request(request, listener);
     }
 
 
@@ -108,7 +112,7 @@ public class ApostaBO extends BaseBO {
                                                                        listener.getErrorListener(),
                                                                        getHeader());
         request.setErrorListener(interceptError(request, getHeader(), listener));
-        silceConnection.request(request);
+        silceConnection.request(request, listener);
     }
 
     public void deletaCarrinhoFavorito(final String idCarrinho,
@@ -122,7 +126,7 @@ public class ApostaBO extends BaseBO {
                                                                        listener.getErrorListener(),
                                                                        getHeader());
         request.setErrorListener(interceptError(request, getHeader(), listener));
-        silceConnection.request(request);
+        silceConnection.request(request, listener);
     }
 
 
@@ -156,7 +160,7 @@ public class ApostaBO extends BaseBO {
                                                                      listener.getErrorListener(),
                                                                      getHeader());
         request.setErrorListener(interceptError(request, getHeader(), listener));
-        silceConnection.request(request);
+        silceConnection.request(request, listener);
     }
 
     public void buscaCarrinhosFavoritos(RequestListener<ListCarrinhoFavoritoDTO> listener){
@@ -167,7 +171,7 @@ public class ApostaBO extends BaseBO {
                                                                     listener.getErrorListener(),
                                                                     getHeader());
         request.setErrorListener(interceptError(request, getHeader(), listener));
-        silceConnection.request(request);
+        silceConnection.request(request, listener);
     }
 
     public void buscaApostasCarrinhoFavorito(Long idCarrinho,RequestListener<ListApostaCarrinhoFavoritoDTO> listener){
@@ -179,7 +183,7 @@ public class ApostaBO extends BaseBO {
                                                                     listener.getErrorListener(),
                                                                     getHeader());
         request.setErrorListener(interceptError(request, getHeader(), listener));
-        silceConnection.request(request);
+        silceConnection.request(request, listener);
     }
 
 
@@ -201,7 +205,7 @@ public class ApostaBO extends BaseBO {
                             CompletaJogoRsp.class,
                             listener.getSilceListener(),
                             listener.getErrorListener(),
-                            new LinkedHashMap<>());
+                            new LinkedHashMap<>(), listener);
     }
 
     public void completaJogoNovo(final int quantidadeTotalNumeros,
@@ -220,7 +224,7 @@ public class ApostaBO extends BaseBO {
                             CompletaJogoNovoRsp.class,
                             listener.getSilceListener(),
                             listener.getErrorListener(),
-                            new LinkedHashMap<>());
+                            new LinkedHashMap<>(), listener);
     }
 
     //APOSTA
@@ -255,7 +259,7 @@ public class ApostaBO extends BaseBO {
                                                                     listener.getErrorListener(),
                                                                     getHeader());
         request.setErrorListener(interceptError(request, getHeader(), listener));
-        silceConnection.request(request);
+        silceConnection.request(request, listener);
     }
 
     public void getApostasHistorico(ApostaPageRequest page, final RequestListener<ResultadoPesquisaPaginadaDTOHistoricoApostaDTOResponse> listener) {
@@ -276,7 +280,7 @@ public class ApostaBO extends BaseBO {
                                                                     listener.getErrorListener(),
                                                                     getHeader());
         request.setErrorListener(interceptError(request, getHeader(), listener));
-        silceConnection.request(request);
+        silceConnection.request(request, listener);
     }
 
 
@@ -292,7 +296,7 @@ public class ApostaBO extends BaseBO {
                                                                      listener.getErrorListener(),
                                                                      getHeader());
         request.setErrorListener(interceptError(request, getHeader(), listener));
-        silceConnection.request(request);
+        silceConnection.request(request, listener);
     }
 
     public void  getMercadoPagoToken(final String email, final RequestListener<StringResponse> listener) {
@@ -307,7 +311,7 @@ public class ApostaBO extends BaseBO {
                                                                     getHeader());
 
         request.setErrorListener(interceptError(request, getHeader(), listener));
-        silceConnection.request(request);
+        silceConnection.request(request, listener);
     }
 
 
@@ -321,7 +325,7 @@ public class ApostaBO extends BaseBO {
                                                                     null,
                                                                     getHeader());
         request.setErrorListener(interceptError(request, getHeader(), listener));
-        silceConnection.request(request);
+        silceConnection.request(request, listener);
     }
 
     public void getDatasApostasHistorico(final RequestListener<MesAnoDTOResponse> listener) {
@@ -332,7 +336,7 @@ public class ApostaBO extends BaseBO {
                                                                     listener.getErrorListener(),
                                                                     getHeader());
         request.setErrorListener(interceptError(request, getHeader(), listener));
-        silceConnection.request(request);
+        silceConnection.request(request, listener);
     }
 
     public void getApostasFavoritas(final int offset, final RequestListener<ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse> listener) {
@@ -348,7 +352,7 @@ public class ApostaBO extends BaseBO {
                                                                     getHeader());
 
         request.setErrorListener(interceptError(request, getHeader(), listener));
-        silceConnection.request(request);
+        silceConnection.request(request, listener);
     }
 
 
@@ -363,7 +367,7 @@ public class ApostaBO extends BaseBO {
                                                                     getHeader());
 
         request.setErrorListener(interceptError(request, getHeader(), listener));
-        silceConnection.request(request);
+        silceConnection.request(request, listener);
     }
 
 
@@ -379,7 +383,7 @@ public class ApostaBO extends BaseBO {
                                                                     getHeader());
 
         request.setErrorListener(interceptError(request, getHeader(), listener));
-        silceConnection.request(request);
+        silceConnection.request(request, listener);
     }
 
     public void getApostaDetalhePremio(Long id, final RequestListener<DetalhesPremioDTOResponse> listener) {
@@ -394,7 +398,7 @@ public class ApostaBO extends BaseBO {
                                                                     getHeader());
 
         request.setErrorListener(interceptError(request, getHeader(), listener));
-        silceConnection.request(request);
+        silceConnection.request(request, listener);
     }
 
     public void getApostaDetalheComprovante(Long id, final RequestListener<ComprovanteApostaDTOResponse> listener) {
@@ -409,7 +413,7 @@ public class ApostaBO extends BaseBO {
                                                                     getHeader());
 
         request.setErrorListener(interceptError(request, getHeader(), listener));
-        silceConnection.request(request);
+        silceConnection.request(request, listener);
     }
 
 
@@ -425,7 +429,7 @@ public class ApostaBO extends BaseBO {
                                                                     getHeader());
 
         request.setErrorListener(interceptError(request, getHeader(), listener));
-        silceConnection.request(request);
+        silceConnection.request(request, listener);
     }
 
     public void getApostaConferir(Long id, final RequestListener<DTOEnumIntegerResponse> listener) {
@@ -440,7 +444,7 @@ public class ApostaBO extends BaseBO {
                                                                     getHeader());
 
         request.setErrorListener(interceptError(request, getHeader(), listener));
-        silceConnection.request(request);
+        silceConnection.request(request, listener);
     }
 
     //APOSTAS FAVORITAS
@@ -455,7 +459,7 @@ public class ApostaBO extends BaseBO {
                                                                        getHeader());
 
         request.setErrorListener(interceptError(request, getHeader(), listener));
-        silceConnection.request(request);
+        silceConnection.request(request, listener);
     }
 
     public void postApostasFavoritas(final ApostaFavoritaDTO apostaFavoritaDTO, final RequestListener<RetornoPadraoDTO> listener) {
@@ -467,7 +471,7 @@ public class ApostaBO extends BaseBO {
                                                                      getHeader());
 
         request.setErrorListener(interceptError(request, getHeader(), listener));
-        silceConnection.request(request);
+        silceConnection.request(request, listener);
     }
 
     public void postIncluirApostaFavoritaCarrinho(final Long idApostaFavorita,
@@ -487,35 +491,39 @@ public class ApostaBO extends BaseBO {
                                                                      getHeader());
 
         request.setErrorListener(interceptError(request, getHeader(), listener));
-        silceConnection.request(request);
+        silceConnection.request(request, listener);
     }
 
     //CARRINHO
     public void adicionarApostaNoCarrinho(final IdentificaoDeUmaApostaDas8Modalidades aposta,
                                           final RequestListener<AgrupadorDTOApostaDTOResponse> listener) {
-        final GsonRequest request = silceConnection.buildPostRequest(ServerMethods.INCLUIR_APOSTA_CARRINHO_PATH,
-                                                                     new LinkedHashMap<>(),
-                                                                     aposta,
-                                                                     AgrupadorDTOApostaDTOResponse.class,
-                                                                     listener.getSilceListener(),
-                                                                     listener.getErrorListener(),
-                                                                     getHeader());
+        if (verificaAcessToken(listener)) {
+            final GsonRequest request = silceConnection.buildPostRequest(ServerMethods.INCLUIR_APOSTA_CARRINHO_PATH,
+                    new LinkedHashMap<>(),
+                    aposta,
+                    AgrupadorDTOApostaDTOResponse.class,
+                    listener.getSilceListener(),
+                    listener.getErrorListener(),
+                    getHeader());
 
-        request.setErrorListener(interceptError(request, getHeader(), listener));
-        silceConnection.request(request);
+            request.setErrorListener(interceptError(request, getHeader(), listener));
+            silceConnection.request(request, listener);
+        }
     }
 
     public void limparCarrinho(RequestListener<CarrinhoDTOResponse> listener) {
-        final GsonRequest request = silceConnection.buildPostRequest(ServerMethods.LIMPAR_CARRINHO_PATH,
-                                                                     new LinkedHashMap<>(),
-                                                                     null,
-                                                                     CarrinhoDTOResponse.class,
-                                                                     listener.getSilceListener(),
-                                                                     listener.getErrorListener(),
-                                                                     getHeader());
+        if (verificaAcessToken(listener)) {
+            final GsonRequest request = silceConnection.buildPostRequest(ServerMethods.LIMPAR_CARRINHO_PATH,
+                    new LinkedHashMap<>(),
+                    null,
+                    CarrinhoDTOResponse.class,
+                    listener.getSilceListener(),
+                    listener.getErrorListener(),
+                    getHeader());
 
-        request.setErrorListener(interceptError(request, getHeader(), listener));
-        silceConnection.request(request);
+            request.setErrorListener(interceptError(request, getHeader(), listener));
+            silceConnection.request(request, listener);
+        }
     }
 
     public void validarCarrinho(final RequestListener<ResourceResponse> listener) {
@@ -527,7 +535,7 @@ public class ApostaBO extends BaseBO {
                                                                     getHeader());
 
         request.setErrorListener(interceptError(request, getHeader(), listener));
-        silceConnection.request(request);
+        silceConnection.request(request, listener);
     }
 
 
@@ -541,44 +549,50 @@ public class ApostaBO extends BaseBO {
                                                                      getHeader());
 
         request.setErrorListener(interceptError(request, getHeader(), listener));
-        silceConnection.request(request);
+        silceConnection.request(request, listener);
     }
 
     public void adicionarSurpresinhaNoCarrinho(final IncluirSurpresinhaDTO aposta,
                                                final RequestListener<AgrupadorDTOApostaDTOResponse> listener) {
-        final GsonRequest request = silceConnection.buildPostRequest(ServerMethods.INCLUIR_SURPRESINHA_CARRINHO_PATH,
-                                                                     new LinkedHashMap<>(),
-                                                                     aposta,
-                                                                     AgrupadorDTOApostaDTOResponse.class,
-                                                                     listener.getSilceListener(),
-                                                                     listener.getErrorListener(),
-                                                                     getHeader());
+        if (verificaAcessToken(listener)) {
+            final GsonRequest request = silceConnection.buildPostRequest(ServerMethods.INCLUIR_SURPRESINHA_CARRINHO_PATH,
+                    new LinkedHashMap<>(),
+                    aposta,
+                    AgrupadorDTOApostaDTOResponse.class,
+                    listener.getSilceListener(),
+                    listener.getErrorListener(),
+                    getHeader());
 
-        request.setErrorListener(interceptError(request, getHeader(), listener));
-        silceConnection.request(request);
+            request.setErrorListener(interceptError(request, getHeader(), listener));
+            silceConnection.request(request, listener);
+        }
     }
 
     public void buscaCarrinho(final RequestListener<CarrinhoDTOResponse> listener) {
-        final GsonRequest request = silceConnection.buildGetRequest(ServerMethods.BUSCA_CARRINHO_PATH,
-                                                                    new LinkedHashMap<>(),
-                                                                    CarrinhoDTOResponse.class,
-                                                                    listener.getSilceListener(),
-                                                                    listener.getErrorListener(),
-                                                                    getHeader());
+        if (verificaAcessToken(listener)) {
+            final GsonRequest request = silceConnection.buildGetRequest(ServerMethods.BUSCA_CARRINHO_PATH,
+                    new LinkedHashMap<>(),
+                    CarrinhoDTOResponse.class,
+                    listener.getSilceListener(),
+                    listener.getErrorListener(),
+                    getHeader());
 
-        request.setErrorListener(interceptError(request, getHeader(), listener));
-        silceConnection.request(request);
+            request.setErrorListener(interceptError(request, getHeader(), listener));
+            silceConnection.request(request, listener);
+        }
     }
 
     public void  deleteApostaCarrinho(String id, final RequestListener<CarrinhoDTOResponse> listener) {
-        final GsonRequest request = silceConnection.buildDeleteRequest(ServerMethods.DELETE_APOSTA_CARRINHO_PATH + id,
-                                                                       new LinkedHashMap<>(),
-                                                                       CarrinhoDTOResponse.class,
-                                                                       listener.getSilceListener(),
-                                                                       listener.getErrorListener(),
-                                                                       getHeader());
-        request.setErrorListener(interceptError(request, getHeader(), listener));
-        silceConnection.request(request);
+        if (verificaAcessToken(listener)) {
+            final GsonRequest request = silceConnection.buildDeleteRequest(ServerMethods.DELETE_APOSTA_CARRINHO_PATH + id,
+                    new LinkedHashMap<>(),
+                    CarrinhoDTOResponse.class,
+                    listener.getSilceListener(),
+                    listener.getErrorListener(),
+                    getHeader());
+            request.setErrorListener(interceptError(request, getHeader(), listener));
+            silceConnection.request(request, listener);
+        }
     }
 
     public void postRegistrarApostaCarrinho(final MeioPagamento meioPagamento, final RequestListener<RetornoPadraoDTO> listener) {
@@ -590,7 +604,7 @@ public class ApostaBO extends BaseBO {
                                                                      getHeader());
 
         request.setErrorListener(interceptError(request, getHeader(), listener));
-        silceConnection.request(request);
+        silceConnection.request(request, listener);
     }
     //RAPIDAO
     public void getRapidoes(final RequestListener<RapidaoDTOResponse> listener) {
@@ -602,7 +616,7 @@ public class ApostaBO extends BaseBO {
                                                                     getHeader());
 
         request.setErrorListener(interceptError(request, getHeader(), listener));
-        silceConnection.request(request);
+        silceConnection.request(request, listener);
     }
 
     public void postRapidoes(final RapidaoDTO rapidao,
@@ -615,7 +629,7 @@ public class ApostaBO extends BaseBO {
                                                                      getHeader());
 
         request.setErrorListener(interceptError(request, getHeader(), listener));
-        silceConnection.request(request);
+        silceConnection.request(request, listener);
     }
 
 
@@ -634,7 +648,7 @@ public class ApostaBO extends BaseBO {
                                                                      getHeader());
 
         request.setErrorListener(interceptError(request, getHeader(), listener));
-        silceConnection.request(request);
+        silceConnection.request(request, listener);
     }
 
     //COMPRAS
@@ -654,7 +668,7 @@ public class ApostaBO extends BaseBO {
                                                                     getHeader());
 
         request.setErrorListener(interceptError(request, getHeader(), listener));
-        silceConnection.request(request);
+        silceConnection.request(request, listener);
     }
 
     public void getDetalhesCompras(final String idSelecionado, final RequestListener<AgrupadorApostaCompraDTOResponse> listener) {
@@ -667,7 +681,7 @@ public class ApostaBO extends BaseBO {
                                                                     getHeader());
 
         request.setErrorListener(interceptError(request, getHeader(), listener));
-        silceConnection.request(request);
+        silceConnection.request(request, listener);
     }
 
     public void getMesesCompras(final RequestListener<MesAnoDTOResponse> listener) {
@@ -679,7 +693,7 @@ public class ApostaBO extends BaseBO {
                                                                     getHeader());
 
         request.setErrorListener(interceptError(request, getHeader(), listener));
-        silceConnection.request(request);
+        silceConnection.request(request, listener);
     }
 
     //RESULTADOS
@@ -696,7 +710,7 @@ public class ApostaBO extends BaseBO {
                                                                     getHeader());
 
         request.setErrorListener(interceptError(request, getHeader(), listener));
-        silceConnection.request(request);
+        silceConnection.request(request, listener);
     }
 
     public void getResultadoModalidade(final String modalidade, final RequestListener<ResultadoConcursoDTOResponse> listener) {
@@ -713,7 +727,7 @@ public class ApostaBO extends BaseBO {
                                                                     getHeader());
 
         request.setErrorListener(interceptError(request, getHeader(), listener));
-        silceConnection.request(request);
+        silceConnection.request(request, listener);
     }
 
     public void postConferirBilhetes(final String codigoBilhete,
@@ -732,7 +746,7 @@ public class ApostaBO extends BaseBO {
                                                                      headers);
 
         request.setErrorListener(interceptError(request, headers, listener));
-        silceConnection.request(request);
+        silceConnection.request(request, listener);
     }
 
     public void obterEscudoTime(String id, final RequestListener<EscudoEquipeEsportivaDTOResponse> listener) {
@@ -745,7 +759,7 @@ public class ApostaBO extends BaseBO {
                                                                     getHeader());
 
         request.setErrorListener(interceptError(request, getHeader(), listener));
-        silceConnection.request(request);
+        silceConnection.request(request, listener);
     }
 
     private static String join(List<Integer> collection, String delimiter) {
@@ -756,9 +770,17 @@ public class ApostaBO extends BaseBO {
                 result.append(delimiter);
             }
             result.append(e);
+
         }
 
         return result.toString();
     }
 
+    private <T> boolean verificaAcessToken(final RequestListener<T> listener) {
+        if (keycloakBO.getAccessToken() != null) {
+            return true;
+        }
+        listener.onErrorResponse(new VolleyError(new NetworkResponse(401, null, false, 0L, null)));
+        return false;
+    }
 }
