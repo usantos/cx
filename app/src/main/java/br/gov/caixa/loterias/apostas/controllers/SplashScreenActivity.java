@@ -7,7 +7,6 @@ import android.os.Handler;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.VolleyError;
-import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.microsoft.appcenter.AppCenter;
 import com.microsoft.appcenter.analytics.Analytics;
 import com.microsoft.appcenter.crashes.Crashes;
@@ -35,7 +34,6 @@ public class SplashScreenActivity extends AppCompatActivity {
         
         AppCenter.start(getApplication(), BuildConfig.APP_CENTER_KEY, Analytics.class, Crashes.class);
 
-        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
         verificaVersao();
     }
 

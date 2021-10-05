@@ -3,7 +3,6 @@ package br.gov.caixa.loterias.apostas.controllers;
 import android.content.Intent;
 import android.os.Bundle;
 
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -12,7 +11,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
-import br.gov.caixa.loterias.apostas.utils.FirebaseManager;
+import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.view.fragment.Introducao1Fragment;
 import br.gov.caixa.loterias.apostas.view.fragment.Introducao2Fragment;
 import br.gov.caixa.loterias.apostas.view.fragment.Introducao3Fragment;
@@ -34,7 +33,7 @@ public class IntroducaoActivity extends AppCompatActivity {
             startActivity(new Intent(IntroducaoActivity.this, LoginActivity.class));
             finish();
         }
-        FirebaseManager.registraEvento(IntroducaoActivity.this  , getResources().getString(R.string.evento_entrou_tour_tela_1));
+        AppCenterManager.registraEvento( getResources().getString(R.string.evento_entrou_tour_tela_1));
 
         adapterViewPager = new MyPagerAdapter(getSupportFragmentManager());
         vpPager = findViewById(R.id.vpPager);
@@ -51,14 +50,14 @@ public class IntroducaoActivity extends AppCompatActivity {
             public void onPageSelected(int position) {
                 switch (position) {
                     case 1: {
-                        FirebaseManager.registraEvento(IntroducaoActivity.this ,getResources().getString(R.string.evento_entrou_tour_tela_2));
+                        AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_tour_tela_2));
                     }
                     case 2: {
-                        FirebaseManager.registraEvento(IntroducaoActivity.this ,getResources().getString(R.string.evento_entrou_tour_tela_3));
+                        AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_tour_tela_3));
                     }
                     case 3: {
                         if (!pulouTour) {
-                            FirebaseManager.registraEvento(IntroducaoActivity.this ,getResources().getString(R.string.evento_entrou_tour_tela_4));
+                            AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_tour_tela_4));
                         }
                     }
                 }
@@ -119,7 +118,7 @@ public class IntroducaoActivity extends AppCompatActivity {
     }
 
     public void pularIntroducao(){
-        FirebaseManager.registraEvento(IntroducaoActivity.this ,getResources().getString(R.string.evento_pulou_tour));
+        AppCenterManager.registraEvento(getResources().getString(R.string.evento_pulou_tour));
         pulouTour = true;
         vpPager.setCurrentItem(3, true);
     }

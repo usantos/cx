@@ -82,10 +82,10 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.UltimaNotificacaoSingleton;
 import br.gov.caixa.loterias.apostas.model.dao.DBLoteriasHelper;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
+import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataSideMenu;
-import br.gov.caixa.loterias.apostas.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.OnSwipeTouchListener;
 import br.gov.caixa.loterias.apostas.utils.RateUtils;
@@ -285,7 +285,7 @@ public class PrincipalActivity extends AppCompatActivity
                 @Override
                 public void onResponse(ParametrosSimulacaoResponse response) {
                     DialogUtils.dismiss();
-                    FirebaseManager.registraEvento(PrincipalActivity.this ,getResources().getString(R.string.evento_entrou_lista_modalidades));
+                    AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_lista_modalidades));
 
                     modalidadesParaListar = response.getPayload().getParametros();
                     if (modalidadesParaListar == null || modalidadesParaListar.isEmpty()) {
@@ -484,7 +484,7 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     private void AnimacaoAbrirMenuRapido(View v) {
-        FirebaseManager.registraEvento(PrincipalActivity.this ,getResources().getString(R.string.evento_entrou_menu_trevo));
+        AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_menu_trevo));
 
         relativeContentPrincipal.setEnabled(false);
         actionApresentarTrevo.setEnabled(false);
@@ -562,7 +562,7 @@ public class PrincipalActivity extends AppCompatActivity
                 dadosUsuarioBO.sair(new RequestListener<NetworkResponse>() {
                     @Override
                     public void onResponse(NetworkResponse response) {
-                        FirebaseManager.registraEvento(PrincipalActivity.this ,getResources().getString(R.string.evento_logout_sucesso));
+                        AppCenterManager.registraEvento(getResources().getString(R.string.evento_logout_sucesso));
 
                         AcessoBO_.getInstance_(PrincipalActivity.this).iniciarLogoutSSO(activity);
                         LoginSP.loginRealizado(false);
@@ -577,7 +577,7 @@ public class PrincipalActivity extends AppCompatActivity
                     }
                 });
             } else {
-                FirebaseManager.registraEvento(PrincipalActivity.this ,getResources().getString(R.string.evento_logout_offline_sucesso));
+                AppCenterManager.registraEvento(getResources().getString(R.string.evento_logout_offline_sucesso));
                 startActivity(new Intent(PrincipalActivity.this, LoginActivity.class));
                 finish();
             }
@@ -608,7 +608,7 @@ public class PrincipalActivity extends AppCompatActivity
     protected void clickButtonHomeBet() {
         int selecionada = Integer.parseInt(buttonHomeBet.getTag().toString());
         ModalidadeEnum modalidade = modalidadesParaListar.get(selecionada).getParametroJogo().getConcurso().getModalidade();
-        FirebaseManager.registraEvento(PrincipalActivity.this ,getResources().getString(R.string.evento_entrou_simular_aposta_modalidade) + modalidade);
+        AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_simular_aposta_modalidade) + modalidade);
         ParametroJogoDTO parametroJogo = modalidadesParaListar.get(selecionada).getParametroJogo();
 
         Intent activity = new Intent(PrincipalActivity.this, SimularApostaActivity_.class);

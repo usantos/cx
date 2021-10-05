@@ -3,7 +3,6 @@ package br.gov.caixa.loterias.apostas.controllers;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.ArrayAdapter;
@@ -44,8 +43,8 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MunicipioDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MunicipioIdDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.UnidadeFederacaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.UnidadeFederacaoDTOResponse;
+import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
-import br.gov.caixa.loterias.apostas.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.segmentedbutton.SegmentedButtonGroup;
 
@@ -173,7 +172,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
                 if (response.getRedirect() != null){
                     RedirectNetwork.checkRedirectSucesso( response.getRedirect(), DadosPessoaisActivity.this);
                 }
-                FirebaseManager.registraEvento(DadosPessoaisActivity.this ,getResources().getString(R.string.evento_entrou_editar_cadastro));
+                AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_editar_cadastro));
                 DialogUtils.dismiss();
             }
 
@@ -425,7 +424,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
         dadosUsuarioBO.putDadosUsuario(apostadorAlteracaoDTO, new RequestListener<CadastrarApostadorDTOResponse>() {
             @Override
             public void onResponse(CadastrarApostadorDTOResponse response) {
-                FirebaseManager.registraEvento(DadosPessoaisActivity.this ,getResources().getString(R.string.evento_edicao_cadastro_sucesso));
+                AppCenterManager.registraEvento(getResources().getString(R.string.evento_edicao_cadastro_sucesso));
 
                 DialogUtils.dismiss();
                 if (response.getRedirect() != null){

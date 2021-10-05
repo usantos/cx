@@ -3,7 +3,6 @@ package br.gov.caixa.loterias.apostas.view.fragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +18,7 @@ import androidx.fragment.app.FragmentTransaction;
 import java.util.ArrayList;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.utils.FirebaseManager;
+import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
 
@@ -59,9 +58,9 @@ public class JogoResponsavelConhecaFragment extends Fragment {
     }
 
     private void setaMetodos(){
-        FirebaseManager.registraEvento(getActivity(), getActivity().getResources().getString(R.string.evento_jr_aba_1));
+        AppCenterManager.registraEvento(getActivity().getResources().getString(R.string.evento_jr_aba_1));
         btnSaibaMais.setOnClickListener(view1 -> {
-            FirebaseManager.registraEvento(getActivity(), getActivity().getResources().getString(R.string.evento_jr_saiba_mais));
+            AppCenterManager.registraEvento( getActivity().getResources().getString(R.string.evento_jr_saiba_mais));
             Uri uri = Uri.parse(getActivity().getResources().getString(R.string.jr_endereco));
             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
             startActivity(intent);

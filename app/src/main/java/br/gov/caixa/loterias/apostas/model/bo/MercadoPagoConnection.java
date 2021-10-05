@@ -24,8 +24,8 @@ import java.io.UnsupportedEncodingException;
 import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.Bin;
+import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.DateUtils;
-import br.gov.caixa.loterias.apostas.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostas.utils.MercadoPagoUtil;
 
 public class MercadoPagoConnection {
@@ -108,7 +108,7 @@ public class MercadoPagoConnection {
 	}
 
 	private static void onErroPayment(Context ctx, MercadoPagoListener listener, String url, VolleyError volleyError) {
-		FirebaseManager.registraErro(ctx, String.valueOf(volleyError.networkResponse.statusCode), "MP_" + url);
+		AppCenterManager.registraErro(String.valueOf(volleyError.networkResponse.statusCode), "MP_" + url);
 		String msg;
 		if(Bin.fromBytes(volleyError.networkResponse.data).toUtf8().contains(ctx.getResources().getString(R.string.not_found))){
 			msg = montarMensagem("MP_PAYMENT_METHOD_NOT_FOUND");
@@ -133,11 +133,11 @@ public class MercadoPagoConnection {
 				codErro = (String) jobj.get("code");
 			} catch (JSONException e) {
 				e.printStackTrace();
-				FirebaseManager.registraErro(ctx, codErro, "MP_"+url2);
+				AppCenterManager.registraErro(codErro, "MP_"+url2);
 				listener.onTokenFailure(montarMensagem(codErro));
 			}
 		}
-		FirebaseManager.registraErro(ctx, codErro, "MP_"+url2);
+		AppCenterManager.registraErro(codErro, "MP_"+url2);
 		listener.onTokenFailure(montarMensagem(codErro));
 	}
 
