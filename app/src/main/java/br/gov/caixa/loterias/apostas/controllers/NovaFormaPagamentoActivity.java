@@ -30,6 +30,7 @@ import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.MercadoPagoConnection;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;

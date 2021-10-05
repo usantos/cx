@@ -36,6 +36,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IndicadorSurpresinha;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.dao.DBLoteriasCrud;
 import br.gov.caixa.loterias.apostas.model.dao.crud.CarrinhoFavoritoCRUD;
+import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -295,9 +296,16 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
 	private int getPositionAposta(IdentificaoDeUmaApostaDas8Modalidades aposta) {
 		int position = -1;
 		for (int i = 0; i <= apostas.size() - 1; i++){
-			if (apostas.get(i).getId() == aposta.getId()){
-				position = i;
-				break;
+			if (LoginSP.isLoginRealizado()) {
+				if (apostas.get(i).getId() == aposta.getId()) {
+					position = i;
+					break;
+				}
+			}else {
+				if (apostas.get(i).getIdDB() == aposta.getIdDB()){
+					position = i;
+					break;
+				}
 			}
 		}
 		return position;

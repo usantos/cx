@@ -26,6 +26,7 @@ import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
 
@@ -199,6 +200,7 @@ public class AdicionarCarrinhoFavoritasView extends DialogFragment implements Vi
                 }
                 dismiss();
                 ViewUtils.alert( getContext(), getContext().getResources().getString( R.string.label_aposta_salva_carinha ) );
+                CarrinhoSingleton.getInstance().setCarrinho(response.getPayload());
             }
 
             @Override
