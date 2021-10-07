@@ -250,6 +250,7 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity implement
                 }
                 AppCenterManager.registraEvento(getResources().getString(R.string.evento_efetuou_pagamento_sucesso));
 
+                CarrinhoSingleton.getInstance().setCarrinho(new CarrinhoDTO());
                 if (response.getRedirect() != null) {
                     RedirectNetwork.checkRedirectSucesso(response.getRedirect(), NovaFormaPagamentoActivity.this);
                 } else {
