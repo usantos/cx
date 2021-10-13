@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
                 android:layout_marginLeft="17dp"
-                android:text="@string/os_seus_n_meros_da_sorte_no_mesmo_lugar"
+                android:text="@string/numeros_da_sorte_no_mesmo_lugar"
                 android:textSize="14.2sp"
                 android:fontFamily="@font/futura_std_bold"
                 android:textColor="@color/colorAccent"/>

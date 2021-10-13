@@ -2,7 +2,6 @@ package br.gov.caixa.loterias.apostas.controllers;
 
 import android.content.Intent;
 import android.os.Bundle;
-
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,7 +22,7 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.NumerosSelecionadosRapidao;
-import br.gov.caixa.loterias.apostas.utils.FirebaseManager;
+import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.NumeroSelecionadoRapidaoAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
@@ -57,7 +56,7 @@ public class NumerosRapidaoActivity extends AppCompatActivity implements NumeroS
         listaNumerosContrariosRapidao = Arrays.asList(new Gson().fromJson(arrayContrarios, Integer[].class));
 
         if(isTipoNrObrigatorios == true){
-            FirebaseManager.registraEvento(this ,getResources().getString(R.string.evento_seleciona_numeros_obrigatorios_config_rapidao));
+            AppCenterManager.registraEvento(getResources().getString(R.string.evento_seleciona_numeros_obrigatorios_config_rapidao));
 
             List<Integer> numerosObrigadoriosSalvos = new ArrayList<>();
             String arrayObrigarios =  getIntent().getExtras().getString(getResources().getString(R.string.extra_numeros_obrigatorios));
@@ -66,7 +65,7 @@ public class NumerosRapidaoActivity extends AppCompatActivity implements NumeroS
             gridViewNumerosRapidaoSlc = findViewById(R.id.gridviewNumerosRapidaoSelecao);
 
         }else{
-            FirebaseManager.registraEvento(this ,getResources().getString(R.string.evento_entrou_seleciona_numeros_proibidos_config_rapidao));
+            AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_seleciona_numeros_proibidos_config_rapidao));
 
             List<Integer> numerosProibidosSalvos = new ArrayList<>();
             String arrayProibidos =  getIntent().getExtras().getString(getResources().getString(R.string.extra_numeros_proibidos));

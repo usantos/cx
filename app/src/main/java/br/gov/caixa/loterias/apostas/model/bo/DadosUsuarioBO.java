@@ -55,7 +55,7 @@ public class DadosUsuarioBO extends BaseBO {
                 listener.getErrorListener(), headers);
 
         request.setErrorListener(interceptError(request, headers, listener));
-        silceConnection.request(request);
+        silceConnection.request(request, listener);
     }
 
     public void autenticar(final String email, final String senha,
@@ -68,7 +68,7 @@ public class DadosUsuarioBO extends BaseBO {
         silceConnection.post(ServerMethods.LOGIN_PATH, new LinkedHashMap<>(),
                 autenticacaoDTO, UsuarioLogadoResponse.class,
                 listener.getSilceListener(),
-                listener.getErrorListener(), new LinkedHashMap<>());
+                listener.getErrorListener(), new LinkedHashMap<>(), listener);
     }
 
     public void sair(final RequestListener<NetworkResponse> listener) {
@@ -84,7 +84,7 @@ public class DadosUsuarioBO extends BaseBO {
                 headers);
 
         request.setErrorListener(interceptError(request, headers, listener));
-        silceConnection.request(request);
+        silceConnection.request(request, listener);
     }
 
     public void gravarUsuario(CadastrarApostadorDTO apostadorDTO, final RequestListener<ApostadorDTOResponse> listener) {
@@ -99,7 +99,7 @@ public class DadosUsuarioBO extends BaseBO {
                 headers);
 
         request.setErrorListener(interceptError(request, headers, listener));
-        silceConnection.request(request);
+        silceConnection.request(request, listener);
     }
 
     public static void salvarNomeUsuairo(String name) {
@@ -240,7 +240,7 @@ public class DadosUsuarioBO extends BaseBO {
                 listener.getErrorListener(), headers);
 
         request.setErrorListener(interceptError(request, headers, listener));
-        silceConnection.request(request);
+        silceConnection.request(request, listener);
     }
 
     public void putDadosUsuario(ApostadorAlteracaoDTO apostadorAlteracaoDTO, final RequestListener<CadastrarApostadorDTOResponse> listener) {
@@ -253,7 +253,7 @@ public class DadosUsuarioBO extends BaseBO {
                 listener.getErrorListener(), headers);
 
         request.setErrorListener(interceptError(request, headers, listener));
-        silceConnection.request(request);
+        silceConnection.request(request, listener);
     }
 
     public void postVerificarCadastro(final List<IdentificaoDeUmaApostaDas8Modalidades> listaApostas, final RequestListener<UsuarioLogadoResponse> listener) {
@@ -268,7 +268,7 @@ public class DadosUsuarioBO extends BaseBO {
                 listener.getErrorListener(), headers);
 
         request.setErrorListener(interceptError(request, headers, listener));
-        silceConnection.request(request);
+        silceConnection.request(request, listener);
     }
 
     public void putLerNotificacao(final RequestListener<RetornoPadraoDTO> listener) {
@@ -285,7 +285,7 @@ public class DadosUsuarioBO extends BaseBO {
                 listener.getErrorListener(), headers);
 
         request.setErrorListener(interceptError(request, headers, listener));
-        silceConnection.request(request);
+        silceConnection.request(request, listener);
     }
 
     public void deleteCartao(Long idCartao, RequestListener<ListCartaoDTOResponse> listener) {
@@ -298,6 +298,6 @@ public class DadosUsuarioBO extends BaseBO {
                 listener.getSilceListener(), listener.getErrorListener(), headers);
 
         request.setErrorListener(interceptError(request, headers, listener));
-        silceConnection.request(request);
+        silceConnection.request(request, listener);
     }
 }

@@ -19,6 +19,7 @@ import org.androidannotations.annotations.RootContext;
 
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
+import java.util.Map;
 
 import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.model.bean.ErrorResponse;
@@ -28,9 +29,9 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.Bin;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.GsonRequest;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.SilceConnection;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.SilceSingleton;
+import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.AuthorizationServiceFactory;
-import br.gov.caixa.loterias.apostas.utils.FirebaseManager;
 
 /**
  * Created by pmotta on 21/03/2018.
@@ -55,7 +56,7 @@ public class BaseBO {
         silceConnection = SilceConnection.create(silceSingleton.getRequestQueue(), BuildConfig.CAIXA_BASE_URL_SILCE);
     }
 
-    protected <T> Response.ErrorListener interceptError(final GsonRequest request, final HashMap<String, String> headers, final RequestListener<T> listener){
+    protected <T> Response.ErrorListener interceptError(final GsonRequest request, final Map<String, String> headers, final RequestListener<T> listener){
         return error -> {
             if(AppUtils.isNetworkAvailable(context)){
                 registraErro(error, request);
@@ -89,7 +90,7 @@ public class BaseBO {
                                         headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
                                         request.setHeaders(headers);
                                         //Refaz a conexão
-                                        silceConnection.request(request);
+                                        silceConnection.request(request, listener);
                                     } else {
                                         listener.onErrorResponse(error);
                                     }
@@ -113,7 +114,7 @@ public class BaseBO {
         ErrorResponse   errorResponse = transformaErroEmErrorResponse(error);
         NetworkResponse response      = error.networkResponse;
         if(response != null && response.statusCode == 500){
-            FirebaseManager.registraErro(context,errorResponse.getCodigo(),getEndpoint(request));
+           AppCenterManager.registraErro(errorResponse.getCodigo(), getEndpoint(request));
         }
     }
 

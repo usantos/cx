@@ -41,8 +41,8 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IndicadorSurpresinha;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MesAnoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MesAnoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOCompraDTOResponse;
+import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
-import br.gov.caixa.loterias.apostas.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.ListaComprasRecyclerViewAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
@@ -135,8 +135,6 @@ public class ListaComprasActivity extends AppCompatActivity {
     private void setaViews(){
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        TextView textBottomInformacaoTextView = findViewById(R.id.textBottomInformacaoTextView);
-        textBottomInformacaoTextView.setText(getResources().getString(R.string.compras_mais_antigas));
         setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.texto_futura_bold, getString(R.string.title_activity_lista_compras))));
         scrollViewContentViewCompras = findViewById(R.id.scrollViewContentViewCompras);
 
@@ -144,7 +142,7 @@ public class ListaComprasActivity extends AppCompatActivity {
         recyclerViewCompras = findViewById(R.id.recyclerCompras);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        FirebaseManager.registraEvento(this ,getResources().getString(R.string.evento_entrou_lista_compras));
+        AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_lista_compras));
         setaDialogFavoritar();
     }
 

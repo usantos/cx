@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.Locale;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.view.fragment.NumerosSuperSeteFragment;
 import br.gov.caixa.loterias.apostas.controllers.FavoritasActivity;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
@@ -43,14 +42,15 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
+import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
-import br.gov.caixa.loterias.apostas.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.custom.AdicionarCarrinhoFavoritasView;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
+import br.gov.caixa.loterias.apostas.view.fragment.NumerosSuperSeteFragment;
 
 /**
  * Created by cedesbr450 on 16/02/18.
@@ -251,7 +251,7 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
         apostaBO.deleteApostasFavoritas(listaApostaFavorita.get(position).getId() + context.getResources().getString(R.string.string_vazia), new RequestListener<RetornoPadraoDTO>() {
             @Override
             public void onResponse(RetornoPadraoDTO response) {
-                FirebaseManager.registraEvento(context ,context.getResources().getString(R.string.evento_efetuou_exclusao_favorito));
+                AppCenterManager.registraEvento(context.getResources().getString(R.string.evento_efetuou_exclusao_favorito));
                 loadViewProgress.dismiss();
                 if (response.getRedirect() != null){
                     RedirectNetwork.checkRedirectSucesso( response.getRedirect(), activity);
@@ -271,7 +271,7 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
         apostaBO.postIncluirApostaFavoritaCarrinho(idApostaFavorita, valorTipoConcurso, qtdTeimosinhas, new RequestListener<CarrinhoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoDTOResponse response) {
-                FirebaseManager.registraEvento(context ,context.getResources().getString(R.string.evento_efetuou_inclusao_favorito_no_carrinho));
+                AppCenterManager.registraEvento(context.getResources().getString(R.string.evento_efetuou_inclusao_favorito_no_carrinho));
                 DialogUtils.dismiss();
                 if (response.getRedirect() != null){
                     RedirectNetwork.checkRedirectSucesso( response.getRedirect(), activity);
@@ -297,7 +297,7 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
             @Override
             public void onResponse(RetornoPadraoDTO response) {
                 loadViewProgress.dismiss();
-                FirebaseManager.registraEvento(context ,context.getResources().getString(R.string.evento_efetuou_troca_do_nome_da_aposta_favorita));
+                AppCenterManager.registraEvento(context.getResources().getString(R.string.evento_efetuou_troca_do_nome_da_aposta_favorita));
                 if (response.getRedirect() != null) {
                     RedirectNetwork.checkRedirectSucesso( response.getRedirect(), activity);
                 }

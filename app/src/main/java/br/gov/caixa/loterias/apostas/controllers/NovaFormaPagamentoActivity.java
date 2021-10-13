@@ -30,12 +30,12 @@ import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.MercadoPagoConnection;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
-import br.gov.caixa.loterias.apostas.utils.AppCenterUtil;
+import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
-import br.gov.caixa.loterias.apostas.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.MaskEditUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -67,7 +67,7 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity implement
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         ViewUtils.configuraStatusBarGradientLayout(this, getWindow());
-        FirebaseManager.registraEvento(this ,getResources().getString(R.string.evento_entrou_adicao_forma_pagamento));
+        AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_adicao_forma_pagamento));
         listener = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nova_forma_pagamento);
@@ -178,7 +178,7 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity implement
                                                     getResources().getString(R.string.cpf),
                                                     DadosUsuarioBO.obterCpf());
                 preencheDadosPagamento();
-                AppCenterUtil.registraEvento(getResources().getString(R.string.app_center_mp_sem_cartao), requestBody);
+                AppCenterManager.registraEventoDeviceMP(getResources().getString(R.string.app_center_mp_sem_cartao), requestBody);
                 MercadoPagoConnection.callWebServicePayment_method(bin, requestBody, this, listener);
             }
         });
@@ -246,10 +246,11 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity implement
             public void onResponse(RetornoPadraoDTO response) {
                 DialogUtils.dismiss();
                 if (checkBoxSalvarCartao.isChecked()) {
-                    FirebaseManager.registraEvento(NovaFormaPagamentoActivity.this ,getResources().getString(R.string.evento_efetuou_adicao_forma_pagamento_sucesso));
+                    AppCenterManager.registraEvento(getResources().getString(R.string.evento_efetuou_adicao_forma_pagamento_sucesso));
                 }
-                FirebaseManager.registraEvento(NovaFormaPagamentoActivity.this ,getResources().getString(R.string.evento_efetuou_pagamento_sucesso));
+                AppCenterManager.registraEvento(getResources().getString(R.string.evento_efetuou_pagamento_sucesso));
 
+                CarrinhoSingleton.getInstance().setCarrinho(new CarrinhoDTO());
                 if (response.getRedirect() != null) {
                     RedirectNetwork.checkRedirectSucesso(response.getRedirect(), NovaFormaPagamentoActivity.this);
                 } else {

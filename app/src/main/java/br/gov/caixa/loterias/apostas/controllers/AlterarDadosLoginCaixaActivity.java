@@ -12,8 +12,8 @@ import androidx.appcompat.widget.Toolbar;
 
 import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
-import br.gov.caixa.loterias.apostas.utils.FirebaseManager;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 
@@ -60,7 +60,7 @@ public class AlterarDadosLoginCaixaActivity extends AppCompatActivity {
                     getResources().getString(R.string.referrer_uri);
 
             paginaAlterarDadosWebView.loadUrl(stringBuilder);
-            FirebaseManager.registraEvento(this , getResources().getString(R.string.event_alterar_dados_caixa));
+            AppCenterManager.registraEvento(getResources().getString(R.string.event_alterar_dados_caixa));
         }else{
             loadViewProgresas.hide();
             ViewUtils.alertTitulo(this, R.string.label_atencao, getResources().getString(R.string.seminternet));
