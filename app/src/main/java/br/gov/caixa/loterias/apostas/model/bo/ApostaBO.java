@@ -36,6 +36,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListApostaCarrinhoFavori
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListCarrinhoFavoritoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MesAnoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDTOResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosConfiguraveisDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RapidaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RapidaoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResourceResponse;
@@ -446,6 +447,18 @@ public class ApostaBO extends BaseBO {
         request.setErrorListener(interceptError(request, getHeader(), listener));
         silceConnection.request(request, listener);
     }
+
+    public void getApresentaHistorico(final RequestListener<ParametrosConfiguraveisDTOResponse> listener) {
+        final GsonRequest request = silceConnection.buildGetRequest(ServerMethods.APOSTAS_VERIFICA_APRESENTA_HISTORICO_PATH,
+                new LinkedHashMap<>(),
+                ParametrosConfiguraveisDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeader());
+        request.setErrorListener(interceptError(request, getHeader(), listener));
+        silceConnection.request(request, listener);
+    }
+
 
     //APOSTAS FAVORITAS
     public void deleteApostasFavoritas(final String idAposta, final RequestListener<RetornoPadraoDTO> listener) {

@@ -71,7 +71,8 @@
                 android:background="@drawable/tab_selector"
                 android:textColor="@color/tab_color"
                 android:button="@null"
-                android:gravity="center" />
+                android:gravity="center"
+                android:visibility="gone" />
 
         </RadioGroup>
 
