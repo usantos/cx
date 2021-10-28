@@ -26,6 +26,7 @@ import br.gov.caixa.loterias.apostas.controllers.SplashScreenActivity;
 import br.gov.caixa.loterias.apostas.controllers.TermosUsoActivity;
 import br.gov.caixa.loterias.apostas.model.bean.ErrorResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RedirectEnum;
+import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.DateUtils;
 import br.gov.caixa.loterias.apostas.utils.MercadoPagoUtil;
@@ -123,8 +124,10 @@ public class  RedirectNetwork {
     }
 
     public static void checkRedirect(VolleyError error, final Activity activity){
-
+        boolean lancouEvento = false;
         if (error.networkResponse == null) {
+            AppCenterManager.registraEventoErro(AppCenterManager.ERRO_GENERICO, error);
+
             if (!AppUtils.isNetworkAvailable(activity)) {
                 if (!activity.getClass().toString().equalsIgnoreCase(SplashScreenActivity.class.toString())) {
                     ViewUtils.alert(activity, activity.getResources().getString(R.string.seminternet));
@@ -141,7 +144,7 @@ public class  RedirectNetwork {
 
         ErrorResponse errorResponse = new ErrorResponse();
 
-        String body;
+        String body = null;
         //get response body and parse with appropriate encoding
         if(error.networkResponse.data != null) {
             try {
@@ -150,9 +153,16 @@ public class  RedirectNetwork {
 
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
+                AppCenterManager.registraEventoErro(AppCenterManager.ERRO_UNSUPPORTED_ENCODING, error, body);
+                lancouEvento = true;
             } catch (Exception e){
                 e.printStackTrace();
+                AppCenterManager.registraEventoErro(AppCenterManager.ERRO_GENERICO_SERIALIZACAO, error, body);
+                lancouEvento = true;
             }
+        }else {
+            AppCenterManager.registraEvento(AppCenterManager.ERRO_SERVICO_SEM_RESPONSEDATA);
+            lancouEvento = true;
         }
 
         if (errorResponse != null) {
@@ -187,6 +197,13 @@ public class  RedirectNetwork {
                         break;
                 }
             }else {
+                if (!lancouEvento) {
+                    if (errorResponse.getCodigo() != null) {
+                        AppCenterManager.registraEventoErro(errorResponse.getCodigo(), error, body);
+                    } else {
+                        AppCenterManager.registraEventoErro(String.valueOf(response.statusCode), error, body);
+                    }
+                }
                 switch (response.statusCode){
                     case 401:
                         connectKeycloak(activity);
@@ -206,25 +223,33 @@ public class  RedirectNetwork {
                         break;
                 }
             }
+        }else {
+            AppCenterManager.registraEvento(AppCenterManager.ERRO_SERVICO_SEM_RESPONSEDATA);
         }
     }
 
     public static void treatNegotialErros(ErrorResponse error, VolleyError volleyError, Activity activity) {
-         switch (error.getCodigo()) {
-             case "011010": case "011011": case "011012":
-                 ViewUtils.alertTitleCustomPositiveListener(activity,"Ok", "Apostar mais",
-                         MensagensNetwork.setMensagem(volleyError, activity), (dialog, which) -> {
-                             PrincipalActivity_.intent(activity).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP).start();
-                         });
-                 break;
-             case "018003" :
-                 enviaRegistrarMp(activity, volleyError);
-                 break;
-                 default:
-                     ViewUtils.alertTitleButton(activity, R.string.label_atencao, montarMensgem(activity, MensagensNetwork.setMensagem(volleyError, activity), error.getCodigo()), "Ok",dialog -> {});
-                     break;
+        if (error != null && error.getCodigo() != null) {
+            switch (error.getCodigo()) {
+                case "011010":
+                case "011011":
+                case "011012":
+                    ViewUtils.alertTitleCustomPositiveListener(activity, "Ok", "Apostar mais",
+                                                               MensagensNetwork.setMensagem(volleyError, activity), (dialog, which) -> {
+                                PrincipalActivity_.intent(activity).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP).start();
+                            });
+                    break;
+                case "018003":
+                    enviaRegistrarMp(activity, volleyError);
+                    break;
+                default:
+                    ViewUtils.alertTitleButton(activity, R.string.label_atencao, montarMensgem(activity, MensagensNetwork.setMensagem(volleyError, activity), error.getCodigo()), "Ok", dialog -> {});
+                    break;
 
-         }
+            }
+        }else {
+            ViewUtils.alertTitleButton(activity, R.string.label_atencao, montarMensgem(activity, MensagensNetwork.setMensagem(volleyError, activity), error.getCodigo()), "Ok", dialog -> {});
+        }
     }
 
     public static void checkRedirectSucesso(RedirectEnum redirect, Activity activity){
