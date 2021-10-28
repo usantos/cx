@@ -45,6 +45,7 @@ public final class AppCenterManager {
             properties = getPropertiesByString("DEVICE", deviceString);
         } catch (JSONException e) {
             e.printStackTrace();
+            properties = getPropetyErroPadrao();
         }
 
         Analytics.trackEvent(evento + "_" + DadosUsuarioBO.obterCpf() + "_" + getDate(), properties, Flags.CRITICAL);
