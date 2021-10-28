@@ -221,7 +221,7 @@ public class  RedirectNetwork {
                  enviaRegistrarMp(activity, volleyError);
                  break;
                  default:
-                     ViewUtils.alertTitleButton(activity, R.string.label_atencao, MensagensNetwork.setMensagem(volleyError, activity), "Ok",dialog -> {});
+                     ViewUtils.alertTitleButton(activity, R.string.label_atencao, montarMensgem(activity, MensagensNetwork.setMensagem(volleyError, activity), error.getCodigo()), "Ok",dialog -> {});
                      break;
 
          }
