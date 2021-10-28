@@ -107,9 +107,15 @@ public class DetalhesCarrinhoFavoritoActivity extends SettingToolbarActivity {
                 setaResult();
                 finish();
                 break;
+            default:
+                abrirAjuda();
         }
         return true;
     }
 
-
+    private void abrirAjuda() {
+        Intent activity = new Intent(DetalhesCarrinhoFavoritoActivity.this, TermosUsoActivity.class);
+        activity.putExtra(getResources().getString(R.string.extra_ajuda), true);
+        startActivity(activity);
+    }
 }

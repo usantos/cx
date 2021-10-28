@@ -1,7 +1,5 @@
 package br.gov.caixa.loterias.apostas.model.bo;
 
-import android.util.Log;
-
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
@@ -566,12 +564,12 @@ public class ApostaBO extends BaseBO {
     }
 
     public void adicionarSurpresinhaNoCarrinho(final IncluirSurpresinhaDTO aposta,
-                                               final RequestListener<AgrupadorDTOApostaDTOResponse> listener) {
+                                               final RequestListener<CarrinhoDTOResponse> listener) {
         if (verificaAcessToken(listener)) {
             final GsonRequest request = silceConnection.buildPostRequest(ServerMethods.INCLUIR_SURPRESINHA_CARRINHO_PATH,
                     new LinkedHashMap<>(),
                     aposta,
-                    AgrupadorDTOApostaDTOResponse.class,
+                    CarrinhoDTOResponse.class,
                     listener.getSilceListener(),
                     listener.getErrorListener(),
                     getHeader());
