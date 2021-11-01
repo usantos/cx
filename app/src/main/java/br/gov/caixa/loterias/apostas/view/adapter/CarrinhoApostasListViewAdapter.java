@@ -327,7 +327,7 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
 		DBLoteriasCrud crud = new DBLoteriasCrud(context);
 		crud.deleteIdentificaoDeUmaApostaDas8Modalidades(aposta);
 		if (local) {
-			parentActivity.lerCarrinhoLocal(Boolean.FALSE);
+			parentActivity.lerCarrinhoLocal();
 		}
 	}
 }
