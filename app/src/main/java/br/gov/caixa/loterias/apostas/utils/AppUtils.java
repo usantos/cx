@@ -43,15 +43,17 @@ public class AppUtils {
 
     public static ArrayList<ArrayList<Integer>> converteMatrizInteiros(List<List<Integer>> lista){
         ArrayList<ArrayList<Integer>> listaInteiros = new ArrayList<>();
-        for (List<Integer> coluna : lista) {
-            if(coluna.get(0) instanceof Integer){
-                listaInteiros.add(new ArrayList<>(coluna));
-            } else {
-                List<Integer> l = converteListaInteiros(coluna);
-                listaInteiros.add(new ArrayList<>(l));
+        if(lista != null){
+            for (List<Integer> coluna : lista) {
+                if (coluna.get(0) instanceof Integer) {
+                    listaInteiros.add(new ArrayList<>(coluna));
+                } else {
+                    List<Integer> l = converteListaInteiros(coluna);
+                    listaInteiros.add(new ArrayList<>(l));
+                }
             }
-
         }
+
         return listaInteiros;
     }
 
