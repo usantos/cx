@@ -64,7 +64,6 @@ public class AppIndisponivelActivity extends AppCompatActivity {
         }
     }
 
-
     private void setaMetodos() {
         buttonTentarNovamente.setOnClickListener(view -> {
             atualizaMsg();
