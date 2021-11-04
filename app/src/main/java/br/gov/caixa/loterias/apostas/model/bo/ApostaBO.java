@@ -1,7 +1,5 @@
 package br.gov.caixa.loterias.apostas.model.bo;
 
-import android.util.Log;
-
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
@@ -36,6 +34,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListApostaCarrinhoFavori
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListCarrinhoFavoritoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MesAnoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDTOResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosConfiguraveisDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RapidaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RapidaoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResourceResponse;
@@ -447,6 +446,18 @@ public class ApostaBO extends BaseBO {
         silceConnection.request(request, listener);
     }
 
+    public void getApresentaHistorico(final RequestListener<ParametrosConfiguraveisDTOResponse> listener) {
+        final GsonRequest request = silceConnection.buildGetRequest(ServerMethods.APOSTAS_VERIFICA_APRESENTA_HISTORICO_PATH,
+                new LinkedHashMap<>(),
+                ParametrosConfiguraveisDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeader());
+        request.setErrorListener(interceptError(request, getHeader(), listener));
+        silceConnection.request(request, listener);
+    }
+
+
     //APOSTAS FAVORITAS
     public void deleteApostasFavoritas(final String idAposta, final RequestListener<RetornoPadraoDTO> listener) {
         LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
@@ -553,12 +564,12 @@ public class ApostaBO extends BaseBO {
     }
 
     public void adicionarSurpresinhaNoCarrinho(final IncluirSurpresinhaDTO aposta,
-                                               final RequestListener<AgrupadorDTOApostaDTOResponse> listener) {
+                                               final RequestListener<CarrinhoDTOResponse> listener) {
         if (verificaAcessToken(listener)) {
             final GsonRequest request = silceConnection.buildPostRequest(ServerMethods.INCLUIR_SURPRESINHA_CARRINHO_PATH,
                     new LinkedHashMap<>(),
                     aposta,
-                    AgrupadorDTOApostaDTOResponse.class,
+                    CarrinhoDTOResponse.class,
                     listener.getSilceListener(),
                     listener.getErrorListener(),
                     getHeader());

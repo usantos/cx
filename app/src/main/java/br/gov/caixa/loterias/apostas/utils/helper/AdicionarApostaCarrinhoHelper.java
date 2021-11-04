@@ -119,10 +119,11 @@ public class AdicionarApostaCarrinhoHelper {
         activity = actv;
         ApostaBO apostaBO = ApostaBO_.getInstance_(activity);
         DialogUtils.show(activity);
-        apostaBO.adicionarSurpresinhaNoCarrinho(apostaSurpresinha, new RequestListener<AgrupadorDTOApostaDTOResponse>() {
+        apostaBO.adicionarSurpresinhaNoCarrinho(apostaSurpresinha, new RequestListener<CarrinhoDTOResponse>() {
             @Override
-            public void onResponse(AgrupadorDTOApostaDTOResponse response) {
+            public void onResponse(CarrinhoDTOResponse response) {
                 DialogUtils.dismiss();
+                CarrinhoSingleton.getInstance().setCarrinho(response.getPayload());
                 telaConfirmarCarrinho(apostaSurpresinha.getModalidade(), apostaSurpresinha);
                 if (response.getRedirect() != null) {
                     RedirectNetwork.checkRedirectSucesso(response.getRedirect(), (Activity) activity);
@@ -261,7 +262,6 @@ public class AdicionarApostaCarrinhoHelper {
             dialog.dismiss();
         } );
     }
-
 
     private static void telaConfirmarCarrinho(ModalidadeEnum modalidadeEnum,  Object aposta) {
         BigDecimal valor = BigDecimal.ZERO;
