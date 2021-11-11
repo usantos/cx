@@ -109,7 +109,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
 
     private void setaMetodos() {
         editTextMunicipioContent.setClickable(true);
-        editTextMunicipioContent.setOnClickListener(v -> getMunicipios());
+        editTextMunicipioContent.setOnClickListener(v -> modalMunicipios());
 
         editTextUFContent.setClickable(true);
         editTextUFContent.setOnClickListener(v -> getUFS());
@@ -151,13 +151,11 @@ public class DadosPessoaisActivity extends AppCompatActivity {
         editTextCepContent.addTextChangedListener(getTextWatcher(editTextCepContent));
     }
 
-
     @Override
     public boolean onSupportNavigateUp() {
         finish();
         return true;
     }
-
 
     private void callWebservice() {
         DialogUtils.show(DadosPessoaisActivity.this);
@@ -185,71 +183,32 @@ public class DadosPessoaisActivity extends AppCompatActivity {
     }
 
     private void getUFS() {
-        DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(DadosPessoaisActivity.this);
-        DialogUtils.show(DadosPessoaisActivity.this);
-        dadosCorporativosBO.ufs(new RequestListener<UnidadeFederacaoDTOResponse>() {
-            @Override
-            public void onResponse(UnidadeFederacaoDTOResponse response) {
-                DialogUtils.dismiss();
-                listUFString = new ArrayList<>();
-                listUf = response.getPayload();
-                for (UnidadeFederacaoDTO uf : response.getPayload()) {
-                    listUFString.add(uf.getSigla());
-                }
-                modalUfs();
-                if (response.getRedirect() != null){
-                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), DadosPessoaisActivity.this);
-                }
-            }
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                DialogUtils.dismiss();
-                RedirectNetwork.checkRedirect( error, DadosPessoaisActivity.this );
-            }
-        });
-    }
-
-    private void getMunicipios() {
-        String idUf = getResources().getString(R.string.string_vazia);
-
-        if (editTextUFContent.getText().toString().equals( getResources().getString(R.string.string_vazia) )) {
-            showDialog();
-        } else {
-            if (municipioIdDTOSelect == null){
-                for (UnidadeFederacaoDTO uf : listUf) {
-                    if (uf.getSigla().equalsIgnoreCase(ufSelect)) {
-                        idUf = uf.getId().toString();
-                    }
-                }
-            }else{
-                idUf = municipioIdDTOSelect.getIdUF().toString();
-            }
-            DialogUtils.show(DadosPessoaisActivity.this);
-            listMunicipios = new ArrayList<>();
-
+        if (listUf == null || listUFString == null) {
             DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(DadosPessoaisActivity.this);
-            dadosCorporativosBO.municipios(idUf, new RequestListener<MunicipioDTOResponse>() {
+            DialogUtils.show(DadosPessoaisActivity.this);
+            dadosCorporativosBO.ufs(new RequestListener<UnidadeFederacaoDTOResponse>() {
                 @Override
-                public void onResponse(MunicipioDTOResponse response) {
+                public void onResponse(UnidadeFederacaoDTOResponse response) {
                     DialogUtils.dismiss();
-                    listMunicipios = new ArrayList<>();
-                    municipioDTOList = response.getPayload();
-                    for (MunicipioDTO municipio : municipioDTOList) {
-                        listMunicipios.add(municipio.getNome());
+                    listUFString = new ArrayList<>();
+                    listUf = response.getPayload();
+                    for (UnidadeFederacaoDTO uf : response.getPayload()) {
+                        listUFString.add(uf.getSigla());
                     }
-                    modalMunicipios();
-                    if (response.getRedirect() != null){
-                        RedirectNetwork.checkRedirectSucesso( response.getRedirect(), DadosPessoaisActivity.this);
+                    modalUfs();
+                    if (response.getRedirect() != null) {
+                        RedirectNetwork.checkRedirectSucesso(response.getRedirect(), DadosPessoaisActivity.this);
                     }
                 }
 
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     DialogUtils.dismiss();
-                    RedirectNetwork.checkRedirect( error, DadosPessoaisActivity.this );
+                    RedirectNetwork.checkRedirect(error, DadosPessoaisActivity.this);
                 }
             });
+        }else {
+            modalUfs();
         }
     }
 
@@ -284,11 +243,13 @@ public class DadosPessoaisActivity extends AppCompatActivity {
 
         // if button is clicked, close the custom dialog
         dialogButtonOk.setOnClickListener(v -> {
-            if (!ufSelect.equals( editTextUFContent.getText().toString() )){
+            if (!ufSelect.isEmpty() && !ufSelect.equals( editTextUFContent.getText().toString() )){
+                editTextUFContent.setText(ufSelect);
                 editTextMunicipioContent.setText( "" );
                 municipioIdDTOSelect = null;
+                buscaMunicipio();
             }
-            editTextUFContent.setText(ufSelect);
+
             dialog.dismiss();
         });
 
@@ -298,6 +259,51 @@ public class DadosPessoaisActivity extends AppCompatActivity {
         });
 
         dialog.show();
+    }
+
+    private void buscaMunicipio() {
+        String idUF = getIdUF(ufSelect);
+
+        if (idUF != null && !idUF.isEmpty()){
+            DialogUtils.show(DadosPessoaisActivity.this);
+
+            DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(DadosPessoaisActivity.this);
+            dadosCorporativosBO.municipios(idUF, new RequestListener<MunicipioDTOResponse>() {
+                @Override
+                public void onResponse(MunicipioDTOResponse response) {
+                    DialogUtils.dismiss();
+                    listMunicipios = new ArrayList<>();
+                    municipioDTOList = response.getPayload();
+                    for (MunicipioDTO municipio : municipioDTOList) {
+                        listMunicipios.add(municipio.getNome());
+                    }
+                    if (response.getRedirect() != null){
+                        RedirectNetwork.checkRedirectSucesso( response.getRedirect(), DadosPessoaisActivity.this);
+                    }
+                }
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    DialogUtils.dismiss();
+                    RedirectNetwork.checkRedirect( error, DadosPessoaisActivity.this );
+                }
+            });
+        }else {
+            showDialog();
+        }
+    }
+
+    private String getIdUF(String ufSelect) {
+        String idUf = null;
+        if (!ufSelect.isEmpty()) {
+            for (UnidadeFederacaoDTO uf : listUf) {
+                if (uf.getSigla().equalsIgnoreCase(ufSelect)) {
+                    idUf = uf.getId().toString();
+                    break;
+                }
+            }
+        }
+        return idUf;
     }
 
     private AlertDialog myDialog;
@@ -344,7 +350,9 @@ public class DadosPessoaisActivity extends AppCompatActivity {
 
         // if button is clicked, close the custom dialog
         dialogButtonOk.setOnClickListener(v -> {
-            editTextMunicipioContent.setText(municipioSelect);
+            if (!municipioSelect.isEmpty() && !municipioSelect.equals( editTextMunicipioContent.getText().toString() ) ) {
+                editTextMunicipioContent.setText(municipioSelect);
+            }
             dialog.dismiss();
         });
 
@@ -355,7 +363,6 @@ public class DadosPessoaisActivity extends AppCompatActivity {
 
         dialog.show();
     }
-
 
     private TextWatcher getTextWatcher(final EditText editText) {
         return new TextWatcher() {
@@ -417,7 +424,6 @@ public class DadosPessoaisActivity extends AppCompatActivity {
         });
     }
 
-
     private void updateDadosCadastrais(ApostadorAlteracaoDTO apostadorAlteracaoDTO){
         final DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_( this );
         DialogUtils.show(DadosPessoaisActivity.this);
@@ -464,7 +470,6 @@ public class DadosPessoaisActivity extends AppCompatActivity {
         }
     }
 
-
     private void getUfeMunicipio(){
 
         DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(DadosPessoaisActivity.this);
@@ -472,10 +477,12 @@ public class DadosPessoaisActivity extends AppCompatActivity {
             @Override
             public void onResponse(UnidadeFederacaoDTOResponse response) {
                 listUf = response.getPayload();
+                listUFString = new ArrayList<>();
                 for (UnidadeFederacaoDTO item : listUf){
                     if (item.getId().equals(apostadorDTO.getMunicipioId().getIdUF())){
-                        editTextUFContent.setText( item.getNome() );
+                        editTextUFContent.setText( item.getSigla() );
                     }
+                    listUFString.add(item.getSigla());
                 }
                 DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(DadosPessoaisActivity.this);
                 dadosCorporativosBO.municipios(apostadorDTO.getMunicipioId().getIdUF().toString(), new RequestListener<MunicipioDTOResponse>() {
@@ -484,10 +491,12 @@ public class DadosPessoaisActivity extends AppCompatActivity {
                         DialogUtils.dismiss();
                         municipioDTOList = response.getPayload();
 
+                        listMunicipios = new ArrayList<>();
                         for (MunicipioDTO item : municipioDTOList){
                             if (item.getId().getNumero().equals(apostadorDTO.getMunicipioId().getNumero())){
                                 editTextMunicipioContent.setText( item.getNome() );
                             }
+                            listMunicipios.add(item.getNome());
                         }
                         atualizaLayout();
 
