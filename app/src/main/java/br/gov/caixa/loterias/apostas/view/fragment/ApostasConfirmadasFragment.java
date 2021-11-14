@@ -56,6 +56,7 @@ import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostas.view.adapter.ApostasConfirmadasAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.FiltroApostasAdapter;
+import br.gov.caixa.loterias.apostas.view.listener.OnApostaConfirmadaListener;
 
 /**
  * Created by pmotta on 16/03/2018.
@@ -301,21 +302,22 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
                     apostasConfirmadasRecyclerView.addItemDecoration(divider);
                 }
                 adapter = new ApostasConfirmadasAdapter(((MinhasApostasActivity)getActivity()), getActivity(), apostasList, isHistorico);
-                adapter.setOnApostasConfirmadasListener(new ApostasConfirmadasAdapter.OnApostasConfirmadasListener() {
+                adapter.setOnApostasConfirmadasListener(new OnApostaConfirmadaListener() {
                     @Override
                     public void onEmptyCellClick() {
                         getActivity().onBackPressed();
                     }
 
                     @Override
-                    public void onReload(ApostaDTO apostaDTO) {
+                    public void onReload(int position) {
+                        ApostaDTO apostaDTO = apostasList.get(position);
                         AdicionarApostaCarrinhoHelper.incluirApostaCarrinhoMinhasApostas(getActivity(), apostaDTO);
                     }
 
                     @Override
-                    public void onItemClick(final ApostaDTO apostaDTO) {
+                    public void onItemClick(final int position) {
                         DialogUtils.show(getActivity());
-
+                        ApostaDTO apostaDTO = apostasList.get(position);
                         if (isHistorico) {
                             if (Objects.equals(apostaDTO.getSituacao().getValor(), SituacaoResultadoBilheteEnum.PAGA_HISTORICO.getValor())) {
                                 apostaBO.getApostaHistoricoComprovante(apostaDTO.getId(), new RequestListener<DetalhesHistoricoPremioDTOResponse>() {

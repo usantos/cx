@@ -3,7 +3,7 @@ package br.gov.caixa.loterias.apostas.utils.helper;
 import com.android.volley.VolleyError;
 
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumLong;
-import br.gov.caixa.loterias.apostas.view.adapter.ApostasConfirmadasAdapter;
+import br.gov.caixa.loterias.apostas.view.holder.ApostaConfirmadaHolder;
 
 /**
  * Created by joafilho on 10/04/2018.
@@ -13,6 +13,6 @@ import br.gov.caixa.loterias.apostas.view.adapter.ApostasConfirmadasAdapter;
 
 public interface ConferirResultadoHandler {
     void handle(DTOEnumLong situacao);
-    void handle(ApostasConfirmadasAdapter.ViewHolder holder, DTOEnumLong situacao);
-    void handleError(ApostasConfirmadasAdapter.ViewHolder holder, VolleyError error);
+    void handle(ApostaConfirmadaHolder holder, DTOEnumLong situacao);
+    void handleError(ApostaConfirmadaHolder holder, VolleyError error);
 }

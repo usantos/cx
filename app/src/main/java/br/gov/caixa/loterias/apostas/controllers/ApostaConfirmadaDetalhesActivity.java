@@ -76,10 +76,10 @@ import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostas.utils.helper.ConferirResultadoHandler;
 import br.gov.caixa.loterias.apostas.utils.helper.ConferirResultadoHelper;
-import br.gov.caixa.loterias.apostas.view.adapter.ApostasConfirmadasAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaNumeroDetalhes_;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaPartidaFragment_;
+import br.gov.caixa.loterias.apostas.view.holder.ApostaConfirmadaHolder;
 
 import static br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity.CARRINHO;
 import static br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity.LER_CARRINHO_LOCAL;
@@ -622,10 +622,10 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     }
 
     @Override
-    public void handle(ApostasConfirmadasAdapter.ViewHolder holder, DTOEnumLong situacao) { }
+    public void handle(ApostaConfirmadaHolder holder, DTOEnumLong situacao) { }
 
     @Override
-    public void handleError(ApostasConfirmadasAdapter.ViewHolder holder, VolleyError error) {
+    public void handleError(ApostaConfirmadaHolder holder, VolleyError error) {
         RedirectNetwork.checkRedirect(error, ApostaConfirmadaDetalhesActivity.this);
     }
 }

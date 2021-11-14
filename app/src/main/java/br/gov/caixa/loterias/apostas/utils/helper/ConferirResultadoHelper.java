@@ -12,7 +12,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumIntegerResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumLong;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoResultadoBilheteEnum;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
-import br.gov.caixa.loterias.apostas.view.adapter.ApostasConfirmadasAdapter;
+import br.gov.caixa.loterias.apostas.view.holder.ApostaConfirmadaHolder;
 
 public class ConferirResultadoHelper  {
 
@@ -53,7 +53,7 @@ public class ConferirResultadoHelper  {
         });
     }
 
-    public static void conferirResultado(ApostasConfirmadasAdapter.ViewHolder holder, final Long apostaId, final Activity contextParam) {
+    public static void conferirResultado(ApostaConfirmadaHolder holder, final Long apostaId, final Activity contextParam) {
         DialogUtils.show(contextParam);
         ApostaBO apostaBO = ApostaBO_.getInstance_(contextParam);
         apostaBO.getApostaConferir(apostaId, new RequestListener<DTOEnumIntegerResponse>() {
@@ -78,7 +78,7 @@ public class ConferirResultadoHelper  {
         });
     }
 
-    public static void conferirResultadoWithoutLoading(ApostasConfirmadasAdapter.ViewHolder holder, final Long apostaId, final Activity contextParam) {
+    public static void conferirResultadoWithoutLoading(ApostaConfirmadaHolder holder, final Long apostaId, final Activity contextParam) {
         ApostaBO apostaBO = ApostaBO_.getInstance_(contextParam);
         apostaBO.getApostaConferir(apostaId, new RequestListener<DTOEnumIntegerResponse>() {
             @Override
@@ -105,7 +105,7 @@ public class ConferirResultadoHelper  {
         RedirectNetwork.checkRedirect(error,activity);
     }
 
-    private static void onErrorWithoutAlert(ApostasConfirmadasAdapter.ViewHolder holder, VolleyError error) {
+    private static void onErrorWithoutAlert(ApostaConfirmadaHolder holder, VolleyError error) {
         conferirResultadoHandler.handleError(holder, error);
     }
 }
