@@ -2,12 +2,14 @@ package br.gov.caixa.loterias.apostas.view.fragment;
 
 import android.app.Dialog;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -104,35 +106,48 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
         return instance;
     }
 
+    private boolean isOnCreate;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        isOnCreate = true;
+    }
+
     @Override
     public void onResume() {
         super.onResume();
-        if(DialogUtils.isShow()){
-            DialogUtils.dismiss();
-        }
 
-        if (firstTime || page == null) {
-            AppCenterManager.registraEvento("ENTROU_GERENCIAR_APOSTAS");
-
-            if (getActivity() != null) {
-                instance = this;
-
-                LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-                apostasConfirmadasRecyclerView.setLayoutManager(layoutManager);
-                apostasConfirmadasRecyclerView.setNestedScrollingEnabled(false);
-                requestMesesAnosDisponiveis();
-                firstTime = false;
+        if(isOnCreate) {
+            if (DialogUtils.isShow()) {
+                DialogUtils.dismiss();
             }
-        } else {
-            if (page == null) {
-                page = new ApostaPageRequest(PAGE_SIZE);
-                page.setOffset(0);
+
+            if (firstTime || page == null) {
+                AppCenterManager.registraEvento("ENTROU_GERENCIAR_APOSTAS");
+
+                if (getActivity() != null) {
+                    instance = this;
+
+                    LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+                    apostasConfirmadasRecyclerView.setLayoutManager(layoutManager);
+                    apostasConfirmadasRecyclerView.setNestedScrollingEnabled(false);
+                    requestMesesAnosDisponiveis();
+                    firstTime = false;
+                }
             } else {
-                page.setSize(PAGE_SIZE);
-                page.setOffset(0);
-                hasMoreItems = true;
+                if (page == null) {
+                    page = new ApostaPageRequest(PAGE_SIZE);
+                    page.setOffset(0);
+                } else {
+                    page.setSize(PAGE_SIZE);
+                    page.setOffset(0);
+                    hasMoreItems = true;
+                }
+                requestApostasConfirmadas();
             }
-            requestApostasConfirmadas();
+            isOnCreate = false;
         }
     }
 
@@ -182,7 +197,6 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
         requestApostasConfirmadas();
         dialogData.dismiss();
     }
-
 
     @Override
     public void onDestroy() {
