@@ -22,7 +22,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumLong;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.helper.ConferirResultadoHandler;
-import br.gov.caixa.loterias.apostas.utils.helper.ConferirResultadoHelper;
 import br.gov.caixa.loterias.apostas.view.listener.OnApostaConfirmadaListener;
 
 public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements View.OnClickListener, ConferirResultadoHandler {
@@ -40,7 +39,7 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 	private MinhasApostasActivity parentActivity;
 	private OnApostaConfirmadaListener onApostasConfirmadasListener;
 
-	public ApostaConfirmadaHolder(View view, OnApostaConfirmadaListener listener, boolean listaVazia, MinhasApostasActivity parentActivity) {
+	public ApostaConfirmadaHolder(View view, OnApostaConfirmadaListener listener, boolean listaVazia) {
 		super(view);
 		this.onApostasConfirmadasListener = listener;
 		this.parentActivity = parentActivity;
@@ -76,15 +75,7 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 
 		int color = ContextCompat.getColor(itemView.getContext(), estiloModalidade.getCorEscura());
 
-		String descricaoStatus;
-		if (aposta.getSituacao().getValor() == 4) {
-			descricaoStatus = itemView.getContext().getResources().getString(R.string.a_conferir);
-			this.situacaoTxt.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.azulescuroapostafavorita));
-			this.progressBarSituacao.setVisibility(View.GONE);
-			conferirResultado(aposta, this);
-		} else {
-			descricaoStatus = aposta.getSituacao().getDescricao();
-		}
+		String descricaoStatus = getDescricaoString(aposta);
 
 		this.color = color;
 		this.stripe.setBackgroundColor(color);
@@ -93,13 +84,31 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 		this.situacaoTxt.setTextColor(color);
 		this.situacaoTxt.setText(itemView.getContext().getResources().getString(R.string.situacao_dois_pontos_espaco) + descricaoStatus.toLowerCase(new Locale(itemView.getContext().getResources().getString(R.string.pt), itemView.getContext().getResources().getString(R.string.br))));
 
+		trataStyleSituacao(aposta);
+		preencheTeimosinha(aposta);
+	}
 
+	private String getDescricaoString(ApostaDTO aposta) {
+		String descricaoStatus;
+		if (aposta.getSituacao().getValor() == 4) {
+			descricaoStatus = itemView.getContext().getResources().getString(R.string.a_conferir);
+			this.situacaoTxt.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.azulescuroapostafavorita));
+			this.showProgressBarSituacao(false);
+		} else {
+			descricaoStatus = aposta.getSituacao().getDescricao();
+		}
+		return descricaoStatus;
+	}
+
+	private void trataStyleSituacao(ApostaDTO aposta) {
 		if (aposta.getSituacao().getValor() != 100) {
 			this.situacaoTxt.setTypeface(null, Typeface.NORMAL);
 			this.situacaoTxt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
 			//holder.modalidadeTxt.setTypeface(null, Typeface.NORMAL);
 		}
+	}
 
+	private void preencheTeimosinha(ApostaDTO aposta) {
 		int teimosinhas = aposta.getQuantidadeTeimosinhas() != null ? aposta.getQuantidadeTeimosinhas() : 0;
 		if (teimosinhas > 0) {
 			int quantidade = aposta.getConcursoInicial() + (teimosinhas - 1);
@@ -111,9 +120,19 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 		}
 	}
 
-	private void conferirResultado (ApostaDTO aposta, ApostaConfirmadaHolder holder) {
-		ConferirResultadoHelper.conferirResultadoHandler = holder;
-		ConferirResultadoHelper.conferirResultadoWithoutLoading(holder, aposta.getId(), parentActivity);
+	public void showProgressBarSituacao(boolean show){
+		if (show){
+			this.progressBarSituacao.setVisibility(View.VISIBLE);
+		}else {
+			this.progressBarSituacao.setVisibility(View.INVISIBLE);
+		}
+	}
+
+	public boolean precisaConferirSituacao(){
+		if (this.situacaoTxt != null && this.situacaoTxt.getText().toString().contains(itemView.getContext().getString(R.string.a_conferir))){
+			return true;
+		}
+		return false;
 	}
 
 	@Override
@@ -161,11 +180,11 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 					}
 					case R.id.setaLayout:
 					case R.id.setaImg: {
-						onApostasConfirmadasListener.onItemClick(getAdapterPosition());
+						onApostasConfirmadasListener.onItemClick(getAdapterPosition(), this);
 						break;
 					}
 					default:
-						onApostasConfirmadasListener.onItemClick(getAdapterPosition());
+						onApostasConfirmadasListener.onItemClick(getAdapterPosition(), this);
 						break;
 				}
 			}

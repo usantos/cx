@@ -90,6 +90,9 @@ public class ConferirResultadoHelper  {
                 resultCheckFinal.setValor(result.getPayload().getValor().longValue());
                 resultCheckFinal.setDescricao(result.getPayload().getDescricao());
 
+                if(DialogUtils.isShow()){
+                    DialogUtils.dismiss();
+                }
                 conferirResultadoHandler.handle(holder,resultCheckFinal);
             }
 

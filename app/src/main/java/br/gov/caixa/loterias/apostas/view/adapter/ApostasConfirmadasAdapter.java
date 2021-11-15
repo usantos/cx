@@ -12,7 +12,6 @@ import java.util.List;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.MinhasApostasActivity;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
-import br.gov.caixa.loterias.apostas.utils.helper.ConferirResultadoHelper;
 import br.gov.caixa.loterias.apostas.view.holder.ApostaConfirmadaHolder;
 import br.gov.caixa.loterias.apostas.view.listener.OnApostaConfirmadaListener;
 
@@ -50,11 +49,6 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostaConfir
         }
     }
 
-    private void conferirResultado (ApostaDTO aposta, ApostaConfirmadaHolder holder) {
-        ConferirResultadoHelper.conferirResultadoHandler = holder;
-        ConferirResultadoHelper.conferirResultadoWithoutLoading(holder, aposta.getId(), parentActivity);
-    }
-
 
     @Override
     public ApostaConfirmadaHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -71,7 +65,7 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostaConfir
         }
 
 
-        return new ApostaConfirmadaHolder(view, onApostasConfirmadasListener, isListaVazia(), parentActivity);
+        return new ApostaConfirmadaHolder(view, onApostasConfirmadasListener, isListaVazia());
     }
 
     private boolean isListaVazia() {
