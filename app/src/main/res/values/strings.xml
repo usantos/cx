@@ -1021,6 +1021,7 @@
     <!-- App Center -->
     <string name="app_center_mp_sem_cartao">DEVICE_MP</string>
     <string name="app_center_mp_cartao_salvo">DEVICE_MP_SAVE</string>
+    <string name="nao_apurado">não apurado</string>
 
 
 </resources>
