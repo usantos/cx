@@ -73,6 +73,9 @@ android {
             buildConfigField "String", "MP_PAYMENT_URL", "\"https://api.mercadopago.com/v1/payment_methods/installments?\""
             buildConfigField "String", "MP_CREATE_TOKEN_URL", "\"https://api.mercadopago.com/v1/card_tokens?\""
             buildConfigField "String", "APP_CENTER_KEY", "\"a4640b29-34da-4726-9224-b48a68e920d9\""
+            buildConfigField "String", "QUEUE_IT_CUSTOMER_ID", "\"caixa\""
+            buildConfigField "String", "QUEUE_IT_EVENT_ALIAS_ID", "\"loteriasprd\""
+            buildConfigField "String", "QUEUE_IT_CUSTOM_LAYOUT_NAME", "\"customLayoutCaixaTem\""
             manifestPlaceholders = [
                     appAuthRedirectScheme: "br.gov.caixa.caixaloterias",
                     hostName             : "br.gov.caixa.caixaloterias",
@@ -99,6 +102,9 @@ android {
             buildConfigField "String", "MP_PAYMENT_URL", "\"https://api.mercadopago.com/v1/payment_methods/installments?\""
             buildConfigField "String", "MP_CREATE_TOKEN_URL", "\"https://api.mercadopago.com/v1/card_tokens?\""
             buildConfigField "String", "APP_CENTER_KEY", "\"dcb5815f-9f49-4a88-818f-053e3a005e20\""
+            buildConfigField "String", "QUEUE_IT_CUSTOMER_ID", "\"caixa\""
+            buildConfigField "String", "QUEUE_IT_EVENT_ALIAS_ID", "\"loteriasdes\""
+            buildConfigField "String", "QUEUE_IT_CUSTOM_LAYOUT_NAME", "\"customLayoutCaixaTem\""
             manifestPlaceholders = [
                     appAuthRedirectScheme: "br.gov.caixa.caixaloterias",
                     hostName             : "br.gov.caixa.caixaloterias",
@@ -202,6 +208,9 @@ dependencies {
     //AppCenter
     implementation "com.microsoft.appcenter:appcenter-analytics:${appCenterSdkVersion}"
     implementation "com.microsoft.appcenter:appcenter-crashes:${appCenterSdkVersion}"
+
+    //Queue-IT
+    implementation 'com.queue-it.androidsdk:library-androidx:2.0.34'
 
     // testImplementation deps
     testImplementation 'junit:junit:4.12'

@@ -3,6 +3,7 @@ package br.gov.caixa.loterias.apostas.controllers;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,6 +19,8 @@ import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.VersionResponse;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.utils.LocalizacaoUtils;
+import br.gov.caixa.loterias.apostas.utils.UtilQueueIT;
+import br.gov.caixa.loterias.apostas.view.listener.ICallbackQueueIT;
 
 
 public class SplashScreenActivity extends AppCompatActivity {
@@ -34,7 +37,33 @@ public class SplashScreenActivity extends AppCompatActivity {
         
         AppCenter.start(getApplication(), BuildConfig.APP_CENTER_KEY, Analytics.class, Crashes.class);
 
-        verificaVersao();
+        startaFila();
+    }
+
+    private void startaFila() {
+        UtilQueueIT queueIT = new UtilQueueIT(SplashScreenActivity.this, onQueueITListener());
+    }
+
+    private ICallbackQueueIT onQueueITListener() {
+        return new ICallbackQueueIT() {
+            @Override
+            public void callbackFila(boolean passouNaFila) {
+                Log.e("QUEUE-IT", "callbackFila -> passouNaFila: " + passouNaFila);
+//                if (passouNaFila) {
+                    verificaVersao();
+//                }
+            }
+
+            @Override
+            public void callbackAbrirFila() {
+                Log.e("QUEUE-IT", "callbackFila -> callbackAbrirFila");
+            }
+
+            @Override
+            public void callbackSaiuFila() {
+                Log.e("QUEUE-IT", "callbackFila -> callbackSaiuFila");
+            }
+        };
     }
 
     private void trataPermissao() {
