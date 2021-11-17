@@ -17,8 +17,11 @@ import java.util.Locale;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.MinhasApostasActivity;
+import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumLong;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacao;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.helper.ConferirResultadoHandler;
@@ -90,14 +93,51 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 
 	private String getDescricaoString(ApostaDTO aposta) {
 		String descricaoStatus;
-		if (aposta.getSituacao().getValor() == 4) {
-			descricaoStatus = itemView.getContext().getResources().getString(R.string.a_conferir);
-			this.situacaoTxt.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.azulescuroapostafavorita));
-			this.showProgressBarSituacao(false);
-		} else {
-			descricaoStatus = aposta.getSituacao().getDescricao();
+
+		this.showProgressBarSituacao(false);
+
+		ParametroSimulacao parametroJogo = getParametroPorJogo(aposta);
+		if(!precisaBuscarResultadoNoSilce(aposta, parametroJogo)){
+			descricaoStatus = itemView.getContext().getResources().getString(R.string.nao_apurado);
+		}else {
+			// 4 = aposta efetivada
+			if (aposta.getSituacao().getValor() == 4) {
+				this.situacaoTxt.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.azulescuroapostafavorita));
+				descricaoStatus = itemView.getContext().getResources().getString(R.string.a_conferir);
+			} else {
+				descricaoStatus = aposta.getSituacao().getDescricao();
+			}
 		}
 		return descricaoStatus;
+	}
+
+	private boolean precisaBuscarResultadoNoSilce(ApostaDTO aposta, ParametroSimulacao parametroJogo) {
+		// refatorar logica das portas logicas
+		if (aposta.getConcursoInicial() < parametroJogo.getParametroJogo().getConcurso().getNumero()){
+			if (aposta.getConcursoInicial()+1 == parametroJogo.getParametroJogo().getConcurso().getNumero()
+				&& parametroJogo.getParametroJogo().getConcurso().getAberto()){
+				return true;
+			}else if(aposta.getConcursoInicial()+1 == parametroJogo.getParametroJogo().getConcurso().getNumero()
+					&& !parametroJogo.getParametroJogo().getConcurso().getAberto()){
+				return false;
+			}else {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private ParametroSimulacao getParametroPorJogo(ApostaDTO aposta) {
+		ParametrosSimulacao parametrosSimulacao = SessaoUsuario.getInstance().getParametrosSimulacao();
+		ParametroSimulacao parametroSimulacao = null;
+		for (ParametroSimulacao parametro : parametrosSimulacao.getParametros()){
+			if(aposta.getModalidade() == parametro.getParametroJogo().getConcurso().getModalidade()){
+				parametroSimulacao = parametro;
+				break;
+			}
+		}
+
+		return parametroSimulacao;
 	}
 
 	private void trataStyleSituacao(ApostaDTO aposta) {
