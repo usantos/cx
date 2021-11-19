@@ -16,7 +16,6 @@ import com.android.volley.VolleyError;
 import java.util.Locale;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.controllers.MinhasApostasActivity;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConcursoDTO;
@@ -40,13 +39,11 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 	private Button btnAposteAqui;
 	private ProgressBar progressBarSituacao;
 	private int color;
-	private MinhasApostasActivity parentActivity;
 	private OnApostaConfirmadaListener onApostasConfirmadasListener;
 
 	public ApostaConfirmadaHolder(View view, OnApostaConfirmadaListener listener, boolean listaVazia) {
 		super(view);
 		this.onApostasConfirmadasListener = listener;
-		this.parentActivity = parentActivity;
 
 		if (!listaVazia) {
 			stripe = view.findViewById(R.id.stripe);

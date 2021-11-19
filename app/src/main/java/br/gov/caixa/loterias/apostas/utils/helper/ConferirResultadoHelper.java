@@ -98,6 +98,9 @@ public class ConferirResultadoHelper  {
 
             @Override
             public void onErrorResponse(VolleyError error) {
+                if(DialogUtils.isShow()){
+                    DialogUtils.dismiss();
+                }
                 onErrorWithoutAlert(holder, error);
             }
         });
