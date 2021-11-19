@@ -19,6 +19,7 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.MinhasApostasActivity;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConcursoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumLong;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacao;
@@ -112,19 +113,23 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 	}
 
 	private boolean precisaBuscarResultadoNoSilce(ApostaDTO aposta, ParametroSimulacao parametroJogo) {
-		// refatorar logica das portas logicas
-		if (aposta.getConcursoInicial() < parametroJogo.getParametroJogo().getConcurso().getNumero()){
-			if (aposta.getConcursoInicial()+1 == parametroJogo.getParametroJogo().getConcurso().getNumero()
-				&& parametroJogo.getParametroJogo().getConcurso().getAberto()){
-				return true;
-			}else if(aposta.getConcursoInicial()+1 == parametroJogo.getParametroJogo().getConcurso().getNumero()
-					&& !parametroJogo.getParametroJogo().getConcurso().getAberto()){
-				return false;
+		boolean precisaBuscar = false;
+
+		Integer numeroConcursoAposta = aposta.getConcursoInicial();
+		ConcursoDTO concursoAtual         = parametroJogo.getParametroJogo().getConcurso();
+
+		if (numeroConcursoAposta < concursoAtual.getNumero()){
+			if(numeroConcursoAposta + 1 == concursoAtual.getNumero()){
+				if (concursoAtual.getAberto()){
+					precisaBuscar = true;
+				} else {
+					precisaBuscar = false;
+				}
 			}else {
-				return true;
+				precisaBuscar = true;
 			}
 		}
-		return false;
+		return precisaBuscar;
 	}
 
 	private ParametroSimulacao getParametroPorJogo(ApostaDTO aposta) {

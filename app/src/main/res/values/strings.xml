@@ -932,7 +932,8 @@
     <string name="barra_n_time_do_coracao_dois_pontos_espaco">\nTime do coração:&#160;</string>
     <string name="barra_n_mes_da_sorte_dois_pontos">\nMês da sorte:&#160;</string>
     <string name="conferindo_resultado_ponto">Conferindo resultado.</string>
-    <string name="a_conferir">à conferir</string>
+    <string name="a_conferir">conferir aposta</string>
+    <string name="nao_apurado">concurso ainda não apurado</string>
     <string name="situacao_dois_pontos_espaco">situação:&#160;</string>
     <string name="premiada_maiusculo">Premiada</string>
     <string name="situacao_dois_pontos_underline">situação: _</string>
@@ -1021,7 +1022,6 @@
     <!-- App Center -->
     <string name="app_center_mp_sem_cartao">DEVICE_MP</string>
     <string name="app_center_mp_cartao_salvo">DEVICE_MP_SAVE</string>
-    <string name="nao_apurado">não apurado</string>
 
 
 </resources>
