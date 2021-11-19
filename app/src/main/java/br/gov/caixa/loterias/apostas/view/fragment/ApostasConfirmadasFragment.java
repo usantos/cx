@@ -97,7 +97,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
     private boolean isLoading;
     private boolean firstTime = true;
     private boolean reloadingEntireList = false;
-    private int numeroDataSelecionada = 0;
+    private int numeroDataSelecionada = 1;
 
     private ApostaPageRequest page;
 
@@ -171,10 +171,10 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
         btnCancelar.setOnClickListener(v -> dialogData.dismiss());
         dialogData.getWindow().setAttributes(lp);
 
-
         npData = dialogData.findViewById(R.id.np_data_aposta);
         npData.setMinValue(1);
         npData.setMaxValue(mesesAnosDisponiveis.size());
+        npData.setValue(numeroDataSelecionada + 1);
         npData.setDisplayedValues(valoresApresentados.toArray(new String[valoresApresentados.size()]));
         npData.setOnValueChangedListener(new ListenerData());
         npData.setWrapSelectorWheel(false);
@@ -452,7 +452,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
         mesesAnosDisponiveis.addAll(result.getPayload());
 
         if (mesesAnosDisponiveis != null && !mesesAnosDisponiveis.isEmpty()) {
-            MesAnoDTO mesAno = mesesAnosDisponiveis.get(0);
+            MesAnoDTO mesAno = mesesAnosDisponiveis.get(1);
             int mes = mesAno.getMes().getValor().intValue();
             int ano = mesAno.getAno().intValue();
             if(page == null){
@@ -488,6 +488,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
     private List<MesAnoDTO> getMesesPadrao(){
         List<MesAnoDTO> mesesPadrao = new ArrayList<>();
         mesesPadrao.add(setMesAnoPadroes(90l));
+        mesesPadrao.add(setMesAnoPadroes(45l));
         mesesPadrao.add(setMesAnoPadroes(30l));
         return mesesPadrao;
     }
