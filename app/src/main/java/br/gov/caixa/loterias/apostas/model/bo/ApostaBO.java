@@ -22,6 +22,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoFavoritoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CodigoResgateDTOResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CompraAsyncResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumIntegerResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesHistoricoPremioDTOResponse;
@@ -618,10 +619,10 @@ public class ApostaBO extends BaseBO {
         silceConnection.request(request, listener);
     }
 
-    public void postRegistrarApostaCarrinhoAsync(final MeioPagamento meioPagamento, final RequestListener<RetornoPadraoDTO> listener) {
-        final GsonRequest request = silceConnection.buildPostRequest(ServerMethods.CARRINHOS_REGISTRAR_APOSTAS_PATH,
+    public void postRegistrarApostaCarrinhoAsync(final MeioPagamento meioPagamento, final RequestListener<CompraAsyncResponse> listener) {
+        final GsonRequest request = silceConnection.buildPostRequest(ServerMethods.CARRINHOS_REGISTRAR_APOSTAS_ASYNC_PATH,
                                                                      new LinkedHashMap<>(),
-                                                                     meioPagamento, RetornoPadraoDTO.class,
+                                                                     meioPagamento, CompraAsyncResponse.class,
                                                                      listener.getSilceListener(),
                                                                      listener.getErrorListener(),
                                                                      getHeader());

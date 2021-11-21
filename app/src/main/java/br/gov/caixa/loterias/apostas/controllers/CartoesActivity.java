@@ -35,6 +35,7 @@ import br.gov.caixa.loterias.apostas.model.bo.MercadoPagoConnection;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CompraAsyncResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListCartaoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoDTO;
@@ -325,6 +326,40 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
                 startActivityForResult(getIntentForNovaFormaPagamento(), 600);
             }
         }
+    }
+
+    private void callWebserviceRegistraApostaAsync(String tokenPagamento, String payment_method_id) {
+        if(!DialogUtils.isShow()){
+            showLoading();
+        }
+
+        ParametrosPagamento parametroPagamento = new ParametrosPagamento( tokenPagamento, getResources().getString(R.string.string_true), payment_method_id, getResources().getString(R.string.string_false) );
+        MeioPagamento meioPagamento = new MeioPagamento(1, parametroPagamento);
+
+        ApostaBO apostaBO = ApostaBO_.getInstance_(CartoesActivity.this);
+        apostaBO.postRegistrarApostaCarrinhoAsync(meioPagamento, new RequestListener<CompraAsyncResponse>() {
+            @Override
+            public void onResponse(CompraAsyncResponse response) {
+                if (response.getRedirect() != null){
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), CartoesActivity.this);
+                }else{
+                    AppCenterManager.registraEvento(getResources().getString(R.string.evento_pagamento_sucesso));
+                    RateUtils.setQtdCompras(RateUtils.getQtdCompras() + 1);
+                    Intent activity = new Intent(CartoesActivity.this, ConfirmacaoPagamentoActivity.class);
+                    startActivity(activity);
+                    CarrinhoSingleton.getInstance().setCarrinho(new CarrinhoDTO());
+                    limpaCarrinhoFavorito();
+                }
+                DialogUtils.dismiss();
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                RedirectNetwork.checkRedirect( error, CartoesActivity.this );
+
+                DialogUtils.dismiss();
+            }
+        });
     }
 
     private void callWebserviceRegistraAposta(String tokenPagamento, String payment_method_id) {
