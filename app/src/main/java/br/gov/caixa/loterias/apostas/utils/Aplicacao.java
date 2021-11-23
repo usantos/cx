@@ -62,7 +62,8 @@ class ActivityLifecycleCallbacks implements Application.ActivityLifecycleCallbac
     @Override
     public void onActivityStarted(Activity activity) {
         if (numStarted == 0) {
-            if(!isRecreated && SessaoUsuarioUtil.precisaAtualizar()) {
+            SessaoUsuario sessaoUser = SessaoUsuario.getInstance();
+            if(!isRecreated && SessaoUsuarioUtil.precisaAtualizar() && sessaoUser.isPassouPelaQueueIT()) {
                 atualizaBuscaParametros(activity);
             }
         }

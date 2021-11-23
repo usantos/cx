@@ -14,6 +14,7 @@ import com.microsoft.appcenter.crashes.Crashes;
 
 import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.AcessoBO_;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.VersionResponse;
@@ -49,9 +50,9 @@ public class SplashScreenActivity extends AppCompatActivity {
             @Override
             public void callbackFila(boolean passouNaFila) {
                 Log.e("QUEUE-IT", "callbackFila -> passouNaFila: " + passouNaFila);
-//                if (passouNaFila) {
-                    verificaVersao();
-//                }
+                SessaoUsuario sessaoUser = SessaoUsuario.getInstance();
+                sessaoUser.setPassouPelaQueueIT(true);
+                verificaVersao();
             }
 
             @Override
