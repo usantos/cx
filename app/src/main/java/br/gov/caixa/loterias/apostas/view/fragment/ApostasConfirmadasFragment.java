@@ -98,6 +98,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
     private boolean firstTime = true;
     private boolean reloadingEntireList = false;
     private int numeroDataSelecionada = 1;
+    private int qtdMesAnoPadrao = 0;
 
     private ApostaPageRequest page;
 
@@ -490,6 +491,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
         mesesPadrao.add(setMesAnoPadroes(90l));
         mesesPadrao.add(setMesAnoPadroes(45l));
         mesesPadrao.add(setMesAnoPadroes(30l));
+        qtdMesAnoPadrao = mesesPadrao.size();
         return mesesPadrao;
     }
 
@@ -531,7 +533,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
 
     private String getTextoDataSelecionada(int indice){
         MesAnoDTO mesAnoSelecionado = mesesAnosDisponiveis.get(indice);
-        if(indice > 1 || isHistorico){
+        if(indice > qtdMesAnoPadrao - 1 || isHistorico){
             return formatMesAno(mesAnoSelecionado.getMes().getValor().intValue(),mesAnoSelecionado.getAno().intValue());
         } else {
             return mesAnoSelecionado.getMes().getDescricao();
