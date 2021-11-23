@@ -518,7 +518,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
             hasMoreItems = false;
             updateResultDate();
         }
-        if (error.networkResponse.statusCode == 401) {
+        if (error != null && error.networkResponse != null && error.networkResponse.statusCode == 401) {
             isOnCreate = true;
         }
         RedirectNetwork.checkRedirect(error, getActivity());
