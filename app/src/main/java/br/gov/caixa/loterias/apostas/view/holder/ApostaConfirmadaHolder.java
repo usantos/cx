@@ -95,7 +95,7 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 		this.showProgressBarSituacao(false);
 
 		ParametroSimulacao parametroJogo = getParametroPorJogo(aposta);
-		if(!precisaBuscarResultadoNoSilce(aposta, parametroJogo)){
+		if(parametroJogo != null && !precisaBuscarResultadoNoSilce(aposta, parametroJogo)){
 			descricaoStatus = itemView.getContext().getResources().getString(R.string.nao_apurado);
 		}else {
 			// 4 = aposta efetivada
