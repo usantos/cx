@@ -119,6 +119,9 @@ public class BaseBO {
     }
 
     private String getEndpoint(GsonRequest request){
+        if (request.getUrl().contains("/?")) {
+            return "URL crashando app";
+        }
         return Bin.fromBase64(request.getUrl().replaceAll(BuildConfig.CAIXA_BASE_URL_SILCE,"")).toUtf8();
     }
 

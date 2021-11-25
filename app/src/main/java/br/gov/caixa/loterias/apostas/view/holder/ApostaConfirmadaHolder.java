@@ -1,6 +1,7 @@
 package br.gov.caixa.loterias.apostas.view.holder;
 
 import android.graphics.Typeface;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
@@ -22,6 +23,8 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConcursoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumLong;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacao;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoPagamentoDTO;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.helper.ConferirResultadoHandler;
@@ -94,16 +97,30 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 
 		this.showProgressBarSituacao(false);
 
-		ParametroSimulacao parametroJogo = getParametroPorJogo(aposta);
+		ParametroSimulacao parametroJogo = getParametroPorJogo(aposta, TipoConcursoEnum.NORMAL);
+		if (parametroJogo == null) {
+			parametroJogo = getParametroPorJogo(aposta, TipoConcursoEnum.ESPECIAL);
+		}
+
 		if(parametroJogo != null && !precisaBuscarResultadoNoSilce(aposta, parametroJogo)){
 			descricaoStatus = itemView.getContext().getResources().getString(R.string.nao_apurado);
+			String msgLog = "Chama: false" + " = MP: " + parametroJogo.getParametroJogo().getConcurso().getModalidade() + "-" + parametroJogo.getParametroJogo().getConcurso().getNumero() + " = " + aposta.getModalidade() + "-" + aposta.getConcursoInicial() + " = diff: " + (parametroJogo.getParametroJogo().getConcurso().getNumero() - aposta.getConcursoInicial());
+			Log.d("RESULTADO-APOSTA", msgLog);
 		}else {
 			// 4 = aposta efetivada
 			if (aposta.getSituacao().getValor() == 4) {
 				this.situacaoTxt.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.azulescuroapostafavorita));
 				descricaoStatus = itemView.getContext().getResources().getString(R.string.a_conferir);
+				if (parametroJogo != null) {
+					String msgLog = "Chama: true" + " = MP: " + parametroJogo.getParametroJogo().getConcurso().getModalidade() + "-" + parametroJogo.getParametroJogo().getConcurso().getNumero() + " = " + aposta.getModalidade() + "-" + aposta.getConcursoInicial() + " = diff: " + (parametroJogo.getParametroJogo().getConcurso().getNumero() - aposta.getConcursoInicial());
+					Log.d("RESULTADO-APOSTA", msgLog);
+				} else {
+					Log.d("RESULTADO-APOSTA", "Chama: true");
+				}
 			} else {
 				descricaoStatus = aposta.getSituacao().getDescricao();
+				String msgLog = "Chama: false" + " - JÁ TEMOS O RESULTADO";
+				Log.d("RESULTADO-APOSTA", msgLog);
 			}
 		}
 		return descricaoStatus;
@@ -129,11 +146,11 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 		return precisaBuscar;
 	}
 
-	private ParametroSimulacao getParametroPorJogo(ApostaDTO aposta) {
+	private ParametroSimulacao getParametroPorJogo(ApostaDTO aposta, TipoConcursoEnum tipoConcurso) {
 		ParametrosSimulacao parametrosSimulacao = SessaoUsuario.getInstance().getParametrosSimulacao();
 		ParametroSimulacao parametroSimulacao = null;
 		for (ParametroSimulacao parametro : parametrosSimulacao.getParametros()){
-			if(aposta.getModalidade() == parametro.getParametroJogo().getConcurso().getModalidade()){
+			if(aposta.getModalidade() == parametro.getParametroJogo().getConcurso().getModalidade() && parametro.getParametroJogo().getConcurso().getTipoConcurso() == tipoConcurso){
 				parametroSimulacao = parametro;
 				break;
 			}
