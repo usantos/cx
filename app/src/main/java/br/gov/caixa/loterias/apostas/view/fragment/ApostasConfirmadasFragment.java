@@ -99,6 +99,8 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
     private boolean reloadingEntireList = false;
     private int numeroDataSelecionada = 1;
     private int qtdMesAnoPadrao = 0;
+    private boolean chamarApostaNovamente = true;
+    private MesAnoDTOResponse resultMesAno;
 
     private ApostaPageRequest page;
 
@@ -242,12 +244,13 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
             apostaBO.getApostasConfirmadas(page, new RequestListener<ResultadoPesquisaPaginadaDTOApostaDTOResponse>() {
                 @Override
                 public void onResponse(ResultadoPesquisaPaginadaDTOApostaDTOResponse result) {
+                    chamarApostaNovamente = false;
                     onApostasConfirmadasResult(result.getPayload().getLista());
                 }
 
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    onApostasConfirmadasError(error);
+                    onApostasConfirmadasError500(error);
                 }
             });
         }
@@ -424,7 +427,8 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
         RequestListener listener = new RequestListener<MesAnoDTOResponse>() {
             @Override
             public void onResponse(MesAnoDTOResponse result) {
-                onMesesAnosDisponiveisResult(result);
+                resultMesAno = result;
+                onMesesAnosDisponiveisResult(resultMesAno);
             }
 
             @Override
@@ -453,7 +457,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
         mesesAnosDisponiveis.addAll(result.getPayload());
 
         if (mesesAnosDisponiveis != null && !mesesAnosDisponiveis.isEmpty()) {
-            MesAnoDTO mesAno = mesesAnosDisponiveis.get(1);
+            MesAnoDTO mesAno = mesesAnosDisponiveis.get(numeroDataSelecionada);
             int mes = mesAno.getMes().getValor().intValue();
             int ano = mesAno.getAno().intValue();
             if(page == null){
@@ -471,7 +475,6 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
             page = null;
             hasMoreItems = false;
         }
-
 
         updateResultDate();
         if (result.getRedirect() != null) {
@@ -560,6 +563,22 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
             DialogUtils.dismiss();
             apostasLoading.setVisibility(View.GONE);
             RedirectNetwork.checkRedirect(error, getActivity());
+        }
+    }
+
+    private void onApostasConfirmadasError500(VolleyError error) {
+        isLoading = false;
+        if (getActivity() != null) {
+            DialogUtils.dismiss();
+            apostasLoading.setVisibility(View.GONE);
+
+            if (chamarApostaNovamente && error != null && error.networkResponse != null && error.networkResponse.statusCode == 500) {
+                chamarApostaNovamente = false;
+                numeroDataSelecionada = 2;
+                onMesesAnosDisponiveisResult(resultMesAno);
+            }else {
+                RedirectNetwork.checkRedirect(error, getActivity());
+            }
         }
     }
 
