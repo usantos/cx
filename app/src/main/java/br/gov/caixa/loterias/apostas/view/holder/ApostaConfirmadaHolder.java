@@ -17,6 +17,7 @@ import com.android.volley.VolleyError;
 import java.util.Locale;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.controllers.MinhasApostasActivity;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConcursoDTO;
@@ -28,6 +29,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoPagamentoDTO;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.helper.ConferirResultadoHandler;
+import br.gov.caixa.loterias.apostas.utils.helper.ConferirResultadoHelper;
 import br.gov.caixa.loterias.apostas.view.listener.OnApostaConfirmadaListener;
 
 public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements View.OnClickListener, ConferirResultadoHandler {
@@ -74,12 +76,12 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 	}
 
 	@Override
-	public void bind(ApostaDTO aposta) {
+	public void bind(ApostaDTO aposta, MinhasApostasActivity parentActivity) {
 		EstiloModalidade estiloModalidade = new EstiloModalidade(aposta.getModalidade());
 
 		int color = ContextCompat.getColor(itemView.getContext(), estiloModalidade.getCorEscura());
 
-		String descricaoStatus = getDescricaoString(aposta);
+		String descricaoStatus = getDescricaoString(aposta, parentActivity);
 
 		this.color = color;
 		this.stripe.setBackgroundColor(color);
@@ -92,7 +94,7 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 		preencheTeimosinha(aposta);
 	}
 
-	private String getDescricaoString(ApostaDTO aposta) {
+	private String getDescricaoString(ApostaDTO aposta, MinhasApostasActivity parentActivity) {
 		String descricaoStatus;
 
 		this.showProgressBarSituacao(false);
@@ -111,6 +113,8 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 			if (aposta.getSituacao().getValor() == 4) {
 				this.situacaoTxt.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.azulescuroapostafavorita));
 				descricaoStatus = itemView.getContext().getResources().getString(R.string.a_conferir);
+
+				conferirResultado(aposta, parentActivity);
 				if (parametroJogo != null) {
 					String msgLog = "Chama: true" + " = MP: " + parametroJogo.getParametroJogo().getConcurso().getModalidade() + "-" + parametroJogo.getParametroJogo().getConcurso().getNumero() + " = " + aposta.getModalidade() + "-" + aposta.getConcursoInicial() + " = diff: " + (parametroJogo.getParametroJogo().getConcurso().getNumero() - aposta.getConcursoInicial());
 					Log.d("RESULTADO-APOSTA", msgLog);
@@ -125,6 +129,13 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 		}
 		return descricaoStatus;
 	}
+
+	private void conferirResultado (ApostaDTO aposta, MinhasApostasActivity parentActivity) {
+		this.showProgressBarSituacao(true);
+		ConferirResultadoHelper.conferirResultadoHandler = this;
+		ConferirResultadoHelper.conferirResultadoWithoutLoading(this, aposta.getId(),  parentActivity);
+	}
+
 
 	private boolean precisaBuscarResultadoNoSilce(ApostaDTO aposta, ParametroSimulacao parametroJogo) {
 		boolean precisaBuscar = false;
@@ -201,21 +212,21 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 
 	@Override
 	public void handle(ApostaConfirmadaHolder holder, DTOEnumLong situacao) {
-		this.stripe.setBackgroundColor(this.color);
-		this.modalidadeTxt.setTextColor(this.color);
-		this.situacaoTxt.setTextColor(this.color);
+		holder.stripe.setBackgroundColor(holder.color);
+		holder.modalidadeTxt.setTextColor(holder.color);
+		holder.situacaoTxt.setTextColor(holder.color);
 
 		if (situacao.getDescricao().equalsIgnoreCase(itemView.getContext().getResources().getString(R.string.premiada_maiusculo))) {
-			this.situacaoTxt.setTypeface(null, Typeface.BOLD);
-			this.situacaoTxt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
-			this.situacaoTxt.setText(ViewUtils.textFuturaAndFuturaBold(itemView.getContext(),itemView.getContext().getResources().getString(R.string.situacao_dois_pontos_underline) + situacao.getDescricao().toLowerCase(new Locale(itemView.getContext().getResources().getString(R.string.pt), itemView.getContext().getResources().getString(R.string.br))) + itemView.getContext().getResources().getString(R.string.underline)));
+			holder.situacaoTxt.setTypeface(null, Typeface.BOLD);
+			holder.situacaoTxt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+			holder.situacaoTxt.setText(ViewUtils.textFuturaAndFuturaBold(itemView.getContext(),itemView.getContext().getResources().getString(R.string.situacao_dois_pontos_underline) + situacao.getDescricao().toLowerCase(new Locale(itemView.getContext().getResources().getString(R.string.pt), itemView.getContext().getResources().getString(R.string.br))) + itemView.getContext().getResources().getString(R.string.underline)));
 		} else {
-			this.situacaoTxt.setText(itemView.getContext().getResources().getString(R.string.situacao_dois_pontos_espaco)
+			holder.situacaoTxt.setText(itemView.getContext().getResources().getString(R.string.situacao_dois_pontos_espaco)
 											 + situacao.getDescricao().toLowerCase(new Locale(itemView.getContext().getResources().getString(R.string.pt),
 																							  itemView.getContext().getResources().getString(R.string.br))));
 		}
 
-		this.progressBarSituacao.setVisibility(View.INVISIBLE);
+		holder.progressBarSituacao.setVisibility(View.INVISIBLE);
 	}
 
 	@Override

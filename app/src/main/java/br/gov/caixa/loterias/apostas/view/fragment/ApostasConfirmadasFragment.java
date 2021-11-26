@@ -325,8 +325,8 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
                 adapter.setOnApostasConfirmadasListener(getOnApostasConfirmadasListener(apostasList));
                 apostasConfirmadasRecyclerView.setAdapter(adapter);
             } else {
-                adapter.addApostasList(apostasList);
-                adapter.notifyDataSetChanged();
+                int cont = adapter.addApostasList(apostasList) ;
+                adapter.notifyItemRangeInserted(cont, apostasList.size());
             }
         }
     }

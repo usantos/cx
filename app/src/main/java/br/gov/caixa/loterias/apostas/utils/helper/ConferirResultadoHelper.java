@@ -79,6 +79,9 @@ public class ConferirResultadoHelper  {
     }
 
     public static void conferirResultadoWithoutLoading(ApostaConfirmadaHolder holder, final Long apostaId, final Activity contextParam) {
+        if(DialogUtils.isShow()){
+            DialogUtils.dismiss();
+        }
         ApostaBO apostaBO = ApostaBO_.getInstance_(contextParam);
         apostaBO.getApostaConferir(apostaId, new RequestListener<DTOEnumIntegerResponse>() {
             @Override
