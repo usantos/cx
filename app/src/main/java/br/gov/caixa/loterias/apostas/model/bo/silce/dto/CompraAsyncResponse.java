@@ -31,6 +31,18 @@ public class CompraAsyncResponse implements Serializable {
     @SerializedName("payload")
     private CompraAsyncDTO payload = null;
 
+    public CompraAsyncResponse() { }
+
+    public CompraAsyncResponse(String codigo, String mensagem, Integer tipo, RedirectEnum redirect, List<ErroValidacao> errosValidacao, String versao, CompraAsyncDTO payload) {
+        this.codigo = codigo;
+        this.mensagem = mensagem;
+        this.tipo = tipo;
+        this.redirect = redirect;
+        this.errosValidacao = errosValidacao;
+        this.versao = versao;
+        this.payload = payload;
+    }
+
     public CompraAsyncDTO getPayload() {
         return payload;
     }

@@ -775,6 +775,7 @@
     <string name="string_true">true</string>
     <string name="string_false">false</string>
     <string name="evento_pagamento_sucesso">EFETUOU_PAGAMENTO_SUCESSO</string>
+    <string name="evento_pagamento_sucesso_async">EFETUOU_PAGAMENTO_SUCESSO_ASYNC</string>
     <string name="bin">bin=</string>
     <string name="public_key"><![CDATA[&public_key=]]></string>
     <string name="response_dois_pontos">Response:</string>

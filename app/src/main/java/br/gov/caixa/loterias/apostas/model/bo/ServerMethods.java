@@ -22,6 +22,7 @@ class ServerMethods {
      static final String CARRINHO_FAVORITO_BUSCAR_CARRINHOS = "/carrinhos-favoritos";
      static final String CARRINHO_FAVORITO_DELETAR_CARRINHO = "/carrinhos-favoritos/{id}";
      static final String CARRINHO_FAVORITO_DELETAR_APOSTA = "/carrinhos-favoritos/{id}/apostas/{idAposta}";
+     static final String CARRINHO_VERIFICA_COMPRA_PROCESSAMENTO = "/carrinhos/verifica-compra-processamento";
 
 
 

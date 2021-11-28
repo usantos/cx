@@ -1,0 +1,130 @@
+package br.gov.caixa.loterias.apostas.utils;
+
+import android.content.Context;
+import android.os.Handler;
+
+import com.android.volley.VolleyError;
+import com.google.gson.Gson;
+
+import java.io.UnsupportedEncodingException;
+
+import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.model.bean.MeioPagamento;
+import br.gov.caixa.loterias.apostas.model.bean.ParametrosPagamento;
+import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
+import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
+import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CompraAsyncResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RedirectEnum;
+import br.gov.caixa.loterias.apostas.view.listener.OnCompraAsync;
+
+public class CompraUtil {
+
+    private static void verificaCompraProcessamento(final Context context, Long idCompraCarrinho, int posicao, final OnCompraAsync listener) {
+        ApostaBO apostaBO = ApostaBO_.getInstance_(context);
+        apostaBO.verificaCompraProcessamento(idCompraCarrinho, new RequestListener<CompraAsyncResponse>() {
+            @Override
+            public void onResponse(CompraAsyncResponse result) {
+                listener.successCompra();
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                trataVerificaProcessamento(error, listener, context, posicao+1);
+            }
+        });
+    }
+
+    public static void registraApostaAsync(final Context context, String tokenPagamento, String payment_method_id, String savedCard, final OnCompraAsync listener) {
+
+        ParametrosPagamento parametroPagamento = new ParametrosPagamento( tokenPagamento, savedCard, payment_method_id, context.getResources().getString(R.string.string_false) );
+        MeioPagamento meioPagamento = new MeioPagamento(1, parametroPagamento);
+
+        ApostaBO apostaBO = ApostaBO_.getInstance_(context);
+        apostaBO.postRegistrarApostaCarrinhoAsync(meioPagamento, new RequestListener<CompraAsyncResponse>() {
+            @Override
+            public void onResponse(CompraAsyncResponse response) {
+                if (verificaRedirect(response)) {
+                    listener.redirectCompra(response);
+                } else {
+                    chamaVerificaCompraProcessamento(context, response, listener, 0);
+                }
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                trataVerificaProcessamento(error, listener, context, 0);
+            }
+        });
+    }
+
+    private static CompraAsyncResponse trataErroRequisicao(VolleyError error, OnCompraAsync listener) {
+        if (error != null && error.networkResponse != null && error.networkResponse.statusCode == 303 && error.networkResponse.data != null) {
+            CompraAsyncResponse compraAsyncResponse = buscaCompraAsyncResponse303(error, listener);
+            if (compraAsyncResponse != null) {
+                if (verificaRedirect(compraAsyncResponse)) {
+                    listener.redirectCompra(compraAsyncResponse);
+                } else {
+                    if (compraAsyncResponse.getCodigo() != null || compraAsyncResponse.getPayload() == null) {
+                        listener.errorCompra(error);
+                    } else {
+                        return compraAsyncResponse;
+                    }
+                }
+            } else {
+                listener.errorCompra(error);
+            }
+        } else {
+            listener.errorCompra(error);
+        }
+        return null;
+    }
+
+    private static void chamaVerificaCompraProcessamento(final Context context, CompraAsyncResponse response, final OnCompraAsync listener, int posicao){
+        Long periodicidade = response.getPayload().getPeriodicidade();
+        Long repeticoes = response.getPayload().getRepeticoes();
+        Long idCompra = response.getPayload().getId();
+        if (posicao < repeticoes) {
+            new Handler().postDelayed(() -> {
+                verificaCompraProcessamento(context, idCompra, posicao, listener);
+            }, periodicidade);
+        } else {
+            listener.successCompra();
+        }
+    }
+
+    private static boolean verificaRedirect(CompraAsyncResponse response) {
+        if (response.getRedirect() != null && response.getRedirect() != RedirectEnum.VERIFICA_COMPRA_PROCESSAMENTO) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private static void trataVerificaProcessamento(VolleyError error, OnCompraAsync listener, Context context, int posicao) {
+        CompraAsyncResponse compraAsyncResponse = trataErroRequisicao(error, listener);
+        if (compraAsyncResponse != null) {
+            chamaVerificaCompraProcessamento(context, compraAsyncResponse, listener, posicao);
+        } else {
+            listener.errorCompra(error);
+        }
+    }
+
+    private static CompraAsyncResponse buscaCompraAsyncResponse303(VolleyError error, final OnCompraAsync listener) {
+        String body;
+        Gson gsonResponse = new Gson();
+        CompraAsyncResponse compraAsyncResponse = new CompraAsyncResponse();
+        try {
+            body = new String(error.networkResponse.data,"UTF-8");
+            compraAsyncResponse = gsonResponse.fromJson(body, CompraAsyncResponse.class);
+
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            listener.errorCompra(error);
+        } catch (Exception e){
+            e.printStackTrace();
+            listener.errorCompra(error);
+        }
+        return compraAsyncResponse;
+    }
+}

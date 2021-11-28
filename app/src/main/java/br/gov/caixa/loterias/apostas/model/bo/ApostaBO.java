@@ -631,6 +631,21 @@ public class ApostaBO extends BaseBO {
         silceConnection.request(request, listener);
     }
 
+    public void verificaCompraProcessamento(final Long idCompraCarrinho, final RequestListener<CompraAsyncResponse> listener) {
+        Map<String, String> queryParams = new HashMap<>();
+        queryParams.put("idCompraCarrinho", String.valueOf(idCompraCarrinho));
+        final GsonRequest request = silceConnection.buildGetRequest(
+                ServerMethods.CARRINHO_VERIFICA_COMPRA_PROCESSAMENTO,
+                queryParams,
+                CompraAsyncResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeader());
+
+        request.setErrorListener(interceptError(request, getHeader(), listener));
+        silceConnection.request(request, listener);
+    }
+
     //RAPIDAO
     public void getRapidoes(final RequestListener<RapidaoDTOResponse> listener) {
         final GsonRequest request = silceConnection.buildGetRequest(ServerMethods.RAPIDOES_PATH,
