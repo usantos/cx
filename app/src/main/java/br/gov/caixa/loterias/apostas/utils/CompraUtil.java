@@ -105,8 +105,6 @@ public class CompraUtil {
         CompraAsyncResponse compraAsyncResponse = trataErroRequisicao(error, listener);
         if (compraAsyncResponse != null) {
             chamaVerificaCompraProcessamento(context, compraAsyncResponse, listener, posicao);
-        } else {
-            listener.errorCompra(error);
         }
     }
 
