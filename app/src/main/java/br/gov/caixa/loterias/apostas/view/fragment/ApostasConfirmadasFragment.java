@@ -110,6 +110,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
     }
 
     private boolean isOnCreate;
+    private int ordenacaoDefault = 3;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -259,7 +260,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
     public void filtraDados(){
         page.setModalidade(0);
         page.setSituacao(0);
-        page.setOrdenarPor(0);
+        page.setOrdenarPor(ordenacaoDefault);
         if(!isHistorico){
             if(filtroAdapter != null){
                 if(filtroAdapter.getNpSituacao() != null) {
@@ -466,6 +467,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
             page.setAno(ano);
             page.setMes(mes);
             page.setOffset(0);
+            page.setOrdenarPor(ordenacaoDefault);
             setValoresApresentados(mesesAnosDisponiveis);
             setaDialogFiltrar();
 
