@@ -60,7 +60,7 @@ public class CompraUtil {
 
     private static CompraAsyncResponse trataErroRequisicao(VolleyError error, OnCompraAsync listener) {
         if (error != null && error.networkResponse != null && error.networkResponse.statusCode == 303 && error.networkResponse.data != null) {
-            CompraAsyncResponse compraAsyncResponse = buscaCompraAsyncResponse303(error, listener);
+            CompraAsyncResponse compraAsyncResponse = buscaCompraAsyncResponse(error);
             if (compraAsyncResponse != null) {
                 if (verificaRedirect(compraAsyncResponse)) {
                     listener.redirectCompra(compraAsyncResponse);
@@ -108,20 +108,18 @@ public class CompraUtil {
         }
     }
 
-    private static CompraAsyncResponse buscaCompraAsyncResponse303(VolleyError error, final OnCompraAsync listener) {
+    private static CompraAsyncResponse buscaCompraAsyncResponse(VolleyError error) {
         String body;
         Gson gsonResponse = new Gson();
-        CompraAsyncResponse compraAsyncResponse = new CompraAsyncResponse();
+        CompraAsyncResponse compraAsyncResponse = null;
         try {
             body = new String(error.networkResponse.data,"UTF-8");
             compraAsyncResponse = gsonResponse.fromJson(body, CompraAsyncResponse.class);
 
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
-            listener.errorCompra(error);
         } catch (Exception e){
             e.printStackTrace();
-            listener.errorCompra(error);
         }
         return compraAsyncResponse;
     }
