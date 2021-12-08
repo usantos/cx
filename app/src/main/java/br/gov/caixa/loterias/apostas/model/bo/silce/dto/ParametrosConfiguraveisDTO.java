@@ -14,6 +14,16 @@ public class ParametrosConfiguraveisDTO {
     private Boolean mostrar6meses = null;
     @SerializedName("hostMicroServicoConferenciaAposta")
     private String urlBase;
+    @SerializedName("habilitarConferenciaAutomaticaApostas")
+    private Boolean isMicroServico;
+
+    public Boolean getMicroServico() {
+        return isMicroServico;
+    }
+
+    public void setMicroServico(Boolean microServico) {
+        isMicroServico = microServico;
+    }
 
     public Boolean getMostrar6meses() {
         return mostrar6meses;
@@ -39,11 +49,12 @@ public class ParametrosConfiguraveisDTO {
             return false;
         ParametrosConfiguraveisDTO that = (ParametrosConfiguraveisDTO) o;
         return Objects.equals(mostrar6meses, that.mostrar6meses) &&
-                Objects.equals(urlBase, that.urlBase);
+                Objects.equals(urlBase, that.urlBase) &&
+                Objects.equals(isMicroServico, that.isMicroServico);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(mostrar6meses, urlBase);
+        return Objects.hash(mostrar6meses, urlBase, isMicroServico);
     }
 }

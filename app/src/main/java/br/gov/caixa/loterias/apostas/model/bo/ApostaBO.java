@@ -227,7 +227,20 @@ public class ApostaBO extends BaseBO {
     }
 
     //APOSTA
-    public void getApostasConfirmadas(ApostaPageRequest page, final RequestListener<ResultadoPesquisaPaginadaDTOApostaDTOResponse> listener) {
+    public void getApostasConfirmadasSilce(ApostaPageRequest page, final RequestListener<ResultadoPesquisaPaginadaDTOApostaDTOResponse> listener) {
+        final Map<String, String> queryParams = getQueryParams(page);
+
+        final GsonRequest request = silceConnection.buildGetRequest(ServerMethods.APOSTAS_CONFIRMADAS_PATH,
+                                                                    queryParams,
+                                                                    ResultadoPesquisaPaginadaDTOApostaDTOResponse.class,
+                                                                    listener.getSilceListener(),
+                                                                    listener.getErrorListener(),
+                                                                    getHeader());
+        request.setErrorListener(interceptError(request, getHeader(), listener));
+        silceConnection.request(request, listener);
+    }
+
+    private Map<String, String> getQueryParams(ApostaPageRequest page) {
         final Map<String, String> queryParams = new HashMap<>();
         queryParams.put("mes", String.valueOf(page.getMes()));
         if(page.getAno() > 0){
@@ -250,15 +263,7 @@ public class ApostaBO extends BaseBO {
         //queryParams.put("situacao", String.valueOf(page.getSituacao()));
 
         //        queryParams.put("idsApostas", idsApostas);
-
-        final GsonRequest request = silceConnection.buildGetRequest(ServerMethods.APOSTAS_CONFIRMADAS_PATH,
-                                                                    queryParams,
-                                                                    ResultadoPesquisaPaginadaDTOApostaDTOResponse.class,
-                                                                    listener.getSilceListener(),
-                                                                    listener.getErrorListener(),
-                                                                    getHeader());
-        request.setErrorListener(interceptError(request, getHeader(), listener));
-        silceConnection.request(request, listener);
+        return queryParams;
     }
 
     public void getApostasHistorico(ApostaPageRequest page, final RequestListener<ResultadoPesquisaPaginadaDTOHistoricoApostaDTOResponse> listener) {

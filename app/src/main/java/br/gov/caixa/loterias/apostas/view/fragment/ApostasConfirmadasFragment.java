@@ -37,6 +37,8 @@ import br.gov.caixa.loterias.apostas.controllers.ApostaConfirmadaDetalhesActivit
 import br.gov.caixa.loterias.apostas.controllers.MinhasApostasActivity;
 import br.gov.caixa.loterias.apostas.model.bean.ApostaPageRequest;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
+import br.gov.caixa.loterias.apostas.model.bo.ApostaMicroServicoBO;
+import br.gov.caixa.loterias.apostas.model.bo.ApostaMicroServicoBO_;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
@@ -52,6 +54,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MesDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOApostaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOHistoricoApostaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoResultadoBilheteEnum;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
@@ -74,6 +77,8 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
 
     @Bean
     protected ApostaBO apostaBO;
+    @Bean
+    protected ApostaMicroServicoBO apostaMicroServicoBO;
 
     @ViewById
     protected TextView dateResultTxt;
@@ -242,19 +247,43 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
                 }
             });
         } else {
-            apostaBO.getApostasConfirmadas(page, new RequestListener<ResultadoPesquisaPaginadaDTOApostaDTOResponse>() {
-                @Override
-                public void onResponse(ResultadoPesquisaPaginadaDTOApostaDTOResponse result) {
-                    chamarApostaNovamente = false;
-                    onApostasConfirmadasResult(result.getPayload().getLista());
-                }
-
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    onApostasConfirmadasError500(error);
-                }
-            });
+            if (!ConfiguracaoAppSingleton.getInstance().isMicroServico()){
+                requesteApostasSilce();
+            }else {
+                requestApostasMicroServico(ConfiguracaoAppSingleton.getInstance().getUrlBaseBuscaApostas());
+            }
         }
+    }
+
+    private void requestApostasMicroServico(String urlBaseBuscaApostas) {
+        this.apostaMicroServicoBO = ApostaMicroServicoBO_.getInstance_(getActivity());
+        apostaMicroServicoBO.getApostasConfirmadasMicroServico(urlBaseBuscaApostas, page, new RequestListener<ResultadoPesquisaPaginadaDTOApostaDTOResponse>() {
+            @Override
+            public void onResponse(ResultadoPesquisaPaginadaDTOApostaDTOResponse result) {
+                chamarApostaNovamente = false;
+                onApostasConfirmadasResult(result.getPayload().getLista());
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                onApostasConfirmadasError500(error);
+            }
+        });
+    }
+
+    private void requesteApostasSilce() {
+        apostaBO.getApostasConfirmadasSilce(page, new RequestListener<ResultadoPesquisaPaginadaDTOApostaDTOResponse>() {
+            @Override
+            public void onResponse(ResultadoPesquisaPaginadaDTOApostaDTOResponse result) {
+                chamarApostaNovamente = false;
+                onApostasConfirmadasResult(result.getPayload().getLista());
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                onApostasConfirmadasError500(error);
+            }
+        });
     }
 
     public void filtraDados(){
