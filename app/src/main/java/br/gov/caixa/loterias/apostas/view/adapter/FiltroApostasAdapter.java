@@ -113,6 +113,7 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
                             setNpOrdenarPor(viewOrdenarPor.findViewById(R.id.np_ordenar_por));
                             npOrdenarPor.setMinValue(1);
                             npOrdenarPor.setMaxValue(opcoesDeOrdenacao.length);
+                            npOrdenarPor.setValue(3);
                             npOrdenarPor.setDisplayedValues(opcoesDeOrdenacao);
                             npOrdenarPor.setOnValueChangedListener(new ListenerOrdenarPor());
                         }

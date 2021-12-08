@@ -68,6 +68,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoResultadoBilheteEnum;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
@@ -76,10 +77,10 @@ import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostas.utils.helper.ConferirResultadoHandler;
 import br.gov.caixa.loterias.apostas.utils.helper.ConferirResultadoHelper;
-import br.gov.caixa.loterias.apostas.view.adapter.ApostasConfirmadasAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaNumeroDetalhes_;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaPartidaFragment_;
+import br.gov.caixa.loterias.apostas.view.holder.ApostaConfirmadaHolder;
 
 import static br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity.CARRINHO;
 import static br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity.LER_CARRINHO_LOCAL;
@@ -206,8 +207,10 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
         }
 
         if (Objects.equals(aposta.getSituacao().getValor(), SituacaoResultadoBilheteEnum.EFETIVADA.getValor())) {
-            ConferirResultadoHelper.conferirResultadoHandler = this;
-            ConferirResultadoHelper.conferirResultado(aposta.getId(), this);
+            if(!ConfiguracaoAppSingleton.getInstance().isMicroServico()) {
+                ConferirResultadoHelper.conferirResultadoHandler = this;
+                ConferirResultadoHelper.conferirResultado(aposta.getId(), this);
+            }
         } else {
             inibirTeim();
         }
@@ -622,10 +625,10 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     }
 
     @Override
-    public void handle(ApostasConfirmadasAdapter.ViewHolder holder, DTOEnumLong situacao) { }
+    public void handle(ApostaConfirmadaHolder holder, DTOEnumLong situacao) { }
 
     @Override
-    public void handleError(ApostasConfirmadasAdapter.ViewHolder holder, VolleyError error) {
+    public void handleError(ApostaConfirmadaHolder holder, VolleyError error) {
         RedirectNetwork.checkRedirect(error, ApostaConfirmadaDetalhesActivity.this);
     }
 }

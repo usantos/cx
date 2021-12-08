@@ -18,7 +18,6 @@ import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.RootContext;
 
 import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
 import java.util.Map;
 
 import br.gov.caixa.loterias.apostas.BuildConfig;
@@ -119,6 +118,9 @@ public class BaseBO {
     }
 
     private String getEndpoint(GsonRequest request){
+        if (request.getUrl().contains("/?")) {
+            return "URL crashando app";
+        }
         return Bin.fromBase64(request.getUrl().replaceAll(BuildConfig.CAIXA_BASE_URL_SILCE,"")).toUtf8();
     }
 
