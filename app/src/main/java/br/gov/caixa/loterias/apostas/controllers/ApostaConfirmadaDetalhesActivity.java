@@ -68,6 +68,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoResultadoBilheteEnum;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
@@ -206,8 +207,10 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
         }
 
         if (Objects.equals(aposta.getSituacao().getValor(), SituacaoResultadoBilheteEnum.EFETIVADA.getValor())) {
-            ConferirResultadoHelper.conferirResultadoHandler = this;
-            ConferirResultadoHelper.conferirResultado(aposta.getId(), this);
+            if(!ConfiguracaoAppSingleton.getInstance().isMicroServico()) {
+                ConferirResultadoHelper.conferirResultadoHandler = this;
+                ConferirResultadoHelper.conferirResultado(aposta.getId(), this);
+            }
         } else {
             inibirTeim();
         }
