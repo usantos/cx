@@ -30,6 +30,7 @@ public class ApostaMicroServicoBO extends BaseMicroServicoBO {
 
     public void getApostasConfirmadasMicroServico(String urlBase, ApostaPageRequest page, RequestListener<ResultadoPesquisaPaginadaDTOApostaDTOResponse> listener) {
         connection = MicroServicoConnection.create(singleton.getRequestQueue(), urlBase);
+        connection.nuke();
 
         final Map<String, String> queryParams = getQueryParams(page);
 
@@ -68,5 +69,4 @@ public class ApostaMicroServicoBO extends BaseMicroServicoBO {
         //        queryParams.put("idsApostas", idsApostas);
         return queryParams;
     }
-
 }
