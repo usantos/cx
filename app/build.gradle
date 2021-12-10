@@ -75,7 +75,7 @@ android {
             buildConfigField "String", "APP_CENTER_KEY", "\"a4640b29-34da-4726-9224-b48a68e920d9\""
             buildConfigField "String", "QUEUE_IT_CUSTOMER_ID", "\"caixa\""
             buildConfigField "String", "QUEUE_IT_EVENT_ALIAS_ID", "\"loteriasprd\""
-            buildConfigField "String", "QUEUE_IT_CUSTOM_LAYOUT_NAME", "\"customLayoutCaixaTem\""
+            buildConfigField "String", "QUEUE_IT_CUSTOM_LAYOUT_NAME", "\"customLayoutLoterias\""
             manifestPlaceholders = [
                     appAuthRedirectScheme: "br.gov.caixa.caixaloterias",
                     hostName             : "br.gov.caixa.caixaloterias",
