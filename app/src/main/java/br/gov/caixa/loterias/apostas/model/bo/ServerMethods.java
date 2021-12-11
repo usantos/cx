@@ -22,6 +22,7 @@ class ServerMethods {
      static final String CARRINHO_FAVORITO_BUSCAR_CARRINHOS = "/carrinhos-favoritos";
      static final String CARRINHO_FAVORITO_DELETAR_CARRINHO = "/carrinhos-favoritos/{id}";
      static final String CARRINHO_FAVORITO_DELETAR_APOSTA = "/carrinhos-favoritos/{id}/apostas/{idAposta}";
+     static final String CARRINHO_VERIFICA_COMPRA_PROCESSAMENTO = "/carrinhos/verifica-compra-processamento";
 
 
 
@@ -80,6 +81,7 @@ class ServerMethods {
      static final String RESULTADOS_MODALIDADE_UTLIMO = "resultados/{modalidade}";
 
      static final String CARRINHOS_REGISTRAR_APOSTAS_PATH = "carrinhos/registrar-apostas";
+     static final String CARRINHOS_REGISTRAR_APOSTAS_ASYNC_PATH = "carrinhos/registrar-apostas-async";
 
      static final String USUARIOS_RECUPERAR_DADOS_PATH = "/usuarios/recuperar-dados";
 

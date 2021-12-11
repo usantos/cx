@@ -90,6 +90,8 @@ public class  RedirectNetwork {
                 case INDISPONIVEL:
                     context.startActivity(new Intent(context, AppIndisponivelActivity.class));
                     return;
+                case VERIFICA_COMPRA_PROCESSAMENTO:
+                    return;
                 default:
                     break;
             }
@@ -193,6 +195,8 @@ public class  RedirectNetwork {
                     case CARRINHOS_FAVORITOS:
                         activity.startActivity(new Intent(activity, CarrinhosFavoritosActivity.class));
                         return;
+                    case VERIFICA_COMPRA_PROCESSAMENTO:
+                        return;
                     default:
                         break;
                 }
@@ -267,6 +271,8 @@ public class  RedirectNetwork {
                 break;
             case INDISPONIVEL:
                 activity.startActivityForResult(new Intent(activity, AppIndisponivelActivity.class), 1);
+                return;
+            case VERIFICA_COMPRA_PROCESSAMENTO:
                 return;
             default:
                 break;

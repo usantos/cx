@@ -22,24 +22,21 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.model.bean.MeioPagamento;
-import br.gov.caixa.loterias.apostas.model.bean.ParametrosPagamento;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.MercadoPagoConnection;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
-import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CompraAsyncResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
+import br.gov.caixa.loterias.apostas.utils.CompraUtil;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.MaskEditUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
+import br.gov.caixa.loterias.apostas.view.listener.OnCompraAsync;
 
 public class NovaFormaPagamentoActivity extends SettingToolbarActivity implements MercadoPagoConnection.MercadoPagoListener {
 
@@ -229,42 +226,53 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity implement
         return invalido;
     }
 
-
-    private void callWebserviceRegistraAposta(String tokenPagamento, String payment_method_id) {
+    private void callWebserviceRegistraApostaAsync(String tokenPagamento, String payment_method_id) {
         if(!DialogUtils.isShow()){
             showLoading();
         }
 
-        ParametrosPagamento parametroPagamento = new ParametrosPagamento(tokenPagamento, String.valueOf(checkBoxSalvarCartao.isChecked()), payment_method_id);
-        MeioPagamento meioPagamento = new MeioPagamento(1, parametroPagamento);
+        CompraUtil.registraApostaAsync(NovaFormaPagamentoActivity.this, tokenPagamento, payment_method_id, String.valueOf(checkBoxSalvarCartao.isChecked()),onCompraAsyncListener());
+    }
 
-        ApostaBO apostaBO = ApostaBO_.getInstance_(NovaFormaPagamentoActivity.this);
-        //alertDialog = LoadingViewLoterias.show(this);
+    private OnCompraAsync onCompraAsyncListener() {
+        return new OnCompraAsync() {
 
-        apostaBO.postRegistrarApostaCarrinho(meioPagamento, new RequestListener<RetornoPadraoDTO>() {
             @Override
-            public void onResponse(RetornoPadraoDTO response) {
-                DialogUtils.dismiss();
-                if (checkBoxSalvarCartao.isChecked()) {
-                    AppCenterManager.registraEvento(getResources().getString(R.string.evento_efetuou_adicao_forma_pagamento_sucesso));
-                }
-                AppCenterManager.registraEvento(getResources().getString(R.string.evento_efetuou_pagamento_sucesso));
-
-                CarrinhoSingleton.getInstance().setCarrinho(new CarrinhoDTO());
-                if (response.getRedirect() != null) {
-                    RedirectNetwork.checkRedirectSucesso(response.getRedirect(), NovaFormaPagamentoActivity.this);
-                } else {
-                    Intent activity = new Intent(NovaFormaPagamentoActivity.this, ConfirmacaoPagamentoActivity.class);
-                    startActivity(activity);
-                }
+            public void successCompra() {
+                sucessoCompraAsync();
             }
 
             @Override
-            public void onErrorResponse(VolleyError error) {
-                DialogUtils.dismiss();
-                RedirectNetwork.checkRedirect(error, NovaFormaPagamentoActivity.this);
+            public void redirectCompra(CompraAsyncResponse compraAsyncResponse) {
+                redirectCompraAsync(compraAsyncResponse);
             }
-        });
+
+            @Override
+            public void errorCompra(VolleyError volleyError) {
+                errorCompraAsync(volleyError);
+            }
+        };
+    }
+
+    private void sucessoCompraAsync() {
+        DialogUtils.dismiss();
+        if (checkBoxSalvarCartao.isChecked()) {
+            AppCenterManager.registraEvento(getResources().getString(R.string.evento_efetuou_adicao_forma_pagamento_sucesso));
+        }
+        AppCenterManager.registraEvento(getResources().getString(R.string.evento_efetuou_pagamento_sucesso));
+        CarrinhoSingleton.getInstance().setCarrinho(new CarrinhoDTO());
+        Intent activity = new Intent(NovaFormaPagamentoActivity.this, ConfirmacaoPagamentoActivity.class);
+        startActivity(activity);
+    }
+
+    private void redirectCompraAsync(CompraAsyncResponse compraAsyncResponse) {
+        RedirectNetwork.checkRedirectSucesso( compraAsyncResponse.getRedirect(), NovaFormaPagamentoActivity.this);
+        DialogUtils.dismiss();
+    }
+
+    private void errorCompraAsync(VolleyError error) {
+        RedirectNetwork.checkRedirect( error, NovaFormaPagamentoActivity.this );
+        DialogUtils.dismiss();
     }
 
     private void apresentaTextCartoes() {
@@ -298,7 +306,7 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity implement
 
     @Override
     public void onSucesso(String cardId, String payment_method_id) {
-        callWebserviceRegistraAposta(cardId , payment_method_id);
+        callWebserviceRegistraApostaAsync(cardId, payment_method_id);
     }
 
     @Override
