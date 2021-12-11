@@ -260,7 +260,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                 disableButtonEditar();
                 fragment = ApostaConfirmadaPartidaFragment_.builder().valorPremio(valorPremio).aposta(aposta).loteca(Boolean.FALSE).build();
 
-                linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorEscura()));
+                linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, getCorEscura()));
                 getSupportFragmentManager().beginTransaction()
                                            .replace(R.id.fragmentContainer, fragment)
                                            .commit();
@@ -269,7 +269,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                 disableButtonEditar();
                 fragment = ApostaConfirmadaPartidaFragment_.builder().valorPremio(valorPremio).aposta(aposta).resultadoConcurso(resultadoConcurso).loteca(Boolean.TRUE).build();
 
-                linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorEscura()));
+                linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, getCorEscura()));
                 getSupportFragmentManager().beginTransaction()
                                            .replace(R.id.fragmentContainer, fragment)
                                            .commit();
@@ -277,12 +277,20 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
             default:
                 fragment = ApostaConfirmadaNumeroDetalhes_.builder().valorPremio(valorPremio).aposta(aposta).resultadoConcurso(resultadoConcurso).build();
 
-                linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorEscura()));
+                linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, getCorEscura()));
                 getSupportFragmentManager().beginTransaction()
                                            .replace(R.id.fragmentContainer, fragment)
                                            .commit();
                 break;
         }
+    }
+
+    private int getCorEscura() {
+        if (estilo != null){
+            return estilo.getCorEscura();
+        }
+        estilo = new EstiloModalidade(aposta.getModalidade());
+        return estilo.getCorEscura();
     }
 
     @Click
@@ -337,7 +345,6 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
             favoriteBtn.setVisibility(View.VISIBLE);
         }
     }
-
 
     @Click
     protected void layoutTextoSalveAposta() {
@@ -455,6 +462,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
             pdfUtils.createComprovanteApostaPdf(comprovanteParaPdf, ApostaConfirmadaDetalhesActivity.this);
         }
     }
+
     private void chamadasParaComprovante(){
         if(!DialogUtils.isShow()) {
             DialogUtils.show(this);
@@ -521,8 +529,6 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
         return true;
     }
 
-
-
     private void getResultadoModalidade(String txtmodalidade, String concurso) {
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
         final ApostaBO apostaBO = ApostaBO_.getInstance_(this);
@@ -565,6 +571,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
             inibirTeim();
         }
     }
+
     private void inibirTeim() {
         if (aposta.getQuantidadeTeimosinhas() != null && aposta.getQuantidadeTeimosinhas() > 0 && !aposta.getSituacao().getDescricao().contains("não apurado")) {
             ViewUtils.alertTitleButton(this,
@@ -609,8 +616,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
         RedirectNetwork.checkRedirect(error,ApostaConfirmadaDetalhesActivity.this);
     }
 
-    @Override
-    public void handle(DTOEnumLong situacao) {
+    private void apresentaBySituacao(DTOEnumLong situacao) {
         aposta.setSituacao(situacao);
 
         chooseFragmentToPresent();
@@ -622,6 +628,11 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
         if(!situacao.getDescricao().equalsIgnoreCase("Premiada")){
             inibirTeim();
         }
+    }
+
+    @Override
+    public void handle(DTOEnumLong situacao) {
+        apresentaBySituacao(situacao);
     }
 
     @Override
