@@ -416,7 +416,12 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
                     @Override
                     public void onResponse(ComprovanteApostaDTOResponse result) {
                         DialogUtils.dismiss();
-                        ApostaConfirmadaDetalhesActivity_.intent(getActivity()).comprovanteApostaDTO(result.getPayload()).start();
+                        ComprovanteApostaDTO comprovante = result.getPayload();
+                        if (ConfiguracaoAppSingleton.getInstance().isMicroServico()){
+                            // ja carregou a situacao no microservico
+                            comprovante.getAposta().setSituacao(apostaDTO.getSituacao());
+                        }
+                        ApostaConfirmadaDetalhesActivity_.intent(getActivity()).comprovanteApostaDTO(comprovante).start();
                     }
 
                     @Override

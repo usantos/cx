@@ -25,7 +25,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumLong;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoPagamentoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.helper.ConferirResultadoHandler;
@@ -105,7 +105,11 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 		}
 
 		if(parametroJogo != null && !precisaBuscarResultadoNoSilce(aposta, parametroJogo)){
-			descricaoStatus = itemView.getContext().getResources().getString(R.string.nao_apurado);
+			if (ConfiguracaoAppSingleton.getInstance().isMicroServico()){
+				descricaoStatus = aposta.getSituacao().getDescricao();
+			}else {
+				descricaoStatus = itemView.getContext().getResources().getString(R.string.nao_apurado);
+			}
 			String msgLog = "Chama: false" + " = MP: " + parametroJogo.getParametroJogo().getConcurso().getModalidade() + "-" + parametroJogo.getParametroJogo().getConcurso().getNumero() + " = " + aposta.getModalidade() + "-" + aposta.getConcursoInicial() + " = diff: " + (parametroJogo.getParametroJogo().getConcurso().getNumero() - aposta.getConcursoInicial());
 			Log.d("RESULTADO-APOSTA", msgLog);
 		}else {
