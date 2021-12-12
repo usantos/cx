@@ -42,6 +42,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
@@ -276,6 +277,11 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
                 if (response.getRedirect() != null){
                     RedirectNetwork.checkRedirectSucesso( response.getRedirect(), activity);
                 }
+
+                if (response.getPayload() != null) {
+                    CarrinhoSingleton.getInstance().setCarrinho(response.getPayload());
+                }
+
                 ViewUtils.alert(context, context.getResources().getString(R.string.label_aposta_salva_carinha));
             }
 
