@@ -25,6 +25,7 @@ import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.FragmentArg;
 import org.androidannotations.annotations.ViewById;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -261,6 +262,9 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
             @Override
             public void onResponse(ResultadoPesquisaPaginadaDTOApostaDTOResponse result) {
                 chamarApostaNovamente = false;
+                for (ApostaDTO aposta: result.getPayload().getLista()){
+                    aposta.setValor(new BigDecimal(1));
+                }
                 onApostasConfirmadasResult(result.getPayload().getLista());
             }
 

@@ -66,6 +66,8 @@ public class ApostaDTO<T> implements Serializable {
     protected Boolean troca = null;
     @SerializedName("dataEfetivacao")
     protected String dataEfetivacao = null;
+    @SerializedName("dataCompra")
+    protected String dataCompra = null;
     @SerializedName("horaEfetivacao")
     protected String horaEfetivacao = null;
     @SerializedName("loterica")
@@ -300,6 +302,18 @@ public class ApostaDTO<T> implements Serializable {
 
     public void setDataEfetivacao(String dataEfetivacao) {
         this.dataEfetivacao = dataEfetivacao;
+    }
+
+    /**
+     * Data de Efetivação da Aposta
+     **/
+    @ApiModelProperty(value = "Data de Efetivação da Aposta")
+    public String getDataCompra() {
+        return dataCompra;
+    }
+
+    public void setDataCompra(String dataCompra) {
+        this.dataCompra = dataCompra;
     }
 
     /**
