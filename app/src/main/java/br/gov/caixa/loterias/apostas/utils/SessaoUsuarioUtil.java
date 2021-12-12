@@ -5,6 +5,7 @@ import java.util.Date;
 import br.gov.caixa.loterias.apostas.model.bean.DadosUsuarioToken;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacaoResponse;
+import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 
 public class SessaoUsuarioUtil {
 
@@ -19,7 +20,12 @@ public class SessaoUsuarioUtil {
 			e.printStackTrace();
 		}
 		sessaoUser.setValorMinimimoAposta(parametros.getPayload().getValorMinimoCarrinho());
-		sessaoUser.setValorMaximoAposta(parametros.getPayload().getValorLimiteDiario());
+		if (LoginSP.isLoginRealizado() && parametros.getPayload().getValorLimiteDiario() != null){
+			sessaoUser.setValorMaximoAposta(parametros.getPayload().getValorLimiteDiario());
+		}
+		if (sessaoUser.getValorMaximoAposta() != null && parametros.getPayload().getValorLimiteDiario() == null){
+			parametros.getPayload().setValorLimiteDiario(sessaoUser.getValorMaximoAposta());
+		}
 		sessaoUser.setParametrosSimulacao(parametros.getPayload());
 		SessaoUsuario.getInstance().setPrecisaMontarCarrossel(true);
 	}
