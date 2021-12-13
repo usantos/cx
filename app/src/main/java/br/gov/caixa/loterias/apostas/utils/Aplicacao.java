@@ -5,6 +5,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.multidex.MultiDex;
@@ -64,7 +65,11 @@ class ActivityLifecycleCallbacks implements Application.ActivityLifecycleCallbac
         if (numStarted == 0) {
             SessaoUsuario sessaoUser = SessaoUsuario.getInstance();
             if(!isRecreated && SessaoUsuarioUtil.precisaAtualizar() && sessaoUser.isPassouPelaQueueIT()) {
-                atualizaBuscaParametros(activity);
+                try{
+                    atualizaBuscaParametros(activity);
+                }catch (Exception e){
+                    Log.e("ERRO", e.getMessage());
+                }
             }
         }
         numStarted++;
