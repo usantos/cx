@@ -179,6 +179,8 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 			this.situacaoTxt.setTypeface(null, Typeface.NORMAL);
 			this.situacaoTxt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
 			//holder.modalidadeTxt.setTypeface(null, Typeface.NORMAL);
+		}else {
+			this.situacaoTxt.setTypeface(null, Typeface.BOLD);
 		}
 	}
 

@@ -3,6 +3,7 @@ package br.gov.caixa.loterias.apostas.model.bo;
 import android.content.Context;
 import android.net.Uri;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -59,7 +60,7 @@ public class BaseMicroServicoBO {
             if(AppUtils.isNetworkAvailable(context)){
                 registraErro(error, request);
                 //Caso não esteja autorizado tenta atualizar o token de acesso
-                if(MensagensNetwork.isUnauthorizedError(error) && keycloakBO.getAccessToken() != null) {
+                if((MensagensNetwork.isUnauthorizedError(error) || error instanceof AuthFailureError) && keycloakBO.getAccessToken() != null) {
                     keycloakBO.refreshAccess(() -> {
                         //Se retornar o token, tenta fazer a mesma requisição
 
