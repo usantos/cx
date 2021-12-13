@@ -220,6 +220,9 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
 
     @AfterViews
     protected void init() {
+        if(ConfiguracaoAppSingleton.getInstance().isMicroServico()){
+            apresentaBySituacao(aposta.getSituacao());
+        }
         setupToolbar();
 
         SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
