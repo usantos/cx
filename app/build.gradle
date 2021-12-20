@@ -16,7 +16,7 @@ android {
         targetSdkVersion 30
 
         //version code = minSdkVersion + versionName(sem pontuação) + versão interna
-        versionCode 211062003
+        versionCode 211062004
         versionName "1.0.62"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -61,6 +61,7 @@ android {
             dimension "default"
             buildConfigField "boolean", "CAIXA_NETWORK_STUB", "false"
             buildConfigField "String", "CAIXA_BASE_URL_SILCE", "\"https://mobileloterias.caixa.gov.br/silce-servico-rest/rest/v1/\""
+            buildConfigField "String", "CAIXA_BASE_URL_MICRO_SERVICO", "\"https://www.loteriasonline.caixa.gov.br/silce-servico-rest/rest/v2\""
             buildConfigField "String", "PUBLIC_KEY_MP", "\"APP_USR-7cebaf99-f15f-4ef2-a9b4-61d3ca29b279\""
             buildConfigField "String", "SSO_CLIENT_ID", "\"cli-mob-lce\""
             buildConfigField "String", "SSO_REDIRECT", "\"br.gov.caixa.caixaloterias:/oauth2Callback\""
@@ -90,6 +91,7 @@ android {
             resValue "string", "app_name", "Loterias_tqs"
             buildConfigField "boolean", "CAIXA_NETWORK_STUB", "false"
             buildConfigField "String", "CAIXA_BASE_URL_SILCE", "\"http://simlo.des.caixa/silce-servico-rest/rest/v1/\""
+            buildConfigField "String", "CAIXA_BASE_URL_MICRO_SERVICO", "\"https://sispl-api-apostas-des-esteiras.nprd2.caixa\""
             buildConfigField "String", "PUBLIC_KEY_MP", "\"TEST-946a3077-5cf1-446c-bab3-e3a266357e9f\""
             buildConfigField "String", "SSO_CLIENT_ID", "\"cli-mob-lce\""
             buildConfigField "String", "SSO_REDIRECT", "\"br.gov.caixa.caixaloterias:/oauth2Callback\""

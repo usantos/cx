@@ -74,7 +74,7 @@ import br.gov.caixa.loterias.apostas.view.listener.OnApostaConfirmadaListener;
 @EFragment(R.layout.fragment_apostas_confirmadas)
 public class ApostasConfirmadasFragment extends Fragment implements MinhasApostasActivity.OnScrollReachBottomListener {
 
-    private static final int PAGE_SIZE = 30;
+    private static final int PAGE_SIZE = 31;
 
     @Bean
     protected ApostaBO apostaBO;
