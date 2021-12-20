@@ -55,10 +55,10 @@ public class MensagensNetwork {
                 errorResponse = gsonResponse.fromJson(body, ErrorResponse.class);
             } catch (UnsupportedEncodingException e) {
                 errorResponse = new ErrorResponse();
-                errorResponse.setMensagem( context.getString( R.string.sistema_indisponivel ));
+                errorResponse.setMensagem( context.getString( R.string.sistema_indisponivel ) + " - " + response.statusCode);
             } catch (Exception e){
                 errorResponse = new ErrorResponse();
-                errorResponse.setMensagem( context.getString( R.string.sistema_indisponivel ));
+                errorResponse.setMensagem( context.getString( R.string.sistema_indisponivel ) + " - " + response.statusCode);
             }
         }
 

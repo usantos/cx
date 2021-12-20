@@ -68,6 +68,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoResultadoBilheteEnum;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
@@ -76,10 +77,10 @@ import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostas.utils.helper.ConferirResultadoHandler;
 import br.gov.caixa.loterias.apostas.utils.helper.ConferirResultadoHelper;
-import br.gov.caixa.loterias.apostas.view.adapter.ApostasConfirmadasAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaNumeroDetalhes_;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaPartidaFragment_;
+import br.gov.caixa.loterias.apostas.view.holder.ApostaConfirmadaHolder;
 
 import static br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity.CARRINHO;
 import static br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity.LER_CARRINHO_LOCAL;
@@ -206,8 +207,10 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
         }
 
         if (Objects.equals(aposta.getSituacao().getValor(), SituacaoResultadoBilheteEnum.EFETIVADA.getValor())) {
-            ConferirResultadoHelper.conferirResultadoHandler = this;
-            ConferirResultadoHelper.conferirResultado(aposta.getId(), this);
+            if(!ConfiguracaoAppSingleton.getInstance().isMicroServico()) {
+                ConferirResultadoHelper.conferirResultadoHandler = this;
+                ConferirResultadoHelper.conferirResultado(aposta.getId(), this);
+            }
         } else {
             inibirTeim();
         }
@@ -217,6 +220,9 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
 
     @AfterViews
     protected void init() {
+        if(ConfiguracaoAppSingleton.getInstance().isMicroServico()){
+            apresentaBySituacao(aposta.getSituacao());
+        }
         setupToolbar();
 
         SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
@@ -257,7 +263,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                 disableButtonEditar();
                 fragment = ApostaConfirmadaPartidaFragment_.builder().valorPremio(valorPremio).aposta(aposta).loteca(Boolean.FALSE).build();
 
-                linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorEscura()));
+                linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, getCorEscura()));
                 getSupportFragmentManager().beginTransaction()
                                            .replace(R.id.fragmentContainer, fragment)
                                            .commit();
@@ -266,7 +272,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                 disableButtonEditar();
                 fragment = ApostaConfirmadaPartidaFragment_.builder().valorPremio(valorPremio).aposta(aposta).resultadoConcurso(resultadoConcurso).loteca(Boolean.TRUE).build();
 
-                linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorEscura()));
+                linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, getCorEscura()));
                 getSupportFragmentManager().beginTransaction()
                                            .replace(R.id.fragmentContainer, fragment)
                                            .commit();
@@ -274,12 +280,20 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
             default:
                 fragment = ApostaConfirmadaNumeroDetalhes_.builder().valorPremio(valorPremio).aposta(aposta).resultadoConcurso(resultadoConcurso).build();
 
-                linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorEscura()));
+                linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, getCorEscura()));
                 getSupportFragmentManager().beginTransaction()
                                            .replace(R.id.fragmentContainer, fragment)
                                            .commit();
                 break;
         }
+    }
+
+    private int getCorEscura() {
+        if (estilo != null){
+            return estilo.getCorEscura();
+        }
+        estilo = new EstiloModalidade(aposta.getModalidade());
+        return estilo.getCorEscura();
     }
 
     @Click
@@ -334,7 +348,6 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
             favoriteBtn.setVisibility(View.VISIBLE);
         }
     }
-
 
     @Click
     protected void layoutTextoSalveAposta() {
@@ -452,6 +465,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
             pdfUtils.createComprovanteApostaPdf(comprovanteParaPdf, ApostaConfirmadaDetalhesActivity.this);
         }
     }
+
     private void chamadasParaComprovante(){
         if(!DialogUtils.isShow()) {
             DialogUtils.show(this);
@@ -518,8 +532,6 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
         return true;
     }
 
-
-
     private void getResultadoModalidade(String txtmodalidade, String concurso) {
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
         final ApostaBO apostaBO = ApostaBO_.getInstance_(this);
@@ -562,6 +574,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
             inibirTeim();
         }
     }
+
     private void inibirTeim() {
         if (aposta.getQuantidadeTeimosinhas() != null && aposta.getQuantidadeTeimosinhas() > 0 && !aposta.getSituacao().getDescricao().contains("não apurado")) {
             ViewUtils.alertTitleButton(this,
@@ -606,8 +619,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
         RedirectNetwork.checkRedirect(error,ApostaConfirmadaDetalhesActivity.this);
     }
 
-    @Override
-    public void handle(DTOEnumLong situacao) {
+    private void apresentaBySituacao(DTOEnumLong situacao) {
         aposta.setSituacao(situacao);
 
         chooseFragmentToPresent();
@@ -622,10 +634,15 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     }
 
     @Override
-    public void handle(ApostasConfirmadasAdapter.ViewHolder holder, DTOEnumLong situacao) { }
+    public void handle(DTOEnumLong situacao) {
+        apresentaBySituacao(situacao);
+    }
 
     @Override
-    public void handleError(ApostasConfirmadasAdapter.ViewHolder holder, VolleyError error) {
+    public void handle(ApostaConfirmadaHolder holder, DTOEnumLong situacao) { }
+
+    @Override
+    public void handleError(ApostaConfirmadaHolder holder, VolleyError error) {
         RedirectNetwork.checkRedirect(error, ApostaConfirmadaDetalhesActivity.this);
     }
 }

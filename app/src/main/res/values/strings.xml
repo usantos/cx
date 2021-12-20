@@ -52,7 +52,7 @@
     <string name="novaAposta">Fazer nova aposta</string>
     <string name="confirmarApostas">Confirme suas apostas e pressione\nAVANÇAR para continuar.</string>
     <string name="confirmacao">Confirmação</string>
-    <string name="label_acompanhe_suas_compras">_Acompanhe_\nsuas compras</string>
+    <string name="label_acompanhe_suas_compras">_Ir para_\ncompras</string>
     <string name="avancarFormaPagamento">_Avançar_\npara a forma de pagamento</string>
     <string name="fazerNovaAposta">Fazer nova aposta</string>
 
@@ -64,8 +64,8 @@
 
     <string name="total">Total</string>
 
-    <string name="confirmacaoPagamentoInfoApostas">Enquanto sua compra é processada, você pode conferi-la em Compras no menu lateral</string>
-    <string name="confirmacaopagamentoParabens">Parabéns!\nSuas apostas foram\nrealizadas com sucesso.</string>
+    <string name="confirmacaoPagamentoInfoApostas">Você pode acompanhar a situação da sua compra enquanto ela é processada. Acesse o menu Compras.</string>
+    <string name="confirmacaopagamentoParabens">Seu pedido foi realizado com sucesso!</string>
     <string name="minhasApostas">Minhas apostas</string>
     <string name="btn_title_voltarAoInicio">_Voltar_\nao início</string>
     <string name="confirmacaoPagamentoBotaoVoltarInicio">_Voltar_\nao início</string>
@@ -775,6 +775,7 @@
     <string name="string_true">true</string>
     <string name="string_false">false</string>
     <string name="evento_pagamento_sucesso">EFETUOU_PAGAMENTO_SUCESSO</string>
+    <string name="evento_pagamento_sucesso_async">EFETUOU_PAGAMENTO_SUCESSO_ASYNC</string>
     <string name="bin">bin=</string>
     <string name="public_key"><![CDATA[&public_key=]]></string>
     <string name="response_dois_pontos">Response:</string>
@@ -932,6 +933,8 @@
     <string name="barra_n_time_do_coracao_dois_pontos_espaco">\nTime do coração:&#160;</string>
     <string name="barra_n_mes_da_sorte_dois_pontos">\nMês da sorte:&#160;</string>
     <string name="conferindo_resultado_ponto">Conferindo resultado.</string>
+    <string name="a_conferir">conferir aposta</string>
+    <string name="nao_apurado">concurso ainda não apurado</string>
     <string name="situacao_dois_pontos_espaco">situação:&#160;</string>
     <string name="premiada_maiusculo">Premiada</string>
     <string name="situacao_dois_pontos_underline">situação: _</string>

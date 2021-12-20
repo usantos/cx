@@ -2,12 +2,14 @@ package br.gov.caixa.loterias.apostas.view.fragment;
 
 import android.app.Dialog;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -23,6 +25,7 @@ import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.FragmentArg;
 import org.androidannotations.annotations.ViewById;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -35,6 +38,8 @@ import br.gov.caixa.loterias.apostas.controllers.ApostaConfirmadaDetalhesActivit
 import br.gov.caixa.loterias.apostas.controllers.MinhasApostasActivity;
 import br.gov.caixa.loterias.apostas.model.bean.ApostaPageRequest;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
+import br.gov.caixa.loterias.apostas.model.bo.ApostaMicroServicoBO;
+import br.gov.caixa.loterias.apostas.model.bo.ApostaMicroServicoBO_;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
@@ -50,12 +55,16 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MesDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOApostaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOHistoricoApostaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoResultadoBilheteEnum;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
+import br.gov.caixa.loterias.apostas.utils.helper.ConferirResultadoHelper;
 import br.gov.caixa.loterias.apostas.view.adapter.ApostasConfirmadasAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.FiltroApostasAdapter;
+import br.gov.caixa.loterias.apostas.view.holder.ApostaConfirmadaHolder;
+import br.gov.caixa.loterias.apostas.view.listener.OnApostaConfirmadaListener;
 
 /**
  * Created by pmotta on 16/03/2018.
@@ -65,10 +74,12 @@ import br.gov.caixa.loterias.apostas.view.adapter.FiltroApostasAdapter;
 @EFragment(R.layout.fragment_apostas_confirmadas)
 public class ApostasConfirmadasFragment extends Fragment implements MinhasApostasActivity.OnScrollReachBottomListener {
 
-    private static final int PAGE_SIZE = 30;
+    private static final int PAGE_SIZE = 31;
 
     @Bean
     protected ApostaBO apostaBO;
+    @Bean
+    protected ApostaMicroServicoBO apostaMicroServicoBO;
 
     @ViewById
     protected TextView dateResultTxt;
@@ -92,7 +103,10 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
     private boolean isLoading;
     private boolean firstTime = true;
     private boolean reloadingEntireList = false;
-    private int numeroDataSelecionada = 0;
+    private int numeroDataSelecionada = 1;
+    private int qtdMesAnoPadrao = 0;
+    private boolean chamarApostaNovamente = true;
+    private MesAnoDTOResponse resultMesAno;
 
     private ApostaPageRequest page;
 
@@ -101,35 +115,49 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
         return instance;
     }
 
+    private boolean isOnCreate;
+    private int ordenacaoDefault = 3;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        isOnCreate = true;
+    }
+
     @Override
     public void onResume() {
         super.onResume();
-        if(DialogUtils.isShow()){
-            DialogUtils.dismiss();
-        }
 
-        if (firstTime || page == null) {
-            AppCenterManager.registraEvento("ENTROU_GERENCIAR_APOSTAS");
-
-            if (getActivity() != null) {
-                instance = this;
-
-                LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-                apostasConfirmadasRecyclerView.setLayoutManager(layoutManager);
-                apostasConfirmadasRecyclerView.setNestedScrollingEnabled(false);
-                requestMesesAnosDisponiveis();
-                firstTime = false;
+        if(isOnCreate) {
+            if (DialogUtils.isShow()) {
+                DialogUtils.dismiss();
             }
-        } else {
-            if (page == null) {
-                page = new ApostaPageRequest(PAGE_SIZE);
-                page.setOffset(0);
+
+            if (firstTime || page == null) {
+                AppCenterManager.registraEvento("ENTROU_GERENCIAR_APOSTAS");
+
+                if (getActivity() != null) {
+                    instance = this;
+
+                    LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+                    apostasConfirmadasRecyclerView.setLayoutManager(layoutManager);
+                    apostasConfirmadasRecyclerView.setNestedScrollingEnabled(false);
+                    requestMesesAnosDisponiveis();
+                    firstTime = false;
+                }
             } else {
-                page.setSize(PAGE_SIZE);
-                page.setOffset(0);
-                hasMoreItems = true;
+                if (page == null) {
+                    page = new ApostaPageRequest(PAGE_SIZE);
+                    page.setOffset(0);
+                } else {
+                    page.setSize(PAGE_SIZE);
+                    page.setOffset(0);
+                    hasMoreItems = true;
+                }
+                requestApostasConfirmadas();
             }
-            requestApostasConfirmadas();
+            isOnCreate = false;
         }
     }
 
@@ -153,10 +181,10 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
         btnCancelar.setOnClickListener(v -> dialogData.dismiss());
         dialogData.getWindow().setAttributes(lp);
 
-
         npData = dialogData.findViewById(R.id.np_data_aposta);
         npData.setMinValue(1);
         npData.setMaxValue(mesesAnosDisponiveis.size());
+        npData.setValue(numeroDataSelecionada + 1);
         npData.setDisplayedValues(valoresApresentados.toArray(new String[valoresApresentados.size()]));
         npData.setOnValueChangedListener(new ListenerData());
         npData.setWrapSelectorWheel(false);
@@ -179,7 +207,6 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
         requestApostasConfirmadas();
         dialogData.dismiss();
     }
-
 
     @Override
     public void onDestroy() {
@@ -221,24 +248,52 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
                 }
             });
         } else {
-            apostaBO.getApostasConfirmadas(page, new RequestListener<ResultadoPesquisaPaginadaDTOApostaDTOResponse>() {
-                @Override
-                public void onResponse(ResultadoPesquisaPaginadaDTOApostaDTOResponse result) {
-                    onApostasConfirmadasResult(result.getPayload().getLista());
-                }
-
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    onApostasConfirmadasError(error);
-                }
-            });
+            if (!ConfiguracaoAppSingleton.getInstance().isMicroServico()){
+                requesteApostasSilce();
+            }else {
+                requestApostasMicroServico(ConfiguracaoAppSingleton.getInstance().getUrlBaseBuscaApostas());
+            }
         }
+    }
+
+    private void requestApostasMicroServico(String urlBaseBuscaApostas) {
+        this.apostaMicroServicoBO = ApostaMicroServicoBO_.getInstance_(getActivity());
+        apostaMicroServicoBO.getApostasConfirmadasMicroServico(urlBaseBuscaApostas, page, new RequestListener<ResultadoPesquisaPaginadaDTOApostaDTOResponse>() {
+            @Override
+            public void onResponse(ResultadoPesquisaPaginadaDTOApostaDTOResponse result) {
+                chamarApostaNovamente = false;
+                for (ApostaDTO aposta: result.getPayload().getLista()){
+                    aposta.setValor(new BigDecimal(1));
+                }
+                onApostasConfirmadasResult(result.getPayload().getLista());
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                onApostasConfirmadasError500(error);
+            }
+        });
+    }
+
+    private void requesteApostasSilce() {
+        apostaBO.getApostasConfirmadasSilce(page, new RequestListener<ResultadoPesquisaPaginadaDTOApostaDTOResponse>() {
+            @Override
+            public void onResponse(ResultadoPesquisaPaginadaDTOApostaDTOResponse result) {
+                chamarApostaNovamente = false;
+                onApostasConfirmadasResult(result.getPayload().getLista());
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                onApostasConfirmadasError500(error);
+            }
+        });
     }
 
     public void filtraDados(){
         page.setModalidade(0);
         page.setSituacao(0);
-        page.setOrdenarPor(0);
+        page.setOrdenarPor(ordenacaoDefault);
         if(!isHistorico){
             if(filtroAdapter != null){
                 if(filtroAdapter.getNpSituacao() != null) {
@@ -301,79 +356,107 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
                     apostasConfirmadasRecyclerView.addItemDecoration(divider);
                 }
                 adapter = new ApostasConfirmadasAdapter(((MinhasApostasActivity)getActivity()), getActivity(), apostasList, isHistorico);
-                adapter.setOnApostasConfirmadasListener(new ApostasConfirmadasAdapter.OnApostasConfirmadasListener() {
-                    @Override
-                    public void onEmptyCellClick() {
-                        getActivity().onBackPressed();
-                    }
-
-                    @Override
-                    public void onReload(ApostaDTO apostaDTO) {
-                        AdicionarApostaCarrinhoHelper.incluirApostaCarrinhoMinhasApostas(getActivity(), apostaDTO);
-                    }
-
-                    @Override
-                    public void onItemClick(final ApostaDTO apostaDTO) {
-                        DialogUtils.show(getActivity());
-
-                        if (isHistorico) {
-                            if (Objects.equals(apostaDTO.getSituacao().getValor(), SituacaoResultadoBilheteEnum.PAGA_HISTORICO.getValor())) {
-                                apostaBO.getApostaHistoricoComprovante(apostaDTO.getId(), new RequestListener<DetalhesHistoricoPremioDTOResponse>() {
-                                    @Override
-                                    public void onResponse(DetalhesHistoricoPremioDTOResponse result) {
-                                        ApostaConfirmadaDetalhesActivity_.intent(getActivity()).detalhesHistoricoPremioDTO(result.getPayload()).start();
-                                    }
-
-                                    @Override
-                                    public void onErrorResponse(VolleyError error) {
-                                        onApostasConfirmadasError(error);
-                                    }
-                                });
-                            } else {
-                                String json = new Gson().toJson(apostaDTO);
-                                IdentificaoDeUmaApostaDas8Modalidades apostaDas8Modalidades = new Gson().fromJson(json, IdentificaoDeUmaApostaDas8Modalidades.class);
-                                ComprovanteApostaDTO comprovanteApostaDTO = new ComprovanteApostaDTO();
-                                comprovanteApostaDTO.setAposta(apostaDas8Modalidades);
-                                DialogUtils.dismiss();
-                                ApostaConfirmadaDetalhesActivity_.intent(getActivity()).comprovanteApostaDTO(comprovanteApostaDTO).start();
-                            }
-                        } else {
-                            if (Objects.equals(apostaDTO.getSituacao().getValor(), SituacaoResultadoBilheteEnum.PAGA.getValor())) {
-
-                                apostaBO.getApostaComprovantePremio(apostaDTO.getId(), new RequestListener<DetalhesPremioDTOResponse>() {
-                                    @Override
-                                    public void onResponse(DetalhesPremioDTOResponse result) {
-                                        DialogUtils.dismiss();
-                                        ApostaConfirmadaDetalhesActivity_.intent(getActivity()).detalhesPremioDTO(result.getPayload()).start();
-                                    }
-
-                                    @Override
-                                    public void onErrorResponse(VolleyError error) {
-                                        onApostasConfirmadasError(error);
-                                    }
-                                });
-                            } else {
-                                apostaBO.getApostaDetalheComprovante(apostaDTO.getId(), new RequestListener<ComprovanteApostaDTOResponse>() {
-                                    @Override
-                                    public void onResponse(ComprovanteApostaDTOResponse result) {
-                                        DialogUtils.dismiss();
-                                        ApostaConfirmadaDetalhesActivity_.intent(getActivity()).comprovanteApostaDTO(result.getPayload()).start();
-                                    }
-
-                                    @Override
-                                    public void onErrorResponse(VolleyError error) {
-                                        onApostasConfirmadasError(error);
-                                    }
-                                });
-                            }
-                        }
-                    }
-                });
+                adapter.setOnApostasConfirmadasListener(getOnApostasConfirmadasListener(apostasList));
                 apostasConfirmadasRecyclerView.setAdapter(adapter);
             } else {
-                adapter.addApostasList(apostasList);
-                adapter.notifyDataSetChanged();
+                int cont = adapter.addApostasList(apostasList) ;
+                adapter.notifyItemRangeInserted(cont, apostasList.size());
             }
+        }
+    }
+
+    private OnApostaConfirmadaListener getOnApostasConfirmadasListener(List<ApostaDTO> apostasList) {
+        return new OnApostaConfirmadaListener() {
+            @Override
+            public void onEmptyCellClick() {
+                getActivity().onBackPressed();
+            }
+
+            @Override
+            public void onReload(int position) {
+                ApostaDTO apostaDTO = apostasList.get(position);
+                AdicionarApostaCarrinhoHelper.incluirApostaCarrinhoMinhasApostas(getActivity(), apostaDTO);
+            }
+
+            @Override
+            public void onItemClick(final int position, ApostaConfirmadaHolder holder) {
+                DialogUtils.show(getActivity());
+                ApostaDTO apostaDTO = apostasList.get(position);
+                if (isHistorico) {
+                    handleOnItemClickHistorico(apostaDTO);
+                } else {
+                    handleOnClickItemConfirmadas(apostaDTO, holder);
+                }
+            }
+        };
+    }
+
+    private void conferirResultado (ApostaDTO aposta, ApostaConfirmadaHolder holder) {
+        holder.showProgressBarSituacao(true);
+        ConferirResultadoHelper.conferirResultadoHandler = holder;
+        ConferirResultadoHelper.conferirResultadoWithoutLoading(holder, aposta.getId(), getActivity());
+    }
+
+    private void handleOnClickItemConfirmadas(ApostaDTO apostaDTO, ApostaConfirmadaHolder holder) {
+        if (holder.precisaConferirSituacao()){
+            conferirResultado(apostaDTO, holder);
+        }else {
+            if (Objects.equals(apostaDTO.getSituacao().getValor(), SituacaoResultadoBilheteEnum.PAGA.getValor())) {
+
+                apostaBO.getApostaComprovantePremio(apostaDTO.getId(), new RequestListener<DetalhesPremioDTOResponse>() {
+                    @Override
+                    public void onResponse(DetalhesPremioDTOResponse result) {
+                        DialogUtils.dismiss();
+                        ApostaConfirmadaDetalhesActivity_.intent(getActivity()).detalhesPremioDTO(result.getPayload()).start();
+                    }
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        onApostasConfirmadasError(error);
+                    }
+                });
+            } else {
+                apostaBO.getApostaDetalheComprovante(apostaDTO.getId(), new RequestListener<ComprovanteApostaDTOResponse>() {
+                    @Override
+                    public void onResponse(ComprovanteApostaDTOResponse result) {
+                        DialogUtils.dismiss();
+                        ComprovanteApostaDTO comprovante = result.getPayload();
+                        if (ConfiguracaoAppSingleton.getInstance().isMicroServico()){
+                            // ja carregou a situacao no microservico
+                            comprovante.getAposta().setSituacao(apostaDTO.getSituacao());
+                        }
+                        ApostaConfirmadaDetalhesActivity_.intent(getActivity()).comprovanteApostaDTO(comprovante).start();
+                    }
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        onApostasConfirmadasError(error);
+                    }
+                });
+            }
+        }
+    }
+
+    private void handleOnItemClickHistorico(ApostaDTO apostaDTO) {
+        if (Objects.equals(apostaDTO.getSituacao().getValor(), SituacaoResultadoBilheteEnum.PAGA_HISTORICO.getValor())) {
+            apostaBO.getApostaHistoricoComprovante(apostaDTO.getId(), new RequestListener<DetalhesHistoricoPremioDTOResponse>() {
+                @Override
+                public void onResponse(DetalhesHistoricoPremioDTOResponse result) {
+                    ApostaConfirmadaDetalhesActivity_.intent(getActivity()).detalhesHistoricoPremioDTO(result.getPayload()).start();
+                }
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    onApostasConfirmadasError(error);
+                }
+            });
+        } else {
+            String                                json                  = new Gson().toJson(apostaDTO);
+            IdentificaoDeUmaApostaDas8Modalidades apostaDas8Modalidades = new Gson().fromJson(json, IdentificaoDeUmaApostaDas8Modalidades.class);
+            ComprovanteApostaDTO                  comprovanteApostaDTO  = new ComprovanteApostaDTO();
+            comprovanteApostaDTO.setAposta(apostaDas8Modalidades);
+            DialogUtils.dismiss();
+            ApostaConfirmadaDetalhesActivity_.intent(getActivity()).comprovanteApostaDTO(comprovanteApostaDTO).start();
         }
     }
 
@@ -383,7 +466,8 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
         RequestListener listener = new RequestListener<MesAnoDTOResponse>() {
             @Override
             public void onResponse(MesAnoDTOResponse result) {
-                onMesesAnosDisponiveisResult(result);
+                resultMesAno = result;
+                onMesesAnosDisponiveisResult(resultMesAno);
             }
 
             @Override
@@ -412,7 +496,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
         mesesAnosDisponiveis.addAll(result.getPayload());
 
         if (mesesAnosDisponiveis != null && !mesesAnosDisponiveis.isEmpty()) {
-            MesAnoDTO mesAno = mesesAnosDisponiveis.get(0);
+            MesAnoDTO mesAno = mesesAnosDisponiveis.get(numeroDataSelecionada);
             int mes = mesAno.getMes().getValor().intValue();
             int ano = mesAno.getAno().intValue();
             if(page == null){
@@ -421,6 +505,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
             page.setAno(ano);
             page.setMes(mes);
             page.setOffset(0);
+            page.setOrdenarPor(ordenacaoDefault);
             setValoresApresentados(mesesAnosDisponiveis);
             setaDialogFiltrar();
 
@@ -430,7 +515,6 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
             page = null;
             hasMoreItems = false;
         }
-
 
         updateResultDate();
         if (result.getRedirect() != null) {
@@ -448,7 +532,9 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
     private List<MesAnoDTO> getMesesPadrao(){
         List<MesAnoDTO> mesesPadrao = new ArrayList<>();
         mesesPadrao.add(setMesAnoPadroes(90l));
+        mesesPadrao.add(setMesAnoPadroes(45l));
         mesesPadrao.add(setMesAnoPadroes(30l));
+        qtdMesAnoPadrao = mesesPadrao.size();
         return mesesPadrao;
     }
 
@@ -475,6 +561,9 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
             hasMoreItems = false;
             updateResultDate();
         }
+        if (error != null && error.networkResponse != null && error.networkResponse.statusCode == 401) {
+            isOnCreate = true;
+        }
         RedirectNetwork.checkRedirect(error, getActivity());
 
     }
@@ -490,7 +579,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
 
     private String getTextoDataSelecionada(int indice){
         MesAnoDTO mesAnoSelecionado = mesesAnosDisponiveis.get(indice);
-        if(indice > 1 || isHistorico){
+        if(indice > qtdMesAnoPadrao - 1 || isHistorico){
             return formatMesAno(mesAnoSelecionado.getMes().getValor().intValue(),mesAnoSelecionado.getAno().intValue());
         } else {
             return mesAnoSelecionado.getMes().getDescricao();
@@ -514,6 +603,22 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
             DialogUtils.dismiss();
             apostasLoading.setVisibility(View.GONE);
             RedirectNetwork.checkRedirect(error, getActivity());
+        }
+    }
+
+    private void onApostasConfirmadasError500(VolleyError error) {
+        isLoading = false;
+        if (getActivity() != null) {
+            DialogUtils.dismiss();
+            apostasLoading.setVisibility(View.GONE);
+
+            if (chamarApostaNovamente && error != null && error.networkResponse != null && error.networkResponse.statusCode == 500) {
+                chamarApostaNovamente = false;
+                numeroDataSelecionada = 2;
+                onMesesAnosDisponiveisResult(resultMesAno);
+            }else {
+                RedirectNetwork.checkRedirect(error, getActivity());
+            }
         }
     }
 

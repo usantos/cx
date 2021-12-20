@@ -31,7 +31,8 @@ public enum RedirectEnum {
     @SerializedName("selecionar-loterica")SELECIONAR_LOTERICA,
     @SerializedName("aceitar-termo-de-uso")ACEITAR_TERMO_DE_USO,
     @SerializedName("login")LOGIN,
-    @SerializedName("indisponibilidade")INDISPONIVEL;
+    @SerializedName("indisponibilidade")INDISPONIVEL,
+    @SerializedName("/carrinhos/verifica-compra-processamento")VERIFICA_COMPRA_PROCESSAMENTO;
 
     @Override
     public String toString() {
@@ -90,6 +91,8 @@ public enum RedirectEnum {
                 return RedirectEnum.INDISPONIVEL;
             case "carrinhos-favoritos":
                 return RedirectEnum.CARRINHOS_FAVORITOS;
+            case "/carrinhos/verifica-compra-processamento":
+                return RedirectEnum.VERIFICA_COMPRA_PROCESSAMENTO;
             default:
                 return null;
         }

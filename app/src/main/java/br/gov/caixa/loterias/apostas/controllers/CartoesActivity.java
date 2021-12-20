@@ -25,22 +25,19 @@ import org.json.JSONObject;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.model.bean.MeioPagamento;
-import br.gov.caixa.loterias.apostas.model.bean.ParametrosPagamento;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO_;
 import br.gov.caixa.loterias.apostas.model.bo.MercadoPagoConnection;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CompraAsyncResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListCartaoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.dao.crud.CarrinhoFavoritoCRUD;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
+import br.gov.caixa.loterias.apostas.utils.CompraUtil;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.RateUtils;
@@ -48,6 +45,7 @@ import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.CartoesRecyclerViewAdapter;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 import br.gov.caixa.loterias.apostas.view.listener.FormaDePagamentoListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnCompraAsync;
 
 import static br.gov.caixa.loterias.apostas.controllers.PrincipalActivity.MENU_LATERAL;
 
@@ -327,37 +325,52 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
         }
     }
 
-    private void callWebserviceRegistraAposta(String tokenPagamento, String payment_method_id) {
+    private void callWebserviceRegistraApostaAsync(String tokenPagamento, String payment_method_id) {
         if(!DialogUtils.isShow()){
             showLoading();
         }
 
-        ParametrosPagamento parametroPagamento = new ParametrosPagamento( tokenPagamento, getResources().getString(R.string.string_true), payment_method_id, getResources().getString(R.string.string_false) );
-        MeioPagamento meioPagamento = new MeioPagamento(1, parametroPagamento);
+        CompraUtil.registraApostaAsync(CartoesActivity.this, tokenPagamento, payment_method_id, getResources().getString(R.string.string_true), onCompraAsyncListener());
+    }
 
-        ApostaBO apostaBO = ApostaBO_.getInstance_(CartoesActivity.this);
-        apostaBO.postRegistrarApostaCarrinho(meioPagamento, new RequestListener<RetornoPadraoDTO>() {
+    private OnCompraAsync onCompraAsyncListener() {
+        return new OnCompraAsync() {
+
             @Override
-            public void onResponse(RetornoPadraoDTO response) {
-                if (response.getRedirect() != null){
-                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), CartoesActivity.this);
-                }else{
-                    AppCenterManager.registraEvento(getResources().getString(R.string.evento_pagamento_sucesso));
-                    RateUtils.setQtdCompras(RateUtils.getQtdCompras() + 1);
-                    Intent activity = new Intent(CartoesActivity.this, ConfirmacaoPagamentoActivity.class);
-                    startActivity(activity);
-                    CarrinhoSingleton.getInstance().setCarrinho(new CarrinhoDTO());
-                    limpaCarrinhoFavorito();
-                }
-                DialogUtils.dismiss();
+            public void successCompra() {
+                sucessoCompraAsync();
             }
 
             @Override
-            public void onErrorResponse(VolleyError error) {
-                RedirectNetwork.checkRedirect( error, CartoesActivity.this );
-                DialogUtils.dismiss();
+            public void redirectCompra(CompraAsyncResponse compraAsyncResponse) {
+                redirectCompraAsync(compraAsyncResponse);
             }
-        });
+
+            @Override
+            public void errorCompra(VolleyError volleyError) {
+                errorCompraAsync(volleyError);
+            }
+        };
+    }
+
+    private void sucessoCompraAsync() {
+        DialogUtils.dismiss();
+        AppCenterManager.registraEvento(getResources().getString(R.string.evento_pagamento_sucesso));
+        RateUtils.setQtdCompras(RateUtils.getQtdCompras() + 1);
+        Intent activity = new Intent(CartoesActivity.this, ConfirmacaoPagamentoActivity.class);
+        startActivity(activity);
+        CarrinhoSingleton.getInstance().setCarrinho(new CarrinhoDTO());
+        limpaCarrinhoFavorito();
+    }
+
+    private void redirectCompraAsync(CompraAsyncResponse compraAsyncResponse) {
+        RedirectNetwork.checkRedirectSucesso( compraAsyncResponse.getRedirect(), CartoesActivity.this);
+        DialogUtils.dismiss();
+    }
+
+    private void errorCompraAsync(VolleyError error) {
+        RedirectNetwork.checkRedirect( error, CartoesActivity.this );
+        DialogUtils.dismiss();
     }
 
     private void limpaCarrinhoFavorito() {
@@ -376,7 +389,7 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
 
     @Override
     public void onSucesso(String cardToken, String payment_method_id) {
-        callWebserviceRegistraAposta(cardToken, payment_method_id);
+        callWebserviceRegistraApostaAsync(cardToken, payment_method_id);
     }
 
     @Override

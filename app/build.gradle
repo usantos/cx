@@ -16,8 +16,8 @@ android {
         targetSdkVersion 30
 
         //version code = minSdkVersion + versionName(sem pontuação) + versão interna
-        versionCode 211061001
-        versionName "1.0.61"
+        versionCode 211062004
+        versionName "1.0.62"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -61,6 +61,7 @@ android {
             dimension "default"
             buildConfigField "boolean", "CAIXA_NETWORK_STUB", "false"
             buildConfigField "String", "CAIXA_BASE_URL_SILCE", "\"https://mobileloterias.caixa.gov.br/silce-servico-rest/rest/v1/\""
+            buildConfigField "String", "CAIXA_BASE_URL_MICRO_SERVICO", "\"https://www.loteriasonline.caixa.gov.br/silce-servico-rest/rest/v2\""
             buildConfigField "String", "PUBLIC_KEY_MP", "\"APP_USR-7cebaf99-f15f-4ef2-a9b4-61d3ca29b279\""
             buildConfigField "String", "SSO_CLIENT_ID", "\"cli-mob-lce\""
             buildConfigField "String", "SSO_REDIRECT", "\"br.gov.caixa.caixaloterias:/oauth2Callback\""
@@ -73,6 +74,9 @@ android {
             buildConfigField "String", "MP_PAYMENT_URL", "\"https://api.mercadopago.com/v1/payment_methods/installments?\""
             buildConfigField "String", "MP_CREATE_TOKEN_URL", "\"https://api.mercadopago.com/v1/card_tokens?\""
             buildConfigField "String", "APP_CENTER_KEY", "\"a4640b29-34da-4726-9224-b48a68e920d9\""
+            buildConfigField "String", "QUEUE_IT_CUSTOMER_ID", "\"caixa\""
+            buildConfigField "String", "QUEUE_IT_EVENT_ALIAS_ID", "\"loteriasprd\""
+            buildConfigField "String", "QUEUE_IT_CUSTOM_LAYOUT_NAME", "\"customLayoutLoterias\""
             manifestPlaceholders = [
                     appAuthRedirectScheme: "br.gov.caixa.caixaloterias",
                     hostName             : "br.gov.caixa.caixaloterias",
@@ -87,6 +91,7 @@ android {
             resValue "string", "app_name", "Loterias_tqs"
             buildConfigField "boolean", "CAIXA_NETWORK_STUB", "false"
             buildConfigField "String", "CAIXA_BASE_URL_SILCE", "\"http://simlo.des.caixa/silce-servico-rest/rest/v1/\""
+            buildConfigField "String", "CAIXA_BASE_URL_MICRO_SERVICO", "\"https://sispl-api-apostas-des-esteiras.nprd2.caixa\""
             buildConfigField "String", "PUBLIC_KEY_MP", "\"TEST-946a3077-5cf1-446c-bab3-e3a266357e9f\""
             buildConfigField "String", "SSO_CLIENT_ID", "\"cli-mob-lce\""
             buildConfigField "String", "SSO_REDIRECT", "\"br.gov.caixa.caixaloterias:/oauth2Callback\""
@@ -99,6 +104,9 @@ android {
             buildConfigField "String", "MP_PAYMENT_URL", "\"https://api.mercadopago.com/v1/payment_methods/installments?\""
             buildConfigField "String", "MP_CREATE_TOKEN_URL", "\"https://api.mercadopago.com/v1/card_tokens?\""
             buildConfigField "String", "APP_CENTER_KEY", "\"dcb5815f-9f49-4a88-818f-053e3a005e20\""
+            buildConfigField "String", "QUEUE_IT_CUSTOMER_ID", "\"caixa\""
+            buildConfigField "String", "QUEUE_IT_EVENT_ALIAS_ID", "\"loteriasdes\""
+            buildConfigField "String", "QUEUE_IT_CUSTOM_LAYOUT_NAME", "\"customLayoutCaixaTem\""
             manifestPlaceholders = [
                     appAuthRedirectScheme: "br.gov.caixa.caixaloterias",
                     hostName             : "br.gov.caixa.caixaloterias",
@@ -202,6 +210,9 @@ dependencies {
     //AppCenter
     implementation "com.microsoft.appcenter:appcenter-analytics:${appCenterSdkVersion}"
     implementation "com.microsoft.appcenter:appcenter-crashes:${appCenterSdkVersion}"
+
+    //Queue-IT
+    implementation 'com.queue-it.androidsdk:library-androidx:2.0.34'
 
     // testImplementation deps
     testImplementation 'junit:junit:4.12'

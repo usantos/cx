@@ -23,12 +23,14 @@ public class TimeCoracaoAdapter extends BaseAdapter {
     private List<ParametroEquipe> times;
     private int bordaTimeSelecionado;
     private int bordaTimeDesselecionado;
+    private boolean buscouPrimeiraPosicao;
 
     public TimeCoracaoAdapter(Context context, List<ParametroEquipe> times) {
         this.context = context;
         this.times = times;
         this.bordaTimeSelecionado = context.getResources().getColor(R.color.borderImageTimeColor);
         this.bordaTimeDesselecionado = context.getResources().getColor(R.color.cinza);
+        this.buscouPrimeiraPosicao = false;
     }
 
     @Override
@@ -61,7 +63,12 @@ public class TimeCoracaoAdapter extends BaseAdapter {
         equipe.setBrasaoSelecionadoId(R.drawable.time_selecionado);
         equipe.setBrasaoId(R.drawable.time);
 
-        EscudoEquipeUtil.setEscudo(context, times.get(i), imageTime);
+        if (i != 0) {
+            EscudoEquipeUtil.setEscudo(context, times.get(i), imageTime);
+        }else if(!buscouPrimeiraPosicao){
+            buscouPrimeiraPosicao = true;
+            EscudoEquipeUtil.setEscudo(context, times.get(i), imageTime);
+        }
         if (equipe.isSelecionado()) {
 //            imageTime.setImageResource(equipe.getBrasaoSelecionadoId());
 
