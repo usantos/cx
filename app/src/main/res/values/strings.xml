@@ -193,6 +193,7 @@
     <string name="colunas">Colunas</string>
 
     <string name="label_aposta_salva_carinha">Aposta salva :)</string>
+    <string name="label_favorita_no_carrinho">Essa aposta foi para o seu carrinho</string>
     <string name="label_sem_teimosinha">Teimosinha</string>
     <string name="label_salve_esta_aposta_carinha">Salve esta aposta :)</string>
     <string name="label_aposta_espelho">Aposta espelho</string>

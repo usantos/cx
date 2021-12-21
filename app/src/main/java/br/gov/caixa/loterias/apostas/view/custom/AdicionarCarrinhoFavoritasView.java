@@ -199,7 +199,7 @@ public class AdicionarCarrinhoFavoritasView extends DialogFragment implements Vi
                     RedirectNetwork.checkRedirectSucesso( response.getRedirect(), getActivity());
                 }
                 dismiss();
-                ViewUtils.alert( getContext(), getContext().getResources().getString( R.string.label_aposta_salva_carinha ) );
+                ViewUtils.alert( getContext(), getContext().getResources().getString( R.string.label_favorita_no_carrinho ) );
                 CarrinhoSingleton.getInstance().setCarrinho(response.getPayload());
             }
 
