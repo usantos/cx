@@ -282,7 +282,7 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
                     CarrinhoSingleton.getInstance().setCarrinho(response.getPayload());
                 }
 
-                ViewUtils.alert(context, context.getResources().getString(R.string.label_aposta_salva_carinha));
+                ViewUtils.alert(context, context.getResources().getString(R.string.label_favorita_no_carrinho));
             }
 
             @Override
