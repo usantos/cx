@@ -79,6 +79,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RepassometroDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RepassometroDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.UltimaNotificacaoSingleton;
 import br.gov.caixa.loterias.apostas.model.dao.DBLoteriasHelper;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
@@ -688,6 +689,16 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     private void AbrirMenusItens(int itemPosition) {
+        if (ConfiguracaoAppSingleton.getInstance().isMostraMenuAposta()){
+            tratarMenuCompleto(itemPosition);
+        }else {
+            trataMenuSemMinhasApostas(itemPosition);       }
+
+        sideMenuExpandableListView.collapseGroup(0);
+        drawerLayout.closeDrawer(Gravity.START, false);
+    }
+
+    private void tratarMenuCompleto(int itemPosition) {
         switch (itemPosition) {
             case 0:
                 startActivity(new Intent(PrincipalActivity.this, DadosPessoaisActivity.class));
@@ -713,8 +724,31 @@ public class PrincipalActivity extends AppCompatActivity
             default:
                 break;
         }
-        sideMenuExpandableListView.collapseGroup(0);
-        drawerLayout.closeDrawer(Gravity.START, false);
+    }
+
+    private void trataMenuSemMinhasApostas(int itemPosition) {
+        switch (itemPosition) {
+            case 0:
+                startActivity(new Intent(PrincipalActivity.this, DadosPessoaisActivity.class));
+                break;
+            /*case 1:
+                startActivity(new Intent(PrincipalActivity.this, AlterarDadosLoginCaixaActivity.class));
+                break;*/
+            case 1:
+                startActivity(new Intent(PrincipalActivity.this, ListaComprasActivity.class));
+                break;
+            case 2:
+                startActivity(new Intent(PrincipalActivity.this, FavoritasActivity.class));
+                break;
+            case 3:
+                startActivity(new Intent(PrincipalActivity.this, CarrinhosFavoritosActivity.class));
+                break;
+            case 4:
+                startActivity(new Intent(PrincipalActivity.this, CartoesActivity.class).putExtra(MENU_LATERAL, true));
+                break;
+            default:
+                break;
+        }
     }
 
     private void layoutSideMenu() {

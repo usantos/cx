@@ -2,8 +2,11 @@ package br.gov.caixa.loterias.apostas.model.bo.silce.internals;
 
 public class ConfiguracaoAppSingleton {
 
+    public static final Boolean MOSTRA_MENU_APOSTAS_DEFAULT = true;
+
     private String urlBaseBuscaApostas;
     private Boolean isMicroServico;
+    private Boolean mostraMenuAposta;
     private static ConfiguracaoAppSingleton configuracaoAppSingleton;
 
     private ConfiguracaoAppSingleton(){ }
@@ -11,6 +14,7 @@ public class ConfiguracaoAppSingleton {
     public static ConfiguracaoAppSingleton getInstance(){
         if (configuracaoAppSingleton == null){
             configuracaoAppSingleton = new ConfiguracaoAppSingleton();
+            configuracaoAppSingleton.mostraMenuAposta = MOSTRA_MENU_APOSTAS_DEFAULT;
         }
         return configuracaoAppSingleton;
     }
@@ -29,5 +33,13 @@ public class ConfiguracaoAppSingleton {
 
 	public Boolean isMicroServico(){
         return  this.isMicroServico;
+    }
+
+    public Boolean isMostraMenuAposta() {
+        return mostraMenuAposta;
+    }
+
+    public void setMostraMenuAposta(Boolean mostraMenuAposta) {
+        this.mostraMenuAposta = mostraMenuAposta;
     }
 }

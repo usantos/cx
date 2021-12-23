@@ -5,22 +5,33 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
+
 /**
  * Created by cedesbr450 on 24/01/18.
  */
 
 public class ExpandableListDataSideMenu {
+    public static final String MENU_DADOS_PESSOAIS = "Dados Pessoais";
+    public static final String MENU_MINHAS_APOSTAS = "Minhas Apostas";
+    public static final String MENU_COMPRAS = "Compras";
+    public static final String MENU_FAVORITAS = "Favoritas";
+    public static final String MENU_CARRINHOS_FAVORITOS = "Carrinhos Favoritos";
+    public static final String MENU_MEUS_CARTOES = "Meus Cartões";
+
     public static HashMap<String, List<String>> getData() {
         LinkedHashMap<String, List<String>> expandableListDetail = new LinkedHashMap<>();
 
         List<String> minhaArea = new ArrayList<>();
-        minhaArea.add("Dados Pessoais");
+        minhaArea.add(MENU_DADOS_PESSOAIS);
         //minhaArea.add("Alterar dados do login Caixa");
-        minhaArea.add("Minhas Apostas");
-        minhaArea.add("Compras");
-        minhaArea.add("Favoritas");
-        minhaArea.add("Carrinhos Favoritos");
-        minhaArea.add("Meus Cartões");
+        if (ConfiguracaoAppSingleton.getInstance().isMostraMenuAposta()) {
+            minhaArea.add(MENU_MINHAS_APOSTAS);
+        }
+        minhaArea.add(MENU_COMPRAS);
+        minhaArea.add(MENU_FAVORITAS);
+        minhaArea.add(MENU_CARRINHOS_FAVORITOS);
+        minhaArea.add(MENU_MEUS_CARTOES);
 
         List<String> Resultados = new ArrayList<>();
         List<String> Rapidao = new ArrayList<>();
