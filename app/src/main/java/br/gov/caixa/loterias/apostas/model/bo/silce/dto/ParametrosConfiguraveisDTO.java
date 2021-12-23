@@ -16,6 +16,8 @@ public class ParametrosConfiguraveisDTO {
     private String urlBase;
     @SerializedName("habilitarConferenciaAutomaticaApostas")
     private Boolean isMicroServico;
+    @SerializedName("consultaMinhasApostas")
+    private Boolean habilitaMenuApostas;
 
     public Boolean getMicroServico() {
         return isMicroServico;
@@ -39,6 +41,14 @@ public class ParametrosConfiguraveisDTO {
 
     public void setUrlBase(String urlBase){
         this.urlBase = urlBase;
+    }
+
+    public Boolean getHabilitaMenuApostas() {
+        return habilitaMenuApostas;
+    }
+
+    public void setHabilitaMenuApostas(Boolean habilitaMenuApostas) {
+        this.habilitaMenuApostas = habilitaMenuApostas;
     }
 
     @Override
