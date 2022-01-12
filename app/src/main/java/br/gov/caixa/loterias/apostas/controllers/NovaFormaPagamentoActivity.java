@@ -230,8 +230,13 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity implement
         if(!DialogUtils.isShow()){
             showLoading();
         }
+        // novo cartao com opcao de salvar desmarcada ou marcada
 
-        CompraUtil.registraApostaAsync(NovaFormaPagamentoActivity.this, tokenPagamento, payment_method_id, String.valueOf(checkBoxSalvarCartao.isChecked()),onCompraAsyncListener());
+        // (SAVE_CARD: self.salvarCartao ? "true" : "false", TOKEN: token, SAVED_CARD: nil, PAYMENT_METHOD_ID: paymentId)) novo cartao
+
+        // public static void registraApostaAsync(final Context context, String tokenPagamento, String payment_method_id, String savedCard, String saveCard, final OnCompraAsync listener) {
+
+        CompraUtil.registraApostaAsync(NovaFormaPagamentoActivity.this, tokenPagamento, payment_method_id, getResources().getString(R.string.string_vazia) ,String.valueOf(checkBoxSalvarCartao.isChecked()),onCompraAsyncListener());
     }
 
     private OnCompraAsync onCompraAsyncListener() {

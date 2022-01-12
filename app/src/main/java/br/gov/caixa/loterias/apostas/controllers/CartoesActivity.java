@@ -329,8 +329,12 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
         if(!DialogUtils.isShow()){
             showLoading();
         }
+        // aqui passa usando um cartao salvo
+        // (SAVE_CARD: nil, TOKEN: token, SAVED_CARD: "true", PAYMENT_METHOD_ID: paymentId))   com cartao já salvo
 
-        CompraUtil.registraApostaAsync(CartoesActivity.this, tokenPagamento, payment_method_id, getResources().getString(R.string.string_true), onCompraAsyncListener());
+        // public static void registraApostaAsync(final Context context, String tokenPagamento, String payment_method_id, String savedCard, String saveCard, final OnCompraAsync listener) {
+
+        CompraUtil.registraApostaAsync(CartoesActivity.this, tokenPagamento, payment_method_id, getResources().getString(R.string.string_true), getResources().getString(R.string.string_vazia), onCompraAsyncListener());
     }
 
     private OnCompraAsync onCompraAsyncListener() {
