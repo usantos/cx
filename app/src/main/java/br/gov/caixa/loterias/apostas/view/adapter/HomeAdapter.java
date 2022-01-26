@@ -99,7 +99,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         holder.titulo.setBackgroundColor(ContextCompat.getColor(context, estilo.getCorClara()));
         holder.valorAcumulado.setTextColor(ContextCompat.getColor(context, estilo.getCorClara()));
 
-        if (data.get(position).getConcurso().getTipoConcurso().toString().equals(context.getResources().getString(R.string.especial_maiusculo))) {
+        if (data.get(position).getConcurso().getTipoConcurso().toString().equals(context.getResources().getString(R.string.especial_maiusculo)) || data.get(position).getConcurso().getModalidade() == ModalidadeEnum.MAIS_MILHONARIA) {
             holder.titulo.setVisibility(View.GONE);
             holder.clEspeciais.setVisibility(View.VISIBLE);
             switch (data.get(position).getTipoModalidade()){
@@ -114,6 +114,9 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                     break;
                 case QUINA:
                     holder.ivEspeciais.setImageDrawable(context.getDrawable(R.drawable.cabecalho_sao_joao));
+                    break;
+                case MAIS_MILHONARIA:
+                    holder.ivEspeciais.setImageDrawable(context.getDrawable(R.drawable.mais_milionaria));
                     break;
                 default:
                     holder.titulo.setVisibility(View.VISIBLE);

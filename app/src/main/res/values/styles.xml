@@ -160,6 +160,12 @@
         <item name="android:windowBackground">@color/megasenaescuro</item>
     </style>
 
+    <style name="AppTheme.Modalidade.MaisMilhonaria">
+        <item name="colorPrimaryDark">@color/mais_milhonaria_escura</item>
+        <item name="colorPrimary">@color/mais_milhonaria_clara</item>
+        <item name="android:windowBackground">@color/mais_milhonaria_escura</item>
+    </style>
+
     <style name="AppTheme.Modalidade.DuplaSena">
         <item name="colorPrimaryDark">@color/duplasenaescuro</item>
         <item name="colorPrimary">@color/duplasenaclaro</item>

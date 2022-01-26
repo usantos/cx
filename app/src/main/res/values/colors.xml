@@ -134,4 +134,8 @@
     <color name="jr_nvl_3">#4768A0</color>
     <color name="jr_nvl_4">#2C4F8B</color>
 
+    <color name="mais_milhonaria_clara">#2C3682</color>
+    <color name="mais_milhonaria_media" >#252D6C</color>
+    <color name="mais_milhonaria_escura">#332A62</color>
+
 </resources>

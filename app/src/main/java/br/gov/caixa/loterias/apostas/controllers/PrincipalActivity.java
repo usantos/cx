@@ -61,6 +61,7 @@ import java.util.Locale;
 
 import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.mock.MaisMilhonariaMock;
 import br.gov.caixa.loterias.apostas.model.bean.Modalidade;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.AcessoBO_;
@@ -289,6 +290,11 @@ public class PrincipalActivity extends AppCompatActivity
                     AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_lista_modalidades));
 
                     modalidadesParaListar = response.getPayload().getParametros();
+
+                    //metodo criado para add na mao a modalidade +Milhonaria
+                    // teste mockado
+                    modalidadesParaListar.add(MaisMilhonariaMock.getParametroMaisMilhonaria());
+
                     if (modalidadesParaListar == null || modalidadesParaListar.isEmpty()) {
                         Intent appIndis = new Intent(PrincipalActivity.this, AppIndisponivelActivity.class);
                         appIndis.putExtra(getResources().getString(R.string.extra_is_busca_param), true);
