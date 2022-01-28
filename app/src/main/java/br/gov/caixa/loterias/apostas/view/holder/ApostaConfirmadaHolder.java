@@ -1,5 +1,6 @@
 package br.gov.caixa.loterias.apostas.view.holder;
 
+import android.app.Activity;
 import android.graphics.Typeface;
 import android.util.Log;
 import android.util.TypedValue;
@@ -17,7 +18,6 @@ import com.android.volley.VolleyError;
 import java.util.Locale;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.controllers.MinhasApostasActivity;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConcursoDTO;
@@ -45,10 +45,12 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 	private ProgressBar progressBarSituacao;
 	private int color;
 	private OnApostaConfirmadaListener onApostasConfirmadasListener;
+	private Activity parentActivity;
 
-	public ApostaConfirmadaHolder(View view, OnApostaConfirmadaListener listener, boolean listaVazia) {
+	public ApostaConfirmadaHolder(View view, OnApostaConfirmadaListener listener, boolean listaVazia, Activity parentActivity) {
 		super(view);
 		this.onApostasConfirmadasListener = listener;
+		this.parentActivity = parentActivity;
 
 		if (!listaVazia) {
 			stripe = view.findViewById(R.id.stripe);
@@ -76,7 +78,7 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 	}
 
 	@Override
-	public void bind(ApostaDTO aposta, MinhasApostasActivity parentActivity) {
+	public void bind(ApostaDTO aposta, int position) {
 		EstiloModalidade estiloModalidade = new EstiloModalidade(aposta.getModalidade());
 
 		int color = ContextCompat.getColor(itemView.getContext(), estiloModalidade.getCorEscura());
@@ -94,7 +96,7 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 		preencheTeimosinha(aposta);
 	}
 
-	private String getDescricaoString(ApostaDTO aposta, MinhasApostasActivity parentActivity) {
+	private String getDescricaoString(ApostaDTO aposta, Activity parentActivity) {
 		String descricaoStatus;
 
 		this.showProgressBarSituacao(false);
@@ -134,7 +136,7 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 		return descricaoStatus;
 	}
 
-	private void conferirResultado (ApostaDTO aposta, MinhasApostasActivity parentActivity) {
+	private void conferirResultado (ApostaDTO aposta, Activity parentActivity) {
 		this.showProgressBarSituacao(true);
 		ConferirResultadoHelper.conferirResultadoHandler = this;
 		ConferirResultadoHelper.conferirResultadoWithoutLoading(this, aposta.getId(),  parentActivity);

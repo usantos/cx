@@ -100,12 +100,13 @@ import br.gov.caixa.loterias.apostas.view.animation.AnimacaoCalculoRepassesSocia
 import br.gov.caixa.loterias.apostas.view.animation.AnimacoesAcessoRapido;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
+import br.gov.caixa.loterias.apostas.view.holder.HomeViewHolder;
 
 @OptionsMenu(R.menu.principal)
 @EActivity(R.layout.activity_principal)
 public class PrincipalActivity extends AppCompatActivity
-        implements DiscreteScrollView.ScrollListener<HomeAdapter.ViewHolder>,
-        DiscreteScrollView.OnItemChangedListener<HomeAdapter.ViewHolder> {
+        implements DiscreteScrollView.ScrollListener<HomeViewHolder>,
+        DiscreteScrollView.OnItemChangedListener<HomeViewHolder> {
 
     public static final String MENU_LATERAL = "MENU_LATERAL";
     private static final int ZXING_CAMERA_PERMISSION = 1;
@@ -595,11 +596,11 @@ public class PrincipalActivity extends AppCompatActivity
     public void onScroll(
             float currentPosition,
             int currentIndex, int newIndex,
-            @Nullable HomeAdapter.ViewHolder currentHolder,
-            @Nullable HomeAdapter.ViewHolder newCurrent) { }
+            @Nullable HomeViewHolder currentHolder,
+            @Nullable HomeViewHolder newCurrent) { }
 
     @Override
-    public void onCurrentItemChanged(@Nullable HomeAdapter.ViewHolder viewHolder, int adapterPosition) {
+    public void onCurrentItemChanged(@Nullable HomeViewHolder viewHolder, int adapterPosition) {
         adapterPosition  = infiniteAdapter.getRealCurrentPosition();
         if (viewHolder != null) {
             EstiloModalidade estilo = new EstiloModalidade(data.get(adapterPosition).getTipoModalidade());

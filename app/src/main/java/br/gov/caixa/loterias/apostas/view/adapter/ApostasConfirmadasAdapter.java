@@ -1,7 +1,6 @@
 package br.gov.caixa.loterias.apostas.view.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,6 @@ import java.util.List;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.MinhasApostasActivity;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
-import br.gov.caixa.loterias.apostas.utils.helper.ConferirResultadoHelper;
 import br.gov.caixa.loterias.apostas.view.holder.ApostaConfirmadaHolder;
 import br.gov.caixa.loterias.apostas.view.listener.OnApostaConfirmadaListener;
 
@@ -69,7 +67,7 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostaConfir
         }
 
 
-        return new ApostaConfirmadaHolder(view, onApostasConfirmadasListener, isListaVazia());
+        return new ApostaConfirmadaHolder(view, onApostasConfirmadasListener, isListaVazia(), parentActivity);
     }
 
     private boolean isListaVazia() {
@@ -80,7 +78,7 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostaConfir
     public void onBindViewHolder(ApostaConfirmadaHolder holder, int position) {
         if (list.size() != 0) {
             ApostaDTO aposta = list.get(position);
-            holder.bind(aposta, parentActivity);
+            holder.bind(aposta, position);
 
         }
     }
