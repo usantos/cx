@@ -438,7 +438,9 @@ public class PrincipalActivity extends AppCompatActivity
 
         //metodo criado para add na mao a modalidade +Milhonaria
         // teste mockado
-        modalidadesParaListar.add(MaisMilhonariaMock.getParametroMaisMilhonaria());
+        if(naoTemMaisMilhonaria()){
+            modalidadesParaListar.add(MaisMilhonariaMock.getParametroMaisMilhonaria());
+        }
 
         for (ParametroSimulacao parametro : modalidadesParaListar) {
             if (parametro.getParametroJogo().getConcurso().getModalidade() != null) {
@@ -449,6 +451,16 @@ public class PrincipalActivity extends AppCompatActivity
         }
 
         return listaModalidades;
+    }
+
+    private boolean naoTemMaisMilhonaria() {
+        for (ParametroSimulacao parametro : modalidadesParaListar) {
+            if (parametro.getParametroJogo().getConcurso().getModalidade() == ModalidadeEnum.MAIS_MILHONARIA){
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private void layoutTrevoAcessoRapido() {
