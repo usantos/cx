@@ -292,10 +292,6 @@ public class PrincipalActivity extends AppCompatActivity
 
                     modalidadesParaListar = response.getPayload().getParametros();
 
-                    //metodo criado para add na mao a modalidade +Milhonaria
-                    // teste mockado
-                    modalidadesParaListar.add(MaisMilhonariaMock.getParametroMaisMilhonaria());
-
                     if (modalidadesParaListar == null || modalidadesParaListar.isEmpty()) {
                         Intent appIndis = new Intent(PrincipalActivity.this, AppIndisponivelActivity.class);
                         appIndis.putExtra(getResources().getString(R.string.extra_is_busca_param), true);
@@ -439,6 +435,10 @@ public class PrincipalActivity extends AppCompatActivity
 
     private List<Modalidade> montaListaModalidades() {
         List<Modalidade> listaModalidades = new ArrayList<>();
+
+        //metodo criado para add na mao a modalidade +Milhonaria
+        // teste mockado
+        modalidadesParaListar.add(MaisMilhonariaMock.getParametroMaisMilhonaria());
 
         for (ParametroSimulacao parametro : modalidadesParaListar) {
             if (parametro.getParametroJogo().getConcurso().getModalidade() != null) {
