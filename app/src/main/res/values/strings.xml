@@ -155,6 +155,7 @@
     <string name="label_selecionar_times_aleatoriamente">_Selecionar_\ntimes aleatoriamente</string>
     <string name="label_selecionar_time_aleatoriamente">_Selecionar_\ntime aleatoriamente</string>
     <string name="label_escolha_time_coracao">_Escolha_\no time do coração</string>
+    <string name="label_escolha_trevos">_Escolher_\nos Trevos</string>
     <string name="label_escolha_time_seu_coracao">Escolha o time do seu coração</string>
 
     <string name="label_concurso">Concurso</string>
@@ -164,7 +165,7 @@
     <string name="label_encerramento">Encerramento</string>
     <string name="label_regras_jogo">Regras do jogo</string>
     <string name="label_mega_sena">mega-sena</string>
-    <string name="label_mais_milhonaria">+Milhonaria</string>
+    <string name="label_mais_milionaria">+Milionaria</string>
     <string name="label_lotofacil">lotofácil</string>
     <string name="label_quina">quina</string>
     <string name="label_dupla_sena">dupla sena</string>
@@ -909,6 +910,7 @@
     <string name="underline_lotogol_underline">_lotogol_</string>
     <string name="underline_dia_de_Sorte_underline">_dia de sorte_</string>
     <string name="underline_super_sete_underline">_super sete_</string>
+    <string name="underline_mais_milionaria_underline">_+milionária_</string>
     <string name="extra_qtd_dezenas_possiveis_selecionado">qtdDezenasPossiveisSelecionado</string>
     <string name="extra_numero_concurso_atual">numeroConcursoAtual</string>
     <string name="extra_data_sorteio_atual">dataSorteioAtual</string>

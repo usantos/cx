@@ -6,16 +6,16 @@ import com.google.gson.Gson;
 
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 
-public class MaisMilhonariaMock {
+public class MaisMilionariaMock {
 
-	private static final String STING_JSON_MAIS_MILHONARIA = "{"+
+	private static final String STING_JSON_MAIS_MILIONARIA = "{"+
 			"\"parametroJogo\": {"+
 		"\"concurso\": {"+
-			"\"modalidade\": \"MAIS_MILHONARIA\","+
+			"\"modalidade\": \"MAIS_MILIONARIA\","+
 			"\"modalidadeDetalhada\": {"+
 				"\"valor\": 2,"+
-			    "\"descricao\": \"Mais-Milhonaria\","+
-				"\"descricaoEspecial\": \"+ Milhonaria\""+
+			    "\"descricao\": \"Mais-Milionaria\","+
+				"\"descricaoEspecial\": \"+ Milionaria\""+
 			"},"+
 			"\"tipoConcurso\": \"NORMAL\","+
 					"\"numero\": 0001,"+
@@ -86,13 +86,13 @@ public class MaisMilhonariaMock {
 "}";
 
 
-	public static ParametroSimulacao getParametroMaisMilhonaria(){
+	public static ParametroSimulacao getParametroMaisMilionaria(){
 		ParametroSimulacao parametroSimulacao = null;
 
 		try {
-			parametroSimulacao = new Gson().fromJson(STING_JSON_MAIS_MILHONARIA, ParametroSimulacao.class);
+			parametroSimulacao = new Gson().fromJson(STING_JSON_MAIS_MILIONARIA, ParametroSimulacao.class);
 		}catch (Exception e){
-			Log.d("+MILHONARIA_ERRO", e.getLocalizedMessage());
+			Log.d("+MILIONARIA_ERRO", e.getLocalizedMessage());
 		}
 
 		return parametroSimulacao;

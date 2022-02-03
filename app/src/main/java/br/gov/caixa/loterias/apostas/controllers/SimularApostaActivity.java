@@ -644,6 +644,10 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
                 configuraTipoApostaTela(getResources().getString(R.string.underline_super_sete_underline), R.color.superseteclaro, R.color.supersetemedio, View.VISIBLE, View.GONE);
                 this.toolBarMenu = R.menu.itens_simular_actionbar_duvida;
                 break;
+            case MAIS_MILIONARIA:
+                configuraTipoApostaTela(getResources().getString(R.string.underline_mais_milionaria_underline), R.color.mais_milionaria_clara, R.color.mais_milionaria_escura, View.VISIBLE, View.GONE);
+                this.toolBarMenu = R.menu.itens_simular_actionbar_duvida;
+                break;
         }
 
         qtdDezenasPossiveisSelecionado = parametroSimulacao.getQuantidadeMinima() != null ? parametroSimulacao.getQuantidadeMinima() : 0;

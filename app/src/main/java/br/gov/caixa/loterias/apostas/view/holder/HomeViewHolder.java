@@ -120,7 +120,7 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 		this.titulo.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), estilo.getCorClara()));
 		this.valorAcumulado.setTextColor(ContextCompat.getColor(itemView.getContext(), estilo.getCorClara()));
 
-		if (modalidade.getConcurso().getTipoConcurso().toString().equals(itemView.getContext().getResources().getString(R.string.especial_maiusculo)) || modalidade.getConcurso().getModalidade() == ModalidadeEnum.MAIS_MILHONARIA) {
+		if (modalidade.getConcurso().getTipoConcurso().toString().equals(itemView.getContext().getResources().getString(R.string.especial_maiusculo)) || modalidade.getConcurso().getModalidade() == ModalidadeEnum.MAIS_MILIONARIA) {
 			this.titulo.setVisibility(View.GONE);
 			this.clEspeciais.setVisibility(View.VISIBLE);
 			switch (modalidade.getTipoModalidade()){
@@ -136,7 +136,7 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 				case QUINA:
 					this.ivEspeciais.setImageDrawable(itemView.getContext().getDrawable(R.drawable.cabecalho_sao_joao));
 					break;
-				case MAIS_MILHONARIA:
+				case MAIS_MILIONARIA:
 					this.ivEspeciais.setImageDrawable(itemView.getContext().getDrawable(R.drawable.mais_milionaria));
 					break;
 				default:

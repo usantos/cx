@@ -61,7 +61,7 @@ import java.util.Locale;
 
 import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.mock.MaisMilhonariaMock;
+import br.gov.caixa.loterias.apostas.mock.MaisMilionariaMock;
 import br.gov.caixa.loterias.apostas.model.bean.Modalidade;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.AcessoBO_;
@@ -436,10 +436,10 @@ public class PrincipalActivity extends AppCompatActivity
     private List<Modalidade> montaListaModalidades() {
         List<Modalidade> listaModalidades = new ArrayList<>();
 
-        //metodo criado para add na mao a modalidade +Milhonaria
+        //metodo criado para add na mao a modalidade +Milionaria
         // teste mockado
-        if(naoTemMaisMilhonaria()){
-            modalidadesParaListar.add(MaisMilhonariaMock.getParametroMaisMilhonaria());
+        if(naoTemMaisMilionaria()){
+            modalidadesParaListar.add(MaisMilionariaMock.getParametroMaisMilionaria());
         }
 
         for (ParametroSimulacao parametro : modalidadesParaListar) {
@@ -453,9 +453,9 @@ public class PrincipalActivity extends AppCompatActivity
         return listaModalidades;
     }
 
-    private boolean naoTemMaisMilhonaria() {
+    private boolean naoTemMaisMilionaria() {
         for (ParametroSimulacao parametro : modalidadesParaListar) {
-            if (parametro.getParametroJogo().getConcurso().getModalidade() == ModalidadeEnum.MAIS_MILHONARIA){
+            if (parametro.getParametroJogo().getConcurso().getModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
                 return false;
             }
         }
