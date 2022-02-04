@@ -233,7 +233,7 @@ public class PrincipalActivity extends AppCompatActivity
 
     private void fragmentSomadorCarrinho() {
         if(somadorCarrinhoFragment == null){
-            FragmentUtils.startSomadorCarrinhoFragment(getSupportFragmentManager(), somadorCarrinhoFragment, R.id.id_fg_somador_carrinho,"TELA PRINCIPAL" );
+            somadorCarrinhoFragment = FragmentUtils.startSomadorCarrinhoFragment(getSupportFragmentManager(), somadorCarrinhoFragment, R.id.id_fg_somador_carrinho,"TELA PRINCIPAL" );
         }else {
             somadorCarrinhoFragment.atualizaValorTotal(CarrinhoSingleton.getInstance().getCarrinho());
         }
@@ -640,7 +640,9 @@ public class PrincipalActivity extends AppCompatActivity
 
     @Click(R.id.id_fg_somador_carrinho)
     protected void vaiProCarrinho() {
-        startActivity(new Intent(PrincipalActivity.this, CarrinhoActivity.class));
+        if (somadorCarrinhoFragment != null && somadorCarrinhoFragment.isVisible()) {
+            startActivity(new Intent(PrincipalActivity.this, CarrinhoActivity.class));
+        }
     }
 
     @Click(R.id.relativeLayoutContentFavoritas)
