@@ -1,20 +1,9 @@
 package br.gov.caixa.loterias.apostas.utils;
 
 import android.content.Context;
-import android.graphics.BitmapFactory;
-import android.util.Base64;
-import android.util.Log;
 import android.widget.ImageView;
 
-import com.android.volley.VolleyError;
-
-import org.apache.commons.lang.StringUtils;
-
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
-import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.EscudoEquipeEsportivaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroEquipe;
 
 /**
@@ -27,7 +16,8 @@ public class EscudoEquipeUtil {
     public static void setEscudo(final Context context, final ParametroEquipe parametroEquipe, final ImageView imageView) {
         //Comentada a chamada do servico para a maga da virada
         //O app mostrará o escudo padrao
-        imageView.setImageResource(R.drawable.time);
+        imageView.setImageResource(R.drawable.time_padrao);
+        imageView.setPadding(0, 0, 0, 12);
         
 //        ApostaBO apostaBO = ApostaBO_.getInstance_(context);
 //        apostaBO.obterEscudoTime(parametroEquipe.getNumero().toString(), new RequestListener<EscudoEquipeEsportivaDTOResponse>() {
