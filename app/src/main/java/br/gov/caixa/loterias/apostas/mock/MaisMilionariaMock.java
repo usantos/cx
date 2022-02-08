@@ -19,10 +19,10 @@ public class MaisMilionariaMock {
 			"},"+
 			"\"tipoConcurso\": \"NORMAL\","+
 					"\"numero\": 0001,"+
-					"\"dataFechamento\": \"04/02/2022 16:50:00\","+
+					"\"dataFechamento\": \"11/02/2022 16:50:00\","+
 					"\"dataAbertura\": \"01/02/2022 20:00:00\","+
-					"\"dataHoraSorteio\": \"04/02/2022 18:00:00\","+
-					"\"dataSorteio\": \"04 fev 2022\","+
+					"\"dataHoraSorteio\": \"11/02/2022 18:00:00\","+
+					"\"dataSorteio\": \"11 fev 2022\","+
 					"\"valorApostaMinima\": 4.50,"+
 					"\"situacao\": \"ABERTO\","+
 					"\"bloqueado\": false,"+
@@ -34,7 +34,7 @@ public class MaisMilionariaMock {
 		"\"situacaoConcursoCanal\": \"ABERTO\","+
 			"\"probabilidadeDeGanhar\": 2,"+
 			"\"aceitaEspelho\": false,"+
-			"\"prognosticoMaximo\": 60,"+
+			"\"prognosticoMaximo\": 50,"+
 			"\"quantidadeMinima\": 6,"+
 			"\"quantidadeMaxima\": 15,"+
 			"\"teimosinhas\": [0,2,4,8],"+
