@@ -1110,7 +1110,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
 	private void verificaSeMostraSalvarApostaView() {
 
-		if (isTipoLoteca || isTipoLotogol || isDiaSorte) {
+		if (isTipoLoteca || isTipoLotogol || isDiaSorte || tipoJogo == ModalidadeEnum.MAIS_MILIONARIA) {
 			ocutarSalvarAposta();
 		} else if (isTipoTimemania) {
 			if (isTelaSelecaoTimeAtivado && (equipeSelecionada != null && equipeSelecionada.isSelecionado())) {
