@@ -98,6 +98,7 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity implement
     private void configuraSpin(){
         Spinner spinner = findViewById(R.id.spin_meses);
         listaMeses = new ArrayList<>();
+        listaMeses.add(getString(R.string.title_mesDeValidade));
         for(int x = 1; x <= 12; x++){
             listaMeses.add(x < 10 ? "0" + x: String.valueOf(x));
         }
@@ -108,7 +109,9 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity implement
         spinner.setAdapter(dataAdapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (!primeiraSelecao){
+                if (!primeiraSelecao ){
+                    editTextMesValidadeCartaoContent.setText("");
+                } else if(i == 0){
                     editTextMesValidadeCartaoContent.setText("");
                 } else {
                     editTextMesValidadeCartaoContent.setText(listaMeses.get(i));

@@ -86,9 +86,10 @@ import br.gov.caixa.loterias.apostas.view.adapter.TimeCoracaoAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView;
 import br.gov.caixa.loterias.apostas.view.listener.CartelaFragmentListener;
+import br.gov.caixa.loterias.apostas.view.listener.LocateAdapterListener;
 import br.gov.caixa.loterias.apostas.view.listener.LotogolListener;
 
-public class CartelaFragment extends Fragment implements OnClickListener, LotecaAdapter.LocateAdapterListener, LotogolListener {
+public class CartelaFragment extends Fragment implements OnClickListener, LocateAdapterListener, LotogolListener {
 	private SensorManager mSensorManager;
 	private float mAccel; // acceleration apart from gravity
 	private float mAccelCurrent; // current acceleration including gravity
