@@ -8,7 +8,6 @@ import com.google.gson.Gson;
 
 import java.io.UnsupportedEncodingException;
 
-import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.MeioPagamento;
 import br.gov.caixa.loterias.apostas.model.bean.ParametrosPagamento;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
@@ -35,9 +34,16 @@ public class CompraUtil {
         });
     }
 
-    public static void registraApostaAsync(final Context context, String tokenPagamento, String payment_method_id, String savedCard, final OnCompraAsync listener) {
+    public static void registraApostaAsync(final Context context, String tokenPagamento, String payment_method_id, String savedCard, String saveCard, final OnCompraAsync listener) {
+//
+//        (SAVE_CARD: nil, TOKEN: token, SAVED_CARD: "true", PAYMENT_METHOD_ID: paymentId))   com cartao já salvo
+//
+//        (SAVE_CARD: self.salvarCartao ? "true" : "false", TOKEN: token, SAVED_CARD: nil, PAYMENT_METHOD_ID: paymentId)) novo cartao
 
-        ParametrosPagamento parametroPagamento = new ParametrosPagamento( tokenPagamento, savedCard, payment_method_id, context.getResources().getString(R.string.string_false) );
+        // aqui passa usando um cartao salvo - savedCard=true
+
+
+        ParametrosPagamento parametroPagamento = new ParametrosPagamento( tokenPagamento, savedCard, payment_method_id, saveCard );
         MeioPagamento meioPagamento = new MeioPagamento(1, parametroPagamento);
 
         ApostaBO apostaBO = ApostaBO_.getInstance_(context);

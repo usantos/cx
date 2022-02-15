@@ -2,6 +2,7 @@ package br.gov.caixa.loterias.apostas.view.fragment;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -86,9 +87,10 @@ import br.gov.caixa.loterias.apostas.view.adapter.TimeCoracaoAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView;
 import br.gov.caixa.loterias.apostas.view.listener.CartelaFragmentListener;
+import br.gov.caixa.loterias.apostas.view.listener.LocateAdapterListener;
 import br.gov.caixa.loterias.apostas.view.listener.LotogolListener;
 
-public class CartelaFragment extends Fragment implements OnClickListener, LotecaAdapter.LocateAdapterListener, LotogolListener {
+public class CartelaFragment extends Fragment implements OnClickListener, LocateAdapterListener, LotogolListener {
 	private SensorManager mSensorManager;
 	private float mAccel; // acceleration apart from gravity
 	private float mAccelCurrent; // current acceleration including gravity
@@ -247,8 +249,9 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 			TextView       ttvPaginaQuantidade = view.findViewById(R.id.ttvPaginaQuantidade);
 
 			ttvEscolha.setText(ViewUtils.textFuturaAndFuturaBold(parentActivity, getString(R.string.dia_sorte_escolha_dia)));
-			ttvEscolha.setTextColor(getResources().getColor(R.color.megasenamedio));
-			ttvPagina.setTextColor(getResources().getColor(R.color.megasenamedio));
+			ttvEscolha.setTextColor(getResources().getColor(R.color.timemaniaclaro));
+			ttvPagina.setTextColor(getResources().getColor(R.color.timemaniaescuro));
+			ttvPagina.setTypeface(null, Typeface.BOLD);
 			ttvPaginaQuantidade.setTextColor(getResources().getColor(R.color.timemaniaclaro));
 			ttvPaginaQuantidade.setText(getString(R.string.paginacao_quantidade, getString(R.string.label_numerico_dois)));
 			ttvLayout.setVisibility(View.VISIBLE);
