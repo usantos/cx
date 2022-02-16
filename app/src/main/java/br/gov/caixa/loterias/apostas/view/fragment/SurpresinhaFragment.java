@@ -132,6 +132,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         }
     }
 
+
     private void identificarTipoJogo() {
         ModalidadeEnum tipoJogo = (ModalidadeEnum) getActivity().getIntent().getSerializableExtra("tipoAposta");
 
