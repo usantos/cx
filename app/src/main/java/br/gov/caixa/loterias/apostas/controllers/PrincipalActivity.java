@@ -436,12 +436,6 @@ public class PrincipalActivity extends AppCompatActivity
     private List<Modalidade> montaListaModalidades() {
         List<Modalidade> listaModalidades = new ArrayList<>();
 
-        //metodo criado para add na mao a modalidade +Milionaria
-        // teste mockado
-        if(naoTemMaisMilionaria()){
-            modalidadesParaListar.add(MaisMilionariaMock.getParametroMaisMilionaria());
-        }
-
         for (ParametroSimulacao parametro : modalidadesParaListar) {
             if (parametro.getParametroJogo().getConcurso().getModalidade() != null) {
                 listaModalidades.add(new Modalidade(parametro.getParametroJogo().getConcurso().getModalidadeDetalhada().getDescricao(),
@@ -451,16 +445,6 @@ public class PrincipalActivity extends AppCompatActivity
         }
 
         return listaModalidades;
-    }
-
-    private boolean naoTemMaisMilionaria() {
-        for (ParametroSimulacao parametro : modalidadesParaListar) {
-            if (parametro.getParametroJogo().getConcurso().getModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
-                return false;
-            }
-        }
-
-        return true;
     }
 
     private void layoutTrevoAcessoRapido() {
