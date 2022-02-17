@@ -58,7 +58,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
     private SimularApostaActivity parentActivity;
     private SurpresinhaFragmentListener surpresinhaFragmentListener;
     private ParametroEquipe equipeSelecionada = null;
-    private boolean isTipoTimeMania, isTipoLotomania, isDiaDeSorte;
+    private boolean isTipoTimeMania, isTipoLotomania, isDiaDeSorte, isMaisMilionaria;
     private ParametroJogoDTO parametroJogo;
     private int typeGameColorLight, qtdSurpresinhas = 1;
     private SurpresinhaGridViewAdapter simularDezenasAdapter;
@@ -68,7 +68,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
     protected ImageView escolhaItemImageView;
 
     @ViewById
-    protected TextView infoItemSurpresaTextView, qtdSurpresinhasSelecionadas;
+    protected TextView infoItemSurpresaTextView, qtdSurpresinhasSelecionadas, surpresinhaTitulo;
 
     @ViewById
     protected Button escolherOutroItemBtn, btnMenosSurpresinha, btnMaisSurpresinha;
@@ -124,6 +124,10 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         if (isDiaDeSorte) {
             initDiaDeSorte();
         }
+
+        if(isMaisMilionaria){
+            surpresinhaTitulo.setTextColor(ContextCompat.getColor(parentActivity, R.color.cinzaescuro));
+        }
     }
 
     public void surpresinhaFragmentBuilder(Bundle dataBundle) {
@@ -131,7 +135,6 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
             typeGameColorLight = (int) dataBundle.get("typeGameColorLight");
         }
     }
-
 
     private void identificarTipoJogo() {
         ModalidadeEnum tipoJogo = (ModalidadeEnum) getActivity().getIntent().getSerializableExtra("tipoAposta");
@@ -145,6 +148,9 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
                 break;
             case DIA_DE_SORTE:
                 isDiaDeSorte = true;
+                break;
+            case MAIS_MILIONARIA:
+                isMaisMilionaria = true;
                 break;
         }
     }
