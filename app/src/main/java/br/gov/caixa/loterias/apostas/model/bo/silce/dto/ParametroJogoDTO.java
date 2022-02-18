@@ -57,6 +57,8 @@ public class ParametroJogoDTO implements Serializable {
     protected Boolean concursoCanalAberto = null;
     @SerializedName("meses")
     protected List<ParametroMesDeSorte> meses = null;
+    @SerializedName("trevos")
+    protected TrevosDTO trevos;
 
     /**
      **/
@@ -239,6 +241,14 @@ public class ParametroJogoDTO implements Serializable {
 
     public void setMeses(List<ParametroMesDeSorte> meses) {
         this.meses = meses;
+    }
+
+    public TrevosDTO getTrevos() {
+        return trevos;
+    }
+
+    public void setTrevos(TrevosDTO trevos) {
+        this.trevos = trevos;
     }
 
     @Override
