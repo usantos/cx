@@ -571,8 +571,20 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
 
     private void configuraParametrosJogo() {
         if (parametroSimulacao != null) {
+            ModalidadeEnum modalidade = (ModalidadeEnum) getIntent().getSerializableExtra(getResources().getString(R.string.tipoAposta));
             for (ParametroValorApostaDTO parametro : parametroSimulacao.getValoresAposta()) {
-                qtdNumerosList.add(getResources().getString(R.string.string_vazia) + parametro.getNumeroPrognosticos() + getResources().getString(R.string.espaco_numeros_por_espaco) + ViewUtils.getMoedaFormat(parametro.getValor()));
+
+                if (modalidade == ModalidadeEnum.MAIS_MILIONARIA){
+                    if (parametro.getNumeroTrevos() == parametroSimulacao.getTrevos().getQtdMinima()){
+                        qtdNumerosList.add(getResources().getString(R.string.string_vazia) + parametro.getNumeroPrognosticos()
+                                                   + getResources().getString(R.string.espaco_numeros_por_espaco)
+                                                   + ViewUtils.getMoedaFormat(parametro.getValor()));
+                    }
+                }else {
+                    qtdNumerosList.add(getResources().getString(R.string.string_vazia) + parametro.getNumeroPrognosticos()
+                                               + getResources().getString(R.string.espaco_numeros_por_espaco)
+                                               + ViewUtils.getMoedaFormat(parametro.getValor()));
+                }
             }
             if (parametroSimulacao.getTeimosinhas() != null) {
                 for (Integer numeroTeimosinha : parametroSimulacao.getTeimosinhas()) {
