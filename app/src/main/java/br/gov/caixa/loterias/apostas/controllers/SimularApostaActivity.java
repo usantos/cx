@@ -712,8 +712,22 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         listViewItens.setAdapter(adapter);
         listViewItens.setOnItemClickListener((parent, view, position, id) -> {
             String itemValue = (String) listViewItens.getItemAtPosition(position);
-            textoBotaoPrognosticosSelecionado = parametroSimulacao.getValoresAposta().get(position).getNumeroPrognosticos() + getResources().getString(R.string.espaco_numeros);
-            qtdDezenasPossiveisSelecionado = parametroSimulacao.getValoresAposta().get(position).getNumeroPrognosticos();
+            if(tipoJogo == ModalidadeEnum.MAIS_MILIONARIA){
+                String stringNumero = "";
+                if (itemValue.startsWith("1")){
+                    stringNumero = itemValue.substring(0,2);
+                }else {
+                    stringNumero = itemValue.substring(0, 1);
+                }
+                ParametroValorApostaDTO valorAposta = parametroSimulacao.getValorApostaBy(new Integer(stringNumero), 2);
+                if (valorAposta != null){
+                    textoBotaoPrognosticosSelecionado = valorAposta.getNumeroPrognosticos() + getResources().getString(R.string.espaco_numeros);
+                    qtdDezenasPossiveisSelecionado = valorAposta.getNumeroPrognosticos();
+                }
+            }else {
+                textoBotaoPrognosticosSelecionado = parametroSimulacao.getValoresAposta().get(position).getNumeroPrognosticos() + getResources().getString(R.string.espaco_numeros);
+                qtdDezenasPossiveisSelecionado = parametroSimulacao.getValoresAposta().get(position).getNumeroPrognosticos();
+            }
         });
 
         Button dialogButtonOk = dialog.findViewById(R.id.dialogButtonOK);

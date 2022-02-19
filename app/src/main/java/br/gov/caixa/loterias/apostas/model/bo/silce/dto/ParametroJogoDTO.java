@@ -320,4 +320,19 @@ public class ParametroJogoDTO implements Serializable {
                 "}\n";
         return sb;
     }
+
+    public ParametroValorApostaDTO getValorApostaBy(Integer numeroPrognostico, int numeroTrevos) {
+        if (concurso.getModalidade() != ModalidadeEnum.MAIS_MILIONARIA){
+            return null;
+        }
+
+        ParametroValorApostaDTO valor = null;
+        for (ParametroValorApostaDTO valorAposta : getValoresAposta()) {
+            if (valorAposta.getNumeroPrognosticos().equals(numeroPrognostico) && valorAposta.getNumeroTrevos().equals(numeroTrevos)){
+                valor = valorAposta;
+                break;
+            }
+        }
+        return valor;
+    }
 }
