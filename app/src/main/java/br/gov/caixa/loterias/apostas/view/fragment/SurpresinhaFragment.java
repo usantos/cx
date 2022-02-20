@@ -57,7 +57,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
     private ParametroEquipe equipeSelecionada = null;
     private ModalidadeEnum tipoJogo;
     private ParametroJogoDTO parametroJogo;
-    private int typeGameColorLight, qtdSurpresinhas = 1, qtdTrevos = 2;
+    private int typeGameColorLight, qtdSurpresinhas = 1, qtdTrevos;
     private SurpresinhaGridViewAdapter simularDezenasAdapter;
     private BigDecimal valorTotalAposta;
 
@@ -96,6 +96,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         parentActivity = ((SimularApostaActivity) getActivity());
         if (parentActivity != null) {
             parametroJogo = parentActivity.getParametroSimulacao();
+            qtdTrevos = parametroJogo.getTrevos().getQtdMinima();
         }
 
         Bundle bundle = getArguments();
@@ -404,4 +405,11 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         escolhaItemLayout.setVisibility(View.VISIBLE);
     }
 
+    public void resetQtdTrevos() {
+        qtdTrevos = parametroJogo.getTrevos().getQtdMinima();
+        atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
+        qtdSurpresinhasSelecionadasTrevos.setText(String.format(Locale.getDefault(), "%d", qtdTrevos));
+        btnMenosTrevos.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.cinzaescuro));
+        btnMaisTrevos.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.mais_milionaria_escura));
+    }
 }

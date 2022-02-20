@@ -407,7 +407,6 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         return valorApostaCartela;
     }
 
-
     public TextView getTextViewCarrinhoCartelaCount() {
         return textViewCarrinhoCartelaCount;
     }
@@ -742,6 +741,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
             } else {
                 if (surpresinhaFragment.getParametroJogo() != null) {
                     surpresinhaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
+                    surpresinhaFragment.resetQtdTrevos();
                 }
             }
             dialog.dismiss();
