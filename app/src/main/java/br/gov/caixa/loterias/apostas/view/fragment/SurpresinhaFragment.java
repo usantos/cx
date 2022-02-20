@@ -216,10 +216,15 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
 
         BigDecimal valorEmReais = BigDecimal.ZERO;
 
-        for (ParametroValorApostaDTO parametro : parametroJogo.getValoresAposta()) {
-            if (parametro.getNumeroPrognosticos() == numPrognostico) {
-                valorEmReais = parametro.getValor();
-                break;
+        if (tipoJogo == ModalidadeEnum.MAIS_MILIONARIA){
+            ParametroValorApostaDTO valor = parametroJogo.getValorApostaBy(numPrognostico, qtdTrevos);
+            valorEmReais = valor.getValor();
+        }else {
+            for (ParametroValorApostaDTO parametro : parametroJogo.getValoresAposta()) {
+                if (parametro.getNumeroPrognosticos() == numPrognostico) {
+                    valorEmReais = parametro.getValor();
+                    break;
+                }
             }
         }
 
@@ -357,7 +362,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
             if (qtdTrevos == 6) {
                 btnMaisTrevos.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.cinzaescuro));
             }
-            //atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
+            atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
             qtdSurpresinhasSelecionadasTrevos.setText(String.format(Locale.getDefault(), "%d", qtdTrevos));
             btnMenosTrevos.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.mais_milionaria_escura));
         }
@@ -370,7 +375,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
             if (qtdTrevos == 2) {
                 btnMenosTrevos.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.cinzaescuro));
             }
-            //atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
+            atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
             qtdSurpresinhasSelecionadasTrevos.setText(String.format(Locale.getDefault(), "%d", qtdTrevos));
             btnMaisTrevos.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.mais_milionaria_escura));
         }
