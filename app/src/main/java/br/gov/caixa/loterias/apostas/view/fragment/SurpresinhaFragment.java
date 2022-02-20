@@ -96,7 +96,9 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         parentActivity = ((SimularApostaActivity) getActivity());
         if (parentActivity != null) {
             parametroJogo = parentActivity.getParametroSimulacao();
-            qtdTrevos = parametroJogo.getTrevos().getQtdMinima();
+            if (parametroJogo != null && parametroJogo.getConcurso().getModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
+                qtdTrevos = parametroJogo.getTrevos().getQtdMinima();
+            }
         }
 
         Bundle bundle = getArguments();

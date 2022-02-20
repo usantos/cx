@@ -741,7 +741,9 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
             } else {
                 if (surpresinhaFragment.getParametroJogo() != null) {
                     surpresinhaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
-                    surpresinhaFragment.resetQtdTrevos();
+                    if (tipoJogo == ModalidadeEnum.MAIS_MILIONARIA){
+                        surpresinhaFragment.resetQtdTrevos();
+                    }
                 }
             }
             dialog.dismiss();
