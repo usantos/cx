@@ -59,7 +59,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
     private SimularApostaActivity parentActivity;
     private SurpresinhaFragmentListener surpresinhaFragmentListener;
     private ParametroEquipe equipeSelecionada = null;
-    private boolean isTipoTimeMania, isTipoLotomania, isDiaDeSorte, isMaisMilionaria;
+    private ModalidadeEnum tipoJogo;
     private ParametroJogoDTO parametroJogo;
     private int typeGameColorLight, qtdSurpresinhas = 1, qtdTrevos = 2;
     private SurpresinhaGridViewAdapter simularDezenasAdapter;
@@ -112,7 +112,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         atualizaDezenaAdapter();
         configuraBotoes();
 
-        if (isTipoLotomania) {
+        if (tipoJogo == ModalidadeEnum.LOTOMANIA) {
             layoutEspelhoSurpresinha.setVisibility(View.VISIBLE);
             selcioneEspelhoSurpresinha = layoutEspelhoSurpresinha.findViewById(R.id.selcioneEspelhoSurpresinha);
         }
@@ -121,15 +121,15 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
             adicionarSurpresinhaNoCarrinho();
         }
 
-        if (isTipoTimeMania) {
+        if (tipoJogo == ModalidadeEnum.TIMEMANIA) {
             escolhaItemLayout.setVisibility(View.VISIBLE);
         }
 
-        if (isDiaDeSorte) {
+        if (tipoJogo == ModalidadeEnum.DIA_DE_SORTE) {
             initDiaDeSorte();
         }
 
-        if(isMaisMilionaria){
+        if(tipoJogo == ModalidadeEnum.MAIS_MILIONARIA){
             surpresinhaTitulo.setTextColor(ContextCompat.getColor(parentActivity, R.color.mais_milionaria_escura));
             surpresinhaInfo.setTextColor(ContextCompat.getColor(parentActivity, R.color.mais_milionaria_escura));
             surpresinhaQtdInfo.setTextColor(ContextCompat.getColor(parentActivity, R.color.mais_milionaria_escura));
@@ -150,22 +150,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
     }
 
     private void identificarTipoJogo() {
-        ModalidadeEnum tipoJogo = (ModalidadeEnum) getActivity().getIntent().getSerializableExtra("tipoAposta");
-
-        switch (tipoJogo) {
-            case TIMEMANIA:
-                isTipoTimeMania = true;
-                break;
-            case LOTOMANIA:
-                isTipoLotomania = true;
-                break;
-            case DIA_DE_SORTE:
-                isDiaDeSorte = true;
-                break;
-            case MAIS_MILIONARIA:
-                isMaisMilionaria = true;
-                break;
-        }
+        tipoJogo = (ModalidadeEnum) getActivity().getIntent().getSerializableExtra("tipoAposta");
     }
 
     @Override
@@ -258,7 +243,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
                 ViewUtils.setMoedaFormatHtml(valorEmReais, valorAposta);
             }
         }
-        if (isTipoLotomania && selcioneEspelhoSurpresinha.isChecked()) {
+        if (tipoJogo == ModalidadeEnum.LOTOMANIA && selcioneEspelhoSurpresinha.isChecked()) {
             valorEmReais = valorEmReais.multiply(Constantes.DOIS_BIG_DECIMAL);
             ViewUtils.setMoedaFormatHtml(valorEmReais, valorAposta);
         }
@@ -292,7 +277,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
 
         aposta.setTimeDoCoracao(equipeSelecionada);
 
-        if (isTipoTimeMania) {
+        if (tipoJogo == ModalidadeEnum.TIMEMANIA) {
             if(aposta.getTimeDoCoracao() == null){
                 Random randomGenerator = Utils.getRandom();
                 aposta.setTimeDoCoracao(parametroJogo.getEquipes().get(randomGenerator.nextInt(parametroJogo.getEquipes().size())));
@@ -306,7 +291,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
                 indicadorSurpresinha.setValor(IndicadorSurpresinha.SURPRESINHA_NUMERICA);
             }
         }
-        if (isTipoLotomania) {
+        if (tipoJogo == ModalidadeEnum.LOTOMANIA) {
             aposta.setGerarEspelho(selcioneEspelhoSurpresinha.isChecked());
         }
 
@@ -337,9 +322,9 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
 
     @Click
     protected void escolherOutroItemBtn() {
-        if (isTipoTimeMania) {
+        if (tipoJogo == ModalidadeEnum.TIMEMANIA) {
             parentActivity.escolherOutroTimeSurpresinha();
-        } else if (isDiaDeSorte) {
+        } else if (tipoJogo == ModalidadeEnum.DIA_DE_SORTE) {
             parentActivity.mesDeSorteFragment(null, true);
         }
 
