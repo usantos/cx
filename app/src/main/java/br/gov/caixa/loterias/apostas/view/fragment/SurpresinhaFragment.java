@@ -219,6 +219,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         for (ParametroValorApostaDTO parametro : parametroJogo.getValoresAposta()) {
             if (parametro.getNumeroPrognosticos() == numPrognostico) {
                 valorEmReais = parametro.getValor();
+                break;
             }
         }
 
