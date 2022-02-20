@@ -76,10 +76,10 @@ import br.gov.caixa.loterias.apostas.view.fragment.CartelaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.MesesFragment_;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SurpresinhaFragment;
-import br.gov.caixa.loterias.apostas.view.fragment.SurpresinhaFragment.SurpresinhaFragmentListener;
 import br.gov.caixa.loterias.apostas.view.fragment.SurpresinhaFragment_;
 import br.gov.caixa.loterias.apostas.view.listener.CartelaFragmentListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnSomadorListener;
+import br.gov.caixa.loterias.apostas.view.listener.SurpresinhaFragmentListener;
 
 import static br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity.CARRINHO;
 import static br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity.LER_CARRINHO_LOCAL;

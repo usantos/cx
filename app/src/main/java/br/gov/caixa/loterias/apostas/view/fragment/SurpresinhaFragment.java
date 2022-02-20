@@ -2,16 +2,10 @@ package br.gov.caixa.loterias.apostas.view.fragment;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -50,7 +44,9 @@ import br.gov.caixa.loterias.apostas.utils.Constantes;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
+import br.gov.caixa.loterias.apostas.view.adapter.SurpresinhaGridViewAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
+import br.gov.caixa.loterias.apostas.view.listener.SurpresinhaFragmentListener;
 
 @EFragment(R.layout.fragment_surpresinha)
 public class SurpresinhaFragment extends Fragment implements OnClickListener {
@@ -173,8 +169,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
 
     // METODOS DE CONFIGURACOES
     private void atualizaDezenaAdapter() {
-        simularDezenasAdapter.rows = montaListaDezenasSurpresinha();
-        simularDezenasAdapter.notifyDataSetChanged();
+        simularDezenasAdapter.atualizaDezenas(montaListaDezenasSurpresinha());
     }
 
     private void configuraBotoes() {
@@ -203,7 +198,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
 
     private void configuraListaDezenas() {
         listaDezenasSurpresinha.setExpanded(true);
-        simularDezenasAdapter = new SurpresinhaGridViewAdapter(getActivity(), montaListaDezenasSurpresinha());
+        simularDezenasAdapter = new SurpresinhaGridViewAdapter(getActivity(), montaListaDezenasSurpresinha(), getActivity(), typeGameColorLight);
         listaDezenasSurpresinha.setAdapter(simularDezenasAdapter);
     }
 
@@ -401,67 +396,6 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         escolherOutroItemBtn.setText(R.string.label_escolher_outro_mes);
         escolherOutroItemBtn.setVisibility(View.GONE);
         escolhaItemLayout.setVisibility(View.VISIBLE);
-    }
-
-    // Adapter do gridview das dezenas
-    private class SurpresinhaGridViewAdapter extends BaseAdapter {
-        private Context context;
-        private ArrayList<String> rows;
-
-        SurpresinhaGridViewAdapter(Context context, ArrayList<String> activitData) {
-            this.context = context;
-            this.rows = activitData;
-        }
-
-        @Override
-        public int getCount() {
-            return rows.toArray().length;
-        }
-
-        @Override
-        public Object getItem(int i) {
-            return rows.get(i);
-        }
-
-        @Override
-        public long getItemId(int i) {
-            return 0;
-        }
-
-        @Override
-        public View getView(int i, View view, ViewGroup viewGroup) {
-            TextView textView;
-            GradientDrawable shape = new GradientDrawable();
-
-            int sizeItens = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40, getActivity().getResources().getDisplayMetrics());
-
-            if (view == null) {
-                textView = new TextView(this.context);
-                textView.setLayoutParams(new GridView.LayoutParams(sizeItens, sizeItens));
-            } else {
-                textView = (TextView) view;
-            }
-
-            shape.setColor(Color.WHITE);
-            textView.setTextColor(ContextCompat.getColor(context, typeGameColorLight));
-
-            shape.setCornerRadius(sizeItens / 2);
-            shape.setStroke(1, Color.GRAY);
-            textView.setBackground(shape);
-            textView.setText(rows.get(i));
-            textView.setGravity(Gravity.CENTER);
-
-            return textView;
-        }
-    }
-
-    // INTERFACE DO FRAGMENT PARA A ACTIVITY
-    public interface SurpresinhaFragmentListener {
-        void adicionarApostaCarrinho();
-
-        void abreCarrinhoApostas();
-
-        void escolherOutroTimeSurpresinha();
     }
 
 }
