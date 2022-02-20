@@ -1027,6 +1027,8 @@
     <!-- App Center -->
     <string name="app_center_mp_sem_cartao">DEVICE_MP</string>
     <string name="app_center_mp_cartao_salvo">DEVICE_MP_SAVE</string>
+    <string name="trevosTitulo">Trevos</string>
+    <string name="trevosInfo">Escolha a quantidade de trevos</string>
 
 
 </resources>
