@@ -51,6 +51,8 @@ import br.gov.caixa.loterias.apostas.view.listener.SurpresinhaFragmentListener;
 @EFragment(R.layout.fragment_surpresinha)
 public class SurpresinhaFragment extends Fragment implements OnClickListener {
 
+    private static final int QUANTIDADE_MINIMA_SURPRESINHAS = 1;
+
     private TextView valorAposta;
     private SimularApostaActivity parentActivity;
     private SurpresinhaFragmentListener surpresinhaFragmentListener;
@@ -96,7 +98,8 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         parentActivity = ((SimularApostaActivity) getActivity());
         if (parentActivity != null) {
             parametroJogo = parentActivity.getParametroSimulacao();
-            if (parametroJogo != null && parametroJogo.getConcurso().getModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
+            if (parametroJogo != null && qtdTrevos == 0
+                    && parametroJogo.getConcurso().getModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
                 qtdTrevos = parametroJogo.getTrevos().getQtdMinima();
             }
         }
@@ -183,11 +186,8 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
 
 //        parentActivity.getSimularApostaLayoutCarrinhoApostas().setOnClickListener(this);
 
-        btnMenosSurpresinha.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.cinzaescuro));
-        btnMaisSurpresinha.setBackgroundColor(ContextCompat.getColor(parentActivity, typeGameColorLight));
-
-        qtdSurpresinhasSelecionadas.setTextColor(ContextCompat.getColor(parentActivity, typeGameColorLight));
-        qtdSurpresinhasSelecionadas.setText(String.format(Locale.getDefault(), "%d", qtdSurpresinhas));
+        atualizaBotoesQtdSurpresinha();
+        atualizaBotoesQtdTrevos();
 
         Button botaoAdicionarSurpresinhaAoCarrinho = parentActivity.getBotaoAdicionarCompletarCartela();
         botaoAdicionarSurpresinhaAoCarrinho.setBackgroundColor(ContextCompat.getColor(parentActivity, typeGameColorLight));
@@ -197,6 +197,32 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
 
         parentActivity.getBotaoLimparAposta().setVisibility(View.GONE);
         parentActivity.getSalvarApostaLayout().setVisibility(View.GONE);
+    }
+
+    private void atualizaBotoesQtdSurpresinha() {
+        if (qtdSurpresinhas == QUANTIDADE_MINIMA_SURPRESINHAS){
+            btnMenosSurpresinha.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.cinzaescuro));
+            btnMaisSurpresinha.setBackgroundColor(ContextCompat.getColor(parentActivity, typeGameColorLight));
+        }else {
+            btnMenosSurpresinha.setBackgroundColor(ContextCompat.getColor(parentActivity, typeGameColorLight));
+            btnMaisSurpresinha.setBackgroundColor(ContextCompat.getColor(parentActivity, typeGameColorLight));
+        }
+
+        qtdSurpresinhasSelecionadas.setTextColor(ContextCompat.getColor(parentActivity, typeGameColorLight));
+        qtdSurpresinhasSelecionadas.setText(String.format(Locale.getDefault(), "%d", qtdSurpresinhas));
+    }
+
+    private void atualizaBotoesQtdTrevos() {
+        if (qtdTrevos == parametroJogo.getTrevos().getQtdMinima()){
+            btnMenosTrevos.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.cinzaescuro));
+            btnMaisTrevos.setBackgroundColor(ContextCompat.getColor(parentActivity, typeGameColorLight));
+        }else {
+            btnMenosTrevos.setBackgroundColor(ContextCompat.getColor(parentActivity, typeGameColorLight));
+            btnMaisTrevos.setBackgroundColor(ContextCompat.getColor(parentActivity, typeGameColorLight));
+        }
+
+        qtdSurpresinhasSelecionadasTrevos.setTextColor(ContextCompat.getColor(parentActivity, typeGameColorLight));
+        qtdSurpresinhasSelecionadasTrevos.setText(String.format(Locale.getDefault(), "%d", qtdTrevos));
     }
 
     private void configuraListaDezenas() {
