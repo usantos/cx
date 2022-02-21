@@ -187,7 +187,9 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
 //        parentActivity.getSimularApostaLayoutCarrinhoApostas().setOnClickListener(this);
 
         atualizaBotoesQtdSurpresinha();
-        atualizaBotoesQtdTrevos();
+        if(tipoJogo == ModalidadeEnum.MAIS_MILIONARIA){
+            atualizaBotoesQtdTrevos();
+        }
 
         Button botaoAdicionarSurpresinhaAoCarrinho = parentActivity.getBotaoAdicionarCompletarCartela();
         botaoAdicionarSurpresinhaAoCarrinho.setBackgroundColor(ContextCompat.getColor(parentActivity, typeGameColorLight));
