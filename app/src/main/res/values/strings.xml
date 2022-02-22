@@ -918,7 +918,7 @@
     <string name="extra_type_game_color_light">typeGameColorLight</string>
     <string name="extra_type_game_color_Dark">typeGameColorDark</string>
     <string name="evento_entrou_selecao_prognosticos">ENTROU_SELECAO_PROGNOSTICOS</string>
-    <string name="quant_de_numeros">Quant. de Números</string>
+    <string name="quant_de_numeros">Quant. de números</string>
     <string name="espaco_numeros">&#160;números</string>
     <string name="evento_entrou_popup_teimosinha">ENTROU_POPUP_TEIMOSINHA</string>
     <string name="teimosinhas_maiusculo">Teimosinhas</string>
