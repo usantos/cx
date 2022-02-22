@@ -22,6 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -208,8 +209,12 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
             }
 
             case R.id.surpresinhaTela: {
-                surpresinhaFragment.setArguments(new Bundle());
-                abrirTelaSurprezinha();
+                if (tipoJogo == ModalidadeEnum.MAIS_MILIONARIA){
+                    Toast.makeText(this, "Implementando/Testando", Toast.LENGTH_LONG).show();
+                }else {
+                    surpresinhaFragment.setArguments(new Bundle());
+                    abrirTelaSurprezinha();
+                }
                 break;
             }
 

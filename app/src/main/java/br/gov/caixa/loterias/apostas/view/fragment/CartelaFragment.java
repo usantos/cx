@@ -324,7 +324,11 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 			TextView       ttvPagina           = view.findViewById(R.id.ttvPagina);
 			TextView       ttvPaginaQuantidade = view.findViewById(R.id.ttvPaginaQuantidade);
 
-			ttvEscolha.setText(ViewUtils.textFuturaAndFuturaBold(parentActivity, getString(R.string.dia_sorte_escolha_dia)));
+			if(tipoJogo == ModalidadeEnum.MAIS_MILIONARIA){
+				ttvEscolha.setText(getString(R.string.escolha_de_seis_a_doze_numeros));
+			}else {
+				ttvEscolha.setText(ViewUtils.textFuturaAndFuturaBold(parentActivity, getString(R.string.dia_sorte_escolha_dia)));
+			}
 			ttvPaginaQuantidade.setText(getString(R.string.paginacao_quantidade, getString(R.string.label_numerico_dois)));
 			ttvLayout.setVisibility(View.VISIBLE);
 

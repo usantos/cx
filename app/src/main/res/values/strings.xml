@@ -344,6 +344,7 @@
 
     <!-- DIA SORTE -->
     <string name="dia_sorte_escolha_dia">Escolha os _n\u00fameros_</string>
+    <string name="escolha_de_seis_a_doze_numeros">Escolha de 6 a 12 números</string>
     <string name="dia_sorte_escolha_mes">Escolha o _mês_ da sorte</string>
     <string name="label_mes_surpresa">M\u00eas surpresa</string>
     <string name="label_escolher_outro_mes">Escolher outro m\u00eas</string>
