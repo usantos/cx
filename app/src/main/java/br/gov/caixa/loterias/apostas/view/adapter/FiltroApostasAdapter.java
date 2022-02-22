@@ -324,6 +324,9 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 				case LOTECA:
 					tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_loteca, R.color.lotecaclaro, false, item.getValor(), item.getDescricaoEspecial());
 					break;
+				case MAIS_MILIONALIA:
+					tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_loteca, R.color.lotecaclaro, false, item.getValor(), item.getDescricaoEspecial());
+					break;
 				default:
 					break;
 			}
