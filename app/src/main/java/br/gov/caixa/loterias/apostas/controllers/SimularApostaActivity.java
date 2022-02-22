@@ -706,6 +706,10 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.custom_dialog_list_view);
 
+        if (tipoJogo == ModalidadeEnum.MAIS_MILIONARIA){
+            dialog.findViewById(R.id.subtituloDialog).setVisibility(View.VISIBLE);
+        }
+
         final ListView listViewItens = dialog.findViewById(R.id.listaItensDialog);
         TextView tituloDialog = dialog.findViewById(R.id.tituloDialogCustom);
         tituloDialog.setText(getResources().getString(R.string.quant_de_numeros));
