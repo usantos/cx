@@ -17,6 +17,7 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="41dp"
             android:text="@string/voce_escolheu_x_numeros"
+            android:textSize="16sp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
 
@@ -47,6 +48,19 @@
             app:layout_constraintEnd_toEndOf="parent"
             />
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/subtitulo_trevos"
+            android:textSize="16sp"
+            android:layout_marginTop="36dp"
+            android:layout_marginStart="60dp"
+            android:layout_marginEnd="60dp"
+            android:textAlignment="center"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/escolhaNumerosText"
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

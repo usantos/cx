@@ -1028,10 +1028,13 @@
     <!-- App Center -->
     <string name="app_center_mp_sem_cartao">DEVICE_MP</string>
     <string name="app_center_mp_cartao_salvo">DEVICE_MP_SAVE</string>
+
+    <!-- Trevos -->
     <string name="trevosTitulo">Trevos</string>
     <string name="trevosInfo">Escolha a quantidade de trevos</string>
     <string name="valores_para_apostas_com_2_trevos">* Valores para apostas com 2 trevos</string>
     <string name="voce_escolheu_x_numeros">Você escolheu _x_ números</string>
+    <string name="subtitulo_trevos">Agora escolha de 2 a 6 trevos \npara marcar nesta aposta</string>
 
 
 </resources>
