@@ -1031,6 +1031,7 @@
     <string name="trevosTitulo">Trevos</string>
     <string name="trevosInfo">Escolha a quantidade de trevos</string>
     <string name="valores_para_apostas_com_2_trevos">* Valores para apostas com 2 trevos</string>
+    <string name="voce_escolheu_x_numeros">Você escolheu _x_ números</string>
 
 
 </resources>

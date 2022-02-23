@@ -26,7 +26,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatCheckBox;
@@ -725,8 +724,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 			if (isDiaSorte && parentActivity.isFragmentCartela()) {
 				parentActivity.mesDeSorteFragment(dezenasSelecionadas, false);
 			} else if(tipoJogo == ModalidadeEnum.MAIS_MILIONARIA && parentActivity.isFragmentCartela()){
-				// segue para a matriz II
-				Toast.makeText(getContext(), "Implementar Matriz II", Toast.LENGTH_LONG).show();
+				parentActivity.trevosFragment(dezenasSelecionadas);
 			} else {
 				adicionarApostaNoCarrinho();
 			}

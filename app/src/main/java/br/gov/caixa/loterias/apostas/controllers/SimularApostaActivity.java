@@ -77,6 +77,7 @@ import br.gov.caixa.loterias.apostas.view.fragment.MesesFragment_;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SurpresinhaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SurpresinhaFragment_;
+import br.gov.caixa.loterias.apostas.view.fragment.TrevosFragment_;
 import br.gov.caixa.loterias.apostas.view.listener.CartelaFragmentListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnSomadorListener;
 import br.gov.caixa.loterias.apostas.view.listener.SurpresinhaFragmentListener;
@@ -530,6 +531,11 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
             simularTelaAposta.setBackgroundResource(R.drawable.icon_seleciona2);
             surpresinhaTela.setBackgroundResource(R.drawable.icon_surpresinha2);
         }
+    }
+
+    public void trevosFragment(List<Integer> dezenasSelecionadas){
+        fragmentManager.beginTransaction().replace(R.id.fragmentSimularApostas, TrevosFragment_.builder().
+                dezenasSelecionadas((ArrayList<Integer>) dezenasSelecionadas).build()).commit();
     }
 
     public ParametroMesDeSorte getMesDeSorteCartela() {
