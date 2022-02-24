@@ -27,7 +27,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaCarrinhoFavoritoDT
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListApostaCarrinhoFavoritoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListCarrinhoFavoritoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
-import br.gov.caixa.loterias.apostas.utils.DialogUtils;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -139,11 +139,11 @@ public class DetalhesApostasCarrinhoFavoritoAdapter extends RecyclerView.Adapter
 	private void excluirAposta(Long idCarrinho, Long idAposta) {
 		ViewUtils.alertTitleButtonYesOrNotListener(activity, activity.getResources().getString(R.string.carrinho_fav_deseja_excluir_aposta), (dialogInterface, i) -> {
 			if (listApostas.size() > 1) {
-				DialogUtils.show(activity);
+				AlertDialogUtils.show(activity);
 				ApostaBO_.getInstance_(activity).deletaApostaCarrinhoFavorito(idCarrinho.toString(), idAposta.toString(), new RequestListener<ListApostaCarrinhoFavoritoDTO>() {
 					@Override
 					public void onResponse(ListApostaCarrinhoFavoritoDTO result) {
-						DialogUtils.dismiss();
+						AlertDialogUtils.dismiss();
 						if (result.getRedirect() != null) {
 							RedirectNetwork.checkRedirectSucesso(result.getRedirect(), activity);
 						}
@@ -154,7 +154,7 @@ public class DetalhesApostasCarrinhoFavoritoAdapter extends RecyclerView.Adapter
 
 					@Override
 					public void onErrorResponse(VolleyError error) {
-						DialogUtils.dismiss();
+						AlertDialogUtils.dismiss();
 						RedirectNetwork.checkRedirect(error, activity);
 					}
 				});
@@ -165,11 +165,11 @@ public class DetalhesApostasCarrinhoFavoritoAdapter extends RecyclerView.Adapter
 	}
 
 	private void excluirCarrinho(Long idCarrinhoAtual) {
-		DialogUtils.show(activity);
+		AlertDialogUtils.show(activity);
 		ApostaBO_.getInstance_(activity).deletaCarrinhoFavorito(idCarrinhoAtual.toString(), new RequestListener<ListCarrinhoFavoritoDTO>() {
 			@Override
 			public void onResponse(ListCarrinhoFavoritoDTO result) {
-				DialogUtils.dismiss();
+				AlertDialogUtils.dismiss();
 				if (result.getRedirect() != null) {
 					RedirectNetwork.checkRedirectSucesso(result.getRedirect(), activity);
 				}
@@ -179,7 +179,7 @@ public class DetalhesApostasCarrinhoFavoritoAdapter extends RecyclerView.Adapter
 
 			@Override
 			public void onErrorResponse(VolleyError error) {
-				DialogUtils.dismiss();
+				AlertDialogUtils.dismiss();
 				RedirectNetwork.checkRedirect(error, activity);
 			}
 		});

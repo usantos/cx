@@ -42,7 +42,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacoesApostaEnum;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
-import br.gov.caixa.loterias.apostas.utils.DialogUtils;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataFiltro;
 import br.gov.caixa.loterias.apostas.utils.Tupla;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -320,11 +320,11 @@ public class DetalhesComprasActivity extends AppCompatActivity {
     }
 
     private void validarCarrinhoFavorito(String nome, Long idFavorito){
-        DialogUtils.show(DetalhesComprasActivity.this);
+        AlertDialogUtils.show(DetalhesComprasActivity.this);
         ApostaBO_.getInstance_(DetalhesComprasActivity.this).validarCarrinhoFavorito(nome, new RequestListener<CarrinhoFavoritoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoFavoritoDTOResponse result) {
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
                 if (result.getRedirect() != null) {
                     RedirectNetwork.checkRedirectSucesso( result.getRedirect(), DetalhesComprasActivity.this);
                 }
@@ -333,7 +333,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
                 ViewUtils.alertTitleButtonYesOrNotListener(
                         DetalhesComprasActivity.this,
                         MensagensNetwork.getErrorMessage(error),
@@ -344,11 +344,11 @@ public class DetalhesComprasActivity extends AppCompatActivity {
     }
 
     private void favoritarCarrinho(String nome, Long idFavorito) {
-        DialogUtils.show(DetalhesComprasActivity.this);
+        AlertDialogUtils.show(DetalhesComprasActivity.this);
         ApostaBO_.getInstance_(DetalhesComprasActivity.this).salvarCarrinhoFavorito(nome,idFavorito.toString(), mantemSurpresinhas, new RequestListener<CarrinhoFavoritoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoFavoritoDTOResponse result) {
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
                 if (result.getRedirect() != null) {
                     RedirectNetwork.checkRedirectSucesso( result.getRedirect(), DetalhesComprasActivity.this);
                 }
@@ -363,18 +363,18 @@ public class DetalhesComprasActivity extends AppCompatActivity {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
                 RedirectNetwork.checkRedirect(error, DetalhesComprasActivity.this);
             }
         });
     }
 
     private void buscaModalidades() {
-        DialogUtils.show(DetalhesComprasActivity.this);
+        AlertDialogUtils.show(DetalhesComprasActivity.this);
         ApostaBO_.getInstance_(DetalhesComprasActivity.this).getModalidades(new RequestListener<ModalidadeDTOResponse>() {
             @Override
             public void onResponse(ModalidadeDTOResponse response) {
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
                 if (response.getRedirect() != null) {
                     RedirectNetwork.checkRedirectSucesso(response.getRedirect(), DetalhesComprasActivity.this);
                 }
@@ -385,7 +385,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
                 RedirectNetwork.checkRedirect(error, DetalhesComprasActivity.this);
             }
         });

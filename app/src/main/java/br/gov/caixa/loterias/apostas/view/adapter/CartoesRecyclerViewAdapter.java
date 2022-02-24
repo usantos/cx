@@ -25,7 +25,7 @@ import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListCartaoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
-import br.gov.caixa.loterias.apostas.utils.DialogUtils;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.listener.FormaDePagamentoListener;
 
@@ -100,12 +100,12 @@ public class CartoesRecyclerViewAdapter extends RecyclerView.Adapter<CartoesRecy
             switch (view.getId()){
                 case R.id.ib_excluir_cartao: {
                     ViewUtils.alertTitleButtonYesOrNotListener(context, context.getString(R.string.exclusao_cartao), (dialog, which) -> {
-                        DialogUtils.show(context);
+                        AlertDialogUtils.show(context);
                         DadosUsuarioBO_.getInstance_(context).deleteCartao(valoresList.get(getAdapterPosition()).getIdCartao(), new RequestListener<ListCartaoDTOResponse>() {
                             @Override
                             public void onResponse(ListCartaoDTOResponse result) {
                                 AppCenterManager.registraEvento(context.getResources().getString(R.string.evento_efetuou_exclusao_forma_pagamento_sucesso));
-                                DialogUtils.dismiss();
+                                AlertDialogUtils.dismiss();
                                 if(result != null && result.getRedirect() != null){
                                     RedirectNetwork.checkRedirectSucesso(result.getRedirect(), ((CartoesActivity)context));
                                 }
@@ -117,7 +117,7 @@ public class CartoesRecyclerViewAdapter extends RecyclerView.Adapter<CartoesRecy
 
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                DialogUtils.dismiss();
+                                AlertDialogUtils.dismiss();
                                 RedirectNetwork.checkRedirect(error, ((CartoesActivity)context));
                             }
                         });

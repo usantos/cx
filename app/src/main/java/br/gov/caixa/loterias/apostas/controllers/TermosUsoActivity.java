@@ -34,7 +34,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListSecaoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResourceResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TermoDeUsoDTOResponse;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
-import br.gov.caixa.loterias.apostas.utils.DialogUtils;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.ItemDuvidaAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView;
@@ -70,8 +70,8 @@ public class TermosUsoActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if(DialogUtils.isShow()){
-            DialogUtils.dismiss();
+        if(AlertDialogUtils.isShow()){
+            AlertDialogUtils.dismiss();
         }
     }
 
@@ -124,12 +124,12 @@ public class TermosUsoActivity extends AppCompatActivity {
     private void setListeners() {
         buttonTermoAceite.setOnClickListener(view -> {
             if (selcioneAceiteTermoUso.isChecked()){
-                DialogUtils.show(TermosUsoActivity.this);
+                AlertDialogUtils.show(TermosUsoActivity.this);
                 DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(TermosUsoActivity.this);
                 dadosCorporativosBO.aceiteTermo(new RequestListener<ResourceResponse>() {
                     @Override
                     public void onResponse(ResourceResponse response) {
-                        DialogUtils.dismiss();
+                        AlertDialogUtils.dismiss();
                         Intent intent = new Intent();
                         setResult(RESULT_OK, intent);
                         finish();
@@ -137,7 +137,7 @@ public class TermosUsoActivity extends AppCompatActivity {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        DialogUtils.dismiss();
+                        AlertDialogUtils.dismiss();
                         RedirectNetwork.checkRedirect(error,TermosUsoActivity.this);
                     }
                 });
@@ -208,13 +208,13 @@ public class TermosUsoActivity extends AppCompatActivity {
     }
 
     private void getTermo() {
-        DialogUtils.show(this);
+        AlertDialogUtils.show(this);
         DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(TermosUsoActivity.this);
 
         dadosCorporativosBO.termo(new RequestListener<TermoDeUsoDTOResponse>() {
             @Override
             public void onResponse(TermoDeUsoDTOResponse response) {
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
                 if (response.getRedirect() != null){
                     RedirectNetwork.checkRedirectSucesso( response.getRedirect(), TermosUsoActivity.this);
                 }
@@ -227,7 +227,7 @@ public class TermosUsoActivity extends AppCompatActivity {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
                 RedirectNetwork.checkRedirect(error, TermosUsoActivity.this);
             }
         });
@@ -276,14 +276,14 @@ public class TermosUsoActivity extends AppCompatActivity {
     }
 
     private void verificaTermoAceito() {
-        DialogUtils.show(this);
+        AlertDialogUtils.show(this);
         DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(TermosUsoActivity.this);
 
         dadosCorporativosBO.validaTermoAceito(new RequestListener<ResourceResponse>() {
 
             @Override
             public void onResponse(ResourceResponse result) {
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
                 isTermoAceito = Boolean.TRUE;
                 scrollViewTermoAceite.setPadding(0, 0, 0, 0);
                 getSupportActionBar().setDisplayHomeAsUpEnabled(isTermoAceito);
@@ -297,7 +297,7 @@ public class TermosUsoActivity extends AppCompatActivity {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
                 RedirectNetwork.checkRedirect(error, TermosUsoActivity.this);
                 getTermo();
                 if(!isCadastro) {
@@ -328,13 +328,13 @@ public class TermosUsoActivity extends AppCompatActivity {
 
     private void initReciclerViewDuvidas() {
         if (secaoDuvidas == null) {
-            DialogUtils.show(this);
+            AlertDialogUtils.show(this);
             DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(getApplicationContext());
 
             dadosCorporativosBO.secaoDuvidas(new RequestListener<ListSecaoDTOResponse>() {
                 @Override
                 public void onResponse(ListSecaoDTOResponse response) {
-                    DialogUtils.dismiss();
+                    AlertDialogUtils.dismiss();
                     if (response.getRedirect() != null){
                         RedirectNetwork.checkRedirectSucesso( response.getRedirect(), TermosUsoActivity.this);
                     }
@@ -345,7 +345,7 @@ public class TermosUsoActivity extends AppCompatActivity {
 
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    DialogUtils.dismiss();
+                    AlertDialogUtils.dismiss();
                     RedirectNetwork.checkRedirect(error, TermosUsoActivity.this);
                 }
             });

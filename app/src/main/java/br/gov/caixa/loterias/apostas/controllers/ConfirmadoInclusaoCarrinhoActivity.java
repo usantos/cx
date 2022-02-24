@@ -36,7 +36,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
-import br.gov.caixa.loterias.apostas.utils.DialogUtils;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -190,13 +190,13 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.confirmarInclusaoApostaLayoutCarrinhoApostas: {
-                DialogUtils.show(this);
+                AlertDialogUtils.show(this);
                 ApostaBO apostaBO = ApostaBO_.getInstance_(this);
 
                 apostaBO.buscaCarrinho(new RequestListener<CarrinhoDTOResponse>() {
                     @Override
                     public void onResponse(CarrinhoDTOResponse response) {
-                        DialogUtils.dismiss();
+                        AlertDialogUtils.dismiss();
                         Bundle args = new Bundle();
                         args.putSerializable(CARRINHO, (Serializable) response.getPayload());
                         startActivityForResult(new Intent(ConfirmadoInclusaoCarrinhoActivity.this, CarrinhoActivity.class).putExtras(args),0);
@@ -207,7 +207,7 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        DialogUtils.dismiss();
+                        AlertDialogUtils.dismiss();
                         if (MensagensNetwork.isUnauthorizedError(error)) {
                             startActivityForResult((new Intent(ConfirmadoInclusaoCarrinhoActivity.this, CarrinhoActivity.class).putExtra(LER_CARRINHO_LOCAL, true)),0);
                         } else {

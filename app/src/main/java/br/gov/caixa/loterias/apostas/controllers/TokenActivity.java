@@ -35,7 +35,7 @@ import br.gov.caixa.loterias.apostas.model.dao.DBLoteriasCrud;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AuthorizationServiceFactory;
-import br.gov.caixa.loterias.apostas.utils.DialogUtils;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 
 public class TokenActivity extends AppCompatActivity {
 
@@ -47,7 +47,7 @@ public class TokenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_token);
-        DialogUtils.show(this);
+        AlertDialogUtils.show(this);
         try {
             AuthorizationResponse authorizationResponse = AuthorizationResponse.fromIntent(getIntent());
             AuthorizationException authorizationException = AuthorizationException.fromIntent(getIntent());
@@ -144,7 +144,7 @@ public class TokenActivity extends AppCompatActivity {
 
     @Override
     public void finish() {
-        DialogUtils.dismiss();
+        AlertDialogUtils.dismiss();
         super.finish();
     }
 

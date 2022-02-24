@@ -31,7 +31,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.CompraUtil;
-import br.gov.caixa.loterias.apostas.utils.DialogUtils;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.MaskEditUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -227,7 +227,7 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity implement
     }
 
     private void callWebserviceRegistraApostaAsync(String tokenPagamento, String payment_method_id) {
-        if(!DialogUtils.isShow()){
+        if(!AlertDialogUtils.isShow()){
             showLoading();
         }
         // novo cartao com opcao de salvar desmarcada ou marcada
@@ -260,7 +260,7 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity implement
     }
 
     private void sucessoCompraAsync() {
-        DialogUtils.dismiss();
+        AlertDialogUtils.dismiss();
         if (checkBoxSalvarCartao.isChecked()) {
             AppCenterManager.registraEvento(getResources().getString(R.string.evento_efetuou_adicao_forma_pagamento_sucesso));
         }
@@ -272,12 +272,12 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity implement
 
     private void redirectCompraAsync(CompraAsyncResponse compraAsyncResponse) {
         RedirectNetwork.checkRedirectSucesso( compraAsyncResponse.getRedirect(), NovaFormaPagamentoActivity.this);
-        DialogUtils.dismiss();
+        AlertDialogUtils.dismiss();
     }
 
     private void errorCompraAsync(VolleyError error) {
         RedirectNetwork.checkRedirect( error, NovaFormaPagamentoActivity.this );
-        DialogUtils.dismiss();
+        AlertDialogUtils.dismiss();
     }
 
     private void apresentaTextCartoes() {
@@ -292,7 +292,7 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity implement
 
     private void apresentaAlertaPreCompra() {
         ViewUtils.alertTitleCustomPositiveListener(NovaFormaPagamentoActivity.this, "Cancelar", "Confirmar", NovaFormaPagamentoActivity.this.getResources().getString(R.string.label_pre_pagamento).replace("{valorCompra}", valorTotalCarrinho.getText()), (dialog, which) -> {
-            DialogUtils.dismiss();
+            AlertDialogUtils.dismiss();
             dialog.dismiss();
         },(dialog, which) -> {
             finish();
@@ -303,7 +303,7 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity implement
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                DialogUtils.show(NovaFormaPagamentoActivity.this);
+                AlertDialogUtils.show(NovaFormaPagamentoActivity.this);
             }
         });
     }
@@ -316,13 +316,13 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity implement
 
     @Override
     public void onTokenFailure(String msgError) {
-        DialogUtils.dismiss();
+        AlertDialogUtils.dismiss();
         apresentaModal(msgError);
     }
 
     @Override
     public void onPaymentFailure(String msgError) {
-        DialogUtils.dismiss();
+        AlertDialogUtils.dismiss();
         apresentaModal(msgError);
     }
 

@@ -45,7 +45,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
-import br.gov.caixa.loterias.apostas.utils.DialogUtils;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -273,7 +273,7 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
             @Override
             public void onResponse(CarrinhoDTOResponse response) {
                 AppCenterManager.registraEvento(context.getResources().getString(R.string.evento_efetuou_inclusao_favorito_no_carrinho));
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
                 if (response.getRedirect() != null){
                     RedirectNetwork.checkRedirectSucesso( response.getRedirect(), activity);
                 }
@@ -287,7 +287,7 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
                 RedirectNetwork.checkRedirect(error, activity);
 
             }
@@ -338,7 +338,7 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
         }
 
         if (arrayConcursos.size() > 1) {
-            DialogUtils.dismiss();
+            AlertDialogUtils.dismiss();
             Boolean temEspecialENormal = false;
             for (ParametroSimulacao modalidade : arrayConcursos) {
                 if (modalidade.getParametroJogo().getConcurso().getTipoConcurso() == TipoConcursoEnum.NORMAL) {
@@ -358,7 +358,7 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
             if (arrayConcursos.get(0).getParametroJogo().getConcurso().getTipoConcurso() == TipoConcursoEnum.ESPECIAL) {
                 adicionarCarrinhoCallWebservice(apostaBO, idApostaFavorita, 2, 0);
             } else {
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
                 if (arrayConcursos.get(0).getParametroJogo().getTeimosinhas().size() > 0) {
                     popupAdicionarCarrinhoFavoritas(arrayConcursos, idApostaFavorita);
                     return;
@@ -376,7 +376,7 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
     }
 
     private void adicionarApostaCarrinhoRequest(final ApostaBO apostaBO, final ApostaFavoritaDTO apostaFavoritaDTO) {
-        DialogUtils.show(activity);
+        AlertDialogUtils.show(activity);
         apostaBO.buscaCarrinho(new RequestListener<CarrinhoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoDTOResponse response) {
@@ -390,7 +390,7 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
                 RedirectNetwork.checkRedirect(error, activity);
             }
         });
@@ -400,9 +400,9 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
         if (SessaoUsuario.getInstance().getParametrosSimulacao().getValorLimiteDiario()
                 .compareTo(carrinhoDTO.getValorTotal()
                         .add(IdentificaoDeUmaApostaDas8Modalidades.getValorApostaFavoritaPorProagnostico(apostaFavoritaDTO))) < 0) {
-            DialogUtils.dismiss();
+            AlertDialogUtils.dismiss();
             ViewUtils.alertTitleButtonYesOrNotListener(context, context.getResources().getString(R.string.MA014), (dialog, which) -> {
-                DialogUtils.show(context);
+                AlertDialogUtils.show(context);
                 checarApostasRepetidas(apostaBO, apostaFavoritaDTO, carrinhoDTO);
             });
         } else {
@@ -412,9 +412,9 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
 
     private void checarApostasRepetidas(final ApostaBO apostaBO, final ApostaFavoritaDTO apostaFavoritaDTO, final CarrinhoDTO carrinhoDTO) {
         if (IdentificaoDeUmaApostaDas8Modalidades.checkExisteUmaApostaIgualCarrinho(apostaFavoritaDTO, carrinhoDTO)) {
-            DialogUtils.dismiss();
+            AlertDialogUtils.dismiss();
             ViewUtils.alertTitleButtonYesOrNotListener(context, context.getResources().getString(R.string.MA015), (dialog, which) -> {
-                DialogUtils.show(activity);
+                AlertDialogUtils.show(activity);
                 adicionarCarrinho(apostaBO, apostaFavoritaDTO.getId(), apostaFavoritaDTO.getModalidade());
             });
         } else {
