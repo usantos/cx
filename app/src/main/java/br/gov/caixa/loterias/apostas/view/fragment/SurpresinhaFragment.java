@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -131,11 +132,11 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
             initDiaDeSorte();
         }
 
-        if(isMaisMilionaria()){
-            surpresinhaTitulo.setTextColor(ContextCompat.getColor(parentActivity, R.color.mais_milionaria_escura));
-            surpresinhaInfo.setTextColor(ContextCompat.getColor(parentActivity, R.color.mais_milionaria_escura));
-            surpresinhaQtdInfo.setTextColor(ContextCompat.getColor(parentActivity, R.color.mais_milionaria_escura));
+        surpresinhaTitulo.setTextColor(ContextCompat.getColor(parentActivity, typeGameColorLight));
+        surpresinhaInfo.setTextColor(ContextCompat.getColor(parentActivity, typeGameColorLight));
+        surpresinhaQtdInfo.setTextColor(ContextCompat.getColor(parentActivity, typeGameColorLight));
 
+        if(isMaisMilionaria()){
             maisMilionaria.setVisibility(View.VISIBLE);
 
             ConstraintLayout.LayoutParams textViewParams = (ConstraintLayout.LayoutParams) surpresinhaQtdInfo.getLayoutParams();
@@ -346,7 +347,11 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.botaoAdicionarCompletarCartela: {
-                adicionarSurpresinhaNoCarrinho();
+                if (!isMaisMilionaria()){
+                    adicionarSurpresinhaNoCarrinho();
+                } else {
+                    Toast.makeText(getContext(), "Falta implementar", Toast.LENGTH_LONG).show();
+                }
             }
             break;
         }
