@@ -41,6 +41,7 @@ import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -69,7 +70,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroMesDeSorte;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
-import br.gov.caixa.loterias.apostas.utils.DialogUtils;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.fragment.CartelaFragment;
@@ -80,6 +81,7 @@ import br.gov.caixa.loterias.apostas.view.fragment.SurpresinhaFragment_;
 import br.gov.caixa.loterias.apostas.view.fragment.TrevosFragment_;
 import br.gov.caixa.loterias.apostas.view.listener.CartelaFragmentListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnSomadorListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnTrevosListener;
 import br.gov.caixa.loterias.apostas.view.listener.SurpresinhaFragmentListener;
 
 import static br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity.CARRINHO;
@@ -88,7 +90,7 @@ import static br.gov.caixa.loterias.apostas.utils.Utils.isErroNegocial;
 import static java.lang.String.format;
 
 @EActivity(R.layout.activity_simular_aposta)
-public class SimularApostaActivity<T> extends AppCompatActivity implements OnClickListener, CartelaFragmentListener, SurpresinhaFragmentListener, OnSomadorListener {
+public class SimularApostaActivity<T> extends AppCompatActivity implements OnClickListener, CartelaFragmentListener, SurpresinhaFragmentListener, OnSomadorListener, OnTrevosListener {
 
     private static int RESULT_FINISH = 3;
 
@@ -205,6 +207,10 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
             case R.id.simularTelaAposta: {
                 cartelaFragment.setEscolhaTimeCoracaoSurpresinha(false);
                 abrirTelaCartela(false);
+                if (tipoJogo == ModalidadeEnum.MAIS_MILIONARIA){
+                    qtdNumerosButton.setOnClickListener(this);
+                    qtdNumerosButton.setText(textoBotaoPrognosticosSelecionado);
+                }
                 break;
             }
 
@@ -322,13 +328,13 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
 
     @Override
     public void abreCarrinhoApostas() {
-        DialogUtils.show(this);
+        AlertDialogUtils.show(this);
         ApostaBO apostaBO = ApostaBO_.getInstance_(this);
 
         apostaBO.buscaCarrinho(new RequestListener<CarrinhoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoDTOResponse response) {
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
                 Bundle args = new Bundle();
                 args.putSerializable(CARRINHO, (Serializable) response.getPayload());
                 startActivity(new Intent(SimularApostaActivity.this, CarrinhoActivity.class).putExtras(args));
@@ -339,7 +345,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
                 if (MensagensNetwork.isUnauthorizedError(error)) {
                     startActivity(new Intent(SimularApostaActivity.this, CarrinhoActivity.class).putExtra(LER_CARRINHO_LOCAL, true));
                 } else {
@@ -439,7 +445,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
 
     public void salvarAposta(final ApostaFavoritaDTO apostaFavorita, String nomeAposta, T dezenasSelecionadas) {
 
-        DialogUtils.show(this);
+        AlertDialogUtils.show(this);
 
         DTOEnumInteger modalidade = new DTOEnumInteger();
         modalidade.setDescricao(parametroSimulacao.getConcurso().getModalidadeDetalhada().getDescricao());
@@ -466,8 +472,8 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                DialogUtils.dismiss();
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
                 if(isErroNegocial(error)){
                     ViewUtils.alertTitleButtonYesOrNotListener(
                             SimularApostaActivity.this,
@@ -484,15 +490,15 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         });
     }
     private void salvarAposta(ApostaFavoritaDTO aposta){
-        if(!DialogUtils.isShow()){
-            DialogUtils.show(this);
+        if(!AlertDialogUtils.isShow()){
+            AlertDialogUtils.show(this);
         }
         dadosCorporativosBO.salvarApostaFavorita(aposta, new RequestListener<NetworkResponse>() {
             @Override
             public void onResponse(NetworkResponse response) {
                 AppCenterManager.registraEvento(getResources().getString(R.string.evento_efetuou_adicao_aposta_favorita_sucesso));
 
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
 
                 RelativeLayout salvarApostaLayout = getSalvarApostaLayout();
 
@@ -516,7 +522,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
                 RedirectNetwork.checkRedirect(error, SimularApostaActivity.this);
 
             }
@@ -534,8 +540,11 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     }
 
     public void trevosFragment(List<Integer> dezenasSelecionadas){
-        fragmentManager.beginTransaction().replace(R.id.fragmentSimularApostas, TrevosFragment_.builder().
-                dezenasSelecionadas((ArrayList<Integer>) dezenasSelecionadas).build()).commit();
+        fragmentManager.beginTransaction()
+                       .replace(R.id.fragmentSimularApostas, TrevosFragment_.builder()
+                                                                            .parametro(parametroSimulacao)
+                                                                            .idBtnQtdTrevos(qtdNumerosButton.getId())
+                                                                            .dezenasSelecionadas((ArrayList<Integer>) dezenasSelecionadas).build()).commit();
     }
 
     public ParametroMesDeSorte getMesDeSorteCartela() {
@@ -899,5 +908,21 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         }else {
             tvQuantidadeApostas.setText(R.string.zero);
         }
+    }
+
+    @Override
+    public Button getButtonQtdTrevos() {
+        return qtdNumerosButton;
+    }
+
+    @Override
+    public void valorAposta(ParametroValorApostaDTO valorAposta) {
+        BigDecimal valorEmReais = valorAposta.getValor();
+
+        if (qtdConcursoSelecionado != 0) {
+            valorEmReais = valorEmReais.multiply(BigDecimal.valueOf(qtdConcursoSelecionado).movePointLeft(0));
+        }
+
+        ViewUtils.setMoedaFormatHtml(valorEmReais, valorApostaCartela);
     }
 }

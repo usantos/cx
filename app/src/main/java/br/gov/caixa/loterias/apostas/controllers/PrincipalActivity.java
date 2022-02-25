@@ -85,7 +85,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.UltimaNotificacaoS
 import br.gov.caixa.loterias.apostas.model.dao.DBLoteriasHelper;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
-import br.gov.caixa.loterias.apostas.utils.DialogUtils;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataSideMenu;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
@@ -279,7 +279,7 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     private void callWebservice() {
-        DialogUtils.show(PrincipalActivity.this);
+        AlertDialogUtils.show(PrincipalActivity.this);
 
         if(SessaoUsuarioUtil.precisaAtualizar()){
             final DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(PrincipalActivity.this);
@@ -287,7 +287,7 @@ public class PrincipalActivity extends AppCompatActivity
             dadosCorporativosBO.parametrosSimulacao(new RequestListener<ParametrosSimulacaoResponse>() {
                 @Override
                 public void onResponse(ParametrosSimulacaoResponse response) {
-                    DialogUtils.dismiss();
+                    AlertDialogUtils.dismiss();
                     AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_lista_modalidades));
 
                     modalidadesParaListar = response.getPayload().getParametros();
@@ -305,7 +305,7 @@ public class PrincipalActivity extends AppCompatActivity
 
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    DialogUtils.dismiss();
+                    AlertDialogUtils.dismiss();
                     Intent appIndis = new Intent(PrincipalActivity.this, AppIndisponivelActivity.class);
                     appIndis.putExtra(getResources().getString(R.string.extra_is_busca_param), true);
 
@@ -315,9 +315,9 @@ public class PrincipalActivity extends AppCompatActivity
         }else if(SessaoUsuario.getInstance().isPrecisaMontarCarrossel()){
             modalidadesParaListar = SessaoUsuario.getInstance().getParametrosSimulacao().getParametros();
             paramatroSimulacaoSuccess();
-            DialogUtils.dismiss();
+            AlertDialogUtils.dismiss();
         }else {
-            DialogUtils.dismiss();
+            AlertDialogUtils.dismiss();
         }
 
     }
@@ -407,14 +407,14 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     private void callRepassesSociais() {
-        DialogUtils.show(PrincipalActivity.this);
+        AlertDialogUtils.show(PrincipalActivity.this);
         final DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(PrincipalActivity.this);
         dadosCorporativosBO.repasses(new RequestListener<RepassometroDTOResponse>() {
             @Override
             public void onResponse(RepassometroDTOResponse response) {
                 repassesSociais = response.getPayload();
                 layoutTrevoAcessoRapido();
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
                 showMenu();
             }
 
@@ -436,6 +436,14 @@ public class PrincipalActivity extends AppCompatActivity
     private List<Modalidade> montaListaModalidades() {
         List<Modalidade> listaModalidades = new ArrayList<>();
 
+        if (!BuildConfig.FLAVOR.equalsIgnoreCase("prd") && !conteMaisMilionaria()){
+            ParametroSimulacao parametro = MaisMilionariaMock.getParametroMaisMilionaria();
+            listaModalidades.add(new Modalidade(parametro.getParametroJogo().getConcurso().getModalidadeDetalhada().getDescricao(),
+                                                parametro.getParametroJogo().getConcurso().getValorApostaMinima(), getResources().getString(R.string.string_vazia), getResources().getString(R.string.string_vazia), parametro.getParametroJogo().getConcurso().getModalidade(),
+                                                parametro.getParametroJogo().getConcurso(), false, null));
+            Toast.makeText(PrincipalActivity.this, "+Milionaria de forma mockada", Toast.LENGTH_LONG).show();
+        }
+
         for (ParametroSimulacao parametro : modalidadesParaListar) {
             if (parametro.getParametroJogo().getConcurso().getModalidade() != null) {
                 listaModalidades.add(new Modalidade(parametro.getParametroJogo().getConcurso().getModalidadeDetalhada().getDescricao(),
@@ -445,6 +453,19 @@ public class PrincipalActivity extends AppCompatActivity
         }
 
         return listaModalidades;
+    }
+
+    private boolean conteMaisMilionaria() {
+        boolean contem = false;
+
+        for (ParametroSimulacao parametro : modalidadesParaListar){
+            if (parametro.getParametroJogo().getConcurso().getModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
+                contem = true;
+                break;
+            }
+        }
+
+        return contem;
     }
 
     private void layoutTrevoAcessoRapido() {
@@ -804,7 +825,7 @@ public class PrincipalActivity extends AppCompatActivity
     @Override
     protected void onDestroy() {
         dbLoteriasHelper.close();
-        DialogUtils.dismiss();
+        AlertDialogUtils.dismiss();
         super.onDestroy();
     }
 

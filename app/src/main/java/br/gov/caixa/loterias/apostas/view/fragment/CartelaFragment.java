@@ -75,7 +75,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PartidaLotogolDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
-import br.gov.caixa.loterias.apostas.utils.DialogUtils;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
@@ -179,6 +179,12 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 			parametroJogo = ViewUtils.getParametroSimulacao(sessaoUsuario, tipoJogo).getParametroJogo();
 		}
 
+		if (tipoJogo == ModalidadeEnum.MAIS_MILIONARIA){
+			ParametroValorApostaDTO valorAposta = parametroJogo.getValorApostaBy(numPrognostico, parametroJogo.getTrevos().getQtdMinima());
+			parentActivity.valorAposta(valorAposta);
+
+			return;
+		}
 		if (numPrognostico != 0) {
 			for (ParametroValorApostaDTO parametro : parametroJogo.getValoresAposta()) {
 				if (parametro.getNumeroPrognosticos() == numPrognostico) {
@@ -784,14 +790,14 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 	}
 
 	private void preencheNumerosAleatorios() {
-		DialogUtils.show(getActivity());
+		AlertDialogUtils.show(getActivity());
 		ApostaBO apostaBO = ApostaBO_.getInstance_(getActivity());
 		orderAscDezenas();
 		apostaBO.completaJogo(parentActivity.qtdDezenasPossiveisSelecionado, dezenasSelecionadas, 1,
 							  parametroJogo.getPrognosticoMaximo(), new RequestListener<CompletaJogoRsp>() {
 					@Override
 					public void onResponse(CompletaJogoRsp response) {
-						DialogUtils.dismiss();
+						AlertDialogUtils.dismiss();
 						isNumerosAleatoriosShake = false;
 						AppCenterManager.registraEvento("ENTROU_COMPLETAR_COM_NUMEROS_ALEATORIOS");
 						isEcolhaTimeBtnAtivado = true;
@@ -807,14 +813,14 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 					@Override
 					public void onErrorResponse(VolleyError error) {
 						isNumerosAleatoriosShake = false;
-						DialogUtils.dismiss();
+						AlertDialogUtils.dismiss();
 						RedirectNetwork.checkRedirect(error, getActivity());
 					}
 				});
 	}
 
 	private void preencheNumerosAleatoriosSuperSete(ArrayList<ArrayList<Integer>> listaInteiros) {
-		DialogUtils.show(getActivity());
+		AlertDialogUtils.show(getActivity());
 		ApostaBO apostaBO = ApostaBO_.getInstance_(getActivity());
 		orderAscDezenas();
 
@@ -823,7 +829,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 								  new RequestListener<CompletaJogoNovoRsp>() {
 									  @Override
 									  public void onResponse(CompletaJogoNovoRsp response) {
-										  DialogUtils.dismiss();
+										  AlertDialogUtils.dismiss();
 										  AppCenterManager.registraEvento( "ENTROU_COMPLETAR_COM_NUMEROS_ALEATORIOS");
 										  isNumerosAleatoriosShake = false;
 										  isEcolhaTimeBtnAtivado = true;
@@ -838,7 +844,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 									  @Override
 									  public void onErrorResponse(VolleyError error) {
 										  isNumerosAleatoriosShake = false;
-										  DialogUtils.dismiss();
+										  AlertDialogUtils.dismiss();
 										  RedirectNetwork.checkRedirect(error, getActivity());
 									  }
 								  });
