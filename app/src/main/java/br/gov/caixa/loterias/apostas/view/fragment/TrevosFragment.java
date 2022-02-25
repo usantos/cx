@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -82,14 +83,20 @@ public class TrevosFragment extends Fragment {
         listener.getButtonFinalizar().setText(stringBotao);
         listener.getButtonFinalizar().setBackgroundColor(getResources().getColor(R.color.cinzaescuro));
         listener.getButtonFinalizar().setOnClickListener(onFinalizarClickListener());
+
+        listener.getButtonLimpar().setOnClickListener(onLimparClickListener());
+        listener.getButtonLimpar().setVisibility(View.GONE);
+    }
+
+    private View.OnClickListener onLimparClickListener() {
+        return v -> {
+            Toast.makeText(getContext(), "Falta implementar", Toast.LENGTH_LONG).show();
+        };
     }
 
     private View.OnClickListener onFinalizarClickListener() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
+        return v -> {
+            Toast.makeText(getContext(), "Falta implementar", Toast.LENGTH_LONG).show();
         };
     }
 

@@ -211,6 +211,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
                     qtdNumerosButton.setText(textoBotaoPrognosticosSelecionado);
                     botaoAdicionarCompletarCartela.setOnClickListener(this);
                     botaoAdicionarCompletarCartela.setBackgroundColor(getResources().getColor(typeGameColorDark));
+                    botaoLimparAposta.setOnClickListener(this);
                 }
                 break;
             }
@@ -907,6 +908,11 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     @Override
     public Button getButtonFinalizar() {
         return botaoAdicionarCompletarCartela;
+    }
+
+    @Override
+    public Button getButtonLimpar() {
+        return botaoLimparAposta;
     }
 
     @Override

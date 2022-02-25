@@ -10,6 +10,8 @@ public interface OnTrevosListener {
 
 	Button getButtonFinalizar();
 
+	Button getButtonLimpar();
+
 	void valorAposta(ParametroValorApostaDTO valorAposta);
 
 }
