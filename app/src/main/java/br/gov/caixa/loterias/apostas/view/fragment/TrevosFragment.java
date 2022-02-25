@@ -70,9 +70,27 @@ public class TrevosFragment extends Fragment {
         escolhaNumerosText.setText(titulo);
         escolhaNumerosText.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
 
-        listener.getButtonQtdTrevos().setOnClickListener(onQtdTrevosClickListener());
+        configIncialButtons();
 
         valoresApostas = parametro.getValoresTrevoByNumero(dezenasSelecionadas.size());
+    }
+
+    private void configIncialButtons() {
+        listener.getButtonQtdTrevos().setOnClickListener(onQtdTrevosClickListener());
+
+        SpannableStringBuilder stringBotao = ViewUtils.textFuturaAndFuturaBold(getActivity(), getString(R.string.completar_trevos_aleatoriamente));
+        listener.getButtonFinalizar().setText(stringBotao);
+        listener.getButtonFinalizar().setBackgroundColor(getResources().getColor(R.color.cinzaescuro));
+        listener.getButtonFinalizar().setOnClickListener(onFinalizarClickListener());
+    }
+
+    private View.OnClickListener onFinalizarClickListener() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        };
     }
 
     @NotNull

@@ -209,6 +209,8 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
                 if (tipoJogo == ModalidadeEnum.MAIS_MILIONARIA){
                     qtdNumerosButton.setOnClickListener(this);
                     qtdNumerosButton.setText(textoBotaoPrognosticosSelecionado);
+                    botaoAdicionarCompletarCartela.setOnClickListener(this);
+                    botaoAdicionarCompletarCartela.setBackgroundColor(getResources().getColor(typeGameColorDark));
                 }
                 break;
             }
@@ -900,6 +902,11 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     @Override
     public Button getButtonQtdTrevos() {
         return qtdNumerosButton;
+    }
+
+    @Override
+    public Button getButtonFinalizar() {
+        return botaoAdicionarCompletarCartela;
     }
 
     @Override

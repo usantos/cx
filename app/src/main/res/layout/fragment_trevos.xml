@@ -17,6 +17,7 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="41dp"
             android:text="@string/voce_escolheu_x_numeros"
+            android:textColor="@color/mais_milionaria_escura"
             android:textSize="16sp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
@@ -31,6 +32,7 @@
             android:text="@string/label_numerico_dois"
             android:textStyle="bold"
             android:textSize="18sp"
+            android:textColor="@color/mais_milionaria_escura"
             app:layout_constraintTop_toTopOf="@id/escolhaNumerosText"
             app:layout_constraintEnd_toStartOf="@id/paginaQuantidadeText"/>
 
@@ -43,6 +45,7 @@
             android:layout_alignTop="@+id/escolhaNumerosText"
             android:layout_marginEnd="24dp"
             android:text=" | 2"
+            android:textColor="@color/mais_milionaria_escura"
             app:layout_constraintTop_toTopOf="@id/paginaNumeroText"
             app:layout_constraintBottom_toBottomOf="@id/paginaNumeroText"
             app:layout_constraintEnd_toEndOf="parent"
@@ -54,6 +57,7 @@
             android:layout_height="wrap_content"
             android:text="@string/subtitulo_trevos"
             android:textSize="16sp"
+            android:textColor="@color/mais_milionaria_escura"
             android:layout_marginTop="36dp"
             android:layout_marginStart="60dp"
             android:layout_marginEnd="60dp"

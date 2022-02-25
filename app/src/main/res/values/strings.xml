@@ -1039,6 +1039,7 @@
     <string name="para_aposta_com_x_numeros">Para a aposta com _x_ números</string>
     <string name="quant_de_trevos">Quant. de trevos</string>
     <string name="trevos_por"> trevos por </string>
+    <string name="completar_trevos_aleatoriamente">_Completar_\n Trevos aleatoriamente</string>
 
 
 </resources>

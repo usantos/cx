@@ -8,6 +8,8 @@ public interface OnTrevosListener {
 
 	Button getButtonQtdTrevos();
 
+	Button getButtonFinalizar();
+
 	void valorAposta(ParametroValorApostaDTO valorAposta);
 
 }
