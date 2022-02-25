@@ -1,6 +1,5 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -12,14 +11,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -68,9 +65,10 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroEquipe;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroMesDeSorte;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
-import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.fragment.CartelaFragment;
@@ -80,6 +78,7 @@ import br.gov.caixa.loterias.apostas.view.fragment.SurpresinhaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SurpresinhaFragment_;
 import br.gov.caixa.loterias.apostas.view.fragment.TrevosFragment_;
 import br.gov.caixa.loterias.apostas.view.listener.CartelaFragmentListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnSomadorListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnTrevosListener;
 import br.gov.caixa.loterias.apostas.view.listener.SurpresinhaFragmentListener;
@@ -713,64 +712,56 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     private void modalNumeros() {
         AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_selecao_prognosticos));
 
-        final Dialog dialog = new Dialog(this);
-        dialog.setContentView(R.layout.custom_dialog_list_view);
+        DialogUtils.showDialogListaEscolha(SimularApostaActivity.this,
+                                           getResources().getString(R.string.quant_de_numeros), null,
+                                           qtdNumerosList, onNumerosDialogListener());
+    }
 
-        if (tipoJogo == ModalidadeEnum.MAIS_MILIONARIA){
-            dialog.findViewById(R.id.subtituloDialog).setVisibility(View.VISIBLE);
-        }
-
-        final ListView listViewItens = dialog.findViewById(R.id.listaItensDialog);
-        TextView tituloDialog = dialog.findViewById(R.id.tituloDialogCustom);
-        tituloDialog.setText(getResources().getString(R.string.quant_de_numeros));
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(SimularApostaActivity.this,
-                R.layout.item_text_popup, R.id.textList, qtdNumerosList);
-
-        listViewItens.setAdapter(adapter);
-        listViewItens.setOnItemClickListener((parent, view, position, id) -> {
-            String itemValue = (String) listViewItens.getItemAtPosition(position);
-            if(tipoJogo == ModalidadeEnum.MAIS_MILIONARIA){
-                String stringNumero = "";
-                if (itemValue.startsWith("1")){
-                    stringNumero = itemValue.substring(0,2);
+    private OnDialogListener onNumerosDialogListener() {
+        return new OnDialogListener() {
+            @Override
+            public void itemSelecionado(int position) {
+                String itemValue = (String) qtdNumerosList.get(position);
+                if(tipoJogo == ModalidadeEnum.MAIS_MILIONARIA){
+                    String stringNumero = "";
+                    if (itemValue.startsWith("1")){
+                        stringNumero = itemValue.substring(0,2);
+                    }else {
+                        stringNumero = itemValue.substring(0, 1);
+                    }
+                    ParametroValorApostaDTO valorAposta = parametroSimulacao.getValorApostaBy(new Integer(stringNumero), 2);
+                    if (valorAposta != null){
+                        textoBotaoPrognosticosSelecionado = valorAposta.getNumeroPrognosticos() + getResources().getString(R.string.espaco_numeros);
+                        qtdDezenasPossiveisSelecionado = valorAposta.getNumeroPrognosticos();
+                    }
                 }else {
-                    stringNumero = itemValue.substring(0, 1);
+                    textoBotaoPrognosticosSelecionado = parametroSimulacao.getValoresAposta().get(position).getNumeroPrognosticos() + getResources().getString(R.string.espaco_numeros);
+                    qtdDezenasPossiveisSelecionado = parametroSimulacao.getValoresAposta().get(position).getNumeroPrognosticos();
                 }
-                ParametroValorApostaDTO valorAposta = parametroSimulacao.getValorApostaBy(new Integer(stringNumero), 2);
-                if (valorAposta != null){
-                    textoBotaoPrognosticosSelecionado = valorAposta.getNumeroPrognosticos() + getResources().getString(R.string.espaco_numeros);
-                    qtdDezenasPossiveisSelecionado = valorAposta.getNumeroPrognosticos();
-                }
-            }else {
-                textoBotaoPrognosticosSelecionado = parametroSimulacao.getValoresAposta().get(position).getNumeroPrognosticos() + getResources().getString(R.string.espaco_numeros);
-                qtdDezenasPossiveisSelecionado = parametroSimulacao.getValoresAposta().get(position).getNumeroPrognosticos();
             }
-        });
 
-        Button dialogButtonOk = dialog.findViewById(R.id.dialogButtonOK);
-        Button dialogButtonCancelar = dialog.findViewById(R.id.dialogButtonCancelar);
+            @Override
+            public void ok() {
+                qtdNumerosButton.setText(textoBotaoPrognosticosSelecionado);
 
-        dialogButtonOk.setOnClickListener(v -> {
-            qtdNumerosButton.setText(textoBotaoPrognosticosSelecionado);
-
-            if (isFragmentCartela()) {
-                cartelaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
-                cartelaFragment.atualizaStatusBotaoFinalizar(true);
-            } else {
-                if (surpresinhaFragment.getParametroJogo() != null) {
-                    surpresinhaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
-                    if (tipoJogo == ModalidadeEnum.MAIS_MILIONARIA){
-                        surpresinhaFragment.resetQtdTrevos();
+                if (isFragmentCartela()) {
+                    cartelaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
+                    cartelaFragment.atualizaStatusBotaoFinalizar(true);
+                } else {
+                    if (surpresinhaFragment.getParametroJogo() != null) {
+                        surpresinhaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
+                        if (tipoJogo == ModalidadeEnum.MAIS_MILIONARIA){
+                            surpresinhaFragment.resetQtdTrevos();
+                        }
                     }
                 }
             }
-            dialog.dismiss();
-        });
 
-        dialogButtonCancelar.setOnClickListener(v -> dialog.dismiss());
+            @Override
+            public void cancelar() {
 
-        dialog.show();
+            }
+        };
     }
 
     public boolean isFragmentCartela(){
@@ -780,41 +771,37 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     private void modalTeimosinhas() {
         AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_popup_teimosinha));
 
-        final Dialog dialog = new Dialog(this);
-        dialog.setContentView(R.layout.custom_dialog_list_view);
+        DialogUtils.showDialogListaEscolha(SimularApostaActivity.this,
+                                           getResources().getString(R.string.teimosinhas_maiusculo), null,
+                                           qtdConcursosList, onTeimosinhaDialogListener());
+    }
 
-        final ListView listViewItens = dialog.findViewById(R.id.listaItensDialog);
-        TextView tituloDialog = dialog.findViewById(R.id.tituloDialogCustom);
-        tituloDialog.setText(getResources().getString(R.string.teimosinhas_maiusculo));
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(SimularApostaActivity.this,
-                R.layout.item_text_popup, R.id.textList, qtdConcursosList);
-
-        listViewItens.setAdapter(adapter);
-        listViewItens.setOnItemClickListener((parent, view, position, id) -> {
-            textoBotaoSurpresinhasSelecionado = (String) listViewItens.getItemAtPosition(position);
-            qtdConcursoSelecionado = parametroSimulacao.getTeimosinhas().get(position);
-        });
-
-        Button dialogButtonOk = dialog.findViewById(R.id.dialogButtonOK);
-        Button dialogButtonCancelar = dialog.findViewById(R.id.dialogButtonCancelar);
-
-        dialogButtonOk.setOnClickListener(v -> {
-            qtdConcursosButton.setText(textoBotaoSurpresinhasSelecionado);
-
-            if (fragmentManager.findFragmentById(R.id.fragmentSimularApostas) instanceof SurpresinhaFragment) {
-                if (surpresinhaFragment.getParametroJogo() != null) {
-                    surpresinhaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
-                }
-            } else {
-                cartelaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
+    private OnDialogListener onTeimosinhaDialogListener() {
+        return new OnDialogListener() {
+            @Override
+            public void itemSelecionado(int position) {
+                textoBotaoSurpresinhasSelecionado = (String) qtdConcursosList.get(position);
+                qtdConcursoSelecionado = parametroSimulacao.getTeimosinhas().get(position);
             }
 
-            dialog.dismiss();
-        });
+            @Override
+            public void ok() {
+                qtdConcursosButton.setText(textoBotaoSurpresinhasSelecionado);
 
-        dialogButtonCancelar.setOnClickListener(v -> dialog.dismiss());
+                if (fragmentManager.findFragmentById(R.id.fragmentSimularApostas) instanceof SurpresinhaFragment) {
+                    if (surpresinhaFragment.getParametroJogo() != null) {
+                        surpresinhaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
+                    }
+                } else {
+                    cartelaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
+                }
+            }
 
-        dialog.show();
+            @Override
+            public void cancelar() {
+
+            }
+        };
     }
 
     private void abrirTelaCartela(boolean surpresinha) {

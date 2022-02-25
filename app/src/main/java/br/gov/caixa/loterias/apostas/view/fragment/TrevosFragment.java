@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -86,14 +85,19 @@ public class TrevosFragment extends Fragment {
             List<String>                  list = getListStringvaloresTrevos(valoresApostas);
 
             DialogUtils.showDialogListaEscolha(getContext(), getString(R.string.quant_de_trevos), subtitulo,
-                                               list,
-                                               onItemClikListener(), onDialogListener()); //onOkClickListener());
+                                               list, onDialogListener());
 
         };
     }
 
     private OnDialogListener onDialogListener() {
         return new OnDialogListener() {
+            @Override
+            public void itemSelecionado(int position) {
+                valorApostaSelecionado = valoresApostas.get(position);
+                textoBotaoTrevosSelecionado = valorApostaSelecionado.getNumeroTrevos() + getString(R.string.espaco_em_branco) +getString(R.string.trevos);
+            }
+
             @Override
             public void ok() {
                 listener.getButtonQtdTrevos().setText(textoBotaoTrevosSelecionado);
@@ -104,13 +108,6 @@ public class TrevosFragment extends Fragment {
             public void cancelar() {
 
             }
-        };
-    }
-
-    private AdapterView.OnItemClickListener onItemClikListener() {
-        return (parent, view, position, id) -> {
-            valorApostaSelecionado = valoresApostas.get(position);
-            textoBotaoTrevosSelecionado = valorApostaSelecionado.getNumeroTrevos() + getString(R.string.espaco_em_branco) +getString(R.string.trevos);
         };
     }
 
