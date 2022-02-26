@@ -1,0 +1,51 @@
+package br.gov.caixa.loterias.apostas.view.adapter.recyclerview;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.List;
+
+import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.Dezena;
+import br.gov.caixa.loterias.apostas.view.holder.DezenaHolder;
+
+public class ListaDezenaRecyclerView extends RecyclerView.Adapter<DezenaHolder>{
+
+	private List<Dezena> dezenas;
+	private List<Dezena> dezenasSelecionadas;
+	private int typeGameColorLight;
+
+	public ListaDezenaRecyclerView(List<Dezena> dezenas, List<Dezena> dezenasSelecionadas, int typeGameColorLight) {
+		this.dezenas = dezenas;
+		this.dezenasSelecionadas = dezenasSelecionadas;
+		this.typeGameColorLight = typeGameColorLight;
+	}
+
+	@NonNull
+	@Override
+	public DezenaHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_apostas_confirmadas,
+																		parent, false);
+		return new DezenaHolder(view, parent.getContext(), typeGameColorLight);
+	}
+
+	@Override
+	public void onBindViewHolder(@NonNull DezenaHolder holder, int position) {
+		Dezena dezena = dezenas.get(position);
+		if (dezenasSelecionadas.contains(Integer.valueOf(dezena.getValue()))) {
+			dezena.setSelected(Boolean.TRUE);
+		} else {
+			dezena.setSelected(Boolean.FALSE);
+		}
+		holder.bind(dezena, position);
+	}
+
+	@Override
+	public int getItemCount() {
+		return dezenas.size();
+	}
+}
