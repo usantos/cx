@@ -23,8 +23,8 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnumSelecaoMod
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RapidaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.RapidaoConfigSingleton;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
-import br.gov.caixa.loterias.apostas.view.adapter.NumerosRapidaoAdapter;
-import br.gov.caixa.loterias.apostas.view.adapter.TiposApostasAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.NumerosRapidaoAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.TiposApostasAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
 
 

@@ -36,7 +36,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TermoDeUsoDTOResponse;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
-import br.gov.caixa.loterias.apostas.view.adapter.ItemDuvidaAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ItemDuvidaAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView;
 
 public class TermosUsoActivity extends AppCompatActivity {

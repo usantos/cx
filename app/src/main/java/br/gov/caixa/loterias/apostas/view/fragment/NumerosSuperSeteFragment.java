@@ -23,7 +23,7 @@ import java.util.List;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConfiguracaoNumerosSuperSete;
 import br.gov.caixa.loterias.apostas.utils.Aplicacao;
-import br.gov.caixa.loterias.apostas.view.adapter.NumerosSuperSeteAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.NumerosSuperSeteAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
 
 public class NumerosSuperSeteFragment extends Fragment {

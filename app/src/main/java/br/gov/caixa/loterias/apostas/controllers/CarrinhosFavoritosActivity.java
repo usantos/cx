@@ -21,7 +21,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaCarrinhoFavoritoDT
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListCarrinhoFavoritoDTO;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
-import br.gov.caixa.loterias.apostas.view.adapter.CarrinhosFavoritosAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.CarrinhosFavoritosAdapter;
 
 public class CarrinhosFavoritosActivity extends AppCompatActivity {
 

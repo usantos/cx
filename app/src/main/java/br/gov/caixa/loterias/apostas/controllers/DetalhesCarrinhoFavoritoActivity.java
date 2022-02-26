@@ -17,7 +17,7 @@ import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListApostaCarrinhoFavoritoDTO;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
-import br.gov.caixa.loterias.apostas.view.adapter.DetalhesApostasCarrinhoFavoritoAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.DetalhesApostasCarrinhoFavoritoAdapter;
 
 import static br.gov.caixa.loterias.apostas.controllers.CarrinhosFavoritosActivity.RESPOSTA_APOSTAS;
 import static br.gov.caixa.loterias.apostas.controllers.CarrinhosFavoritosActivity.RESPOSTA_EXCLUIU_APOSTAS;

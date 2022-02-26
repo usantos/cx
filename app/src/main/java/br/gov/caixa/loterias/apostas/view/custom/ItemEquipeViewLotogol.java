@@ -21,7 +21,7 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DezenaLotogol;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroEquipe;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
-import br.gov.caixa.loterias.apostas.view.adapter.NumerosLotogolAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.NumerosLotogolAdapter;
 import br.gov.caixa.loterias.apostas.view.listener.LotogolListener;
 
 /**

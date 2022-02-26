@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.view.adapter.JogoResponsavelCardsAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.JogoResponsavelCardsAdapter;
 import me.relex.circleindicator.CircleIndicator2;
 
 public class JogoResponsavelCardsFragment extends Fragment {

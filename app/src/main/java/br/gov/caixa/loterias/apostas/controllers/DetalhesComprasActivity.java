@@ -46,8 +46,8 @@ import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataFiltro;
 import br.gov.caixa.loterias.apostas.utils.Tupla;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
-import br.gov.caixa.loterias.apostas.view.adapter.FiltroApostasAdapter;
-import br.gov.caixa.loterias.apostas.view.adapter.ListaComprasDetalhesAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.FiltroApostasAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaComprasDetalhesAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 
 public class DetalhesComprasActivity extends AppCompatActivity {

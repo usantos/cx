@@ -61,8 +61,8 @@ import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostas.utils.helper.ConferirResultadoHelper;
-import br.gov.caixa.loterias.apostas.view.adapter.ApostasConfirmadasAdapter;
-import br.gov.caixa.loterias.apostas.view.adapter.FiltroApostasAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ApostasConfirmadasAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.FiltroApostasAdapter;
 import br.gov.caixa.loterias.apostas.view.holder.ApostaConfirmadaHolder;
 import br.gov.caixa.loterias.apostas.view.listener.OnApostaConfirmadaListener;
 

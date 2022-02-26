@@ -24,7 +24,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
-import br.gov.caixa.loterias.apostas.view.adapter.DezenasAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.DezenasAdapter;
 
 @EViewGroup(R.layout.item_compras_dezenas_layout)
 public class ComprasDezenasView extends LinearLayout {
