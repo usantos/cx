@@ -11,15 +11,16 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.Dezena;
+import br.gov.caixa.loterias.apostas.view.config.DezenaConfig;
 import br.gov.caixa.loterias.apostas.view.holder.DezenaHolder;
 
 public class ListaDezenaRecyclerView extends RecyclerView.Adapter<DezenaHolder>{
 
 	private List<Dezena> dezenas;
-	private List<Dezena> dezenasSelecionadas;
+	private List<Integer> dezenasSelecionadas;
 	private int typeGameColorLight;
 
-	public ListaDezenaRecyclerView(List<Dezena> dezenas, List<Dezena> dezenasSelecionadas, int typeGameColorLight) {
+	public ListaDezenaRecyclerView(List<Dezena> dezenas, List<Integer> dezenasSelecionadas, int typeGameColorLight) {
 		this.dezenas = dezenas;
 		this.dezenasSelecionadas = dezenasSelecionadas;
 		this.typeGameColorLight = typeGameColorLight;
@@ -28,9 +29,9 @@ public class ListaDezenaRecyclerView extends RecyclerView.Adapter<DezenaHolder>{
 	@NonNull
 	@Override
 	public DezenaHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_apostas_confirmadas,
+		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_dezena,
 																		parent, false);
-		return new DezenaHolder(view, parent.getContext(), typeGameColorLight);
+		return new DezenaHolder(view, parent.getContext(), new DezenaConfig(false, typeGameColorLight));
 	}
 
 	@Override

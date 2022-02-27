@@ -2,62 +2,67 @@ package br.gov.caixa.loterias.apostas.view.holder;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
-import android.util.TypedValue;
-import android.view.Gravity;
+import android.graphics.drawable.Drawable;
 import android.view.View;
-import android.widget.GridView;
 import android.widget.TextView;
 
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 
+import org.jetbrains.annotations.NotNull;
+
+import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.Dezena;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.view.config.DezenaConfig;
 
 public class DezenaHolder extends LoteriasHolder<Dezena> {
 
-	private Context context;
-	private int typeGameColorLight;
+	private TextView txtNumero;
 
-	public DezenaHolder(View itemView, Context context, int typeGameColorLight) {
+	private Context context;
+	private DezenaConfig config;
+
+	public DezenaHolder(View itemView, Context context, DezenaConfig config) {
 		super(itemView);
 		this.context = context;
-		this.typeGameColorLight = typeGameColorLight;
+		this.config = config;
+
+		txtNumero = itemView.findViewById(R.id.tv_item_numeto);
 	}
 
 	@Override
 	public void bind(Dezena dezena, int position) {
-		TextView         textView;
-		GradientDrawable shape     = new GradientDrawable();
-		int              sizeItens = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 45, context.getResources().getDisplayMetrics());
-
-		if (itemView == null) {
-			textView = new TextView(this.context);
-
-			textView.setLayoutParams(new GridView.LayoutParams(sizeItens, sizeItens));
-		} else {
-			textView = (TextView) itemView;
-		}
-
+		Drawable shape;
 		if (dezena.isSelected()) {
-			shape.setColor(ContextCompat.getColor(context, typeGameColorLight));
-			textView.setTextColor(Color.WHITE);
+			shape = getShape(R.drawable.ic_item_dezena_selecionado, config.getColor());
+			txtNumero.setTextColor(Color.WHITE);
 		} else {
-			shape.setColor(Color.WHITE);
-			textView.setTextColor(ContextCompat.getColor(context, typeGameColorLight));
+			shape = getShape(R.drawable.ic_item_dezena, config.getColor());
+			txtNumero.setTextColor(ContextCompat.getColor(context, config.getColor()));
 		}
+		txtNumero.setBackground(shape);
 
-		shape.setCornerRadius(sizeItens / 2);
-		shape.setStroke(1, Color.GRAY);
-		textView.setBackground(shape);
-		if (dezena.getValue().length() == 1) {
-			textView.setText(String.format("0%s", dezena.getValue()));
-		} else {
-
-			textView.setText(dezena.getValue());
+		if(config.isLabelDezena()){
+			if (dezena.getValue().length() == 1) {
+				txtNumero.setText(String.format("0%s", dezena.getValue()));
+			} else {
+				txtNumero.setText(dezena.getValue());
+			}
+		}else {
+			txtNumero.setText(dezena.getValue());
 		}
-		textView.setTypeface(ViewUtils.getFontFuturaBold(context));
-		textView.setGravity(Gravity.CENTER);
+		txtNumero.setTypeface(ViewUtils.getFontFuturaBold(context));
+	}
+
+	@NotNull
+	private Drawable getShape(int drawable, int color ) {
+		Drawable unwrappedDrawable = AppCompatResources.getDrawable(context, drawable);
+		Drawable shape = DrawableCompat.wrap(unwrappedDrawable);
+		DrawableCompat.setTint(shape, color);
+
+		return shape;
 	}
 
 }

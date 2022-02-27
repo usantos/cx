@@ -13,6 +13,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
@@ -24,10 +26,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.Dezena;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaDezenaRecyclerView;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnTrevosListener;
 
@@ -36,6 +40,8 @@ public class TrevosFragment extends Fragment {
 
     @ViewById
     protected TextView escolhaNumerosText;
+    @ViewById
+    protected RecyclerView listaTrevos;
 
     @FragmentArg
     protected ParametroJogoDTO parametro;
@@ -48,6 +54,8 @@ public class TrevosFragment extends Fragment {
     private List<ParametroValorApostaDTO> valoresApostas;
     private String textoBotaoTrevosSelecionado;
     private ParametroValorApostaDTO valorApostaSelecionado;
+    private List<Dezena> dezenaList;
+    private List<Integer> trevoSelecionadoList = new ArrayList<>();
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -74,6 +82,25 @@ public class TrevosFragment extends Fragment {
         configIncialButtons();
 
         valoresApostas = parametro.getValoresTrevoByNumero(dezenasSelecionadas.size());
+
+        ListaDezenaRecyclerView listaDezenaRecyclerView = new ListaDezenaRecyclerView(getListaDezenas(), trevoSelecionadoList, R.color.mais_milionaria_escura);
+        listaTrevos.setAdapter(listaDezenaRecyclerView);
+        RecyclerView.LayoutManager layot = new GridLayoutManager(getContext(), 3);
+        listaTrevos.setLayoutManager(layot);
+
+    }
+
+    private List<Dezena> getListaDezenas() {
+        if (dezenaList == null || dezenaList.size() != parametro.getTrevos().getQtdPrognostico()){
+            dezenaList = new ArrayList<>();
+            for (int numeo = 1; numeo <= parametro.getTrevos().getQtdPrognostico(); numeo++){
+                Dezena dezena = new Dezena();
+                dezena.setValue(String.valueOf(numeo));
+                dezena.setSelected(Boolean.FALSE);
+                dezenaList.add(dezena);
+            }
+        }
+        return dezenaList;
     }
 
     private void configIncialButtons() {
