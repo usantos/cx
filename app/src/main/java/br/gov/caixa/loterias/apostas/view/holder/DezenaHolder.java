@@ -36,11 +36,21 @@ public class DezenaHolder extends LoteriasHolder<Dezena> {
 	public void bind(Dezena dezena, int position) {
 		Drawable shape;
 		if (dezena.isSelected()) {
-			shape = getShape(R.drawable.ic_item_dezena_selecionado, config.getColor());
-			txtNumero.setTextColor(Color.WHITE);
+			if (config.isShapePadrao()) {
+				shape = getShape(config.getDrawableSelecionado(), config.getColor());
+				txtNumero.setTextColor(Color.WHITE);
+			}else {
+				shape = AppCompatResources.getDrawable(context, config.getDrawableSelecionado());
+				txtNumero.setTextColor(config.getColor());
+			}
 		} else {
-			shape = getShape(R.drawable.ic_item_dezena, config.getColor());
-			txtNumero.setTextColor(ContextCompat.getColor(context, config.getColor()));
+			if (config.isShapePadrao()){
+				shape = getShape(config.getDrawable(), config.getColor());
+			}else {
+				shape = AppCompatResources.getDrawable(context, config.getDrawable());
+				txtNumero.setTextColor(ContextCompat.getColor(context, config.getColor()));
+			}
+
 		}
 		txtNumero.setBackground(shape);
 

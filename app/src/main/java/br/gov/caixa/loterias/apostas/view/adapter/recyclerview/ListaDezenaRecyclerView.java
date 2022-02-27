@@ -31,7 +31,9 @@ public class ListaDezenaRecyclerView extends RecyclerView.Adapter<DezenaHolder>{
 	public DezenaHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_dezena,
 																		parent, false);
-		return new DezenaHolder(view, parent.getContext(), new DezenaConfig(false, typeGameColorLight));
+		DezenaConfig dezenaConfig = new DezenaConfig(false, typeGameColorLight,
+													 R.drawable.ic_item_trevo, R.drawable.ic_item_trevo_selecionado);
+		return new DezenaHolder(view, parent.getContext(), dezenaConfig);
 	}
 
 	@Override

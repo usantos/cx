@@ -13,7 +13,6 @@
         android:gravity="center"
         android:layout_margin="8dp"
         android:background="@drawable/ic_item_dezena"
-        android:backgroundTint="@color/mais_milionaria_escura"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
