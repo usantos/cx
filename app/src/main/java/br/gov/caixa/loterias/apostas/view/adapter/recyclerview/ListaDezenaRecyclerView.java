@@ -54,4 +54,9 @@ public class ListaDezenaRecyclerView extends RecyclerView.Adapter<DezenaHolder>{
 	public int getItemCount() {
 		return dezenas.size();
 	}
+
+	public void selecionaTudo(List<Integer> selecionados) {
+		this.dezenasSelecionadas = selecionados;
+		notifyDataSetChanged();
+	}
 }

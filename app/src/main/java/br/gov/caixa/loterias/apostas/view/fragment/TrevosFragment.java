@@ -58,6 +58,7 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
     private ParametroValorApostaDTO valorApostaSelecionado;
     private List<Dezena> dezenaList;
     private List<Integer> trevoSelecionadoList = new ArrayList<>();
+    private ListaDezenaRecyclerView adappter;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -85,8 +86,8 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
 
         valoresApostas = parametro.getValoresTrevoByNumero(dezenasSelecionadas.size());
 
-        ListaDezenaRecyclerView listaDezenaRecyclerView = new ListaDezenaRecyclerView(getListaDezenas(), trevoSelecionadoList, R.color.mais_milionaria_escura, this);
-        listaTrevos.setAdapter(listaDezenaRecyclerView);
+        adappter = new ListaDezenaRecyclerView(getListaDezenas(), trevoSelecionadoList, R.color.mais_milionaria_escura, this);
+        listaTrevos.setAdapter(adappter);
         RecyclerView.LayoutManager layot = new GridLayoutManager(getContext(), 3);
         listaTrevos.setLayoutManager(layot);
 
@@ -155,6 +156,15 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
             @Override
             public void ok() {
                 listener.getButtonQtdTrevos().setText(textoBotaoTrevosSelecionado);
+                int ultimoValor = valoresApostas.size() - 1;
+                if (valoresApostas.get(ultimoValor).equals(valorApostaSelecionado)){
+                    trevoSelecionadoList = new ArrayList<>();
+                    for (int numero = 1; numero <= parametro.getTrevos().getQtdPrognostico(); numero++){
+                        trevoSelecionadoList.add(numero);
+                    }
+                    adappter.selecionaTudo(trevoSelecionadoList);
+                    listaTrevos.setAdapter(adappter);
+                }
                 listener.valorAposta(valorApostaSelecionado);
             }
 
