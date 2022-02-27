@@ -13,17 +13,20 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.Dezena;
 import br.gov.caixa.loterias.apostas.view.config.DezenaConfig;
 import br.gov.caixa.loterias.apostas.view.holder.DezenaHolder;
+import br.gov.caixa.loterias.apostas.view.listener.OnItemClickListener;
 
 public class ListaDezenaRecyclerView extends RecyclerView.Adapter<DezenaHolder>{
 
 	private List<Dezena> dezenas;
 	private List<Integer> dezenasSelecionadas;
 	private int typeGameColorLight;
+	private OnItemClickListener listener;
 
-	public ListaDezenaRecyclerView(List<Dezena> dezenas, List<Integer> dezenasSelecionadas, int typeGameColorLight) {
+	public ListaDezenaRecyclerView(List<Dezena> dezenas, List<Integer> dezenasSelecionadas, int typeGameColorLight, OnItemClickListener listener) {
 		this.dezenas = dezenas;
 		this.dezenasSelecionadas = dezenasSelecionadas;
 		this.typeGameColorLight = typeGameColorLight;
+		this.listener = listener;
 	}
 
 	@NonNull
@@ -33,7 +36,7 @@ public class ListaDezenaRecyclerView extends RecyclerView.Adapter<DezenaHolder>{
 																		parent, false);
 		DezenaConfig dezenaConfig = new DezenaConfig(false, typeGameColorLight,
 													 R.drawable.ic_item_trevo, R.drawable.ic_item_trevo_selecionado);
-		return new DezenaHolder(view, parent.getContext(), dezenaConfig);
+		return new DezenaHolder(view, parent.getContext(), dezenaConfig, listener);
 	}
 
 	@Override

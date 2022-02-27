@@ -32,11 +32,13 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaDezenaRecyclerView;
+import br.gov.caixa.loterias.apostas.view.holder.DezenaHolder;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnItemClickListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnTrevosListener;
 
 @EFragment(R.layout.fragment_trevos)
-public class TrevosFragment extends Fragment {
+public class TrevosFragment extends Fragment implements OnItemClickListener<DezenaHolder> {
 
     @ViewById
     protected TextView escolhaNumerosText;
@@ -83,7 +85,7 @@ public class TrevosFragment extends Fragment {
 
         valoresApostas = parametro.getValoresTrevoByNumero(dezenasSelecionadas.size());
 
-        ListaDezenaRecyclerView listaDezenaRecyclerView = new ListaDezenaRecyclerView(getListaDezenas(), trevoSelecionadoList, R.color.mais_milionaria_escura);
+        ListaDezenaRecyclerView listaDezenaRecyclerView = new ListaDezenaRecyclerView(getListaDezenas(), trevoSelecionadoList, R.color.mais_milionaria_escura, this);
         listaTrevos.setAdapter(listaDezenaRecyclerView);
         RecyclerView.LayoutManager layot = new GridLayoutManager(getContext(), 3);
         listaTrevos.setLayoutManager(layot);
@@ -189,5 +191,23 @@ public class TrevosFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+    }
+
+    @Override
+    public void click(DezenaHolder holder, int position) {
+        Dezena dezena = dezenaList.get(position);
+        dezena.setSelected(!dezena.isSelected());
+        if (dezena.isSelected()){
+            Integer numero = Integer.valueOf(dezena.getValue());
+            if (!trevoSelecionadoList.contains(numero)) {
+                trevoSelecionadoList.add(numero);
+            }
+        }else {
+            Integer numero = Integer.valueOf(dezena.getValue());
+            if (trevoSelecionadoList.contains(numero)) {
+                trevoSelecionadoList.remove(numero);
+            }
+        }
+        holder.atualizaDezena(dezena);
     }
 }
