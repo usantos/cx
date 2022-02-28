@@ -17,6 +17,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.VolleyError;
+
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.FragmentArg;
@@ -27,9 +29,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.Dezena;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
+import br.gov.caixa.loterias.apostas.model.model.SimularApostaModel;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaDezenaRecyclerView;
@@ -60,6 +65,8 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
     private List<Dezena> dezenaList;
     private List<Integer> trevoSelecionadoList = new ArrayList<>();
     private ListaDezenaRecyclerView adappter;
+
+    private SimularApostaModel model;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -93,6 +100,7 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
         RecyclerView.LayoutManager layot = new GridLayoutManager(getContext(), 3);
         listaTrevos.setLayoutManager(layot);
 
+        model = new SimularApostaModel(getActivity());
     }
 
     private List<Dezena> getListaDezenas() {
@@ -128,8 +136,36 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
 
     private View.OnClickListener onFinalizarClickListener() {
         return v -> {
-            Toast.makeText(getContext(), "Falta implementar", Toast.LENGTH_LONG).show();
+            if (listener.getButtonFinalizar().getText().toString().contains("Completar")){
+                completarTrevosAleatoriamente();
+            }else {
+                addApostaCarrinho();
+            }
         };
+    }
+
+    private void addApostaCarrinho() {
+        Toast.makeText(getContext(), "Falta implementar", Toast.LENGTH_LONG).show();
+    }
+
+    private void completarTrevosAleatoriamente() {
+        AlertDialogUtils.show(getContext());
+        model.preencheNumerosAleatorios(valorApostaSelecionado.getNumeroTrevos(), trevoSelecionadoList,
+                                        parametro.getTrevos().getQtdMaxima(), new OnSilceListener<List<Integer>>() {
+                    @Override
+                    public void success(List<Integer> list) {
+                        AlertDialogUtils.dismiss();
+                        trevoSelecionadoList.clear();
+                        trevoSelecionadoList.addAll(list);
+                        adappter.atualizaSelecionados(list);
+                        atualizaStatusBotao();
+                    }
+
+                    @Override
+                    public void error(VolleyError error) {
+                        AlertDialogUtils.dismiss();
+                    }
+                });
     }
 
     @NotNull
@@ -214,7 +250,7 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
     }
 
     @Override
-    public void click(DezenaHolder holder, int position) {
+    public void itemClick(DezenaHolder holder, int position) {
         Dezena dezena = dezenaList.get(position);
         dezena.setSelected(!dezena.isSelected());
         if (dezena.isSelected()){

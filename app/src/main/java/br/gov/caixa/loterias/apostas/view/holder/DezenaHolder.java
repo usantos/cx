@@ -91,6 +91,6 @@ public class DezenaHolder extends LoteriasHolder<Dezena> implements  View.OnClic
 
 	@Override
 	public void onClick(View v) {
-		listener.click(this, getAdapterPosition());
+		listener.itemClick(this, getAdapterPosition());
 	}
 }
