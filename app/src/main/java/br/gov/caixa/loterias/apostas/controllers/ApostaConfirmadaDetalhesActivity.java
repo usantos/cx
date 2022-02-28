@@ -207,7 +207,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
         }
 
         if (Objects.equals(aposta.getSituacao().getValor(), SituacaoResultadoBilheteEnum.EFETIVADA.getValor())) {
-            if(!ConfiguracaoAppSingleton.getInstance().isMicroServico()) {
+            if(!ConfiguracaoAppSingleton.getInstance().isMicroServico() || aposta.getSituacao().getDescricao().contains("Aposta não conferida")) {
                 ConferirResultadoHelper.conferirResultadoHandler = this;
                 ConferirResultadoHelper.conferirResultado(aposta.getId(), this);
             }

@@ -74,7 +74,7 @@ import br.gov.caixa.loterias.apostas.view.listener.OnApostaConfirmadaListener;
 @EFragment(R.layout.fragment_apostas_confirmadas)
 public class ApostasConfirmadasFragment extends Fragment implements MinhasApostasActivity.OnScrollReachBottomListener {
 
-    private static final int PAGE_SIZE = 31;
+    private static final int PAGE_SIZE = 30;
 
     @Bean
     protected ApostaBO apostaBO;
@@ -248,10 +248,12 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
                 }
             });
         } else {
-            if (!ConfiguracaoAppSingleton.getInstance().isMicroServico()){
-                requesteApostasSilce();
-            }else {
+            if (ConfiguracaoAppSingleton.getInstance() != null
+                    && ConfiguracaoAppSingleton.getInstance().isMicroServico() != null
+                    && ConfiguracaoAppSingleton.getInstance().isMicroServico()){
                 requestApostasMicroServico(ConfiguracaoAppSingleton.getInstance().getUrlBaseBuscaApostas());
+            }else {
+                requesteApostasSilce();
             }
         }
     }
@@ -310,6 +312,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
                 page.setOffset(0);
                 reloadingEntireList = true;
                 requestApostasConfirmadas();
+                hasMoreItems = true;
             }
         }
     }
@@ -330,8 +333,14 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
         apostasLoading.setVisibility(View.GONE);
 
         if (apostasList != null) {
-            if (PAGE_SIZE > apostasList.size()) {
-                hasMoreItems = false;
+            if(ConfiguracaoAppSingleton.getInstance().isMicroServico()){
+                if ((PAGE_SIZE - 1) > apostasList.size()){
+                    hasMoreItems = false;
+                }
+            }else {
+                if (PAGE_SIZE > apostasList.size()) {
+                    hasMoreItems = false;
+                }
             }
 
             if (page.getOffset() == 0) {

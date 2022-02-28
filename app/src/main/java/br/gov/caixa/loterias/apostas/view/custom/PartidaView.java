@@ -18,7 +18,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroPartida;
 import br.gov.caixa.loterias.apostas.utils.EscudoEquipeUtil;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
-import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.LotecaAdapter;
+import br.gov.caixa.loterias.apostas.view.listener.LocateAdapterListener;
 
 /**
  * Created by joafilho on 28/12/2017.
@@ -32,7 +32,7 @@ public class PartidaView extends LinearLayout {
     private ParametroPartida parametroPartida;
     private ParametroJogoDTO parametroJogoDTO;
 
-    private LotecaAdapter.LocateAdapterListener listener;
+    private LocateAdapterListener listener;
 
     private static final float DOIS = 2;
 
@@ -157,7 +157,7 @@ public class PartidaView extends LinearLayout {
         listener.clickEquipeLoteca(parametroPartida);
     }
 
-    public void setListener(LotecaAdapter.LocateAdapterListener listener) {
+    public void setListener(LocateAdapterListener listener) {
         this.listener = listener;
     }
 
