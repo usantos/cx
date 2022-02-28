@@ -32,7 +32,7 @@ public class PartidaView extends LinearLayout {
     private ParametroPartida parametroPartida;
     private ParametroJogoDTO parametroJogoDTO;
 
-    private LotecaAdapter.LocateAdapterListener listener;
+    private LocateAdapterListener listener;
 
     private static final float DOIS = 2;
 
@@ -157,7 +157,7 @@ public class PartidaView extends LinearLayout {
         listener.clickEquipeLoteca(parametroPartida);
     }
 
-    public void setListener(LotecaAdapter.LocateAdapterListener listener) {
+    public void setListener(LocateAdapterListener listener) {
         this.listener = listener;
     }
 
