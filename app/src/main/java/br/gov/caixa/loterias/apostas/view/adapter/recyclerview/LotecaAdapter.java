@@ -40,7 +40,7 @@ public class LotecaAdapter extends RecyclerView.Adapter<LotecaHolder> {
     @Override
     public void onBindViewHolder(LotecaHolder holder, int position) {
         ParametroPartida parametroPartida = listaPartidas.get(position);
-        holder.bind(parametroPartida, null);
+        holder.bind(parametroPartida, position);
 
     }
 

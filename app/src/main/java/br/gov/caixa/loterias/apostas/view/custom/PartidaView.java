@@ -18,7 +18,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroPartida;
 import br.gov.caixa.loterias.apostas.utils.EscudoEquipeUtil;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
-import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.LotecaAdapter;
+import br.gov.caixa.loterias.apostas.view.listener.LocateAdapterListener;
 
 /**
  * Created by joafilho on 28/12/2017.
