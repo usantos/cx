@@ -916,7 +916,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     }
 
     @Override
-    public void valorAposta(ParametroValorApostaDTO valorAposta) {
+    public void atualizaValorAposta(ParametroValorApostaDTO valorAposta) {
         BigDecimal valorEmReais = valorAposta.getValor();
 
         if (qtdConcursoSelecionado != 0) {

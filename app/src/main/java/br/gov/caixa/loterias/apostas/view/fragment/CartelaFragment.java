@@ -181,7 +181,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
 		if (tipoJogo == ModalidadeEnum.MAIS_MILIONARIA){
 			ParametroValorApostaDTO valorAposta = parametroJogo.getValorApostaBy(numPrognostico, parametroJogo.getTrevos().getQtdMinima());
-			parentActivity.valorAposta(valorAposta);
+			parentActivity.atualizaValorAposta(valorAposta);
 
 			return;
 		}

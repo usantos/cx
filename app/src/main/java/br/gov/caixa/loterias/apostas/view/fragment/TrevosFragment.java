@@ -164,10 +164,18 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
                     for (int numero = 1; numero <= parametro.getTrevos().getQtdPrognostico(); numero++){
                         trevoSelecionadoList.add(numero);
                     }
-                    adappter.selecionaTudo(trevoSelecionadoList);
+                    adappter.atualizaSelecionados(trevoSelecionadoList);
                     listaTrevos.setAdapter(adappter);
                 }
-                listener.valorAposta(valorApostaSelecionado);
+                listener.atualizaValorAposta(valorApostaSelecionado);
+                atualizaStatusBotao();
+                if (trevoSelecionadoList.size() > valorApostaSelecionado.getNumeroTrevos()){
+                    listener.getButtonFinalizar().setText(ViewUtils.textFuturaAndFuturaBold(getActivity(), getString(R.string.completar_trevos_aleatoriamente)));
+                    listener.getButtonFinalizar().setBackgroundColor(ContextCompat.getColor(getContext(), R.color.cinzaescuro));
+                    trevoSelecionadoList = new ArrayList<>();
+                    adappter.atualizaSelecionados(trevoSelecionadoList);
+                    listaTrevos.setAdapter(adappter);
+                }
             }
 
             @Override
@@ -221,7 +229,18 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
             }
         }
         holder.atualizaDezena(dezena);
+        checaQuantidadeTrevos();
         atualizaStatusBotao();
+    }
+
+    private void checaQuantidadeTrevos() {
+        if (trevoSelecionadoList.size() >= parametro.getTrevos().getQtdMinima()){
+            textoBotaoTrevosSelecionado = trevoSelecionadoList.size() + getString(R.string.espaco_em_branco) +getString(R.string.trevos);
+            listener.getButtonQtdTrevos().setText(textoBotaoTrevosSelecionado);
+
+            valorApostaSelecionado = parametro.getValorApostaBy(dezenasSelecionadas.size(), trevoSelecionadoList.size());
+            listener.atualizaValorAposta(valorApostaSelecionado);
+        }
     }
 
     private void atualizaStatusBotao() {
