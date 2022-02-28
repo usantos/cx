@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -85,6 +86,7 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
         configIncialButtons();
 
         valoresApostas = parametro.getValoresTrevoByNumero(dezenasSelecionadas.size());
+        valorApostaSelecionado = valoresApostas.get(0);
 
         adappter = new ListaDezenaRecyclerView(getListaDezenas(), trevoSelecionadoList, R.color.mais_milionaria_escura, this);
         listaTrevos.setAdapter(adappter);
@@ -219,5 +221,16 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
             }
         }
         holder.atualizaDezena(dezena);
+        atualizaStatusBotao();
+    }
+
+    private void atualizaStatusBotao() {
+        if (trevoSelecionadoList.size() >= valorApostaSelecionado.getNumeroTrevos()){
+            listener.getButtonFinalizar().setText(ViewUtils.textFuturaAndFuturaBold(getActivity(), getString(R.string.adicionarAoCarrinho)));
+            listener.getButtonFinalizar().setBackgroundColor(ContextCompat.getColor(getContext(), R.color.mais_milionaria_escura));
+        }else {
+            listener.getButtonFinalizar().setText(ViewUtils.textFuturaAndFuturaBold(getActivity(), getString(R.string.completar_trevos_aleatoriamente)));
+            listener.getButtonFinalizar().setBackgroundColor(ContextCompat.getColor(getContext(), R.color.cinzaescuro));
+        }
     }
 }
