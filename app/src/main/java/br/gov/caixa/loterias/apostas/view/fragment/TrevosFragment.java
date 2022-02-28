@@ -229,7 +229,7 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
     private List<String> getListStringvaloresTrevos(List<ParametroValorApostaDTO> listaValores){
         List<String> valores = new ArrayList<>();
         for (ParametroValorApostaDTO valorAposta : listaValores){
-            valores.add(valorAposta.getNumeroTrevos() + " " + getString(R.string.trevos_por_rs)
+            valores.add(valorAposta.getNumeroTrevos() + " " + getString(R.string.trevos_por)
                                 + " " + ViewUtils.getMoedaFormat(valorAposta.getValor()));
         }
 
