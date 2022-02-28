@@ -76,6 +76,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
+import br.gov.caixa.loterias.apostas.utils.ListaUtils;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
@@ -443,7 +444,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 			return;
 		}
 
-		orderAscDezenas();
+		dezenasSelecionadas = ListaUtils.orderAscDezenas(dezenasSelecionadas);
 
 		if (isTipoSuperSete) {
 			IdentificaoDeUmaApostaDas8Modalidades<List<List<Integer>>> aposta = getApostaPreenchidaMatriz();
@@ -792,7 +793,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 	private void preencheNumerosAleatorios() {
 		AlertDialogUtils.show(getActivity());
 		ApostaBO apostaBO = ApostaBO_.getInstance_(getActivity());
-		orderAscDezenas();
+		dezenasSelecionadas = ListaUtils.orderAscDezenas(dezenasSelecionadas);
 		apostaBO.completaJogo(parentActivity.qtdDezenasPossiveisSelecionado, dezenasSelecionadas, 1,
 							  parametroJogo.getPrognosticoMaximo(), new RequestListener<CompletaJogoRsp>() {
 					@Override
@@ -822,7 +823,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 	private void preencheNumerosAleatoriosSuperSete(ArrayList<ArrayList<Integer>> listaInteiros) {
 		AlertDialogUtils.show(getActivity());
 		ApostaBO apostaBO = ApostaBO_.getInstance_(getActivity());
-		orderAscDezenas();
+		dezenasSelecionadas = ListaUtils.orderAscDezenas(dezenasSelecionadas);
 
 		apostaBO.completaJogoNovo(parentActivity.qtdDezenasPossiveisSelecionado, listaInteiros,
 								  parametroJogo.getConcurso().getModalidade().name(),
@@ -1591,24 +1592,6 @@ public class CartelaFragment extends Fragment implements OnClickListener, Loteca
 
 	public void setEscolhaTimeCoracaoSurpresinha(boolean escolhaTimeCoracaoSurpresinha) {
 		isEscolhaTimeCoracaoSurpresinha = escolhaTimeCoracaoSurpresinha;
-	}
-
-	private void orderAscDezenas() {
-		Integer       menorDezenaAtual = null;
-		List<Integer> listaOrdenadaAsc = new ArrayList<>();
-		while (dezenasSelecionadas.size() > 0) {
-			for (Integer dezena : dezenasSelecionadas) {
-				if (menorDezenaAtual == null) {
-					menorDezenaAtual = dezena;
-				} else if (menorDezenaAtual > dezena) {
-					menorDezenaAtual = dezena;
-				}
-			}
-			listaOrdenadaAsc.add(menorDezenaAtual);
-			dezenasSelecionadas.remove(menorDezenaAtual);
-			menorDezenaAtual = null;
-		}
-		dezenasSelecionadas = listaOrdenadaAsc;
 	}
 
 	private List<ParametroPartida> orderAscPartidas() {
