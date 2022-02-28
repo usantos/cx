@@ -61,6 +61,7 @@ import java.util.Locale;
 
 import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.mock.MaisMilionariaMock;
 import br.gov.caixa.loterias.apostas.model.bean.Modalidade;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.AcessoBO_;
@@ -99,12 +100,13 @@ import br.gov.caixa.loterias.apostas.view.animation.AnimacaoCalculoRepassesSocia
 import br.gov.caixa.loterias.apostas.view.animation.AnimacoesAcessoRapido;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
+import br.gov.caixa.loterias.apostas.view.holder.HomeViewHolder;
 
 @OptionsMenu(R.menu.principal)
 @EActivity(R.layout.activity_principal)
 public class PrincipalActivity extends AppCompatActivity
-        implements DiscreteScrollView.ScrollListener<HomeAdapter.ViewHolder>,
-        DiscreteScrollView.OnItemChangedListener<HomeAdapter.ViewHolder> {
+        implements DiscreteScrollView.ScrollListener<HomeViewHolder>,
+        DiscreteScrollView.OnItemChangedListener<HomeViewHolder> {
 
     public static final String MENU_LATERAL = "MENU_LATERAL";
     private static final int ZXING_CAMERA_PERMISSION = 1;
@@ -289,6 +291,7 @@ public class PrincipalActivity extends AppCompatActivity
                     AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_lista_modalidades));
 
                     modalidadesParaListar = response.getPayload().getParametros();
+
                     if (modalidadesParaListar == null || modalidadesParaListar.isEmpty()) {
                         Intent appIndis = new Intent(PrincipalActivity.this, AppIndisponivelActivity.class);
                         appIndis.putExtra(getResources().getString(R.string.extra_is_busca_param), true);
@@ -589,11 +592,11 @@ public class PrincipalActivity extends AppCompatActivity
     public void onScroll(
             float currentPosition,
             int currentIndex, int newIndex,
-            @Nullable HomeAdapter.ViewHolder currentHolder,
-            @Nullable HomeAdapter.ViewHolder newCurrent) { }
+            @Nullable HomeViewHolder currentHolder,
+            @Nullable HomeViewHolder newCurrent) { }
 
     @Override
-    public void onCurrentItemChanged(@Nullable HomeAdapter.ViewHolder viewHolder, int adapterPosition) {
+    public void onCurrentItemChanged(@Nullable HomeViewHolder viewHolder, int adapterPosition) {
         adapterPosition  = infiniteAdapter.getRealCurrentPosition();
         if (viewHolder != null) {
             EstiloModalidade estilo = new EstiloModalidade(data.get(adapterPosition).getTipoModalidade());

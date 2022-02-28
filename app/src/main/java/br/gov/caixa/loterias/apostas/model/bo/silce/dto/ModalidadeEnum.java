@@ -18,7 +18,8 @@ public enum ModalidadeEnum implements Serializable {
     @SerializedName("MEGA_SENA")MEGA_SENA,
     @SerializedName("QUINA")QUINA,
     @SerializedName("TIMEMANIA")TIMEMANIA,
-    @SerializedName("SUPER_7") SUPER_7;
+    @SerializedName("SUPER_7") SUPER_7,
+    @SerializedName("MAIS_MILIONARIA") MAIS_MILIONARIA;
 
     public static String fromString(ModalidadeEnum modalidade) {
         switch (modalidade) {
@@ -42,6 +43,8 @@ public enum ModalidadeEnum implements Serializable {
                 return "dia de sorte";
             case SUPER_7:
                 return "super sete";
+            case MAIS_MILIONARIA:
+                return "+ milionaria";
 
         }
         return "";

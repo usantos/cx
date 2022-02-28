@@ -76,10 +76,10 @@ import br.gov.caixa.loterias.apostas.view.fragment.CartelaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.MesesFragment_;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SurpresinhaFragment;
-import br.gov.caixa.loterias.apostas.view.fragment.SurpresinhaFragment.SurpresinhaFragmentListener;
 import br.gov.caixa.loterias.apostas.view.fragment.SurpresinhaFragment_;
 import br.gov.caixa.loterias.apostas.view.listener.CartelaFragmentListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnSomadorListener;
+import br.gov.caixa.loterias.apostas.view.listener.SurpresinhaFragmentListener;
 
 import static br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity.CARRINHO;
 import static br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity.LER_CARRINHO_LOCAL;
@@ -407,7 +407,6 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         return valorApostaCartela;
     }
 
-
     public TextView getTextViewCarrinhoCartelaCount() {
         return textViewCarrinhoCartelaCount;
     }
@@ -571,8 +570,20 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
 
     private void configuraParametrosJogo() {
         if (parametroSimulacao != null) {
+            ModalidadeEnum modalidade = (ModalidadeEnum) getIntent().getSerializableExtra(getResources().getString(R.string.tipoAposta));
             for (ParametroValorApostaDTO parametro : parametroSimulacao.getValoresAposta()) {
-                qtdNumerosList.add(getResources().getString(R.string.string_vazia) + parametro.getNumeroPrognosticos() + getResources().getString(R.string.espaco_numeros_por_espaco) + ViewUtils.getMoedaFormat(parametro.getValor()));
+
+                if (modalidade == ModalidadeEnum.MAIS_MILIONARIA){
+                    if (parametro.getNumeroTrevos() == parametroSimulacao.getTrevos().getQtdMinima()){
+                        qtdNumerosList.add(getResources().getString(R.string.string_vazia) + parametro.getNumeroPrognosticos()
+                                                   + getResources().getString(R.string.espaco_numeros_por_espaco)
+                                                   + ViewUtils.getMoedaFormat(parametro.getValor()));
+                    }
+                }else {
+                    qtdNumerosList.add(getResources().getString(R.string.string_vazia) + parametro.getNumeroPrognosticos()
+                                               + getResources().getString(R.string.espaco_numeros_por_espaco)
+                                               + ViewUtils.getMoedaFormat(parametro.getValor()));
+                }
             }
             if (parametroSimulacao.getTeimosinhas() != null) {
                 for (Integer numeroTeimosinha : parametroSimulacao.getTeimosinhas()) {
@@ -644,6 +655,10 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
                 configuraTipoApostaTela(getResources().getString(R.string.underline_super_sete_underline), R.color.superseteclaro, R.color.supersetemedio, View.VISIBLE, View.GONE);
                 this.toolBarMenu = R.menu.itens_simular_actionbar_duvida;
                 break;
+            case MAIS_MILIONARIA:
+                configuraTipoApostaTela(getResources().getString(R.string.underline_mais_milionaria_underline), R.color.mais_milionaria_clara, R.color.mais_milionaria_escura, View.VISIBLE, View.GONE);
+                this.toolBarMenu = R.menu.itens_simular_actionbar_duvida;
+                break;
         }
 
         qtdDezenasPossiveisSelecionado = parametroSimulacao.getQuantidadeMinima() != null ? parametroSimulacao.getQuantidadeMinima() : 0;
@@ -686,6 +701,10 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.custom_dialog_list_view);
 
+        if (tipoJogo == ModalidadeEnum.MAIS_MILIONARIA){
+            dialog.findViewById(R.id.subtituloDialog).setVisibility(View.VISIBLE);
+        }
+
         final ListView listViewItens = dialog.findViewById(R.id.listaItensDialog);
         TextView tituloDialog = dialog.findViewById(R.id.tituloDialogCustom);
         tituloDialog.setText(getResources().getString(R.string.quant_de_numeros));
@@ -696,8 +715,22 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         listViewItens.setAdapter(adapter);
         listViewItens.setOnItemClickListener((parent, view, position, id) -> {
             String itemValue = (String) listViewItens.getItemAtPosition(position);
-            textoBotaoPrognosticosSelecionado = parametroSimulacao.getValoresAposta().get(position).getNumeroPrognosticos() + getResources().getString(R.string.espaco_numeros);
-            qtdDezenasPossiveisSelecionado = parametroSimulacao.getValoresAposta().get(position).getNumeroPrognosticos();
+            if(tipoJogo == ModalidadeEnum.MAIS_MILIONARIA){
+                String stringNumero = "";
+                if (itemValue.startsWith("1")){
+                    stringNumero = itemValue.substring(0,2);
+                }else {
+                    stringNumero = itemValue.substring(0, 1);
+                }
+                ParametroValorApostaDTO valorAposta = parametroSimulacao.getValorApostaBy(new Integer(stringNumero), 2);
+                if (valorAposta != null){
+                    textoBotaoPrognosticosSelecionado = valorAposta.getNumeroPrognosticos() + getResources().getString(R.string.espaco_numeros);
+                    qtdDezenasPossiveisSelecionado = valorAposta.getNumeroPrognosticos();
+                }
+            }else {
+                textoBotaoPrognosticosSelecionado = parametroSimulacao.getValoresAposta().get(position).getNumeroPrognosticos() + getResources().getString(R.string.espaco_numeros);
+                qtdDezenasPossiveisSelecionado = parametroSimulacao.getValoresAposta().get(position).getNumeroPrognosticos();
+            }
         });
 
         Button dialogButtonOk = dialog.findViewById(R.id.dialogButtonOK);
@@ -712,6 +745,9 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
             } else {
                 if (surpresinhaFragment.getParametroJogo() != null) {
                     surpresinhaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
+                    if (tipoJogo == ModalidadeEnum.MAIS_MILIONARIA){
+                        surpresinhaFragment.resetQtdTrevos();
+                    }
                 }
             }
             dialog.dismiss();

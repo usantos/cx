@@ -57,6 +57,8 @@ public class ParametroJogoDTO implements Serializable {
     protected Boolean concursoCanalAberto = null;
     @SerializedName("meses")
     protected List<ParametroMesDeSorte> meses = null;
+    @SerializedName("trevos")
+    protected TrevosDTO trevos;
 
     /**
      **/
@@ -241,6 +243,14 @@ public class ParametroJogoDTO implements Serializable {
         this.meses = meses;
     }
 
+    public TrevosDTO getTrevos() {
+        return trevos;
+    }
+
+    public void setTrevos(TrevosDTO trevos) {
+        this.trevos = trevos;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -309,5 +319,20 @@ public class ParametroJogoDTO implements Serializable {
                 "  concursoCanalAberto: " + concursoCanalAberto + "\n" +
                 "}\n";
         return sb;
+    }
+
+    public ParametroValorApostaDTO getValorApostaBy(Integer numeroPrognostico, int numeroTrevos) {
+        if (concurso.getModalidade() != ModalidadeEnum.MAIS_MILIONARIA){
+            return null;
+        }
+
+        ParametroValorApostaDTO valor = null;
+        for (ParametroValorApostaDTO valorAposta : getValoresAposta()) {
+            if (valorAposta.getNumeroPrognosticos().equals(numeroPrognostico) && valorAposta.getNumeroTrevos().equals(numeroTrevos)){
+                valor = valorAposta;
+                break;
+            }
+        }
+        return valor;
     }
 }

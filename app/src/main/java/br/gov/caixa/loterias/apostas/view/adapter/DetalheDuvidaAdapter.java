@@ -1,16 +1,15 @@
 package br.gov.caixa.loterias.apostas.view.adapter;
 
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DuvidaDTO;
 import br.gov.caixa.loterias.apostas.view.custom.ItemDuvidaDetalheView;
 import br.gov.caixa.loterias.apostas.view.custom.ItemDuvidaDetalheView_;
+import br.gov.caixa.loterias.apostas.view.holder.DetalheDuvidaHolder;
 
 
 /**
@@ -18,7 +17,7 @@ import br.gov.caixa.loterias.apostas.view.custom.ItemDuvidaDetalheView_;
  * Class DetalheDuvidaAdapter
  */
 
-public class DetalheDuvidaAdapter extends RecyclerView.Adapter<DetalheDuvidaAdapter.DetalheDuvidaHolder> {
+public class DetalheDuvidaAdapter extends RecyclerView.Adapter<DetalheDuvidaHolder> {
 
     private List<DuvidaDTO> duvidasDetalhe;
 
@@ -38,11 +37,7 @@ public class DetalheDuvidaAdapter extends RecyclerView.Adapter<DetalheDuvidaAdap
 
     @Override
     public void onBindViewHolder(DetalheDuvidaHolder holder, int position) {
-        holder.itemDuvidaDetalheView.setLayout(duvidasDetalhe.get(position));
-        if (position != 0) {
-            holder.itemDuvidaDetalheView.getLayoutItemDetalheDuvida().setBackgroundResource(R.drawable.drawer_linha_divisao_cinza_2_top);
-        }
-
+        holder.bind(duvidasDetalhe.get(position), position);
     }
 
     @Override
@@ -50,13 +45,4 @@ public class DetalheDuvidaAdapter extends RecyclerView.Adapter<DetalheDuvidaAdap
         return duvidasDetalhe.size();
     }
 
-    class DetalheDuvidaHolder extends HomeAdapter.ViewHolder {
-
-        private ItemDuvidaDetalheView itemDuvidaDetalheView;
-
-        DetalheDuvidaHolder(View itemView) {
-            super(itemView);
-            this.itemDuvidaDetalheView = (ItemDuvidaDetalheView) itemView;
-        }
-    }
 }

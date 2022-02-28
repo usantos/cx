@@ -27,6 +27,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatCheckBox;
@@ -320,18 +321,29 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.fragment_cartela, container, false);
-		if (isDiaSorte && parentActivity.getMesDeSorteCartela() == null) {
+		if ((isDiaSorte && parentActivity.getMesDeSorteCartela() == null) || tipoJogo == ModalidadeEnum.MAIS_MILIONARIA) {
 			RelativeLayout ttvLayout           = view.findViewById(R.id.ttvLayout);
 			TextView       ttvEscolha          = view.findViewById(R.id.ttvEscolha);
 			TextView       ttvPagina           = view.findViewById(R.id.ttvPagina);
 			TextView       ttvPaginaQuantidade = view.findViewById(R.id.ttvPaginaQuantidade);
 
-			ttvEscolha.setText(ViewUtils.textFuturaAndFuturaBold(parentActivity, getString(R.string.dia_sorte_escolha_dia)));
-			ttvEscolha.setTextColor(getResources().getColor(R.color.diasortemedio));
-			ttvPagina.setTextColor(getResources().getColor(R.color.diasortemedio));
-			ttvPaginaQuantidade.setTextColor(getResources().getColor(R.color.diasorteclaro));
+			if(tipoJogo == ModalidadeEnum.MAIS_MILIONARIA){
+				ttvEscolha.setText(getString(R.string.escolha_de_seis_a_doze_numeros));
+			}else {
+				ttvEscolha.setText(ViewUtils.textFuturaAndFuturaBold(parentActivity, getString(R.string.dia_sorte_escolha_dia)));
+			}
 			ttvPaginaQuantidade.setText(getString(R.string.paginacao_quantidade, getString(R.string.label_numerico_dois)));
 			ttvLayout.setVisibility(View.VISIBLE);
+
+			if (isDiaSorte){
+				ttvEscolha.setTextColor(getResources().getColor(R.color.diasortemedio));
+				ttvPagina.setTextColor(getResources().getColor(R.color.diasortemedio));
+				ttvPaginaQuantidade.setTextColor(getResources().getColor(R.color.diasorteclaro));
+			}else if(tipoJogo == ModalidadeEnum.MAIS_MILIONARIA){
+				ttvEscolha.setTextColor(getResources().getColor(R.color.mais_milionaria_media));
+				ttvPagina.setTextColor(getResources().getColor(R.color.mais_milionaria_media));
+				ttvPaginaQuantidade.setTextColor(getResources().getColor(R.color.mais_milionaria_clara));
+			}
 		}
 		return view;
 	}
@@ -715,6 +727,9 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 		} else if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) { //Adiciona aposta no carrinho
 			if (isDiaSorte && parentActivity.isFragmentCartela()) {
 				parentActivity.mesDeSorteFragment(dezenasSelecionadas, false);
+			} else if(tipoJogo == ModalidadeEnum.MAIS_MILIONARIA && parentActivity.isFragmentCartela()){
+				// segue para a matriz II
+				Toast.makeText(getContext(), "Implementar Matriz II", Toast.LENGTH_LONG).show();
 			} else {
 				adicionarApostaNoCarrinho();
 			}
@@ -998,7 +1013,9 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 				atualizarBotaoFinalizar(R.string.label_escolha_time_coracao);
 			} else if (isDiaSorte) {
 				atualizarBotaoFinalizar(R.string.escolhaOmes);
-			} else {
+			} else if(tipoJogo == ModalidadeEnum.MAIS_MILIONARIA){
+				atualizarBotaoFinalizar(R.string.label_escolha_trevos);
+			}else {
 				botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(fragmentView.getContext(), getString(R.string.adicionarAoCarrinho)));
 				verificaSeMostraBotaoLimparAposta();
 			}
@@ -1100,7 +1117,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 
 	private void verificaSeMostraSalvarApostaView() {
 
-		if (isTipoLoteca || isTipoLotogol || isDiaSorte) {
+		if (isTipoLoteca || isTipoLotogol || isDiaSorte || tipoJogo == ModalidadeEnum.MAIS_MILIONARIA) {
 			ocutarSalvarAposta();
 		} else if (isTipoTimemania) {
 			if (isTelaSelecaoTimeAtivado && (equipeSelecionada != null && equipeSelecionada.isSelecionado())) {
@@ -1205,6 +1222,8 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 		if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado || isEscolhaTimeCoracaoSurpresinha) {
 			if (isDiaSorte) {
 				atualizarBotaoFinalizar(R.string.escolhaOmes);
+			} else if(tipoJogo == ModalidadeEnum.MAIS_MILIONARIA){
+				atualizarBotaoFinalizar(R.string.label_escolha_trevos);
 			} else {
 				atualizarBotaoFinalizarAdicionarCarrinho();
 				if (isTipoTimemania) {
