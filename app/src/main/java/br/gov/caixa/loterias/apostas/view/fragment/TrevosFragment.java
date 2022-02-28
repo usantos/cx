@@ -130,7 +130,10 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
 
     private View.OnClickListener onLimparClickListener() {
         return v -> {
-            Toast.makeText(getContext(), "Falta implementar", Toast.LENGTH_LONG).show();
+            trevoSelecionadoList.clear();
+            adappter.atualizaSelecionados(trevoSelecionadoList);
+            listener.getButtonLimpar().setVisibility(View.INVISIBLE);
+            atualizaStatusBotao();
         };
     }
 
@@ -159,6 +162,7 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
                         trevoSelecionadoList.addAll(list);
                         adappter.atualizaSelecionados(list);
                         atualizaStatusBotao();
+                        checaMostraBotaoLimpar();
                     }
 
                     @Override
@@ -205,6 +209,7 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
                 }
                 listener.atualizaValorAposta(valorApostaSelecionado);
                 atualizaStatusBotao();
+                checaMostraBotaoLimpar();
                 if (trevoSelecionadoList.size() > valorApostaSelecionado.getNumeroTrevos()){
                     listener.getButtonFinalizar().setText(ViewUtils.textFuturaAndFuturaBold(getActivity(), getString(R.string.completar_trevos_aleatoriamente)));
                     listener.getButtonFinalizar().setBackgroundColor(ContextCompat.getColor(getContext(), R.color.cinzaescuro));
@@ -267,6 +272,15 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
         holder.atualizaDezena(dezena);
         checaQuantidadeTrevos();
         atualizaStatusBotao();
+        checaMostraBotaoLimpar();
+    }
+
+    private void checaMostraBotaoLimpar() {
+        if (trevoSelecionadoList.size() > 0){
+            listener.getButtonLimpar().setVisibility(View.VISIBLE);
+        }else {
+            listener.getButtonLimpar().setVisibility(View.GONE);
+        }
     }
 
     private void checaQuantidadeTrevos() {
