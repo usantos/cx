@@ -1,0 +1,197 @@
+package br.gov.caixa.loterias.apostas.utils;
+
+import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumCharacter;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumInteger;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.EquipeDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IndicadorSurpresinha;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroEquipe;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroMesDeSorte;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroPartida;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PartidaLotecaDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PartidaLotogolDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
+
+public class ApostaUtils {
+
+	public static IdentificaoDeUmaApostaDas8Modalidades getApostaPreenchida(ParametroJogoDTO parametroJogo,
+																	 List<Integer> dezenasSelecionadas,
+																	 BigDecimal valorTotalAposta,
+																	 int qtdConcursoSelecionado) {
+
+		IdentificaoDeUmaApostaDas8Modalidades aposta = new IdentificaoDeUmaApostaDas8Modalidades();
+
+		aposta.setId(Constantes.ZERO_LONG);
+		aposta.setModalidade(parametroJogo.getConcurso().getModalidade());
+
+		DTOEnumCharacter tipoConcurso = new DTOEnumCharacter();
+
+		String valorTipoConcurso = parametroJogo.getConcurso().getTipoConcurso() == TipoConcursoEnum.NORMAL ? "1" : "2";
+		tipoConcurso.setValor(valorTipoConcurso);
+		tipoConcurso.setDescricao(parametroJogo.getConcurso().getTipoConcurso().toString());
+		aposta.setTipoConcurso(tipoConcurso);
+		aposta.setPartidasLotogol(null);
+		aposta.setPartidasLoteca(null);
+		if (dezenasSelecionadas != null && dezenasSelecionadas.size() > 0) {
+			aposta.setNumerosSelecionados(dezenasSelecionadas);
+		}
+
+		DTOEnumInteger indicadorSurpresinha = new DTOEnumInteger();
+		indicadorSurpresinha.setValor(IndicadorSurpresinha.NAO_SURPRESINHA);
+		indicadorSurpresinha.setDescricao("");
+
+		aposta.setIndicadorSurpresinha(indicadorSurpresinha);
+		aposta.setValor(valorTotalAposta);
+		aposta.setConcursoAlvo(parametroJogo.getConcurso().getNumero());
+		aposta.setQuantidadeTeimosinhas(qtdConcursoSelecionado);
+		aposta.setQuantidadeApostas(1);
+		aposta.setEspelho(false);
+		aposta.setGerarEspelho(false);
+
+		aposta.setConcursoInicial(0);
+		aposta.setSituacao(null);
+		aposta.setTroca(false);
+
+		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+		Date       date       = new Date();
+
+		DateFormat hourFormat = new SimpleDateFormat("HH:mm:ss", Locale.US);
+		Date       hour       = new Date();
+
+		aposta.setDataEfetivacao(dateFormat.format(date));
+		aposta.setHoraEfetivacao(hourFormat.format(hour));
+		aposta.setVinculoEspelho(Constantes.ZERO_LONG);
+		aposta.setQuantidadeNumeros(dezenasSelecionadas.size());
+		aposta.setSurpresinha(false);
+
+		return aposta;
+	}
+
+	public static IdentificaoDeUmaApostaDas8Modalidades getApostaEquipe(ParametroJogoDTO parametroJogo,
+																		List<Integer> dezenasSelecionadas,
+																		BigDecimal valorTotalAposta,
+																		int qtdConcursoSelecionado,
+																		ParametroEquipe equipeSelecionada){
+		IdentificaoDeUmaApostaDas8Modalidades aposta = getApostaPreenchida(parametroJogo, dezenasSelecionadas, valorTotalAposta, qtdConcursoSelecionado);
+
+		aposta.setTimeDoCoracao(equipeSelecionada);
+
+		return aposta;
+	}
+
+	public static IdentificaoDeUmaApostaDas8Modalidades getApostaDiaDeSorte(ParametroJogoDTO parametroJogo,
+																			List<Integer> dezenasSelecionadas,
+																			BigDecimal valorTotalAposta,
+																			int qtdConcursoSelecionado,
+																			ParametroMesDeSorte mesDeSorte){
+		IdentificaoDeUmaApostaDas8Modalidades aposta = getApostaPreenchida(parametroJogo, dezenasSelecionadas, valorTotalAposta, qtdConcursoSelecionado);
+
+		aposta.setMesDeSorte(mesDeSorte);
+
+		return aposta;
+	}
+
+	public static IdentificaoDeUmaApostaDas8Modalidades getApostaLotogol(ParametroJogoDTO parametroJogo,
+																			List<Integer> dezenasSelecionadas,
+																			BigDecimal valorTotalAposta,
+																			int qtdConcursoSelecionado,
+																		 HashSet<ParametroPartida> partidasSelecionadas){
+		IdentificaoDeUmaApostaDas8Modalidades aposta = getApostaPreenchida(parametroJogo, dezenasSelecionadas, valorTotalAposta, qtdConcursoSelecionado);
+
+		setApostaLotogol(parametroJogo, aposta, partidasSelecionadas);
+
+		return aposta;
+	}
+
+	public static IdentificaoDeUmaApostaDas8Modalidades getApostaLoteca(ParametroJogoDTO parametroJogo,
+																		 List<Integer> dezenasSelecionadas,
+																		 BigDecimal valorTotalAposta,
+																		 int qtdConcursoSelecionado,
+																		 HashSet<ParametroPartida> partidasSelecionadas){
+		IdentificaoDeUmaApostaDas8Modalidades aposta = getApostaPreenchida(parametroJogo, dezenasSelecionadas, valorTotalAposta, qtdConcursoSelecionado);
+
+		setApostaLoteca(parametroJogo, aposta, partidasSelecionadas);
+
+		return aposta;
+	}
+
+	private static void setApostaLotogol(ParametroJogoDTO parametro, IdentificaoDeUmaApostaDas8Modalidades aposta, HashSet<ParametroPartida> partidas) {
+		if (parametro.getConcurso().getModalidade() == ModalidadeEnum.LOTOGOL) {
+			List<ParametroPartida> partidasSelecionadas = ListaUtils.orderAscPartidas(partidas);
+			aposta.setPartidasLotogol(new ArrayList<>());
+			for (ParametroPartida partida : partidasSelecionadas) {
+				PartidaLotogolDTO lotogolDTO = new PartidaLotogolDTO();
+				EquipeDTO         equipeDTO1 = new EquipeDTO();
+				EquipeDTO         equipeDTO2 = new EquipeDTO();
+
+				setValorEquipe1DTOEquipe2DTO(partida, equipeDTO1, equipeDTO2);
+
+				lotogolDTO.setEquipe1(equipeDTO1);
+				lotogolDTO.setEquipe2(equipeDTO2);
+
+				aposta.getPartidasLotogol().add(lotogolDTO);
+			}
+		}
+	}
+
+	private static void setApostaLoteca(ParametroJogoDTO parametro, IdentificaoDeUmaApostaDas8Modalidades aposta, HashSet<ParametroPartida> partidas) {
+		if (parametro.getConcurso().getModalidade() == ModalidadeEnum.LOTECA) {
+			List<ParametroPartida> partidasSelecionadas = ListaUtils.orderAscPartidas(partidas);
+			aposta.setPartidasLoteca(new ArrayList<>());
+			for (ParametroPartida partida : partidasSelecionadas) {
+				PartidaLotecaDTO lotecaDTO  = new PartidaLotecaDTO();
+				EquipeDTO        equipeDTO1 = new EquipeDTO();
+				EquipeDTO        equipeDTO2 = new EquipeDTO();
+
+				setValorEquipe1DTOEquipe2DTO(partida, equipeDTO1, equipeDTO2);
+
+				lotecaDTO.setEquipe1(equipeDTO1);
+				lotecaDTO.setEquipe2(equipeDTO2);
+				lotecaDTO.setEmpate(partida.isEmpate());
+
+				aposta.getPartidasLoteca().add(lotecaDTO);
+			}
+		}
+	}
+
+	private static void setValorEquipe1DTOEquipe2DTO(ParametroPartida partida, EquipeDTO equipeDTO1, EquipeDTO equipeDTO2) {
+		equipeDTO1.setPlacar(partida.getEquipe1().getPlacar());
+		equipeDTO1.setVitoria(partida.getEquipe1().isSelecionado());
+		equipeDTO1.setParametroEquipe(partida.getEquipe1());
+		equipeDTO1.setIndicadorSelecao(partida.getEquipe1().getIndicadorSelecao());
+		equipeDTO1.setDescricaoCurta(partida.getEquipe1().getDescricaoCurta());
+		equipeDTO1.setDescricaoLonga(partida.getEquipe1().getDescricaoLonga());
+		equipeDTO1.setNumero(partida.getEquipe1().getNumero());
+		equipeDTO1.setNumeroPais(partida.getEquipe1().getNumeroPais());
+		equipeDTO1.setPais(partida.getEquipe1().getPais());
+		equipeDTO1.setSiglaPais(partida.getEquipe1().getSiglaPais());
+		equipeDTO1.setUf(partida.getEquipe1().getUf());
+		equipeDTO1.setNomeClass(partida.getEquipe1().getNomeClass());
+		equipeDTO1.setNome(partida.getEquipe1().getNome());
+
+		equipeDTO2.setPlacar(partida.getEquipe2().getPlacar());
+		equipeDTO2.setVitoria(partida.getEquipe2().isSelecionado());
+		equipeDTO2.setParametroEquipe(partida.getEquipe2());
+		equipeDTO2.setIndicadorSelecao(partida.getEquipe2().getIndicadorSelecao());
+		equipeDTO2.setDescricaoCurta(partida.getEquipe2().getDescricaoCurta());
+		equipeDTO2.setDescricaoLonga(partida.getEquipe2().getDescricaoLonga());
+		equipeDTO2.setNumero(partida.getEquipe2().getNumero());
+		equipeDTO2.setNumeroPais(partida.getEquipe2().getNumeroPais());
+		equipeDTO2.setPais(partida.getEquipe2().getPais());
+		equipeDTO2.setSiglaPais(partida.getEquipe2().getSiglaPais());
+		equipeDTO2.setUf(partida.getEquipe2().getUf());
+		equipeDTO2.setNomeClass(partida.getEquipe2().getNomeClass());
+		equipeDTO2.setNome(partida.getEquipe2().getNome());
+	}
+}
