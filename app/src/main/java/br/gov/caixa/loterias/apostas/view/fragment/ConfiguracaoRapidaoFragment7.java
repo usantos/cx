@@ -25,7 +25,7 @@ import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.RapidaoConfigSingleton;
-import br.gov.caixa.loterias.apostas.view.adapter.FavoritasRapidaoRecyclerAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.FavoritasRapidaoRecyclerAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 
 public class ConfiguracaoRapidaoFragment7 extends Fragment {

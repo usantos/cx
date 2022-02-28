@@ -1,6 +1,5 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -12,14 +11,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -41,6 +38,7 @@ import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -67,6 +65,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroEquipe;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroMesDeSorte;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
@@ -77,8 +76,11 @@ import br.gov.caixa.loterias.apostas.view.fragment.MesesFragment_;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SurpresinhaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SurpresinhaFragment_;
+import br.gov.caixa.loterias.apostas.view.fragment.TrevosFragment_;
 import br.gov.caixa.loterias.apostas.view.listener.CartelaFragmentListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnSomadorListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnTrevosListener;
 import br.gov.caixa.loterias.apostas.view.listener.SurpresinhaFragmentListener;
 
 import static br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity.CARRINHO;
@@ -87,7 +89,7 @@ import static br.gov.caixa.loterias.apostas.utils.Utils.isErroNegocial;
 import static java.lang.String.format;
 
 @EActivity(R.layout.activity_simular_aposta)
-public class SimularApostaActivity<T> extends AppCompatActivity implements OnClickListener, CartelaFragmentListener, SurpresinhaFragmentListener, OnSomadorListener {
+public class SimularApostaActivity<T> extends AppCompatActivity implements OnClickListener, CartelaFragmentListener, SurpresinhaFragmentListener, OnSomadorListener, OnTrevosListener {
 
     private static int RESULT_FINISH = 3;
 
@@ -204,6 +206,13 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
             case R.id.simularTelaAposta: {
                 cartelaFragment.setEscolhaTimeCoracaoSurpresinha(false);
                 abrirTelaCartela(false);
+                if (tipoJogo == ModalidadeEnum.MAIS_MILIONARIA){
+                    qtdNumerosButton.setOnClickListener(this);
+                    qtdNumerosButton.setText(textoBotaoPrognosticosSelecionado);
+                    botaoAdicionarCompletarCartela.setOnClickListener(this);
+                    botaoAdicionarCompletarCartela.setBackgroundColor(getResources().getColor(typeGameColorDark));
+                    botaoLimparAposta.setOnClickListener(this);
+                }
                 break;
             }
 
@@ -321,13 +330,13 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
 
     @Override
     public void abreCarrinhoApostas() {
-        DialogUtils.show(this);
+        AlertDialogUtils.show(this);
         ApostaBO apostaBO = ApostaBO_.getInstance_(this);
 
         apostaBO.buscaCarrinho(new RequestListener<CarrinhoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoDTOResponse response) {
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
                 Bundle args = new Bundle();
                 args.putSerializable(CARRINHO, (Serializable) response.getPayload());
                 startActivity(new Intent(SimularApostaActivity.this, CarrinhoActivity.class).putExtras(args));
@@ -338,7 +347,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
                 if (MensagensNetwork.isUnauthorizedError(error)) {
                     startActivity(new Intent(SimularApostaActivity.this, CarrinhoActivity.class).putExtra(LER_CARRINHO_LOCAL, true));
                 } else {
@@ -438,7 +447,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
 
     public void salvarAposta(final ApostaFavoritaDTO apostaFavorita, String nomeAposta, T dezenasSelecionadas) {
 
-        DialogUtils.show(this);
+        AlertDialogUtils.show(this);
 
         DTOEnumInteger modalidade = new DTOEnumInteger();
         modalidade.setDescricao(parametroSimulacao.getConcurso().getModalidadeDetalhada().getDescricao());
@@ -465,8 +474,8 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                DialogUtils.dismiss();
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
                 if(isErroNegocial(error)){
                     ViewUtils.alertTitleButtonYesOrNotListener(
                             SimularApostaActivity.this,
@@ -483,15 +492,15 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         });
     }
     private void salvarAposta(ApostaFavoritaDTO aposta){
-        if(!DialogUtils.isShow()){
-            DialogUtils.show(this);
+        if(!AlertDialogUtils.isShow()){
+            AlertDialogUtils.show(this);
         }
         dadosCorporativosBO.salvarApostaFavorita(aposta, new RequestListener<NetworkResponse>() {
             @Override
             public void onResponse(NetworkResponse response) {
                 AppCenterManager.registraEvento(getResources().getString(R.string.evento_efetuou_adicao_aposta_favorita_sucesso));
 
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
 
                 RelativeLayout salvarApostaLayout = getSalvarApostaLayout();
 
@@ -515,7 +524,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
                 RedirectNetwork.checkRedirect(error, SimularApostaActivity.this);
 
             }
@@ -530,6 +539,14 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
             simularTelaAposta.setBackgroundResource(R.drawable.icon_seleciona2);
             surpresinhaTela.setBackgroundResource(R.drawable.icon_surpresinha2);
         }
+    }
+
+    public void trevosFragment(List<Integer> dezenasSelecionadas){
+        fragmentManager.beginTransaction()
+                       .replace(R.id.fragmentSimularApostas, TrevosFragment_.builder()
+                                                                            .parametro(parametroSimulacao)
+                                                                            .idBtnQtdTrevos(qtdNumerosButton.getId())
+                                                                            .dezenasSelecionadas((ArrayList<Integer>) dezenasSelecionadas).build()).commit();
     }
 
     public ParametroMesDeSorte getMesDeSorteCartela() {
@@ -698,64 +715,56 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     private void modalNumeros() {
         AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_selecao_prognosticos));
 
-        final Dialog dialog = new Dialog(this);
-        dialog.setContentView(R.layout.custom_dialog_list_view);
+        DialogUtils.showDialogListaEscolha(SimularApostaActivity.this,
+                                           getResources().getString(R.string.quant_de_numeros), null,
+                                           qtdNumerosList, onNumerosDialogListener());
+    }
 
-        if (tipoJogo == ModalidadeEnum.MAIS_MILIONARIA){
-            dialog.findViewById(R.id.subtituloDialog).setVisibility(View.VISIBLE);
-        }
-
-        final ListView listViewItens = dialog.findViewById(R.id.listaItensDialog);
-        TextView tituloDialog = dialog.findViewById(R.id.tituloDialogCustom);
-        tituloDialog.setText(getResources().getString(R.string.quant_de_numeros));
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(SimularApostaActivity.this,
-                R.layout.item_text_popup, R.id.textList, qtdNumerosList);
-
-        listViewItens.setAdapter(adapter);
-        listViewItens.setOnItemClickListener((parent, view, position, id) -> {
-            String itemValue = (String) listViewItens.getItemAtPosition(position);
-            if(tipoJogo == ModalidadeEnum.MAIS_MILIONARIA){
-                String stringNumero = "";
-                if (itemValue.startsWith("1")){
-                    stringNumero = itemValue.substring(0,2);
+    private OnDialogListener onNumerosDialogListener() {
+        return new OnDialogListener() {
+            @Override
+            public void itemSelecionado(int position) {
+                String itemValue = (String) qtdNumerosList.get(position);
+                if(tipoJogo == ModalidadeEnum.MAIS_MILIONARIA){
+                    String stringNumero = "";
+                    if (itemValue.startsWith("1")){
+                        stringNumero = itemValue.substring(0,2);
+                    }else {
+                        stringNumero = itemValue.substring(0, 1);
+                    }
+                    ParametroValorApostaDTO valorAposta = parametroSimulacao.getValorApostaBy(new Integer(stringNumero), 2);
+                    if (valorAposta != null){
+                        textoBotaoPrognosticosSelecionado = valorAposta.getNumeroPrognosticos() + getResources().getString(R.string.espaco_numeros);
+                        qtdDezenasPossiveisSelecionado = valorAposta.getNumeroPrognosticos();
+                    }
                 }else {
-                    stringNumero = itemValue.substring(0, 1);
+                    textoBotaoPrognosticosSelecionado = parametroSimulacao.getValoresAposta().get(position).getNumeroPrognosticos() + getResources().getString(R.string.espaco_numeros);
+                    qtdDezenasPossiveisSelecionado = parametroSimulacao.getValoresAposta().get(position).getNumeroPrognosticos();
                 }
-                ParametroValorApostaDTO valorAposta = parametroSimulacao.getValorApostaBy(new Integer(stringNumero), 2);
-                if (valorAposta != null){
-                    textoBotaoPrognosticosSelecionado = valorAposta.getNumeroPrognosticos() + getResources().getString(R.string.espaco_numeros);
-                    qtdDezenasPossiveisSelecionado = valorAposta.getNumeroPrognosticos();
-                }
-            }else {
-                textoBotaoPrognosticosSelecionado = parametroSimulacao.getValoresAposta().get(position).getNumeroPrognosticos() + getResources().getString(R.string.espaco_numeros);
-                qtdDezenasPossiveisSelecionado = parametroSimulacao.getValoresAposta().get(position).getNumeroPrognosticos();
             }
-        });
 
-        Button dialogButtonOk = dialog.findViewById(R.id.dialogButtonOK);
-        Button dialogButtonCancelar = dialog.findViewById(R.id.dialogButtonCancelar);
+            @Override
+            public void ok() {
+                qtdNumerosButton.setText(textoBotaoPrognosticosSelecionado);
 
-        dialogButtonOk.setOnClickListener(v -> {
-            qtdNumerosButton.setText(textoBotaoPrognosticosSelecionado);
-
-            if (isFragmentCartela()) {
-                cartelaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
-                cartelaFragment.atualizaStatusBotaoFinalizar(true);
-            } else {
-                if (surpresinhaFragment.getParametroJogo() != null) {
-                    surpresinhaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
-                    if (tipoJogo == ModalidadeEnum.MAIS_MILIONARIA){
-                        surpresinhaFragment.resetQtdTrevos();
+                if (isFragmentCartela()) {
+                    cartelaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
+                    cartelaFragment.atualizaStatusBotaoFinalizar(true);
+                } else {
+                    if (surpresinhaFragment.getParametroJogo() != null) {
+                        surpresinhaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
+                        if (tipoJogo == ModalidadeEnum.MAIS_MILIONARIA){
+                            surpresinhaFragment.resetQtdTrevos();
+                        }
                     }
                 }
             }
-            dialog.dismiss();
-        });
 
-        dialogButtonCancelar.setOnClickListener(v -> dialog.dismiss());
+            @Override
+            public void cancelar() {
 
-        dialog.show();
+            }
+        };
     }
 
     public boolean isFragmentCartela(){
@@ -765,41 +774,37 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     private void modalTeimosinhas() {
         AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_popup_teimosinha));
 
-        final Dialog dialog = new Dialog(this);
-        dialog.setContentView(R.layout.custom_dialog_list_view);
+        DialogUtils.showDialogListaEscolha(SimularApostaActivity.this,
+                                           getResources().getString(R.string.teimosinhas_maiusculo), null,
+                                           qtdConcursosList, onTeimosinhaDialogListener());
+    }
 
-        final ListView listViewItens = dialog.findViewById(R.id.listaItensDialog);
-        TextView tituloDialog = dialog.findViewById(R.id.tituloDialogCustom);
-        tituloDialog.setText(getResources().getString(R.string.teimosinhas_maiusculo));
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(SimularApostaActivity.this,
-                R.layout.item_text_popup, R.id.textList, qtdConcursosList);
-
-        listViewItens.setAdapter(adapter);
-        listViewItens.setOnItemClickListener((parent, view, position, id) -> {
-            textoBotaoSurpresinhasSelecionado = (String) listViewItens.getItemAtPosition(position);
-            qtdConcursoSelecionado = parametroSimulacao.getTeimosinhas().get(position);
-        });
-
-        Button dialogButtonOk = dialog.findViewById(R.id.dialogButtonOK);
-        Button dialogButtonCancelar = dialog.findViewById(R.id.dialogButtonCancelar);
-
-        dialogButtonOk.setOnClickListener(v -> {
-            qtdConcursosButton.setText(textoBotaoSurpresinhasSelecionado);
-
-            if (fragmentManager.findFragmentById(R.id.fragmentSimularApostas) instanceof SurpresinhaFragment) {
-                if (surpresinhaFragment.getParametroJogo() != null) {
-                    surpresinhaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
-                }
-            } else {
-                cartelaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
+    private OnDialogListener onTeimosinhaDialogListener() {
+        return new OnDialogListener() {
+            @Override
+            public void itemSelecionado(int position) {
+                textoBotaoSurpresinhasSelecionado = (String) qtdConcursosList.get(position);
+                qtdConcursoSelecionado = parametroSimulacao.getTeimosinhas().get(position);
             }
 
-            dialog.dismiss();
-        });
+            @Override
+            public void ok() {
+                qtdConcursosButton.setText(textoBotaoSurpresinhasSelecionado);
 
-        dialogButtonCancelar.setOnClickListener(v -> dialog.dismiss());
+                if (fragmentManager.findFragmentById(R.id.fragmentSimularApostas) instanceof SurpresinhaFragment) {
+                    if (surpresinhaFragment.getParametroJogo() != null) {
+                        surpresinhaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
+                    }
+                } else {
+                    cartelaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
+                }
+            }
 
-        dialog.show();
+            @Override
+            public void cancelar() {
+
+            }
+        };
     }
 
     private void abrirTelaCartela(boolean surpresinha) {
@@ -893,5 +898,31 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         }else {
             tvQuantidadeApostas.setText(R.string.zero);
         }
+    }
+
+    @Override
+    public Button getButtonQtdTrevos() {
+        return qtdNumerosButton;
+    }
+
+    @Override
+    public Button getButtonFinalizar() {
+        return botaoAdicionarCompletarCartela;
+    }
+
+    @Override
+    public Button getButtonLimpar() {
+        return botaoLimparAposta;
+    }
+
+    @Override
+    public void atualizaValorAposta(ParametroValorApostaDTO valorAposta) {
+        BigDecimal valorEmReais = valorAposta.getValor();
+
+        if (qtdConcursoSelecionado != 0) {
+            valorEmReais = valorEmReais.multiply(BigDecimal.valueOf(qtdConcursoSelecionado).movePointLeft(0));
+        }
+
+        ViewUtils.setMoedaFormatHtml(valorEmReais, valorApostaCartela);
     }
 }

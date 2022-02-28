@@ -42,11 +42,11 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.dao.DBLoteriasCrud;
 import br.gov.caixa.loterias.apostas.model.dao.crud.CarrinhoFavoritoCRUD;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
-import br.gov.caixa.loterias.apostas.utils.DialogUtils;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.SessaoUsuarioUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
-import br.gov.caixa.loterias.apostas.view.adapter.CarrinhoApostasListViewAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.CarrinhoApostasListViewAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 
@@ -280,19 +280,19 @@ public class CarrinhoActivity extends AppCompatActivity {
 
     private void validarCarrinho() {
         ocorrendoValidacao = true;
-        DialogUtils.show(CarrinhoActivity.this);
+        AlertDialogUtils.show(CarrinhoActivity.this);
         ApostaBO_.getInstance_(CarrinhoActivity.this).validarCarrinho(new RequestListener<ResourceResponse>() {
             @Override
             public void onResponse(ResourceResponse result) {
                 ocorrendoValidacao = false;
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
                 CarrinhoSingleton.getInstance().setCarrinho(carrinho);
                 startActivity(new Intent(CarrinhoActivity.this, CartoesActivity.class));
             }
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
                 if (error != null && error.networkResponse != null && error.networkResponse.statusCode != 401) {
                     ocorrendoValidacao = false;
                 }
@@ -302,11 +302,11 @@ public class CarrinhoActivity extends AppCompatActivity {
     }
 
     private void validarCarrinhoFavorito(String nome) {
-        DialogUtils.show(CarrinhoActivity.this);
+        AlertDialogUtils.show(CarrinhoActivity.this);
         ApostaBO_.getInstance_(CarrinhoActivity.this).validarCarrinhoFavorito(nome, new RequestListener<CarrinhoFavoritoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoFavoritoDTOResponse result) {
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
                 if (result.getRedirect() != null) {
                     RedirectNetwork.checkRedirectSucesso(result.getRedirect(), CarrinhoActivity.this);
                 }
@@ -315,7 +315,7 @@ public class CarrinhoActivity extends AppCompatActivity {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
                 if (isErroNegocial(error)) {
                     ViewUtils.alertTitleButtonYesOrNotListener(
                             CarrinhoActivity.this,
@@ -331,11 +331,11 @@ public class CarrinhoActivity extends AppCompatActivity {
     }
 
     private void favoritarCarrinho(String nome) {
-        DialogUtils.show(CarrinhoActivity.this);
+        AlertDialogUtils.show(CarrinhoActivity.this);
         ApostaBO_.getInstance_(CarrinhoActivity.this).salvarCarrinhoFavorito(nome, new RequestListener<CarrinhoFavoritoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoFavoritoDTOResponse result) {
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
                 if (result.getRedirect() != null) {
                     RedirectNetwork.checkRedirectSucesso(result.getRedirect(), CarrinhoActivity.this);
                 }
@@ -349,7 +349,7 @@ public class CarrinhoActivity extends AppCompatActivity {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
                 RedirectNetwork.checkRedirect(error, CarrinhoActivity.this);
             }
         });
@@ -362,13 +362,13 @@ public class CarrinhoActivity extends AppCompatActivity {
 
     protected void clickLimparCarrinhoLinearLayout() {
         ViewUtils.alertTitleButtonYesOrNotListener(this, getString(R.string.MA011), (dialogInterface, i) -> {
-            DialogUtils.show(CarrinhoActivity.this);
+            AlertDialogUtils.show(CarrinhoActivity.this);
             ApostaBO apostaBO = ApostaBO_.getInstance_(CarrinhoActivity.this);
             apostaBO.limparCarrinho(new RequestListener<CarrinhoDTOResponse>() {
                 @Override
                 public void onResponse(CarrinhoDTOResponse result) {
                     AppCenterManager.registraEvento(getResources().getString(R.string.evento_limpou_carrinho_online));
-                    DialogUtils.dismiss();
+                    AlertDialogUtils.dismiss();
                     if (result.getRedirect() != null) {
                         RedirectNetwork.checkRedirectSucesso(result.getRedirect(), CarrinhoActivity.this);
                     }
@@ -379,7 +379,7 @@ public class CarrinhoActivity extends AppCompatActivity {
 
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    DialogUtils.dismiss();
+                    AlertDialogUtils.dismiss();
                     if (MensagensNetwork.isUnauthorizedError(error)) {
                         deleteCarrinhoLocal();
                     } else {
@@ -429,13 +429,13 @@ public class CarrinhoActivity extends AppCompatActivity {
     private void callWebservice() {
 
         final ApostaBO apostaBO = ApostaBO_.getInstance_(CarrinhoActivity.this);
-        DialogUtils.show(CarrinhoActivity.this);
+        AlertDialogUtils.show(CarrinhoActivity.this);
         vLoading.setVisibility(View.VISIBLE);
         apostaBO.buscaCarrinho(new RequestListener<CarrinhoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoDTOResponse response) {
                 vLoading.setVisibility(View.GONE);
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
                 AppCenterManager.registraEvento( getResources().getString(R.string.evento_entrou_carrinho_online));
                 if (response.getRedirect() != null) {
                     RedirectNetwork.checkRedirectSucesso(response.getRedirect(), CarrinhoActivity.this);
@@ -447,7 +447,7 @@ public class CarrinhoActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 vLoading.setVisibility(View.GONE);
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
                 if (MensagensNetwork.isUnauthorizedError(error)) {
                     lerCarrinhoLocal();
                 } else {
@@ -519,13 +519,13 @@ public class CarrinhoActivity extends AppCompatActivity {
     }
 
     private void atualizaParametros() {
-        DialogUtils.show(this);
+        AlertDialogUtils.show(this);
         if(SessaoUsuarioUtil.precisaAtualizar()) {
             final DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(CarrinhoActivity.this);
             dadosCorporativosBO.parametrosSimulacao(new RequestListener<ParametrosSimulacaoResponse>() {
                 @Override
                 public void onResponse(ParametrosSimulacaoResponse response) {
-                    DialogUtils.dismiss();
+                    AlertDialogUtils.dismiss();
 
                     List<ParametroSimulacao> parametros = response.getPayload().getParametros();
                     if (parametros == null || parametros.isEmpty()) {
@@ -541,14 +541,14 @@ public class CarrinhoActivity extends AppCompatActivity {
 
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    DialogUtils.dismiss();
+                    AlertDialogUtils.dismiss();
                     RedirectNetwork.checkRedirect(error, CarrinhoActivity.this);
                     postResume();
                 }
             });
         }else {
             postResume();
-            DialogUtils.dismiss();
+            AlertDialogUtils.dismiss();
         }
     }
 

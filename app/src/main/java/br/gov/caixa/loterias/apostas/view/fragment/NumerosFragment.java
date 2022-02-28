@@ -18,7 +18,7 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConfiguracaoNumeros;
-import br.gov.caixa.loterias.apostas.view.adapter.NumerosAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.NumerosAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
 
 public class NumerosFragment extends Fragment {

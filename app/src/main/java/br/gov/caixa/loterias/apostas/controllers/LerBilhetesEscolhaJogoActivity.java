@@ -26,7 +26,7 @@ import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnumSelecaoModalidades;
-import br.gov.caixa.loterias.apostas.view.adapter.TiposApostasConferirApostaAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.TiposApostasConferirApostaAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 

@@ -16,6 +16,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import io.swagger.annotations.ApiModel;
@@ -334,5 +335,20 @@ public class ParametroJogoDTO implements Serializable {
             }
         }
         return valor;
+    }
+
+    public List<ParametroValorApostaDTO> getValoresTrevoByNumero(int prognostico) {
+        if (concurso.getModalidade() != ModalidadeEnum.MAIS_MILIONARIA){
+            return new ArrayList<>();
+        }
+
+        List<ParametroValorApostaDTO> valores = new ArrayList<>();
+
+        for (ParametroValorApostaDTO valorAposta : getValoresAposta()) {
+            if (valorAposta.getNumeroPrognosticos().equals(prognostico)){
+                valores.add(valorAposta);
+            }
+        }
+        return valores;
     }
 }

@@ -27,7 +27,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatCheckBox;
@@ -75,16 +74,16 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PartidaLotecaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PartidaLotogolDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
-import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
-import br.gov.caixa.loterias.apostas.view.adapter.LotecaAdapter;
-import br.gov.caixa.loterias.apostas.view.adapter.LotogolAdapter;
-import br.gov.caixa.loterias.apostas.view.adapter.SuperSeteAdapter;
-import br.gov.caixa.loterias.apostas.view.adapter.TimeCoracaoAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.LotecaAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.LotogolAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SuperSeteAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.TimeCoracaoAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView;
 import br.gov.caixa.loterias.apostas.view.listener.CartelaFragmentListener;
@@ -182,6 +181,12 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 			parametroJogo = ViewUtils.getParametroSimulacao(sessaoUsuario, tipoJogo).getParametroJogo();
 		}
 
+		if (tipoJogo == ModalidadeEnum.MAIS_MILIONARIA){
+			ParametroValorApostaDTO valorAposta = parametroJogo.getValorApostaBy(numPrognostico, parametroJogo.getTrevos().getQtdMinima());
+			parentActivity.atualizaValorAposta(valorAposta);
+
+			return;
+		}
 		if (numPrognostico != 0) {
 			for (ParametroValorApostaDTO parametro : parametroJogo.getValoresAposta()) {
 				if (parametro.getNumeroPrognosticos() == numPrognostico) {
@@ -728,8 +733,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 			if (isDiaSorte && parentActivity.isFragmentCartela()) {
 				parentActivity.mesDeSorteFragment(dezenasSelecionadas, false);
 			} else if(tipoJogo == ModalidadeEnum.MAIS_MILIONARIA && parentActivity.isFragmentCartela()){
-				// segue para a matriz II
-				Toast.makeText(getContext(), "Implementar Matriz II", Toast.LENGTH_LONG).show();
+				parentActivity.trevosFragment(dezenasSelecionadas);
 			} else {
 				adicionarApostaNoCarrinho();
 			}
@@ -789,14 +793,14 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	}
 
 	private void preencheNumerosAleatorios() {
-		DialogUtils.show(getActivity());
+		AlertDialogUtils.show(getActivity());
 		ApostaBO apostaBO = ApostaBO_.getInstance_(getActivity());
 		orderAscDezenas();
 		apostaBO.completaJogo(parentActivity.qtdDezenasPossiveisSelecionado, dezenasSelecionadas, 1,
 							  parametroJogo.getPrognosticoMaximo(), new RequestListener<CompletaJogoRsp>() {
 					@Override
 					public void onResponse(CompletaJogoRsp response) {
-						DialogUtils.dismiss();
+						AlertDialogUtils.dismiss();
 						isNumerosAleatoriosShake = false;
 						AppCenterManager.registraEvento("ENTROU_COMPLETAR_COM_NUMEROS_ALEATORIOS");
 						isEcolhaTimeBtnAtivado = true;
@@ -812,14 +816,14 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 					@Override
 					public void onErrorResponse(VolleyError error) {
 						isNumerosAleatoriosShake = false;
-						DialogUtils.dismiss();
+						AlertDialogUtils.dismiss();
 						RedirectNetwork.checkRedirect(error, getActivity());
 					}
 				});
 	}
 
 	private void preencheNumerosAleatoriosSuperSete(ArrayList<ArrayList<Integer>> listaInteiros) {
-		DialogUtils.show(getActivity());
+		AlertDialogUtils.show(getActivity());
 		ApostaBO apostaBO = ApostaBO_.getInstance_(getActivity());
 		orderAscDezenas();
 
@@ -828,7 +832,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 								  new RequestListener<CompletaJogoNovoRsp>() {
 									  @Override
 									  public void onResponse(CompletaJogoNovoRsp response) {
-										  DialogUtils.dismiss();
+										  AlertDialogUtils.dismiss();
 										  AppCenterManager.registraEvento( "ENTROU_COMPLETAR_COM_NUMEROS_ALEATORIOS");
 										  isNumerosAleatoriosShake = false;
 										  isEcolhaTimeBtnAtivado = true;
@@ -843,7 +847,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 									  @Override
 									  public void onErrorResponse(VolleyError error) {
 										  isNumerosAleatoriosShake = false;
-										  DialogUtils.dismiss();
+										  AlertDialogUtils.dismiss();
 										  RedirectNetwork.checkRedirect(error, getActivity());
 									  }
 								  });

@@ -38,11 +38,11 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.dao.crud.CarrinhoFavoritoCRUD;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.CompraUtil;
-import br.gov.caixa.loterias.apostas.utils.DialogUtils;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.RateUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
-import br.gov.caixa.loterias.apostas.view.adapter.CartoesRecyclerViewAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.CartoesRecyclerViewAdapter;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 import br.gov.caixa.loterias.apostas.view.listener.FormaDePagamentoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnCompraAsync;
@@ -272,13 +272,13 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
                         configuraTelaSemCartoes(true);
                     }
                 }
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
             }
 
             @Override
             public void onErrorResponse(VolleyError error) {
                 RedirectNetwork.checkRedirect( error, CartoesActivity.this );
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
             }
         });
     }
@@ -286,7 +286,7 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
     private void apresentaAlertaPreCompra() {
         if (!flagVeioMenu) {
             ViewUtils.alertTitleCustomPositiveListener(CartoesActivity.this, "Cancelar", "Confirmar", CartoesActivity.this.getResources().getString(R.string.label_pre_pagamento).replace("{valorCompra}", tvValorTotalCarrinho.getText()), (dialog, which) -> {
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
                 dialog.dismiss();
             },(dialog, which) -> {
                 finish();
@@ -326,7 +326,7 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
     }
 
     private void callWebserviceRegistraApostaAsync(String tokenPagamento, String payment_method_id) {
-        if(!DialogUtils.isShow()){
+        if(!AlertDialogUtils.isShow()){
             showLoading();
         }
         // aqui passa usando um cartao salvo
@@ -358,7 +358,7 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
     }
 
     private void sucessoCompraAsync() {
-        DialogUtils.dismiss();
+        AlertDialogUtils.dismiss();
         AppCenterManager.registraEvento(getResources().getString(R.string.evento_pagamento_sucesso));
         RateUtils.setQtdCompras(RateUtils.getQtdCompras() + 1);
         Intent activity = new Intent(CartoesActivity.this, ConfirmacaoPagamentoActivity.class);
@@ -369,12 +369,12 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
 
     private void redirectCompraAsync(CompraAsyncResponse compraAsyncResponse) {
         RedirectNetwork.checkRedirectSucesso( compraAsyncResponse.getRedirect(), CartoesActivity.this);
-        DialogUtils.dismiss();
+        AlertDialogUtils.dismiss();
     }
 
     private void errorCompraAsync(VolleyError error) {
         RedirectNetwork.checkRedirect( error, CartoesActivity.this );
-        DialogUtils.dismiss();
+        AlertDialogUtils.dismiss();
     }
 
     private void limpaCarrinhoFavorito() {
@@ -386,7 +386,7 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                DialogUtils.show(CartoesActivity.this);
+                AlertDialogUtils.show(CartoesActivity.this);
             }
         });
     }
@@ -398,13 +398,13 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
 
     @Override
     public void onTokenFailure(String msgError) {
-        DialogUtils.dismiss();
+        AlertDialogUtils.dismiss();
         apresentaModal(msgError);
     }
 
     @Override
     public void onPaymentFailure(String msgError) {
-        DialogUtils.dismiss();
+        AlertDialogUtils.dismiss();
         apresentaModal(msgError);
     }
 

@@ -25,7 +25,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DuvidaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListSecaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListSecaoDTOResponse;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
-import br.gov.caixa.loterias.apostas.view.adapter.DetalheDuvidaAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.DetalheDuvidaAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 
