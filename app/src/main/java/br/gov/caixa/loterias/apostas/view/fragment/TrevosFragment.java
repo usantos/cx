@@ -38,6 +38,7 @@ import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaDezenaRecyclerView;
+import br.gov.caixa.loterias.apostas.view.config.DezenaConfig;
 import br.gov.caixa.loterias.apostas.view.holder.DezenaHolder;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemClickListener;
@@ -46,6 +47,7 @@ import br.gov.caixa.loterias.apostas.view.listener.OnTrevosListener;
 @EFragment(R.layout.fragment_trevos)
 public class TrevosFragment extends Fragment implements OnItemClickListener<DezenaHolder> {
 
+    private static final int QUANTIDADE_COLUNA_LISTA = 3;
     @ViewById
     protected TextView escolhaNumerosText;
     @ViewById
@@ -95,9 +97,11 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
         valoresApostas = parametro.getValoresTrevoByNumero(dezenasSelecionadas.size());
         valorApostaSelecionado = valoresApostas.get(0);
 
-        adappter = new ListaDezenaRecyclerView(getListaDezenas(), trevoSelecionadoList, R.color.mais_milionaria_escura, this);
+        DezenaConfig dezenaConfig = new DezenaConfig(false, R.color.mais_milionaria_escura,
+                                                     R.drawable.ic_item_trevo, R.drawable.ic_item_trevo_selecionado);
+        adappter = new ListaDezenaRecyclerView(getListaDezenas(), trevoSelecionadoList, dezenaConfig, this);
         listaTrevos.setAdapter(adappter);
-        RecyclerView.LayoutManager layot = new GridLayoutManager(getContext(), 3);
+        RecyclerView.LayoutManager layot = new GridLayoutManager(getContext(), QUANTIDADE_COLUNA_LISTA);
         listaTrevos.setLayoutManager(layot);
 
         model = new SimularApostaModel(getActivity());
