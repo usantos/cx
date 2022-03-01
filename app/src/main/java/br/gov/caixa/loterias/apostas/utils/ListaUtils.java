@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroPartida;
+import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SuperSeteAdapter;
 
 public class ListaUtils {
 
@@ -45,6 +46,14 @@ public class ListaUtils {
 		}
 
 		return listaOrdenadaAsc;
+	}
+
+	public static ArrayList<ArrayList<Integer>> pegaListaSuperSete(ArrayList<SuperSeteAdapter> listaAdaptersSuperSete) {
+		ArrayList<ArrayList<Integer>> listaNumerosSuperSete = new ArrayList<>();
+		for (SuperSeteAdapter adapter : listaAdaptersSuperSete) {
+			listaNumerosSuperSete.add(new ArrayList<>(adapter.dezenasSelecionadas));
+		}
+		return listaNumerosSuperSete;
 	}
 
 }

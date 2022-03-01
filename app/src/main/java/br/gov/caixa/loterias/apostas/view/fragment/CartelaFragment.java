@@ -446,7 +446,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 			IdentificaoDeUmaApostaDas8Modalidades<List<List<Integer>>> aposta = ApostaUtils
 					.getApostaSuperSete(parametroJogo, dezenasSelecionadas,
 										valorTotalAposta,parentActivity.qtdConcursoSelecionado,
-										pegaListaSuperSete());
+										ListaUtils.pegaListaSuperSete(listaAdaptersSuperSete));
 			AdicionarApostaCarrinhoHelper.incluirApostaCarrinhoCartela(parentActivity, aposta);
 		} else {
 			IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta = getApostaPreenchida();
@@ -560,7 +560,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 					}
 
 					if (isTipoSuperSete) {
-						parentActivity.salvarAposta(aposta, nomeAposta.getText().toString(), pegaListaSuperSete());
+						parentActivity.salvarAposta(aposta, nomeAposta.getText().toString(), ListaUtils.pegaListaSuperSete(listaAdaptersSuperSete));
 					} else {
 						parentActivity.salvarAposta(aposta, nomeAposta.getText().toString(), dezenasSelecionadas);
 
@@ -646,7 +646,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 				if (qtdTotalSelecionadosSuperSete == parentActivity.qtdDezenasPossiveisSelecionado) {
 					adicionarApostaNoCarrinho();
 				} else {
-					preencheNumerosAleatoriosSuperSete(pegaListaSuperSete());
+					preencheNumerosAleatoriosSuperSete(ListaUtils.pegaListaSuperSete(listaAdaptersSuperSete));
 				}
 			} else {
 				preencheNumerosAleatorios();
@@ -788,20 +788,11 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 		}
 	}
 
-	private ArrayList<ArrayList<Integer>> pegaListaSuperSete() {
-		ArrayList<ArrayList<Integer>> listaNumerosSuperSete = new ArrayList<>();
-		for (SuperSeteAdapter adapter : listaAdaptersSuperSete) {
-			listaNumerosSuperSete.add(new ArrayList<>(adapter.dezenasSelecionadas));
-		}
-		return listaNumerosSuperSete;
-	}
-
-
 	private boolean validaSelecaoSuperSete() {
 		//lista de cima igual aos selecionados e no minimo 1 por coluna
 		Boolean                       mostraSalvar          = false;
 		int                           contColunasComSelecao = 0;
-		ArrayList<ArrayList<Integer>> listaSuperSete        = pegaListaSuperSete();
+		ArrayList<ArrayList<Integer>> listaSuperSete        = ListaUtils.pegaListaSuperSete(listaAdaptersSuperSete);
 		for (ArrayList<Integer> listaSelecionados : listaSuperSete) {
 			if (listaSelecionados.size() > 0) {
 				contColunasComSelecao++;
@@ -1154,7 +1145,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 			botaoLimparAposta.setVisibility(View.GONE);
 		} else {
 			if (isTipoSuperSete && isPickerPrognosticos) {
-				atualizaSuperSetePrognosticoMaior(pegaListaSuperSete());
+				atualizaSuperSetePrognosticoMaior(ListaUtils.pegaListaSuperSete(listaAdaptersSuperSete));
 			}
 			atualizarBotaoFinalizarCompletarCartela();
 		}
