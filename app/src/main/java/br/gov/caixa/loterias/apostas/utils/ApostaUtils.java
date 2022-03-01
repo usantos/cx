@@ -89,7 +89,7 @@ public class ApostaUtils {
 		return aposta;
 	}
 
-	public static IdentificaoDeUmaApostaDas8Modalidades getApostaEquipe(ParametroJogoDTO parametroJogo,
+	public static IdentificaoDeUmaApostaDas8Modalidades getApostaTimemania(ParametroJogoDTO parametroJogo,
 																		List<Integer> dezenasSelecionadas,
 																		BigDecimal valorTotalAposta,
 																		int qtdConcursoSelecionado,
@@ -147,10 +147,9 @@ public class ApostaUtils {
 		if (dezenasSelecionadas != null && listaSuperSete.size() > 0) {
 			aposta.setNumerosSelecionados(listaSuperSete);
 		}
-		
+
 		return aposta;
 	}
-
 
 	private static void setApostaLotogol(ParametroJogoDTO parametro, IdentificaoDeUmaApostaDas8Modalidades aposta, HashSet<ParametroPartida> partidas) {
 		if (parametro.getConcurso().getModalidade() == ModalidadeEnum.LOTOGOL) {

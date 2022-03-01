@@ -40,13 +40,9 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 
 import java.math.BigDecimal;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Random;
 
 import br.gov.caixa.loterias.apostas.R;
@@ -60,12 +56,9 @@ import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.data.CompletaJogoNovoRsp;
 import br.gov.caixa.loterias.apostas.model.bo.silce.data.CompletaJogoRsp;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumCharacter;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumInteger;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.Dezena;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.EquipeDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IndicadorSurpresinha;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroEquipe;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
@@ -73,18 +66,18 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroPartida;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PartidaLotecaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PartidaLotogolDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
 import br.gov.caixa.loterias.apostas.utils.ListaUtils;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
-import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.LotecaAdapter;
-import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.LotogolAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SuperSeteAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.TimeCoracaoAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.LotecaAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.LotogolAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView;
 import br.gov.caixa.loterias.apostas.view.listener.CartelaFragmentListener;
@@ -450,7 +443,10 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 		dezenasSelecionadas = ListaUtils.orderAscDezenas(dezenasSelecionadas);
 
 		if (isTipoSuperSete) {
-			IdentificaoDeUmaApostaDas8Modalidades<List<List<Integer>>> aposta = getApostaPreenchidaMatriz();
+			IdentificaoDeUmaApostaDas8Modalidades<List<List<Integer>>> aposta = ApostaUtils
+					.getApostaSuperSete(parametroJogo, dezenasSelecionadas,
+										valorTotalAposta,parentActivity.qtdConcursoSelecionado,
+										pegaListaSuperSete());
 			AdicionarApostaCarrinhoHelper.incluirApostaCarrinhoCartela(parentActivity, aposta);
 		} else {
 			IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta = getApostaPreenchida();
@@ -458,120 +454,27 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 		}
 	}
 
-	private IdentificaoDeUmaApostaDas8Modalidades<List<List<Integer>>> getApostaPreenchidaMatriz() {
-
-		IdentificaoDeUmaApostaDas8Modalidades aposta = new IdentificaoDeUmaApostaDas8Modalidades();
-
-		aposta.setId(Constantes.ZERO_LONG);
-		aposta.setModalidade(parametroJogo.getConcurso().getModalidade());
-
-		DTOEnumCharacter tipoConcurso = new DTOEnumCharacter();
-
-		String valorTipoConcurso = parametroJogo.getConcurso().getTipoConcurso() == TipoConcursoEnum.NORMAL ? "1" : "2";
-		tipoConcurso.setValor(valorTipoConcurso);
-		tipoConcurso.setDescricao(parametroJogo.getConcurso().getTipoConcurso().toString());
-		aposta.setTipoConcurso(tipoConcurso);
-		aposta.setPartidasLotogol(null);
-		aposta.setPartidasLoteca(null);
-
-		if (dezenasSelecionadas != null && pegaListaSuperSete().size() > 0) {
-			aposta.setNumerosSelecionados(pegaListaSuperSete());
-		}
-
-		DTOEnumInteger indicadorSurpresinha = new DTOEnumInteger();
-		indicadorSurpresinha.setValor(IndicadorSurpresinha.NAO_SURPRESINHA);
-		indicadorSurpresinha.setDescricao("");
-
-		aposta.setIndicadorSurpresinha(indicadorSurpresinha);
-		aposta.setValor(valorTotalAposta);
-		aposta.setConcursoAlvo(parametroJogo.getConcurso().getNumero());
-		aposta.setQuantidadeTeimosinhas(parentActivity.qtdConcursoSelecionado);
-		aposta.setQuantidadeApostas(1);
-		aposta.setEspelho(false);
-		aposta.setGerarEspelho(false);
-
-		aposta.setTimeDoCoracao(equipeSelecionada);
-
-		aposta.setConcursoInicial(0);
-		aposta.setSituacao(null);
-		aposta.setTroca(false);
-
-		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
-		Date       date       = new Date();
-
-		DateFormat hourFormat = new SimpleDateFormat("HH:mm:ss", Locale.US);
-		Date       hour       = new Date();
-
-		aposta.setDataEfetivacao(dateFormat.format(date));
-		aposta.setHoraEfetivacao(hourFormat.format(hour));
-		aposta.setVinculoEspelho(Constantes.ZERO_LONG);
-		aposta.setQuantidadeNumeros(dezenasSelecionadas.size());
-		aposta.setSurpresinha(false);
-
-		return aposta;
-	}
-
 	private IdentificaoDeUmaApostaDas8Modalidades getApostaPreenchida() {
 
-		IdentificaoDeUmaApostaDas8Modalidades aposta = new IdentificaoDeUmaApostaDas8Modalidades();
-
-		aposta.setId(Constantes.ZERO_LONG);
-		aposta.setModalidade(parametroJogo.getConcurso().getModalidade());
-
-		DTOEnumCharacter tipoConcurso = new DTOEnumCharacter();
-
-		String valorTipoConcurso = parametroJogo.getConcurso().getTipoConcurso() == TipoConcursoEnum.NORMAL ? "1" : "2";
-		tipoConcurso.setValor(valorTipoConcurso);
-		tipoConcurso.setDescricao(parametroJogo.getConcurso().getTipoConcurso().toString());
-		aposta.setTipoConcurso(tipoConcurso);
-		aposta.setPartidasLotogol(null);
-		aposta.setPartidasLoteca(null);
-		if (dezenasSelecionadas != null && dezenasSelecionadas.size() > 0) {
-			aposta.setNumerosSelecionados(dezenasSelecionadas);
+		if (isDiaSorte){
+			return ApostaUtils.getApostaDiaDeSorte(parametroJogo, dezenasSelecionadas,
+												   valorTotalAposta,
+												   parentActivity.qtdConcursoSelecionado, parentActivity.getMesDeSorteCartela());
+		} else if (isTipoLoteca){
+			return ApostaUtils.getApostaLoteca(parametroJogo, dezenasSelecionadas,
+											   valorTotalAposta,parentActivity.qtdConcursoSelecionado,
+											   partidasSelecionadas);
+		} else if (isTipoLotogol){
+			return ApostaUtils.getApostaLotogol(parametroJogo, dezenasSelecionadas, valorTotalAposta,
+												parentActivity.qtdConcursoSelecionado, partidasSelecionadas);
+		} else if(isTipoTimemania){
+			return ApostaUtils.getApostaTimemania(parametroJogo, dezenasSelecionadas,
+												  valorTotalAposta,parentActivity.qtdConcursoSelecionado,
+												  equipeSelecionada);
+		} else {
+			return ApostaUtils.getApostaPreenchida(parametroJogo, dezenasSelecionadas,
+												   valorTotalAposta, parentActivity.qtdConcursoSelecionado);
 		}
-
-		//		if(dezenasSelecionadas != null && pegaListaSuperSete().size() > 0){
-		//			aposta.setNumerosSelecionados(pegaListaSuperSete());
-		//		}
-
-		DTOEnumInteger indicadorSurpresinha = new DTOEnumInteger();
-		indicadorSurpresinha.setValor(IndicadorSurpresinha.NAO_SURPRESINHA);
-		indicadorSurpresinha.setDescricao("");
-
-		aposta.setIndicadorSurpresinha(indicadorSurpresinha);
-		aposta.setValor(valorTotalAposta);
-		aposta.setConcursoAlvo(parametroJogo.getConcurso().getNumero());
-		aposta.setQuantidadeTeimosinhas(parentActivity.qtdConcursoSelecionado);
-		aposta.setQuantidadeApostas(1);
-		aposta.setEspelho(false);
-		aposta.setGerarEspelho(false);
-
-		aposta.setTimeDoCoracao(equipeSelecionada);
-
-		aposta.setConcursoInicial(0);
-		aposta.setSituacao(null);
-		aposta.setTroca(false);
-
-		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
-		Date       date       = new Date();
-
-		DateFormat hourFormat = new SimpleDateFormat("HH:mm:ss", Locale.US);
-		Date       hour       = new Date();
-
-		aposta.setDataEfetivacao(dateFormat.format(date));
-		aposta.setHoraEfetivacao(hourFormat.format(hour));
-		aposta.setVinculoEspelho(Constantes.ZERO_LONG);
-		aposta.setQuantidadeNumeros(dezenasSelecionadas.size());
-		aposta.setSurpresinha(false);
-
-		if (isDiaSorte) {
-			aposta.setMesDeSorte(parentActivity.getMesDeSorteCartela());
-		}
-
-		this.setApostaLoteca(aposta);
-		this.setApostaLotogol(aposta);
-
-		return aposta;
 	}
 
 	// METODO DO PROTOCOLO ONCLICK
