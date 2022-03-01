@@ -58,7 +58,9 @@ public class DezenaHolder extends LoteriasHolder<Dezena> implements  View.OnClic
 		if (dezena.isSelected()) {
 			if (config.isShapePadrao()) {
 				shape = getShape(config.getDrawableSelecionado(), config.getColor());
+				DrawableCompat.setTint(shape,ContextCompat.getColor(context, config.getColor()));
 				txtNumero.setTextColor(Color.WHITE);
+				txtNumero.setTypeface(Typeface.DEFAULT_BOLD);
 			}else {
 				shape = AppCompatResources.getDrawable(context, config.getDrawableSelecionado());
 				txtNumero.setTextColor(config.getColor());
@@ -67,9 +69,13 @@ public class DezenaHolder extends LoteriasHolder<Dezena> implements  View.OnClic
 		} else {
 			if (config.isShapePadrao()){
 				shape = getShape(config.getDrawable(), config.getColor());
+				DrawableCompat.setTint(shape,ContextCompat.getColor(context, config.getColor()));
+				txtNumero.setTextColor(ContextCompat.getColor(context, config.getColor()));
+				txtNumero.setTypeface(Typeface.DEFAULT_BOLD);
 			}else {
 				shape = AppCompatResources.getDrawable(context, config.getDrawable());
 				txtNumero.setTextColor(ContextCompat.getColor(context, config.getColor()));
+				txtNumero.setTypeface(Typeface.DEFAULT_BOLD);
 			}
 
 		}
