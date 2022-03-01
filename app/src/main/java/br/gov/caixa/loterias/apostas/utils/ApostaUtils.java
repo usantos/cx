@@ -25,7 +25,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 
 public class ApostaUtils {
 
-	public static IdentificaoDeUmaApostaDas8Modalidades getApostaPreenchida(ParametroJogoDTO parametroJogo,
+	private static IdentificaoDeUmaApostaDas8Modalidades getApostaPreenchidaGenerica(ParametroJogoDTO parametroJogo,
 																	 List<Integer> dezenasSelecionadas,
 																	 BigDecimal valorTotalAposta,
 																	 int qtdConcursoSelecionado) {
@@ -43,9 +43,6 @@ public class ApostaUtils {
 		aposta.setTipoConcurso(tipoConcurso);
 		aposta.setPartidasLotogol(null);
 		aposta.setPartidasLoteca(null);
-		if (dezenasSelecionadas != null && dezenasSelecionadas.size() > 0) {
-			aposta.setNumerosSelecionados(dezenasSelecionadas);
-		}
 
 		DTOEnumInteger indicadorSurpresinha = new DTOEnumInteger();
 		indicadorSurpresinha.setValor(IndicadorSurpresinha.NAO_SURPRESINHA);
@@ -74,6 +71,20 @@ public class ApostaUtils {
 		aposta.setVinculoEspelho(Constantes.ZERO_LONG);
 		aposta.setQuantidadeNumeros(dezenasSelecionadas.size());
 		aposta.setSurpresinha(false);
+
+		return aposta;
+	}
+
+	public static IdentificaoDeUmaApostaDas8Modalidades getApostaPreenchida(ParametroJogoDTO parametroJogo,
+																			List<Integer> dezenasSelecionadas,
+																			BigDecimal valorTotalAposta,
+																			int qtdConcursoSelecionado) {
+
+		IdentificaoDeUmaApostaDas8Modalidades aposta = getApostaPreenchida(parametroJogo, dezenasSelecionadas, valorTotalAposta, qtdConcursoSelecionado);
+
+		if (dezenasSelecionadas != null && dezenasSelecionadas.size() > 0) {
+			aposta.setNumerosSelecionados(dezenasSelecionadas);
+		}
 
 		return aposta;
 	}
@@ -125,6 +136,21 @@ public class ApostaUtils {
 
 		return aposta;
 	}
+
+	public static IdentificaoDeUmaApostaDas8Modalidades getApostaSuperSete(ParametroJogoDTO parametroJogo,
+																		List<Integer> dezenasSelecionadas,
+																		BigDecimal valorTotalAposta,
+																		int qtdConcursoSelecionado,
+																		   ArrayList<ArrayList<Integer>> listaSuperSete){
+		IdentificaoDeUmaApostaDas8Modalidades aposta = getApostaPreenchida(parametroJogo, dezenasSelecionadas, valorTotalAposta, qtdConcursoSelecionado);
+
+		if (dezenasSelecionadas != null && listaSuperSete.size() > 0) {
+			aposta.setNumerosSelecionados(listaSuperSete);
+		}
+		
+		return aposta;
+	}
+
 
 	private static void setApostaLotogol(ParametroJogoDTO parametro, IdentificaoDeUmaApostaDas8Modalidades aposta, HashSet<ParametroPartida> partidas) {
 		if (parametro.getConcurso().getModalidade() == ModalidadeEnum.LOTOGOL) {
