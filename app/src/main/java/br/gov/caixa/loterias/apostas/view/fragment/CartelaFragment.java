@@ -68,7 +68,6 @@ import br.gov.caixa.loterias.apostas.utils.Constantes;
 import br.gov.caixa.loterias.apostas.utils.ListaUtils;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
-import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SuperSeteAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.TimeCoracaoAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaDezenaRecyclerView;
@@ -384,10 +383,10 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 					.getApostaSuperSete(parametroJogo, dezenasSelecionadas,
 										valorTotalAposta,parentActivity.qtdConcursoSelecionado,
 										ListaUtils.pegaListaSuperSete(listaAdaptersSuperSete));
-			AdicionarApostaCarrinhoHelper.incluirApostaCarrinhoCartela(parentActivity, aposta);
+			model.adidionaApostaNoCarrinho(parentActivity, aposta);
 		} else {
 			IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta = getApostaPreenchida();
-			AdicionarApostaCarrinhoHelper.incluirApostaCarrinhoCartela(parentActivity, aposta);
+			model.adidionaApostaNoCarrinho(parentActivity, aposta);
 		}
 	}
 
@@ -600,7 +599,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 
 				aposta.setGerarEspelho(true);
 				aposta.setValor(aposta.getValor().divide(Constantes.DOIS_BIG_DECIMAL));
-				AdicionarApostaCarrinhoHelper.incluirApostaCarrinhoCartela(parentActivity, aposta);
+				model.adidionaApostaNoCarrinho(parentActivity, aposta);
 			} else {
 				adicionarApostaNoCarrinho();
 			}
