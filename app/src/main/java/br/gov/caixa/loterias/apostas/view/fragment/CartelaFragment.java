@@ -47,13 +47,9 @@ import java.util.Random;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.SimularApostaActivity;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
-import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
-import br.gov.caixa.loterias.apostas.model.bo.silce.data.CompletaJogoNovoRsp;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.Dezena;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
@@ -65,7 +61,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
 import br.gov.caixa.loterias.apostas.model.model.SimularApostaModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
-import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
 import br.gov.caixa.loterias.apostas.utils.ListaUtils;
 import br.gov.caixa.loterias.apostas.utils.Utils;
@@ -193,6 +188,8 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 				dezenas.add(new Dezena("" + i, Boolean.FALSE));
 			}
 		}
+
+		model = new SimularApostaModel(getActivity());
 	}
 
 	@Override
@@ -627,10 +624,6 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	}
 
 	private void preencheNumerosAleatorios() {
-		if (model == null){
-			model = new SimularApostaModel(getActivity());
-		}
-
 		AlertDialogUtils.show(getActivity());
 
 		dezenasSelecionadas = ListaUtils.orderAscDezenas(dezenasSelecionadas);
@@ -657,33 +650,27 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 
 	private void preencheNumerosAleatoriosSuperSete(ArrayList<ArrayList<Integer>> listaInteiros) {
 		AlertDialogUtils.show(getActivity());
-		ApostaBO apostaBO = ApostaBO_.getInstance_(getActivity());
 		dezenasSelecionadas = ListaUtils.orderAscDezenas(dezenasSelecionadas);
 
-		apostaBO.completaJogoNovo(parentActivity.qtdDezenasPossiveisSelecionado, listaInteiros,
-								  parametroJogo.getConcurso().getModalidade().name(),
-								  new RequestListener<CompletaJogoNovoRsp>() {
-									  @Override
-									  public void onResponse(CompletaJogoNovoRsp response) {
-										  AlertDialogUtils.dismiss();
-										  AppCenterManager.registraEvento( "ENTROU_COMPLETAR_COM_NUMEROS_ALEATORIOS");
-										  isNumerosAleatoriosShake = false;
-										  isEcolhaTimeBtnAtivado = true;
-										  if (response.getRedirect() != null) {
-											  RedirectNetwork.checkRedirectSucesso(response.getRedirect(), getActivity());
-										  }
-										  preencheSuperSete(response.getPayload());
-										  atualizaBotoeslayout();
-										  atualizarBotaoFinalizarAdicionarCarrinho();
-									  }
+		model.preencheNumerosAleatoriosSuperSete(parentActivity.qtdDezenasPossiveisSelecionado, listaInteiros, parametroJogo.getConcurso().getModalidade().name(),
+												 new OnSilceListener<List<List<Integer>>>() {
+													 @Override
+													 public void success(List<List<Integer>> payload) {
+														 AlertDialogUtils.dismiss();
+														 isNumerosAleatoriosShake = false;
+														 isEcolhaTimeBtnAtivado = true;
 
-									  @Override
-									  public void onErrorResponse(VolleyError error) {
-										  isNumerosAleatoriosShake = false;
-										  AlertDialogUtils.dismiss();
-										  RedirectNetwork.checkRedirect(error, getActivity());
-									  }
-								  });
+														 preencheSuperSete(payload);
+														 atualizaBotoeslayout();
+														 atualizarBotaoFinalizarAdicionarCarrinho();
+													 }
+
+													 @Override
+													 public void error(VolleyError error) {
+														 isNumerosAleatoriosShake = false;
+														 AlertDialogUtils.dismiss();
+													 }
+												 });
 	}
 
 	private ArrayList<ArrayList<Integer>> atualizaSuperSetePrognosticoMaior(ArrayList<ArrayList<Integer>> listaInteiros) {
