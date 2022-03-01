@@ -80,7 +80,7 @@ public class ApostaUtils {
 																			BigDecimal valorTotalAposta,
 																			int qtdConcursoSelecionado) {
 
-		IdentificaoDeUmaApostaDas8Modalidades aposta = getApostaPreenchida(parametroJogo, dezenasSelecionadas, valorTotalAposta, qtdConcursoSelecionado);
+		IdentificaoDeUmaApostaDas8Modalidades aposta = getApostaPreenchidaGenerica(parametroJogo, dezenasSelecionadas, valorTotalAposta, qtdConcursoSelecionado);
 
 		if (dezenasSelecionadas != null && dezenasSelecionadas.size() > 0) {
 			aposta.setNumerosSelecionados(dezenasSelecionadas);
@@ -94,7 +94,7 @@ public class ApostaUtils {
 																		BigDecimal valorTotalAposta,
 																		int qtdConcursoSelecionado,
 																		ParametroEquipe equipeSelecionada){
-		IdentificaoDeUmaApostaDas8Modalidades aposta = getApostaPreenchida(parametroJogo, dezenasSelecionadas, valorTotalAposta, qtdConcursoSelecionado);
+		IdentificaoDeUmaApostaDas8Modalidades aposta = getApostaPreenchidaGenerica(parametroJogo, dezenasSelecionadas, valorTotalAposta, qtdConcursoSelecionado);
 
 		aposta.setTimeDoCoracao(equipeSelecionada);
 
@@ -106,7 +106,7 @@ public class ApostaUtils {
 																			BigDecimal valorTotalAposta,
 																			int qtdConcursoSelecionado,
 																			ParametroMesDeSorte mesDeSorte){
-		IdentificaoDeUmaApostaDas8Modalidades aposta = getApostaPreenchida(parametroJogo, dezenasSelecionadas, valorTotalAposta, qtdConcursoSelecionado);
+		IdentificaoDeUmaApostaDas8Modalidades aposta = getApostaPreenchidaGenerica(parametroJogo, dezenasSelecionadas, valorTotalAposta, qtdConcursoSelecionado);
 
 		aposta.setMesDeSorte(mesDeSorte);
 
@@ -118,7 +118,7 @@ public class ApostaUtils {
 																			BigDecimal valorTotalAposta,
 																			int qtdConcursoSelecionado,
 																		 HashSet<ParametroPartida> partidasSelecionadas){
-		IdentificaoDeUmaApostaDas8Modalidades aposta = getApostaPreenchida(parametroJogo, dezenasSelecionadas, valorTotalAposta, qtdConcursoSelecionado);
+		IdentificaoDeUmaApostaDas8Modalidades aposta = getApostaPreenchidaGenerica(parametroJogo, dezenasSelecionadas, valorTotalAposta, qtdConcursoSelecionado);
 
 		setApostaLotogol(parametroJogo, aposta, partidasSelecionadas);
 
@@ -130,7 +130,7 @@ public class ApostaUtils {
 																		 BigDecimal valorTotalAposta,
 																		 int qtdConcursoSelecionado,
 																		 HashSet<ParametroPartida> partidasSelecionadas){
-		IdentificaoDeUmaApostaDas8Modalidades aposta = getApostaPreenchida(parametroJogo, dezenasSelecionadas, valorTotalAposta, qtdConcursoSelecionado);
+		IdentificaoDeUmaApostaDas8Modalidades aposta = getApostaPreenchidaGenerica(parametroJogo, dezenasSelecionadas, valorTotalAposta, qtdConcursoSelecionado);
 
 		setApostaLoteca(parametroJogo, aposta, partidasSelecionadas);
 
@@ -142,7 +142,7 @@ public class ApostaUtils {
 																		BigDecimal valorTotalAposta,
 																		int qtdConcursoSelecionado,
 																		   ArrayList<ArrayList<Integer>> listaSuperSete){
-		IdentificaoDeUmaApostaDas8Modalidades aposta = getApostaPreenchida(parametroJogo, dezenasSelecionadas, valorTotalAposta, qtdConcursoSelecionado);
+		IdentificaoDeUmaApostaDas8Modalidades aposta = getApostaPreenchidaGenerica(parametroJogo, dezenasSelecionadas, valorTotalAposta, qtdConcursoSelecionado);
 
 		if (dezenasSelecionadas != null && listaSuperSete.size() > 0) {
 			aposta.setNumerosSelecionados(listaSuperSete);
