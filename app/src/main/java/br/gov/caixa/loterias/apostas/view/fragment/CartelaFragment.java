@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.hardware.Sensor;
-import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
@@ -83,42 +82,17 @@ import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView;
 import br.gov.caixa.loterias.apostas.view.listener.CartelaFragmentListener;
 import br.gov.caixa.loterias.apostas.view.listener.LocateAdapterListener;
 import br.gov.caixa.loterias.apostas.view.listener.LotogolListener;
+import br.gov.caixa.loterias.apostas.view.listener.custom.LoteriasSensorEventListener;
 
 public class CartelaFragment extends Fragment implements OnClickListener, LocateAdapterListener, LotogolListener {
 	private SensorManager mSensorManager;
-	private float mAccel; // acceleration apart from gravity
-	private float mAccelCurrent; // current acceleration including gravity
-	private float mAccelLast; // last acceleration including gravity
 	private boolean isNumerosAleatoriosShake = false;
 	private BigDecimal valorEmReais = BigDecimal.ZERO;
 	private LotecaAdapter lotecaAdapter;
 
-	private final SensorEventListener mSensorListener = new SensorEventListener() {
-
-		public void onSensorChanged(SensorEvent se) {
-			float x = se.values[0];
-			float y = se.values[1];
-			float z = se.values[2];
-			mAccelLast = mAccelCurrent;
-			mAccelCurrent = (float) Math.sqrt((double) (x * x + y * y + z * z));
-			float delta = mAccelCurrent - mAccelLast;
-			mAccel = mAccel * 0.9f + delta; // perform low-cut filter
-
-			if (mAccel > 10 && mAccel < 16) {
-				if (!isNumerosAleatoriosShake) {
-                    /*isNumerosAleatoriosShake = true;
-                    botaoLimparAposta.performClick();
-                    preencheNumerosAleatorios();*/
-				}
-			}
-			//System.out.println(mAccel);
-		}
-
-		public void onAccuracyChanged(Sensor sensor, int accuracy) {
-		}
-
-
-	};
+	private final SensorEventListener mSensorListener = new LoteriasSensorEventListener(0.00f,
+																						SensorManager.GRAVITY_EARTH,
+																						SensorManager.GRAVITY_EARTH).getSensor();
 
 	private List<Dezena> dezenas = new ArrayList<>();
 	private List<Integer> dezenasSelecionadas = new ArrayList<>();
@@ -213,9 +187,6 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 		super.onCreate(savedInstanceState);
 		mSensorManager = (SensorManager) this.getContext().getSystemService(Context.SENSOR_SERVICE);
 		mSensorManager.registerListener(mSensorListener, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
-		mAccel = 0.00f;
-		mAccelCurrent = SensorManager.GRAVITY_EARTH;
-		mAccelLast = SensorManager.GRAVITY_EARTH;
 
 		parentActivity = ((SimularApostaActivity) getActivity());
 		if (parentActivity != null) {
