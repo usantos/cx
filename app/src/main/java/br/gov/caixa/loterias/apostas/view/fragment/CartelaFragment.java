@@ -118,15 +118,9 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	private ScrollView svSuperSete;
 	private int qtdTotalSelecionadosSuperSete = 0;
 
-	private boolean isTipoLoteca;
-	private boolean isTipoSuperSete;
-	private boolean isTipoTimemania;
 	private boolean isEcolhaTimeBtnAtivado;
 	private boolean isTelaSelecaoTimeAtivado;
-	private boolean isTipoLotogol;
-	private boolean isTipoLotomania;
 	private boolean isEscolhaTimeCoracaoSurpresinha;
-	private boolean isDiaSorte;
 
 	public BigDecimal valorTotalAposta;
 	public int typeGameColorLight, typeGameColorDark, numeroConcursoAtual;
@@ -146,7 +140,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 			parametroJogo = ViewUtils.getParametroSimulacao(sessaoUsuario, tipoJogo).getParametroJogo();
 		}
 
-		if (tipoJogo == ModalidadeEnum.MAIS_MILIONARIA){
+		if (parametroJogo.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)){
 			ParametroValorApostaDTO valorAposta = parametroJogo.getValorApostaBy(numPrognostico, parametroJogo.getTrevos().getQtdMinima());
 			parentActivity.atualizaValorAposta(valorAposta);
 
@@ -171,7 +165,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 			valorEmReais = valorEmReais.multiply(BigDecimal.valueOf(qtdTeimosinhas).movePointLeft(0));
 		}
 
-		if (isTipoLotomania && selcioneOutrosNumeros.isChecked()) {
+		if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOMANIA) && selcioneOutrosNumeros.isChecked()) {
 			valorEmReais = valorEmReais.multiply(Constantes.DOIS_BIG_DECIMAL);
 		}
 
@@ -191,7 +185,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 			identificarTipoJogo();
 		}
 
-		if (parametroJogo != null && dezenas.size() == 0 && parametroJogo.getPrognosticoMaximo() != null && !isTipoSuperSete) {
+		if (parametroJogo != null && dezenas.size() == 0 && parametroJogo.getPrognosticoMaximo() != null && !parametroJogo.isTipoJogo(ModalidadeEnum.SUPER_7)) {
 			for (int i = 1; i <= parametroJogo.getPrognosticoMaximo(); i++) {
 				dezenas.add(new Dezena("" + i, Boolean.FALSE));
 			}
@@ -202,13 +196,13 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		int idList;
-		if (isTipoLoteca || isTipoLotogol) {
+		if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA) || parametroJogo.isTipoJogo(ModalidadeEnum.LOTOGOL)) {
 			idList = R.id.recyclerViewPartida;
 		} else {
 			idList = R.id.listaDezenas;
 		}
 
-		if (isTipoTimemania) {
+		if (parametroJogo.isTipoJogo(ModalidadeEnum.TIMEMANIA)) {
 			RelativeLayout ttvLayout           = view.findViewById(R.id.ttvLayout);
 			TextView       ttvEscolha          = view.findViewById(R.id.ttvEscolha);
 			TextView       ttvPagina           = view.findViewById(R.id.ttvPagina);
@@ -223,7 +217,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 			ttvLayout.setVisibility(View.VISIBLE);
 		}
 
-		if (isTipoLotomania) {
+		if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOMANIA)) {
 			opcaoOutrosNumerosLayout = view.findViewById(R.id.opcaoOutrosNumerosLayout);
 			selcioneOutrosNumeros = opcaoOutrosNumerosLayout.findViewById(R.id.selcioneOutrosNumeros);
 			TextView infoSelecioneOutrosNumeros = opcaoOutrosNumerosLayout.findViewById(R.id.infoSelecioneOutrosNumeros);
@@ -236,7 +230,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 			}
 		}
 
-		if (isTipoSuperSete) {
+		if (parametroJogo.isTipoJogo(ModalidadeEnum.SUPER_7)) {
 			rlColunasSuperSete = view.findViewById(R.id.rl_colunas_super_7);
 			svSuperSete = view.findViewById(R.id.sv_super_sete);
 			rlColunasSuperSete.setVisibility(View.VISIBLE);
@@ -252,7 +246,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 			limparTimeSelecionado();
 		}
 
-		if (isTipoTimemania && !isTelaSelecaoTimeAtivado) {
+		if (parametroJogo.isTipoJogo(ModalidadeEnum.TIMEMANIA) && !isTelaSelecaoTimeAtivado) {
 			// Tela de escolha de números
 			TextView ttvEscolha = view.findViewById(R.id.ttvEscolha);
 			TextView ttvPagina  = view.findViewById(R.id.ttvPagina);
@@ -285,13 +279,13 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.fragment_cartela, container, false);
-		if ((isDiaSorte && parentActivity.getMesDeSorteCartela() == null) || tipoJogo == ModalidadeEnum.MAIS_MILIONARIA) {
+		if ((parametroJogo.isTipoJogo(ModalidadeEnum.DIA_DE_SORTE) && parentActivity.getMesDeSorteCartela() == null) || parametroJogo.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)) {
 			RelativeLayout ttvLayout           = view.findViewById(R.id.ttvLayout);
 			TextView       ttvEscolha          = view.findViewById(R.id.ttvEscolha);
 			TextView       ttvPagina           = view.findViewById(R.id.ttvPagina);
 			TextView       ttvPaginaQuantidade = view.findViewById(R.id.ttvPaginaQuantidade);
 
-			if(tipoJogo == ModalidadeEnum.MAIS_MILIONARIA){
+			if(parametroJogo.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)){
 				ttvEscolha.setText(getString(R.string.escolha_de_seis_a_doze_numeros));
 			}else {
 				ttvEscolha.setText(ViewUtils.textFuturaAndFuturaBold(parentActivity, getString(R.string.dia_sorte_escolha_dia)));
@@ -299,11 +293,11 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 			ttvPaginaQuantidade.setText(getString(R.string.paginacao_quantidade, getString(R.string.label_numerico_dois)));
 			ttvLayout.setVisibility(View.VISIBLE);
 
-			if (isDiaSorte){
+			if (parametroJogo.isTipoJogo(ModalidadeEnum.DIA_DE_SORTE)){
 				ttvEscolha.setTextColor(getResources().getColor(R.color.diasortemedio));
 				ttvPagina.setTextColor(getResources().getColor(R.color.diasortemedio));
 				ttvPaginaQuantidade.setTextColor(getResources().getColor(R.color.diasorteclaro));
-			}else if(tipoJogo == ModalidadeEnum.MAIS_MILIONARIA){
+			}else if(parametroJogo.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)){
 				ttvEscolha.setTextColor(getResources().getColor(R.color.mais_milionaria_media));
 				ttvPagina.setTextColor(getResources().getColor(R.color.mais_milionaria_media));
 				ttvPaginaQuantidade.setTextColor(getResources().getColor(R.color.mais_milionaria_clara));
@@ -342,38 +336,8 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	}
 
 	private void identificarTipoJogo() {
-
 		if (parentActivity.getIntent() != null) {
 			tipoJogo = (ModalidadeEnum) parentActivity.getIntent().getSerializableExtra("tipoAposta");
-		}
-
-		switch (tipoJogo) {
-			case DIA_DE_SORTE:
-				isDiaSorte = true;
-				break;
-			case MEGA_SENA:
-				break;
-			case QUINA:
-				break;
-			case LOTOFACIL:
-				break;
-			case DUPLA_SENA:
-				break;
-			case TIMEMANIA:
-				isTipoTimemania = true;
-				break;
-			case LOTOMANIA:
-				isTipoLotomania = true;
-				break;
-			case LOTECA:
-				isTipoLoteca = true;
-				break;
-			case LOTOGOL:
-				isTipoLotogol = true;
-				break;
-			case SUPER_7:
-				isTipoSuperSete = true;
-				break;
 		}
 	}
 
@@ -407,7 +371,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 
 		dezenasSelecionadas = ListaUtils.orderAscDezenas(dezenasSelecionadas);
 
-		if (isTipoSuperSete) {
+		if (parametroJogo.isTipoJogo(ModalidadeEnum.SUPER_7)) {
 			IdentificaoDeUmaApostaDas8Modalidades<List<List<Integer>>> aposta = ApostaUtils
 					.getApostaSuperSete(parametroJogo, dezenasSelecionadas,
 										valorTotalAposta,parentActivity.qtdConcursoSelecionado,
@@ -421,18 +385,18 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 
 	private IdentificaoDeUmaApostaDas8Modalidades getApostaPreenchida() {
 
-		if (isDiaSorte){
+		if (parametroJogo.isTipoJogo(ModalidadeEnum.DIA_DE_SORTE)){
 			return ApostaUtils.getApostaDiaDeSorte(parametroJogo, dezenasSelecionadas,
 												   valorTotalAposta,
 												   parentActivity.qtdConcursoSelecionado, parentActivity.getMesDeSorteCartela());
-		} else if (isTipoLoteca){
+		} else if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA)){
 			return ApostaUtils.getApostaLoteca(parametroJogo, dezenasSelecionadas,
 											   valorTotalAposta,parentActivity.qtdConcursoSelecionado,
 											   partidasSelecionadas);
-		} else if (isTipoLotogol){
+		} else if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOGOL)){
 			return ApostaUtils.getApostaLotogol(parametroJogo, dezenasSelecionadas, valorTotalAposta,
 												parentActivity.qtdConcursoSelecionado, partidasSelecionadas);
-		} else if(isTipoTimemania){
+		} else if(parametroJogo.isTipoJogo(ModalidadeEnum.TIMEMANIA)){
 			return ApostaUtils.getApostaTimemania(parametroJogo, dezenasSelecionadas,
 												  valorTotalAposta,parentActivity.qtdConcursoSelecionado,
 												  equipeSelecionada);
@@ -447,7 +411,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	public void onClick(View view) {
 		switch (view.getId()) {
 			case R.id.botaoAdicionarCompletarCartela: {
-				if (isTipoTimemania) {
+				if (parametroJogo.isTipoJogo(ModalidadeEnum.TIMEMANIA)) {
 					if (isEcolhaTimeBtnAtivado && dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) {
 						if (mGridTimeCoracao == null) {
 							mostrarCartelaEscolhaTimeCoracao();
@@ -473,13 +437,13 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 			break;
 
 			case R.id.botaoLimparAposta: { // LIMPAR APOSTA
-				if (isTipoLoteca && partidasSelecionadas != null) {
+				if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA) && partidasSelecionadas != null) {
 					limparPartidadasSelecionasLoteca(Boolean.FALSE);
-				} else if (isTipoTimemania && isTelaSelecaoTimeAtivado) {
+				} else if (parametroJogo.isTipoJogo(ModalidadeEnum.TIMEMANIA) && isTelaSelecaoTimeAtivado) {
 					limparTimeSelecionado();
-				} else if (isTipoLotogol && partidasSelecionadas != null) {
+				} else if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOGOL) && partidasSelecionadas != null) {
 					limparPartidasSelecionadasLotogol(Boolean.FALSE);
-				} else if (isTipoSuperSete) {
+				} else if (parametroJogo.isTipoJogo(ModalidadeEnum.SUPER_7)) {
 					limpaNumerosSuperSete();
 				} else {
 					dezenasSelecionadas.clear();
@@ -519,11 +483,11 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 
 				if (!TextUtils.isEmpty(nomeAposta.getText().toString())) {
 					ApostaFavoritaDTO aposta = new ApostaFavoritaDTO();
-					if (isTipoTimemania && equipeSelecionada != null) {
+					if (parametroJogo.isTipoJogo(ModalidadeEnum.TIMEMANIA) && equipeSelecionada != null) {
 						aposta.setTimeDoCoracao(equipeSelecionada);
 					}
 
-					if (isTipoSuperSete) {
+					if (parametroJogo.isTipoJogo(ModalidadeEnum.SUPER_7)) {
 						parentActivity.salvarAposta(aposta, nomeAposta.getText().toString(), ListaUtils.pegaListaSuperSete(listaAdaptersSuperSete));
 					} else {
 						parentActivity.salvarAposta(aposta, nomeAposta.getText().toString(), dezenasSelecionadas);
@@ -552,7 +516,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	}
 
 	private void limparOpcaoOutrosNumerosLayout() {
-		if (isTipoLotomania && opcaoOutrosNumerosLayout.getVisibility() == View.VISIBLE) {
+		if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOMANIA) && opcaoOutrosNumerosLayout.getVisibility() == View.VISIBLE) {
 			setVisibilityCheckedNumerosLayout(View.GONE);
 			atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
 		}
@@ -578,11 +542,11 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	}
 
 	private void adcionarApostaPreencherNumerosAleatorios() {
-		if (isTipoTimemania) {
+		if (parametroJogo.isTipoJogo(ModalidadeEnum.TIMEMANIA)) {
 			adicionarApostaPreencherNumerosTimemania();
-		} else if (isTipoLotomania) {
+		} else if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOMANIA)) {
 			adicionarApostaPreencherNumerosLotomania();
-		} else if (isTipoLoteca) {
+		} else if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA)) {
 			int duplo  = Integer.parseInt(parentActivity.getLabelValueDuplasLoteca().getText().toString());
 			int triplo = Integer.parseInt(parentActivity.getLabelValueTriplasLoteca().getText().toString());
 
@@ -591,22 +555,22 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 			} else {
 				//TODO implementar regra de completar placar
 			}
-		} else if (isTipoLotogol) {
+		} else if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOGOL)) {
 			if (partidasSelecionadas.size() == parametroJogo.getPartidas().size()) {
 				adicionarApostaNoCarrinho();
 			} else {
 				//TODO implementar regra de completar placar
 			}
 		} else if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) { //Adiciona aposta no carrinho
-			if (isDiaSorte && parentActivity.isFragmentCartela()) {
+			if (parametroJogo.isTipoJogo(ModalidadeEnum.DIA_DE_SORTE) && parentActivity.isFragmentCartela()) {
 				parentActivity.mesDeSorteFragment(dezenasSelecionadas, false);
-			} else if(tipoJogo == ModalidadeEnum.MAIS_MILIONARIA && parentActivity.isFragmentCartela()){
+			} else if(parametroJogo.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA) && parentActivity.isFragmentCartela()){
 				parentActivity.trevosFragment(dezenasSelecionadas);
 			} else {
 				adicionarApostaNoCarrinho();
 			}
 		} else {
-			if (isTipoSuperSete) {
+			if (parametroJogo.isTipoJogo(ModalidadeEnum.SUPER_7)) {
 				if (qtdTotalSelecionadosSuperSete == parentActivity.qtdDezenasPossiveisSelecionado) {
 					adicionarApostaNoCarrinho();
 				} else {
@@ -852,22 +816,22 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 		botaoLimparAposta.setOnClickListener(this);
 
 
-		if (isTipoLoteca || isTipoLotogol) {
+		if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA) || parametroJogo.isTipoJogo(ModalidadeEnum.LOTOGOL)) {
 			botaoFinalizar.setVisibility(View.INVISIBLE);
 			String textoBotao;
-			if (isTipoLoteca) {
+			if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA)) {
 				textoBotao = getString(R.string.label_selecionar_times_aleatoriamente);
 			} else {
 				textoBotao = getString(R.string.label_complete_placar_aleatoriamente);
 			}
 			botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(getActivity(), textoBotao));
 		} else if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) {
-			if (isTipoTimemania) {
+			if (parametroJogo.isTipoJogo(ModalidadeEnum.TIMEMANIA)) {
 				mGridTimeCoracao = null;
 				atualizarBotaoFinalizar(R.string.label_escolha_time_coracao);
-			} else if (isDiaSorte) {
+			} else if (parametroJogo.isTipoJogo(ModalidadeEnum.DIA_DE_SORTE)) {
 				atualizarBotaoFinalizar(R.string.escolhaOmes);
-			} else if(tipoJogo == ModalidadeEnum.MAIS_MILIONARIA){
+			} else if(parametroJogo.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)){
 				atualizarBotaoFinalizar(R.string.label_escolha_trevos);
 			}else {
 				botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(fragmentView.getContext(), getString(R.string.adicionarAoCarrinho)));
@@ -905,13 +869,13 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	}
 
 	private void verificaSeMostraBotaoLimparAposta() {
-		if (isTipoLoteca) {
+		if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA)) {
 			if (partidasSelecionadas.isEmpty()) {
 				botaoLimparAposta.setVisibility(View.GONE);
 			} else {
 				botaoLimparAposta.setVisibility(View.VISIBLE);
 			}
-		} else if (isTipoLotogol) {
+		} else if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOGOL)) {
 
 			int visibility = View.GONE;
 			for (ParametroPartida parametroPartida : parametroJogo.getPartidas()) {
@@ -921,7 +885,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 				}
 			}
 			botaoLimparAposta.setVisibility(visibility);
-		} else if (isTipoTimemania) {
+		} else if (parametroJogo.isTipoJogo(ModalidadeEnum.TIMEMANIA)) {
 			if (isTelaSelecaoTimeAtivado && (equipeSelecionada == null || !equipeSelecionada.isSelecionado())) {
 				botaoLimparAposta.setVisibility(View.GONE);
 			} else if (!isTelaSelecaoTimeAtivado && dezenasSelecionadas.isEmpty()) {
@@ -929,7 +893,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 			} else {
 				botaoLimparAposta.setVisibility(View.VISIBLE);
 			}
-		} else if (isTipoSuperSete) {
+		} else if (parametroJogo.isTipoJogo(ModalidadeEnum.SUPER_7)) {
 			if (mostraLimparSuperSete()) {
 				botaoLimparAposta.setVisibility(View.VISIBLE);
 			} else {
@@ -968,18 +932,17 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 		return false;
 	}
 
-
 	private void verificaSeMostraSalvarApostaView() {
 
-		if (isTipoLoteca || isTipoLotogol || isDiaSorte || tipoJogo == ModalidadeEnum.MAIS_MILIONARIA) {
+		if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA) || parametroJogo.isTipoJogo(ModalidadeEnum.LOTOGOL) || parametroJogo.isTipoJogo(ModalidadeEnum.DIA_DE_SORTE) || parametroJogo.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)) {
 			ocutarSalvarAposta();
-		} else if (isTipoTimemania) {
+		} else if (parametroJogo.isTipoJogo(ModalidadeEnum.TIMEMANIA)) {
 			if (isTelaSelecaoTimeAtivado && (equipeSelecionada != null && equipeSelecionada.isSelecionado())) {
 				mostrarSalvarAposta();
 			} else {
 				ocutarSalvarAposta();
 			}
-		} else if (isTipoSuperSete) {
+		} else if (parametroJogo.isTipoJogo(ModalidadeEnum.SUPER_7)) {
 			if (validaSelecaoSuperSete()) {
 				mostrarSalvarAposta();
 			} else {
@@ -1008,7 +971,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	}
 
 	public void atualizaStatusBotaoFinalizar(Boolean isPickerPrognosticos) {
-		if (isTipoLotogol) {
+		if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOGOL)) {
 			if (partidasSelecionadas.size() < parametroJogo.getPartidas().size()) {
 				botaoFinalizar.setVisibility(View.INVISIBLE);
 				botaoFinalizar.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.cinza));
@@ -1017,7 +980,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 				botaoFinalizar.setVisibility(View.VISIBLE);
 				atualizarBotaoFinalizarAdicionarCarrinho();
 			}
-		} else if (isTipoTimemania) {
+		} else if (parametroJogo.isTipoJogo(ModalidadeEnum.TIMEMANIA)) {
 			if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado && isEcolhaTimeBtnAtivado) {
 				botaoFinalizar.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.timemaniaescuro));
 				if (mGridTimeCoracao != null) {
@@ -1030,7 +993,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 			} else {
 				atualizarAdicionarCarinhoCompletarCartela(isPickerPrognosticos);
 			}
-		} else if (isTipoSuperSete) {
+		} else if (parametroJogo.isTipoJogo(ModalidadeEnum.SUPER_7)) {
 			if (matrizSelecionada != null) {
 				preencheSuperSete(matrizSelecionada);
 				matrizSelecionada = null;
@@ -1052,7 +1015,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	}
 
 	private void atualizaStatusBotaoFinalizarLoteca(Boolean mostrarBotao) {
-		if (isTipoLoteca) {
+		if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA)) {
 			int duplo  = Integer.parseInt(parentActivity.getLabelValueDuplasLoteca().getText().toString());
 			int triplo = Integer.parseInt(parentActivity.getLabelValueTriplasLoteca().getText().toString());
 
@@ -1074,13 +1037,13 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 
 	private void atualizarAdicionarCarinhoCompletarCartela(Boolean isPickerPrognosticos) {
 		if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado || isEscolhaTimeCoracaoSurpresinha) {
-			if (isDiaSorte) {
+			if (parametroJogo.isTipoJogo(ModalidadeEnum.DIA_DE_SORTE)) {
 				atualizarBotaoFinalizar(R.string.escolhaOmes);
-			} else if(tipoJogo == ModalidadeEnum.MAIS_MILIONARIA){
+			} else if(parametroJogo.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)){
 				atualizarBotaoFinalizar(R.string.label_escolha_trevos);
 			} else {
 				atualizarBotaoFinalizarAdicionarCarrinho();
-				if (isTipoTimemania) {
+				if (parametroJogo.isTipoJogo(ModalidadeEnum.TIMEMANIA)) {
 					if (equipeSelecionada != null && equipeSelecionada.isSelecionado()) {
 						botaoFinalizar.setClickable(true);
 						botaoFinalizar.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.timemaniaescuro));
@@ -1099,7 +1062,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 
 			botaoLimparAposta.setVisibility(View.GONE);
 		} else {
-			if (isTipoSuperSete && isPickerPrognosticos) {
+			if (parametroJogo.isTipoJogo(ModalidadeEnum.SUPER_7) && isPickerPrognosticos) {
 				atualizaSuperSetePrognosticoMaior(ListaUtils.pegaListaSuperSete(listaAdaptersSuperSete));
 			}
 			atualizarBotaoFinalizarCompletarCartela();
@@ -1121,7 +1084,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	private void atualizarBotaoFinalizarAdicionarCarrinho() {
 		botaoFinalizar.setBackgroundColor(ContextCompat.getColor(parentActivity, typeGameColorLight));
 		botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(parentActivity, getString(R.string.adicionarAoCarrinho)));
-		if ((!isTipoLoteca && !isTipoLotogol) && !isDiaSorte) {
+		if ((!parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA) && !parametroJogo.isTipoJogo(ModalidadeEnum.LOTOGOL)) && !parametroJogo.isTipoJogo(ModalidadeEnum.DIA_DE_SORTE)) {
 			parentActivity.getSalvarApostaLayout().setVisibility(View.VISIBLE);
 		}
 	}
@@ -1131,7 +1094,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 		listaDezenas = fragmentView.findViewById(R.id.listaDezenas);
 		recyclerViewPartida = fragmentView.findViewById(R.id.recyclerViewPartida);
 
-		if (dezenas != null && dezenas.size() > 0 && !isTipoSuperSete) {
+		if (dezenas != null && dezenas.size() > 0 && !parametroJogo.isTipoJogo(ModalidadeEnum.SUPER_7)) {
 
 			listaDezenas.setExpanded(true);
 			simularDezenasAdapter = new SimularDezenasAdapter(getActivity(), dezenas);
@@ -1147,7 +1110,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 						parentActivity.verificaNovoQtdDezenasMax(dezenasSelecionadas.size());
 						verificaSeMostraBotaoLimparAposta();
 					}
-					if (isTipoLotomania && selcioneOutrosNumeros.isChecked()) {
+					if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOMANIA) && selcioneOutrosNumeros.isChecked()) {
 						selcioneOutrosNumeros.setChecked(false);
 					}
 					atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
@@ -1176,11 +1139,11 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 					}
 				}
 
-				if (isTipoTimemania) {
+				if (parametroJogo.isTipoJogo(ModalidadeEnum.TIMEMANIA)) {
 					isEcolhaTimeBtnAtivado = true;
 				}
 
-				if (isTipoLotomania) {
+				if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOMANIA)) {
 					if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) {
 						setVisibilityCheckedNumerosLayout(View.VISIBLE);
 					} else {
@@ -1191,7 +1154,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 
 				verificaSeMostraSalvarApostaView();
 				verificaSeMostraBotaoLimparAposta();
-				if (isTipoLoteca) {
+				if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA)) {
 					atualizaStatusBotaoFinalizarLoteca(false);
 				} else {
 					atualizaStatusBotaoFinalizar(false);
@@ -1200,18 +1163,18 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 				simularDezenasAdapter.notifyDataSetChanged();
 			});
 		} else {
-			if (isTipoLoteca) {
+			if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA)) {
 				configurarTimesLoteca();
 				partidasSelecionadas = new HashSet<>();
 				fragmentView.findViewById(R.id.layoutTitleLoteca).setVisibility(View.VISIBLE);
-			} else if (isTipoLotogol) {
+			} else if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOGOL)) {
 				configurarTimesLotogol();
 				partidasSelecionadas = new HashSet<>();
 				fragmentView.findViewById(R.id.layoutTitleLoteca).setVisibility(View.VISIBLE);
 				fragmentView.findViewById(R.id.layoutTitleLoteca).setPadding(20, 80, 0, 0);
 				((TextView) fragmentView.findViewById(R.id.titleContinue)).setText(R.string.label_quantidade_gols_cada_time);
 
-			} else if (isTipoSuperSete) {
+			} else if (parametroJogo.isTipoJogo(ModalidadeEnum.SUPER_7)) {
 				configuraSuperSete(fragmentView);
 				partidasSelecionadas = new HashSet<>();
 			}
