@@ -31,12 +31,15 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -68,16 +71,20 @@ import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SuperSeteAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.TimeCoracaoAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaDezenaRecyclerView;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.LotecaAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.LotogolAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView;
+import br.gov.caixa.loterias.apostas.view.holder.DezenaHolder;
 import br.gov.caixa.loterias.apostas.view.listener.CartelaFragmentListener;
 import br.gov.caixa.loterias.apostas.view.listener.LocateAdapterListener;
 import br.gov.caixa.loterias.apostas.view.listener.LotogolListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnItemClickListener;
 import br.gov.caixa.loterias.apostas.view.listener.custom.LoteriasSensorEventListener;
 
 public class CartelaFragment extends Fragment implements OnClickListener, LocateAdapterListener, LotogolListener {
+	private static final int QUANTIDADE_COLUNA_LISTA = 5;
 	private SensorManager mSensorManager;
 	private boolean isNumerosAleatoriosShake = false;
 	private BigDecimal valorEmReais = BigDecimal.ZERO;
@@ -107,7 +114,8 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	private EditText informeNomeTime;
 	private RelativeLayout opcaoOutrosNumerosLayout, rlColunasSuperSete;
 	private LinearLayout selecioneTimeCoracaoLayout;
-	private ExpandableHeightGridView mGridTimeCoracao, listaDezenas;
+	private ExpandableHeightGridView mGridTimeCoracao;
+	private RecyclerView listaDezenas;
 	private ArrayList<ExpandableHeightGridView> listaGridsSuperSete;
 	private ArrayList<SuperSeteAdapter> listaAdaptersSuperSete;
 	private ExpandableHeightRecyclerView recyclerViewPartida;
@@ -122,7 +130,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	public int typeGameColorLight, typeGameColorDark, numeroConcursoAtual;
 	public Button botaoFinalizar, botaoLimparAposta;
 	public TextView valorAposta;
-	public SimularDezenasAdapter simularDezenasAdapter;
+	public ListaDezenaRecyclerView simularDezenasAdapter;
 	public String dataSorteioAtual;
 
 	private SimularApostaModel model;
@@ -261,7 +269,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 		editaAposta();
 
 		ViewUtils.organizaTabLayout(getActivity(), R.id.cartelaFragmentMainLayout, idList, R.id.cartelaFragmentScrollView);
-		((ScrollView) view.findViewById(R.id.cartelaFragmentScrollView)).fullScroll(ScrollView.FOCUS_UP);
+//		((ScrollView) view.findViewById(R.id.cartelaFragmentScrollView)).fullScroll(ScrollView.FOCUS_UP);
 	}
 
 	public void cartelaFragmentBuilder(Bundle dataBundle) {
@@ -454,6 +462,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 
 				verificaSeMostraBotaoLimparAposta();
 				atualizaStatusBotaoFinalizar(false);
+				ocutarSalvarAposta();
 			}
 			break;
 
@@ -636,7 +645,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 												isEcolhaTimeBtnAtivado = true;
 												dezenasSelecionadas.clear();
 												dezenasSelecionadas.addAll(list);
-												simularDezenasAdapter.notifyDataSetChanged();
+												simularDezenasAdapter.atualizaSelecionados(dezenasSelecionadas);
 												atualizaBotoeslayout();
 											}
 
@@ -944,6 +953,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 		RelativeLayout salvarApostaLayout = parentActivity.getSalvarApostaLayout();
 
 		salvarApostaLayout.setVisibility(View.GONE);
+		view.findViewById(R.id.rodape_espacamento).setVisibility(View.GONE);
 	}
 
 	private void mostrarSalvarAposta() {
@@ -953,6 +963,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 		final float scale = parentActivity.getResources().getDisplayMetrics().density;
 		salvarApostaLayout.getLayoutParams().height = (int) (64 * scale + 0.5f);
 		salvarApostaLayout.setOnClickListener(this);
+		view.findViewById(R.id.rodape_espacamento).setVisibility(View.VISIBLE);
 	}
 
 	public void atualizaStatusBotaoFinalizar(Boolean isPickerPrognosticos) {
@@ -1080,71 +1091,14 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 
 		if (dezenas != null && dezenas.size() > 0 && !parametroJogo.isTipoJogo(ModalidadeEnum.SUPER_7)) {
 
-			listaDezenas.setExpanded(true);
-			simularDezenasAdapter = new SimularDezenasAdapter(getActivity(), dezenas);
+
+			simularDezenasAdapter = new ListaDezenaRecyclerView(dezenas, dezenasSelecionadas,
+																typeGameColorDark, onItemClickListener());
 			listaDezenas.setAdapter(simularDezenasAdapter);
-			listaDezenas.setOnItemClickListener((adapterView, view, position, l) -> {
-				Dezena  dezena           = dezenas.get(position);
-				Integer valorSelecionado = Integer.valueOf(dezena.getValue());
 
-				if (dezenasSelecionadas.contains(valorSelecionado)) {
-					dezenasSelecionadas.remove(valorSelecionado);
-					if (dezenasSelecionadas.size() >= parametroJogo.getQuantidadeMinima()) {
-						parentActivity.qtdDezenasPossiveisSelecionado -= 1;
-						parentActivity.verificaNovoQtdDezenasMax(dezenasSelecionadas.size());
-						verificaSeMostraBotaoLimparAposta();
-					}
-					if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOMANIA) && selcioneOutrosNumeros.isChecked()) {
-						selcioneOutrosNumeros.setChecked(false);
-					}
-					atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
-
-				} else {
-					int maxNumerosParaSelecionar = parametroJogo.getQuantidadeMaxima();
-					if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) {
-						// VERIFICA SE TEM OPÇÃO DE SELECIONAR MAIS DEZENAS
-						int qtdDezenasPossiveisSelecionadoAtual = parentActivity.qtdDezenasPossiveisSelecionado;
-
-						parentActivity.qtdDezenasPossiveisSelecionado = cartelaFragmentListener.verificaNovoQtdDezenasMax(parentActivity.qtdDezenasPossiveisSelecionado);
-
-						if (qtdDezenasPossiveisSelecionadoAtual < maxNumerosParaSelecionar) {
-							parentActivity.qtdDezenasPossiveisSelecionado += 1;
-							parentActivity.verificaNovoQtdDezenasMax(parentActivity.qtdDezenasPossiveisSelecionado);
-							atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
-							if (parentActivity.getFlagApostaSalva()) {
-								voltaSalvarApostaParaLayoutInicial();
-							}
-							dezenasSelecionadas.add(valorSelecionado);
-						} else {
-							ViewUtils.alert(getActivity(), getString(R.string.label_nao_possivel_selecionar_quantidade_numeros_superior_limite_modalidade_loterica));
-						}
-					} else {
-						dezenasSelecionadas.add(valorSelecionado);
-					}
-				}
-
-				if (parametroJogo.isTipoJogo(ModalidadeEnum.TIMEMANIA)) {
-					isEcolhaTimeBtnAtivado = true;
-				}
-
-				if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOMANIA)) {
-					if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) {
-						setVisibilityCheckedNumerosLayout(View.VISIBLE);
-					} else {
-						setVisibilityCheckedNumerosLayout(View.GONE);
-					}
-				}
-
-				verificaSeMostraSalvarApostaView();
-				verificaSeMostraBotaoLimparAposta();
-				if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA)) {
-					atualizaStatusBotaoFinalizarLoteca(false);
-				} else {
-					atualizaStatusBotaoFinalizar(false);
-				}
-
-				simularDezenasAdapter.notifyDataSetChanged();
-			});
+			RecyclerView.LayoutManager layot = new GridLayoutManager(getContext(), QUANTIDADE_COLUNA_LISTA);
+			listaDezenas.setLayoutManager(layot);
+			listaDezenas.setNestedScrollingEnabled(false);
 		} else {
 			if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA)) {
 				configurarTimesLoteca();
@@ -1162,6 +1116,72 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 				partidasSelecionadas = new HashSet<>();
 			}
 		}
+	}
+
+	@NotNull
+	private OnItemClickListener<DezenaHolder> onItemClickListener() {
+		return (OnItemClickListener<DezenaHolder>) (holder, position) -> {
+			Dezena  dezena           = dezenas.get(position);
+			Integer valorSelecionado = Integer.valueOf(dezena.getValue());
+
+			if (dezenasSelecionadas.contains(valorSelecionado)) {
+				dezenasSelecionadas.remove(valorSelecionado);
+				if (dezenasSelecionadas.size() >= parametroJogo.getQuantidadeMinima()) {
+					parentActivity.qtdDezenasPossiveisSelecionado -= 1;
+					parentActivity.verificaNovoQtdDezenasMax(dezenasSelecionadas.size());
+					verificaSeMostraBotaoLimparAposta();
+				}
+				if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOMANIA) && selcioneOutrosNumeros.isChecked()) {
+					selcioneOutrosNumeros.setChecked(false);
+				}
+				atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
+
+			} else {
+				int maxNumerosParaSelecionar = parametroJogo.getQuantidadeMaxima();
+				if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) {
+					// VERIFICA SE TEM OPÇÃO DE SELECIONAR MAIS DEZENAS
+					int qtdDezenasPossiveisSelecionadoAtual = parentActivity.qtdDezenasPossiveisSelecionado;
+
+					parentActivity.qtdDezenasPossiveisSelecionado = cartelaFragmentListener.verificaNovoQtdDezenasMax(parentActivity.qtdDezenasPossiveisSelecionado);
+
+					if (qtdDezenasPossiveisSelecionadoAtual < maxNumerosParaSelecionar) {
+						parentActivity.qtdDezenasPossiveisSelecionado += 1;
+						parentActivity.verificaNovoQtdDezenasMax(parentActivity.qtdDezenasPossiveisSelecionado);
+						atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
+						if (parentActivity.getFlagApostaSalva()) {
+							voltaSalvarApostaParaLayoutInicial();
+						}
+						dezenasSelecionadas.add(valorSelecionado);
+					} else {
+						ViewUtils.alert(getActivity(), getString(R.string.label_nao_possivel_selecionar_quantidade_numeros_superior_limite_modalidade_loterica));
+					}
+				} else {
+					dezenasSelecionadas.add(valorSelecionado);
+				}
+			}
+
+			if (parametroJogo.isTipoJogo(ModalidadeEnum.TIMEMANIA)) {
+				isEcolhaTimeBtnAtivado = true;
+			}
+
+			if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOMANIA)) {
+				if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) {
+					setVisibilityCheckedNumerosLayout(View.VISIBLE);
+				} else {
+					setVisibilityCheckedNumerosLayout(View.GONE);
+				}
+			}
+
+			verificaSeMostraSalvarApostaView();
+			verificaSeMostraBotaoLimparAposta();
+			if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA)) {
+				atualizaStatusBotaoFinalizarLoteca(false);
+			} else {
+				atualizaStatusBotaoFinalizar(false);
+			}
+
+			simularDezenasAdapter.notifyDataSetChanged();
+		};
 	}
 
 	private void configurarTimesLoteca() {

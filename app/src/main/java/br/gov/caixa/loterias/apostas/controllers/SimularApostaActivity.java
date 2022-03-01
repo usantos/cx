@@ -199,7 +199,6 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         }
     }
 
-
     // Pegar o handle dos botoes que mostrarao o seu respectivo fragment na activity
     public void onClick(View v) {
         switch (v.getId()) {
@@ -237,7 +236,6 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     public ParametroJogoDTO getParametroSimulacao() {
         return parametroSimulacao;
     }
-
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -286,9 +284,6 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         if (id == R.id.action_termos) {
@@ -301,7 +296,6 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
 
         return super.onOptionsItemSelected(item);
     }
-
 
     // MÉTODOS DO FRAGMENT CARTELAFRAGMENTLISTENER
     @Override
@@ -365,7 +359,6 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         abrirTelaSurprezinha();
     }
 
-
     @Override
     public void escolherOutroTimeSurpresinha() {
         cartelaFragment.setEscolhaTimeCoracaoSurpresinha(true);
@@ -382,10 +375,6 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
 
     public void setLabelValueTriplasLoteca(String labelValueTriplasLoteca) {
         this.labelValueTriplasLoteca.setText(labelValueTriplasLoteca);
-    }
-
-    public FrameLayout getFragmentSimularApostas() {
-        return fragmentSimularApostas;
     }
 
     public TextView getLabelValueSimplesLoteca() {
@@ -416,10 +405,6 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         return valorApostaCartela;
     }
 
-    public TextView getTextViewCarrinhoCartelaCount() {
-        return textViewCarrinhoCartelaCount;
-    }
-
     public RelativeLayout getSalvarApostaLayout() {
         return salvarApostaLayout;
     }
@@ -428,13 +413,8 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         return editNomeAposta;
     }
 
-
     public ImageView getIconStarSalvar() {
         return iconStarSalvar;
-    }
-
-    public ConstraintLayout getSimularApostaLayoutCarrinhoApostas() {
-        return simularApostaLayoutCarrinhoApostas;
     }
 
     public IdentificaoDeUmaApostaDas8Modalidades getAposta() {
@@ -491,6 +471,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
             }
         });
     }
+
     private void salvarAposta(ApostaFavoritaDTO aposta){
         if(!AlertDialogUtils.isShow()){
             AlertDialogUtils.show(this);

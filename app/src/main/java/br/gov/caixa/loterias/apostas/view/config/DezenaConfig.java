@@ -29,10 +29,6 @@ public class DezenaConfig {
 		return isLabelDezena;
 	}
 
-	public void setLabelDezena(boolean isDezena) {
-		isLabelDezena = isDezena;
-	}
-
 	public int getColor() {
 		return color;
 	}
@@ -51,10 +47,6 @@ public class DezenaConfig {
 
 	public int getDrawableSelecionado() {
 		return drawableSelecionado;
-	}
-
-	public void setDrawableSelecionado(int drawableSelecionado) {
-		this.drawableSelecionado = drawableSelecionado;
 	}
 
 	public boolean isShapePadrao(){
