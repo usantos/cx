@@ -52,8 +52,8 @@ import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
+import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.data.CompletaJogoNovoRsp;
-import br.gov.caixa.loterias.apostas.model.bo.silce.data.CompletaJogoRsp;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.Dezena;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
@@ -62,6 +62,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroEquipe;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroPartida;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
+import br.gov.caixa.loterias.apostas.model.model.SimularApostaModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
@@ -128,6 +129,8 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	public TextView valorAposta;
 	public SimularDezenasAdapter simularDezenasAdapter;
 	public String dataSorteioAtual;
+
+	private SimularApostaModel model;
 
 	public CartelaFragment() {
 		// Required empty public constructor
@@ -527,7 +530,6 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 		selcioneOutrosNumeros.setChecked(Boolean.FALSE);
 	}
 
-
 	private void limparTimeSelecionado() {
 		if (equipeSelecionada != null) {
 			equipeSelecionada.setSelecionado(false);
@@ -625,33 +627,32 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	}
 
 	private void preencheNumerosAleatorios() {
-		AlertDialogUtils.show(getActivity());
-		ApostaBO apostaBO = ApostaBO_.getInstance_(getActivity());
-		dezenasSelecionadas = ListaUtils.orderAscDezenas(dezenasSelecionadas);
-		apostaBO.completaJogo(parentActivity.qtdDezenasPossiveisSelecionado, dezenasSelecionadas, 1,
-							  parametroJogo.getPrognosticoMaximo(), new RequestListener<CompletaJogoRsp>() {
-					@Override
-					public void onResponse(CompletaJogoRsp response) {
-						AlertDialogUtils.dismiss();
-						isNumerosAleatoriosShake = false;
-						AppCenterManager.registraEvento("ENTROU_COMPLETAR_COM_NUMEROS_ALEATORIOS");
-						isEcolhaTimeBtnAtivado = true;
-						dezenasSelecionadas.clear();
-						dezenasSelecionadas.addAll(response.getPayload());
-						simularDezenasAdapter.notifyDataSetChanged();
-						atualizaBotoeslayout();
-						if (response.getRedirect() != null) {
-							RedirectNetwork.checkRedirectSucesso(response.getRedirect(), getActivity());
-						}
-					}
+		if (model == null){
+			model = new SimularApostaModel(getActivity());
+		}
 
-					@Override
-					public void onErrorResponse(VolleyError error) {
-						isNumerosAleatoriosShake = false;
-						AlertDialogUtils.dismiss();
-						RedirectNetwork.checkRedirect(error, getActivity());
-					}
-				});
+		AlertDialogUtils.show(getActivity());
+
+		dezenasSelecionadas = ListaUtils.orderAscDezenas(dezenasSelecionadas);
+		model.preencheNumerosAleatorios(parentActivity.qtdDezenasPossiveisSelecionado, dezenasSelecionadas, parametroJogo.getPrognosticoMaximo(),
+										new OnSilceListener<List<Integer>>() {
+											@Override
+											public void success(List<Integer> list) {
+												AlertDialogUtils.dismiss();
+												isNumerosAleatoriosShake = false;
+												isEcolhaTimeBtnAtivado = true;
+												dezenasSelecionadas.clear();
+												dezenasSelecionadas.addAll(list);
+												simularDezenasAdapter.notifyDataSetChanged();
+												atualizaBotoeslayout();
+											}
+
+											@Override
+											public void error(VolleyError error) {
+												isNumerosAleatoriosShake = false;
+												AlertDialogUtils.dismiss();
+											}
+										});
 	}
 
 	private void preencheNumerosAleatoriosSuperSete(ArrayList<ArrayList<Integer>> listaInteiros) {
@@ -815,7 +816,6 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 		botaoLimparAposta = parentActivity.getBotaoLimparAposta();
 		botaoLimparAposta.setOnClickListener(this);
 
-
 		if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA) || parametroJogo.isTipoJogo(ModalidadeEnum.LOTOGOL)) {
 			botaoFinalizar.setVisibility(View.INVISIBLE);
 			String textoBotao;
@@ -876,7 +876,6 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 				botaoLimparAposta.setVisibility(View.VISIBLE);
 			}
 		} else if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOGOL)) {
-
 			int visibility = View.GONE;
 			for (ParametroPartida parametroPartida : parametroJogo.getPartidas()) {
 				if (StringUtils.isNotEmpty(parametroPartida.getEquipe1().getPlacar()) || StringUtils.isNotEmpty(parametroPartida.getEquipe2().getPlacar())) {
@@ -933,7 +932,6 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	}
 
 	private void verificaSeMostraSalvarApostaView() {
-
 		if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA) || parametroJogo.isTipoJogo(ModalidadeEnum.LOTOGOL) || parametroJogo.isTipoJogo(ModalidadeEnum.DIA_DE_SORTE) || parametroJogo.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)) {
 			ocutarSalvarAposta();
 		} else if (parametroJogo.isTipoJogo(ModalidadeEnum.TIMEMANIA)) {
@@ -1090,7 +1088,6 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	}
 
 	private void configuraListaDezenas(View fragmentView) {
-
 		listaDezenas = fragmentView.findViewById(R.id.listaDezenas);
 		recyclerViewPartida = fragmentView.findViewById(R.id.recyclerViewPartida);
 
@@ -1151,7 +1148,6 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 					}
 				}
 
-
 				verificaSeMostraSalvarApostaView();
 				verificaSeMostraBotaoLimparAposta();
 				if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA)) {
@@ -1194,7 +1190,6 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 		recyclerViewPartida.setAdapter(lotogolAdapter);
 		recyclerViewPartida.setExpanded(true);
 	}
-
 
 	private void configuraSuperSete(View viewLayout) {
 		listaGridsSuperSete = new ArrayList<>();
@@ -1389,9 +1384,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	}
 
 	@Override
-	public void partidaSelecionada() {
-
-	}
+	public void partidaSelecionada() { }
 
 	@Override
 	public void atualizarParametrosLotogol(ParametroPartida parametroPartida) {
@@ -1544,7 +1537,6 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 			}
 			textView.setTypeface(ViewUtils.getFontFuturaBold(context));
 			textView.setGravity(Gravity.CENTER);
-
 
 			return textView;
 		}
