@@ -33,7 +33,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.Dezena;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
-import br.gov.caixa.loterias.apostas.model.model.SimularApostaModel;
+import br.gov.caixa.loterias.apostas.model.model.TrevoModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
@@ -67,7 +67,7 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
     private List<Integer> trevoSelecionadoList = new ArrayList<>();
     private ListaDezenaRecyclerView adappter;
 
-    private SimularApostaModel model;
+    private TrevoModel model;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -103,7 +103,7 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
         RecyclerView.LayoutManager layot = new GridLayoutManager(getContext(), QUANTIDADE_COLUNA_LISTA);
         listaTrevos.setLayoutManager(layot);
 
-        model = new SimularApostaModel(getActivity());
+        model = new TrevoModel(getActivity());
     }
 
     private List<Dezena> getListaDezenas() {
@@ -155,7 +155,7 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
                                                                                                          valorApostaSelecionado.getValor(),
                                                                                                          listener.getQtdConcursos(), trevoSelecionadoList);
 
-        model.adidionaApostaNoCarrinho(getActivity(), apostaMaisMilionaria);
+        model.adidionaApostaNoCarrinho(apostaMaisMilionaria);
     }
 
     private void completarTrevosAleatoriamente() {
