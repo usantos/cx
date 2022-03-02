@@ -436,13 +436,13 @@ public class PrincipalActivity extends AppCompatActivity
     private List<Modalidade> montaListaModalidades() {
         List<Modalidade> listaModalidades = new ArrayList<>();
 
-        if (!BuildConfig.FLAVOR.equalsIgnoreCase("prd") && !conteMaisMilionaria()){
-            ParametroSimulacao parametro = MaisMilionariaMock.getParametroMaisMilionaria();
-            listaModalidades.add(new Modalidade(parametro.getParametroJogo().getConcurso().getModalidadeDetalhada().getDescricao(),
-                                                parametro.getParametroJogo().getConcurso().getValorApostaMinima(), getResources().getString(R.string.string_vazia), getResources().getString(R.string.string_vazia), parametro.getParametroJogo().getConcurso().getModalidade(),
-                                                parametro.getParametroJogo().getConcurso(), false, null));
-            Toast.makeText(PrincipalActivity.this, "+Milionaria de forma mockada", Toast.LENGTH_LONG).show();
-        }
+//        if (!BuildConfig.FLAVOR.equalsIgnoreCase("prd") && !conteMaisMilionaria()){
+//            ParametroSimulacao parametro = MaisMilionariaMock.getParametroMaisMilionaria();
+//            listaModalidades.add(new Modalidade(parametro.getParametroJogo().getConcurso().getModalidadeDetalhada().getDescricao(),
+//                                                parametro.getParametroJogo().getConcurso().getValorApostaMinima(), getResources().getString(R.string.string_vazia), getResources().getString(R.string.string_vazia), parametro.getParametroJogo().getConcurso().getModalidade(),
+//                                                parametro.getParametroJogo().getConcurso(), false, null));
+//            Toast.makeText(PrincipalActivity.this, "+Milionaria de forma mockada", Toast.LENGTH_LONG).show();
+//        }
 
         for (ParametroSimulacao parametro : modalidadesParaListar) {
             if (parametro.getParametroJogo().getConcurso().getModalidade() != null) {

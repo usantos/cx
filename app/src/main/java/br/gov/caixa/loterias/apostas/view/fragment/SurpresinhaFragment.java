@@ -1,6 +1,7 @@
 package br.gov.caixa.loterias.apostas.view.fragment;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -187,8 +188,6 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
             atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
         }
 
-//        parentActivity.getSimularApostaLayoutCarrinhoApostas().setOnClickListener(this);
-
         atualizaBotoesQtdSurpresinha();
         if(parametroJogo.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)){
             atualizaBotoesQtdTrevos();
@@ -202,15 +201,18 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
 
         parentActivity.getBotaoLimparAposta().setVisibility(View.GONE);
         parentActivity.getSalvarApostaLayout().setVisibility(View.GONE);
+
+        btnMenosSurpresinha.setBackgroundTintList(getCor(R.color.cinzaescuro));
+        btnMaisSurpresinha.setBackgroundTintList(getCor(typeGameColorLight));
     }
 
     private void atualizaBotoesQtdSurpresinha() {
         if (qtdSurpresinhas == QUANTIDADE_MINIMA_SURPRESINHAS){
-            btnMenosSurpresinha.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.cinzaescuro));
-            btnMaisSurpresinha.setBackgroundColor(ContextCompat.getColor(parentActivity, typeGameColorLight));
+            btnMenosSurpresinha.setBackgroundTintList(getCor(R.color.cinzaescuro));
+            btnMaisSurpresinha.setBackgroundTintList(getCor(typeGameColorLight));
         }else {
-            btnMenosSurpresinha.setBackgroundColor(ContextCompat.getColor(parentActivity, typeGameColorLight));
-            btnMaisSurpresinha.setBackgroundColor(ContextCompat.getColor(parentActivity, typeGameColorLight));
+            btnMenosSurpresinha.setBackgroundTintList(getCor(typeGameColorLight));
+            btnMaisSurpresinha.setBackgroundTintList(getCor(typeGameColorLight));
         }
 
         qtdSurpresinhasSelecionadas.setTextColor(ContextCompat.getColor(parentActivity, typeGameColorLight));
@@ -218,16 +220,23 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
     }
 
     private void atualizaBotoesQtdTrevos() {
-        if (qtdTrevos == parametroJogo.getTrevos().getQtdMinima()){
-            btnMenosTrevos.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.cinzaescuro));
-            btnMaisTrevos.setBackgroundColor(ContextCompat.getColor(parentActivity, typeGameColorLight));
-        }else {
-            btnMenosTrevos.setBackgroundColor(ContextCompat.getColor(parentActivity, typeGameColorLight));
-            btnMaisTrevos.setBackgroundColor(ContextCompat.getColor(parentActivity, typeGameColorLight));
+        if (qtdTrevos > parametroJogo.getTrevos().getQtdMinima() && qtdTrevos < parametroJogo.getTrevos().getQtdMaxima()){
+            btnMenosTrevos.setBackgroundTintList(getCor(typeGameColorLight));
+            btnMaisTrevos.setBackgroundTintList(getCor(typeGameColorLight));
+        }else if (qtdTrevos == parametroJogo.getTrevos().getQtdMinima()){
+            btnMenosTrevos.setBackgroundTintList(getCor(R.color.cinzaescuro));
+            btnMaisTrevos.setBackgroundTintList(getCor(typeGameColorLight));
+        } else {
+            btnMenosTrevos.setBackgroundTintList(getCor(typeGameColorLight));
+            btnMaisTrevos.setBackgroundTintList(getCor(R.color.cinzaescuro));
         }
 
         qtdSurpresinhasSelecionadasTrevos.setTextColor(ContextCompat.getColor(parentActivity, typeGameColorLight));
         qtdSurpresinhasSelecionadasTrevos.setText(String.format(Locale.getDefault(), "%d", qtdTrevos));
+    }
+
+    private ColorStateList getCor(int cor) {
+        return ContextCompat.getColorStateList(getActivity(), cor);
     }
 
     private void configuraListaDezenas() {
@@ -360,7 +369,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         if (qtdSurpresinhas > 1) {
             qtdSurpresinhas--;
             if (qtdSurpresinhas == 1) {
-                btnMenosSurpresinha.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.cinzaescuro));
+                atualizaBotoesQtdSurpresinha();
             }
             atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
             qtdSurpresinhasSelecionadas.setText(String.format(Locale.getDefault(), "%d", qtdSurpresinhas));
@@ -370,7 +379,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
     @Click
     protected void btnMaisSurpresinha() {
         if (qtdSurpresinhas == 1) {
-            btnMenosSurpresinha.setBackgroundColor(ContextCompat.getColor(parentActivity, typeGameColorLight));
+            atualizaBotoesQtdSurpresinha();
         }
 
         qtdSurpresinhas++;
@@ -383,12 +392,9 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
     protected void btnMaisTrevos() {
         if (qtdTrevos < 6) {
             qtdTrevos++;
-            if (qtdTrevos == 6) {
-                btnMaisTrevos.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.cinzaescuro));
-            }
+            atualizaBotoesQtdTrevos();
             atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
             qtdSurpresinhasSelecionadasTrevos.setText(String.format(Locale.getDefault(), "%d", qtdTrevos));
-            btnMenosTrevos.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.mais_milionaria_escura));
         }
     }
 
@@ -396,12 +402,9 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
     protected void btnMenosTrevos() {
         if (qtdTrevos > 2) {
             qtdTrevos--;
-            if (qtdTrevos == 2) {
-                btnMenosTrevos.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.cinzaescuro));
-            }
+            atualizaBotoesQtdTrevos();
             atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
             qtdSurpresinhasSelecionadasTrevos.setText(String.format(Locale.getDefault(), "%d", qtdTrevos));
-            btnMaisTrevos.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.mais_milionaria_escura));
         }
     }
 
