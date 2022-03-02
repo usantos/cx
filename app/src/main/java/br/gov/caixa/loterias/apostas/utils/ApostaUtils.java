@@ -156,7 +156,7 @@ public class ApostaUtils {
 																		   BigDecimal valorTotalAposta,
 																		   int qtdConcursoSelecionado,
 																				List<Integer> trevosSelecionados){
-		IdentificaoDeUmaApostaDas8Modalidades aposta = getApostaPreenchidaGenerica(parametroJogo, dezenasSelecionadas, valorTotalAposta, qtdConcursoSelecionado);
+		IdentificaoDeUmaApostaDas8Modalidades aposta = getApostaPreenchida(parametroJogo, dezenasSelecionadas, valorTotalAposta, qtdConcursoSelecionado);
 
 		aposta.setQuantidadeTrevos(trevosSelecionados.size());
 		aposta.setTrevosSelecionados(trevosSelecionados);
