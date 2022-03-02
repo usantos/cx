@@ -44,6 +44,8 @@ IdentificaoDeUmaApostaDas8Modalidades<T> implements Serializable {
 	protected List<PartidaLotecaDTO> partidasLoteca = null;
 	@SerializedName(value = "numerosSelecionados")
 	public T numerosSelecionados = null;
+	@SerializedName(value = "numerosSelecionadosMaisMilionariaTrevo")
+	public T trevosSelecionados = null;
 	@SerializedName("indicadorSurpresinha")
 	protected DTOEnumInteger indicadorSurpresinha = null;
 	@SerializedName("valor")
@@ -76,6 +78,8 @@ IdentificaoDeUmaApostaDas8Modalidades<T> implements Serializable {
 	protected Long vinculoEspelho = null;
 	@SerializedName("quantidadeNumeros")
 	protected Integer quantidadeNumeros = null;
+	@SerializedName("quantidadeNumerosMaisMilionariaTrevo")
+	protected Integer quantidadeTrevos = null;
 	@SerializedName("surpresinha")
 	protected Boolean surpresinha = null;
 	@SerializedName("mesDeSorte")
@@ -419,6 +423,22 @@ IdentificaoDeUmaApostaDas8Modalidades<T> implements Serializable {
 
 	public void setMesDeSorte(ParametroMesDeSorte mesDeSorte) {
 		this.mesDeSorte = mesDeSorte;
+	}
+
+	public T getTrevosSelecionados() {
+		return trevosSelecionados;
+	}
+
+	public void setTrevosSelecionados(T trevosSelecionados) {
+		this.trevosSelecionados = trevosSelecionados;
+	}
+
+	public Integer getQuantidadeTrevos() {
+		return quantidadeTrevos;
+	}
+
+	public void setQuantidadeTrevos(Integer quantidadeTrevos) {
+		this.quantidadeTrevos = quantidadeTrevos;
 	}
 
 	@Override

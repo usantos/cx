@@ -526,7 +526,6 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         fragmentManager.beginTransaction()
                        .replace(R.id.fragmentSimularApostas, TrevosFragment_.builder()
                                                                             .parametro(parametroSimulacao)
-                                                                            .idBtnQtdTrevos(qtdNumerosButton.getId())
                                                                             .dezenasSelecionadas((ArrayList<Integer>) dezenasSelecionadas).build()).commit();
     }
 
@@ -905,5 +904,10 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         }
 
         ViewUtils.setMoedaFormatHtml(valorEmReais, valorApostaCartela);
+    }
+
+    @Override
+    public int getQtdConcursos() {
+        return qtdConcursoSelecionado;
     }
 }

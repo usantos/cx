@@ -151,6 +151,19 @@ public class ApostaUtils {
 		return aposta;
 	}
 
+	public static IdentificaoDeUmaApostaDas8Modalidades getApostaMaisMilionaria(ParametroJogoDTO parametroJogo,
+																		   List<Integer> dezenasSelecionadas,
+																		   BigDecimal valorTotalAposta,
+																		   int qtdConcursoSelecionado,
+																				List<Integer> trevosSelecionados){
+		IdentificaoDeUmaApostaDas8Modalidades aposta = getApostaPreenchidaGenerica(parametroJogo, dezenasSelecionadas, valorTotalAposta, qtdConcursoSelecionado);
+
+		aposta.setQuantidadeTrevos(trevosSelecionados.size());
+		aposta.setTrevosSelecionados(trevosSelecionados);
+
+		return aposta;
+	}
+
 	private static void setApostaLotogol(ParametroJogoDTO parametro, IdentificaoDeUmaApostaDas8Modalidades aposta, HashSet<ParametroPartida> partidas) {
 		if (parametro.getConcurso().getModalidade() == ModalidadeEnum.LOTOGOL) {
 			List<ParametroPartida> partidasSelecionadas = ListaUtils.orderAscPartidas(partidas);

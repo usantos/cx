@@ -14,4 +14,5 @@ public interface OnTrevosListener {
 
 	void atualizaValorAposta(ParametroValorApostaDTO valorAposta);
 
+	int getQtdConcursos();
 }

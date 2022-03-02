@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,10 +30,12 @@ import java.util.List;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.Dezena;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
 import br.gov.caixa.loterias.apostas.model.model.SimularApostaModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaDezenaRecyclerView;
@@ -57,8 +58,6 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
     protected ParametroJogoDTO parametro;
     @FragmentArg
     protected ArrayList<Integer> dezenasSelecionadas;
-    @FragmentArg
-    protected int idBtnQtdTrevos;
 
     private OnTrevosListener listener;
     private List<ParametroValorApostaDTO> valoresApostas;
@@ -152,7 +151,11 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
     }
 
     private void addApostaCarrinho() {
-        Toast.makeText(getContext(), "Falta implementar", Toast.LENGTH_LONG).show();
+        IdentificaoDeUmaApostaDas8Modalidades apostaMaisMilionaria = ApostaUtils.getApostaMaisMilionaria(parametro, dezenasSelecionadas,
+                                                                                                         valorApostaSelecionado.getValor(),
+                                                                                                         listener.getQtdConcursos(), trevoSelecionadoList);
+
+        model.adidionaApostaNoCarrinho(getActivity(), apostaMaisMilionaria);
     }
 
     private void completarTrevosAleatoriamente() {
