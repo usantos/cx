@@ -15,6 +15,7 @@ import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.data.CompletaJogoNovoRsp;
 import br.gov.caixa.loterias.apostas.model.bo.silce.data.CompletaJogoRsp;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IncluirSurpresinhaDTO;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
 
@@ -72,5 +73,9 @@ public class SimularApostaModel {
 
 	public void adidionaApostaNoCarrinho(Activity actv, IdentificaoDeUmaApostaDas8Modalidades aposta){
 		AdicionarApostaCarrinhoHelper.incluirApostaCarrinhoCartela(actv, aposta);
+	}
+
+	public void addSurpresinhaCarrinho(IncluirSurpresinhaDTO surpresinha) {
+		AdicionarApostaCarrinhoHelper.incluirApostaCarrinhoSurpresinha(activity, surpresinha);
 	}
 }

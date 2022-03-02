@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -27,24 +26,19 @@ import org.androidannotations.annotations.ViewById;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Locale;
-import java.util.Random;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.SimularApostaActivity;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumCharacter;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumInteger;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IncluirSurpresinhaDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IndicadorSurpresinha;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroEquipe;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
+import br.gov.caixa.loterias.apostas.model.model.SurpresinhaApostaModel;
+import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
-import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
-import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SurpresinhaGridViewAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
 import br.gov.caixa.loterias.apostas.view.listener.SurpresinhaFragmentListener;
@@ -88,12 +82,16 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
     @ViewById
     protected ConstraintLayout maisMilionaria;
 
+    private SurpresinhaApostaModel model;
+
     public SurpresinhaFragment() {
         // Required empty public constructor
     }
 
     @AfterViews
     protected void init() {
+        model = new SurpresinhaApostaModel(getActivity());
+
         AppCenterManager.registraEvento("ENTROU_SURPRESINHA");
 
         parentActivity = ((SimularApostaActivity) getActivity());
@@ -136,7 +134,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         surpresinhaInfo.setTextColor(ContextCompat.getColor(parentActivity, typeGameColorLight));
         surpresinhaQtdInfo.setTextColor(ContextCompat.getColor(parentActivity, typeGameColorLight));
 
-        if(isMaisMilionaria()){
+        if(parametroJogo.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)){
             maisMilionaria.setVisibility(View.VISIBLE);
 
             ConstraintLayout.LayoutParams textViewParams = (ConstraintLayout.LayoutParams) surpresinhaQtdInfo.getLayoutParams();
@@ -192,7 +190,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
 //        parentActivity.getSimularApostaLayoutCarrinhoApostas().setOnClickListener(this);
 
         atualizaBotoesQtdSurpresinha();
-        if(isMaisMilionaria()){
+        if(parametroJogo.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)){
             atualizaBotoesQtdTrevos();
         }
 
@@ -204,10 +202,6 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
 
         parentActivity.getBotaoLimparAposta().setVisibility(View.GONE);
         parentActivity.getSalvarApostaLayout().setVisibility(View.GONE);
-    }
-
-    private boolean isMaisMilionaria() {
-        return tipoJogo == ModalidadeEnum.MAIS_MILIONARIA;
     }
 
     private void atualizaBotoesQtdSurpresinha() {
@@ -256,7 +250,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
 
         BigDecimal valorEmReais = BigDecimal.ZERO;
 
-        if (isMaisMilionaria()){
+        if (parametroJogo.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)){
             ParametroValorApostaDTO valor = parametroJogo.getValorApostaBy(numPrognostico, qtdTrevos);
             valorEmReais = valor.getValor();
         }else {
@@ -294,49 +288,31 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
 
     public void adicionarSurpresinhaNoCarrinho() {
 
-        IncluirSurpresinhaDTO aposta = new IncluirSurpresinhaDTO();
-        aposta.setModalidade(parametroJogo.getConcurso().getModalidade());
-        aposta.setQuantidadeNumeros(parentActivity.qtdDezenasPossiveisSelecionado);
-        aposta.setQuantidadeSurpresinhas(qtdSurpresinhas);
+        IncluirSurpresinhaDTO surpresinha;
+        switch (parametroJogo.getConcurso().getModalidade()){
+            case TIMEMANIA:
+                surpresinha = ApostaUtils.getSurpresinhaTimemania(parametroJogo,parentActivity.qtdDezenasPossiveisSelecionado,
+                                                             qtdSurpresinhas, parentActivity.qtdConcursoSelecionado,
+                                                             valorTotalAposta, equipeSelecionada);
+                break;
+            case LOTOMANIA:
+                surpresinha = ApostaUtils.getSurpresinhaLotomania(parametroJogo,parentActivity.qtdDezenasPossiveisSelecionado,
+                                                             qtdSurpresinhas, parentActivity.qtdConcursoSelecionado,
+                                                             valorTotalAposta, selcioneEspelhoSurpresinha.isChecked());
+                break;
+            case MAIS_MILIONARIA:
+                surpresinha = ApostaUtils.getSurpresinhaMaisMilionaria(parametroJogo,parentActivity.qtdDezenasPossiveisSelecionado,
+                                                             qtdSurpresinhas, parentActivity.qtdConcursoSelecionado,
+                                                             valorTotalAposta, qtdTrevos);
+                break;
+            default:
+                surpresinha = ApostaUtils.getSurpresinha(parametroJogo,parentActivity.qtdDezenasPossiveisSelecionado,
+                                                             qtdSurpresinhas, parentActivity.qtdConcursoSelecionado,
+                                                             valorTotalAposta);
 
-        DTOEnumCharacter tipoConcurso = new DTOEnumCharacter();
-
-        String valorTipoConcurso = parametroJogo.getConcurso().getTipoConcurso() == TipoConcursoEnum.NORMAL ? "1" : "2";
-        tipoConcurso.setValor(valorTipoConcurso);
-        tipoConcurso.setDescricao(parametroJogo.getConcurso().getTipoConcurso().toString());
-        aposta.setTipoConcurso(tipoConcurso);
-
-        DTOEnumInteger indicadorSurpresinha = new DTOEnumInteger();
-        indicadorSurpresinha.setValor(IndicadorSurpresinha.SURPRESINHA);
-        indicadorSurpresinha.setDescricao("");
-
-        aposta.setIndicadorSurpresinha(indicadorSurpresinha);
-        aposta.setConcursoAlvo(parametroJogo.getConcurso().getNumero());
-        aposta.setQuantidadeTeimosinhas(parentActivity.qtdConcursoSelecionado);
-        aposta.setQuantidadeApostas(1);
-        aposta.setValor(valorTotalAposta);
-
-        aposta.setTimeDoCoracao(equipeSelecionada);
-
-        if (isTimemania()) {
-            if(aposta.getTimeDoCoracao() == null){
-                Random randomGenerator = Utils.getRandom();
-                aposta.setTimeDoCoracao(parametroJogo.getEquipes().get(randomGenerator.nextInt(parametroJogo.getEquipes().size())));
-                //TODO lógica para sortear time de acordo quantidade de surpresinhas
-                    //            List<ParametroEquipe> parametroEquipeList = new ArrayList<>();
-                    //            for (int i = 0; i < qtdSurpresinhas; i++) {
-                    //                parametroEquipeList.add(parametroJogo.getEquipes().get(randomGenerator.nextInt(parametroJogo.getEquipes().size())));
-                    //            }
-                    //            aposta.setListaTimeDoCoracao(parametroEquipeList);
-            } else {
-                indicadorSurpresinha.setValor(IndicadorSurpresinha.SURPRESINHA_NUMERICA);
-            }
-        }
-        if (isLotomania()) {
-            aposta.setGerarEspelho(selcioneEspelhoSurpresinha.isChecked());
         }
 
-        AdicionarApostaCarrinhoHelper.incluirApostaCarrinhoSurpresinha(parentActivity, aposta);
+        model.addSurpresinhaCarrinho(surpresinha);
     }
 
     private boolean isLotomania() {
@@ -347,11 +323,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.botaoAdicionarCompletarCartela: {
-                if (!isMaisMilionaria()){
-                    adicionarSurpresinhaNoCarrinho();
-                } else {
-                    Toast.makeText(getContext(), "Falta implementar", Toast.LENGTH_LONG).show();
-                }
+                adicionarSurpresinhaNoCarrinho();
             }
             break;
         }

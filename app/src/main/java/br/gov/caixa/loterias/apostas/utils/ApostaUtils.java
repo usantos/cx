@@ -8,11 +8,13 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumCharacter;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumInteger;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.EquipeDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IncluirSurpresinhaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IndicadorSurpresinha;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroEquipe;
@@ -160,6 +162,84 @@ public class ApostaUtils {
 
 		aposta.setQuantidadeTrevos(trevosSelecionados.size());
 		aposta.setTrevosSelecionados(trevosSelecionados);
+
+		return aposta;
+	}
+
+	private static DTOEnumInteger getIndicadorSurpresinha(){
+		DTOEnumInteger indicadorSurpresinha = new DTOEnumInteger();
+		indicadorSurpresinha.setValor(IndicadorSurpresinha.SURPRESINHA);
+		indicadorSurpresinha.setDescricao("");
+
+		return indicadorSurpresinha;
+	}
+
+	public static IncluirSurpresinhaDTO getSurpresinha(ParametroJogoDTO parametroJogo, int qtdDezenasPossiveisSelecionado,
+															 int qtdSurpresinhas, int qtdConcursoSelecionado, BigDecimal valorTotalAposta) {
+		IncluirSurpresinhaDTO aposta = new IncluirSurpresinhaDTO();
+		aposta.setModalidade(parametroJogo.getConcurso().getModalidade());
+		aposta.setQuantidadeNumeros(qtdDezenasPossiveisSelecionado);
+		aposta.setQuantidadeSurpresinhas(qtdSurpresinhas);
+
+		DTOEnumCharacter tipoConcurso = new DTOEnumCharacter();
+
+		String valorTipoConcurso = parametroJogo.getConcurso().getTipoConcurso() == TipoConcursoEnum.NORMAL ? "1" : "2";
+		tipoConcurso.setValor(valorTipoConcurso);
+		tipoConcurso.setDescricao(parametroJogo.getConcurso().getTipoConcurso().toString());
+		aposta.setTipoConcurso(tipoConcurso);
+
+		DTOEnumInteger indicadorSurpresinha = getIndicadorSurpresinha();
+
+		aposta.setIndicadorSurpresinha(indicadorSurpresinha);
+		aposta.setConcursoAlvo(parametroJogo.getConcurso().getNumero());
+		aposta.setQuantidadeTeimosinhas(qtdConcursoSelecionado);
+		aposta.setQuantidadeApostas(1);
+		aposta.setValor(valorTotalAposta);
+
+		return aposta;
+	}
+
+	public static IncluirSurpresinhaDTO getSurpresinhaTimemania(ParametroJogoDTO parametroJogo, int qtdDezenasPossiveisSelecionado,
+																int qtdSurpresinhas, int qtdConcursoSelecionado, BigDecimal valorTotalAposta,
+																ParametroEquipe equipeSelecionada) {
+
+		IncluirSurpresinhaDTO aposta = getSurpresinha(parametroJogo, qtdDezenasPossiveisSelecionado,
+																	qtdSurpresinhas, qtdConcursoSelecionado,
+																	valorTotalAposta);
+
+		aposta.setTimeDoCoracao(equipeSelecionada);
+
+		if(aposta.getTimeDoCoracao() == null){
+			Random randomGenerator = Utils.getRandom();
+			aposta.setTimeDoCoracao(parametroJogo.getEquipes().get(randomGenerator.nextInt(parametroJogo.getEquipes().size())));
+		} else {
+			aposta.getIndicadorSurpresinha().setValor(IndicadorSurpresinha.SURPRESINHA_NUMERICA);
+		}
+
+		return aposta;
+	}
+
+	public static IncluirSurpresinhaDTO getSurpresinhaLotomania(ParametroJogoDTO parametroJogo, int qtdDezenasPossiveisSelecionado,
+																int qtdSurpresinhas, int qtdConcursoSelecionado, BigDecimal valorTotalAposta,
+																boolean geraEspelho) {
+
+		IncluirSurpresinhaDTO aposta = getSurpresinha(parametroJogo, qtdDezenasPossiveisSelecionado,
+																	qtdSurpresinhas, qtdConcursoSelecionado,
+																	valorTotalAposta);
+
+		aposta.setGerarEspelho(geraEspelho);
+
+		return aposta;
+	}
+
+	public static IncluirSurpresinhaDTO getSurpresinhaMaisMilionaria(ParametroJogoDTO parametroJogo, int qtdDezenasPossiveisSelecionado,
+																	 int qtdSurpresinhas, int qtdConcursoSelecionado, BigDecimal valorTotalAposta, int qtdTrevos) {
+
+		IncluirSurpresinhaDTO aposta = getSurpresinha(parametroJogo, qtdDezenasPossiveisSelecionado,
+																	qtdSurpresinhas, qtdConcursoSelecionado,
+																	valorTotalAposta);
+
+		aposta.setQtdTrevos(qtdTrevos);
 
 		return aposta;
 	}
