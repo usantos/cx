@@ -5,6 +5,7 @@ import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import br.gov.caixa.loterias.apostas.model.dao.tabela.TabelaCarrinhoFavorito;
 import br.gov.caixa.loterias.apostas.model.dao.tabela.TabelaEquipe;
 import br.gov.caixa.loterias.apostas.model.dao.tabela.TabelaIdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.dao.tabela.TabelaLoterica;
@@ -20,7 +21,7 @@ import br.gov.caixa.loterias.apostas.model.dao.tabela.TabelaPartidaLotogol;
 
 public class DBLoteriasHelper extends SQLiteOpenHelper {
 
-    public static final int DATABASE_VERSION = 3;
+    public static final int DATABASE_VERSION = 4;
     public static final String DATABASE_NAME = "Loterias.db";
 
     public DBLoteriasHelper(Context context) {
@@ -30,7 +31,6 @@ public class DBLoteriasHelper extends SQLiteOpenHelper {
     public DBLoteriasHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version, DatabaseErrorHandler errorHandler) {
         super(context, name, factory, version, errorHandler);
     }
-
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
@@ -58,6 +58,7 @@ public class DBLoteriasHelper extends SQLiteOpenHelper {
         deletaTabela(sqLiteDatabase, DBTabelasLoterias.deleteTabela(TabelaPartidaLotogol.NOME_TABELA));
         deletaTabela(sqLiteDatabase, DBTabelasLoterias.deleteTabela(TabelaPartidaLoteca.NOME_TABELA));
         deletaTabela(sqLiteDatabase, DBTabelasLoterias.deleteTabela(TabelaMesDeSorte.NOME_TABELA));
+        deletaTabela(sqLiteDatabase, DBTabelasLoterias.deleteTabela(TabelaCarrinhoFavorito.NOME_TABELA));
     }
 
     private void criarTabela(SQLiteDatabase sqLiteDatabase, String tabela) {

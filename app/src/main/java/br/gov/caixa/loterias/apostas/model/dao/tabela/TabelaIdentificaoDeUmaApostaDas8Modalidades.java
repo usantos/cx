@@ -12,6 +12,7 @@ public class TabelaIdentificaoDeUmaApostaDas8Modalidades implements BaseColumns 
 	public static final String COLUNA_TIPO_CONCURSO_VALOR = "tipo_concurso_valor";
 	public static final String COLUNA_TIPO_CONCURSO_DESCRICAO = "tipo_concurso_descricao";
 	public static final String COLUNA_NUMEROS_SELECIONADOS = "numeros_selecionados";
+	public static final String COLUNA_TREVOS_SELECIONADOS = "trevos_selecionados";
 	public static final String COLUNA_INDICADOR_SURPRESINHA_VALOR = "indicador_surpresinha_valor";
 	public static final String COLUNA_INDICADOR_SURPRESINHA_DESCRICAO = "indicador_surpresinha_descricao";
 	public static final String COLUNA_VALOR = "valor";
@@ -29,6 +30,7 @@ public class TabelaIdentificaoDeUmaApostaDas8Modalidades implements BaseColumns 
 	public static final String COLUNA_LOTERICA_ID = "tb_loterica_id";
 	public static final String COLUNA_VINCULO_ESPELHO = "vinculo_espelho";
 	public static final String COLUNA_QUANTIDADE_NUMEROS = "quantidade_numeros";
+	public static final String COLUNA_QUANTIDADE_TREVOS = "quantidade_trevos";
 	public static final String COLUNA_SURPRESINHA = "surpresinha";
 	public static final String COLUNA_QUANTIDADE_SURPRESINHA = "quantidade_surpresinha";
 	public static final String COLUNA_ID_TIME_CORACAO = "id_time_coracao";
