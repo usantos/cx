@@ -11,10 +11,9 @@ import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 
-import org.jetbrains.annotations.NotNull;
-
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.Dezena;
+import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.config.DezenaConfig;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemClickListener;
@@ -57,8 +56,9 @@ public class DezenaHolder extends LoteriasHolder<Dezena> implements  View.OnClic
 		Drawable shape;
 		if (dezena.isSelected()) {
 			if (config.isShapePadrao()) {
-				shape = getShape(config.getDrawableSelecionado(), config.getColor());
+				shape = VectorUtils.getShape(config.getDrawableSelecionado(), config.getColor());
 				txtNumero.setTextColor(Color.WHITE);
+				txtNumero.setTypeface(Typeface.DEFAULT_BOLD);
 			}else {
 				shape = AppCompatResources.getDrawable(context, config.getDrawableSelecionado());
 				txtNumero.setTextColor(config.getColor());
@@ -66,10 +66,13 @@ public class DezenaHolder extends LoteriasHolder<Dezena> implements  View.OnClic
 			}
 		} else {
 			if (config.isShapePadrao()){
-				shape = getShape(config.getDrawable(), config.getColor());
+				shape = VectorUtils.getShape(config.getDrawable(), config.getColor());
+				txtNumero.setTextColor(ContextCompat.getColor(context, config.getColor()));
+				txtNumero.setTypeface(Typeface.DEFAULT_BOLD);
 			}else {
 				shape = AppCompatResources.getDrawable(context, config.getDrawable());
 				txtNumero.setTextColor(ContextCompat.getColor(context, config.getColor()));
+				txtNumero.setTypeface(Typeface.DEFAULT_BOLD);
 			}
 
 		}
@@ -78,15 +81,6 @@ public class DezenaHolder extends LoteriasHolder<Dezena> implements  View.OnClic
 
 	public void atualizaDezena(Dezena dezena) {
 		atualizaShape(dezena);
-	}
-
-	@NotNull
-	private Drawable getShape(int drawable, int color ) {
-		Drawable unwrappedDrawable = AppCompatResources.getDrawable(context, drawable);
-		Drawable shape = DrawableCompat.wrap(unwrappedDrawable);
-		DrawableCompat.setTint(shape, color);
-
-		return shape;
 	}
 
 	@Override

@@ -19,13 +19,23 @@ public class ListaDezenaRecyclerView extends RecyclerView.Adapter<DezenaHolder>{
 
 	private List<Dezena> dezenas;
 	private List<Integer> dezenasSelecionadas;
-	private int typeGameColorLight;
+	private int color;
+	private DezenaConfig dezenaConfig;
 	private OnItemClickListener listener;
 
-	public ListaDezenaRecyclerView(List<Dezena> dezenas, List<Integer> dezenasSelecionadas, int typeGameColorLight, OnItemClickListener listener) {
+	public ListaDezenaRecyclerView(List<Dezena> dezenas, List<Integer> dezenasSelecionadas, int color, OnItemClickListener listener) {
 		this.dezenas = dezenas;
 		this.dezenasSelecionadas = dezenasSelecionadas;
-		this.typeGameColorLight = typeGameColorLight;
+		this.color = color;
+		this.listener = listener;
+		this.dezenaConfig = new DezenaConfig(true, color);
+	}
+
+	public ListaDezenaRecyclerView(List<Dezena> dezenas, List<Integer> dezenasSelecionadas, DezenaConfig dezenaConfig, OnItemClickListener listener) {
+		this.dezenas = dezenas;
+		this.dezenasSelecionadas = dezenasSelecionadas;
+		this.dezenaConfig = dezenaConfig;
+		this.color = dezenaConfig.getColor();
 		this.listener = listener;
 	}
 
@@ -34,8 +44,6 @@ public class ListaDezenaRecyclerView extends RecyclerView.Adapter<DezenaHolder>{
 	public DezenaHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_dezena,
 																		parent, false);
-		DezenaConfig dezenaConfig = new DezenaConfig(false, typeGameColorLight,
-													 R.drawable.ic_item_trevo, R.drawable.ic_item_trevo_selecionado);
 		return new DezenaHolder(view, parent.getContext(), dezenaConfig, listener);
 	}
 

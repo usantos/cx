@@ -202,17 +202,6 @@ public class AdicionarApostaCarrinhoHelper {
         }
     }
 
-    /*private static void checarApostasRepetidas(final ApostaBO apostaBO, final IdentificaoDeUmaApostaDas8Modalidades aposta) {
-        if (checarApostasRepetidas(activity,aposta)) {
-            DialogUtils.dismiss();
-            ViewUtils.alertTitleButtonYesOrNotListener(activity, activity.getResources().getString(R.string.MA015), (dialog, which) -> {
-                DialogUtils.show(activity);
-                postAdicionarApostaCarrinho(apostaBO);
-            });
-        } else {
-            postAdicionarApostaCarrinho(apostaBO);
-        }
-    }*/
     private static void prosseguirInclusaoAposta(Activity activity, IdentificaoDeUmaApostaDas8Modalidades aposta, ApostaBO apostaBO) {
         if(!checarApostasRepetidas(activity, aposta, apostaBO, ApostaOrigem.CARROSEL)){
             postAdicionarApostaCarrinho(apostaBO);
@@ -354,7 +343,6 @@ public class AdicionarApostaCarrinhoHelper {
                 }
             }
             AppCenterManager.registraEvento("ENTROU_ADICAO_APOSTA_CARRINHO_OFFLINE");
-
 
             return Boolean.TRUE;
         }

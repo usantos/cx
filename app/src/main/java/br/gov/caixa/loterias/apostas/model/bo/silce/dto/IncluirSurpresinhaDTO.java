@@ -37,6 +37,8 @@ public class IncluirSurpresinhaDTO {
     private Integer quantidadeTeimosinhas = null;
     @SerializedName("quantidadeSurpresinhas")
     private Integer quantidadeSurpresinhas = null;
+    @SerializedName("quantidadeNumerosMaisMilionariaTrevo")
+    private Integer qtdTrevos = null;
     @SerializedName("gerarEspelho")
     private Boolean gerarEspelho = null;
     @SerializedName("quantidadeApostas")
@@ -173,6 +175,10 @@ public class IncluirSurpresinhaDTO {
 
     public void setListaTimeDoCoracao(List<ParametroEquipe> listaTimeDoCoracao) {
         this.listaTimeDoCoracao = listaTimeDoCoracao;
+    }
+
+    public void setQtdTrevos(int qtdTrevos) {
+        this.qtdTrevos = qtdTrevos;
     }
 
     @Override

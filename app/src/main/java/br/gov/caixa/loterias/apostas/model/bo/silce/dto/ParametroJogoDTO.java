@@ -61,6 +61,10 @@ public class ParametroJogoDTO implements Serializable {
     @SerializedName("trevos")
     protected TrevosDTO trevos;
 
+    public boolean isTipoJogo(ModalidadeEnum tipo){
+        return getConcurso().getModalidade() == tipo;
+    }
+
     /**
      **/
     @ApiModelProperty(value = "")

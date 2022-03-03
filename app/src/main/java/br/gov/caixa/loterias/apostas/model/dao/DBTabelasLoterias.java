@@ -64,6 +64,7 @@ public final class DBTabelasLoterias {
                 TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_TIPO_CONCURSO_VALOR + " TEXT, " +
                 TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_TIPO_CONCURSO_DESCRICAO + " TEXT, " +
                 TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_NUMEROS_SELECIONADOS + " TEXT, " +
+                TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_TREVOS_SELECIONADOS + " TEXT, " +
                 TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_INDICADOR_SURPRESINHA_VALOR + " INTEGER, " +
                 TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_INDICADOR_SURPRESINHA_DESCRICAO + " TEXT, " +
                 TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_VALOR + " REAL, " +
@@ -81,6 +82,7 @@ public final class DBTabelasLoterias {
                 TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_LOTERICA_ID + " NUMERIC, " +
                 TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_VINCULO_ESPELHO + " NUMERIC, " +
                 TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_QUANTIDADE_NUMEROS + " INTEGER, " +
+                TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_QUANTIDADE_TREVOS + " INTEGER, " +
                 TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_SURPRESINHA + " INTEGER, " +
                 TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_QUANTIDADE_SURPRESINHA + " INTEGER, " +
                 TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_ID_TIME_CORACAO + " NUMERIC, " +

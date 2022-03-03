@@ -75,6 +75,8 @@ public enum ModalidadeEnum implements Serializable {
                 return ModalidadeEnum.DUPLA_SENA;
             case "super sete":
                 return ModalidadeEnum.SUPER_7;
+            case "+ milionaria":
+                return MAIS_MILIONARIA;
             default:
                 return null;
         }

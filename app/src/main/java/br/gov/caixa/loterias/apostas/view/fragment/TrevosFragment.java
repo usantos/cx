@@ -7,8 +7,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,13 +29,16 @@ import java.util.List;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.Dezena;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
-import br.gov.caixa.loterias.apostas.model.model.SimularApostaModel;
+import br.gov.caixa.loterias.apostas.model.model.TrevoModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaDezenaRecyclerView;
+import br.gov.caixa.loterias.apostas.view.config.DezenaConfig;
 import br.gov.caixa.loterias.apostas.view.holder.DezenaHolder;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemClickListener;
@@ -46,8 +47,7 @@ import br.gov.caixa.loterias.apostas.view.listener.OnTrevosListener;
 @EFragment(R.layout.fragment_trevos)
 public class TrevosFragment extends Fragment implements OnItemClickListener<DezenaHolder> {
 
-    @ViewById
-    protected TextView escolhaNumerosText;
+    private static final int QUANTIDADE_COLUNA_LISTA = 3;
     @ViewById
     protected RecyclerView listaTrevos;
 
@@ -55,8 +55,6 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
     protected ParametroJogoDTO parametro;
     @FragmentArg
     protected ArrayList<Integer> dezenasSelecionadas;
-    @FragmentArg
-    protected int idBtnQtdTrevos;
 
     private OnTrevosListener listener;
     private List<ParametroValorApostaDTO> valoresApostas;
@@ -66,7 +64,7 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
     private List<Integer> trevoSelecionadoList = new ArrayList<>();
     private ListaDezenaRecyclerView adappter;
 
-    private SimularApostaModel model;
+    private TrevoModel model;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -83,24 +81,19 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
         textoBotaoTrevosSelecionado = parametro.getTrevos().getQtdMinima() + getString(R.string.espaco_em_branco) +getString(R.string.trevos);
         listener.getButtonQtdTrevos().setText(textoBotaoTrevosSelecionado);
 
-        String                 tituloSemBold      = getString(R.string.voce_escolheu_x_numeros)
-                .replace("x", String.valueOf(dezenasSelecionadas.size()));
-        SpannableStringBuilder titulo = ViewUtils.textFuturaAndFuturaBold(getActivity(), tituloSemBold);
-
-        escolhaNumerosText.setText(titulo);
-        escolhaNumerosText.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
-
         configIncialButtons();
 
         valoresApostas = parametro.getValoresTrevoByNumero(dezenasSelecionadas.size());
         valorApostaSelecionado = valoresApostas.get(0);
 
-        adappter = new ListaDezenaRecyclerView(getListaDezenas(), trevoSelecionadoList, R.color.mais_milionaria_escura, this);
+        DezenaConfig dezenaConfig = new DezenaConfig(false, R.color.mais_milionaria_escura,
+                                                     R.drawable.ic_item_trevo, R.drawable.ic_item_trevo_selecionado);
+        adappter = new ListaDezenaRecyclerView(getListaDezenas(), trevoSelecionadoList, dezenaConfig, this);
         listaTrevos.setAdapter(adappter);
-        RecyclerView.LayoutManager layot = new GridLayoutManager(getContext(), 3);
+        RecyclerView.LayoutManager layot = new GridLayoutManager(getContext(), QUANTIDADE_COLUNA_LISTA);
         listaTrevos.setLayoutManager(layot);
 
-        model = new SimularApostaModel(getActivity());
+        model = new TrevoModel(getActivity());
     }
 
     private List<Dezena> getListaDezenas() {
@@ -148,7 +141,11 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
     }
 
     private void addApostaCarrinho() {
-        Toast.makeText(getContext(), "Falta implementar", Toast.LENGTH_LONG).show();
+        IdentificaoDeUmaApostaDas8Modalidades apostaMaisMilionaria = ApostaUtils.getApostaMaisMilionaria(parametro, dezenasSelecionadas,
+                                                                                                         valorApostaSelecionado.getValor(),
+                                                                                                         listener.getQtdConcursos(), trevoSelecionadoList);
+
+        model.adidionaApostaNoCarrinho(apostaMaisMilionaria);
     }
 
     private void completarTrevosAleatoriamente() {
