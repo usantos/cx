@@ -3,53 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/layoutCartelaFragmentScrollView"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:id="@+id/escolhaNumerosText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="41dp"
-            android:text="@string/voce_escolheu_x_numeros"
-            android:textColor="@color/mais_milionaria_escura"
-            android:textSize="16sp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
-
-        <TextView
-            android:id="@+id/paginaNumeroText"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_alignBottom="@+id/escolhaNumerosText"
-            android:layout_alignTop="@+id/escolhaNumerosText"
-            android:layout_toStartOf="@+id/paginaQuantidadeText"
-            android:text="@string/label_numerico_dois"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:textColor="@color/mais_milionaria_escura"
-            app:layout_constraintTop_toTopOf="@id/escolhaNumerosText"
-            app:layout_constraintEnd_toStartOf="@id/paginaQuantidadeText"/>
-
-        <TextView
-            android:id="@+id/paginaQuantidadeText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/escolhaNumerosText"
-            android:layout_alignParentEnd="true"
-            android:layout_alignTop="@+id/escolhaNumerosText"
-            android:layout_marginEnd="24dp"
-            android:text=" | 2"
-            android:textColor="@color/mais_milionaria_escura"
-            app:layout_constraintTop_toTopOf="@id/paginaNumeroText"
-            app:layout_constraintBottom_toBottomOf="@id/paginaNumeroText"
-            app:layout_constraintEnd_toEndOf="parent"
-            />
+        android:layout_height="match_parent">
 
         <TextView
             android:id="@+id/subtituloTrevos"
@@ -64,7 +23,7 @@
             android:textAlignment="center"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/escolhaNumerosText"
+            app:layout_constraintTop_toTopOf="parent"
             />
 
         <androidx.recyclerview.widget.RecyclerView

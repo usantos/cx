@@ -424,13 +424,16 @@ public class ViewUtils {
      * @return
      */
     public static SpannableStringBuilder textFuturaAndFuturaBold(Context context, String texto) {
-        Typeface font = ViewUtils.getFontFuturaBold(context);
+        try{
+            Typeface font = ViewUtils.getFontFuturaBold(context);
 
-        PositionStringBold positionStringBold = positionString(texto);
-        SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(texto.replace("_", ""));
-        spannableStringBuilder.setSpan(new CustomTypefaceSpan("", font), positionStringBold.getStart(), positionStringBold.getEnd(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
-
-        return spannableStringBuilder;
+            PositionStringBold positionStringBold = positionString(texto);
+            SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(texto.replace("_", ""));
+            spannableStringBuilder.setSpan(new CustomTypefaceSpan("", font), positionStringBold.getStart(), positionStringBold.getEnd(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            return spannableStringBuilder;
+        }catch (Exception e){
+            return  new SpannableStringBuilder().append(texto);
+        }
     }
 
     public static SpannableStringBuilder textColor(Context context, String texto,int idCor) {

@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -50,8 +49,6 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
 
     private static final int QUANTIDADE_COLUNA_LISTA = 3;
     @ViewById
-    protected TextView escolhaNumerosText;
-    @ViewById
     protected RecyclerView listaTrevos;
 
     @FragmentArg
@@ -83,13 +80,6 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
     protected void init() {
         textoBotaoTrevosSelecionado = parametro.getTrevos().getQtdMinima() + getString(R.string.espaco_em_branco) +getString(R.string.trevos);
         listener.getButtonQtdTrevos().setText(textoBotaoTrevosSelecionado);
-
-        String                 tituloSemBold      = getString(R.string.voce_escolheu_x_numeros)
-                .replace("x", String.valueOf(dezenasSelecionadas.size()));
-        SpannableStringBuilder titulo = ViewUtils.textFuturaAndFuturaBold(getActivity(), tituloSemBold);
-
-        escolhaNumerosText.setText(titulo);
-        escolhaNumerosText.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
 
         configIncialButtons();
 

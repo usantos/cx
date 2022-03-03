@@ -156,44 +156,6 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     app:layout_constraintTop_toTopOf="parent">
-
-                    <RelativeLayout
-                        android:id="@+id/ttvLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:visibility="gone"
-                        tools:visibility="visible">
-
-                        <TextView
-                            android:id="@+id/ttvEscolha"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="24dp"
-                            android:layout_marginTop="41dp"
-                            tools:text="@string/dia_sorte_escolha_dia" />
-
-                        <TextView
-                            android:id="@+id/ttvPagina"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_alignTop="@+id/ttvEscolha"
-                            android:layout_alignBottom="@+id/ttvEscolha"
-                            android:layout_toStartOf="@+id/ttvPaginaQuantidade"
-                            android:text="@string/label_numerico_um"
-                            android:textStyle="bold"
-                            android:textSize="22sp"/>
-
-                        <TextView
-                            android:id="@+id/ttvPaginaQuantidade"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_alignTop="@+id/ttvPagina"
-                            android:layout_alignBottom="@+id/ttvPagina"
-                            android:layout_alignParentEnd="true"
-                            android:layout_marginTop="4dp"
-                            android:layout_marginEnd="24dp"
-                            tools:text=" | 2" />
-                    </RelativeLayout>
                 </LinearLayout>
 
 

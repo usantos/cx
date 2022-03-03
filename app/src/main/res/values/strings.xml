@@ -1040,6 +1040,7 @@
     <string name="quant_de_trevos">Quant. de trevos</string>
     <string name="trevos_por"> trevos por </string>
     <string name="completar_trevos_aleatoriamente">_Completar_\n Trevos aleatoriamente</string>
+    <string name="divisor_paginacao">|</string>
 
 
 </resources>

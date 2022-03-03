@@ -47,6 +47,7 @@ import java.util.Date;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.model.bean.Paginacao;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
@@ -70,15 +71,18 @@ import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
+import br.gov.caixa.loterias.apostas.utils.PaginacaoUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.fragment.CartelaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.MesesFragment_;
+import br.gov.caixa.loterias.apostas.view.fragment.PaginacaoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SurpresinhaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SurpresinhaFragment_;
 import br.gov.caixa.loterias.apostas.view.fragment.TrevosFragment_;
 import br.gov.caixa.loterias.apostas.view.listener.CartelaFragmentListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnPaginacaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnSomadorListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnTrevosListener;
 import br.gov.caixa.loterias.apostas.view.listener.SurpresinhaFragmentListener;
@@ -89,7 +93,7 @@ import static br.gov.caixa.loterias.apostas.utils.Utils.isErroNegocial;
 import static java.lang.String.format;
 
 @EActivity(R.layout.activity_simular_aposta)
-public class SimularApostaActivity<T> extends AppCompatActivity implements OnClickListener, CartelaFragmentListener, SurpresinhaFragmentListener, OnSomadorListener, OnTrevosListener {
+public class SimularApostaActivity<T> extends AppCompatActivity implements OnClickListener, CartelaFragmentListener, SurpresinhaFragmentListener, OnSomadorListener, OnTrevosListener, OnPaginacaoListener {
 
     private static int RESULT_FINISH = 3;
 
@@ -132,6 +136,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     private CartelaFragment cartelaFragment;
     private SurpresinhaFragment surpresinhaFragment;
     private SomadorCarrinhoFragment somadorCarrinhoFragment;
+    private PaginacaoFragment paginacaoFragment;
 
     private String dataSorteioAtual;
     private int typeGameColorLight;
@@ -211,7 +216,13 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
                     botaoAdicionarCompletarCartela.setOnClickListener(this);
                     botaoAdicionarCompletarCartela.setBackgroundColor(getResources().getColor(typeGameColorDark));
                     botaoLimparAposta.setOnClickListener(this);
+                    voltaPagina();
                 }
+
+                if (parametroSimulacao.isTipoJogo(ModalidadeEnum.DIA_DE_SORTE)){
+                    voltaPagina();
+                }
+
                 break;
             }
 
@@ -520,6 +531,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
             simularTelaAposta.setBackgroundResource(R.drawable.icon_seleciona2);
             surpresinhaTela.setBackgroundResource(R.drawable.icon_surpresinha2);
         }
+        proximaPagina();
     }
 
     public void trevosFragment(List<Integer> dezenasSelecionadas){
@@ -527,6 +539,9 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
                        .replace(R.id.fragmentSimularApostas, TrevosFragment_.builder()
                                                                             .parametro(parametroSimulacao)
                                                                             .dezenasSelecionadas((ArrayList<Integer>) dezenasSelecionadas).build()).commit();
+        Paginacao paginacao = PaginacaoUtils.getPaginacaoMaisMilionaria(getApplicationContext(), dezenasSelecionadas.size(), R.color.mais_milionaria_escura);
+        paginacaoFragment.atualizaPaginacao(paginacao);
+        proximaPagina();
     }
 
     public ParametroMesDeSorte getMesDeSorteCartela() {
@@ -605,6 +620,30 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         FragmentTransaction ft = fm.beginTransaction();
         ft.replace(R.id.fragmentSimularApostas, cartelaFragment).commit();
         somadorCarrinhoFragment = FragmentUtils.startSomadorCarrinhoFragment(getSupportFragmentManager(), somadorCarrinhoFragment, R.id.id_fg_somador_carrinho, "TELA SIMULAR APOSTA");
+
+        Paginacao paginacao = getPaginacao();
+        if (paginacao != null) {
+            paginacaoFragment = FragmentUtils.startPaginacaoFragment(getSupportFragmentManager(), paginacaoFragment, R.id.paginacaoView, paginacao);
+        }else {
+            findViewById(R.id.paginacaoView).setVisibility(View.GONE);
+        }
+    }
+
+    private Paginacao getPaginacao() {
+        Paginacao paginacao = null;
+        switch (parametroSimulacao.getConcurso().getModalidade()){
+            case MAIS_MILIONARIA:
+                paginacao = PaginacaoUtils.getPaginacaoMaisMilionaria(getApplicationContext(), 0, R.color.mais_milionaria_escura);
+                break;
+            case TIMEMANIA:
+                paginacao = PaginacaoUtils.getPaginacaoTimemania(getApplicationContext(), R.color.timemaniaescuro);
+                break;
+            case DIA_DE_SORTE:
+                paginacao = PaginacaoUtils.getPaginacaoDiaDeSorte(getApplicationContext(), R.color.diasorteescuro);
+                break;
+        }
+
+        return paginacao;
     }
 
     private void configuraActivity() {
@@ -909,5 +948,15 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     @Override
     public int getQtdConcursos() {
         return qtdConcursoSelecionado;
+    }
+
+    @Override
+    public void proximaPagina() {
+        paginacaoFragment.proximaPagina();
+    }
+
+    @Override
+    public void voltaPagina() {
+        paginacaoFragment.voltaPagina();
     }
 }

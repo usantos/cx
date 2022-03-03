@@ -1,9 +1,6 @@
 package br.gov.caixa.loterias.apostas.view.fragment;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.Typeface;
-import android.graphics.drawable.GradientDrawable;
 import android.hardware.Sensor;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
@@ -11,16 +8,12 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -209,21 +202,6 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 			idList = R.id.listaDezenas;
 		}
 
-		if (parametroJogo.isTipoJogo(ModalidadeEnum.TIMEMANIA)) {
-			RelativeLayout ttvLayout           = view.findViewById(R.id.ttvLayout);
-			TextView       ttvEscolha          = view.findViewById(R.id.ttvEscolha);
-			TextView       ttvPagina           = view.findViewById(R.id.ttvPagina);
-			TextView       ttvPaginaQuantidade = view.findViewById(R.id.ttvPaginaQuantidade);
-
-			ttvEscolha.setText(ViewUtils.textFuturaAndFuturaBold(parentActivity, getString(R.string.dia_sorte_escolha_dia)));
-			ttvEscolha.setTextColor(getResources().getColor(R.color.timemaniaclaro));
-			ttvPagina.setTextColor(getResources().getColor(R.color.timemaniaescuro));
-			ttvPagina.setTypeface(null, Typeface.BOLD);
-			ttvPaginaQuantidade.setTextColor(getResources().getColor(R.color.timemaniaclaro));
-			ttvPaginaQuantidade.setText(getString(R.string.paginacao_quantidade, getString(R.string.label_numerico_dois)));
-			ttvLayout.setVisibility(View.VISIBLE);
-		}
-
 		if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOMANIA)) {
 			opcaoOutrosNumerosLayout = view.findViewById(R.id.opcaoOutrosNumerosLayout);
 			selcioneOutrosNumeros = opcaoOutrosNumerosLayout.findViewById(R.id.selcioneOutrosNumeros);
@@ -253,13 +231,6 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 			limparTimeSelecionado();
 		}
 
-		if (parametroJogo.isTipoJogo(ModalidadeEnum.TIMEMANIA) && !isTelaSelecaoTimeAtivado) {
-			// Tela de escolha de números
-			TextView ttvEscolha = view.findViewById(R.id.ttvEscolha);
-			TextView ttvPagina  = view.findViewById(R.id.ttvPagina);
-			ttvEscolha.setText(ViewUtils.textFuturaAndFuturaBold(parentActivity, getString(R.string.dia_sorte_escolha_dia)));
-			ttvPagina.setText(R.string.label_numerico_um);
-		}
 		if (!isEscolhaTimeCoracaoSurpresinha) {
 			configuraListaDezenas(view);
 			verificaSeMostraBotaoLimparAposta();
@@ -286,30 +257,6 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.fragment_cartela, container, false);
-		if ((parametroJogo.isTipoJogo(ModalidadeEnum.DIA_DE_SORTE) && parentActivity.getMesDeSorteCartela() == null) || parametroJogo.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)) {
-			RelativeLayout ttvLayout           = view.findViewById(R.id.ttvLayout);
-			TextView       ttvEscolha          = view.findViewById(R.id.ttvEscolha);
-			TextView       ttvPagina           = view.findViewById(R.id.ttvPagina);
-			TextView       ttvPaginaQuantidade = view.findViewById(R.id.ttvPaginaQuantidade);
-
-			if(parametroJogo.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)){
-				ttvEscolha.setText(getString(R.string.escolha_de_seis_a_doze_numeros));
-			}else {
-				ttvEscolha.setText(ViewUtils.textFuturaAndFuturaBold(parentActivity, getString(R.string.dia_sorte_escolha_dia)));
-			}
-			ttvPaginaQuantidade.setText(getString(R.string.paginacao_quantidade, getString(R.string.label_numerico_dois)));
-			ttvLayout.setVisibility(View.VISIBLE);
-
-			if (parametroJogo.isTipoJogo(ModalidadeEnum.DIA_DE_SORTE)){
-				ttvEscolha.setTextColor(getResources().getColor(R.color.diasortemedio));
-				ttvPagina.setTextColor(getResources().getColor(R.color.diasortemedio));
-				ttvPaginaQuantidade.setTextColor(getResources().getColor(R.color.diasorteclaro));
-			}else if(parametroJogo.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)){
-				ttvEscolha.setTextColor(getResources().getColor(R.color.mais_milionaria_media));
-				ttvPagina.setTextColor(getResources().getColor(R.color.mais_milionaria_media));
-				ttvPaginaQuantidade.setTextColor(getResources().getColor(R.color.mais_milionaria_clara));
-			}
-		}
 		return view;
 	}
 
@@ -370,7 +317,6 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	}
 
 	private void adicionarApostaNoCarrinho() {
-
 		if (isEscolhaTimeCoracaoSurpresinha) {
 			cartelaFragmentListener.adicionarTimeSurpresa(equipeSelecionada);
 			return;
@@ -423,6 +369,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 						if (mGridTimeCoracao == null) {
 							mostrarCartelaEscolhaTimeCoracao();
 							timemaniaTimeSelecionadoEdicao();
+							parentActivity.proximaPagina();
 						} else {
 							if (equipeSelecionada != null) {
 								if (equipeSelecionada.isSelecionado()) {
@@ -737,10 +684,6 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	private void mostrarCartelaEscolhaTimeCoracao() {
 		// Estando a aposta completa apresenta a tela de escolha do time
 		// Seta a paginação
-		TextView ttvEscolha = view.findViewById(R.id.ttvEscolha);
-		TextView ttvPagina  = view.findViewById(R.id.ttvPagina);
-		ttvEscolha.setText(R.string.label_escolha_time_seu_coracao);
-		ttvPagina.setText(R.string.label_numerico_dois);
 
 		isEcolhaTimeBtnAtivado = true;
 		isTelaSelecaoTimeAtivado = true;
@@ -1480,71 +1423,6 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 			verificaSeMostraBotaoLimparAposta();
 			verificaSeMostraSalvarApostaView();
 			atualizarAdicionarCarinhoCompletarCartela(false);
-		}
-	}
-
-	// Adapter do gridview das dezenas
-	private class SimularDezenasAdapter extends BaseAdapter {
-		private Context context;
-		private List<Dezena> rows;
-
-		SimularDezenasAdapter(Context context, List<Dezena> activitData) {
-			this.context = context;
-			this.rows = activitData;
-		}
-
-		@Override
-		public int getCount() {
-			return rows.size();
-		}
-
-		@Override
-		public Object getItem(int i) {
-			return rows.get(i);
-		}
-
-		@Override
-		public long getItemId(int i) {
-			return 0;
-		}
-
-		@Override
-		public View getView(int i, View view, ViewGroup viewGroup) {
-			TextView         textView;
-			GradientDrawable shape     = new GradientDrawable();
-			int              sizeItens = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 45, parentActivity.getResources().getDisplayMetrics());
-
-			if (view == null) {
-				textView = new TextView(this.context);
-
-				textView.setLayoutParams(new GridView.LayoutParams(sizeItens, sizeItens));
-			} else {
-				textView = (TextView) view;
-			}
-
-			if (dezenasSelecionadas.contains(Integer.valueOf(rows.get(i).getValue()))) {
-				shape.setColor(ContextCompat.getColor(context, typeGameColorLight));
-				textView.setTextColor(Color.WHITE);
-				rows.get(i).setSelected(Boolean.TRUE);
-			} else {
-				shape.setColor(Color.WHITE);
-				textView.setTextColor(ContextCompat.getColor(context, typeGameColorLight));
-				rows.get(i).setSelected(Boolean.FALSE);
-			}
-
-			shape.setCornerRadius(sizeItens / 2);
-			shape.setStroke(1, Color.GRAY);
-			textView.setBackground(shape);
-			if (dezenas.get(i).getValue().length() == 1) {
-				textView.setText(String.format("0%s", dezenas.get(i).getValue()));
-			} else {
-
-				textView.setText(dezenas.get(i).getValue());
-			}
-			textView.setTypeface(ViewUtils.getFontFuturaBold(context));
-			textView.setGravity(Gravity.CENTER);
-
-			return textView;
 		}
 	}
 }
