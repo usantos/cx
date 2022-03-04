@@ -21,10 +21,13 @@ public class GeradorNumerosAleatorios {
 			numerosPossiveis.removeAll(selecionados);
 		}
 
-		while (qtdNumeros >= aleatorios.size()){
-			int numero = new Random().nextInt(numerosPossiveis.size() + 1);
-			aleatorios.add(numero);
-			numerosPossiveis.remove(Integer.valueOf(numero));
+		while (qtdNumeros > aleatorios.size()){
+			int index = new Random().nextInt(numerosPossiveis.size());
+			Integer numero = numerosPossiveis.get(index);
+			if (!aleatorios.contains(numero) && numero > 0 && numero <= prognostico) {
+				aleatorios.add(numero);
+				numerosPossiveis.remove(index);
+			}
 		}
 
 		iniciaNumerosPossiveis();
