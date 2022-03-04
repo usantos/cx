@@ -91,7 +91,6 @@ public class PaginacaoFragment extends Fragment {
 	}
 
 	private void atualizaPaginacao(Pagina pagina) {
-		//SpannableStringBuilder subtituloString = ViewUtils.textFuturaAndFuturaBold(getActivity(), pagina.getSubtitulo());
 		subtitulo.setText(pagina.getSubtitulo());
 		numeroPagina.setText(String.valueOf(pagina.getNumeroPagina()));
 	}
