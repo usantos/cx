@@ -20,7 +20,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IncluirSurpresinhaDTO;
 import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
-import br.gov.caixa.loterias.apostas.utils.helper.GeradorNumerosAleatorios;
+import br.gov.caixa.loterias.apostas.utils.gerador.GeradorListaNumeros;
 
 public class SimularApostaModel {
 
@@ -58,7 +58,7 @@ public class SimularApostaModel {
 	}
 
 	private void preencheNumerosAleatoriosLocal(int qtdNumeos, List<Integer> selecionados, int prognostico, OnSilceListener listener){
-		List<Integer> numerosAleatorios = new GeradorNumerosAleatorios(prognostico).gerar(qtdNumeos, selecionados);
+		List<Integer> numerosAleatorios = new GeradorListaNumeros(prognostico).gerar(qtdNumeos, selecionados);
 
 		if (numerosAleatorios != null && !numerosAleatorios.isEmpty()){
 			Toast.makeText(Aplicacao.application.getApplicationContext(), "Aleatorio local: "+ numerosAleatorios.size(), Toast.LENGTH_LONG).show();
@@ -69,6 +69,16 @@ public class SimularApostaModel {
 	}
 
 	public void preencheNumerosAleatoriosSuperSete(int qtdDezenasPossiveisSelecionado, ArrayList<ArrayList<Integer>> listaInteiros,
+												   String nome, OnSilceListener listener) {
+		preencheNumerosAleatoriosSuperSeteSilce(qtdDezenasPossiveisSelecionado, listaInteiros, nome, listener);
+	}
+
+	private void preencheNumerosAleatoriosSuperSeteLocal(int qtdDezenasPossiveisSelecionado, List<ArrayList<Integer>> listaInteiros,
+														 OnSilceListener listener) {
+		//new GeradorNumerosAleatorios(10).gerarSuperSete(qtdDezenasPossiveisSelecionado, listaInteiros);
+	}
+
+	private void preencheNumerosAleatoriosSuperSeteSilce(int qtdDezenasPossiveisSelecionado, ArrayList<ArrayList<Integer>> listaInteiros,
 												   String nome, OnSilceListener listener) {
 		ApostaBO apostaBO = ApostaBO_.getInstance_(activity);
 		apostaBO.completaJogoNovo(qtdDezenasPossiveisSelecionado, listaInteiros,
