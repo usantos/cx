@@ -25,6 +25,7 @@
         android:layout_toStartOf="@+id/paginaQuantidadeText"
         android:layout_marginEnd="1dp"
         android:text="@string/label_numerico_dois"
+        app:layout_constraintBaseline_toBaselineOf="@id/subtituloPaginacao"
         android:textStyle="bold"
         android:textSize="22sp"
         android:textColor="@color/mais_milionaria_escura"

@@ -1,6 +1,7 @@
 package br.gov.caixa.loterias.apostas.model.model;
 
 import android.app.Activity;
+import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 
@@ -16,8 +17,10 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.data.CompletaJogoNovoRsp;
 import br.gov.caixa.loterias.apostas.model.bo.silce.data.CompletaJogoRsp;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IncluirSurpresinhaDTO;
+import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
+import br.gov.caixa.loterias.apostas.utils.helper.GeradorNumerosAleatorios;
 
 public class SimularApostaModel {
 
@@ -25,7 +28,12 @@ public class SimularApostaModel {
 
 	public SimularApostaModel(Activity activity) {this.activity = activity;}
 
-	public void preencheNumerosAleatorios(int qtdDezenasPossiveisSelecionado, List<Integer> dezenasSelecionadas,
+
+	public void preencheNumerosAleatorios(int qtdNumeos, List<Integer> selecionados, int prognostico, OnSilceListener listener){
+		preencheNumerosAleatoriosLocal(qtdNumeos, selecionados, prognostico, listener);
+	}
+
+	private void preencheNumerosAleatoriosSilce(int qtdDezenasPossiveisSelecionado, List<Integer> dezenasSelecionadas,
 										   int qtdPrognosticoMaximo, OnSilceListener listener) {
 		ApostaBO apostaBO = ApostaBO_.getInstance_(activity);
 		apostaBO.completaJogo(qtdDezenasPossiveisSelecionado, dezenasSelecionadas, 1,
@@ -47,6 +55,17 @@ public class SimularApostaModel {
 						RedirectNetwork.checkRedirect(error, activity);
 					}
 				});
+	}
+
+	private void preencheNumerosAleatoriosLocal(int qtdNumeos, List<Integer> selecionados, int prognostico, OnSilceListener listener){
+		List<Integer> numerosAleatorios = new GeradorNumerosAleatorios(prognostico).gerar(qtdNumeos, selecionados);
+
+		if (numerosAleatorios != null && !numerosAleatorios.isEmpty()){
+			Toast.makeText(Aplicacao.application.getApplicationContext(), "Aleatorio local: "+ numerosAleatorios.size(), Toast.LENGTH_LONG).show();
+			listener.success(numerosAleatorios);
+		}else {
+			listener.error(null);
+		}
 	}
 
 	public void preencheNumerosAleatoriosSuperSete(int qtdDezenasPossiveisSelecionado, ArrayList<ArrayList<Integer>> listaInteiros,

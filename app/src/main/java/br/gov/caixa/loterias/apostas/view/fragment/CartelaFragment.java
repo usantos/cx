@@ -126,6 +126,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	public String dataSorteioAtual;
 
 	private SimularApostaModel model;
+	private View rodape;
 
 	public CartelaFragment() {
 		// Required empty public constructor
@@ -257,6 +258,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.fragment_cartela, container, false);
+		rodape = view.findViewById(R.id.rodape_espacamento);
 		return view;
 	}
 
@@ -810,8 +812,10 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 		if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA)) {
 			if (partidasSelecionadas.isEmpty()) {
 				botaoLimparAposta.setVisibility(View.GONE);
+				rodape.setVisibility(View.GONE);
 			} else {
 				botaoLimparAposta.setVisibility(View.VISIBLE);
+				rodape.setVisibility(View.VISIBLE);
 			}
 		} else if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOGOL)) {
 			int visibility = View.GONE;
@@ -822,25 +826,34 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 				}
 			}
 			botaoLimparAposta.setVisibility(visibility);
+			rodape.setVisibility(visibility);
 		} else if (parametroJogo.isTipoJogo(ModalidadeEnum.TIMEMANIA)) {
 			if (isTelaSelecaoTimeAtivado && (equipeSelecionada == null || !equipeSelecionada.isSelecionado())) {
 				botaoLimparAposta.setVisibility(View.GONE);
+				rodape.setVisibility(View.GONE);
 			} else if (!isTelaSelecaoTimeAtivado && dezenasSelecionadas.isEmpty()) {
 				botaoLimparAposta.setVisibility(View.GONE);
+				rodape.setVisibility(View.GONE);
 			} else {
 				botaoLimparAposta.setVisibility(View.VISIBLE);
+				rodape.setVisibility(View.VISIBLE);
 			}
 		} else if (parametroJogo.isTipoJogo(ModalidadeEnum.SUPER_7)) {
 			if (mostraLimparSuperSete()) {
 				botaoLimparAposta.setVisibility(View.VISIBLE);
+				rodape.setVisibility(View.VISIBLE);
 			} else {
 				botaoLimparAposta.setVisibility(View.GONE);
+				rodape.setVisibility(View.GONE);
 			}
 		} else if (dezenasSelecionadas.isEmpty()) {
 			botaoLimparAposta.setVisibility(View.GONE);
+			rodape.setVisibility(View.GONE);
 		} else {
 			botaoLimparAposta.setVisibility(View.VISIBLE);
+			rodape.setVisibility(View.VISIBLE);
 		}
+
 	}
 
 	private void limpaNumerosSuperSete() {
@@ -895,7 +908,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 		RelativeLayout salvarApostaLayout = parentActivity.getSalvarApostaLayout();
 
 		salvarApostaLayout.setVisibility(View.GONE);
-		view.findViewById(R.id.rodape_espacamento).setVisibility(View.GONE);
+		rodape.setVisibility(View.GONE);
 	}
 
 	private void mostrarSalvarAposta() {
