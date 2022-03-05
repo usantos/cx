@@ -175,6 +175,15 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Paginacao paginacao = getPaginacao();
+        if (paginacao != null && isFragmentCartela()){
+            voltaPagina();
+        }
+    }
+
     public void zerarApostas() {
         qtdNumerosList = new ArrayList<>();
         qtdConcursosList = new ArrayList<>();
@@ -208,21 +217,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.simularTelaAposta: {
-                cartelaFragment.setEscolhaTimeCoracaoSurpresinha(false);
-                abrirTelaCartela(false);
-                if (tipoJogo == ModalidadeEnum.MAIS_MILIONARIA){
-                    qtdNumerosButton.setOnClickListener(this);
-                    qtdNumerosButton.setText(textoBotaoPrognosticosSelecionado);
-                    botaoAdicionarCompletarCartela.setOnClickListener(this);
-                    botaoAdicionarCompletarCartela.setBackgroundColor(getResources().getColor(typeGameColorDark));
-                    botaoLimparAposta.setOnClickListener(this);
-                    voltaPagina();
-                }
-
-                if (parametroSimulacao.isTipoJogo(ModalidadeEnum.DIA_DE_SORTE)){
-                    voltaPagina();
-                }
-
+                resetaCartela();
                 break;
             }
 
@@ -241,6 +236,23 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
                 modalTeimosinhas();
                 break;
             }
+        }
+    }
+
+    private void resetaCartela() {
+        cartelaFragment.setEscolhaTimeCoracaoSurpresinha(false);
+        abrirTelaCartela(false);
+        if (tipoJogo == ModalidadeEnum.MAIS_MILIONARIA){
+            qtdNumerosButton.setOnClickListener(this);
+            qtdNumerosButton.setText(textoBotaoPrognosticosSelecionado);
+            botaoAdicionarCompletarCartela.setOnClickListener(this);
+            botaoAdicionarCompletarCartela.setBackgroundColor(getResources().getColor(typeGameColorDark));
+            botaoLimparAposta.setOnClickListener(this);
+            voltaPagina();
+        }
+
+        if (parametroSimulacao.isTipoJogo(ModalidadeEnum.DIA_DE_SORTE)){
+            voltaPagina();
         }
     }
 
@@ -621,29 +633,11 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         ft.replace(R.id.fragmentSimularApostas, cartelaFragment).commit();
         somadorCarrinhoFragment = FragmentUtils.startSomadorCarrinhoFragment(getSupportFragmentManager(), somadorCarrinhoFragment, R.id.id_fg_somador_carrinho, "TELA SIMULAR APOSTA");
 
-        Paginacao paginacao = getPaginacao();
-        if (paginacao != null) {
-            paginacaoFragment = FragmentUtils.startPaginacaoFragment(getSupportFragmentManager(), paginacaoFragment, R.id.paginacaoView, paginacao);
+        if (getPaginacao() != null) {
+            paginacaoFragment = FragmentUtils.startPaginacaoFragment(getSupportFragmentManager(), paginacaoFragment, R.id.paginacaoView);
         }else {
             findViewById(R.id.paginacaoView).setVisibility(View.GONE);
         }
-    }
-
-    private Paginacao getPaginacao() {
-        Paginacao paginacao = null;
-        switch (parametroSimulacao.getConcurso().getModalidade()){
-            case MAIS_MILIONARIA:
-                paginacao = PaginacaoUtils.getPaginacaoMaisMilionaria(getApplicationContext(), 0, R.color.mais_milionaria_escura);
-                break;
-            case TIMEMANIA:
-                paginacao = PaginacaoUtils.getPaginacaoTimemania(getApplicationContext(), R.color.timemaniaescuro);
-                break;
-            case DIA_DE_SORTE:
-                paginacao = PaginacaoUtils.getPaginacaoDiaDeSorte(getApplicationContext(), R.color.diasorteescuro);
-                break;
-        }
-
-        return paginacao;
     }
 
     private void configuraActivity() {
@@ -948,6 +942,24 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     @Override
     public int getQtdConcursos() {
         return qtdConcursoSelecionado;
+    }
+
+    @Override
+    public Paginacao getPaginacao() {
+        Paginacao paginacao = null;
+        switch (parametroSimulacao.getConcurso().getModalidade()){
+            case MAIS_MILIONARIA:
+                paginacao = PaginacaoUtils.getPaginacaoMaisMilionaria(getApplicationContext(), 0, R.color.mais_milionaria_escura);
+                break;
+            case TIMEMANIA:
+                paginacao = PaginacaoUtils.getPaginacaoTimemania(getApplicationContext(), R.color.timemaniaescuro);
+                break;
+            case DIA_DE_SORTE:
+                paginacao = PaginacaoUtils.getPaginacaoDiaDeSorte(getApplicationContext(), R.color.diasorteescuro);
+                break;
+        }
+
+        return paginacao;
     }
 
     @Override

@@ -1,19 +1,21 @@
 package br.gov.caixa.loterias.apostas.view.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-
-import java.io.Serializable;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.Pagina;
 import br.gov.caixa.loterias.apostas.model.bean.Paginacao;
+import br.gov.caixa.loterias.apostas.view.listener.OnPaginacaoListener;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,22 +32,31 @@ public class PaginacaoFragment extends Fragment {
 	private TextView divisor;
 	private TextView qtdPagina;
 
+	private OnPaginacaoListener paginacaoListener;
+
 	public PaginacaoFragment() {
 		// Required empty public constructor
+	}
+
+	@Override
+	public void onAttach(@NonNull Context context) {
+		super.onAttach(context);
+		try {
+			paginacaoListener = (OnPaginacaoListener) context;
+		}catch (Exception e){
+			Log.d("PAGINACAO_ERRO", "A classe que usa o fragment precisa implementar OnPaginacaoListener");
+		}
 	}
 
 	/**
 	 * Use this factory method to create a new instance of
 	 * this fragment using the provided parameters.
 	 *
-	 * @param paginacao Parameter 1.
+	 * @param
 	 * @return A new instance of fragment PaginacaoFragment.
 	 */
-	public static PaginacaoFragment newInstance(Paginacao paginacao) {
+	public static PaginacaoFragment newInstance() {
 		PaginacaoFragment fragment = new PaginacaoFragment();
-		Bundle            args     = new Bundle();
-		args.putSerializable(ARG_PAGINACAO, (Serializable) paginacao);
-		fragment.setArguments(args);
 		return fragment;
 	}
 
@@ -53,8 +64,8 @@ public class PaginacaoFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		if (getArguments() != null) {
-			paginacao = (Paginacao) getArguments().getSerializable(ARG_PAGINACAO);
+		if (paginacaoListener != null) {
+			paginacao = paginacaoListener.getPaginacao();
 		}
 	}
 
