@@ -386,6 +386,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
 
         atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
         qtdSurpresinhasSelecionadas.setText(String.format(Locale.getDefault(), "%d", qtdSurpresinhas));
+        btnMenosSurpresinha.setBackgroundTintList(getCor(typeGameColorLight));
     }
 
     @Click
