@@ -1,7 +1,6 @@
 package br.gov.caixa.loterias.apostas.model.model;
 
 import android.app.Activity;
-import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 
@@ -17,7 +16,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.data.CompletaJogoNovoRsp;
 import br.gov.caixa.loterias.apostas.model.bo.silce.data.CompletaJogoRsp;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IncluirSurpresinhaDTO;
-import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.gerador.GeradorListaNumeros;
 import br.gov.caixa.loterias.apostas.utils.gerador.GeradorMatrizNumeros;
@@ -28,6 +26,7 @@ public class SimularApostaModel {
 	private static final int PROGNOSTICO_MINIMO = 1;
 	private static final int PROGNOSTICO_MINIMO_SUPER_SETE = 0;
 	private static final int PROGNOSTICO_COLUNA_SUPER_SETE = 7;
+	private static final int PROGNOSTICO_MAXIMO_SUPER_SETE = 9;
 
 	private Activity activity;
 
@@ -66,7 +65,6 @@ public class SimularApostaModel {
 		List<Integer> numerosAleatorios = new GeradorListaNumeros(PROGNOSTICO_MINIMO, prognostico).gerar(qtdNumeos, selecionados);
 
 		if (numerosAleatorios != null && !numerosAleatorios.isEmpty()){
-			Toast.makeText(Aplicacao.application.getApplicationContext(), "Aleatorio local: "+ numerosAleatorios.size(), Toast.LENGTH_LONG).show();
 			listener.success(numerosAleatorios);
 		}else {
 			listener.error(null);
@@ -80,7 +78,7 @@ public class SimularApostaModel {
 
 	private void preencheNumerosAleatoriosSuperSeteLocal(int qtdDezenasPossiveisSelecionado, ArrayList<ArrayList<Integer>> listaInteiros,
 														 String nome, OnSilceListener listener) {
-		ArrayList<ArrayList<Integer>> matriz = new GeradorMatrizNumeros(PROGNOSTICO_MINIMO_SUPER_SETE, 2,
+		ArrayList<ArrayList<Integer>> matriz = new GeradorMatrizNumeros(PROGNOSTICO_MINIMO_SUPER_SETE, PROGNOSTICO_MAXIMO_SUPER_SETE,
 																		PROGNOSTICO_COLUNA_SUPER_SETE)
 				.gerar(qtdDezenasPossiveisSelecionado, listaInteiros);
 

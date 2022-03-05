@@ -27,7 +27,7 @@ public class GeradorMatrizNumeros extends GeradorNumerosAleatorios<ArrayList<Arr
 				}
 
 				if(qtdNumeros > (repeticoes * prognosticoColunas)){
-					int restante = qtdNumeros - (repeticoes * prognosticoColunas);
+					int restante = getQuantidadeRestante(qtdNumeros, selecionados);
 
 					selecionados = completaRestante(selecionados, restante, repeticoes + 1);
 				}
@@ -39,12 +39,28 @@ public class GeradorMatrizNumeros extends GeradorNumerosAleatorios<ArrayList<Arr
 		}
 	}
 
+	private int getQuantidadeRestante(int qtdNumeros, ArrayList<ArrayList<Integer>> selecionados) {
+		return qtdNumeros - getQuantidadeSelecionados(selecionados);
+	}
+
+	private int getQuantidadeSelecionados(ArrayList<ArrayList<Integer>> selecionados){
+		int qtd = 0;
+
+		for (ArrayList<Integer> coluna: selecionados){
+			if (coluna != null){
+				qtd += coluna.size();
+			}
+		}
+
+		return qtd;
+	}
+
 	private ArrayList<ArrayList<Integer>> completaRestante(ArrayList<ArrayList<Integer>> selecionados, int restante, int qtdNumero) {
 		List<Integer> indices = new ArrayList<>();
 		while (restante != 0){
 			int coluna = new GeradorNumero(0, 6).gerar(1, 6);
 			if ( coluna >= 0 && coluna <= 6){
-				if (!indices.contains(coluna)){
+				if (!indices.contains(coluna) && selecionados.get(coluna).size() < qtdNumero){
 					ArrayList<Integer> gerado = (ArrayList<Integer>)geradorLista.gerar(qtdNumero, selecionados.get(coluna));
 					selecionados.set(coluna, gerado);
 					indices.add(coluna);
