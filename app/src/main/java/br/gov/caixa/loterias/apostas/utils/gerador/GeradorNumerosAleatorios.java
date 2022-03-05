@@ -1,39 +1,23 @@
 package br.gov.caixa.loterias.apostas.utils.gerador;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public abstract class GeradorNumerosAleatorios<T> {
-	private int prognostico;
-	private List<Integer> numerosPossiveis;
+	private int prognosticoMin;
+	private int prognosticoMax;
 
-	public GeradorNumerosAleatorios(int prognostico) {
-		this.prognostico = prognostico;
-		iniciaNumerosPossiveis(this.prognostico);
+	protected GeradorNumerosAleatorios(int prognosticoMin, int prognosticoMax) {
+		this.prognosticoMin = prognosticoMin;
+		this.prognosticoMax = prognosticoMax;
 	}
 
-	public abstract T gerar(int qtdNumeros, List<Integer> selecionados);
-
-	protected void iniciaNumerosPossiveis(int prognostico) {
-		numerosPossiveis = new ArrayList<>();
-		for (int numero = 1; numero <= prognostico; numero++){
-			numerosPossiveis.add(Integer.valueOf(numero));
-		}
+	public int getMin() {
+		return prognosticoMin;
 	}
 
-	public int getPrognostico() {
-		return prognostico;
+	public int getMax() {
+		return prognosticoMax;
 	}
 
-	public void setPrognostico(int prognostico) {
-		this.prognostico = prognostico;
-	}
+	public abstract T gerar(int qtdNumeros, T selecionados);
 
-	public List<Integer> getNumerosPossiveis() {
-		return numerosPossiveis;
-	}
 
-	public void setNumerosPossiveis(List<Integer> numerosPossiveis) {
-		this.numerosPossiveis = numerosPossiveis;
-	}
 }

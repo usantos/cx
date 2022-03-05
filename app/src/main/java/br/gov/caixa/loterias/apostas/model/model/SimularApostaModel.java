@@ -19,10 +19,15 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDa
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IncluirSurpresinhaDTO;
 import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
-import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostas.utils.gerador.GeradorListaNumeros;
+import br.gov.caixa.loterias.apostas.utils.gerador.GeradorMatrizNumeros;
+import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
 
 public class SimularApostaModel {
+
+	private static final int PROGNOSTICO_MINIMO = 1;
+	private static final int PROGNOSTICO_MINIMO_SUPER_SETE = 0;
+	private static final int PROGNOSTICO_COLUNA_SUPER_SETE = 7;
 
 	private Activity activity;
 
@@ -58,7 +63,7 @@ public class SimularApostaModel {
 	}
 
 	private void preencheNumerosAleatoriosLocal(int qtdNumeos, List<Integer> selecionados, int prognostico, OnSilceListener listener){
-		List<Integer> numerosAleatorios = new GeradorListaNumeros(prognostico).gerar(qtdNumeos, selecionados);
+		List<Integer> numerosAleatorios = new GeradorListaNumeros(PROGNOSTICO_MINIMO, prognostico).gerar(qtdNumeos, selecionados);
 
 		if (numerosAleatorios != null && !numerosAleatorios.isEmpty()){
 			Toast.makeText(Aplicacao.application.getApplicationContext(), "Aleatorio local: "+ numerosAleatorios.size(), Toast.LENGTH_LONG).show();
@@ -70,12 +75,16 @@ public class SimularApostaModel {
 
 	public void preencheNumerosAleatoriosSuperSete(int qtdDezenasPossiveisSelecionado, ArrayList<ArrayList<Integer>> listaInteiros,
 												   String nome, OnSilceListener listener) {
-		preencheNumerosAleatoriosSuperSeteSilce(qtdDezenasPossiveisSelecionado, listaInteiros, nome, listener);
+		preencheNumerosAleatoriosSuperSeteLocal(qtdDezenasPossiveisSelecionado, listaInteiros, nome, listener);
 	}
 
-	private void preencheNumerosAleatoriosSuperSeteLocal(int qtdDezenasPossiveisSelecionado, List<ArrayList<Integer>> listaInteiros,
-														 OnSilceListener listener) {
-		//new GeradorNumerosAleatorios(10).gerarSuperSete(qtdDezenasPossiveisSelecionado, listaInteiros);
+	private void preencheNumerosAleatoriosSuperSeteLocal(int qtdDezenasPossiveisSelecionado, ArrayList<ArrayList<Integer>> listaInteiros,
+														 String nome, OnSilceListener listener) {
+		ArrayList<ArrayList<Integer>> matriz = new GeradorMatrizNumeros(PROGNOSTICO_MINIMO_SUPER_SETE, 2,
+																		PROGNOSTICO_COLUNA_SUPER_SETE)
+				.gerar(qtdDezenasPossiveisSelecionado, listaInteiros);
+
+		listener.success(matriz);
 	}
 
 	private void preencheNumerosAleatoriosSuperSeteSilce(int qtdDezenasPossiveisSelecionado, ArrayList<ArrayList<Integer>> listaInteiros,
