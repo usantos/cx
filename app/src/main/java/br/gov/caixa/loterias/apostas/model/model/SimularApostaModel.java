@@ -17,15 +17,27 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.data.CompletaJogoRsp;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IncluirSurpresinhaDTO;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
+import br.gov.caixa.loterias.apostas.utils.gerador.GeradorListaNumeros;
+import br.gov.caixa.loterias.apostas.utils.gerador.GeradorMatrizNumeros;
 import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
 
 public class SimularApostaModel {
+
+	private static final int PROGNOSTICO_MINIMO = 1;
+	private static final int PROGNOSTICO_MINIMO_SUPER_SETE = 0;
+	private static final int PROGNOSTICO_COLUNA_SUPER_SETE = 7;
+	private static final int PROGNOSTICO_MAXIMO_SUPER_SETE = 9;
 
 	private Activity activity;
 
 	public SimularApostaModel(Activity activity) {this.activity = activity;}
 
-	public void preencheNumerosAleatorios(int qtdDezenasPossiveisSelecionado, List<Integer> dezenasSelecionadas,
+
+	public void preencheNumerosAleatorios(int qtdNumeos, List<Integer> selecionados, int prognostico, OnSilceListener listener){
+		preencheNumerosAleatoriosLocal(qtdNumeos, selecionados, prognostico, listener);
+	}
+
+	private void preencheNumerosAleatoriosSilce(int qtdDezenasPossiveisSelecionado, List<Integer> dezenasSelecionadas,
 										   int qtdPrognosticoMaximo, OnSilceListener listener) {
 		ApostaBO apostaBO = ApostaBO_.getInstance_(activity);
 		apostaBO.completaJogo(qtdDezenasPossiveisSelecionado, dezenasSelecionadas, 1,
@@ -49,7 +61,31 @@ public class SimularApostaModel {
 				});
 	}
 
+	private void preencheNumerosAleatoriosLocal(int qtdNumeos, List<Integer> selecionados, int prognostico, OnSilceListener listener){
+		List<Integer> numerosAleatorios = new GeradorListaNumeros(PROGNOSTICO_MINIMO, prognostico).gerar(qtdNumeos, selecionados);
+
+		if (numerosAleatorios != null && !numerosAleatorios.isEmpty()){
+			listener.success(numerosAleatorios);
+		}else {
+			listener.error(null);
+		}
+	}
+
 	public void preencheNumerosAleatoriosSuperSete(int qtdDezenasPossiveisSelecionado, ArrayList<ArrayList<Integer>> listaInteiros,
+												   String nome, OnSilceListener listener) {
+		preencheNumerosAleatoriosSuperSeteLocal(qtdDezenasPossiveisSelecionado, listaInteiros, nome, listener);
+	}
+
+	private void preencheNumerosAleatoriosSuperSeteLocal(int qtdDezenasPossiveisSelecionado, ArrayList<ArrayList<Integer>> listaInteiros,
+														 String nome, OnSilceListener listener) {
+		ArrayList<ArrayList<Integer>> matriz = new GeradorMatrizNumeros(PROGNOSTICO_MINIMO_SUPER_SETE, PROGNOSTICO_MAXIMO_SUPER_SETE,
+																		PROGNOSTICO_COLUNA_SUPER_SETE)
+				.gerar(qtdDezenasPossiveisSelecionado, listaInteiros);
+
+		listener.success(matriz);
+	}
+
+	private void preencheNumerosAleatoriosSuperSeteSilce(int qtdDezenasPossiveisSelecionado, ArrayList<ArrayList<Integer>> listaInteiros,
 												   String nome, OnSilceListener listener) {
 		ApostaBO apostaBO = ApostaBO_.getInstance_(activity);
 		apostaBO.completaJogoNovo(qtdDezenasPossiveisSelecionado, listaInteiros,

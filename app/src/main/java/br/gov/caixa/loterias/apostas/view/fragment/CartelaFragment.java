@@ -126,6 +126,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	public String dataSorteioAtual;
 
 	private SimularApostaModel model;
+	private View rodape;
 
 	public CartelaFragment() {
 		// Required empty public constructor
@@ -257,6 +258,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.fragment_cartela, container, false);
+		rodape = view.findViewById(R.id.rodape_espacamento);
 		return view;
 	}
 
@@ -841,6 +843,8 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 		} else {
 			botaoLimparAposta.setVisibility(View.VISIBLE);
 		}
+
+		verificaMostraRodape();
 	}
 
 	private void limpaNumerosSuperSete() {
@@ -895,7 +899,16 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 		RelativeLayout salvarApostaLayout = parentActivity.getSalvarApostaLayout();
 
 		salvarApostaLayout.setVisibility(View.GONE);
-		view.findViewById(R.id.rodape_espacamento).setVisibility(View.GONE);
+		verificaMostraRodape();
+	}
+
+	private void verificaMostraRodape(){
+		if (parentActivity.getBotaoLimparAposta().getVisibility() == View.VISIBLE ||
+		parentActivity.getSalvarApostaLayout().getVisibility() == View.VISIBLE){
+			rodape.setVisibility(View.VISIBLE);
+		} else {
+			rodape.setVisibility(View.GONE);
+		}
 	}
 
 	private void mostrarSalvarAposta() {
@@ -905,7 +918,8 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 		final float scale = parentActivity.getResources().getDisplayMetrics().density;
 		salvarApostaLayout.getLayoutParams().height = (int) (64 * scale + 0.5f);
 		salvarApostaLayout.setOnClickListener(this);
-		view.findViewById(R.id.rodape_espacamento).setVisibility(View.VISIBLE);
+
+		verificaMostraRodape();
 	}
 
 	public void atualizaStatusBotaoFinalizar(Boolean isPickerPrognosticos) {
