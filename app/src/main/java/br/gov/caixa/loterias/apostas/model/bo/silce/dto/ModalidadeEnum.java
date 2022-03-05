@@ -44,8 +44,7 @@ public enum ModalidadeEnum implements Serializable {
             case SUPER_7:
                 return "super sete";
             case MAIS_MILIONARIA:
-                return "+ milionaria";
-
+                return "+Milionária";
         }
         return "";
     }

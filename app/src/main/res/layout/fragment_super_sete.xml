@@ -1,0 +1,154 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layoutCartelaFragmentScrollView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="false"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/layout_colunas"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/colunas_super_sete"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/cartelaFragmentScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="false"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layout_colunas">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="600dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:paddingBottom="250dp"
+                android:orientation="horizontal">
+
+                <br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView
+                    android:id="@+id/ehgv_super_sete_primeiro"
+                    android:layout_width="wrap_content"
+                    android:layout_height="500dp"
+                    android:layout_weight="1"
+                    android:alpha="0.5"
+                    android:layout_margin="3dp"
+                    android:background="@color/supersete_claro_transparente"
+                    android:columnWidth="50dp"
+                    android:gravity="center"
+                    android:isScrollContainer="false"
+                    android:numColumns="1"
+                    android:scrollbars="none"
+                    android:stretchMode="columnWidth"
+                    android:verticalSpacing="10dp" />
+
+                <br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView
+                    android:id="@+id/ehgv_super_sete_segundo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="500dp"
+                    android:layout_weight="1"
+                    android:alpha="0.5"
+                    android:layout_margin="3dp"
+                    android:background="@color/supersete_claro_transparente"
+                    android:columnWidth="50dp"
+                    android:gravity="center"
+                    android:isScrollContainer="false"
+                    android:numColumns="1"
+                    android:scrollbars="none"
+                    android:stretchMode="columnWidth"
+                    android:verticalSpacing="10dp" />
+
+                <br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView
+                    android:id="@+id/ehgv_super_sete_terceiro"
+                    android:layout_width="wrap_content"
+                    android:layout_height="500dp"
+                    android:layout_weight="1"
+                    android:alpha="0.5"
+                    android:layout_margin="3dp"
+                    android:background="@color/supersete_claro_transparente"
+                    android:columnWidth="50dp"
+                    android:gravity="center"
+                    android:isScrollContainer="false"
+                    android:numColumns="1"
+                    android:scrollbars="none"
+                    android:stretchMode="columnWidth"
+                    android:verticalSpacing="10dp" />
+
+                <br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView
+                    android:id="@+id/ehgv_super_sete_quarto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="500dp"
+                    android:layout_weight="1"
+                    android:alpha="0.5"
+                    android:layout_margin="3dp"
+                    android:background="@color/supersete_claro_transparente"
+                    android:columnWidth="50dp"
+                    android:gravity="center"
+                    android:isScrollContainer="false"
+                    android:numColumns="1"
+                    android:scrollbars="none"
+                    android:stretchMode="columnWidth"
+                    android:verticalSpacing="10dp" />
+
+                <br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView
+                    android:id="@+id/ehgv_super_sete_quinto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="500dp"
+                    android:layout_weight="1"
+                    android:alpha="0.5"
+                    android:layout_margin="3dp"
+                    android:background="@color/supersete_claro_transparente"
+                    android:columnWidth="50dp"
+                    android:gravity="center"
+                    android:isScrollContainer="false"
+                    android:numColumns="1"
+                    android:scrollbars="none"
+                    android:stretchMode="columnWidth"
+                    android:verticalSpacing="10dp" />
+
+                <br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView
+                    android:id="@+id/ehgv_super_sete_sexto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="500dp"
+                    android:layout_weight="1"
+                    android:alpha="0.5"
+                    android:layout_margin="3dp"
+                    android:background="@color/supersete_claro_transparente"
+                    android:columnWidth="50dp"
+                    android:gravity="center"
+                    android:isScrollContainer="false"
+                    android:numColumns="1"
+                    android:scrollbars="none"
+                    android:stretchMode="columnWidth"
+                    android:verticalSpacing="10dp" />
+
+                <br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView
+                    android:id="@+id/ehgv_super_sete_setimo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="500dp"
+                    android:layout_weight="1"
+                    android:alpha="0.5"
+                    android:layout_margin="3dp"
+                    android:background="@color/supersete_claro_transparente"
+                    android:columnWidth="50dp"
+                    android:gravity="center"
+                    android:isScrollContainer="false"
+                    android:numColumns="1"
+                    android:scrollbars="none"
+                    android:stretchMode="columnWidth"
+                    android:verticalSpacing="10dp" />
+
+            </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

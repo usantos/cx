@@ -5,7 +5,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import br.gov.caixa.loterias.apostas.model.bean.Paginacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.view.fragment.PaginacaoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
@@ -27,9 +26,9 @@ public class FragmentUtils {
 
 	}
 
-	public static PaginacaoFragment startPaginacaoFragment(FragmentManager fm, PaginacaoFragment fragment, int id, Paginacao paginacao) {
+	public static PaginacaoFragment startPaginacaoFragment(FragmentManager fm, PaginacaoFragment fragment, int id) {
 		if(fragment == null){
-			fragment = PaginacaoFragment.newInstance(paginacao);
+			fragment = PaginacaoFragment.newInstance();
 			FragmentUtils.startFragment(fm, id, fragment);
 		}
 		return fragment;
