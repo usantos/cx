@@ -65,7 +65,7 @@ public class CarrinhoModel {
 
 	public CarrinhoDTO lerCarrinhoLocal() {
 		DBLoteriasCrud crud = new DBLoteriasCrud(activity);
-		 CarrinhoDTO carrinho = new CarrinhoDTO();
+		CarrinhoDTO carrinho = new CarrinhoDTO();
 		carrinho.setApostas(crud.readAllIdentificaoDeUmaApostaDas8Modalidades());
 
 		return carrinho;

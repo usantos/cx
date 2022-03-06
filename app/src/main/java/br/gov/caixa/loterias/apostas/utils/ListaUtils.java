@@ -56,4 +56,24 @@ public class ListaUtils {
 		return listaNumerosSuperSete;
 	}
 
+	public static List<Integer> transformaListDoubleEmListInteger(Object listNumeros) {
+		List<Integer> listaInteiros = new ArrayList<>();
+		try{
+			List<Double> doubleLits = (List<Double>) listNumeros;
+			if (doubleLits != null && !doubleLits.isEmpty()){
+				if (doubleLits.get(0) instanceof Double){
+					for (int num = 0; num < doubleLits.size(); num++){
+						Integer integer = (Integer) doubleLits.get(num).intValue();
+						listaInteiros.add(integer);
+					}
+				} else {
+					listaInteiros = (List<Integer>) listNumeros;
+				}
+			}
+		}catch (Exception e){
+
+		}
+
+		return listaInteiros;
+	}
 }

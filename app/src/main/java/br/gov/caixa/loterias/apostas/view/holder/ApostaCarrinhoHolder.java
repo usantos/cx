@@ -25,6 +25,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDa
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IndicadorSurpresinha;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
+import br.gov.caixa.loterias.apostas.utils.ListaUtils;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.DetalheApostaLotecaAdapter;
@@ -123,7 +124,14 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 		}
 
 		if (aposta.getModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
-			String                 qtd     = "_"+aposta.getQuantidadeTrevos()+"_";
+			int quantidade = 0;
+			if (aposta.getTrevosSelecionados() != null && !((List<Integer>)aposta.getTrevosSelecionados()).isEmpty()){
+				List<Integer> trevos = (List<Integer>) aposta.getTrevosSelecionados();
+				quantidade = trevos.size();
+			} else {
+				quantidade = aposta.getQuantidadeTrevos();
+			}
+			String                 qtd     = "_"+quantidade+"_";
 			SpannableStringBuilder qtdBold = ViewUtils.textFuturaAndFuturaBold(context, qtd);
 			SpannableStringBuilder trevosBold = ViewUtils.textFuturaAndFuturaBold(context, context.getResources().getString(R.string.underline_trevos_underline));
 
@@ -197,22 +205,26 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 					} else {
 						IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> apostaNumerica = aposta;
 						if (apostaNumerica.getListaNumerosSelecionados() != null) {
-							for (Integer num : apostaNumerica.getListaNumerosSelecionados()) {
-								if (num.equals(apostaNumerica.getNumerosSelecionados().get(apostaNumerica.getListaNumerosSelecionados().size() - 1))) {
-									numeroStr.append(String.format(context.getResources().getString(R.string.percent_zero_dois_d), num));
+							List<Integer> numerosSelecionados = ListaUtils.transformaListDoubleEmListInteger(aposta.getNumerosSelecionados());
+
+							for(int num = 0; num < numerosSelecionados.size(); num++){
+								if (num == numerosSelecionados.size() -1){
+									numeroStr.append(String.format(context.getResources().getString(R.string.percent_zero_dois_d), numerosSelecionados.get(num)));
 								} else {
-									numeroStr.append(String.format(context.getResources().getString(R.string.percent_zero_dois_d_traco), num));
+									numeroStr.append(String.format(context.getResources().getString(R.string.percent_zero_dois_d_traco), numerosSelecionados.get(num)));
 								}
 							}
 						}
 
 						if (apostaNumerica.getModalidade() == ModalidadeEnum.MAIS_MILIONARIA && apostaNumerica.getTrevosSelecionados() != null){
 							trevosStr.append(context.getResources().getString(R.string.trevos_dois_pontos));
-							for (Integer num : apostaNumerica.getTrevosSelecionados()) {
-								if (num.equals(apostaNumerica.getTrevosSelecionados().get(apostaNumerica.getTrevosSelecionados().size() - 1))) {
-									trevosStr.append(String.format(context.getResources().getString(R.string.percent_zero_dois_d), num));
+							List<Integer> trevosSelecionados = ListaUtils.transformaListDoubleEmListInteger(aposta.getTrevosSelecionados());
+
+							for (int num = 0; num < trevosSelecionados.size(); num++) {
+								if (num == trevosSelecionados.size() - 1) {
+									trevosStr.append(String.format(context.getResources().getString(R.string.percent_d), trevosSelecionados.get(num)));
 								} else {
-									trevosStr.append(String.format(context.getResources().getString(R.string.percent_zero_dois_d_traco), num));
+									trevosStr.append(String.format(context.getResources().getString(R.string.percent_d_traco), trevosSelecionados.get(num)));
 								}
 							}
 						}
@@ -233,7 +245,7 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 						trevosStr.append("\n");
 						trevosStr.append(context.getResources().getString(R.string.trevos_dois_pontos));
 						for (int i = 0; i < aposta.getQuantidadeTrevos(); i++){
-							if (i == aposta.getQuantidadeNumeros() - 1) {
+							if (i == aposta.getQuantidadeTrevos() - 1) {
 								trevosStr.append(context.getResources().getString(R.string.x_x));
 							} else {
 								trevosStr.append(context.getResources().getString(R.string.x_x_traco));
@@ -261,7 +273,9 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 
 	private String removeUltimoTraco(String str) {
 		if (str.endsWith("-")){
-			str = str.substring(0, (str.length() -1));
+			str = str.substring(0, (str.length() - 1));
+		} else if (str.endsWith("- ")){
+			str = str.substring(0, (str.length() - 2));
 		}
 
 		return str;
