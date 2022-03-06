@@ -36,6 +36,7 @@ import br.gov.caixa.loterias.apostas.view.listener.ApostaCarrinhoListener;
 public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaDas8Modalidades> {
 	private TextView textViewTipoAposta;
 	private TextView numerosAposta;
+	private TextView trevosAposta;
 	private TextView valorAposta;
 	private ExpandableHeightRecyclerView recycleViewDetalheAposta;
 	private RelativeLayout containerFragment;
@@ -43,6 +44,7 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 	private LinearLayout dadosApostaCarrinho;
 	private LinearLayout dadosCarrinho;
 	private TextView textViewNumeroConcurso, tvNumeroConcursoNovo;
+
 
 	private Context context;
 	private AppCompatActivity activity;
@@ -60,6 +62,7 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 
 		textViewTipoAposta = view.findViewById(R.id.tipoAposta);
 		numerosAposta = view.findViewById(R.id.numerosText);
+		trevosAposta = view.findViewById(R.id.trevos);
 		valorAposta = view.findViewById(R.id.valorAposta);
 		recycleViewDetalheAposta = view.findViewById(R.id.recycleViewDetalheAposta);
 		layoutCabecalhoLoteca = view.findViewById(R.id.layoutCabecalhoLoteca);
@@ -93,10 +96,12 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 
 		TextView     quantidadeApostadas = this.dadosApostaCarrinho.findViewById(R.id.quantidadeApostadas);
 		TextView     quantidadeSorteios  = this.dadosApostaCarrinho.findViewById(R.id.quantidadeSorteios);
+		TextView     quantidadeTrevos  = this.dadosApostaCarrinho.findViewById(R.id.quantidadeTrevos);
 		Button       buttonApostaEspelho = this.dadosApostaCarrinho.findViewById(R.id.buttonApostaEspelho);
 		LinearLayout layoutTimeCoracao   = this.dadosApostaCarrinho.findViewById(R.id.layoutTimeCoracao);
 		TextView     labelTimeCoracao    = this.dadosApostaCarrinho.findViewById(R.id.labelTimeCoracaoTxt);
 		TextView     textViewTimeCoracao = this.dadosApostaCarrinho.findViewById(R.id.textViewTimeCoracao);
+
 
 		String quantidadeApostadasString;
 		String quantidadeSorteiosString;
@@ -114,6 +119,12 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 			quantidadeSorteiosString = context.getString(R.string.label_sorteios);
 		} else {
 			quantidadeSorteiosString = context.getString(R.string.label_sorteio);
+		}
+
+		if (aposta.getModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
+			quantidadeTrevos.setText(context.getResources().getString(R.string.trevos_dois_pontos) + aposta.getQuantidadeTrevos());
+		}else {
+			quantidadeTrevos.setVisibility(View.GONE);
 		}
 
 		quantidadeApostadas.setText(String.format(Locale.getDefault(), context.getResources().getString(R.string.percent_d_percent_s), quantidadeNumeros, quantidadeApostadasString));
@@ -166,6 +177,7 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 		}
 
 		StringBuilder numeroStr = new StringBuilder();
+		StringBuilder trevosStr = new StringBuilder();
 		if (aposta != null && aposta.getIndicadorSurpresinha() != null && aposta.getIndicadorSurpresinha().getValor() != null) {
 			switch (aposta.getIndicadorSurpresinha().getValor()) {
 				case IndicadorSurpresinha.NAO_SURPRESINHA:
@@ -188,6 +200,17 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 								}
 							}
 						}
+
+						if (apostaNumerica.getModalidade() == ModalidadeEnum.MAIS_MILIONARIA && apostaNumerica.getTrevosSelecionados() != null){
+							trevosStr.append(context.getResources().getString(R.string.trevos_dois_pontos));
+							for (Integer num : apostaNumerica.getTrevosSelecionados()) {
+								if (num.equals(apostaNumerica.getTrevosSelecionados().get(apostaNumerica.getTrevosSelecionados().size() - 1))) {
+									trevosStr.append(String.format(context.getResources().getString(R.string.percent_zero_dois_d), num));
+								} else {
+									trevosStr.append(String.format(context.getResources().getString(R.string.percent_zero_dois_d_traco), num));
+								}
+							}
+						}
 					}
 
 					break;
@@ -200,6 +223,16 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 							numeroStr.append(context.getResources().getString(R.string.x_x_traco));
 						}
 					}
+
+					if (aposta.getModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
+						for (int i = 0; i < aposta.getQuantidadeTrevos(); i++){
+							if (i == aposta.getQuantidadeNumeros() - 1) {
+								trevosStr.append(context.getResources().getString(R.string.x_x));
+							} else {
+								trevosStr.append(context.getResources().getString(R.string.x_x_traco));
+							}
+						}
+					}
 					break;
 				default:
 					break;
@@ -207,6 +240,11 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 		}
 
 		this.numerosAposta.setText(numeroStr.toString());
+		if (aposta.getModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
+			this.trevosAposta.setText(trevosStr.toString());
+		} else {
+			this.trevosAposta.setVisibility(View.GONE);
+		}
 		ViewUtils.setMoedaFormatHtml(aposta.getValor(), this.valorAposta);
 
 		if (animacao) {
