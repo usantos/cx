@@ -209,7 +209,7 @@ public class CarrinhoActivity extends AppCompatActivity {
 
         layoutManager = new LinearLayoutManager(this);
         rvListaApostas.setLayoutManager(layoutManager);
-        rvListaApostas.setAdapter(new CarrinhoApostasListViewAdapter(this, (ArrayList<IdentificaoDeUmaApostaDas8Modalidades>) listApostas, this, true));
+        rvListaApostas.setAdapter(new CarrinhoApostasListViewAdapter(this, (ArrayList<IdentificaoDeUmaApostaDas8Modalidades>) listApostas, this, true, model));
         rvListaApostas.setExpanded(Boolean.TRUE);
         rvListaApostas.setItemViewCacheSize(PAGE_SIZE);
 

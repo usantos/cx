@@ -1,6 +1,5 @@
 package br.gov.caixa.loterias.apostas.view.adapter.recyclerview;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,24 +24,20 @@ import java.util.Locale;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
-import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
-import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
-import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
+import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IndicadorSurpresinha;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
-import br.gov.caixa.loterias.apostas.model.dao.DBLoteriasCrud;
 import br.gov.caixa.loterias.apostas.model.dao.crud.CarrinhoFavoritoCRUD;
+import br.gov.caixa.loterias.apostas.model.model.CarrinhoModel;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.animation.AnimacaoSwipeList;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView;
-import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 import br.gov.caixa.loterias.apostas.view.fragment.NumerosSuperSeteFragment;
 
 public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<CarrinhoApostasListViewAdapter.ApostaHolder> {
@@ -52,12 +47,14 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
 	private NumerosSuperSeteFragment fragment;
 	private boolean animacao;
 	private static final String TAG = "TAG_CARRINHO";
+	private CarrinhoModel model;
 
-	public CarrinhoApostasListViewAdapter(CarrinhoActivity parentActivity, ArrayList<IdentificaoDeUmaApostaDas8Modalidades> apostas, Context context, boolean animacao) {
+	public CarrinhoApostasListViewAdapter(CarrinhoActivity parentActivity, ArrayList<IdentificaoDeUmaApostaDas8Modalidades> apostas, Context context, boolean animacao, CarrinhoModel model) {
 		this.context = context;
 		this.apostas = apostas;
 		this.parentActivity = parentActivity;
 		this.animacao = animacao;
+		this.model = model;
 		this.setHasStableIds(true);
 	}
 
@@ -263,34 +260,29 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
 		ViewUtils.alertTitleButtonYesOrNotListener(context, context.getResources().getString(R.string.MA010), (dialogInterface, i) -> {
 			int          positionAposta      = getPositionAposta(aposta);
 			if(positionAposta >= 0) {
-				ApostaBO     apostaBO         = ApostaBO_.getInstance_(parentActivity);
-				final Dialog loadViewProgress = LoadingViewLoterias.show(parentActivity);
-				apostaBO.deleteApostaCarrinho(aposta.getId().toString(), new RequestListener<CarrinhoDTOResponse>() {
-					@Override
-					public void onResponse(CarrinhoDTOResponse response) {
-						loadViewProgress.dismiss();
-						parentActivity.setCarrinho(response.getPayload());
-						deletarApostaBaseLocal(aposta, Boolean.FALSE);
-						parentActivity.deletaAposta(positionAposta, aposta);
-						deletaCarrinhoFavorito();
-						if (response.getRedirect() != null) {
-							RedirectNetwork.checkRedirectSucesso(response.getRedirect(), parentActivity);
-						}
-					}
-
-					@Override
-					public void onErrorResponse(VolleyError error) {
-						loadViewProgress.dismiss();
-						if (MensagensNetwork.isUnauthorizedError(error)) {
-							deletarApostaBaseLocal(aposta, Boolean.TRUE);
-							parentActivity.deletaAposta(positionAposta, aposta);
-						}else {
-							RedirectNetwork.checkRedirect(error, parentActivity);
-						}
-					}
-				});
+				AlertDialogUtils.show(parentActivity);
+				model.deletaApostaCarrinho(aposta, onDeletaApostaCarrinho(aposta, positionAposta));
 			}
 		});
+	}
+
+	private OnSilceListener<CarrinhoDTO> onDeletaApostaCarrinho(IdentificaoDeUmaApostaDas8Modalidades aposta, int positionAposta) {
+		return new OnSilceListener<CarrinhoDTO>() {
+			@Override
+			public void success(CarrinhoDTO payload) {
+				parentActivity.setCarrinho(payload);
+				deletarApostaBaseLocal(aposta, Boolean.FALSE);
+				parentActivity.deletaAposta(positionAposta, aposta);
+				deletaCarrinhoFavorito();
+			}
+
+			@Override
+			public void error(VolleyError error) {
+				AlertDialogUtils.dismiss();
+				deletarApostaBaseLocal(aposta, Boolean.TRUE);
+				parentActivity.deletaAposta(positionAposta, aposta);
+			}
+		};
 	}
 
 	private int getPositionAposta(IdentificaoDeUmaApostaDas8Modalidades aposta) {
@@ -324,8 +316,7 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<Carrinh
 	}
 
 	private void deletarApostaBaseLocal(IdentificaoDeUmaApostaDas8Modalidades aposta, boolean local) {
-		DBLoteriasCrud crud = new DBLoteriasCrud(context);
-		crud.deleteIdentificaoDeUmaApostaDas8Modalidades(aposta);
+		model.deletarApostaLocal(aposta);
 		if (local) {
 			parentActivity.lerCarrinhoLocal();
 		}
