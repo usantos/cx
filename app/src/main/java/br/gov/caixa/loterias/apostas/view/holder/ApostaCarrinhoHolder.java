@@ -1,6 +1,7 @@
 package br.gov.caixa.loterias.apostas.view.holder;
 
 import android.content.Context;
+import android.text.SpannableStringBuilder;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -122,7 +123,11 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 		}
 
 		if (aposta.getModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
-			quantidadeTrevos.setText(context.getResources().getString(R.string.trevos_dois_pontos) + aposta.getQuantidadeTrevos());
+			String                 qtd     = "_"+aposta.getQuantidadeTrevos()+"_";
+			SpannableStringBuilder qtdBold = ViewUtils.textFuturaAndFuturaBold(context, qtd);
+			SpannableStringBuilder trevosBold = ViewUtils.textFuturaAndFuturaBold(context, context.getResources().getString(R.string.underline_trevos_underline));
+
+			quantidadeTrevos.setText(qtdBold + " " + trevosBold);
 		}else {
 			quantidadeTrevos.setVisibility(View.GONE);
 		}
@@ -225,6 +230,8 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 					}
 
 					if (aposta.getModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
+						trevosStr.append("\n");
+						trevosStr.append(context.getResources().getString(R.string.trevos_dois_pontos));
 						for (int i = 0; i < aposta.getQuantidadeTrevos(); i++){
 							if (i == aposta.getQuantidadeNumeros() - 1) {
 								trevosStr.append(context.getResources().getString(R.string.x_x));
@@ -239,9 +246,9 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 			}
 		}
 
-		this.numerosAposta.setText(numeroStr.toString());
+		this.numerosAposta.setText(removeUltimoTraco(numeroStr.toString()));
 		if (aposta.getModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
-			this.trevosAposta.setText(trevosStr.toString());
+			this.trevosAposta.setText(removeUltimoTraco(trevosStr.toString()));
 		} else {
 			this.trevosAposta.setVisibility(View.GONE);
 		}
@@ -250,6 +257,14 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 		if (animacao) {
 			AnimacaoSwipeList.animacaoSwipeList(context, position, swipeLayout);
 		}
+	}
+
+	private String removeUltimoTraco(String str) {
+		if (str.endsWith("-")){
+			str = str.substring(0, (str.length() -1));
+		}
+
+		return str;
 	}
 
 	private void configuraFragment(IdentificaoDeUmaApostaDas8Modalidades aposta, ApostaCarrinhoHolder holder) {

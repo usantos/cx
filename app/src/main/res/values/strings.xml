@@ -1042,6 +1042,7 @@
     <string name="completar_trevos_aleatoriamente">_Completar_\n Trevos aleatoriamente</string>
     <string name="divisor_paginacao">|</string>
     <string name="trevos_dois_pontos">"Trevos: "</string>
+    <string name="underline_trevos_underline">_trevos_</string>
 
 
 </resources>
