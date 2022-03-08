@@ -96,7 +96,7 @@ public class ApostaUtils {
 																		BigDecimal valorTotalAposta,
 																		int qtdConcursoSelecionado,
 																		ParametroEquipe equipeSelecionada){
-		IdentificaoDeUmaApostaDas8Modalidades aposta = getApostaPreenchidaGenerica(parametroJogo, dezenasSelecionadas, valorTotalAposta, qtdConcursoSelecionado);
+		IdentificaoDeUmaApostaDas8Modalidades aposta = getApostaPreenchida(parametroJogo, dezenasSelecionadas, valorTotalAposta, qtdConcursoSelecionado);
 
 		aposta.setTimeDoCoracao(equipeSelecionada);
 
@@ -108,7 +108,7 @@ public class ApostaUtils {
 																			BigDecimal valorTotalAposta,
 																			int qtdConcursoSelecionado,
 																			ParametroMesDeSorte mesDeSorte){
-		IdentificaoDeUmaApostaDas8Modalidades aposta = getApostaPreenchidaGenerica(parametroJogo, dezenasSelecionadas, valorTotalAposta, qtdConcursoSelecionado);
+		IdentificaoDeUmaApostaDas8Modalidades aposta = getApostaPreenchida(parametroJogo, dezenasSelecionadas, valorTotalAposta, qtdConcursoSelecionado);
 
 		aposta.setMesDeSorte(mesDeSorte);
 

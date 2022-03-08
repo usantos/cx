@@ -23,6 +23,7 @@ import org.androidannotations.annotations.FragmentArg;
 import org.androidannotations.annotations.ViewById;
 import org.jetbrains.annotations.NotNull;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -141,8 +142,14 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
     }
 
     private void addApostaCarrinho() {
+        BigDecimal valorAposta = BigDecimal.ZERO;
+        if (listener.getQtdConcursos() > 0){
+            valorAposta = valorApostaSelecionado.getValor().multiply(BigDecimal.valueOf(listener.getQtdConcursos()).movePointLeft(0));
+        } else {
+            valorAposta = valorApostaSelecionado.getValor();
+        }
         IdentificaoDeUmaApostaDas8Modalidades apostaMaisMilionaria = ApostaUtils.getApostaMaisMilionaria(parametro, dezenasSelecionadas,
-                                                                                                         valorApostaSelecionado.getValor(),
+                                                                                                         valorAposta,
                                                                                                          listener.getQtdConcursos(), trevoSelecionadoList);
 
         model.adidionaApostaNoCarrinho(apostaMaisMilionaria);

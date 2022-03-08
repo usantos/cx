@@ -23,34 +23,23 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO_;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
-import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
-import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
+import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoFavoritoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacaoResponse;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResourceResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
-import br.gov.caixa.loterias.apostas.model.dao.DBLoteriasCrud;
-import br.gov.caixa.loterias.apostas.model.dao.crud.CarrinhoFavoritoCRUD;
-import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
+import br.gov.caixa.loterias.apostas.model.model.CarrinhoModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.SessaoUsuarioUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.CarrinhoApostasListViewAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
-
-import static br.gov.caixa.loterias.apostas.utils.Utils.isErroNegocial;
 
 
 public class CarrinhoActivity extends AppCompatActivity {
@@ -78,6 +67,8 @@ public class CarrinhoActivity extends AppCompatActivity {
     private LinearLayoutManager layoutManager;
     private ScrollView svCarrinho;
 
+    private CarrinhoModel model;
+
     //fragments
     private SomadorCarrinhoFragment somadorCarrinhoFragment;
 
@@ -85,6 +76,7 @@ public class CarrinhoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_carrinho);
+        model = new CarrinhoModel(CarrinhoActivity.this);
         pegaExtras();
         setaViews();
         setaMetodos();
@@ -124,6 +116,7 @@ public class CarrinhoActivity extends AppCompatActivity {
             callWebservice();
         }
     }
+
     @Override
     public boolean onSupportNavigateUp() {
         finish();
@@ -142,6 +135,11 @@ public class CarrinhoActivity extends AppCompatActivity {
             atualizaLayout(offSet);
         }
         handleBtnFavoritar();
+    }
+
+    public void lerCarrinhoLocal(){
+        carrinho = model.lerCarrinhoLocal();
+        atualizaLayout(offSet);
     }
 
     private void handleBtnFavoritar() {
@@ -201,7 +199,6 @@ public class CarrinhoActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.title_activity_carrinho)));
         setaDialogFavoritar();
-
     }
 
     private void setaMetodos() {
@@ -212,7 +209,7 @@ public class CarrinhoActivity extends AppCompatActivity {
 
         layoutManager = new LinearLayoutManager(this);
         rvListaApostas.setLayoutManager(layoutManager);
-        rvListaApostas.setAdapter(new CarrinhoApostasListViewAdapter(this, (ArrayList<IdentificaoDeUmaApostaDas8Modalidades>) listApostas, this, true));
+        rvListaApostas.setAdapter(new CarrinhoApostasListViewAdapter(this, (ArrayList<IdentificaoDeUmaApostaDas8Modalidades>) listApostas, this, true, model));
         rvListaApostas.setExpanded(Boolean.TRUE);
         rvListaApostas.setItemViewCacheSize(PAGE_SIZE);
 
@@ -258,19 +255,37 @@ public class CarrinhoActivity extends AppCompatActivity {
         montarLayout();
     }
 
+    private void callWebservice() {
+        AlertDialogUtils.show(CarrinhoActivity.this);
+        vLoading.setVisibility(View.VISIBLE);
+        model.buscaCarrinhoSilce(onCarrinhoListener());
+    }
+
+    private OnSilceListener<CarrinhoDTO> onCarrinhoListener() {
+        return new OnSilceListener<CarrinhoDTO>() {
+            @Override
+            public void success(CarrinhoDTO payload) {
+                vLoading.setVisibility(View.GONE);
+                AlertDialogUtils.dismiss();
+
+                setCarrinho(payload);
+                atualizaLayout(offSet);
+            }
+
+            @Override
+            public void error(VolleyError error) {
+                vLoading.setVisibility(View.GONE);
+                AlertDialogUtils.dismiss();
+            }
+        };
+    }
+
     private void fragmentSomadorCarrinho() {
         if(somadorCarrinhoFragment == null) {
            somadorCarrinhoFragment = FragmentUtils.startSomadorCarrinhoFragment(getSupportFragmentManager(), somadorCarrinhoFragment, R.id.id_fg_somador_carrinho, "TELA CARRINHO");
         } else {
             setValorTotalCarrinho();
         }
-    }
-
-    public void lerCarrinhoLocal() {
-        DBLoteriasCrud crud = new DBLoteriasCrud(getApplicationContext());
-        carrinho = new CarrinhoDTO();
-        carrinho.setApostas(crud.readAllIdentificaoDeUmaApostaDas8Modalidades());
-        atualizaLayout(offSet);
     }
 
     public void setCarrinho(CarrinhoDTO carrinho) {
@@ -281,9 +296,13 @@ public class CarrinhoActivity extends AppCompatActivity {
     private void validarCarrinho() {
         ocorrendoValidacao = true;
         AlertDialogUtils.show(CarrinhoActivity.this);
-        ApostaBO_.getInstance_(CarrinhoActivity.this).validarCarrinho(new RequestListener<ResourceResponse>() {
+        model.validarCarrinho(onValidarCarrinhoListener());
+    }
+
+    private OnSilceListener onValidarCarrinhoListener() {
+        return new OnSilceListener() {
             @Override
-            public void onResponse(ResourceResponse result) {
+            public void success(Object payload) {
                 ocorrendoValidacao = false;
                 AlertDialogUtils.dismiss();
                 CarrinhoSingleton.getInstance().setCarrinho(carrinho);
@@ -291,68 +310,60 @@ public class CarrinhoActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onErrorResponse(VolleyError error) {
+            public void error(VolleyError error) {
                 AlertDialogUtils.dismiss();
                 if (error != null && error.networkResponse != null && error.networkResponse.statusCode != 401) {
                     ocorrendoValidacao = false;
                 }
-                RedirectNetwork.checkRedirect(error, CarrinhoActivity.this);
             }
-        });
+        };
     }
 
     private void validarCarrinhoFavorito(String nome) {
         AlertDialogUtils.show(CarrinhoActivity.this);
-        ApostaBO_.getInstance_(CarrinhoActivity.this).validarCarrinhoFavorito(nome, new RequestListener<CarrinhoFavoritoDTOResponse>() {
+        model.validarCarrinhoFavorito(nome, onValidarCarrinhoFavorito(nome));
+    }
+
+    private OnSilceListener onValidarCarrinhoFavorito(String nome) {
+        return new OnSilceListener() {
             @Override
-            public void onResponse(CarrinhoFavoritoDTOResponse result) {
+            public void success(Object payload) {
                 AlertDialogUtils.dismiss();
-                if (result.getRedirect() != null) {
-                    RedirectNetwork.checkRedirectSucesso(result.getRedirect(), CarrinhoActivity.this);
-                }
                 favoritarCarrinho(nome);
             }
 
             @Override
-            public void onErrorResponse(VolleyError error) {
+            public void error(VolleyError error) {
                 AlertDialogUtils.dismiss();
-                if (isErroNegocial(error)) {
-                    ViewUtils.alertTitleButtonYesOrNotListener(
-                            CarrinhoActivity.this,
-                            MensagensNetwork.getErrorMessage(error),
-                            (dialogInterface, i) ->
-                                    favoritarCarrinho(nome)
-                    );
-                } else {
-                    RedirectNetwork.checkRedirect(error, CarrinhoActivity.this);
-                }
+
+                ViewUtils.alertTitleButtonYesOrNotListener(CarrinhoActivity.this,
+                                                           MensagensNetwork.getErrorMessage(error),
+                                                           (dialogInterface, i) -> favoritarCarrinho(nome));
             }
-        });
+        };
     }
 
     private void favoritarCarrinho(String nome) {
         AlertDialogUtils.show(CarrinhoActivity.this);
-        ApostaBO_.getInstance_(CarrinhoActivity.this).salvarCarrinhoFavorito(nome, new RequestListener<CarrinhoFavoritoDTOResponse>() {
+        model.favoritarCarrinho(nome, onFavoritarCarrinhoListener());
+    }
+
+    private OnSilceListener onFavoritarCarrinhoListener() {
+        return new OnSilceListener() {
             @Override
-            public void onResponse(CarrinhoFavoritoDTOResponse result) {
+            public void success(Object payload) {
                 AlertDialogUtils.dismiss();
-                if (result.getRedirect() != null) {
-                    RedirectNetwork.checkRedirectSucesso(result.getRedirect(), CarrinhoActivity.this);
-                }
+
                 ViewUtils.alertTitleButton(CarrinhoActivity.this,
-                        R.string.label_atencao, getString(R.string.carrinho_fav_lbl_msg),
-                        getString(R.string.ok), dialogInterface -> {
-                            dialogFavoritar.dismiss();
-                        }
-                );
+                                           R.string.label_atencao, getString(R.string.carrinho_fav_lbl_msg),
+                                           getString(R.string.ok), dialogInterface -> { dialogFavoritar.dismiss(); });
             }
 
             @Override
-            public void onErrorResponse(VolleyError error) {
+            public void error(VolleyError error) {
                 AlertDialogUtils.dismiss();
-                RedirectNetwork.checkRedirect(error, CarrinhoActivity.this);
             }
-        });
+        };
     }
 
     protected void clickBotaoFazerNovaAposta() {
@@ -363,43 +374,34 @@ public class CarrinhoActivity extends AppCompatActivity {
     protected void clickLimparCarrinhoLinearLayout() {
         ViewUtils.alertTitleButtonYesOrNotListener(this, getString(R.string.MA011), (dialogInterface, i) -> {
             AlertDialogUtils.show(CarrinhoActivity.this);
-            ApostaBO apostaBO = ApostaBO_.getInstance_(CarrinhoActivity.this);
-            apostaBO.limparCarrinho(new RequestListener<CarrinhoDTOResponse>() {
-                @Override
-                public void onResponse(CarrinhoDTOResponse result) {
-                    AppCenterManager.registraEvento(getResources().getString(R.string.evento_limpou_carrinho_online));
-                    AlertDialogUtils.dismiss();
-                    if (result.getRedirect() != null) {
-                        RedirectNetwork.checkRedirectSucesso(result.getRedirect(), CarrinhoActivity.this);
-                    }
-                    limparCarrinhoAtualizarTela();
-                    limparCarrinhosFavoritos();
-                    setValorTotalCarrinho();
-                }
-
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    AlertDialogUtils.dismiss();
-                    if (MensagensNetwork.isUnauthorizedError(error)) {
-                        deleteCarrinhoLocal();
-                    } else {
-                        RedirectNetwork.checkRedirect(error, CarrinhoActivity.this);
-                    }
-                }
-            });
+            model.limparCarrinho(onLimparCarrinhoListener());
         });
+    }
 
+    private OnSilceListener onLimparCarrinhoListener() {
+        return new OnSilceListener() {
+            @Override
+            public void success(Object payload) {
+                AlertDialogUtils.dismiss();
+                limparCarrinhoAtualizarTela();
+                limparCarrinhosFavoritos();
+                setValorTotalCarrinho();
+            }
+
+            @Override
+            public void error(VolleyError error) {
+                AlertDialogUtils.dismiss();
+                deleteCarrinhoLocal();
+            }
+        };
     }
 
     private void limparCarrinhosFavoritos() {
-        CarrinhoFavoritoCRUD crud = new CarrinhoFavoritoCRUD(CarrinhoActivity.this);
-        crud.deletaTodos();
+        model.limparCarrinhosFavoritosLocal();
     }
 
     private void deleteCarrinhoLocal() {
-        AppCenterManager.registraEvento( getResources().getString(R.string.evento_limpou_carrinho_offline));
-        DBLoteriasCrud crud = new DBLoteriasCrud(getApplicationContext());
-        crud.deleteAll();
+        model.deletaCarrinhoLocal();
         limparCarrinhoAtualizarTela();
         setValorTotalCarrinho();
     }
@@ -416,7 +418,6 @@ public class CarrinhoActivity extends AppCompatActivity {
         }
         atualizaLayout(offSet);
         configuraBotoesSuperiores();
-
     }
 
     private void montarLayout() {
@@ -424,37 +425,6 @@ public class CarrinhoActivity extends AppCompatActivity {
         BigDecimal valorCarrinho = sessaoUsuario.getValorMinimimoAposta() == null ? BigDecimal.ZERO : sessaoUsuario.getValorMinimimoAposta();
         ViewUtils.setMoedaFormatHtml(valorCarrinho, infoValorMinimo, getResources().getString(R.string.label_lembrar_valor_minimo).replace(getResources().getString(R.string.underline), getResources().getString(R.string.quebra_html)) + getResources().getString(R.string.espaco_em_branco));
         btnAvancaPagamento.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.avancarFormaPagamento)));
-    }
-
-    private void callWebservice() {
-
-        final ApostaBO apostaBO = ApostaBO_.getInstance_(CarrinhoActivity.this);
-        AlertDialogUtils.show(CarrinhoActivity.this);
-        vLoading.setVisibility(View.VISIBLE);
-        apostaBO.buscaCarrinho(new RequestListener<CarrinhoDTOResponse>() {
-            @Override
-            public void onResponse(CarrinhoDTOResponse response) {
-                vLoading.setVisibility(View.GONE);
-                AlertDialogUtils.dismiss();
-                AppCenterManager.registraEvento( getResources().getString(R.string.evento_entrou_carrinho_online));
-                if (response.getRedirect() != null) {
-                    RedirectNetwork.checkRedirectSucesso(response.getRedirect(), CarrinhoActivity.this);
-                }
-                setCarrinho(response.getPayload());
-                atualizaLayout(offSet);
-            }
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                vLoading.setVisibility(View.GONE);
-                AlertDialogUtils.dismiss();
-                if (MensagensNetwork.isUnauthorizedError(error)) {
-                    lerCarrinhoLocal();
-                } else {
-                    RedirectNetwork.checkRedirect(error, CarrinhoActivity.this);
-                }
-            }
-        });
     }
 
     public void configuraRecyclerViewCarrinhoAposta(int offSet) {
@@ -521,36 +491,36 @@ public class CarrinhoActivity extends AppCompatActivity {
     private void atualizaParametros() {
         AlertDialogUtils.show(this);
         if(SessaoUsuarioUtil.precisaAtualizar()) {
-            final DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(CarrinhoActivity.this);
-            dadosCorporativosBO.parametrosSimulacao(new RequestListener<ParametrosSimulacaoResponse>() {
-                @Override
-                public void onResponse(ParametrosSimulacaoResponse response) {
-                    AlertDialogUtils.dismiss();
-
-                    List<ParametroSimulacao> parametros = response.getPayload().getParametros();
-                    if (parametros == null || parametros.isEmpty()) {
-                        Intent appIndis = new Intent(CarrinhoActivity.this, AppIndisponivelActivity.class);
-                        appIndis.putExtra(getResources().getString(R.string.extra_is_busca_param), true);
-
-                        startActivityForResult(appIndis, 1);
-                    }
-
-                    SessaoUsuarioUtil.atualizaParametrosSingleton(response);
-                    postResume();
-                }
-
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    AlertDialogUtils.dismiss();
-                    RedirectNetwork.checkRedirect(error, CarrinhoActivity.this);
-                    postResume();
-                }
-            });
+            model.buscaParametroSiumulacao(onParametroSimulacaoListener());
         }else {
             postResume();
             AlertDialogUtils.dismiss();
         }
     }
 
+    private OnSilceListener<ParametrosSimulacaoResponse> onParametroSimulacaoListener() {
+        return new OnSilceListener<ParametrosSimulacaoResponse>() {
+            @Override
+            public void success(ParametrosSimulacaoResponse response) {
+                AlertDialogUtils.dismiss();
 
+                List<ParametroSimulacao> parametros = response.getPayload().getParametros();
+                if (parametros == null || parametros.isEmpty()) {
+                    Intent appIndis = new Intent(CarrinhoActivity.this, AppIndisponivelActivity.class);
+                    appIndis.putExtra(getResources().getString(R.string.extra_is_busca_param), true);
+
+                    startActivityForResult(appIndis, 1);
+                }
+
+                SessaoUsuarioUtil.atualizaParametrosSingleton(response);
+                postResume();
+            }
+
+            @Override
+            public void error(VolleyError error) {
+                AlertDialogUtils.dismiss();
+                postResume();
+            }
+        };
+    }
 }
