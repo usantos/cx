@@ -98,7 +98,6 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 
 		TextView     quantidadeApostadas = this.dadosApostaCarrinho.findViewById(R.id.quantidadeApostadas);
 		TextView     quantidadeSorteios  = this.dadosApostaCarrinho.findViewById(R.id.quantidadeSorteios);
-		TextView     quantidadeTrevos  = this.dadosApostaCarrinho.findViewById(R.id.quantidadeTrevos);
 		Button       buttonApostaEspelho = this.dadosApostaCarrinho.findViewById(R.id.buttonApostaEspelho);
 		LinearLayout layoutTimeCoracao   = this.dadosApostaCarrinho.findViewById(R.id.layoutTimeCoracao);
 		TextView     labelTimeCoracao    = this.dadosApostaCarrinho.findViewById(R.id.labelTimeCoracaoTxt);
@@ -121,23 +120,6 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 			quantidadeSorteiosString = context.getString(R.string.label_sorteios);
 		} else {
 			quantidadeSorteiosString = context.getString(R.string.label_sorteio);
-		}
-
-		if (aposta.getModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
-			int quantidade = 0;
-			if (aposta.getTrevosSelecionados() != null && !((List<Integer>)aposta.getTrevosSelecionados()).isEmpty()){
-				List<Integer> trevos = (List<Integer>) aposta.getTrevosSelecionados();
-				quantidade = trevos.size();
-			} else {
-				quantidade = aposta.getQuantidadeTrevos();
-			}
-			String                 qtd     = "_"+quantidade+"_";
-			SpannableStringBuilder qtdBold = ViewUtils.textFuturaAndFuturaBold(context, qtd);
-			SpannableStringBuilder trevosBold = ViewUtils.textFuturaAndFuturaBold(context, context.getResources().getString(R.string.underline_trevos_underline));
-
-			quantidadeTrevos.setText(qtdBold + " " + trevosBold);
-		}else {
-			quantidadeTrevos.setVisibility(View.GONE);
 		}
 
 		quantidadeApostadas.setText(String.format(Locale.getDefault(), context.getResources().getString(R.string.percent_d_percent_s), quantidadeNumeros, quantidadeApostadasString));
@@ -187,6 +169,22 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 			layoutTimeCoracao.setVisibility(View.VISIBLE);
 			labelTimeCoracao.setText(R.string.label_mes_sorte);
 			textViewTimeCoracao.setText(aposta.getMesDeSorte() != null && aposta.getMesDeSorte().getNome() != null ? aposta.getMesDeSorte().getNome() : context.getString(R.string.label_tres_interrogacoes));
+		} else if(ModalidadeEnum.MAIS_MILIONARIA == aposta.getModalidade()){
+			layoutTimeCoracao.setVisibility(View.VISIBLE);
+
+			int quantidade = 0;
+			if (aposta.getTrevosSelecionados() != null && !((List<Integer>)aposta.getTrevosSelecionados()).isEmpty()){
+				List<Integer> trevos = (List<Integer>) aposta.getTrevosSelecionados();
+				quantidade = trevos.size();
+			} else {
+				quantidade = aposta.getQuantidadeTrevos();
+			}
+			String                 qtd     = "_"+quantidade+"_";
+			SpannableStringBuilder qtdBold = ViewUtils.textFuturaAndFuturaBold(context, qtd);
+			SpannableStringBuilder trevosBold = ViewUtils.textFuturaAndFuturaBold(context, context.getResources().getString(R.string.underline_trevos_underline));
+
+			labelTimeCoracao.setText(qtdBold);
+			textViewTimeCoracao.setText(" " + trevosBold);
 		}
 
 		StringBuilder numeroStr = new StringBuilder();
@@ -217,7 +215,7 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 						}
 
 						if (apostaNumerica.getModalidade() == ModalidadeEnum.MAIS_MILIONARIA && apostaNumerica.getTrevosSelecionados() != null){
-							trevosStr.append(context.getResources().getString(R.string.trevos_dois_pontos));
+							trevosStr.append("\n" + context.getResources().getString(R.string.trevos_dois_pontos));
 							List<Integer> trevosSelecionados = ListaUtils.transformaListDoubleEmListInteger(aposta.getTrevosSelecionados());
 
 							for (int num = 0; num < trevosSelecionados.size(); num++) {
@@ -258,9 +256,13 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 			}
 		}
 
+		if (ModalidadeEnum.DIA_DE_SORTE == aposta.getModalidade() || aposta.getModalidade() == ModalidadeEnum.TIMEMANIA){
+			numeroStr.append("\n\n");
+		}
+
 		this.numerosAposta.setText(removeUltimoTraco(numeroStr.toString()));
 		if (aposta.getModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
-			this.trevosAposta.setText(removeUltimoTraco(trevosStr.toString()));
+			this.trevosAposta.setText(removeUltimoTraco(trevosStr.toString() + "\n"));
 		} else {
 			this.trevosAposta.setVisibility(View.GONE);
 		}
