@@ -141,6 +141,14 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 
 		if (parametroJogo.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)){
 			ParametroValorApostaDTO valorAposta = parametroJogo.getValorApostaBy(numPrognostico, parametroJogo.getTrevos().getQtdMinima());
+
+			valorEmReais = valorAposta.getValor();
+			if (parentActivity.getQtdConcursos() > 0){
+				valorTotalAposta = valorEmReais.multiply(BigDecimal.valueOf(parentActivity.getQtdConcursos()).movePointLeft(0));
+			} else {
+				valorTotalAposta = valorEmReais;
+			}
+
 			parentActivity.atualizaValorAposta(valorAposta);
 
 			return;

@@ -181,6 +181,10 @@ public class IncluirSurpresinhaDTO {
         this.qtdTrevos = qtdTrevos;
     }
 
+    public int getQtdTrevos(){
+        return qtdTrevos;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

@@ -581,13 +581,20 @@ public class ViewUtils {
         ParametroSimulacao param = getParametroSimulacao(SessaoUsuario.getInstance(),aposta.getModalidade());
         if(param != null){
             ModalidadeDTO modalidadeDetalhada = param.getParametroJogo().getConcurso().getModalidadeDetalhada();
+
+            if (aposta.getModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
+                return aposta.getTipoConcurso().getDescricao().equalsIgnoreCase("ESPECIAL") ?
+                        ModalidadeEnum.getDescricaoEspecial(aposta.getModalidade()) : ModalidadeEnum.getDescricao(aposta.getModalidade());
+            } else {
+                return aposta.getTipoConcurso().getDescricao().equalsIgnoreCase("ESPECIAL") ?
+                        modalidadeDetalhada.getDescricaoEspecial():
+                        modalidadeDetalhada.getDescricao();
+            }
+        } else {
             return aposta.getTipoConcurso().getDescricao().equalsIgnoreCase("ESPECIAL") ?
-                    modalidadeDetalhada.getDescricaoEspecial():
-                    modalidadeDetalhada.getDescricao();
-        } /*else {
-            return ModalidadeEnum.fromString(aposta.getModalidade());
-        }*/
-        return "";
+                    ModalidadeEnum.getDescricaoEspecial(aposta.getModalidade()) :
+                    ModalidadeEnum.getDescricao(aposta.getModalidade());
+        }
     }
 
     public static String getNomeModalidadePorAposta(IdentificaoDeUmaApostaDas8Modalidades aposta) {

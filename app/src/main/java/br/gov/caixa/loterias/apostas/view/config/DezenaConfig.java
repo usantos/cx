@@ -8,18 +8,21 @@ public class DezenaConfig {
 	private int drawable;
 	private int drawableSelecionado;
 	private boolean isShapePadrao;
+	private boolean isClickable;
 
-	public DezenaConfig(boolean isDezena, int color, int drawable, int drawableSelecionado) {
+	public DezenaConfig(boolean isDezena, int color, int drawable, int drawableSelecionado, boolean isClickable) {
 		this.isLabelDezena = isDezena;
 		this.color = color;
 		this.drawable = drawable;
 		this.drawableSelecionado = drawableSelecionado;
+		this.isClickable = isClickable;
 		this.isShapePadrao = false;
 	}
 
-	public DezenaConfig(boolean isDezena, int color) {
+	public DezenaConfig(boolean isDezena, int color, boolean isClickable) {
 		this.isLabelDezena = isDezena;
 		this.color = color;
+		this.isClickable = isClickable;
 		this.drawable = R.drawable.ic_item_dezena;
 		this.drawableSelecionado = R.drawable.ic_item_dezena_selecionado;
 		this.isShapePadrao = true;
@@ -51,5 +54,9 @@ public class DezenaConfig {
 
 	public boolean isShapePadrao(){
 		return isShapePadrao;
+	}
+
+	public boolean isClickable() {
+		return isClickable;
 	}
 }

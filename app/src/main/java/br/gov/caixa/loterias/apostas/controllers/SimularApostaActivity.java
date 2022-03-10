@@ -128,6 +128,9 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     @ViewById
     protected ImageView imageViewPaginacao, iconStarSalvar, imageQtdNumerosButton;
 
+    @ViewById
+    protected FrameLayout paginacaoView;
+
     @Extra
     protected IdentificaoDeUmaApostaDas8Modalidades aposta;
 
@@ -217,6 +220,9 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.simularTelaAposta: {
+                if (temPaginacao()){
+                    paginacaoView.setVisibility(View.VISIBLE);
+                }
                 resetaCartela();
                 break;
             }
@@ -224,6 +230,9 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
             case R.id.surpresinhaTela: {
                 surpresinhaFragment.setArguments(new Bundle());
                 abrirTelaSurprezinha();
+                if (temPaginacao()){
+                    paginacaoView.setVisibility(View.GONE);
+                }
                 break;
             }
 
@@ -237,6 +246,13 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
                 break;
             }
         }
+    }
+
+    private boolean temPaginacao() {
+        return parametroSimulacao.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)
+                || parametroSimulacao.isTipoJogo(ModalidadeEnum.DIA_DE_SORTE)
+                || parametroSimulacao.isTipoJogo(ModalidadeEnum.TIMEMANIA)
+                && paginacaoFragment != null;
     }
 
     private void resetaCartela() {
@@ -636,7 +652,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         if (getPaginacao() != null) {
             paginacaoFragment = FragmentUtils.startPaginacaoFragment(getSupportFragmentManager(), paginacaoFragment, R.id.paginacaoView);
         }else {
-            findViewById(R.id.paginacaoView).setVisibility(View.GONE);
+            paginacaoView.setVisibility(View.GONE);
         }
     }
 
@@ -728,9 +744,15 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     private void modalNumeros() {
         AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_selecao_prognosticos));
 
-        DialogUtils.showDialogListaEscolha(SimularApostaActivity.this,
-                                           getResources().getString(R.string.quant_de_numeros), null,
-                                           qtdNumerosList, onNumerosDialogListener());
+        if (parametroSimulacao.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)){
+            DialogUtils.showDialogListaEscolha(SimularApostaActivity.this,
+                                               getResources().getString(R.string.quant_de_numeros), getResources().getString(R.string.valores_para_apostas_com_2_trevos),
+                                               qtdNumerosList, onNumerosDialogListener());
+        } else {
+            DialogUtils.showDialogListaEscolha(SimularApostaActivity.this,
+                                               getResources().getString(R.string.quant_de_numeros), null,
+                                               qtdNumerosList, onNumerosDialogListener());
+        }
     }
 
     private OnDialogListener onNumerosDialogListener() {

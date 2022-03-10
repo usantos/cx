@@ -80,10 +80,13 @@ public class AdicionarApostaCarrinhoHelper {
     public static void incluirApostaCarrinhoMinhasApostas(Activity actv, Object objectAposta) {
         activity = actv;
         ApostaBO apostaBO = ApostaBO_.getInstance_(activity);
-        aposta = getApostaPreenchida(objectAposta);
         AlertDialogUtils.show(activity);
+        aposta = getApostaPreenchida(objectAposta);
         if (aposta != null && !checarApostasRepetidas(activity, aposta, apostaBO, ApostaOrigem.LISTA_APOSTA)) {
             postAdicionarApostaCarrinhoMinhasApostas(apostaBO);
+        } else {
+            AlertDialogUtils.dismiss();
+            ViewUtils.alertTitleButton(activity, R.string.label_atencao, actv.getResources().getString(R.string.erro_req), activity.getResources().getString(R.string.ok));
         }
     }
 
@@ -384,6 +387,10 @@ public class AdicionarApostaCarrinhoHelper {
                 aposta.setNumerosSelecionados(apostaDTO.getListaNumerosSelecionados());
 
             }
+
+            if (aposta.getModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
+                aposta.setTrevosSelecionados(apostaDTO.getListaTrevosSelecionados());
+            }
             DTOEnumInteger indicadorSurpresinha = new DTOEnumInteger();
             indicadorSurpresinha.setValor(IndicadorSurpresinha.NAO_SURPRESINHA);
             indicadorSurpresinha.setDescricao("");
@@ -469,6 +476,7 @@ public class AdicionarApostaCarrinhoHelper {
         apostaDas8Modalidades.setConcursoAlvo(aposta.getConcursoAlvo());
         apostaDas8Modalidades.setQuantidadeTeimosinhas(aposta.getQuantidadeTeimosinhas());
         apostaDas8Modalidades.setQuantidadeApostas(aposta.getQuantidadeApostas());
+        apostaDas8Modalidades.setQuantidadeTrevos(aposta.getQtdTrevos());
         apostaDas8Modalidades.setTimeDoCoracao(aposta.getTimeDoCoracao());
         apostaDas8Modalidades.setSurpresinha(true);
         apostaDas8Modalidades.setGerarEspelho(aposta.getGerarEspelho());

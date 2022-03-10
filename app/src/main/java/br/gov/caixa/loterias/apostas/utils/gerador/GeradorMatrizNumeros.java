@@ -58,7 +58,7 @@ public class GeradorMatrizNumeros extends GeradorNumerosAleatorios<ArrayList<Arr
 	private ArrayList<ArrayList<Integer>> completaRestante(ArrayList<ArrayList<Integer>> selecionados, int restante, int qtdNumero) {
 		List<Integer> indices = new ArrayList<>();
 		while (restante != 0){
-			int coluna = new GeradorNumero(0, 6).gerar(1, 6);
+			int coluna = new GeradorNumero(0, 6).gerar(0, 6);
 			if ( coluna >= 0 && coluna <= 6){
 				if (!indices.contains(coluna) && selecionados.get(coluna).size() < qtdNumero){
 					ArrayList<Integer> gerado = (ArrayList<Integer>)geradorLista.gerar(qtdNumero, selecionados.get(coluna));

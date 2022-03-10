@@ -28,7 +28,7 @@ public class ListaDezenaRecyclerView extends RecyclerView.Adapter<DezenaHolder>{
 		this.dezenasSelecionadas = dezenasSelecionadas;
 		this.color = color;
 		this.listener = listener;
-		this.dezenaConfig = new DezenaConfig(true, color);
+		this.dezenaConfig = new DezenaConfig(true, color, true);
 	}
 
 	public ListaDezenaRecyclerView(List<Dezena> dezenas, List<Integer> dezenasSelecionadas, DezenaConfig dezenaConfig, OnItemClickListener listener) {

@@ -32,7 +32,6 @@ public class SimularApostaModel {
 
 	public SimularApostaModel(Activity activity) {this.activity = activity;}
 
-
 	public void preencheNumerosAleatorios(int qtdNumeos, List<Integer> selecionados, int prognostico, OnSilceListener listener){
 		preencheNumerosAleatoriosLocal(qtdNumeos, selecionados, prognostico, listener);
 	}

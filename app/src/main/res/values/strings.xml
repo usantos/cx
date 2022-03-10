@@ -934,6 +934,7 @@
     <string name="name">name</string>
     <string name="especial_maiusculo">ESPECIAL</string>
     <string name="percent_zero_dois_d">%02d</string>
+    <string name="percent_d_traco">%d -&#160;</string>
     <string name="percent_zero_dois_d_traco">%02d -&#160;</string>
     <string name="barra_n_time_do_coracao_dois_pontos_espaco">\nTime do coração:&#160;</string>
     <string name="barra_n_mes_da_sorte_dois_pontos">\nMês da sorte:&#160;</string>
@@ -949,7 +950,7 @@
     <string name="percent_d">%d</string>
     <string name="barra">/</string>
     <string name="x_x">XX</string>
-    <string name="x_x_traco">XX -</string>
+    <string name="x_x_traco">XX -&#160;</string>
     <string name="chave_modalidade_chave">{modalidade}</string>
     <string name="ambos">Ambos</string>
     <string name="carrinho_favorito_titulo">Carrinho Favorito</string>
@@ -1041,6 +1042,8 @@
     <string name="trevos_por"> trevos por </string>
     <string name="completar_trevos_aleatoriamente">_Completar_\n Trevos aleatoriamente</string>
     <string name="divisor_paginacao">|</string>
+    <string name="trevos_dois_pontos">"Trevos: "</string>
+    <string name="underline_trevos_underline">_trevos_</string>
 
 
 </resources>
