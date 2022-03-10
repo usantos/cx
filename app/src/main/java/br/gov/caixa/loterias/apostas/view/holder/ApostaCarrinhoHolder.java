@@ -215,7 +215,7 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 						}
 
 						if (apostaNumerica.getModalidade() == ModalidadeEnum.MAIS_MILIONARIA && apostaNumerica.getTrevosSelecionados() != null){
-							trevosStr.append("\n" + context.getResources().getString(R.string.trevos_dois_pontos));
+							trevosStr.append(context.getResources().getString(R.string.trevos_dois_pontos));
 							List<Integer> trevosSelecionados = ListaUtils.transformaListDoubleEmListInteger(aposta.getTrevosSelecionados());
 
 							for (int num = 0; num < trevosSelecionados.size(); num++) {
@@ -240,7 +240,6 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 					}
 
 					if (aposta.getModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
-						trevosStr.append("\n");
 						trevosStr.append(context.getResources().getString(R.string.trevos_dois_pontos));
 						for (int i = 0; i < aposta.getQuantidadeTrevos(); i++){
 							if (i == aposta.getQuantidadeTrevos() - 1) {
@@ -257,7 +256,7 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 		}
 
 		if (ModalidadeEnum.DIA_DE_SORTE == aposta.getModalidade() || aposta.getModalidade() == ModalidadeEnum.TIMEMANIA){
-			numeroStr.append("\n\n");
+			numeroStr.append("\n\n\n");
 		}
 
 		this.numerosAposta.setText(removeUltimoTraco(numeroStr.toString()));

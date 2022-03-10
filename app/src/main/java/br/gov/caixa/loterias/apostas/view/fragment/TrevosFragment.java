@@ -37,6 +37,7 @@ import br.gov.caixa.loterias.apostas.model.model.TrevoModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
+import br.gov.caixa.loterias.apostas.utils.ListaUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaDezenaRecyclerView;
 import br.gov.caixa.loterias.apostas.view.config.DezenaConfig;
@@ -88,7 +89,7 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
         valorApostaSelecionado = valoresApostas.get(0);
 
         DezenaConfig dezenaConfig = new DezenaConfig(false, R.color.mais_milionaria_escura,
-                                                     R.drawable.ic_item_trevo, R.drawable.ic_item_trevo_selecionado);
+                                                     R.drawable.ic_item_trevo, R.drawable.ic_item_trevo_selecionado, true);
         adappter = new ListaDezenaRecyclerView(getListaDezenas(), trevoSelecionadoList, dezenaConfig, this);
         listaTrevos.setAdapter(adappter);
         RecyclerView.LayoutManager layot = new GridLayoutManager(getContext(), QUANTIDADE_COLUNA_LISTA);
@@ -148,10 +149,13 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
         } else {
             valorAposta = valorApostaSelecionado.getValor();
         }
-        IdentificaoDeUmaApostaDas8Modalidades apostaMaisMilionaria = ApostaUtils.getApostaMaisMilionaria(parametro, dezenasSelecionadas,
+        List<Integer> numerosSelecionadosOrdenados = ListaUtils.orderAscDezenas((List<Integer>) dezenasSelecionadas);
+        trevoSelecionadoList = ListaUtils.orderAscDezenas(trevoSelecionadoList);
+
+
+        IdentificaoDeUmaApostaDas8Modalidades apostaMaisMilionaria = ApostaUtils.getApostaMaisMilionaria(parametro, numerosSelecionadosOrdenados,
                                                                                                          valorAposta,
                                                                                                          listener.getQtdConcursos(), trevoSelecionadoList);
-
         model.adidionaApostaNoCarrinho(apostaMaisMilionaria);
     }
 

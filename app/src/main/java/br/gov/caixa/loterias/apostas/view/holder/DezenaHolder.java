@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.ContextCompat;
-import androidx.core.graphics.drawable.DrawableCompat;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.Dezena;
@@ -33,7 +32,6 @@ public class DezenaHolder extends LoteriasHolder<Dezena> implements  View.OnClic
 		this.listener = listener;
 
 		txtNumero = itemView.findViewById(R.id.tv_item_numeto);
-		txtNumero.setOnClickListener(this);
 	}
 
 	@Override
@@ -50,6 +48,11 @@ public class DezenaHolder extends LoteriasHolder<Dezena> implements  View.OnClic
 			txtNumero.setText(dezena.getValue());
 		}
 		txtNumero.setTypeface(ViewUtils.getFontFuturaBold(context));
+
+		if (config.isClickable()){
+			txtNumero.setOnClickListener(this);
+		}
+
 	}
 
 	private void atualizaShape(Dezena dezena) {

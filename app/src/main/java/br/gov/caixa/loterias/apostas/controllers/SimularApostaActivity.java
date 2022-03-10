@@ -744,9 +744,15 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     private void modalNumeros() {
         AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_selecao_prognosticos));
 
-        DialogUtils.showDialogListaEscolha(SimularApostaActivity.this,
-                                           getResources().getString(R.string.quant_de_numeros), null,
-                                           qtdNumerosList, onNumerosDialogListener());
+        if (parametroSimulacao.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)){
+            DialogUtils.showDialogListaEscolha(SimularApostaActivity.this,
+                                               getResources().getString(R.string.quant_de_numeros), getResources().getString(R.string.valores_para_apostas_com_2_trevos),
+                                               qtdNumerosList, onNumerosDialogListener());
+        } else {
+            DialogUtils.showDialogListaEscolha(SimularApostaActivity.this,
+                                               getResources().getString(R.string.quant_de_numeros), null,
+                                               qtdNumerosList, onNumerosDialogListener());
+        }
     }
 
     private OnDialogListener onNumerosDialogListener() {
