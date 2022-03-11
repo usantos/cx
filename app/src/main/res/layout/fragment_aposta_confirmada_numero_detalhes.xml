@@ -137,7 +137,7 @@
                     android:layout_width="1dp"
                     android:layout_height="0dp"
                     android:layout_marginStart="10dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/dataApostaTxt"
+                    app:layout_constraintBottom_toBottomOf="@+id/cl_data"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/dataApostaTxt"
                     android:background="?android:textColor" />
@@ -163,7 +163,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/divider"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:textColor="?android:attr/textColorSecondary"
+                    android:textColor="@color/branco"
                     android:textSize="12sp"
                     android:textStyle="bold"
                     tools:text="Aguardando" />
@@ -173,10 +173,10 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/val_premio"
-                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/resultTxt"
                     app:layout_constraintStart_toStartOf="@+id/divider"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginStart="5dp"
+                    android:layout_marginStart="10dp"
                     android:textColor="?android:attr/textColorSecondary"
                     android:textSize="12sp"
                     android:visibility="gone" />
@@ -188,12 +188,44 @@
                     app:layout_constraintTop_toBottomOf="@+id/tv_val_premio_tit"
                     app:layout_constraintStart_toStartOf="@+id/divider"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginStart="5dp"
+                    android:layout_marginStart="10dp"
                     android:textColor="?android:attr/textColorSecondary"
                     android:textSize="12sp"
                     android:textStyle="bold"
                     android:visibility="gone"
                     tools:text="@string/r_0_00" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clResgatePremio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="12dp"
+                android:layout_below="@id/cl_data"
+                android:layout_alignStart="@id/quantidadeApostadasTxt"
+                android:weightSum="1">
+
+                <ImageView
+                    android:id="@+id/ivResgatePremio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_resgate_premio"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Resgatar prêmio"
+                    android:textColor="@color/branco"
+                    android:layout_marginStart="16sp"
+                    app:layout_constraintStart_toEndOf="@+id/ivResgatePremio"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -216,7 +248,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/cl_data"
                 android:layout_alignStart="@id/quantidadeApostadasTxt"
-                android:layout_marginTop="39dp"
+                android:layout_marginTop="50dp"
                 android:paddingBottom="16dp"
                 android:visibility="gone"
                 tools:visibility="visible">

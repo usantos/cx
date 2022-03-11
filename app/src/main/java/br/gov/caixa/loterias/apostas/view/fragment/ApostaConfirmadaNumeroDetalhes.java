@@ -66,7 +66,7 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 	protected TextView tv_val_premio, tv_val_premio_tit;
 
 	@ViewById
-	protected ConstraintLayout cl_premio_pago;
+	protected ConstraintLayout cl_premio_pago, clResgatePremio;
 
 	@FragmentArg
 	protected BigDecimal valorPremio;
@@ -78,15 +78,24 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 			dataApostaTxt.setText(aposta.getDataEfetivacao() + getResources().getString(R.string.barra_n) + aposta.getHoraEfetivacao());
 		}
 
+		valorPremio = new BigDecimal(6);
 		if (valorPremio != null) {
 			tv_val_premio.setVisibility(View.VISIBLE);
 			tv_val_premio_tit.setVisibility(View.VISIBLE);
-			cl_premio_pago.setVisibility(View.VISIBLE);
-			resultTxt.setVisibility(View.GONE);
 			tv_val_premio.setText(ViewUtils.getMoedaFormat(valorPremio));
+			if (apostaPremiada()){
+				resultTxt.setText(aposta.getSituacao().getDescricao());
+				clResgatePremio.setVisibility(View.VISIBLE);
+				cl_premio_pago.setVisibility(View.GONE);
+				resultTxt.setVisibility(View.VISIBLE);
+			} else {
+				cl_premio_pago.setVisibility(View.VISIBLE);
+				clResgatePremio.setVisibility(View.GONE);
+				resultTxt.setVisibility(View.GONE);
+			}
 		} else  {
+			clResgatePremio.setVisibility(View.GONE);
 			resultTxt.setText(aposta.getSituacao().getDescricao());
-
 		}
 
 		if (aposta.getTroca()) {
@@ -114,6 +123,10 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 			informacaoAdicionalTxt.setText(aposta.getMesDeSorte().getNome());
 		}
 		configuraNumeros();
+	}
+
+	private boolean apostaPremiada() {
+		return true;
 	}
 
 	private void configuraNumeros() {
@@ -201,8 +214,6 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 		}
 	}
 
-
-
 	private void configuraFragmentSuperSete(IdentificaoDeUmaApostaDas8Modalidades aposta) {
 		FragmentManager fm          = getActivity().getSupportFragmentManager();
 
@@ -227,7 +238,11 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 
 	private ConfiguracaoNumeros configuraEstiloNumeros() {
 		EstiloModalidade estilo = new EstiloModalidade(aposta.getModalidade());
-		return new ConfiguracaoNumeros(estilo.getCorEscura(), R.color.branco);
+		if (aposta.getModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
+			return new ConfiguracaoNumeros(estilo.getCorClara(), R.color.branco);
+		} else {
+			return new ConfiguracaoNumeros(estilo.getCorEscura(), R.color.branco);
+		}
 	}
 
 	private ConfiguracaoNumerosSuperSete configuraEstiloSuperSete() {
