@@ -29,6 +29,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConfiguracaoNumerosSuper
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoAposta;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -78,11 +79,12 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 			dataApostaTxt.setText(aposta.getDataEfetivacao() + getResources().getString(R.string.barra_n) + aposta.getHoraEfetivacao());
 		}
 
-		valorPremio = new BigDecimal(6);
-		if (valorPremio != null) {
+		if (aposta.getSituacao().getValor() == SituacaoAposta.PREMIO_PAGO || apostaPremiada()) {
 			tv_val_premio.setVisibility(View.VISIBLE);
 			tv_val_premio_tit.setVisibility(View.VISIBLE);
-			tv_val_premio.setText(ViewUtils.getMoedaFormat(valorPremio));
+			if (valorPremio != null) {
+				tv_val_premio.setText(ViewUtils.getMoedaFormat(valorPremio));
+			}
 			if (apostaPremiada()){
 				resultTxt.setText(aposta.getSituacao().getDescricao());
 				clResgatePremio.setVisibility(View.VISIBLE);
@@ -126,7 +128,15 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 	}
 
 	private boolean apostaPremiada() {
-		return true;
+		return aposta.getSituacao().getValor() == SituacaoAposta.PREMIADA;
+	}
+
+	public void atualizaValorPremio(BigDecimal valor){
+		if (valor != null){
+			valorPremio = valor;
+			tv_val_premio.setText(ViewUtils.getMoedaFormat(valorPremio));
+		}
+
 	}
 
 	private void configuraNumeros() {

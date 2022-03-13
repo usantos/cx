@@ -104,4 +104,12 @@ public class ApostaConfirmadaPartidaFragment extends Fragment {
         listaPartidasApostadasExpandebleRecyclerView.setFocusable(Boolean.FALSE);
     }
 
+    public void atualizaValorPremio(BigDecimal valor){
+        if (valor != null){
+            valorPremio = valor;
+            tv_val_premio.setText(ViewUtils.getMoedaFormat(valorPremio));
+        }
+
+    }
+
 }
