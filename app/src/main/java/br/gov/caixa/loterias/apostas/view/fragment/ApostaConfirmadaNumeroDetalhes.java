@@ -30,6 +30,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDa
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoAposta;
+import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -151,13 +152,29 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 
 	private void configuraFragmentNumeros(IdentificaoDeUmaApostaDas8Modalidades aposta) {
 		FragmentManager fm          = getActivity().getSupportFragmentManager();
-		NumerosFragment fragment,fragResultado;
+		Fragment fragment, fragResultado;
 		switch (aposta.getModalidade()){
 			case DUPLA_SENA:
 				numerosSorteadosPrimeiro = resultadoConcurso != null ? resultadoConcurso.getListaSorteadosPrimeiroSorteio() : null;
 				numerosSorteadosSegundo =  (List<Integer>) (resultadoConcurso != null && resultadoConcurso.getNumerosSorteadosSegundoSorteio() != null  ?
 						resultadoConcurso.getNumerosSorteadosSegundoSorteio() : new ArrayList<>());
 				fragment = NumerosFragment.newInstance(aposta.getListaNumerosSelecionados(),numerosSorteadosPrimeiro,configuraEstiloNumeros());
+				break;
+			case MAIS_MILIONARIA:
+//				numerosSorteadosPrimeiro = new ArrayList<>();
+//				numerosSorteadosPrimeiro.add(1);
+//				numerosSorteadosPrimeiro.add(2);
+//				numerosSorteadosPrimeiro.add(3);
+//				numerosSorteadosPrimeiro.add(10);
+//				numerosSorteadosPrimeiro.add(20);
+//				numerosSorteadosPrimeiro.add(30);
+//				numerosSorteadosPrimeiro.add(4);
+//				numerosSorteadosPrimeiro.add(6);
+
+				fragment = NumerosTrevosFragment.newInstance(aposta.getListaNumerosSelecionados(),
+															 AppUtils.converteListaInteiros((List<Integer>) aposta.getTrevosSelecionados()),
+															 numerosSorteadosPrimeiro,configuraEstiloNumeros());
+
 				break;
 			default:
 				numerosSorteadosPrimeiro = resultadoConcurso != null ? resultadoConcurso.getListaSorteadosPrimeiroSorteio() : null;
@@ -169,6 +186,10 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 		rl_fg_numeros_1.setVisibility(View.VISIBLE);
 		//frag resultado
 		if(numerosSorteadosPrimeiro != null){
+			if (aposta.getModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
+				numerosSorteadosPrimeiro.remove(numerosSorteadosPrimeiro.size() - 1);
+				numerosSorteadosPrimeiro.remove(numerosSorteadosPrimeiro.size() - 1);
+			}
 			Collections.sort(numerosSorteadosPrimeiro);
 			fragResultado = NumerosFragment.newInstance(numerosSorteadosPrimeiro ,numerosSorteadosPrimeiro,configuraEstiloNumeros());
 			fm.beginTransaction().replace(R.id.rl_container_result_1, fragResultado).commit();
