@@ -29,6 +29,8 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConfiguracaoNumerosSuper
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoAposta;
+import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -66,7 +68,7 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 	protected TextView tv_val_premio, tv_val_premio_tit;
 
 	@ViewById
-	protected ConstraintLayout cl_premio_pago;
+	protected ConstraintLayout cl_premio_pago, clResgatePremio;
 
 	@FragmentArg
 	protected BigDecimal valorPremio;
@@ -78,15 +80,25 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 			dataApostaTxt.setText(aposta.getDataEfetivacao() + getResources().getString(R.string.barra_n) + aposta.getHoraEfetivacao());
 		}
 
-		if (valorPremio != null) {
+		if (aposta.getSituacao().getValor() == SituacaoAposta.PREMIO_PAGO || apostaPremiada()) {
 			tv_val_premio.setVisibility(View.VISIBLE);
 			tv_val_premio_tit.setVisibility(View.VISIBLE);
-			cl_premio_pago.setVisibility(View.VISIBLE);
-			resultTxt.setVisibility(View.GONE);
-			tv_val_premio.setText(ViewUtils.getMoedaFormat(valorPremio));
+			if (valorPremio != null) {
+				tv_val_premio.setText(ViewUtils.getMoedaFormat(valorPremio));
+			}
+			if (apostaPremiada()){
+				resultTxt.setText(aposta.getSituacao().getDescricao());
+				clResgatePremio.setVisibility(View.VISIBLE);
+				cl_premio_pago.setVisibility(View.GONE);
+				resultTxt.setVisibility(View.VISIBLE);
+			} else {
+				cl_premio_pago.setVisibility(View.VISIBLE);
+				clResgatePremio.setVisibility(View.GONE);
+				resultTxt.setVisibility(View.GONE);
+			}
 		} else  {
+			clResgatePremio.setVisibility(View.GONE);
 			resultTxt.setText(aposta.getSituacao().getDescricao());
-
 		}
 
 		if (aposta.getTroca()) {
@@ -116,6 +128,18 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 		configuraNumeros();
 	}
 
+	private boolean apostaPremiada() {
+		return aposta.getSituacao().getValor() == SituacaoAposta.PREMIADA;
+	}
+
+	public void atualizaValorPremio(BigDecimal valor){
+		if (valor != null){
+			valorPremio = valor;
+			tv_val_premio.setText(ViewUtils.getMoedaFormat(valorPremio));
+		}
+
+	}
+
 	private void configuraNumeros() {
 		if (!aposta.getNumerosSelecionados().isEmpty()) {
 			if (aposta.getModalidade() == ModalidadeEnum.SUPER_7) {
@@ -128,13 +152,29 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 
 	private void configuraFragmentNumeros(IdentificaoDeUmaApostaDas8Modalidades aposta) {
 		FragmentManager fm          = getActivity().getSupportFragmentManager();
-		NumerosFragment fragment,fragResultado;
+		Fragment fragment, fragResultado;
 		switch (aposta.getModalidade()){
 			case DUPLA_SENA:
 				numerosSorteadosPrimeiro = resultadoConcurso != null ? resultadoConcurso.getListaSorteadosPrimeiroSorteio() : null;
 				numerosSorteadosSegundo =  (List<Integer>) (resultadoConcurso != null && resultadoConcurso.getNumerosSorteadosSegundoSorteio() != null  ?
 						resultadoConcurso.getNumerosSorteadosSegundoSorteio() : new ArrayList<>());
 				fragment = NumerosFragment.newInstance(aposta.getListaNumerosSelecionados(),numerosSorteadosPrimeiro,configuraEstiloNumeros());
+				break;
+			case MAIS_MILIONARIA:
+//				numerosSorteadosPrimeiro = new ArrayList<>();
+//				numerosSorteadosPrimeiro.add(1);
+//				numerosSorteadosPrimeiro.add(2);
+//				numerosSorteadosPrimeiro.add(3);
+//				numerosSorteadosPrimeiro.add(10);
+//				numerosSorteadosPrimeiro.add(20);
+//				numerosSorteadosPrimeiro.add(30);
+//				numerosSorteadosPrimeiro.add(4);
+//				numerosSorteadosPrimeiro.add(6);
+
+				fragment = NumerosTrevosFragment.newInstance(aposta.getListaNumerosSelecionados(),
+															 AppUtils.converteListaInteiros((List<Integer>) aposta.getTrevosSelecionados()),
+															 numerosSorteadosPrimeiro,configuraEstiloNumeros());
+
 				break;
 			default:
 				numerosSorteadosPrimeiro = resultadoConcurso != null ? resultadoConcurso.getListaSorteadosPrimeiroSorteio() : null;
@@ -146,6 +186,10 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 		rl_fg_numeros_1.setVisibility(View.VISIBLE);
 		//frag resultado
 		if(numerosSorteadosPrimeiro != null){
+			if (aposta.getModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
+				numerosSorteadosPrimeiro.remove(numerosSorteadosPrimeiro.size() - 1);
+				numerosSorteadosPrimeiro.remove(numerosSorteadosPrimeiro.size() - 1);
+			}
 			Collections.sort(numerosSorteadosPrimeiro);
 			fragResultado = NumerosFragment.newInstance(numerosSorteadosPrimeiro ,numerosSorteadosPrimeiro,configuraEstiloNumeros());
 			fm.beginTransaction().replace(R.id.rl_container_result_1, fragResultado).commit();
@@ -201,8 +245,6 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 		}
 	}
 
-
-
 	private void configuraFragmentSuperSete(IdentificaoDeUmaApostaDas8Modalidades aposta) {
 		FragmentManager fm          = getActivity().getSupportFragmentManager();
 
@@ -227,7 +269,11 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 
 	private ConfiguracaoNumeros configuraEstiloNumeros() {
 		EstiloModalidade estilo = new EstiloModalidade(aposta.getModalidade());
-		return new ConfiguracaoNumeros(estilo.getCorEscura(), R.color.branco);
+		if (aposta.getModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
+			return new ConfiguracaoNumeros(estilo.getCorClara(), R.color.branco);
+		} else {
+			return new ConfiguracaoNumeros(estilo.getCorEscura(), R.color.branco);
+		}
 	}
 
 	private ConfiguracaoNumerosSuperSete configuraEstiloSuperSete() {

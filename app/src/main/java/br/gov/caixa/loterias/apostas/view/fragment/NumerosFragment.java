@@ -24,6 +24,7 @@ import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
 public class NumerosFragment extends Fragment {
 
 	private static final String LISTA_NUMEROS = "LISTA_NUMEROS";
+	private static final String LISTA_TREVOS = "LISTA_TREVOS";
 	private static final String LISTA_MARCADOS = "LISTA_MARCADOS";
 	private static final String CONFIGURACAO = "CONFIGURACAO";
 
