@@ -4,6 +4,7 @@ import br.gov.caixa.loterias.apostas.model.dao.tabela.TabelaCarrinhoFavorito;
 import br.gov.caixa.loterias.apostas.model.dao.tabela.TabelaEquipe;
 import br.gov.caixa.loterias.apostas.model.dao.tabela.TabelaIdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.dao.tabela.TabelaLoterica;
+import br.gov.caixa.loterias.apostas.model.dao.tabela.TabelaMercadoPago;
 import br.gov.caixa.loterias.apostas.model.dao.tabela.TabelaMesDeSorte;
 import br.gov.caixa.loterias.apostas.model.dao.tabela.TabelaParametroEquipe;
 import br.gov.caixa.loterias.apostas.model.dao.tabela.TabelaPartidaLoteca;
@@ -216,6 +217,21 @@ public final class DBTabelasLoterias {
                 " ( " +
                 TabelaCarrinhoFavorito.COLUNA_ID_CARRINHO + " INTEGER PRIMARY KEY NOT NULL , " +
                 TabelaCarrinhoFavorito.COLUNA_NOME_CARRINHO + " TEXT " +
+                " ) ";
+        return sb;
+    }
+
+    /**
+     * Método para criar tabela do mercado pago
+     *
+     * @return sb
+     */
+    public static String criarTabelaMercadoPago() {
+
+        String sb = (" CREATE TABLE " + TabelaMercadoPago.NOME_TABELA) +
+                " ( " +
+                TabelaMercadoPago.COLUNA_ID + " INTEGER PRIMARY KEY NOT NULL , " +
+                TabelaMercadoPago.COLUNA_PUBLIC_KEY + " TEXT " +
                 " ) ";
         return sb;
     }
