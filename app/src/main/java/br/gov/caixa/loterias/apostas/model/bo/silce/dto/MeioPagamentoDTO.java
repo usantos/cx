@@ -26,6 +26,8 @@ public class MeioPagamentoDTO {
     private String nomePagamentoCompra = null;
     @SerializedName("nomePagamentoPremio")
     private String nomePagamentoPremio = null;
+    @SerializedName("padrao")
+    private Boolean padrao;
     @SerializedName("publicKey")
     private String publicKey = null;
 
@@ -76,6 +78,13 @@ public class MeioPagamentoDTO {
         this.publicKey = publicKey;
     }
 
+    public Boolean getPadrao() {
+        return padrao;
+    }
+
+    public void setPadrao(Boolean padrao) {
+        this.padrao = padrao;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -89,6 +98,7 @@ public class MeioPagamentoDTO {
         return (this.id == null ? meioPagamentoDTO.id == null : this.id.equals(meioPagamentoDTO.id)) &&
                 (this.nomePagamentoCompra == null ? meioPagamentoDTO.nomePagamentoCompra == null : this.nomePagamentoCompra.equals(meioPagamentoDTO.nomePagamentoCompra)) &&
                 (this.nomePagamentoPremio == null ? meioPagamentoDTO.nomePagamentoPremio == null : this.nomePagamentoPremio.equals(meioPagamentoDTO.nomePagamentoPremio)) &&
+                (this.padrao == null ? meioPagamentoDTO.padrao == null : this.padrao.equals(meioPagamentoDTO.padrao)) &&
                 (this.publicKey == null ? meioPagamentoDTO.publicKey == null : this.publicKey.equals(meioPagamentoDTO.publicKey));
     }
 
@@ -99,18 +109,18 @@ public class MeioPagamentoDTO {
         result = 31 * result + (this.nomePagamentoCompra == null ? 0 : this.nomePagamentoCompra.hashCode());
         result = 31 * result + (this.nomePagamentoPremio == null ? 0 : this.nomePagamentoPremio.hashCode());
         result = 31 * result + (this.publicKey == null ? 0 : this.publicKey.hashCode());
+        result = 31 * result + (this.padrao == null ? 0 : this.padrao.hashCode());
         return result;
     }
 
     @Override
     public String toString() {
-
-        String sb = "class MeioPagamentoDTO {\n" +
-                "  id: " + id + "\n" +
-                "  nomePagamentoCompra: " + nomePagamentoCompra + "\n" +
-                "  nomePagamentoPremio: " + nomePagamentoPremio + "\n" +
-                "  publicKey: " + publicKey + "\n" +
-                "}\n";
-        return sb;
+        return "MeioPagamentoDTO{" +
+                "id=" + id +
+                ", nomePagamentoCompra='" + nomePagamentoCompra + '\'' +
+                ", nomePagamentoPremio='" + nomePagamentoPremio + '\'' +
+                ", padrao=" + padrao +
+                ", publicKey='" + publicKey + '\'' +
+                '}';
     }
 }
