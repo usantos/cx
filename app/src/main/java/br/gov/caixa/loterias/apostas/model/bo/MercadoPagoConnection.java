@@ -23,7 +23,9 @@ import java.io.UnsupportedEncodingException;
 
 import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MeioPagamentoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.Bin;
+import br.gov.caixa.loterias.apostas.model.dao.crud.MercadoPagoCRUD;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.DateUtils;
 import br.gov.caixa.loterias.apostas.utils.MercadoPagoUtil;
@@ -37,74 +39,107 @@ public class MercadoPagoConnection {
 	}
 
 	public static void callWebServicePayment_method(final String bin , String jsonObject, Context ctx, MercadoPagoListener listener) {
-		String	url = BuildConfig.MP_PAYMENT_URL + ctx.getResources().getString(R.string.bin) + bin +  ctx.getResources().getString(R.string.public_key) + BuildConfig.PUBLIC_KEY_MP;
+		String publicKey = MercadoPagoUtil.getPublicKey();
 
-		StringRequest request = new StringRequest(Request.Method.GET, url, response -> {
-			try {
-				RequestQueue rQueue = Volley.newRequestQueue(ctx);
-				JSONArray  jsonArray   = new JSONArray(response);
-				JSONObject responseObj;
-				responseObj = jsonArray.getJSONObject(0);
-				String payment_method_id = responseObj.getString(ctx.getResources().getString(R.string.payment_method_id));
+		if (publicKey == null || publicKey.isEmpty()){
+			silceBuscaKeyPublic(bin, jsonObject, ctx, listener);
+		}else {
+			String	url = BuildConfig.MP_PAYMENT_URL + ctx.getResources().getString(R.string.bin) +
+					bin +  ctx.getResources().getString(R.string.public_key) + publicKey;
 
+			StringRequest request = new StringRequest(Request.Method.GET, url, response -> {
+				try {
+					RequestQueue rQueue = Volley.newRequestQueue(ctx);
+					JSONArray  jsonArray   = new JSONArray(response);
+					JSONObject responseObj;
+					responseObj = jsonArray.getJSONObject(0);
+					String payment_method_id = responseObj.getString(ctx.getResources().getString(R.string.payment_method_id));
 
+					callWebServiceCreateToken(jsonObject, ctx, listener, rQueue, payment_method_id);
+				} catch (JSONException e) {
+					listener.onTokenFailure(montarMensagem(""));
+					e.printStackTrace();
+				}
+			}, volleyError -> {
+				onErroPayment(ctx, listener, url, volleyError);
+			});
 
-				callWebServiceCreateToken(jsonObject, ctx, listener, rQueue, payment_method_id);
-			} catch (JSONException e) {
-				listener.onTokenFailure(montarMensagem(""));
-				e.printStackTrace();
+			RequestQueue rQueue = Volley.newRequestQueue(ctx);
+			rQueue.add(request);
+		}
+	}
+
+	private static void silceBuscaKeyPublic(String bin, String jsonObject, Context ctx, MercadoPagoListener listener) {
+		DadosCorporativosBO_ service = DadosCorporativosBO_.getInstance_(ctx);
+		Long                 id      = new Long(1);
+		service.buscaKeyMercadoPago(id, new RequestListener<MeioPagamentoResponse>() {
+			@Override
+			public void onResponse(MeioPagamentoResponse result) {
+				if (result != null && result.getPayload() != null) {
+					new MercadoPagoCRUD(ctx).inserir(id, result.getPayload().getPublicKey());
+					callWebServicePayment_method(bin,jsonObject, ctx, listener);
+				}
 			}
-		}, volleyError -> {
-			onErroPayment(ctx, listener, url, volleyError);
-		});
 
-		RequestQueue rQueue = Volley.newRequestQueue(ctx);
-		rQueue.add(request);
+			@Override
+			public void onErrorResponse(VolleyError error) {
+				//
+				listener.onPaymentFailure("Não foi possível realizar o pagamento. Tente novamente mais tarde!");
+				Log.d("","");
+			}
+		});
 	}
 
 	private static void callWebServiceCreateToken(String jsonObject, Context ctx, MercadoPagoListener listener, RequestQueue rQueue, String payment_method_id) {
-		String url2 = BuildConfig.MP_CREATE_TOKEN_URL +  ctx.getResources().getString(R.string.public_key) + BuildConfig.PUBLIC_KEY_MP;
+		String publicKey = MercadoPagoUtil.getPublicKey();
 
-		StringRequest stringRequest = new StringRequest(Request.Method.POST, url2,
-														response1 -> Log.i("VOLLEY", response1),
-														error -> {
-															onErroCreateToken(error, ctx, url2, listener);
-														}) {
-			@Override
-			public String getBodyContentType() {
-				return "application/json; charset=utf-8";
-			}
+		if (publicKey == null || publicKey.isEmpty()){
 
-			@Override
-			public byte[] getBody() throws AuthFailureError {
-				try {
-					return jsonObject == null ? null : jsonObject.getBytes("utf-8");
-				} catch (UnsupportedEncodingException uee) {
-					VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", jsonObject, "utf-8");
-					return null;
+		} else {
+			String url2 = BuildConfig.MP_CREATE_TOKEN_URL +  ctx.getResources().getString(R.string.public_key) +
+					publicKey;
+
+			StringRequest stringRequest = new StringRequest(Request.Method.POST, url2,
+															response1 -> Log.i("VOLLEY", response1),
+															error -> {
+																onErroCreateToken(error, ctx, url2, listener);
+															}) {
+				@Override
+				public String getBodyContentType() {
+					return "application/json; charset=utf-8";
 				}
-			}
 
-			@Override
-			protected Response<String> parseNetworkResponse(NetworkResponse response) {
-				String responseString = "";
-				if (response != null) {
-					String body = null;
+				@Override
+				public byte[] getBody() throws AuthFailureError {
 					try {
-						body = new String(response.data,"UTF-8");
-						Log.d("'", "'");
-					} catch (UnsupportedEncodingException e) {
-						e.printStackTrace();
+						return jsonObject == null ? null : jsonObject.getBytes("utf-8");
+					} catch (UnsupportedEncodingException uee) {
+						VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", jsonObject, "utf-8");
+						return null;
 					}
-					CardTokenResponse cardResponse = new Gson().fromJson(body, CardTokenResponse.class);
-
-					listener.onSucesso(cardResponse.getId(),payment_method_id);
-
 				}
-				return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
-			}
-		};
-		rQueue.add(stringRequest);
+
+				@Override
+				protected Response<String> parseNetworkResponse(NetworkResponse response) {
+					String responseString = "";
+					if (response != null) {
+						String body = null;
+						try {
+							body = new String(response.data,"UTF-8");
+							Log.d("'", "'");
+						} catch (UnsupportedEncodingException e) {
+							e.printStackTrace();
+						}
+						CardTokenResponse cardResponse = new Gson().fromJson(body, CardTokenResponse.class);
+
+						listener.onSucesso(cardResponse.getId(),payment_method_id);
+
+					}
+					return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
+				}
+			};
+			rQueue.add(stringRequest);
+		}
 	}
 
 	private static void onErroPayment(Context ctx, MercadoPagoListener listener, String url, VolleyError volleyError) {
@@ -141,7 +176,7 @@ public class MercadoPagoConnection {
 		listener.onTokenFailure(montarMensagem(codErro));
 	}
 
-	private static String montarMensagem (String codError) {
+	private static String montarMensagem(String codError) {
 		String codErrorString = codError == null ? "" : codError;
 		String mensagemCompleta = MercadoPagoUtil.getMessageFromCode(codErrorString) + "\n\n";
 		if (codError != null && codError != "MP_PAYMENT_METHOD_NOT_FOUND") {

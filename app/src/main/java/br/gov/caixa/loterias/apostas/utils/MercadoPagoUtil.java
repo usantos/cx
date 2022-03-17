@@ -4,6 +4,7 @@ package br.gov.caixa.loterias.apostas.utils;
 import android.content.Context;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.model.dao.crud.MercadoPagoCRUD;
 
 public class MercadoPagoUtil {
 
@@ -158,5 +159,15 @@ public class MercadoPagoUtil {
             default:
                 return context.getString(R.string.mercado_pago_erro_default);
         }
+    }
+
+    public static String getPublicKey(){
+        String          publicKey = "";
+        MercadoPagoCRUD crud      = new MercadoPagoCRUD(Aplicacao.application.getApplicationContext());
+
+        if (crud.existe((long) 1)){
+            publicKey = crud.getPublicKey();
+        }
+        return publicKey;
     }
 }

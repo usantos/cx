@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
 
-import br.gov.caixa.loterias.apostas.model.dao.tabela.TabelaCarrinhoFavorito;
 import br.gov.caixa.loterias.apostas.model.dao.tabela.TabelaMercadoPago;
 
 public class MercadoPagoCRUD extends DBLoteriasCRUD {
@@ -26,7 +25,7 @@ public class MercadoPagoCRUD extends DBLoteriasCRUD {
 				values.put(TabelaMercadoPago.COLUNA_ID, id);
 				values.put(TabelaMercadoPago.COLUNA_PUBLIC_KEY, publicKey);
 
-				return getDb().insert(TabelaCarrinhoFavorito.NOME_TABELA, null, values);
+				return getDb().insert(TabelaMercadoPago.NOME_TABELA, null, values);
 			} catch (Exception e) {
 				Log.e(TAG, e.getMessage());
 				return null;
@@ -35,6 +34,46 @@ public class MercadoPagoCRUD extends DBLoteriasCRUD {
 			}
 		} else {
 			return null;
+		}
+	}
+
+	public String getPublicKey(){
+		this.initDBLoteriasHelper();
+		Cursor cursor = null;
+		String publicKey = "";
+
+		try {
+			setDb(getDbLoteriasHelper().getWritableDatabase());
+
+			String[] projection = {
+					TabelaMercadoPago.COLUNA_ID,
+					TabelaMercadoPago.COLUNA_PUBLIC_KEY
+			};
+
+			String selection = TabelaMercadoPago.COLUNA_ID + " = " + new Long(1);
+
+			cursor = getDb().query(
+					TabelaMercadoPago.NOME_TABELA,
+					projection,
+					selection,
+					null,
+					null,
+					null,
+					null
+								  );
+
+			while (cursor.moveToNext()) {
+				publicKey = cursor.getString(cursor.getColumnIndexOrThrow(TabelaMercadoPago.COLUNA_PUBLIC_KEY));
+			}
+
+			return publicKey;
+		} catch (Exception e) {
+			Log.e(TAG, e.getMessage());
+			return publicKey;
+		} finally {
+			if (cursor != null) {
+				cursor.close();
+			}
 		}
 	}
 
