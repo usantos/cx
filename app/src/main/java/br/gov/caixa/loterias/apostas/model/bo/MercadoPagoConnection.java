@@ -35,6 +35,8 @@ import br.gov.caixa.loterias.apostas.utils.MercadoPagoUtil;
 
 public class MercadoPagoConnection {
 
+	private static boolean jaBuscouPublicKey = false;
+
 	public interface MercadoPagoListener {
 		void onSucesso(String cardId, String payment_method_id);
 		void onTokenFailure(String msgError);
@@ -51,6 +53,7 @@ public class MercadoPagoConnection {
 					bin +  ctx.getResources().getString(R.string.public_key) + publicKey;
 
 			StringRequest request = new StringRequest(Request.Method.GET, url, response -> {
+				jaBuscouPublicKey = false;
 				try {
 					RequestQueue rQueue = Volley.newRequestQueue(ctx);
 					JSONArray  jsonArray   = new JSONArray(response);
@@ -64,11 +67,13 @@ public class MercadoPagoConnection {
 					e.printStackTrace();
 				}
 			}, error -> {
-				if (MercadoPagoUtil.checaPrecisaAtualizarKeyPublica(error)){
+				if (MercadoPagoUtil.checaPrecisaAtualizarKeyPublica(error) && !jaBuscouPublicKey){
+					jaBuscouPublicKey = true;
 					silceBuscaKeyPublic(listener,
 										onSilceKeyPaymentMethodListener(bin, jsonObject, ctx,
 																		listener));
 				} else {
+					jaBuscouPublicKey = false;
 					onErroPayment(ctx, listener, url, error);
 				}
 			});
@@ -126,12 +131,14 @@ public class MercadoPagoConnection {
 			StringRequest stringRequest = new StringRequest(Request.Method.POST, url2,
 															response1 -> Log.i("VOLLEY", response1),
 															error -> {
-																if (MercadoPagoUtil.checaPrecisaAtualizarKeyPublica(error)){
+																if (MercadoPagoUtil.checaPrecisaAtualizarKeyPublica(error) && !jaBuscouPublicKey){
+																	jaBuscouPublicKey = true;
 																	silceBuscaKeyPublic(listener,
 																						onBuscaSilceCreateTokenListener(jsonObject, ctx, listener,
 																														rQueue, payment_method_id));
 
 																} else {
+																	jaBuscouPublicKey = false;
 																	onErroCreateToken(error, ctx, url2, listener);
 																}
 															}) {
@@ -154,6 +161,7 @@ public class MercadoPagoConnection {
 				protected Response<String> parseNetworkResponse(NetworkResponse response) {
 					String responseString = "";
 					if (response != null) {
+						jaBuscouPublicKey = false;
 						String body = null;
 						try {
 							body = new String(response.data,"UTF-8");
