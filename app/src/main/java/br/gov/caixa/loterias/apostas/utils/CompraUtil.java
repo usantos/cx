@@ -34,7 +34,7 @@ public class CompraUtil {
         });
     }
 
-    public static void registraApostaAsync(final Context context, String tokenPagamento, String payment_method_id, String savedCard, String saveCard, final OnCompraAsync listener) {
+    public static void registraApostaAsync(String tokenPagamento, String payment_method_id, String savedCard, String saveCard, final OnCompraAsync listener) {
 //
 //        (SAVE_CARD: nil, TOKEN: token, SAVED_CARD: "true", PAYMENT_METHOD_ID: paymentId))   com cartao já salvo
 //
@@ -46,6 +46,7 @@ public class CompraUtil {
         ParametrosPagamento parametroPagamento = new ParametrosPagamento( tokenPagamento, savedCard, payment_method_id, saveCard );
         MeioPagamento meioPagamento = new MeioPagamento(1, parametroPagamento);
 
+        Context context = Aplicacao.application.getApplicationContext();
         ApostaBO apostaBO = ApostaBO_.getInstance_(context);
         apostaBO.postRegistrarApostaCarrinhoAsync(meioPagamento, new RequestListener<CompraAsyncResponse>() {
             @Override

@@ -15,6 +15,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -44,7 +45,7 @@ public class MercadoPagoConnection {
 		String publicKey = MercadoPagoUtil.getPublicKey();
 
 		if (publicKey == null || publicKey.isEmpty()){
-			silceBuscaKeyPublic(listener, () -> callWebServicePayment_method(bin, jsonObject, ctx, listener));
+			silceBuscaKeyPublic(listener, onSilceKeyPaymentMethodListener(bin, jsonObject, ctx, listener));
 		}else {
 			String	url = BuildConfig.MP_PAYMENT_URL + ctx.getResources().getString(R.string.bin) +
 					bin +  ctx.getResources().getString(R.string.public_key) + publicKey;
@@ -62,13 +63,34 @@ public class MercadoPagoConnection {
 					listener.onTokenFailure(montarMensagem(""));
 					e.printStackTrace();
 				}
-			}, volleyError -> {
-				onErroPayment(ctx, listener, url, volleyError);
+			}, error -> {
+				if (MercadoPagoUtil.checaPrecisaAtualizarKeyPublica(error)){
+					silceBuscaKeyPublic(listener,
+										onSilceKeyPaymentMethodListener(bin, jsonObject, ctx,
+																		listener));
+				} else {
+					onErroPayment(ctx, listener, url, error);
+				}
 			});
 
 			RequestQueue rQueue = Volley.newRequestQueue(ctx);
 			rQueue.add(request);
 		}
+	}
+
+	@NotNull
+	private static OnPublicKeyListener onSilceKeyPaymentMethodListener(String bin, String jsonObject, Context ctx, MercadoPagoListener listener) {
+		return new OnPublicKeyListener() {
+			@Override
+			public void success() {
+				callWebServicePayment_method(bin, jsonObject, ctx, listener);
+			}
+
+			@Override
+			public void failed(String url, VolleyError volleyError) {
+				onErroPayment(ctx, listener, url, volleyError);
+			}
+		};
 	}
 
 	private static void silceBuscaKeyPublic(MercadoPagoListener listener, OnPublicKeyListener keyListener) {
@@ -86,9 +108,7 @@ public class MercadoPagoConnection {
 
 			@Override
 			public void onErrorResponse(VolleyError error) {
-				//
 				listener.onPaymentFailure("Não foi possível realizar o pagamento. Tente novamente mais tarde!");
-				Log.d("","");
 			}
 		});
 	}
@@ -97,9 +117,8 @@ public class MercadoPagoConnection {
 		String publicKey = MercadoPagoUtil.getPublicKey();
 
 		if (publicKey == null || publicKey.isEmpty()){
-			silceBuscaKeyPublic(listener, () -> {
-				callWebServiceCreateToken(jsonObject, ctx, listener, rQueue, payment_method_id);
-			});
+			silceBuscaKeyPublic(listener,
+								onBuscaSilceCreateTokenListener(jsonObject, ctx, listener, rQueue, payment_method_id));
 		} else {
 			String url2 = BuildConfig.MP_CREATE_TOKEN_URL +  ctx.getResources().getString(R.string.public_key) +
 					publicKey;
@@ -107,7 +126,14 @@ public class MercadoPagoConnection {
 			StringRequest stringRequest = new StringRequest(Request.Method.POST, url2,
 															response1 -> Log.i("VOLLEY", response1),
 															error -> {
-																onErroCreateToken(error, ctx, url2, listener);
+																if (MercadoPagoUtil.checaPrecisaAtualizarKeyPublica(error)){
+																	silceBuscaKeyPublic(listener,
+																						onBuscaSilceCreateTokenListener(jsonObject, ctx, listener,
+																														rQueue, payment_method_id));
+
+																} else {
+																	onErroCreateToken(error, ctx, url2, listener);
+																}
 															}) {
 				@Override
 				public String getBodyContentType() {
@@ -145,6 +171,21 @@ public class MercadoPagoConnection {
 			};
 			rQueue.add(stringRequest);
 		}
+	}
+
+	@NotNull
+	private static OnPublicKeyListener onBuscaSilceCreateTokenListener(String jsonObject, Context ctx, MercadoPagoListener listener, RequestQueue rQueue, String payment_method_id) {
+		return new OnPublicKeyListener() {
+			@Override
+			public void success() {
+				callWebServiceCreateToken(jsonObject, ctx, listener, rQueue, payment_method_id);
+			}
+
+			@Override
+			public void failed(String url, VolleyError volleyError) {
+				onErroPayment(ctx, listener, url,volleyError);
+			}
+		};
 	}
 
 	private static void onErroPayment(Context ctx, MercadoPagoListener listener, String url, VolleyError volleyError) {

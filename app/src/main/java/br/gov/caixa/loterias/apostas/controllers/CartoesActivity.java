@@ -1,5 +1,6 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ import org.json.JSONObject;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO_;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO_;
 import br.gov.caixa.loterias.apostas.model.bo.MercadoPagoConnection;
@@ -33,13 +35,17 @@ import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CompraAsyncResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListCartaoDTOResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MeioPagamentoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.dao.crud.CarrinhoFavoritoCRUD;
+import br.gov.caixa.loterias.apostas.model.dao.crud.MercadoPagoCRUD;
+import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.CompraUtil;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
+import br.gov.caixa.loterias.apostas.utils.MercadoPagoUtil;
 import br.gov.caixa.loterias.apostas.utils.RateUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.CartoesRecyclerViewAdapter;
@@ -68,6 +74,7 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
 
     //fragments
     private SomadorCarrinhoFragment somadorCarrinhoFragment;
+    private boolean jaBuscouPublicKey = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -334,7 +341,7 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
 
         // public static void registraApostaAsync(final Context context, String tokenPagamento, String payment_method_id, String savedCard, String saveCard, final OnCompraAsync listener) {
 
-        CompraUtil.registraApostaAsync(CartoesActivity.this, tokenPagamento, payment_method_id, getResources().getString(R.string.string_true), getResources().getString(R.string.string_vazia), onCompraAsyncListener());
+        CompraUtil.registraApostaAsync(tokenPagamento, payment_method_id, getResources().getString(R.string.string_true), getResources().getString(R.string.string_vazia), onCompraAsyncListener());
     }
 
     private OnCompraAsync onCompraAsyncListener() {
@@ -343,6 +350,7 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
             @Override
             public void successCompra() {
                 sucessoCompraAsync();
+                jaBuscouPublicKey = false;
             }
 
             @Override
@@ -352,9 +360,34 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
 
             @Override
             public void errorCompra(VolleyError volleyError) {
-                errorCompraAsync(volleyError);
+                if (MercadoPagoUtil.checaPrecisaAtualizarKeyPublicaComRespostaSilce(volleyError) && !jaBuscouPublicKey){
+                    silceBuscaKeyPublic();
+                } else {
+                    errorCompraAsync(volleyError);
+                }
             }
         };
+    }
+
+    private void silceBuscaKeyPublic() {
+        Context              ctx     = Aplicacao.application.getApplicationContext();
+        DadosCorporativosBO_ service = DadosCorporativosBO_.getInstance_(ctx);
+        Long                 id      = new Long(1);
+        service.buscaKeyMercadoPago(id, new RequestListener<MeioPagamentoResponse>() {
+            @Override
+            public void onResponse(MeioPagamentoResponse result) {
+                jaBuscouPublicKey = true;
+                if (result != null && result.getPayload() != null) {
+                    new MercadoPagoCRUD(ctx).inserir(id, result.getPayload().getPublicKey());
+                    MercadoPagoConnection.callWebServicePayment_method(bin ,requestBody, CartoesActivity.this, listener);
+                }
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                errorCompraAsync(error);
+            }
+        });
     }
 
     private void sucessoCompraAsync() {
@@ -375,6 +408,7 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
     private void errorCompraAsync(VolleyError error) {
         RedirectNetwork.checkRedirect( error, CartoesActivity.this );
         DialogUtils.dismiss();
+        jaBuscouPublicKey = false;
     }
 
     private void limpaCarrinhoFavorito() {
@@ -383,12 +417,7 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
     }
 
     private void showLoading(){
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                DialogUtils.show(CartoesActivity.this);
-            }
-        });
+        runOnUiThread(() -> DialogUtils.show(CartoesActivity.this));
     }
 
     @Override

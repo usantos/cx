@@ -3,7 +3,14 @@ package br.gov.caixa.loterias.apostas.utils;
 
 import android.content.Context;
 
+import com.android.volley.VolleyError;
+import com.google.gson.Gson;
+
+import java.io.UnsupportedEncodingException;
+
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.model.bean.ErrorResponse;
+import br.gov.caixa.loterias.apostas.model.bean.MPErrorResponse;
 import br.gov.caixa.loterias.apostas.model.dao.crud.MercadoPagoCRUD;
 
 public class MercadoPagoUtil {
@@ -170,4 +177,47 @@ public class MercadoPagoUtil {
         }
         return publicKey;
     }
+
+    public static boolean checaPrecisaAtualizarKeyPublica(VolleyError error){
+        boolean precisaAtualizar = false;
+        String          body          = "";
+        MPErrorResponse errorResponse = null;
+        if(error.networkResponse.data!=null) {
+            try {
+                body          = new String(error.networkResponse.data,"UTF-8");
+                errorResponse = new Gson().fromJson(body, MPErrorResponse.class);
+                if (errorResponse.getStatus() == 400 || errorResponse.getStatus() == 404){
+                    precisaAtualizar = true;
+                }
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+
+        return precisaAtualizar;
+    }
+
+    public static boolean checaPrecisaAtualizarKeyPublicaComRespostaSilce(VolleyError error){
+        boolean precisaAtualizar = false;
+        String        body          = "";
+        ErrorResponse errorResponse = null;
+        if(error.networkResponse.data!=null) {
+            try {
+                body          = new String(error.networkResponse.data,"UTF-8");
+                errorResponse = new Gson().fromJson(body, ErrorResponse.class);
+                if (errorResponse.getCodigo().equalsIgnoreCase("019012")){
+                    precisaAtualizar = true;
+                }
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+
+        return precisaAtualizar;
+    }
+
 }
