@@ -336,10 +336,6 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
         if(!DialogUtils.isShow()){
             showLoading();
         }
-        // aqui passa usando um cartao salvo
-        // (SAVE_CARD: nil, TOKEN: token, SAVED_CARD: "true", PAYMENT_METHOD_ID: paymentId))   com cartao já salvo
-
-        // public static void registraApostaAsync(final Context context, String tokenPagamento, String payment_method_id, String savedCard, String saveCard, final OnCompraAsync listener) {
 
         CompraUtil.registraApostaAsync(tokenPagamento, payment_method_id, getResources().getString(R.string.string_true), getResources().getString(R.string.string_vazia), onCompraAsyncListener());
     }
@@ -350,7 +346,6 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
             @Override
             public void successCompra() {
                 sucessoCompraAsync();
-                jaBuscouPublicKey = false;
             }
 
             @Override
@@ -362,6 +357,7 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
             public void errorCompra(VolleyError volleyError) {
                 if (MercadoPagoUtil.checaPrecisaAtualizarKeyPublicaComRespostaSilce(volleyError) && !jaBuscouPublicKey){
                     silceBuscaKeyPublic();
+                    errorCompraAsync(volleyError);
                 } else {
                     errorCompraAsync(volleyError);
                 }
@@ -379,7 +375,7 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
                 jaBuscouPublicKey = true;
                 if (result != null && result.getPayload() != null) {
                     new MercadoPagoCRUD(ctx).inserir(id, result.getPayload().getPublicKey());
-                    MercadoPagoConnection.callWebServicePayment_method(bin ,requestBody, CartoesActivity.this, listener);
+                    //MercadoPagoConnection.callWebServicePayment_method(bin ,requestBody, CartoesActivity.this, listener);
                 }
             }
 
@@ -398,11 +394,13 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
         startActivity(activity);
         CarrinhoSingleton.getInstance().setCarrinho(new CarrinhoDTO());
         limpaCarrinhoFavorito();
+        jaBuscouPublicKey = false;
     }
 
     private void redirectCompraAsync(CompraAsyncResponse compraAsyncResponse) {
         RedirectNetwork.checkRedirectSucesso( compraAsyncResponse.getRedirect(), CartoesActivity.this);
         DialogUtils.dismiss();
+        jaBuscouPublicKey = false;
     }
 
     private void errorCompraAsync(VolleyError error) {

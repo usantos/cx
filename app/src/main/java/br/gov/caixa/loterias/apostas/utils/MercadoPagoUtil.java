@@ -207,7 +207,7 @@ public class MercadoPagoUtil {
             try {
                 body          = new String(error.networkResponse.data,"UTF-8");
                 errorResponse = new Gson().fromJson(body, ErrorResponse.class);
-                if (errorResponse.getCodigo().equalsIgnoreCase("019012")){
+                if (errorResponse.getCodigo().equalsIgnoreCase("019012") && errorResponse.getMensagem().contains("2006")){
                     precisaAtualizar = true;
                 }
             } catch (UnsupportedEncodingException e) {
