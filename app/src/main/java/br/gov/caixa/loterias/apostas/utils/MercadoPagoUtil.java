@@ -186,7 +186,7 @@ public class MercadoPagoUtil {
             try {
                 body          = new String(error.networkResponse.data,"UTF-8");
                 errorResponse = new Gson().fromJson(body, MPErrorResponse.class);
-                if (errorResponse.getStatus() == 400 || errorResponse.getStatus() == 404){
+                if (isStatusKeyInvalida(errorResponse)){
                     precisaAtualizar = true;
                 }
             } catch (UnsupportedEncodingException e) {
@@ -197,6 +197,17 @@ public class MercadoPagoUtil {
         }
 
         return precisaAtualizar;
+    }
+
+    private static boolean isMessageKeyInvalida(MPErrorResponse errorResponse) {
+        return errorResponse.getMessage().contains("invalid request") ||
+                errorResponse.getMessage().contains("Field: client_id is required and cannot be null") ||
+                errorResponse.getMessage().contains("not found public_key") ||
+                errorResponse.getMessage().contains("Invalid access parameters");
+    }
+
+    private static boolean isStatusKeyInvalida(MPErrorResponse errorResponse) {
+        return errorResponse.getStatus() == 400 || errorResponse.getStatus() == 404;
     }
 
     public static boolean checaPrecisaAtualizarKeyPublicaComRespostaSilce(VolleyError error){

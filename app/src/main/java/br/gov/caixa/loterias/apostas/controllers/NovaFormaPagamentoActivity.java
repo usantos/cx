@@ -1,6 +1,5 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -23,24 +22,18 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO_;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.MercadoPagoConnection;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
-import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CompraAsyncResponse;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MeioPagamentoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
-import br.gov.caixa.loterias.apostas.model.dao.crud.MercadoPagoCRUD;
-import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.CompraUtil;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.MaskEditUtil;
-import br.gov.caixa.loterias.apostas.utils.MercadoPagoUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 import br.gov.caixa.loterias.apostas.view.listener.OnCompraAsync;
@@ -67,7 +60,6 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity implement
 
     //fragments
     private SomadorCarrinhoFragment somadorCarrinhoFragment;
-    private boolean jaBuscouPublicKey = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -260,35 +252,9 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity implement
 
             @Override
             public void errorCompra(VolleyError volleyError) {
-                if (MercadoPagoUtil.checaPrecisaAtualizarKeyPublicaComRespostaSilce(volleyError) && !jaBuscouPublicKey){
-                    silceBuscaKeyPublic();
-                    errorCompraAsync(volleyError);
-                } else {
-                    errorCompraAsync(volleyError);
-                }
+                errorCompraAsync(volleyError);
             }
         };
-    }
-
-    private void silceBuscaKeyPublic() {
-        Context              ctx     = Aplicacao.application.getApplicationContext();
-        DadosCorporativosBO_ service = DadosCorporativosBO_.getInstance_(ctx);
-        Long                 id      = new Long(1);
-        service.buscaKeyMercadoPago(id, new RequestListener<MeioPagamentoResponse>() {
-            @Override
-            public void onResponse(MeioPagamentoResponse result) {
-                jaBuscouPublicKey = true;
-                if (result != null && result.getPayload() != null) {
-                    new MercadoPagoCRUD(ctx).inserir(id, result.getPayload().getPublicKey());
-                    //MercadoPagoConnection.callWebServicePayment_method(bin ,requestBody, NovaFormaPagamentoActivity.this, listener);
-                }
-            }
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                errorCompraAsync(error);
-            }
-        });
     }
 
     private void sucessoCompraAsync() {
@@ -300,19 +266,16 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity implement
         CarrinhoSingleton.getInstance().setCarrinho(new CarrinhoDTO());
         Intent activity = new Intent(NovaFormaPagamentoActivity.this, ConfirmacaoPagamentoActivity.class);
         startActivity(activity);
-        jaBuscouPublicKey = false;
     }
 
     private void redirectCompraAsync(CompraAsyncResponse compraAsyncResponse) {
         RedirectNetwork.checkRedirectSucesso( compraAsyncResponse.getRedirect(), NovaFormaPagamentoActivity.this);
         DialogUtils.dismiss();
-        jaBuscouPublicKey = false;
     }
 
     private void errorCompraAsync(VolleyError error) {
         RedirectNetwork.checkRedirect( error, NovaFormaPagamentoActivity.this );
         DialogUtils.dismiss();
-        jaBuscouPublicKey = false;
     }
 
     private void apresentaTextCartoes() {
