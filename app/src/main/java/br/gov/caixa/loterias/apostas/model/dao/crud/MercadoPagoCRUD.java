@@ -122,12 +122,12 @@ public class MercadoPagoCRUD extends DBLoteriasCRUD {
 		}
 	}
 
-	public void atualiza(Long id, String publicKey){
+	public Long atualiza(Long id, String publicKey){
 		if (existe(id)){
 			deletaTodos();
 		}
 
-		inserir(id, publicKey);
+		return inserir(id, publicKey);
 	}
 
 	public void deletaTodos(){

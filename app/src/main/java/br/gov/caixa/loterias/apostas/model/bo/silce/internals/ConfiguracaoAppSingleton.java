@@ -8,6 +8,8 @@ public class ConfiguracaoAppSingleton {
     private String urlBaseBuscaApostas;
     private Boolean isMicroServico;
     private Boolean mostraMenuAposta;
+    private Boolean isAtualizaPublicKey;
+
     private static ConfiguracaoAppSingleton configuracaoAppSingleton;
 
     private ConfiguracaoAppSingleton(){ }
@@ -17,6 +19,7 @@ public class ConfiguracaoAppSingleton {
             configuracaoAppSingleton = new ConfiguracaoAppSingleton();
             configuracaoAppSingleton.mostraMenuAposta = MOSTRA_MENU_APOSTAS_DEFAULT;
             configuracaoAppSingleton.isMicroServico = IS_MICRO_SERVICO_DEFAULT;
+            configuracaoAppSingleton.isAtualizaPublicKey = Boolean.FALSE;
         }
         return configuracaoAppSingleton;
     }
@@ -43,5 +46,13 @@ public class ConfiguracaoAppSingleton {
 
     public void setMostraMenuAposta(Boolean mostraMenuAposta) {
         this.mostraMenuAposta = mostraMenuAposta;
+    }
+
+    public boolean isAtualizaPublicKey(){
+        return isAtualizaPublicKey;
+    }
+
+    public void setAtualizaPublicKey(Boolean atualiza){
+        isAtualizaPublicKey = atualiza;
     }
 }

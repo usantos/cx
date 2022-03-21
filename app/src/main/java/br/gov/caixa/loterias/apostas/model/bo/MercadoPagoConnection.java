@@ -27,11 +27,13 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnPublicKeyListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MeioPagamentoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.Bin;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
 import br.gov.caixa.loterias.apostas.model.dao.crud.MercadoPagoCRUD;
 import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.DateUtils;
 import br.gov.caixa.loterias.apostas.utils.MercadoPagoUtil;
+import br.gov.caixa.loterias.apostas.utils.TestVisao;
 
 public class MercadoPagoConnection {
 
@@ -46,7 +48,7 @@ public class MercadoPagoConnection {
 	public static void callWebServicePayment_method(final String bin , String jsonObject, Context ctx, MercadoPagoListener listener) {
 		String publicKey = MercadoPagoUtil.getPublicKey();
 
-		if (publicKey == null || publicKey.isEmpty()){
+		if (ConfiguracaoAppSingleton.getInstance().isAtualizaPublicKey() || publicKey == null || publicKey.isEmpty()){
 			silceBuscaKeyPublic(listener, onSilceKeyPaymentMethodListener(bin, jsonObject, ctx, listener));
 		}else {
 			String	url = BuildConfig.MP_PAYMENT_URL + ctx.getResources().getString(R.string.bin) +
@@ -106,8 +108,12 @@ public class MercadoPagoConnection {
 			@Override
 			public void onResponse(MeioPagamentoResponse result) {
 				if (result != null && result.getPayload() != null) {
-					new MercadoPagoCRUD(ctx).inserir(id, result.getPayload().getPublicKey());
+					Long inserir = new MercadoPagoCRUD(ctx).atualiza(id, result.getPayload().getPublicKey());
+					if (inserir > 0){
+						ConfiguracaoAppSingleton.getInstance().setAtualizaPublicKey(false);
+					}
 					keyListener.success();
+					TestVisao.toast(result.getPayload().getPublicKey());
 				}
 			}
 
@@ -121,7 +127,7 @@ public class MercadoPagoConnection {
 	private static void callWebServiceCreateToken(String jsonObject, Context ctx, MercadoPagoListener listener, RequestQueue rQueue, String payment_method_id) {
 		String publicKey = MercadoPagoUtil.getPublicKey();
 
-		if (publicKey == null || publicKey.isEmpty()){
+		if (ConfiguracaoAppSingleton.getInstance().isAtualizaPublicKey() || publicKey == null || publicKey.isEmpty()){
 			silceBuscaKeyPublic(listener,
 								onBuscaSilceCreateTokenListener(jsonObject, ctx, listener, rQueue, payment_method_id));
 		} else {
