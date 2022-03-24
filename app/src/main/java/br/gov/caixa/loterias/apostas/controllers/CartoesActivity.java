@@ -36,9 +36,9 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListCartaoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.dao.crud.CarrinhoFavoritoCRUD;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.CompraUtil;
-import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.RateUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -379,7 +379,7 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
     }
 
     private void showLoading(){
-        runOnUiThread(() -> DialogUtils.show(CartoesActivity.this));
+        runOnUiThread(() -> AlertDialogUtils.show(CartoesActivity.this));
     }
 
     @Override

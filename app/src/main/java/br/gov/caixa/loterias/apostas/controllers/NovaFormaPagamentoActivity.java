@@ -29,9 +29,9 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CompraAsyncResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.CompraUtil;
-import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.MaskEditUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -298,7 +298,7 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity implement
     }
 
     private void showLoading(){
-        runOnUiThread(() -> DialogUtils.show(NovaFormaPagamentoActivity.this));
+        runOnUiThread(() -> AlertDialogUtils.show(NovaFormaPagamentoActivity.this));
     }
 
     @Override
